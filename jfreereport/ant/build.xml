@@ -14,26 +14,42 @@
 <!-- If you have comments about this script, please post a message -->
 <!-- in the JFreeReport forum. -->
 
-<project name="jfreereport" default="all" basedir="..">
+<project name="jfreereport" default="all">
+
+    <!-- Read the latest sources from the CVS -->
+    <target name="cvs-checkout" description="Retrieves the latest sources from the cvs archive at sourceforge.">
+      <property name="basedir" value="." />
+      <cvspass cvsroot=":pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport"
+             password=""
+        />
+      <cvs cvsRoot=":pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport"
+           package="jfreereport"
+           compression="true" compressionlevel="5"
+           dest="jfreereport-cvs"
+        />
+    </target>
 
     <!-- General initialisation. -->
     <target name="init-general" description="Initialise general parameters.">
         <tstamp />
+        <!-- BaseDirectory is different for either cvs target and build target -->
+        <property name="basedir" value=".." />
         <property name="builddir" value="${basedir}/build" />
-        <property name="BeanShell-jar" value="${basedir}/lib/bsh-1.2b6.jar" />
-        <property name="GnuJAXP-jar" value="${basedir}/lib/gnujaxp.jar" />
-        <property name="iText-jar" value="${basedir}/lib/iText-0.96.jar" />
-        <property name="JCommon-jar" value="${basedir}/lib/jcommon-0.7.1.jar" />
-        <property name="Pixie-jar" value="${basedir}/lib/pixie.jar" />
-        <property name="POI-jar" value="${basedir}/lib/jakarta-poi-1.5.1-final-20020615.jar" />
+        <property name="libdir" value="${basedir}/lib" />
+        <property name="BeanShell-jar" value="$bsh-1.2b6.jar" />
+        <property name="GnuJAXP-jar" value="$gnujaxp.jar" />
+        <property name="iText-jar" value="$iText-0.96.jar" />
+        <property name="JCommon-jar" value="$jcommon-0.7.1.jar" />
+        <property name="Pixie-jar" value="pixie.jar" />
+        <property name="POI-jar" value="jakarta-poi-1.5.1-final-20020615.jar" />
 
         <path id="build.classpath">
-            <pathelement location="${BeanShell-jar}" />
-            <pathelement location="${GnuJAXP-jar}" />
-            <pathelement location="${iText-jar}" />
-            <pathelement location="${JCommon-jar}" />
-            <pathelement location="${Pixie-jar}" />
-            <pathelement location="${POI-jar}" />
+            <pathelement location="${libdir}/${BeanShell-jar}" />
+            <pathelement location="${libdir}/${GnuJAXP-jar}" />
+            <pathelement location="${libdir}/${iText-jar}" />
+            <pathelement location="${libdir}/${JCommon-jar}" />
+            <pathelement location="${libdir}/${Pixie-jar}" />
+            <pathelement location="${libdir}/${POI-jar}" />
         </path>
 
     </target>
@@ -42,7 +58,7 @@
     <target name="init-jfreereport" depends="init-general"
             description="Initialise JFreeReport parameters.">
         <property name="jfreereport.name" value="jfreereport" />
-        <property name="jfreereport.version" value="0.8.0_3" />
+        <property name="jfreereport.version" value="0.8.1" />
     </target>
 
     <!-- Compile the JFreeReport classes -->
@@ -60,10 +76,12 @@
         </javac>
 
         <!-- copy across the BeanShell header file -->
-        <copy file="${basedir}/source/com/jrefinery/report/function/BSHExpressionHeader.txt" tofile="${basedir}/build/com/jrefinery/report/function/BSHExpressionHeader.txt" />
+        <copy file="${basedir}/source/com/jrefinery/report/function/BSHExpressionHeader.txt"
+          tofile="${basedir}/build/com/jrefinery/report/function/BSHExpressionHeader.txt" />
 
         <!-- include the jfreereport.properties -->
-        <copy file="${basedir}/source/com/jrefinery/report/jfreereport.properties" tofile="${basedir}/build/com/jrefinery/report/jfreereport.properties" />
+        <copy file="${basedir}/source/com/jrefinery/report/jfreereport.properties"
+          tofile="${basedir}/build/com/jrefinery/report/jfreereport.properties" />
 
         <!-- copy across the icons -->
         <copy todir="${basedir}/build/com/jrefinery/report/resources">
@@ -107,13 +125,14 @@
         <!-- include the butterfly image file -->
         <copy file="${basedir}/source/com/jrefinery/report/demo/anim0002.wmf" tofile="${basedir}/build/com/jrefinery/report/demo/anim0002.wmf" />
 
-	<!-- make the jar file -->
+	      <!-- make the jar file -->
         <jar jarfile="${basedir}/${jfreereport.name}-${jfreereport.version}-demo.jar"
              basedir="${basedir}/build"
-	     includes="com/jrefinery/report/demo/**">
+	           includes="com/jrefinery/report/demo/**">
             <manifest>
                 <attribute name="Main-Class" value="com.jrefinery.report.demo.JFreeReportDemo" />
-                <attribute name="Class-Path" value="${jfreereport.name}-${jfreereport.version}.jar ${jfreereport.name}-${jfreereport.version}-demo.jar lib/gnujaxp.jar lib/iText-0.96.jar lib/jcommon-0.7.1.jar lib/pixie.jar lib/bsh-1.2b6.jar lib/jakarta-poi-1.5.1-final-20020615.jar"/>
+                <attribute name="Class-Path"
+                  value="${jfreereport.name}-${jfreereport.version}.jar lib/${BeanShell-jar} lib/${GnuJAXP-jar} lib/${iText-jar} lib/${JCommon-jar} lib/${Pixie-jar} lib/${POI-jar}"/>
             </manifest> 
         </jar>
         
@@ -266,6 +285,13 @@
     <target name="all" 
             depends="compile-jfreereport,compile-jfreereport-demo,javadoc-jfreereport,make-jfreereport-zip,make-jfreereport-targz"
             description="Compiles JFreeReport, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
+    </target>
+
+    <!-- Checkout the sources from sourceforge and rebuild JFreeReport -->
+    <target name="cvs-rebuild"
+            depends="cvs-checkout"
+            description="Checksout the sources from sourceforge and rebuilds the sources by using the ant-script within the sources">
+        <ant antfile="jfreereport-cvs/ant/build.xml" dir="jfreereport-cvs" target="all"/>
     </target>
 
 </project>

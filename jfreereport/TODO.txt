@@ -5,17 +5,9 @@
   - FlowLayout
   - BoxLayout
   - GridBagLayout
-* Document-Target (xml, html, xls)
-* new Parser for the reports with support for:
-  - StyleSheets in the XML-Parser
-  - ReportConfigurations
-  - Multiple Targets
-  - Resource-Bundeling
-  - Multiple Languages within the report-definition
 * Smarter PageLayouting:
   - FlowLayouter, LayoutAgents
   - ContentDistribution over multiple physical pages
-* implement "Keep-Aspect-Ratio" for Image and Shape Scaling
 * Better Support for international Fonts in the PDF-Target
   - parse TTF-Files for supported Charsets/Unicode-Ranges
   - automaticly adjust encoding if nessesary
