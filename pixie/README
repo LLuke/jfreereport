@@ -5,3 +5,11 @@ resurrected as WMF-Reader and ImageProducer for Java 1.2.2 or higher.
 Pixie lacks the support for most BitMap-Formats but everything else is working
 fine. Write-Support is beeing implemented somewhere in the near future.
 
+
+WARNING: Pixie moved from package gnu.bhresearch.pixie to the package
+         org.jfree.pixie
+         
+         Additionally we removed all leftovers from the original pixie
+         library, so that only the WMF file format is supported.
+         
+         
