@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.3 2003/04/09 15:49:55 mungady Exp $
+ * $Id: LayoutManagerCache.java,v 1.4 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -220,6 +220,10 @@ public class LayoutManagerCache
     {
       return false;
     }
+    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE) == false)
+    {
+      return false;
+    }
     if (e instanceof Band)
     {
       // search for dynamic elements within the element's children ...
@@ -229,15 +233,13 @@ public class LayoutManagerCache
       {
         if (isCachable(elements[i]) == false)
         {
+          elements[i].getStyle().setStyleProperty
+              (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, new Boolean(false));
           return false;
         }
       }
-      return true;
     }
-    else
-    {
-      return true;
-    }
+    return true;
   }
 
   /**

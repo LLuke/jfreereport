@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.40 2003/05/30 16:57:20 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.41 2003/06/01 19:11:40 taqua Exp $
  *
  * Changes
  * -------
@@ -96,13 +96,13 @@ public class DataRowBackend implements Cloneable
 
   /** The index of the last function. */
   private int functionsEndIndex;
-  
+
   /** The index of the last property. */
   private int propertiesEndIndex;
-  
+
   /** The index of the table end. */
   private int tableEndIndex;
-  
+
   /** The last row. */
   private int lastRow;
 
@@ -120,7 +120,7 @@ public class DataRowBackend implements Cloneable
 
   /**
    * Creates a new DataRowBackend.
-   * 
+   *
    * @param db  the data row backend.
    */
   protected DataRowBackend(DataRowBackend db)
@@ -474,11 +474,17 @@ public class DataRowBackend implements Cloneable
   /**
    * Create a preview backend. Such datarows will have no access to functions (all functions
    * will return null).
+   * <p>
+   * This method will return null, if this is the last row.
    *
    * @return The 'preview' data row backend.
    */
   public DataRowBackend previewNextRow()
   {
+    if (isLastRow())
+    {
+      return null;
+    }
     if (preview == null)
     {
       preview = new DataRowPreview(this);

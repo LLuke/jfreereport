@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.26 2003/05/30 18:47:48 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.27 2003/06/04 21:09:10 taqua Exp $
  *
  * Changes
  * -------
@@ -147,6 +147,13 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
   public static final StyleKey DYNAMIC_HEIGHT = StyleKey.getStyleKey("dynamic_height",
                                                                      Boolean.class);
   
+  /**
+   * The Layout Cacheable stylekey. Set this stylekey to false, to define that the element
+   * is not cachable. This key defaults to true.
+   */
+  public static final StyleKey ELEMENT_LAYOUT_CACHEABLE = StyleKey.getStyleKey("layout-cacheable",
+                                                                    Boolean.class);
+
   /** The style-sheet name. */
   private String name;
 

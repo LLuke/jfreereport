@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.8 2003/04/24 18:08:57 taqua Exp $
+ * $Id: TextContentFactoryModule.java,v 1.9 2003/05/02 12:40:31 taqua Exp $
  *
  * Changes
  * -------
@@ -92,6 +92,16 @@ public class TextContentFactoryModule implements ContentFactoryModule
                                          LayoutSupport ot)
     throws ContentCreationException
   {
+    String text = (String) e.getValue();
+    if (text == null)
+    {
+      return null;
+    }
+    if (text.length() == 0)
+    {
+      return null;
+    }
+    
     Point2D point = bounds.getAbsolutePosition();
 
     // TextElement has a defined width (Max(MinSize, PrefSize).
@@ -107,7 +117,11 @@ public class TextContentFactoryModule implements ContentFactoryModule
     }
     Dimension2D dim = new FloatDimension((float) width, (float) height);
 
-    String text = (String) e.getValue();
+    if (dim.getWidth() == 0 || dim.getHeight() == 0)
+    {
+      return null;
+    }
+
     FontDefinition f = e.getStyle().getFontDefinitionProperty();
     Rectangle2D tBounds = new Rectangle2D.Float((float) point.getX(),
                                                   (float) point.getY(),

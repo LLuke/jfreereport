@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.5 2003/02/25 18:46:55 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.6 2003/02/27 10:35:38 mungady Exp $
  *
  * Changes
  * -------
@@ -87,16 +87,22 @@ public class ImageContentFactoryModule implements ContentFactoryModule
   public Content createContentForElement(Element e, ElementLayoutInformation bounds, 
                                          LayoutSupport ot)
   {
-    Point2D point = bounds.getAbsolutePosition();
-    Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
-                                                            bounds.getPreferredSize());
-
     ImageReference ir = (ImageReference) e.getValue();
     // there is no content?
     if (ir == null)
     {
       return null;
     }
+
+    Point2D point = bounds.getAbsolutePosition();
+    Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
+                                                            bounds.getPreferredSize());
+
+    if (iBounds.getWidth() == 0 || iBounds.getHeight() == 0)
+    {
+      return null;
+    }
+    
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE))
     {
       double w = ir.getImageWidth();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.11 2003/05/14 22:26:39 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.12 2003/05/16 17:26:46 taqua Exp $
  *
  * Changes
  * -------
@@ -246,6 +246,7 @@ public class DefaultSizeCalculator implements SizeCalculator
    */
   public DefaultSizeCalculator(FontDefinition font)
   {
+    if (font == null) throw new NullPointerException("Given FontDefinition is null");
     this.font = font;
   }
 

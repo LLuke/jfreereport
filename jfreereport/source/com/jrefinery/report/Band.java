@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.55 2003/05/14 22:26:25 taqua Exp $
+ * $Id: Band.java,v 1.56 2003/05/30 18:47:48 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -242,6 +242,7 @@ public class Band extends Element implements Serializable, Cloneable
     allElementsCached = null;
     element.getStyle().addDefaultParent(getBandDefaults());
     element.setParent(this);
+    invalidateLayout();
   }
 
   /**
@@ -322,6 +323,7 @@ public class Band extends Element implements Serializable, Cloneable
     e.setParent(null);
     allElements.remove(e);
     allElementsCached = null;
+    invalidateLayout();
   }
 
   /**
@@ -411,6 +413,7 @@ public class Band extends Element implements Serializable, Cloneable
     int elementSize = allElements.size();
     b.allElements = new ArrayList(elementSize);
     b.allElementsCached = new Element[elementSize];
+    b.setParent(null);
 
     ElementStyleSheet myBandDefaults = getBandDefaults();
     ElementStyleSheet cloneBandDefaults = b.getBandDefaults();
@@ -485,5 +488,19 @@ public class Band extends Element implements Serializable, Cloneable
     Dimension2D d = (Dimension2D) getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE,
                                                               new FloatDimension(0, 0));
     return (float) d.getHeight();
+  }
+
+  /**
+   * Invalidates the layout. This method is called whenever a new element has been
+   * added. You should also call this method if you modified one of the elements of
+   * the band (eg. redefined the max, min or preferred size).
+   */
+  public void invalidateLayout ()
+  {
+    getLayout().invalidateLayout(this);
+    if (getParent() != null)
+    {
+      getParent().invalidateLayout();
+    }
   }
 }

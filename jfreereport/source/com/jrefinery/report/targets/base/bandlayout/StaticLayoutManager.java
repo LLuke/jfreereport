@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.34 2003/05/02 12:40:30 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.35 2003/06/01 20:33:38 taqua Exp $
  *
  * Changes
  * -------
@@ -272,8 +272,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     Dimension2D maxSize = eli.getMaximumSize();
     Dimension2D minSize = eli.getMinimumSize();
 
-    float height = (float) eli.getMinimumSize().getHeight();
-//    float width = (float) eli.getMinimumSize().getWidth();
+    float height = (float) minSize.getHeight();
     float width = (float) maxSize.getWidth();
 
     // Now adjust the defined sizes by using the elements stored in the band.
@@ -292,8 +291,16 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       boolean staticHeight = isElementStaticHeight(e);
       if (staticWidth || staticHeight)
       {
-        Dimension2D absDim = getPreferredSize(e, maxSize);
         Point2D absPos = (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS);
+
+        // check whether the element would be visible .. if not visible, then
+        // dont do anything ...
+        if (absPos.getX() > maxSize.getWidth() || absPos.getY() > maxSize.getHeight())
+        {
+          // dont display, as this element is larger than the container ...
+          continue;
+        }
+        Dimension2D absDim = getPreferredSize(e, maxSize);
 
         if (staticWidth)
         {
@@ -334,10 +341,17 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       boolean staticHeight = isElementStaticHeight(e);
       if (staticWidth == false || staticHeight == false)
       {
-        absDim = correctDimension(getPreferredSize(e, base), base, absDim);
-        // absPos is not modified ...
         absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS),
                                       base, absPos);
+        // check whether the element would be visible .. if not visible, then
+        // dont do anything ...
+        if (absPos.getX() > base.getWidth() || absPos.getY() > base.getHeight())
+        {
+          // dont display, as this element is larger than the container ...
+          continue;
+        }
+
+        absDim = correctDimension(getPreferredSize(e, base), base, absDim);
 
         if (staticWidth == false)
         {
@@ -382,8 +396,10 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     Dimension2D maxSize = eli.getMaximumSize();
     Dimension2D minSize = eli.getMinimumSize();
 
-    float height = (float) eli.getMinimumSize().getHeight();
-//    float width = (float) eli.getMinimumSize().getWidth();
+    // we use the max width, as the width is bound to the outside container,
+    // either an other band or the page; the width is required to compute dynamic
+    // elements or elements with an 100% width ...
+    float height = (float) minSize.getHeight();
     float width = (float) maxSize.getWidth();
 
     // Check the position of the elements inside and calculate the minimum width
@@ -403,9 +419,16 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       boolean staticHeight = isElementStaticHeight(e);
       if (staticWidth || staticHeight)
       {
-        Dimension2D size = getMinimumSize(e, maxSize);
         // absPos is readonly ...
         Point2D absPos = (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS);
+        // check whether the element would be visible .. if not visible, then
+        // dont do anything ...
+        if (absPos.getX() > maxSize.getWidth() || absPos.getY() > maxSize.getHeight())
+        {
+          // dont display, as this element is larger than the container ...
+          continue;
+        }
+        Dimension2D size = getMinimumSize(e, maxSize);
 
         if (staticWidth)
         {
@@ -447,8 +470,15 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       boolean staticHeight = isElementStaticHeight(e);
       if (staticWidth == false || staticHeight == false)
       {
-        absDim = correctDimension(getMinimumSize(e, base), base, absDim);
         absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), base, absPos);
+        // check whether the element would be visible .. if not visible, then
+        // dont do anything ...
+        if (absPos.getX() > base.getWidth() || absPos.getY() > base.getHeight())
+        {
+          // dont display, as this element is larger than the container ...
+          continue;
+        }
+        absDim = correctDimension(getMinimumSize(e, base), base, absDim);
 
         if (staticWidth == false)
         {
@@ -518,13 +548,21 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       {
         continue;
       }
+      absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim,
+                            absPos);
+      // check whether the element would be visible .. if not visible, then
+      // dont do anything ...
+      if (absPos.getX() > parentDim.getWidth() || absPos.getY() > parentDim.getHeight())
+      {
+        // dont display, as this element is larger than the container ...
+        BandLayoutManagerUtil.setBounds(e, new Rectangle2D.Float(0,0,0,0));
+        continue;
+      }
+
       Dimension2D uncorrectedSize = getPreferredSize(e, parentDim);
       //Log.debug ("UBounds: Element: " + e.getName() + " Bounds: " + uncorrectedSize);
       absDim = correctDimension(uncorrectedSize, parentDim, absDim);
       //Log.debug ("CBounds: Element: " + e.getName() + " Bounds: " + size);
-
-      absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim,
-                            absPos);
 
       // here apply the maximum bounds ...
       Rectangle2D bounds = new Rectangle2D.Float(

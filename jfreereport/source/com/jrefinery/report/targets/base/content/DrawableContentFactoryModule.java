@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContent.java,v 1.11 2003/03/20 18:28:34 taqua Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.6 2003/04/09 15:50:24 mungady Exp $
  *
  * Changes
  * -------
@@ -81,17 +81,25 @@ public class DrawableContentFactoryModule implements ContentFactoryModule
                                          LayoutSupport ot)
       throws ContentCreationException
   {
+    DrawableContainer drawable = (DrawableContainer) e.getValue();
+    if (drawable == null)
+    {
+      return null;
+    }
+
     Point2D point = bounds.getAbsolutePosition();
     Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
                                                             bounds.getPreferredSize());
-
+    if (iBounds.getWidth() == 0 || iBounds.getHeight() == 0)
+    {
+      return null;
+    }
     // basic drawable object don't have own bounds, so they cannot define
     // scaling or keep-aspect ratio.
     //
     // this could be a show-stopper for WMF-Drawables, so we'll start subclassing
     // the drawable stuff soon ...
 
-    DrawableContainer drawable = (DrawableContainer) e.getValue();
     Rectangle2D drawableBounds = new Rectangle2D.Float(0, 0,
                                                        (float) iBounds.getWidth(),
                                                        (float) iBounds.getHeight());

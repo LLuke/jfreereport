@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.12 2003/04/24 18:08:57 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.13 2003/05/02 12:40:36 taqua Exp $
  *
  * Changes
  * -------
@@ -86,6 +86,7 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
     setStyleProperty(ALIGNMENT, ElementAlignment.LEFT);
     setStyleProperty(VISIBLE, Boolean.TRUE);
     setStyleProperty(LINEHEIGHT, new Float(0));
+    setStyleProperty(ELEMENT_LAYOUT_CACHEABLE, new Boolean(true));
     setLocked(true);
   }
 

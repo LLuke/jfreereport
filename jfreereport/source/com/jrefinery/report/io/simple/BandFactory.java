@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.11 2003/05/02 12:40:19 taqua Exp $
+ * $Id: BandFactory.java,v 1.12 2003/05/11 13:39:17 taqua Exp $
  *
  * Changes
  * -------
@@ -195,8 +195,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
   public void startReportHeader (Attributes attr)
           throws SAXException
   {
-    float height = ParserUtil.parseFloat (attr.getValue ("height"),
-                                          "Element height not specified");
+    float height = ParserUtil.parseFloat (attr.getValue ("height"), 0);
     boolean ownPage = ParserUtil.parseBoolean (attr.getValue ("ownpage"), false);
 
     // create the report header...
@@ -240,8 +239,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           throws SAXException
   {
     // get the height...
-    float height = ParserUtil.parseFloat (attr.getValue ("height"),
-                                          "Element height not specified");
+    float height = ParserUtil.parseFloat (attr.getValue ("height"),0);
     boolean ownPage = ParserUtil.parseBoolean (attr.getValue ("ownpage"), false);
 
     // create the report footer...
@@ -284,8 +282,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           throws SAXException
   {
     // get the height...
-    float height = ParserUtil.parseFloat (attr.getValue ("height"),
-                                          "Element height not specified");
+    float height = ParserUtil.parseFloat (attr.getValue ("height"),0);
     boolean firstPage = ParserUtil.parseBoolean (attr.getValue ("onfirstpage"), true);
     boolean lastPage = ParserUtil.parseBoolean (attr.getValue ("onlastpage"), true);
 
@@ -330,8 +327,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           throws SAXException
   {
     // get the height...
-    float height = ParserUtil.parseFloat (attr.getValue ("height"),
-                                          "Element height not specified");
+    float height = ParserUtil.parseFloat (attr.getValue ("height"),0);
     boolean firstPage = ParserUtil.parseBoolean (attr.getValue ("onfirstpage"), true);
     boolean lastPage = ParserUtil.parseBoolean (attr.getValue ("onlastpage"), true);
 
@@ -376,8 +372,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           throws SAXException
   {
     // get the height...
-    float height = ParserUtil.parseFloat (attr.getValue ("height"),
-                                          "Element height not specified");
+    float height = ParserUtil.parseFloat (attr.getValue ("height"),0);
     ItemBand items = new ItemBand ();
     items.getStyle().setStyleProperty
         (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));

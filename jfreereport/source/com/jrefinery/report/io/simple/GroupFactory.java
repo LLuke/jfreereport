@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.12 2003/05/02 12:40:20 taqua Exp $
+ * $Id: GroupFactory.java,v 1.13 2003/05/11 13:39:17 taqua Exp $
  *
  * Changes
  * -------
@@ -179,8 +179,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
 
   {
     // get the height...
-    float height = ParserUtil.parseFloat(atts.getValue("height"),
-        "Element height not specified");
+    float height = ParserUtil.parseFloat(atts.getValue("height"),0);
     boolean pageBreak = ParserUtil.parseBoolean
         (atts.getValue("pagebreak"),
             ParserUtil.parseBoolean(atts.getValue("pagebreak-before-print"), false));
@@ -233,8 +232,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
         (atts.getValue("pagebreak-after-print"), false);
 
     // get the height...
-    float height = ParserUtil.parseFloat(atts.getValue("height"),
-        "Element height not specified");
+    float height = ParserUtil.parseFloat(atts.getValue("height"),0);
 
     // get the default font...
     // create the group footer...

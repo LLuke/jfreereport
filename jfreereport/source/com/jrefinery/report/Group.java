@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.21 2003/04/09 00:10:32 mungady Exp $
+ * $Id: Group.java,v 1.22 2003/06/01 17:39:23 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -282,14 +282,14 @@ public class Group implements Serializable, Cloneable, Comparable
    * Returns true if this is the last item in the group, and false otherwise.
    *
    * @param currentDataRow  the current data row.
-   * @param nextDataRow   the next data row.
+   * @param nextDataRow   the next data row, or null, if this is the last datarow.
    *
    * @return A flag indicating whether or not the current item is the last in its group.
    */
   public boolean isLastItemInGroup(DataRowBackend currentDataRow, DataRowBackend nextDataRow)
   {
     // return true if this is the last row in the model.
-    if (currentDataRow.isLastRow())
+    if (currentDataRow.isLastRow() || nextDataRow == null)
     {
       return true;
     }

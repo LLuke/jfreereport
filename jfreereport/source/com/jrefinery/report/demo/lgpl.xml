@@ -517,6 +517,7 @@
 
     ]]>
     </label>
+    <line name="RHline1" x1="380" y1="250" x2="500" y2="250" weight="2.00" color="#ff0000"></line>
   </reportheader>
 
   <pageheader height="18" onfirstpage="true" fontname="SansSerif" fontstyle="bold" fontsize="9">
