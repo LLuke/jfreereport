@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------------
  * OpenSourceProjects.java
  * -----------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2002, 2003, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceProjects.java,v 1.2 2002/12/09 03:56:34 taqua Exp $
+ * $Id: OpenSourceProjects.java,v 1.3 2002/12/11 01:03:13 mungady Exp $
  *
  * Changes
  * -------
@@ -228,19 +228,12 @@ public class OpenSourceProjects extends AbstractTableModel
 
         c += 1;
         this.category[c] = "Class Libraries";
-        this.name[c] = "Batik";
-        this.description[c] = "Batik is a Java(tm) technology based toolkit for applications or "
-                            + "applets that want to use images in the Scalable Vector Graphics "
-                            + "(SVG) format for various purposes, such as viewing, generation or "
-                            + "manipulation.";
-        this.licence[c] = "Apache License";
-        this.url[c] = "http://xml.apache.org";
-
-        c += 1;
-        this.category[c] = "Class Libraries";
         this.name[c] = "JFreeChart";
         this.description[c] = "A free Java chart library.  JFreeChart can be used in applications, "
-            + "applets, servlets and JSP.  It can generate bar charts, line charts, scatter plots.";
+            + "applets, servlets and JSP.  It can generate pie charts (2D and 3D), bar charts "
+            + "(horizontal or vertical, stacked or regular), line charts, time series charts, "
+            + "high/low/open/close charts, candlestick plots, moving averages, scatter plots, "
+            + "Gantt charts, thermometers, dials, combination charts and more.";
         this.licence[c] = "LGPL";
         this.url[c] = "http://www.object-refinery.com/jfreechart";
 
@@ -260,17 +253,27 @@ public class OpenSourceProjects extends AbstractTableModel
 
         c += 1;
         this.category[c] = "Class Libraries";
+        this.name[c] = "Batik";
+        this.description[c] = "Batik is a Java(tm) technology based toolkit for applications or "
+                            + "applets that want to use images in the Scalable Vector Graphics "
+                            + "(SVG) format for various purposes, such as viewing, generation or "
+                            + "manipulation.";
+        this.licence[c] = "Apache License";
+        this.url[c] = "http://xml.apache.org";
+
+        c += 1;
+        this.category[c] = "Class Libraries";
         this.name[c] = "JasperReports";
         this.description[c] = "For generating reports from JDBC.";
         this.licence[c] = "LGPL";
-        this.url[c] = "http://jgraph.sourceforge.net";
+        this.url[c] = "http://jasperreports.sourceforge.net";
 
         c += 1;
         this.category[c] = "Class Libraries";
         this.name[c] = "JGraph";
         this.description[c] = "For presenting and manipulating graphs.";
         this.licence[c] = "LGPL";
-        this.url[c] = "http://jasperreports.sourceforge.net";
+        this.url[c] = "http://jgraph.sourceforge.net";
 
         c += 1;
         this.category[c] = "Text Editors";

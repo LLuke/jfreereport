@@ -6,20 +6,36 @@
     <!-- REPORT HEADER -->
     <!-- This band appears once at the beginning of the report.  In this example, -->
     <!-- the header contains four labels. -->
-    <reportheader height="56"
+    <reportheader height="110"
                   fontname="SansSerif" fontstyle="plain" fontsize="10">
 
-        <rectangle x="0" y="0" width="100%" height="30"
+        <rectangle x="104" y="0" width="100%" height="30"
                    color="#CCFFCC" weight="0"/>
 
+        <rectangle x="104" y="0" width="100%" height="30"
+                   color="#CCCCCC" weight="0" draw="true" fill="false" />
+
+        <rectangle x="0" y="0" width="102" height="102"
+                   color="#CCCCCC" weight="0"/>
+
+        <image-field x="1" y="1" width="100" height="100" fieldname="logo" />
+ 
         <label fontstyle="bold" fontsize="18"
-               x="0" y="5" width="100%" height="18"
+               x="104" y="7" width="100%" height="18"
                alignment="center"
             >Open Source Java Projects</label>
 
-        <label x="0" y="36" width="100%" height="0"
-               fontname="Serif" alignment="center"
-            >This report (generated using JFreeReport) lists a number of Open Source Java projects that you might find useful.</label>
+        <label x="106" y="36" width="100%" height="0"
+               fontname="Serif" alignment="center" dynamic="true"
+            >This report lists a number of Open Source Java projects that you might find useful.  The report has been generated using JFreeReport.  For an up-to-date list, please visit the following web page:</label>
+
+        <label x="106" y="50" width="100%" height="100%"
+               fontname="Monospaced" fontsize="9"
+               alignment="center" vertical-alignment="center" 
+            >http://www.object-refinery.com/open.html</label>
+
+        <line x1="0" y1="104" x2="0" y2="104"  
+                   color="#CCCCCC" weight="0.5"/>
 
     </reportheader>
 
@@ -27,9 +43,6 @@
     <!-- Displays item count and total bytes for icons listed in the report. -->
     <reportfooter height="30"
                   fontname="SansSerif" fontstyle="bold" fontsize="12">
-
-
-
     </reportfooter>
 
     <!-- PAGE HEADER -->
@@ -63,7 +76,7 @@
     <groups>
         <group name="Category Group">
             <groupheader height="25" fontname="SansSerif" fontstyle="bold" fontsize="12" pagebreak="false">
-                <string-field x="0" y="11" width="250" height="9" alignment="left" fieldname="Category"/>
+                <string-field x="0" y="11" width="250" height="12" alignment="left" fieldname="Category"/>
                 <line x1="0" y1="23" x2="0" y2="23" weight="0.5"/>
             </groupheader>
             <fields>
@@ -76,8 +89,6 @@
     <!-- This band is printed once for each row of data in the TableModel. -->
     <items height="0"
            fontname="SansSerif" fontstyle="plain" fontsize="9">
-
-        <rectangle x="0" y="0" width="100%" height="100%" color="#0000FF" draw="true" fill="false"/>
 
         <string-field x="0" y="7" width="140" height="10" alignment="left"
                       fontstyle="bold" fontsize="10"

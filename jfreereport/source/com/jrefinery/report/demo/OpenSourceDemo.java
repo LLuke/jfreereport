@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.8 2003/02/04 17:56:08 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.9 2003/03/18 17:14:17 taqua Exp $
  *
  * Changes
  * -------
@@ -38,13 +38,12 @@
 
 package com.jrefinery.report.demo;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.io.ReportGenerator;
-import com.jrefinery.report.preview.PreviewFrame;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.ui.ApplicationFrame;
-import com.jrefinery.ui.RefineryUtilities;
+import java.awt.BorderLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
@@ -55,10 +54,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URL;
+
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.io.ReportGenerator;
+import com.jrefinery.report.preview.PreviewFrame;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.WaitingImageObserver;
+import com.jrefinery.ui.ApplicationFrame;
+import com.jrefinery.ui.RefineryUtilities;
 
 /**
  * A simple JFreeReport demonstration.  The generated report lists some free and open source
@@ -160,13 +165,27 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
         URL in = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
         this.report = parseReport(in);
       }
-      if (report == null)
+      if (this.report == null)
       {
         JOptionPane.showMessageDialog(this, "The report definition is null");
         return;
       }
+      
+      this.report.setData(this.data);
+      
+      ReportConfiguration config = report.getReportConfiguration();
+      //config.setEnableExportExcel(false);
+      //config.setEnableExportCSV(false);
+      //config.setEnableExportHTML(false);
 
-      report.setData(this.data);
+      // add an image as a report property...
+      URL imageURL = getClass().getResource("/com/jrefinery/report/demo/gorilla.jpg");
+      Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
+      WaitingImageObserver obs = new WaitingImageObserver(image);
+      obs.waitImageLoaded();
+      this.report.setProperty("logo", image);
+      this.report.setPropertyMarked("logo", true);
+      
       PreviewFrame frame = new PreviewFrame(this.report);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
