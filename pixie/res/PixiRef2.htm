@@ -1,0 +1,211 @@
+<!-- This document was created with HomeSite 2.5 -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<HTML>
+<HEAD>
+	<TITLE>Using the Pixie Viewer</TITLE>
+</HEAD>
+
+<BODY>
+<A HREF="PixiRef1.htm">[Prev]</A>
+<A HREF="PixiInfo.htm">[Up]</A>
+<A HREF="Support.htm">[Next]</A>
+&nbsp;<FONT SIZE="-2">
+(Last updated 1st December 1997 by
+<A HREF="mailto:drh@bhresearch.co.uk">DRH</A>)</FONT>
+<HR>
+
+<H1>Using the Pixie Viewer</H1>
+
+This page discusses the Pixie viewer applet in more detail.
+The viewer applet is what goes on your web page and displays the image,
+so this page is mostly about HTML.
+See <A HREF="PixiRef1.htm">Using the Pixie Converter</A> to find out
+how to create image files to view in the first place,
+The <A HREF="PixiInst.htm#Viewer">Install page</A>
+briefly explains what files you need to transfer to your
+server for the viewer to work.
+
+<H4>The basic HTML
+</H4><UL><P>
+
+Here's the test <CODE>&lt;APPLET&gt;</CODE> example we used earlier:
+<UL><CODE>
+&lt;APPLET CODE=&quot;Pixie.class&quot; WIDTH=600 HEIGHT=300&gt;<BR>
+&lt;PARAM NAME=Src VALUE=&quot;Eg.pxi&quot;&gt;<BR>
+&lt;/APPLET&gt;<BR></CODE>
+</UL>
+
+<P>
+Here is what the various parts mean.
+<DL>
+	<DT><CODE>CODE=&quot;Pixie.class&quot;</CODE><DD>
+	This sets the name of the Java applet itself.
+If you use Pixie images on several pages, make them all share
+the same copy of Pixie.class.
+That way browsers will only download it for the first page.
+All the subsequent pages will use the copy in the browser's cache,
+which will be much faster.
+It'll make it easier for you to manage your site, too.
+
+	<DT><CODE>WIDTH=600 HEIGHT=300</CODE><DD>
+	These tell the browser the size of the image, in pixels.
+	If you specified a size by using &quot;-r&quot;
+	when you created the file with the
+	converter, you should use the same size here.
+	
+	<DT><CODE>NAME=Src VALUE=&quot;Eg.pxi&quot;</CODE><DD>
+	All &lt;PARAM&gt; tags are passed on to the applet.
+	The &quot;Src&quot; one sets the name of the Pixie
+	file to use.
+	Again, if you want the same image on two pages
+	make sure they share the same file, so that
+	browsers can cache it.
+</DL>
+
+</UL>
+
+<H4>Background color
+</H4><UL><P>
+For some pictures, the background color of the applet shows
+through behind the image.
+This happens when the picture is drawn with holes in it, so that it doesn't 
+completely fill its rectangle.
+The viewer applet tries to match its background to the color of
+the page, but often doesn't succeed and the result can
+be an ugly rectangle around the image.
+You can fix this by forcing both the page background and the
+applet background to the same color,
+so that they blend in together.
+
+<P>
+To change the background color of the web page,
+for example to white, add a <CODE>BGCOLOR</CODE> attribute to its
+<CODE>&lt;BODY&gt;</CODE> tag:
+<UL><CODE>
+&lt;BODY BGCOLOR=&quot;#ffffff&quot; TEXT=&quot;#000000&quot;&gt;</CODE>
+</UL>
+<P>
+This example also changes the text color to black,
+to avoid getting white text on a white background.
+You may want to change the link colors too.
+This is standard HTML, not part of Pixie,
+so you can consult your HTML reference for more information.
+
+<P>
+To change the background color of the viewer applet to white,
+use a <CODE>&lt;PARAM&gt;</CODE> like this:
+<UL><CODE>
+&lt;PARAM NAME=BGCOLOR VALUE=&quot;#ffffff&quot;&gt;<BR></CODE>
+</UL>
+<P>
+This must go between the <CODE>&lt;APPLET&gt;</CODE> and <CODE>&lt;/APPLET&gt;</CODE> tags.
+
+</UL>
+
+<H4>Color depth
+</H4><UL><P>
+Some pictures need more than 256 colors to look right,
+but you don't know in advance how many colors
+visitor's browsers support.
+But the Pixie applet does.
+Pixie lets you provide a second .PXI file which it will
+use if the browser has 256 colors or less.
+Only one of the two files will be downloaded.
+
+<P>
+You set this with another <CODE>&lt;PARAM&gt;</CODE> tag:
+<UL><CODE>
+&lt;PARAM NAME=SRC VALUE=&quot;Eg.pxi&quot;&gt;<BR>
+&lt;PARAM NAME=SRC8 VALUE=&quot;Eg8.pxi&quot;&gt;<BR></CODE>
+</UL>
+
+<P>
+Again this must go between the <CODE>&lt;APPLET&gt;</CODE> and <CODE>&lt;/APPLET&gt;</CODE> tags.
+The &quot;8&quot; in &quot;SRC8&quot; means a
+color depth of 8 bits per pixel.
+
+<P>
+When designing an 8-bit picture,
+you should consider confining yourself to
+the "browser safe" palette.
+This is a palette of the 216 colors that most
+browsers are most likely to be able to display correctly.
+See <A HREF="http://www.webreference.com/dev/graphics/palette.html">Which Color Palette?</A> for more information.
+
+<CODE>Non-Java browsers</CODE>
+The Pixie viewer is a Java applet.
+Not all browsers support Java,
+and in those that do, users sometimes turn it off.
+Fortunately the HTML standard is designed to degrade gracefully.
+You can put normal HTML between the <CODE>&lt;APPLET&gt</CODE> and <CODE>&lt;/APPLET&gt;</CODE> tags,
+and it will be used if the browser does not have Java enabled.
+
+<P>
+You could, for example, include an <CODE>&lt;IMG&gt;</CODE> tag with a .GIF
+version of the Pixie image, as a fallback for people with old browsers,
+or who turn Java off for security reasons.
+It will only be downloaded if it's needed.
+
+</UL>
+
+<H4>Text-only browsers
+</H4><UL><P>
+Many people can't see images - blind people, obviously,
+but also normal people with slow Internet connections may
+turn graphics off.
+Search engines in particular, rarely index pictures.
+Generally, then,
+you should make sure that the important information
+of a Pixie image is also available as normal HTML text.
+This means you might have:
+<UL>
+<LI>a full color Pixie image,
+<LI>a 256 color Pixie image for browsers with limited color,
+<LI>a GIF image for browsers without Java,
+<LI>and some pure text for text-only browsers.
+</UL>
+<P>
+All for the same information.
+
+<P>
+<A HREF="http://www.anybrowser.org/campaign/">Best Viewed With Any Browser</A>
+is a good starting point for information on why such fallbacks are
+a good idea and how to implement them.
+
+</UL>
+
+<H4>Another HTML example
+</H4><UL><P>
+Here is a complete example,
+which combines all of the points discussed in this section.
+<UL><CODE>
+&lt;BODY BGCOLOR=&quot;#ffffff&quot; TEXT=&quot;#000000&quot;&gt;<BR>
+&lt;APPLET CODE=&quot;Pixie.class&quot; WIDTH=600 HEIGHT=300&gt;<BR>
+&lt;PARAM NAME=SRC VALUE=&quot;Eg.pxi&quot;&gt;<BR>
+&lt;PARAM NAME=SRC8 VALUE=&quot;Eg8.pxi&quot;&gt;<BR>
+&lt;PARAM NAME=BGCOLOR VALUE=&quot;#ffffff&quot;&gt;<BR>
+&lt;IMG SRC=&quot;Eg.gif&quot; WIDTH=600 HEIGHT=300<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;ALT=&quot;PIXIE - Tiny pictures for the web&quot;&gt;<BR>
+To see this Pixie example, you need a Java-capable browser with
+Java turned on.<BR> 
+&lt;/APPLET&gt;<BR>
+&lt;/BODY&gt;</CODE>
+</UL>
+
+<P>
+Note the ALT text in the &lt;IMG&gt; tag.
+</UL>
+
+If you have any problems, try the <A HREF="Support.htm#Support">Support</A> section.
+See especially the <A HREF="Messages.htm#Applet">Pixie Warning and Error Messages</A> page.
+
+<HR>
+<A HREF="PixiRef1.htm">[Prev]</A>
+<A HREF="PixiInfo.htm">[Up]</A>
+<A HREF="Support.htm">[Next]</A>
+&nbsp;<FONT SIZE="-2">
+(Last updated 1st December 1997 by
+<A HREF="mailto:drh@bhresearch.co.uk">DRH</A>)</FONT>
+</BODY>
+</HTML>

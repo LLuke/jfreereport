@@ -1,0 +1,176 @@
+<!-- This document was created with HomeSite 2.5 -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<HTML>
+<HEAD>
+	<TITLE>Downloading and installing Pixie</TITLE>
+</HEAD>
+
+<BODY>
+<A HREF="PixiFaq.htm">[Prev]</A>
+<A HREF="PixiInfo.htm">[Up]</A>
+<A HREF="PixiRef1.htm">[Next]</A>
+&nbsp;<FONT SIZE="-2">
+(Last updated 30th March 1998 by
+<A HREF="mailto:drh@bhresearch.co.uk">DRH</A>)</FONT>
+<HR>
+
+<H1>Downloading and installing Pixie</H1>
+
+This page describes how to download, install and run Pixie.
+
+<H4>License
+</H4><UL><P>
+
+Use and distribution of Pixie is governed by the
+<A HREF="Lgpl.htm">GNU Library General Public License</A> (Version 2).
+Briefly, this means you can use Pixie free of charge.
+You can also redistribute it and/or change the source,
+provided you obey certain important restrictions.
+(These include making sure that everyone who gets
+the executables can also get the source code.)
+The source code is available from <A HREF="SrcInst.htm">SrcInst.htm</A>.
+
+<P>
+You should read the license itself carefully before downloading the software.
+In particular, you should note that Pixie comes with NO WARRANTY.
+You are solely responsible for determining whether the software
+is suitable for your purposes.
+</UL>
+
+<H4>Requirements: Java and the JRE or Jview
+</H4><UL><P>
+
+Everything about Pixie is 100% Java, so it should all run on
+Windows, Macs, Unix boxes and so on.
+But there's a key difference between using the viewer and the converter.
+
+<P>
+The Pixie <I>Viewer</I>
+-- the piece that displays the image files --
+is an <I>applet</I>,
+that runs inside the browsers used by
+visitors to your web site.
+You reference it in the html coding
+within one of your web pages. When a visitor looks at that page,
+using a browser that is Java-enabled, the applet automatically
+runs inside the visitor's browser and displays the image.
+
+<P>
+The <I>Converter</I>
+-- the piece that creates Pixie files from image
+files in other formats --
+is an <I>application</I>, not an applet.
+It runs on just one computer, yours, and it doesn't use a browser.
+To run the Converter (which you'll need to do), you'll need
+either a recent version of the Java
+Runtime Environment from JavaSoft,
+or MSIE from Microsoft,
+or a Java Development Kit.
+If you don't have any of these, please download the JavaSoft JRE from
+<A HREF="http://java.sun.com/products/jdk/1.1/jre/">http://java.sun.com/products/jdk/1.1/jre/</A>.
+and get it working on their examples before attempting to install
+Pixie.
+
+</UL>
+
+<H4>Downloading
+</H4><UL><P>
+
+You can download the latest version of Pixie from:
+<UL>
+<A HREF="http://www.bhresearch.co.uk/Java/Pixie/Pixie.zip">
+http://www.bhresearch.co.uk/Java/Pixie/Pixie.zip</A> (120k)
+</UL>
+
+<P>
+The current version is <A HREF="History.htm">
+1.13 (30th March 1998)
+</A>.
+
+<P>
+The converter program is supplied as an archive of Java .class files.
+(See <A HREF="http://www.bhresearch.co.uk/Java/Pixie/SrcInst.htm">http://www.bhresearch.co.uk/Java/Pixie/SrcInst.htm</A>
+to get the source code.)
+</UL>
+
+<H4>Installing
+</H4><UL><P>
+
+The Pixie.zip archive contains the following files:
+<UL>
+<LI><B>Pixie.class</B> - the Java viewer applet.
+<LI><B>ConvPxi.zip</B> - the Metafile to Pixie converter program.
+<LI><B>ConvPxi.bat</B> - batchfile to run the converter using JavaSoft's JRE.
+<LI><B>*.htm</B> - HTML documentation.
+<LI><B>*.wmf</B> - Windows Metafile test files.
+</UL>
+
+<P>
+Create a new directory, for example C:\Pixie, and then extract the files from Pixie.zip into that directory.
+
+</UL>
+
+<A NAME="Viewer"></A>
+<H4>Running the Pixie viewer
+</H4><UL><P>
+
+Add an <CODE>&lt;APPLET&gt;</CODE> HTML tag to your web page. This will look
+like:
+<UL><CODE>
+&lt;APPLET CODE=&quot;Pixie.class&quot; WIDTH=600 HEIGHT=300&gt;<BR>
+&lt;PARAM NAME=Src VALUE=&quot;Eg.pxi&quot;&gt;<BR>
+&lt;/APPLET&gt;<BR></CODE>
+</UL>
+
+<P>
+Alternatively, use the file Eg.htm from the install file.
+Copy this web page, Pixie.class and Eg.pxi to a
+directory on your web site's server (typically using FTP).
+View the new web page in your
+browser and make sure the Java viewer loads and works.
+
+</UL>
+
+<A NAME="Converter"></A>
+<H4>Running the Pixie converter
+</H4><UL><P>
+
+For the Java SDK, the Java Runtime Environment and most other setups,
+change to the directory with the Pixie files and type:
+<UL><CODE>
+jre -cp ConvPxi.zip gnu.bhresearch.pixie.Convert</CODE>
+</UL>
+
+<P>
+For MSIE on Windows95, change to the directory with the Pixie files and type:
+<UL><CODE>
+jview -cp ConvPxi.zip gnu.bhresearch.pixie.Convert</CODE>
+</UL>
+
+<P>
+The Java interpreter is case sensitive,
+so it is important that the capital letters are exactly as shown.
+
+<P>
+The program should prompt you for the filename to convert.
+Type Eg.wmf and press Return, and then press Return again
+to accept the defaults. This will convert Eg.wmf into Eg.pxi.
+
+<P>
+For more information on how to use Pixie, see
+<A HREF="PixiRef1.htm">Using the Pixie converter</A>.
+It starts by telling you how to avoid typing in that
+long commandline every time.
+
+</UL>
+
+<HR>
+<A HREF="PixiFaq.htm">[Prev]</A>
+<A HREF="PixiInfo.htm">[Up]</A>
+<A HREF="PixiRef1.htm">[Next]</A>
+&nbsp;<FONT SIZE="-2">
+(Last updated 30th March 1998 by
+<A HREF="mailto:drh@bhresearch.co.uk">DRH</A>)</FONT>
+</BODY>
+</HTML>

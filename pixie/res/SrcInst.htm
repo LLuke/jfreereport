@@ -1,0 +1,131 @@
+<!-- This document was created with HomeSite 2.5 -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<HTML>
+<HEAD>
+	<TITLE>Pixie Source Code</TITLE>
+</HEAD>
+
+<BODY>
+<A HREF="History.htm">[Prev]</A>
+<A HREF="Support.htm">[Up]</A>
+<A HREF="Lgpl.htm">[Next]</A>
+&nbsp;<FONT SIZE="-2">
+(Last updated 30th March 1998 by
+<A HREF="mailto:drh@bhresearch.co.uk">DRH</A>)</FONT>
+<HR>
+
+<H1>Pixie Source Code</H1>
+
+This page describes how to download the Java source code for Pixie.class, PixieSlide.class and ConvPxi. It is mainly of interest to programmers.
+
+<P>
+Note, however, that the Pixie license does not allow you to give the Pixie.zip or PixiSlid.zip archives, or other parts of Pixie, to other people without making sure
+they can also get the source code. For example, if you put Pixie.zip onto a CDROM you
+should download and include PixieSrc.zip as well. So even non-programmers may need this
+page.
+
+<H4>License
+</H4><UL><P>
+The source code for Pixie is published
+under the <A HREF="lgpl.htm">GNU Library General Public License</A>.
+Briefly, this means you are free to modify it or redistribute it,
+provided that everyone who gets a copy of the executable can also get a copy
+of the source, and that they in turn have the same freedoms under the LGPL. 
+It does <B>not</B> mean you are obliged to distribute your changes,
+nor that you cannot charge a fee for doing so.
+
+<P>You should read the license itself carefully before downloading the software.
+In particular, you should note that Pixie comes with NO WARRANTY.
+You are solely responsible for determining whether the software
+is suitable for your purposes.
+</UL>
+
+<H4>Why LGPL?
+</H4><UL><P>
+
+I am quite proud of the Pixie format; it is much more compact
+than anything else I've seen yet it doesn't take much Java code
+to interpret it. I would like to see it adopted widely.
+Making the source available is one way to encourage its use.
+
+<P>
+I am using the LGPL rather than the GPL because it is more open.
+You can link LGPL code with other code without that other code
+having to be covered by the LGPL, provided a few restrictions are
+satisfied (see the license for details).
+This makes it easier for you to use the Pixie format
+in commercial products.
+
+<P>
+If you want to work on Pixie source code but consider even the LGPL
+to be too restrictive, please
+<A HREF="mailto:drh@bhresearch.co.uk">email me</A>
+to see if we can negotiate a one-off license.
+</UL>
+
+<H4>Download
+</H4><UL><P>
+You can download the latest version of the Pixie source from:
+<UL>
+<A HREF="http://www.bhresearch.co.uk/Java/Pixie/PixieSrc.zip">
+http://www.bhresearch.co.uk/Java/Pixie/PixieSrc.zip</A> (70k)
+</UL>
+
+<P>
+The current version is <A HREF="History.htm">
+1.13 (30th March 1998)
+</A>.
+</UL>
+
+<H4>Installing and compiling
+</H4><UL><P>
+
+Most of the files from the PixieSrc.zip archive live in the package
+&quot;gnu.bhresearch.pixie&quot;.
+(The GNU folk seem to prefer the &quot;gnu.&quot; prefix over
+&quot;ORG.gnu.&quot; or &quot;GNU.&quot;)
+A handful of utility classes live in &quot;gnu.bhresearch.quant&quot;,
+and the viewer applets live in the default unnamed package.
+The only non-Java file is a copy of the LGPL license.
+
+<P>
+I don't use a makefile and haven't provided one. I compile using
+the Java SDK 1.1.5, using &quot;javac -O *.java&quot;.
+(This is plenty fast enough for me.)
+All the code is pure Java.
+It does not use any native methods or funny extensions.
+You will get &quot;obsolete&quot; warnings because it is intended to
+run on version 1.0.2 JVMs.
+
+<P>
+The source contains comments in JavaDoc format.
+I haven't included them separately as HTML;
+you can extract them yourself if you wish.
+You will find the user documentation from
+<A HREF="PixiInst.htm">Pixie.zip</A> and <A HREF="SlidInst.htm">PixiSlid.zip</A>
+useful.
+
+</UL>
+
+<H4>Coordinating changes
+</H4><UL><P>
+Although you don't have to tell anyone you are working on the source,
+I'd rather you at least told
+<A HREF="mailto:pixie@bhresearch.co.uk">me</A>. That way I can help coordinate changes
+and avoid the same work being done twice. I may also be able to give you advice
+as to the best way to go about making a change.
+
+<P>Check this page for to find details
+of projects currently under way. (Currently there are none.)
+</UL>
+
+<HR>
+<A HREF="History.htm">[Prev]</A>
+<A HREF="Support.htm">[Up]</A>
+<A HREF="Lgpl.htm">[Next]</A>
+&nbsp;<FONT SIZE="-2">
+(Last updated 30th March 1998 by
+<A HREF="mailto:drh@bhresearch.co.uk">DRH</A>)</FONT>
+</BODY>
+</HTML>

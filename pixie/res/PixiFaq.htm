@@ -1,0 +1,213 @@
+<!-- This document was created with HomeSite 2.5 -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<HTML>
+<HEAD>
+	<TITLE>Burry Holms Research - Pixie Q&A</TITLE>
+</HEAD>
+
+<BODY>
+<A HREF="PixiInfo.htm">[Prev]</A>
+<A HREF="PixiInfo.htm">[Up]</A>
+<A HREF="PixiInst.htm">[Next]</A>
+&nbsp;<FONT SIZE="-2">
+(Last updated 5th December 1997 by
+<A HREF="mailto:drh@bhresearch.co.uk">DRH</A>)</FONT>
+<HR>
+
+<H1>Q&A</H1>
+
+Here are some frequently asked questions about Pixie.
+
+<H4>What's wrong with .GIF and .JPG?
+</H4><UL><P>
+
+.GIF and .JPG are bitmap formats.
+This means the size of an image file will be proportional to the
+displayed size of the image.
+Pixie is a vector format, which is scalable, so that images which are drawn
+large can be physically small. This means they can download faster.
+
+</UL>
+
+<H4>Does the world really need yet another graphics format?
+Why not use an existing vector format, like XFIG?
+</H4><UL><P>
+
+Two reasons.
+Firstly, XFIG is an ASCII format, which means it is rather
+verbose. For web use you want images to be as small as possible.
+Pixie is very terse and has built-in compression.
+Pixie files are typically much smaller even than other binary formats
+such as Windows Metafiles.
+
+<P>
+Secondly, to keep the Java viewer program small.
+The current Pixie viewer is about 6k long, which will only take
+a few seconds to download.
+A viewer for a more complex format like XFIG could mean a hit of
+several minutes when people first visit your web site.
+Many of your visitors won't bother to wait.
+
+</UL>
+
+<H4>Why Java? Why not use an add-in for Netscape?
+</H4><UL><P>
+Because not everyone uses Netscape.
+A lot of people don't even use Windows.
+Those who do probably won't bother to download a special add-in
+just to look at your site.
+
+</UL>
+
+<H4>Not everyone can run Java, either.
+</H4><UL><P>
+Ah, erm, true. I was hoping you wouldn't mention that.
+
+<P>
+If you are really anxious that everyone can see your images,
+you shouldn't rely on Pixie alone.
+Fortunately the Java support in HTML is designed
+to degrade gracefully.
+If you want you can provide a .GIF or JPEG to fall back on for the Java-impaired.
+
+</UL>
+
+<H4>What about people who have Java, but who are still using old versions  of it?
+</H4><UL><P>
+The viewer applet avoids using Java features
+which are not supported by older browsers.
+Specifically, it uses Java 1.0.2 rather than 1.1.
+Everyone who can use Java applets,
+should be able to see Pixie images.
+
+</UL>
+
+<H4>What about browsers with Java-related bugs?
+</H4><UL><P>
+
+Yes, there are a few of these.
+I keep a list in <A HREF="Problems.htm#BadBrowsers">Problems.htm</A>.
+
+<P>
+Pixie is a relatively undemanding applet, so if any
+Java works at all Pixie should.
+Where possible I work around known browser bugs.
+Browser vendors themselves strive to release bug-free products,
+and if they discover problems they usually release fixed
+versions within a few weeks. 
+
+<P>
+Still, some visitors to your site may be using bang up to date,
+state of the art browsers.
+With any power feature - JavaScript, frames, style sheets, forms, whatever
+- there's always a chance that some new browser won't support it properly.
+You and your visitors should be aware that the leading edge carries a certain risk.
+Ultimately, if you can't tolerate that risk,
+stick with proven browsers or don't use Java applets such as Pixie on your site.
+
+</UL>
+
+<H4>OK. Understood. Why can't I use Pixie to draw my pictures?
+</H4><UL><P>
+Because the world doesn't need another drawing program.
+You are much better off using a well-established product
+and converting the result into something Pixie can understand.
+
+<P>
+If you don't have a drawing program already, take a look at Serif's DrawPlus.
+There is a free intro version for Windows on
+<A HREF="http://www.serif.com/">their web site</A>.
+(Be aware that I was Software Architect for that product
+while I was working at Serif, so I might be a little biased.)
+
+</UL>
+
+<H4>So what formats does Pixie understand?
+</H4><UL><P>
+Currently, the Pixie Converter program only understands
+Windows Metafiles (the .WMF extension) and its own
+ascii scripts (.PXS).
+Most Windows programs can export Metafiles.
+I plan to support other formats later.
+Let me know which ones you think I should do first.
+
+</UL>
+
+<H4>Can I use Pixie in ImageMaps? What about slide shows?
+</H4><UL><P>
+You need to use <A HREF="SlidInfo.htm">PixieSlide</A>.
+The simple Pixie viewer applet cannot support those things,
+but PixieSlide does all that and more.
+
+</UL>
+
+<H4>How much smaller are Pixie files likely to be?
+</H4><UL><P>
+
+The key question. It depends on the image.
+Large, complex images are the ones that tend to do better with Pixie.
+
+<P>
+When comparing file sizes, you should bare in mind that most
+users have hardware compression in their modems, and Pixie files
+compress by about 30% more than .GIF and .JPG.
+You should include the size of the Pixie viewer applet for the first
+image on your site, but remember it will compress well (by over 40%) too.
+
+<P>
+Here are some sample figures (in bytes) for a complex Excel chart I tested recently.
+<P>
+<UL>
+<TABLE BORDER=2 CELLPADDING=3>
+<TR>
+	<TD>&nbsp;</TD>
+	<TD><B>Normal</B></TD>
+	<TD><B>Compressed</B></TD>
+</TR>
+<TR>
+	<TD><B>.GIF (816x1056x16)</B></TD>
+	<TD ALIGN=RIGHT>12736</TD>
+	<TD ALIGN=RIGHT>12736</TD>
+</TR>
+<TR>
+	<TD><B>.WMF</B></TD>
+	<TD ALIGN=RIGHT>67534</TD>
+	<TD ALIGN=RIGHT>34943</TD>
+</TR>
+<TR>
+	<TD><B>.PXI</B></TD>
+	<TD ALIGN=RIGHT>3857</TD>
+	<TD ALIGN=RIGHT>2855</TD>
+</TR>
+<TR>
+	<TD><B>.PXI + Pixie.class</B></TD>
+	<TD ALIGN=RIGHT>10108</TD>
+	<TD ALIGN=RIGHT>6741</TD>
+</TR>
+</TABLE>
+</UL>
+<P>
+The chart used 10 different colors, so I used a 16-color GIF.
+I've included the metafile size out of interest.
+(JPEG was unsuitable because it blurred the chart.)
+The first and last figures in the final column probably
+give the best comparison of download times.
+
+<P>
+Obviously, your milage may vary. A lot depends on the type of image.
+</UL>
+
+<H4>Well, that all makes sense. What next?
+</H4><UL><P>
+<A HREF="PixiInst.htm">Download</A> the converter and try it out!
+
+</UL><HR>
+<A HREF="PixiInfo.htm">[Prev]</A>
+<A HREF="PixiInfo.htm">[Up]</A>
+<A HREF="PixiInst.htm">[Next]</A>
+&nbsp;<FONT SIZE="-2">
+(Last updated 5th December 1997 by
+<A HREF="mailto:drh@bhresearch.co.uk">DRH</A>)</FONT>
+</BODY>
+</HTML>
