@@ -27,9 +27,12 @@
  *
  * Original Author:  Mimil;
  *
- * $Id$
+ * $Id: CSVReader.java,v 1.1 2004/08/07 14:35:14 mimil Exp $
  *
- * $Log$
+ * $Log: CSVReader.java,v $
+ * Revision 1.1  2004/08/07 14:35:14  mimil
+ * Initial version
+ *
  */
 
 package org.jfree.report.ext.input;
@@ -38,7 +41,13 @@ import javax.swing.table.AbstractTableModel;
 import java.io.*;
 import java.util.ArrayList;
 
-
+/**
+ * Creates a <code>TableModel</code> using a file formated in CSV for input.
+ * The separation can be what ever you want (as it is an understandable regexp).
+ * The default separator is a <code>;</code>.
+ *
+ * @author Mimil
+ */
 public class CSVReader {
     private BufferedReader reader;
     private String separator = ";";
@@ -75,6 +84,11 @@ public class CSVReader {
         }
     }
 
+    /**
+     * Parses the input and stores data in a TableModel.
+     *
+     * @see this.getTableModel()
+     */
     public void parse() {
 
         try {
@@ -102,27 +116,62 @@ public class CSVReader {
 
     }
 
+    /**
+     * Returns the current separator used to parse the input.
+     *
+     * @return a regexp
+     */
     public String getSeparator() {
         return separator;
     }
 
+    /**
+     * Sets the separator for parsing the input.
+     * It can be a regexp as we use the function <code>String.split()</code>.
+     * The default separator is a <code>;</code>.
+     *
+     * @param separator a regexp
+     */
     public void setSeparator(String separator) {
         this.separator = separator;
     }
 
+    /**
+     * Creates the corrspondant TableModel of the input.
+     *
+     * @return the new TableModel
+     */
     public AbstractTableModel getTableModel() {
         this.parse();
         return tableModel;
     }
 
+    /**
+     * Tells if the first line of the input was column names.
+     *
+     * @return boolean
+     */
     public boolean isColumnNameFirstLine() {
         return columnNameFirst;
     }
 
+    /**
+     * Set if the first line of the input is column names or not.
+     *
+     * @param columnNameFirst   boolean
+     */
     public void setColumnNameFirstLine(boolean columnNameFirst) {
         this.columnNameFirst = columnNameFirst;
     }
 
+    /**
+     * <code>TableModel</code> used by the <code>CSVReader</code> class.
+     * It has a feature which generates the column name if it is not know.
+     *
+     * @see this.getColumnName()
+     *
+     * @author Mimil
+     */
     public class CSVTableModel extends AbstractTableModel {
 
         protected String[] columnNames = null;
@@ -134,6 +183,11 @@ public class CSVReader {
             this.array = new ArrayList();
         }
 
+        /**
+         * Counts columns of this <code>TableModel</code>.
+         *
+         * @return the column count
+         */
         public int getColumnCount() {
             if (this.columnNames != null) {
                 return columnNames.length;
@@ -142,10 +196,22 @@ public class CSVReader {
             return this.maxColumnCount;
         }
 
+        /**
+         * Counts rows of this <code>TableModel</code>.
+         *
+         * @return the row count
+         */
         public int getRowCount() {
             return this.rowCount;
         }
 
+        /**
+         * Gets the Object at specified row and column positions.
+         *
+         * @param rowIndex row index
+         * @param columnIndex column index
+         * @return The requested Object
+         */
         public Object getValueAt(int rowIndex, int columnIndex) {
             Object[] line = (Object[]) this.array.get(rowIndex);
 
@@ -156,17 +222,32 @@ public class CSVReader {
             }
         }
 
+        /**
+         * Sets the maximum column count if it is bigger than the current one.
+         *
+         * @param maxColumnCount
+         */
         public void setMaxColumnCount(int maxColumnCount) {
             if (this.maxColumnCount < maxColumnCount) {
                 this.maxColumnCount = maxColumnCount;
             }
         }
 
+        /**
+         * Return the column name at a specified position.
+         *
+         * @param column column index
+         * @return the column name
+         */
         public String getColumnName(int column) {
             if (this.columnNames != null) {
                 return this.columnNames[column];
-            } else {    //todo: an exception if column > maxColumnCount
-                return "COLUMN_" + column;
+            } else {
+                if(column >= this.maxColumnCount) {
+                    throw new IllegalArgumentException("Column ("+column+") does not exist");
+                } else {
+                    return "COLUMN_" + column;
+                }
             }
         }
     }

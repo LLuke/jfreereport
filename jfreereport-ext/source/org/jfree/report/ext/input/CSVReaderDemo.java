@@ -27,9 +27,12 @@
  *
  * Original Author:  Mimil;
  *
- * $Id$
+ * $Id: CSVReaderDemo.java,v 1.1 2004/08/07 14:35:14 mimil Exp $
  *
- * $Log$
+ * $Log: CSVReaderDemo.java,v $
+ * Revision 1.1  2004/08/07 14:35:14  mimil
+ * Initial version
+ *
  */
 
 package org.jfree.report.ext.input;
@@ -54,7 +57,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 
-
+/**
+ * Demo that show how to use <code>CSVReader</code> to generate <code>TableModel</code> for JFreeReport input data.
+ *
+ * @see CSVReader
+ */
 public class CSVReaderDemo extends AbstractDemoFrame {
 
     private TableModel data;
@@ -66,7 +73,9 @@ public class CSVReaderDemo extends AbstractDemoFrame {
             + "R2C0; R2C1; R2C2;";
     String textColumn = "C0; C1; C2;\n";
 
-
+    /**
+     * Creates the demo workspace.
+     */
     public CSVReaderDemo() {
         this.setJMenuBar(this.createMenuBar());
         JPanel panel = new JPanel(new FlowLayout());
@@ -76,6 +85,9 @@ public class CSVReaderDemo extends AbstractDemoFrame {
         this.setTitle("CSVReader Demos");
     }
 
+    /**
+     * Starts JFreeReport system.
+     */
     protected void attemptPreview() {
         this.report = new JFreeReport();
 
@@ -119,6 +131,11 @@ public class CSVReaderDemo extends AbstractDemoFrame {
         this.attemptPreview();
     }
 
+    /**
+     * Adds elements to the report item band.
+     *
+     * @param band The report item band
+     */
     private void configureItemBand(final ItemBand band) {
         final ElementStyleSheet ess = band.getBandDefaults();
         ess.setFontDefinitionProperty(new FontDefinition("SansSerif", 10));
@@ -136,6 +153,11 @@ public class CSVReaderDemo extends AbstractDemoFrame {
         }
     }
 
+    /**
+     * Adds elements to the report page header.
+     *
+     * @param header The report page header
+     */
     private void configurePageHeader(final PageHeader header) {
         LabelElementFactory title = new LabelElementFactory();
         title.setText("CSVReader Demos by Mimil");
@@ -168,7 +190,7 @@ public class CSVReaderDemo extends AbstractDemoFrame {
 
 
     /**
-     * Creates a menu bar.
+     * Creates the menu bar for this demo application.
      *
      * @return the menu bar.
      */
