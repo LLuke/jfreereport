@@ -35,6 +35,7 @@
       destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/pixie/**"/>
+	  <exclude name="org/jfree/pixie/g2recorder/**"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}"/>
       </classpath>

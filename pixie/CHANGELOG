@@ -1,4 +1,6 @@
 04-Mar-2005 : Another BugFix release for JFreeReport 0.8.5;
+              The classes from package org.jfree.pixie.g2recorder are no longer
+			  included in the release, until they have been completed.
 
 21-Oct-2004 : BugFixes ..
 
