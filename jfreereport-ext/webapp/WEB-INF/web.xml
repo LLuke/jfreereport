@@ -12,7 +12,7 @@
     </servlet>
 
     <servlet>
-        <servlet-name>jpegreport</servlet-name>
+        <servlet-name>pngreport</servlet-name>
         <servlet-class>com.jrefinery.report.ext.demo.JFreeReportPngServlet</servlet-class>
     </servlet>
 
@@ -32,8 +32,8 @@
     </servlet-mapping>
 
     <servlet-mapping>
-	<servlet-name>jpegreport</servlet-name>
-	<url-pattern>/jpegreport</url-pattern>
+	<servlet-name>pngreport</servlet-name>
+	<url-pattern>/pngreport</url-pattern>
     </servlet-mapping>
 
 </web-app>

@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportPngServlet.java,v 1.3 2003/03/01 14:55:33 taqua Exp $
+ * $Id: JFreeReportPngServlet.java,v 1.4 2003/03/02 04:10:28 taqua Exp $
  *
  * Changes
  * -------
@@ -87,9 +87,15 @@ public class JFreeReportPngServlet extends HttpServlet
   }
 
   /**
-   * Handles the POST method for the request. This processes the "
+   * Handles the POST method for the request. This parses the report definition,
+   * loads the tablemodel and generates a single page of the report. The generated
+   * page is returned as PNG file.
    * <p>
-   * The page parameter is required, must be a valid integer.
+   * The generated PageStateList is stored in the session so that it can be reused
+   * for later calls. The <code>page</code> parameter must be set to a valid value,
+   * or the page generation will fail.
+   * <p>
+   * The page parameter is required, must be a valid positive integer.
    *
    * @param request the http request object.
    * @param response the http response object.
@@ -113,7 +119,6 @@ public class JFreeReportPngServlet extends HttpServlet
           new DefaultPageableReportServletWorker(request.getSession(true),
                                                  in,
                                                  new SwingIconsDemoTableModel());
-      worker.getReport();
 
       String param = request.getParameter("page");
       if (param == null)

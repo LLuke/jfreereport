@@ -1,3 +1,8 @@
+<!--
+
+<!DOCTYPE project PUBLIC "-//ANT//DTD project//EN" "ant.dtd">
+-->
+
 <!-- An ANT build file for JFreeReport -->
 
 <!-- Based on a script written by David Gilbert -->
@@ -14,6 +19,126 @@
 <!-- in the JFreeReport forum. -->
 
 <project name="jfreereport-ext" default="all" basedir=".">
-<!-- fill me -->
+  <!-- Runns some tests, to identify the used JDK implementation -->
+  <target name="check-JDK">
+    <description>Runs tests to retrieve the JDK version</description>
+    <available classname="java.util.Timer" property="java-1.3.present"/>
+    <available classname="java.nio.Buffer" property="java-1.4.present"/>
+  </target>
+
+  <target name="init-ext" description="Initialise parameters for the base project.">
+    <tstamp/>
+    <!-- BaseDirectory is different for either cvs target and build target -->
+    <property name="projectdir" value=".."/>
+    <property name="builddir" value="${projectdir}/build"/>
+    <property name="libdir" value="${projectdir}/lib"/>
+
+    <property name="JFreeChart-jar" value="jfreechart-0.9.6.jar"/>
+    <property name="jlfgr-1_0" value="jlfgr-1_0.zip"/>
+    <property name="junit-jar" value="junit.jar"/>
+    <property name="log4j-jar" value="log4j-1.2.3.jar"/>
+    <property name="servlet-jar" value="servlet.jar"/>
+
+    <property name="jfreereport-ext.name" value="jfreereport-ext"/>
+    <property name="jfreereport-ext.version" value="0.8.1"/>
+  </target>
+
+  <!-- Initialisation. -->
+  <target name="init-base" description="Initialise parameters for the base project.">
+    <tstamp/>
+    <property name="jfreereport-dir" value=".."/>
+    <property name="jfreereport-libdir" value="${jfreereport-dir}/lib"/>
+
+    <!-- JFreeReport base libraries -->
+    <property name="BeanShell-jar" value="bsh-1.2b6.jar"/>
+    <property name="GnuJAXP-jar" value="gnujaxp.jar"/>
+    <property name="iText-jar" value="iText-0.96.jar"/>
+    <property name="JCommon-jar" value="jcommon-0.7.2.jar"/>
+    <property name="Pixie-jar" value="pixie.jar"/>
+    <property name="POI-jar" value="jakarta-poi-1.5.1-final-20020615.jar"/>
+    <property name="JFreeReport-jar" value="jfreereport-0.8.1.jar"/>
+    <property name="JFreeReport-demo-jar" value="jfreereport-0.8.1-demo.jar"/>
+
+  </target>
+
+  <target name="init-classpath" depends="init-base,init-ext">
+    <path id="build.classpath">
+      <pathelement location="${jfreereport-libdir}/${BeanShell-jar}"/>
+      <pathelement location="${jfreereport-libdir}/${GnuJAXP-jar}"/>
+      <pathelement location="${jfreereport-libdir}/${iText-jar}"/>
+      <pathelement location="${jfreereport-libdir}/${JCommon-jar}"/>
+      <pathelement location="${jfreereport-libdir}/${Pixie-jar}"/>
+      <pathelement location="${jfreereport-libdir}/${POI-jar}"/>
+      <pathelement location="${jfreereport-dir}/${JFreeReport-jar}"/>
+      <pathelement location="${jfreereport-dir}/${JFreeReport-demo-jar}"/>
+      <pathelement location="${libdir}/${JFreeChart-jar}"/>
+      <pathelement location="${libdir}/${junit-jar}"/>
+      <pathelement location="${libdir}/${log4j-jar}"/>
+      <pathelement location="${libdir}/${servlet-jar}"/>
+    </path>
+  </target>
+
+  <!-- Compile the JFreeReport classes -->
+  <target name="compile"
+    depends="init-classpath"
+    description="Compile the JFreeReport source code.">
+
+    <!-- create a temp build directory -->
+    <mkdir dir="${projectdir}/build"/>
+
+    <!-- compile the source -->
+    <javac srcdir="${projectdir}/source"
+      destdir="${projectdir}/build"
+      excludes="com/jrefinery/report/demo/**">
+      <classpath refid="build.classpath"/>
+      <exclude name="com/jrefinery/report/ext/NetDump.java" unless="java-1.3.present"/>
+      <exclude name="com/jrefinery/report/ext/log/Java14LogTarget.java" unless="java-1.4.present"/>
+    </javac>
+
+    <!-- copy across the resource files -->
+    <copy todir="${projectdir}/build/com/jrefinery/report/ext/junit/bugs/resource">
+      <fileset dir="${projectdir}/source/com/jrefinery/report/ext/junit/bugs/resource"/>
+    </copy>
+
+    <!-- make the jar file -->
+    <jar jarfile="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.jar"
+      basedir="${projectdir}/build">
+    </jar>
+
+    <!-- remove the temp build area -->
+    <delete dir="${projectdir}/build"/>
+  </target>
+
+  <!-- Generate the JFreeReport JavaDoc HTML pages -->
+  <target name="javadoc" depends="init-classpath">
+    <delete dir="${projectdir}/javadoc"/>
+    <mkdir dir="${projectdir}/javadoc"/>
+    <javadoc destdir="${projectdir}/javadoc"
+      windowtitle="JFreeReport Extension Class Library"
+      overview="../source/overview.html">
+      <classpath refid="build.classpath"/>
+      <packageset dir="${projectdir}/source" defaultexcludes="yes">
+        <include name="com/jrefinery/report/ext/**"/>
+      </packageset>
+    </javadoc>
+  </target>
+
+  <target name="build-war" depends="compile">
+    <!-- create a temp build directory -->
+    <mkdir dir="${projectdir}/warbuild"/>
+
+    <!-- copy across the resource files -->
+    <copy todir="${projectdir}/warbuild">
+      <fileset dir="${projectdir}/webapp">
+        <exclude name="**/CVS"/>
+      </fileset>
+    </copy>
+
+    <!-- remove the temp build area
+    <delete dir="${projectdir}/warbuild"/>
+-->
+  </target>
+
+  <target name="all" depends="compile, javadoc, build-war"/>
 </project>
 

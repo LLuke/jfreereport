@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractPageableReportServletWorker.java,v 1.2 2003/03/01 14:55:33 taqua Exp $
+ * $Id: AbstractPageableReportServletWorker.java,v 1.3 2003/03/02 04:10:28 taqua Exp $
  *
  * Changes
  * -------
@@ -188,5 +188,16 @@ public abstract class AbstractPageableReportServletWorker
     {
       throw new ReportProcessingException("Failed", e);
     }
+  }
+
+  /**
+   * Returns a property prefix for the various used report properties. This can
+   * be used to host several reports on a single session.
+   *
+   * @return the property prefix, an empty string by default.
+   */
+  protected String getPropertyPrefix()
+  {
+    return "";
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportHtmlServlet.java,v 1.4 2003/03/01 14:55:33 taqua Exp $
+ * $Id: JFreeReportHtmlServlet.java,v 1.5 2003/03/02 04:10:28 taqua Exp $
  *
  * Changes
  * -------
@@ -75,6 +75,11 @@ public class JFreeReportHtmlServlet extends HttpServlet
   }
 
   /**
+   * Handles the POST method for the request. This parses the report definition,
+   * loads the tablemodel and generates a single page of the report. The generated
+   * page is returned as StreamHtml file, with the implicit restriction, that generated
+   * images are not included. External referenced images are included, if they are loaded
+   * from an Http or Ftp or File source. 
    *
    * @param request the http request object.
    * @param response the http response object.

@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportServlet.java,v 1.8 2003/03/01 14:55:33 taqua Exp $
+ * $Id: JFreeReportServlet.java,v 1.9 2003/03/02 04:10:28 taqua Exp $
  *
  * Changes
  * -------
@@ -73,6 +73,16 @@ public class JFreeReportServlet extends HttpServlet
     doPost(request, response);
   }
 
+  /**
+   * Handles the POST method for the request. This parses the report definition,
+   * loads the tablemodel and generates a single page of the report. The generated
+   * page is returned as PDF file.
+   *
+   * @param request the http request object.
+   * @param response the http response object.
+   * @throws ServletException if an error occured, which could not be handled internaly.
+   * @throws IOException if writing the generated contents failed.
+   */ 
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
   {
