@@ -7,9 +7,9 @@
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id:$
- * $Author:$
- * $Date:$
+ * $Id: RectangleShapeElementTestCase.java,v 1.1 2002/07/08 22:10:35 taqua Exp $
+ * $Author: taqua $
+ * $Date: 2002/07/08 22:10:35 $
  */
 package com.jrefinery.report.ext.junit.base;
 
@@ -17,6 +17,8 @@ import junit.framework.*;
 import junit.extensions.*;
 import java.awt.Toolkit;
 import java.awt.AWTEvent;
+import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 import java.awt.event.AWTEventListener;
 import java.awt.event.WindowEvent;
 
@@ -93,13 +95,6 @@ public class RectangleShapeElementTestCase extends TestCase
    * actions which are necessary for performs tests.
    */
   protected void setUp() {
-    Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
-        public void eventDispatched(AWTEvent event) {
-          WindowEvent we = ((WindowEvent) event);
-          if (we.getID() == WindowEvent.WINDOW_OPENED)
-            we.getWindow().dispose();
-        }
-      }, AWTEvent.WINDOW_EVENT_MASK);
     varRectangleShapeElement = new RectangleShapeElement();
   } // end of setUp()
   /**
@@ -110,38 +105,6 @@ public class RectangleShapeElementTestCase extends TestCase
   public static Test suite() {
     return new TestSuite(RectangleShapeElementTestCase.class);
   } // end of suite()
-  /**
-   * for classes which doesn't contain any methods here is one additional
-   * method for performing test on such classes.
-   */
-  public void testNoMethods() {
-  }
-
-  /**
-   * Method for testing how works original method:
-   * void draw( ... )
-   * from tested class
-   */
-  public void testDraw320600891290237458() {
-
-    assertTrue("Warning! This new test method with no real test code inside.", false);
-
-  } // end of testDraw320600891290237458( ... )
-
-  /**
-   * Method for testing how works original method:
-   * java.awt.geom.Rectangle2D getRectangle()
-   * from tested class
-   */
-  public void testGetRectangle() {
-
-    varRectangleShapeElement.setRectangle((java.awt.geom.Rectangle2D)null);
-    assertEquals((java.awt.geom.Rectangle2D)null, varRectangleShapeElement.getRectangle());
-    assertTrue("Warning! This new test method with no real test code inside.", false);
-    varRectangleShapeElement.setRectangle((java.awt.geom.Rectangle2D)null);
-    assertEquals((java.awt.geom.Rectangle2D)null, varRectangleShapeElement.getRectangle());
-
-  } // end of testGetRectangle()
 
   /**
    * Method for testing how works original method:
@@ -150,7 +113,18 @@ public class RectangleShapeElementTestCase extends TestCase
    */
   public void testSetBounds227781269() {
 
-    assertTrue("Warning! This new test method with no real test code inside.", false);
+    try
+    {
+      varRectangleShapeElement.setBounds((java.awt.geom.Rectangle2D)null);
+      assertTrue("Failed to throw a nullpointer", false);
+    }
+    catch (NullPointerException npe)
+    {
+    }
+    Rectangle r = new Rectangle(1,1,2,2);
+    varRectangleShapeElement = new RectangleShapeElement();
+    varRectangleShapeElement.setBounds(r);
+    assertEquals(r, varRectangleShapeElement.getBounds());
 
   } // end of testSetBounds227781269(java.awt.geom.Rectangle2D)
 
@@ -161,11 +135,18 @@ public class RectangleShapeElementTestCase extends TestCase
    */
   public void testSetRectangle227781269() {
 
-    varRectangleShapeElement.setRectangle((java.awt.geom.Rectangle2D)null);
-    assertEquals((java.awt.geom.Rectangle2D)null, varRectangleShapeElement.getRectangle());
-    assertTrue("Warning! This new test method with no real test code inside.", false);
-    varRectangleShapeElement.setRectangle((java.awt.geom.Rectangle2D)null);
-    assertEquals((java.awt.geom.Rectangle2D)null, varRectangleShapeElement.getRectangle());
+    try
+    {
+      varRectangleShapeElement.setRectangle((java.awt.geom.Rectangle2D)null);
+      assertTrue("Failed to throw a nullpointer", false);
+    }
+    catch (NullPointerException npe)
+    {
+    }
+    Rectangle r = new Rectangle(1,1,2,2);
+    varRectangleShapeElement = new RectangleShapeElement();
+    varRectangleShapeElement.setRectangle(r);
+    assertEquals(r, varRectangleShapeElement.getRectangle());
 
   } // end of testSetRectangle227781269(java.awt.geom.Rectangle2D)
 
@@ -176,19 +157,29 @@ public class RectangleShapeElementTestCase extends TestCase
    */
   public void testSetShape2073736251() {
 
-    assertTrue("Warning! This new test method with no real test code inside.", false);
+    try
+    {
+      varRectangleShapeElement.setShape(null);
+      assertTrue("Failed to throw a nullpointer", false);
+    }
+    catch (NullPointerException npe)
+    {
+    }
+    try
+    {
+      Line2D l = new Line2D.Float (1,1,1,1);
+      varRectangleShapeElement = new RectangleShapeElement();
+      varRectangleShapeElement.setShape(l);
+      assertTrue("No expected classcast exception, failed", false);
+    }
+    catch (ClassCastException ce)
+    {
+    }
 
+    Rectangle r = new Rectangle(1,1,2,2);
+    varRectangleShapeElement = new RectangleShapeElement();
+    varRectangleShapeElement.setShape(r);
+    assertEquals(r, varRectangleShapeElement.getShape());
   } // end of testSetShape2073736251(java.awt.Shape)
-
-  /**
-   * Method for testing how works original method:
-   * boolean shouldDraw()
-   * from tested class
-   */
-  public void testShouldDraw() {
-
-    assertTrue("Warning! This new test method with no real test code inside.", false);
-
-  } // end of testShouldDraw()
 
 } // end of RectangleShapeElementTestCase

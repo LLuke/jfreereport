@@ -38,6 +38,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import com.jrefinery.report.ext.junit.bugs.GeneratorTests;
+import com.jrefinery.report.ext.junit.bugs.GroupCountBug;
+import com.jrefinery.report.ext.junit.bugs.ReportPropertyLostBug;
 
 /**
  * A test suite for the JFreeReport class library that can be run using JUnit (http://www.junit.org).
@@ -52,6 +54,8 @@ public class JFreeReportTestSuite extends TestCase
   {
     TestSuite suite = new TestSuite ("JFreeReport");
     suite.addTest (GeneratorTests.suite ());
+    suite.addTest(GroupCountBug.suite());
+    suite.addTest(ReportPropertyLostBug.suite());
     return suite;
   }
 

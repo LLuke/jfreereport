@@ -9,9 +9,9 @@ package com.jrefinery.report.ext.junit;
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id:$
- * $Author:$
- * $Date:$
+ * $Id: TestAll.java,v 1.1 2002/07/08 22:10:35 taqua Exp $
+ * $Author: taqua $
+ * $Date: 2002/07/08 22:10:35 $
  */
 
 import junit.framework.Test;
@@ -37,6 +37,7 @@ public class TestAll
   public static Test suite ()
   {
     TestSuite suite = new TestSuite ("All JUnit Tests");
+    suite.addTest (new com.jrefinery.report.ext.junit.base.ParameterTest("Parameter Test"));
     suite.addTest (com.jrefinery.report.ext.junit.base.DateFunctionElementTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.FunctionCollectionTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.LabelElementTestCase.suite ());
@@ -46,14 +47,12 @@ public class TestAll
     suite.addTest (com.jrefinery.report.ext.junit.base.NumberFunctionElementTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.ItemBandTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.JFreeReportTestCase.suite ());
-    suite.addTest (com.jrefinery.report.ext.junit.base.StringFunctionElementTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.WaitingImageObserverTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.ImageReferenceTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.GeneralElementTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.ReportStateListTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.ReportHeaderTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.MultilineTextElementTestCase.suite ());
-    suite.addTest (com.jrefinery.report.ext.junit.base.StringElementTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.GroupHeaderTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.PageFooterTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.LineShapeElementTestCase.suite ());
@@ -138,6 +137,7 @@ public class TestAll
     suite.addTest (com.jrefinery.report.ext.junit.base.resources.JFreeReportResources_deTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.preview.PreviewFrameTestCase.suite ());
     suite.addTest (com.jrefinery.report.ext.junit.base.preview.ReportPaneTestCase.suite ());
+    suite.addTest (com.jrefinery.report.ext.junit.JFreeReportTestSuite.suite());
     return suite;
   } // end of suite()
 } // end of com.jrefinery.report.ext.junit.TestAll

@@ -7,9 +7,9 @@
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id:$
- * $Author:$
- * $Date:$
+ * $Id: ReportHeaderTestCase.java,v 1.1 2002/07/08 22:10:35 taqua Exp $
+ * $Author: taqua $
+ * $Date: 2002/07/08 22:10:35 $
  */
 package com.jrefinery.report.ext.junit.base;
 
@@ -93,13 +93,6 @@ public class ReportHeaderTestCase extends TestCase
    * actions which are necessary for performs tests.
    */
   protected void setUp() {
-    Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
-        public void eventDispatched(AWTEvent event) {
-          WindowEvent we = ((WindowEvent) event);
-          if (we.getID() == WindowEvent.WINDOW_OPENED)
-            we.getWindow().dispose();
-        }
-      }, AWTEvent.WINDOW_EVENT_MASK);
     varReportHeader = new ReportHeader();
   } // end of setUp()
   /**
@@ -110,12 +103,6 @@ public class ReportHeaderTestCase extends TestCase
   public static Test suite() {
     return new TestSuite(ReportHeaderTestCase.class);
   } // end of suite()
-  /**
-   * for classes which doesn't contain any methods here is one additional
-   * method for performing test on such classes.
-   */
-  public void testNoMethods() {
-  }
 
   /**
    * Method for testing how works original method:
@@ -124,19 +111,13 @@ public class ReportHeaderTestCase extends TestCase
    */
   public void testIsOwnPage() {
 
-    assertTrue("Warning! This new test method with no real test code inside.", false);
+    varReportHeader.setOwnPage(true);
+    assertTrue(varReportHeader.isOwnPage());
+
+    varReportHeader.setOwnPage(false);
+    assertTrue(varReportHeader.isOwnPage() == false);
 
   } // end of testIsOwnPage()
 
-  /**
-   * Method for testing how works original method:
-   * void setOwnPage(boolean)
-   * from tested class
-   */
-  public void testSetOwnPage64711720() {
-
-    assertTrue("Warning! This new test method with no real test code inside.", false);
-
-  } // end of testSetOwnPage64711720(boolean)
 
 } // end of ReportHeaderTestCase

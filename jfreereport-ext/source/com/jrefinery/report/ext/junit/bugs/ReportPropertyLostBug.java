@@ -107,8 +107,8 @@ public class ReportPropertyLostBug extends TestCase
     URL url = getClass ().getResource ("/com/jrefinery/report/demo/report1.xml");
     if (url == null)
       throw new FileNotFoundException ();
-    File in = new File (url.getFile ());
-    report = ReportGenerator.getInstance ().parseReport (in);
+
+    report = ReportGenerator.getInstance ().parseReport (url, url);
     report.setData (new SampleData1 ());
     BufferedImage buffer = new BufferedImage (100, 100, BufferedImage.TYPE_INT_RGB);
     Graphics2D g2 = (Graphics2D) buffer.getGraphics ();
@@ -150,13 +150,15 @@ public class ReportPropertyLostBug extends TestCase
     }
   }
 
-  public static void main (String[] args)
+  public static void main (String[] args) throws Exception
   {
     // Select A5 landscape to view the required page dimensions.
     PrinterJob pj = PrinterJob.getPrinterJob ();
     PageFormat fmt = pj.pageDialog (pj.defaultPage ());
     System.out.println (fmt.getWidth () + " " + fmt.getHeight ());
     System.out.println (fmt.getImageableX () + " " + fmt.getImageableY () + " " + fmt.getImageableWidth () + " " + fmt.getImageableHeight ());
+
+    new ReportPropertyLostBug("").setUp();
     System.exit (0);
   }
 }

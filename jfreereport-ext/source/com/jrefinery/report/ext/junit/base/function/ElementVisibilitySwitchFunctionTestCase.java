@@ -7,9 +7,9 @@
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id:$
- * $Author:$
- * $Date:$
+ * $Id: ElementVisibilitySwitchFunctionTestCase.java,v 1.1 2002/07/08 22:10:37 taqua Exp $
+ * $Author: taqua $
+ * $Date: 2002/07/08 22:10:37 $
  */
 package com.jrefinery.report.ext.junit.base.function;
 
@@ -93,13 +93,6 @@ public class ElementVisibilitySwitchFunctionTestCase extends TestCase
    * actions which are necessary for performs tests.
    */
   protected void setUp() {
-    Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
-        public void eventDispatched(AWTEvent event) {
-          WindowEvent we = ((WindowEvent) event);
-          if (we.getID() == WindowEvent.WINDOW_OPENED)
-            we.getWindow().dispose();
-        }
-      }, AWTEvent.WINDOW_EVENT_MASK);
     varElementVisibilitySwitchFunction = new ElementVisibilitySwitchFunction();
   } // end of setUp()
   /**

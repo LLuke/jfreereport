@@ -7,9 +7,9 @@
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id:$
- * $Author:$
- * $Date:$
+ * $Id: ReportProcessingExceptionTestCase.java,v 1.1 2002/07/08 22:10:35 taqua Exp $
+ * $Author: taqua $
+ * $Date: 2002/07/08 22:10:35 $
  */
 package com.jrefinery.report.ext.junit.base;
 
@@ -93,14 +93,6 @@ public class ReportProcessingExceptionTestCase extends TestCase
    * actions which are necessary for performs tests.
    */
   protected void setUp() {
-    Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
-        public void eventDispatched(AWTEvent event) {
-          WindowEvent we = ((WindowEvent) event);
-          if (we.getID() == WindowEvent.WINDOW_OPENED)
-            we.getWindow().dispose();
-        }
-      }, AWTEvent.WINDOW_EVENT_MASK);
-    varReportProcessingException = new ReportProcessingException();
   } // end of setUp()
   /**
    * Returns all tests which should be performed for testing class.
@@ -114,7 +106,10 @@ public class ReportProcessingExceptionTestCase extends TestCase
    * for classes which doesn't contain any methods here is one additional
    * method for performing test on such classes.
    */
-  public void testNoMethods() {
+  public void testConstructor() {
+    varReportProcessingException = new ReportProcessingException();
+    varReportProcessingException = new ReportProcessingException(null);
+    varReportProcessingException = new ReportProcessingException("Message");
   }
 
 } // end of ReportProcessingExceptionTestCase

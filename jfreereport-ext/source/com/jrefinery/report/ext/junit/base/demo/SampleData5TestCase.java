@@ -7,9 +7,9 @@
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id:$
- * $Author:$
- * $Date:$
+ * $Id: SampleData5TestCase.java,v 1.1 2002/07/08 22:10:35 taqua Exp $
+ * $Author: taqua $
+ * $Date: 2002/07/08 22:10:35 $
  */
 package com.jrefinery.report.ext.junit.base.demo;
 
@@ -99,15 +99,6 @@ public class SampleData5TestCase extends TestCase
    */
   protected void setUp ()
   {
-    Toolkit.getDefaultToolkit ().addAWTEventListener (new AWTEventListener ()
-    {
-      public void eventDispatched (AWTEvent event)
-      {
-        WindowEvent we = ((WindowEvent) event);
-        if (we.getID () == WindowEvent.WINDOW_OPENED)
-          we.getWindow ().dispose ();
-      }
-    }, AWTEvent.WINDOW_EVENT_MASK);
     varSampleData5 = new SampleData5 ();
   } // end of setUp()
 
