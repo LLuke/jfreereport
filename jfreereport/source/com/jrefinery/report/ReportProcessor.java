@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProcessor.java,v 1.15 2002/10/16 18:33:40 taqua Exp $
+ * $Id: ReportProcessor.java,v 1.16 2002/11/20 22:30:30 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,7 @@
  * 04-Jun-2002 : Documentation
  * 09-Jul-2002 : Docs
  * 08-Aug-2002 : Band visibility support
+ * 26-Nov-2002 : newPage flag introduced to solve problem in GroupHeader when pagebreaking
  */
 package com.jrefinery.report;
 
@@ -143,7 +144,7 @@ public class ReportProcessor implements JFreeReportConstants
       dheight = band.getHeight ();
     }
 
-    Log.debug ("Cursor: " + cursor.getY() + " DHeight: " + dheight + " y: " + y);
+    Log.debug ("Cursor: " + cursor.getY() + " DHeight: " + dheight + " y: " + y + " Band: " + band.getClass());
     cursor.advance (y - cursor.getY () + dheight);
   }
 

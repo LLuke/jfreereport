@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: SystemOutLogTarget.java,v 1.6 2002/11/07 21:45:29 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,10 @@ import java.io.Serializable;
  */
 public class SystemOutLogTarget implements LogTarget, Serializable
 {
+  public SystemOutLogTarget()
+  {
+  }
+
   /**
    * logs an message to the main-log stream. All attached logStreams will also
    * receive this message. If the given log-level is higher than the given debug-level

@@ -24,7 +24,7 @@
  * ReportConfiguration.java
  * -----------------------
  *
- * $Id$
+ * $Id: ReportConfiguration.java,v 1.4 2002/11/07 21:45:29 taqua Exp $
  *
  * Changes
  * -------
@@ -108,7 +108,7 @@ public class ReportConfiguration
     }
   }
 
-  private ReportConfiguration ()
+  protected ReportConfiguration ()
   {
     configuration = new Properties();
   }
@@ -126,7 +126,7 @@ public class ReportConfiguration
 
   public String getConfigProperty (String key, String defaultValue)
   {
-    String value = (String) configuration.getProperty(key);
+    String value = configuration.getProperty(key);
     if (value == null)
     {
       if (isRootConfig())
@@ -215,7 +215,7 @@ public class ReportConfiguration
 
   public String getLogTarget()
   {
-    return getConfigProperty(LOGTARGET, LOGTARGET_DEFAULT);;
+    return getConfigProperty(LOGTARGET, LOGTARGET_DEFAULT);
   }
 
   public void setLogTarget(String logTarget)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: HugeJFreeReportDemo.java,v 1.17 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -41,9 +41,9 @@
 package com.jrefinery.report.demo;
 
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
-import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.ActionDowngrade;

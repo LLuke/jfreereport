@@ -29,7 +29,7 @@
     </pageheader>
 
     <pagefooter height="18">
-        <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
+        <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0" draw="false" fill="true"/>
         <!-- insert a page number field here -->
     </pagefooter>
 

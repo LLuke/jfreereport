@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.37 2002/11/09 00:09:23 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.38 2002/11/20 22:30:39 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -111,6 +111,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.awt.print.Pageable;
+import java.awt.print.Printable;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.MessageFormat;
@@ -145,7 +147,6 @@ public class PreviewFrame
      */
     public void propertyChange(PropertyChangeEvent event)
     {
-      Object source = event.getSource();
       String property = event.getPropertyName();
 
       if (property.equals(ReportPane.PAGENUMBER_PROPERTY)
@@ -192,7 +193,7 @@ public class PreviewFrame
   /**
    * Default 'save as' action for the frame.
    */
-  private class DefaultSaveAsAction extends SaveAsAction implements Runnable
+  protected class DefaultSaveAsAction extends SaveAsAction implements Runnable
   {
     /**
      * Creates a 'save as' action.
@@ -394,7 +395,13 @@ public class PreviewFrame
      */
     public void run()
     {
-      attemptPrint();
+      try
+      {
+        attemptPrint();
+      }
+      catch (PrinterException pe)
+      {
+      }
     }
   }
 
@@ -755,21 +762,24 @@ public class PreviewFrame
   /**
    * Prints the report.
    */
-  protected void attemptPrint()
+  protected void attemptPrint() throws PrinterException
   {
     PrinterJob pj = PrinterJob.getPrinterJob();
     pj.setPageable(reportPane);
     if (pj.printDialog())
     {
-      try
-      {
-        pj.print();
-      }
-      catch (PrinterException e)
-      {
-        showExceptionDialog("error.printfailed", e);
-      }
+      pj.print();
     }
+  }
+
+  protected Pageable getPageable ()
+  {
+    return reportPane;
+  }
+
+  protected Printable getPrintable ()
+  {
+    return reportPane;
   }
 
   /**
@@ -1228,8 +1238,6 @@ public class PreviewFrame
    */
   protected JToolBar createToolBar()
   {
-    ResourceBundle resources = getResources();
-
     JToolBar toolbar = new JToolBar();
 
     toolbar.add(createButton(saveAsAction));
@@ -1333,19 +1341,10 @@ public class PreviewFrame
    */
   public void dispose ()
   {
-    //Log.debug (" ------------------> FRAME DISPOSED -------------------->");
     super.dispose();
 
     // Silly Swing keeps at least one reference in the RepaintManager to support DoubleBuffering
     // I dont want this here, as PreviewFrames are evil and resource expensive ...
     RepaintManager.setCurrentManager(null);
-
   }
-/*
-  protected void finalize() throws Throwable
-  {
-    Log.debug (" ------------------> FRAME FINALIZED -------------------->");
-    super.finalize();
-  }
-*/
 }

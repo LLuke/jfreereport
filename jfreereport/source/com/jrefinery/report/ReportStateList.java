@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id$
+ * $Id: ReportStateList.java,v 1.10 2002/11/07 21:45:20 taqua Exp $
  *
  * Changes
  * -------
@@ -256,8 +256,6 @@ public class ReportStateList
 
     if (state.isFinish())
       throw new IllegalArgumentException();
-
-    Log.error ("Added State: " + state.getClass());
 
     MasterList master = null;
     if (getMasterPos (size ()) >= masterStates.size ())

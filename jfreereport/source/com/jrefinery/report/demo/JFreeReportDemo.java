@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.41 2002/11/06 21:03:15 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.42 2002/11/20 22:30:38 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -49,7 +49,6 @@ package com.jrefinery.report.demo;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
-import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.ActionDowngrade;

@@ -15,7 +15,6 @@
 <!-- in the JFreeReport forum. -->
 
 <project name="jfreereport" default="build-jfreereport" basedir="..">
-
     <!-- General initialisation. -->
     <target name="init-general" description="Initialise general parameters.">
         <tstamp />
@@ -26,6 +25,14 @@
         <property name="JCommon-jar" value="${basedir}/lib/jcommon-0.7.1.jar" />
         <property name="Pixie-jar" value="${basedir}/lib/pixie.jar" />
     </target>
+
+    <path id="build.classpath">
+        <pathelement location="${BeanShell-jar}" />
+        <pathelement location="${GnuJAXP-jar}" />
+        <pathelement location="${iText-jar}" />
+        <pathelement location="${JCommon-jar}" />
+        <pathelement location="${Pixie-jar}" />
+    </path>
 
     <!-- JFreeReport initialisation. -->
     <target name="init-jfreereport" depends="init-general"
@@ -44,7 +51,7 @@
         <!-- compile the source -->
         <javac srcdir="${basedir}/source" 
                destdir="${basedir}/build"
-               classpath="${BeanShell-jar}:${GnuJAXP-jar}:${iText-jar}:${JCommon-jar}:${Pixie-jar}" 
+               classpathref="build.classpath"
                excludes="com/jrefinery/report/demo/**">
         </javac>
 
@@ -77,7 +84,7 @@
         <!-- compile the demo source -->
         <javac srcdir="${basedir}/source" 
                destdir="${basedir}/build"
-               classpath="${basedir}/${jfreereport.name}-${jfreereport.version}.jar:${BeanShell-jar}:${GnuJAXP-jar}:${iText-jar}:${JCommon-jar}:${Pixie-jar}" 
+               classpathref="build.classpath"
                includes="com/jrefinery/report/demo/**">
         </javac>
 
@@ -106,7 +113,7 @@
         <mkdir dir="${basedir}/javadoc" />
         <javadoc destdir="${basedir}/javadoc" 
                  windowtitle="JFreeReport Class Library"
-                 classpath="${BeanShell-jar}:${GnuJAXP-jar}:${iText-jar}:${JCommon-jar}:${Pixie-jar}">
+                 classpathref="build.classpath">
             <packageset dir="${basedir}/source" defaultexcludes="yes">
                 <include name="com/jrefinery/report/**" />
                 <exclude name="com/jrefinery/report/demo/**" />  

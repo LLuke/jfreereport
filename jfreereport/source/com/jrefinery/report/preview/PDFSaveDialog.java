@@ -24,7 +24,7 @@
  * PDFSaveDialog.java
  * ------------------
  *
- * $Id$
+ * $Id: PDFSaveDialog.java,v 1.12 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * --------
@@ -40,17 +40,18 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
-import com.jrefinery.report.util.NullOutputStream;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.ui.ExtensionFileFilter;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -59,16 +60,13 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.KeyStroke;
-import javax.swing.JComponent;
+import java.awt.Dialog;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Frame;
-import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -76,7 +74,6 @@ import java.awt.print.PageFormat;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
