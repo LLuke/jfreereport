@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractConfigTreeNode.java,v 1.2 2003/08/31 19:27:57 taqua Exp $
+ * $Id: AbstractConfigTreeNode.java,v 1.3 2003/09/08 18:11:49 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,18 +43,39 @@ import java.util.Collections;
 import java.util.ArrayList;
 import javax.swing.tree.TreeNode;
 
+/**
+ * An abstract base implementation of the config tree node interface.
+ * The implementation provides all base services needed to have an
+ * valid TreeNode.
+ * 
+ * @author Thomas Morgner
+ */
 public abstract class AbstractConfigTreeNode implements ConfigTreeNode
 {
+  /** The list of tree nodes that act as childs. */
   private ArrayList childs;
+  /** The name of this node. */
   private String name;
+  /** The parent of this node or null, if this is the root node. */
   private TreeNode parent;
 
+  /**
+   * Creates a new config tree node with the given name. The node will
+   * be able to have child nodes.
+   * 
+   * @param name the name of the node.
+   */
   public AbstractConfigTreeNode(String name)
   {
     childs = new ArrayList();
     this.name = name;
   }
 
+  /**
+   * Adds the given node to the tree model.
+   * 
+   * @param node the new node that should be added.
+   */
   public void add (ConfigTreeNode node)
   {
     if (node == null)

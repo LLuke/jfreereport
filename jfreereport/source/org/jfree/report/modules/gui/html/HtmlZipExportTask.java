@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlZipExportTask.java,v 1.3 2003/08/31 21:06:09 taqua Exp $
+ * $Id: HtmlZipExportTask.java,v 1.4 2003/09/06 18:09:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,16 +52,50 @@ import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.modules.output.table.html.ZIPHtmlFilesystem;
 
+/**
+ * An export task implementation that exports the report into a ZIPped
+ * Html directory structure.
+ * 
+ * @author Thomas Morgner
+ */
 public class HtmlZipExportTask extends ExportTask
 {
+  /** The progress dialog that monitors the export process. */
   private final ReportProgressDialog progressDialog;
+  /** The name of the target file. */
   private final String fileName;
+  /** The name of the data directory (within the ZIP file). */
   private final String dataDirectory;
-  private final JFreeReport report;
+  /** The report that should be exported. */
+  private final JFreeReport report;  
 
+  /**
+   * Creates a new html export task.
+   * 
+   * @param fileName the name of the target file.
+   * @param dataDirectory the name of the data directory (within the target ZIP file).
+   * @param dialog the progress monitor component.
+   * @param report the report that should be exported.
+   */  
   public HtmlZipExportTask(final String fileName, final String dataDirectory,
                            final ReportProgressDialog dialog, final JFreeReport report)
   {
+    if (fileName == null)
+    {
+      throw new NullPointerException("File name is null.");
+    }
+    if (dialog == null)
+    {
+      throw new NullPointerException("Progress dialog is null.");
+    }
+    if (report == null)
+    {
+      throw new NullPointerException("Report is null.");
+    }
+    if (dataDirectory == null)
+    {
+      throw new NullPointerException("DataDirectory is null.");
+    }
     this.fileName = fileName;
     this.progressDialog = dialog;
     this.dataDirectory = dataDirectory;

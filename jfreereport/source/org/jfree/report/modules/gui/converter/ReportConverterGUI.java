@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.8 2003/08/26 17:35:50 taqua Exp $
  *
  * Changes
  * -------
@@ -199,8 +199,10 @@ public class ReportConverterGUI extends JFrame
   /** The encoding combo box model used to select the target file encoding. */
   private final EncodingComboBoxModel encodingModel;
 
+  /** The table model that displays all messages from the conversion. */
   private OperationResultTableModel resultTableModel;
 
+  /** A primitive status bar. */
   private JLabel statusHolder;
 
   /**
@@ -257,16 +259,31 @@ public class ReportConverterGUI extends JFrame
     return statusPane;
   }
 
+  /**
+   * Sets the text of the status line.
+   * 
+   * @param text the new text that should be displayed in the status bar.
+   */
   public void setStatusText (String text)
   {
     statusHolder.setText(text);
   }
 
+  /**
+   * Returns the text from the status bar.
+   * 
+   * @return the status bar text.
+   */
   public String getStatusText ()
   {
     return statusHolder.getText();
   }
 
+  /**
+   * Creates the main panel and all child components.
+   *  
+   * @return the created panel.
+   */
   private JPanel createMainPane ()
   {
     final JButton selectSourceButton = new ActionButton(new SelectSourceAction());

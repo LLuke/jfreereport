@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TranslationTableFactory.java,v 1.2 2003/08/27 20:19:53 taqua Exp $
+ * $Id: TranslationTableFactory.java,v 1.3 2003/09/02 15:05:32 taqua Exp $
  *
  * Changes
  * -------------------------
- * 26.08.2003 : Initial version
+ * 26-Aug-2003 : Initial version
  *
  */
 
@@ -46,13 +46,33 @@ import java.util.Properties;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.CSVTokenizer;
 
+/**
+ * The translation table factory is responsible for building the contexts
+ * and reading the translations.
+ * 
+ * @author Thomas Morgner
+ */
 public final class TranslationTableFactory
 {
+  /**
+   * The context rule defines a transition from one context state to
+   * an other. How the mapping is done is defined in the contextmap.properties
+   * file. 
+   */
   public static class ContextRule
   {
+    /** The name of the context. */
     private String name;
+    /** The mapped name of the context. If null, the no mapping is done.*/
     private String mapTo;
 
+    /**
+     * Creates a new rule for the given name and mapping. The mapping is
+     * optional.
+     * 
+     * @param name the name of the context
+     * @param mapTo the name of the target context or null if no mapping is done.
+     */
     public ContextRule(String name, String mapTo)
     {
       if (name == null)
@@ -63,21 +83,44 @@ public final class TranslationTableFactory
       this.mapTo = mapTo;
     }
 
+    /**
+     * Checks, whether a mapping is defined for this rule. 
+     * 
+     * @return true, if a mapping is defined, false otherwise.
+     */
     public boolean isMappingDefined ()
     {
       return mapTo != null;
     }
 
+    /**
+     * Returns the name of this context rule.
+     * @return the context rule name.
+     */
     public String getName()
     {
       return name;
     }
 
+    /**
+     * Returns the mapping for this rule or null, if no mapping is defined.
+     * 
+     * @return the mapping.
+     */
     public String getMapTo()
     {
       return mapTo;
     }
 
+    /**
+     * Checks, wether this context rule is equal to an other object.
+     * It is equal, if the other object is also an context rule which
+     * has the same name. 
+     * @see java.lang.Object#equals(java.lang.Object)
+     * 
+     * @param o the other object
+     * @return true, if the other object is equal, false otherwise.
+     */
     public boolean equals(Object o)
     {
       if (this == o)
@@ -99,14 +142,27 @@ public final class TranslationTableFactory
       return true;
     }
 
+    /**
+     * Computes an hashcode for this object.
+     *  
+     * @see java.lang.Object#hashCode()
+     * 
+     * @return the hashcode.
+     */
     public int hashCode()
     {
       return name.hashCode();
     }
   }
 
+  /** The singleton instance of the translation table factory. */
   private static TranslationTableFactory singleton;
 
+  /**
+   * Returns the singleton instance of this factory.
+   * 
+   * @return the factory.
+   */
   public static TranslationTableFactory getInstance ()
   {
     if (singleton == null)
@@ -116,40 +172,54 @@ public final class TranslationTableFactory
     return singleton;
   }
 
+  /** A collection of all known contexts. */
   private Hashtable contexts;
+  /** A collection of all known translations. */
   private Properties translations;
 
+  /**
+   * Creates a new translation factory and loads the required property files.
+   */
   private TranslationTableFactory()
   {
     contexts = new Hashtable();
+    translations = new Properties();
     loadContextMap();
     loadTranslationSpecs();
   }
 
+  /**
+   * Loads the translation specifications. This method will ignore all
+   * errors.
+   */
   private void loadTranslationSpecs()
   {
     InputStream in = this.getClass().getResourceAsStream("translations.properties");
     if (in == null)
     {
+      Log.warn ("Unable to locate the resource 'translations.properties'");
       return;
     }
-    translations = new Properties();
     try
     {
       translations.load(in);
     }
     catch (Exception e)
     {
-      Log.debug ("Unable to load the translation set.");
+      Log.warn ("Unable to load the translation set.", e);
     }
   }
 
+  /**
+   * Loads the context mapping specifications. This method will ignore all
+   * errors.
+   */
   private void loadContextMap()
   {
     InputStream in = this.getClass().getResourceAsStream("contextmap.properties");
     if (in == null)
     {
-      Log.debug ("Context map was not found.");
+      Log.warn ("Unable to locate the resource 'contextmap.properties'");
       return;
     }
     try
@@ -193,6 +263,13 @@ public final class TranslationTableFactory
     }
   }
 
+  /**
+   * Builds a context rule for the specified base name and stores the
+   * rule in the map of available mappings.
+   * 
+   * @param base the base name
+   * @param contextMap the context map that contains all known mappings.
+   */
   private void buildContext (String base, Properties contextMap)
   {
     String equals = contextMap.getProperty(base + ".equal");
@@ -238,6 +315,15 @@ public final class TranslationTableFactory
     contexts.put(base, rule);
   }
 
+  /**
+   * Builds a context based on the given last context and the new context name.
+   * If no last context is given, the context is considered to be an initial
+   * context.
+   * 
+   * @param lastContext the (possibly null) context rule of the last node.
+   * @param context the new context name segment.
+   * @return the new context rule, or null, if there is no such context defined.
+   */
   public ContextRule buildContext (ContextRule lastContext, String context)
   {
     if (lastContext == null)
@@ -265,14 +351,22 @@ public final class TranslationTableFactory
     return nextContext;
   }
 
+  /**
+   * Creates a mapping for the given rule. 
+   * 
+   * @param rule the rule that should be looked up
+   * @return a translation table for the given rule.
+   * @throws NullPointerException if the rule is null. 
+   */
   public TranslationTable getTranslationTable (ContextRule rule)
   {
     return new TranslationTable(translations, rule.getName());
   }
 
-  public static void main (String [] args)
-  {
-    TranslationTableFactory factory = TranslationTableFactory.getInstance();
+//  public static void main (String [] args)
+//  {
+//    TranslationTableFactory factory = TranslationTableFactory.getInstance();
+
 //    ArrayList cons = new ArrayList();
 //    Enumeration enum = factory.contexts.keys();
 //    while (enum.hasMoreElements())
@@ -285,13 +379,14 @@ public final class TranslationTableFactory
 //    {
 //      System.out.println(cons.get(i));
 //    }
-    ContextRule rule = factory.buildContext(null, "report-definition");
-    rule = factory.buildContext(rule, "report-description");
-    rule = factory.buildContext(rule, "report-header");
-    rule = factory.buildContext(rule, "band");
-    rule = factory.buildContext(rule, "band");
-    rule = factory.buildContext(rule, "element");
-    rule = factory.buildContext(rule, "style");
-    Log.debug (rule.getName());
-  }
+
+//    ContextRule rule = factory.buildContext(null, "report-definition");
+//    rule = factory.buildContext(rule, "report-description");
+//    rule = factory.buildContext(rule, "report-header");
+//    rule = factory.buildContext(rule, "band");
+//    rule = factory.buildContext(rule, "band");
+//    rule = factory.buildContext(rule, "element");
+//    rule = factory.buildContext(rule, "style");
+//    Log.debug (rule.getName());
+//  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.5 2003/08/31 21:06:09 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.6 2003/09/06 18:09:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,19 +56,50 @@ import org.jfree.report.modules.output.pageable.plaintext.IBMPrinterCommandSet;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
 
+/**
+ * An export task implementation that writes the report into a plain text file.
+ * 
+ * @author Thomas Morgner
+ */
 public class PlainTextExportTask extends ExportTask
 {
+  /** The progress monitor component that visualizes the export progress. */
   private final ReportProgressDialog progressDialog;
+  /** The name of the target file. */
   private final String fileName;
+  /** The report that should be exported. */
   private final JFreeReport report;
+  /** The desired export type, one of the constants defined in the PlainTextExportDialog. */
   private final int exportType;
+  /** The chars per inch for the export. */
   private final int charPerInch;
+  /** The lines per inch for the export. */
   private final int linesPerInch;
 
+  /**
+   * Creates a new plain text export task.
+   * 
+   * @param fileName the name of the target file.
+   * @param dialog the progress monitor dialog.
+   * @param exportType the desired export type.
+   * @param report the report that should be exported.
+   */
   public PlainTextExportTask
       (final String fileName, final ReportProgressDialog dialog,
        final int exportType, final JFreeReport report)
   {
+    if (fileName == null)
+    {
+      throw new NullPointerException("File name is null.");
+    }
+    if (dialog == null)
+    {
+      throw new NullPointerException("Progress dialog is null.");
+    }
+    if (report == null)
+    {
+      throw new NullPointerException("Report is null.");
+    }
     this.fileName = fileName;
     this.progressDialog = dialog;
     this.report = report;
@@ -81,7 +112,7 @@ public class PlainTextExportTask extends ExportTask
   }
 
   /**
-   * Returns the printer command set.
+   * Returns the printer command set for the given report and export type.
    *
    * @param out  the output stream.
    * @param report  the report.
@@ -113,7 +144,7 @@ public class PlainTextExportTask extends ExportTask
   }
 
   /**
-   * Exports the repotr into a PDF file.
+   * Exports the report into a plain text file.
    */
   public void run()
   {

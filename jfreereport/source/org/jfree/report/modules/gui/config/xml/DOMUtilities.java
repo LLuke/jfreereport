@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DOMUtilities.java,v 1.1 2003/08/27 20:19:53 taqua Exp $
+ * $Id: DOMUtilities.java,v 1.2 2003/09/08 18:11:49 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 27.08.2003 : Initial version
+ * 27-Aug-2003 : Initial version
  *  
  */
 
@@ -53,11 +53,20 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.jfree.report.util.CharacterEntityParser;
 
+/**
+ * Some utility methods to help parsing when using a DOM parser.
+ * 
+ * @author Thomas Morgner
+ */
 public final class DOMUtilities
 {
+  /** An instance of the XML character entity parser. */
   private static final CharacterEntityParser XML_ENTITIES =
     CharacterEntityParser.createXMLEntityParser();
-    
+  
+  /**
+   * Hidden default constructor.
+   */
   private DOMUtilities()
   {
   }
@@ -65,7 +74,12 @@ public final class DOMUtilities
   /**
    * Parses the given input stream to form a document.
    *
+   * @param instream the input stream that should be parsed.
    * @return the parsed document or <code>null</code>, when an error occured
+   * @throws ParserConfigurationException if the parser could not be initalized.
+   * @throws SAXException if the parsing failed due to errors in the xml document
+   * @throws IOException if reading from the input stream failed. 
+   * 
    */
   public static Document parseInputStream (InputStream instream)
     throws ParserConfigurationException, SAXException, IOException

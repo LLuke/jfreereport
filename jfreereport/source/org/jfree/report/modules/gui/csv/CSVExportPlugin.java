@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportPlugin.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: CSVExportPlugin.java,v 1.5 2003/09/06 18:09:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -69,6 +69,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
   public static final String BASE_RESOURCE_CLASS =
       CSVExportResources.class.getName();
 
+  /** The progress dialog that will monitor the export process. */ 
   private final ReportProgressDialog progressDialog;
 
   /**

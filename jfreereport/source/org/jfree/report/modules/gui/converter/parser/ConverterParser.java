@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConverterParser.java,v 1.2 2003/08/31 19:27:57 taqua Exp $
+ * $Id: ConverterParser.java,v 1.3 2003/08/31 21:06:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,17 +48,42 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+/**
+ * The ConverterParser is a filtering proxy implementation that uses the
+ * mappings defined in this package to modify the parsed attribute values 
+ * on the fly into the new values.
+ * 
+ * @author Thomas Morgner
+ */
 public class ConverterParser extends Parser
 {
+  /** The backend parser. */
   private Parser base;
+  /** the context collection used to create the correct mappings. */
   private Stack currentContext;
 
+  /**
+   * Creates a new ConverterParser using the given parser as backend.
+   * 
+   * @param base the backend parser that will do all the work.
+   */
   public ConverterParser(Parser base)
   {
     this.base = base;
     currentContext = new Stack();
   }
 
+  /**
+   * Receive notification of the end of the document.
+   * Updates the context and forwards the event to the base parser.
+   *
+   * @exception SAXException Any SAX exception, possibly wrapping another exception.
+   *
+   * @param uri  the URI.
+   * @param localName  the element type name.
+   * @param qName  the name.
+   * @see org.xml.sax.ContentHandler#endDocument
+   */
   public void endElement(String uri, String localName, String qName)
       throws SAXException
   {
@@ -66,6 +91,19 @@ public class ConverterParser extends Parser
     base.endElement(uri, localName, qName);
   }
 
+  /**
+   * Receive notification of the start of an element.
+   * Updates the context and forwards the event to the base parser.
+   *
+   * @param uri  the URI.
+   * @param localName  the element type name.
+   * @param qName  the name.
+   * @param attributes  the specified or defaulted attributes.
+   *
+   * @exception SAXException Any SAX exception, possibly
+   *            wrapping another exception.
+   * @see org.xml.sax.ContentHandler#startElement
+   */
   public void startElement(String uri, String localName,
                              String qName, Attributes attributes)
       throws SAXException
@@ -107,14 +145,13 @@ public class ConverterParser extends Parser
    * the entity itself, that it use an alternative URI, or that it
    * use an entirely different input source.</p>
    *
-   * <p>Application writers can use this method to redirect external
-   * system identifiers to secure and/or local URIs, to look up
-   * public identifiers in a catalogue, or to read an entity from a
-   * database or other input source (including, for example, a dialog
-   * box).</p>
-   *
    * <p>If the system identifier is a URL, the SAX parser must
    * resolve it fully before reporting it to the application.</p>
+   *
+   * <p>The official SAX implementation declares that it also throws an
+   * IOException, while the JDK1.4 SAX2 implementation doesn't.
+   * We catch all exceptions here and map them into the SAXException
+   * to resolve that issue.</p>
    *
    * @param publicId The public identifier of the external entity
    *        being referenced, or null if none was supplied.
@@ -288,88 +325,203 @@ public class ConverterParser extends Parser
     base.fatalError(exception);
   }
 
-  public Object getHelperObject(String s)
+  /**
+   * Returns a helper object.
+   *
+   * @param key  the key.
+   *
+   * @return The object.
+   */
+  public Object getHelperObject(String key)
   {
-    return base.getHelperObject(s);
+    return base.getHelperObject(key);
   }
 
+  /**
+   * Receive an object for locating the origin of SAX document events.
+   *
+   * The locator allows the application to determine the end position of
+   * any document-related event, even if the parser is not reporting an
+   * error. Typically, the application will use this information for
+   * reporting its own errors (such as character content that does not
+   * match an application's business rules). The information returned by
+   * the locator is probably not sufficient for use with a search engine.
+   *
+   * @param locator  the locator.
+   */
   public void setDocumentLocator(Locator locator)
   {
     base.setDocumentLocator(locator);
   }
 
+  /**
+   * Returns the current locator.
+   *
+   * @return the locator.
+   */
   public Locator getLocator()
   {
     return base.getLocator();
   }
 
+  /**
+   * Pushes a handler onto the stack.
+   *
+   * @param elementDefinitionHandler  the handler.
+   */
   public void pushFactory(ElementDefinitionHandler elementDefinitionHandler)
   {
     base.pushFactory(elementDefinitionHandler);
   }
 
+  /**
+   * Reads a handler off the stack without removing it.
+   *
+   * @return The handler.
+   */
   public ElementDefinitionHandler peekFactory()
   {
     return base.peekFactory();
   }
 
+  /**
+   * Pops a handler from the stack.
+   *
+   * @return The handler.
+   */
   public ElementDefinitionHandler popFactory()
   {
     return base.popFactory();
   }
 
+  /**
+   * Receive notification of the end of the document.
+   * Forwards the event to the base parser implementation.
+   *
+   * @exception SAXException Any SAX exception, possibly wrapping another exception.
+   *
+   * @see org.xml.sax.ContentHandler#endDocument
+   */
   public void endDocument() throws SAXException
   {
     base.endDocument();
   }
 
+  /**
+   * Receive notification of the beginning of the document.
+   * Forwards the event to the base parser implementation.
+   *
+   * @exception SAXException Any SAX exception, possibly wrapping another exception.
+   * @see org.xml.sax.ContentHandler#startDocument
+   */
   public void startDocument() throws SAXException
   {
     base.startDocument();
   }
 
-  public void characters(char[] chars, int i, int i1) throws SAXException
+  /**
+   * Receive notification of character data inside an element.
+   * Forwards the event to the base parser implementation.
+   *
+   * @param chars  the characters.
+   * @param start  the start position in the character array.
+   * @param length  the number of characters to use from the character array.
+   *
+   * @exception SAXException Any SAX exception, possibly wrapping another exception.
+   * @see org.xml.sax.ContentHandler#characters
+   */
+  public void characters(char[] chars, int start, int length) throws SAXException
   {
-    base.characters(chars, i, i1);
+    base.characters(chars, start, length);
   }
 
+  /**
+   * Sets the initial handler.
+   *
+   * @param elementDefinitionHandler  the initial handler.
+   */
   public void setInitialFactory(ElementDefinitionHandler elementDefinitionHandler)
   {
     base.setInitialFactory(elementDefinitionHandler);
   }
 
+  /**
+   * Returns the initial handler.
+   *
+   * @return The initial handler.
+   */
   public ElementDefinitionHandler getInitialFactory()
   {
     return base.getInitialFactory();
   }
 
-  public String getConfigProperty(String s)
+  /**
+   * Returns the configuration property with the specified key.
+   *
+   * @param key  the property key.
+   *
+   * @return the property value.
+   */
+  public String getConfigProperty(String key)
   {
-    return base.getConfigProperty(s);
+    return base.getConfigProperty(key);
   }
 
-  public String getConfigProperty(String s, String s1)
+  /**
+   * Returns the configuration property with the specified key (or the specified default value
+   * if there is no such property).
+   * <p>
+   * If the property is not defined in this configuration, the code will lookup the property in
+   * the parent configuration.
+   *
+   * @param key  the property key.
+   * @param defaultValue  the default value.
+   *
+   * @return the property value.
+   */
+  public String getConfigProperty(String key, String defaultValue)
   {
-    return base.getConfigProperty(s, s1);
+    return base.getConfigProperty(key, defaultValue);
   }
 
-  public void setConfigProperty(String s, String s1)
+  /**
+   * Sets a parser configuration value.
+   *
+   * @param key  the key.
+   * @param value  the value.
+   */
+  public void setConfigProperty(String key, String value)
   {
-    base.setConfigProperty(s, s1);
+    base.setConfigProperty(key, value);
   }
 
-  public void setHelperObject(String s, Object o)
+  /**
+   * Sets a helper object.
+   *
+   * @param key  the key.
+   * @param value  the value.
+   */
+  public void setHelperObject(String key, Object value)
   {
-    base.setHelperObject(s, o);
+    base.setHelperObject(key, value);
   }
 
+  /**
+   * Returns a new instance of the parser.
+   *
+   * @return a new instance of the parser.
+   */
   public Parser getInstance()
   {
     return new ConverterParser(base);
   }
 
   /**
-   * A proxy implementation. Forwards all calls to the base parser.
+   * Returns the parsed result object after the parsing is complete. Calling
+   * this function during the parsing is undefined and may result in an
+   * IllegalStateException.
+   * <p>
+   * This is a proxy implementation. Forwards all calls to the base parser.
    *
    * @see Parser#getResult
    * @return the result

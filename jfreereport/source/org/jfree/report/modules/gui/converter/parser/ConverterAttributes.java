@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConverterAttributes.java,v 1.1 2003/08/26 17:35:51 taqua Exp $
  *
  * Changes
  * -------------------------
- * 25.08.2003 : Initial version
+ * 25-Aug-2003 : Initial version
  *
  */
 
@@ -40,13 +40,36 @@ package org.jfree.report.modules.gui.converter.parser;
 
 import org.xml.sax.Attributes;
 
+/**
+ * An Attribute implementation that uses a translation table to map given
+ * attribute values into the new value-space.
+ *  
+ * @author Thomas Morgner
+ */
 public class ConverterAttributes implements Attributes
 {
+  /** The attributes from the XML parser are used as backend. */
   private Attributes base;
+  /** The translation table that translates the attribute values. */
   private TranslationTable translationTable;
 
+  /**
+   * Creates a new ConverterAttribute set for the given attributes and
+   * the specified translation table.
+   * 
+   * @param base the attributes from the XML parser
+   * @param translationTable the translation table.
+   */
   public ConverterAttributes(Attributes base, TranslationTable translationTable)
   {
+    if (base == null)
+    {
+      throw new NullPointerException("Base attributes are null.");
+    }
+    if (translationTable == null)
+    {
+      throw new NullPointerException("TranslationTable is null.");
+    }
     this.base = base;
     this.translationTable = translationTable;
   }

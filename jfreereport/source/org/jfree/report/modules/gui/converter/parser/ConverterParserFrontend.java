@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConverterParserFrontend.java,v 1.1 2003/08/26 17:35:51 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 25.08.2003 : Initial version
+ * 25-Aug-2003 : Initial version
  *  
  */
 
@@ -41,8 +41,17 @@ package org.jfree.report.modules.gui.converter.parser;
 import org.jfree.xml.ParserFrontend;
 import org.jfree.report.modules.parser.base.ReportParser;
 
+/**
+ * A parser frontend implementation that initializes the converter
+ * parser. This parser will wrap around the real xml parser implementation.
+ * 
+ * @author Thomas Morgner
+ */
 public class ConverterParserFrontend extends ParserFrontend
 {
+  /**
+   * Creates a new parser frontend.
+   */
   public ConverterParserFrontend()
   {
     super(new ConverterParser(new ReportParser()));

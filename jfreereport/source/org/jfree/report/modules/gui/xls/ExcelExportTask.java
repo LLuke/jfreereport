@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportTask.java,v 1.3 2003/08/31 21:06:09 taqua Exp $
+ * $Id: ExcelExportTask.java,v 1.4 2003/09/06 18:09:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,23 +51,51 @@ import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 
+/**
+ * An export task implementation, which writes a given report into an
+ * Excel file.
+ * 
+ * @author Thomas Morgner
+ */
 public class ExcelExportTask extends ExportTask
 {
+  /** The progress dialog that will be used to visualize the report progress. */
   private final ReportProgressDialog progressDialog;
+  /** The file name of the output file. */
   private final String fileName;
+  /** The report which should be exported. */
   private final JFreeReport report;
 
+  /**
+   * Creates a new export task.
+   * 
+   * @param fileName the name of the target file.
+   * @param dialog the progress dialog that will monitor the report progress.
+   * @param report the report that should be exported.
+   */
   public ExcelExportTask
       (final String fileName, final ReportProgressDialog dialog,
        final JFreeReport report)
   {
+    if (fileName == null)
+    {
+      throw new NullPointerException("File name is null.");
+    }
+    if (dialog == null)
+    {
+      throw new NullPointerException("Progress dialog is null.");
+    }
+    if (report == null)
+    {
+      throw new NullPointerException("Report is null.");
+    }
     this.fileName = fileName;
     this.progressDialog = dialog;
     this.report = report;
   }
 
   /**
-   * Exports the repotr into a PDF file.
+   * Exports the report into an Excel file.
    */
   public void run()
   {

@@ -28,34 +28,54 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ClassConfigDescriptionEntry.java,v 1.2 2003/08/31 19:27:57 taqua Exp $
+ * $Id: ClassConfigDescriptionEntry.java,v 1.3 2003/09/08 18:11:49 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 26.08.2003 : Initial version
+ * 26-Aug-2003 : Initial version
  *  
  */
 
 package org.jfree.report.modules.gui.config.model;
 
+/**
+ * A config description entry that describes class name configurations.
+ * The specified class in the configuration is forced to be a subclass 
+ * of the specified base class.
+ * 
+ * @author Thomas Morgner
+ */
 public class ClassConfigDescriptionEntry extends ConfigDescriptionEntry
 {
+  /** The base class for the configuration value. */
   private Class baseClass;
 
+  /**
+   * Creates a new config description entry. 
+   * 
+   * @param keyName the full name of the key.
+   */
   public ClassConfigDescriptionEntry(String keyName)
   {
     super(keyName);
+    baseClass = Object.class;
   }
 
+  /**
+   * Returns the base class used to verify the configuration values.
+   * 
+   * @return the base class or Object.class if not specified otherwise.
+   */
   public Class getBaseClass()
   {
-    if (baseClass == null)
-    {
-      throw new NullPointerException();
-    }
     return baseClass;
   }
 
+  /**
+   * Defines the base class for this configuration entry.
+   * 
+   * @param baseClass the base class, never null.
+   */
   public void setBaseClass(Class baseClass)
   {
     if (baseClass == null)

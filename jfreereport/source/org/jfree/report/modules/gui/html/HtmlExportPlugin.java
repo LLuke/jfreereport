@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportPlugin.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: HtmlExportPlugin.java,v 1.5 2003/09/06 18:09:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -68,7 +68,7 @@ public class HtmlExportPlugin extends AbstractExportPlugin
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
       HtmlExportResources.class.getName();
-
+  /** The progress dialog that monitors the export process. */
   private final ReportProgressDialog progressDialog;
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationResultTableModel.java,v 1.1 2003/08/26 17:35:51 taqua Exp $
+ * $Id: OperationResultTableModel.java,v 1.2 2003/08/27 20:19:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,16 +44,29 @@ import javax.swing.table.AbstractTableModel;
 import org.jfree.report.modules.gui.converter.resources.ConverterResources;
 import org.jfree.report.modules.parser.base.OperationResult;
 
+/**
+ * The operation result tablemodel is used to display the parser and converter
+ * results to the user.
+ * 
+ * @author Thomas Morgner
+ */
 public class OperationResultTableModel extends AbstractTableModel
 {
+  /** An internal column mapping. */
   private static final int COLUMN_SEVERITY = 0;
+  /** An internal column mapping. */
   private static final int COLUMN_MESSAGE = 1;
+  /** An internal column mapping. */
   private static final int COLUMN_LINE = 2;
+  /** An internal column mapping. */
   private static final int COLUMN_COLUMN = 3;
 
+  /** The operation results are read from the parser. */
   private OperationResult[] data;
+  /** The resource bundle used to translate the column names. */
   private ResourceBundle resources;
 
+  /** The column name keys for the resource bundle. */
   private static final String[] COLUMN_NAMES =
       {
         "ResultTableModel.Severity",
@@ -62,18 +75,31 @@ public class OperationResultTableModel extends AbstractTableModel
         "ResultTableModel.Column"
       };
 
+  /**
+   * Creates a new and initially empty operation result table model.
+   */
   public OperationResultTableModel()
   {
-    this.resources = ResourceBundle.getBundle(ConverterResources.class.getName());
-    setData(new OperationResult[0]);
+    this(new OperationResult[0]);
   }
 
+  /**
+   * Creates a new operation result table model which will be filled with
+   * the given data.
+   * 
+   * @param data the operation result objects from the parser or writer.
+   */
   public OperationResultTableModel(OperationResult[] data)
   {
     this.resources = ResourceBundle.getBundle(ConverterResources.class.getName());
     setData(data);
   }
 
+  /**
+   * Sets the data for the tablemodel.
+   * 
+   * @param data the data.
+   */
   public void setData (OperationResult[] data)
   {
     if (data == null)

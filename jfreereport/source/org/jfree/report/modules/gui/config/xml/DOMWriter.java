@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DOMWriter.java,v 1.2 2003/08/28 17:45:43 taqua Exp $
+ * $Id: DOMWriter.java,v 1.3 2003/09/08 18:11:49 taqua Exp $
  *
  * Changes
  * -------------------------
- * 27.08.2003 : Initial version
+ * 27-Aug-2003 : Initial version
  *
  */
 
@@ -41,8 +41,19 @@ package org.jfree.report.modules.gui.config.xml;
 import org.jfree.xml.writer.SafeTagList;
 import org.jfree.xml.writer.XMLWriterSupport;
 
+/**
+ * A XML-Writer utility class, that helps when writing an XML document
+ * from an arbitary data source.
+ *  
+ * @author Thomas Morgner
+ */
 public final class DOMWriter extends XMLWriterSupport
 {
+  /**
+   * The safeTag list marks all tags which can be followed by an linebreak.
+   * 
+   * @return the safetag list for this document type.
+   */
   private static SafeTagList createSafeTagList()
   {
     SafeTagList list = new SafeTagList();
@@ -55,13 +66,23 @@ public final class DOMWriter extends XMLWriterSupport
     return list;
   }
 
+  /**
+   * Hidden default constructor. Initializes the writer with the internal
+   * safetag list.
+   */
   private DOMWriter()
   {
     super(createSafeTagList(), 0);
   }
-  
+
+  /** The singleton instance of this writer. */  
   private static DOMWriter singleton;
   
+  /** 
+   * Returns the singleton instance of this DOM writer.
+   * 
+   * @return the instance.
+   */
   public static DOMWriter getInstance()
   {
     if (singleton == null)

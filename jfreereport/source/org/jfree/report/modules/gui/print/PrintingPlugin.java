@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.3 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.4 2003/09/06 18:09:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -61,7 +61,7 @@ public class PrintingPlugin extends AbstractExportPlugin
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
       PrintExportResources.class.getName();
-
+  /** The progress dialog that is used to monitor the printing progress. */
   private final ReportProgressDialog progressDialog;
 
   /**
@@ -89,7 +89,10 @@ public class PrintingPlugin extends AbstractExportPlugin
   {
     // need to connect to the report pane to receive state updates ...
     getBase().addRepaginationListener(progressDialog);
-    PrintExportTask task = new PrintExportTask(getBase().getPageable(), progressDialog);
+    PrintExportTask task = new PrintExportTask
+        (getBase().getPageable(), progressDialog, 
+         report.getReportConfiguration().getConfigProperty
+            ("org.jfree.report.modules.gui.print.JobName"));
     delegateTask(task);
     synchronized (task)
     {

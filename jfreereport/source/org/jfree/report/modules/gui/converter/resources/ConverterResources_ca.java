@@ -28,7 +28,7 @@
  * Original Author:  Marc Casas;
  * Contributor(s):   -;
  *
- * $Id: $
+ * $Id: ConverterResources_ca.java,v 1.1 2003/09/08 18:41:45 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,7 +47,9 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
  */
 public class ConverterResources_ca extends JFreeReportResources
 {
-
+  /**
+   * DefaultConstructor.
+   */
   public ConverterResources_ca()
   {
   }

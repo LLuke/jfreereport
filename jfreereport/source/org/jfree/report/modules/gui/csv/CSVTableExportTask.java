@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableExportTask.java,v 1.4 2003/09/06 18:09:16 taqua Exp $
+ * $Id: CSVTableExportTask.java,v 1.5 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,18 +52,52 @@ import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
 
+/**
+ * An export task implementation that writes an report into a CSV file,
+ * and uses the table target to create layouted content.
+ * 
+ * @author Thomas Morgner
+ */
 public class CSVTableExportTask extends ExportTask
 {
+  /** The progress dialog that monitors the export process. */
   private final ReportProgressDialog progressDialog;
+  /** The name of the output file. */
   private final String fileName;
+  /** The encoding to be used for the file. */
   private final String encoding;
+  /** The report that should be exported. */
   private final JFreeReport report;
-
+  
+  /**
+   * Creates a new CSV export task.
+   * 
+   * @param fileName the filename of the target file
+   * @param encoding the encoding for the generated output 
+   * @param dialog the progress monitor
+   * @param report the report that should be exported.
+   */
   public CSVTableExportTask
       (final String fileName, final String encoding,
        final ReportProgressDialog dialog,
        final JFreeReport report)
   {
+    if (fileName == null)
+    {
+      throw new NullPointerException("File name is null.");
+    }
+    if (dialog == null)
+    {
+      throw new NullPointerException("Progress dialog is null.");
+    }
+    if (report == null)
+    {
+      throw new NullPointerException("Report is null.");
+    }
+    if (encoding == null)
+    {
+      throw new NullPointerException("Encoding is null.");
+    }
     this.fileName = fileName;
     this.progressDialog = dialog;
     this.report = report;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TranslationTable.java,v 1.1 2003/08/26 17:35:51 taqua Exp $
+ * $Id: TranslationTable.java,v 1.2 2003/08/27 20:19:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,21 +39,46 @@
 package org.jfree.report.modules.gui.converter.parser;
 
 import java.util.Properties;
-import java.io.InputStream;
 
-import org.jfree.report.util.Log;
-
+/**
+ * A simple attribute translator. The translator searches a set of properties
+ * for a specific value and replaces the attribute value with the updated
+ * value.
+ * <p>
+ * A translation will be valid for a given context, which is build acording
+ * to the rules specified in the contextmap.properties file.
+ *   
+ * @author Thomas Morgner
+ */
 public class TranslationTable
 {
+  /** The translation map contains all keys and their values. */
   private Properties translationMap;
+  /** the current context, where the map will be valid. */
   private String context;
 
+  /**
+   * Creates a new translation table which will contain the given translations
+   * and will be valid within the given context.
+   * 
+   * @param translations the translations
+   * @param context the translation context.
+   */
   public TranslationTable (Properties translations, String context)
   {
     this.translationMap = translations;
     this.context = context;
   }
 
+  /**
+   * Translates the value of the given attribute into a new value.
+   * If no translation for the original value is known, then the value
+   * is returned unchanged.
+   *  
+   * @param localName the name of the attribute
+   * @param orgValue the untranslated value as read from the xml file 
+   * @return the translated value if defined, else the untranslated value.
+   */
   public String translateAttribute (String localName, String orgValue)
   {
     if (orgValue == null)
@@ -74,32 +99,30 @@ public class TranslationTable
     key.append(localName);
     key.append("@");
     key.append(orgValue);
-//    Log.debug ("Attemp to translate: " + key);
     String o = translationMap.getProperty(key.toString(), orgValue);
-//    Log.debug ("Result: " + o);
 
     return o;
   }
 
-  public static void main (String[] args)
-  {
-    InputStream in = TranslationTable.class.getResourceAsStream("translations.properties");
-    if (in == null)
-    {
-      return;
-    }
-    Properties translations = new Properties();
-    try
-    {
-      translations.load(in);
-    }
-    catch (Exception e)
-    {
-      Log.debug ("Unable to load the translation set.");
-    }
-    TranslationTable table = new TranslationTable
-      (translations, "report-definition.parser-config.object-factory");
-    Log.debug (table.translateAttribute
-      ("class", "com.jrefinery.report.io.ext.factory.objects.DefaultClassFactory"));
-  }
+//  public static void main (String[] args)
+//  {
+//    InputStream in = TranslationTable.class.getResourceAsStream("translations.properties");
+//    if (in == null)
+//    {
+//      return;
+//    }
+//    Properties translations = new Properties();
+//    try
+//    {
+//      translations.load(in);
+//    }
+//    catch (Exception e)
+//    {
+//      Log.debug ("Unable to load the translation set.");
+//    }
+//    TranslationTable table = new TranslationTable
+//      (translations, "report-definition.parser-config.object-factory");
+//    Log.debug (table.translateAttribute
+//      ("class", "com.jrefinery.report.io.ext.factory.objects.DefaultClassFactory"));
+//  }
 }

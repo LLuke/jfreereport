@@ -28,22 +28,37 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEntry.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
+ * $Id: ConfigDescriptionEntry.java,v 1.2 2003/09/08 18:11:49 taqua Exp $
  *
  * Changes
  * -------------------------
- * 26.08.2003 : Initial version
+ * 26-Aug-2003 : Initial version
  *
  */
 
 package org.jfree.report.modules.gui.config.model;
 
+/**
+ * A config description entry provides a declaration of a single
+ * report configuration key and speicifes rules for the values of that
+ * key.
+ * 
+ * @author Thomas Morgner
+ */
 public abstract class ConfigDescriptionEntry
 {
+  /** A description of the given key. */
   private String description;
+  /** The fully qualified name of the key. */
   private String keyName;
+  /** a flag defining whether this is a boot time key. */
   private boolean global;
 
+  /**
+   * Creates a new config description entry with the given name.
+   * 
+   * @param keyName the name of the entry.
+   */
   public ConfigDescriptionEntry(String keyName)
   {
     if (keyName == null)
@@ -53,31 +68,69 @@ public abstract class ConfigDescriptionEntry
     this.keyName = keyName;
   }
 
+  /**
+   * Returns the full key name of the configuration description.
+   * @return the key name.
+   */
   public String getKeyName()
   {
     return keyName;
   }
 
+  /**
+   * Returns the descrption of the configuration entry.
+   *  
+   * @return the key description.
+   */
   public String getDescription()
   {
     return description;
   }
 
+  /**
+   * Defines the descrption of the configuration entry.
+   *  
+   * @param description the key description.
+   */
   public void setDescription(String description)
   {
     this.description = description;
   }
 
+  /**
+   * Returns, whether the key is a global key. Global keys are read
+   * from the global report configuration and specifying them in the
+   * report local configuration is useless.
+   *  
+   * @return true, if the key is global, false otherwise.
+   */
   public boolean isGlobal()
   {
     return global;
   }
 
+  /**
+   * Defines, whether the key is a global key. Global keys are read
+   * from the global report configuration and specifying them in the
+   * report local configuration is useless.
+   *  
+   * @param global set to true, if the key is global, false otherwise.
+   */
   public void setGlobal(boolean global)
   {
     this.global = global;
   }
 
+  /**
+   * Checks, whether the given object is equal to this config description
+   * entry. The object will be equal, if it is also an config description
+   * entry with the same name as this entry.
+   *  
+   * @see java.lang.Object#equals(java.lang.Object)
+   * 
+   * @param o the other object.
+   * @return true, if the config entry is equal to the given object, false otherwise.
+   */
   public boolean equals(Object o)
   {
     if (this == o)
@@ -99,6 +152,12 @@ public abstract class ConfigDescriptionEntry
     return true;
   }
 
+  /**
+   * Computes an hashcode for this object. 
+   * @see java.lang.Object#hashCode()
+   * 
+   * @return the hashcode.
+   */
   public int hashCode()
   {
     return keyName.hashCode();
