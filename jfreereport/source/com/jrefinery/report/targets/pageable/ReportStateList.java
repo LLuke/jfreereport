@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.5 2002/12/09 03:56:34 taqua Exp $
+ * $Id: ReportStateList.java,v 1.6 2002/12/12 12:26:57 mungady Exp $
  *
  * Changes
  * -------
@@ -277,8 +277,9 @@ public class ReportStateList
     //list. So if an Element gets lost (GCd), only 4 states need to be replayed.
     else if (size() < MASTER4_MAX)
     {
+      int secPos = size() - PRIMARY_MAX;
       MasterList master = null;
-      int masterPos = getMasterPos (size (), MASTERPOSITIONS_MED);
+      int masterPos = getMasterPos (secPos, MASTERPOSITIONS_MED);
       if (masterPos >= masterStates4.size ())
       {
         master = new MasterList (this, MASTERPOSITIONS_MED);
@@ -295,8 +296,9 @@ public class ReportStateList
     //list. So if an Element gets lost (GCd), 10 states need to be replayed.
     else
     {
+      int thirdPos = size() - MASTER4_MAX;
       MasterList master = null;
-      int masterPos = getMasterPos (size (), MASTERPOSITIONS_MAX);
+      int masterPos = getMasterPos (thirdPos, MASTERPOSITIONS_MAX);
       if (masterPos >= masterStates10.size ())
       {
         master = new MasterList (this, MASTERPOSITIONS_MAX);
@@ -353,6 +355,5 @@ public class ReportStateList
           = (MasterList) masterStates10.get (getMasterPos (index, MASTERPOSITIONS_MAX));
       return (ReportState) master.get (index);
     }
-
   }
 }

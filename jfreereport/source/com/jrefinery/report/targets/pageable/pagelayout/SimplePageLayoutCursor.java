@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.1 2002/12/02 17:57:06 taqua Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.2 2002/12/05 16:49:44 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -63,6 +63,9 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
 
   /** The reserved space at the bottom of the page. */
   private float reserved;
+
+  /** The space used by the pageheader */
+  private float pageTop;
 
   /**
    * Constructs a new cursor.
@@ -199,5 +202,15 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
     b.append("}");
 
     return b.toString();
+  }
+
+  public float getPageTop()
+  {
+    return pageTop;
+  }
+
+  public void setPageTop(float pageTop)
+  {
+    this.pageTop = pageTop;
   }
 }

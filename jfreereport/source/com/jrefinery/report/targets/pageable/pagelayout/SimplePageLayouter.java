@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.11 2002/12/18 20:31:47 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.12 2002/12/18 20:46:41 taqua Exp $
  *
  * Changes
  * -------
@@ -267,8 +267,12 @@ public class SimplePageLayouter extends PageLayouter
           }
         }
       }
-      // to do: do not print on last page ... how to get the information when the last page is
+      // todo: do not print on last page ... how to get the information when the last page is
       // reached for all events?
+
+
+      // mark the current position to calculate the maxBand-Height
+      getCursor().setPageTop(getCursor().getY());
     }
     catch (FunctionProcessingException fe)
     {
@@ -524,10 +528,11 @@ public class SimplePageLayouter extends PageLayouter
         = BandLayoutManagerUtil.getLayoutManager(band, getLogicalPage().getOutputTarget());
     // in this layouter the width of a band is always the full page width
     float width = (float) getLogicalPage().getWidth();
-    Dimension2D fdim = lm.preferredLayoutSize(band, new FloatDimension(width, Short.MAX_VALUE));
+    float height = getCursor().getPageBottomReserved() - getCursor().getPageTop();
+    Dimension2D fdim = lm.preferredLayoutSize(band, new FloatDimension(width, height));
 
     // the height is defined by the band's requirements
-    float height = (float) fdim.getHeight();
+    height = (float) fdim.getHeight();
     Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, height);
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
     lm.doLayout(band);

@@ -7,12 +7,12 @@
 -->
 <report name="Sample Report 2" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
 
-    <!-- REPORT HEADER -->
+    <!-- REPORT HEADER
     <reportheader height="144" fontname="SansSerif" fontstyle="bold" fontsize="18">
         <label x="0" y="0" width="100%" height="20" alignment="center">Sample Report Two</label>
         <label x="0" y="24" width="100%" height="10" fontsize="10" alignment="center">Generated using JFreeReport.</label>
     </reportheader>
-
+-->
     <!-- REPORT FOOTER -->
     <reportfooter height="24" fontname="SansSerif" fontstyle="bold" fontsize="10" ownpage="true">
         <label x="0" y="0" width="100%" height="20" alignment="center">END OF REPORT</label>
@@ -40,7 +40,7 @@
         <group name="Letter Group">
 
             <!-- GROUP HEADER -->
-            <groupheader height="20" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak="false" repeat="true">
+            <groupheader height="20" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak="true" repeat="true">
                 <label x="0" y="1" width="120" height="9" alignment="left">LETTER GROUP:</label>
                 <string-field x="120" y="1" width="76" height="9" alignment="left" fieldname="Letter"/>
                 <line x1="0" y1="12" x2="0" y2="12" weight="0.25"/>

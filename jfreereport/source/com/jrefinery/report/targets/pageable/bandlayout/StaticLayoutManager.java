@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.7 2002/12/13 01:26:11 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.8 2002/12/13 10:49:33 mungady Exp $
  *
  * Changes
  * -------
@@ -241,6 +241,7 @@ public class StaticLayoutManager implements BandLayoutManager
    * to the given container bounds as well as to the own maximum size.
    *
    * @param b  the band.
+   * @param containerDims the maximum size the band should use for that container.
    *
    * @return the preferred size.
    */

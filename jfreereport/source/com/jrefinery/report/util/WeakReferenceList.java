@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WeakReferenceList.java,v 1.11 2002/12/09 03:56:34 taqua Exp $
+ * $Id: WeakReferenceList.java,v 1.12 2002/12/11 00:41:42 mungady Exp $
  *
  * Changes
  * -------
@@ -139,6 +139,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
     else
     {
       Reference ref = childs[getChildPos (index)];
+      if (ref == null) throw new IllegalStateException("State: " + index);
       Object ob = ref.get ();
       if (ob == null)
       {

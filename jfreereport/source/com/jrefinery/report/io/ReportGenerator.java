@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.18 2002/12/12 12:26:56 mungady Exp $
+ * $Id: ReportGenerator.java,v 1.19 2002/12/12 20:24:03 taqua Exp $
  *
  * Changes
  * -------
@@ -124,13 +124,23 @@ public class ReportGenerator
     }
 
     File f = new File (reportDtd);
-    if (f.exists () && f.isFile () && f.canRead ())
+    if (f.exists () == false)
     {
+      Log.debug ("Local DTD cannot be read.");
+      dtd = reportDtd;
+    }
+    else if (f.isFile ()== false)
+    {
+      Log.debug ("Local DTD is no ordinary file");
+      dtd = reportDtd;
+    }
+    else if (f.canRead()== false)
+    {
+      Log.debug ("Unable to read the DTD-file.");
       dtd = reportDtd;
     }
     else
     {
-      Log.debug ("Local DTD exists, but cannot be read");
       dtd = reportDtd;
     }
   }
