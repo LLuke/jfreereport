@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.17 2002/08/14 21:14:09 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.18 2002/08/22 21:08:24 taqua Exp $
  *
  * Changes
  * -------
@@ -296,7 +296,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
 
     /**
-     * Adds the font by creating the basefont object
+     * Adds the fontname by creating the basefont object
      */
     private void addFont (String font)
             throws DocumentException, IOException
@@ -511,6 +511,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     String fontKey = null;
     String logicalName = font.getName ();
+    String encoding = getFontEncoding();
 
     if (startsWithIgnoreCase (logicalName, "dialoginput") ||
             startsWithIgnoreCase (logicalName, "monospaced"))
@@ -550,6 +551,15 @@ public class PDFOutputTarget extends AbstractOutputTarget
       else
       {
         fontKey = BaseFont.COURIER;
+      }
+      // hope this one is correct ...
+      if (encoding.equals (BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
+      {
+        encoding = "iso-8859-1";
+      }
+      else
+      {
+        encoding = "Cp1252";
       }
 
     }
@@ -592,6 +602,16 @@ public class PDFOutputTarget extends AbstractOutputTarget
         fontKey = BaseFont.TIMES_ROMAN;
       }
 
+      // hope this one is correct ...
+      if (encoding.equals (BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
+      {
+        encoding = "iso-8859-1";
+      }
+      else
+      {
+        encoding = "Cp1252";
+      }
+
     }
     else if (startsWithIgnoreCase (logicalName, "SansSerif") ||
             startsWithIgnoreCase (logicalName, "Dialog"))
@@ -632,6 +652,15 @@ public class PDFOutputTarget extends AbstractOutputTarget
       {
         fontKey = BaseFont.HELVETICA;
       }
+      // hope this one is correct ...
+      if (encoding.equals (BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
+      {
+        encoding = "iso-8859-1";
+      }
+      else
+      {
+        encoding = "Cp1252";
+      }
     }
     else
     {
@@ -639,6 +668,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
 
     BaseFont f = (BaseFont) this.baseFonts.get (fontKey);
+    if (f != null)
+    {
+      // the encoding does not match, reset ...
+      if (f.getEncoding().equals (encoding) == false)
+      {
+        f == null;
+      }
+    }
 
     if (f == null)
     {
@@ -664,18 +701,18 @@ public class PDFOutputTarget extends AbstractOutputTarget
             fontKey = filename;
           }
         }
-        f = BaseFont.createFont (fontKey, getFontEncoding (), this.embedFonts);
+        f = BaseFont.createFont (fontKey, encoding, this.embedFonts);
       }
       catch (Exception e)
       {
-        Log.warn ("BaseFont.createFont failed.", e);
+        Log.warn ("BaseFont.createFont failed. Key = " + fontKey, e);
       }
       if (f == null)
       {
         // fallback .. use BaseFont.HELVETICA as default
         try
         {
-          f = BaseFont.createFont (BaseFont.HELVETICA, getFontEncoding (), this.embedFonts);
+          f = BaseFont.createFont (BaseFont.HELVETICA, encoding, this.embedFonts);
         }
         catch (Exception e)
         {

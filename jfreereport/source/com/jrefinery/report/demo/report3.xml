@@ -37,7 +37,7 @@
   <pagefooter height="14"/>
   <groups>
     <group name="Customer">
-      <groupheader height="600" fontname="SansSerif" fontstyle="plain" fontsize="11" baseline="11" pagebreak="false">
+      <groupheader height="355" fontname="SansSerif" fontstyle="plain" fontsize="11" baseline="11" pagebreak="false">
         <label x="0" y="12" width="200" height="12" alignment="left">Salingers Bookstore</label>
         <label x="0" y="24" width="200" height="12" alignment="left">19a Hollow Road</label>
         <label x="0" y="48" width="200" height="12" alignment="left">9999 Boston</label>
@@ -53,7 +53,7 @@
 <!--        <date-function x="258" y="224" width="200" height="12" alignment="left" format="EEE, MMM d, yyyy" function="printdate"/> -->
         <label x="0" y="290" width="450" height="12" alignment="left"
           fontname="Arial Unicode MS" fontstyle="plain" fontsize="11"
-        >Dear customer, (&#x30c4;&#x30fc;&#x30eb;&#x3068;&#x30e6;&#x30fc;&#x30c6;&#x30a3;&#x30ea;&#x30c6;&#x30a3;)</label>
+        >Dear customer, (Unicode Test 1: &#x30c4;&#x30fc;&#x30eb;&#x3068;&#x30e6;&#x30fc;&#x30c6;&#x30a3;&#x30ea;&#x30c6;&#x30a3;)</label>
         <label x="0" y="314" width="450" height="12" alignment="left"
         >we received your order and will deliver the following articles to your address:</label>
         <label x="0" y="340" width="80" height="12" alignment="left">Productcode</label>
@@ -71,7 +71,7 @@
         <line x1="200" y1="37" x2="450" y2="37" weight="0.5"/>
         <label x="0" y="84" width="100%" height="36" alignment="left"
 >We thank you for your order and hope to see you soon again. Please pay your invoice within the next 10 days.</label>
-        <label x="0" y="114" width="100%" height="12" alignment="left">Yours sincerely,</label>
+        <label x="0" y="114" width="100%" height="12" fontname="Arial Unicode MS" alignment="left">Yours sincerely, (Unicode Test 2: &#x6e96;&#x53d7;&#x4fdd;&#x4eba;)</label>
         <label x="20" y="136" width="100%" height="12" alignment="left">John W. Who, Salesman</label>
        </groupfooter>
       <fields>

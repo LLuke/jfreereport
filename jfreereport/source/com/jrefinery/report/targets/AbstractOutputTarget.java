@@ -33,6 +33,8 @@
  * 17-Jul-2002 : Added NullPointer handling for drawText(). Whitespaces are now replaced by
  *               space (0x20) if the text to be printed fits on a single line
  * 20-Jul-2002 : created this changelog
+ * 23-Aug-2002 : breakLines was broken, fixed and removed useless code ..
+ * 23-Aug-2002 : removed the strictmode, the reserved literal is now always added
  */
 package com.jrefinery.report.targets;
 
@@ -55,14 +57,6 @@ public abstract class AbstractOutputTarget implements OutputTarget
 {
   /** A literal used for lines that get shortened by the linebreak implementation. */
   public static final String RESERVED_LITERAL = " ...";
-
-  /**
-   * The strict mode triggers an alternate linebreak behaviour. In this mode, a line which
-   * cannot be displayed fully, is cut and gets the RESERVED_LITERAL (" ...") appended.
-   *
-   * This mode is currently false by default. Trigger it on and see example3 for the difference.
-   */
-  private boolean STRICT_MODE = false;
 
   /** The pageFormat for this target */
   private PageFormat pageformat;
@@ -278,33 +272,18 @@ public abstract class AbstractOutputTarget implements OutputTarget
     {
       // Will not happen
     }
-    //Log.debug ("The Line count: " + bareLines.size ());
 
     /**
      * Reserve some space for the last line if there is more than one line to display.
      * If there is only one line, don't cut the line yet. Perhaps we intruduce the strict
      * mode later, but without any visual editing it would be cruel to any report designer.
      */
-    float reserved = 0;
-    if (STRICT_MODE == false)
-    {
-      reserved = getStringBounds (RESERVED_LITERAL, 0, RESERVED_LITERAL.length ());
-    }
+    float reserved = getStringBounds (RESERVED_LITERAL, 0, RESERVED_LITERAL.length ());
 
     BreakIterator breakit = BreakIterator.getLineInstance ();
     ArrayList returnLines = new ArrayList ();
 
-    int linesToDo = 0;
-    boolean limitedMode = false;
-    if (maxLines > 0)
-    {
-      linesToDo = Math.min (bareLines.size (), maxLines);
-      limitedMode = true;
-    }
-    else
-    {
-      linesToDo = bareLines.size ();
-    }
+    int linesToDo = bareLines.size ();
 
     for (int i = 0; i < linesToDo; i++)
     {
@@ -320,41 +299,44 @@ public abstract class AbstractOutputTarget implements OutputTarget
         float x = 0;
 
         float w = width;
-        if (limitedMode && i == (linesToDo - 1))
-        {
-          w -= reserved;
-        }
 
         while (endPos != BreakIterator.DONE)
         {
           x += (float) getStringBounds (currentLine, startPos, endPos);
-          if (x >= w)
+          if ((maxLines != 0) && (i == (maxLines - 1)))
           {
-            break;
+            if (x >= (w - reserved))
+            {
+              break;
+            }
+          }
+          else
+          {
+            if (x >= w)
+            {
+              break;
+            }
           }
 
           startPos = endPos;
           endPos = breakit.next ();
         }
 
-        if (endPos == BreakIterator.DONE || ((STRICT_MODE == false) && linesToDo == 1))
+        if (endPos == BreakIterator.DONE)
         {
-//          Log.debug ("Adding : " + lineStartPos + " to End of Line: " + currentLine.substring (lineStartPos));
           returnLines.add (currentLine.substring (lineStartPos));
-          lineStartPos = lineLength;
+          return returnLines;
         }
         else
         {
-
-          if (limitedMode && i == (linesToDo - 1))
+          // if this is the last allowed row, add the RESERVED_LITERAL to the string ..
+          if ((maxLines != 0) && (i == (maxLines - 1)))
           {
-//            Log.debug ("Adding : " + lineStartPos + " to " + startPos + " : " + currentLine.substring (lineStartPos, startPos));
             returnLines.add (currentLine.substring (lineStartPos, startPos) + RESERVED_LITERAL);
             return returnLines;
           }
           else
           {
-//            Log.debug ("Adding : " + lineStartPos + " to " + startPos + " : " + currentLine.substring (lineStartPos, startPos));
             returnLines.add (currentLine.substring (lineStartPos, startPos));
             lineStartPos = startPos;
           }

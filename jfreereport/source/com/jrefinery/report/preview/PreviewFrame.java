@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.22 2002/08/22 19:19:28 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.23 2002/08/22 21:08:24 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -558,6 +558,7 @@ public class PreviewFrame
       {
         OutputStream out = new FileOutputStream (new File (selFileName));
         PDFOutputTarget target = new PDFOutputTarget (out, pf, true);
+        target.setFontEncoding("Identity-H");
         target.open ("Title", "Author");
         reportPane.getReport ().processReport (target);
         target.close ();
