@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SubBandParsingTest.java,v 1.1 2003/10/11 21:36:07 taqua Exp $
+ * $Id: SubBandParsingTest.java,v 1.2 2003/11/01 19:57:03 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -52,36 +52,36 @@ public class SubBandParsingTest extends TestCase
   {
   }
 
-  public SubBandParsingTest(String s)
+  public SubBandParsingTest(final String s)
   {
     super(s);
   }
 
   public void testParsing () throws Exception
   {
-    URL url = getClass().getResource("resources/subband.xml");
+    final URL url = getClass().getResource("resources/subband.xml");
     assertNotNull(url);
-    JFreeReport report = ReportGenerator.getInstance().parseReport(url);
+    final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
 
-    Band band = report.getReportHeader();
+    final Band band = report.getReportHeader();
     assertEquals(2, band.getElementCount());
     for (int i = 0; i < 2; i++)
     {
-      Band subband = (Band) band.getElement(i);
+      final Band subband = (Band) band.getElement(i);
       assertEquals(2, subband.getElementCount());
       for (int x = 0; x < 2; x++)
       {
-        Band bandLowest =  (Band) subband.getElement(x);
+        final Band bandLowest =  (Band) subband.getElement(x);
         assertTrue(bandLowest.getElementCount() > 0);
       }
     }
   }
 
-  public static void main (String[] args) throws Exception
+  public static void main (final String[] args) throws Exception
   {
-    URL url = new SubBandParsingTest().getClass().getResource("resources/subband.xml");
+    final URL url = new SubBandParsingTest().getClass().getResource("resources/subband.xml");
     assertNotNull(url);
-    JFreeReport report = ReportGenerator.getInstance().parseReport(url);
+    final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
     final PreviewDialog dialog = new PreviewDialog(report);
     dialog.setModal(true);
     dialog.pack();

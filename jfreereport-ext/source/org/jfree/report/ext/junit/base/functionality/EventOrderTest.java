@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventOrderTest.java,v 1.5 2003/12/21 23:49:22 taqua Exp $
+ * $Id: EventOrderTest.java,v 1.6 2005/01/31 17:16:36 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -399,7 +399,6 @@ public class EventOrderTest extends TestCase
     FunctionalityTestLib.createXLS(report);
     Log.debug("   ZIP_HTML ..");
     FunctionalityTestLib.createZIPHTML(report);
-
   }
 
   public void testPageCount() throws Exception

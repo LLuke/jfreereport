@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupCountTest.java,v 1.3 2003/11/07 20:38:48 taqua Exp $
+ * $Id: TotalGroupCountTest.java,v 1.4 2003/12/21 23:49:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -70,7 +70,7 @@ public class TotalGroupCountTest extends TestCase
      *
      * @param event  the event.
      */
-    public void groupFinished(ReportEvent event)
+    public void groupFinished(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
@@ -84,7 +84,7 @@ public class TotalGroupCountTest extends TestCase
      *
      * @param event  the event.
      */
-    public void groupStarted(ReportEvent event)
+    public void groupStarted(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
@@ -93,15 +93,15 @@ public class TotalGroupCountTest extends TestCase
       assertEvent(event);
     }
 
-    private void assertEvent(ReportEvent event)
+    private void assertEvent(final ReportEvent event)
     {
       // the number of continents in the report1
-      Number n = (Number) event.getDataRow().get("continent-total-gc");
+      final Number n = (Number) event.getDataRow().get("continent-total-gc");
       assertEquals("continent-total-gc", 6, n.intValue());
 
       // the number of continents in the report1
       // we don't have the default group, so it should return the same as above
-      Number n2 = (Number) event.getDataRow().get("total-gc");
+      final Number n2 = (Number) event.getDataRow().get("total-gc");
       assertEquals("total-gc", 6, n2.intValue());
     }
 
@@ -133,9 +133,9 @@ public class TotalGroupCountTest extends TestCase
     {
       report = ReportGenerator.getInstance().parseReport(url);
       report.setData(REPORT2.getReportTableModel());
-      GroupList list = report.getGroups();
+      final GroupList list = report.getGroups();
       // make sure that there is no default group ...
-      Group g = list.getGroupByName("default");
+      final Group g = list.getGroupByName("default");
       if (g != null)
       {
         list.remove(g);
@@ -143,13 +143,13 @@ public class TotalGroupCountTest extends TestCase
       report.setGroups(list);
       report.addExpression(new TotalGroupCountVerifyFunction());
 
-      TotalGroupCountFunction f = new TotalGroupCountFunction();
+      final TotalGroupCountFunction f = new TotalGroupCountFunction();
       f.setName("continent-total-gc");
       f.setGroup("Continent Group");
       f.setDependencyLevel(1);
       report.addExpression(f);
 
-      TotalGroupCountFunction f2 = new TotalGroupCountFunction();
+      final TotalGroupCountFunction f2 = new TotalGroupCountFunction();
       f2.setName("total-gc");
       f2.setDependencyLevel(1);
       report.addExpression(f2);
