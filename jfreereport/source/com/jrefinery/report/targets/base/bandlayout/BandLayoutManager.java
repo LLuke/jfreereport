@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManager.java,v 1.3 2003/02/07 22:35:05 taqua Exp $
+ * $Id: BandLayoutManager.java,v 1.4 2003/02/25 18:46:51 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,7 @@
 package com.jrefinery.report.targets.base.bandlayout;
 
 import com.jrefinery.report.Band;
+import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.StyleKey;
 
@@ -104,4 +105,19 @@ public interface BandLayoutManager
    * Clears any cached items used by the layout manager.
    */  
   public void flushLayout();
+
+  /**
+   * Adds the specified component to the layout, the specified constraints are stored
+   * in the elements style sheet.
+   *
+   * @param e the element to be added to the layout manager.
+   */
+  public void addLayoutElement (Element e);
+
+  /**
+   * Removed the specified component from the layout.
+   *
+   * @param e the element to be removed from the layout manager.
+   */
+  public void removeLayoutElement (Element e);
 }

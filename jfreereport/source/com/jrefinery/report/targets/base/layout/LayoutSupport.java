@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutSupport.java,v 1.3 2003/02/26 13:58:00 mungady Exp $
+ * $Id: LayoutSupport.java,v 1.4 2003/02/27 10:35:39 mungady Exp $
  *
  * Changes
  * -------
@@ -65,13 +65,6 @@ public interface LayoutSupport
    */
   public SizeCalculator createTextSizeCalculator(FontDefinition font) 
       throws SizeCalculatorException;
-
-  /**
-   * Returns the default layout manager.
-   *
-   * @return the default layout manager.
-   */
-  public BandLayoutManager getDefaultLayoutManager ();
 
   /**
    * Returns the element alignment. Elements will be layouted aligned to this

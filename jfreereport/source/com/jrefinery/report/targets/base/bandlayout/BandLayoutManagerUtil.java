@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.11 2003/02/25 18:46:51 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.12 2003/02/26 16:42:24 mungady Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package com.jrefinery.report.targets.base.bandlayout;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
@@ -74,16 +75,11 @@ public class BandLayoutManagerUtil
     }
     if (lm == null)
     {
-      lm = ot.getDefaultLayoutManager();
-      e.getStyle().setStyleProperty(BandLayoutManager.LAYOUTMANAGER, lm);
+      throw new IllegalStateException("There is no layout manager defined for that band.");
     }
 
     // always update the layout support ...
-    if (lm != null)
-    {
-      lm.setLayoutSupport(ot);
-    }
-
+    lm.setLayoutSupport(ot);
     return lm;
   }
 
@@ -151,4 +147,6 @@ public class BandLayoutManagerUtil
     lm.doLayout(band);
     return bounds;
   }
+
+
 }

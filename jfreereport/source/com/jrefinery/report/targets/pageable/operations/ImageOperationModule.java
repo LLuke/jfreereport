@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageOperationModule.java,v 1.5 2003/02/07 22:40:41 taqua Exp $
+ * $Id: ImageOperationModule.java,v 1.6 2003/02/09 23:09:15 taqua Exp $
  *
  * Changes
  * -------
@@ -78,6 +78,11 @@ public class ImageOperationModule extends OperationModule
     Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
     ImageContent ic = (ImageContent) value.getContentForBounds(bounds);
 
+    if (ic == null)
+    {
+      return new ArrayList();
+    }
+    
     ArrayList ops = new ArrayList();
     ops.add(new PhysicalOperation.SetBoundsOperation(bounds));
     ops.add(new PhysicalOperation.SetPaintOperation(paint));

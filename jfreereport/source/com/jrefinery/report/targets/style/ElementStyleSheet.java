@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.18 2003/03/18 17:14:44 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.19 2003/03/18 22:35:26 taqua Exp $
  *
  * Changes
  * -------
@@ -139,6 +139,10 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
   public static final StyleKey KEEP_ASPECT_RATIO = StyleKey.getStyleKey("keepAspectRatio",
                                                                         Boolean.class);
 
+  /** A key for the dynamic height flag for an element. */
+  public static final StyleKey DYNAMIC_HEIGHT = StyleKey.getStyleKey("dynamic_height",
+                                                                     Boolean.class);
+  
   /** The style-sheet name. */
   private String name;
 

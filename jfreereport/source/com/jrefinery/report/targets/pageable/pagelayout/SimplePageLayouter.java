@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.36 2003/02/26 13:58:00 mungady Exp $
+ * $Id: SimplePageLayouter.java,v 1.37 2003/02/27 10:35:40 mungady Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,9 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.event.PrepareEventListener;
 import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.states.ReportState;
@@ -86,7 +88,7 @@ import com.jrefinery.report.targets.style.BandStyleSheet;
  *
  * @author Thomas Morgner
  */
-public class SimplePageLayouter extends PageLayouter
+public class SimplePageLayouter extends PageLayouter implements PrepareEventListener
 {
   /**
    * Represents the current state of the page layouter.
@@ -226,8 +228,6 @@ public class SimplePageLayouter extends PageLayouter
     setCurrentEvent(event);
     try
     {
-      restartPage();
-
       printBand(getReport().getReportHeader());
     }
     catch (FunctionProcessingException fe)
@@ -254,16 +254,7 @@ public class SimplePageLayouter extends PageLayouter
     {
       throw new IllegalStateException();
     }
-    try
-    {
-      setCurrentEvent(event);
-      restartPage();
-    }
-    catch (Exception e)
-    {
-      throw new FunctionProcessingException("ItemsFinished", e);
-    }
-
+    setCurrentEvent(event);
     isInItemGroup = false;
   }
 
@@ -283,10 +274,9 @@ public class SimplePageLayouter extends PageLayouter
     try
     {
       setCurrentEvent(event);
-
       restartPage();
-
       createSaveState(null);
+      saveCurrentState();
 
       endPage(ENDPAGE_FORCED);
     }
@@ -312,15 +302,8 @@ public class SimplePageLayouter extends PageLayouter
     {
       throw new IllegalStateException();
     }
-    try
-    {
-      setCurrentEvent(event);
-      restartPage();
-    }
-    catch (Exception e)
-    {
-      throw new FunctionProcessingException("ItemsStarted", e);
-    }
+
+    setCurrentEvent(event);
 
     isInItemGroup = true;
   }
@@ -409,9 +392,6 @@ public class SimplePageLayouter extends PageLayouter
           }
         }
       }
-      // todo: do not print on last page ... how to get the information when the last page is
-      // reached for all events?
-
 
       // mark the current position to calculate the maxBand-Height
       getCursor().setPageTop(getCursor().getY());
@@ -497,8 +477,6 @@ public class SimplePageLayouter extends PageLayouter
     {
       setCurrentEvent(event);
 
-      restartPage();
-
       Object prepareRun =
           event.getState().getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, 
                                        Boolean.FALSE);
@@ -512,15 +490,7 @@ public class SimplePageLayouter extends PageLayouter
 
       Band b = getReport().getReportFooter();
       printBand(b);
-      // if the band was printed on that page without PAGEBREAK_BEFORE
-      // the final pagebreak is forced later ..
-      /* docmark
-      if (printBand(b) && isPageEnded() == false)
-      {
-        createSaveState(null);
-        endPage(ENDPAGE_FORCED);
-      }
-      */
+      Log.debug ("Printing Report Footer");
     }
     catch (FunctionProcessingException fe)
     {
@@ -549,8 +519,6 @@ public class SimplePageLayouter extends PageLayouter
     try
     {
       setCurrentEvent(event);
-
-      restartPage();
 
       int gidx = event.getState().getCurrentGroupIndex();
       Group g = getReport().getGroup(gidx);
@@ -585,8 +553,6 @@ public class SimplePageLayouter extends PageLayouter
     {
       setCurrentEvent(event);
 
-      restartPage();
-
       int gidx = event.getState().getCurrentGroupIndex();
       Group g = getReport().getGroup(gidx);
       Band b = g.getFooter();
@@ -620,8 +586,6 @@ public class SimplePageLayouter extends PageLayouter
     try
     {
       setCurrentEvent(event);
-
-      restartPage();
 
       printBand(getReport().getItemBand());
     }
@@ -688,9 +652,11 @@ public class SimplePageLayouter extends PageLayouter
     // or restarted; PageHeader and PageFooter are printed out of order and
     // do not influence the reporting state
 
-    Rectangle2D bounds = doLayout(b);
+    Rectangle2D bounds = doLayout(b, true);
     bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
-    return doPrint(bounds, b, spool);
+    boolean retval = doPrint(bounds, b, spool);
+    //Log.debug ("Printing Successfull: " + retval);
+    return retval;
   }
 
   /**
@@ -709,10 +675,12 @@ public class SimplePageLayouter extends PageLayouter
     // or restarted; PageHeader and PageFooter are printed out of order and
     // do not influence the reporting state
 
-    Rectangle2D bounds = doLayout(b);
+    // if there is nothing printed, then ignore everything ...
+    boolean spool = getLogicalPage().isEmpty();
+    Rectangle2D bounds = doLayout(b, true);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
                    bounds.getWidth(), bounds.getHeight());
-    return doPrint(bounds, b, false);
+    return doPrint(bounds, b, spool);
   }
 
   /**
@@ -723,7 +691,7 @@ public class SimplePageLayouter extends PageLayouter
    *
    * @return the dimensions of the band.
    */
-  protected Rectangle2D doLayout(Band band)
+  protected Rectangle2D doLayout(Band band, boolean fireEvent)
   {
     float width = getLogicalPage().getWidth();
     float height = getCursor().getPageBottomReserved() - getCursor().getPageTop();
@@ -731,7 +699,10 @@ public class SimplePageLayouter extends PageLayouter
                                           getLogicalPage().getOutputTarget(),
                                           width,
                                           height);
-    getCurrentEvent().getState().fireLayoutCompleteEvent(band);
+    if (fireEvent == true)
+    {
+      getCurrentEvent().getState().fireLayoutCompleteEvent(band);
+    }
     return bounds;
   }
 
@@ -849,7 +820,8 @@ public class SimplePageLayouter extends PageLayouter
   public boolean isSpaceFor(float height)
   {
     Band b = getReport().getPageFooter();
-    Rectangle2D rect = doLayout(b);
+    // perform layout, but do not fire the event, as we don't print the band ...
+    Rectangle2D rect = doLayout(b, false);
     getCursor().setReservedSpace((float) rect.getHeight());
     return getCursor().isSpaceFor(height);
   }
@@ -935,10 +907,13 @@ public class SimplePageLayouter extends PageLayouter
    */
   public void restartPage () throws ReportProcessingException
   {
-    if (isPageRestartDone())
+    if (isPageRestartDone() || isRestartingPage() || isFinishingPage())
     {
+      Log.debug ("Won't restart page for event " + getCurrentEvent());
+      Log.debug (isPageRestartDone() + ", " + isRestartingPage() + ", " + isFinishingPage());
       return;
     }
+    Log.debug ("Restart page for event " + getCurrentEvent());
     startPage();
 
     if (state == null)
@@ -1044,5 +1019,19 @@ public class SimplePageLayouter extends PageLayouter
       sl.spooledBand = (Spool) spooledBand.clone();
     }
     return sl;
+  }
+
+  public void prepareEvent(ReportEvent event)
+  {
+    try
+    {
+      Log.debug ("PrepareEvent received: " + event);
+      setCurrentEvent(event);
+      restartPage();
+    }
+    catch (Exception e)
+    {
+      throw new FunctionProcessingException("ItemsStarted", e);
+    }
   }
 }

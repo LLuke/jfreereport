@@ -28,13 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.20 2003/03/18 22:35:20 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.21 2003/03/19 16:04:15 taqua Exp $
  *
  * Changes
  * -------
  * 03-Dec-2002 : Javadocs (DG);
  * 21-Jan-2003 : removed ABSOLUTE_DIM StyleKey. The beast would cause trouble.
  * 01-Feb-2003 : BugFix: Layouting was not correct for subbands.
+ * 24-Mar-2003 : Invisible bands will be layouted, invisible childs will be ignored.
  */
 
 package com.jrefinery.report.targets.base.bandlayout;
@@ -47,9 +48,9 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
+import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.targets.base.content.ContentFactory;
-import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleKey;
 
@@ -64,24 +65,21 @@ import com.jrefinery.report.targets.style.StyleKey;
  * This operation is expensive, so this is only done if really needed. The dynamic
  * flag will influence the height of an element, a valid width must be already set.
  * <p>
- * It is not yet tested, whether the band composition works with this layoutmanager.
+ * Invisible elements within the layouted band are not evaluated. This layout manager
+ * will ignore invisible child bands and -elements.
  *
  * @author Thomas Morgner
  */
-public class StaticLayoutManager implements BandLayoutManager
+public class StaticLayoutManager extends AbstractBandLayoutManager
 {
   /** A key for the absolute position of an element. */
   public static final StyleKey ABSOLUTE_POS  = StyleKey.getStyleKey("absolute_pos", Point2D.class);
 
-  /** A key for the dynamic height flag for an element. */
-  public static final StyleKey DYNAMIC_HEIGHT = StyleKey.getStyleKey("dynamic_height",
-                                                                     Boolean.class);
-
-  /** The output target. */
-  private LayoutSupport layoutSupport;
-
-  /** A cache for element attributes.  Not in use yet. */
-  //private LayoutManagerCache elementCache;
+  /**
+   * A key for the dynamic height flag for an element.
+   * @deprecated moved to ElementStyleSheet.DYNAMIC_HEIGHT
+   */
+  public static final StyleKey DYNAMIC_HEIGHT = ElementStyleSheet.DYNAMIC_HEIGHT;
 
   /**
    * Creates a new layout manager.
@@ -89,26 +87,6 @@ public class StaticLayoutManager implements BandLayoutManager
   public StaticLayoutManager()
   {
     //elementCache = new LayoutManagerCache();
-  }
-
-  /**
-   * Returns the layout support.
-   * 
-   * @return The layout support.
-   */
-  public LayoutSupport getLayoutSupport()
-  {
-    return layoutSupport;
-  }
-
-  /**
-   * Sets the layout support.
-   * 
-   * @param layoutSupport  the layout support.
-   */
-  public void setLayoutSupport(LayoutSupport layoutSupport)
-  {
-    this.layoutSupport = layoutSupport;
   }
 
   /**
@@ -142,14 +120,14 @@ public class StaticLayoutManager implements BandLayoutManager
     }
 
     // docmark: minimum size also checks the dynamic height.
-    if (e.getStyle().getBooleanStyleProperty(DYNAMIC_HEIGHT))
+    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
       retval = getElementContentBounds(retval, e, containerBounds);
     }
 
     // now apply the maximum bounds to the retval.
     // the maximum bounds are defined by the element and the elements container.
-    Dimension2D maxSize = correctDimension((Dimension2D) 
+    Dimension2D maxSize = correctDimension((Dimension2D)
         e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), containerBounds);
 
     maxSize.setSize(Math.min (containerBounds.getWidth() - absPos.getX(), maxSize.getWidth()),
@@ -202,7 +180,7 @@ public class StaticLayoutManager implements BandLayoutManager
       }
     }
 
-    if (e.getStyle().getBooleanStyleProperty(DYNAMIC_HEIGHT))
+    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
       retval = getElementContentBounds(retval, e, containerBounds);
     }
@@ -242,38 +220,16 @@ public class StaticLayoutManager implements BandLayoutManager
     // check if we can handle the content before doing anything...
     // ...
     // bounds can be null, if no absolute dim was defined.
-    ContentFactory contentFactory = layoutSupport.getContentFactory();
+    ContentFactory contentFactory = getLayoutSupport().getContentFactory();
     if (contentFactory.canHandleContent(e.getContentType()) == false)
     {
       return bounds;
     }
 
-    Dimension2D parentDim = new FloatDimension((float) conBounds.getWidth(),
-                                               (float) conBounds.getHeight());
-    bounds = correctDimension(bounds, parentDim);
-
-    Point2D absPos = correctPoint(
-        (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim);
-    Dimension2D maxSize = correctDimension(
-        (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), parentDim);
-    Dimension2D minSize = correctDimension(
-        (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE), parentDim);
-
-    Dimension2D prefSize 
-        = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
-    if (prefSize != null)
-    {
-      prefSize = correctDimension(prefSize, parentDim);
-    }
-
-    // the width is the limiting element in the calculation, height is considered
-    // infinitive ...
-    maxSize.setSize(Math.min (parentDim.getWidth() - absPos.getX(), maxSize.getWidth()),
-                    Short.MAX_VALUE);
+    ElementLayoutInformation eli = createLayoutInfo(e, conBounds);
+    Dimension2D minSize = eli.getMinimumSize();
     try
     {
-      ElementLayoutInformation eli 
-          = new ElementLayoutInformation(absPos, minSize, maxSize, prefSize);
 
       Content content = contentFactory.createContentForElement(e, eli, getLayoutSupport());
       Rectangle2D contentBounds = content.getMinimumContentSize();
@@ -307,12 +263,6 @@ public class StaticLayoutManager implements BandLayoutManager
    */
   public Dimension2D preferredLayoutSize(Band b, Dimension2D containerDims)
   {
-    // invisible bands do not need any space
-    if (b.isVisible() == false)
-    {
-      return new FloatDimension(0, 0);
-    }
-
     float height = 0;
     float width = 0;
 
@@ -329,7 +279,7 @@ public class StaticLayoutManager implements BandLayoutManager
       width = (float) Math.max(width, prefSize.getWidth());
     }
 
-    Dimension2D minSize = correctDimension((Dimension2D) 
+    Dimension2D minSize = correctDimension((Dimension2D)
         b.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE), containerDims);
 
     // check for an minimum size and take that into account
@@ -337,7 +287,7 @@ public class StaticLayoutManager implements BandLayoutManager
     width = (float) Math.max(width, minSize.getWidth());
 
     // now take the maximum limit defined for that band into account.
-    Dimension2D maxSize = correctDimension((Dimension2D) 
+    Dimension2D maxSize = correctDimension((Dimension2D)
         b.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), containerDims);
     float maxW = (float) Math.min (maxSize.getWidth(), containerDims.getWidth());
     float maxH = (float) Math.min (maxSize.getHeight(), containerDims.getHeight());
@@ -402,7 +352,7 @@ public class StaticLayoutManager implements BandLayoutManager
       {
         Dimension2D size = correctDimension(getPreferredSize(e, parentBounds), parentBounds);
         // absPos is not modified ...
-        Point2D absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), 
+        Point2D absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS),
                                       parentBounds);
 
         if (staticWidth == false)
@@ -428,27 +378,9 @@ public class StaticLayoutManager implements BandLayoutManager
 
     // now align the calculated data ...
     FloatDimension fdim 
-        = new FloatDimension(align(width, layoutSupport.getHorizontalAlignmentBorder()),
-                             align(height, layoutSupport.getVerticalAlignmentBorder()));
+        = new FloatDimension(align(width, getLayoutSupport().getHorizontalAlignmentBorder()),
+                             align(height, getLayoutSupport().getVerticalAlignmentBorder()));
     return fdim;
-  }
-
-  /**
-   * Align.
-   * 
-   * @param value  the value.
-   * @param boundary  the boundary.
-   *
-   * @return The aligned value.
-   */
-  private float align (float value, float boundary)
-  {
-    if (boundary == 0)
-    {
-      return value;
-    }
-
-    return (float) Math.floor(value / boundary) * boundary;
   }
 
   /**
@@ -461,15 +393,9 @@ public class StaticLayoutManager implements BandLayoutManager
    */
   public Dimension2D minimumLayoutSize(Band b, Dimension2D containerBounds)
   {
-    // invisible bands do not need any space
-    if (b.isVisible() == false)
-    {
-      return new FloatDimension(0, 0);
-    }
-
     // the preferred size of an band can be a relative value. Then this value is
     // relative to the container bounds
-    Dimension2D minSize  = correctDimension((Dimension2D) 
+    Dimension2D minSize  = correctDimension((Dimension2D)
         b.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE), containerBounds);
 
     float height = (float) Math.max(0, minSize.getHeight());
@@ -478,7 +404,7 @@ public class StaticLayoutManager implements BandLayoutManager
     //Log.debug ("MinimumLayoutSize: " + b.getName() + " > " + minSize);
 
     // now take the maximum limit defined for that band into account.
-    Dimension2D maxSize = correctDimension((Dimension2D) 
+    Dimension2D maxSize = correctDimension((Dimension2D)
         b.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), containerBounds);
     float maxW = (float) Math.min (maxSize.getWidth(), containerBounds.getWidth());
     float maxH = (float) Math.min (maxSize.getHeight(), containerBounds.getHeight());
@@ -574,8 +500,8 @@ public class StaticLayoutManager implements BandLayoutManager
     //Log.debug ("Dimension after dynamic correction: " + width + " -> " + height);
     // now align the calculated data ...
     FloatDimension fdim = new FloatDimension(
-        align(width, layoutSupport.getHorizontalAlignmentBorder()),
-        align(height, layoutSupport.getVerticalAlignmentBorder()));
+        align(width, getLayoutSupport().getHorizontalAlignmentBorder()),
+        align(height, getLayoutSupport().getVerticalAlignmentBorder()));
     return fdim;
   }
 
@@ -589,6 +515,7 @@ public class StaticLayoutManager implements BandLayoutManager
    * and <code>MINIMUM_SIZE</code> properties set to valid values.
    *
    * @param b the band to lay out.
+   * @throws IllegalStateException if the bands has no bounds set.
    */
   public void doLayout(Band b)
   {
@@ -598,12 +525,13 @@ public class StaticLayoutManager implements BandLayoutManager
     Rectangle2D parentBounds = BandLayoutManagerUtil.getBounds(b, null);
     if (parentBounds == null)
     {
-      throw new NullPointerException("Need the parent's bound set");
+      throw new IllegalStateException("Need the parent's bound set");
     }
 
     Dimension2D parentDim = new FloatDimension((float) parentBounds.getWidth(),
                                                (float) parentBounds.getHeight());
 
+    LayoutSupport layoutSupport = getLayoutSupport();
     for (int i = 0; i < elements.length; i++)
     {
       Element e = elements[i];
@@ -640,33 +568,19 @@ public class StaticLayoutManager implements BandLayoutManager
    *
    * @return <code>true</code> or </code>false</code>.
    */
-  private boolean isElementStaticWidth (Element e)
+  protected boolean isElementStaticWidth (Element e)
   {
     Point2D absPos = (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS);
     if (absPos == null)
     {
-      throw new IllegalArgumentException("Element " + e 
+      throw new IllegalArgumentException("Element " + e
                                          + " has no valid constraints. ABSOLUTE_POS is missing");
     }
     if (absPos.getX() < 0)
     {
       return false;
     }
-    Dimension2D minSize
-        = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
-    if (minSize.getWidth() < 0)
-    {
-      return false;
-    }
-    minSize = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
-    if (minSize != null)
-    {
-      if (minSize.getWidth() < 0)
-      {
-        return false;
-      }
-    }
-    return true;
+    return super.isElementStaticWidth(e);
   }
 
   /**
@@ -676,33 +590,19 @@ public class StaticLayoutManager implements BandLayoutManager
    *
    * @return true or false.
    */
-  private boolean isElementStaticHeight (Element e)
+  protected boolean isElementStaticHeight (Element e)
   {
     Point2D absPos = (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS);
-    if (absPos == null) 
+    if (absPos == null)
     {
-      throw new IllegalArgumentException("Element " + e 
+      throw new IllegalArgumentException("Element " + e
                                          + " has no valid constraints. ABSOLUTE_POS is missing");
     }
     if (absPos.getY() < 0)
     {
       return false;
     }
-    Dimension2D minSize
-        = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
-    if (minSize.getHeight() < 0)
-    {
-      return false;
-    }
-    minSize = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
-    if (minSize != null)
-    {
-      if (minSize.getHeight() < 0)
-      {
-        return false;
-      }
-    }
-    return true;
+    return super.isElementStaticHeight(e);
   }
 
   /**
@@ -715,53 +615,21 @@ public class StaticLayoutManager implements BandLayoutManager
   }
 
   /**
-   * Corrects the relative (proportional) values. The values are given
-   * in the range from -100 (= 100%) to 0 (0%) and are resolved to the
-   * base values.
+   * Adds the specified component to the layout, the specified constraints are stored
+   * in the elements style sheet.
    *
-   * @param dim  the dimension that should be corrected.
-   * @param base  the base to define the 100% limit.
-   *
-   * @return the corrected dimension.
+   * @param e the element to be added to the layout manager.
    */
-  private Dimension2D correctDimension (Dimension2D dim, Dimension2D base)
+  public void addLayoutElement(Element e)
   {
-    float newWidth = (float) dim.getWidth();
-    if (dim.getWidth() < 0)
-    {
-      newWidth = (float) (dim.getWidth() * base.getWidth() / -100);
-    }
-    float newHeight = (float) dim.getHeight();
-    if (dim.getHeight() < 0)
-    {
-      newHeight = (float) (dim.getHeight() * base.getHeight() / -100);
-    }
-    return new FloatDimension(newWidth, newHeight);
   }
 
   /**
-   * Corrects the relative (proportional) values. The values are given
-   * in the range from -100 (= 100%) to 0 (0%) and are resolved to the
-   * base values.
+   * Removed the specified component from the layout.
    *
-   * @param dim  the point that should be corrected.
-   * @param base  the base to define the 100% limit.
-   *
-   * @return the corrected point.
+   * @param e the element to be removed from the layout manager.
    */
-  private Point2D correctPoint (Point2D dim, Dimension2D base)
+  public void removeLayoutElement(Element e)
   {
-    double x = dim.getX();
-    double y = dim.getY();
-    if (x < 0)
-    {
-      x = (dim.getX() * base.getWidth() / -100);
-    }
-    if (y < 0)
-    {
-      y = (dim.getY() * base.getHeight() / -100);
-    }
-    return new Point2D.Float((float) x, (float) y);
   }
-
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: EventMonitorFunction.java,v 1.4 2003/03/07 16:55:55 taqua Exp $
  *
  * Changes
  * -------
@@ -80,6 +80,18 @@ public class EventMonitorFunction extends AbstractFunction
   public void reportFinished(ReportEvent event)
   {
     Log.info ("Report Finished: Level = " + event.getState().getLevel() 
+                       + " Prepare Run: " + event.getState().isPrepareRun());
+  }
+
+  /**
+   * Receives notification that report generation has completed, the report footer was printed,
+   * no more output is done. This is a helper event to shut down the output service.
+   *
+   * @param event The event.
+   */
+  public void reportDone(ReportEvent event)
+  {
+    Log.info ("Report Done: Level = " + event.getState().getLevel() 
                        + " Prepare Run: " + event.getState().isPrepareRun());
   }
 

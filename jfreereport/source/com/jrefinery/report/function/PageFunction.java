@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.8 2002/12/02 17:29:19 taqua Exp $
+ * $Id: PageFunction.java,v 1.9 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.states.ReportState;
 
@@ -98,6 +99,7 @@ public class PageFunction extends AbstractFunction
     {
       setPage(getPage() + 1);
     }
+    Log.debug ("Page Start received!");
   }
 
   /**
@@ -129,7 +131,8 @@ public class PageFunction extends AbstractFunction
   public void reportStarted(ReportEvent event)
   {
     // ReportStartEvent is called before any PageStartEvent, so we are BEFORE the first page
-    this.setPage(getStartPage() - 1);
+    // behaviour changed: PageStarted is called before ReportStarted !
+    this.setPage(getStartPage());
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DummyOutputTarget.java,v 1.7 2003/03/07 13:47:40 taqua Exp $
+ * $Id: DummyOutputTarget.java,v 1.8 2003/03/07 16:56:03 taqua Exp $
  *
  * Changes
  * -------
@@ -348,18 +348,6 @@ public class DummyOutputTarget extends AbstractOutputTarget
   public SizeCalculator createTextSizeCalculator(FontDefinition font) throws SizeCalculatorException
   {
     return backend.createTextSizeCalculator(font);
-  }
-
-  /**
-   * Creates and returns a default layout manager for this output target.
-   * <p>
-   * Note that a new layout manager is created every time this method is called.
-   *
-   * @return a default layout manager.
-   */
-  public BandLayoutManager getDefaultLayoutManager()
-  {
-    return backend.getDefaultLayoutManager();
   }
 
   /**

@@ -16,7 +16,7 @@
   </configuration>
 
   <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="18">
-    <label x="0" y="0" width="100%" height="48" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
+    <label x="0" y="0" width="100%" height="48" fsunderline="true" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
     <label x="0" y="0" width="100%" height="48" vertical-alignment="bottom" alignment="center">This text is valign="bottom"</label>
   </reportheader>
 

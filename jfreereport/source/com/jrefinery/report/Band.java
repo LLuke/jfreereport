@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.44 2003/03/04 20:28:37 taqua Exp $
+ * $Id: Band.java,v 1.45 2003/03/18 22:34:25 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -66,6 +66,8 @@
 package com.jrefinery.report;
 
 import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
+import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
@@ -125,6 +127,9 @@ public class Band extends Element implements Serializable, Cloneable
   public Band()
   {
     getStyle().addParent(BandDefaultStyleSheet.getBandDefaultStyle());
+
+    BandLayoutManager layout = new StaticLayoutManager();
+    getStyle().setStyleProperty(BandLayoutManager.LAYOUTMANAGER, layout);
 
     setName("anonymousBand@" + hashCode());
     allElements = new ArrayList();

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.12 2003/03/07 16:56:03 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.13 2003/03/18 18:28:44 taqua Exp $
  *
  * Changes
  * -------
@@ -228,20 +228,6 @@ public abstract class AbstractOutputTarget implements OutputTarget
   public Rectangle2D getOperationBounds()
   {
     return operationBounds.getBounds2D();
-  }
-
-  /**
-   * Creates and returns a default layout manager for this output target.
-   * <p>
-   * Note that a new layout manager is created every time this method is called.
-   *
-   * @return a default layout manager.
-   */
-  public BandLayoutManager getDefaultLayoutManager()
-  {
-    BandLayoutManager lm = new StaticLayoutManager();
-    lm.setLayoutSupport(this);
-    return lm;
   }
 
   /**

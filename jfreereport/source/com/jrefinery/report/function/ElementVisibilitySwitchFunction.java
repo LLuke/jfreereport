@@ -28,18 +28,21 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.15 2003/03/04 20:28:44 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.16 2003/03/07 18:07:47 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
  * 05-Jun-2002 : Changed name from ElementVisiblity --> ElementVisibility.  Updated Javadoc
  *               comments (DG);
  * 08-Jun-2002 : Completed Javadoc comments.
+ * 24-Mar-2003 : Bug: After page breaks, the visible state could be invalid.
  */
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.event.LayoutListener;
+import com.jrefinery.report.event.LayoutEvent;
 import com.jrefinery.report.util.Log;
 
 /**
@@ -52,13 +55,16 @@ import com.jrefinery.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class ElementVisibilitySwitchFunction extends AbstractFunction
+public class ElementVisibilitySwitchFunction extends AbstractFunction implements LayoutListener
 {
   /** the Property key for the name of the ItemBand element. */
   public static final String ELEMENT_PROPERTY = "element";
 
+  public static final String INITIAL_STATE_PROPERTY = "initial-state";
+
   /** The function value. */
   private boolean trigger;
+
 
   /**
    * Default constructor.
@@ -77,7 +83,8 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    */
   public void itemsStarted(ReportEvent event)
   {
-    trigger = false;
+    trigger = (getInitialTriggerValue() == false);
+    Log.debug ("Initial Trigger Value: " + trigger);
   }
 
   /**
@@ -89,12 +96,8 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    */
   public void itemsAdvanced(ReportEvent event)
   {
-    if (event.getState().isPrepareRun())
-    {
-      return;
-    }
-    
     trigger = (!trigger);
+
     Element e = FunctionUtilities.findElement(event.getReport().getItemBand(), getElement());
     if (e != null)
     {
@@ -104,6 +107,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
     {
       Log.warn ("Element not defined in the item band");
     }
+    Log.debug ("Trigger set to           : " + trigger + " in row " + event.getState().getCurrentDataItem());
   }
 
   /**
@@ -120,6 +124,16 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
     {
       throw new FunctionInitializeException("Element name must be specified");
     }
+  }
+
+  /**
+   * Gets the initial value for the visible trigger, either "true" or "false".
+   *
+   * @return the initial value for the trigger.
+   */
+  public boolean getInitialTriggerValue ()
+  {
+    return getProperty(INITIAL_STATE_PROPERTY, "false").equalsIgnoreCase("true");
   }
 
   /**
@@ -162,4 +176,24 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
     }
   }
 
+  /**
+   * Receives notification that the band layouting has completed.
+   * <P>
+   * The event carries the current report state.
+   *
+   * @param event  the event.
+   */
+  public void layoutComplete(LayoutEvent event)
+  {
+    if (event.getLayoutedBand() != event.getReport().getItemBand())
+    {
+      return;
+    }
+
+    Element e = FunctionUtilities.findElement(event.getReport().getItemBand(), getElement());
+    if (e != null)
+    {
+      Log.debug ("LayoutComplete: Visisble: " + e.isVisible()+ " evt: " + event.getState().getCurrentDataItem());
+    }
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultLayoutSupport.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
+ * $Id: DefaultLayoutSupport.java,v 1.3 2003/02/26 13:57:59 mungady Exp $
  *
  * Changes
  * -------
@@ -87,20 +87,6 @@ public class DefaultLayoutSupport implements LayoutSupport
   public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException
   {
     return new DefaultSizeCalculator(font);
-  }
-
-  /**
-   * Creates and returns a default layout manager for this output target.
-   * <p>
-   * Note that a new layout manager is created every time this method is called.
-   *
-   * @return a default layout manager.
-   */
-  public BandLayoutManager getDefaultLayoutManager()
-  {
-    BandLayoutManager lm = new StaticLayoutManager();
-    lm.setLayoutSupport(this);
-    return lm;
   }
 
   /**
