@@ -28,19 +28,19 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DefaultTemplateCollection.java,v 1.7 2003/03/07 16:56:00 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.templates;
 
 /**
  * A template collection.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class DefaultTemplateCollection extends TemplateCollection
@@ -59,5 +59,6 @@ public class DefaultTemplateCollection extends TemplateCollection
     addTemplate(new StringFieldTemplateDescription("string-field"));
     addTemplate(new ResourceFieldTemplateDescription("resource-field"));
     addTemplate(new ResourceLabelTemplateDescription("resource-label"));
+    addTemplate(new ShapeFieldTemplateDescription("shape-field"));
   }
 }
