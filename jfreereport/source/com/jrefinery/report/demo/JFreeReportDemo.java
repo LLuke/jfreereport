@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.30 2002/08/31 16:50:48 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.31 2002/09/06 17:02:31 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -333,8 +333,6 @@ public class JFreeReportDemo extends JFrame
     try
     {
       report1 = gen.parseReport(in, in);
-//       report1 = new JFreeReport();
-
     }
     catch (Exception ioe)
     {
@@ -527,7 +525,7 @@ public class JFreeReportDemo extends JFrame
     {
     }
 
-//    PDFOutputTarget.getFontFactory().registerDefaultFontPath();
+    PDFOutputTarget.getFontFactory().registerDefaultFontPath();
 
     String baseName = "com.jrefinery.report.demo.resources.DemoResources";
     ResourceBundle resources = ResourceBundle.getBundle(baseName);

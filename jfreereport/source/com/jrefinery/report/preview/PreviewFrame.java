@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.30 2002/09/05 08:25:01 mungady Exp $
+ * $Id: PreviewFrame.java,v 1.31 2002/09/06 17:02:41 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -1108,5 +1108,11 @@ public class PreviewFrame
   public void setLargeIconsEnabled(boolean b)
   {
     largeIconsEnabled = b;
+  }
+
+  public void dispose ()
+  {
+    Log.debug (" ------------------> FRAME DISPOSED -------------------->");
+    super.dispose();
   }
 }
