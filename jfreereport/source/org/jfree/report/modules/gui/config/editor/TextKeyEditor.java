@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TextKeyEditor.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,7 +39,6 @@
 package org.jfree.report.modules.gui.config.editor;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JTextField;

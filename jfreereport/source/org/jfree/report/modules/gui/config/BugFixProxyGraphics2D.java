@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: BugFixProxyGraphics2D.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,7 +39,6 @@
 package org.jfree.report.modules.gui.config;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Composite;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -55,7 +54,6 @@ import java.awt.Stroke;
 import java.awt.Polygon;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
-import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Arc2D;
@@ -406,9 +404,9 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * This is equivalent to calling transform(T), where T is an
    * <code>AffineTransform</code> represented by the following matrix:
    * <pre>
-   *		[   1    0    tx  ]
-   *		[   0    1    ty  ]
-   *		[   0    0    1   ]
+   *  [   1    0    tx  ]
+   *  [   0    1    ty  ]
+   *  [   0    0    1   ]
    * </pre>
    * @param tx the distance to translate along the x-axis
    * @param ty the distance to translate along the y-axis
@@ -426,9 +424,9 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * This is equivalent to calling <code>transform(R)</code>, where R is an
    * <code>AffineTransform</code> represented by the following matrix:
    * <pre>
-   *		[   cos(theta)    -sin(theta)    0   ]
-   *		[   sin(theta)     cos(theta)    0   ]
-   *		[       0              0         1   ]
+   *  [   cos(theta)    -sin(theta)    0   ]
+   *  [   sin(theta)     cos(theta)    0   ]
+   *  [       0              0         1   ]
    * </pre>
    * Rotating with a positive angle theta rotates points on the positive
    * x axis toward the positive y axis.
@@ -448,9 +446,9 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * amount as the original translation.  This is equivalent to the
    * following sequence of calls:
    * <pre>
-   *		translate(x, y);
-   *		rotate(theta);
-   *		translate(-x, -y);
+   *  translate(x, y);
+   *  rotate(theta);
+   *  translate(-x, -y);
    * </pre>
    * Rotating with a positive angle theta rotates points on the positive
    * x axis toward the positive y axis.
@@ -471,9 +469,9 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * This is equivalent to calling <code>transform(S)</code>, where S is an
    * <code>AffineTransform</code> represented by the following matrix:
    * <pre>
-   *		[   sx   0    0   ]
-   *		[   0    sy   0   ]
-   *		[   0    0    1   ]
+   *  [   sx   0    0   ]
+   *  [   0    sy   0   ]
+   *  [   0    0    1   ]
    * </pre>
    * @param sx the amount by which X coordinates in subsequent
    * rendering operations are multiplied relative to previous
@@ -496,9 +494,9 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * is an <code>AffineTransform</code> represented by the following
    * matrix:
    * <pre>
-   *		[   1   shx   0   ]
-   *		[  shy   1    0   ]
-   *		[   0    0    1   ]
+   *  [   1   shx   0   ]
+   *  [  shy   1    0   ]
+   *  [   0    0    1   ]
    * </pre>
    * @param shx the multiplier by which coordinates are shifted in
    * the positive X axis direction as a function of their Y coordinate
@@ -866,7 +864,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param       height the height of the new clip rectangle.
    * @see         Graphics#clipRect
    * @see         Graphics#setClip(Shape)
-   * @see	    Graphics#getClip
+   * @see         Graphics#getClip
    * @since       JDK1.1
    */
   public void setClip(int x, int y, int width, int height)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DOMUtilities.java,v 1.1 2003/08/27 20:19:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -53,10 +53,15 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.jfree.report.util.CharacterEntityParser;
 
-public class DOMUtilities
+public final class DOMUtilities
 {
   private static final CharacterEntityParser XML_ENTITIES =
     CharacterEntityParser.createXMLEntityParser();
+    
+  private DOMUtilities()
+  {
+  }
+  
   /**
    * Parses the given input stream to form a document.
    *

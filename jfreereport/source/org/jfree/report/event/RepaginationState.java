@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RepaginationState.java,v 1.1 2003/08/24 15:17:25 taqua Exp $
+ * $Id: RepaginationState.java,v 1.2 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------
@@ -63,10 +63,16 @@ public class RepaginationState extends EventObject
   /**
    * Creates a new state.
    *
-   * @param pass  the pass.
-   * @param page  the page.
-   * @param currentRow  the current row.
-   * @param maxRow  the maximum row.
+   * @param source the source object that fired the event.
+   * @param pass  the pass the current function level of the processor.
+   * This counts down to -1.
+   * @param page  the page that is currently being processed, or -1 if the 
+   * page is not known.
+   * @param currentRow  the current row the current row of the tablemodel
+   * that is processed.
+   * @param maxRow  the maximum row the total number of rows in the tablemodel.
+   * @param prepare true, if the event was fired by a prepare run, 
+   * false otherwise. 
    */
   public RepaginationState(final Object source, final int pass,
                            final int page, final int currentRow,
@@ -77,9 +83,10 @@ public class RepaginationState extends EventObject
   }
 
   /**
-   * Returns the pass.
+   * Returns the pass, which is the current function level of the report
+   * processor.
    *
-   * @return The pass.
+   * @return the report processors function level.
    */
   public int getPass()
   {
@@ -87,9 +94,9 @@ public class RepaginationState extends EventObject
   }
 
   /**
-   * Returns the page.
+   * Returns the current page.
    *
-   * @return The page.
+   * @return The page or -1 if the page is not known.
    */
   public int getPage()
   {
@@ -107,7 +114,7 @@ public class RepaginationState extends EventObject
   }
 
   /**
-   * Returns the max row.
+   * Returns the number of rows in the tablemodel of the report.
    *
    * @return the max row.
    */
@@ -120,10 +127,15 @@ public class RepaginationState extends EventObject
    * Makes it possible to reuse the event object. Repagination events
    * are generated in masses, and it wastes resources to throw them away.
    *
-   * @param pass
-   * @param page
-   * @param currentRow
-   * @param maxRow
+   * @param pass  the pass the current function level of the processor.
+   * This counts down to -1.
+   * @param page  the page that is currently being processed, or -1 if the 
+   * page is not known.
+   * @param currentRow  the current row the current row of the tablemodel
+   * that is processed.
+   * @param maxRow  the maximum row the total number of rows in the tablemodel.
+   * @param prepare true, if the event was fired by a prepare run, 
+   * false otherwise. 
    */
   public void reuse(final int pass, final int page, final int currentRow,
                     final int maxRow, final boolean prepare)
@@ -135,6 +147,13 @@ public class RepaginationState extends EventObject
     this.prepare = prepare;
   }
 
+  /**
+   * Checks, whether the event was fired during a prepare run of the report
+   * processor.
+   * 
+   * @return true, if the report processor works on a prepare run, false
+   * otherwise.
+   */
   public boolean isPrepare()
   {
     return prepare;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionModel.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
+ * $Id: ConfigDescriptionModel.java,v 1.2 2003/08/31 19:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -53,7 +53,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.jfree.report.modules.gui.config.xml.DOMUtilities;
 import org.jfree.report.modules.gui.config.xml.DOMWriter;
-import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.ReportConfiguration;
 import org.w3c.dom.Document;
@@ -296,7 +295,7 @@ public class ConfigDescriptionModel extends AbstractListModel
     writer.println("<!ELEMENT enum               (text)*>");
     writer.println("<!ELEMENT text               (#PCDATA)>");
     writer.println(" ]>");
-    DOMWriter dwriter = new DOMWriter();
+    DOMWriter dwriter = DOMWriter.getInstance();
     dwriter.writeTag(writer, "config-description");
 
     CharacterEntityParser parser = CharacterEntityParser.createXMLEntityParser();

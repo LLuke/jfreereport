@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_sv.java,v 1.1 2003/08/30 15:02:53 taqua Exp $
+ * $Id: DemoResources_sv.java,v 1.2 2003/08/31 19:27:56 taqua Exp $
  *
  * Changes
  * -------
@@ -95,7 +95,8 @@ public class DemoResources_sv extends JFreeReportResources
     {"error", "Fel"},
     {"example", "Exempel {0}"},
 
-    {"report.previewfailure.message", "Ett fel uppstod under initializeringen av förhandgranskningsfönstret."},
+    {"report.previewfailure.message", 
+      "Ett fel uppstod under initializeringen av förhandgranskningsfönstret."},
     {"report.previewfailure.title", "Förhandgranskningsfel"},
 
   };

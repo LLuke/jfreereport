@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEditor.java,v 1.3 2003/08/28 19:36:44 taqua Exp $
+ * $Id: ConfigDescriptionEditor.java,v 1.4 2003/08/31 19:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
- * 26.08.2003 : Initial version
+ * 26-Aug-2003 : Initial version
  *
  */
 
@@ -62,7 +62,6 @@ import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -95,9 +94,9 @@ import org.jfree.ui.ExtensionFileFilter;
 
 public class ConfigDescriptionEditor extends JFrame
 {
-  public static final String CLASS_DETAIL_EDITOR_NAME = "Class";
-  public static final String ENUM_DETAIL_EDITOR_NAME = "Enum";
-  public static final String TEXT_DETAIL_EDITOR_NAME = "Text";
+  private static final String CLASS_DETAIL_EDITOR_NAME = "Class";
+  private static final String ENUM_DETAIL_EDITOR_NAME = "Enum";
+  private static final String TEXT_DETAIL_EDITOR_NAME = "Text";
 
   private class CloseAction extends AbstractActionDowngrade
   {
@@ -433,6 +432,8 @@ public class ConfigDescriptionEditor extends JFrame
   private JFileChooser fileChooser;
 
   private JLabel statusHolder;
+  private int type;
+
 
   /**
    * Constructs a new frame that is initially invisible.
@@ -776,12 +777,10 @@ public class ConfigDescriptionEditor extends JFrame
     statusHolder.setText(text);
   }
 
-  private String getStatusText ()
-  {
-    return statusHolder.getText();
-  }
-
-  private int type;
+//  private String getStatusText ()
+//  {
+//    return statusHolder.getText();
+//  }
 
   private void setEntryType (int type)
   {
@@ -881,7 +880,8 @@ public class ConfigDescriptionEditor extends JFrame
     {
       try
       {
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(fileChooser.getSelectedFile()));
+        OutputStream out = new BufferedOutputStream
+          (new FileOutputStream(fileChooser.getSelectedFile()));
         model.save(out, "ISO-8859-1");
         out.close();
         setStatusText("Save complete.");
@@ -903,7 +903,8 @@ public class ConfigDescriptionEditor extends JFrame
     {
       try
       {
-        InputStream in = new BufferedInputStream(new FileInputStream(fileChooser.getSelectedFile()));
+        InputStream in = new BufferedInputStream
+          (new FileInputStream(fileChooser.getSelectedFile()));
         model.load(in);
         in.close();
         model.sort();

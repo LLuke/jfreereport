@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TotalGroupCountFunction.java,v 1.1 2003/08/26 17:37:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,27 +40,53 @@ package org.jfree.report.function;
 
 import org.jfree.report.event.ReportEvent;
 
+/**
+ * A report function that counts the total of groups in a report.
+ * If a null-groupname is given, all groups are counted.
+ * <p>
+ * A group can be defined using the property "group".
+ * If the group property is not set, all group starts get counted.
+ * 
+ * @author Thomas Morgner
+ */
 public class TotalGroupCountFunction extends GroupCountFunction
 {
+  /**
+   * An internal storage to collect the total value instead of the 
+   * current value. Values in this storage are not affected by cloning. 
+   */
   private static class GroupCountStorage
   {
+    /** The current group count.*/ 
     private int groupCount;
 
+    /**
+     * DefaultConstructor.
+     */
     public GroupCountStorage()
     {
     }
 
+    /**
+     * Returns the current group count.
+     * @return the current group count.
+     */
     public int getGroupCount()
     {
       return groupCount;
     }
 
+    /**
+     * Defines the current group count.
+     * @param groupCount the new value for the group count. 
+     */
     public void setGroupCount(final int groupCount)
     {
       this.groupCount = groupCount;
     }
   }
 
+  /** The storage used to save the computed total. */ 
   private GroupCountStorage storage;
 
   /**

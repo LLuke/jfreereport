@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEntry.java,v 1.2 2003/08/28 17:45:43 taqua Exp $
+ * $Id: ConfigDescriptionEntry.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -80,12 +80,21 @@ public abstract class ConfigDescriptionEntry
 
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof ConfigDescriptionEntry)) return false;
+    if (this == o)
+    { 
+      return true;
+    }
+    if (!(o instanceof ConfigDescriptionEntry))
+    { 
+      return false;
+    }
 
     final ConfigDescriptionEntry configDescriptionEntry = (ConfigDescriptionEntry) o;
 
-    if (!keyName.equals(configDescriptionEntry.keyName)) return false;
+    if (!keyName.equals(configDescriptionEntry.keyName))
+    { 
+      return false;
+    }
 
     return true;
   }

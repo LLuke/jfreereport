@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutCacheKey.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: LayoutCacheKey.java,v 1.3 2003/08/31 19:27:56 taqua Exp $
  *
  * Changes
  * -------
@@ -67,6 +67,7 @@ public class LayoutCacheKey
 
   /** The cached hashcode. */
   private int hashCode;
+  /** A flag that defines, whether the cached hashcode is valid. */
   private boolean hashcodeValid;
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Boot.java,v 1.1 2003/09/02 15:06:25 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,22 +47,56 @@ import org.jfree.report.util.Log;
  * This class should be called before using the JFreeReport classes, to
  * make sure that all subsystems are initialized correctly and in the correct
  * order.
+ * <p>
+ * Application developers should make sure, that the booting is done, before
+ * JFreeReport objects are used. Although the boot process will be started
+ * automaticly if needed, this automated start may no longer guarantee the 
+ * module initialization order.  
+ * <p>
+ * Additional modules can be specified by defining the system property
+ * "org.jfree.report.boot.Modules". The property expects a comma-separated
+ * list of Module implementations.
+ * 
+ * @author Thomas Morgner
  */
 public final class Boot
 {
+  /** A flag indicating whether the booting is currenly in progress. */ 
   private static boolean bootInProgress;
+  /** A flag indicating whether the booting is complete. */
   private static boolean bootDone;
 
+  /**
+   * Hidden default constructor.
+   */
+  private Boot ()
+  {
+  }
+  
+  /**
+   * Checks, whether the booting of JFreeReport is in progress.
+   * 
+   * @return true, if the booting is in progress, false otherwise.
+   */
   public static boolean isBootInProgress()
   {
     return bootInProgress;
   }
 
+  /**
+   * Checks, whether the booting of JFreeReport is complete.
+   * 
+   * @return true, if the booting is complete, false otherwise.
+   */
   public static boolean isBootDone()
   {
     return bootDone;
   }
 
+  /**
+   * Starts the boot process. This method does nothing, if the booting
+   * is currently in progress or already done.
+   */
   public static void start()
   {
     if (isBootInProgress() || isBootDone())
@@ -95,7 +129,8 @@ public final class Boot
     }
     catch (Exception se)
     {
-      Log.error ("An error occured while checking the system properties for extension modules.", se);
+      Log.error 
+        ("An error occured while checking the system properties for extension modules.", se);
     }
 
     mgr.initializeModules();

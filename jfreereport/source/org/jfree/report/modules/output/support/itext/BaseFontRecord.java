@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecord.java,v 1.2 2003/08/24 15:06:42 taqua Exp $
+ * $Id: BaseFontRecord.java,v 1.3 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,8 @@ import com.lowagie.text.pdf.BaseFont;
 import org.jfree.report.style.FontDefinition;
 
 /**
- * A PDF font record. Once created the base font record is immutable.
+ * A PDF font record. The record is used to cache the generated PDF fonts. 
+ * Once created the base font record is immutable.
  *
  * @author Thomas Morgner
  */
@@ -64,6 +65,12 @@ public final class BaseFontRecord
 
   /**
    * Creates a new font record.
+   * 
+   * @param font the font definition stored in this record.
+   * @param logicalName the logical iText name of the font.
+   * @param embedded a flag that defines whether this font should be embedded
+   * in the target document.
+   * @param baseFont the generated base font for the given font definition.
    */
   public BaseFontRecord(final FontDefinition font, final String logicalName,
                         boolean embedded, final BaseFont baseFont)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.4 2003/08/25 14:29:34 taqua Exp $
+ * $Id: Worker.java,v 1.5 2003/08/31 19:27:59 taqua Exp $
  *
  *
  * Changes
@@ -112,6 +112,7 @@ public class Worker extends Thread
     }
     catch (SecurityException se)
     {
+      // ignored 
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportPlugin.java,v 1.3 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PlainTextExportPlugin.java,v 1.4 2003/09/06 18:09:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,7 +46,6 @@ import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
-import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.plaintext.resources.PlainTextExportResources;

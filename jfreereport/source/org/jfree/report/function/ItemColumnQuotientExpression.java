@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemColumnQuotientExpression.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: ItemColumnQuotientExpression.java,v 1.5 2003/08/28 19:36:30 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,6 @@
 package org.jfree.report.function;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import org.jfree.report.util.Log;
 
@@ -65,9 +64,6 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
 
   /** Literal text for the 'divisor' property. */
   public static final String DIVISOR_PROPERTY = "divisor";
-
-  /** A useful constant representing zero. */
-  private static final BigDecimal ZERO = new BigDecimal(0.0);
 
   /**
    * Constructs a new function.

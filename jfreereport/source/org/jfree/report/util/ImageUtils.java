@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ImageUtils.java,v 1.1 2003/08/31 19:29:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,15 +43,27 @@ import java.util.Arrays;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+/**
+ * Provides utility methods for image creation and manipluation.
+ *  
+ * @author Thomas Morgner
+ */
 public final class ImageUtils
 {
+  /**
+   * DefaultConstructor.
+   */
+  private ImageUtils()
+  {
+  }
+  
   /**
    * Creates a transparent image.  These can be used for aligning menu items.
    *
    * @param width  the width.
    * @param height  the height.
    *
-   * @return the image.
+   * @return the created transparent image.
    */
   public static BufferedImage createTransparentImage(final int width, final int height)
   {
@@ -62,6 +74,14 @@ public final class ImageUtils
     return img;
   }
 
+  /**
+   * Creates a transparent icon. The Icon can be used for aligning menu
+   * items.
+   * 
+   * @param width the width of the new icon
+   * @param height the height of the new icon
+   * @return the created transparent icon.
+   */
   public static Icon createTransparentIcon (final int width, final int height)
   {
     return new ImageIcon (createTransparentImage(width, height));

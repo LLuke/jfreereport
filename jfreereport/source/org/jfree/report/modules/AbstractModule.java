@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractModule.java,v 1.8 2003/08/31 19:27:56 taqua Exp $
+ * $Id: AbstractModule.java,v 1.9 2003/09/02 15:05:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -183,7 +183,6 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
   /** The list of optional modules. */
   private ModuleInfo[] optionalModules;
 
-  private String[]dependentSubSystems;
   /** The name of the module. */
   private String name;
   /** A short description of the module. */
@@ -283,6 +282,7 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
    * @param reader the reader from where to read.
    * @param firstLine the first line (which was read elsewhere).
    * @return the complete value, never null
+   * @throws IOException if an IO error occurs.
    */
   private String readValue(final ReaderHelper reader, String firstLine) throws IOException
   {
@@ -310,6 +310,13 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     return b.toString();
   }
 
+  /**
+   * Checks, whether the next line in the reader is a value line.
+   * 
+   * @param reader from where to read the lines.
+   * @return true, if the next line is a value line, false otherwise.
+   * @throws IOException if an IO error occurs.
+   */
   private boolean isNextLineValueLine (ReaderHelper reader) throws IOException
   {
     if (reader.hasNext() == false)
@@ -698,9 +705,9 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
   }
 
   /**
-   * Defines the subsystem name.
+   * Defines the subsystem name for this module.
    *
-   * @param name
+   * @param name the new name of the subsystem.
    */
   protected void setSubSystem (String name)
   {

@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_nl.java,v 1.8 2003/08/28 17:45:43 taqua Exp $
+ * $Id: JFreeReportResources_nl.java,v 1.9 2003/09/06 18:09:16 taqua Exp $
  */
 package org.jfree.report.modules.gui.base.resources;
 
@@ -113,7 +113,8 @@ public class JFreeReportResources_nl extends JFreeReportResources
 
         // progress dialog defaults ...
         {"progress-dialog.prepare-layout", "Layout voorbereiden voor uitvoer."},
-        {"progress-dialog.perform-output", "Bezig met uitvoeren van de gewenste rapport uitvoer ..."},
+        {"progress-dialog.perform-output", 
+         "Bezig met uitvoeren van de gewenste rapport uitvoer ..."},
         {"progress-dialog.page-label", "Pagina: {0}"},
         {"progress-dialog.rows-label", "Rij: {0} / {1}"},
         {"progress-dialog.pass-label", "Gereed: {0} - Functiewaarden berekenen ..."},

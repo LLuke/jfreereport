@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageSorter.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
+ * $Id: PackageSorter.java,v 1.1 2003/09/02 15:06:25 taqua Exp $
  *
  * Changes
  * -------------------------
- * 09.07.2003 : Initial version
+ * 02-Sep-2003 : Initial version
  *
  */
 
@@ -50,55 +50,130 @@ import org.jfree.report.util.Log;
  * Compares two modules for order. A module is considered less than an other
  * module if the module is a required module of the compared module. Modules
  * are considered equal if they have no relation.
+ * <p>
+ * When sorting, we match this modules position against all dependent
+ * modules until all positions are stable. Circular references are evil
+ * and are filtered during the module loading process in the package manager. 
  *
  * @author Thomas Morgner
  */
 public final class PackageSorter
 {
+  /**
+   * An Internal wrapper class which collects additional information
+   * on the given module. Every module has a position, which is heigher
+   * than the position of all dependent modules.
+   * 
+   * @author Thomas Morgner
+   */
   private static class SortModule implements Comparable
   {
+    /** stores the relative position of the module in the global list. */ 
     private int position;
+    /** The package state of the to be matched module. */
     private PackageState state;
+    /** A list of all directly dependent subsystems. */
     private ArrayList dependSubsystems;
     // direct dependencies, indirect ones are handled by the
     // dependent classes ...
 
+    /**
+     * Creates a new SortModule for the given package state. 
+     * 
+     * @param state the package state object, that should be wrapped up
+     * by this class. 
+     */
     public SortModule(PackageState state)
     {
       this.position = -1;
       this.state = state;
     }
 
+    /**
+     * Returns the list of all dependent subsystems. The list gets defined
+     * when the sorting is started.
+     * 
+     * @return the list of all dependent subsystems.
+     */
     public ArrayList getDependSubsystems()
     {
       return dependSubsystems;
     }
 
+    /**
+     * Defines a list of dependent subsystems for this module. The list contains
+     * the names of the dependent subsystems as strings.
+     * 
+     * @param dependSubsystems a list of all dependent subsystems. 
+     */
     public void setDependSubsystems(ArrayList dependSubsystems)
     {
       this.dependSubsystems = dependSubsystems;
     }
 
+    /**
+     * Returns the current position of this module in the global list.
+     * The position is computed by comparing all positions of all dependent
+     * subsystem modules.
+     * 
+     * @return the current module position.
+     */
     public int getPosition()
     {
       return position;
     }
 
+    /**
+     * Defines the position of this module in the global list of all
+     * known modules.
+     * 
+     * @param position the position.
+     */
     public void setPosition(int position)
     {
       this.position = position;
     }
 
+    /**
+     * Returns the package state contained in this SortModule.
+     * 
+     * @return the package state of this module.
+     */
     public PackageState getState()
     {
       return state;
     }
 
+    /**
+     * Returns a basic string representation of this SortModule. This
+     * should be used for debugging purposes only. 
+     * @see java.lang.Object#toString()
+     * 
+     * @return a string representation of this module.
+     */
     public String toString ()
     {
-      return (position + " " + state.getModule().getName() + " " + state.getModule().getModuleClass());
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("SortModule: ");
+      buffer.append(position);
+      buffer.append(" ");
+      buffer.append(state.getModule().getName());
+      buffer.append(" ");
+      buffer.append(state.getModule().getModuleClass());
+      return buffer.toString();
     }
 
+    /**
+     * Compares this module against an other sort module.
+     *  
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     * 
+     * @param o the other sort module instance.
+     * @return -1 if the other's module position is less than
+     * this modules position, +1 if this module is less than the
+     * other module or 0 if both modules have an equal position in
+     * the list.
+     */
     public int compareTo(Object o)
     {
       SortModule otherModule = (SortModule) o;
@@ -121,6 +196,14 @@ public final class PackageSorter
   {
   }
 
+  /**
+   * Sorts the given list of package states. 
+   * 
+   * ToDo: The algorithm used is simple and not optimized, 
+   * we could write something better in a near future. 
+   *  
+   * @param modules the list of modules.
+   */
   public static void sort (List modules)
   {
     HashMap moduleMap = new HashMap();
@@ -311,9 +394,11 @@ public final class PackageSorter
 
 
   /**
-   * Checks, whether a module is a base module of an given module.
+   * Collects all directly dependent subsystems.
    *
    * @param childMod the module which to check
+   * @param moduleMap the map of all other modules, keyed by module class.
+   * @return the list of all dependent subsystems.
    */
   private static ArrayList collectSubsystemModules
       (final Module childMod, final HashMap moduleMap)
@@ -326,7 +411,10 @@ public final class PackageSorter
           moduleMap.get(info[i].getModuleClass());
       if (dependentModule == null)
       {
-        Log.warn ("A dependent module was not found in the list of known modules." + info[i].getModuleClass());
+        Log.warn 
+          (new Log.SimpleMessage
+            ("A dependent module was not found in the list of known modules.",
+            info[i].getModuleClass()));
         continue;
       }
 

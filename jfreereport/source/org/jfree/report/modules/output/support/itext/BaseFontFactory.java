@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.9 2003/08/28 17:45:44 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.10 2003/09/02 15:05:33 taqua Exp $
  *
  * Changes
  * -------
@@ -101,7 +101,13 @@ public final class BaseFontFactory extends DefaultFontMapper
 
   /** A flag to check whether this factory is initialized. */
   private boolean initialized;
-  public static final String GC_AFTER_REGISTER = "org.jfree.report.modules.output.support.itext.GCAfterRegister";
+  
+  /** 
+   * The name of the report property, which defines, whether the 
+   * GarbageCollector should be run after the font registration.
+   */
+  public static final String GC_AFTER_REGISTER = 
+    "org.jfree.report.modules.output.support.itext.GCAfterRegister";
 
   /**
    * The font path filter is used to collect font files and directories
@@ -168,6 +174,11 @@ public final class BaseFontFactory extends DefaultFontMapper
    * font names.
    */
   private static final String FONTS_STORAGE_PATH = "registered_itext_fonts";
+  
+  /**
+   * The storage path for the config storage provider to cache the registered
+   * font files. This is used to detect changes in the font setup.
+   */
   private static final String KNOWN_FONTS_PATH = "known_itext_font_files";
 
   /**
@@ -279,6 +290,8 @@ public final class BaseFontFactory extends DefaultFontMapper
    * Registers the default windows font path.
    *
    * @param encoding the default font encoding.
+   * @param knownFonts a map containing all known fonts
+   * @param seenFiles a map containing all known font files.
    */
   private void registerWindowsFontPath(final String encoding,
                                        final HashNMap knownFonts,
@@ -323,7 +336,7 @@ public final class BaseFontFactory extends DefaultFontMapper
    * Register all fonts (*.ttf files) in the given path.
    *
    * @param file  the directory that contains the font files.
-   * @param encoding  the encoding.
+   * @param encoding  the encoding for the given font.
    */
   public synchronized void registerFontPath
       (final File file, final String encoding)
@@ -331,6 +344,14 @@ public final class BaseFontFactory extends DefaultFontMapper
     registerFontPath(file, encoding, new HashNMap(), new Properties());
   }
 
+  /**
+   * Register all fonts (*.ttf files) in the given path.
+   * 
+   * @param file  the directory that contains the font files.
+   * @param encoding  the encoding for the given font.
+   * @param knownFonts a map containing all known fonts
+   * @param seenFiles a map containing all known font files.
+   */
   private synchronized void registerFontPath
       (final File file, final String encoding,
        final HashNMap knownFonts, final Properties seenFiles)
@@ -407,7 +428,9 @@ public final class BaseFontFactory extends DefaultFontMapper
   }
 
   /**
-   * Adds the fontname by creating the basefont object.
+   * Adds the fontname by creating the basefont object. This method tries to
+   * load the fonts as embeddable fonts, if this fails, it repeats the loading
+   * with the embedded-flag set to false. 
    *
    * @param font  the font name.
    * @param encoding  the encoding.
@@ -422,7 +445,18 @@ public final class BaseFontFactory extends DefaultFontMapper
     {
       return; // already in there
     }
-    final BaseFont bfont = BaseFont.createFont(font, encoding, true, false, null, null);
+    
+    BaseFont bfont;
+    try
+    {
+      bfont = BaseFont.createFont(font, encoding, true, false, null, null);
+    }
+    catch (DocumentException de)
+    {
+      // failed to load the font as embedded font, try not-embedded.
+      bfont = BaseFont.createFont(font, encoding, false, false, null, null);
+    }
+    
     final String[][] fi = bfont.getFullFontName();
     for (int i = 0; i < fi.length; i++)
     {

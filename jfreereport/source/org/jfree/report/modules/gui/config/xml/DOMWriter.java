@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DOMWriter.java,v 1.1 2003/08/27 20:19:53 taqua Exp $
+ * $Id: DOMWriter.java,v 1.2 2003/08/28 17:45:43 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,7 +41,7 @@ package org.jfree.report.modules.gui.config.xml;
 import org.jfree.xml.writer.SafeTagList;
 import org.jfree.xml.writer.XMLWriterSupport;
 
-public class DOMWriter extends XMLWriterSupport
+public final class DOMWriter extends XMLWriterSupport
 {
   private static SafeTagList createSafeTagList()
   {
@@ -55,8 +55,19 @@ public class DOMWriter extends XMLWriterSupport
     return list;
   }
 
-  public DOMWriter()
+  private DOMWriter()
   {
     super(createSafeTagList(), 0);
+  }
+  
+  private static DOMWriter singleton;
+  
+  public static DOMWriter getInstance()
+  {
+    if (singleton == null)
+    {
+      singleton = new DOMWriter();
+    }
+    return singleton;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserEntityResolver.java,v 1.4 2003/08/25 14:29:32 taqua Exp $
+ * $Id: ParserEntityResolver.java,v 1.5 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,8 @@ public final class ParserEntityResolver implements EntityResolver
     }
     else
     {
-      Log.warn(new Log.SimpleMessage("Validate location failed for ", publicID, " location: ", location));
+      Log.warn(new Log.SimpleMessage("Validate location failed for ", 
+        publicID, " location: ", location));
       return false;
     }
   }

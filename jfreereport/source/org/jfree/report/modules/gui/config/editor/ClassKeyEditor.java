@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ClassKeyEditor.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,7 +46,8 @@ public class ClassKeyEditor extends TextKeyEditor
 {
   private Class baseClass;
 
-  public ClassKeyEditor(ReportConfiguration config, ClassConfigDescriptionEntry entry, String displayName)
+  public ClassKeyEditor(ReportConfiguration config, 
+      ClassConfigDescriptionEntry entry, String displayName)
   {
     super(config, entry, "C:" + displayName);
     Log.debug ("Constructing ...");

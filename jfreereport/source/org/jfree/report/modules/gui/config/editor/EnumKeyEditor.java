@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: EnumKeyEditor.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -71,7 +71,8 @@ public class EnumKeyEditor extends AbstractKeyEditor
   private List options;
   private JPanel entryLabelCarrier;
 
-  public EnumKeyEditor(ReportConfiguration config, EnumConfigDescriptionEntry entry, String displayName)
+  public EnumKeyEditor(ReportConfiguration config, 
+    EnumConfigDescriptionEntry entry, String displayName)
   {
     super(config, entry);
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.7 2003/08/25 14:29:32 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.8 2003/09/07 15:27:08 taqua Exp $
  *
  * Changes
  * -------
@@ -491,7 +491,6 @@ public class HtmlProducer extends TableProducer
             pout.print(tdStyleClass);
             pout.println("\">");
           }
-
           continue;
         }
 
@@ -582,7 +581,6 @@ public class HtmlProducer extends TableProducer
 
         pout.print("</div>");
         pout.println("</td>");
-
         x += gridPosition.getColSpan() - 1;
       }
       pout.println("</tr>");

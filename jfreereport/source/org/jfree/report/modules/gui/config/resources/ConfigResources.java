@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigResources.java,v 1.1 2003/08/27 20:19:53 taqua Exp $
+ * $Id: ConfigResources.java,v 1.2 2003/08/31 19:27:57 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,8 +40,16 @@ package org.jfree.report.modules.gui.config.resources;
 
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 
+/**
+ * Provides localizable resources for the Configuration editor.
+ * 
+ * @author Thomas Morgner
+ */
 public class ConfigResources extends JFreeReportResources
 {
+  /**
+   * DefaultConstructor.
+   */
   public ConfigResources()
   {
   }
@@ -79,6 +87,8 @@ public class ConfigResources extends JFreeReportResources
         {"action.save.name", "Save"},
         {"action.save.small-icon",
           getIcon("org/jfree/report/modules/gui/config/resources/Save24.gif")},
+
+        {"action.exit.name", "Exit"},
 
         {"default-editor.error-icon",
           getIcon("org/jfree/report/modules/gui/config/resources/Stop24.gif")},

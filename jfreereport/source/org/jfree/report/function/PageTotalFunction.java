@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.3 2003/08/25 14:29:29 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -48,26 +48,11 @@ import org.jfree.report.ReportDefinition;
 import org.jfree.report.event.ReportEvent;
 
 /**
- * This function will only work as expected in group mode if the named group has pagebreak set to
- * true.  This function depends on pageEvents, so use it with PageableProcessor only.
- *
- * FunctionFlow:
- *
- * if autmatic pagebreak:
- *   fireGroupFinish
- *   -> PageFull, group footer cannot be printed yet
- *   firePageFinish
- *    -> groupFooter is printed
- *   fireGroupStarted
- *   firePageFinish // manual pagebreak
- *   -> groupHeader is printed
- *
- * if manual pagebreak only
- *    fireGroupFinish
- *    -> print GroupFooter
- *    fireGroupStarted
- *    firePageFinish // manual pagebreak
- *   -> groupHeader is printed
+ * Prints the total number of pages of an report. If a group is specified,
+ * this function expects the group to have the manual pagebreak enabled. 
+ * 
+ * This function will only work as expected in group mode if the named 
+ * group has pagebreak set to true. 
  *
  * @author Thomas Morgner
  */

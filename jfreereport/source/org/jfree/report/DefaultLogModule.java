@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultLogModule.java,v 1.5 2003/08/25 14:29:31 taqua Exp $
+ * $Id: DefaultLogModule.java,v 1.1 2003/09/02 15:06:25 taqua Exp $
  *
  * Changes
  * -------------------------
- * 11.07.2003 : Initial version
+ * 11-Jul-2003 : Initial version
  *
  */
 
@@ -55,9 +55,9 @@ import org.jfree.report.util.SystemOutLogTarget;
  */
 public class DefaultLogModule extends AbstractModule
 {
-  private static boolean init;
   /**
    * DefaultConstructor. Loads the module specification.
+   * 
    * @throws ModuleInitializeException if an error occured.
    */
   public DefaultLogModule() throws ModuleInitializeException
@@ -81,11 +81,6 @@ public class DefaultLogModule extends AbstractModule
    */
   public void initialize() throws ModuleInitializeException
   {
-    if (init == true)
-    {
-      throw new Error();
-    }
-    init = true;
     if (ReportConfiguration.getGlobalConfig().isDisableLogging())
     {
       return;

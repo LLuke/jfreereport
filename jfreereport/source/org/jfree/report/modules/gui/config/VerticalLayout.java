@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: VerticalLayout.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,8 +45,17 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 
+/**
+ * A simple layout manager, which aligns all components in a vertical
+ * flow layout.
+ * 
+ * @author Thomas Morgner
+ */
 public class VerticalLayout implements LayoutManager
 {
+  /**
+   * DefaultConstructor.
+   */
   public VerticalLayout()
   {
   }
@@ -73,7 +82,7 @@ public class VerticalLayout implements LayoutManager
    * Calculates the preferred size dimensions for the specified
    * panel given the components in the specified parent container.
    * @param parent the component to be laid out
-   *
+   * @return the preferred layout size
    * @see #minimumLayoutSize
    */
   public Dimension preferredLayoutSize(Container parent)
@@ -106,6 +115,7 @@ public class VerticalLayout implements LayoutManager
    * Calculates the minimum size dimensions for the specified
    * panel given the components in the specified parent container.
    * @param parent the component to be laid out
+   * @return the minimul layoutsize
    * @see #preferredLayoutSize
    */
   public Dimension minimumLayoutSize(Container parent)
@@ -148,7 +158,7 @@ public class VerticalLayout implements LayoutManager
       Component[] comps = parent.getComponents();
 
       final int width = bounds.width - insHorizontal;
-      final int x = bounds.x + ins.left;
+      //final int x = bounds.x + ins.left;
       int y = bounds.y + ins.top;
 
       for (int i = 0; i < comps.length; i++)

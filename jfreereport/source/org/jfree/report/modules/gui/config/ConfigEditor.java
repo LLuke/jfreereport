@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigEditor.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
+ * $Id: ConfigEditor.java,v 1.2 2003/08/31 19:27:57 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 28.08.2003 : Initial version
+ * 28-Jul-2003 : Initial version
  *  
  */
 
@@ -44,56 +44,90 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ResourceBundle;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Enumeration;
+import java.util.Properties;
+import java.util.ResourceBundle;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.UIManager;
-import javax.swing.JTree;
-import javax.swing.JScrollPane;
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTree;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.TreeSelectionEvent;
-import javax.swing.tree.TreeSelectionModel;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreePath;
-import javax.swing.border.EmptyBorder;
+import javax.swing.tree.TreeSelectionModel;
 
 import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionButton;
-import org.jfree.report.modules.gui.config.resources.ConfigResources;
+import org.jfree.report.modules.gui.base.components.FilesystemFilter;
+import org.jfree.report.modules.gui.config.editor.ConfigEditorPanel;
 import org.jfree.report.modules.gui.config.model.ConfigTreeModel;
 import org.jfree.report.modules.gui.config.model.ConfigTreeModelException;
 import org.jfree.report.modules.gui.config.model.ConfigTreeModuleNode;
-import org.jfree.report.modules.gui.config.editor.ConfigEditorPanel;
+import org.jfree.report.modules.gui.config.resources.ConfigResources;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.StringUtil;
+import org.jfree.report.Boot;
 
+/**
+ * The ConfigEditor can be used to edit the global jfreereport.properties files.
+ * These files provide global settings for all reports and contain the system
+ * level configuration of JFreeReport.
+ * 
+ * @author Thomas Morgner
+ */
 public class ConfigEditor extends JFrame
 {
+  /**
+   * An Action to handle close requests.
+   */
   private class CloseAction extends AbstractActionDowngrade
   {
+    /**
+     * DefaultConstructor.
+     */
     public CloseAction()
     {
-      putValue(NAME, "Exit");
+      putValue(NAME, resources.getString("action.exit.name"));
     }
 
     /**
-     * Invoked when an action occurs.
+     * Invoked when an action occurs. The action invokes System.exit(0).
+     * 
+     * @param e the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
-      System.exit(0);
+      attempClose();
     }
   }
 
+  /**
+   * An action to handle save requests.
+   */
   private class SaveAction extends AbstractActionDowngrade
   {
+    /**
+     * DefaultConstructor.
+     */
     public SaveAction()
     {
       putValue(NAME, resources.getString("action.save.name"));
@@ -101,7 +135,8 @@ public class ConfigEditor extends JFrame
     }
 
     /**
-     * Invoked when an action occurs.
+     * Saves the configuration
+     * @param e the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -109,8 +144,14 @@ public class ConfigEditor extends JFrame
     }
   }
 
+  /**
+   * An action to handle load requests.
+   */
   private class LoadAction extends AbstractActionDowngrade
   {
+    /**
+     * DefaultConstructor.
+     */
     public LoadAction()
     {
       putValue(NAME, resources.getString("action.load.name"));
@@ -118,21 +159,24 @@ public class ConfigEditor extends JFrame
     }
 
     /**
-     * Invoked when an action occurs.
+     * Loads the configuration
+     * @param e the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
-      //load();
-      Log.debug (detailEditorPane.getMinimumSize());
-      Log.debug (detailEditorPane.getPreferredSize());
-      Log.debug ("---");
-      detailEditorPane.debug();
-      Log.debug ("---");
+      load();
     }
   }
 
+  /**
+   * This class handles the tree selection events and activates the 
+   * detail editors. 
+   */
   private class ModuleTreeSelectionHandler implements TreeSelectionListener
   {
+    /**
+     * DefaultConstructor.
+     */
     public ModuleTreeSelectionHandler()
     {
     }
@@ -153,37 +197,42 @@ public class ConfigEditor extends JFrame
       }
     }
   }
+  
+  /** The name of the resource bundle implementation used in this dialog. */
   private static final String RESOURCE_BUNDLE =
       ConfigResources.class.getName();
-
+  /** A label that serves as status bar. */
   private JLabel statusHolder;
+  /** The resource bundle instance of this dialog. */
   private ResourceBundle resources;
 
-  private LoadAction loadAction;
-  private CloseAction closeAction;
-  private SaveAction saveAction;
-
+  /** The detail editor for the currently selected tree node. */
   private ConfigEditorPanel detailEditorPane;
+  /** The tree model used to display the structure of the report configuration.*/
   private ConfigTreeModel treeModel;
 
+  /** The currently used report configuration. */
+  private ReportConfiguration currentReportConfiguration;
+  /** The file chooser used to load and save the report configuration. */
+  private JFileChooser fileChooser;
+
+
   /**
-   * Constructs a new frame that is initially invisible.
-   * <p>
-   * This constructor sets the component's locale property to the value
-   * returned by <code>JComponent.getDefaultLocale</code>.
+   * Constructs a new ConfigEditor.
+   * 
+   * @throws ConfigTreeModelException if the tree model could not be built. 
    */
   public ConfigEditor() throws ConfigTreeModelException
   {
     this.resources = ResourceBundle.getBundle(RESOURCE_BUNDLE);
+    currentReportConfiguration = new ReportConfiguration(ReportConfiguration.getGlobalConfig());
+
 
     detailEditorPane = new ConfigEditorPanel();
 
     JSplitPane splitPane = new JSplitPane
         (JSplitPane.HORIZONTAL_SPLIT, createEntryTree(),
             detailEditorPane);
-//            new JScrollPane(detailEditorPane,
-//                JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-//                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
 
     JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());
@@ -198,7 +247,6 @@ public class ConfigEditor extends JFrame
 
     setContentPane(cPaneStatus);
 
-
     addWindowListener(new WindowAdapter()
     {
       /**
@@ -207,12 +255,18 @@ public class ConfigEditor extends JFrame
        */
       public void windowClosing(WindowEvent e)
       {
-        closeAction.actionPerformed(new ActionEvent (e.getSource(), 0, "close"));
+        attempClose();
       }
     });
 
   }
 
+  /**
+   * Creates the JTree for the report configuration.
+   *  
+   * @return the tree component.
+   * @throws ConfigTreeModelException if the model could not be built.
+   */
   private JComponent createEntryTree () throws ConfigTreeModelException
   {
     InputStream in = getClass().getResourceAsStream("config-description.xml");
@@ -239,11 +293,16 @@ public class ConfigEditor extends JFrame
     return pane;
   }
 
+  /**
+   * Creates the button pane to hold all control buttons.
+   * 
+   * @return the created panel with all control buttons.
+   */
   private JPanel createButtonPane ()
   {
-    closeAction = new CloseAction();
-    saveAction = new SaveAction();
-    loadAction = new LoadAction();
+    Action closeAction = new CloseAction();
+    Action saveAction = new SaveAction();
+    Action loadAction = new LoadAction();
 
     JPanel panel = new JPanel();
     panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -277,30 +336,158 @@ public class ConfigEditor extends JFrame
     return statusPane;
   }
 
+  /**
+   * Defines the text to be displayed on the status bar. Setting text will
+   * replace any other previously defined text.
+   * 
+   * @param text the new statul bar text.
+   */
   private void setStatusText (String text)
   {
     statusHolder.setText(text);
   }
 
-  private String getStatusText ()
-  {
-    return statusHolder.getText();
-  }
+//  private String getStatusText ()
+//  {
+//    return statusHolder.getText();
+//  }
 
+  /**
+   * Loads the report configuration from a user selectable report properties file.
+   */
   private void load()
   {
     setStatusText("Loading: Select file ...");
+    if (fileChooser == null)
+    {
+      fileChooser = new JFileChooser();
+      final FilesystemFilter filter = new FilesystemFilter(".properties", "Properties files");
+      fileChooser.addChoosableFileFilter(filter);
+      fileChooser.setMultiSelectionEnabled(false);
+    }
+
+    final int option = fileChooser.showSaveDialog(this);
+    if (option == JFileChooser.APPROVE_OPTION)
+    {
+      final File selFile = fileChooser.getSelectedFile();
+      String selFileName = selFile.getAbsolutePath();
+
+      // Test if ends on xls
+      if (StringUtil.endsWithIgnoreCase(selFileName, ".properties") == false)
+      {
+        selFileName = selFileName + ".properties";
+      }
+      Properties prop = new Properties();
+      try
+      {
+        InputStream in = new BufferedInputStream (new FileInputStream (selFileName));
+        prop.load(in);
+        in.close();
+      }
+      catch (IOException ioe)
+      {
+        Log.debug ("Failed to load the properties.", ioe);
+        setStatusText("Failed to load the properties." + ioe.getMessage());
+        return;
+      }
+
+      // clear all previously set configuration settings ...
+      Enumeration defaults = currentReportConfiguration.getConfigProperties();
+      while (defaults.hasMoreElements())
+      {
+        String key = (String) defaults.nextElement();
+        currentReportConfiguration.setConfigProperty(key, null);
+      }
+
+      Enumeration enum = prop.keys();
+      while (enum.hasMoreElements())
+      {
+        String key = (String) enum.nextElement();
+        String value = prop.getProperty(key);
+        currentReportConfiguration.setConfigProperty(key, value);
+      }
+      try
+      {
+        treeModel.init(currentReportConfiguration);
+        setStatusText("Loading the properties complete.");
+      }
+      catch (ConfigTreeModelException e)
+      {
+        Log.debug ("Failed to update the model.", e);
+        setStatusText("Failed to update the model.");
+      }
+    }
   }
 
+  /**
+   * Saves the report configuration to a user selectable report properties file.
+   */
   private void save()
   {
     setStatusText("Saving: Select file ...");
+    if (fileChooser == null)
+    {
+      fileChooser = new JFileChooser();
+      final FilesystemFilter filter = new FilesystemFilter(".properties", "Properties files");
+      fileChooser.addChoosableFileFilter(filter);
+      fileChooser.setMultiSelectionEnabled(false);
+    }
+
+    final int option = fileChooser.showSaveDialog(this);
+    if (option == JFileChooser.APPROVE_OPTION)
+    {
+      final File selFile = fileChooser.getSelectedFile();
+      String selFileName = selFile.getAbsolutePath();
+
+      // Test if ends on xls
+      if (StringUtil.endsWithIgnoreCase(selFileName, ".properties") == false)
+      {
+        selFileName = selFileName + ".properties";
+      }
+
+      Properties prop = new Properties();
+      // clear all previously set configuration settings ...
+      Enumeration defaults = currentReportConfiguration.getConfigProperties();
+      while (defaults.hasMoreElements())
+      {
+        String key = (String) defaults.nextElement();
+        prop.setProperty(key, currentReportConfiguration.getConfigProperty(key));
+      }
+
+      try
+      {
+        OutputStream out = new BufferedOutputStream (new FileOutputStream (selFileName));
+        prop.store(out, "");
+        out.close();
+        setStatusText("Saving the properties complete.");
+      }
+      catch (IOException ioe)
+      {
+        Log.debug ("Failed to save the properties.", ioe);
+        setStatusText("Failed to savethe properties." + ioe.getMessage());
+      }
+
+    }
   }
 
+  /**
+   * Closes this frame and exits the JavaVM.
+   *
+   */
+  private void attempClose()
+  {
+    System.exit (0);
+  }
+  
+  /**
+   * main Method to start the editor.
+   * @param args not used.
+   */
   public static void main(String[] args)
   {
     try
     {
+      Boot.start();
       ConfigEditor ed = new ConfigEditor();
       ed.pack();
       ed.setVisible(true);

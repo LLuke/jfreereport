@@ -45,7 +45,7 @@
  * Expression.java
  * ---------------
  *
- * $Id: Expression.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: Expression.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * ChangeLog
  * ------------
@@ -170,6 +170,8 @@ public interface Expression extends Cloneable
    * possible) to 2^31 (upper limit of int).
    * <p>
    * Levels below 0 are reserved for system-functionality (printing and layouting).
+   * <p>
+   * The level must not change during the report processing, or the result is invalid.
    *
    * @return the level.
    */

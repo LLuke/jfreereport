@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractConfigTreeNode.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
+ * $Id: AbstractConfigTreeNode.java,v 1.2 2003/08/31 19:27:57 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,8 +42,6 @@ import java.util.Enumeration;
 import java.util.Collections;
 import java.util.ArrayList;
 import javax.swing.tree.TreeNode;
-
-import org.jfree.report.modules.gui.config.model.ConfigTreeNode;
 
 public abstract class AbstractConfigTreeNode implements ConfigTreeNode
 {
@@ -70,14 +68,26 @@ public abstract class AbstractConfigTreeNode implements ConfigTreeNode
     }
   }
 
+  /**
+   * Removes all child nodes.
+   *
+   */
   protected void reset ()
   {
+    for (int i = 0; i < childs.size(); i++)
+    {
+      ConfigTreeNode node = (ConfigTreeNode) childs.get(i);
+      node.setParent(null);
+    }
     childs.clear();
   }
   
   /**
    * Returns the child <code>TreeNode</code> at index
    * <code>childIndex</code>.
+   * 
+   * @param childIndex the index of the child node within this parent node.
+   * @return the child node.
    */
   public TreeNode getChildAt(int childIndex)
   {
@@ -87,6 +97,8 @@ public abstract class AbstractConfigTreeNode implements ConfigTreeNode
   /**
    * Returns the number of children <code>TreeNode</code>s the receiver
    * contains.
+   * 
+   * @return the number of child nodes.
    */
   public int getChildCount()
   {
@@ -95,6 +107,8 @@ public abstract class AbstractConfigTreeNode implements ConfigTreeNode
 
   /**
    * Returns true if the receiver allows children.
+   * 
+   * @return true, if this node allows child nodes.
    */
   public boolean getAllowsChildren()
   {
@@ -105,6 +119,10 @@ public abstract class AbstractConfigTreeNode implements ConfigTreeNode
    * Returns the index of <code>node</code> in the receivers children.
    * If the receiver does not contain <code>node</code>, -1 will be
    * returned.
+   * 
+   * @param node the suspected child node.
+   * @return the index of the given node or -1 if the node is not
+   * contained in this node.
    */
   public int getIndex(TreeNode node)
   {
@@ -113,6 +131,8 @@ public abstract class AbstractConfigTreeNode implements ConfigTreeNode
 
   /**
    * Returns true if the receiver is a leaf.
+   * 
+   * @return true, if this node is a leaf node, false otherwise.
    */
   public boolean isLeaf()
   {
@@ -121,22 +141,42 @@ public abstract class AbstractConfigTreeNode implements ConfigTreeNode
 
   /**
    * Returns the children of the receiver as an <code>Enumeration</code>.
+   * 
+   * @return all childs as enumeration.
    */
   public Enumeration children()
   {
     return Collections.enumeration(childs);
   }
 
+  /**
+   * Return the name of the node. 
+   * @see org.jfree.report.modules.gui.config.model.ConfigTreeNode#getName()
+   * 
+   * @return the name of the node.
+   */
   public String getName()
   {
     return name;
   }
 
+  /**
+   * Return the parent of this node or null if there is no parent. 
+   * @see javax.swing.tree.TreeNode#getParent()
+   * 
+   * @return the parent
+   */
   public TreeNode getParent()
   {
     return parent;
   }
 
+  /**
+   * Defines the parent of this node, or null if the node should not have a 
+   * parent. 
+   *
+   * @param parent the new parent or null.
+   */
   public void setParent(TreeNode parent)
   {
     this.parent = parent;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextConfigDescriptionEntry.java,v 1.1 2003/08/27 20:19:53 taqua Exp $
+ * $Id: TextConfigDescriptionEntry.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -37,8 +37,6 @@
  */
 
 package org.jfree.report.modules.gui.config.model;
-
-import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 
 public class TextConfigDescriptionEntry extends ConfigDescriptionEntry
 {

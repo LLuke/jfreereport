@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleNodeFactory.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
+ * $Id: ModuleNodeFactory.java,v 1.2 2003/09/02 15:05:32 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,6 +49,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.jfree.report.Boot;
 import org.jfree.report.JFreeReportCoreModule;
+import org.jfree.report.DefaultLogModule;
 import org.jfree.report.modules.Module;
 import org.jfree.report.modules.PackageManager;
 import org.jfree.report.util.Log;
@@ -67,10 +68,10 @@ public class ModuleNodeFactory
      * @param o1 the first object to be compared.
      * @param o2 the second object to be compared.
      * @return a negative integer, zero, or a positive integer as the
-     * 	       first argument is less than, equal to, or greater than the
-     *	       second.
+     *         first argument is less than, equal to, or greater than the
+     *         second.
      * @throws ClassCastException if the arguments' types prevent them from
-     * 	       being compared by this Comparator.
+     *         being compared by this Comparator.
      */
     public int compare(Object o1, Object o2)
     {
@@ -225,7 +226,8 @@ public class ModuleNodeFactory
     Module fallback = null;
     for (int i = 0; i < activeModules.length; i++)
     {
-      if (activeModules[i].getClass().equals(JFreeReportCoreModule.class))
+      if (activeModules[i].getClass().equals(JFreeReportCoreModule.class) ||
+          activeModules[i].getClass().equals(DefaultLogModule.class))
       {
         fallback = activeModules[i];
       }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConfigTreeRenderer.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,8 +48,20 @@ import org.jfree.report.modules.gui.config.model.ConfigTreeModuleNode;
 import org.jfree.report.modules.gui.config.model.ConfigTreeRootNode;
 import org.jfree.report.modules.gui.config.model.ConfigTreeSectionNode;
 
+/**
+ * Implements a config tree renderer that fixes some AWT-Graphics problems
+ * in conjunction with the clipping. It seems that the AWT-Graphics ignores
+ * the clipping bounds for some primitive operations. Clipping is done
+ * if the operations are performed on the Graphics2D level.
+ * 
+ * @see org.jfree.report.modules.gui.config.BugFixProxyGraphics2D
+ * @author Thomas Morgner
+ */
 public class ConfigTreeRenderer extends DefaultTreeCellRenderer
 {
+  /**
+   * DefaultConstructor.
+   */
   public ConfigTreeRenderer()
   {
     setDoubleBuffered(false);
@@ -62,6 +74,15 @@ public class ConfigTreeRenderer extends DefaultTreeCellRenderer
    * <code>toString</code> on <code>value</code>.
    * The foreground color is set based on the selection and the icon
    * is set based on on leaf and expanded.
+   * 
+   * @param tree the tree that renders the node.
+   * @param value the tree node
+   * @param sel whether the node is selected.
+   * @param expanded whether the node is expanded
+   * @param leaf whether the node is a leaf
+   * @param row the row number of the node in the tree.
+   * @param hasFocus whether the node has the input focus
+   * @return the renderer component.
    */
   public Component getTreeCellRendererComponent(JTree tree, Object value,
                                                 boolean sel,

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportCoreModule.java,v 1.1 2003/08/30 15:04:53 taqua Exp $
+ * $Id: JFreeReportCoreModule.java,v 1.2 2003/09/02 15:05:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,8 +43,21 @@ import java.io.InputStream;
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 
+/**
+ * The CoreModule is used to represent the base classes of JFreeReport
+ * in a PackageManager-compatible way. Modules may request a certain
+ * core-version to be present by referencing to this module.
+ * 
+ * @author Thomas Morgner
+ */
 public class JFreeReportCoreModule extends AbstractModule
 {
+  /**
+   * Creates a new module definition based on the 'coremodule.properties'
+   * file of this package.
+   * 
+   * @throws ModuleInitializeException if the file could not be loaded.
+   */
   public JFreeReportCoreModule() throws ModuleInitializeException
   {
     final InputStream in = getClass().getResourceAsStream
@@ -58,10 +71,7 @@ public class JFreeReportCoreModule extends AbstractModule
   }
 
   /**
-   * Initializes the module. Use this method to perform all initial setup operations.
-   * This method is called only once in a modules lifetime. If the initializing cannot
-   * be completed, throw a ModuleInitializeException to indicate the error,. The module
-   * will not be available to the system.
+   * Initializes the module. This method does nothing.
    *
    * @throws ModuleInitializeException if an error ocurred while initializing the module.
    */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_de.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: DemoResources_de.java,v 1.3 2003/08/28 17:45:42 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,8 @@ public class DemoResources_de extends JFreeReportResources
     {"report.definitionfailure.message", "Reportdefinition konnte nicht geladen werden. {0} "},
     {"report.definitionfailure.title", "Das Laden der Berichtdefinition schlug fehl."},
     {"report.definitionnull", "Es wurde keine Reportdefinition erzeugt"},
-    {"report.previewfailure.message", "Während der initialisierung der Berichtsvorschau trat ein Fehler auf."},
+    {"report.previewfailure.message", 
+      "Während der initialisierung der Berichtsvorschau trat ein Fehler auf."},
     {"report.previewfailure.title", "Das Vorbereiten der Berichtsvorschau schlug fehl."},
     {"error", "Fehler"},
     {"example", "Beispiel {0}"}

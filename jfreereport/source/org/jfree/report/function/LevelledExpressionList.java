@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.3 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -89,8 +89,8 @@ public final class LevelledExpressionList implements ReportListener,
   /**
    * Creates a new list.
    *
-   * @param ec  the expressions.
-   * @param fc  the functions.
+   * @param ec  the expressions from the report definition.
+   * @param fc  the functions from the report definition.
    */
   public LevelledExpressionList(final ExpressionCollection ec, final ExpressionCollection fc)
   {
@@ -100,6 +100,13 @@ public final class LevelledExpressionList implements ReportListener,
     this.levels = buildLevels();
   }
 
+  /**
+   * Builds the list of all levels. This is done once after the initialisation,
+   * as the functions level is not expected to change after the function was
+   * initialized.
+   * 
+   * @return the function levels.
+   */
   private int[] buildLevels()
   {
     // copy all levels from the collections to the cache ...
@@ -911,7 +918,12 @@ public final class LevelledExpressionList implements ReportListener,
     return ft;
   }
 
-
+  /**
+   * Returns the preview instance of the levelled expression list. This list
+   * does no longer contain any Function instances.
+   *  
+   * @return the preview (expressions only) instance of the levelled expression list.
+   */
   public LevelledExpressionList getPreviewInstance()
   {
     final LevelledExpressionList ft = new LevelledExpressionList();

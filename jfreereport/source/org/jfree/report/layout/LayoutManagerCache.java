@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.6 2003/08/27 20:19:52 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,9 @@ public class LayoutManagerCache
     }
 
     /**
-     * @return
+     * Returns the minimum size stored in this carrier.
+     *  
+     * @return the minimum size stored in that carrier.
      */
     public Dimension2D getMinSize()
     {
@@ -80,7 +82,9 @@ public class LayoutManagerCache
     }
 
     /**
-     * @return
+     * Returns the preferred size stored in this carrier.
+     *  
+     * @return the preferred size stored in that carrier.
      */
     public Dimension2D getPrefSize()
     {
@@ -88,7 +92,9 @@ public class LayoutManagerCache
     }
 
     /**
-     * @param dimension2D
+     * Defines the minimum size stored in this carrier.
+     *  
+     * @param dimension2D the minimum size to be stored in that carrier.
      */
     public void setMinSize(final Dimension2D dimension2D)
     {
@@ -96,7 +102,9 @@ public class LayoutManagerCache
     }
 
     /**
-     * @param dimension2D
+     * Defines the minimum size stored in this carrier.
+     *  
+     * @param dimension2D the minimum size stored in that carrier.
      */
     public void setPrefSize(final Dimension2D dimension2D)
     {

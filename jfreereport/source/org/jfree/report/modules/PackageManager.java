@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.12 2003/08/31 19:27:56 taqua Exp $
+ * $Id: PackageManager.java,v 1.13 2003/09/02 15:05:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.jfree.report.Boot;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PackageConfiguration;
 import org.jfree.report.util.ReportConfiguration;
@@ -63,6 +62,13 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public final class PackageManager
 {
+  /** An internal constant declaring that the specified module was already loaded. */
+  private static final int RETURN_MODULE_LOADED = 0;
+  /** An internal constant declaring that the specified module is not known. */
+  private static final int RETURN_MODULE_UNKNOWN = 1;
+  /** An internal constant declaring that the specified module produced an error while loading. */
+  private static final int RETURN_MODULE_ERROR = 2;
+
   /** A singleton instance of the package manager. */
   private static PackageManager singleton;
 
@@ -204,10 +210,6 @@ public final class PackageManager
     }
   }
 
-  private static final int RETURN_MODULE_LOADED = 0;
-  private static final int RETURN_MODULE_UNKNOWN = 1;
-  private static final int RETURN_MODULE_ERROR = 2;
-
   /**
    * Checks, whether the given module is already loaded in either the given
    * tempModules list or the global package registry. If tmpModules is null,
@@ -251,6 +253,13 @@ public final class PackageManager
     return RETURN_MODULE_UNKNOWN;
   }
 
+  /**
+   * A utility method that collects all failed modules. Such an module caused 
+   * an error while being loaded, and is now cached in case it is referenced
+   * elsewhere.
+   *  
+   * @param state the failed module.
+   */
   private void dropFailedModule (PackageState state)
   {
     if (modules.contains(state) == false)
@@ -265,7 +274,13 @@ public final class PackageManager
    * are discarded and no action is taken.
    *
    * @param moduleInfo the module info of the module that should be loaded.
+   * @param incompleteModules a list of incompletly loaded modules. This are module
+   * specifications which depend on the current module and wait for the module to
+   * be completly loaded.
    * @param modules the list of previously loaded modules for this module.
+   * @param fatal a flag that states, whether the failure of loading a module should
+   * be considered an error. Root-modules load errors are never fatal, as we try
+   * to load all known modules, regardless whether they are active or not. 
    * @return true, if the module was loaded successfully, false otherwise.
    */
   private boolean loadModule(final ModuleInfo moduleInfo, final ArrayList incompleteModules,
@@ -300,7 +315,9 @@ public final class PackageManager
         if (incompleteModules.contains(module))
         {
           // we assume that loading will continue ...
-          Log.error ("Circular module reference: This module definition is invalid: " + module.getClass());
+          Log.error(new Log.SimpleMessage
+            ("Circular module reference: This module definition is invalid: ", 
+              module.getClass()));
           PackageState state = new PackageState(module, PackageState.STATE_ERROR);
           dropFailedModule(state);
           return false;
@@ -501,14 +518,14 @@ public final class PackageManager
     return mods;
   }
 
-  public static void main (String [] args)
-  {
-    Boot.start();
-    Module[] mods = PackageManager.getInstance().getAllModules();
-    for (int i = 0; i < mods.length; i++)
-    {
-      System.out.println (mods[i].getSubSystem() + " " + mods[i].getName());
-    }
-    System.out.println ("A total of " + mods.length + " modules is available.");
-  }
+//  public static void main (String [] args)
+//  {
+//    Boot.start();
+//    Module[] mods = PackageManager.getInstance().getAllModules();
+//    for (int i = 0; i < mods.length; i++)
+//    {
+//      System.out.println (mods[i].getSubSystem() + " " + mods[i].getName());
+//    }
+//    System.out.println ("A total of " + mods.length + " modules is available.");
+//  }
 }
