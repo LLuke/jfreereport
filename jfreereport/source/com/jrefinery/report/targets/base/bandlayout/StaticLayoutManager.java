@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.8 2003/02/08 20:43:19 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.9 2003/02/16 19:02:38 taqua Exp $
  *
  * Changes
  * -------
@@ -436,6 +436,8 @@ public class StaticLayoutManager implements BandLayoutManager
     double height = Math.max(0, minSize.getHeight());
     double width = Math.max(0, minSize.getWidth());
 
+    Log.debug ("MinimumLayoutSize: " + b.getName() + " > " + minSize);
+
     // now take the maximum limit defined for that band into account.
     Dimension2D maxSize
         = (Dimension2D) b.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
@@ -541,6 +543,8 @@ public class StaticLayoutManager implements BandLayoutManager
     {
       throw new NullPointerException("Need the parent's bound set");
     }
+    Log.warn("ParentBounds: " + parentBounds + " > " + b.getName());
+
     Dimension2D parentDim = new FloatDimension(parentBounds.getWidth(), parentBounds.getHeight());
     Point2D parentPoint = new Point2D.Double (parentBounds.getX(), parentBounds.getY());
 
@@ -552,7 +556,7 @@ public class StaticLayoutManager implements BandLayoutManager
 
       Point2D absPos
           = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim);
-      absPos.setLocation(absPos.getX() + parentPoint.getX(), absPos.getY() + parentPoint.getY());
+      //absPos.setLocation(absPos.getX() + parentPoint.getX(), absPos.getY() + parentPoint.getY());
 
       // here apply the maximum bounds ...
       Rectangle2D bounds = new Rectangle2D.Double(align(absPos.getX(), layoutSupport.getHorizontalAlignmentBorder()),
@@ -560,6 +564,8 @@ public class StaticLayoutManager implements BandLayoutManager
                                                   align(size.getWidth(), layoutSupport.getHorizontalAlignmentBorder()),
                                                   align(size.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
       BandLayoutManagerUtil.setBounds(e, bounds);
+      Log.debug ("Bounds Defined: " + e.getName() + " > " + bounds);
+      Log.debug ("       Points : " + e.getName() + " > " + absPos + " -> "+ parentPoint);
       if (e instanceof Band)
       {
         Band band = (Band) e;

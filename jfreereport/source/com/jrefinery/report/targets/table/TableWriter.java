@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 2:32:12 PM
  *
- * $Id: TableWriter.java,v 1.10 2003/02/12 10:00:01 taqua Exp $
+ * $Id: TableWriter.java,v 1.11 2003/02/12 23:05:57 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -147,6 +147,7 @@ public class TableWriter extends AbstractFunction
     getCursor().advance((float) bounds.getHeight());
     if (cellCount < producer.getCellCount())
     {
+      // something was printed ...
       isPageEmpty = false;
     }
   }

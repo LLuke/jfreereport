@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.25 2003/02/12 10:00:01 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.26 2003/02/12 17:36:09 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,6 @@ import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.function.Expression;
-import com.jrefinery.report.states.PostReportFooterState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.pageable.LogicalPage;
@@ -865,13 +864,6 @@ public class SimplePageLayouter extends PageLayouter
       print(state.getBand(), false);
     }
     clearSaveState();
-    // this is the last valid state for the reporting,
-    // force the last pagebreak if the reportfooter was printed here.
-    if (anchestor instanceof PostReportFooterState && state.getBand() != null)
-    {
-      createSaveState(null);
-      endPage(ENDPAGE_FORCED);
-    }
   }
 
   /**

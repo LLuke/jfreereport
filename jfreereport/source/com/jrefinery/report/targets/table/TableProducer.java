@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.10 2003/02/11 20:20:19 taqua Exp $
+ * $Id: TableProducer.java,v 1.11 2003/02/12 21:17:18 taqua Exp $
  *
  * Changes
  * -------
@@ -50,28 +50,66 @@ import java.util.List;
  */
 public abstract class TableProducer
 {
+  /** the grid, that stores the collected TableCellData */
   private TableGrid grid;
+  /** the dummy mode flag */
   private boolean dummy;
 
+  /**
+   * Creates a new TableProducer.
+   *
+   * @param strictLayout the strict layout flag. Set to true, to enable the strict
+   * layout mode.
+   */
   public TableProducer(boolean strictLayout)
   {
     grid = new TableGrid(strictLayout);
     dummy = false;
   }
 
-  /** A useful constant for specifying the PDF creator. */
+  /** A useful constant for specifying the creator constant. */
   protected static final String CREATOR =
       JFreeReport.getInfo().getName()
       + " version "
       + JFreeReport.getInfo().getVersion();
 
+  /**
+   * Starts the report writing. This method is called before any other report handling
+   * method is called.
+   */
   public abstract void open();
+
+  /**
+   * Closes the report and finishs the report writing. Any used resource should
+   * be freed when this method returns. The current page is already closed.
+   */
   public abstract void close();
 
+  /**
+   * Handles the end of a page.
+   */
   public abstract void endPage();
+
+  /**
+   * Handles the start of a new page. The page name is given as parameter.
+   * The TableWriter starts a new page whenever a manual pagebreak is found
+   * in the report definition. The ReportProducer has been opened before.
+   *
+   * @param name the page name
+   */
   public abstract void beginPage(String name);
+
+  /**
+   * Gets the TableProducer implementation of this TableProducer.
+   *
+   * @return the TableProducers TableCellDataFactory, which is used to create
+   * the TableCellData.
+   */
   public abstract TableCellDataFactory getCellDataFactory ();
 
+  /**
+   * Clears the grid, removes all created cells.
+   */
   public void clearCells ()
   {
     grid.clear();
@@ -83,20 +121,39 @@ public abstract class TableProducer
     return grid.performLayout();
   }
 
+  /**
+   * Gets the number of created cells in the grid.
+   *
+   * @return the number of stored cells in the grid.
+   */
   public int getCellCount ()
   {
     return grid.size();
   }
 
-  public void addCell (TableCellData data)
+  /**
+   * Adds a new TableCellData to the grid.
+   *
+   * @param data the new TableCellData.
+   */
+  protected void addCell (TableCellData data)
   {
     grid.addData(data);
   }
 
+  /**
+   * Returns true, if the TableProducer is open. Only open producers
+   * are able to write TableCells or to create TableCellData from Elements.
+   *
+   * @return checks, whether the TableProducer is open.
+   */
   public abstract boolean isOpen();
 
 
   /**
+   * Processes the layouted band. The band is inserted on the specified bounds in
+   * the TableGrid.
+   *
    * @param bounds the bounds that define where to print the given band on this logical page
    * @param band the band that should be spooled/printed
    */
@@ -113,11 +170,12 @@ public abstract class TableProducer
       return;
     }
 
+    // do nothing if the band has no height...
     if (bounds.getHeight() == 0)
     {
       return;
     }
-
+/*
     processBandInner(bounds, band);
   }
 
@@ -127,6 +185,12 @@ public abstract class TableProducer
     {
       return;
     }
+    // do nothing if the band is invisble
+    if (band.isVisible() == false)
+    {
+      return;
+    }
+*/
     // handle the band itself, the band's bounds are already translated.
     processElement(bounds, band);
 
@@ -138,7 +202,7 @@ public abstract class TableProducer
       if (e instanceof Band)
       {
         Rectangle2D bbounds = (Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-        processBandInner(translateSubRect(bbounds, bounds), (Band) e);
+        processBand(translateSubRect(bbounds, bounds), (Band) e);
       }
       else
       {

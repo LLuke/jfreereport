@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SubSetTableModel.java,v 1.4 2003/02/04 17:56:23 taqua Exp $
+ * $Id: SubSetTableModel.java,v 1.5 2003/02/07 20:26:02 taqua Exp $
  *
  * Changes
  * -------
  * 26-Jan-2003 : Initial version
- *
+ * 16-Feb-2003 : Documentation
  */
 package com.jrefinery.report.tablemodel;
 
@@ -43,17 +43,23 @@ import javax.swing.table.TableModel;
 import java.util.ArrayList;
 
 /**
- *
+ * A TableModel that proxies an other tablemodel and cuts rows from the
+ * start and/or the end of the other tablemodel.
  */
 public class SubSetTableModel implements TableModel
 {
   /**
-   *
+   * A helper class, that translates tableevents received from the wrapped table model
+   * and forwards them with changed indices to the regitered listeners.
    */
   private class TableEventTranslator implements TableModelListener
   {
+    /** the registered listeners */
     private ArrayList listeners;
 
+    /**
+     * Default Constructor
+     */
     public TableEventTranslator()
     {
       listeners = new ArrayList();
@@ -61,7 +67,10 @@ public class SubSetTableModel implements TableModel
 
     /**
      * This fine grain notification tells listeners the exact range
-     * of cells, rows, or columns that changed.
+     * of cells, rows, or columns that changed. The received rows are
+     * translated to fit the external tablemodel size.
+     *
+     * @param e the event, that should be translated.
      */
     public void tableChanged(TableModelEvent e)
     {
@@ -91,8 +100,9 @@ public class SubSetTableModel implements TableModel
     }
 
     /**
+     * Adds the TableModelListener to this Translator.
      *
-     * @param l
+     * @param l the tablemodel listener
      */
     public void addTableModelListener (TableModelListener l)
     {
@@ -100,8 +110,9 @@ public class SubSetTableModel implements TableModel
     }
 
     /**
+     * Removes the TableModelListener from this Translator.
      *
-     * @param l
+     * @param l the tablemodel listener
      */
     public void removeTableModelListener (TableModelListener l)
     {
@@ -109,21 +120,33 @@ public class SubSetTableModel implements TableModel
     }
   }
 
+  /** the row that should be the first row */
   private int start;
+  /** the row that should be the last row */
   private int end;
+  /** the model */
   private TableModel model;
+  /** the event translator */
   private TableEventTranslator eventHandler;
 
   /**
+   * Creates a new SubSetTableModel, the start and the end parameters define
+   * the new tablemodel row count. The parameter <code>start</code> must be
+   * a positive integer and denotes the number or rows removed from the start
+   * of the tablemodel. <code>end</code> is the number of the last translated
+   * row. Any row after <code>end</code> is ignored. End must be greater or
+   * equal the given start row.
    *
-   * @param start
-   * @param end
-   * @param model
+   * @param start the number of rows that should be removed.
+   * @param end the last row.
+   * @param model the wrapped model
+   * @throws NullPointerException if the given model is null
+   * @throws IllegalArgumentException if start or end are invalid.
    */
   public SubSetTableModel (int start, int end, TableModel model)
   {
     if (start < 0) throw new IllegalArgumentException("Start < 0");
-    if (end < start) throw new IllegalArgumentException("end < start");
+    if (end <= start) throw new IllegalArgumentException("end < start");
     if (model == null) throw new NullPointerException();
     if (end >= model.getRowCount()) throw new IllegalArgumentException("End >= Model.RowCount");
 
@@ -134,9 +157,10 @@ public class SubSetTableModel implements TableModel
   }
 
   /**
+   * Translates the given row to fit for the wrapped tablemodel.
    * 
-   * @param rowIndex
-   * @return
+   * @param rowIndex the original row index.
+   * @return the translated row index.
    */
   private int getClientRowIndex (int rowIndex)
   {

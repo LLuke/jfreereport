@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport2.java,v 1.1 2003/02/01 18:30:53 taqua Exp $
+ * $Id: SampleReport2.java,v 1.2 2003/02/06 17:38:01 taqua Exp $
  *
  * Changes:
  * --------
@@ -40,11 +40,16 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportHeader;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
+import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
+import com.jrefinery.report.targets.base.layout.DefaultLayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.geom.Point2D;
 
 /**
  * A sample to show the band in band capabilities of JFreeReport ...
@@ -74,12 +79,19 @@ public class SampleReport2
   {
     Band band = new Band ();
     band.setName("Band-" + name);
-    band.getStyle().setStyleProperty(ElementStyleSheet.MAXIMUMSIZE, new FloatDimension(x + width, y + height));
+//    Log.debug ("Create Band : " + name + " width = " + width + " height = " + height);
+    band.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(width, height));
+    band.getStyle().setStyleProperty(ElementStyleSheet.MAXIMUMSIZE, new FloatDimension(width, height));
+    band.getStyle().setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, new Point2D.Double(x, y));
+
+    // create the marker shape, the shape fills the generated band and paints the colored background
+    // all coordinates or dimensions are within the band, and not affected by the bands placement in
+    // the outer report bands 
     band.addElement(
         ItemFactory.createRectangleShapeElement(name,
                                                 color,
                                                 null,
-                                                new Rectangle(x,y,width, height),
+                                                new Rectangle(0, 0, -100, -100),
                                                 false,
                                                 true)
     );
@@ -97,14 +109,19 @@ public class SampleReport2
     Band levelA1 = createBand("A1", Color.magenta,0,0, 100, 100);
     levelA1.addElement(createBand("A1-B1", Color.blue, 0, 50, 50, 50));
     levelA1.addElement(createBand("A1-B2", Color.yellow, 50, 0, 150, 50));
-
-    Band levelA2 = createBand("A2", Color.green,-55,-5, -45, -100);
-    levelA2.addElement(createBand("A2-B1", Color.red, -5, -55, -40, -40));
-    levelA2.addElement(createBand("A2-B2", Color.pink, -55, -5, -40, -40));
+    // x=55%, y=5%, width=40%, height=100%
+    Band levelA2 = createBand("A2", Color.green,-50, 0, -50, -100);
+    // x=5%, y=55%, width=40%, height=40%
+    levelA2.addElement(createBand("A2-B1", Color.red, 0, -50, -50, -50));
+    // x=55%, y=5%, width=40%, height=40%
+    levelA2.addElement(createBand("A2-B2", Color.darkGray, -55, -5, -40, -40));
 
     ReportHeader header = new ReportHeader ();
     header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
                                        new FloatDimension(-100, 100));
+    header.getStyle().setStyleProperty(ElementStyleSheet.MAXIMUMSIZE,
+                                       new FloatDimension(Short.MAX_VALUE, 100));
+
     header.addElement(
         ItemFactory.createRectangleShapeElement("Root-Shape",
                                                 Color.orange,
@@ -120,4 +137,9 @@ public class SampleReport2
     return report;
   }
 
+  public static void main (String [] args)
+  {
+    JFreeReport r = new SampleReport2().createReport();
+    BandLayoutManagerUtil.doLayout(r.getReportHeader(), new DefaultLayoutSupport(), 1000, 1000);
+  }
 }
