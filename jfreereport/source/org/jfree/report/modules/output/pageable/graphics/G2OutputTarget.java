@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.4 2003/08/24 15:05:18 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.5 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -503,7 +503,6 @@ public class G2OutputTarget extends AbstractOutputTarget
 
     final float correctedBaseline = baseline * cFact;
     g2.drawString(text, 0.0f, correctedBaseline);
-
     if (getFont().isUnderline())
     {
       final float l = (getFont().getFont().getSize2D() + correctedBaseline) / 2.0f;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.15 2003/09/09 02:29:13 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.16 2003/09/09 21:31:36 taqua Exp $
  *
  * Changes
  * -------
@@ -1963,6 +1963,7 @@ public class PreviewProxyBase extends JComponent
           final ReportPane reportPane = getReportPane();
           try
           {
+            long startTime = System.currentTimeMillis();
             reportPane.addRepaginationListener(progressDialog);
             RefineryUtilities.positionFrameRandomly(progressDialog);
             progressDialog.setVisible(true);
@@ -1975,6 +1976,7 @@ public class PreviewProxyBase extends JComponent
             progressDialog.setVisible(false);
             reportPane.removeRepaginationListener(progressDialog);
             setLockInterface(false);
+            Log.debug ("Pagination done: " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.");
           }
           catch (ReportInterruptedException re)
           {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.5 2003/09/07 15:27:08 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.6 2003/09/09 02:29:13 taqua Exp $
  *
  * Changes
  * -------
@@ -71,18 +71,18 @@ public class TextOperationModule extends OperationModule
    * Creates a list of operations.
    *
    * @param col  the operations collector.
-   * @param e  the element.
+   * @param element  the element.
    * @param value  the content.
    * @param bounds  the bounds.
    */
-  public void createOperations(final PhysicalOperationsCollector col, final Element e,
+  public void createOperations(final PhysicalOperationsCollector col, final Element element,
                                final Content value, final Rectangle2D bounds)
   {
     if (bounds == null)
     {
       throw new NullPointerException("Bounds is null");
     }
-    if (e == null)
+    if (element == null)
     {
       throw new NullPointerException("element is null");
     }
@@ -96,31 +96,29 @@ public class TextOperationModule extends OperationModule
       return;
     }
     // Font
-    final FontDefinition font = e.getStyle().getFontDefinitionProperty();
+    final FontDefinition font = element.getStyle().getFontDefinitionProperty();
 
     // Paint
-    final Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
+    final Color paint = (Color) element.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
 
     col.addOperation(new PhysicalOperation.SetFontOperation(font));
     col.addOperation(new PhysicalOperation.SetPaintOperation(paint));
-    Rectangle2D cbounds = c.getMinimumContentSize();
-    if (cbounds == null)
-    {
-      // if the content could not determine its minimum bounds, then skip ...
-      cbounds = bounds.getBounds2D();
-    }
 
     final ElementAlignment va
-        = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
+        = (ElementAlignment) element.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
     final VerticalBoundsAlignment vba = getVerticalLayout(va, bounds);
     // calculate the horizontal shift ... is applied later
-    // vba.calculateShift(cbounds);
+
+    final Rectangle2D cBounds = c.getMinimumContentSize();
+    float vbaShift = (float) cBounds.getY();
+    vbaShift = (float) vba.align(c.getMinimumContentSize()).getY() - vbaShift;
 
     final ElementAlignment ha
-        = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
+        = (ElementAlignment) element.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
 
     HorizontalBoundsAlignment hba = getHorizontalLayout(ha, bounds);
-    addContent(c, col, hba, vba);
+    addContent(c, col, hba, vbaShift);
+    // bugfix here: Dont move the line content within the global content bounds.
   }
 
   /**
@@ -130,16 +128,18 @@ public class TextOperationModule extends OperationModule
    * @param c  the content.
    * @param col  the list where to collect the generated content
    * @param hba  the bounds.
-   * @param vba  the vertical bounds alignment.
+   * @param vbaShift  the vertical bounds alignment shifting.
    */
   private void addContent(final Content c, final PhysicalOperationsCollector col,
                           final HorizontalBoundsAlignment hba,
-                          final VerticalBoundsAlignment vba)
+                          final float vbaShift)
   {
     if (c instanceof TextLine)
     {
       final String value = ((TextLine) c).getContent();
-      final Rectangle2D abounds = vba.align(hba.align(c.getBounds()));
+      final Rectangle2D abounds = hba.align(c.getBounds());
+      abounds.setRect(abounds.getX(), abounds.getY() + vbaShift,
+          abounds.getWidth(), abounds.getHeight());
       col.addOperation(new PhysicalOperation.SetBoundsOperation(abounds));
       col.addOperation(new PhysicalOperation.PrintTextOperation(value));
     }
@@ -147,7 +147,7 @@ public class TextOperationModule extends OperationModule
     {
       for (int i = 0; i < c.getContentPartCount(); i++)
       {
-        addContent(c.getContentPart(i), col, hba, vba);
+        addContent(c.getContentPart(i), col, hba, vbaShift);
       }
     }
   }

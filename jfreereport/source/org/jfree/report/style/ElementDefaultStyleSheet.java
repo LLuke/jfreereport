@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,9 @@ import org.jfree.ui.FloatDimension;
 /**
  * The default element style sheet. This style sheet defines default attribute
  * values for all elements.
- *
+ * <p>
+ * The default valignment was modified to top.
+ * 
  * @author Thomas Morgner
  */
 public class ElementDefaultStyleSheet extends ElementStyleSheet
@@ -74,7 +76,7 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
     setStyleProperty(BOUNDS, new Rectangle2D.Float());
     setStyleProperty(PAINT, DEFAULT_PAINT);
     setFontDefinitionProperty(DEFAULT_FONT_DEFINITION);
-    setStyleProperty(VALIGNMENT, ElementAlignment.BOTTOM);
+    setStyleProperty(VALIGNMENT, ElementAlignment.TOP);
     setStyleProperty(ALIGNMENT, ElementAlignment.LEFT);
     setStyleProperty(VISIBLE, Boolean.TRUE);
     setStyleProperty(LINEHEIGHT, new Float(0));

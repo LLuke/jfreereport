@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.4 2003/08/24 15:03:59 taqua Exp $
+ * $Id: PhysicalOperation.java,v 1.5 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -263,6 +263,15 @@ public abstract class PhysicalOperation
     public String toString()
     {
       return "SetBoundsOperation: " + bounds;
+    }
+
+    /**
+     * Returns the bounds from this operation object.
+     * @return a clone of the bounds
+     */
+    public Rectangle2D getBounds ()
+    {
+      return bounds.getBounds2D();
     }
   }
 
