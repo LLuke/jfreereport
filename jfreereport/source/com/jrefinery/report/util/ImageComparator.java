@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,14 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageComparator.java,v 1.5 2003/02/26 13:58:04 mungady Exp $
+ * $Id: ImageComparator.java,v 1.6 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
  * 26-Jan-2003 : Initial version
  * 05-Feb-2003 : Documentation
  * 25-Feb-2003 : Fixed Checkstyle issues (DG);
- * 
+ *
  */
 
 package com.jrefinery.report.util;
@@ -48,7 +48,7 @@ import java.util.Arrays;
  * The ImageComparator tries to compare a byte[] for equality by creating
  * 2 hashes for the bytearray and comparing thoose hashes. If no digest
  * algorithms are available, then the complete byte[] is used for comparison.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ImageComparator
@@ -70,7 +70,7 @@ public class ImageComparator
 
     /**
      * Create a new CompleteImageCompareData instance.
-     * 
+     *
      * @param image the image data used for comparison.
      */
     private CompleteImageCompareData(byte[] image)
@@ -86,18 +86,18 @@ public class ImageComparator
      */
     public boolean equals(Object o)
     {
-      if (this == o) 
+      if (this == o)
       {
         return true;
       }
-      if (!(o instanceof CompleteImageCompareData)) 
+      if (!(o instanceof CompleteImageCompareData))
       {
         return false;
       }
 
       final CompleteImageCompareData data = (CompleteImageCompareData) o;
 
-      if (!Arrays.equals(image, data.image)) 
+      if (!Arrays.equals(image, data.image))
       {
         return false;
       }
@@ -123,7 +123,7 @@ public class ImageComparator
   {
     /** An MD5 digest. */
     private byte[] digestMD5Data;
-    
+
     /** An SHA digest. */
     private byte[] digestSHAData;
 
@@ -135,7 +135,7 @@ public class ImageComparator
      */
     private DigestImageCompareData(byte[] digestMD5Data, byte[] digestSHAData)
     {
-      if (digestMD5Data == null ||  digestSHAData == null)
+      if (digestMD5Data == null || digestSHAData == null)
       {
         throw new NullPointerException();
       }
@@ -151,22 +151,22 @@ public class ImageComparator
      */
     public boolean equals(Object o)
     {
-      if (this == o) 
+      if (this == o)
       {
         return true;
       }
-      if (!(o instanceof DigestImageCompareData)) 
+      if (!(o instanceof DigestImageCompareData))
       {
         return false;
       }
 
       final DigestImageCompareData data = (DigestImageCompareData) o;
 
-      if (!Arrays.equals(digestMD5Data, data.digestMD5Data)) 
+      if (!Arrays.equals(digestMD5Data, data.digestMD5Data))
       {
         return false;
       }
-      if (!Arrays.equals(digestSHAData, data.digestSHAData)) 
+      if (!Arrays.equals(digestSHAData, data.digestSHAData))
       {
         return false;
       }
@@ -186,7 +186,7 @@ public class ImageComparator
 
   /** An MD5 message digest. */
   private MessageDigest digestMD5;
-  
+
   /** An SHA message digest. */
   private MessageDigest digestSHA;
 
@@ -204,7 +204,7 @@ public class ImageComparator
     }
     catch (NoSuchAlgorithmException nse)
     {
-      Log.info ("No MD5 algorithm available");
+      Log.info("No MD5 algorithm available");
     }
     try
     {
@@ -212,7 +212,7 @@ public class ImageComparator
     }
     catch (NoSuchAlgorithmException nse)
     {
-      Log.info ("No SHA algorithm available");
+      Log.info("No SHA algorithm available");
     }
   }
 
@@ -222,7 +222,7 @@ public class ImageComparator
    * @param image the image data which should be prepared for comparison
    * @return the prepared image data.
    */
-  public ImageCompareData createCompareData (byte[] image)
+  public ImageCompareData createCompareData(byte[] image)
   {
     if (digestMD5 != null && digestSHA != null)
     {

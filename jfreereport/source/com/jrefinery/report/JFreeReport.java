@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.57 2003/06/23 16:08:20 taqua Exp $
+ * $Id: JFreeReport.java,v 1.58 2003/06/26 19:55:55 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -77,10 +77,10 @@ import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.ExpressionCollection;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.targets.style.StyleSheetCollection;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.ReportProperties;
 import com.jrefinery.report.util.SerializerHelper;
-import com.jrefinery.report.targets.style.StyleSheetCollection;
 
 /**
  * This class co-ordinates the process of generating a report from a <code>TableModel</code>.
@@ -160,31 +160,31 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * The default constructor. Creates an empty but fully initialized report.
    */
-  public JFreeReport ()
+  public JFreeReport()
   {
     this.reportConfiguration = new ReportConfiguration(ReportConfiguration.getGlobalConfig());
-    this.properties = new ReportProperties ();
+    this.properties = new ReportProperties();
     this.styleSheetCollection = new StyleSheetCollection();
 
-    this.groups = new GroupList ();
-    checkGroups ();
+    this.groups = new GroupList();
+    checkGroups();
     this.groups.registerStyleSheetCollection(this.styleSheetCollection);
 
-    this.reportHeader = new ReportHeader ();
+    this.reportHeader = new ReportHeader();
     this.reportHeader.registerStyleSheetCollection(this.styleSheetCollection);
-    this.reportFooter = new ReportFooter ();
+    this.reportFooter = new ReportFooter();
     this.reportFooter.registerStyleSheetCollection(this.styleSheetCollection);
-    this.pageHeader = new PageHeader ();
+    this.pageHeader = new PageHeader();
     this.pageHeader.registerStyleSheetCollection(this.styleSheetCollection);
-    this.pageFooter = new PageFooter ();
+    this.pageFooter = new PageFooter();
     this.pageFooter.registerStyleSheetCollection(this.styleSheetCollection);
-    this.itemBand = new ItemBand ();
+    this.itemBand = new ItemBand();
     this.itemBand.registerStyleSheetCollection(this.styleSheetCollection);
 
-    this.data = new DefaultTableModel ();
-    this.functions = new ExpressionCollection ();
+    this.data = new DefaultTableModel();
+    this.functions = new ExpressionCollection();
     this.expressions = new ExpressionCollection();
-    setDefaultPageFormat (null);
+    setDefaultPageFormat(null);
   }
 
   /**
@@ -204,34 +204,34 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @throws NullPointerException if one of the <i>not null</i>-parameters is null.
    * @throws FunctionInitializeException if any of the functions cannot be initialized.
    */
-  public JFreeReport (
-          String name,
-          ReportHeader reportHeader,
-          ReportFooter reportFooter,
-          PageHeader pageHeader,
-          PageFooter pageFooter,
-          ItemBand itemBand,
-          GroupList groups,
-          Collection functions,
-          TableModel data,
-          PageFormat defaultPageFormat)
-          throws FunctionInitializeException
+  public JFreeReport(
+      String name,
+      ReportHeader reportHeader,
+      ReportFooter reportFooter,
+      PageHeader pageHeader,
+      PageFooter pageFooter,
+      ItemBand itemBand,
+      GroupList groups,
+      Collection functions,
+      TableModel data,
+      PageFormat defaultPageFormat)
+      throws FunctionInitializeException
   {
-    this ();
-    setName (name);
-    setReportHeader (reportHeader);
-    setReportFooter (reportFooter);
-    setPageHeader (pageHeader);
-    setPageFooter (pageFooter);
-    setData (data);
-    setDefaultPageFormat (defaultPageFormat);
+    this();
+    setName(name);
+    setReportHeader(reportHeader);
+    setReportFooter(reportFooter);
+    setPageHeader(pageHeader);
+    setPageFooter(pageFooter);
+    setData(data);
+    setDefaultPageFormat(defaultPageFormat);
 
-    setItemBand (itemBand);
-    setGroups (groups);
+    setItemBand(itemBand);
+    setGroups(groups);
 
     // store the functions in a Map using the function name as the key.
 
-    setFunctions (new ExpressionCollection (functions));
+    setFunctions(new ExpressionCollection(functions));
   }
 
   /**
@@ -253,22 +253,22 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @throws FunctionInitializeException if any of the functions cannot be initialized.
    * <!-- changed expressions to fit functions parameter -->
    */
-  public JFreeReport (
-          String name,
-          ReportHeader reportHeader,
-          ReportFooter reportFooter,
-          PageHeader pageHeader,
-          PageFooter pageFooter,
-          ItemBand itemBand,
-          GroupList groups,
-          Collection functions,
-          TableModel data,
-          PageFormat defaultPageFormat,
-          Collection expressions)
-          throws FunctionInitializeException
+  public JFreeReport(
+      String name,
+      ReportHeader reportHeader,
+      ReportFooter reportFooter,
+      PageHeader pageHeader,
+      PageFooter pageFooter,
+      ItemBand itemBand,
+      GroupList groups,
+      Collection functions,
+      TableModel data,
+      PageFormat defaultPageFormat,
+      Collection expressions)
+      throws FunctionInitializeException
   {
-    this (name, reportHeader, reportFooter, pageHeader, pageFooter, itemBand,
-          groups, functions, data, defaultPageFormat);
+    this(name, reportHeader, reportFooter, pageHeader, pageFooter, itemBand,
+        groups, functions, data, defaultPageFormat);
     setExpressions(new ExpressionCollection(expressions));
   }
 
@@ -280,10 +280,10 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the name.
    */
-  public String getName ()
+  public String getName()
   {
-    Object name = getProperty (NAME_PROPERTY);
-    return String.valueOf (name);
+    Object name = getProperty(NAME_PROPERTY);
+    return String.valueOf(name);
   }
 
   /**
@@ -294,9 +294,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param name  the name of the report.
    */
-  public void setName (String name)
+  public void setName(String name)
   {
-    setProperty (NAME_PROPERTY, name);
+    setProperty(NAME_PROPERTY, name);
   }
 
   /**
@@ -311,9 +311,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @param key  the key.
    * @param value  the value.
    */
-  public void setProperty (String key, Object value)
+  public void setProperty(String key, Object value)
   {
-    this.properties.put (key, value);
+    this.properties.put(key, value);
   }
 
   /**
@@ -323,7 +323,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the report properties.
    */
-  public ReportProperties getProperties ()
+  public ReportProperties getProperties()
   {
     return properties;
   }
@@ -335,13 +335,13 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the property value.
    */
-  public Object getProperty (String key)
+  public Object getProperty(String key)
   {
     if (key == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
-    return this.properties.get (key);
+    return this.properties.get(key);
   }
 
   /**
@@ -351,7 +351,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the property value.
    */
-  public boolean isPropertyMarked (String key)
+  public boolean isPropertyMarked(String key)
   {
     return this.properties.isMarked(key);
   }
@@ -362,7 +362,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @param key  the key.
    * @param mark the new marking flag
    */
-  public void setPropertyMarked (String key, boolean mark)
+  public void setPropertyMarked(String key, boolean mark)
   {
     this.properties.setMarked(key, mark);
   }
@@ -372,11 +372,11 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param header  the report header (<code>null</code> not permitted).
    */
-  public void setReportHeader (ReportHeader header)
+  public void setReportHeader(ReportHeader header)
   {
     if (header == null)
     {
-      throw new NullPointerException ("JFreeReport.setReportHeader(...) : null not permitted.");
+      throw new NullPointerException("JFreeReport.setReportHeader(...) : null not permitted.");
     }
 
     this.reportHeader.unregisterStyleSheetCollection(getStyleSheetCollection());
@@ -389,7 +389,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the report header (never <code>null</code>).
    */
-  public ReportHeader getReportHeader ()
+  public ReportHeader getReportHeader()
   {
     return reportHeader;
   }
@@ -399,11 +399,11 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param footer  the report footer (<code>null</code> not permitted).
    */
-  public void setReportFooter (ReportFooter footer)
+  public void setReportFooter(ReportFooter footer)
   {
     if (footer == null)
     {
-      throw new NullPointerException ("JFreeReport.setReportFooter(...) : null not permitted.");
+      throw new NullPointerException("JFreeReport.setReportFooter(...) : null not permitted.");
     }
 
     this.reportFooter.unregisterStyleSheetCollection(getStyleSheetCollection());
@@ -416,7 +416,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the report footer (never <code>null</code>).
    */
-  public ReportFooter getReportFooter ()
+  public ReportFooter getReportFooter()
   {
     return reportFooter;
   }
@@ -426,11 +426,11 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param header  the page header (<code>null</code> not permitted).
    */
-  public void setPageHeader (PageHeader header)
+  public void setPageHeader(PageHeader header)
   {
     if (header == null)
     {
-      throw new NullPointerException ("JFreeReport.setPageHeader(...) : null not permitted.");
+      throw new NullPointerException("JFreeReport.setPageHeader(...) : null not permitted.");
     }
 
     this.pageHeader.unregisterStyleSheetCollection(getStyleSheetCollection());
@@ -443,7 +443,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the page header (never <code>null</code>).
    */
-  public PageHeader getPageHeader ()
+  public PageHeader getPageHeader()
   {
     return pageHeader;
   }
@@ -453,11 +453,11 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param footer  the page footer (<code>null</code> not permitted).
    */
-  public void setPageFooter (PageFooter footer)
+  public void setPageFooter(PageFooter footer)
   {
     if (footer == null)
     {
-      throw new NullPointerException ("JFreeReport.setPageFooter(...) : null not permitted.");
+      throw new NullPointerException("JFreeReport.setPageFooter(...) : null not permitted.");
     }
 
     this.pageFooter.unregisterStyleSheetCollection(getStyleSheetCollection());
@@ -470,7 +470,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the page footer (never <code>null</code>).
    */
-  public PageFooter getPageFooter ()
+  public PageFooter getPageFooter()
   {
     return pageFooter;
   }
@@ -480,11 +480,11 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param band  the new item band (<code>null</code> not permitted).
    */
-  public void setItemBand (ItemBand band)
+  public void setItemBand(ItemBand band)
   {
     if (band == null)
     {
-      throw new NullPointerException ("JFreeReport.setItemBand(...) : null not permitted.");
+      throw new NullPointerException("JFreeReport.setItemBand(...) : null not permitted.");
     }
 
     this.itemBand.unregisterStyleSheetCollection(getStyleSheetCollection());
@@ -497,7 +497,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the item band (never <code>null</code>).
    */
-  public ItemBand getItemBand ()
+  public ItemBand getItemBand()
   {
     return this.itemBand;
   }
@@ -507,9 +507,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param group  the group.
    */
-  public void addGroup (Group group)
+  public void addGroup(Group group)
   {
-    groups.add (group);
+    groups.add(group);
   }
 
   /**
@@ -520,18 +520,18 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param groupList  the list of groups.
    */
-  public void setGroups (GroupList groupList)
+  public void setGroups(GroupList groupList)
   {
     if (groupList == null)
     {
-      throw new NullPointerException ("GroupList must not be null");
+      throw new NullPointerException("GroupList must not be null");
     }
 
-    this.groups.clear ();
-    Iterator it = groupList.iterator ();
-    while (it.hasNext ())
+    this.groups.clear();
+    Iterator it = groupList.iterator();
+    while (it.hasNext())
     {
-      addGroup ((Group) it.next ());
+      addGroup((Group) it.next());
     }
     checkGroups();
   }
@@ -539,22 +539,23 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Verifies the group list and adds the default group to the list if necessary.
    */
-  protected void checkGroups ()
+  protected void checkGroups()
   {
     // if this was an empty group, fix it by adding an default group
-    if (groups.size () == 0)
+    if (groups.size() == 0)
     {
-      Group defaultGroup = new Group ();
-      defaultGroup.setName ("default");
-      addGroup (defaultGroup);
+      Group defaultGroup = new Group();
+      defaultGroup.setName("default");
+      addGroup(defaultGroup);
     }
   }
+
   /**
    * Returns a clone of the list of groups for the report.
    *
    * @return the group list.
    */
-  public GroupList getGroups ()
+  public GroupList getGroups()
   {
     return (GroupList) this.groups.clone();
   }
@@ -566,9 +567,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the group count.
    */
-  public int getGroupCount ()
+  public int getGroupCount()
   {
-    return groups.size ();
+    return groups.size();
   }
 
   /**
@@ -581,20 +582,20 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @throws IllegalArgumentException if the count is negative.
    * @throws IndexOutOfBoundsException if the count is greater than the number of defined groups.
    */
-  public Group getGroup (int count)
+  public Group getGroup(int count)
   {
     if (count < 0)
     {
-      throw new IllegalArgumentException ("GroupCount must not be negative");
+      throw new IllegalArgumentException("GroupCount must not be negative");
     }
 
-    if (count >= groups.size ())
+    if (count >= groups.size())
     {
-      throw new IndexOutOfBoundsException ("No such group defined. " + count + " vs. "
-                                           + groups.size ());
+      throw new IndexOutOfBoundsException("No such group defined. " + count + " vs. "
+          + groups.size());
     }
 
-    return groups.get (count);
+    return groups.get(count);
   }
 
   /**
@@ -604,9 +605,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @throws FunctionInitializeException if any of the functions cannot be initialized.
    */
-  public void addExpression (Expression function) throws FunctionInitializeException
+  public void addExpression(Expression function) throws FunctionInitializeException
   {
-    expressions.add (function);
+    expressions.add(function);
   }
 
   /**
@@ -616,9 +617,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @throws FunctionInitializeException if any of the functions cannot be initialized.
    */
-  public void addFunction (Function function) throws FunctionInitializeException
+  public void addFunction(Function function) throws FunctionInitializeException
   {
-    this.functions.add (function);
+    this.functions.add(function);
   }
 
   /**
@@ -626,7 +627,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the function collection.
    */
-  public ExpressionCollection getFunctions ()
+  public ExpressionCollection getFunctions()
   {
     return this.functions;
   }
@@ -636,11 +637,11 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param functions  the collection of functions.
    */
-  public void setFunctions (ExpressionCollection functions)
+  public void setFunctions(ExpressionCollection functions)
   {
     if (functions == null)
     {
-      throw new NullPointerException ("JFreeReport.setFunctions(...) : null not permitted.");
+      throw new NullPointerException("JFreeReport.setFunctions(...) : null not permitted.");
     }
     else
     {
@@ -653,7 +654,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the page format.
    */
-  public PageFormat getDefaultPageFormat ()
+  public PageFormat getDefaultPageFormat()
   {
     return defaultPageFormat;
   }
@@ -665,11 +666,11 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param format  the default format (<code>null</code> permitted).
    */
-  public void setDefaultPageFormat (PageFormat format)
+  public void setDefaultPageFormat(PageFormat format)
   {
     if (format == null)
     {
-      format = PrinterJob.getPrinterJob ().defaultPage ();
+      format = PrinterJob.getPrinterJob().defaultPage();
     }
     defaultPageFormat = format;
   }
@@ -683,11 +684,11 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param data  the data for the report (<code>null</code> not permitted).
    */
-  public void setData (TableModel data)
+  public void setData(TableModel data)
   {
     if (data == null)
     {
-      throw new NullPointerException ("JFreeReport.setData(...) : null not permitted.");
+      throw new NullPointerException("JFreeReport.setData(...) : null not permitted.");
     }
     this.data = data;
   }
@@ -697,7 +698,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the data in form of a table model.
    */
-  public TableModel getData ()
+  public TableModel getData()
   {
     return data;
   }
@@ -709,19 +710,19 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    JFreeReport report = (JFreeReport) super.clone ();
+    JFreeReport report = (JFreeReport) super.clone();
     report.data = data; // data is defined to be immutable, so don't clone the thing
-    report.defaultPageFormat = (PageFormat) defaultPageFormat.clone ();
-    report.groups = (GroupList) groups.clone ();
-    report.itemBand = (ItemBand) itemBand.clone ();
-    report.pageFooter = (PageFooter) pageFooter.clone ();
-    report.pageHeader = (PageHeader) pageHeader.clone ();
-    report.properties = (ReportProperties) properties.clone ();
-    report.reportFooter = (ReportFooter) reportFooter.clone ();
-    report.reportHeader = (ReportHeader) reportHeader.clone ();
-    report.functions = (ExpressionCollection) functions.clone ();
+    report.defaultPageFormat = (PageFormat) defaultPageFormat.clone();
+    report.groups = (GroupList) groups.clone();
+    report.itemBand = (ItemBand) itemBand.clone();
+    report.pageFooter = (PageFooter) pageFooter.clone();
+    report.pageHeader = (PageHeader) pageHeader.clone();
+    report.properties = (ReportProperties) properties.clone();
+    report.reportFooter = (ReportFooter) reportFooter.clone();
+    report.reportHeader = (ReportHeader) reportHeader.clone();
+    report.functions = (ExpressionCollection) functions.clone();
     report.expressions = (ExpressionCollection) expressions.clone();
     report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
     report.groups.updateStyleSheetCollection(report.styleSheetCollection);
@@ -738,11 +739,11 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the information.
    */
-  public static final JFreeReportInfo getInfo ()
+  public static final JFreeReportInfo getInfo()
   {
     if (JFreeReport.info == null)
     {
-      JFreeReport.info = new JFreeReportInfo ();
+      JFreeReport.info = new JFreeReportInfo();
     }
     return JFreeReport.info;
   }
@@ -805,10 +806,10 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @throws IOException if there is an IO problem.
    * @throws ClassNotFoundException if there is a class problem.
    */
-  private void readObject (ObjectInputStream in)
-          throws IOException, ClassNotFoundException
+  private void readObject(ObjectInputStream in)
+      throws IOException, ClassNotFoundException
   {
-    in.defaultReadObject ();
+    in.defaultReadObject();
     defaultPageFormat = (PageFormat) SerializerHelper.getInstance().readObject(in);
   }
 

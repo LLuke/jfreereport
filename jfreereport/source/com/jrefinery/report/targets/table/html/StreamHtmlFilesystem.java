@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StreamHtmlFilesystem.java,v 1.4 2003/02/25 15:42:44 taqua Exp $
+ * $Id: StreamHtmlFilesystem.java,v 1.5 2003/02/26 16:42:28 mungady Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import com.jrefinery.report.ImageReference;
  * data. The generated HTML Stream has an inline style sheet definition and supports
  * external images. The external images must be loaded from HTTP, HTTPS or FTP sources,
  * generated images or images loaded from the local filesystem are not supported.
- * 
+ *
  * @author Thomas Morgner
  */
 public class StreamHtmlFilesystem implements HtmlFilesystem
@@ -87,9 +87,9 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
    * are loaded from an HTTP, HTTPS or FTP source.
    *
    * @param reference the image reference containing the data.
-   * 
+   *
    * @return the generated HtmlReference, never null.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    */
   public HtmlReferenceData createImageReference(ImageReference reference)
@@ -102,8 +102,8 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
     else
     {
       URL src = reference.getSourceURL();
-      if (src.getProtocol().equals("http") || src.getProtocol().equals("https") 
-                                           || src.getProtocol().equals("ftp"))
+      if (src.getProtocol().equals("http") || src.getProtocol().equals("https")
+          || src.getProtocol().equals("ftp"))
       {
         return new ImageReferenceData(src.toExternalForm());
       }
@@ -116,7 +116,7 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
    *
    * @param styleSheet the stylesheet data, which should be referenced.
    * @return an InternalCSSReferenceData for the given stylesheet.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    */
   public HtmlReferenceData createCSSReference(String styleSheet)

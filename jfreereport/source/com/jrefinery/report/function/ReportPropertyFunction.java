@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.16 2003/01/14 21:07:12 taqua Exp $
+ * $Id: ReportPropertyFunction.java,v 1.17 2003/06/01 17:39:26 taqua Exp $
  *
  * Changes
  * -------
@@ -78,7 +78,7 @@ public class ReportPropertyFunction extends AbstractFunction implements Serializ
    */
   public ReportPropertyFunction()
   {
-    Log.warn ("The use of the 'ReportPropertyFunction' is deprecated. " +
+    Log.warn("The use of the 'ReportPropertyFunction' is deprecated. " +
         "Please use the 'property-ref' instead.");
   }
 

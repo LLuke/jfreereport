@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardType.java,v 1.1 2003/04/02 21:24:00 taqua Exp $
+ * $Id: CardType.java,v 1.2 2003/04/09 15:30:27 mungady Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,7 @@ package com.jrefinery.report.demo.cards;
 
 /**
  * An enumeration of card types.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class CardType
@@ -63,14 +63,14 @@ public class CardType
   public static final CardType EMPTY = new CardType("Empty");
 
   /** The type name. */
-  private final String myName; 
+  private final String myName;
 
   /**
-   * Creates a new card type.  
+   * Creates a new card type.
    * <p>
-   * This constructor is private to prevent new types being constructed - only the predefined 
+   * This constructor is private to prevent new types being constructed - only the predefined
    * types are valid.
-   * 
+   *
    * @param name  the type name.
    */
   private CardType(String name)
@@ -80,7 +80,7 @@ public class CardType
 
   /**
    * Returns the type name.
-   * 
+   *
    * @return The type name.
    */
   public String getTypeName()
@@ -90,7 +90,7 @@ public class CardType
 
   /**
    * Returns a string representing the type.
-   * 
+   *
    * @return A string.
    */
   public String toString()

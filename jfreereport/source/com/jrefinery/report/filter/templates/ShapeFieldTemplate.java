@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFieldTemplate.java,v 1.5 2003/03/07 16:55:55 taqua Exp $
+ * $Id: ShapeFieldTemplate.java,v 1.2 2003/04/09 00:12:30 mungady Exp $
  *
  * Changes
  * -------
  * 07-Mar-2003 : Version 1;
- *  
+ *
  */
 
 package com.jrefinery.report.filter.templates;
@@ -45,7 +45,7 @@ import com.jrefinery.report.filter.ShapeFilter;
 
 /**
  * A shape field template.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class ShapeFieldTemplate extends AbstractTemplate implements DataRowConnectable

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.7 2003/06/13 22:54:00 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.8 2003/06/26 19:55:56 taqua Exp $
  *
  * Changes
  * --------
@@ -47,7 +47,7 @@ import com.jrefinery.report.util.ReportConfiguration;
 
 /**
  * An export plug-in factory.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class ExportPluginFactory
@@ -58,12 +58,12 @@ public class ExportPluginFactory
 
   /**
    * Loads and instatiaties an export plug-in.
-   * 
+   *
    * @param proxy  the preview proxy.
    * @param className the class name of the export plugin.
    * @return The plug-in.
    */
-  protected ExportPlugin createPlugIn (PreviewProxy proxy, String className)
+  protected ExportPlugin createPlugIn(PreviewProxy proxy, String className)
   {
     if (proxy == null)
     {
@@ -78,7 +78,7 @@ public class ExportPluginFactory
     }
     catch (Exception e)
     {
-      Log.warn ("Unable to create the export plugin: " + className, e);
+      Log.warn("Unable to create the export plugin: " + className, e);
       return null;
     }
   }
@@ -88,10 +88,10 @@ public class ExportPluginFactory
    *
    * @param config  the report configuration.
    * @param plugin  the plug-in key.
-   * 
+   *
    * @return A boolean.
    */
-  protected boolean isPluginEnabled (ReportConfiguration config, String plugin)
+  protected boolean isPluginEnabled(ReportConfiguration config, String plugin)
   {
     return config.getConfigProperty(PLUGIN_ENABLE_PREFIX + plugin, "false").equals("true");
   }
@@ -99,18 +99,18 @@ public class ExportPluginFactory
   /**
    * Creates a list containing all available export plugins.
    * todo 0.8.4 move it into the report configuration ...
-   * 
+   *
    * @param proxy  the preview proxy.
    * @param config  the report configuration.
-   * 
+   *
    * @return  The list of export plugins.
    */
-  public ArrayList createExportPlugIns (PreviewProxy proxy, ReportConfiguration config)
+  public ArrayList createExportPlugIns(PreviewProxy proxy, ReportConfiguration config)
   {
     InputStream in = getClass().getResourceAsStream
         ("/com/jrefinery/report/preview/previewplugins.properties");
 
-    Properties prop = new Properties ();
+    Properties prop = new Properties();
 
     try
     {
@@ -118,7 +118,7 @@ public class ExportPluginFactory
     }
     catch (Exception e)
     {
-      Log.warn ("Unable to load export plugin configuration.");
+      Log.warn("Unable to load export plugin configuration.");
     }
 
     String availablePlugins = prop.getProperty("available.plugins", "");
@@ -131,7 +131,7 @@ public class ExportPluginFactory
       String pluginClass = prop.getProperty(plugin);
       if (pluginClass == null)
       {
-        Log.warn (new Log.SimpleMessage("Plugin ", plugin, " is not defined."));
+        Log.warn(new Log.SimpleMessage("Plugin ", plugin, " is not defined."));
         continue;
       }
       if (isPluginEnabled(config, plugin))
@@ -139,12 +139,12 @@ public class ExportPluginFactory
         ExportPlugin ep = createPlugIn(proxy, pluginClass);
         if (ep != null)
         {
-          retval.add (ep);
+          retval.add(ep);
         }
       }
       else
       {
-        Log.warn (new Log.SimpleMessage("Plugin ", plugin, " is not enabled."));
+        Log.warn(new Log.SimpleMessage("Plugin ", plugin, " is not enabled."));
       }
     }
     return retval;

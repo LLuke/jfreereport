@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -26,10 +26,10 @@
  * (C)opyright 2003, by Heiko Evermann and Contributors.
  *
  * Original Author:  Heiko Evermann
- * Contributor(s):   Thomas Morgner; 
+ * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.10 2003/05/23 20:12:16 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.11 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ import com.jrefinery.report.util.NullOutputStream;
  * capabilities of POI 1.10 to format the cell value as numeric or date value. An
  * excel-specific format string can be defined for every element using the element-
  * style key "Excel.CellDataFormat".
- * 
+ *
  * @author Heiko Evermann
  */
 public class ExcelProcessor extends TableProcessor

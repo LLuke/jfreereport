@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigHandler.java,v 1.14 2003/06/10 16:07:49 taqua Exp $
+ * $Id: ParserConfigHandler.java,v 1.15 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -101,11 +101,11 @@ public class ParserConfigHandler implements ElementDefinitionHandler
    */
   public ParserConfigHandler(Parser parser, String finishTag)
   {
-    if (parser == null) 
+    if (parser == null)
     {
       throw new NullPointerException("Parser is null");
     }
-    if (finishTag == null) 
+    if (finishTag == null)
     {
       throw new NullPointerException("FinishTag is null");
     }
@@ -122,7 +122,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
-    throws SAXException
+      throws SAXException
   {
     if (tagName.equals(STYLEKEY_FACTORY_TAG))
     {
@@ -137,7 +137,8 @@ public class ParserConfigHandler implements ElementDefinitionHandler
       StyleKeyFactory factory = (StyleKeyFactory) createFactory(className);
       if (factory == null)
       {
-        throw new ParseException("Unable to create Factory: " + className, getParser().getLocator());
+        throw new ParseException
+            ("Unable to create Factory: " + className, getParser().getLocator());
       }
       fc.addFactory(factory);
     }
@@ -192,13 +193,13 @@ public class ParserConfigHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + STYLEKEY_FACTORY_TAG + ", "
-                              + DATASOURCE_FACTORY_TAG + ", "
-                              + DATADEFINITION_FACTORY_TAG + ", "
-                              + TEMPLATE_FACTORY_TAG + ", "
-                              + OBJECT_FACTORY_TAG
-                             );
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + STYLEKEY_FACTORY_TAG + ", "
+          + DATASOURCE_FACTORY_TAG + ", "
+          + DATADEFINITION_FACTORY_TAG + ", "
+          + TEMPLATE_FACTORY_TAG + ", "
+          + OBJECT_FACTORY_TAG
+      );
     }
   }
 
@@ -211,7 +212,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if the specified class cannot be loaded.
    */
-  private Object createFactory (String classname) throws SAXException
+  private Object createFactory(String classname) throws SAXException
   {
     try
     {
@@ -220,7 +221,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
     }
     catch (Exception e)
     {
-      Log.error ("Failed to parse Factory: ", e);
+      Log.error("Failed to parse Factory: ", e);
       throw new ParseException("Invalid Factory class specified: " + classname,
           getParser().getLocator());
     }
@@ -233,7 +234,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
   {
     // is not used ...
   }
@@ -261,13 +262,13 @@ public class ParserConfigHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + STYLEKEY_FACTORY_TAG + ", "
-                              + DATADEFINITION_FACTORY_TAG + ", "
-                              + TEMPLATE_FACTORY_TAG + ", "
-                              + DATASOURCE_FACTORY_TAG + ", "
-                              + ELEMENT_FACTORY_TAG + ", "
-                              + OBJECT_FACTORY_TAG);
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + STYLEKEY_FACTORY_TAG + ", "
+          + DATADEFINITION_FACTORY_TAG + ", "
+          + TEMPLATE_FACTORY_TAG + ", "
+          + DATASOURCE_FACTORY_TAG + ", "
+          + ELEMENT_FACTORY_TAG + ", "
+          + OBJECT_FACTORY_TAG);
     }
   }
 

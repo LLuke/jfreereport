@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.19 2003/05/11 13:39:17 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.20 2003/06/26 19:55:56 taqua Exp $
  *
  * Changes
  * --------
@@ -100,7 +100,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
      *
      * @return A boolean.
      */
-    public boolean equals (Object o)
+    public boolean equals(Object o)
     {
       if (o == null)
       {
@@ -114,7 +114,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
      *
      * @return A hash code.
      */
-    public int hashCode ()
+    public int hashCode()
     {
       return getClass().hashCode();
     }
@@ -133,7 +133,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
 
     /** The display name. */
     private String displayName;
-    
+
     /**
      * Creates a new encoding.
      *
@@ -181,7 +181,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
      *
      * @return The display name.
      */
-    public String getDisplayName ()
+    public String getDisplayName()
     {
       return displayName;
     }
@@ -259,11 +259,11 @@ public class EncodingComboBoxModel implements ComboBoxModel
    * @return <code>true</code> if the encoding is valid and added to the model, <code>false</code>
    *         otherwise.
    */
-  public boolean addEncoding (String name, String description)
+  public boolean addEncoding(String name, String description)
   {
     if (EncodingSupport.isSupportedEncoding(name))
     {
-      encodings.add (new EncodingCarrier(name, description));
+      encodings.add(new EncodingCarrier(name, description));
     }
     else
     {
@@ -280,9 +280,9 @@ public class EncodingComboBoxModel implements ComboBoxModel
    * @param name  the name.
    * @param description  the description.
    */
-  public void addEncodingUnchecked (String name, String description)
+  public void addEncodingUnchecked(String name, String description)
   {
-    encodings.add (new EncodingCarrier(name, description));
+    encodings.add(new EncodingCarrier(name, description));
     fireContentsChanged();
   }
 
@@ -291,7 +291,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @param encoding the encoding that should be verified.
    */
-  public void ensureEncodingAvailable (String encoding)
+  public void ensureEncodingAvailable(String encoding)
   {
     String desc = getDefaultEncodings().getProperty(encoding, ENCODING_DEFAULT_DESCRIPTION);
     EncodingCarrier ec = new EncodingCarrier(encoding, desc);
@@ -305,7 +305,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
   /**
    * Sorts the encodings.
    */
-  public void sort ()
+  public void sort()
   {
     Collections.sort(encodings, new EncodingCarrierComparator());
     fireContentsChanged();
@@ -314,7 +314,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
   /**
    * Notifies all registered listeners that the content of the model has changed.
    */
-  protected void fireContentsChanged ()
+  protected void fireContentsChanged()
   {
     if (listDataListeners == null)
     {
@@ -360,7 +360,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return The encoding (name).
    */
-  public String getSelectedEncoding ()
+  public String getSelectedEncoding()
   {
     if (selectedIndex == -1)
     {
@@ -415,7 +415,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
     {
       listDataListeners = new ArrayList(5);
     }
-    listDataListeners.add (l);
+    listDataListeners.add(l);
   }
 
   /**
@@ -439,7 +439,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return the singleton instance of the initialized default encoding names
    */
-  private static Properties getDefaultEncodings ()
+  private static Properties getDefaultEncodings()
   {
     if (defaultEncodings == null)
     {
@@ -487,7 +487,8 @@ public class EncodingComboBoxModel implements ComboBoxModel
       defaultEncodings.put("ISO-2022-KR", "ISO 2022 KR, Korean");
       defaultEncodings.put("MS950", "Windows Traditional Chinese");
       defaultEncodings.put("EUC-TW", "CNS 11643 (Plane 1-3), EUC encoding, Traditional Chinese");
-      defaultEncodings.put("ISO-2022-CN-CNS", "CNS 11643 in ISO 2022 CN form, Traditional Chinese");
+      defaultEncodings.put("ISO-2022-CN-CNS",
+          "CNS 11643 in ISO 2022 CN form, Traditional Chinese");
       defaultEncodings.put("Big5", "Big5, Traditional Chinese");
       defaultEncodings.put("Big5-HKSCS", "Big5 with Hong Kong extensions, Traditional Chinese");
       defaultEncodings.put("TIS-620", "TIS 620, Thai");
@@ -495,9 +496,9 @@ public class EncodingComboBoxModel implements ComboBoxModel
 
       //extended encoding set, contained in lib/charsets.jar
       defaultEncodings.put("Big5_Solaris",
-                      "Big5 with seven additional Hanzi ideograph character mappings");
+          "Big5 with seven additional Hanzi ideograph character mappings");
       defaultEncodings.put("Cp037",
-                      "USA, Canada (Bilingual, French), Netherlands, Portugal, Brazil, Australia");
+          "USA, Canada (Bilingual, French), Netherlands, Portugal, Brazil, Australia");
       defaultEncodings.put("Cp273", "IBM Austria, Germany");
       defaultEncodings.put("Cp277", "IBM Denmark, Norway");
       defaultEncodings.put("Cp278", "IBM Finland, Sweden");
@@ -534,16 +535,18 @@ public class EncodingComboBoxModel implements ComboBoxModel
       defaultEncodings.put("Cp918", "IBM Pakistan (Urdu)");
       defaultEncodings.put("Cp921", "IBM Lativa, Lithuania (AIX, DOS)");
       defaultEncodings.put("Cp922", "IBM Estonia (AIX, DOS)");
-      defaultEncodings.put("Cp930", "Japanese Katakana-Kanji mixed with 4370 UDC, superset of 5026");
+      defaultEncodings.put("Cp930",
+          "Japanese Katakana-Kanji mixed with 4370 UDC, superset of 5026");
       defaultEncodings.put("Cp933", "Korean mixed with 1880 UDC, superset of 5029");
       defaultEncodings.put("Cp935", "Simplified Chinese mixed with 1880 UDC, superset of 5031");
-      defaultEncodings.put("Cp937", "Traditional Chinsese Hostmixed with 6204 UDC, superset of 5033");
+      defaultEncodings.put("Cp937",
+          "Traditional Chinsese Hostmixed with 6204 UDC, superset of 5033");
       defaultEncodings.put("Cp939", "Japanese Latin Kanji mixed with 4370 UDC, superset of 5035");
       defaultEncodings.put("Cp942", "IBM OS/2 Japanese, superset of Cp932");
       defaultEncodings.put("Cp942C", "Variant of Cp942: IBM OS/2 Japanese, superset of Cp932");
       defaultEncodings.put("Cp943", "IBM OS/2 Japanese, superset of Cp932 and Shift-JIS");
       defaultEncodings.put("Cp943C",
-                      "Variant of Cp943: IBM OS/2 Japanese, superset of Cp932 and Shift-JIS");
+          "Variant of Cp943: IBM OS/2 Japanese, superset of Cp932 and Shift-JIS");
       defaultEncodings.put("Cp948", "IBM OS/2 Chinese (Taiwan) superset of Cp938");
       defaultEncodings.put("Cp949", "PC Korean");
       defaultEncodings.put("Cp949C", "Variant of Cp949: PC Korean");
@@ -552,7 +555,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
       defaultEncodings.put("Cp970", "AIX Korean");
       defaultEncodings.put("Cp1006", "IBM AIX Parkistan (Urdu)");
       defaultEncodings.put("Cp1025",
-                      "IBM Multilingual Cyrillic: Bulgaria, Bosnia, Herzegovinia, Macedonia (FYR)");
+          "IBM Multilingual Cyrillic: Bulgaria, Bosnia, Herzegovinia, Macedonia (FYR)");
       defaultEncodings.put("Cp1026", "IBM Latin-5, Turkey");
       defaultEncodings.put("Cp1046", "IBM Arabic Windows");
       defaultEncodings.put("Cp1097", "IBM Iran (Farsi)/Persian");
@@ -599,7 +602,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return The default model.
    */
-  public static EncodingComboBoxModel createDefaultModel ()
+  public static EncodingComboBoxModel createDefaultModel()
   {
     EncodingComboBoxModel ecb = new EncodingComboBoxModel();
 
@@ -626,7 +629,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
       InputStream in = ecb.getClass().getResourceAsStream(encFile);
       if (in == null)
       {
-        Log.warn (new Log.SimpleMessage
+        Log.warn(new Log.SimpleMessage
             ("The specified encodings definition file was not found: ", encFile));
       }
       else
@@ -646,13 +649,14 @@ public class EncodingComboBoxModel implements ComboBoxModel
             if (encDef.getProperty(enc, "false").equalsIgnoreCase("true"))
             {
               // if the encoding is disabled ...
-              ecb.addEncoding(enc, defaultEncodings.getProperty(enc, ENCODING_DEFAULT_DESCRIPTION));
+              ecb.addEncoding
+                  (enc, defaultEncodings.getProperty(enc, ENCODING_DEFAULT_DESCRIPTION));
             }
           }
         }
         catch (IOException e)
         {
-          Log.warn (new Log.SimpleMessage
+          Log.warn(new Log.SimpleMessage
               ("There was an error while reading the encodings definition file: ", encFile), e);
         }
       }
@@ -679,7 +683,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return The index.
    */
-  public String getEncoding (int index)
+  public String getEncoding(int index)
   {
     EncodingCarrier ec = (EncodingCarrier) encodings.get(index);
     return ec.getName();
@@ -692,7 +696,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return The description.
    */
-  public String getDescription (int index)
+  public String getDescription(int index)
   {
     EncodingCarrier ec = (EncodingCarrier) encodings.get(index);
     return ec.getDescription();

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.11 2003/05/11 13:39:17 taqua Exp $
+ * $Id: TextLine.java,v 1.12 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class TextLine implements Content
    * @param sizeCalc  the size calculator.
    * @param lineheight the line height that should be used for this text line.
    */
-  public TextLine (SizeCalculator sizeCalc, float lineheight)
+  public TextLine(SizeCalculator sizeCalc, float lineheight)
   {
     bounds = new Rectangle2D.Float();
     this.lineHeight = lineheight;
@@ -92,13 +92,13 @@ public class TextLine implements Content
    * Returns the height of this text line.
    * @return the height of the line of text.
    */
-  public float getHeight ()
+  public float getHeight()
   {
     return (float) bounds.getHeight();
   }
 
   /**
-   * Returns the content type, in this case 
+   * Returns the content type, in this case
    * {@link com.jrefinery.report.targets.base.content.ContentType#TEXT}.
    *
    * @return the content type.
@@ -117,7 +117,7 @@ public class TextLine implements Content
    * @param width the width of the bounds.
    * @param height the height of the bounds.
    */
-  public void setContent (String content, float x, float y, float width, float height)
+  public void setContent(String content, float x, float y, float width, float height)
   {
     if (x < 0)
     {
@@ -137,10 +137,10 @@ public class TextLine implements Content
     }
 
     this.content = content;
-    width = Math.min (width, getSizeCalculator().getStringWidth(content, 0, content.length()));
+    width = Math.min(width, getSizeCalculator().getStringWidth(content, 0, content.length()));
     height = Math.min(height, getSizeCalculator().getLineHeight());
     // apply custom lineheight if greater than the current height ...
-    height = Math.max (height, lineHeight);
+    height = Math.max(height, lineHeight);
     bounds.setRect(x, y, width, height);
   }
 
@@ -204,7 +204,7 @@ public class TextLine implements Content
       return null;
     }
     float frontW = (float) (actBounds.getX() - this.bounds.getX());
-    int frontPos = calcStringLength (0, frontW);
+    int frontPos = calcStringLength(0, frontW);
     int endPos = calcStringLength(frontPos, (float) actBounds.getWidth());
 
     if (frontPos == endPos)
@@ -215,10 +215,10 @@ public class TextLine implements Content
 
     TextLine line = new TextLine(getSizeCalculator(), lineHeight);
     line.setContent(content.substring(frontPos, endPos),
-                    (float) actBounds.getX(),
-                    (float) actBounds.getY(),
-                    (float) actBounds.getWidth(),
-                    (float) actBounds.getHeight());
+        (float) actBounds.getX(),
+        (float) actBounds.getY(),
+        (float) actBounds.getWidth(),
+        (float) actBounds.getHeight());
     return line;
   }
 
@@ -230,7 +230,7 @@ public class TextLine implements Content
    *
    * @return the number of characters that will fit within a certain width.
    */
-  private int calcStringLength (int startPos, float maxWidth)
+  private int calcStringLength(int startPos, float maxWidth)
   {
     if (maxWidth == 0.0)
     {
@@ -319,7 +319,7 @@ public class TextLine implements Content
    *
    * @return a string representation.
    */
-  public String toString ()
+  public String toString()
   {
     StringBuffer b = new StringBuffer();
     b.append(getClass().getName());

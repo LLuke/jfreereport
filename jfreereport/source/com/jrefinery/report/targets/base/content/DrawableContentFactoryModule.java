@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableContentFactoryModule.java,v 1.7 2003/06/10 12:11:55 taqua Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.8 2003/06/10 16:07:54 taqua Exp $
  *
  * Changes
  * -------
@@ -89,7 +89,7 @@ public class DrawableContentFactoryModule implements ContentFactoryModule
 
     Point2D point = bounds.getAbsolutePosition();
     Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
-                                                            bounds.getPreferredSize());
+        bounds.getPreferredSize());
     if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
     {
       return null;
@@ -101,8 +101,8 @@ public class DrawableContentFactoryModule implements ContentFactoryModule
     // the drawable stuff soon ...
 
     Rectangle2D drawableBounds = new Rectangle2D.Float(0, 0,
-                                                       (float) iBounds.getWidth(),
-                                                       (float) iBounds.getHeight());
+        (float) iBounds.getWidth(),
+        (float) iBounds.getHeight());
     DrawableContainer con = new DrawableContainer(drawable.getDrawable(), iBounds, drawableBounds);
     return new DrawableContent(con, point);
   }

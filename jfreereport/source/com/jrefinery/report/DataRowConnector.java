@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowConnector.java,v 1.16 2003/04/05 18:57:09 taqua Exp $
+ * $Id: DataRowConnector.java,v 1.17 2003/04/09 00:10:32 mungady Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class DataRowConnector implements DataRow
   /**
    * Default constructor.
    */
-  public DataRowConnector ()
+  public DataRowConnector()
   {
   }
 
@@ -74,7 +74,7 @@ public class DataRowConnector implements DataRow
    *
    * @return the currently assigned DataRowBackend for this DataRowConnector.
    */
-  public DataRowBackend getDataRowBackend ()
+  public DataRowBackend getDataRowBackend()
   {
     return dataRow;
   }
@@ -86,7 +86,7 @@ public class DataRowConnector implements DataRow
    *
    * @param dataRow the data row backend
    */
-  public void setDataRowBackend (DataRowBackend dataRow)
+  public void setDataRowBackend(DataRowBackend dataRow)
   {
     this.dataRow = dataRow;
   }
@@ -101,13 +101,13 @@ public class DataRowConnector implements DataRow
    *
    * @throws IllegalStateException if there is no backend connected.
    */
-  public Object get (int col)
+  public Object get(int col)
   {
     if (dataRow == null)
     {
       throw new IllegalStateException("Not connected");
     }
-    return dataRow.get (col);
+    return dataRow.get(col);
   }
 
   /**
@@ -118,13 +118,13 @@ public class DataRowConnector implements DataRow
    * @return The column, function or expression value.
    * @throws IllegalStateException if there is no backend connected
    */
-  public Object get (String col)
+  public Object get(String col)
   {
     if (dataRow == null)
     {
       throw new IllegalStateException("Not connected");
     }
-    return dataRow.get (col);
+    return dataRow.get(col);
   }
 
   /**
@@ -136,13 +136,13 @@ public class DataRowConnector implements DataRow
    *
    * @throws IllegalStateException if there is no backend connected.
    */
-  public String getColumnName (int col)
+  public String getColumnName(int col)
   {
     if (dataRow == null)
     {
       throw new IllegalStateException("Not connected");
     }
-    return dataRow.getColumnName (col);
+    return dataRow.getColumnName(col);
   }
 
   /**
@@ -156,13 +156,13 @@ public class DataRowConnector implements DataRow
    *
    * @throws IllegalStateException if there is no backend connected.
    */
-  public int findColumn (String name)
+  public int findColumn(String name)
   {
     if (dataRow == null)
     {
       throw new IllegalStateException("Not connected");
     }
-    return getDataRowBackend ().findColumn (name);
+    return getDataRowBackend().findColumn(name);
   }
 
   /**
@@ -173,13 +173,13 @@ public class DataRowConnector implements DataRow
    *
    * @throws IllegalStateException if there is no backend connected.
    */
-  public int getColumnCount ()
+  public int getColumnCount()
   {
     if (dataRow == null)
     {
       throw new IllegalStateException("Not connected");
     }
-    return getDataRowBackend ().getColumnCount ();
+    return getDataRowBackend().getColumnCount();
   }
 
   /**
@@ -188,20 +188,20 @@ public class DataRowConnector implements DataRow
    * @param report the report which will be connected
    * @param con  the data row connector.
    */
-  public static void connectDataSources (ReportDefinition report, DataRowConnector con)
+  public static void connectDataSources(ReportDefinition report, DataRowConnector con)
   {
-    connectDataSources (report.getPageFooter (), con);
-    connectDataSources (report.getPageHeader (), con);
-    connectDataSources (report.getReportFooter (), con);
-    connectDataSources (report.getReportHeader (), con);
-    connectDataSources (report.getItemBand (), con);
+    connectDataSources(report.getPageFooter(), con);
+    connectDataSources(report.getPageHeader(), con);
+    connectDataSources(report.getReportFooter(), con);
+    connectDataSources(report.getReportHeader(), con);
+    connectDataSources(report.getItemBand(), con);
 
-    int groupCount = report.getGroupCount ();
+    int groupCount = report.getGroupCount();
     for (int i = 0; i < groupCount; i++)
     {
-      Group g = report.getGroup (i);
-      connectDataSources (g.getFooter (), con);
-      connectDataSources (g.getHeader (), con);
+      Group g = report.getGroup(i);
+      connectDataSources(g.getFooter(), con);
+      connectDataSources(g.getHeader(), con);
     }
   }
 
@@ -211,7 +211,7 @@ public class DataRowConnector implements DataRow
    * @param band the band which will be connected.
    * @param con  the connector.
    */
-  public static void connectDataSources (Band band, DataRowConnector con)
+  public static void connectDataSources(Band band, DataRowConnector con)
   {
     Element[] elements = band.getElementArray();
     for (int i = 0; i < elements.length; i++)
@@ -223,11 +223,11 @@ public class DataRowConnector implements DataRow
       }
       else
       {
-        DataSource ds = getLastDatasource (e);
+        DataSource ds = getLastDatasource(e);
         if (ds instanceof DataRowConnectable)
         {
           DataRowConnectable dc = (DataRowConnectable) ds;
-          dc.connectDataRow (con);
+          dc.connectDataRow(con);
         }
       }
     }
@@ -240,20 +240,20 @@ public class DataRowConnector implements DataRow
    * @param report  the report which will be disconnected from this DataRow.
    * @param con  the connector.
    */
-  public static void disconnectDataSources (ReportDefinition report, DataRowConnector con)
+  public static void disconnectDataSources(ReportDefinition report, DataRowConnector con)
   {
-    disconnectDataSources (report.getPageFooter (), con);
-    disconnectDataSources (report.getPageHeader (), con);
-    disconnectDataSources (report.getReportFooter (), con);
-    disconnectDataSources (report.getReportHeader (), con);
-    disconnectDataSources (report.getItemBand (), con);
+    disconnectDataSources(report.getPageFooter(), con);
+    disconnectDataSources(report.getPageHeader(), con);
+    disconnectDataSources(report.getReportFooter(), con);
+    disconnectDataSources(report.getReportHeader(), con);
+    disconnectDataSources(report.getItemBand(), con);
 
-    int groupCount = report.getGroupCount ();
+    int groupCount = report.getGroupCount();
     for (int i = 0; i < groupCount; i++)
     {
-      Group g = report.getGroup (i);
-      disconnectDataSources (g.getFooter (), con);
-      disconnectDataSources (g.getHeader (), con);
+      Group g = report.getGroup(i);
+      disconnectDataSources(g.getFooter(), con);
+      disconnectDataSources(g.getHeader(), con);
     }
   }
 
@@ -263,23 +263,23 @@ public class DataRowConnector implements DataRow
    * @param band  the band which will be disconnected from this DataRow.
    * @param con  the connector.
    */
-  public static void disconnectDataSources (Band band, DataRowConnector con)
+  public static void disconnectDataSources(Band band, DataRowConnector con)
   {
-    List l = band.getElements ();
-    for (int i = 0; i < l.size (); i++)
+    List l = band.getElements();
+    for (int i = 0; i < l.size(); i++)
     {
-      Element e = (Element) l.get (i);
+      Element e = (Element) l.get(i);
       if (e instanceof Band)
       {
         disconnectDataSources((Band) e, con);
       }
       else
       {
-        DataSource ds = getLastDatasource (e);
+        DataSource ds = getLastDatasource(e);
         if (ds instanceof DataRowConnectable)
         {
           DataRowConnectable dc = (DataRowConnectable) ds;
-          dc.disconnectDataRow (con);
+          dc.disconnectDataRow(con);
         }
       }
     }
@@ -296,27 +296,27 @@ public class DataRowConnector implements DataRow
    *
    * @return The last DataSource in the chain.
    */
-  public static DataSource getLastDatasource (DataTarget e)
+  public static DataSource getLastDatasource(DataTarget e)
   {
     if (e == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
-    DataSource s = e.getDataSource ();
+    DataSource s = e.getDataSource();
     if (s instanceof DataTarget)
     {
       DataTarget tgt = (DataTarget) s;
-      return getLastDatasource (tgt);
+      return getLastDatasource(tgt);
     }
     return s;
   }
 
   /**
    * Returns a string describing the object.
-   * 
+   *
    * @return The string.
    */
-  public String toString ()
+  public String toString()
   {
     if (dataRow == null)
     {

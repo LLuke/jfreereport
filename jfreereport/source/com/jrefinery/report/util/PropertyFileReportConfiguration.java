@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyFileReportConfiguration.java,v 1.8 2003/04/11 14:11:48 taqua Exp $
+ * $Id: PropertyFileReportConfiguration.java,v 1.9 2003/05/02 12:40:47 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ import java.io.InputStream;
 
 /**
  * A report configuration that reads its values from the jfreereport.properties file.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PropertyFileReportConfiguration extends ReportConfiguration
@@ -66,7 +66,7 @@ public class PropertyFileReportConfiguration extends ReportConfiguration
       }
       catch (IOException ioe)
       {
-        Log.warn ("Unable to read global configuration", ioe);
+        Log.warn("Unable to read global configuration", ioe);
       }
     }
     else

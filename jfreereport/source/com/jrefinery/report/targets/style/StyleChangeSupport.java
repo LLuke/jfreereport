@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleChangeSupport.java,v 1.4 2003/04/09 16:10:31 mungady Exp $
+ * $Id: StyleChangeSupport.java,v 1.5 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -41,20 +41,20 @@ import java.util.ArrayList;
 
 /**
  * A utility class for managing a collection of {@link StyleChangeListener} objects.
- * 
+ *
  * @author Thomas Morgner.
  */
-public class StyleChangeSupport 
+public class StyleChangeSupport
 {
   /** Storage for the listeners. */
   private ArrayList listeners;
-  
+
   /** The source. */
   private ElementStyleSheet source;
 
   /**
    * Creates a new support object.
-   * 
+   *
    * @param source  the source of change events.
    */
   public StyleChangeSupport(ElementStyleSheet source)
@@ -64,10 +64,10 @@ public class StyleChangeSupport
 
   /**
    * Adds a listener.
-   * 
+   *
    * @param l  the listener.
    */
-  public void addListener (StyleChangeListener l)
+  public void addListener(StyleChangeListener l)
   {
     if (l == null)
     {
@@ -77,15 +77,15 @@ public class StyleChangeSupport
     {
       listeners = new ArrayList(5);
     }
-    listeners.add(new WeakReference (l));
+    listeners.add(new WeakReference(l));
   }
 
   /**
    * Removes a listener.
-   * 
+   *
    * @param l  the listener.
    */
-  public void removeListener (StyleChangeListener l)
+  public void removeListener(StyleChangeListener l)
   {
     if (l == null)
     {
@@ -100,11 +100,11 @@ public class StyleChangeSupport
 
   /**
    * Notifies all listeners that a style has changed.
-   * 
+   *
    * @param key  the style key.
    * @param value  the new style value.
    */
-  public void fireStyleChanged (StyleKey key, Object value)
+  public void fireStyleChanged(StyleKey key, Object value)
   {
     if (listeners == null)
     {
@@ -126,7 +126,7 @@ public class StyleChangeSupport
         {
           removeList = new ArrayList(5);
         }
-        removeList.add (ref);
+        removeList.add(ref);
       }
     }
     if (removeList != null)
@@ -137,10 +137,10 @@ public class StyleChangeSupport
 
   /**
    * Notifies all listeners that a style has been removed.
-   * 
+   *
    * @param key  the style key.
    */
-  public void fireStyleRemoved (StyleKey key)
+  public void fireStyleRemoved(StyleKey key)
   {
     if (listeners == null)
     {
@@ -162,7 +162,7 @@ public class StyleChangeSupport
         {
           removeList = new ArrayList(5);
         }
-        removeList.add (ref);
+        removeList.add(ref);
       }
     }
     if (removeList != null)

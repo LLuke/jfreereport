@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LengthLimitingDocument.java,v 1.3 2003/02/25 15:42:48 taqua Exp $
+ * $Id: LengthLimitingDocument.java,v 1.4 2003/02/26 13:58:04 mungady Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import javax.swing.text.PlainDocument;
 /**
  * This Document restricts the size of the contained plain text to the given number of
  * characters.
- * 
+ *
  * @author Thomas Morgner
  */
 public class LengthLimitingDocument extends PlainDocument
@@ -55,9 +55,9 @@ public class LengthLimitingDocument extends PlainDocument
   /**
    * Creates a new LengthLimitingDocument, with no limitation.
    */
-  public LengthLimitingDocument ()
+  public LengthLimitingDocument()
   {
-    this (-1);
+    this(-1);
   }
 
   /**
@@ -67,9 +67,9 @@ public class LengthLimitingDocument extends PlainDocument
    *
    * @param maxlen the maximum number of elements in this document
    */
-  public LengthLimitingDocument (int maxlen)
+  public LengthLimitingDocument(int maxlen)
   {
-    super ();
+    super();
     this.maxlen = maxlen;
   }
 
@@ -79,7 +79,7 @@ public class LengthLimitingDocument extends PlainDocument
    *
    * @param maxlen the maximum number of characters in this document.
    */
-  public void setMaxLength (int maxlen)
+  public void setMaxLength(int maxlen)
   {
     this.maxlen = maxlen;
   }
@@ -88,7 +88,7 @@ public class LengthLimitingDocument extends PlainDocument
    * Returns the defined maximum number characters for this document.
    * @return the maximum number of characters
    */
-  public int getMaxLength ()
+  public int getMaxLength()
   {
     return maxlen;
   }
@@ -102,8 +102,8 @@ public class LengthLimitingDocument extends PlainDocument
    * @param a the attribute set assigned for the document
    * @throws BadLocationException if the offset is not correct
    */
-  public void insertString (int offs, String str, AttributeSet a)
-          throws BadLocationException
+  public void insertString(int offs, String str, AttributeSet a)
+      throws BadLocationException
   {
     if (str == null)
     {
@@ -112,12 +112,12 @@ public class LengthLimitingDocument extends PlainDocument
 
     if (maxlen < 0)
     {
-      super.insertString (offs, str, a);
+      super.insertString(offs, str, a);
     }
 
-    char[] numeric = str.toCharArray ();
-    StringBuffer b = new StringBuffer ();
-    b.append(numeric, 0, Math.min (maxlen, numeric.length));
-    super.insertString (offs, b.toString (), a);
+    char[] numeric = str.toCharArray();
+    StringBuffer b = new StringBuffer();
+    b.append(numeric, 0, Math.min(maxlen, numeric.length));
+    super.insertString(offs, b.toString(), a);
   }
 }

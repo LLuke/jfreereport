@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,19 +28,19 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DrawableElement.java,v 1.3 2003/04/09 15:45:47 mungady Exp $
+ * $Id: DrawableElement.java,v 1.4 2003/05/14 22:26:25 taqua Exp $
  *
  * Changes
  * -------
  * 04-Mar-2003 : Initial version
- * 
+ *
  */
 
 package com.jrefinery.report;
 
 /**
  * The element returns a drawable container. Drawable elements always scale.
- * 
+ *
  * @author Thomas Morgner
  */
 public class DrawableElement extends Element

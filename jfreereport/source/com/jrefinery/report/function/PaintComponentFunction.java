@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.13 2003/06/10 16:07:48 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.14 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,7 @@
  * 25-Feb-2003 : BugFixes: Images got lost on pagebreaks ...
  * 26-Feb-2003 : Fixed Checkstyle issues (DG);
  *
- * 
+ *
  */
 package com.jrefinery.report.function;
 
@@ -62,7 +62,7 @@ import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 /**
  * Paints a AWT or Swing Component, fitting the component into the element bounds.
  * The component must be contained in the dataRow.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PaintComponentFunction extends AbstractFunction
@@ -70,10 +70,10 @@ public class PaintComponentFunction extends AbstractFunction
 {
   /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
-  
+
   /** Literal text for the 'field' property. */
   public static final String ELEMENT_PROPERTY = "element";
-  
+
   /** Literal text for the 'scale' property. */
   public static final String SCALE_PROPERTY = "scale";
 
@@ -197,8 +197,8 @@ public class PaintComponentFunction extends AbstractFunction
       peerSupply.validate();
 
       BufferedImage bi = new BufferedImage((int) (scale * dim.width),
-                                           (int) (scale * dim.height),
-                                           BufferedImage.TYPE_INT_ARGB);
+          (int) (scale * dim.height),
+          BufferedImage.TYPE_INT_ARGB);
       Graphics2D graph = bi.createGraphics();
       graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
       comp.paint(graph);
@@ -235,7 +235,7 @@ public class PaintComponentFunction extends AbstractFunction
    *
    * @param scale the scale factor.
    */
-  public void setScale (float scale)
+  public void setScale(float scale)
   {
     setProperty(SCALE_PROPERTY, String.valueOf(scale));
   }
@@ -247,13 +247,13 @@ public class PaintComponentFunction extends AbstractFunction
    *
    * @return the scale factor.
    */
-  public float getScale ()
+  public float getScale()
   {
     String scale = getProperty(SCALE_PROPERTY, "1");
     try
     {
       float f = Float.parseFloat(scale);
-      if (f == 0) 
+      if (f == 0)
       {
         return 1;
       }
@@ -309,7 +309,7 @@ public class PaintComponentFunction extends AbstractFunction
    * could not be found.
    */
   private void readObject(ObjectInputStream in)
-     throws IOException, ClassNotFoundException
+      throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     peerSupply = new Frame();

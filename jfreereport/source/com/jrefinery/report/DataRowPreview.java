@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowPreview.java,v 1.3 2003/05/14 22:26:25 taqua Exp $
+ * $Id: DataRowPreview.java,v 1.4 2003/05/30 16:57:21 taqua Exp $
  *
  * Changes
  * -------
  * 06.04.2003 : Initial version
- * 
+ *
  */
 package com.jrefinery.report;
 
@@ -48,7 +48,7 @@ import com.jrefinery.report.util.ReportPropertiesList;
  * two states. As function columns as ReportEventListeners are dependent on an
  * valid state, these columns cannot be queried using this class. A query on such
  * an column will throw an InvalidStateException.
- * 
+ *
  * @author Thomas Morgner
  */
 public class DataRowPreview extends DataRowBackend
@@ -67,7 +67,7 @@ public class DataRowPreview extends DataRowBackend
    * Updates this instance to be a preview of the given backend.
    * @param db the row.
    */
-  public void update (DataRowBackend db)
+  public void update(DataRowBackend db)
   {
     super.setCurrentRow(db.getCurrentRow() + 1);
   }

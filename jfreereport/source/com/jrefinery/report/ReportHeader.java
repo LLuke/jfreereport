@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportHeader.java,v 1.9 2002/12/06 17:18:36 mungady Exp $
+ * $Id: ReportHeader.java,v 1.10 2003/02/23 20:39:11 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -63,7 +63,7 @@ public class ReportHeader extends Band
   /**
    * Constructs a report header, initially containing no elements.
    */
-  public ReportHeader ()
+  public ReportHeader()
   {
   }
 
@@ -73,9 +73,10 @@ public class ReportHeader extends Band
    *
    * @param b  the new flag indicating whether to force a pagebreak.
    */
-  public void setOwnPage (boolean b)
+  public void setOwnPage(boolean b)
   {
-    getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_AFTER, new Boolean(b));
+    getStyle().setBooleanStyleProperty
+        (BandStyleSheet.PAGEBREAK_AFTER, b);
   }
 
   /**
@@ -83,10 +84,8 @@ public class ReportHeader extends Band
    *
    * @return a flag indicating whether or not the header appears on its own page.
    */
-  public boolean isOwnPage ()
+  public boolean isOwnPage()
   {
-    Boolean b = (Boolean) getStyle().getStyleProperty(BandStyleSheet.PAGEBREAK_AFTER, 
-                                                      Boolean.FALSE);
-    return b.booleanValue();
+    return getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER, false);
   }
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_fr.java,v 1.6 2003/05/16 13:24:41 taqua Exp $
+ * $Id: JFreeReportResources_si.java,v 1.2 2003/05/26 13:30:58 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -128,7 +128,8 @@ public class JFreeReportResources_si extends JFreeReportResources
         {"error.savefailed.title", "Napaka pri shranjevanju"},
         {"error.printfailed.message", "Napaka pri tiskanju poro\u010Dila: {0}"},
         {"error.printfailed.title", "Napaka pri tiskanju"},
-        {"error.validationfailed.message", "Napaka med preverjanjem vnosa uporabnikovih podatkov."},
+        {"error.validationfailed.message",
+         "Napaka med preverjanjem vnosa uporabnikovih podatkov."},
         {"error.validationfailed.title", "Napaka pri preverjanju"},
 
         {"tabletarget.page", "Stran {0}"},
@@ -150,8 +151,9 @@ public class JFreeReportResources_si extends JFreeReportResources
         {"pdfsavedialog.ownerpassword", "Lastni\u0161ko geslo"},
         {"pdfsavedialog.ownerpasswordconfirm", "Potrdi"},
         {"pdfsavedialog.ownerpasswordNoMatch", "Lastni\u0161ki gesli se ne ujemata."},
-        {"pdfsavedialog.ownerpasswordEmpty", "Lastni\u0161ko geslo je prazno. Uporabniki lahko spremenijo varnostne omejitve."
-      + " \u017Delite vseeno nadaljevati?"},
+        {"pdfsavedialog.ownerpasswordEmpty",
+         "Lastni\u0161ko geslo je prazno. Uporabniki lahko spremenijo varnostne omejitve."
+         + " \u017Delite vseeno nadaljevati?"},
 
         {"pdfsavedialog.warningTitle", "Opozorilo"},
         {"pdfsavedialog.errorTitle", "Napaka"},
@@ -281,7 +283,8 @@ public class JFreeReportResources_si extends JFreeReportResources
         {"plain-text-exportdialog.targetIsEmpty",
          "Prosim navedite ime za CSV datoteko."},
         {"plain-text-exportdialog.targetIsNoFile", "Izbrani cilj ni navadna datoteka."},
-        {"plain-text-exportdialog.targetIsNotWritable", "V izbrano datoteko ni mogo\u010De pisati."},
+        {"plain-text-exportdialog.targetIsNotWritable",
+         "V izbrano datoteko ni mogo\u010De pisati."},
         {"plain-text-exportdialog.targetOverwriteConfirmation",
          "Datoteka ''{0}'' obstaja. Ali jo \u017Eelite prepisati?"},
         {"plain-text-exportdialog.targetOverwriteTitle", "Ali \u017Eelite prepisati datoteko?"},
@@ -296,7 +299,8 @@ public class JFreeReportResources_si extends JFreeReportResources
         {"convertdialog.targetIsEmpty", "Ciljna datoteka ni navedena"},
         {"convertdialog.errorTitle", "Napaka"},
         {"convertdialog.targetIsNoFile", "Navedena ciljna datoteka ni navadna datoteka."},
-        {"convertdialog.targetIsNotWritable", "V navedeno ciljno datoteko ni mogo\u010De pisati."},
+        {"convertdialog.targetIsNotWritable",
+         "V navedeno ciljno datoteko ni mogo\u010De pisati."},
         {"convertdialog.targetOverwriteConfirmation",
          "Datoteka ''{0}'' obstaja. Ali jo \u017Eelite prepisati?"},
         {"convertdialog.targetOverwriteTitle", "Ali \u017Eelite prepisati datoteko?"},

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.15 2003/05/14 22:26:39 taqua Exp $
+ * $Id: TextContent.java,v 1.16 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class TextContent extends ContentContainer
    */
   public TextContent(String value, float lineHeight, Rectangle2D bounds, SizeCalculator ot)
   {
-    super ((Rectangle2D) bounds.clone());
+    super((Rectangle2D) bounds.clone());
     this.sizeCalculator = ot;
 
     float x = (float) bounds.getX();

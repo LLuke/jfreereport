@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MiddleAlignment.java,v 1.8 2003/04/05 18:57:18 taqua Exp $
+ * $Id: MiddleAlignment.java,v 1.9 2003/05/11 13:39:18 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public class MiddleAlignment extends VerticalBoundsAlignment
     r = getReferenceBounds().createIntersection(r);
     float x = (float) r.getX();
     float y = (float) (getReferenceBounds().getY()
-                       + ((getReferenceBounds().getHeight() - r.getHeight()) / 2));
+        + ((getReferenceBounds().getHeight() - r.getHeight()) / 2));
     float w = (float) r.getWidth();
     float h = (float) r.getHeight();
     r.setRect(x, y, w, h);

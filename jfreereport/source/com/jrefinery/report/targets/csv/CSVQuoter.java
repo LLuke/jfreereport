@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,21 +28,21 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVQuoter.java,v 1.5 2003/02/25 14:54:52 mungady Exp $
+ * $Id: CSVQuoter.java,v 1.6 2003/02/25 18:46:59 taqua Exp $
  *
  * Changes
  * -------
  * 18-Jan-2003 : Initial Version
  * 09-Feb-2003 : Documentation
  * 24-Feb-2003 : Fixed Checkstyle issues (DG);
- * 
+ *
  */
 
 package com.jrefinery.report.targets.csv;
 
 /**
  * The <code>CSVQuoter</code> is a helper class to encode a string for the CSV file format.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class CSVQuoter
@@ -55,14 +55,14 @@ public class CSVQuoter
    */
   public CSVQuoter()
   {
-    this (",");
+    this(",");
   }
 
   /**
    * Creates a new <code>CSVQuoter</code>, which uses the defined separator.
    *
    * @param separator  the separator.
-   * 
+   *
    * @throws NullPointerException if the given separator is <code>null</code>.
    */
   public CSVQuoter(String separator)
@@ -75,7 +75,7 @@ public class CSVQuoter
    * If the string does not need quoting, the original string is returned unchanged.
    *
    * @param original  the unquoted string.
-   * 
+   *
    * @return The quoted string
    */
   public String doQuoting(String original)
@@ -88,7 +88,7 @@ public class CSVQuoter
       retval.append("\"");
       return retval.toString();
     }
-    else 
+    else
     {
       return original;
     }
@@ -99,7 +99,7 @@ public class CSVQuoter
    * If the string was not quoted, then the string is returned unchanged.
    *
    * @param nativeString  the quoted string.
-   * 
+   *
    * @return The unquoted string.
    */
   public String undoQuoting(String nativeString)
@@ -126,7 +126,7 @@ public class CSVQuoter
       }
       return b.toString();
     }
-    else 
+    else
     {
       return nativeString;
     }
@@ -203,7 +203,7 @@ public class CSVQuoter
    */
   public void setSeparator(String separator)
   {
-    if (separator == null) 
+    if (separator == null)
     {
       throw new NullPointerException();
     }

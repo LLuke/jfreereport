@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContent.java,v 1.11 2003/03/20 18:28:34 taqua Exp $
+ * $Id: ShapeContent.java,v 1.12 2003/04/09 15:50:25 mungady Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public class ShapeContent implements Content
    */
   public ShapeContent(Shape s)
   {
-    this (s, s.getBounds2D());
+    this(s, s.getBounds2D());
   }
 
   /**
@@ -101,7 +101,7 @@ public class ShapeContent implements Content
    *
    * @return the shape.
    */
-  public Shape getShape ()
+  public Shape getShape()
   {
     return shape;
   }

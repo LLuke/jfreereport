@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Piotr Bzdyl;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_pl.java,v 1.6 2003/06/16 16:06:56 taqua Exp $
+ * $Id: DemoResources_pl.java,v 1.7 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ public class DemoResources_pl extends JFreeReportResources
    *
    * @return an array of localised resources.
    */
-  public Object[][] getContents ()
+  public Object[][] getContents()
   {
     return CONTENTS;
   }
@@ -68,26 +68,26 @@ public class DemoResources_pl extends JFreeReportResources
 
     {"action.close.name", "Wyj\u015bcie"},
     {"action.close.description", "Wyj\u015b z JFreeReportDemo"},
-    {"action.close.mnemonic", new Integer (KeyEvent.VK_E)},
+    {"action.close.mnemonic", new Integer(KeyEvent.VK_E)},
 
     {"action.print-preview.name", "Podgl\u0105d wydruku..."},
     {"action.print-preview.description", "Podgl\u0105d raportu"},
-    {"action.print-preview.mnemonic", new Integer (KeyEvent.VK_P)},
+    {"action.print-preview.mnemonic", new Integer(KeyEvent.VK_P)},
 
     {"action.about.name", "O programie..."},
     {"action.about.description", "Informacja o programie"},
-    {"action.about.mnemonic", new Integer (KeyEvent.VK_A)},
+    {"action.about.mnemonic", new Integer(KeyEvent.VK_A)},
 
     {"menu.file.name", "Plik"},
-    {"menu.file.mnemonic", new Character ('P')},
+    {"menu.file.mnemonic", new Character('P')},
     {"menu.help.name", "Pomoc"},
-    {"menu.help.mnemonic", new Character ('c')},
+    {"menu.help.mnemonic", new Character('c')},
     {"exitdialog.title", "Potwierdzenie..."},
     {"exitdialog.message", "Czy na pewno wyj\u015b\u0107 z programu?"},
 
 
-    {"report.definitionnotfound", 
-        "Definicja raportu {0} nie znaleziona w \u015bcie\u017ce (classpath)"},
+    {"report.definitionnotfound",
+     "Definicja raportu {0} nie znaleziona w \u015bcie\u017ce (classpath)"},
     {"report.definitionfailure.message", "Nie mo\u017cna za\u0142adowa� definicji raportu {0}."},
     {"report.definitionfailure.title", "B\u0142\u0105d podczas \u0142adowania (Loader error)"},
     {"report.definitionnull", "Definicja raportu nie zosta\u0142a wygenerowana"},

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.2 2003/06/19 18:44:10 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.3 2003/06/26 19:55:56 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 13.06.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.preview;
@@ -76,7 +76,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    *
    * @param proxy
    */
-  public void init (PreviewProxy proxy)
+  public void init(PreviewProxy proxy)
   {
     super.init(proxy);
     if (proxy instanceof Frame)
@@ -114,7 +114,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public String getShortDescription()
   {
-    return resources.getString ("action.export-to-excel.description");
+    return resources.getString("action.export-to-excel.description");
   }
 
   /**
@@ -124,7 +124,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon()
   {
-    return (Icon) resources.getObject ("action.export-to-excel.small-icon");
+    return (Icon) resources.getObject("action.export-to-excel.small-icon");
   }
 
   /**
@@ -134,7 +134,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon()
   {
-    return (Icon) resources.getObject ("action.export-to-excel.icon");
+    return (Icon) resources.getObject("action.export-to-excel.icon");
   }
 
   /**
@@ -144,7 +144,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public KeyStroke getAcceleratorKey()
   {
-    return (KeyStroke) resources.getObject ("action.export-to-excel.accelerator");
+    return (KeyStroke) resources.getObject("action.export-to-excel.accelerator");
   }
 
   /**
@@ -154,7 +154,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public Integer getMnemonicKey()
   {
-    return (Integer) resources.getObject ("action.export-to-excel.mnemonic");
+    return (Integer) resources.getObject("action.export-to-excel.mnemonic");
   }
 
   /**
@@ -164,7 +164,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public String getDisplayName()
   {
-    return resources.getString ("action.export-to-excel.name");
+    return resources.getString("action.export-to-excel.name");
   }
 
   /**

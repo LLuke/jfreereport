@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupHeaderState.java,v 1.6 2003/02/04 17:56:21 taqua Exp $
+ * $Id: PostGroupHeaderState.java,v 1.7 2003/02/25 18:46:47 taqua Exp $
  *
  * Changes
  * -------
@@ -55,9 +55,9 @@ public final class PostGroupHeaderState extends ReportState
    *
    * @param previous  the previous state.
    */
-  public PostGroupHeaderState (ReportState previous)
+  public PostGroupHeaderState(ReportState previous)
   {
-    super (previous);
+    super(previous);
   }
 
   /**
@@ -65,29 +65,29 @@ public final class PostGroupHeaderState extends ReportState
    *
    * @return true, if the currentGroupIndex is smaller than the defined groups - 1
    */
-  protected boolean hasMoreGroups ()
+  protected boolean hasMoreGroups()
   {
-    return this.getCurrentGroupIndex () < (this.getReport ().getGroupCount () - 1);
+    return this.getCurrentGroupIndex() < (this.getReport().getGroupCount() - 1);
   }
 
   /**
    * Advances from this state to the next.  If the reporting engine hasn't reached the inner-most
-   * group yet, move to the '<code>PRE-GROUP-HEADER</code>' state again, otherwise move to the 
+   * group yet, move to the '<code>PRE-GROUP-HEADER</code>' state again, otherwise move to the
    * '<code>PRE-ITEM-GROUP</code>' state.
    *
    * @return the next state.
    */
-  public ReportState advance ()
+  public ReportState advance()
   {
-    if (hasMoreGroups ())
+    if (hasMoreGroups())
     {
       // there are more groups defined, activate the next group and proceed to print it's header
-      return new PreGroupHeaderState (this);
+      return new PreGroupHeaderState(this);
     }
     else
     {
       // we have reached the inner-most group, so prepare to print some data items
-      return new PreItemGroupState (this);
+      return new PreItemGroupState(this);
     }
   }
 
@@ -97,7 +97,7 @@ public final class PostGroupHeaderState extends ReportState
    *
    * @return true; the post group header previews the next data row.
    */
-  public boolean isPrefetchState ()
+  public boolean isPrefetchState()
   {
     return true;
   }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.16 2003/06/01 17:39:25 taqua Exp $
+ * $Id: BSHExpression.java,v 1.17 2003/06/01 20:33:38 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -74,29 +74,29 @@ import com.jrefinery.report.util.Log;
  * An example in the XML format: (from report1.xml)
  * <p>
  * <pre><expression name="expression" class="com.jrefinery.report.function.BSHExpression">
-  <properties>
-  <property name="expression">
-  // you may import packages and classes or use the fully qualified name of the class
-  import com.jrefinery.report.*;
+ <properties>
+ <property name="expression">
+ // you may import packages and classes or use the fully qualified name of the class
+ import com.jrefinery.report.*;
 
-  String userdefinedFunction (String parameter, Date date)
-  {
-  return parameter + " - the current date is " + date);
-  }
+ String userdefinedFunction (String parameter, Date date)
+ {
+ return parameter + " - the current date is " + date);
+ }
 
-  // use simple java code to perform the expression. You may use all classes
-  // available in your classpath as if you write "real" java code in your favourite
-  // IDE.
-  // See the www.beanshell.org site for more information ...
-  //
-  // A return value of type "Object" is alway implied ...
-  getValue ()
-  {
-  return userdefinedFunction ("Hello World :) ", new Date());
-  }
-  </property>
-  </properties>
-  </expression></pre>
+ // use simple java code to perform the expression. You may use all classes
+ // available in your classpath as if you write "real" java code in your favourite
+ // IDE.
+ // See the www.beanshell.org site for more information ...
+ //
+ // A return value of type "Object" is alway implied ...
+ getValue ()
+ {
+ return userdefinedFunction ("Hello World :) ", new Date());
+ }
+ </property>
+ </properties>
+ </expression></pre>
  *
  * @author Thomas Morgner
  */
@@ -140,7 +140,7 @@ public class BSHExpression extends AbstractExpression implements Serializable
     catch (Exception e)
     {
       e.printStackTrace();
-      Log.error(new Log.SimpleMessage("Evaluation error: ", e.getClass(), " - ",e.getMessage()));
+      Log.error(new Log.SimpleMessage("Evaluation error: ", e.getClass(), " - ", e.getMessage()));
       throw new NullPointerException();
     }
     //return null;

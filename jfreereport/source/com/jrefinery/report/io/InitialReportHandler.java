@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
 
- * $Id: InitialReportHandler.java,v 1.6 2003/04/24 18:08:47 taqua Exp $
+ * $Id: InitialReportHandler.java,v 1.7 2003/05/02 12:39:52 taqua Exp $
  *
  * Changes
  * -------
@@ -55,14 +55,14 @@ import org.xml.sax.SAXException;
  * <p>
  * Once one of the profiles is activated, the parser forwards all SAXEvents to
  * the selected ElementDefinitionHandler.
- * 
+ *
  * @author Thomas Morgner
  */
 public class InitialReportHandler implements ElementDefinitionHandler
 {
   /** the document element tag for the extended report format. */
   public static final String REPORT_DEFINITION_TAG = "report-definition";
-  
+
   /** the document element tag for the simple report format. */
   public static final String OLD_REPORT_TAG = "report";
 
@@ -89,7 +89,7 @@ public class InitialReportHandler implements ElementDefinitionHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
-    throws SAXException
+      throws SAXException
   {
     if (tagName.equals(REPORT_DEFINITION_TAG))
     {
@@ -104,8 +104,8 @@ public class InitialReportHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " 
-                              + REPORT_DEFINITION_TAG + ".");
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + REPORT_DEFINITION_TAG + ".");
     }
   }
 
@@ -116,7 +116,7 @@ public class InitialReportHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
   {
     // characters are ignored at this point...
   }
@@ -140,8 +140,8 @@ public class InitialReportHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " 
-                              + REPORT_DEFINITION_TAG + ".");
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + REPORT_DEFINITION_TAG + ".");
     }
   }
 

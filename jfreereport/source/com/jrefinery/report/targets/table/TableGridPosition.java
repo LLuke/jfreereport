@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridPosition.java,v 1.9 2003/02/25 15:42:31 taqua Exp $
+ * $Id: TableGridPosition.java,v 1.10 2003/04/08 14:33:10 mungady Exp $
  *
  * Changes
  * -------
@@ -43,23 +43,23 @@ import java.awt.geom.Rectangle2D;
 /**
  * The TableGridPosition is used to bind the layouted table position to an
  * TableCellData object.
- * 
+ *
  * @author Thomas Morgner
  */
 public final class TableGridPosition
 {
   /** the TableCellData element stored in this position. */
   private TableCellData element;
-  
+
   /** the number of columns spanned by this cell. */
   private int colSpan;
-  
+
   /** the number of rows spanned by this cell. */
   private int rowSpan;
-  
+
   /** the column, where the cell starts. */
   private int col;
-  
+
   /** the row, where the cell starts.*/
   private int row;
 
@@ -161,7 +161,7 @@ public final class TableGridPosition
    * @param pos the compared position
    * @return true, if the position is contained in this cells area, false otherwise.
    */
-  public boolean contains (TableGridPosition pos)
+  public boolean contains(TableGridPosition pos)
   {
     if (row > pos.getRow())
     {
@@ -176,14 +176,14 @@ public final class TableGridPosition
 
     if ((col + colSpan) < (pos.getCol() + pos.getColSpan()))
     {
-      //Log.debug ("Contains ColSpan: " + (col + colSpan) + " -> " + (pos.getCol() 
+      //Log.debug ("Contains ColSpan: " + (col + colSpan) + " -> " + (pos.getCol()
       //           + pos.getColSpan()));
       return false;
     }
 
     if ((row + rowSpan) < (pos.getRow() + pos.getRowSpan()))
     {
-      //Log.debug ("Contains RowSpan: " + (row + rowSpan) + " -> " + (pos.getRow() 
+      //Log.debug ("Contains RowSpan: " + (row + rowSpan) + " -> " + (pos.getRow()
       //           + pos.getRowSpan()));
       return false;
     }
@@ -198,7 +198,7 @@ public final class TableGridPosition
    * @param y the compated row
    * @return true, if row and column are the same as this grid positions row and column.
    */
-  public boolean isOrigin (int x, int y)
+  public boolean isOrigin(int x, int y)
   {
     return (x == col) && (y == row);
   }
@@ -210,9 +210,9 @@ public final class TableGridPosition
    *
    * @return  a string representation of the object.
    */
-  public String toString ()
+  public String toString()
   {
-    StringBuffer buffer  = new StringBuffer();
+    StringBuffer buffer = new StringBuffer();
     buffer.append("TableGridPosition={col=");
     buffer.append(getCol());
     buffer.append("; row=");

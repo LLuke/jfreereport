@@ -1,8 +1,12 @@
 checkstyle.maxlinelen 100
-checkstyle.maxparameters 30
+checkstyle.maxparameters 15
 checkstyle.lcurly.type nl
 checkstyle.lcurly.method nl
 checkstyle.lcurly.other nl
 checkstyle.rcurly alone
 checkstyle.ignore.public.in.interface yes
 checkstyle.javadoc.checkUnusedThrows yes
+checkstyle.illegal.instantiations java.lang.Boolean
+checkstyle.wrap.operator ignore
+checkstyle.header.file checkstyle/fileheader.txt
+checkstyle.require.packagehtml true

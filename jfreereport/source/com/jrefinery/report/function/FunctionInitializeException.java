@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -
  *
- * $Id: FunctionInitializeException.java,v 1.6 2002/12/12 12:26:56 mungady Exp $
+ * $Id: FunctionInitializeException.java,v 1.7 2003/06/12 23:17:13 taqua Exp $
  *
  * Changes
  * -------
@@ -62,9 +62,9 @@ public class FunctionInitializeException extends ReportInitialisationException
    * @param message  the exception message.
    * @param ex  the parent exception.
    */
-  public FunctionInitializeException (String message, Exception ex)
+  public FunctionInitializeException(String message, Exception ex)
   {
-    super (message);
+    super(message);
     parent = ex;
   }
 
@@ -73,9 +73,9 @@ public class FunctionInitializeException extends ReportInitialisationException
    *
    * @param message  the exception message.
    */
-  public FunctionInitializeException (String message)
+  public FunctionInitializeException(String message)
   {
-    super (message);
+    super(message);
   }
 
   /**
@@ -83,7 +83,7 @@ public class FunctionInitializeException extends ReportInitialisationException
    *
    * @return the parent exception.
    */
-  public Exception getParent ()
+  public Exception getParent()
   {
     return parent;
   }
@@ -93,13 +93,13 @@ public class FunctionInitializeException extends ReportInitialisationException
    *
    * @param stream  the output stream.
    */
-  public void printStackTrace (PrintStream stream)
+  public void printStackTrace(PrintStream stream)
   {
-    super.printStackTrace (stream);
-    if (getParent () != null)
+    super.printStackTrace(stream);
+    if (getParent() != null)
     {
-      stream.println ("ParentException: ");
-      getParent ().printStackTrace (stream);
+      stream.println("ParentException: ");
+      getParent().printStackTrace(stream);
     }
   }
 
@@ -108,13 +108,13 @@ public class FunctionInitializeException extends ReportInitialisationException
    *
    * @param writer  the writer.
    */
-  public void printStackTrace (PrintWriter writer)
+  public void printStackTrace(PrintWriter writer)
   {
-    super.printStackTrace (writer);
-    if (getParent () != null)
+    super.printStackTrace(writer);
+    if (getParent() != null)
     {
-      writer.println ("ParentException: ");
-      getParent ().printStackTrace (writer);
+      writer.println("ParentException: ");
+      getParent().printStackTrace(writer);
     }
   }
 }

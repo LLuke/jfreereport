@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupHeaderState.java,v 1.14 2003/05/07 20:27:26 taqua Exp $
+ * $Id: PreGroupHeaderState.java,v 1.15 2003/05/16 17:26:45 taqua Exp $
  *
  * Changes
  * -------
@@ -51,9 +51,9 @@ public final class PreGroupHeaderState extends ReportState
    *
    * @param previous  the previous state.
    */
-  public PreGroupHeaderState (ReportState previous)
+  public PreGroupHeaderState(ReportState previous)
   {
-    super (previous);
+    super(previous);
   }
 
   /**
@@ -62,23 +62,23 @@ public final class PreGroupHeaderState extends ReportState
    *
    * @return  the next state ('<code>POST-GROUP-HEADER</code>').
    */
-  public ReportState advance ()
+  public ReportState advance()
   {
     firePrepareEvent(ReportEvent.GROUP_STARTED);
 
-    enterGroup ();
+    enterGroup();
     // enough space, fire the events and proceed to PostGroupHeaderState
-    fireGroupStartedEvent ();
-    return new PostGroupHeaderState (this);
+    fireGroupStartedEvent();
+    return new PostGroupHeaderState(this);
   }
 
   /**
    * Returns the corrected display item for this state. As the currentItem has not yet advanced
    * we perform a readAHead lookup when populating elements.
    *
-   * @return true; Header related states preview the next itemband DataRow. 
+   * @return true; Header related states preview the next itemband DataRow.
    */
-  public boolean isPrefetchState ()
+  public boolean isPrefetchState()
   {
     return true;
   }

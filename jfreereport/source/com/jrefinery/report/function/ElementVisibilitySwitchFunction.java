@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.24 2003/05/11 13:39:16 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.25 2003/06/01 17:39:25 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -141,7 +141,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction implements
     {
       if (warned == false)
       {
-        Log.warn (new Log.SimpleMessage("Element ", getElement(), "not defined in the item band"));
+        Log.warn(new Log.SimpleMessage("Element ", getElement(), "not defined in the item band"));
         warned = true;
       }
     }
@@ -169,7 +169,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction implements
    *
    * @return the initial value for the trigger.
    */
-  public boolean getInitialTriggerValue ()
+  public boolean getInitialTriggerValue()
   {
     return getProperty(INITIAL_STATE_PROPERTY, "false").equalsIgnoreCase("true");
   }

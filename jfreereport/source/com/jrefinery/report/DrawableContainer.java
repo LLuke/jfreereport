@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DrawableContainer.java,v 1.3 2003/04/09 00:10:32 mungady Exp $
+ * $Id: DrawableContainer.java,v 1.4 2003/04/24 18:08:43 taqua Exp $
  *
  * Changes
  * -------
@@ -51,34 +51,34 @@ import org.jfree.ui.Drawable;
  * content bounds.
  * <p>
  * The clipping bounds define the clipping area of the drawable object.
- * 
+ *
  * @author Thomas Morgner
  */
 public class DrawableContainer
 {
   /** The drawable object. */
   private Drawable drawable;
-  
+
   /** The size for drawing. */
   private Dimension2D drawableSize;
-  
+
   /** The clipping bounds. */
   private Rectangle2D clippingBounds;
 
   /**
    * Creates a new container.
-   * 
+   *
    * @param container  the container.
    * @param clippingBounds  the clipping bounds.
    */
   public DrawableContainer(DrawableContainer container, Rectangle2D clippingBounds)
   {
-    this (container.getDrawable(), container.getDrawableSize(), clippingBounds);
+    this(container.getDrawable(), container.getDrawableSize(), clippingBounds);
   }
 
   /**
    * Creates a new container.
-   * 
+   *
    * @param drawable  the drawable object.
    * @param drawableSize  the size.
    * @param clippingBounds  the clipping region.
@@ -92,7 +92,7 @@ public class DrawableContainer
 
   /**
    * Returns the drawable object.
-   * 
+   *
    * @return The drawable object.
    */
   public Drawable getDrawable()
@@ -102,7 +102,7 @@ public class DrawableContainer
 
   /**
    * Returns the drawable size.
-   * 
+   *
    * @return The size.
    */
   public Dimension2D getDrawableSize()
@@ -112,7 +112,7 @@ public class DrawableContainer
 
   /**
    * Sets the drawable size.
-   * 
+   *
    * @param drawableSize  the drawable size.
    */
   public void setDrawableSize(Dimension2D drawableSize)
@@ -122,7 +122,7 @@ public class DrawableContainer
 
   /**
    * Returns the clipping bounds.
-   * 
+   *
    * @return The clipping bounds.
    */
   public Rectangle2D getClippingBounds()
@@ -132,9 +132,9 @@ public class DrawableContainer
 
   /**
    * Sets the clipping bounds.
-   * 
+   *
    * @param clippingBounds  the clipping bounds.
-   */  
+   */
   public void setClippingBounds(Rectangle2D clippingBounds)
   {
     this.clippingBounds.setRect(clippingBounds);
@@ -142,10 +142,10 @@ public class DrawableContainer
 
   /**
    * Returns a string representation of this object (useful for debugging).
-   * 
+   *
    * @return A string.
    */
-  public String toString ()
+  public String toString()
   {
     StringBuffer b = new StringBuffer();
     b.append(getClass().getName());

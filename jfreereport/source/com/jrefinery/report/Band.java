@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.60 2003/06/23 14:36:56 taqua Exp $
+ * $Id: Band.java,v 1.61 2003/06/23 16:08:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -483,6 +483,74 @@ public class Band extends Element implements Serializable, Cloneable
     }
   }
 
+  /**
+   * Handles the unregistration of the stylesheet collection.
+   */
+  protected void handleUnregisterStyleSheetCollection()
+  {
+    Element[] elements = getElementArray();
+    for (int i = 0; i < elements.length; i++)
+    {
+      elements[i].unregisterStyleSheetCollection(getStyleSheetCollection());
+    }
+    //getStyleSheetCollection().remove(getBandDefaults());
+    getBandDefaults().unregisterStyleSheetCollection(getStyleSheetCollection());
+    super.handleUnregisterStyleSheetCollection();
+  }
+
+  /**
+   * Handles the registration of the stylesheet collection.
+   */
+  protected void handleRegisterStyleSheetCollection()
+  {
+    Element[] elements = getElementArray();
+    for (int i = 0; i < elements.length; i++)
+    {
+      elements[i].registerStyleSheetCollection(getStyleSheetCollection());
+    }
+    //getStyleSheetCollection().addStyleSheet(getBandDefaults());
+    getBandDefaults().registerStyleSheetCollection(getStyleSheetCollection());
+    super.handleRegisterStyleSheetCollection();
+  }
+
+  /**
+   * Updates the stylesheet collection for this element and all substylesheets.
+   * This method must be called after the element was cloned, to make sure that
+   * all stylesheets are registered properly.
+   * <p>
+   * If you don't call this function after cloning prepare to be doomed.
+   * This method will replace all inherited stylesheets with clones from the stylesheet
+   * collection.
+   *
+   * @param sc the stylesheet collection that contains the updated information and
+   * that should be assigned with that element.
+   * @throws NullPointerException if the given stylesheet collection is null.
+   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException
+   * if there is an other stylesheet collection already registered with that element.
+   */
+  public void updateStyleSheetCollection(StyleSheetCollection sc)
+  {
+    if (sc == null)
+    {
+      throw new NullPointerException("StyleSheetCollection is null.");
+    }
+    if (getStyleSheetCollection() != null)
+    {
+      throw new NullPointerException("There is a stylesheet collection already registered.");
+    }
+
+    Element[] elements = getElementArray();
+    for (int i = 0; i < elements.length; i++)
+    {
+      elements[i].updateStyleSheetCollection(sc);
+    }
+
+    sc.updateStyleSheet(getBandDefaults());
+    super.updateStyleSheetCollection(sc);
+
+    registerStyleSheetCollection(sc);
+  }
+
   /// DEPRECATED METHODS //////////////////////////////////////////////////////////////////////////
 
   /**
@@ -516,50 +584,4 @@ public class Band extends Element implements Serializable, Cloneable
     return (float) d.getHeight();
   }
 
-  protected void handleUnregisterStyleSheetCollection()
-  {
-    Element[] elements = getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      elements[i].unregisterStyleSheetCollection(getStyleSheetCollection());
-    }
-    //getStyleSheetCollection().remove(getBandDefaults());
-    getBandDefaults().unregisterStyleSheetCollection(getStyleSheetCollection());
-    super.handleUnregisterStyleSheetCollection();
-  }
-
-  protected void handleRegisterStyleSheetCollection()
-  {
-    Element[] elements = getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      elements[i].registerStyleSheetCollection(getStyleSheetCollection());
-    }
-    //getStyleSheetCollection().addStyleSheet(getBandDefaults());
-    getBandDefaults().registerStyleSheetCollection(getStyleSheetCollection());
-    super.handleRegisterStyleSheetCollection();
-  }
-
-  public void updateStyleSheetCollection(StyleSheetCollection sc)
-  {
-    if (sc == null)
-    {
-      throw new NullPointerException("StyleSheetCollection is null.");
-    }
-    if (getStyleSheetCollection() != null)
-    {
-      throw new NullPointerException("There is a stylesheet collection already registered.");
-    }
-
-    Element[] elements = getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      elements[i].updateStyleSheetCollection(sc);
-    }
-
-    sc.updateStyleSheet(getBandDefaults());
-    super.updateStyleSheetCollection(sc);
-
-    registerStyleSheetCollection(sc);
-  }
 }

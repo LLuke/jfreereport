@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.4 2003/04/09 15:47:30 mungady Exp $
+ * $Id: FunctionUtilities.java,v 1.5 2003/05/16 19:29:50 taqua Exp $
  *
  * Changes
  * -------
  * 07-Mar-2003 : Version 1;
- * 
+ *
  */
 package com.jrefinery.report.function;
 
@@ -44,7 +44,7 @@ import com.jrefinery.report.event.ReportEvent;
 
 /**
  * A collection of utility methods relating to functions.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class FunctionUtilities
@@ -54,10 +54,10 @@ public class FunctionUtilities
    *
    * @param band  the band that is suspected to contain the element.
    * @param element  the element name.
-   * 
+   *
    * @return the found element or null, if no element could be found.
    */
-  public static Element findElement (Band band, String element)
+  public static Element findElement(Band band, String element)
   {
     if (element == null)
     {
@@ -82,13 +82,13 @@ public class FunctionUtilities
 
   /**
    * Returns true if the events current groupname is equal to the group name.
-   * 
+   *
    * @param groupName  the group name.
    * @param event  the report event.
-   * 
+   *
    * @return A boolean.
    */
-  public static boolean isDefinedGroup (String groupName, ReportEvent event)
+  public static boolean isDefinedGroup(String groupName, ReportEvent event)
   {
     if (groupName == null)
     {
@@ -109,13 +109,13 @@ public class FunctionUtilities
   /**
    * Returns true, if the current run level is defined for the given function and
    * this is a prepare run.
-   *  
+   *
    * @param f  the function.
    * @param event  the event.
-   * 
+   *
    * @return A boolean.
    */
-  public static boolean isDefinedPrepareRunLevel (Function f, ReportEvent event)
+  public static boolean isDefinedPrepareRunLevel(Function f, ReportEvent event)
   {
     if (f == null)
     {
@@ -136,9 +136,9 @@ public class FunctionUtilities
 
   /**
    * Returns true or false.
-   * 
+   *
    * @param event  the report event.
-   * 
+   *
    * @return A boolean.
    */
   public static boolean isLayoutLevel(ReportEvent event)

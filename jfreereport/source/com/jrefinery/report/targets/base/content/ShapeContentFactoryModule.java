@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContentFactoryModule.java,v 1.10 2003/06/10 12:11:55 taqua Exp $
+ * $Id: ShapeContentFactoryModule.java,v 1.11 2003/06/10 16:07:54 taqua Exp $
  *
  * Changes
  * -------
@@ -94,17 +94,21 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
   {
     Shape value = (Shape) e.getValue();
     if (value == null)
+    {
       return null;
+    }
 
     Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
-                                                            bounds.getPreferredSize());
+        bounds.getPreferredSize());
     if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
+    {
       return null;
+    }
 
     Shape s = ShapeTransform.transformShape(value,
-                         e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
-                         e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
-                         iBounds);
-    return new ShapeContent (s);
+        e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
+        e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
+        iBounds);
+    return new ShapeContent(s);
   }
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PersonBoundCard.java,v 1.1 2003/04/02 21:24:00 taqua Exp $
+ * $Id: PersonBoundCard.java,v 1.2 2003/04/09 15:30:27 mungady Exp $
  *
  * Changes
  * -------
@@ -38,38 +38,38 @@ package com.jrefinery.report.demo.cards;
 
 /**
  * A card that is bound to a person's identity.
- * 
+ *
  * @author Thomas Morgner.
  */
 public abstract class PersonBoundCard extends Card
 {
   /** The person's first name. */
   private String firstName;
-  
+
   /** The person's last name. */
   private String lastName;
-  
+
   /** The card number. */
   private String cardNr;
 
   /**
    * Creates a new card.
-   * 
+   *
    * @param firstName  the first name.
    * @param lastName  the last name.
    * @param cardNr  the card number.
    */
   public PersonBoundCard(String firstName, String lastName, String cardNr)
   {
-    if (firstName == null) 
+    if (firstName == null)
     {
       throw new NullPointerException("FirstName");
     }
-    if (lastName == null) 
+    if (lastName == null)
     {
       throw new NullPointerException("LastName");
     }
-    if (cardNr == null) 
+    if (cardNr == null)
     {
       throw new NullPointerException("CardNr");
     }
@@ -81,7 +81,7 @@ public abstract class PersonBoundCard extends Card
 
   /**
    * Returns the first name.
-   * 
+   *
    * @return The first name.
    */
   public String getFirstName()
@@ -91,17 +91,17 @@ public abstract class PersonBoundCard extends Card
 
   /**
    * Returns the last name.
-   * 
+   *
    * @return The last name.
    */
   public String getLastName()
   {
     return lastName;
   }
- 
+
   /**
    * Returns the card number.
-   * 
+   *
    * @return The card number.
    */
   public String getCardNr()

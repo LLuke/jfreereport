@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.14 2003/04/09 16:06:34 mungady Exp $
+ * $Id: XMLProcessor.java,v 1.15 2003/05/02 12:40:44 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ import com.jrefinery.report.util.NullOutputStream;
  * The XMLProcessor is not intended to produce complex output, it is an educational
  * example. If you want valid xml data enriched with layouting information, then
  * have a look at the HTML-OutputTarget, this target is also able to write XHTMl code.
- * 
+ *
  * @author Thomas Morgner
  */
 public class XMLProcessor
@@ -82,10 +82,10 @@ public class XMLProcessor
    * @throws ReportProcessingException if the report could not be initialized
    * @throws FunctionInitializeException if the writer function could not be initialized.
    */
-  public XMLProcessor (JFreeReport report)
+  public XMLProcessor(JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
-    if (report == null) 
+    if (report == null)
     {
       throw new NullPointerException();
     }
@@ -139,7 +139,7 @@ public class XMLProcessor
    * Processes the entire report and records the state at the end of the report preparation.
    *
    * @return the final ReportState
-   * 
+   *
    * @throws ReportProcessingException if there was a problem processing the report.
    * @throws CloneNotSupportedException if there is a cloning problem.
    */
@@ -199,7 +199,7 @@ public class XMLProcessor
       // inner loop: process the complete report, calculate the function values
       // for the current level. Higher level functions are not available in the
       // dataRow.
-      boolean failOnError = (level == -1) 
+      boolean failOnError = (level == -1)
           && getReport().getReportConfiguration().isStrictErrorHandling();
       while (!state.isFinish())
       {
@@ -209,7 +209,7 @@ public class XMLProcessor
         {
           if (state.isErrorOccured() == true)
           {
-            throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
+            throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
           }
         }
         if (!state.isFinish())
@@ -239,8 +239,7 @@ public class XMLProcessor
           throw new IllegalStateException("Repaginate did not produce an finish state");
         }
       }
-    }
-    while (hasNext == true);
+    } while (hasNext == true);
 
     // root of evilness here ... pagecount should not be handled specially ...
     // The pagecount should not be added as report property, there are functions to
@@ -269,9 +268,9 @@ public class XMLProcessor
    * @throws ReportProcessingException if the report processing failed.
    * @throws IllegalStateException if there is no writer defined.
    */
-  public void processReport () throws ReportProcessingException
+  public void processReport() throws ReportProcessingException
   {
-    if (writer == null) 
+    if (writer == null)
     {
       throw new IllegalStateException("No writer defined");
     }
@@ -291,7 +290,7 @@ public class XMLProcessor
         state = state.advance();
         if (failOnError && state.isErrorOccured() == true)
         {
-          throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
+          throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
         }
         if (!state.isFinish())
         {

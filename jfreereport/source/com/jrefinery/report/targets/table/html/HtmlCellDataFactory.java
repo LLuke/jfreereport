@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellDataFactory.java,v 1.12 2003/02/26 16:42:27 mungady Exp $
+ * $Id: HtmlCellDataFactory.java,v 1.13 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ import com.jrefinery.report.targets.table.TableCellData;
  * HTML cell data. The element style is converted using an external
  * style factory. This factory reuses previously defined styles if
  * possible, to increase the file creating efficiency.
- * 
+ *
  * @author Thomas Morgner
  */
 public class HtmlCellDataFactory extends AbstractTableCellDataFactory
@@ -73,7 +73,7 @@ public class HtmlCellDataFactory extends AbstractTableCellDataFactory
    */
   public HtmlCellDataFactory(HtmlStyleCollection styleCollection, boolean useXHTML)
   {
-    if (styleCollection == null) 
+    if (styleCollection == null)
     {
       throw new NullPointerException();
     }
@@ -111,9 +111,9 @@ public class HtmlCellDataFactory extends AbstractTableCellDataFactory
 
     FontDefinition font = e.getStyle().getFontDefinitionProperty();
     Color color = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
-    ElementAlignment valign 
+    ElementAlignment valign
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
-    ElementAlignment halign 
+    ElementAlignment halign
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
 
     if (value instanceof ImageReference)

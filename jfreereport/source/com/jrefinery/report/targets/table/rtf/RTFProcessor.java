@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProcessor.java,v 1.5 2003/02/26 16:42:30 mungady Exp $
+ * $Id: RTFProcessor.java,v 1.6 2003/05/11 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import com.jrefinery.report.util.NullOutputStream;
 /**
  * The ExcelProcessor coordinates the output process for generating
  * RTF files using the iText library.
- * 
+ *
  * @author Thomas Morgner
  */
 public class RTFProcessor extends TableProcessor
@@ -101,7 +101,7 @@ public class RTFProcessor extends TableProcessor
     if (dummy == true)
     {
       prod = new RTFProducer(new NullOutputStream(),
-                              isStrictLayout());
+          isStrictLayout());
       prod.setDummy(true);
     }
     else

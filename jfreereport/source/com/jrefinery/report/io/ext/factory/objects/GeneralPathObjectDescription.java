@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GeneralPathObjectDescription.java,v 1.2 2003/05/11 13:39:17 taqua Exp $
+ * $Id: GeneralPathObjectDescription.java,v 1.3 2003/05/14 22:26:38 taqua Exp $
  *
  * Changes
  * -------
@@ -64,6 +64,8 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
   /** A constant value for the "windingRule" parameter. */
   private static final String WINDING_RULE_NON_ZERO = "wind-non-zero";
 
+  /** The number of maximum points in a path iterator segment. */
+  private static final int MAX_POINTS = 6;
   /**
    * DefaultConstructor. Initializes this object description to produce
    * GeneralPath objects.
@@ -146,6 +148,8 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
                 segments[i].getX2(), segments[i].getY2());
             break;
           }
+        default:
+          throw new IllegalStateException("Unexpected result from path iterator.");
       }
     }
     return path;
@@ -154,7 +158,7 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
   /**
    * Translates the winding rule parameter into a predefined PathIterator constant.
    *
-   * @return the translated winding rule or -1 if the rule was invalid. 
+   * @return the translated winding rule or -1 if the rule was invalid.
    */
   private int parseWindingRule()
   {
@@ -190,7 +194,7 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
     }
 
     Shape s = (Shape) o;
-    PathIterator pi = s.getPathIterator(AffineTransform.getTranslateInstance(0,0));
+    PathIterator pi = s.getPathIterator(AffineTransform.getTranslateInstance(0, 0));
     if (pi.getWindingRule() == PathIterator.WIND_EVEN_ODD)
     {
       setParameter(WINDING_RULE_NAME, WINDING_RULE_EVEN_ODD);
@@ -200,7 +204,7 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
       setParameter(WINDING_RULE_NAME, WINDING_RULE_NON_ZERO);
     }
 
-    float[] points = new float[6];
+    float[] points = new float[MAX_POINTS];
     ArrayList segments = new ArrayList();
     while (pi.isDone() == false)
     {
@@ -247,6 +251,8 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
             seg.setY2(points[3]);
             break;
           }
+        default:
+          throw new IllegalStateException("Unexpected result from PathIterator.");
       }
       segments.add(seg);
       pi.next();

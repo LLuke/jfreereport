@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.9 2003/06/10 16:07:48 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.10 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -69,15 +69,15 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
 
   /** the color if the field is TRUE. */
   private transient Color elementColorTrue;
-  
+
   /** the color if the field is FALSE. */
   private transient Color elementColorFalse;
-  
+
   /** The color object descripion. */
   private transient ColorObjectDescription cod;
 
   /**
-   * Default constructor. 
+   * Default constructor.
    */
   public ElementColorFunction()
   {
@@ -159,7 +159,7 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
 
   /**
    * Sets the color for true values.
-   * 
+   *
    * @param elementColorTrue  the color.
    */
   public void setElementColorTrue(Color elementColorTrue)
@@ -182,7 +182,7 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
 
   /**
    * Sets the color for false values.
-   * 
+   *
    * @param elementColorFalse  the color.
    */
   public void setElementColorFalse(Color elementColorFalse)
@@ -205,7 +205,7 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
 
   /**
    * Returns the color for true values.
-   * 
+   *
    * @return A color.
    */
   public Color getElementColorTrue()
@@ -215,7 +215,7 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
 
   /**
    * Returns the color for false values.
-   * 
+   *
    * @return A color.
    */
   public Color getElementColorFalse()
@@ -283,7 +283,7 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
    * @throws IOException if errors occur while writing the stream.
    */
   private void writeObject(ObjectOutputStream out)
-     throws IOException
+      throws IOException
   {
     out.defaultWriteObject();
     SerializerHelper.getInstance().writeObject(elementColorFalse, out);
@@ -299,11 +299,11 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
    * could not be found.
    */
   private void readObject(ObjectInputStream in)
-     throws IOException, ClassNotFoundException
+      throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     elementColorFalse = (Color) SerializerHelper.getInstance().readObject(in);
-    elementColorTrue  = (Color) SerializerHelper.getInstance().readObject(in);
+    elementColorTrue = (Color) SerializerHelper.getInstance().readObject(in);
     cod = new ColorObjectDescription();
   }
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FontDefinitionObjectDescription.java,v 1.7 2003/04/23 13:43:04 taqua Exp $
+ * $Id: FontDefinitionObjectDescription.java,v 1.8 2003/04/24 18:08:50 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.objects;
@@ -45,32 +45,32 @@ import org.jfree.xml.factory.objects.ObjectFactoryException;
 
 /**
  * An object-description for a {@link FontDefinition} object.
- * 
+ *
  * @author Thomas Morgner
  */
 public class FontDefinitionObjectDescription extends AbstractObjectDescription
 {
   /** The font encoding parameter name. */
   public static final String FONT_ENCODING = "fontEncoding";
-  
+
   /** The font name parameter name. */
   public static final String FONT_NAME = "fontName";
-  
+
   /** The font size parameter name. */
   public static final String FONT_SIZE = "fontSize";
-  
+
   /** The bold attribute text. */
   public static final String BOLD = "bold";
-  
+
   /** The embedded font attribute text. */
   public static final String EMBEDDED_FONT = "embeddedFont";
-  
+
   /** The italic attribute text. */
   public static final String ITALIC = "italic";
-  
+
   /** The strikethrough attribute text. */
   public static final String STRIKETHROUGH = "strikethrough";
-  
+
   /** The underline attribute text. */
   public static final String UNDERLINE = "underline";
 
@@ -92,12 +92,12 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
 
   /**
    * Returns a parameter value as a boolean.
-   * 
+   *
    * @param name  the parameter name.
-   * 
+   *
    * @return A boolean.
    */
-  private boolean getBooleanParameter (String name)
+  private boolean getBooleanParameter(String name)
   {
     Boolean bool = (Boolean) getParameter(name);
     if (bool == null)
@@ -109,16 +109,16 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
 
   /**
    * Returns a parameter as an int.
-   * 
+   *
    * @param name  the parameter name.
-   * 
+   *
    * @return The parameter value.
-   * 
+   *
    * @throws ObjectFactoryException if there is a problem while reading the
    * properties of the given object.
    */
-  private int getIntegerParameter (String name)
-    throws ObjectFactoryException
+  private int getIntegerParameter(String name)
+      throws ObjectFactoryException
   {
     Integer i = (Integer) getParameter(name);
     if (i == null)
@@ -130,7 +130,7 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
 
   /**
    * Creates an object based on this description.
-   * 
+   *
    * @return The object.
    */
   public Object createObject()
@@ -145,21 +145,21 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
       boolean italic = getBooleanParameter(ITALIC);
       boolean strike = getBooleanParameter(STRIKETHROUGH);
       boolean underline = getBooleanParameter(UNDERLINE);
-      return new FontDefinition(fontName, fontSize, bold, italic, underline, strike, 
-                                fontEncoding, embedded);
+      return new FontDefinition(fontName, fontSize, bold, italic, underline, strike,
+          fontEncoding, embedded);
     }
     catch (Exception e)
     {
-      Log.info ("Failed to create FontDefinition: ", e);
+      Log.info("Failed to create FontDefinition: ", e);
       return null;
     }
   }
 
   /**
    * Sets the parameters of this description object to match the supplied object.
-   * 
+   *
    * @param o  the object (should be an instance of <code>FontDefinition</code>).
-   * 
+   *
    * @throws ObjectFactoryException if the object is not an instance of <code>Float</code>.
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
@@ -169,15 +169,30 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
       throw new ObjectFactoryException(
           "The given object is no com.jrefinery.report.targets.FontDefinition.");
     }
-    
+
     FontDefinition fdef = (FontDefinition) o;
     setParameter(FONT_ENCODING, fdef.getFontEncoding(null));
     setParameter(FONT_NAME, fdef.getFontName());
     setParameter(FONT_SIZE, new Integer(fdef.getFontSize()));
-    setParameter(BOLD, new Boolean(fdef.isBold()));
-    setParameter(EMBEDDED_FONT, new Boolean(fdef.isEmbeddedFont()));
-    setParameter(ITALIC, new Boolean(fdef.isItalic()));
-    setParameter(STRIKETHROUGH, new Boolean(fdef.isStrikeThrough()));
-    setParameter(UNDERLINE, new Boolean(fdef.isUnderline()));
+    setParameter(BOLD, getBoolean(fdef.isBold()));
+    setParameter(EMBEDDED_FONT, getBoolean(fdef.isEmbeddedFont()));
+    setParameter(ITALIC, getBoolean(fdef.isItalic()));
+    setParameter(STRIKETHROUGH, getBoolean(fdef.isStrikeThrough()));
+    setParameter(UNDERLINE, getBoolean(fdef.isUnderline()));
+  }
+
+  /**
+   * Returns the correct Boolean object for the given primitive boolean variable.
+   *
+   * @param bool the primitive boolean.
+   * @return the Boolean object.
+   */
+  private Boolean getBoolean (boolean bool)
+  {
+    if (bool == true)
+    {
+      return Boolean.TRUE;
+    }
+    return Boolean.FALSE;
   }
 }

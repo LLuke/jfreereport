@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesHandler.java,v 1.12 2003/06/10 16:07:50 taqua Exp $
+ * $Id: TemplatesHandler.java,v 1.13 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import org.xml.sax.SAXException;
  * global format strings, f.i. for Number or Date fields.
  *
  * @author Thomas Morgner.
- * @see com.jrefinery.report.filter.templates.Template 
+ * @see com.jrefinery.report.filter.templates.Template
  */
 public class TemplatesHandler implements ElementDefinitionHandler
 {
@@ -79,11 +79,11 @@ public class TemplatesHandler implements ElementDefinitionHandler
    */
   public TemplatesHandler(Parser parser, String finishTag)
   {
-    if (parser == null) 
+    if (parser == null)
     {
       throw new NullPointerException("Parser is null");
     }
-    if (finishTag == null) 
+    if (finishTag == null)
     {
       throw new NullPointerException("FinishTag is null");
     }
@@ -108,7 +108,7 @@ public class TemplatesHandler implements ElementDefinitionHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
-    throws SAXException
+      throws SAXException
   {
     if (tagName.equals(TEMPLATE_TAG) == false)
     {
@@ -144,7 +144,7 @@ public class TemplatesHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
   {
     // ignore characters ...
   }
@@ -157,7 +157,7 @@ public class TemplatesHandler implements ElementDefinitionHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName)
-    throws SAXException
+      throws SAXException
   {
     if (tagName.equals(TEMPLATE_TAG))
     {
@@ -170,7 +170,7 @@ public class TemplatesHandler implements ElementDefinitionHandler
     else
     {
       throw new ParseException("Wrong tag, expected one of " + finishTag + ","
-                             + TEMPLATE_TAG, getParser().getLocator());
+          + TEMPLATE_TAG, getParser().getLocator());
     }
   }
 

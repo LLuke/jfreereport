@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.41 2003/06/13 17:55:29 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.42 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -71,6 +71,9 @@ import com.jrefinery.report.util.Log;
  */
 public class PageableReportProcessor
 {
+  /** The level where the page function is executed. */
+  private static final int PRINT_FUNCTION_LEVEL = -1;
+
   /** The page layout manager name. */
   public static final String LAYOUTMANAGER_NAME = "pageable.layoutManager";
 
@@ -95,7 +98,7 @@ public class PageableReportProcessor
    * @throws FunctionInitializeException if a function cannot be initialised.
    */
   public PageableReportProcessor(JFreeReport report)
-    throws ReportProcessingException, FunctionInitializeException
+      throws ReportProcessingException, FunctionInitializeException
   {
     try
     {
@@ -121,7 +124,7 @@ public class PageableReportProcessor
    *
    * @param l  the listener.
    */
-  public void addRepaginationListener (RepaginationListener l)
+  public void addRepaginationListener(RepaginationListener l)
   {
     if (l == null)
     {
@@ -131,7 +134,7 @@ public class PageableReportProcessor
     {
       listeners = new ArrayList(5);
     }
-    listeners.add (l);
+    listeners.add(l);
   }
 
   /**
@@ -139,7 +142,7 @@ public class PageableReportProcessor
    *
    * @param l  the listener.
    */
-  public void removeRepaginationListener (RepaginationListener l)
+  public void removeRepaginationListener(RepaginationListener l)
   {
     if (l == null)
     {
@@ -157,7 +160,7 @@ public class PageableReportProcessor
    *
    * @param state  the state.
    */
-  protected void fireStateUpdate (RepaginationState state)
+  protected void fireStateUpdate(RepaginationState state)
   {
     if (listeners == null)
     {
@@ -235,7 +238,7 @@ public class PageableReportProcessor
    *
    * @throws ReportProcessingException if there is a processing error.
    */
-  private PageLayouter getLayoutManager (String key) throws ReportProcessingException
+  private PageLayouter getLayoutManager(String key) throws ReportProcessingException
   {
     if (key == null)
     {
@@ -337,7 +340,7 @@ public class PageableReportProcessor
       dummyOutput.open();
 
       // now process all function levels.
-      // there is at least one level defined, as we added the CSVWriter
+      // there is at least one level defined, as we added the PageLayouter
       // to the report.
       // the levels are defined from +inf to 0
       // we don't draw and we do not collect states in a StateList yet
@@ -348,86 +351,20 @@ public class PageableReportProcessor
       }
 
       boolean hasNext;
-      ReportStateProgress progress = null;
       int level = ((Integer) it.next()).intValue();
-      boolean failOnError = getReport().getReportConfiguration().isStrictErrorHandling();
       // outer loop: process all function levels
       do
       {
         // if the current level is the output-level, then save the report state.
         // The state is used later to restart the report processing.
-        if (level == -1)
+        if (level == PRINT_FUNCTION_LEVEL)
         {
           pageStates = new ReportStateList(this);
-
-          // inner loop: process the complete report, calculate the function values
-          // for the current level. Higher level functions are not available in the
-          // dataRow.
-
-          while (!state.isFinish())
-          {
-            fireStateUpdate(new RepaginationState(level, state.getCurrentPage(),
-                                                  state.getCurrentDataItem(), maxRows));
-
-            ReportState oldstate = state;
-            progress = state.createStateProgress(progress);
-            state = processPage(state, dummyOutput, failOnError);
-            if (!state.isFinish())
-            {
-              // if the report processing is stalled, throw an exception; an infinite
-              // loop would be caused.
-              if (!state.isProceeding(progress))
-              {
-                throw new ReportProcessingException("State did not proceed, bailing out!");
-              }
-            }
-
-            // if layout level has reached, and some content was generated, then add the page
-            if (isEmptyPageGenerated(state) == false)
-            {
-              // add the page start event ..
-              pageStates.add(oldstate);
-            }
-            else
-            {
-              // inform the next page, that the last one was canceled ...
-              state.firePageCanceledEvent();
-            }
-          }
+          state = processPrintedPages(state, pageStates, dummyOutput, maxRows);
         }
         else
         {
-          // Function processing does not use the PageLayouter, so we don't need
-          // the expensive cloning ...
-          while (!state.isFinish())
-          {
-            progress = state.createStateProgress(progress);
-            state = state.advance();
-            if (failOnError)
-            {
-              if (state.isErrorOccured() == true)
-              {
-                throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
-              }
-            }
-            else
-            {
-              if (state.isErrorOccured() == true)
-              {
-                Log.error("Failed to dispatch an event.",
-                    new ReportEventException ("Failed to dispatch an event.", state.getErrors()));
-              }
-            }
-            if (!state.isFinish())
-            {
-              // if the report processing is stalled, throw an exception; an infinite
-              // loop would be caused.
-              if (!state.isProceeding(progress))
-              {
-                throw new ReportProcessingException("State did not proceed, bailing out!");
-              }
-            }
-          }
+          state = processPrepareLevels(state);
         }
 
         // if there is an other level to process, then use the finish state to
@@ -450,8 +387,7 @@ public class PageableReportProcessor
             throw new IllegalStateException("Repaginate did not produce an finish state");
           }
         }
-      }
-      while (hasNext == true);
+      } while (hasNext == true);
 
       dummyOutput.close();
       state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
@@ -467,6 +403,109 @@ public class PageableReportProcessor
     {
       throw new ReportProcessingException("Unable to initialize the report, clone error", cne);
     }
+  }
+
+  /**
+   * Processes the print level for the current report. This function will
+   * fill the report state list while performing the repagination.
+   *
+   * @param state the start state for the print level.
+   * @param pageStates the list of report states that should receive the created page states.
+   * @param dummyOutput a dummy output target which performs the layout calculations.
+   * @param maxRows the number of rows in the report (used to estaminate the current progress).
+   * @return the finish state for the report.
+   * @throws ReportProcessingException if there was a problem processing the report.
+   */
+  private ReportState processPrintedPages (ReportState state, ReportStateList pageStates,
+                                           OutputTarget dummyOutput, int maxRows)
+      throws ReportProcessingException
+  {
+    boolean failOnError = getReport().getReportConfiguration().isStrictErrorHandling();
+    ReportStateProgress progress = null;
+
+    // inner loop: process the complete report, calculate the function values
+    // for the current level. Higher level functions are not available in the
+    // dataRow.
+
+    while (!state.isFinish())
+    {
+      fireStateUpdate(new RepaginationState(PRINT_FUNCTION_LEVEL, state.getCurrentPage(),
+          state.getCurrentDataItem(), maxRows));
+
+      ReportState oldstate = state;
+      progress = state.createStateProgress(progress);
+      state = processPage(state, dummyOutput, failOnError);
+      if (!state.isFinish())
+      {
+        // if the report processing is stalled, throw an exception; an infinite
+        // loop would be caused.
+        if (!state.isProceeding(progress))
+        {
+          throw new ReportProcessingException("State did not proceed, bailing out!");
+        }
+      }
+
+      // if layout level has reached, and some content was generated, then add the page
+      if (isEmptyPageGenerated(state) == false)
+      {
+        // add the page start event ..
+        pageStates.add(oldstate);
+      }
+      else
+      {
+        // inform the next page, that the last one was canceled ...
+        state.firePageCanceledEvent();
+      }
+    }
+    return state;
+  }
+
+  /**
+   * Processes all prepare levels to compute the function values.
+   *
+   * @param state the state state with which we beginn the processing.
+   * @return the finish state for the current level.
+   * @throws ReportProcessingException if processing failed or if there are
+   * exceptions during the function execution.
+   */
+  private ReportState processPrepareLevels (ReportState state)
+    throws ReportProcessingException
+  {
+    boolean failOnError = getReport().getReportConfiguration().isStrictErrorHandling();
+    ReportStateProgress progress = null;
+
+    // Function processing does not use the PageLayouter, so we don't need
+    // the expensive cloning ...
+    while (!state.isFinish())
+    {
+      progress = state.createStateProgress(progress);
+      state = state.advance();
+      if (failOnError)
+      {
+        if (state.isErrorOccured() == true)
+        {
+          throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
+        }
+      }
+      else
+      {
+        if (state.isErrorOccured() == true)
+        {
+          Log.error("Failed to dispatch an event.",
+              new ReportEventException("Failed to dispatch an event.", state.getErrors()));
+        }
+      }
+      if (!state.isFinish())
+      {
+        // if the report processing is stalled, throw an exception; an infinite
+        // loop would be caused.
+        if (!state.isProceeding(progress))
+        {
+          throw new ReportProcessingException("State did not proceed, bailing out!");
+        }
+      }
+    }
+    return state;
   }
 
   /**
@@ -586,7 +625,7 @@ public class PageableReportProcessor
           {
             if (state.isErrorOccured() == true)
             {
-              throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
+              throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
             }
           }
           else
@@ -594,7 +633,7 @@ public class PageableReportProcessor
             if (state.isErrorOccured() == true)
             {
               Log.error("Failed to dispatch an event.",
-                  new ReportEventException ("Failed to dispatch an event.", state.getErrors()));
+                  new ReportEventException("Failed to dispatch an event.", state.getErrors()));
             }
           }
           lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
@@ -624,7 +663,7 @@ public class PageableReportProcessor
    * @param state the state which should be checked
    * @return true, if the page is empty, false otherwise.
    */
-  protected boolean isEmptyPageGenerated (ReportState state)
+  protected boolean isEmptyPageGenerated(ReportState state)
   {
     PageLayouter org = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
     return org.isGeneratedPageEmpty();

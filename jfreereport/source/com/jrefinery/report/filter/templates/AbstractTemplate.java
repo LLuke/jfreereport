@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,19 +28,19 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractTemplate.java,v 1.4 2003/03/07 16:55:54 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
  * 18-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.filter.templates;
 
 /**
  * An abstract base class that implements the {@link Template} interface.
- * 
+ *
  * @author Thomas Morgner
  */
 public abstract class AbstractTemplate implements Template
@@ -57,12 +57,12 @@ public abstract class AbstractTemplate implements Template
 
   /**
    * Sets the template name.
-   * 
+   *
    * @param name  the name (<code>null</code> not permitted).
    */
   public void setName(String name)
   {
-    if (name == null) 
+    if (name == null)
     {
       throw new NullPointerException();
     }
@@ -71,7 +71,7 @@ public abstract class AbstractTemplate implements Template
 
   /**
    * Returns the template name.
-   * 
+   *
    * @return The name.
    */
   public String getName()
@@ -93,7 +93,7 @@ public abstract class AbstractTemplate implements Template
 
   /**
    * Returns an instance of the template by cloning.
-   * 
+   *
    * @return A clone.
    */
   public Template getInstance()

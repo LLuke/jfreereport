@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NameGenerator.java,v 1.2 2003/02/25 14:07:31 taqua Exp $
+ * $Id: NameGenerator.java,v 1.3 2003/02/26 13:57:58 mungady Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@ package com.jrefinery.report.io.simple;
 
 /**
  * The name generator is used to generate unique names for elements and bands.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class NameGenerator
@@ -64,12 +64,12 @@ public class NameGenerator
    *
    * @return a non-null name.
    */
-  public String generateName (String name)
+  public String generateName(String name)
   {
     if (name == null)
     {
       nameCounter += 1;
-      return "@anonymous" + Integer.toHexString (nameCounter);
+      return "@anonymous" + Integer.toHexString(nameCounter);
     }
     return name;
   }

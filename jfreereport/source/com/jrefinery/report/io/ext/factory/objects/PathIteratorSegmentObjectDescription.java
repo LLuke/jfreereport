@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PathIteratorSegmentObjectDescription.java,v 1.1 2003/05/09 17:12:13 taqua Exp $
+ * $Id: PathIteratorSegmentObjectDescription.java,v 1.2 2003/05/14 22:26:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -103,7 +103,9 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
     PathIteratorSegment seg = new PathIteratorSegment();
     int segType = parseSegmentType((String) getParameter("segmentType"));
     if (segType == -1)
+    {
       return null;
+    }
 
     seg.setSegmentType(segType);
     seg.setX1(getFloatParameter("x1"));
@@ -122,7 +124,7 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
    * @param segment the string that contains the PathIterator type.
    * @return the parsed PathIterator type or -1.
    */
-  private int parseSegmentType (String segment)
+  private int parseSegmentType(String segment)
   {
     if (segment == null)
     {
@@ -159,17 +161,24 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
    * @throws IllegalArgumentException if the segment type is none of the
    * predefined PathIterator types.
    */
-  private String createSegmentType (int segment)
+  private String createSegmentType(int segment)
+    throws IllegalArgumentException
   {
     switch (segment)
     {
-      case PathIterator.SEG_CLOSE: return SEG_CLOSE;
-      case PathIterator.SEG_CUBICTO: return SEG_CUBIC_TO;
-      case PathIterator.SEG_LINETO: return SEG_LINE_TO;
-      case PathIterator.SEG_MOVETO: return SEG_MOVE_TO;
-      case PathIterator.SEG_QUADTO: return SEG_QUAD_TO;
+      case PathIterator.SEG_CLOSE:
+        return SEG_CLOSE;
+      case PathIterator.SEG_CUBICTO:
+        return SEG_CUBIC_TO;
+      case PathIterator.SEG_LINETO:
+        return SEG_LINE_TO;
+      case PathIterator.SEG_MOVETO:
+        return SEG_MOVE_TO;
+      case PathIterator.SEG_QUADTO:
+        return SEG_QUAD_TO;
+      default:
+        throw new IllegalArgumentException("The segment type is invalid.");
     }
-    throw new IllegalArgumentException("The segment type is invalid.");
   }
 
   /**
@@ -179,12 +188,12 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
    * @param name the parameter name
    * @return the float value of the parameter or 0.
    */
-  private float getFloatParameter (String name)
+  private float getFloatParameter(String name)
   {
     Float o = (Float) getParameter(name);
     if (o == null)
     {
-       return 0;
+      return 0;
     }
     return o.floatValue();
   }

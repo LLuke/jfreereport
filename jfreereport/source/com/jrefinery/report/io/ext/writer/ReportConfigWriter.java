@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.8 2003/05/30 16:57:51 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.9 2003/06/10 16:07:52 taqua Exp $
  *
  * Changes
  * -------
@@ -54,14 +54,14 @@ import com.jrefinery.report.util.ReportConfiguration;
 
 /**
  * A report configuration writer.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class ReportConfigWriter extends AbstractXMLDefinitionWriter
 {
   /**
    * A report configuration writer.
-   * 
+   *
    * @param reportWriter  the report writer.
    * @param indentLevel the current indention level.
    */
@@ -72,16 +72,16 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Writes the report configuration element.
-   * 
+   *
    * @param writer  the writer.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    */
   public void write(Writer writer) throws IOException
   {
     writeTag(writer, ExtReportHandler.REPORT_CONFIG_TAG);
     writeTag(writer, ReportConfigHandler.DEFAULT_PAGEFORMAT_TAG,
-             buildPageFormatProperties(), CLOSE);
+        buildPageFormatProperties(), CLOSE);
     writeTag(writer, ReportConfigHandler.CONFIGURATION_TAG);
     ReportConfiguration config = getReport().getReportConfiguration();
     Enumeration enum = config.getConfigProperties();
@@ -103,10 +103,10 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Compiles a collection of page format properties.
-   * 
+   *
    * @return The properties.
    */
-  private Properties buildPageFormatProperties ()
+  private Properties buildPageFormatProperties()
   {
     Properties retval = new Properties();
     PageFormat fmt = getReport().getDefaultPageFormat();
@@ -114,35 +114,35 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
 
     if (fmt.getOrientation() == PageFormat.LANDSCAPE)
     {
-      retval.setProperty(ReportConfigHandler.ORIENTATION_ATT, 
-                         ReportConfigHandler.ORIENTATION_LANDSCAPE_VAL);
+      retval.setProperty(ReportConfigHandler.ORIENTATION_ATT,
+          ReportConfigHandler.ORIENTATION_LANDSCAPE_VAL);
       retval.setProperty(ReportConfigHandler.TOPMARGIN_ATT, String.valueOf(borders[RIGHT_BORDER]));
       retval.setProperty(ReportConfigHandler.LEFTMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
-      retval.setProperty(ReportConfigHandler.BOTTOMMARGIN_ATT, 
-                         String.valueOf(borders[LEFT_BORDER]));
-      retval.setProperty(ReportConfigHandler.RIGHTMARGIN_ATT, 
-                         String.valueOf(borders[BOTTOM_BORDER]));
+      retval.setProperty(ReportConfigHandler.BOTTOMMARGIN_ATT,
+          String.valueOf(borders[LEFT_BORDER]));
+      retval.setProperty(ReportConfigHandler.RIGHTMARGIN_ATT,
+          String.valueOf(borders[BOTTOM_BORDER]));
     }
     else if (fmt.getOrientation() == PageFormat.PORTRAIT)
     {
-      retval.setProperty(ReportConfigHandler.ORIENTATION_ATT, 
-                         ReportConfigHandler.ORIENTATION_PORTRAIT_VAL);
+      retval.setProperty(ReportConfigHandler.ORIENTATION_ATT,
+          ReportConfigHandler.ORIENTATION_PORTRAIT_VAL);
       retval.setProperty(ReportConfigHandler.TOPMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
       retval.setProperty(ReportConfigHandler.LEFTMARGIN_ATT, String.valueOf(borders[LEFT_BORDER]));
-      retval.setProperty(ReportConfigHandler.BOTTOMMARGIN_ATT, 
-                         String.valueOf(borders[BOTTOM_BORDER]));
-      retval.setProperty(ReportConfigHandler.RIGHTMARGIN_ATT, 
-                         String.valueOf(borders[RIGHT_BORDER]));
+      retval.setProperty(ReportConfigHandler.BOTTOMMARGIN_ATT,
+          String.valueOf(borders[BOTTOM_BORDER]));
+      retval.setProperty(ReportConfigHandler.RIGHTMARGIN_ATT,
+          String.valueOf(borders[RIGHT_BORDER]));
     }
     else
     {
-      retval.setProperty(ReportConfigHandler.ORIENTATION_ATT, 
-                         ReportConfigHandler.ORIENTATION_REVERSE_LANDSCAPE_VAL);
+      retval.setProperty(ReportConfigHandler.ORIENTATION_ATT,
+          ReportConfigHandler.ORIENTATION_REVERSE_LANDSCAPE_VAL);
       retval.setProperty(ReportConfigHandler.TOPMARGIN_ATT, String.valueOf(borders[LEFT_BORDER]));
-      retval.setProperty(ReportConfigHandler.LEFTMARGIN_ATT, 
-                         String.valueOf(borders[BOTTOM_BORDER]));
-      retval.setProperty(ReportConfigHandler.BOTTOMMARGIN_ATT, 
-                         String.valueOf(borders[RIGHT_BORDER]));
+      retval.setProperty(ReportConfigHandler.LEFTMARGIN_ATT,
+          String.valueOf(borders[BOTTOM_BORDER]));
+      retval.setProperty(ReportConfigHandler.BOTTOMMARGIN_ATT,
+          String.valueOf(borders[RIGHT_BORDER]));
       retval.setProperty(ReportConfigHandler.RIGHTMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
     }
 
@@ -164,26 +164,26 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
 
   /** A constant for the top border. */
   private static final int TOP_BORDER = 0;
-  
+
   /** A constant for the left border. */
   private static final int LEFT_BORDER = 1;
-  
+
   /** A constant for the bottom border. */
   private static final int BOTTOM_BORDER = 2;
-  
+
   /** A constant for the right border. */
   private static final int RIGHT_BORDER = 3;
 
   /**
    * Returns the borders for the given paper.
-   * 
+   *
    * @param p  the paper.
-   * 
+   *
    * @return The borders.
    */
-  private int[] getBorders (Paper p)
+  private int[] getBorders(Paper p)
   {
-    int [] retval = new int[4];
+    int[] retval = new int[4];
 
     retval[0] = (int) p.getImageableY();
     retval[1] = (int) p.getImageableX();
@@ -195,13 +195,13 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
   /**
    * Finds the page definition from the {@link PageFormatFactory} class that matches the
    * specified width and height.
-   * 
+   *
    * @param w  the width.
    * @param h  the height.
-   * 
+   *
    * @return The page definition name.
    */
-  public String lookupPageDefinition (int w, int h)
+  public String lookupPageDefinition(int w, int h)
   {
     try
     {
@@ -225,7 +225,7 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
     }
     catch (Exception e)
     {
-      Log.info ("Unable to translate the page size", e);
+      Log.info("Unable to translate the page size", e);
     }
     return null;
   }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDemoFrame.java,v 1.1 2003/06/19 18:46:35 taqua Exp $
+ * $Id: AbstractDemoFrame.java,v 1.2 2003/06/26 19:55:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,15 +38,15 @@
 
 package com.jrefinery.report.demo.helper;
 
-import java.util.ResourceBundle;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import java.util.ResourceBundle;
 import javax.swing.Action;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 
 import com.jrefinery.report.demo.PreviewAction;
 import com.jrefinery.report.util.ExceptionDialog;

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportConstants.java,v 1.14 2003/03/18 15:53:08 mungady Exp $
+ * $Id: JFreeReportConstants.java,v 1.15 2003/04/09 00:10:34 mungady Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@
 package com.jrefinery.report;
 
 /**
- * An interface that defines some useful constants used by the {@link JFreeReport} and 
+ * An interface that defines some useful constants used by the {@link JFreeReport} and
  * {@link com.jrefinery.report.states.ReportState} classes.
  * <p>
  * A number of report property keys are defined.  These can be used to access report properties
@@ -75,7 +75,7 @@ public interface JFreeReportConstants
 
   /**
    * Key for the 'report page count' property.
-   * 
+   *
    * @deprecated pagecount should be calculated by functions. The property is
    *             no longer filled by the ReportProcessor.
    */

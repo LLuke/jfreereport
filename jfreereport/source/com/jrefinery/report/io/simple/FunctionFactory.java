@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.12 2003/06/10 16:07:53 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.13 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes
  * -------
@@ -88,7 +88,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    * @param finishTag the finish tag, that should trigger the deactivation of this parser.
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  public FunctionFactory (Parser parser, String finishTag)
+  public FunctionFactory(Parser parser, String finishTag)
   {
     super(parser, finishTag);
     entityParser = CharacterEntityParser.createXMLEntityParser();
@@ -104,43 +104,43 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if an unknown tag is encountered.
    */
-  public void startElement (String qName,
-                            Attributes atts) throws SAXException
+  public void startElement(String qName,
+                           Attributes atts) throws SAXException
   {
-    String elementName = qName.toLowerCase ().trim ();
-    if (elementName.equals (FUNCTION_TAG))
+    String elementName = qName.toLowerCase().trim();
+    if (elementName.equals(FUNCTION_TAG))
     {
-      startFunction (atts);
+      startFunction(atts);
     }
-    else if (elementName.equals (FUNCTIONS_TAG))
+    else if (elementName.equals(FUNCTIONS_TAG))
     {
-      startFunctions (atts);
+      startFunctions(atts);
     }
-    else if (elementName.equals (PROPERTIES_TAG))
+    else if (elementName.equals(PROPERTIES_TAG))
     {
-      startProperties (atts);
+      startProperties(atts);
     }
-    else if (elementName.equals (PROPERTY_TAG))
+    else if (elementName.equals(PROPERTY_TAG))
     {
-      startProperty (atts);
+      startProperty(atts);
     }
-    else if (elementName.equals (DATAREF_TAG))
+    else if (elementName.equals(DATAREF_TAG))
     {
       // data ref is ignored, was specified some times ago, but never
       // implemented and is now obsolete
     }
     else if (elementName.equals(EXPRESSION_TAG))
     {
-      startExpression (atts);
+      startExpression(atts);
     }
     else if (elementName.equals(PROPERTY_REFERENCE_TAG))
     {
-      startPropertyRef (atts);
+      startPropertyRef(atts);
     }
     else
     {
-      throw new SAXException ("Expected one of 'function', 'functions', 'data-ref', 'properties', "
-                            + "'property' tag");
+      throw new SAXException("Expected one of 'function', 'functions', 'data-ref', 'properties', "
+          + "'property' tag");
     }
   }
 
@@ -149,7 +149,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @return the function/expression properties.
    */
-  protected Properties getProperties ()
+  protected Properties getProperties()
   {
     return currentProperties;
   }
@@ -159,7 +159,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @param p  the properties.
    */
-  protected void setProperties (Properties p)
+  protected void setProperties(Properties p)
   {
     this.currentProperties = p;
   }
@@ -169,7 +169,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @return the function just built (or under construction).
    */
-  protected Function getCurrentFunction ()
+  protected Function getCurrentFunction()
   {
     return (Function) currentFunction;
   }
@@ -180,7 +180,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @param function  the function.
    */
-  protected void setCurrentFunction (Function function)
+  protected void setCurrentFunction(Function function)
   {
     this.currentFunction = function;
   }
@@ -190,7 +190,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @return the expression just built (or under construction).
    */
-  protected Expression getCurrentExpression ()
+  protected Expression getCurrentExpression()
   {
     return currentFunction;
   }
@@ -201,7 +201,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @param function  the expression.
    */
-  protected void setCurrentExpression (Expression function)
+  protected void setCurrentExpression(Expression function)
   {
     this.currentFunction = function;
   }
@@ -213,10 +213,10 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startProperties (Attributes atts)
-          throws SAXException
+  protected void startProperties(Attributes atts)
+      throws SAXException
   {
-    setProperties (new Properties ());
+    setProperties(new Properties());
   }
 
   /**
@@ -226,16 +226,16 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startProperty (Attributes atts)
-          throws SAXException
+  protected void startProperty(Attributes atts)
+      throws SAXException
   {
-    currentProperty = atts.getValue (NAME_ATT);
-    currentEncoding = atts.getValue (PROPERTY_ENCODING_ATT);
+    currentProperty = atts.getValue(NAME_ATT);
+    currentEncoding = atts.getValue(PROPERTY_ENCODING_ATT);
     if (currentEncoding == null)
     {
       currentEncoding = PROPERTY_ENCODING_TEXT;
     }
-    currentText = new StringBuffer ();
+    currentText = new StringBuffer();
   }
 
   /**
@@ -246,8 +246,8 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startFunctions (Attributes atts)
-          throws SAXException
+  protected void startFunctions(Attributes atts)
+      throws SAXException
   {
   }
 
@@ -258,39 +258,39 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startExpression (Attributes attr)
+  protected void startExpression(Attributes attr)
       throws SAXException
   {
-    String name = getNameGenerator().generateName (attr.getValue ("name"));
-    String className = attr.getValue ("class");
+    String name = getNameGenerator().generateName(attr.getValue("name"));
+    String className = attr.getValue("class");
     int depLevel = ParserUtil.parseInt(attr.getValue(DEPENCY_LEVEL_ATT), 0);
 
     if (className == null)
     {
-      throw new ParseException ("Expression class not specified", getLocator());
+      throw new ParseException("Expression class not specified", getLocator());
     }
 
     try
     {
       Class fnC = getClass().getClassLoader().loadClass(className);
-      setCurrentExpression ((Expression) fnC.newInstance ());
-      getCurrentExpression().setName (name);
+      setCurrentExpression((Expression) fnC.newInstance());
+      getCurrentExpression().setName(name);
       getCurrentExpression().setDependencyLevel(depLevel);
     }
     catch (ClassNotFoundException e)
     {
-      throw new ParseException ("Expression " + name + " class=" + className
-                            + " is not valid. " , e, getLocator() );
+      throw new ParseException("Expression " + name + " class=" + className
+          + " is not valid. ", e, getLocator());
     }
     catch (IllegalAccessException e)
     {
-      throw new ParseException ("Expression " + name + " class=" + className
-                            + " is not valid. " , e, getLocator());
+      throw new ParseException("Expression " + name + " class=" + className
+          + " is not valid. ", e, getLocator());
     }
     catch (InstantiationException e)
     {
-      throw new ParseException ("Expression " + name + " class=" + className
-                            + " is not valid. " , e, getLocator());
+      throw new ParseException("Expression " + name + " class=" + className
+          + " is not valid. ", e, getLocator());
     }
   }
 
@@ -302,16 +302,16 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startPropertyRef (Attributes attr)
+  protected void startPropertyRef(Attributes attr)
       throws SAXException
   {
-    currentProperty = getNameGenerator().generateName (attr.getValue ("name"));
-    currentEncoding = attr.getValue (PROPERTY_ENCODING_ATT);
+    currentProperty = getNameGenerator().generateName(attr.getValue("name"));
+    currentEncoding = attr.getValue(PROPERTY_ENCODING_ATT);
     if (currentEncoding == null)
     {
       currentEncoding = PROPERTY_ENCODING_TEXT;
     }
-    currentText = new StringBuffer ();
+    currentText = new StringBuffer();
   }
 
   /**
@@ -322,39 +322,39 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startFunction (Attributes attr)
-          throws SAXException
+  protected void startFunction(Attributes attr)
+      throws SAXException
   {
-    String name = getNameGenerator().generateName (attr.getValue ("name"));
-    String className = attr.getValue ("class");
+    String name = getNameGenerator().generateName(attr.getValue("name"));
+    String className = attr.getValue("class");
     int depLevel = ParserUtil.parseInt(attr.getValue(DEPENCY_LEVEL_ATT), 0);
 
     if (className == null)
     {
-      throw new ParseException ("Function class not specified", getLocator());
+      throw new ParseException("Function class not specified", getLocator());
     }
 
     try
     {
       Class fnC = getClass().getClassLoader().loadClass(className);
-      setCurrentFunction ((Function) fnC.newInstance ());
-      getCurrentFunction().setName (name);
+      setCurrentFunction((Function) fnC.newInstance());
+      getCurrentFunction().setName(name);
       getCurrentFunction().setDependencyLevel(depLevel);
     }
     catch (ClassNotFoundException e)
     {
-      throw new ParseException ("Function " + name + " class=" + className
-          + " is not valid. " , e, getLocator());
+      throw new ParseException("Function " + name + " class=" + className
+          + " is not valid. ", e, getLocator());
     }
     catch (IllegalAccessException e)
     {
-      throw new ParseException ("Function " + name + " class=" + className
-          + " is not valid. " , e, getLocator());
+      throw new ParseException("Function " + name + " class=" + className
+          + " is not valid. ", e, getLocator());
     }
     catch (InstantiationException e)
     {
-      throw new ParseException ("Function " + name + " class=" + className
-          + " is not valid. " , e, getLocator());
+      throw new ParseException("Function " + name + " class=" + className
+          + " is not valid. ", e, getLocator());
     }
   }
 
@@ -365,12 +365,12 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    * @param start  the first character index.
    * @param length  the length (number of valid characters).
    */
-  public void characters (char[] ch, int start, int length)
+  public void characters(char[] ch, int start, int length)
   {
     // accumulate the characters in case the text is split into several chunks...
     if (this.currentText != null)
     {
-      this.currentText.append (String.copyValueOf (ch, start, length));
+      this.currentText.append(String.copyValueOf(ch, start, length));
     }
   }
 
@@ -381,34 +381,34 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is a problem parsing the element.
    */
-  public void endElement (String qName) throws SAXException
+  public void endElement(String qName) throws SAXException
   {
-    String elementName = qName.toLowerCase ().trim ();
-    if (elementName.equals (FUNCTION_TAG))
+    String elementName = qName.toLowerCase().trim();
+    if (elementName.equals(FUNCTION_TAG))
     {
-      endFunction ();
+      endFunction();
     }
-    else if (elementName.equals (FUNCTIONS_TAG))
+    else if (elementName.equals(FUNCTIONS_TAG))
     {
-      endFunctions ();
+      endFunctions();
     }
-    else if (elementName.equals (DATAREF_TAG))
+    else if (elementName.equals(DATAREF_TAG))
     {
       // is no longer used
     }
-    else if (elementName.equals (PROPERTIES_TAG))
+    else if (elementName.equals(PROPERTIES_TAG))
     {
-      endProperties ();
+      endProperties();
     }
-    else if (elementName.equals (PROPERTY_TAG))
+    else if (elementName.equals(PROPERTY_TAG))
     {
-      endProperty ();
+      endProperty();
     }
-    else if (elementName.equals (EXPRESSION_TAG))
+    else if (elementName.equals(EXPRESSION_TAG))
     {
       endExpression();
     }
-    else if (elementName.equals (PROPERTY_REFERENCE_TAG))
+    else if (elementName.equals(PROPERTY_REFERENCE_TAG))
     {
       endPropertyRef();
     }
@@ -418,7 +418,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     }
     else
     {
-      throw new ParseException ("Expected closing function tag.", getLocator());
+      throw new ParseException("Expected closing function tag.", getLocator());
     }
   }
 
@@ -428,16 +428,16 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is a problem parsing the element.
    */
-  protected void endFunction ()
-          throws SAXException
+  protected void endFunction()
+      throws SAXException
   {
     try
     {
-      getReport ().addFunction (getCurrentFunction());
+      getReport().addFunction(getCurrentFunction());
     }
     catch (FunctionInitializeException fie)
     {
-      throw new SAXException (fie);
+      throw new SAXException(fie);
     }
   }
 
@@ -447,17 +447,17 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is a problem parsing the element.
    */
-  protected void endExpression ()
-    throws SAXException
+  protected void endExpression()
+      throws SAXException
   {
     try
     {
-      getReport ().addExpression (getCurrentExpression());
+      getReport().addExpression(getCurrentExpression());
     }
     catch (FunctionInitializeException fie)
     {
-      Log.warn ("Function initialization failed", fie);
-      throw new ParseException (fie);
+      Log.warn("Function initialization failed", fie);
+      throw new ParseException(fie);
     }
   }
 
@@ -466,8 +466,8 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is a problem parsing the element.
    */
-  protected void endFunctions ()
-          throws SAXException
+  protected void endFunctions()
+      throws SAXException
   {
     getParser().popFactory().endElement(FUNCTIONS_TAG);
   }
@@ -478,15 +478,15 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is a problem parsing the element.
    */
-  protected void endProperties ()
-          throws SAXException
+  protected void endProperties()
+      throws SAXException
   {
     Expression f = getCurrentExpression();
     if (f == null)
     {
-      throw new ParseException ("End properties reached without a function defined", getLocator());
+      throw new ParseException("End properties reached without a function defined", getLocator());
     }
-    f.setProperties (currentProperties);
+    f.setProperties(currentProperties);
   }
 
   /**
@@ -494,10 +494,10 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is a problem parsing the element.
    */
-  protected void endProperty ()
-          throws SAXException
+  protected void endProperty()
+      throws SAXException
   {
-    Properties currentProps = getProperties ();
+    Properties currentProps = getProperties();
     if (currentProps == null)
     {
       throw new ParseException("EndProperty without properties tag?", getLocator());
@@ -513,8 +513,8 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is a problem parsing the element.
    */
-  protected void endPropertyRef ()
-          throws SAXException
+  protected void endPropertyRef()
+      throws SAXException
   {
     getReport().getProperties().setMarked(currentProperty, true);
     if (currentText.length() != 0)

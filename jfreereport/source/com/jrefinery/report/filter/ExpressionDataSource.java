@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * $Id: ExpressionDataSource.java,v 1.7 2003/02/25 14:07:19 taqua Exp $
+ * $Id: ExpressionDataSource.java,v 1.8 2003/06/01 17:39:24 taqua Exp $
  *
  * Changes
  * -------
@@ -69,9 +69,9 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable, Ser
    * Default constructor. The expression name is empty ("", not null), the value initially
    * null.
    */
-  public ExpressionDataSource ()
+  public ExpressionDataSource()
   {
-    setExpression ("");
+    setExpression("");
   }
 
   /**
@@ -79,9 +79,9 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable, Ser
    *
    * @param expression The expression.
    */
-  public ExpressionDataSource (String expression)
+  public ExpressionDataSource(String expression)
   {
-    setExpression (expression);
+    setExpression(expression);
   }
 
   /**
@@ -89,11 +89,11 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable, Ser
    *
    * @param field the name of the expression as defined in the expression collection.
    */
-  public void setExpression (String field)
+  public void setExpression(String field)
   {
     if (field == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
     this.expression = field;
   }
@@ -103,7 +103,7 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable, Ser
    *
    * @return the registered expression name
    */
-  public String getExpression ()
+  public String getExpression()
   {
     return expression;
   }
@@ -114,13 +114,13 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable, Ser
    * @return The value.
    * @throws IllegalStateException if there is no datarow connected.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    if (getDataRow () == null)
+    if (getDataRow() == null)
     {
-      throw new IllegalStateException ("No DataRowBackend Connected");
+      throw new IllegalStateException("No DataRowBackend Connected");
     }
-    return getDataRow ().get (getExpression ());
+    return getDataRow().get(getExpression());
   }
 
   /**
@@ -129,9 +129,9 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable, Ser
    * @return a clone of this ExpressionDataSource.
    * @throws CloneNotSupportedException if the cloning is not supported.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    return super.clone ();
+    return super.clone();
   }
 
   /**
@@ -144,15 +144,15 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable, Ser
    * @throws IllegalStateException if there is a datarow already connected.
    * @param row the datarow to be connected.
    */
-  public void connectDataRow (DataRow row) throws IllegalStateException
+  public void connectDataRow(DataRow row) throws IllegalStateException
   {
     if (row == null)
     {
-      throw new NullPointerException ("Null-DataRowBackend cannot be set.");
+      throw new NullPointerException("Null-DataRowBackend cannot be set.");
     }
     if (dataRow != null)
     {
-      throw new IllegalStateException ("There is a datarow already connected");
+      throw new IllegalStateException("There is a datarow already connected");
     }
     dataRow = row;
   }
@@ -165,15 +165,15 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable, Ser
    * @throws IllegalStateException if there is currently no datarow connected.
    * @param row the datarow to be disconnected.
    */
-  public void disconnectDataRow (DataRow row) throws IllegalStateException
+  public void disconnectDataRow(DataRow row) throws IllegalStateException
   {
     if (row == null)
     {
-      throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
+      throw new NullPointerException("Null-DataRowBackend cannot be disconnected.");
     }
     if (dataRow == null)
     {
-      throw new IllegalStateException ("There is no datarow connected");
+      throw new IllegalStateException("There is no datarow connected");
     }
     dataRow = null;
   }
@@ -183,7 +183,7 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable, Ser
    *
    * @return the datarow connected with this datasource.
    */
-  protected DataRow getDataRow ()
+  protected DataRow getDataRow()
   {
     return dataRow;
   }

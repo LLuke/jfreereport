@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementAlignment.java,v 1.8 2003/03/07 16:55:23 taqua Exp $
+ * $Id: ElementAlignment.java,v 1.9 2003/05/02 12:39:02 taqua Exp $
  *
  * Changes
  * -------
@@ -54,31 +54,31 @@ public class ElementAlignment implements Serializable
 {
   /** A constant for left alignment. */
   public static final ElementAlignment LEFT = new ElementAlignment("LEFT", 1);
-  
+
   /** A constant for center alignment (horizontal). */
   public static final ElementAlignment CENTER = new ElementAlignment("CENTER", 3);
-  
+
   /** A constant for right alignment. */
   public static final ElementAlignment RIGHT = new ElementAlignment("RIGHT", 2);
-  
+
   /** A constant for top alignment. */
   public static final ElementAlignment TOP = new ElementAlignment("TOP", 14);
-  
+
   /** A constant for middle alignment (vertical). */
   public static final ElementAlignment MIDDLE = new ElementAlignment("MIDDLE", 15);
-  
+
   /** A constant for bottom alignment. */
   public static final ElementAlignment BOTTOM = new ElementAlignment("BOTTOM", 16);
 
   /** The alignment name. */
   private final String myName; // for debug only
-  
+
   /** The corresponding constant defined in the <code>Element<code> class. */
   private final int oldAlignment;
 
   /**
    * Creates a new alignment object.  Since this constructor is private, you cannot create new
-   * alignment objects, you can only use the predefined constants. 
+   * alignment objects, you can only use the predefined constants.
    *
    * @param name  the alignment name.
    * @param oldAlignment  the old alignment code.
@@ -99,7 +99,7 @@ public class ElementAlignment implements Serializable
     return myName;
   }
 
-  /** 
+  /**
    * Returns the alignment code, used by the old XML parsing code, that corresponds to this
    * alignment object.
    *
@@ -111,31 +111,31 @@ public class ElementAlignment implements Serializable
   }
 
   /**
-   * Returns <code>true</code> if this object is equal to the specified object, and 
+   * Returns <code>true</code> if this object is equal to the specified object, and
    * <code>false</code> otherwise.
-   * 
+   *
    * @param o  the other object.
-   * 
+   *
    * @return A boolean.
    */
   public boolean equals(Object o)
   {
-    if (this == o) 
+    if (this == o)
     {
       return true;
     }
-    if (!(o instanceof ElementAlignment)) 
+    if (!(o instanceof ElementAlignment))
     {
       return false;
     }
 
     final ElementAlignment alignment = (ElementAlignment) o;
 
-    if (oldAlignment != alignment.oldAlignment) 
+    if (oldAlignment != alignment.oldAlignment)
     {
       return false;
     }
-    if (!myName.equals(alignment.myName)) 
+    if (!myName.equals(alignment.myName))
     {
       return false;
     }
@@ -145,7 +145,7 @@ public class ElementAlignment implements Serializable
 
   /**
    * Returns a hash code for the alignment object.
-   * 
+   *
    * @return The code.
    */
   public int hashCode()
@@ -158,9 +158,9 @@ public class ElementAlignment implements Serializable
 
   /**
    * Replaces the automatically generated instance with one of the enumeration instances.
-   * 
+   *
    * @return the resolved element
-   * 
+   *
    * @throws ObjectStreamException if the element could not be resolved.
    */
   protected Object readResolve() throws ObjectStreamException
@@ -173,7 +173,7 @@ public class ElementAlignment implements Serializable
     {
       return ElementAlignment.RIGHT;
     }
-    if (this.equals(ElementAlignment.CENTER)) 
+    if (this.equals(ElementAlignment.CENTER))
     {
       return ElementAlignment.CENTER;
     }
@@ -195,13 +195,13 @@ public class ElementAlignment implements Serializable
   }
 
   /**
-   * Translates the old alignment (<code>int</code>) constants into the new 
+   * Translates the old alignment (<code>int</code>) constants into the new
    * {@link ElementAlignment} objects.
    *
    * @param alignment  the alignment code.
-   * 
+   *
    * @return The corresponding alignment object.
-   * 
+   *
    * @throws IllegalArgumentException if the supplied code does not match one
    *                                  of the predefined constant values.
    */
@@ -226,13 +226,13 @@ public class ElementAlignment implements Serializable
   }
 
   /**
-   * Translates the old alignment (<code>int</code>) constants into the new 
+   * Translates the old alignment (<code>int</code>) constants into the new
    * {@link ElementAlignment} objects.
    *
    * @param alignment  the alignment code.
-   * 
+   *
    * @return The corresponding alignment object.
-   * 
+   *
    * @throws IllegalArgumentException if the supplied code does not match one
    *                                  of the predefined constant values.
    */

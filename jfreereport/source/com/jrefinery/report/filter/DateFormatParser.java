@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: DateFormatParser.java,v 1.9 2002/12/02 17:19:45 taqua Exp $
+ * $Id: DateFormatParser.java,v 1.10 2002/12/12 12:26:55 mungady Exp $
  *
  * ChangeLog
  * ---------
@@ -50,9 +50,9 @@ public class DateFormatParser extends FormatParser
   /**
    * Creates a new 'date format parser'.
    */
-  public DateFormatParser ()
+  public DateFormatParser()
   {
-    setDateFormat (DateFormat.getInstance ());
+    setDateFormat(DateFormat.getInstance());
   }
 
   /**
@@ -62,9 +62,9 @@ public class DateFormatParser extends FormatParser
    *
    * @throws NullPointerException if the given format is null
    */
-  public DateFormat getDateFormat ()
+  public DateFormat getDateFormat()
   {
-    return (DateFormat) getFormatter ();
+    return (DateFormat) getFormatter();
   }
 
   /**
@@ -74,9 +74,9 @@ public class DateFormatParser extends FormatParser
    *
    * @throws NullPointerException if the given format is null
    */
-  public void setDateFormat (DateFormat format)
+  public void setDateFormat(DateFormat format)
   {
-    super.setFormatter (format);
+    super.setFormatter(format);
   }
 
   /**
@@ -87,10 +87,10 @@ public class DateFormatParser extends FormatParser
    * @throws NullPointerException if the given format is null
    * @throws ClassCastException if an invalid formater is set.
    */
-  public void setFormatter (Format format)
+  public void setFormatter(Format format)
   {
     DateFormat dfmt = (DateFormat) format;
-    super.setFormatter (dfmt);
+    super.setFormatter(dfmt);
   }
 
   /**
@@ -104,10 +104,10 @@ public class DateFormatParser extends FormatParser
    *
    * @throws ClassCastException if the value is no date or not null.
    */
-  public void setNullValue (Object nullvalue)
+  public void setNullValue(Object nullvalue)
   {
     Date dt = (Date) nullvalue;
-    super.setNullValue (dt);
+    super.setNullValue(dt);
   }
 
   /**
@@ -119,7 +119,7 @@ public class DateFormatParser extends FormatParser
    *
    * @return true, if the given value is already an instance of date.
    */
-  protected boolean isValidOutput (Object o)
+  protected boolean isValidOutput(Object o)
   {
     return o instanceof Date;
   }

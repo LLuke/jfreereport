@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserEntityResolver.java,v 1.8 2003/05/02 12:39:52 taqua Exp $
+ * $Id: ParserEntityResolver.java,v 1.9 2003/06/23 14:36:56 taqua Exp $
  *
  * Changes
  * -------
@@ -49,17 +49,17 @@ import org.xml.sax.SAXException;
 
 /**
  * Resolves the JFreeReport DTD specification and routes the parser to a local copy.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ParserEntityResolver implements EntityResolver
 {
   /** the Public ID for the simple version of JFreeReport XML definitions. */
-  public static final String PUBLIC_ID_SIMPLE =   
+  public static final String PUBLIC_ID_SIMPLE =
       "-//JFreeReport//DTD report definition//EN//simple";
-      
+
   /** the Public ID for the extensible version of JFreeReport XML definitions. */
-  public static final String PUBLIC_ID_EXTENDED = 
+  public static final String PUBLIC_ID_EXTENDED =
       "-//JFreeReport//DTD report definition//EN//extended";
 
   /** The hashtable for the known entities. */
@@ -79,10 +79,10 @@ public class ParserEntityResolver implements EntityResolver
    *
    * @param publicID  the public ID.
    * @param location  the URL.
-   * 
+   *
    * @return A boolean.
    */
-  public boolean setDTDLocation (String publicID, URL location)
+  public boolean setDTDLocation(String publicID, URL location)
   {
     if (isValid(location))
     {
@@ -91,7 +91,7 @@ public class ParserEntityResolver implements EntityResolver
     }
     else
     {
-      Log.warn ("Validate location failed for location: " + location);
+      Log.warn("Validate location failed for location: " + location);
       return false;
     }
   }
@@ -104,7 +104,7 @@ public class ParserEntityResolver implements EntityResolver
    *
    * @return the URL for the DTD.
    */
-  public URL getDTDLocation (String publicID)
+  public URL getDTDLocation(String publicID)
   {
     return (URL) dtds.get(publicID);
   }
@@ -113,12 +113,12 @@ public class ParserEntityResolver implements EntityResolver
    * Checks whether the speficied URL is readable.
    *
    * @param reportDtd the url pointing to the local DTD copy.
-   * 
+   *
    * @return true, if the URL can be read, false otherwise.
    */
-  private boolean isValid (URL reportDtd)
+  private boolean isValid(URL reportDtd)
   {
-    if (reportDtd == null) 
+    if (reportDtd == null)
     {
       return false;
     }
@@ -139,12 +139,12 @@ public class ParserEntityResolver implements EntityResolver
    * <p>
    * Resolves the DTD definition to point to a local copy, if the specified
    * public ID is known to this resolver.
-   * 
+   *
    * @param publicId  the public ID.
    * @param systemId  the system ID.
-   * 
+   *
    * @return The input source.
-   * 
+   *
    * @throws SAXException if there is a parsing problem.
    * @throws IOException if there is an I/O problem.
    */
@@ -163,7 +163,7 @@ public class ParserEntityResolver implements EntityResolver
       URL location = getDTDLocation(publicId);
       if (location == null)
       {
-        Log.info ("A public ID was given for the document, but it was unknown or invalid.");
+        Log.info("A public ID was given for the document, but it was unknown or invalid.");
         return null;
       }
       return new InputSource(location.openStream());
@@ -181,7 +181,7 @@ public class ParserEntityResolver implements EntityResolver
    *
    * @return the default entity resolver.
    */
-  public static ParserEntityResolver getDefaultResolver ()
+  public static ParserEntityResolver getDefaultResolver()
   {
     ParserEntityResolver res = new ParserEntityResolver();
     URL urlReportDTD = res.getClass().getResource("/com/jrefinery/report/resources/report.dtd");

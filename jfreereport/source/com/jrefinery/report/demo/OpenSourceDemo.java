@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.15 2003/05/02 12:39:35 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.16 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -88,7 +88,7 @@ public class OpenSourceDemo extends AbstractDemoFrame
     setTitle(title);
     this.data = new OpenSourceProjects();
     setJMenuBar(createMenuBar());
-    setContentPane(createContent()); 
+    setContentPane(createContent());
   }
 
   /**
@@ -120,7 +120,7 @@ public class OpenSourceDemo extends AbstractDemoFrame
   {
     JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-    
+
     String d = "This demo creates a report listing some useful open source projects for Java.";
     JTextArea textArea = new JTextArea(d);
     textArea.setLineWrap(true);
@@ -130,7 +130,7 @@ public class OpenSourceDemo extends AbstractDemoFrame
     scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     JTable table = new JTable(this.data);
     JScrollPane scrollPane = new JScrollPane(table);
-    
+
     JButton previewButton = new ActionButton(getPreviewAction());
 
     content.add(scroll, BorderLayout.NORTH);
@@ -151,7 +151,7 @@ public class OpenSourceDemo extends AbstractDemoFrame
     {
       JOptionPane.showMessageDialog(this,
           MessageFormat.format(getResources().getString("report.definitionnotfound"),
-                               new Object[]{in}),
+              new Object[]{in}),
           getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 

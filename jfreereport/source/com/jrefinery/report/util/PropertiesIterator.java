@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -24,7 +24,7 @@
  * PropertiesIterator.java
  * -----------------------
  *
- * $Id: PropertiesIterator.java,v 1.6 2002/11/07 21:45:29 taqua Exp $
+ * $Id: PropertiesIterator.java,v 1.7 2002/12/12 12:26:57 mungady Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public class PropertiesIterator implements Iterator
    */
   public PropertiesIterator(Properties properties)
   {
-    this (properties, null);
+    this(properties, null);
   }
 
   /**
@@ -108,7 +108,7 @@ public class PropertiesIterator implements Iterator
    *
    * @return the next key in the sequence
    */
-  private String getNextKey ()
+  private String getNextKey()
   {
     if (prefix == null)
     {

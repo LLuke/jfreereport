@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AboutAction.java,v 1.14 2003/05/02 12:39:32 taqua Exp $
+ * $Id: AboutAction.java,v 1.15 2003/05/14 22:26:37 taqua Exp $
  *
  * Changes
  * -------
@@ -65,13 +65,13 @@ public abstract class AboutAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  protected AboutAction (ResourceBundle resources)
+  protected AboutAction(ResourceBundle resources)
   {
-    putValue (NAME, resources.getString ("action.about.name"));
-    putValue (SHORT_DESCRIPTION, resources.getString ("action.about.description"));
-    putValue (ActionDowngrade.MNEMONIC_KEY,
-              resources.getObject ("action.about.mnemonic"));
-    putValue (SMALL_ICON, resources.getObject ("action.about.small-icon"));
-    putValue ("ICON24", resources.getObject ("action.about.icon"));
+    putValue(NAME, resources.getString("action.about.name"));
+    putValue(SHORT_DESCRIPTION, resources.getString("action.about.description"));
+    putValue(ActionDowngrade.MNEMONIC_KEY,
+        resources.getObject("action.about.mnemonic"));
+    putValue(SMALL_ICON, resources.getObject("action.about.small-icon"));
+    putValue("ICON24", resources.getObject("action.about.icon"));
   }
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFilter.java,v 1.11 2002/12/06 17:21:50 mungady Exp $
+ * $Id: StringFilter.java,v 1.12 2003/06/01 17:39:25 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import java.io.Serializable;
  * String using String.valueOf () which uses Object.toString() to convert the object into the
  * string.
  * <p>
- * You can specify a default string to return when the value from the data source is 
+ * You can specify a default string to return when the value from the data source is
  * <code>null</code>.  Initially the string 'null' is used.
  *
  * @author Thomas Morgner
@@ -63,7 +63,7 @@ public class StringFilter implements DataFilter, Serializable
   /**
    * Default constructor.
    */
-  public StringFilter ()
+  public StringFilter()
   {
     nullvalue = "null";
   }
@@ -73,11 +73,11 @@ public class StringFilter implements DataFilter, Serializable
    *
    * @param nullvalue  the null value.
    */
-  public void setNullValue (String nullvalue)
+  public void setNullValue(String nullvalue)
   {
     if (nullvalue == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
     this.nullvalue = nullvalue;
   }
@@ -87,7 +87,7 @@ public class StringFilter implements DataFilter, Serializable
    *
    * @return the string.
    */
-  public String getNullValue ()
+  public String getNullValue()
   {
     return nullvalue;
   }
@@ -95,28 +95,28 @@ public class StringFilter implements DataFilter, Serializable
   /**
    * Returns the value obtained from the data source.
    * <P>
-   * The filter ensures that the returned value is a String, even though the return type is 
+   * The filter ensures that the returned value is a String, even though the return type is
    * Object (as required by the DataSource interface).
    *
    * @return the string.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    DataSource ds = getDataSource ();
+    DataSource ds = getDataSource();
     if (ds == null)
     {
-      return getNullValue ();
+      return getNullValue();
     }
-    Object o = ds.getValue ();
+    Object o = ds.getValue();
     if (o == null)
     {
-      return getNullValue ();
+      return getNullValue();
     }
     if (o instanceof String)
     {
       return (String) o;
     }
-    return String.valueOf (o);
+    return String.valueOf(o);
   }
 
   /**
@@ -124,7 +124,7 @@ public class StringFilter implements DataFilter, Serializable
    *
    * @return the data source.
    */
-  public DataSource getDataSource ()
+  public DataSource getDataSource()
   {
     return source;
   }
@@ -134,11 +134,11 @@ public class StringFilter implements DataFilter, Serializable
    *
    * @param ds  the data source.
    */
-  public void setDataSource (DataSource ds)
+  public void setDataSource(DataSource ds)
   {
     if (ds == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
     source = ds;
   }
@@ -150,12 +150,12 @@ public class StringFilter implements DataFilter, Serializable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    StringFilter f = (StringFilter) super.clone ();
+    StringFilter f = (StringFilter) super.clone();
     if (source != null)
     {
-      f.source = (DataSource) source.clone ();
+      f.source = (DataSource) source.clone();
     }
     return f;
   }

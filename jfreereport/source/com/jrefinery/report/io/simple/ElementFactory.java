@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.24 2003/06/10 16:07:53 taqua Exp $
+ * $Id: ElementFactory.java,v 1.25 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes
  * -------
@@ -133,12 +133,12 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * @param parser the used parser to coordinate the parsing process.
    * @param finishTag the finish tag, that should trigger the deactivation of this parser.
    * @param band the band that should be defined.
-   * 
+   *
    * @throws NullPointerException if the finishTag or the parser are null.
    */
   public ElementFactory(Parser parser, String finishTag, Band band)
   {
-    super (parser, finishTag);
+    super(parser, finishTag);
     this.currentBand = band;
     this.currentText = new StringBuffer();
     fontFactory = new FontFactory();
@@ -172,11 +172,11 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else if (elementName.equals(RESOURCELABEL_TAG))
     {
-       startResourceLabel(atts);
+      startResourceLabel(atts);
     }
     else if (elementName.equals(RESOURCEFIELD_TAG))
     {
-       startResourceField(atts);
+      startResourceField(atts);
     }
     else if (elementName.equals(DRAWABLE_FIELD_TAG))
     {
@@ -192,7 +192,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else if (elementName.equals(IMAGEFUNCTION_TAG))
     {
-      Log.warn ("The usage of the image-function tag is deprecated. " +
+      Log.warn("The usage of the image-function tag is deprecated. " +
           "Use the image-element instead.");
       startImageFunction(atts);
     }
@@ -202,7 +202,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else if (elementName.equals(IMAGEURLFUNCTION_TAG))
     {
-      Log.warn ("The usage of the image-url-function tag is deprecated. " +
+      Log.warn("The usage of the image-url-function tag is deprecated. " +
           "Use the image-url-element instead.");
       startImageURLFunction(atts);
     }
@@ -225,7 +225,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else if (elementName.equals(MULTILINE_FIELD_TAG))
     {
-      Log.warn ("The usage of the mutiline-field tag is deprecated. " +
+      Log.warn("The usage of the mutiline-field tag is deprecated. " +
           "Use the string-element instead.");
       startMultilineField(atts);
     }
@@ -239,19 +239,19 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else if (elementName.equals(STRING_FUNCTION_TAG))
     {
-      Log.warn ("The usage of the string-function tag is deprecated. " +
+      Log.warn("The usage of the string-function tag is deprecated. " +
           "Use the string-element instead.");
       startStringFunction(atts);
     }
     else if (elementName.equals(NUMBER_FUNCTION_TAG))
     {
-      Log.warn ("The usage of the number-function tag is deprecated. " +
+      Log.warn("The usage of the number-function tag is deprecated. " +
           "Use the number-element instead.");
       startNumberFunction(atts);
     }
     else if (elementName.equals(DATE_FUNCTION_TAG))
     {
-      Log.warn ("The usage of the date-function tag is deprecated. " +
+      Log.warn("The usage of the date-function tag is deprecated. " +
           "Use the date-element instead.");
       startDateFunction(atts);
     }
@@ -324,11 +324,11 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else if (elementName.equals(RESOURCELABEL_TAG))
     {
-       endResourceLabel();
+      endResourceLabel();
     }
     else if (elementName.equals(RESOURCEFIELD_TAG))
     {
-       endResourceField();
+      endResourceField();
     }
     else if (elementName.equals(DRAWABLE_FIELD_TAG))
     {
@@ -435,8 +435,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
           elementScale,
           elementARatio);
       boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
-      element.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                     new Boolean (elementDynamic));
+      element.getStyle().setBooleanStyleProperty
+          (ElementStyleSheet.DYNAMIC_HEIGHT, elementDynamic);
 
       getCurrentBand().addElement(element);
     }
@@ -472,8 +472,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         elementARatio);
 
     boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
-    element.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                   new Boolean (elementDynamic));
+    element.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, elementDynamic);
 
     getCurrentBand().addElement(element);
 
@@ -481,9 +481,9 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
 
   /**
    * Starts a drawable field.
-   * 
+   *
    * @param atts  the attributes.
-   * 
+   *
    * @throws SAXException if there is a SAX error.
    */
   protected void startDrawableField(Attributes atts) throws SAXException
@@ -527,8 +527,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         elementScale,
         elementARatio);
     boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
-    element.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                   new Boolean (elementDynamic));
+    element.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, elementDynamic);
 
     getCurrentBand().addElement(element);
   }
@@ -557,8 +557,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         elementScale,
         elementARatio);
     boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
-    element.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                   new Boolean (elementDynamic));
+    element.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, elementDynamic);
 
     getCurrentBand().addElement(element);
   }
@@ -588,8 +588,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         elementScale,
         elementARatio);
     boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
-    element.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                   new Boolean (elementDynamic));
+    element.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, elementDynamic);
 
     getCurrentBand().addElement(element);
   }
@@ -791,10 +791,10 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         null,
         getCurrentText());
 
-    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                   new Boolean (textElementDynamic));
+    te.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, textElementDynamic);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    
+
     clearCurrentText();
     getCurrentBand().addElement(te);
   }
@@ -887,7 +887,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startResourceLabel (Attributes attrs)
+  protected void startResourceLabel(Attributes attrs)
       throws SAXException
   {
     getTextElementAttributes(attrs);
@@ -901,7 +901,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
       if (resourceBase == null)
       {
         throw new SAXException("Resourcebase is not defined for this report. " +
-            "Use the configuration key 'com.jrefinery.report.ResourceBundle' to define it." );
+            "Use the configuration key 'com.jrefinery.report.ResourceBundle' to define it.");
       }
     }
 
@@ -915,8 +915,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startResourceField (Attributes attrs)
-    throws SAXException
+  protected void startResourceField(Attributes attrs)
+      throws SAXException
   {
     getDataElementAttributes(attrs);
     resourceBase = attrs.getValue(RESOURCEBASE_ATTR);
@@ -928,7 +928,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
       if (resourceBase == null)
       {
         throw new SAXException("Resourcebase is not defined for this report. " +
-            "Use the configuration key 'com.jrefinery.report.ResourceBundle' to define it." );
+            "Use the configuration key 'com.jrefinery.report.ResourceBundle' to define it.");
       }
     }
   }
@@ -937,7 +937,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * Ends a resource label tag, sets the static key for the resource label,
    * which was build during the parsing. The label is added to the current band.
    */
-  protected void endResourceLabel ()
+  protected void endResourceLabel()
   {
     TextElement te = ItemFactory.createResourceLabel(textElementName,
         textElementBounds,
@@ -949,15 +949,15 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         resourceBase,
         getCurrentText());
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                   new Boolean (textElementDynamic));
+    te.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
   /**
    * Ends the resource field and adds it to the current band.
    */
-  protected void endResourceField ()
+  protected void endResourceField()
   {
     TextElement te = ItemFactory.createResourceElement(textElementName,
         textElementBounds,
@@ -969,8 +969,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         resourceBase,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                   new Boolean (textElementDynamic));
+    te.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -991,8 +991,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementNullString,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                   new Boolean (textElementDynamic));
+    te.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -1012,8 +1012,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementNullString,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                   new Boolean (textElementDynamic));
+    te.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -1034,8 +1034,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementFormatString,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                   new Boolean (textElementDynamic));
+    te.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -1056,8 +1056,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementFormatString,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                   new Boolean (textElementDynamic));
+    te.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -1078,8 +1078,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementFormatString,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                   new Boolean (textElementDynamic));
+    te.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -1099,8 +1099,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementNullString,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                   new Boolean (textElementDynamic));
+    te.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -1121,8 +1121,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementFormatString,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                   new Boolean (textElementDynamic));
+    te.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -1139,10 +1139,10 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     this.textElementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
     this.textElementBounds = ParserUtil.getElementPosition(atts);
     this.textElementFont = fontFactory.createFont(atts);
-    this.textElementAlignment = parseTextAlignment(atts.getValue(ALIGNMENT_ATT), 
-                                                   ElementAlignment.LEFT.getOldAlignment());
+    this.textElementAlignment = parseTextAlignment(atts.getValue(ALIGNMENT_ATT),
+        ElementAlignment.LEFT.getOldAlignment());
     this.textElementVerticalAlignment = parseTextVerticalAlignment(atts.getValue(VALIGNMENT_ATT),
-                                                       ElementAlignment.BOTTOM.getOldAlignment());
+        ElementAlignment.BOTTOM.getOldAlignment());
     this.textElementColor = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
     this.textElementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
   }

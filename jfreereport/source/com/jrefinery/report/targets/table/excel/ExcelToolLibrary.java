@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -26,15 +26,15 @@
  * (C)opyright 2003, by Heiko Evermann and Contributors.
  *
  * Original Author:  Heiko Evermann
- * Contributor(s):   Thomas Morgner; 
+ * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelToolLibrary.java,v 1.7 2003/04/08 14:35:19 mungady Exp $
+ * $Id: ExcelToolLibrary.java,v 1.8 2003/05/02 12:40:39 taqua Exp $
  *
  * Changes
  * -------
  * 25-Jan-2003 : Initial version
- * 
+ *
  */
 
 package com.jrefinery.report.targets.table.excel;
@@ -49,7 +49,7 @@ import org.apache.poi.hssf.util.HSSFColor;
 
 /**
  * POI Excel utility methods.
- * 
+ *
  * @author Heiko Evermann
  */
 public class ExcelToolLibrary
@@ -67,7 +67,7 @@ public class ExcelToolLibrary
    * a real color system.
    *
    * @param awtColor the awt color that should be transformed into an Excel color.
-   * @return the excel color index that is nearest to the supplied color. 
+   * @return the excel color index that is nearest to the supplied color.
    */
   public static short getNearestColor(Color awtColor)
   {

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PostReportInitializedState.java,v 1.1 2003/06/13 16:23:32 taqua Exp $
+ * $Id: PostReportInitializedState.java,v 1.2 2003/06/15 21:26:29 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 13.06.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.states;
@@ -45,7 +45,7 @@ import com.jrefinery.report.event.ReportEvent;
  * Prints the report header. This state is the second state in the report
  * processing and was created after the report was initialized.
  *
- * @author Thomas Morgner 
+ * @author Thomas Morgner
  */
 public class PostReportInitializedState extends ReportState
 {
@@ -72,8 +72,8 @@ public class PostReportInitializedState extends ReportState
     firePrepareEvent(ReportEvent.REPORT_STARTED);
 
     // initialise the report before any band (and especially before the pageheader) is printed.
-    fireReportStartedEvent ();
-    return new PreGroupHeaderState (this);
+    fireReportStartedEvent();
+    return new PreGroupHeaderState(this);
   }
 
   /**
@@ -82,7 +82,7 @@ public class PostReportInitializedState extends ReportState
    *
    * @return true; Header related states preview the next itemband DataRow.
    */
-  public boolean isPrefetchState ()
+  public boolean isPrefetchState()
   {
     return true;
   }

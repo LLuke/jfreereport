@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandDefaultStyleSheet.java,v 1.16 2003/06/19 18:44:11 taqua Exp $
+ * $Id: BandDefaultStyleSheet.java,v 1.17 2003/06/23 14:36:57 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import org.jfree.ui.FloatDimension;
 /**
  * A default band style sheet. This StyleSheet defines the default attribute
  * values for all Bands.
- * 
+ *
  * @author Thomas Morgner
  */
 public class BandDefaultStyleSheet extends BandStyleSheet
@@ -100,7 +100,7 @@ public class BandDefaultStyleSheet extends BandStyleSheet
    *
    * @return the style-sheet.
    */
-  public static final BandDefaultStyleSheet getBandDefaultStyle ()
+  public static final BandDefaultStyleSheet getBandDefaultStyle()
   {
     if (defaultStyle == null)
     {
@@ -143,21 +143,29 @@ public class BandDefaultStyleSheet extends BandStyleSheet
   }
 
   /**
-   * Assigns a new stylesheet collection to this stylesheet.
-   * <p>
-   * Default StyleSheets are shared among all reports, as they are unmodifyable.
+   * This method does nothing.
    *
-   * @param styleSheetCollection
-   * @throws IllegalArgumentException
+   * @param styleSheetCollection the stylesheet collection that should be registered.
    */
   public final void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
   }
 
+  /**
+   * This method does nothing.
+   *
+   * @param styleSheetCollection the stylesheet collection that should be registered.
+   */
   public final void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
   }
 
+  /**
+   * Returns true, if this stylesheet is one of the global default stylesheets.
+   * Global default stylesheets are unmodifiable and shared among all element stylesheets.
+   *
+   * @return always true.
+   */
   public boolean isGlobalDefault()
   {
     return true;

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFImageCellData.java,v 1.7 2003/02/26 16:42:30 mungady Exp $
+ * $Id: RTFImageCellData.java,v 1.8 2003/03/29 20:17:27 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import com.lowagie.text.Image;
 
 /**
  * A wrapper for Image content within the generated RTFTable.
- * 
+ *
  * @author Thomas Morgner
  */
 public class RTFImageCellData extends RTFCellData
@@ -70,7 +70,7 @@ public class RTFImageCellData extends RTFCellData
   public RTFImageCellData(Rectangle2D outerBounds, ImageReference image, RTFCellStyle style)
   {
     super(outerBounds, style);
-    if (image == null) 
+    if (image == null)
     {
       throw new NullPointerException();
     }
@@ -123,7 +123,7 @@ public class RTFImageCellData extends RTFCellData
    *
    * @return an image.
    *
-   * @throws DocumentException if no PDFImageElement could be created using the given 
+   * @throws DocumentException if no PDFImageElement could be created using the given
    *         ImageReference.
    * @throws IOException if the image could not be read.
    */
@@ -134,10 +134,10 @@ public class RTFImageCellData extends RTFCellData
 
     try
     {
-      Rectangle2D drawArea = new Rectangle2D.Float (0, 0, (float) bounds.getWidth(), 
-                                                          (float) bounds.getHeight());
-      if ((imageRef.getSourceURL() != null) 
-          && (drawArea.contains(imageBounds)) 
+      Rectangle2D drawArea = new Rectangle2D.Float(0, 0, (float) bounds.getWidth(),
+          (float) bounds.getHeight());
+      if ((imageRef.getSourceURL() != null)
+          && (drawArea.contains(imageBounds))
           && isSupportedImageFormat(imageRef.getSourceURL()))
       {
         return Image.getInstance(imageRef.getSourceURL());
@@ -171,7 +171,7 @@ public class RTFImageCellData extends RTFCellData
    * @param url the url pointing to the image, that should be tested.
    * @return true, if the image is a JPEG or PNG file, false otherwise.
    */
-  private boolean isSupportedImageFormat (URL url)
+  private boolean isSupportedImageFormat(URL url)
   {
     String file = url.getFile();
     if (StringUtil.endsWithIgnoreCase(file, ".jpg"))

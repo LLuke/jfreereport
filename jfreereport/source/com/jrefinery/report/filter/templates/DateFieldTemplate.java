@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFieldTemplate.java,v 1.4 2003/03/07 16:55:54 taqua Exp $
+ * $Id: DateFieldTemplate.java,v 1.5 2003/05/02 12:39:44 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
  * 18-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.filter.templates;
@@ -48,17 +48,17 @@ import com.jrefinery.report.filter.StringFilter;
 
 /**
  * A date field template.
- * 
+ *
  * @author Thomas Morgner
  */
 public class DateFieldTemplate extends AbstractTemplate implements DataRowConnectable
 {
   /** The date format filter. */
   private SimpleDateFormatFilter dateFilter;
-  
+
   /** The data-row datasource. */
   private DataRowDataSource dataRowDataSource;
-  
+
   /** A string filter. */
   private StringFilter stringFilter;
 
@@ -76,7 +76,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
 
   /**
    * Returns the date format string.
-   * 
+   *
    * @return The date format string.
    */
   public String getFormat()
@@ -86,7 +86,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
 
   /**
    * Sets the date format string.
-   * 
+   *
    * @param format  the format string.
    */
   public void setFormat(String format)
@@ -96,7 +96,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
 
   /**
    * Returns the field name.
-   * 
+   *
    * @return The field name.
    */
   public String getField()
@@ -106,7 +106,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
 
   /**
    * Sets the field name.
-   * 
+   *
    * @param field  the field name.
    */
   public void setField(String field)
@@ -116,7 +116,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
 
   /**
    * Returns the string that represents <code>null</code> values.
-   * 
+   *
    * @return A string.
    */
   public String getNullValue()
@@ -126,7 +126,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
 
   /**
    * Sets the string that represents <code>null</code> values.
-   * 
+   *
    * @param nullValue  the string that represents <code>null</code> values.
    */
   public void setNullValue(String nullValue)
@@ -136,7 +136,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
 
   /**
    * Returns the date formatter.
-   * 
+   *
    * @return The date formatter.
    */
   public SimpleDateFormat getDateFormat()
@@ -146,7 +146,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
 
   /**
    * Sets the date formatter.
-   * 
+   *
    * @param dateFormat  the date formatter.
    */
   public void setDateFormat(SimpleDateFormat dateFormat)
@@ -209,7 +209,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
 
   /**
    * Returns the date filter.
-   * 
+   *
    * @return The date filter.
    */
   protected SimpleDateFormatFilter getDateFilter()
@@ -219,7 +219,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
 
   /**
    * Returns the data-row datasource.
-   * 
+   *
    * @return The data-row datasource.
    */
   protected DataRowDataSource getDataRowDataSource()
@@ -229,7 +229,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
 
   /**
    * Returns the string filter.
-   * 
+   *
    * @return The string filter.
    */
   protected StringFilter getStringFilter()

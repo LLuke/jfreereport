@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -25,11 +25,11 @@
  * --------------------------
  * (C)opyright 2003, by Hawesko GmbH & Co KG and Contributors.
  *
- * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG), based on ideas and code from 
+ * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG), based on ideas and code from
  *                   JRXlsExporter.java of JasperReports;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellStyleFactory.java,v 1.14 2003/05/14 22:26:40 taqua Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.15 2003/06/23 16:08:28 taqua Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,7 @@ public class ExcelCellStyleFactory
   {
     /** The foreground style. */
     private ExcelDataCellStyle style;
-    
+
     /** the background style. */
     private TableCellBackground background;
 
@@ -115,11 +115,11 @@ public class ExcelCellStyleFactory
      */
     public boolean equals(Object o)
     {
-      if (this == o) 
+      if (this == o)
       {
         return true;
       }
-      if (!(o instanceof StyleCarrier)) 
+      if (!(o instanceof StyleCarrier))
       {
         return false;
       }
@@ -130,7 +130,7 @@ public class ExcelCellStyleFactory
       {
         return false;
       }
-      if (style != null ? !style.equals(carrier.style) : carrier.style != null) 
+      if (style != null ? !style.equals(carrier.style) : carrier.style != null)
       {
         return false;
       }
@@ -178,7 +178,7 @@ public class ExcelCellStyleFactory
    */
   public ExcelCellStyleFactory(HSSFWorkbook workbook)
   {
-    if (workbook == null) 
+    if (workbook == null)
     {
       throw new NullPointerException();
     }
@@ -195,29 +195,29 @@ public class ExcelCellStyleFactory
    * @return the HSSFCellStyle-Alignment.
    * @throws IllegalArgumentException if an Unknown JFreeReport alignment is given.
    */
-  protected short convertAlignment (ElementAlignment e)
+  protected short convertAlignment(ElementAlignment e)
   {
-    if (e == ElementAlignment.LEFT) 
+    if (e == ElementAlignment.LEFT)
     {
       return HSSFCellStyle.ALIGN_LEFT;
     }
-    if (e == ElementAlignment.RIGHT) 
+    if (e == ElementAlignment.RIGHT)
     {
       return HSSFCellStyle.ALIGN_RIGHT;
     }
-    if (e == ElementAlignment.CENTER) 
+    if (e == ElementAlignment.CENTER)
     {
       return HSSFCellStyle.ALIGN_CENTER;
     }
-    if (e == ElementAlignment.TOP) 
+    if (e == ElementAlignment.TOP)
     {
       return HSSFCellStyle.VERTICAL_TOP;
     }
-    if (e == ElementAlignment.BOTTOM) 
+    if (e == ElementAlignment.BOTTOM)
     {
       return HSSFCellStyle.VERTICAL_BOTTOM;
     }
-    if (e == ElementAlignment.MIDDLE) 
+    if (e == ElementAlignment.MIDDLE)
     {
       return HSSFCellStyle.VERTICAL_CENTER;
     }
@@ -232,7 +232,7 @@ public class ExcelCellStyleFactory
    * @param width the AWT-Stroke-Width.
    * @return the translated excel border width.
    */
-  protected short translateStroke (float width)
+  protected short translateStroke(float width)
   {
     if (width == 0)
     {
@@ -266,7 +266,7 @@ public class ExcelCellStyleFactory
    * @param element the element that should be converted into the excel style.
    * @return the generated excel style, never null.
    */
-  public ExcelDataCellStyle getExcelDataCellStyle (Element element)
+  public ExcelDataCellStyle getExcelDataCellStyle(Element element)
   {
     return getExcelDataCellStyle(element, "TEXT");
   }
@@ -278,7 +278,7 @@ public class ExcelCellStyleFactory
    * @param format the format string for the cell.
    * @return the generated excel style, never null.
    */
-  public ExcelDataCellStyle getExcelDataCellStyle (Element element, String format)
+  public ExcelDataCellStyle getExcelDataCellStyle(Element element, String format)
   {
     ElementAlignment horizontalAlignment = (ElementAlignment)
         element.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.LEFT);
@@ -301,7 +301,7 @@ public class ExcelCellStyleFactory
    *
    * @return the default style for empty cells.
    */
-  public HSSFCellStyle getEmptyCellStyle ()
+  public HSSFCellStyle getEmptyCellStyle()
   {
     if (emptyCellStyle == null)
     {
@@ -321,7 +321,7 @@ public class ExcelCellStyleFactory
    * @param bg the background style for the table cell.
    * @return the generated or cached HSSFCellStyle.
    */
-  public HSSFCellStyle createCellStyle (ExcelDataCellStyle style, TableCellBackground bg)
+  public HSSFCellStyle createCellStyle(ExcelDataCellStyle style, TableCellBackground bg)
   {
     StyleCarrier carrier = new StyleCarrier(style, bg);
     if (styleCache.containsKey(carrier))
@@ -338,8 +338,8 @@ public class ExcelCellStyleFactory
     {
       hssfCellStyle.setAlignment(convertAlignment(style.getHorizontalAlignment()));
       hssfCellStyle.setVerticalAlignment(convertAlignment(style.getVerticalAlignment()));
-      hssfCellStyle.setFont(fontFactory.getExcelFont(style.getFontDefinition(), 
-                                                     style.getTextColor()));
+      hssfCellStyle.setFont(fontFactory.getExcelFont(style.getFontDefinition(),
+          style.getTextColor()));
       hssfCellStyle.setDataFormat(dataFormat.getFormat(style.getDataStyle()));
     }
 

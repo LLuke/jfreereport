@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageURLElementTemplate.java,v 1.5 2003/03/07 16:55:54 taqua Exp $
+ * $Id: ImageURLElementTemplate.java,v 1.6 2003/05/02 12:39:44 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
  * 18-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.filter.templates;
@@ -46,17 +46,17 @@ import com.jrefinery.report.filter.URLFilter;
 
 /**
  * An image URL element template, which reads the image from a static URL.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ImageURLElementTemplate extends AbstractTemplate
 {
   /** The image load filter. */
   private ImageLoadFilter imageLoadFilter;
-  
+
   /** A static datasource. */
   private StaticDataSource staticDataSource;
-  
+
   /** A URL filter. */
   private URLFilter urlFilter;
 
@@ -74,7 +74,7 @@ public class ImageURLElementTemplate extends AbstractTemplate
 
   /**
    * Sets the URL for the template.
-   * 
+   *
    * @param content  the URL.
    */
   public void setContent(String content)
@@ -84,7 +84,7 @@ public class ImageURLElementTemplate extends AbstractTemplate
 
   /**
    * Returns the URL text for the template.
-   * 
+   *
    * @return The URL text.
    */
   public String getContent()
@@ -94,7 +94,7 @@ public class ImageURLElementTemplate extends AbstractTemplate
 
   /**
    * Returns the base URL.
-   * 
+   *
    * @return The URL.
    */
   public URL getBaseURL()
@@ -104,7 +104,7 @@ public class ImageURLElementTemplate extends AbstractTemplate
 
   /**
    * Sets the base URL.
-   * 
+   *
    * @param baseURL  the URL.
    */
   public void setBaseURL(URL baseURL)
@@ -137,5 +137,5 @@ public class ImageURLElementTemplate extends AbstractTemplate
     template.staticDataSource = (StaticDataSource) template.urlFilter.getDataSource();
     return template;
   }
-  
+
 }

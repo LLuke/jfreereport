@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FilesystemFilter.java,v 1.5 2003/05/02 12:40:46 taqua Exp $
+ * $Id: FilesystemFilter.java,v 1.6 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -44,18 +44,18 @@ import javax.swing.filechooser.FileFilter;
 /**
  * A generic filesystem filter which implements FilenameFilter and the
  * Swing FileFilter. Multiple extensions can be registered for a single filetype.
- * 
+ *
  * @author Thomas Morgner
  */
 public class FilesystemFilter extends FileFilter implements FilenameFilter
 {
   /** File extensions. */
   private ArrayList fileext;
-  
+
   /** A description. */
   private String descr;
 
-  /** Accept directories. */  
+  /** Accept directories. */
   private boolean accDirs;
 
   /**
@@ -81,7 +81,7 @@ public class FilesystemFilter extends FileFilter implements FilenameFilter
    */
   public FilesystemFilter(String fileext, String descr, boolean accDirs)
   {
-    this (new String[]{fileext}, descr, accDirs);
+    this(new String[]{fileext}, descr, accDirs);
   }
 
   /**
@@ -189,7 +189,7 @@ public class FilesystemFilter extends FileFilter implements FilenameFilter
    *
    * @param ext the extension that should be added to this filter.
    */
-  public void addExtension (String ext)
+  public void addExtension(String ext)
   {
     fileext.add(ext);
   }

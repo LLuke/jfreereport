@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractActionDowngrade.java,v 1.11 2003/05/02 12:40:44 taqua Exp $
+ * $Id: AbstractActionDowngrade.java,v 1.12 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -70,13 +70,13 @@ public abstract class AbstractActionDowngrade extends AbstractAction implements 
    * A transparent 16x16 icon.
    */
   private static final ImageIcon TRANSPARENT_EMPTY_ICON_16 =
-      new ImageIcon (createTransparentImage(16, 16));
+      new ImageIcon(createTransparentImage(16, 16));
 
   /**
    * A transparent 24x24 icon.
    */
   private static final ImageIcon TRANSPARENT_EMPTY_ICON_24 =
-      new ImageIcon (createTransparentImage(24, 24));
+      new ImageIcon(createTransparentImage(24, 24));
 
   /**
    * Creates a transparent image, which can be used for aligning menu items.
@@ -86,9 +86,9 @@ public abstract class AbstractActionDowngrade extends AbstractAction implements 
    *
    * @return a transparent image.
    */
-  public static BufferedImage createTransparentImage (int width, int height)
+  public static BufferedImage createTransparentImage(int width, int height)
   {
-    BufferedImage img = new BufferedImage (width, height, BufferedImage.TYPE_INT_ARGB);
+    BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     int[] data = img.getRGB(0, 0, width, height, null, 0, width);
     Arrays.fill(data, 0x00000000);
     img.setRGB(0, 0, width, height, data, 0, width);
@@ -100,7 +100,7 @@ public abstract class AbstractActionDowngrade extends AbstractAction implements 
    */
   protected AbstractActionDowngrade()
   {
-    putValue (SMALL_ICON, TRANSPARENT_EMPTY_ICON_16);
-    putValue ("ICON24", TRANSPARENT_EMPTY_ICON_24);
+    putValue(SMALL_ICON, TRANSPARENT_EMPTY_ICON_16);
+    putValue("ICON24", TRANSPARENT_EMPTY_ICON_24);
   }
 }

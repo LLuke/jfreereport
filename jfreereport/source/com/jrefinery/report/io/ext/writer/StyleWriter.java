@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.16 2003/05/30 16:57:53 taqua Exp $
+ * $Id: StyleWriter.java,v 1.17 2003/06/10 16:07:52 taqua Exp $
  *
  * Changes
  * -------
@@ -128,7 +128,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    * @param o the stylekey value.
    * @return the found object description or null, if none was found.
    */
-  private ObjectDescription findObjectDescription (StyleKey key, Object o)
+  private ObjectDescription findObjectDescription(StyleKey key, Object o)
   {
     ClassFactoryCollector cc = getReportWriter().getClassFactoryCollector();
     ObjectDescription od = cc.getDescriptionForClass(o.getClass());
@@ -166,14 +166,14 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeKeyValue (Writer w, StyleKey key, Object o)
-    throws IOException, ReportWriterException
+  private void writeKeyValue(Writer w, StyleKey key, Object o)
+      throws IOException, ReportWriterException
   {
     ObjectDescription od = findObjectDescription(key, o);
     if (od == null)
     {
       throw new ReportWriterException("Unable to find object description for key: "
-                                      + key.getName());
+          + key.getName());
     }
 
     try
@@ -182,8 +182,8 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     }
     catch (ObjectFactoryException e)
     {
-      throw new ReportWriterException ("Unable to fill the parameters for key: "
-                                       + key.getName(), e);
+      throw new ReportWriterException("Unable to fill the parameters for key: "
+          + key.getName(), e);
     }
 
     Properties p = new Properties();
@@ -240,7 +240,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    *
    * @return The list.
    */
-  private ArrayList getParameterNames (ObjectDescription d)
+  private ArrayList getParameterNames(ObjectDescription d)
   {
     ArrayList list = new ArrayList();
     Iterator it = d.getParameterNames();
@@ -259,7 +259,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    *
    * @return A boolean.
    */
-  private boolean isDefaultStyleSheet (ElementStyleSheet es)
+  private boolean isDefaultStyleSheet(ElementStyleSheet es)
   {
     if (es == BandDefaultStyleSheet.getBandDefaultStyle())
     {

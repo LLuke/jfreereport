@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutAgentProgress.java,v 1.2 2002/12/04 16:20:57 mungady Exp $
+ * $Id: LayoutAgentProgress.java,v 1.3 2002/12/07 14:58:33 taqua Exp $
  *
  * Changes
  * -------
@@ -48,13 +48,13 @@ public class LayoutAgentProgress
 {
   /** Indicates that the layout agent will not process the task. */
   public static final LayoutAgentProgress WONT_PROCESS = new LayoutAgentProgress("WONT_PROCESS");
-  
+
   /** Indicates that the layout agent has completed processing the task. */
-  public static final LayoutAgentProgress PROCESSING_COMPLETE 
+  public static final LayoutAgentProgress PROCESSING_COMPLETE
       = new LayoutAgentProgress("PROCESSING_COMPLETE");
-  
+
   /** Indicates that the layout agent has only partially completed processing the task. */
-  public static final LayoutAgentProgress PROCESSING_INCOMPLETE 
+  public static final LayoutAgentProgress PROCESSING_INCOMPLETE
       = new LayoutAgentProgress("PROCESSING_INCOMPLETE");
 
   /** The name. */

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: NullOutputStream.java,v 1.6 2003/02/10 19:33:52 taqua Exp $
+ * $Id: NullOutputStream.java,v 1.7 2003/02/23 20:39:29 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ public class NullOutputStream extends OutputStream
   /**
    * Default constructor.
    */
-  public NullOutputStream ()
+  public NullOutputStream()
   {
   }
 

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WrappingTableModel.java,v 1.3 2003/04/12 13:43:03 taqua Exp $
+ * $Id: WrappingTableModel.java,v 1.4 2003/05/11 13:38:57 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import com.jrefinery.report.tablemodel.TableModelInfo;
 
 /**
  * A wrapping table model.
- * 
+ *
  * @author Thomas Morgner
  */
 public class WrappingTableModel implements TableModel
@@ -82,12 +82,12 @@ public class WrappingTableModel implements TableModel
       int firstRow = e.getFirstRow();
       int lastRow = e.getLastRow();
 
-      int _firstRowIndex = (firstRow / 2);
-      int _lastRowIndex = (lastRow / 2);
+      int firstRowIndex = (firstRow / 2);
+      int lastRowIndex = (lastRow / 2);
 
       TableModelEvent event =
-          new TableModelEvent(WrappingTableModel.this, _firstRowIndex, _lastRowIndex,
-                              columnIndex, e.getType());
+          new TableModelEvent(WrappingTableModel.this, firstRowIndex, lastRowIndex,
+              columnIndex, e.getType());
 
       for (int i = 0; i < listeners.size(); i++)
       {
@@ -102,7 +102,7 @@ public class WrappingTableModel implements TableModel
      *
      * @param l the tablemodel listener
      */
-    public void addTableModelListener (TableModelListener l)
+    public void addTableModelListener(TableModelListener l)
     {
       listeners.add(l);
     }
@@ -112,7 +112,7 @@ public class WrappingTableModel implements TableModel
      *
      * @param l the tablemodel listener
      */
-    public void removeTableModelListener (TableModelListener l)
+    public void removeTableModelListener(TableModelListener l)
     {
       listeners.remove(l);
     }
@@ -120,34 +120,34 @@ public class WrappingTableModel implements TableModel
 
   /** A table event translator. */
   private TableEventTranslator translator;
-  
+
   /** The column prefix 1. */
   private String columnPrefix1;
-  
+
   /** The column prefix 2. */
   private String columnPrefix2;
-  
+
   /** The table model. */
   private TableModel model;
 
   /**
    * Creates a new wrapping table model.
-   * 
+   *
    * @param model  the underlying table model.
    */
-  public WrappingTableModel (TableModel model)
+  public WrappingTableModel(TableModel model)
   {
-    this (model, "Column1_", "Column2_");
+    this(model, "Column1_", "Column2_");
   }
 
   /**
    * Creates a new wrapping table model.
-   * 
+   *
    * @param model  the underlying table model.
    * @param prefix1  the first column prefix.
    * @param prefix2  the second column prefix.
    */
-  public WrappingTableModel (TableModel model, String prefix1, String prefix2)
+  public WrappingTableModel(TableModel model, String prefix1, String prefix2)
   {
     if (prefix1 == null)
     {
@@ -169,7 +169,7 @@ public class WrappingTableModel implements TableModel
 
   /**
    * Returns column prefix 1.
-   * 
+   *
    * @return Column prefix 1.
    */
   public String getColumnPrefix1()
@@ -179,7 +179,7 @@ public class WrappingTableModel implements TableModel
 
   /**
    * Returns column prefix 2.
-   * 
+   *
    * @return Column prefix 2.
    */
   public String getColumnPrefix2()
@@ -220,7 +220,7 @@ public class WrappingTableModel implements TableModel
    * not need to be unique; two columns in a table can have the same name.
    *
    * @param columnIndex  the index of the column
-   * 
+   *
    * @return the name of the column
    */
   public String getColumnName(int columnIndex)
@@ -258,7 +258,7 @@ public class WrappingTableModel implements TableModel
    *
    * @param rowIndex  the row whose value to be queried
    * @param columnIndex  the column whose value to be queried
-   * 
+   *
    * @return true if the cell is editable
    * @see #setValueAt
    */
@@ -275,13 +275,13 @@ public class WrappingTableModel implements TableModel
 
   /**
    * Calculates the physical row.
-   * 
+   *
    * @param row  the (logical) row index.
    * @param column  the column index.
    *
    * @return The physical row.
    */
-  private int calculateRow (int row, int column)
+  private int calculateRow(int row, int column)
   {
     if (column < model.getColumnCount())
     {
@@ -294,13 +294,14 @@ public class WrappingTableModel implements TableModel
       return (row * 2) + 1;
     }
   }
+
   /**
    * Returns the value for the cell at <code>columnIndex</code> and
    * <code>rowIndex</code>.
    *
    * @param rowIndex  the row whose value is to be queried
    * @param columnIndex  the column whose value is to be queried
-   * 
+   *
    * @return the value Object at the specified cell
    */
   public Object getValueAt(int rowIndex, int columnIndex)
@@ -359,10 +360,10 @@ public class WrappingTableModel implements TableModel
 
   /**
    * Test code - please ignore.
-   * 
+   *
    * @param args  ignored.
    */
-  public static void main (String [] args)
+  public static void main(String[] args)
   {
     TableModelInfo.printTableModel(new WrappingTableModel(new CardTableModel()));
   }

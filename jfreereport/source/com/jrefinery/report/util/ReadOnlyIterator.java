@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReadOnlyIterator.java,v 1.3 2003/04/05 19:22:16 taqua Exp $
+ * $Id: ReadOnlyIterator.java,v 1.4 2003/04/09 15:55:08 mungady Exp $
  *
  * Changes
  * -------
  * 05.04.2003 : Initial version
- * 
+ *
  */
 
 package com.jrefinery.report.util;
@@ -42,7 +42,7 @@ import java.util.Iterator;
 
 /**
  * A unmodifiable iterator wrapper.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ReadOnlyIterator implements Iterator
@@ -52,7 +52,7 @@ public class ReadOnlyIterator implements Iterator
 
   /**
    * Creates a read-only iterator.
-   * 
+   *
    * @param base  the base iterator.
    */
   public ReadOnlyIterator(Iterator base)

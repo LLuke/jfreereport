@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: LGPLTextDemo.java,v 1.8 2003/05/14 22:26:37 taqua Exp $
+ * $Id: LGPLTextDemo.java,v 1.9 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -126,7 +126,7 @@ public class LGPLTextDemo extends AbstractDemoFrame
     {
       JOptionPane.showMessageDialog(this,
           MessageFormat.format(getResources().getString("report.definitionnotfound"),
-                               new Object[]{in}),
+              new Object[]{in}),
           getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.34 2003/06/23 16:08:27 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.35 2003/06/26 19:55:57 taqua Exp $
  *
  * Changes
  * -------
@@ -58,8 +58,8 @@ import java.util.List;
 
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.util.SerializerHelper;
 import com.jrefinery.report.util.InstanceID;
+import com.jrefinery.report.util.SerializerHelper;
 
 /**
  * An element style-sheet contains zero, one or many attributes that affect the appearance of
@@ -121,49 +121,49 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   }
 
   /** A key for the 'minimum size' of an element. */
-  public static final StyleKey MINIMUMSIZE   = StyleKey.getStyleKey("min-size", Dimension2D.class);
+  public static final StyleKey MINIMUMSIZE = StyleKey.getStyleKey("min-size", Dimension2D.class);
 
   /** A key for the 'maximum size' of an element. */
-  public static final StyleKey MAXIMUMSIZE   = StyleKey.getStyleKey("max-size", Dimension2D.class);
+  public static final StyleKey MAXIMUMSIZE = StyleKey.getStyleKey("max-size", Dimension2D.class);
 
   /** A key for the 'preferred size' of an element. */
   public static final StyleKey PREFERREDSIZE = StyleKey.getStyleKey("preferred-size",
-                                                                    Dimension2D.class);
+      Dimension2D.class);
 
   /** A key for the 'bounds' of an element. */
-  public static final StyleKey BOUNDS        = StyleKey.getStyleKey("bounds", Rectangle2D.class);
+  public static final StyleKey BOUNDS = StyleKey.getStyleKey("bounds", Rectangle2D.class);
 
   /** A key for an element's 'visible' flag. */
-  public static final StyleKey VISIBLE       = StyleKey.getStyleKey("visible", Boolean.class);
+  public static final StyleKey VISIBLE = StyleKey.getStyleKey("visible", Boolean.class);
 
   /** A key for the 'paint' used to color an element. */
-  public static final StyleKey PAINT         = StyleKey.getStyleKey("paint", Color.class);
+  public static final StyleKey PAINT = StyleKey.getStyleKey("paint", Color.class);
 
   /** A key for the 'stroke' used to draw an element. */
-  public static final StyleKey STROKE        = StyleKey.getStyleKey("stroke", Stroke.class);
+  public static final StyleKey STROKE = StyleKey.getStyleKey("stroke", Stroke.class);
 
   /** A key for the 'font name' used to draw element text. */
-  public static final StyleKey FONT          = StyleKey.getStyleKey("font", String.class);
+  public static final StyleKey FONT = StyleKey.getStyleKey("font", String.class);
 
   /** A key for the 'font size' used to draw element text. */
-  public static final StyleKey FONTSIZE      = StyleKey.getStyleKey("font-size", Integer.class);
+  public static final StyleKey FONTSIZE = StyleKey.getStyleKey("font-size", Integer.class);
 
   /** A key for the 'font size' used to draw element text. */
-  public static final StyleKey LINEHEIGHT      = StyleKey.getStyleKey("line-height", Float.class);
+  public static final StyleKey LINEHEIGHT = StyleKey.getStyleKey("line-height", Float.class);
 
   /** A key for an element's 'bold' flag. */
-  public static final StyleKey BOLD          = StyleKey.getStyleKey("font-bold", Boolean.class);
+  public static final StyleKey BOLD = StyleKey.getStyleKey("font-bold", Boolean.class);
 
   /** A key for an element's 'italic' flag. */
-  public static final StyleKey ITALIC        = StyleKey.getStyleKey("font-italic", Boolean.class);
+  public static final StyleKey ITALIC = StyleKey.getStyleKey("font-italic", Boolean.class);
 
   /** A key for an element's 'underlined' flag. */
-  public static final StyleKey UNDERLINED    = StyleKey.getStyleKey("font-underline",
-                                                                    Boolean.class);
+  public static final StyleKey UNDERLINED = StyleKey.getStyleKey("font-underline",
+      Boolean.class);
 
   /** A key for an element's 'strikethrough' flag. */
   public static final StyleKey STRIKETHROUGH = StyleKey.getStyleKey("font-strikethrough",
-                                                                    Boolean.class);
+      Boolean.class);
 
   /** A key for an element's 'embedd' flag. */
   public static final StyleKey EMBEDDED_FONT = StyleKey.getStyleKey("font-embedded", Boolean.class);
@@ -172,30 +172,30 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   public static final StyleKey FONTENCODING = StyleKey.getStyleKey("font-encoding", String.class);
 
   /** A key for the horizontal alignment of an element. */
-  public static final StyleKey ALIGNMENT     = StyleKey.getStyleKey("alignment",
-                                                                    ElementAlignment.class);
+  public static final StyleKey ALIGNMENT = StyleKey.getStyleKey("alignment",
+      ElementAlignment.class);
 
   /** A key for the vertical alignment of an element. */
-  public static final StyleKey VALIGNMENT     = StyleKey.getStyleKey("valignment",
-                                                                     ElementAlignment.class);
+  public static final StyleKey VALIGNMENT = StyleKey.getStyleKey("valignment",
+      ElementAlignment.class);
 
   /** A key for an element's 'scale' flag. */
   public static final StyleKey SCALE = StyleKey.getStyleKey("scale", Boolean.class);
 
   /** A key for an element's 'keep aspect ratio' flag. */
   public static final StyleKey KEEP_ASPECT_RATIO = StyleKey.getStyleKey("keepAspectRatio",
-                                                                        Boolean.class);
+      Boolean.class);
 
   /** A key for the dynamic height flag for an element. */
   public static final StyleKey DYNAMIC_HEIGHT = StyleKey.getStyleKey("dynamic_height",
-                                                                     Boolean.class);
+      Boolean.class);
 
   /**
    * The Layout Cacheable stylekey. Set this stylekey to false, to define that the element
    * is not cachable. This key defaults to true.
    */
   public static final StyleKey ELEMENT_LAYOUT_CACHEABLE = StyleKey.getStyleKey("layout-cacheable",
-                                                                    Boolean.class);
+      Boolean.class);
   /** The instance id of this ElementStyleSheet. This id is shared among all clones. */
   private InstanceID id;
 
@@ -243,7 +243,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @param name  the name (<code>null</code> not permitted).
    */
-  public ElementStyleSheet (String name)
+  public ElementStyleSheet(String name)
   {
     if (name == null)
     {
@@ -323,7 +323,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos &gt;=
    *         numberOfParents)
    */
-  public synchronized void addParent (int position, ElementStyleSheet parent)
+  public synchronized void addParent(int position, ElementStyleSheet parent)
   {
     if (parent == null)
     {
@@ -331,7 +331,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
     if (parent.isSubStyleSheet(this) == false)
     {
-      parents.add (position, parent);
+      parents.add(position, parent);
       parentsCached = null;
       parentsListCached = null;
       if (parent.isGlobalDefault() == false)
@@ -364,7 +364,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos &gt;=
    *         numberOfParents)
    */
-  public synchronized void addDefaultParent (int position, ElementStyleSheet parent)
+  public synchronized void addDefaultParent(int position, ElementStyleSheet parent)
   {
     if (parent == null)
     {
@@ -372,7 +372,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
     if (parent.isSubStyleSheet(this) == false)
     {
-      defaultSheets.add (position, parent);
+      defaultSheets.add(position, parent);
       defaultCached = null;
       defaultParentsListCached = null;
       if (getStyleSheetCollection() != null)
@@ -398,7 +398,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @return true, if the element is a child of this element style sheet,
    * false otherwise.
    */
-  public boolean isSubStyleSheet (ElementStyleSheet parent)
+  public boolean isSubStyleSheet(ElementStyleSheet parent)
   {
     for (int i = 0; i < parents.size(); i++)
     {
@@ -445,7 +445,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       // do nothing if this is none of the parents ...
       return;
     }
-    parents.remove (parent);
+    parents.remove(parent);
     if (parent.isGlobalDefault() == false)
     {
       parent.removeListener(this);
@@ -469,7 +469,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     {
       throw new NullPointerException("ElementStyleSheet.removeParent(...): parent is null.");
     }
-    defaultSheets.remove (parent);
+    defaultSheets.remove(parent);
     if (parent.isGlobalDefault() == false)
     {
       parent.removeListener(this);
@@ -485,7 +485,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return the list.
    */
-  public List getParents ()
+  public List getParents()
   {
     if (parentsListCached == null)
     {
@@ -501,7 +501,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return the list.
    */
-  public List getDefaultParents ()
+  public List getDefaultParents()
   {
     if (defaultParentsListCached == null)
     {
@@ -536,7 +536,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    */
   public Object getStyleProperty(StyleKey key, Object defaultValue)
   {
-    Object value = properties.get (key);
+    Object value = properties.get(key);
     if (value != null)
     {
       return value;
@@ -611,7 +611,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @throws NullPointerException if the given key is null.
    * @throws ClassCastException if the value cannot be assigned with the given key.
    */
-  public void setBooleanStyleProperty (StyleKey key, boolean value)
+  public void setBooleanStyleProperty(StyleKey key, boolean value)
   {
     if (value)
     {
@@ -631,7 +631,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @throws NullPointerException if the given key is null.
    * @throws ClassCastException if the value cannot be assigned with the given key.
    */
-  public void setStyleProperty (StyleKey key, Object value)
+  public void setStyleProperty(StyleKey key, Object value)
   {
     if (key == null)
     {
@@ -643,22 +643,22 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       {
         styleCache.remove(key);
       }
-      properties.remove (key);
+      properties.remove(key);
       styleChangeSupport.fireStyleRemoved(key);
     }
     else
     {
       if (key.getValueType().isAssignableFrom(value.getClass()) == false)
       {
-        throw new ClassCastException ("Value for key " + key.getName()
-                                      + " is not assignable: " + value.getClass()
-                                      + " is not assignable from " + key.getValueType());
+        throw new ClassCastException("Value for key " + key.getName()
+            + " is not assignable: " + value.getClass()
+            + " is not assignable from " + key.getValueType());
       }
       if (styleCache != null)
       {
         styleCache.put(key, value);
       }
-      properties.put (key, value);
+      properties.put(key, value);
       styleChangeSupport.fireStyleChanged(key, value);
     }
   }
@@ -678,12 +678,12 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       sc.properties = (HashMap) properties.clone();
       if (styleCache != null)
       {
-        sc.styleCache = new HashMap (styleCache);
+        sc.styleCache = new HashMap(styleCache);
       }
       sc.styleChangeSupport = new StyleChangeSupport(sc);
       sc.parents = new ArrayList();// parents.clone();
-      ElementStyleSheet[] cl_parentsCached = new ElementStyleSheet[parents.size()];
-      ElementStyleSheet[] cl_defaultCached = new ElementStyleSheet[defaultSheets.size()];
+      ElementStyleSheet[] cloneParentsCached = new ElementStyleSheet[parents.size()];
+      ElementStyleSheet[] cloneDefaultCached = new ElementStyleSheet[defaultSheets.size()];
       sc.parentsListCached = null;
       sc.defaultParentsListCached = null;
       sc.collectionHelper = new ElementStyleSheetCollectionHelper(sc);
@@ -698,7 +698,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       for (int i = parentsCached.length - 1; i >= 0; i--)
       {
         sc.addParent(parentsCached[i]);
-        cl_parentsCached[i] = parentsCached[i];
+        cloneParentsCached[i] = parentsCached[i];
       }
 
       // Clone all default parents ...
@@ -713,10 +713,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       for (int i = defaultCached.length - 1; i >= 0; i--)
       {
         sc.addDefaultParent(defaultCached[i]);
-        cl_defaultCached[i] = defaultCached[i];
+        cloneDefaultCached[i] = defaultCached[i];
       }
-      sc.parentsCached = cl_parentsCached;
-      sc.defaultCached = cl_defaultCached;
+      sc.parentsCached = cloneParentsCached;
+      sc.defaultCached = cloneDefaultCached;
       return sc;
     }
     catch (CloneNotSupportedException cne)
@@ -732,7 +732,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean getBooleanStyleProperty (StyleKey key)
+  public boolean getBooleanStyleProperty(StyleKey key)
   {
     return getBooleanStyleProperty(key, false);
   }
@@ -745,7 +745,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return true or false.
    */
-  public boolean getBooleanStyleProperty (StyleKey key, boolean defaultValue)
+  public boolean getBooleanStyleProperty(StyleKey key, boolean defaultValue)
   {
     Boolean b = (Boolean) getStyleProperty(key, null);
     if (b == null)
@@ -763,7 +763,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return the style value.
    */
-  public int getIntStyleProperty (StyleKey key, int def)
+  public int getIntStyleProperty(StyleKey key, int def)
   {
     Integer i = (Integer) getStyleProperty(key, new Integer(def));
     return i.intValue();
@@ -775,7 +775,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @deprecated use getFontDefinition()
    * @return the font.
    */
-  public Font getFontStyleProperty ()
+  public Font getFontStyleProperty()
   {
     String name = (String) getStyleProperty(FONT);
     int size = getIntStyleProperty(FONTSIZE, -1);
@@ -800,7 +800,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @deprecated use setFontDefinition()
    * @param font  the font (<code>null</code> not permitted).
    */
-  public void setFontStyleProperty (Font font)
+  public void setFontStyleProperty(Font font)
   {
     if (font == null)
     {
@@ -817,7 +817,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return the font.
    */
-  public FontDefinition getFontDefinitionProperty ()
+  public FontDefinition getFontDefinitionProperty()
   {
     String name = (String) getStyleProperty(FONT);
     int size = getIntStyleProperty(FONTSIZE, -1);
@@ -829,7 +829,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     String encoding = (String) getStyleProperty(FONTENCODING);
 
     FontDefinition retval = new FontDefinition(name, size, bold, italic, underlined, strike,
-                                               encoding, embed);
+        encoding, embed);
     return retval;
   }
 
@@ -838,7 +838,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @param font  the font (<code>null</code> not permitted).
    */
-  public void setFontDefinitionProperty (FontDefinition font)
+  public void setFontDefinitionProperty(FontDefinition font)
   {
     if (font == null)
     {
@@ -859,7 +859,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return an enumeration of all localy defined style property keys.
    */
-  public Iterator getDefinedPropertyNames ()
+  public Iterator getDefinedPropertyNames()
   {
     return properties.keySet().iterator();
   }
@@ -869,7 +869,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @param l  the listener.
    */
-  public void addListener (StyleChangeListener l)
+  public void addListener(StyleChangeListener l)
   {
     styleChangeSupport.addListener(l);
   }
@@ -879,7 +879,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @param l  the listener.
    */
-  public void removeListener (StyleChangeListener l)
+  public void removeListener(StyleChangeListener l)
   {
     styleChangeSupport.removeListener(l);
   }
@@ -922,7 +922,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @throws IOException if errors occur while writing the stream.
    */
   private void writeObject(ObjectOutputStream out)
-       throws IOException
+      throws IOException
   {
     out.defaultWriteObject();
     int size = properties.size();
@@ -946,7 +946,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * could not be found.
    */
   private void readObject(ObjectInputStream in)
-       throws IOException, ClassNotFoundException
+      throws IOException, ClassNotFoundException
   {
     styleChangeSupport = new StyleChangeSupport(this);
 
@@ -957,7 +957,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     {
       Object key = in.readObject();
       Object value = SerializerHelper.getInstance().readObject(in);
-      properties.put (key, value);
+      properties.put(key, value);
     }
   }
 

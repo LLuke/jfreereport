@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CloseableTableModel.java,v 1.5 2002/11/07 21:45:28 taqua Exp $
+ * $Id: CloseableTableModel.java,v 1.6 2002/12/11 00:41:42 mungady Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,6 @@ public interface CloseableTableModel extends TableModel
    * If this model has a resultset assigned, close it, if this is a DefaultTableModel,
    * remove all data.
    */
-  public void close ();
+  public void close();
 
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * ---------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: SimpleDateFormatParser.java,v 1.8 2002/12/12 12:26:55 mungady Exp $
+ * $Id: SimpleDateFormatParser.java,v 1.9 2003/02/25 14:07:21 taqua Exp $
  *
  * Changes
  * -------
@@ -55,9 +55,9 @@ public class SimpleDateFormatParser extends DateFormatParser
   /**
    * DefaultConstructor.
    */
-  public SimpleDateFormatParser ()
+  public SimpleDateFormatParser()
   {
-    setFormatter (new SimpleDateFormat ());
+    setFormatter(new SimpleDateFormat());
   }
 
 
@@ -66,9 +66,9 @@ public class SimpleDateFormatParser extends DateFormatParser
    *
    * @return The date format object.
    */
-  public SimpleDateFormat getSimpleDateFormat ()
+  public SimpleDateFormat getSimpleDateFormat()
   {
-    return (SimpleDateFormat) getFormatter ();
+    return (SimpleDateFormat) getFormatter();
   }
 
   /**
@@ -77,9 +77,9 @@ public class SimpleDateFormatParser extends DateFormatParser
    * @param format The format.
    * @throws NullPointerException if the format given is null
    */
-  public void setSimpleDateFormat (SimpleDateFormat format)
+  public void setSimpleDateFormat(SimpleDateFormat format)
   {
-    super.setFormatter (format);
+    super.setFormatter(format);
   }
 
   /**
@@ -90,10 +90,10 @@ public class SimpleDateFormatParser extends DateFormatParser
    * @throws NullPointerException if the format given is null
    * @throws ClassCastException if the format given is no DateFormat
    */
-  public void setFormatter (Format format)
+  public void setFormatter(Format format)
   {
     SimpleDateFormat sdfmt = (SimpleDateFormat) format;
-    super.setFormatter (sdfmt);
+    super.setFormatter(sdfmt);
   }
 
   /**
@@ -103,9 +103,9 @@ public class SimpleDateFormatParser extends DateFormatParser
    * @see java.text.SimpleDateFormat
    * @return the formatstring used for this DateFormat.
    */
-  public String getFormatString ()
+  public String getFormatString()
   {
-    return getSimpleDateFormat ().toPattern ();
+    return getSimpleDateFormat().toPattern();
   }
 
   /**
@@ -114,9 +114,9 @@ public class SimpleDateFormatParser extends DateFormatParser
    * @param format the formatString
    * @throws IllegalArgumentException if the string is invalid
    */
-  public void setFormatString (String format)
+  public void setFormatString(String format)
   {
-    getSimpleDateFormat ().applyPattern (format);
+    getSimpleDateFormat().applyPattern(format);
   }
 
   /**
@@ -126,9 +126,9 @@ public class SimpleDateFormatParser extends DateFormatParser
    * @see java.text.SimpleDateFormat
    * @return the localized format string.
    */
-  public String getLocalizedFormatString ()
+  public String getLocalizedFormatString()
   {
-    return getSimpleDateFormat ().toLocalizedPattern ();
+    return getSimpleDateFormat().toLocalizedPattern();
   }
 
 
@@ -138,9 +138,9 @@ public class SimpleDateFormatParser extends DateFormatParser
    * @param format the formatString
    * @throws IllegalArgumentException if the string is invalid
    */
-  public void setLocalizedFormatString (String format)
+  public void setLocalizedFormatString(String format)
   {
-    getSimpleDateFormat ().applyLocalizedPattern (format);
+    getSimpleDateFormat().applyLocalizedPattern(format);
   }
 
 }

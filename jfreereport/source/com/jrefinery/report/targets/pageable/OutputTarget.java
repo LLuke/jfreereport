@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.13 2003/04/09 16:13:48 mungady Exp $
+ * $Id: OutputTarget.java,v 1.14 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -84,7 +84,7 @@ public interface OutputTarget extends LayoutSupport
    *
    * @throws NullPointerException if <code>property</code> is null.
    */
-  public Object getProperty (String property, Object defaultValue);
+  public Object getProperty(String property, Object defaultValue);
 
   /**
    * Defines a property for this target.
@@ -95,26 +95,26 @@ public interface OutputTarget extends LayoutSupport
    * @param property  the property name (key).
    * @param value  the property value (use null to remove an existing property).
    */
-  public void setProperty (String property, Object value);
+  public void setProperty(String property, Object value);
 
   /**
    * Opens the target.
    *
    * @throws OutputTargetException if there is some problem opening the target.
    */
-  public void open () throws OutputTargetException;
+  public void open() throws OutputTargetException;
 
   /**
    * Returns true if the target is open, and false otherwise.
    *
    * @return true or false.
    */
-  public boolean isOpen ();
+  public boolean isOpen();
 
   /**
    * Closes the target.
    */
-  public void close ();
+  public void close();
 
   /**
    * Signals that a page is being started.  Stores the state of the target to
@@ -122,7 +122,7 @@ public interface OutputTarget extends LayoutSupport
    *
    * @param page  the physical page.
    */
-  public void beginPage (PhysicalPage page);
+  public void beginPage(PhysicalPage page);
 
   /**
    * Signals that the current page is ended.  Some targets need to know when a page is finished,
@@ -130,7 +130,7 @@ public interface OutputTarget extends LayoutSupport
    *
    * @throws OutputTargetException if there is some problem with the target.
    */
-  public void endPage () throws OutputTargetException;
+  public void endPage() throws OutputTargetException;
 
   /**
    * Returns the value of the specified property.  If the property is not found, <code>null</code>
@@ -142,7 +142,7 @@ public interface OutputTarget extends LayoutSupport
    *
    * @throws NullPointerException if <code>property</code> is null.
    */
-  public Object getProperty (String property);
+  public Object getProperty(String property);
 
 
   /**
@@ -150,7 +150,7 @@ public interface OutputTarget extends LayoutSupport
    *
    * @return the current font.
    */
-  public FontDefinition getFont ();
+  public FontDefinition getFont();
 
   /**
    * Sets the font.
@@ -159,14 +159,14 @@ public interface OutputTarget extends LayoutSupport
    *
    * @throws OutputTargetException if there is a problem setting the font.
    */
-  public void setFont (FontDefinition font) throws OutputTargetException;
+  public void setFont(FontDefinition font) throws OutputTargetException;
 
   /**
    * Returns the current stroke.
    *
    * @return the stroke.
    */
-  public Stroke getStroke ();
+  public Stroke getStroke();
 
   /**
    * Defines the current stroke for the target.
@@ -177,14 +177,14 @@ public interface OutputTarget extends LayoutSupport
    *
    * @throws OutputTargetException if there is a problem setting the stroke.
    */
-  public void setStroke (Stroke stroke) throws OutputTargetException;
+  public void setStroke(Stroke stroke) throws OutputTargetException;
 
   /**
    * Returns the current paint.
    *
    * @return the paint.
    */
-  public Paint getPaint ();
+  public Paint getPaint();
 
   /**
    * Sets the paint.
@@ -193,49 +193,49 @@ public interface OutputTarget extends LayoutSupport
    *
    * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void setPaint (Paint paint) throws OutputTargetException;
+  public void setPaint(Paint paint) throws OutputTargetException;
 
   /**
    * Defines the bounds for the next set of operations.
    *
    * @param bounds  the bounds.
    */
-  public void setOperationBounds (Rectangle2D bounds);
+  public void setOperationBounds(Rectangle2D bounds);
 
   /**
    * Returns the operation bounds.
    *
    * @return  the bounds.
    */
-  public Rectangle2D getOperationBounds ();
+  public Rectangle2D getOperationBounds();
 
   /**
    * Draws a string at the current cursor position.
    *
    * @param text  the text.
    */
-  public void drawString (String text);
+  public void drawString(String text);
 
   /**
    * Draws a shape relative to the current position.
    *
    * @param shape  the shape to draw.
    */
-  public void drawShape (Shape shape);
+  public void drawShape(Shape shape);
 
   /**
    * Fills the shape relative to the current position.
    *
    * @param shape  the shape to draw.
    */
-  public void fillShape (Shape shape);
+  public void fillShape(Shape shape);
 
   /**
    * Draws a drawable relative to the current position.
    *
    * @param drawable the drawable to draw.
    */
-  public void drawDrawable (DrawableContainer drawable);
+  public void drawDrawable(DrawableContainer drawable);
 
   /**
    * Draws a image relative to the specified coordinates.
@@ -244,7 +244,7 @@ public interface OutputTarget extends LayoutSupport
    *
    * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void drawImage (ImageReference image) throws OutputTargetException;
+  public void drawImage(ImageReference image) throws OutputTargetException;
 
   /**
    * Creates an output target that mimics a real output target, but produces no output.
@@ -253,14 +253,14 @@ public interface OutputTarget extends LayoutSupport
    *
    * @return a dummy output target.
    */
-  public OutputTarget createDummyWriter ();
+  public OutputTarget createDummyWriter();
 
   /**
    * Configures the output target.
    *
    * @param config  the configuration.
    */
-  public void configure (ReportConfiguration config);
+  public void configure(ReportConfiguration config);
 
   /**
    * Returns the logical page.

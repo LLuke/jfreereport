@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.15 2003/04/24 18:08:57 taqua Exp $
+ * $Id: PhysicalOperation.java,v 1.16 2003/05/02 12:40:33 taqua Exp $
  *
  * Changes
  * -------
@@ -48,18 +48,20 @@ import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
-import com.jrefinery.report.util.Log;  // for Javadoc link
+import com.jrefinery.report.util.Log;
+
+// for Javadoc link
 
 /**
- * The base class for an operation that can be applied to an 
+ * The base class for an operation that can be applied to an
  * {@link com.jrefinery.report.targets.pageable.OutputTarget}.
- * These operations are typically added to a 
+ * These operations are typically added to a
  * {@link com.jrefinery.report.targets.pageable.physicals.PhysicalPage} in the process of being
  * sent to the output target.
  * <P>
  * Refer to the subclasses for some examples.
  * <p>
- * A sequence of operations can be stored in a {@link com.jrefinery.report.targets.pageable.Spool} 
+ * A sequence of operations can be stored in a {@link com.jrefinery.report.targets.pageable.Spool}
  * and replayed at any time.
  *
  * @author Thomas Morgner
@@ -67,7 +69,7 @@ import com.jrefinery.report.util.Log;  // for Javadoc link
 public abstract class PhysicalOperation
 {
   /**
-   * An operation that sets the font for an 
+   * An operation that sets the font for an
    * {@link com.jrefinery.report.targets.pageable.OutputTarget}.
    */
   public static class SetFontOperation extends PhysicalOperation
@@ -136,12 +138,12 @@ public abstract class PhysicalOperation
      */
     public void performOperation(OutputTarget ot) throws OutputTargetException
     {
-      Log.debug (new Log.SimpleMessage("Physical Operation Comment: " , comment));
+      Log.debug(new Log.SimpleMessage("Physical Operation Comment: ", comment));
     }
   }
 
   /**
-   * An operation that sets the paint for an 
+   * An operation that sets the paint for an
    * {@link com.jrefinery.report.targets.pageable.OutputTarget}.
    */
   public static class SetPaintOperation extends PhysicalOperation
@@ -180,7 +182,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that sets the stroke for an 
+   * An operation that sets the stroke for an
    * {@link com.jrefinery.report.targets.pageable.OutputTarget}.
    */
   public static class SetStrokeOperation extends PhysicalOperation
@@ -219,7 +221,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that sets the bounds for an 
+   * An operation that sets the bounds for an
    * {@link com.jrefinery.report.targets.pageable.OutputTarget}.
    */
   public static class SetBoundsOperation extends PhysicalOperation
@@ -304,14 +306,14 @@ public abstract class PhysicalOperation
      *
      * @return a string.
      */
-    public String toString ()
+    public String toString()
     {
-      return "PrintTextOperation: "  + text;
+      return "PrintTextOperation: " + text;
     }
   }
 
   /**
-   * An operation that prints an Image on an 
+   * An operation that prints an Image on an
    * {@link com.jrefinery.report.targets.pageable.OutputTarget}.
    */
   public static class PrintImageOperation extends PhysicalOperation
@@ -347,7 +349,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that draws a shape on an 
+   * An operation that draws a shape on an
    * {@link com.jrefinery.report.targets.pageable.OutputTarget}.
    */
   public static class PrintShapeOperation extends PhysicalOperation
@@ -383,7 +385,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that draws a filled shape on an 
+   * An operation that draws a filled shape on an
    * {@link com.jrefinery.report.targets.pageable.OutputTarget}.
    */
   public static class PrintFilledShapeOperation extends PhysicalOperation

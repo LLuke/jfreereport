@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GridBLayoutManager.java,v 1.1 2003/03/29 20:18:49 taqua Exp $
+ * $Id: GridBLayoutManager.java,v 1.2 2003/04/09 15:49:53 mungady Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import com.jrefinery.report.targets.base.ElementLayoutInformation;
 
 /**
  * A layout manager.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class GridBLayoutManager extends AbstractBandLayoutManager
@@ -71,7 +71,7 @@ public class GridBLayoutManager extends AbstractBandLayoutManager
     {
       return eli.getPreferredSize();
     }
-    
+
     // Now adjust the defined sizes by using the elements stored in the band.
     Element[] elements = b.getElementArray();
 
@@ -109,7 +109,7 @@ public class GridBLayoutManager extends AbstractBandLayoutManager
 
   /**
    * Clears any cached items used by the layout manager. Invalidates the layout.
-   * 
+   *
    * @param container  the container.
    */
   public void invalidateLayout(Band container)

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageReferenceData.java,v 1.4 2003/02/25 15:42:43 taqua Exp $
+ * $Id: ImageReferenceData.java,v 1.5 2003/02/26 16:42:28 mungady Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,7 @@ package com.jrefinery.report.targets.table.html;
 /**
  * Defines a external image reference to an image file. The image is included
  * in the generated content using the &lt;IMG&gt; html-tag.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ImageReferenceData extends HtmlReferenceData

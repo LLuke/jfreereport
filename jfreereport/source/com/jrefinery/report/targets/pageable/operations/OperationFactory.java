@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationFactory.java,v 1.11 2003/04/05 18:57:18 taqua Exp $
+ * $Id: OperationFactory.java,v 1.12 2003/04/09 15:52:52 mungady Exp $
  *
  * Changes
  * -------
@@ -71,9 +71,9 @@ public class OperationFactory
    *
    * @param module  the module.
    */
-  public void registerModule (OperationModule module)
+  public void registerModule(OperationModule module)
   {
-    modules.add (0, module);
+    modules.add(0, module);
   }
 
   /**
@@ -81,7 +81,7 @@ public class OperationFactory
    *
    * @param module  the module.
    */
-  public void unregisterModule (OperationModule module)
+  public void unregisterModule(OperationModule module)
   {
     modules.remove(module);
   }
@@ -96,18 +96,18 @@ public class OperationFactory
    * @return the module or null if no handler is registered for that content-type.
    * @throws OutputTargetException if no module was found for the given content.
    */
-  public OperationModule getModule (String content)
-    throws OutputTargetException
+  public OperationModule getModule(String content)
+      throws OutputTargetException
   {
     for (int i = 0; i < modules.size(); i++)
     {
-      OperationModule mod = (OperationModule) modules.get (i);
+      OperationModule mod = (OperationModule) modules.get(i);
       if (mod.canHandleContent(content))
       {
         return mod;
       }
     }
-    throw new OutputTargetException ("No operation module for " + content);
+    throw new OutputTargetException("No operation module for " + content);
   }
 
   /**
@@ -117,11 +117,11 @@ public class OperationFactory
    * @param contentType the to be tested content type.
    * @return true, if this kind of content can be handled, false otherwise.
    */
-  public boolean canHandleContent (String contentType)
+  public boolean canHandleContent(String contentType)
   {
     for (int i = 0; i < modules.size(); i++)
     {
-      OperationModule mod = (OperationModule) modules.get (i);
+      OperationModule mod = (OperationModule) modules.get(i);
       if (mod.canHandleContent(contentType))
       {
         return true;
@@ -139,14 +139,14 @@ public class OperationFactory
    * @param col the operations collector for the ops.
    * @throws OutputTargetException if this factory is not able to handle that content.
    */
-  public void createOperations (PhysicalOperationsCollector col, Element e, Content value, 
-                                Rectangle2D bounds)
-    throws OutputTargetException
+  public void createOperations(PhysicalOperationsCollector col, Element e, Content value,
+                               Rectangle2D bounds)
+      throws OutputTargetException
   {
     String contentType = e.getContentType();
     for (int i = 0; i < modules.size(); i++)
     {
-      OperationModule mod = (OperationModule) modules.get (i);
+      OperationModule mod = (OperationModule) modules.get(i);
       if (mod.canHandleContent(contentType))
       {
         // todo element alignment !
@@ -154,7 +154,7 @@ public class OperationFactory
         return;
       }
     }
-    throw new OutputTargetException ("No operation module for " + contentType);
+    throw new OutputTargetException("No operation module for " + contentType);
   }
 
 }

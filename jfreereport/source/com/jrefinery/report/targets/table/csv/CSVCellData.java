@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,13 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVCellData.java,v 1.5 2003/02/25 15:42:34 taqua Exp $
+ * $Id: CSVCellData.java,v 1.6 2003/05/02 12:40:37 taqua Exp $
  *
  * Changes
  * -------
  * 21-Jan-2003 : Initial version;
  * 24-Feb-2003 : Fixed Checkstyle issues (DG);
- * 
+ *
  */
 package com.jrefinery.report.targets.table.csv;
 
@@ -45,7 +45,7 @@ import com.jrefinery.report.targets.table.TableCellData;
 /**
  * The CSV extension of the {@link TableCellData} base class. The cell data implementation contains
  * the string value of the element value.
- * 
+ *
  * @author Thomas Morgner
  */
 public class CSVCellData extends TableCellData
@@ -62,7 +62,7 @@ public class CSVCellData extends TableCellData
   public CSVCellData(String value, Rectangle2D outerBounds)
   {
     super(outerBounds);
-    if (value == null) 
+    if (value == null)
     {
       throw new NullPointerException();
     }

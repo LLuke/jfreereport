@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.18 2003/05/09 17:12:13 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.19 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ import org.jfree.io.IOUtils;
  * External referenced content can either be copied into the data directory or could
  * be included as linked content. This behaviour is controled by the <code>copyExternalImages</code>
  * flag.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ZIPHtmlFilesystem implements HtmlFilesystem
@@ -84,25 +84,25 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
 
   /** the target zip output stream. */
   private ZipOutputStream zipOut;
-  
+
   /** the buffer for caching the root stream, until all external data is generated. */
   private ByteArrayOutputStream rootBase;
-  
+
   /** the root stream for writing the main html file. */
   private OutputStream rootStream;
-  
+
   /** A collection of all used file names for generating external content. */
   private HashMap usedNames;
-  
+
   /** A collection of all referenced external content. */
   private HashMap usedURLs;
-  
+
   /** A collection of all previously encoded images. */
   private HashMap encodedImages;
-  
+
   /** the image comparator used to compare generated images. */
   private ImageComparator comparator;
-  
+
   /** A flag indicating whether to copy external references into the data directory. */
   private boolean copyExternalImages;
 
@@ -113,38 +113,38 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    *
    * @param out the target output stream.
    * @param dataDirectory the data directory, relative within the ZIP file.
-   * 
+   *
    * @throws IOException if an IO error occurs.
    */
   public ZIPHtmlFilesystem(OutputStream out, String dataDirectory)
-    throws IOException
+      throws IOException
   {
-    if (out == null) 
+    if (out == null)
     {
       throw new NullPointerException();
     }
-    if (dataDirectory == null) 
+    if (dataDirectory == null)
     {
       throw new NullPointerException();
     }
 
-    this.zipOut = new ZipOutputStream(new NoCloseOutputStream (out));
+    this.zipOut = new ZipOutputStream(new NoCloseOutputStream(out));
     //this.zipOut.setComment("Created with JFReeReport.");
 
     this.rootBase = new ByteArrayOutputStream();
     this.rootStream = new DeflaterOutputStream(rootBase, new Deflater(Deflater.BEST_COMPRESSION));
 
     // dataDirectory creation ...
-    File dataDir = new File (dataDirectory);
-    File baseDir = new File ("");
+    File dataDir = new File(dataDirectory);
+    File baseDir = new File("");
     if (dataDir.isAbsolute() || IOUtils.getInstance().isSubDirectory(baseDir, dataDir) == false)
     {
       throw new IllegalArgumentException("The data directory is no relative directory in the "
-                                         + "zip file");
+          + "zip file");
     }
 
     dataDirectory = IOUtils.getInstance().createRelativeURL(dataDir.toURL(), baseDir.toURL());
-    if (dataDirectory.length () != 0) 
+    if (dataDirectory.length() != 0)
     {
       if (dataDirectory.endsWith("/") == false)
       {
@@ -197,7 +197,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    * to the linked files. If you pan to use the report offline, then it is best to
    * copy all referenced data into the zip file.
    *
-   * @param copyExternalImages true, if external referenced content should be copied into the ZIP 
+   * @param copyExternalImages true, if external referenced content should be copied into the ZIP
    *                           file, false otherwise.
    */
   public void setCopyExternalImages(boolean copyExternalImages)
@@ -215,7 +215,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    * @param url the url that should be tested.
    * @return true, if the content type is supported by the browsers, false otherwise.
    */
-  protected boolean isSupportedImageFormat (URL url)
+  protected boolean isSupportedImageFormat(URL url)
   {
     String file = url.getFile();
     if (StringUtil.endsWithIgnoreCase(file, ".jpg"))
@@ -249,22 +249,22 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    * the Image content is read and copied into the data directory.
    *
    * @param reference the image reference containing the data.
-   * 
+   *
    * @return the generated HtmlReference, never null.
-   * 
+   *
    * @throws IOException if IO errors occured while creating the reference.
-   * 
+   *
    * @see ZIPHtmlFilesystem#isSupportedImageFormat
    */
   public HtmlReferenceData createImageReference(ImageReference reference)
-    throws IOException
+      throws IOException
   {
     if (reference.getSourceURL() == null)
     {
       WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
       obs.waitImageLoaded();
 
-      PngEncoder encoder = new PngEncoder (reference.getImage(),
+      PngEncoder encoder = new PngEncoder(reference.getImage(),
           PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
       byte[] data = encoder.pngEncode();
 
@@ -282,7 +282,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
         zipOut.write(data);
 
         name = entryName;
-        encodedImages.put (object, name);
+        encodedImages.put(object, name);
       }
       return new ImageReferenceData(name);
     }
@@ -295,12 +295,12 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
         WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
         obs.waitImageLoaded();
 
-        PngEncoder encoder = new PngEncoder (reference.getImage(),
+        PngEncoder encoder = new PngEncoder(reference.getImage(),
             PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
         byte[] data = encoder.pngEncode();
 
         IOUtils iou = IOUtils.getInstance();
-        String entryName = dataDirectory 
+        String entryName = dataDirectory
             + createName(iou.stripFileExtension(iou.getFileName(url))) + ".png";
         ZipEntry ze = new ZipEntry(entryName);
         zipOut.putNextEntry(ze);
@@ -352,9 +352,9 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    * @param base the basename.
    * @return the unique name generated using the basename.
    */
-  private String createName (String base)
+  private String createName(String base)
   {
-    CounterRef ref = (CounterRef) usedNames.get (base);
+    CounterRef ref = (CounterRef) usedNames.get(base);
     if (ref == null)
     {
       ref = new CounterRef();
@@ -377,7 +377,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    * @throws IOException if IO errors occured while creating the reference.
    */
   public HtmlReferenceData createCSSReference(String styleSheet)
-    throws IOException
+      throws IOException
   {
     String entryName = dataDirectory + createName("style") + ".css";
     ZipEntry ze = new ZipEntry(entryName);
@@ -409,7 +409,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
     byte[] data = rootBase.toByteArray();
     rootBase = null;
 
-    InflaterInputStream infIn 
+    InflaterInputStream infIn
         = new InflaterInputStream(new BufferedInputStream(new ByteArrayInputStream(data)));
     IOUtils.getInstance().copyStreams(infIn, zipOut);
     zipOut.closeEntry();

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.13 2003/04/05 18:57:19 taqua Exp $
+ * $Id: PhysicalPage.java,v 1.14 2003/05/02 12:40:35 taqua Exp $
  *
  * Changes
  * -------
@@ -139,7 +139,7 @@ public class PhysicalPage
    *
    * @return a clone of the page format.
    */
-  public PageFormat getPageFormat ()
+  public PageFormat getPageFormat()
   {
     return (PageFormat) pageFormat.clone();
   }
@@ -151,7 +151,7 @@ public class PhysicalPage
    * @return true, if no operations were performed on this page since the last
    * flush, false otherwise.
    */
-  public boolean isEmpty ()
+  public boolean isEmpty()
   {
     return bandOperations.size() == 0;
   }

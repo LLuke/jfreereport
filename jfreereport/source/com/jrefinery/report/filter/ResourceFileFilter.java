@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2003, by Thomas Morgner.
  *
- * $Id: ResourceFileFilter.java,v 1.8 2003/06/01 17:39:25 taqua Exp $
+ * $Id: ResourceFileFilter.java,v 1.9 2003/06/19 18:44:09 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -44,14 +44,14 @@ import com.jrefinery.report.util.Log;
  * <p>
  * Filters a given datasource and uses the datasource value as key
  * for a ResourceBundle.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ResourceFileFilter implements DataFilter, Serializable
 {
   /** the used resource bundle. */
   private ResourceBundle resources;
-  
+
   /** the filtered data source. */
   private DataSource dataSource;
 
@@ -117,7 +117,7 @@ public class ResourceFileFilter implements DataFilter, Serializable
     catch (Exception e)
     {
       // on errors return null.
-      Log.info (new Log.SimpleMessage("Failed to retrive the value for key", svalue), e);
+      Log.info(new Log.SimpleMessage("Failed to retrive the value for key", svalue), e);
     }
     return null;
   }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * -----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FormatParser.java,v 1.13 2003/06/01 17:39:24 taqua Exp $
+ * $Id: FormatParser.java,v 1.14 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class FormatParser implements DataFilter, Serializable
   /**
    * DefaultConstructor.
    */
-  public FormatParser ()
+  public FormatParser()
   {
   }
 
@@ -75,11 +75,11 @@ public class FormatParser implements DataFilter, Serializable
    * @param format The format.
    * @throws NullPointerException if the given format is null
    */
-  public void setFormatter (Format format)
+  public void setFormatter(Format format)
   {
     if (format == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
     this.format = format;
   }
@@ -89,7 +89,7 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @return The format.
    */
-  public Format getFormatter ()
+  public Format getFormatter()
   {
     return this.format;
   }
@@ -106,34 +106,34 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @return The formatted value.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    Format f = getFormatter ();
+    Format f = getFormatter();
     if (f == null)
     {
-      return getNullValue ();
+      return getNullValue();
     }
 
-    DataSource ds = getDataSource ();
+    DataSource ds = getDataSource();
     if (ds == null)
     {
-      return getNullValue ();
+      return getNullValue();
     }
 
-    Object o = ds.getValue ();
+    Object o = ds.getValue();
     if (o == null)
     {
-      return getNullValue ();
+      return getNullValue();
     }
 
-    if (isValidOutput (o))
+    if (isValidOutput(o))
     {
       return o;
     }
 
     try
     {
-      return f.parseObject (String.valueOf (o));
+      return f.parseObject(String.valueOf(o));
     }
     catch (ParseException e)
     {
@@ -150,7 +150,7 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @return false as this class does not know anything about the format of input or result objects.
    */
-  protected boolean isValidOutput (Object o)
+  protected boolean isValidOutput(Object o)
   {
     return false;
   }
@@ -160,7 +160,7 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @return The data source.
    */
-  public DataSource getDataSource ()
+  public DataSource getDataSource()
   {
     return datasource;
   }
@@ -170,11 +170,11 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @param ds The data source.
    */
-  public void setDataSource (DataSource ds)
+  public void setDataSource(DataSource ds)
   {
     if (ds == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
     this.datasource = ds;
   }
@@ -186,7 +186,7 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @param nullvalue The value returned when the parsing failed.
    */
-  public void setNullValue (Object nullvalue)
+  public void setNullValue(Object nullvalue)
   {
     this.nullvalue = nullvalue;
   }
@@ -197,7 +197,7 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @return The value returned when the parsing failed.
    */
-  public Object getNullValue ()
+  public Object getNullValue()
   {
     return nullvalue;
   }
@@ -209,16 +209,16 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    FormatParser p = (FormatParser) super.clone ();
+    FormatParser p = (FormatParser) super.clone();
     if (datasource != null)
     {
-      p.datasource = (DataSource) datasource.clone ();
+      p.datasource = (DataSource) datasource.clone();
     }
     if (format != null)
     {
-      p.format = (Format) format.clone ();
+      p.format = (Format) format.clone();
     }
     return p;
   }

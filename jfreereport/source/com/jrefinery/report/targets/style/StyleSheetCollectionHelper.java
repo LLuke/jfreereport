@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetCollectionHelper.java,v 1.2 2003/06/23 14:36:57 taqua Exp $
+ * $Id: StyleSheetCollectionHelper.java,v 1.3 2003/06/26 19:55:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -80,10 +80,11 @@ public abstract class StyleSheetCollectionHelper implements Serializable
    * <code>InvalidStyleSheetCollectionException</code>
    *
    * @param styleSheetCollection the stylesheet collection that should be unregistered.
-   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException
+   * @throws InvalidStyleSheetCollectionException when an other stylesheet was already
+   * registered with this helper
    * @throws NullPointerException if the given stylesheet collection is null.
    */
-  public void unregisterStyleSheetCollection (StyleSheetCollection styleSheetCollection)
+  public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
     if (styleSheetCollection == null)
     {
@@ -115,8 +116,8 @@ public abstract class StyleSheetCollectionHelper implements Serializable
    * <code>InvalidStyleSheetCollectionException</code>.
    *
    * @param styleSheetCollection the stylesheet collection that should be registered.
-   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException
-   * if there is already an other stylesheet registered.
+   * @throws InvalidStyleSheetCollectionException if there is already an other
+   * stylesheet registered.
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)

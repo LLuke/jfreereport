@@ -1,9 +1,9 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Demeter F. Tamás;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_hu.java,v 1.1 2003/05/16 13:24:20 taqua Exp $
+ * $Id: DemoResources_hu.java,v 1.2 2003/06/16 16:06:56 taqua Exp $
  *
  *
  */
@@ -51,7 +51,7 @@ public class DemoResources_hu extends JFreeReportResources
    *
    * @return an array of localised resources.
    */
-  public Object[][] getContents ()
+  public Object[][] getContents()
   {
     return CONTENTS;
   }
@@ -63,20 +63,20 @@ public class DemoResources_hu extends JFreeReportResources
 
     {"action.close.name", "Kilépés"},
     {"action.close.description", "kilépés a JFreeReportDemo-ból"},
-    {"action.close.mnemonic", new Integer (KeyEvent.VK_K)},
+    {"action.close.mnemonic", new Integer(KeyEvent.VK_K)},
 
     {"action.print-preview.name", "Nyomtatási elõnézet..."},
     {"action.print-preview.description", "Lista megtekintése"},
-    {"action.print-preview.mnemonic", new Integer (KeyEvent.VK_N)},
+    {"action.print-preview.mnemonic", new Integer(KeyEvent.VK_N)},
 
     {"action.about.name", "Névjegy..."},
     {"action.about.description", "Információk az alkalmazásról"},
-    {"action.about.mnemonic", new Integer (KeyEvent.VK_N)},
+    {"action.about.mnemonic", new Integer(KeyEvent.VK_N)},
 
     {"menu.file.name", "Fájl"},
-    {"menu.file.mnemonic", new Character ('F')},
+    {"menu.file.mnemonic", new Character('F')},
     {"menu.help.name", "Súgó"},
-    {"menu.help.mnemonic", new Character ('S')},
+    {"menu.help.mnemonic", new Character('S')},
     {"exitdialog.title", "Jóváhagyás .."},
     {"exitdialog.message", "Biztos, hogy kilépsz a programból?"},
 

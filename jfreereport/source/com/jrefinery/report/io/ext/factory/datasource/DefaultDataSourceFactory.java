@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultDataSourceFactory.java,v 1.10 2003/05/02 12:40:09 taqua Exp $
+ * $Id: DefaultDataSourceFactory.java,v 1.11 2003/05/16 15:28:22 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -86,9 +86,9 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
     registerDataSources("DateFormatFilter", new BeanObjectDescription(DateFormatFilter.class));
     registerDataSources("DateFormatParser", new BeanObjectDescription(DateFormatParser.class));
     registerDataSources("DecimalFormatFilter",
-                        new BeanObjectDescription(DecimalFormatFilter.class));
+        new BeanObjectDescription(DecimalFormatFilter.class));
     registerDataSources("DecimalFormatParser",
-                        new BeanObjectDescription(DecimalFormatParser.class));
+        new BeanObjectDescription(DecimalFormatParser.class));
     registerDataSources("EmptyDataSource", new BeanObjectDescription(EmptyDataSource.class));
     registerDataSources("FormatFilter", new BeanObjectDescription(FormatFilter.class));
     registerDataSources("FormatParser", new BeanObjectDescription(FormatParser.class));
@@ -97,9 +97,9 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
     registerDataSources("NumberFormatFilter", new BeanObjectDescription(NumberFormatFilter.class));
     registerDataSources("NumberFormatParser", new BeanObjectDescription(NumberFormatParser.class));
     registerDataSources("SimpleDateFormatFilter",
-                        new BeanObjectDescription(SimpleDateFormatFilter.class));
+        new BeanObjectDescription(SimpleDateFormatFilter.class));
     registerDataSources("SimpleDateFormatParser",
-                        new BeanObjectDescription(SimpleDateFormatParser.class));
+        new BeanObjectDescription(SimpleDateFormatParser.class));
     registerDataSources("StaticDataSource", new BeanObjectDescription(StaticDataSource.class));
     registerDataSources("StringFilter", new BeanObjectDescription(StringFilter.class));
     registerDataSources("URLFilter", new URLFilterObjectDescription(URLFilter.class));
@@ -111,18 +111,18 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
     registerDataSources("DateFieldTemplate", new DateFieldTemplateDescription("date-field"));
     registerDataSources("ImageFieldTemplate", new ImageFieldTemplateDescription("image-field"));
     registerDataSources("ImageURLFieldTemplate",
-                        new ImageURLFieldTemplateDescription("image-url-field"));
+        new ImageURLFieldTemplateDescription("image-url-field"));
     registerDataSources("ImageURLElementTemplate",
-                        new ImageURLElementTemplateDescription("image-url-element"));
+        new ImageURLElementTemplateDescription("image-url-element"));
     registerDataSources("LabelTemplate", new LabelTemplateDescription("label"));
     registerDataSources("NumberFieldTemplate", new NumberFieldTemplateDescription("number-field"));
     registerDataSources("StringFieldTemplate", new StringFieldTemplateDescription("string-field"));
     registerDataSources("ResourceFieldTemplate",
-                        new ResourceFieldTemplateDescription("resource-field"));
+        new ResourceFieldTemplateDescription("resource-field"));
     registerDataSources("ResourceLabelTemplate",
-                        new ResourceLabelTemplateDescription("resource-label"));
+        new ResourceLabelTemplateDescription("resource-label"));
     registerDataSources("ShapeFieldTemplate",
-                        new ShapeFieldTemplateDescription("shape-field"));
+        new ShapeFieldTemplateDescription("shape-field"));
   }
 
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HugeJFreeReportDemo.java,v 1.27 2003/04/24 18:08:45 taqua Exp $
+ * $Id: HugeJFreeReportDemo.java,v 1.28 2003/05/02 12:39:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -60,43 +60,43 @@ public class HugeJFreeReportDemo extends JFreeReportDemo
   /**
    * Constructs a frame containing sample reports created using the JFreeReport Class Library.
    */
-  public HugeJFreeReportDemo ()
+  public HugeJFreeReportDemo()
   {
   }
 
   /**
    * Creates and returns a list of the available demos.
-   * 
+   *
    * @return The list.
    */
   protected List createAvailableDemos()
   {
     ArrayList list = new ArrayList();
-    
-    list.add(new DemoDefinition(createExampleName(1), 
-             new SampleData1(), 
-             new URLDemoHandler("/com/jrefinery/report/demo/report1.xml")));
-             
-    list.add(new DemoDefinition(createExampleName(2), 
-             new SampleData2(), 
-             new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
-             
-    list.add(new DemoDefinition(createExampleName(3), 
-             new SampleData3(), 
-             new URLDemoHandler("/com/jrefinery/report/demo/report3.xml")));
-             
-    list.add(new DemoDefinition(createExampleName(4), 
-             new SampleData4(), 
-             new URLDemoHandler("/com/jrefinery/report/demo/report4.xml")));
-             
-    list.add(new DemoDefinition(createExampleName(5) + " (HUGE)", 
-             new SampleData5(), 
-             new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
-             
-    list.add(new DemoDefinition(createExampleName(6) + " (HUGE)", 
-             new SampleData6(), 
-             new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
-             
+
+    list.add(new DemoDefinition(createExampleName(1),
+        new SampleData1(),
+        new URLDemoHandler("/com/jrefinery/report/demo/report1.xml")));
+
+    list.add(new DemoDefinition(createExampleName(2),
+        new SampleData2(),
+        new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
+
+    list.add(new DemoDefinition(createExampleName(3),
+        new SampleData3(),
+        new URLDemoHandler("/com/jrefinery/report/demo/report3.xml")));
+
+    list.add(new DemoDefinition(createExampleName(4),
+        new SampleData4(),
+        new URLDemoHandler("/com/jrefinery/report/demo/report4.xml")));
+
+    list.add(new DemoDefinition(createExampleName(5) + " (HUGE)",
+        new SampleData5(),
+        new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
+
+    list.add(new DemoDefinition(createExampleName(6) + " (HUGE)",
+        new SampleData6(),
+        new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
+
     return list;
   }
 
@@ -108,21 +108,21 @@ public class HugeJFreeReportDemo extends JFreeReportDemo
    *
    * @param args ignored.
    */
-  public static void main (String[] args)
+  public static void main(String[] args)
   {
     try
     {
-      UIManager.setLookAndFeel (UIManager.getSystemLookAndFeelClassName ());
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     }
     catch (Exception e)
     {
       System.err.println("Look and feel problem.");
     }
 
-    HugeJFreeReportDemo frame = new HugeJFreeReportDemo ();
-    frame.pack ();
-    RefineryUtilities.centerFrameOnScreen (frame);
-    frame.setVisible (true);
+    HugeJFreeReportDemo frame = new HugeJFreeReportDemo();
+    frame.pack();
+    RefineryUtilities.centerFrameOnScreen(frame);
+    frame.setVisible(true);
   }
 
 }

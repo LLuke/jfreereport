@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGrid.java,v 1.9 2003/02/25 15:42:30 taqua Exp $
+ * $Id: TableGrid.java,v 1.10 2003/03/13 17:43:08 taqua Exp $
  *
  * Changes
  * -------
  * 25-Jan-2003 : Initial version
- * 
+ *
  */
 
 package com.jrefinery.report.targets.table;
@@ -66,21 +66,21 @@ import java.util.TreeSet;
  * is more useful for you.
  *
  * @see TableGridLayout
- * 
+ *
  * @author Thomas Morgner
- * 
+ *
  */
 public class TableGrid
 {
   /** The XBounds, all vertical cell boundaries. */
   private TreeSet xBounds;
-  
+
   /** The YBounds, all horizontal cell boundaries. */
   private TreeSet yBounds;
 
   /** The elements stored in the table grid. */
   private ArrayList elements;
-  
+
   /** A flag, defining whether to use strict layout mode. */
   private boolean strict;
 
@@ -104,9 +104,9 @@ public class TableGrid
    * @param pos the position that should be added to the grid.
    * @throws NullPointerException if the given position is null
    */
-  public void addData (TableCellData pos)
+  public void addData(TableCellData pos)
   {
-    if (pos == null) 
+    if (pos == null)
     {
       throw new NullPointerException();
     }
@@ -123,8 +123,8 @@ public class TableGrid
     {
       Integer xW = new Integer((int) (bounds.getX() + bounds.getWidth()));
       Integer yW = new Integer((int) (bounds.getY() + bounds.getHeight()));
-      xBounds.add (xW);
-      yBounds.add (yW);
+      xBounds.add(xW);
+      yBounds.add(yW);
     }
   }
 
@@ -143,7 +143,7 @@ public class TableGrid
    *
    * @return the new TableGridLayout.
    */
-  public TableGridLayout performLayout ()
+  public TableGridLayout performLayout()
   {
     TableCellData[] positions =
         (TableCellData[]) elements.toArray(new TableCellData[elements.size()]);
@@ -156,7 +156,7 @@ public class TableGrid
   /**
    * Removes all elements from the grid and removes all previously found bounds.
    */
-  public void clear ()
+  public void clear()
   {
     xBounds.clear();
     yBounds.clear();

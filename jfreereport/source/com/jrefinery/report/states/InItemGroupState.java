@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: InItemGroupState.java,v 1.8 2003/05/07 20:27:26 taqua Exp $
+ * $Id: InItemGroupState.java,v 1.9 2003/05/16 17:26:43 taqua Exp $
  *
  * Changes
  * -------
@@ -61,9 +61,9 @@ public final class InItemGroupState extends ReportState
    *
    * @param previous  the previous state.
    */
-  public InItemGroupState (ReportState previous)
+  public InItemGroupState(ReportState previous)
   {
-    super (previous);
+    super(previous);
   }
 
   /**
@@ -73,7 +73,7 @@ public final class InItemGroupState extends ReportState
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public ReportState advance () throws ReportProcessingException
+  public ReportState advance() throws ReportProcessingException
   {
     // If there is enough space to print the itemband, advance the items, populate
     // the band and print it. If there was not enough space, the engine will return
@@ -81,18 +81,18 @@ public final class InItemGroupState extends ReportState
 
     firePrepareEvent(ReportEvent.ITEMS_ADVANCED);
 
-    advanceItem ();
+    advanceItem();
 
-    fireItemsAdvancedEvent ();
+    fireItemsAdvancedEvent();
 
     // we have more data to work on
     // If the group is done, print the GroupFooter of the parent
-    Group group = getReport().getGroup (getCurrentGroupIndex ());
+    Group group = getReport().getGroup(getCurrentGroupIndex());
 
-    if (group.isLastItemInGroup (getDataRowBackend (),
-                                 getDataRowBackend ().previewNextRow ()))
+    if (group.isLastItemInGroup(getDataRowBackend(),
+        getDataRowBackend().previewNextRow()))
     {
-      return new PostItemGroupState (this);
+      return new PostItemGroupState(this);
     }
     else
     {

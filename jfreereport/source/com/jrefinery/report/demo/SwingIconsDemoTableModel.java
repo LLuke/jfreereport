@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SwingIconsDemoTableModel.java,v 1.6 2003/05/02 12:39:41 taqua Exp $
+ * $Id: SwingIconsDemoTableModel.java,v 1.7 2003/06/13 16:19:47 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ import org.jfree.io.IOUtils;
 /**
  * A table model implementation for the SwingIconsDemo.java demo application.  The model reads
  * the contents of the file "jlfgr-1_0.jar", which must be reachable via the classpath.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class SwingIconsDemoTableModel extends IconTableModel
@@ -70,7 +70,7 @@ public class SwingIconsDemoTableModel extends IconTableModel
 
   /**
    * Creates a new table model.
-   * 
+   *
    * @param url  the url for the jlfgr-1_0.jar file (or <code>null</code> to search the classpath).
    */
   public SwingIconsDemoTableModel(URL url)
@@ -80,12 +80,12 @@ public class SwingIconsDemoTableModel extends IconTableModel
       url = this.getClass().getResource("/jlfgr-1_0.jar");
       if (url == null)
       {
-        Log.warn ("Unable to find jlfgr-1_0.jar\n" 
-                  + "Unable to load the icons.\n" 
-                  + "Please make sure you have the Java Look and Feel Graphics Repository in "
-                  + "your classpath.\n" 
-                  + "You may download this jar-file from "
-                  + "http://developer.java.sun.com/developer/techDocs/hi/repository.");
+        Log.warn("Unable to find jlfgr-1_0.jar\n"
+            + "Unable to load the icons.\n"
+            + "Please make sure you have the Java Look and Feel Graphics Repository in "
+            + "your classpath.\n"
+            + "You may download this jar-file from "
+            + "http://developer.java.sun.com/developer/techDocs/hi/repository.");
         return;
       }
     }
@@ -101,15 +101,15 @@ public class SwingIconsDemoTableModel extends IconTableModel
     {
       Log.warn("Failed to load the Icons", e);
     }
-    Log.debug ("Loaded: " + getRowCount() + " icons");
+    Log.debug("Loaded: " + getRowCount() + " icons");
   }
 
   /**
    * Reads the icon data from the jar file.
-   * 
+   *
    * @param in  the input stream.
    */
-  private void readData(InputStream in) 
+  private void readData(InputStream in)
   {
     try
     {
@@ -140,12 +140,12 @@ public class SwingIconsDemoTableModel extends IconTableModel
 
   /**
    * Reads an icon from the jar file.
-   * 
+   *
    * @param in  the input stream.
-   * 
+   *
    * @return The image.
    */
-  private Image getImage(InputStream in) 
+  private Image getImage(InputStream in)
   {
     Image result = null;
     ByteArrayOutputStream byteIn = new ByteArrayOutputStream();
@@ -164,12 +164,12 @@ public class SwingIconsDemoTableModel extends IconTableModel
 
   /**
    * Returns the category.
-   * 
+   *
    * @param fullName  the icon file path/name.
-   * 
+   *
    * @return The category extracted from the file name.
    */
-  private String getCategory(String fullName) 
+  private String getCategory(String fullName)
   {
     int start = fullName.indexOf("/") + 1;
     int end = fullName.lastIndexOf("/");
@@ -178,12 +178,12 @@ public class SwingIconsDemoTableModel extends IconTableModel
 
   /**
    * Returns the name.
-   * 
+   *
    * @param fullName  the icon file path/name.
-   * 
+   *
    * @return The name extracted from the full name.
    */
-  private String getName(String fullName) 
+  private String getName(String fullName)
   {
     int start = fullName.lastIndexOf("/") + 1;
     int end = fullName.indexOf(".");

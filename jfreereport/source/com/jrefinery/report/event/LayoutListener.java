@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,19 +28,19 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: LayoutListener.java,v 1.2 2003/02/25 09:55:50 taqua Exp $
+ * $Id: LayoutListener.java,v 1.3 2003/02/26 13:57:56 mungady Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
  * 12-Feb-2003 : Initial version
- * 
+ *
  */
 package com.jrefinery.report.event;
 
 /**
  * Adds layout notification support for functions. Functions get informed when
- * the layouting is complete. 
- * 
+ * the layouting is complete.
+ *
  * @author Thomas Morgner
  */
 public interface LayoutListener
@@ -52,5 +52,5 @@ public interface LayoutListener
    *
    * @param event  the event.
    */
-  public void layoutComplete (LayoutEvent event);
+  public void layoutComplete(LayoutEvent event);
 }

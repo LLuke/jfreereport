@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: HSSFFontWrapper.java,v 1.9 2003/02/26 13:58:03 mungady Exp $
+ * $Id: HSSFFontWrapper.java,v 1.10 2003/05/02 12:40:39 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * The HSSFFontWrapper is used to store excel style font informations.
- * 
- * @author Heiko Evermann 
+ *
+ * @author Heiko Evermann
  */
 public class HSSFFontWrapper
 {
@@ -54,25 +54,25 @@ public class HSSFFontWrapper
 
   /** the font name. */
   private String fontName;
-  
+
   /** the excel color index. */
   private short colorIndex;
-  
+
   /** the font size. */
   private int fontHeight;
-  
+
   /** the font's bold flag. */
   private boolean bold;
-  
+
   /** the font's italic flag. */
   private boolean italic;
-  
+
   /** the font's underline flag. */
   private boolean underline;
-  
+
   /** the font's strikethrough flag. */
   private boolean strikethrough;
-  
+
   /** the excel font. */
   private HSSFFont font;
 
@@ -101,7 +101,7 @@ public class HSSFFontWrapper
     {
       fontName = fName;
     }
-    
+
     colorIndex = ExcelToolLibrary.getNearestColor(color);
     fontHeight = (short) (font.getFontSize());
     bold = font.isBold();
@@ -134,7 +134,7 @@ public class HSSFFontWrapper
    * @param workbook the workbook, that will be used to create the font.
    * @return the created font.
    */
-  public HSSFFont getFont (HSSFWorkbook workbook)
+  public HSSFFont getFont(HSSFWorkbook workbook)
   {
     if (font == null)
     {
@@ -172,42 +172,42 @@ public class HSSFFontWrapper
    */
   public boolean equals(Object o)
   {
-    if (this == o) 
+    if (this == o)
     {
       return true;
     }
-    if (!(o instanceof HSSFFontWrapper)) 
+    if (!(o instanceof HSSFFontWrapper))
     {
       return false;
     }
 
     final HSSFFontWrapper wrapper = (HSSFFontWrapper) o;
 
-    if (bold != wrapper.bold) 
+    if (bold != wrapper.bold)
     {
       return false;
     }
-    if (underline != wrapper.strikethrough) 
+    if (underline != wrapper.strikethrough)
     {
       return false;
     }
-    if (strikethrough != wrapper.strikethrough) 
+    if (strikethrough != wrapper.strikethrough)
     {
       return false;
     }
-    if (colorIndex != wrapper.colorIndex) 
+    if (colorIndex != wrapper.colorIndex)
     {
       return false;
     }
-    if (fontHeight != wrapper.fontHeight) 
+    if (fontHeight != wrapper.fontHeight)
     {
       return false;
     }
-    if (italic != wrapper.italic) 
+    if (italic != wrapper.italic)
     {
       return false;
     }
-    if (!fontName.equals(wrapper.fontName)) 
+    if (!fontName.equals(wrapper.fontName))
     {
       return false;
     }

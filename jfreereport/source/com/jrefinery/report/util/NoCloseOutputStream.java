@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * ------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * $Id: NoCloseOutputStream.java,v 1.3 2003/02/05 17:56:03 taqua Exp $
+ * $Id: NoCloseOutputStream.java,v 1.4 2003/02/26 13:58:05 mungady Exp $
  *
  * Changes
  * -------
@@ -41,15 +41,15 @@ import java.io.OutputStream;
 /**
  * A Wrapper stream that does never calls close on its parent. This implementation
  * is needed when creating ZipOutputStream, as the final ZipDirectory is written
- * when close is called on the ZipOutputSteam. 
- * 
+ * when close is called on the ZipOutputSteam.
+ *
  * @author Thomas Morgner
  */
 public class NoCloseOutputStream extends FilterOutputStream
 {
   /**
    * Create a new NoCloseOutputStream with the given output stream a parent.
-   * 
+   *
    * @param out the parent stream
    */
   public NoCloseOutputStream(OutputStream out)

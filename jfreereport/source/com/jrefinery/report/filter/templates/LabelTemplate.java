@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: LabelTemplate.java,v 1.5 2003/03/18 22:34:58 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
  * 18-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.filter.templates;
@@ -43,14 +43,14 @@ import com.jrefinery.report.filter.StringFilter;
 
 /**
  * A label template can be used to describe static text content.
- * 
+ *
  * @author Thomas Morgner
  */
 public class LabelTemplate extends AbstractTemplate
 {
   /** A static data source. */
   private StaticDataSource staticDataSource;
-  
+
   /** A string filter. */
   private StringFilter stringFilter;
 
@@ -66,7 +66,7 @@ public class LabelTemplate extends AbstractTemplate
 
   /**
    * Sets the text for the label.
-   * 
+   *
    * @param content  the text.
    */
   public void setContent(String content)
@@ -76,7 +76,7 @@ public class LabelTemplate extends AbstractTemplate
 
   /**
    * Returns the text for the label.
-   * 
+   *
    * @return The text.
    */
   public String getContent()
@@ -86,7 +86,7 @@ public class LabelTemplate extends AbstractTemplate
 
   /**
    * Returns the string that represents <code>null</code>.
-   * 
+   *
    * @return The string that represents <code>null</code>.
    */
   public String getNullValue()
@@ -96,7 +96,7 @@ public class LabelTemplate extends AbstractTemplate
 
   /**
    * Sets the string that represents <code>null</code>.
-   * 
+   *
    * @param nullValue  the string.
    */
   public void setNullValue(String nullValue)

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageRefFilter.java,v 1.12 2003/05/02 12:39:43 taqua Exp $
+ * $Id: ImageRefFilter.java,v 1.13 2003/06/01 17:39:25 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ public class ImageRefFilter implements DataFilter, Serializable
   /**
    * Default constructor.
    */
-  public ImageRefFilter ()
+  public ImageRefFilter()
   {
   }
 
@@ -69,7 +69,7 @@ public class ImageRefFilter implements DataFilter, Serializable
    *
    * @return The data source.
    */
-  public DataSource getDataSource ()
+  public DataSource getDataSource()
   {
     return dataSource;
   }
@@ -79,7 +79,7 @@ public class ImageRefFilter implements DataFilter, Serializable
    *
    * @param dataSource The data source.
    */
-  public void setDataSource (DataSource dataSource)
+  public void setDataSource(DataSource dataSource)
   {
     this.dataSource = dataSource;
   }
@@ -91,14 +91,14 @@ public class ImageRefFilter implements DataFilter, Serializable
    *
    * @return The value.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    DataSource ds = getDataSource ();
+    DataSource ds = getDataSource();
     if (ds == null)
     {
       return null;
     }
-    Object o = ds.getValue ();
+    Object o = ds.getValue();
     if (o instanceof ImageReference)
     {
       return o;
@@ -108,7 +108,7 @@ public class ImageRefFilter implements DataFilter, Serializable
       return null;
     }
 
-    return new ImageReference ((Image) o);
+    return new ImageReference((Image) o);
   }
 
   /**
@@ -118,7 +118,7 @@ public class ImageRefFilter implements DataFilter, Serializable
    *
    * @return The data type.
    */
-  public Class getDataType ()
+  public Class getDataType()
   {
     return ImageReference.class;
   }
@@ -130,12 +130,12 @@ public class ImageRefFilter implements DataFilter, Serializable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    ImageRefFilter r = (ImageRefFilter) super.clone ();
+    ImageRefFilter r = (ImageRefFilter) super.clone();
     if (dataSource != null)
     {
-      r.dataSource = (DataSource) dataSource.clone ();
+      r.dataSource = (DataSource) dataSource.clone();
     }
     return r;
   }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinition.java,v 1.9 2003/06/23 16:08:20 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.10 2003/06/26 19:55:55 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
 
 package com.jrefinery.report;
 
+import com.jrefinery.report.targets.style.StyleSheetCollection;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.ReportProperties;
-import com.jrefinery.report.targets.style.StyleSheetCollection;
 
 /**
  * A report definition. This the working copy of the JFreeReport object. This object
@@ -190,9 +190,9 @@ public class ReportDefinition implements Cloneable
    *
    * @return the group count.
    */
-  public int getGroupCount ()
+  public int getGroupCount()
   {
-    return groups.size ();
+    return groups.size();
   }
 
   /**
@@ -205,20 +205,20 @@ public class ReportDefinition implements Cloneable
    * @throws IllegalArgumentException if the count is negative.
    * @throws IndexOutOfBoundsException if the count is greater than the number of defined groups.
    */
-  public Group getGroup (int count)
+  public Group getGroup(int count)
   {
     if (count < 0)
     {
-      throw new IllegalArgumentException ("GroupCount must not be negative");
+      throw new IllegalArgumentException("GroupCount must not be negative");
     }
 
-    if (count >= groups.size ())
+    if (count >= groups.size())
     {
-      throw new IndexOutOfBoundsException ("No such group defined. " + count + " vs. "
-                                           + groups.size ());
+      throw new IndexOutOfBoundsException("No such group defined. " + count + " vs. "
+          + groups.size());
     }
 
-    return groups.get (count);
+    return groups.get(count);
   }
 
   /**
@@ -235,13 +235,13 @@ public class ReportDefinition implements Cloneable
   public Object clone() throws CloneNotSupportedException
   {
     ReportDefinition report = (ReportDefinition) super.clone();
-    report.groups = (GroupList) groups.clone ();
-    report.itemBand = (ItemBand) itemBand.clone ();
-    report.pageFooter = (PageFooter) pageFooter.clone ();
-    report.pageHeader = (PageHeader) pageHeader.clone ();
-    report.properties = (ReportProperties) properties.clone ();
-    report.reportFooter = (ReportFooter) reportFooter.clone ();
-    report.reportHeader = (ReportHeader) reportHeader.clone ();
+    report.groups = (GroupList) groups.clone();
+    report.itemBand = (ItemBand) itemBand.clone();
+    report.pageFooter = (PageFooter) pageFooter.clone();
+    report.pageHeader = (PageHeader) pageHeader.clone();
+    report.properties = (ReportProperties) properties.clone();
+    report.reportFooter = (ReportFooter) reportFooter.clone();
+    report.reportHeader = (ReportHeader) reportHeader.clone();
     report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
     report.groups.updateStyleSheetCollection(report.styleSheetCollection);
     report.itemBand.updateStyleSheetCollection(report.styleSheetCollection);

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2002, 2003, by Thomas Morgner.
  *
- * $Id: ScrollableResultSetTableModel.java,v 1.5 2003/05/02 12:40:28 taqua Exp $
+ * $Id: ScrollableResultSetTableModel.java,v 1.6 2003/05/11 13:39:17 taqua Exp $
  *
  * Changes
  * -------
@@ -79,22 +79,22 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public ScrollableResultSetTableModel (ResultSet resultset) throws SQLException
+  public ScrollableResultSetTableModel(ResultSet resultset) throws SQLException
   {
     if (resultset != null)
     {
-      updateResultSet (resultset);
+      updateResultSet(resultset);
     }
     else
     {
-      close ();
+      close();
     }
   }
 
   /**
    * Default constructor.
    */
-  protected ScrollableResultSetTableModel ()
+  protected ScrollableResultSetTableModel()
   {
   }
 
@@ -105,39 +105,39 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public void updateResultSet (ResultSet resultset) throws SQLException
+  public void updateResultSet(ResultSet resultset) throws SQLException
   {
     if (this.resultset != null)
     {
-      close ();
+      close();
     }
 
     this.resultset = resultset;
-    this.dbmd = resultset.getMetaData ();
+    this.dbmd = resultset.getMetaData();
 
-    if (resultset.last ())
+    if (resultset.last())
     {
-      rowCount = resultset.getRow ();
+      rowCount = resultset.getRow();
     }
     else
     {
       rowCount = 0;
     }
 
-    fireTableStructureChanged ();
+    fireTableStructureChanged();
   }
 
   /**
    * Clears the model of the current result set. The resultset is closed.
    */
-  public void close ()
+  public void close()
   {
     // Close the old result set if needed.
     if (resultset != null)
     {
       try
       {
-        resultset.close ();
+        resultset.close();
       }
       catch (SQLException e)
       {
@@ -148,7 +148,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
     resultset = null;
     dbmd = null;
     rowCount = 0;
-    fireTableStructureChanged ();
+    fireTableStructureChanged();
   }
 
   /**
@@ -157,7 +157,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @return the row count.
    */
-  public int getRowCount ()
+  public int getRowCount()
   {
     if (resultset == null)
     {
@@ -166,9 +166,9 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
 
     try
     {
-      if (resultset.last ())
+      if (resultset.last())
       {
-        rowCount = resultset.getRow ();
+        rowCount = resultset.getRow();
         if (rowCount == -1)
         {
           rowCount = 0;
@@ -195,7 +195,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @see java.sql.ResultSetMetaData#getColumnCount()
    */
-  public int getColumnCount ()
+  public int getColumnCount()
   {
     if (resultset == null)
     {
@@ -206,7 +206,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
     {
       try
       {
-        return dbmd.getColumnCount ();
+        return dbmd.getColumnCount();
       }
       catch (SQLException e)
       {
@@ -225,13 +225,13 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @see java.sql.ResultSetMetaData#getColumnLabel(int)
    */
-  public String getColumnName (int column)
+  public String getColumnName(int column)
   {
     if (dbmd != null)
     {
       try
       {
-        return dbmd.getColumnLabel (column + 1);
+        return dbmd.getColumnLabel(column + 1);
       }
       catch (SQLException e)
       {
@@ -249,14 +249,14 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @return the value.
    */
-  public Object getValueAt (int row, int column)
+  public Object getValueAt(int row, int column)
   {
     if (resultset != null)
     {
       try
       {
-        resultset.absolute (row + 1);
-        return resultset.getObject (column + 1);
+        resultset.absolute(row + 1);
+        return resultset.getObject(column + 1);
       }
       catch (SQLException e)
       {
@@ -273,13 +273,13 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @return the column class.
    */
-  public Class getColumnClass (int column)
+  public Class getColumnClass(int column)
   {
     if (dbmd != null)
     {
       try
       {
-        return getClass().getClassLoader().loadClass(getColumnClassName (column));
+        return getClass().getClassLoader().loadClass(getColumnClassName(column));
       }
       catch (Exception e)
       {
@@ -297,20 +297,20 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @return the column class name.
    */
-  public String getColumnClassName (int column)
+  public String getColumnClassName(int column)
   {
     if (dbmd != null)
     {
       try
       {
-        return mckoiDBFixClassName (dbmd.getColumnClassName (column + 1));
+        return mckoiDBFixClassName(dbmd.getColumnClassName(column + 1));
       }
       catch (SQLException e)
       {
         //Log.debug ("GetColumnClassName failed for " + column, e);
       }
     }
-    return Object.class.getName ();
+    return Object.class.getName();
   }
 
   /**
@@ -322,11 +322,11 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @return the modified class name.
    */
-  private String mckoiDBFixClassName (String classname)
+  private String mckoiDBFixClassName(String classname)
   {
-    if (classname.startsWith ("class "))
+    if (classname.startsWith("class "))
     {
-      return classname.substring (6).trim ();
+      return classname.substring(6).trim();
     }
     return classname;
   }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RepaginationListener.java,v 1.1 2003/03/18 22:35:22 taqua Exp $
+ * $Id: RepaginationListener.java,v 1.2 2003/04/09 15:50:32 mungady Exp $
  *
  * Changes
  * -------
@@ -39,15 +39,15 @@ package com.jrefinery.report.targets.base.event;
 /**
  * An interface that should be supported by objects interested in receiving notification of
  * repagination events.
- * 
+ *
  * @author Thomas Morgner.
  */
 public interface RepaginationListener
 {
   /**
    * Receives notification of a repagination update.
-   * 
+   *
    * @param state  the state.
    */
-  public void repaginationUpdate (RepaginationState state);
+  public void repaginationUpdate(RepaginationState state);
 }

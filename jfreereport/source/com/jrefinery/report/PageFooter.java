@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PageFooter.java,v 1.8 2002/12/02 18:24:08 taqua Exp $
+ * $Id: PageFooter.java,v 1.9 2002/12/06 17:18:24 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -56,7 +56,7 @@ public class PageFooter extends Band
   /**
    * Constructs a page footer containing no elements.
    */
-  public PageFooter ()
+  public PageFooter()
   {
   }
 
@@ -65,19 +65,19 @@ public class PageFooter extends Band
    *
    * @return true or false.
    */
-  public boolean isDisplayOnFirstPage ()
+  public boolean isDisplayOnFirstPage()
   {
     return getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE, false);
   }
 
   /**
-   * Defines whether the footer should be shown on the first page. 
+   * Defines whether the footer should be shown on the first page.
    *
    * @param b  a flag indicating whether or not the footer is shown on the first page.
    */
-  public void setDisplayOnFirstPage (boolean b)
+  public void setDisplayOnFirstPage(boolean b)
   {
-    getStyle().setStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE, new Boolean(b));
+    getStyle().setBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE, b);
   }
 
   /**
@@ -85,18 +85,18 @@ public class PageFooter extends Band
    *
    * @return true or false.
    */
-  public boolean isDisplayOnLastPage ()
+  public boolean isDisplayOnLastPage()
   {
     return getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE, false);
   }
 
   /**
-   * Defines whether the footer should be shown on the last page. 
+   * Defines whether the footer should be shown on the last page.
    *
    * @param b  a flag indicating whether or not the footer is shown on the first page.
    */
-  public void setDisplayOnLastPage (boolean b)
+  public void setDisplayOnLastPage(boolean b)
   {
-    getStyle().setStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE, new Boolean(b));
+    getStyle().setBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE, b);
   }
 }

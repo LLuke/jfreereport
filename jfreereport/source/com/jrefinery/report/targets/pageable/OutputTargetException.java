@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * --------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: OutputTargetException.java,v 1.5 2003/02/07 22:40:40 taqua Exp $
+ * $Id: OutputTargetException.java,v 1.6 2003/02/09 18:43:05 taqua Exp $
  *
  * Changes
  * -------
@@ -52,9 +52,9 @@ public class OutputTargetException extends SizeCalculatorException
    * @param message  the exception message.
    * @param ex  the parent exception.
    */
-  public OutputTargetException (String message, Exception ex)
+  public OutputTargetException(String message, Exception ex)
   {
-    super (message, ex);
+    super(message, ex);
   }
 
   /**
@@ -62,8 +62,8 @@ public class OutputTargetException extends SizeCalculatorException
    *
    * @param message  the exception message.
    */
-  public OutputTargetException (String message)
+  public OutputTargetException(String message)
   {
-    super (message);
+    super(message);
   }
 }

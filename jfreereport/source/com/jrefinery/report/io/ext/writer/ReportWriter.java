@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.13 2003/06/04 21:09:09 taqua Exp $
+ * $Id: ReportWriter.java,v 1.14 2003/06/12 19:49:39 taqua Exp $
  *
  * Changes
  * -------
@@ -54,14 +54,14 @@ import org.jfree.xml.factory.objects.ClassFactoryCollector;
 
 /**
  * A report writer.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ReportWriter
 {
   /** A data-source collector. */
   private DataSourceCollector dataSourceCollector;
-  
+
   /** An element factory collector. */
   private ElementFactoryCollector elementFactoryCollector;
 
@@ -70,23 +70,23 @@ public class ReportWriter
 
   /** A style-key factory collector. */
   private StyleKeyFactoryCollector styleKeyFactoryCollector;
-  
+
   /** A template collector. */
   private TemplateCollector templateCollector;
-  
+
   /** The report. */
   private JFreeReport report;
-  
+
   /** The encoding. */
   private String encoding;
 
   /**
    * Creates a new report writer for a report.
-   * 
+   *
    * @param report  the report.
    * @param encoding  the encoding.
-   */ 
-  public ReportWriter (JFreeReport report, String encoding)
+   */
+  public ReportWriter(JFreeReport report, String encoding)
   {
     dataSourceCollector = new DataSourceCollector();
     elementFactoryCollector = new ElementFactoryCollector();
@@ -100,7 +100,7 @@ public class ReportWriter
 
   /**
    * Returns the encoding.
-   * 
+   *
    * @return The encoding.
    */
   public String getEncoding()
@@ -110,17 +110,17 @@ public class ReportWriter
 
   /**
    * Adds a data-source factory.
-   * 
+   *
    * @param dsf  the data-source factory.
    */
-  public void addDataSourceFactory (DataSourceFactory dsf)
+  public void addDataSourceFactory(DataSourceFactory dsf)
   {
     dataSourceCollector.addFactory(dsf);
   }
 
   /**
    * Returns the data-source collector.
-   * 
+   *
    * @return The data-source collector.
    */
   public DataSourceCollector getDataSourceCollector()
@@ -130,17 +130,17 @@ public class ReportWriter
 
   /**
    * Adds an element factory.
-   * 
+   *
    * @param ef  the element factory.
    */
-  public void addElementFactory (ElementFactory ef)
+  public void addElementFactory(ElementFactory ef)
   {
     elementFactoryCollector.addFactory(ef);
   }
 
   /**
    * Returns the element factory collector.
-   * 
+   *
    * @return The element factory collector.
    */
   public ElementFactoryCollector getElementFactoryCollector()
@@ -150,17 +150,17 @@ public class ReportWriter
 
   /**
    * Adds a class factory.
-   * 
+   *
    * @param cf  the class factory.
    */
-  public void addClassFactoryFactory (ClassFactory cf)
+  public void addClassFactoryFactory(ClassFactory cf)
   {
     classFactoryCollector.addFactory(cf);
   }
 
   /**
    * Returns the class factory collector.
-   * 
+   *
    * @return The class factory collector.
    */
   public ClassFactoryCollector getClassFactoryCollector()
@@ -170,17 +170,17 @@ public class ReportWriter
 
   /**
    * Adds a style-key factory.
-   * 
+   *
    * @param skf  the style-key factory.
    */
-  public void addStyleKeyFactory (StyleKeyFactory skf)
+  public void addStyleKeyFactory(StyleKeyFactory skf)
   {
     styleKeyFactoryCollector.addFactory(skf);
   }
 
   /**
    * Returns the style-key factory collector.
-   * 
+   *
    * @return The style-key factory collector.
    */
   public StyleKeyFactoryCollector getStyleKeyFactoryCollector()
@@ -190,17 +190,17 @@ public class ReportWriter
 
   /**
    * Adds a template collection.
-   * 
+   *
    * @param collection  the template collection.
    */
-  public void addTemplateCollection (TemplateCollection collection)
+  public void addTemplateCollection(TemplateCollection collection)
   {
     templateCollector.addTemplateCollection(collection);
   }
 
   /**
    * Returns the template collector.
-   * 
+   *
    * @return The template collector.
    */
   public TemplateCollector getTemplateCollector()
@@ -210,7 +210,7 @@ public class ReportWriter
 
   /**
    * Returns the report.
-   * 
+   *
    * @return The report.
    */
   public JFreeReport getReport()
@@ -220,13 +220,13 @@ public class ReportWriter
 
   /**
    * Writes a report to a character stream writer.
-   * 
+   *
    * @param w  the character stream writer.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void write (Writer w) throws IOException, ReportWriterException
+  public void write(Writer w) throws IOException, ReportWriterException
   {
     ReportDefinitionWriter writer = new ReportDefinitionWriter(this);
 

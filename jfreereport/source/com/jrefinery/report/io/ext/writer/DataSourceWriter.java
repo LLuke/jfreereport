@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.13 2003/06/19 18:44:10 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.14 2003/06/23 14:36:56 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**
  * A data-source writer. Writes datasources and templates.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class DataSourceWriter extends ObjectWriter
@@ -58,7 +58,7 @@ public class DataSourceWriter extends ObjectWriter
 
   /**
    * Creates a new writer.
-   * 
+   *
    * @param reportWriter  the report writer.
    * @param baseObject  the base object.
    * @param objectDescription the object description.
@@ -78,10 +78,10 @@ public class DataSourceWriter extends ObjectWriter
 
   /**
    * Writes a parameter.
-   * 
+   *
    * @param writer  the writer.
    * @param name  the name.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if the report definition could not be written.
    */
@@ -97,7 +97,7 @@ public class DataSourceWriter extends ObjectWriter
       if (dsname == null)
       {
         throw new ReportWriterException("The datasource type is not registered: "
-                                        + ds.getClass());
+            + ds.getClass());
       }
 
       writeTag(writer, DataSourceHandler.DATASOURCE_TAG, "type", dsname, OPEN);

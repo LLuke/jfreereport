@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.12 2003/05/14 22:26:39 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.13 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes
  * -------
@@ -103,11 +103,11 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     Dimension2D maxSize = correctDimension((Dimension2D)
         e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), containerBounds, null);
 
-    maxSize.setSize(Math.min (containerBounds.getWidth(), maxSize.getWidth()),
-                    Math.min (containerBounds.getHeight(), maxSize.getHeight()));
+    maxSize.setSize(Math.min(containerBounds.getWidth(), maxSize.getWidth()),
+        Math.min(containerBounds.getHeight(), maxSize.getHeight()));
 
-    retval.setSize(Math.min (retval.getWidth(), maxSize.getWidth()),
-                   Math.min (retval.getHeight(), maxSize.getHeight()));
+    retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
+        Math.min(retval.getHeight(), maxSize.getHeight()));
     //Log.debug ("-- calculate MinimumSize: " + retval);
     // layouting has failed, if negative values are returned ... !
     if (retval.getWidth() < 0 || retval.getHeight() < 0)
@@ -164,13 +164,13 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     // the maximum bounds are defined by the element and the elements container.
     Dimension2D maxSize = correctDimension(
         (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE),
-                                                    containerBounds, null);
+        containerBounds, null);
 
-    maxSize.setSize(Math.min (containerBounds.getWidth(), maxSize.getWidth()),
-                    Math.min (containerBounds.getHeight(), maxSize.getHeight()));
+    maxSize.setSize(Math.min(containerBounds.getWidth(), maxSize.getWidth()),
+        Math.min(containerBounds.getHeight(), maxSize.getHeight()));
 
-    retval.setSize(Math.min (retval.getWidth(), maxSize.getWidth()),
-                   Math.min (retval.getHeight(), maxSize.getHeight()));
+    retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
+        Math.min(retval.getHeight(), maxSize.getHeight()));
     //Log.debug ("-- calculate PreferredSize: " + retval);
     // layouting has failed, if negative values are returned ... !
     if (retval.getWidth() < 0 || retval.getHeight() < 0)
@@ -198,9 +198,9 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return the new elements dimension.
    */
-  protected Dimension2D getElementContentBounds (Dimension2D bounds,
-                                                 Element e,
-                                                 Dimension2D conBounds)
+  protected Dimension2D getElementContentBounds(Dimension2D bounds,
+                                                Element e,
+                                                Dimension2D conBounds)
   {
     // check if we can handle the content before doing anything...
     // ...
@@ -226,14 +226,14 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
       {
         return new FloatDimension();
       }
-      return new FloatDimension((float) Math.max (minSize.getWidth(), contentBounds.getWidth()),
-                                (float) Math.max (minSize.getHeight(), contentBounds.getHeight()));
+      return new FloatDimension((float) Math.max(minSize.getWidth(), contentBounds.getWidth()),
+          (float) Math.max(minSize.getHeight(), contentBounds.getHeight()));
     }
     catch (Exception ex)
     {
-      Log.debug ("Exception: ", ex);
-      return new FloatDimension((float) Math.max (minSize.getWidth(), bounds.getWidth()),
-                                (float) Math.max (minSize.getHeight(), bounds.getHeight()));
+      Log.debug("Exception: ", ex);
+      return new FloatDimension((float) Math.max(minSize.getWidth(), bounds.getWidth()),
+          (float) Math.max(minSize.getHeight(), bounds.getHeight()));
     }
   }
 
@@ -245,7 +245,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    * @param parentDim the dimensions for the parent of the element
    * @return the created layout information.
    */
-  protected ElementLayoutInformation createLayoutInfoForDynamics (Element e, Dimension2D parentDim)
+  protected ElementLayoutInformation createLayoutInfoForDynamics(Element e, Dimension2D parentDim)
   {
     Dimension2D maxSize = correctDimension(
         (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), parentDim, null
@@ -263,8 +263,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
 
     // the width is the limiting element in the calculation, height is considered
     // infinitive ...
-    maxSize.setSize(Math.min (parentDim.getWidth(), maxSize.getWidth()),
-                    maxSize.getHeight());
+    maxSize.setSize(Math.min(parentDim.getWidth(), maxSize.getWidth()),
+        maxSize.getHeight());
     ElementLayoutInformation eli
         = new ElementLayoutInformation(new Point2D.Float(), minSize, maxSize, prefSize);
     return eli;
@@ -279,18 +279,18 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    * @return layout information.
    */
   protected ElementLayoutInformation
-      createLayoutInformationForMinimumSize (Element e, Dimension2D containerBounds)
+      createLayoutInformationForMinimumSize(Element e, Dimension2D containerBounds)
   {
     // the preferred size of an band can be a relative value. Then this value is
     // relative to the container bounds
-    Dimension2D minSize  = correctDimension((Dimension2D)
+    Dimension2D minSize = correctDimension((Dimension2D)
         e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE), containerBounds, null);
 
     // now take the maximum limit defined for that band into account.
     Dimension2D maxSize = correctDimension((Dimension2D)
         e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), containerBounds, null);
-    float maxW = (float) Math.min (maxSize.getWidth(), containerBounds.getWidth());
-    float maxH = (float) Math.min (maxSize.getHeight(), containerBounds.getHeight());
+    float maxW = (float) Math.min(maxSize.getWidth(), containerBounds.getWidth());
+    float maxH = (float) Math.min(maxSize.getHeight(), containerBounds.getHeight());
 
     // the bounds inherited from the parent, cut down to the maximum size defined
     // for this elements.
@@ -307,7 +307,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    * @return layout information.
    */
   protected ElementLayoutInformation
-      createLayoutInformationForPreferredSize (Element e, Dimension2D containerDims)
+      createLayoutInformationForPreferredSize(Element e, Dimension2D containerDims)
   {
     float height = 0;
     float width = 0;
@@ -336,8 +336,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     width = (float) Math.max(width, minSize.getWidth());
 
     // now take the maximum limit defined for that band into account.
-    float maxW = (float) Math.min (maxSize.getWidth(), containerDims.getWidth());
-    float maxH = (float) Math.min (maxSize.getHeight(), containerDims.getHeight());
+    float maxW = (float) Math.min(maxSize.getWidth(), containerDims.getWidth());
+    float maxH = (float) Math.min(maxSize.getHeight(), containerDims.getHeight());
 
     // the bounds inherited from the parent, cut down to the maximum size defined
     // for this elements.
@@ -378,7 +378,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return <code>true</code> or </code>false</code>.
    */
-  protected boolean isElementStaticWidth (Element e)
+  protected boolean isElementStaticWidth(Element e)
   {
     Dimension2D size
         = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
@@ -409,7 +409,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return true or false.
    */
-  protected boolean isElementStaticHeight (Element e)
+  protected boolean isElementStaticHeight(Element e)
   {
     Dimension2D size
         = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
@@ -444,7 +444,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return the corrected dimension.
    */
-  protected  Dimension2D correctDimension (Dimension2D dim, Dimension2D base, Dimension2D retval)
+  protected Dimension2D correctDimension(Dimension2D dim, Dimension2D base, Dimension2D retval)
   {
     float newWidth = (float) dim.getWidth();
     if (dim.getWidth() < 0)
@@ -478,7 +478,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return the corrected point.
    */
-  protected Point2D correctPoint (Point2D dim, Dimension2D base, Point2D retval)
+  protected Point2D correctPoint(Point2D dim, Dimension2D base, Point2D retval)
   {
     double x = dim.getX();
     double y = dim.getY();
@@ -509,7 +509,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return The aligned value.
    */
-  protected float align (float value, float boundary)
+  protected float align(float value, float boundary)
   {
     if (boundary == 0)
     {

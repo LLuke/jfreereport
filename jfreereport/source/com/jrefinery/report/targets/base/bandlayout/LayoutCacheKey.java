@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutCacheKey.java,v 1.2 2003/04/07 18:08:09 taqua Exp $
+ * $Id: LayoutCacheKey.java,v 1.3 2003/04/09 15:49:54 mungady Exp $
  *
  * Changes
  * -------
@@ -44,14 +44,14 @@ import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 /**
  * A layout cache key.
- * 
+ *
  * @author Thomas Morgner
  */
 public class LayoutCacheKey
 {
   /** The parent dimensions. */
   private Dimension2D parentDim;
-  
+
   /** The minimum size. */
   private Dimension2D minSize;
 
@@ -60,7 +60,7 @@ public class LayoutCacheKey
 
   /** The preferred size. */
   private Dimension2D prefSize;
-  
+
   /** The absolute position. */
   private Point2D absPos;
 
@@ -73,7 +73,7 @@ public class LayoutCacheKey
 
   /**
    * Creates a new key.
-   * 
+   *
    * @param e  the element.
    * @param parentDim  the parent dimensions.
    */
@@ -85,22 +85,22 @@ public class LayoutCacheKey
 
   /**
    * Returns true if this is a search key, and false otherwise.
-   * 
+   *
    * @return A boolean.
    */
-  public boolean isSearchKey ()
+  public boolean isSearchKey()
   {
     return false;
   }
 
   /**
    * Sets the element.
-   * 
+   *
    * @param e  the element.
    */
   protected void setElement(Element e)
   {
-    if (e == null) 
+    if (e == null)
     {
       throw new NullPointerException();
     }
@@ -122,12 +122,12 @@ public class LayoutCacheKey
 
   /**
    * Sets the parent dimensions.
-   * 
+   *
    * @param parentDim  the parent dimensions.
    */
   protected void setParentDim(Dimension2D parentDim)
   {
-    if (parentDim == null) 
+    if (parentDim == null)
     {
       throw new NullPointerException();
     }
@@ -136,7 +136,7 @@ public class LayoutCacheKey
 
   /**
    * Returns the parent dimensions.
-   * 
+   *
    * @return The parent dimensions.
    */
   public Dimension2D getParentDim()
@@ -146,18 +146,18 @@ public class LayoutCacheKey
 
   /**
    * Tests this object for equality with another object.
-   * 
+   *
    * @param o  the other object.
-   * 
+   *
    * @return A boolean.
    */
   public boolean equals(Object o)
   {
-    if (this == o) 
+    if (this == o)
     {
       return true;
     }
-    if (!(o instanceof LayoutCacheKey)) 
+    if (!(o instanceof LayoutCacheKey))
     {
       return false;
     }
@@ -186,25 +186,25 @@ public class LayoutCacheKey
       Log.debug ("prefSize: " + prefSize + "  " + layoutCacheKey.prefSize);
     }
 */
-    if (absPos != null ? !absPos.equals(layoutCacheKey.absPos) : layoutCacheKey.absPos != null) 
+    if (absPos != null ? !absPos.equals(layoutCacheKey.absPos) : layoutCacheKey.absPos != null)
     {
       return false;
     }
-    if (maxSize != null ? !maxSize.equals(layoutCacheKey.maxSize) : layoutCacheKey.maxSize != null) 
+    if (maxSize != null ? !maxSize.equals(layoutCacheKey.maxSize) : layoutCacheKey.maxSize != null)
     {
       return false;
     }
-    if (minSize != null ? !minSize.equals(layoutCacheKey.minSize) : layoutCacheKey.minSize != null) 
+    if (minSize != null ? !minSize.equals(layoutCacheKey.minSize) : layoutCacheKey.minSize != null)
     {
       return false;
     }
-    if (parentDim != null ? !parentDim.equals(layoutCacheKey.parentDim) 
-                          : layoutCacheKey.parentDim != null) 
+    if (parentDim != null ? !parentDim.equals(layoutCacheKey.parentDim)
+        : layoutCacheKey.parentDim != null)
     {
       return false;
     }
-    if (prefSize != null ? !prefSize.equals(layoutCacheKey.prefSize) 
-                         : layoutCacheKey.prefSize != null) 
+    if (prefSize != null ? !prefSize.equals(layoutCacheKey.prefSize)
+        : layoutCacheKey.prefSize != null)
     {
       return false;
     }
@@ -214,7 +214,7 @@ public class LayoutCacheKey
 
   /**
    * Returns a hash code.
-   * 
+   *
    * @return A hash code.
    */
   public int hashCode()

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GotoPageAction.java,v 1.14 2003/05/02 12:39:33 taqua Exp $
+ * $Id: GotoPageAction.java,v 1.15 2003/05/14 22:26:37 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import com.jrefinery.report.util.ActionDowngrade;
  * The GotoPageAction is used to direclty jump to a page. A simple dialog opens to
  * ask the user for the page. This is the abstract base for the action doing the
  * localisation specific initialisation.
- * 
+ *
  * @author Thomas Morgner
  */
 public abstract class GotoPageAction extends AbstractActionDowngrade
@@ -60,14 +60,14 @@ public abstract class GotoPageAction extends AbstractActionDowngrade
    *
    * @param resources Localised resources for the action.
    */
-  protected GotoPageAction (ResourceBundle resources)
+  protected GotoPageAction(ResourceBundle resources)
   {
-    this.putValue (NAME, resources.getString ("action.gotopage.name"));
-    this.putValue (SHORT_DESCRIPTION, resources.getString ("action.gotopage.description"));
-    this.putValue (ActionDowngrade.MNEMONIC_KEY, 
-                   resources.getObject ("action.gotopage.mnemonic"));
-    this.putValue (ActionDowngrade.ACCELERATOR_KEY, 
-                   resources.getObject ("action.gotopage.accelerator"));
+    this.putValue(NAME, resources.getString("action.gotopage.name"));
+    this.putValue(SHORT_DESCRIPTION, resources.getString("action.gotopage.description"));
+    this.putValue(ActionDowngrade.MNEMONIC_KEY,
+        resources.getObject("action.gotopage.mnemonic"));
+    this.putValue(ActionDowngrade.ACCELERATOR_KEY,
+        resources.getObject("action.gotopage.accelerator"));
   }
 
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellStyle.java,v 1.10 2003/02/25 15:42:41 taqua Exp $
+ * $Id: HtmlCellStyle.java,v 1.11 2003/02/26 16:42:27 mungady Exp $
  *
  * Changes
  * -------
@@ -44,20 +44,20 @@ import com.jrefinery.report.targets.FontDefinition;
 /**
  * The HtmlCellStyle is used to define the style for the generated HTML-CellStyle.
  * This style directly references to an CSS-StyleDefinition.
- * 
+ *
  * @author Thomas Morgner
  */
 public class HtmlCellStyle
 {
   /** the font definition used for the text. */
   private FontDefinition font;
-  
+
   /** the text color. */
   private Color fontColor;
-  
+
   /** the vertical content alignment. */
   private ElementAlignment verticalAlignment;
-  
+
   /** the horizontal content alignment. */
   private ElementAlignment horizontalAlignment;
 
@@ -70,26 +70,26 @@ public class HtmlCellStyle
    * @param horizontalAlignment the horizontal content alignment.
    * @throws NullPointerException if any of the parameters is null.
    */
-  public HtmlCellStyle(FontDefinition font, Color fontColor, ElementAlignment verticalAlignment, 
+  public HtmlCellStyle(FontDefinition font, Color fontColor, ElementAlignment verticalAlignment,
                        ElementAlignment horizontalAlignment)
   {
-    if (font == null) 
+    if (font == null)
     {
       throw new NullPointerException("Font");
     }
-    if (fontColor == null) 
+    if (fontColor == null)
     {
       throw new NullPointerException("FontColor");
     }
-    if (verticalAlignment == null) 
+    if (verticalAlignment == null)
     {
       throw new NullPointerException("VAlign");
     }
-    if (horizontalAlignment == null) 
+    if (horizontalAlignment == null)
     {
       throw new NullPointerException("HAlign");
     }
-    
+
     this.font = font;
     this.fontColor = fontColor;
     this.verticalAlignment = verticalAlignment;
@@ -145,7 +145,7 @@ public class HtmlCellStyle
    */
   public boolean equals(Object o)
   {
-    if (this == o) 
+    if (this == o)
     {
       return true;
     }

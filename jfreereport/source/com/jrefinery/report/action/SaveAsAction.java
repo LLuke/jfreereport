@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SaveAsAction.java,v 1.14 2003/05/02 12:39:33 taqua Exp $
+ * $Id: SaveAsAction.java,v 1.15 2003/06/23 16:08:27 taqua Exp $
  *
  * Changes
  * -------
@@ -62,15 +62,15 @@ public abstract class SaveAsAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  public SaveAsAction (ResourceBundle resources)
+  public SaveAsAction(ResourceBundle resources)
   {
-    this.putValue (NAME, resources.getString ("action.save-as.name"));
-    this.putValue (SHORT_DESCRIPTION, resources.getString ("action.save-as.description"));
-    this.putValue (ActionDowngrade.MNEMONIC_KEY,
-                   resources.getObject ("action.save-as.mnemonic"));
-    this.putValue (ActionDowngrade.ACCELERATOR_KEY,
-                   resources.getObject ("action.save-as.accelerator"));
-    this.putValue (SMALL_ICON, resources.getObject ("action.save-as.small-icon"));
-    this.putValue ("ICON24", resources.getObject ("action.save-as.icon"));
+    this.putValue(NAME, resources.getString("action.save-as.name"));
+    this.putValue(SHORT_DESCRIPTION, resources.getString("action.save-as.description"));
+    this.putValue(ActionDowngrade.MNEMONIC_KEY,
+        resources.getObject("action.save-as.mnemonic"));
+    this.putValue(ActionDowngrade.ACCELERATOR_KEY,
+        resources.getObject("action.save-as.accelerator"));
+    this.putValue(SMALL_ICON, resources.getObject("action.save-as.small-icon"));
+    this.putValue("ICON24", resources.getObject("action.save-as.icon"));
   }
 }

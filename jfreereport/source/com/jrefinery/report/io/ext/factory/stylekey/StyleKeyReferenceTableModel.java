@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyReferenceTableModel.java,v 1.3 2003/03/07 16:55:59 taqua Exp $
+ * $Id: StyleKeyReferenceTableModel.java,v 1.4 2003/05/02 12:40:13 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.stylekey;
@@ -47,7 +47,7 @@ import com.jrefinery.report.targets.style.StyleKey;
 
 /**
  * A table model for the style key reference generator.
- * 
+ *
  * @author Thomas Morgner
  */
 public class StyleKeyReferenceTableModel extends AbstractTableModel
@@ -59,13 +59,13 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
   {
     /** The factory. */
     private StyleKeyFactory keyFactory;
-    
+
     /** The key. */
     private StyleKey key;
 
     /**
      * Creates a new row.
-     * 
+     *
      * @param keyFactory  the factory.
      * @param key  the key.
      */
@@ -77,7 +77,7 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
 
     /**
      * Returns the factory.
-     * 
+     *
      * @return The factory.
      */
     public StyleKeyFactory getKeyFactory()
@@ -87,7 +87,7 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
 
     /**
      * Returns the key.
-     * 
+     *
      * @return The key.
      */
     public StyleKey getKey()
@@ -109,7 +109,7 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
 
   /**
    * Creates a new table model.
-   * 
+   *
    * @param cf  the factory collection.
    */
   public StyleKeyReferenceTableModel(StyleKeyFactoryCollector cf)
@@ -120,10 +120,10 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
 
   /**
    * Adds a factory.
-   * 
+   *
    * @param cf  the factory.
    */
-  private void addStyleKeyFactoryCollector (StyleKeyFactoryCollector cf)
+  private void addStyleKeyFactoryCollector(StyleKeyFactoryCollector cf)
   {
     Iterator it = cf.getFactories();
     while (it.hasNext())
@@ -142,10 +142,10 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
 
   /**
    * Adds a factory.
-   * 
+   *
    * @param cf  the factory.
    */
-  private void addStyleKeyFactory (StyleKeyFactory cf)
+  private void addStyleKeyFactory(StyleKeyFactory cf)
   {
     Iterator it = cf.getRegisteredKeys();
     ArrayList factories = new ArrayList();
@@ -196,7 +196,7 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
 
   /**
    * Returns the column name.
-   * 
+   *
    * @param column  the column being queried
    * @return a string containing the default name of <code>column</code>
    */
@@ -222,7 +222,7 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
    *
    * @param rowIndex  the row whose value is to be queried
    * @param columnIndex  the column whose value is to be queried
-   * 
+   *
    * @return the value Object at the specified cell
    */
   public Object getValueAt(int rowIndex, int columnIndex)
@@ -230,10 +230,14 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
     StylekeyDescriptionRow or = (StylekeyDescriptionRow) rows.get(rowIndex);
     switch (columnIndex)
     {
-      case 0: return String.valueOf(or.getKeyFactory().getClass().getName());
-      case 1: return String.valueOf(or.getKey().getName());
-      case 2: return String.valueOf(or.getKey().getValueType().getName());
+      case 0:
+        return String.valueOf(or.getKeyFactory().getClass().getName());
+      case 1:
+        return String.valueOf(or.getKey().getName());
+      case 2:
+        return String.valueOf(or.getKey().getValueType().getName());
+      default:
+        return null;
     }
-    return null;
   }
 }

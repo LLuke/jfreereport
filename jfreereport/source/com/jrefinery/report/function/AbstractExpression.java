@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -49,7 +49,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.22 2003/05/14 22:26:38 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.23 2003/05/23 20:12:14 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ import java.util.Properties;
 import com.jrefinery.report.DataRow;
 
 /**
- * An abstract base class for implementing new report expressions. 
+ * An abstract base class for implementing new report expressions.
  * <p>
  * Expressions are stateless functions which have access to the report's {@link DataRow}. All
  * expressions are named and the defined names have to be unique within the report's expressions,
@@ -93,7 +93,7 @@ public abstract class AbstractExpression implements Expression
   private DataRow dataRow;
 
   /**
-   * Creates an unnamed expression. Make sure the name of the expression is set using 
+   * Creates an unnamed expression. Make sure the name of the expression is set using
    * {@link #setName} before the expression is added to the report's expression collection.
    */
   protected AbstractExpression()
@@ -104,7 +104,7 @@ public abstract class AbstractExpression implements Expression
 
   /**
    * Returns the name of the expression.
-   * 
+   *
    * @return the name.
    */
   public String getName()
@@ -162,8 +162,8 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * Returns <code>true</code> if this expression contains "auto-active" content and should be 
-   * called by the system regardless of whether this expression is referenced in the 
+   * Returns <code>true</code> if this expression contains "auto-active" content and should be
+   * called by the system regardless of whether this expression is referenced in the
    * {@link DataRow}.
    *
    * @return true, if the expression is activated automaticly, false otherwise.
@@ -174,7 +174,7 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * Sets a property for the expression.  If the property value is <code>null</code>, the property 
+   * Sets a property for the expression.  If the property value is <code>null</code>, the property
    * will be removed from the property collection.
    *
    * @param name  the property name (<code>null</code> not permitted).
@@ -212,7 +212,7 @@ public abstract class AbstractExpression implements Expression
    * Adds a property collection to the properties for this expression (overwriting existing
    * properties with the same name).
    * <P>
-   * Expression parameters are recorded as properties.  The required parameters (if any) will be 
+   * Expression parameters are recorded as properties.  The required parameters (if any) will be
    * specified in the documentation for the class that implements the expression.
    *
    * @param p  the properties.
@@ -247,9 +247,9 @@ public abstract class AbstractExpression implements Expression
    * <p>
    * The dependency level controls the order of evaluation for expressions and functions.  Higher
    * level expressions are evaluated before lower level expressions.  Any level in the range
-   * 0 to Integer.MAX_VALUE is allowed.  Negative values are reserved for system functions 
+   * 0 to Integer.MAX_VALUE is allowed.  Negative values are reserved for system functions
    * (printing and layouting).
-   * 
+   *
    * @param level  the level (must be greater than or equal to 0).
    */
   public void setDependencyLevel(int level)
@@ -273,8 +273,8 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * Sets the current {@link DataRow} for the expression.  The data row is set when the report 
-   * processing starts and can be used to access the values of other expressions, functions, and 
+   * Sets the current {@link DataRow} for the expression.  The data row is set when the report
+   * processing starts and can be used to access the values of other expressions, functions, and
    * the report's <code>TableModel</code>.
    * <p>
    * This method is used by the report processing engine, you shouldn't need to call it yourself.

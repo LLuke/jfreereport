@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.14 2003/05/14 22:26:37 taqua Exp $
+ * $Id: CloseAction.java,v 1.1 2003/06/19 18:46:35 taqua Exp $
  *
  * Changes
  * -------
@@ -58,11 +58,11 @@ public abstract class CloseAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  protected CloseAction (ResourceBundle resources)
+  protected CloseAction(ResourceBundle resources)
   {
-    this.putValue (NAME, resources.getString ("action.close.name"));
-    this.putValue (SHORT_DESCRIPTION, resources.getString ("action.close.description"));
-    this.putValue (ActionDowngrade.MNEMONIC_KEY,
-                   resources.getObject ("action.close.mnemonic"));
+    this.putValue(NAME, resources.getString("action.close.name"));
+    this.putValue(SHORT_DESCRIPTION, resources.getString("action.close.description"));
+    this.putValue(ActionDowngrade.MNEMONIC_KEY,
+        resources.getObject("action.close.mnemonic"));
   }
 }

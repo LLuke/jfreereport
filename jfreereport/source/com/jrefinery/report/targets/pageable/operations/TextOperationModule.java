@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.13 2003/04/06 18:11:31 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.14 2003/04/09 15:52:55 mungady Exp $
  *
  * Changes
  * -------
@@ -62,9 +62,9 @@ public class TextOperationModule extends OperationModule
   /**
    * Default constructor.
    */
-  public TextOperationModule ()
+  public TextOperationModule()
   {
-    super ("text/*");
+    super("text/*");
   }
 
   /**
@@ -75,7 +75,7 @@ public class TextOperationModule extends OperationModule
    * @param value  the content.
    * @param bounds  the bounds.
    */
-  public void createOperations(PhysicalOperationsCollector col, Element e, Content value, 
+  public void createOperations(PhysicalOperationsCollector col, Element e, Content value,
                                Rectangle2D bounds)
   {
     if (bounds == null)
@@ -101,8 +101,8 @@ public class TextOperationModule extends OperationModule
     // Paint
     Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
 
-    col.addOperation (new PhysicalOperation.SetFontOperation (font));
-    col.addOperation (new PhysicalOperation.SetPaintOperation(paint));
+    col.addOperation(new PhysicalOperation.SetFontOperation(font));
+    col.addOperation(new PhysicalOperation.SetPaintOperation(paint));
     Rectangle2D cbounds = c.getMinimumContentSize();
     if (cbounds == null)
     {
@@ -153,16 +153,16 @@ public class TextOperationModule extends OperationModule
    * @param hba  the bounds.
    * @param vba  the vertical bounds alignment.
    */
-  private void addContent (Content c, PhysicalOperationsCollector col,
-                           HorizontalBoundsAlignment hba,
-                           VerticalBoundsAlignment vba)
+  private void addContent(Content c, PhysicalOperationsCollector col,
+                          HorizontalBoundsAlignment hba,
+                          VerticalBoundsAlignment vba)
   {
     if (c instanceof TextLine)
     {
       String value = ((TextLine) c).getContent();
-      Rectangle2D abounds = vba.applyShift (hba.align(c.getBounds()));
-      col.addOperation (new PhysicalOperation.SetBoundsOperation (abounds));
-      col.addOperation (new PhysicalOperation.PrintTextOperation(value));
+      Rectangle2D abounds = vba.applyShift(hba.align(c.getBounds()));
+      col.addOperation(new PhysicalOperation.SetBoundsOperation(abounds));
+      col.addOperation(new PhysicalOperation.PrintTextOperation(value));
     }
     else
     {
@@ -179,23 +179,23 @@ public class TextOperationModule extends OperationModule
    *
    * @param c  the content.
    */
-  public static void print (Content c)
+  public static void print(Content c)
   {
     if (c == null)
     {
-      Log.debug ("Content = " + c + "IsNull");
+      Log.debug("Content = " + c + "IsNull");
       return;
     }
-    Log.debug ("Content = " + c + " Bounds: " + c.getBounds());
+    Log.debug("Content = " + c + " Bounds: " + c.getBounds());
     if (c instanceof TextLine)
     {
-      Log.debug ("Line: " + ((TextLine) c).getContent());
+      Log.debug("Line: " + ((TextLine) c).getContent());
     }
     else
     {
       for (int i = 0; i < c.getContentPartCount(); i++)
       {
-        print (c.getContentPart(i));
+        print(c.getContentPart(i));
       }
     }
   }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.4 2003/05/14 22:26:39 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.5 2003/06/10 12:11:55 taqua Exp $
  *
  * Changes
  * -------
@@ -59,14 +59,14 @@ public class LayoutManagerCache
   {
     /** The minimum size. */
     private Dimension2D minSize;
-    
+
     /** The preferred size. */
     private Dimension2D prefSize;
   }
 
   /** The put count. */
   private static int putCount;
-  
+
   /** The get count. */
   private static int getCount;
 
@@ -76,16 +76,16 @@ public class LayoutManagerCache
   /**
    * Default constructor.
    */
-  public LayoutManagerCache ()
+  public LayoutManagerCache()
   {
     elementCache = new WeakHashMap();
   }
 
   /**
    * Returns the minimum size of ???.
-   * 
+   *
    * @param e  the layout cache key.
-   * 
+   *
    * @return The minimum size.
    */
   public Dimension2D getMinSize(LayoutCacheKey e)
@@ -95,7 +95,7 @@ public class LayoutManagerCache
     {
       return null;
     }
-    if (ec.minSize != null) 
+    if (ec.minSize != null)
     {
       getCount++;
     }
@@ -104,9 +104,9 @@ public class LayoutManagerCache
 
   /**
    * Returns the preferred size of ???.
-   * 
+   *
    * @param e  the layout cache key.
-   * 
+   *
    * @return The preferred size.
    */
   public Dimension2D getPrefSize(LayoutCacheKey e)
@@ -125,7 +125,7 @@ public class LayoutManagerCache
 
   /**
    * Sets the minimum size of ???.
-   * 
+   *
    * @param key  the key.
    * @param element  the element.
    * @param d  the minimum size.
@@ -150,7 +150,7 @@ public class LayoutManagerCache
       ec.minSize = d;
       if (key.isSearchKey())
       {
-        elementCache.put (new LayoutCacheKey(element, key.getParentDim()), ec);
+        elementCache.put(new LayoutCacheKey(element, key.getParentDim()), ec);
       }
       else
       {
@@ -168,7 +168,7 @@ public class LayoutManagerCache
 
   /**
    * Sets the preferred size of ???.
-   * 
+   *
    * @param key  the key.
    * @param element  the element.
    * @param d  the minimum size.
@@ -193,7 +193,7 @@ public class LayoutManagerCache
       ec.prefSize = d;
       if (key.isSearchKey())
       {
-        elementCache.put (new LayoutCacheKey(element, key.getParentDim()), ec);
+        elementCache.put(new LayoutCacheKey(element, key.getParentDim()), ec);
       }
       else
       {
@@ -208,9 +208,9 @@ public class LayoutManagerCache
 
   /**
    * Returns true if the specified element is cachable, and false otherwise.
-   * 
+   *
    * @param e  the element.
-   * 
+   *
    * @return A boolean.
    */
   public boolean isCachable(Element e)
@@ -233,8 +233,8 @@ public class LayoutManagerCache
       {
         if (isCachable(elements[i]) == false)
         {
-          elements[i].getStyle().setStyleProperty
-              (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, new Boolean(false));
+          elements[i].getStyle().setBooleanStyleProperty
+              (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, false);
           return false;
         }
       }
@@ -255,6 +255,6 @@ public class LayoutManagerCache
    */
   public static void printResults()
   {
-    Log.debug ("CacheResults: " + getCount + ":" + putCount);
+    Log.debug("CacheResults: " + getCount + ":" + putCount);
   }
 }

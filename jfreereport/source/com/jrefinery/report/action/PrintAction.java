@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PrintAction.java,v 1.17 2003/05/14 22:26:37 taqua Exp $
+ * $Id: PrintAction.java,v 1.18 2003/06/23 16:08:27 taqua Exp $
  *
  * Changes
  * -------
@@ -63,15 +63,15 @@ public abstract class PrintAction extends AbstractActionDowngrade implements Run
    *
    * @param resources  localised resources.
    */
-  protected PrintAction (ResourceBundle resources)
+  protected PrintAction(ResourceBundle resources)
   {
-    this.putValue (NAME, resources.getString ("action.print.name"));
-    this.putValue (SHORT_DESCRIPTION, resources.getString ("action.print.description"));
-    this.putValue (ActionDowngrade.MNEMONIC_KEY,
-                   resources.getObject ("action.print.mnemonic"));
-    this.putValue (ActionDowngrade.ACCELERATOR_KEY,
-                   resources.getObject ("action.print.accelerator"));
-    this.putValue (SMALL_ICON, resources.getObject ("action.print.small-icon"));
-    this.putValue ("ICON24", resources.getObject ("action.print.icon"));
+    this.putValue(NAME, resources.getString("action.print.name"));
+    this.putValue(SHORT_DESCRIPTION, resources.getString("action.print.description"));
+    this.putValue(ActionDowngrade.MNEMONIC_KEY,
+        resources.getObject("action.print.mnemonic"));
+    this.putValue(ActionDowngrade.ACCELERATOR_KEY,
+        resources.getObject("action.print.accelerator"));
+    this.putValue(SMALL_ICON, resources.getObject("action.print.small-icon"));
+    this.putValue("ICON24", resources.getObject("action.print.icon"));
   }
 }

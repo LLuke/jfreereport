@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.4 2003/06/19 18:44:09 taqua Exp $
+ * $Id: SwingIconsDemo.java,v 1.5 2003/06/26 19:55:56 taqua Exp $
  *
  * Changes
  * -------
@@ -150,7 +150,7 @@ public class SwingIconsDemo extends AbstractDemoFrame
     {
       JOptionPane.showMessageDialog(this,
           MessageFormat.format(getResources().getString("report.definitionnotfound"),
-                               new Object[]{in}),
+              new Object[]{in}),
           getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 

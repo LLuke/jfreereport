@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementLayoutInformation.java,v 1.11 2003/04/23 17:13:39 taqua Exp $
+ * $Id: ElementLayoutInformation.java,v 1.12 2003/04/24 18:08:56 taqua Exp $
  *
  * Changes
  * -------
  * 25-Feb-2003 : Added standard header and fixed Checkstyle issues (DG);
- * 
+ *
  */
 package com.jrefinery.report.targets.base;
 
@@ -44,16 +44,16 @@ import java.awt.geom.Rectangle2D;
 import org.jfree.ui.FloatDimension;
 
 /**
- * A small carrier class to encapsulate the common layout parameters. This information is a 
+ * A small carrier class to encapsulate the common layout parameters. This information is a
  * utility class, don't expect to find one bound to an element.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ElementLayoutInformation
 {
   /** The absolute position of the element. */
   private Point2D absolutePosition;
- 
+
   /** The current minimum size for the element. */
   private Dimension2D minimumSize;
 
@@ -70,7 +70,7 @@ public class ElementLayoutInformation
    * are set to <code>rect.width, rect.height</code>.
    *
    * @param rect  the rectangle that will be the base for this ElementLayoutInformation.
-   * 
+   *
    * @throws NullPointerException if the given rectangle is null.
    */
   public ElementLayoutInformation(Rectangle2D rect)
@@ -85,9 +85,9 @@ public class ElementLayoutInformation
     minimumSize = fdim;
     preferredSize = fdim;
   }
-  
+
   /**
-   * Creates a new instance. 
+   * Creates a new instance.
    * <p>
    * The preferred size will be undefined (<code>null</code>).
    *
@@ -96,15 +96,15 @@ public class ElementLayoutInformation
    * @param maximumSize  the maximum size for the element.
    * @throws NullPointerException if one of the parameters is <code>null</code>.
    */
-  public ElementLayoutInformation(Point2D absolutePosition, 
-                                  Dimension2D minimumSize, 
+  public ElementLayoutInformation(Point2D absolutePosition,
+                                  Dimension2D minimumSize,
                                   Dimension2D maximumSize)
   {
-    this (absolutePosition, minimumSize, maximumSize, null);
+    this(absolutePosition, minimumSize, maximumSize, null);
   }
 
   /**
-   * Creates a new instance. 
+   * Creates a new instance.
    * <p>
    * If the preferred size is <code>null</code>, then it is left undefined.
    *
@@ -112,13 +112,13 @@ public class ElementLayoutInformation
    * @param minimumSize  the minimum size for the element
    * @param maximumSize  the maximum size for the element
    * @param preferredSize  the preferred size or <code>null</code> if not known.
-   * 
+   *
    * @throws NullPointerException if the position or max/min size is <code>null</code>.
    *
    */
-  public ElementLayoutInformation(Point2D absolutePosition, 
-                                  Dimension2D minimumSize, 
-                                  Dimension2D maximumSize, 
+  public ElementLayoutInformation(Point2D absolutePosition,
+                                  Dimension2D minimumSize,
+                                  Dimension2D maximumSize,
                                   Dimension2D preferredSize)
   {
     if (absolutePosition == null)
@@ -193,25 +193,25 @@ public class ElementLayoutInformation
    *
    * @param max  ??.
    * @param pref  ??.
-   * 
+   *
    * @return  the minimum dimension.
    */
-  public static Dimension2D unionMin (Dimension2D max, Dimension2D pref)
+  public static Dimension2D unionMin(Dimension2D max, Dimension2D pref)
   {
     if (pref == null)
     {
       return max;
     }
     return new FloatDimension((float) Math.min(pref.getWidth(), max.getWidth()),
-                              (float) Math.min(pref.getHeight(), max.getHeight()));
+        (float) Math.min(pref.getHeight(), max.getHeight()));
   }
 
   /**
    * Returns a string representing the object (useful for debugging).
-   * 
+   *
    * @return A string.
    */
-  public String toString ()
+  public String toString()
   {
     StringBuffer b = new StringBuffer();
     b.append("ElementLayoutInformation: \n");

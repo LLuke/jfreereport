@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultReportConfiguration.java,v 1.2 2003/02/05 21:48:27 taqua Exp $
+ * $Id: DefaultReportConfiguration.java,v 1.3 2003/02/26 13:58:04 mungady Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@ package com.jrefinery.report.util;
 /**
  * Create the implemented default report configuration. This configuration should
  * be set as root and defines the implementation defaults.
- * 
+ *
  * @author Thomas Morgner
  */
 public class DefaultReportConfiguration extends ReportConfiguration
@@ -50,9 +50,9 @@ public class DefaultReportConfiguration extends ReportConfiguration
    */
   public DefaultReportConfiguration()
   {
-    this.getConfiguration().put (DISABLE_LOGGING, DISABLE_LOGGING_DEFAULT);
-    this.getConfiguration().put (LOGLEVEL, LOGLEVEL_DEFAULT);
-    this.getConfiguration().put (PDFTARGET_AUTOINIT, PDFTARGET_AUTOINIT_DEFAULT);
-    this.getConfiguration().put (PDFTARGET_ENCODING, PDFTARGET_ENCODING_DEFAULT);
-  } 
+    this.getConfiguration().put(DISABLE_LOGGING, DISABLE_LOGGING_DEFAULT);
+    this.getConfiguration().put(LOGLEVEL, LOGLEVEL_DEFAULT);
+    this.getConfiguration().put(PDFTARGET_AUTOINIT, PDFTARGET_AUTOINIT_DEFAULT);
+    this.getConfiguration().put(PDFTARGET_ENCODING, PDFTARGET_ENCODING_DEFAULT);
+  }
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractStyleKeyFactory.java,v 1.13 2003/06/04 21:09:08 taqua Exp $
+ * $Id: AbstractStyleKeyFactory.java,v 1.14 2003/06/10 16:07:50 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.stylekey;
@@ -47,7 +47,7 @@ import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**
  * An abstract class for implementing the {@link StyleKeyFactory} interface.
- * 
+ *
  * @author Thomas Morgner.
  */
 public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
@@ -55,11 +55,11 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
   /** the parser configuration property name for this factory. */
   public static final String OBJECT_FACTORY_TAG = "object-factory";
 
-  /** Storage for the keys. */  
+  /** Storage for the keys. */
   private HashMap knownKeys;
-  
+
   /**
-   * Creates a new factory. 
+   * Creates a new factory.
    */
   public AbstractStyleKeyFactory()
   {
@@ -68,34 +68,34 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
 
   /**
    * Registers a key.
-   * 
+   *
    * @param key  the key.
    */
-  public void addKey (StyleKey key)
+  public void addKey(StyleKey key)
   {
-    knownKeys.put (key.getName(), key);
+    knownKeys.put(key.getName(), key);
   }
 
   /**
    * Returns the key with the given name.
-   * 
+   *
    * @param name  the name.
-   * 
+   *
    * @return The key.
    */
-  public StyleKey getStyleKey (String name)
+  public StyleKey getStyleKey(String name)
   {
-    return (StyleKey) knownKeys.get (name);
+    return (StyleKey) knownKeys.get(name);
   }
 
   /**
    * Creates an object.
-   * 
+   *
    * @param k  the style key.
    * @param value  the value.
    * @param c  the class.
    * @param fc the class factory used to create the basic object.
-   * 
+   *
    * @return The object.
    */
   public Object createBasicObject(StyleKey k, String value, Class c, ClassFactory fc)
@@ -110,14 +110,14 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
     {
       throw new NullPointerException();
     }
-    
+
     if (fc == null)
     {
       throw new NullPointerException("Class " + getClass());
     }
-    
+
     ObjectDescription od = fc.getDescriptionForClass(c);
-    if (od == null) 
+    if (od == null)
     {
       od = fc.getSuperClassObjectDescription(c, null);
       if (od == null)
@@ -131,7 +131,7 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
 
   /**
    * Returns an iterator that provides access to the registered keys.
-   * 
+   *
    * @return The iterator.
    */
   public Iterator getRegisteredKeys()

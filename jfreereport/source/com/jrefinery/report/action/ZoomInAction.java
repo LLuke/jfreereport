@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ZoomInAction.java,v 1.16 2003/05/02 12:39:33 taqua Exp $
+ * $Id: ZoomInAction.java,v 1.17 2003/05/14 22:26:37 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import com.jrefinery.report.util.ActionDowngrade;
  * can be increased in predefined steps from 25% to 400%. This abstract base class
  * implements the locales specific initialisations, actual work is done in an internal
  * subclass in PreviewFrame.
- * 
+ *
  * @author David Gilbert
  */
 public abstract class ZoomInAction extends AbstractActionDowngrade
@@ -59,16 +59,16 @@ public abstract class ZoomInAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  protected ZoomInAction (ResourceBundle resources)
+  protected ZoomInAction(ResourceBundle resources)
   {
-    putValue (NAME, resources.getString ("action.zoomIn.name"));
-    putValue (SHORT_DESCRIPTION, resources.getString ("action.zoomIn.description"));
-    putValue (ActionDowngrade.MNEMONIC_KEY, 
-              resources.getObject ("action.zoomIn.mnemonic"));
-    putValue (ActionDowngrade.ACCELERATOR_KEY, 
-              resources.getObject ("action.zoomIn.accelerator"));
-    putValue (SMALL_ICON, resources.getObject ("action.zoomIn.small-icon"));
-    putValue ("ICON24", resources.getObject ("action.zoomIn.icon"));
+    putValue(NAME, resources.getString("action.zoomIn.name"));
+    putValue(SHORT_DESCRIPTION, resources.getString("action.zoomIn.description"));
+    putValue(ActionDowngrade.MNEMONIC_KEY,
+        resources.getObject("action.zoomIn.mnemonic"));
+    putValue(ActionDowngrade.ACCELERATOR_KEY,
+        resources.getObject("action.zoomIn.accelerator"));
+    putValue(SMALL_ICON, resources.getObject("action.zoomIn.small-icon"));
+    putValue("ICON24", resources.getObject("action.zoomIn.icon"));
   }
 
 }

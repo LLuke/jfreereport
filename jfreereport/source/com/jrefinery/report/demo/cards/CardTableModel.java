@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardTableModel.java,v 1.2 2003/04/09 15:30:27 mungady Exp $
+ * $Id: CardTableModel.java,v 1.3 2003/05/02 12:39:41 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  * A card table model.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class CardTableModel extends AbstractTableModel
@@ -52,45 +52,45 @@ public class CardTableModel extends AbstractTableModel
 
   /** The type index. */
   private static final int POS_TYPE = 0;
-  
+
   /** The name index. */
   private static final int POS_NAME = 1;
-  
+
   /** The first name index. */
   private static final int POS_FIRSTNAME = 2;
-  
+
   /** The card number index. */
   private static final int POS_CARDNR = 3;
-  
+
   /** The login index. */
   private static final int POS_LOGIN = 4;
-  
+
   /** The password index. */
   private static final int POS_PASSWORD = 5;
-  
+
   /** The expiry date index. */
   private static final int POS_EXPIRES = 6;
 
   /** The column names. */
   private static final String[] COL_NAMES =
-    {
-      "type", "name", "firstName", "cardNr", "login", "password", "expires"
-    };
+      {
+        "type", "name", "firstName", "cardNr", "login", "password", "expires"
+      };
 
   /**
    * Default constructor.
    */
-  public CardTableModel ()
+  public CardTableModel()
   {
     cards = new ArrayList();
   }
 
   /**
    * Adds a card.
-   * 
+   *
    * @param c  the card.
    */
-  public void addCard (Card c)
+  public void addCard(Card c)
   {
     if (c == null)
     {
@@ -164,7 +164,7 @@ public class CardTableModel extends AbstractTableModel
    *
    * @param rowIndex  the row whose value is to be queried
    * @param columnIndex  the column whose value is to be queried
-   * 
+   *
    * @return the value Object at the specified cell
    */
   public Object getValueAt(int rowIndex, int columnIndex)

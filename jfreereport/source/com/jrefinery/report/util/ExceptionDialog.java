@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExceptionDialog.java,v 1.14 2003/05/02 12:40:46 taqua Exp $
+ * $Id: ExceptionDialog.java,v 1.15 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -72,9 +72,9 @@ public class ExceptionDialog extends JDialog
     /**
      * Default constructor.
      */
-    private OKAction ()
+    private OKAction()
     {
-      putValue (NAME, UIManager.getDefaults ().getString ("OptionPane.okButtonText"));
+      putValue(NAME, UIManager.getDefaults().getString("OptionPane.okButtonText"));
     }
 
     /**
@@ -82,9 +82,9 @@ public class ExceptionDialog extends JDialog
      *
      * @param event  the action event.
      */
-    public void actionPerformed (ActionEvent event)
+    public void actionPerformed(ActionEvent event)
     {
-      setVisible (false);
+      setVisible(false);
     }
   }
 
@@ -96,9 +96,9 @@ public class ExceptionDialog extends JDialog
     /**
      * Default constructor.
      */
-    private DetailsAction ()
+    private DetailsAction()
     {
-      putValue (NAME, ">>");
+      putValue(NAME, ">>");
     }
 
     /**
@@ -106,18 +106,18 @@ public class ExceptionDialog extends JDialog
      *
      * @param event  the action event.
      */
-    public void actionPerformed (ActionEvent event)
+    public void actionPerformed(ActionEvent event)
     {
-      scroller.setVisible (!(scroller.isVisible ()));
-      if (scroller.isVisible ())
+      scroller.setVisible(!(scroller.isVisible()));
+      if (scroller.isVisible())
       {
-        putValue (NAME, "<<");
+        putValue(NAME, "<<");
       }
       else
       {
-        putValue (NAME, ">>");
+        putValue(NAME, ">>");
       }
-      adjustSize ();
+      adjustSize();
     }
   }
 
@@ -148,38 +148,38 @@ public class ExceptionDialog extends JDialog
   /**
    * Creates a new ExceptionDialog.
    */
-  public ExceptionDialog ()
+  public ExceptionDialog()
   {
-    setModal (true);
-    messageLabel = new JLabel ();
-    backtraceArea = new JTextArea ();
+    setModal(true);
+    messageLabel = new JLabel();
+    backtraceArea = new JTextArea();
 
-    scroller = new JScrollPane (backtraceArea);
-    scroller.setVisible (false);
+    scroller = new JScrollPane(backtraceArea);
+    scroller.setVisible(false);
 
-    JPanel detailPane = new JPanel ();
-    detailPane.setLayout (new GridBagLayout ());
-    GridBagConstraints gbc = new GridBagConstraints ();
+    JPanel detailPane = new JPanel();
+    detailPane.setLayout(new GridBagLayout());
+    GridBagConstraints gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.CENTER;
     gbc.fill = GridBagConstraints.NONE;
     gbc.weightx = 0;
     gbc.weighty = 0;
     gbc.gridx = 0;
     gbc.gridy = 0;
-    JLabel icon = new JLabel (UIManager.getDefaults ().getIcon ("OptionPane.errorIcon"));
-    icon.setBorder (BorderFactory.createEmptyBorder (10, 10, 10, 10));
-    detailPane.add (icon, gbc);
+    JLabel icon = new JLabel(UIManager.getDefaults().getIcon("OptionPane.errorIcon"));
+    icon.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    detailPane.add(icon, gbc);
 
-    gbc = new GridBagConstraints ();
+    gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.WEST;
     gbc.fill = GridBagConstraints.NONE;
     gbc.weightx = 1;
     gbc.weighty = 1;
     gbc.gridx = 1;
     gbc.gridy = 0;
-    detailPane.add (messageLabel);
+    detailPane.add(messageLabel);
 
-    gbc = new GridBagConstraints ();
+    gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.SOUTH;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 0;
@@ -187,12 +187,12 @@ public class ExceptionDialog extends JDialog
     gbc.gridx = 0;
     gbc.gridy = 2;
     gbc.gridwidth = 2;
-    detailPane.add (createButtonPane (), gbc);
+    detailPane.add(createButtonPane(), gbc);
 
-    filler = new JPanel ();
-    filler.setPreferredSize (new Dimension (0, 0));
-    filler.setBackground (Color.green);
-    gbc = new GridBagConstraints ();
+    filler = new JPanel();
+    filler.setPreferredSize(new Dimension(0, 0));
+    filler.setBackground(Color.green);
+    gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.NORTH;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 1;
@@ -200,9 +200,9 @@ public class ExceptionDialog extends JDialog
     gbc.gridx = 0;
     gbc.gridy = 3;
     gbc.gridwidth = 2;
-    detailPane.add (filler, gbc);
+    detailPane.add(filler, gbc);
 
-    gbc = new GridBagConstraints ();
+    gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.SOUTHWEST;
     gbc.fill = GridBagConstraints.BOTH;
     gbc.weightx = 1;
@@ -210,22 +210,22 @@ public class ExceptionDialog extends JDialog
     gbc.gridx = 0;
     gbc.gridy = 4;
     gbc.gridwidth = 2;
-    detailPane.add (scroller, gbc);
+    detailPane.add(scroller, gbc);
 
-    setContentPane (detailPane);
+    setContentPane(detailPane);
   }
 
   /**
    * Adjusts the size of the dialog to fit the with of the contained message and stacktrace.
    */
-  public void adjustSize ()
+  public void adjustSize()
   {
-    Dimension scSize = scroller.getPreferredSize ();
-    Dimension cbase = filler.getPreferredSize ();
-    cbase.width = Math.max (scSize.width, cbase.width);
+    Dimension scSize = scroller.getPreferredSize();
+    Dimension cbase = filler.getPreferredSize();
+    cbase.width = Math.max(scSize.width, cbase.width);
     cbase.height = 0;
-    filler.setMinimumSize (cbase);
-    pack ();
+    filler.setMinimumSize(cbase);
+    pack();
 
   }
 
@@ -234,22 +234,22 @@ public class ExceptionDialog extends JDialog
    *
    * @return a panel containing the 'OK' and 'Details' buttons.
    */
-  private JPanel createButtonPane ()
+  private JPanel createButtonPane()
   {
-    JPanel buttonPane = new JPanel ();
-    buttonPane.setLayout (new FlowLayout (2));
-    buttonPane.setBorder (BorderFactory.createEmptyBorder (2, 2, 2, 2));
-    okAction = new OKAction ();
-    detailsAction = new DetailsAction ();
+    JPanel buttonPane = new JPanel();
+    buttonPane.setLayout(new FlowLayout(2));
+    buttonPane.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    okAction = new OKAction();
+    detailsAction = new DetailsAction();
 
-    JButton ok = new ActionButton (okAction);
-    JButton details = new ActionButton (detailsAction);
+    JButton ok = new ActionButton(okAction);
+    JButton details = new ActionButton(detailsAction);
 
-    FloatingButtonEnabler.getInstance ().addButton (ok);
-    FloatingButtonEnabler.getInstance ().addButton (details);
+    FloatingButtonEnabler.getInstance().addButton(ok);
+    FloatingButtonEnabler.getInstance().addButton(details);
 
-    buttonPane.add (ok);
-    buttonPane.add (details);
+    buttonPane.add(ok);
+    buttonPane.add(details);
     return buttonPane;
   }
 
@@ -258,9 +258,9 @@ public class ExceptionDialog extends JDialog
    *
    * @param mesg  the message.
    */
-  public void setMessage (String mesg)
+  public void setMessage(String mesg)
   {
-    messageLabel.setText (mesg);
+    messageLabel.setText(mesg);
   }
 
   /**
@@ -268,9 +268,9 @@ public class ExceptionDialog extends JDialog
    *
    * @return the message.
    */
-  public String getMessage ()
+  public String getMessage()
   {
-    return messageLabel.getText ();
+    return messageLabel.getText();
   }
 
   /**
@@ -280,17 +280,17 @@ public class ExceptionDialog extends JDialog
    *
    * @param e  the exception.
    */
-  public void setException (Exception e)
+  public void setException(Exception e)
   {
     currentEx = e;
     if (e == null)
     {
-      detailsAction.setEnabled (false);
-      backtraceArea.setText ("");
+      detailsAction.setEnabled(false);
+      backtraceArea.setText("");
     }
     else
     {
-      backtraceArea.setText (readFromException (e));
+      backtraceArea.setText(readFromException(e));
     }
   }
 
@@ -301,16 +301,16 @@ public class ExceptionDialog extends JDialog
    *
    * @return the stack trace.
    */
-  private String readFromException (Exception e)
+  private String readFromException(Exception e)
   {
     String text = "No backtrace available";
     try
     {
-      StringWriter writer = new StringWriter ();
-      PrintWriter pwriter = new PrintWriter (writer);
-      e.printStackTrace (pwriter);
-      text = writer.toString ();
-      writer.close ();
+      StringWriter writer = new StringWriter();
+      PrintWriter pwriter = new PrintWriter(writer);
+      e.printStackTrace(pwriter);
+      text = writer.toString();
+      writer.close();
     }
     catch (Exception ex)
     {
@@ -324,7 +324,7 @@ public class ExceptionDialog extends JDialog
    *
    * @return the exception.
    */
-  public Exception getException ()
+  public Exception getException()
   {
     return currentEx;
   }
@@ -337,21 +337,21 @@ public class ExceptionDialog extends JDialog
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void showExceptionDialog (String title, String message, Exception e)
+  public static void showExceptionDialog(String title, String message, Exception e)
   {
     if (defaultDialog == null)
     {
-      defaultDialog = new ExceptionDialog ();
+      defaultDialog = new ExceptionDialog();
     }
     if (e != null)
     {
-      Log.error("UserError" , e);
+      Log.error("UserError", e);
     }
-    defaultDialog.setTitle (title);
-    defaultDialog.setMessage (message);
-    defaultDialog.setException (e);
-    defaultDialog.adjustSize ();
-    defaultDialog.setVisible (true);
+    defaultDialog.setTitle(title);
+    defaultDialog.setMessage(message);
+    defaultDialog.setException(e);
+    defaultDialog.adjustSize();
+    defaultDialog.setVisible(true);
   }
 
 }

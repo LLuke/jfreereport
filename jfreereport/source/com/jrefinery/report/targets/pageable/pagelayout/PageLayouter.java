@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.24 2003/05/16 17:26:47 taqua Exp $
+ * $Id: PageLayouter.java,v 1.25 2003/06/13 16:21:40 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ public abstract class PageLayouter extends AbstractFunction
     /**
      * Creates a new state.
      */
-    public LayoutManagerState ()
+    public LayoutManagerState()
     {
     }
   }
@@ -158,7 +158,7 @@ public abstract class PageLayouter extends AbstractFunction
    * and the second step starts to print the page header and opens the logical page.
    * The second step is not executed, if no more content is printed.
    *
-   * @param pageRestartDone set to true, if the restart process for this page is completed, 
+   * @param pageRestartDone set to true, if the restart process for this page is completed,
    *                        false otherwise.
    */
   public void setPageRestartDone(boolean pageRestartDone)
@@ -207,17 +207,17 @@ public abstract class PageLayouter extends AbstractFunction
    * Clears the logical page reference. This method must be called after
    * the page has been processed.
    */
-  public void clearLogicalPage ()
+  public void clearLogicalPage()
   {
     this.logicalPage = null;
   }
 
   /**
-   * Returns the logical page. 
+   * Returns the logical page.
    *
    * @return the logical page.
    */
-  public LogicalPage getLogicalPage ()
+  public LogicalPage getLogicalPage()
   {
     return logicalPage;
   }
@@ -319,7 +319,7 @@ public abstract class PageLayouter extends AbstractFunction
   /**
    * Clears the current event.
    */
-  protected void clearCurrentEvent ()
+  protected void clearCurrentEvent()
   {
     if (currentEvent == null)
     {
@@ -327,6 +327,7 @@ public abstract class PageLayouter extends AbstractFunction
     }
     this.currentEvent = null;
   }
+
   /**
    * Ends a page. During the process, an PageFinished event is generated and
    * the state advances to the next page. The Layoutmanager-State is saved and
@@ -340,13 +341,13 @@ public abstract class PageLayouter extends AbstractFunction
    * @throws ReportProcessingException if the page end is requested while the page
    * is restarted.
    */
-  protected void endPage () throws ReportProcessingException
+  protected void endPage() throws ReportProcessingException
   {
     // this can be dangerous if a band spans multiple pages.
     // rethink that.
     if (isRestartingPage())
     {
-      throw new ReportProcessingException ("Report does not proceed (PageEnd during RestartPage)");
+      throw new ReportProcessingException("Report does not proceed (PageEnd during RestartPage)");
     }
     // cannot finish
     if (isFinishingPage())
@@ -378,7 +379,7 @@ public abstract class PageLayouter extends AbstractFunction
    * PageStartedEvent is fired. While this method is executed, the RestartingPage
    * flag is set to true.
    */
-  protected void startPage ()
+  protected void startPage()
   {
     if (isPageRestartDone() == true)
     {
@@ -427,7 +428,7 @@ public abstract class PageLayouter extends AbstractFunction
    *
    * @return a valid saveState, never null
    */
-  protected abstract LayoutManagerState saveCurrentState ();
+  protected abstract LayoutManagerState saveCurrentState();
 
   /**
    * Return the last stored LayoutManager state or null if there is no state
@@ -448,8 +449,8 @@ public abstract class PageLayouter extends AbstractFunction
    * @param state  the report state.
    *
    * @throws ReportProcessingException if there is a problem processing the report.
-  public abstract void restoreSaveState (ReportState state)
-      throws ReportProcessingException;
+   public abstract void restoreSaveState (ReportState state)
+   throws ReportProcessingException;
    */
 
 
@@ -457,7 +458,7 @@ public abstract class PageLayouter extends AbstractFunction
    * Clear the saveState. This should be called after the saveState has been
    * restored.
    */
-  protected void clearSaveState ()
+  protected void clearSaveState()
   {
     layoutManagerState = null;
   }
@@ -469,15 +470,15 @@ public abstract class PageLayouter extends AbstractFunction
    *
    * @return this PageLayouter.
    */
-  public Object getValue ()
+  public Object getValue()
   {
     return this;
   }
 
   /**
-   * The dependency level defines the level of execution for this function. Higher dependency 
-   * functions are executed before lower dependency functions. For ordinary functions and 
-   * expressions, the range for dependencies is defined to start from 0 (lowest dependency 
+   * The dependency level defines the level of execution for this function. Higher dependency
+   * functions are executed before lower dependency functions. For ordinary functions and
+   * expressions, the range for dependencies is defined to start from 0 (lowest dependency
    * possible) to 2^31 (upper limit of int).
    * <p>
    * PageLayouter functions override the default behaviour an place them self at depency level -1,
@@ -498,7 +499,6 @@ public abstract class PageLayouter extends AbstractFunction
   {
     this.depLevel = deplevel;
   }
-
 
 
   /**
@@ -536,13 +536,13 @@ public abstract class PageLayouter extends AbstractFunction
     //setStartNewPage(false);
     setGeneratedPageEmpty(true);
     setPageRestartDone(false);
-    
+
     if (state == null)
     {
       if (ancestor.getCurrentPage() != ReportState.BEFORE_FIRST_PAGE)
       {
-        throw new IllegalStateException("State is null, but this is not the first page." 
-                                        + ancestor.getCurrentPage());
+        throw new IllegalStateException("State is null, but this is not the first page."
+            + ancestor.getCurrentPage());
       }
     }
     // open the logical page ...

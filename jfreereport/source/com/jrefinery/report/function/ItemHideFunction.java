@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.6 2003/01/14 21:06:32 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.7 2003/06/01 17:39:26 taqua Exp $
  *
  * Changes
  * -------
@@ -213,7 +213,11 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
    */
   public Object getValue()
   {
-    return new Boolean(visible);
+    if (visible)
+    {
+      return Boolean.TRUE;
+    }
+    return Boolean.FALSE;
   }
 
   /**

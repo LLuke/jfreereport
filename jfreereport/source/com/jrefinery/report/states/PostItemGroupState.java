@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostItemGroupState.java,v 1.6 2003/05/07 20:27:26 taqua Exp $
+ * $Id: PostItemGroupState.java,v 1.7 2003/05/16 17:26:44 taqua Exp $
  *
  * Changes
  * -------
@@ -56,22 +56,22 @@ public final class PostItemGroupState extends ReportState
    *
    * @param previous  the previous state.
    */
-  public PostItemGroupState (ReportState previous)
+  public PostItemGroupState(ReportState previous)
   {
-    super (previous);
+    super(previous);
   }
 
   /**
-   * Advances from this state to the '<code>PRE-GROUP-FOOTER</code>' state.  Before changing 
+   * Advances from this state to the '<code>PRE-GROUP-FOOTER</code>' state.  Before changing
    * state, an 'items-finished' event is fired.
    *
    * @return the next report state ('<code>PRE-GROUP-FOOTER</code>').
    */
-  public ReportState advance ()
+  public ReportState advance()
   {
     firePrepareEvent(ReportEvent.ITEMS_FINISHED);
 
-    fireItemsFinishedEvent ();
-    return new PreGroupFooterState (this);
+    fireItemsFinishedEvent();
+    return new PreGroupFooterState(this);
   }
 }

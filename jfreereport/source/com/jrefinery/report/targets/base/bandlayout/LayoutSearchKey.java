@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutSearchKey.java,v 1.1 2003/04/06 20:43:00 taqua Exp $
+ * $Id: LayoutSearchKey.java,v 1.2 2003/04/09 15:49:56 mungady Exp $
  *
  * Changes
  * -------
@@ -42,14 +42,14 @@ import com.jrefinery.report.Element;
 
 /**
  * A layout search key.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class LayoutSearchKey extends LayoutCacheKey
 {
   /**
    * Returns <code>true</code> to indicate that this is a search key.
-   * 
+   *
    * @return <code>true</code>.
    */
   public boolean isSearchKey()
@@ -59,11 +59,11 @@ public class LayoutSearchKey extends LayoutCacheKey
 
   /**
    * Sets the search constraint.
-   * 
+   *
    * @param e  the element.
    * @param dim  the dimension.
    */
-  public void setSearchConstraint (Element e, Dimension2D dim)
+  public void setSearchConstraint(Element e, Dimension2D dim)
   {
     setElement(e);
     setParentDim(dim);

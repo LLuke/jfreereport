@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.12 2003/06/10 16:07:53 taqua Exp $
+ * $Id: ReportFactory.java,v 1.13 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes
  * -------
@@ -125,11 +125,11 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
     {
       startFunctions(atts);
     }
-    else if (tagName.equals (PROPERTY_TAG))
+    else if (tagName.equals(PROPERTY_TAG))
     {
-      startProperty (atts);
+      startProperty(atts);
     }
-    else if (tagName.equals (getFinishTag()))
+    else if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
     }
@@ -147,16 +147,16 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startProperty (Attributes atts)
-          throws SAXException
+  protected void startProperty(Attributes atts)
+      throws SAXException
   {
-    currentProperty = atts.getValue (NAME_ATT);
-    currentEncoding = atts.getValue (PROPERTY_ENCODING_ATT);
+    currentProperty = atts.getValue(NAME_ATT);
+    currentEncoding = atts.getValue(PROPERTY_ENCODING_ATT);
     if (currentEncoding == null)
     {
       currentEncoding = PROPERTY_ENCODING_TEXT;
     }
-    currentText = new StringBuffer ();
+    currentText = new StringBuffer();
   }
 
   /**
@@ -176,12 +176,12 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    * @param start  the first character index.
    * @param length  the length (number of valid characters).
    */
-  public void characters (char[] ch, int start, int length)
+  public void characters(char[] ch, int start, int length)
   {
     // accumulate the characters in case the text is split into several chunks...
     if (this.currentText != null)
     {
-      this.currentText.append (String.copyValueOf (ch, start, length));
+      this.currentText.append(String.copyValueOf(ch, start, length));
     }
   }
 
@@ -203,9 +203,9 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
     {
       endConfiguration();
     }
-    else if (elementName.equals (PROPERTY_TAG))
+    else if (elementName.equals(PROPERTY_TAG))
     {
-      endProperty ();
+      endProperty();
     }
     else if (elementName.equals(REPORT_HEADER_TAG)
         || elementName.equals(REPORT_FOOTER_TAG)
@@ -236,11 +236,11 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @throws SAXException if there is a problem parsing the element.
    */
-  protected void endProperty ()
-          throws SAXException
+  protected void endProperty()
+      throws SAXException
   {
     getReport().getReportConfiguration()
-        .setConfigProperty(currentProperty, entityParser.decodeEntities(currentText.toString ()));
+        .setConfigProperty(currentProperty, entityParser.decodeEntities(currentText.toString()));
     currentText = null;
     currentProperty = null;
   }
@@ -264,10 +264,10 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
     PageFormat format = report.getDefaultPageFormat();
     float defTopMargin = (float) format.getImageableY();
     float defBottomMargin = (float) (format.getHeight() - format.getImageableHeight()
-                                                - format.getImageableY());
+        - format.getImageableY());
     float defLeftMargin = (float) format.getImageableX();
     float defRightMargin = (float) (format.getWidth() - format.getImageableWidth()
-                                              - format.getImageableX());
+        - format.getImageableX());
 
     format = createPageFormat(format, atts);
 
@@ -281,16 +281,16 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
     {
       case PageFormat.PORTRAIT:
         PageFormatFactory.getInstance().setBorders(p, defTopMargin, defLeftMargin,
-                                                      defBottomMargin, defRightMargin);
+            defBottomMargin, defRightMargin);
         break;
       case PageFormat.LANDSCAPE:
         // right, top, left, bottom
         PageFormatFactory.getInstance().setBorders(p, defRightMargin, defTopMargin,
-                                                   defLeftMargin, defBottomMargin);
+            defLeftMargin, defBottomMargin);
         break;
       case PageFormat.REVERSE_LANDSCAPE:
         PageFormatFactory.getInstance().setBorders(p, defLeftMargin, defBottomMargin,
-                                                   defRightMargin, defTopMargin);
+            defRightMargin, defTopMargin);
         break;
     }
 
@@ -346,7 +346,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
       Paper p = PageFormatFactory.getInstance().createPaper(pageformatName);
       if (p == null)
       {
-        Log.warn ("Unable to create the requested Paper. " + pageformatName);
+        Log.warn("Unable to create the requested Paper. " + pageformatName);
         return format;
       }
       return PageFormatFactory.getInstance().createPageFormat(p, orientationVal);
@@ -360,14 +360,14 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
       Paper p = PageFormatFactory.getInstance().createPaper(pageformatData);
       if (p == null)
       {
-        Log.warn ("Unable to create the requested Paper. Paper={" + pageformatData[0] + ", "
-                  + pageformatData[1] + "}");
+        Log.warn("Unable to create the requested Paper. Paper={" + pageformatData[0] + ", "
+            + pageformatData[1] + "}");
         return format;
       }
       return PageFormatFactory.getInstance().createPageFormat(p, orientationVal);
     }
 
-    Log.info ("Insufficient Data to create a pageformat: Returned default.");
+    Log.info("Insufficient Data to create a pageformat: Returned default.");
     return format;
   }
 

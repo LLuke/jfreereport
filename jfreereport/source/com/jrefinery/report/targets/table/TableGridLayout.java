@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridLayout.java,v 1.10 2003/02/24 15:02:20 mungady Exp $
+ * $Id: TableGridLayout.java,v 1.11 2003/02/25 15:42:31 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import java.util.List;
  * The table grid layout is used to layout the collected TableCellData object from
  * the TableGrid into the table. The cells position is calculated by comparing the cell
  * bounds with the collected x and y-cuts.
- * 
+ *
  * @author Thomas Morgner
  */
 public class TableGridLayout
@@ -106,7 +106,7 @@ public class TableGridLayout
      */
     public void add(TableGridPosition pos)
     {
-      if (pos == null) 
+      if (pos == null)
       {
         throw new NullPointerException();
       }
@@ -115,7 +115,7 @@ public class TableGridLayout
       {
         if (pos.getElement().isBackground())
         {
-          backGrounds.add (0, pos);
+          backGrounds.add(0, pos);
           //Log.debug ("backGrounds -> added " + backGrounds.size());
         }
         else
@@ -147,7 +147,7 @@ public class TableGridLayout
           Log.warn (new Log.SimpleMessage("Root already added: " , pos.getElement().getBounds()));
           Log.warn (new Log.SimpleMessage("+            added: " , root.getElement().getBounds()));
           Log.warn (new Log.SimpleMessage("+            added: " , pos.getElement().debugChunk));
-          Log.warn (new Log.SimpleMessage("+            added: Col=" , new Integer(root.getCol()), 
+          Log.warn (new Log.SimpleMessage("+            added: Col=" , new Integer(root.getCol()),
                                                             "  Row=" , new Integer(root.getRow())));
           */
           pos.setInvalidCell(true);
@@ -160,7 +160,7 @@ public class TableGridLayout
      *
      * @return the collected backgrounds of the element.
      */
-    public List getBackground ()
+    public List getBackground()
     {
       return backGrounds;
     }
@@ -181,7 +181,7 @@ public class TableGridLayout
      *
      * @return a string representation of the element for debugging purposes.
      */
-    public String toString ()
+    public String toString()
     {
       StringBuffer buffer = new StringBuffer();
       buffer.append("TableGridLayout.Element={root=");
@@ -248,7 +248,7 @@ public class TableGridLayout
    *
    * @param pos the new position that should be added into the grid
    */
-  protected void add (TableCellData pos)
+  protected void add(TableCellData pos)
   {
     Rectangle2D bounds = pos.getBounds();
 
@@ -273,9 +273,9 @@ public class TableGridLayout
       Log.debug ("DebugChunk: " + pos.debugChunk);
       Log.debug ("gPos.getCol: " + gPos.getCol() + " -> " + getColumnStart(gPos.getCol()));
       Log.debug ("gPos.getRow: " + gPos.getRow() + " -> " + getRowStart(gPos.getRow()));
-      Log.debug ("gPos.getColSpan: " + gPos.getColSpan() + " -> " 
+      Log.debug ("gPos.getColSpan: " + gPos.getColSpan() + " -> "
                  + getColumnEnd(gPos.getColSpan() + gPos.getCol() - 1));
-      Log.debug ("gPos.getRowSpan: " + gPos.getRowSpan() + " -> " 
+      Log.debug ("gPos.getRowSpan: " + gPos.getRowSpan() + " -> "
                  + getRowEnd(gPos.getRowSpan() + gPos.getRow() - 1));
     }
 */
@@ -306,9 +306,9 @@ public class TableGridLayout
    * @throws IndexOutOfBoundsException if posX or posY are invalid.
    * @throws NullPointerException if the given table grid position is invalid
    */
-  protected void addToGrid (int posX, int posY, TableGridPosition gPos)
+  protected void addToGrid(int posX, int posY, TableGridPosition gPos)
   {
-    if (gPos == null) 
+    if (gPos == null)
     {
       throw new NullPointerException();
     }
@@ -343,7 +343,7 @@ public class TableGridLayout
    * @param y the table row
    * @return the element, or null, if there is no element defined.
    */
-  public Element getData (int x, int y)
+  public Element getData(int x, int y)
   {
     return (Element) data[x][y];
   }
@@ -374,7 +374,7 @@ public class TableGridLayout
    * @param column the column
    * @return the position of the column in points
    */
-  public int getColumnStart (int column)
+  public int getColumnStart(int column)
   {
     return xCuts[column];
   }
@@ -385,7 +385,7 @@ public class TableGridLayout
    * @param row the row
    * @return the position of the row in points
    */
-  public int getRowStart (int row)
+  public int getRowStart(int row)
   {
     return yCuts[row];
   }
@@ -396,7 +396,7 @@ public class TableGridLayout
    * @param column the column
    * @return the end position of the column in points
    */
-  public int getColumnEnd (int column)
+  public int getColumnEnd(int column)
   {
     if (column == xCuts.length - 1)
     {
@@ -414,7 +414,7 @@ public class TableGridLayout
    * @param row the row
    * @return the end position of the column in points
    */
-  public int getRowEnd (int row)
+  public int getRowEnd(int row)
   {
     if (row == yCuts.length - 1)
     {
@@ -434,7 +434,7 @@ public class TableGridLayout
    * @param value the value that is searched in the data array.
    * @return the position of the value in the array or the next lower position.
    */
-  private static int findBoundary (int[] data, int value)
+  private static int findBoundary(int[] data, int value)
   {
     return findBoundary(data, value, false);
   }
@@ -451,7 +451,7 @@ public class TableGridLayout
    * returned.
    * @return the position of the value in the array or the next lower position.
    */
-  private static int findBoundary (int[] data, int value, boolean upperLimit)
+  private static int findBoundary(int[] data, int value, boolean upperLimit)
   {
     for (int i = 0; i < data.length; i++)
     {

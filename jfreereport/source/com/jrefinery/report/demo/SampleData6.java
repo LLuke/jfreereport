@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData6.java,v 1.7 2003/04/05 18:57:09 taqua Exp $
+ * $Id: SampleData6.java,v 1.8 2003/04/09 16:21:35 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,7 +51,7 @@ public class SampleData6 extends AbstractTableModel
   /**
    * Default constructor - builds a sample data source.
    */
-  public SampleData6 ()
+  public SampleData6()
   {
   }
 
@@ -60,7 +60,7 @@ public class SampleData6 extends AbstractTableModel
    *
    * @return the row count.
    */
-  public int getRowCount ()
+  public int getRowCount()
   {
     return 20000;
   }
@@ -70,7 +70,7 @@ public class SampleData6 extends AbstractTableModel
    *
    * @return the column count.
    */
-  public int getColumnCount ()
+  public int getColumnCount()
   {
     return 5;
   }
@@ -82,7 +82,7 @@ public class SampleData6 extends AbstractTableModel
    *
    * @return the column class.
    */
-  public Class getColumnClass (int column)
+  public Class getColumnClass(int column)
   {
     if (column == 3)
     {
@@ -105,7 +105,7 @@ public class SampleData6 extends AbstractTableModel
    *
    * @return the column name.
    */
-  public String getColumnName (int column)
+  public String getColumnName(int column)
   {
     if (column == 0)
     {
@@ -141,15 +141,20 @@ public class SampleData6 extends AbstractTableModel
    *
    * @return the value.
    */
-  public Object getValueAt (int row, int column)
+  public Object getValueAt(int row, int column)
   {
     switch (column)
     {
-      case 0: return "Name_One" + row;
-      case 1: return "Color_Red" + (row / 1000);
-      case 2: return "Letter_A" + (row / 100);
-      case 3: return new Integer (1);
-      case 4: return new Double (1.1);
+      case 0:
+        return "Name_One" + row;
+      case 1:
+        return "Color_Red" + (row / 1000);
+      case 2:
+        return "Letter_A" + (row / 100);
+      case 3:
+        return new Integer(1);
+      case 4:
+        return new Double(1.1);
     }
     return null;
   }

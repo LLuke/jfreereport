@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StringFieldTemplate.java,v 1.5 2003/03/07 16:55:55 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
  * 18-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.filter.templates;
@@ -45,19 +45,19 @@ import com.jrefinery.report.filter.StringFilter;
 
 /**
  * A string field template.
- * 
+ *
  * @author Thomas Morgner
  */
 public class StringFieldTemplate extends AbstractTemplate implements DataRowConnectable
 {
   /** The data-row data source. */
   private DataRowDataSource dataRowDataSource;
-  
+
   /** A string filter. */
   private StringFilter stringFilter;
 
   /**
-   * Creates a new string field template. 
+   * Creates a new string field template.
    */
   public StringFieldTemplate()
   {
@@ -68,7 +68,7 @@ public class StringFieldTemplate extends AbstractTemplate implements DataRowConn
 
   /**
    * Returns the field name.
-   * 
+   *
    * @return The field name.
    */
   public String getField()
@@ -78,7 +78,7 @@ public class StringFieldTemplate extends AbstractTemplate implements DataRowConn
 
   /**
    * Sets the field name.
-   * 
+   *
    * @param field  the field name.
    */
   public void setField(String field)
@@ -88,7 +88,7 @@ public class StringFieldTemplate extends AbstractTemplate implements DataRowConn
 
   /**
    * Returns the value displayed by the field when the data source value is <code>null</code>.
-   * 
+   *
    * @return A value to represent <code>null</code>.
    */
   public String getNullValue()
@@ -98,7 +98,7 @@ public class StringFieldTemplate extends AbstractTemplate implements DataRowConn
 
   /**
    * Sets the value displayed by the field when the data source value is <code>null</code>.
-   * 
+   *
    * @param nullValue  the value that represents <code>null</code>.
    */
   public void setNullValue(String nullValue)

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPage.java,v 1.6 2003/02/18 19:37:30 taqua Exp $
+ * $Id: LogicalPage.java,v 1.7 2003/05/02 12:40:32 taqua Exp $
  *
  * Changes
  * -------
@@ -58,46 +58,46 @@ public interface LogicalPage
    * @return the page width.
    */
   public float getWidth();
-  
+
   /**
    * Returns the page height.
    *
    * @return the page height.
    */
   public float getHeight();
-  
+
   /**
    * Returns true if the page is open, and false otherwise.
    *
    * @return true or false.
    */
   public boolean isOpen();
-  
+
   /**
    * Returns true if the page is empty, and false otherwise.
    *
    * @return true or false.
    */
   public boolean isEmpty();
-  
+
   /**
-   * Closes the page. 
+   * Closes the page.
    */
   public void close();
-  
+
   /**
    * Opens the page.
    */
   public void open();
-  
+
   /**
    * Replays a spool.A spool is a collection of previously prepared content which
    * should be printed later.
    *
    * @param operations the spool that should be replayed.
    */
-  public void replaySpool (Spool operations);
-  
+  public void replaySpool(Spool operations);
+
   /**
    * Generate a spool. A spool is a collection (or macro) of lowlevel processing instruction
    * on how to distribute a band and its contents. When a spool is recorded, all operations
@@ -113,7 +113,7 @@ public interface LogicalPage
    * @return a spool.
    */
   public Spool spoolBand(Rectangle2D bounds, Band band) throws OutputTargetException;
-  
+
   /**
    * Adds a band to the logical page.
    *
@@ -123,7 +123,7 @@ public interface LogicalPage
    * @throws OutputTargetException if there is a problem with the output target.
    */
   public void addBand(Rectangle2D bounds, Band band) throws OutputTargetException;
-  
+
   /**
    * Returns the physical page format.
    * todo: Find a better way of handling this. Support different pageformats in one
@@ -131,15 +131,15 @@ public interface LogicalPage
    *
    * @return the physical page format.
    */
-  public PageFormat getPhysicalPageFormat ();
-  
+  public PageFormat getPhysicalPageFormat();
+
   /**
    * Gets the output target.
    *
    * @return the output target.
    */
   public OutputTarget getOutputTarget();
-  
+
   /**
    * Sets the output target for the page.
    *
@@ -152,6 +152,6 @@ public interface LogicalPage
    *
    * @return a logical page.
    */
-  public LogicalPage newInstance ();
-  
+  public LogicalPage newInstance();
+
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,14 +28,14 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG, based on PDFSaveDialog);
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
- * 
- * $Id: ExcelExportDialog.java,v 1.13 2003/06/19 18:44:10 taqua Exp $
+ *
+ * $Id: ExcelExportDialog.java,v 1.14 2003/06/26 19:55:56 taqua Exp $
  *
  * Changes
  * --------
  * 02-Jan-2003 : Initial version
  * 25-Feb-2003 : Added missing Javadocs (DG);
- * 
+ *
  */
 
 package com.jrefinery.report.preview;
@@ -81,7 +81,7 @@ import com.jrefinery.report.util.StringUtil;
  * A dialog that is used to perform the printing of a report into an Excel file.
  * <p>
  * The main method to call the dialog is {@link ExcelExportDialog#performExport}. Given a report
- * and a pageformat, the dialog is shown and if the user approved the dialog, the excel file 
+ * and a pageformat, the dialog is shown and if the user approved the dialog, the excel file
  * is saved using the settings made in the dialog.
  *
  * @author Heiko Evermann
@@ -358,7 +358,7 @@ public class ExcelExportDialog extends JDialog
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
     buttonPanel.registerKeyboardAction(getActionConfirm(), KeyStroke.getKeyStroke('\n'),
-                                       JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
     gbc.weightx = 1;
@@ -395,7 +395,7 @@ public class ExcelExportDialog extends JDialog
    * Gets the confirmation state of the dialog. A confirmed dialog has no invalid
    * settings and the user confirmed any resource conflicts.
    *
-   * @return true, if the dialog has been confirmed and the excel file should be saved, 
+   * @return true, if the dialog has been confirmed and the excel file should be saved,
    * false otherwise.
    */
   public boolean isConfirmed()
@@ -415,7 +415,7 @@ public class ExcelExportDialog extends JDialog
 
   /**
    * Returns the setting of the 'strict layout' check-box.
-   * 
+   *
    * @return A boolean.
    */
   public boolean isStrictLayout()
@@ -424,8 +424,8 @@ public class ExcelExportDialog extends JDialog
   }
 
   /**
-   * Sets the 'strict-layout' check-box. 
-   * 
+   * Sets the 'strict-layout' check-box.
+   *
    * @param strictLayout  the new setting.
    */
   public void setStrictLayout(boolean strictLayout)
@@ -485,9 +485,9 @@ public class ExcelExportDialog extends JDialog
     if (filename.trim().length() == 0)
     {
       JOptionPane.showMessageDialog(this,
-                                    getResources().getString("excelexportdialog.targetIsEmpty"),
-                                    getResources().getString("excelexportdialog.errorTitle"),
-                                    JOptionPane.ERROR_MESSAGE);
+          getResources().getString("excelexportdialog.targetIsEmpty"),
+          getResources().getString("excelexportdialog.errorTitle"),
+          JOptionPane.ERROR_MESSAGE);
       return false;
     }
     File f = new File(filename);
@@ -496,29 +496,29 @@ public class ExcelExportDialog extends JDialog
       if (f.isFile() == false)
       {
         JOptionPane.showMessageDialog(this,
-                                      getResources().getString("excelexportdialog.targetIsNoFile"),
-                                      getResources().getString("excelexportdialog.errorTitle"),
-                                      JOptionPane.ERROR_MESSAGE);
+            getResources().getString("excelexportdialog.targetIsNoFile"),
+            getResources().getString("excelexportdialog.errorTitle"),
+            JOptionPane.ERROR_MESSAGE);
         return false;
       }
       if (f.canWrite() == false)
       {
         JOptionPane.showMessageDialog(this,
-                                      getResources().getString(
-                                          "excelexportdialog.targetIsNotWritable"),
-                                      getResources().getString("excelexportdialog.errorTitle"),
-                                      JOptionPane.ERROR_MESSAGE);
+            getResources().getString(
+                "excelexportdialog.targetIsNotWritable"),
+            getResources().getString("excelexportdialog.errorTitle"),
+            JOptionPane.ERROR_MESSAGE);
         return false;
       }
       String key1 = "excelexportdialog.targetOverwriteConfirmation";
       String key2 = "excelexportdialog.targetOverwriteTitle";
       if (JOptionPane.showConfirmDialog(this,
-                                        MessageFormat.format(getResources().getString(key1),
-                                            new Object[]{getFilename()}
-                                        ),
-                                        getResources().getString(key2),
-                                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-                                        == JOptionPane.NO_OPTION)
+          MessageFormat.format(getResources().getString(key1),
+              new Object[]{getFilename()}
+          ),
+          getResources().getString(key2),
+          JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+          == JOptionPane.NO_OPTION)
       {
         return false;
       }
@@ -622,14 +622,15 @@ public class ExcelExportDialog extends JDialog
 
   /**
    * For debugging.
-   * 
+   *
    * @param args  ignored.
    */
-  public static void main (String [] args)
+  public static void main(String[] args)
   {
     JDialog d = new ExcelExportDialog();
     d.pack();
-    d.addWindowListener(new WindowAdapter(){
+    d.addWindowListener(new WindowAdapter()
+    {
       /**
        * Invoked when a window is in the process of being closed.
        * The close operation can be overridden at this point.

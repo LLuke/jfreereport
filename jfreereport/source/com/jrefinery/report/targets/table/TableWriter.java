@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.22 2003/05/16 17:26:48 taqua Exp $
+ * $Id: TableWriter.java,v 1.23 2003/06/23 16:08:27 taqua Exp $
  *
  * Changes
  * -------
@@ -226,9 +226,9 @@ public class TableWriter extends AbstractFunction implements PageEventListener
     float height = Short.MAX_VALUE;
 
     Rectangle2D bounds = BandLayoutManagerUtil.doLayout(band,
-                                          getLayoutSupport(),
-                                          width,
-                                          height);
+        getLayoutSupport(),
+        width,
+        height);
     getCurrentEvent().getState().fireLayoutCompleteEvent(band, getCurrentEvent().getType());
     return bounds;
   }
@@ -242,7 +242,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    * the sheet.
    * @param band the band that should be printed.
    */
-  private void doPrint (Rectangle2D bounds, Band band)
+  private void doPrint(Rectangle2D bounds, Band band)
   {
     int cellCount = producer.getCellCount();
 
@@ -260,11 +260,11 @@ public class TableWriter extends AbstractFunction implements PageEventListener
   /**
    * Ends the current page. Fires the PageFinished event.
    */
-  private void endPage ()
+  private void endPage()
   {
     if (inEndPage == true)
     {
-      throw new IllegalStateException ("Already in startPage or endPage");
+      throw new IllegalStateException("Already in startPage or endPage");
     }
     inEndPage = true;
 
@@ -279,11 +279,11 @@ public class TableWriter extends AbstractFunction implements PageEventListener
   /**
    * Starts a new page. Fires the PageStarted event.
    */
-  public void startPage ()
+  public void startPage()
   {
     if (inEndPage == true)
     {
-      throw new IllegalStateException ("Already in startPage or endPage");
+      throw new IllegalStateException("Already in startPage or endPage");
     }
     inEndPage = true;
 
@@ -408,14 +408,14 @@ public class TableWriter extends AbstractFunction implements PageEventListener
     setCursor(new TableWriterCursor());
 
     // is paginated ...
-     Object[] params = new Object[]{
-       new Integer(event.getState().getCurrentPage())
-     };
-     String sheetName =
-         MessageFormat.format(
-             getResources().getString("tabletarget.page"),
-             params
-         );
+    Object[] params = new Object[]{
+      new Integer(event.getState().getCurrentPage())
+    };
+    String sheetName =
+        MessageFormat.format(
+            getResources().getString("tabletarget.page"),
+            params
+        );
 
     if (getSheetNameFunction() != null)
     {
@@ -472,8 +472,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
         print(b);
       }
     }
-    else
-    if (isLastPageBreak)
+    else if (isLastPageBreak)
     {
       if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
       {

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -62,15 +62,15 @@ public abstract class FirstPageAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  protected FirstPageAction (ResourceBundle resources)
+  protected FirstPageAction(ResourceBundle resources)
   {
-    putValue (NAME, resources.getString ("action.firstpage.name"));
-    putValue (SHORT_DESCRIPTION, resources.getString ("action.firstpage.description"));
-    putValue (ActionDowngrade.MNEMONIC_KEY, 
-              resources.getObject ("action.firstpage.mnemonic"));
-    putValue (ActionDowngrade.ACCELERATOR_KEY, 
-              resources.getObject ("action.firstpage.accelerator"));
-    putValue (SMALL_ICON, resources.getObject ("action.firstpage.small-icon"));
-    putValue ("ICON24", resources.getObject ("action.firstpage.icon"));
+    putValue(NAME, resources.getString("action.firstpage.name"));
+    putValue(SHORT_DESCRIPTION, resources.getString("action.firstpage.description"));
+    putValue(ActionDowngrade.MNEMONIC_KEY,
+        resources.getObject("action.firstpage.mnemonic"));
+    putValue(ActionDowngrade.ACCELERATOR_KEY,
+        resources.getObject("action.firstpage.accelerator"));
+    putValue(SMALL_ICON, resources.getObject("action.firstpage.small-icon"));
+    putValue("ICON24", resources.getObject("action.firstpage.icon"));
   }
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TopAlignment.java,v 1.8 2003/04/05 18:57:19 taqua Exp $
+ * $Id: TopAlignment.java,v 1.9 2003/05/11 13:39:18 taqua Exp $
  *
  * Changes
  * -------
@@ -73,8 +73,8 @@ public class TopAlignment extends VerticalBoundsAlignment
     r = getReferenceBounds().createIntersection(r);
     float x = (float) r.getX();
     float y = (float) getReferenceBounds().getY();
-    float w = (float) Math.min (r.getWidth(), getReferenceBounds().getWidth());
-    float h = (float) Math.min (r.getHeight(), getReferenceBounds().getHeight());
+    float w = (float) Math.min(r.getWidth(), getReferenceBounds().getWidth());
+    float h = (float) Math.min(r.getHeight(), getReferenceBounds().getHeight());
 
     r.setRect(x, y, w, h);
     return r;

@@ -1,10 +1,9 @@
 /**
-/**
  * ========================================
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -29,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostReportFooterState.java,v 1.6 2003/05/07 20:27:26 taqua Exp $
+ * $Id: PostReportFooterState.java,v 1.7 2003/05/16 17:26:44 taqua Exp $
  *
  * Changes
  * -------
@@ -55,9 +54,9 @@ public class PostReportFooterState extends ReportState
    *
    * @param previous  the previous state.
    */
-  public PostReportFooterState (ReportState previous)
+  public PostReportFooterState(ReportState previous)
   {
-    super (previous);
+    super(previous);
   }
 
   /**
@@ -68,7 +67,7 @@ public class PostReportFooterState extends ReportState
    * has been completed.
    * @throws ReportProcessingException if advancing failed.
    */
-  public ReportState advance () throws ReportProcessingException
+  public ReportState advance() throws ReportProcessingException
   {
     firePrepareEvent(ReportEvent.REPORT_DONE);
 

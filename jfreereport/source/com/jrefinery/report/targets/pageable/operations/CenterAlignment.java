@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CenterAlignment.java,v 1.9 2003/04/05 18:57:16 taqua Exp $
+ * $Id: CenterAlignment.java,v 1.10 2003/05/11 13:39:18 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public class CenterAlignment extends HorizontalBoundsAlignment
     }
     inner = getReferenceBounds().createIntersection(inner);
     float x = (float) (getReferenceBounds().getX()
-                       + ((getReferenceBounds().getWidth() - inner.getWidth()) / 2));
+        + ((getReferenceBounds().getWidth() - inner.getWidth()) / 2));
     float y = (float) inner.getY();
     float w = (float) inner.getWidth();
     float h = (float) inner.getHeight();

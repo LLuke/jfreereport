@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultClassFactory.java,v 1.9 2003/04/24 18:08:50 taqua Exp $
+ * $Id: DefaultClassFactory.java,v 1.10 2003/05/09 17:12:12 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.objects;
@@ -47,7 +47,7 @@ import org.jfree.xml.factory.objects.JavaBaseClassFactory;
 
 /**
  * A default implementation of the {@link org.jfree.xml.factory.objects.ClassFactory} interface.
- * 
+ *
  * @author Thomas Morgner
  */
 public class DefaultClassFactory extends JavaBaseClassFactory

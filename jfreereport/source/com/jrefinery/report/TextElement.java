@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextElement.java,v 1.31 2003/02/26 16:41:47 mungady Exp $
+ * $Id: TextElement.java,v 1.32 2003/05/02 12:39:03 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -118,9 +118,9 @@ public class TextElement extends Element
   }
 
   /**
-   * Returns the value for this text element.  
+   * Returns the value for this text element.
    * <p>
-   * Internally, a <code>StringFilter</code> is used to ensure that the final result is an 
+   * Internally, a <code>StringFilter</code> is used to ensure that the final result is an
    * instance of String (even though it is returned as an Object.
    *
    * @return the value for the element.
@@ -155,7 +155,7 @@ public class TextElement extends Element
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
     TextElement te = (TextElement) super.clone();
     te.stringfilter = (StringFilter) stringfilter.clone();
@@ -193,7 +193,7 @@ public class TextElement extends Element
    */
   public void setStrikethrough(boolean b)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.STRIKETHROUGH, new Boolean(b));
+    getStyle().setBooleanStyleProperty(ElementStyleSheet.STRIKETHROUGH, b);
   }
 
   /**
@@ -206,7 +206,7 @@ public class TextElement extends Element
    */
   public void setFont(Font f)
   {
-    getStyle().setFontDefinitionProperty(new FontDefinition (f));
+    getStyle().setFontDefinitionProperty(new FontDefinition(f));
   }
 
   /**
@@ -240,7 +240,7 @@ public class TextElement extends Element
    */
   public void setUnderlined(boolean b)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.UNDERLINED, new Boolean(b));
+    getStyle().setBooleanStyleProperty(ElementStyleSheet.UNDERLINED, b);
   }
 
   /**
@@ -284,8 +284,8 @@ public class TextElement extends Element
    */
   public void setAlignment(int alignment)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, 
-                                ElementAlignment.translateHorizontalAlignment(alignment));
+    getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+        ElementAlignment.translateHorizontalAlignment(alignment));
   }
 
   /**
@@ -315,7 +315,7 @@ public class TextElement extends Element
    */
   public void setVerticalAlignment(int alignment)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, 
-                                ElementAlignment.translateVerticalAlignment(alignment));
+    getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+        ElementAlignment.translateVerticalAlignment(alignment));
   }
 }

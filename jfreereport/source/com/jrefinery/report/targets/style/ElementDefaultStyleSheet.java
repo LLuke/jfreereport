@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.16 2003/06/19 18:44:11 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.17 2003/06/23 14:36:57 taqua Exp $
  *
  * Changes
  * -------
@@ -49,19 +49,19 @@ import org.jfree.ui.FloatDimension;
 /**
  * The default element style sheet. This style sheet defines default attribute
  * values for all elements.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ElementDefaultStyleSheet extends ElementStyleSheet
 {
   /** The default paint. */
   public static final Color DEFAULT_PAINT = Color.black;
-  
+
   /**
    * The default font.
    * @deprecated use the key DEFAULT_FONT_DEFINITION
    */
-  public static final Font DEFAULT_FONT = new Font ("Serif", Font.PLAIN, 10);
+  public static final Font DEFAULT_FONT = new Font("Serif", Font.PLAIN, 10);
 
   /** The default font. */
   public static final FontDefinition DEFAULT_FONT_DEFINITION = new FontDefinition("Serif", 10);
@@ -86,7 +86,7 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
     setStyleProperty(ALIGNMENT, ElementAlignment.LEFT);
     setStyleProperty(VISIBLE, Boolean.TRUE);
     setStyleProperty(LINEHEIGHT, new Float(0));
-    setStyleProperty(ELEMENT_LAYOUT_CACHEABLE, new Boolean(true));
+    setStyleProperty(ELEMENT_LAYOUT_CACHEABLE, Boolean.TRUE);
     setLocked(true);
   }
 
@@ -116,7 +116,7 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
    *
    * @return the style-sheet.
    */
-  public static final ElementDefaultStyleSheet getDefaultStyle ()
+  public static final ElementDefaultStyleSheet getDefaultStyle()
   {
     if (defaultStyle == null)
     {
@@ -159,21 +159,29 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
   }
 
   /**
-   * Assigns a new stylesheet collection to this stylesheet.
-   * <p>
-   * DefaultStylesheets are shared among all reports, as they are unmodifyable.
+   * This method does nothing.
    *
-   * @param styleSheetCollection
-   * @throws IllegalArgumentException
+   * @param styleSheetCollection the stylesheet collection that should be registered.
    */
   public final void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
   }
 
+  /**
+   * This method does nothing.
+   *
+   * @param styleSheetCollection the stylesheet collection that should be registered.
+   */
   public final void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
   }
 
+  /**
+   * Returns true, if this stylesheet is one of the global default stylesheets.
+   * Global default stylesheets are unmodifiable and shared among all element stylesheets.
+   *
+   * @return always true.
+   */
   public boolean isGlobalDefault()
   {
     return true;

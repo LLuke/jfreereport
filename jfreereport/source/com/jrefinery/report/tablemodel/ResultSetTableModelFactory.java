@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.10 2003/06/23 14:36:56 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.11 2003/06/26 19:55:57 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import com.jrefinery.report.util.ReportConfiguration;
 
 /**
  * Creates a <code>TableModel</code> which is backed up by a <code>ResultSet</code>.
- * If the <code>ResultSet</code> is scrollable, a 
+ * If the <code>ResultSet</code> is scrollable, a
  * {@link com.jrefinery.report.tablemodel.ScrollableResultSetTableModel} is
  * created, otherwise all data is copied from the <code>ResultSet</code> into a
  * <code>DefaultTableModel</code>.
@@ -77,7 +77,7 @@ public class ResultSetTableModelFactory
   /**
    * Creates a table model by using the given <code>ResultSet</code> as the backend.
    * If the <code>ResultSet</code> is scrollable (the type is not <code>TYPE_FORWARD_ONLY</code>),
-   * an instance of {@link com.jrefinery.report.tablemodel.ScrollableResultSetTableModel} is 
+   * an instance of {@link com.jrefinery.report.tablemodel.ScrollableResultSetTableModel} is
    * returned. This model uses the
    * extended capabilities of scrollable resultsets to directly read data from the database
    * without caching or the need of copying the complete <code>ResultSet</code> into the programs

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EmptyReportException.java,v 1.1 2003/06/12 23:19:41 taqua Exp $
+ * $Id: EmptyReportException.java,v 1.2 2003/06/15 21:26:29 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 12.06.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report;

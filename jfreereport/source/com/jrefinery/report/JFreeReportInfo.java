@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.17 2003/05/27 13:40:30 mungady Exp $
+ * $Id: JFreeReportInfo.java,v 1.18 2003/06/04 21:09:04 taqua Exp $
  *
  * Changes:
  * --------
@@ -63,44 +63,44 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
    * <p>
    * Uses a resource bundle to localise some of the information.
    */
-  public JFreeReportInfo ()
+  public JFreeReportInfo()
   {
     // get a locale-specific resource bundle...
     String baseResourceClass = "com.jrefinery.report.resources.JFreeReportResources";
-    ResourceBundle resources = ResourceBundle.getBundle (baseResourceClass);
+    ResourceBundle resources = ResourceBundle.getBundle(baseResourceClass);
 
-    setName (resources.getString ("project.name"));
-    setVersion (resources.getString ("project.version"));
-    setInfo (resources.getString ("project.info"));
-    setCopyright (resources.getString ("project.copyright"));
-    setLicenceText (Licences.LGPL);
+    setName(resources.getString("project.name"));
+    setVersion(resources.getString("project.version"));
+    setInfo(resources.getString("project.info"));
+    setCopyright(resources.getString("project.copyright"));
+    setLicenceText(Licences.LGPL);
 
-    setContributors(Arrays.asList (
-            new Contributor[]
-            {
-              new Contributor ("David Gilbert", "david.gilbert@object-refinery.com"),
-              new Contributor ("Thomas Morgner", "taqua@users.sourceforge.net"),
-              new Contributor ("J\u00d6rg Sch\u00d6mer", "joerg.schoemer@nikocity.de"),
-              new Contributor ("Heiko Evermann", "-"),
-              new Contributor ("Piotr Bzdyl", "-"),
-              new Contributor ("Patrice Rolland", "-"),
-              new Contributor ("Cedric Pronzato", "-")
-            }
+    setContributors(Arrays.asList(
+        new Contributor[]
+        {
+          new Contributor("David Gilbert", "david.gilbert@object-refinery.com"),
+          new Contributor("Thomas Morgner", "taqua@users.sourceforge.net"),
+          new Contributor("J\u00d6rg Sch\u00d6mer", "joerg.schoemer@nikocity.de"),
+          new Contributor("Heiko Evermann", "-"),
+          new Contributor("Piotr Bzdyl", "-"),
+          new Contributor("Patrice Rolland", "-"),
+          new Contributor("Cedric Pronzato", "-")
+        }
     ));
 
-    setLibraries (Arrays.asList (
-            new Library[]
-            {
-              new Library (JCommon.INFO),
-              new Library ("iText", "0.99", "LGPL", "http://www.lowagie.com/iText/index.html"),
-              new Library ("GNU JAXP", "1.0beta1", "GPL with library exception",
-                      "http://www.gnu.org/software/classpathx/jaxp/"),
-              new Library ("Pixie", "0.8.0", "LGPL",
-                      "http://sourceforge.net/projects/jfreereport/"),
-              new Library ("BeanShell", "1.2B6", "LGPL", "http://www.beanshell.org/"),
-              new Library ("Apache POI", "1.10", "Apache Public Licence",
-                           "http://jakarta.apache.org/poi/"),
-            }
+    setLibraries(Arrays.asList(
+        new Library[]
+        {
+          new Library(JCommon.INFO),
+          new Library("iText", "0.99", "LGPL", "http://www.lowagie.com/iText/index.html"),
+          new Library("GNU JAXP", "1.0beta1", "GPL with library exception",
+              "http://www.gnu.org/software/classpathx/jaxp/"),
+          new Library("Pixie", "0.8.0", "LGPL",
+              "http://sourceforge.net/projects/jfreereport/"),
+          new Library("BeanShell", "1.2B6", "LGPL", "http://www.beanshell.org/"),
+          new Library("Apache POI", "1.10", "Apache Public Licence",
+              "http://jakarta.apache.org/poi/"),
+        }
     ));
   }
 
@@ -113,7 +113,7 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
    *
    * @param args ignored
    */
-  public static void main (String[] args)
+  public static void main(String[] args)
   {
     JFreeReportInfo info = new JFreeReportInfo();
     System.out.println(info.getName() + " " + info.getVersion());
@@ -121,8 +121,8 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
     System.out.println(info.getCopyright());
     System.out.println(info.getInfo());
     System.out.println("----------------------------------------------------------------");
-    System.out.println("This project is licenced under the terms of the " 
-                       + info.getLicenceName() + ".");
+    System.out.println("This project is licenced under the terms of the "
+        + info.getLicenceName() + ".");
     System.exit(0);
   }
 }

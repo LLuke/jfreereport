@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupsHandler.java,v 1.6 2003/04/23 13:39:20 taqua Exp $
+ * $Id: GroupsHandler.java,v 1.7 2003/04/24 18:08:49 taqua Exp $
  *
  * Changes
  * -------
@@ -115,8 +115,8 @@ public class GroupsHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + GROUP_TAG);
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + GROUP_TAG);
     }
   }
 
@@ -129,7 +129,7 @@ public class GroupsHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char ch[], int start, int length) throws SAXException
+  public void characters(char[] ch, int start, int length) throws SAXException
   {
     // not used here
   }
@@ -149,14 +149,14 @@ public class GroupsHandler implements ElementDefinitionHandler
       report.setGroups(groupList);
       getParser().popFactory().endElement(tagName);
     }
-    else if (tagName.equals (GROUP_TAG))
+    else if (tagName.equals(GROUP_TAG))
     {
       // ignore ...
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + GROUP_TAG + ", " + finishTag);
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + GROUP_TAG + ", " + finishTag);
     }
   }
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.16 2003/06/10 16:07:50 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.17 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -89,15 +89,15 @@ public class StyleSheetHandler implements ElementDefinitionHandler
    */
   public StyleSheetHandler(Parser parser, String finishTag, ElementStyleSheet styleSheet)
   {
-    if (parser == null) 
+    if (parser == null)
     {
       throw new NullPointerException("Parser is null");
     }
-    if (finishTag == null) 
+    if (finishTag == null)
     {
       throw new NullPointerException("FinishTag is null");
     }
-    if (styleSheet == null) 
+    if (styleSheet == null)
     {
       throw new NullPointerException("StyleSheet is null");
     }
@@ -122,14 +122,14 @@ public class StyleSheetHandler implements ElementDefinitionHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
-    throws SAXException
+      throws SAXException
   {
     if (tagName.equals(BASIC_KEY_TAG))
     {
       String name = attrs.getValue("name");
       if (name == null)
       {
-        throw new ParseException ("Attribute 'name' is missing.", getParser().getLocator());
+        throw new ParseException("Attribute 'name' is missing.", getParser().getLocator());
       }
       String className = attrs.getValue("class");
       Class c = null;
@@ -152,7 +152,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
       String name = attrs.getValue("name");
       if (name == null)
       {
-        throw new ParseException ("Attribute 'name' is missing.", getParser().getLocator());
+        throw new ParseException("Attribute 'name' is missing.", getParser().getLocator());
       }
       String className = attrs.getValue("class");
       Class c = null;
@@ -188,9 +188,9 @@ public class StyleSheetHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + BASIC_KEY_TAG + ", "
-                              + COMPOUND_KEY_TAG + ". ");
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + BASIC_KEY_TAG + ", "
+          + COMPOUND_KEY_TAG + ". ");
     }
   }
 
@@ -201,7 +201,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
   {
     // no characters expected here ...
   }
@@ -214,7 +214,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName)
-    throws SAXException
+      throws SAXException
   {
     if (tagName.equals(BASIC_KEY_TAG))
     {
@@ -235,10 +235,10 @@ public class StyleSheetHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + BASIC_KEY_TAG + ", "
-                              + COMPOUND_KEY_TAG + ", "
-                              + finishTag);
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + BASIC_KEY_TAG + ", "
+          + COMPOUND_KEY_TAG + ", "
+          + finishTag);
     }
   }
 

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.16 2003/05/09 17:12:13 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.17 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ import org.jfree.io.IOUtils;
  * External referenced content can either be copied into the data directory or could
  * be included as linked content. This behaviour is controled by the <code>copyExternalImages</code>
  * flag.
- * 
+ *
  * @author Thomas Morgner
  */
 public class DirectoryHtmlFilesystem implements HtmlFilesystem
@@ -75,25 +75,25 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
 
   /** the root file to store the generated main html file. */
   private File rootFile;
-  
+
   /** the handle to the data directory. */
   private File dataDirectory;
-  
+
   /** the root stream for writing the file. */
   private FileOutputStream rootStream;
-  
+
   /** A collection of all used file names for generating external content. */
   private HashMap usedNames;
-  
+
   /** A collection of all referenced external content. */
   private HashMap usedURLs;
-  
+
   /** A collection of all previously encoded images. */
   private HashMap encodedImages;
-  
+
   /** the image comparator used to compare generated images. */
   private ImageComparator comparator;
-  
+
   /** A flag indicating whether to copy external references into the data directory. */
   private boolean copyExternalImages;
 
@@ -104,10 +104,10 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * @param file the filename of the root html file.
    * @throws IOException if an error occurs.
    */
-  public DirectoryHtmlFilesystem (File file)
-    throws IOException
+  public DirectoryHtmlFilesystem(File file)
+      throws IOException
   {
-    this (file, file.getParentFile());
+    this(file, file.getParentFile());
   }
 
   /**
@@ -118,8 +118,8 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * @param dataDirectory the name of the data directory, where the files should be created.
    * @throws IOException if an error occurs.
    */
-  public DirectoryHtmlFilesystem (File file, File dataDirectory)
-    throws IOException
+  public DirectoryHtmlFilesystem(File file, File dataDirectory)
+      throws IOException
   {
     this.usedNames = new HashMap();
     this.usedURLs = new HashMap();
@@ -128,7 +128,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
 
     if (file.exists() && file.isFile() == false)
     {
-      throw new IOException ("The given file-parameter does not point to a data file");
+      throw new IOException("The given file-parameter does not point to a data file");
     }
     else
     {
@@ -169,7 +169,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * to the linked files. If you pan to use the report offline, then it is best to
    * copy all referenced data into the zip file.
    *
-   * @param copyExternalImages true, if external referenced content should be copied into the 
+   * @param copyExternalImages true, if external referenced content should be copied into the
    *                           ZIP file, false otherwise.
    */
   public void setCopyExternalImages(boolean copyExternalImages)
@@ -204,7 +204,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * @param url the url that should be tested.
    * @return true, if the content type is supported by the browsers, false otherwise.
    */
-  protected boolean isSupportedImageFormat (URL url)
+  protected boolean isSupportedImageFormat(URL url)
   {
     String file = url.getFile();
     if (StringUtil.endsWithIgnoreCase(file, ".jpg"))
@@ -236,14 +236,14 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * @see DirectoryHtmlFilesystem#isSupportedImageFormat
    */
   public HtmlReferenceData createImageReference(ImageReference reference)
-    throws IOException
+      throws IOException
   {
     if (reference.getSourceURL() == null)
     {
       WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
       obs.waitImageLoaded();
 
-      PngEncoder encoder = new PngEncoder (reference.getImage(),
+      PngEncoder encoder = new PngEncoder(reference.getImage(),
           PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
       byte[] data = encoder.pngEncode();
 
@@ -252,14 +252,14 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
       if (name == null)
       {
         // encode the picture ...
-        File dataFile = new File (dataDirectory, createName("picture") + ".png");
+        File dataFile = new File(dataDirectory, createName("picture") + ".png");
         // a png encoder is included in JCommon ...
-        OutputStream in = new BufferedOutputStream (new FileOutputStream(dataFile));
+        OutputStream in = new BufferedOutputStream(new FileOutputStream(dataFile));
         in.write(data);
         in.flush();
         in.close();
         name = IOUtils.getInstance().createRelativeURL(dataFile.toURL(), dataDirectory.toURL());
-        encodedImages.put (object, name);
+        encodedImages.put(object, name);
       }
       return new ImageReferenceData(name);
     }
@@ -272,14 +272,14 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
         WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
         obs.waitImageLoaded();
 
-        PngEncoder encoder = new PngEncoder (reference.getImage(),
+        PngEncoder encoder = new PngEncoder(reference.getImage(),
             PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
         byte[] data = encoder.pngEncode();
 
         // encode the picture ...
-        File dataFile = new File (dataDirectory, createName("picture") + ".png");
+        File dataFile = new File(dataDirectory, createName("picture") + ".png");
         // a png encoder is included in JCommon ...
-        OutputStream in = new BufferedOutputStream (new FileOutputStream(dataFile));
+        OutputStream in = new BufferedOutputStream(new FileOutputStream(dataFile));
         in.write(data);
         in.flush();
         in.close();
@@ -288,14 +288,14 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
       }
       return new ImageReferenceData(name);
     }
-    else if (isCopyExternalImages ())
+    else if (isCopyExternalImages())
     {
       URL url = reference.getSourceURL();
       String name = (String) usedURLs.get(url);
       if (name == null)
       {
-        File dataFile 
-            = new File (dataDirectory, createName(IOUtils.getInstance().getFileName(url)));
+        File dataFile
+            = new File(dataDirectory, createName(IOUtils.getInstance().getFileName(url)));
         InputStream urlIn = new BufferedInputStream(reference.getSourceURL().openStream());
         OutputStream fout = new BufferedOutputStream(new FileOutputStream(dataFile));
         IOUtils.getInstance().copyStreams(urlIn, fout);
@@ -310,7 +310,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     else
     {
       String baseName = IOUtils.getInstance().createRelativeURL(reference.getSourceURL(),
-                                                                dataDirectory.toURL());
+          dataDirectory.toURL());
       return new ImageReferenceData(baseName);
     }
   }
@@ -321,9 +321,9 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * @param base the basename.
    * @return the unique name generated using the basename.
    */
-  private String createName (String base)
+  private String createName(String base)
   {
-    CounterRef ref = (CounterRef) usedNames.get (base);
+    CounterRef ref = (CounterRef) usedNames.get(base);
     if (ref == null)
     {
       ref = new CounterRef();
@@ -346,14 +346,14 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * @throws IOException if IO errors occured while creating the reference.
    */
   public HtmlReferenceData createCSSReference(String styleSheet)
-    throws IOException
+      throws IOException
   {
-    File refFile = new File(dataDirectory, createName ("style") + ".css");
-    OutputStream fout = new BufferedOutputStream (new FileOutputStream(refFile));
+    File refFile = new File(dataDirectory, createName("style") + ".css");
+    OutputStream fout = new BufferedOutputStream(new FileOutputStream(refFile));
     fout.write(styleSheet.getBytes());
     fout.close();
     String baseName = IOUtils.getInstance().createRelativeURL(refFile.toURL(),
-                                                              dataDirectory.toURL());
+        dataDirectory.toURL());
     return new HRefReferenceData(baseName);
   }
 

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowDataSource.java,v 1.7 2003/02/02 23:43:49 taqua Exp $
+ * $Id: DataRowDataSource.java,v 1.8 2003/06/01 17:39:24 taqua Exp $
  *
  * Changes
  * -------
@@ -45,11 +45,11 @@ import java.io.Serializable;
 import com.jrefinery.report.DataRow;
 
 /**
- * A DataSource that can access values from the 'data-row'. The data-row contains all values from 
- * the current row of the report's <code>TableModel</code>, plus the current values of the defined 
+ * A DataSource that can access values from the 'data-row'. The data-row contains all values from
+ * the current row of the report's <code>TableModel</code>, plus the current values of the defined
  * expressions and functions for the report.
  * <p>
- * This class replaces the three classes: <code>ExpressionDataSource</code>, 
+ * This class replaces the three classes: <code>ExpressionDataSource</code>,
  * <code>FunctionDataSource</code> and <code>ReportDataSource</code>.
  * <p>
  * @see com.jrefinery.report.DataRow
@@ -69,11 +69,11 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
   private transient DataRow dataRow;
 
   /**
-   * Default constructor. 
+   * Default constructor.
    * <p>
    * The expression name is empty ("", not null), the value initially null.
    */
-  public DataRowDataSource ()
+  public DataRowDataSource()
   {
     setDataSourceColumnName("");
   }
@@ -83,7 +83,7 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
    *
    * @param column  the name of the field, function or expression in the data-row.
    */
-  public DataRowDataSource (String column)
+  public DataRowDataSource(String column)
   {
     setDataSourceColumnName(column);
   }
@@ -124,13 +124,13 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
    *
    * @throws IllegalStateException if there is no data-row connected.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    if (getDataRow () == null)
+    if (getDataRow() == null)
     {
-      throw new IllegalStateException ("No DataRowBackend Connected");
+      throw new IllegalStateException("No DataRowBackend Connected");
     }
-    return getDataRow ().get (getDataSourceColumnName());
+    return getDataRow().get(getDataSourceColumnName());
   }
 
   /**
@@ -140,9 +140,9 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
    *
    * @throws CloneNotSupportedException if the cloning is not supported.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    return super.clone ();
+    return super.clone();
   }
 
   /**
@@ -153,24 +153,24 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
    * @throws NullPointerException if the given row is null
    * @throws IllegalStateException if there is a datarow already connected.
    */
-  public void connectDataRow (DataRow row) throws IllegalStateException
+  public void connectDataRow(DataRow row) throws IllegalStateException
   {
     if (row == null)
     {
-      throw new NullPointerException ("DataRowDataSource.connectDataRow: null data-row.");
+      throw new NullPointerException("DataRowDataSource.connectDataRow: null data-row.");
     }
     if (dataRow != null)
     {
-      throw new IllegalStateException ("DataRowDataSource.connectDataRow: "
-                                       + "datarow already connected.");
+      throw new IllegalStateException("DataRowDataSource.connectDataRow: "
+          + "datarow already connected.");
     }
     dataRow = row;
   }
 
   /**
-   * Releases the connection to the data-row. 
+   * Releases the connection to the data-row.
    * <p>
-   * If no datarow is connected, an <code>IllegalStateException</code> is thrown to indicate the 
+   * If no datarow is connected, an <code>IllegalStateException</code> is thrown to indicate the
    * programming error.
    *
    * @param row the datarow to be disconnected.
@@ -178,15 +178,15 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
    * @throws NullPointerException if the given row is null
    * @throws IllegalStateException if there is currently no datarow connected.
    */
-  public void disconnectDataRow (DataRow row) throws IllegalStateException
+  public void disconnectDataRow(DataRow row) throws IllegalStateException
   {
     if (row == null)
     {
-      throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
+      throw new NullPointerException("Null-DataRowBackend cannot be disconnected.");
     }
     if (dataRow == null)
     {
-      throw new IllegalStateException ("There is no datarow connected");
+      throw new IllegalStateException("There is no datarow connected");
     }
     dataRow = null;
   }
@@ -196,7 +196,7 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
    *
    * @return the data-row.
    */
-  public DataRow getDataRow ()
+  public DataRow getDataRow()
   {
     return dataRow;
   }

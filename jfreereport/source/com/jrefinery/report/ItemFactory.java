@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.44 2003/04/24 18:08:43 taqua Exp $
+ * $Id: ItemFactory.java,v 1.45 2003/05/02 12:39:02 taqua Exp $
  *
  * Changes
  * -------
@@ -129,14 +129,14 @@ public class ItemFactory
                                               String field)
   {
     return createDateElement(name,
-                             bounds,
-                             paint,
-                             alignment,
-                             ElementAlignment.TOP.getOldAlignment(),
-                             font,
-                             nullString,
-                             format,
-                             field);
+        bounds,
+        paint,
+        alignment,
+        ElementAlignment.TOP.getOldAlignment(),
+        font,
+        nullString,
+        format,
+        field);
   }
 
   /**
@@ -228,9 +228,10 @@ public class ItemFactory
                                               String field)
   {
     return createDateElement(name, bounds, paint, alignment,
-                             ElementAlignment.TOP.getOldAlignment(),
-                             font, nullString, format, field);
+        ElementAlignment.TOP.getOldAlignment(),
+        font, nullString, format, field);
   }
+
   /**
    * Creates a new TextElement containing a date filter structure.
    *
@@ -391,7 +392,7 @@ public class ItemFactory
                                                  String nullString,
                                                  String function)
   {
-    return createStringElement(name, bounds, paint, alignment, font,  nullString, function);
+    return createStringElement(name, bounds, paint, alignment, font, nullString, function);
   }
 
   /**
@@ -680,6 +681,7 @@ public class ItemFactory
   {
     return createImageDataRowElement(name, bounds, paint, field, scale, false);
   }
+
   /**
    * Creates a new ImageElement.
    *
@@ -766,8 +768,8 @@ public class ItemFactory
                                                String labeltext)
   {
     return createLabelElement(name, bounds, paint, alignment,
-                              ElementAlignment.TOP.getOldAlignment(),
-                              font, labeltext);
+        ElementAlignment.TOP.getOldAlignment(),
+        font, labeltext);
   }
 
   /**
@@ -837,16 +839,16 @@ public class ItemFactory
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static ShapeElement createLineShapeElement(String name,
-                                                        Paint paint,
-                                                        Stroke stroke,
-                                                        Line2D shape)
+                                                    Paint paint,
+                                                    Stroke stroke,
+                                                    Line2D shape)
   {
-    if (shape.getX1() == shape.getX2() && shape.getY1 () == shape.getY2())
+    if (shape.getX1() == shape.getX2() && shape.getY1() == shape.getY2())
     {
       // scale the line, is horizontal,the line is on pos 0,0 within the element
-      Rectangle2D bounds = new Rectangle2D.Float (0, (float) shape.getY1(), -100, 0);
-      return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 100, 0), 
-                                true, false, true);
+      Rectangle2D bounds = new Rectangle2D.Float(0, (float) shape.getY1(), -100, 0);
+      return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 100, 0),
+          true, false, true);
     }
     else
     {
@@ -861,9 +863,9 @@ public class ItemFactory
       }
 
       shape.setLine(shape.getX1() - bounds.getX(),
-                    shape.getY1() - bounds.getY(),
-                    shape.getX2() - bounds.getX(),
-                    shape.getY2() - bounds.getY());
+          shape.getY1() - bounds.getY(),
+          shape.getX2() - bounds.getX(),
+          shape.getY2() - bounds.getY());
       return createShapeElement(name, bounds, paint, stroke, shape, true, false, true);
     }
   }
@@ -910,13 +912,13 @@ public class ItemFactory
     {
       // no need to translate ...
       return createShapeElement(name, shapeBounds, paint, stroke, shape,
-                                shouldDraw, shouldFill, true);
+          shouldDraw, shouldFill, true);
     }
 
-    AffineTransform af = AffineTransform.getTranslateInstance(-shapeBounds.getX(), 
-                                                              -shapeBounds.getY());
+    AffineTransform af = AffineTransform.getTranslateInstance(-shapeBounds.getX(),
+        -shapeBounds.getY());
     return createShapeElement(name, shapeBounds, paint, stroke, af.createTransformedShape(shape),
-                              shouldDraw, shouldFill, true);
+        shouldDraw, shouldFill, true);
   }
 
 
@@ -947,7 +949,7 @@ public class ItemFactory
                                                 boolean shouldScale)
   {
     return createShapeElement(name, bounds, paint, stroke, shape, shouldDraw,
-                              shouldFill, shouldScale, false);
+        shouldFill, shouldScale, false);
   }
 
   /**
@@ -1050,6 +1052,7 @@ public class ItemFactory
     setElementBounds(shapeElement, bounds);
     return shapeElement;
   }
+
   /**
    * Creates a new RectangleShapeElement.
    *
@@ -1066,18 +1069,18 @@ public class ItemFactory
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static ShapeElement createRectangleShapeElement(String name,
-                                                          Paint paint,
-                                                          Stroke stroke,
-                                                          Rectangle2D shape,
-                                                          boolean shouldDraw,
-                                                          boolean shouldFill)
+                                                         Paint paint,
+                                                         Stroke stroke,
+                                                         Rectangle2D shape,
+                                                         boolean shouldDraw,
+                                                         boolean shouldFill)
   {
     if (shape.getX() < 0 || shape.getY() < 0 || shape.getWidth() < 0 || shape.getHeight() < 0)
     {
       // this is a relative rectangle element, so the shape defines the bounds
       // and expects to draw a scaled rectangle within these bounds
       return createShapeElement(name, shape, paint, stroke, new Rectangle2D.Float(0, 0, 100, 100),
-                                shouldDraw, shouldFill, true);
+          shouldDraw, shouldFill, true);
     }
     Rectangle2D rect = (Rectangle2D) shape.clone();
     rect.setRect(0, 0, rect.getWidth(), rect.getHeight());
@@ -1141,10 +1144,11 @@ public class ItemFactory
                                                 String field)
   {
     return createNumberElement(name, bounds, paint, alignment,
-                               ElementAlignment.TOP.getOldAlignment(),
-                               font, nullString,
-                               format, field);
+        ElementAlignment.TOP.getOldAlignment(),
+        font, nullString,
+        format, field);
   }
+
   /**
    * Creates a new TextElement containing a numeric filter structure.
    *
@@ -1176,7 +1180,7 @@ public class ItemFactory
     DataSource ds;
     if (format instanceof DecimalFormat)
     {
-      NumberFieldTemplate template = new NumberFieldTemplate ();
+      NumberFieldTemplate template = new NumberFieldTemplate();
       template.setDecimalFormat((DecimalFormat) format);
       template.setNullValue(nullString);
       template.setField(field);
@@ -1246,9 +1250,9 @@ public class ItemFactory
                                                 String field)
   {
     return createNumberElement(name, bounds, paint, alignment,
-                               ElementAlignment.TOP.getOldAlignment(),
-                               font, nullString,
-                               format, field);
+        ElementAlignment.TOP.getOldAlignment(),
+        font, nullString,
+        format, field);
   }
 
   /**
@@ -1400,13 +1404,13 @@ public class ItemFactory
                                                 String field)
   {
     return createStringElement(name,
-                               bounds,
-                               paint,
-                               alignment,
-                               ElementAlignment.TOP.getOldAlignment(),
-                               font,
-                               nullString,
-                               field);
+        bounds,
+        paint,
+        alignment,
+        ElementAlignment.TOP.getOldAlignment(),
+        font,
+        nullString,
+        field);
   }
 
   /**
@@ -1508,7 +1512,7 @@ public class ItemFactory
   {
     GroupFooter footer = new GroupFooter();
     footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-                                       new FloatDimension(0, height));
+        new FloatDimension(0, height));
     if (defaultFont != null)
     {
       footer.getBandDefaults().setFontDefinitionProperty(new FontDefinition(defaultFont));
@@ -1536,7 +1540,7 @@ public class ItemFactory
   {
     GroupHeader header = new GroupHeader();
     header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-                                       new FloatDimension(0, height));
+        new FloatDimension(0, height));
     if (defaultFont != null)
     {
       header.getBandDefaults().setFontDefinitionProperty(new FontDefinition(defaultFont));
@@ -1545,7 +1549,7 @@ public class ItemFactory
     {
       header.getBandDefaults().setStyleProperty(ElementStyleSheet.PAINT, defaultPaint);
     }
-    header.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, new Boolean(pageBreak));
+    header.getStyle().setBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, pageBreak);
     return header;
   }
 
@@ -1568,7 +1572,7 @@ public class ItemFactory
   {
     PageFooter footer = new PageFooter();
     footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-                                       new FloatDimension (0, height));
+        new FloatDimension(0, height));
     if (defaultFont != null)
     {
       footer.getBandDefaults().setFontDefinitionProperty(new FontDefinition(defaultFont));
@@ -1602,7 +1606,7 @@ public class ItemFactory
   {
     PageHeader header = new PageHeader();
     header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-                                       new FloatDimension (0, height));
+        new FloatDimension(0, height));
     if (defaultFont != null)
     {
       header.getBandDefaults().setFontDefinitionProperty(new FontDefinition(defaultFont));
@@ -1633,7 +1637,7 @@ public class ItemFactory
   {
     ReportFooter footer = new ReportFooter();
     footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-                                       new FloatDimension (0, height));
+        new FloatDimension(0, height));
     if (defaultFont != null)
     {
       footer.getBandDefaults().setFontDefinitionProperty(new FontDefinition(defaultFont));
@@ -1663,7 +1667,7 @@ public class ItemFactory
   {
     ReportHeader header = new ReportHeader();
     header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-                                       new FloatDimension (0, height));
+        new FloatDimension(0, height));
     if (defaultFont != null)
     {
       header.getBandDefaults().setFontDefinitionProperty(new FontDefinition(defaultFont));
@@ -1689,7 +1693,7 @@ public class ItemFactory
   public static Band createItemBand(float height, Font defaultFont, Paint defaultPaint)
   {
     ItemBand band = new ItemBand();
-    band.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension (0, height));
+    band.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
     if (defaultFont != null)
     {
       band.getBandDefaults().setFontDefinitionProperty(new FontDefinition(defaultFont));
@@ -1810,13 +1814,13 @@ public class ItemFactory
    * @param e  the element.
    * @param bounds  the bounds.
    */
-  public static void setElementBounds (Element e, Rectangle2D bounds)
+  public static void setElementBounds(Element e, Rectangle2D bounds)
   {
     e.getStyle().setStyleProperty(StaticLayoutManager.ABSOLUTE_POS,
-                                  new Point2D.Float((float) bounds.getX(), (float) bounds.getY()));
+        new Point2D.Float((float) bounds.getX(), (float) bounds.getY()));
     e.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-                                  new FloatDimension((float) bounds.getWidth(),
-                                                     (float) bounds.getHeight()));
+        new FloatDimension((float) bounds.getWidth(),
+            (float) bounds.getHeight()));
   }
 
   /**

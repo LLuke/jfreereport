@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFTextCellData.java,v 1.6 2003/05/02 12:40:44 taqua Exp $
+ * $Id: RTFTextCellData.java,v 1.7 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import com.lowagie.text.Paragraph;
 
 /**
  * A wrapper for text content within the generated RTF Table.
- * 
+ *
  * @author Thomas Morgner
  */
 public class RTFTextCellData extends RTFCellData
@@ -63,7 +63,7 @@ public class RTFTextCellData extends RTFCellData
   public RTFTextCellData(Rectangle2D outerBounds, String value, RTFTextCellStyle style)
   {
     super(outerBounds, style);
-    if (value == null) 
+    if (value == null)
     {
       throw new NullPointerException();
     }
@@ -71,13 +71,13 @@ public class RTFTextCellData extends RTFCellData
   }
 
   /**
-   * Creates a iText TableCell with text content in it. 
+   * Creates a iText TableCell with text content in it.
    *
    * @return the cell with the content.
    * @throws DocumentException if the cell could not be created.
    */
   public Cell getCell()
-    throws DocumentException
+      throws DocumentException
   {
     Cell cell = new Cell();
     cell.setBorderWidth(0);
@@ -85,7 +85,7 @@ public class RTFTextCellData extends RTFCellData
     Chunk chunk = new Chunk(value);
     RTFTextCellStyle style = (RTFTextCellStyle) getStyle();
     style.applyTextStyle(chunk);
-    Paragraph paragraph  = new Paragraph();
+    Paragraph paragraph = new Paragraph();
     paragraph.add(chunk);
     cell.addElement(paragraph);
     return cell;

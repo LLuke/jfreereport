@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -23,12 +23,12 @@
  * -----------------
  * ExportToExcelAction.java
  * -----------------
-  * (C)opyright 2003, by Heiko Evermann and Contributors.
+ * (C)opyright 2003, by Heiko Evermann and Contributors.
  *
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):
-*
- * $Id: ExportToHtmlAction.java,v 1.2 2003/02/23 20:39:28 taqua Exp $
+ *
+ * $Id: ExportToHtmlAction.java,v 1.3 2003/05/02 12:39:32 taqua Exp $
  *
  * Changes
  * -------
@@ -55,15 +55,15 @@ public abstract class ExportToHtmlAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  public ExportToHtmlAction (ResourceBundle resources)
+  public ExportToHtmlAction(ResourceBundle resources)
   {
-    this.putValue (NAME, resources.getString ("action.export-to-html.name"));
-    this.putValue (SHORT_DESCRIPTION, resources.getString ("action.export-to-html.description"));
-    this.putValue (ActionDowngrade.MNEMONIC_KEY,
-                   resources.getObject ("action.export-to-html.mnemonic"));
-    this.putValue (ActionDowngrade.ACCELERATOR_KEY,
-                   resources.getObject ("action.export-to-html.accelerator"));
-    this.putValue (SMALL_ICON, resources.getObject ("action.export-to-html.small-icon"));
-    this.putValue ("ICON24", resources.getObject ("action.export-to-html.icon"));
+    this.putValue(NAME, resources.getString("action.export-to-html.name"));
+    this.putValue(SHORT_DESCRIPTION, resources.getString("action.export-to-html.description"));
+    this.putValue(ActionDowngrade.MNEMONIC_KEY,
+        resources.getObject("action.export-to-html.mnemonic"));
+    this.putValue(ActionDowngrade.ACCELERATOR_KEY,
+        resources.getObject("action.export-to-html.accelerator"));
+    this.putValue(SMALL_ICON, resources.getObject("action.export-to-html.small-icon"));
+    this.putValue("ICON24", resources.getObject("action.export-to-html.icon"));
   }
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.35 2003/04/24 18:08:57 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.36 2003/06/12 23:17:16 taqua Exp $
  *
  * Changes
  * -------
@@ -100,6 +100,7 @@ public class LogicalPageImpl implements LogicalPage
    * fun with it elsewhere.
    */
   private boolean addOperationComments;
+
   /**
    * Creates a new logical page, where the physical page format is equal to the
    * logical page format.
@@ -143,9 +144,9 @@ public class LogicalPageImpl implements LogicalPage
     for (int i = 0; i < physicalPage.length; i++)
     {
       physicalPage[i] = new PhysicalPage(phys,
-                                         new Rectangle2D.Float(0, 0,
-                                                                (float) phys.getImageableWidth(),
-                                                                (float) phys.getImageableHeight()));
+          new Rectangle2D.Float(0, 0,
+              (float) phys.getImageableWidth(),
+              (float) phys.getImageableHeight()));
     }
   }
 
@@ -198,7 +199,7 @@ public class LogicalPageImpl implements LogicalPage
    * @param ot the outputTarget, must not be null
    * @throws NullPointerException if the given OutputTarget is null
    */
-  public void setOutputTarget (OutputTarget ot)
+  public void setOutputTarget(OutputTarget ot)
   {
     if (ot == null)
     {
@@ -288,7 +289,7 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @param operations  the operations.
    */
-  public void replaySpool (Spool operations)
+  public void replaySpool(Spool operations)
   {
     PhysicalOperation[] ops = operations.getOperations();
     for (int i = 0; i < ops.length; i++)
@@ -338,8 +339,8 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  protected void spoolBand (Rectangle2D bounds, Band band, Spool spool)
-    throws OutputTargetException
+  protected void spoolBand(Rectangle2D bounds, Band band, Spool spool)
+      throws OutputTargetException
   {
     // do nothing if the band is invisble
     if (band.isVisible() == false)
@@ -356,13 +357,13 @@ public class LogicalPageImpl implements LogicalPage
 
     PageFormat pf = getPageFormat();
     Rectangle2D logicalPageBounds = new Rectangle2D.Float(0, 0,
-                                                          (float) pf.getImageableWidth(),
-                                                          (float) pf.getImageableHeight());
+        (float) pf.getImageableWidth(),
+        (float) pf.getImageableHeight());
     Rectangle2D ibounds = logicalPageBounds.createIntersection(bounds);
 
     if (addOperationComments)
     {
-      spool.addOperation(new PhysicalOperation.AddComment (
+      spool.addOperation(new PhysicalOperation.AddComment(
           new Log.SimpleMessage("Begin Band: ", band.getClass(), " -> ", band.getName())));
     }
 
@@ -394,8 +395,8 @@ public class LogicalPageImpl implements LogicalPage
    */
   private Rectangle2D translateSubRect(Rectangle2D outer, Rectangle2D inner)
   {
-    float w = (float) Math.min (outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
-    float h = (float) Math.min (outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
+    float w = (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
+    float h = (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
     Rectangle2D rc = new Rectangle2D.Float(
         (float) (outer.getX() + inner.getX()),
         (float) (outer.getY() + inner.getY()),
@@ -443,9 +444,9 @@ public class LogicalPageImpl implements LogicalPage
     Rectangle2D drawBounds = translateSubRect(bounds, elementBounds);
     if (addOperationComments)
     {
-      operations.addOperation(new PhysicalOperation.AddComment ("Begin Element: " + e.getClass()
-                              + " -> " + e.getName()));
-      operations.addOperation(new PhysicalOperation.AddComment (" ...  Element: " + drawBounds));
+      operations.addOperation(new PhysicalOperation.AddComment("Begin Element: " + e.getClass()
+          + " -> " + e.getName()));
+      operations.addOperation(new PhysicalOperation.AddComment(" ...  Element: " + drawBounds));
     }
 
     ElementLayoutInformation eli = new ElementLayoutInformation(drawBounds);
@@ -473,7 +474,7 @@ public class LogicalPageImpl implements LogicalPage
    *
    * todo how to handle multiple physical pages? How to specify which page should be printed ...
    */
-  public void close ()
+  public void close()
   {
     for (int i = 0; i < physicalPage.length; i++)
     {
@@ -483,7 +484,7 @@ public class LogicalPageImpl implements LogicalPage
       }
       catch (Exception e)
       {
-        Log.error ("On CloseLogicalPage" , e);
+        Log.error("On CloseLogicalPage", e);
       }
       physicalPage[i].flush();
     }
@@ -503,7 +504,7 @@ public class LogicalPageImpl implements LogicalPage
   /**
    * Opens the logical page. Prepare everything to get bands added.
    */
-  public void open ()
+  public void open()
   {
     closed = false;
   }
@@ -514,7 +515,7 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @return true, if the page is empty and nothing was printed, false otherwise.
    */
-  public boolean isEmpty ()
+  public boolean isEmpty()
   {
     for (int i = 0; i < physicalPage.length; i++)
     {
@@ -532,7 +533,7 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @return the defined width of this logical page.
    */
-  public float getWidth ()
+  public float getWidth()
   {
     return (float) getPageFormat().getImageableWidth();
   }
@@ -544,7 +545,7 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @return the defined height of this logical page.
    */
-  public float getHeight ()
+  public float getHeight()
   {
     return (float) getPageFormat().getImageableHeight();
   }

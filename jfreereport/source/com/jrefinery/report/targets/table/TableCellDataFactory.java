@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,13 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellDataFactory.java,v 1.5 2003/02/24 15:02:20 mungady Exp $
+ * $Id: TableCellDataFactory.java,v 1.6 2003/05/02 12:40:37 taqua Exp $
  *
  * Changes
  * -------
  * 18-Jan-2003 : Initial version
  * 24-Feb-2003 : Fixed Checkstyle issues (DG);
- * 
+ *
  */
 package com.jrefinery.report.targets.table;
 
@@ -52,7 +52,7 @@ import com.jrefinery.report.Element;
  * @see TableWriter
  * @see TableCellData
  * @see TableGrid
- * 
+ *
  * @author Thomas Morgner
  */
 public interface TableCellDataFactory
@@ -62,13 +62,13 @@ public interface TableCellDataFactory
    * should contain copies of all needed element attributes, as the element instance
    * will be reused in the later report processing.
    * <p>
-   * If the tablemodel does not support the element type, return <code>null</code>.   
+   * If the tablemodel does not support the element type, return <code>null</code>.
    *
    * @param e  the element that should be converted into TableCellData.
    * @param rect  the element's bounds within the table (specified in points).
-   * 
-   * @return The generated TableCellData object, or <code>null</code> if element type is 
+   *
+   * @return The generated TableCellData object, or <code>null</code> if element type is
    *         not supported.
    */
-  public TableCellData createCellData (Element e, Rectangle2D rect);
+  public TableCellData createCellData(Element e, Rectangle2D rect);
 }

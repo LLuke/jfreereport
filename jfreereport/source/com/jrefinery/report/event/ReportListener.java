@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: ReportListener.java,v 1.9 2003/05/16 17:26:39 taqua Exp $
+ * $Id: ReportListener.java,v 1.10 2003/06/13 17:54:33 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -58,7 +58,7 @@ public interface ReportListener extends EventListener
    *
    * @param event The event.
    */
-  public void reportInitialized (ReportEvent event);
+  public void reportInitialized(ReportEvent event);
 
   /**
    * Receives notification that report generation has started.
@@ -68,7 +68,7 @@ public interface ReportListener extends EventListener
    *
    * @param event The event.
    */
-  public void reportStarted (ReportEvent event);
+  public void reportStarted(ReportEvent event);
 
   /**
    * Receives notification that report generation has finished (the last record is read and all
@@ -76,7 +76,7 @@ public interface ReportListener extends EventListener
    *
    * @param event The event.
    */
-  public void reportFinished (ReportEvent event);
+  public void reportFinished(ReportEvent event);
 
   /**
    * Receives notification that report generation has completed, the report footer was printed,
@@ -84,7 +84,7 @@ public interface ReportListener extends EventListener
    *
    * @param event The event.
    */
-  public void reportDone (ReportEvent event);
+  public void reportDone(ReportEvent event);
 
   /**
    * Receives notification that a new page is being started.
@@ -96,7 +96,7 @@ public interface ReportListener extends EventListener
    * @param event The event.
    * @deprecated Implement the PageEventListener interface to receive page events.
    */
-  public void pageStarted (ReportEvent event);
+  public void pageStarted(ReportEvent event);
 
   /**
    * Receives notification that a page is completed.
@@ -108,7 +108,7 @@ public interface ReportListener extends EventListener
    * @param event The event.
    * @deprecated Implement the PageEventListener interface to receive page events.
    */
-  public void pageFinished (ReportEvent event);
+  public void pageFinished(ReportEvent event);
 
   /**
    * Receives notification that a new group has started.
@@ -117,7 +117,7 @@ public interface ReportListener extends EventListener
    *
    * @param event The event.
    */
-  public void groupStarted (ReportEvent event);
+  public void groupStarted(ReportEvent event);
 
   /**
    * Receives notification that a group is finished.
@@ -126,7 +126,7 @@ public interface ReportListener extends EventListener
    *
    * @param event The event.
    */
-  public void groupFinished (ReportEvent event);
+  public void groupFinished(ReportEvent event);
 
   /**
    * Receives notification that a group of item bands is about to be processed.
@@ -135,7 +135,7 @@ public interface ReportListener extends EventListener
    *
    * @param event The event.
    */
-  public void itemsStarted (ReportEvent event);
+  public void itemsStarted(ReportEvent event);
 
   /**
    * Receives notification that a group of item bands has been completed.
@@ -144,7 +144,7 @@ public interface ReportListener extends EventListener
    *
    * @param event The event.
    */
-  public void itemsFinished (ReportEvent event);
+  public void itemsFinished(ReportEvent event);
 
   /**
    * Receives notification that a new row has been read.
@@ -153,6 +153,6 @@ public interface ReportListener extends EventListener
    *
    * @param event The event.
    */
-  public void itemsAdvanced (ReportEvent event);
+  public void itemsAdvanced(ReportEvent event);
 
 }

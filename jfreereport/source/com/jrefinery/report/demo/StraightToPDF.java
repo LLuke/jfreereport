@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.9 2003/06/19 18:44:09 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.10 2003/06/26 19:55:56 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,7 @@ public class StraightToPDF
    */
   public StraightToPDF(String filename) throws ParseException
   {
-    URL in  = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
+    URL in = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
     JFreeReport report = parseReport(in);
     TableModel data = new OpenSourceProjects();
     report.setData(data);
@@ -164,8 +164,8 @@ public class StraightToPDF
     }
     catch (Exception e)
     {
-      Log.error ("Failed to run demo", e);
-      System.exit (1);
+      Log.error("Failed to run demo", e);
+      System.exit(1);
     }
   }
 

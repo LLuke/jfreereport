@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.26 2003/06/23 16:08:20 taqua Exp $
+ * $Id: Group.java,v 1.27 2003/06/26 19:55:55 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -451,7 +451,7 @@ public class Group implements Serializable, Cloneable, Comparable
       {
         // groups with the same number of -, but different fields, are not compareable.
         throw new IllegalArgumentException("These groups are not comparable, they don't have any "
-                                           + "subgroup relation");
+            + "subgroup relation");
       }
     }
 
@@ -468,7 +468,7 @@ public class Group implements Serializable, Cloneable, Comparable
     // not compareable, invalid groups
     // return 0;
     throw new IllegalArgumentException("These groups are not comparable, they don't have any "
-                                       + "subgroup relation");
+        + "subgroup relation");
   }
 
   /**
@@ -476,7 +476,7 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @return A string.
    */
-  public String toString ()
+  public String toString()
   {
     StringBuffer b = new StringBuffer();
     b.append("Group={Name='");
@@ -524,6 +524,7 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @param styleSheetCollection the stylesheet collection that should be unregistered.
    * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException
+   * if there is an other stylesheet collection already registered with that element.
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
@@ -543,10 +544,10 @@ public class Group implements Serializable, Cloneable, Comparable
    * @param sc the stylesheet collection that contains the updated information and
    * that should be assigned with that element.
    * @throws NullPointerException if the given stylesheet collection is null.
-   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException if there is an other stylesheet
-   * collection already registered with that element.
+   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException
+   * if there is an other stylesheet collection already registered with that element.
    */
-  public void updateStyleSheetCollection (StyleSheetCollection sc)
+  public void updateStyleSheetCollection(StyleSheetCollection sc)
   {
     footer.updateStyleSheetCollection(sc);
     header.updateStyleSheetCollection(sc);

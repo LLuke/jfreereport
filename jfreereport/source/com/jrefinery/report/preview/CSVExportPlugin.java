@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportPlugin.java,v 1.2 2003/06/19 18:44:10 taqua Exp $
+ * $Id: CSVExportPlugin.java,v 1.3 2003/06/26 19:55:56 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 13-Jun-2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.preview;
@@ -92,7 +92,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public String getDisplayName()
   {
-    return resources.getString ("action.export-to-csv.name");
+    return resources.getString("action.export-to-csv.name");
   }
 
   /**
@@ -102,7 +102,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public String getShortDescription()
   {
-    return resources.getString ("action.export-to-csv.description");
+    return resources.getString("action.export-to-csv.description");
   }
 
   /**
@@ -112,7 +112,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon()
   {
-    return (Icon) resources.getObject ("action.export-to-csv.small-icon");
+    return (Icon) resources.getObject("action.export-to-csv.small-icon");
   }
 
   /**
@@ -122,7 +122,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon()
   {
-    return (Icon) resources.getObject ("action.export-to-csv.icon");
+    return (Icon) resources.getObject("action.export-to-csv.icon");
   }
 
   /**
@@ -132,7 +132,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public KeyStroke getAcceleratorKey()
   {
-    return (KeyStroke) resources.getObject ("action.export-to-csv.accelerator");
+    return (KeyStroke) resources.getObject("action.export-to-csv.accelerator");
   }
 
   /**
@@ -142,7 +142,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public Integer getMnemonicKey()
   {
-    return (Integer) resources.getObject ("action.export-to-csv.mnemonic");
+    return (Integer) resources.getObject("action.export-to-csv.mnemonic");
   }
 
   /**

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -27,7 +27,7 @@
  * resulting combined work under terms of your choice, provided that
  * every copy of the combined work is accompanied by a complete copy of
  * the source code of JFreeReport (the version of JFreeReport used to produce the
- * combined work), being distributed under the terms of the GNU Lesser General 
+ * combined work), being distributed under the terms of the GNU Lesser General
  * Public License plus this exception.  An independent module is a module
  * which is not derived from or based on JFreeReport.
  *
@@ -49,7 +49,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.33 2003/06/13 16:21:22 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.34 2003/06/15 21:26:29 taqua Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,7 @@ public abstract class AbstractFunction implements Function
   private DataRow dataRow;
 
   /**
-   * Creates an unnamed function. Make sure the name of the function is set using 
+   * Creates an unnamed function. Make sure the name of the function is set using
    * {@link #setName} before the function is added to the report's function collection.
    */
   protected AbstractFunction()
@@ -191,7 +191,7 @@ public abstract class AbstractFunction implements Function
   }
 
   /**
-   * Sets a property for the function.  If the property value is <code>null</code>, the property 
+   * Sets a property for the function.  If the property value is <code>null</code>, the property
    * will be removed from the property collection.
    *
    * @param name  the property name (<code>null</code> not permitted).
@@ -226,7 +226,7 @@ public abstract class AbstractFunction implements Function
    * Adds a property collection to the properties for this function (overwriting existing
    * properties with the same name).
    * <P>
-   * Function parameters are recorded as properties.  The required parameters (if any) will be 
+   * Function parameters are recorded as properties.  The required parameters (if any) will be
    * specified in the documentation for the class that implements the function.
    *
    * @param p  the properties.
@@ -261,9 +261,9 @@ public abstract class AbstractFunction implements Function
    * <p>
    * The dependency level controls the order of evaluation for expressions and functions.  Higher
    * level expressions are evaluated before lower level expressions.  Any level in the range
-   * 0 to Integer.MAX_VALUE is allowed.  Negative values are reserved for system functions 
+   * 0 to Integer.MAX_VALUE is allowed.  Negative values are reserved for system functions
    * (printing and layouting).
-   * 
+   *
    * @param level  the level (must be greater than or equal to 0).
    */
   public void setDependencyLevel(int level)
@@ -410,7 +410,7 @@ public abstract class AbstractFunction implements Function
   }
 
   /**
-   * Clones the function.  
+   * Clones the function.
    * <P>
    * Be aware, this does not create a deep copy. If you have complex
    * strucures contained in objects, you have to override this function.

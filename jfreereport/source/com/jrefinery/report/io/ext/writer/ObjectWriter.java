@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.14 2003/06/04 21:09:09 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.15 2003/06/10 16:07:52 taqua Exp $
  *
  * Changes
  * -------
@@ -53,29 +53,29 @@ import org.jfree.xml.factory.objects.ObjectFactoryException;
 
 /**
  * A writer.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class ObjectWriter extends AbstractXMLDefinitionWriter
 {
   /** The base object. */
   private Object baseObject;
-  
+
   /** The object description. */
   private ObjectDescription objectDescription;
-  
+
   /** The object factory. */
   private ClassFactoryCollector cc;
 
   /**
    * Creates a new writer.
-   * 
+   *
    * @param reportWriter  the report writer.
    * @param baseObject  the base object (<code>null</code> not permitted).
    * @param objectDescription  the object description (<code>null</code> not permitted).
    * @param indentLevel the current indention level.
    */
-  public ObjectWriter(ReportWriter reportWriter, Object baseObject, 
+  public ObjectWriter(ReportWriter reportWriter, Object baseObject,
                       ObjectDescription objectDescription, int indentLevel)
   {
     super(reportWriter, indentLevel);
@@ -87,7 +87,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     {
       throw new NullPointerException("ObjectDescription is null");
     }
-    
+
     this.baseObject = baseObject;
     this.objectDescription = objectDescription;
     cc = getReportWriter().getClassFactoryCollector();
@@ -95,7 +95,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Returns the object description.
-   * 
+   *
    * @return The object description.
    */
   public ObjectDescription getObjectDescription()
@@ -105,7 +105,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Returns the base object.
-   * 
+   *
    * @return The base object.
    */
   public Object getBaseObject()
@@ -115,19 +115,19 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Returns the object factory.
-   * 
+   *
    * @return The object factory.
    */
-  public ClassFactoryCollector getClassFactoryCollector ()
+  public ClassFactoryCollector getClassFactoryCollector()
   {
     return cc;
   }
 
   /**
    * Writes the description.
-   * 
+   *
    * @param writer  the writer.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if the object could not be written.
    */
@@ -154,12 +154,12 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Returns a description of a parameter.
-   * 
+   *
    * @param name  the parameter name.
-   * 
+   *
    * @return The description.
    */
-  protected ObjectDescription getParameterDescription (String name)
+  protected ObjectDescription getParameterDescription(String name)
   {
 
     // Try to find the object description directly ...
@@ -202,22 +202,22 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
     if (parameterDescription == null)
     {
-      Log.info ("Unable to get parameter description for class: " + o.getClass());
+      Log.info("Unable to get parameter description for class: " + o.getClass());
     }
     return parameterDescription;
   }
 
   /**
    * Writes a parameter to XML.
-   * 
+   *
    * @param writer  the writer.
    * @param parameterName  the parameter name.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if transforming the report into a stream failed.
    */
-  protected void writeParameter (Writer writer, String parameterName)
-    throws IOException, ReportWriterException
+  protected void writeParameter(Writer writer, String parameterName)
+      throws IOException, ReportWriterException
   {
     Object parameterValue = getObjectDescription().getParameter(parameterName);
     if (parameterValue == null)
@@ -231,7 +231,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     if (parameterDescription == null)
     {
       throw new ReportWriterException("Unable to get Parameter description for "
-                                      + getBaseObject() + " Parameter: " + parameterName);
+          + getBaseObject() + " Parameter: " + parameterName);
     }
 
     try
@@ -261,8 +261,8 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     {
       writeTag(writer, CompoundObjectHandler.COMPOUND_OBJECT_TAG, p, OPEN);
 
-      ObjectWriter objWriter = new ObjectWriter(getReportWriter(), parameterValue, 
-                                                parameterDescription, getIndentLevel());
+      ObjectWriter objWriter = new ObjectWriter(getReportWriter(), parameterValue,
+          parameterDescription, getIndentLevel());
       objWriter.write(writer);
 
       writeCloseTag(writer, CompoundObjectHandler.COMPOUND_OBJECT_TAG);
@@ -272,7 +272,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Returns <code>true</code> if this is a basic object, and <code>false</code> otherwise.
-   * 
+   *
    * @param parameters  the parameter.
    * @param od  the descriptions.
    *
@@ -284,7 +284,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     {
       throw new NullPointerException();
     }
-    
+
     if (parameters.size() == 1)
     {
       String param = (String) parameters.get(0);
@@ -301,12 +301,12 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Returns a list of parameter names.
-   * 
+   *
    * @param d  the description.
-   * 
+   *
    * @return The list.
    */
-  protected static ArrayList getParameterNames (ObjectDescription d)
+  protected static ArrayList getParameterNames(ObjectDescription d)
   {
     ArrayList list = new ArrayList();
 

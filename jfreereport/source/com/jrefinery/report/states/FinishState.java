@@ -1,10 +1,9 @@
 /**
-/**
  * ========================================
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -29,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: FinishState.java,v 1.5 2002/12/12 12:26:56 mungady Exp $
+ * $Id: FinishState.java,v 1.6 2003/02/04 17:56:20 taqua Exp $
  *
  * Changes
  * -------
@@ -54,9 +53,9 @@ public final class FinishState extends ReportState
    *
    * @param previous  the previous state.
    */
-  public FinishState (ReportState previous)
+  public FinishState(ReportState previous)
   {
-    super (previous);
+    super(previous);
   }
 
   /**
@@ -69,9 +68,9 @@ public final class FinishState extends ReportState
    * @throws ReportProcessingException to indicate that it is not possible to advance to another
    *         state from the finish state.
    */
-  public ReportState advance () throws ReportProcessingException
+  public ReportState advance() throws ReportProcessingException
   {
-    throw new ReportProcessingException ("Cannot advance beyond finish!");
+    throw new ReportProcessingException("Cannot advance beyond finish!");
   }
 
   /**
@@ -79,7 +78,7 @@ public final class FinishState extends ReportState
    *
    * @return true, as this report is done and will no longer advance.
    */
-  public boolean isFinish ()
+  public boolean isFinish()
   {
     return true;
   }

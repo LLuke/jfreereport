@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ImageCellRenderer.java,v 1.7 2003/05/02 12:39:34 taqua Exp $
+ * $Id: ImageCellRenderer.java,v 1.1 2003/06/19 18:46:35 taqua Exp $
  *
  * Changes
  * -------
@@ -57,17 +57,17 @@ public class ImageCellRenderer extends DefaultTableCellRenderer implements Table
 {
 
   /** The icon. */
-  private ImageIcon icon = new ImageIcon ();
+  private ImageIcon icon = new ImageIcon();
 
   /**
    * Constructs a new renderer.
    */
-  public ImageCellRenderer ()
+  public ImageCellRenderer()
   {
-    super ();
-    setHorizontalAlignment (JLabel.CENTER);
-    setVerticalAlignment (JLabel.CENTER);
-    setIcon (icon);
+    super();
+    setHorizontalAlignment(JLabel.CENTER);
+    setVerticalAlignment(JLabel.CENTER);
+    setIcon(icon);
   }
 
   /**
@@ -81,19 +81,19 @@ public class ImageCellRenderer extends DefaultTableCellRenderer implements Table
    * @param column The (zero-based) column index.
    * @return The component that can render the contents of the cell.
    */
-  public Component getTableCellRendererComponent (JTable table, Object value, boolean isSelected,
-                                                  boolean hasFocus, int row, int column)
+  public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                 boolean hasFocus, int row, int column)
   {
 
-    setFont (null);
-    icon.setImage ((Image) value);
+    setFont(null);
+    icon.setImage((Image) value);
     if (isSelected)
     {
-      setBackground (table.getSelectionBackground ());
+      setBackground(table.getSelectionBackground());
     }
     else
     {
-      setBackground (null);
+      setBackground(null);
     }
     return this;
   }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Spool.java,v 1.10 2003/04/05 18:57:16 taqua Exp $
+ * $Id: Spool.java,v 1.11 2003/05/02 12:40:33 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
 import com.jrefinery.report.targets.pageable.operations.PhysicalOperationsCollector;
 
-/** 
+/**
  * A spool is a sequence of operations (instances of PhysicalOperation) that can be
  * applied to an OutputTarget.
  *
@@ -57,7 +57,7 @@ public class Spool implements Cloneable, PhysicalOperationsCollector
   /**
    * Creates a new spool.
    */
-  public Spool ()
+  public Spool()
   {
     this.operations = new ArrayList();
   }
@@ -67,7 +67,7 @@ public class Spool implements Cloneable, PhysicalOperationsCollector
    *
    * @return true, if the spool is empty, false otherwise.
    */
-  public boolean isEmpty ()
+  public boolean isEmpty()
   {
     return operations.isEmpty();
   }
@@ -77,7 +77,7 @@ public class Spool implements Cloneable, PhysicalOperationsCollector
    *
    * @return an array of operations.
    */
-  public PhysicalOperation[] getOperations ()
+  public PhysicalOperation[] getOperations()
   {
     PhysicalOperation[] ops = new PhysicalOperation[operations.size()];
     ops = (PhysicalOperation[]) operations.toArray(ops);
@@ -89,9 +89,9 @@ public class Spool implements Cloneable, PhysicalOperationsCollector
    *
    * @param op  the operation.
    */
-  public void addOperation (PhysicalOperation op)
+  public void addOperation(PhysicalOperation op)
   {
-    operations.add (op);
+    operations.add(op);
   }
 
   /**
@@ -111,7 +111,7 @@ public class Spool implements Cloneable, PhysicalOperationsCollector
    *
    * @throws CloneNotSupportedException if cloning is not supported.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
     Spool s = (Spool) super.clone();
     s.operations = (ArrayList) operations.clone();

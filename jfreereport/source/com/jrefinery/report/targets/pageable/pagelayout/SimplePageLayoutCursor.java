@@ -1,9 +1,9 @@
 /**
  * ========================================
- * JFreeReport : a free Java report library 
+ * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.9 2003/02/25 15:42:26 taqua Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.10 2003/02/27 10:35:40 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -53,7 +53,7 @@ import java.io.Serializable;
  * A utility class for keeping track of the current output position on a logical page.  Only the
  * vertical location is tracked, it begins at zero (the top of the page) and increases as the
  * cursor moves down the page.
- * 
+ *
  * @author David Gilbert
  */
 public class SimplePageLayoutCursor implements Cloneable, Serializable
@@ -75,7 +75,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @param height  the logical page height.
    */
-  public SimplePageLayoutCursor (float height)
+  public SimplePageLayoutCursor(float height)
   {
     y = (float) 0;
     pageBottom = height;
@@ -88,11 +88,11 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @param reserve  the space (in points) to reserve at the bottom of the page.
    */
-  public void setReservedSpace (float reserve)
+  public void setReservedSpace(float reserve)
   {
     if (reserve < 0)
     {
-      throw new IllegalArgumentException ("Cannot free reserved space");
+      throw new IllegalArgumentException("Cannot free reserved space");
     }
     else if (reserve > pageBottom)
     {
@@ -106,7 +106,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return the reserved space (in Java2D units).
    */
-  public float getReservedSpace ()
+  public float getReservedSpace()
   {
     return reserved;
   }
@@ -115,11 +115,11 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    * Adds the specified amount to the y-coordinate.
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advance (float amount)
+  public void advance(float amount)
   {
     if (amount < 0)
     {
-      throw new IllegalArgumentException ("Cannot advance negative");
+      throw new IllegalArgumentException("Cannot advance negative");
     }
     y += amount;
   }
@@ -131,11 +131,11 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advanceTo (float amount)
+  public void advanceTo(float amount)
   {
     if (amount < y)
     {
-      throw new IllegalArgumentException ("Cannot advance negative");
+      throw new IllegalArgumentException("Cannot advance negative");
     }
     y = amount;
   }
@@ -147,7 +147,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return A flag indicating whether or not there is room to print the band.
    */
-  public boolean isSpaceFor (float height)
+  public boolean isSpaceFor(float height)
   {
     return (y + height <= (pageBottom - reserved));
   }
@@ -157,7 +157,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return the current y-position of this cursor.
    */
-  public float getY ()
+  public float getY()
   {
     return y;
   }
@@ -167,7 +167,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return the bottom border of the printable area.
    */
-  public float getPageBottom ()
+  public float getPageBottom()
   {
     return pageBottom;
   }
@@ -177,7 +177,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return the start of the space reserved for the page footer.
    */
-  public float getPageBottomReserved ()
+  public float getPageBottomReserved()
   {
     return (pageBottom - reserved);
   }
@@ -189,9 +189,9 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @throws CloneNotSupportedException  n.a.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    return super.clone ();
+    return super.clone();
   }
 
   /**

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.15 2003/06/19 18:44:09 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.16 2003/06/23 14:36:56 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,7 @@ public class LevelledExpressionList implements ReportListener,
 
   /** The levels. */
   private int[] levels;
-  
+
   /**
    * Creates a new list.
    *
@@ -93,7 +93,7 @@ public class LevelledExpressionList implements ReportListener,
     while (it.hasNext())
     {
       Integer level = (Integer) it.next();
-      al.add (level);
+      al.add(level);
     }
     levels = new int[al.size()];
     for (int i = 0; i < levels.length; i++)
@@ -157,7 +157,7 @@ public class LevelledExpressionList implements ReportListener,
 
   }
 
-    /**
+  /**
    * Receives notification that report generation has started.
    * <P>
    * The event carries a ReportState.Started state.  Use this to initialize the report.
@@ -995,7 +995,7 @@ public class LevelledExpressionList implements ReportListener,
    *
    * @return true, if there were errors, false otherwise.
    */
-  public boolean hasErrors ()
+  public boolean hasErrors()
   {
     return errorList.size() != 0;
   }
@@ -1020,10 +1020,10 @@ public class LevelledExpressionList implements ReportListener,
 
   /**
    * Fires a prepare event.
-   * 
+   *
    * @param event  the event.
    */
-  public void firePrepareEvent (ReportEvent event)
+  public void firePrepareEvent(ReportEvent event)
   {
     clearError();
 
@@ -1056,10 +1056,10 @@ public class LevelledExpressionList implements ReportListener,
 
   /**
    * Fires a prepare event layout listeners.
-   * 
+   *
    * @param event  the event.
    */
-  protected void firePrepareEventLayoutListener (ReportEvent event)
+  protected void firePrepareEventLayoutListener(ReportEvent event)
   {
     // no clear error here ...
     for (int i = 0; i < levels.length; i++)
@@ -1073,8 +1073,8 @@ public class LevelledExpressionList implements ReportListener,
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
-        if (e instanceof Function && e instanceof PrepareEventListener 
-                                  && e instanceof LayoutListener)
+        if (e instanceof Function && e instanceof PrepareEventListener
+            && e instanceof LayoutListener)
         {
           PrepareEventListener f = (PrepareEventListener) e;
           try

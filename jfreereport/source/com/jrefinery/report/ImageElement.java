@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.20 2002/12/02 18:23:59 taqua Exp $
+ * $Id: ImageElement.java,v 1.21 2002/12/06 17:17:46 mungady Exp $
  *
  * Changes:
  * --------
@@ -62,7 +62,7 @@ public class ImageElement extends Element
   /**
    * Constructs a image element.
    */
-  public ImageElement ()
+  public ImageElement()
   {
   }
 
@@ -93,7 +93,7 @@ public class ImageElement extends Element
    */
   public void setScale(boolean scale)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.SCALE, new Boolean(scale));
+    getStyle().setBooleanStyleProperty(ElementStyleSheet.SCALE, scale);
   }
 
   /**
@@ -113,6 +113,6 @@ public class ImageElement extends Element
    */
   public void setKeepAspectRatio(boolean kar)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, new Boolean(kar));
+    getStyle().setBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, kar);
   }
 }

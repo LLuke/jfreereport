@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlFilesystem.java,v 1.6 2003/02/26 16:42:27 mungady Exp $
+ * $Id: HtmlFilesystem.java,v 1.7 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,7 @@ public interface HtmlFilesystem
    * @return the output stream of the main HTML file.
    * @throws IOException if an IO error occured, while providing the root stream.
    */
-  public OutputStream getRootStream () throws IOException;
+  public OutputStream getRootStream() throws IOException;
 
   /**
    * Creates a HtmlReference for ImageData. If the target filesystem does not support
@@ -91,7 +91,7 @@ public interface HtmlFilesystem
    * @return the generated HtmlReference, never null.
    * @throws IOException if IO errors occured while creating the reference.
    */
-  public HtmlReferenceData createCSSReference (String styleSheet) throws IOException;
+  public HtmlReferenceData createCSSReference(String styleSheet) throws IOException;
 
   /**
    * Close the Filesystem and write any buffered content. The filesystem will not

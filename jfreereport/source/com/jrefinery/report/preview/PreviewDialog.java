@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.13 2003/06/12 23:17:14 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.14 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -100,90 +100,90 @@ public class PreviewDialog extends JDialog implements PreviewProxy
 
   /** A preview proxy. */
   private PreviewProxyBase base;
-  
+
   /** Localised resources. */
   private ResourceBundle resources;
 
   /**
    * Creates a new preview dialog for a report.
-   * 
+   *
    * @param report  the report.
-   * 
+   *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
   public PreviewDialog(JFreeReport report)
       throws ReportProcessingException
   {
-    init (report);
+    init(report);
   }
 
   /**
    * Creates a new preview dialog for a report.
-   * 
+   *
    * @param report  the report.
    * @param owner  the owner frame.
-   * 
+   *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
   public PreviewDialog(JFreeReport report, Frame owner)
       throws ReportProcessingException
   {
     super(owner);
-    init (report);
+    init(report);
   }
 
   /**
    * Creates a new preview dialog for a report.
-   * 
+   *
    * @param report  the report.
    * @param owner  the owner frame.
    * @param modal  modal or non-modal?
-   * 
+   *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
   public PreviewDialog(JFreeReport report, Frame owner, boolean modal)
       throws ReportProcessingException
   {
     super(owner, modal);
-    init (report);
+    init(report);
   }
 
   /**
    * Creates a new preview dialog for a report.
-   * 
+   *
    * @param report  the report.
    * @param owner  the owner dialog.
-   * 
+   *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
   public PreviewDialog(JFreeReport report, Dialog owner)
       throws ReportProcessingException
   {
     super(owner);
-    init (report);
+    init(report);
   }
 
   /**
    * Creates a new preview dialog for a report.
-   * 
+   *
    * @param report  the report.
    * @param owner  the owner dialog.
    * @param modal  modal or non-modal?
-   * 
+   *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
   public PreviewDialog(JFreeReport report, Dialog owner, boolean modal)
-    throws ReportProcessingException
+      throws ReportProcessingException
   {
     super(owner, modal);
-    init (report);
+    init(report);
   }
 
   /**
    * Initialise.
-   * 
+   *
    * @param report  the report
-   * 
+   *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
   private void init(JFreeReport report) throws ReportProcessingException
@@ -196,7 +196,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
 
   /**
    * Creates the default close action.
-   * 
+   *
    * @return The action.
    */
   public Action createDefaultCloseAction()
@@ -227,7 +227,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
       public void windowClosing(WindowEvent e)
       {
         base.getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
-                                                         "CloseFrame"));
+            "CloseFrame"));
       }
     }
     );
@@ -250,7 +250,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
 
   /**
    * Returns the preview proxy.
-   * 
+   *
    * @return The proxy.
    */
   public PreviewProxyBase getBase()

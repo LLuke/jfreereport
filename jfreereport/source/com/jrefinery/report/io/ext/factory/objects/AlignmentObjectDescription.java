@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AlignmentObjectDescription.java,v 1.4 2003/04/23 13:43:04 taqua Exp $
+ * $Id: AlignmentObjectDescription.java,v 1.5 2003/04/24 18:08:50 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.objects;
@@ -44,7 +44,7 @@ import org.jfree.xml.factory.objects.ObjectFactoryException;
 
 /**
  * An object-description for an {@link ElementAlignment} object.
- * 
+ *
  * @author Thomas Morgner
  */
 public class AlignmentObjectDescription extends AbstractObjectDescription
@@ -60,7 +60,7 @@ public class AlignmentObjectDescription extends AbstractObjectDescription
 
   /**
    * Creates an {@link ElementAlignment} object based on this description.
-   * 
+   *
    * @return The object.
    */
   public Object createObject()
@@ -99,9 +99,9 @@ public class AlignmentObjectDescription extends AbstractObjectDescription
 
   /**
    * Sets the parameters in the object description to match the specified object.
-   * 
+   *
    * @param o  the object (an {@link ElementAlignment} instance).
-   * 
+   *
    * @throws ObjectFactoryException if the object is not recognised.
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
@@ -135,5 +135,5 @@ public class AlignmentObjectDescription extends AbstractObjectDescription
       throw new ObjectFactoryException("Invalid value specified for ElementAlignment");
     }
   }
-  
+
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResourceFieldTemplate.java,v 1.5 2003/03/07 16:55:54 taqua Exp $
+ * $Id: ResourceFieldTemplate.java,v 1.6 2003/05/02 12:39:44 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
  * 18-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.filter.templates;
@@ -49,20 +49,20 @@ import com.jrefinery.report.filter.StringFilter;
 
 /**
  * A resource field template, which reads a String value from a ResourceBundle.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ResourceFieldTemplate extends AbstractTemplate implements DataRowConnectable
 {
   /** A data-row accessor. */
   private DataRowDataSource dataRowDataSource;
-  
+
   /** A string filter. */
   private StringFilter stringFilter;
-  
+
   /** A resource file filter. */
   private ResourceFileFilter resourceFilter;
-  
+
   /** The resource class name. */
   private String resourceClassName;
 
@@ -80,7 +80,7 @@ public class ResourceFieldTemplate extends AbstractTemplate implements DataRowCo
 
   /**
    * Returns the field name.
-   * 
+   *
    * @return The field name.
    */
   public String getField()
@@ -90,7 +90,7 @@ public class ResourceFieldTemplate extends AbstractTemplate implements DataRowCo
 
   /**
    * Sets the field name.
-   * 
+   *
    * @param field  the field name.
    */
   public void setField(String field)
@@ -100,7 +100,7 @@ public class ResourceFieldTemplate extends AbstractTemplate implements DataRowCo
 
   /**
    * Returns the resource class name.
-   * 
+   *
    * @return The resource class name.
    */
   public String getResourceClassName()
@@ -110,13 +110,13 @@ public class ResourceFieldTemplate extends AbstractTemplate implements DataRowCo
 
   /**
    * Sets the resource class name.
-   * 
+   *
    * @param resourceClassName  the resource class name.
-   * 
+   *
    * @throws MissingResourceException if the resource is missing.
    */
   public void setResourceClassName(String resourceClassName)
-    throws MissingResourceException
+      throws MissingResourceException
   {
     resourceFilter.setResources(ResourceBundle.getBundle(resourceClassName));
     this.resourceClassName = resourceClassName;
@@ -124,7 +124,7 @@ public class ResourceFieldTemplate extends AbstractTemplate implements DataRowCo
 
   /**
    * Returns the string that represents a <code>null</code> value.
-   * 
+   *
    * @return The string that represents a <code>null</code> value.
    */
   public String getNullValue()
@@ -134,7 +134,7 @@ public class ResourceFieldTemplate extends AbstractTemplate implements DataRowCo
 
   /**
    * Sets the string that represents a <code>null</code> value.
-   * 
+   *
    * @param nullValue  the string that represents a <code>null</code> value.
    */
   public void setNullValue(String nullValue)

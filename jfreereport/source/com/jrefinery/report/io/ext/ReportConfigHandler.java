@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.13 2003/06/10 16:07:49 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.14 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -134,11 +134,11 @@ public class ReportConfigHandler implements ElementDefinitionHandler
    */
   public ReportConfigHandler(Parser parser, String finishTag)
   {
-    if (parser == null) 
+    if (parser == null)
     {
       throw new NullPointerException("Parser is null");
     }
-    if (finishTag == null) 
+    if (finishTag == null)
     {
       throw new NullPointerException("FinishTag is null");
     }
@@ -155,7 +155,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
-    throws SAXException
+      throws SAXException
   {
     if (tagName.equals(DEFAULT_PAGEFORMAT_TAG))
     {
@@ -171,10 +171,10 @@ public class ReportConfigHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + OUTPUT_TARGET_TAG + ", "
-                              + DEFAULT_PAGEFORMAT_TAG + ", "
-                              + CONFIGURATION_TAG);
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + OUTPUT_TARGET_TAG + ", "
+          + DEFAULT_PAGEFORMAT_TAG + ", "
+          + CONFIGURATION_TAG);
     }
 
   }
@@ -186,7 +186,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
   {
     // is not used ... ignore all events ..
   }
@@ -232,10 +232,10 @@ public class ReportConfigHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + OUTPUT_TARGET_TAG + ", "
-                              + DEFAULT_PAGEFORMAT_TAG + ", "
-                              + CONFIGURATION_TAG);
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + OUTPUT_TARGET_TAG + ", "
+          + DEFAULT_PAGEFORMAT_TAG + ", "
+          + CONFIGURATION_TAG);
     }
   }
 
@@ -254,7 +254,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
    *
    * @return The report.
    */
-  private JFreeReport getReport ()
+  private JFreeReport getReport()
   {
     return (JFreeReport) getParser().getHelperObject(
         InitialReportHandler.REPORT_DEFINITION_TAG);
@@ -267,17 +267,17 @@ public class ReportConfigHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  private void handlePageFormat (Attributes atts) throws SAXException
+  private void handlePageFormat(Attributes atts) throws SAXException
   {
     JFreeReport report = getReport();
 
     PageFormat format = report.getDefaultPageFormat();
     float defTopMargin = (float) format.getImageableY();
     float defBottomMargin = (float) (format.getHeight() - format.getImageableHeight()
-                                                - format.getImageableY());
+        - format.getImageableY());
     float defLeftMargin = (float) format.getImageableX();
     float defRightMargin = (float) (format.getWidth() - format.getImageableWidth()
-                                              - format.getImageableX());
+        - format.getImageableX());
 
     format = createPageFormat(format, atts);
 
@@ -291,17 +291,20 @@ public class ReportConfigHandler implements ElementDefinitionHandler
     {
       case PageFormat.PORTRAIT:
         PageFormatFactory.getInstance().setBorders(p, defTopMargin, defLeftMargin,
-                                                      defBottomMargin, defRightMargin);
+            defBottomMargin, defRightMargin);
         break;
       case PageFormat.LANDSCAPE:
         // right, top, left, bottom
         PageFormatFactory.getInstance().setBorders(p, defRightMargin, defTopMargin,
-                                                   defLeftMargin, defBottomMargin);
+            defLeftMargin, defBottomMargin);
         break;
       case PageFormat.REVERSE_LANDSCAPE:
         PageFormatFactory.getInstance().setBorders(p, defLeftMargin, defBottomMargin,
-                                                   defRightMargin, defTopMargin);
+            defRightMargin, defTopMargin);
         break;
+      default:
+        // will not happen..
+        Log.debug ("Unexpected paper orientation.");
     }
 
     format.setPaper(p);
@@ -332,8 +335,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
     {
       orientationVal = PageFormat.PORTRAIT;
     }
-    else
-    if (orientation.equals(ORIENTATION_LANDSCAPE_VAL))
+    else if (orientation.equals(ORIENTATION_LANDSCAPE_VAL))
     {
       orientationVal = PageFormat.LANDSCAPE;
     }
@@ -355,7 +357,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
       Paper p = PageFormatFactory.getInstance().createPaper(pageformatName);
       if (p == null)
       {
-        Log.warn ("Unable to create the requested Paper. " + pageformatName);
+        Log.warn("Unable to create the requested Paper. " + pageformatName);
         return format;
       }
       return PageFormatFactory.getInstance().createPageFormat(p, orientationVal);
@@ -369,14 +371,14 @@ public class ReportConfigHandler implements ElementDefinitionHandler
       Paper p = PageFormatFactory.getInstance().createPaper(pageformatData);
       if (p == null)
       {
-        Log.warn ("Unable to create the requested Paper. Paper={" + pageformatData[0] + ", "
-                  + pageformatData[1] + "}");
+        Log.warn("Unable to create the requested Paper. Paper={" + pageformatData[0] + ", "
+            + pageformatData[1] + "}");
         return format;
       }
       return PageFormatFactory.getInstance().createPageFormat(p, orientationVal);
     }
 
-    Log.info ("Insufficient Data to create a pageformat: Returned default.");
+    Log.info("Insufficient Data to create a pageformat: Returned default.");
     return format;
   }
 

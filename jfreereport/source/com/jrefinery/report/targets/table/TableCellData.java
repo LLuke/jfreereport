@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,13 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellData.java,v 1.6 2003/02/24 15:02:20 mungady Exp $
+ * $Id: TableCellData.java,v 1.7 2003/04/08 14:33:09 mungady Exp $
  *
  * Changes
  * -------
  * 18-Jan-2003 : Initial version
  * 24-Feb-2003 : Fixed Checkstyle issues (DG);
- * 
+ *
  */
 
 package com.jrefinery.report.targets.table;
@@ -42,14 +42,14 @@ package com.jrefinery.report.targets.table;
 import java.awt.geom.Rectangle2D;
 
 /**
- * Encapsulates cell information, either style information or cell data, and the cell bounds. 
- * The cell bounds are used by the {@link TableGridLayout} to place the cell into a 
+ * Encapsulates cell information, either style information or cell data, and the cell bounds.
+ * The cell bounds are used by the {@link TableGridLayout} to place the cell into a
  * {@link TableGrid}.
  * <p>
  * This class contains all data needed to successfully layout the table grid.
  * The cell style information is dependent on the concrete implementation and not
  * defined here.
- * 
+ *
  * @author Thomas Morgner.
  */
 public abstract class TableCellData
@@ -64,7 +64,7 @@ public abstract class TableCellData
    */
   public TableCellData(Rectangle2D outerBounds)
   {
-    if (outerBounds == null) 
+    if (outerBounds == null)
     {
       throw new NullPointerException("TableCellData constructor : outerBounds is null");
     }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -29,7 +29,7 @@
  * based on ideas and code from JRXlsExporter.java of JasperReports
  * Contributor(s):   -;
  *
- * $Id: ExcelFontFactory.java,v 1.7 2003/05/02 12:40:39 taqua Exp $
+ * $Id: ExcelFontFactory.java,v 1.8 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * This class keeps track of all fonts that we have used so far in our Excel file.
- * 
+ *
  * @author Heiko Evermann
  */
 public class ExcelFontFactory
@@ -59,7 +59,7 @@ public class ExcelFontFactory
 
   /**
    * Constructor for ExcelFontFactory.
-   * 
+   *
    * @param workbook  the workbook.
    */
   public ExcelFontFactory(HSSFWorkbook workbook)
@@ -93,5 +93,5 @@ public class ExcelFontFactory
     fontList.add(excelFont);
     return excelFont;
   }
- 
+
 }

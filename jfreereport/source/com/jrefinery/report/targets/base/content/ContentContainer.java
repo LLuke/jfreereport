@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentContainer.java,v 1.7 2003/04/09 15:50:23 mungady Exp $
+ * $Id: ContentContainer.java,v 1.8 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -59,14 +59,14 @@ public class ContentContainer implements Content
    *
    * @param bounds  the content bounds.
    */
-  protected ContentContainer (Rectangle2D bounds)
+  protected ContentContainer(Rectangle2D bounds)
   {
     this.bounds = bounds;
     content = new ArrayList(5);
   }
 
   /**
-   * Returns the content type, in this case 
+   * Returns the content type, in this case
    * {@link com.jrefinery.report.targets.base.content.ContentType#CONTAINER}.
    *
    * @return the content type.
@@ -91,7 +91,7 @@ public class ContentContainer implements Content
    *
    * @param bounds  the new bounds.
    */
-  protected void setBounds (Rectangle2D bounds)
+  protected void setBounds(Rectangle2D bounds)
   {
     this.bounds.setRect(bounds);
   }
@@ -104,7 +104,7 @@ public class ContentContainer implements Content
    * @param width  the width.
    * @param height  the height.
    */
-  protected void setBounds (float x, float y, float width, float height)
+  protected void setBounds(float x, float y, float width, float height)
   {
     this.bounds.setRect(x, y, width, height);
   }
@@ -114,9 +114,9 @@ public class ContentContainer implements Content
    *
    * @param cp  the content to add.
    */
-  protected void addContentPart (Content cp)
+  protected void addContentPart(Content cp)
   {
-    content.add (cp);
+    content.add(cp);
   }
 
   /**
@@ -153,7 +153,7 @@ public class ContentContainer implements Content
     ContentContainer cc = null;
     for (int i = 0; i < getContentPartCount(); i++)
     {
-      Content contentPart = getContentPart (i);
+      Content contentPart = getContentPart(i);
       if (contentPart.getBounds().intersects(bounds) == false)
       {
         continue;
@@ -172,7 +172,7 @@ public class ContentContainer implements Content
         {
           cc = new ContentContainer(bounds);
         }
-        cc.addContentPart (retval);
+        cc.addContentPart(retval);
       }
     }
     return cc;
@@ -188,7 +188,7 @@ public class ContentContainer implements Content
     Rectangle2D retval = null;
     for (int i = 0; i < getContentPartCount(); i++)
     {
-      Content contentPart = getContentPart (i);
+      Content contentPart = getContentPart(i);
       Rectangle2D minCBounds = contentPart.getMinimumContentSize();
 
       if (minCBounds == null)
@@ -209,17 +209,17 @@ public class ContentContainer implements Content
 
   /**
    * Returns a string describing this object.
-   * 
+   *
    * @return The string.
    */
-  public String toString ()
+  public String toString()
   {
     StringBuffer container = new StringBuffer();
     container.append(getClass().getName());
     container.append("={\n");
     for (int i = 0; i < getContentPartCount(); i++)
     {
-      container.append (getContentPart(i));
+      container.append(getContentPart(i));
       container.append("\n");
     }
     container.append("}\n");

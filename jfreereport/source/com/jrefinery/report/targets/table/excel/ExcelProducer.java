@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.16 2003/05/23 20:12:16 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.17 2003/05/29 16:36:39 taqua Exp $
  *
  * Changes
  * -------
@@ -56,8 +56,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.Region;
 
 /**
- * An output target for the report engine that generates an Excel file using the hffs class library
- * from the Apache Jakarta Project
+ * An output target for the report engine that generates an Excel file using the
+ * hffs class library from the Apache Jakarta Project
  * (see <code>http://jakarta.apache.org/poi/index.html</code>.
  * <p>
  * At the moment only texts are exported.
@@ -80,7 +80,7 @@ public class ExcelProducer extends TableProducer
 
   /** the excel workbook represents the excel document. */
   private HSSFWorkbook workbook;
-  
+
   /** the current excel sheet. */
   private HSSFSheet sheet;
 
@@ -92,7 +92,7 @@ public class ExcelProducer extends TableProducer
    *
    * @param out  the output stream.
    * @param strict true, if a stricter layout should be used, false otherwise.
-   * 
+   *
    * @see com.jrefinery.report.targets.table.TableGrid#isStrict
    */
   public ExcelProducer(OutputStream out, boolean strict)
@@ -137,7 +137,7 @@ public class ExcelProducer extends TableProducer
    *
    * @param name the page name
    */
-  public void beginPage (String name)
+  public void beginPage(String name)
   {
     if (name == null)
     {
@@ -153,7 +153,7 @@ public class ExcelProducer extends TableProducer
    * Handles the end of a page, lays out the collected cells
    * and write the excel sheet.
    */
-  public void endPage ()
+  public void endPage()
   {
     if (isDummy() == false)
     {
@@ -169,7 +169,7 @@ public class ExcelProducer extends TableProducer
    *
    * @return true, if the page is open, false otherwise.
    */
-  private boolean isPageOpen ()
+  private boolean isPageOpen()
   {
     return sheet != null;
   }
@@ -263,8 +263,8 @@ public class ExcelProducer extends TableProducer
     if (content.getColSpan() > 1 || content.getRowSpan() > 1)
     {
       sheet.addMergedRegion(new Region(y, x,
-                                       (y + content.getRowSpan() - 1),
-                                       (short) (x + content.getColSpan() - 1)));
+          (y + content.getRowSpan() - 1),
+          (short) (x + content.getColSpan() - 1)));
     }
 
     ExcelCellData contentCell = (ExcelCellData) content.getElement();
@@ -299,7 +299,8 @@ public class ExcelProducer extends TableProducer
    */
   public void configure(Properties configuration)
   {
-    String mapData = configuration.getProperty(ExcelProcessor.ENHANCED_DATA_FORMAT_PROPERTY, "true");
+    String mapData = configuration.getProperty
+        (ExcelProcessor.ENHANCED_DATA_FORMAT_PROPERTY, "true");
     this.mapData = (mapData.equalsIgnoreCase("true"));
   }
 }

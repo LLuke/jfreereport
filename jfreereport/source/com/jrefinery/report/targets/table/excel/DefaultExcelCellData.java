@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -26,10 +26,10 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Heiko Evermann
- * Contributor(s):   Thomas Morgner; 
+ * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultExcelCellData.java,v 1.5 2003/02/25 15:42:35 taqua Exp $
+ * $Id: DefaultExcelCellData.java,v 1.6 2003/02/26 13:58:02 mungady Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
  * The DefaultExcelCellData stores generic text data. The text data in the excel sheet
  * is not formated in any way. This implementation is used for POI 1.5.1, later versions
  * should use specific formats for the excel cells.
- * 
+ *
  * @author Heiko Evermann
  */
 public class DefaultExcelCellData extends ExcelCellData
@@ -70,7 +70,7 @@ public class DefaultExcelCellData extends ExcelCellData
 
   /**
    * Applies the cell data to the given Excel cell.
-   * 
+   *
    * @param cell  the generated excel cell, which should be filled with the data.
    */
   public void applyContent(HSSFCell cell)

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.49 2003/06/26 15:18:57 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.50 2003/06/26 19:55:57 taqua Exp $
  *
  * Changes
  * -------
@@ -45,11 +45,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Enumeration;
-import java.util.Properties;
-import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Properties;
 
 import org.jfree.util.Configuration;
 
@@ -87,13 +87,14 @@ import org.jfree.util.Configuration;
  * </li>
  * <li><code>com.jrefinery.report.LogTarget</code>
  * <p>
- * The default log target. This should be set to the classname of a  valid {@link org.jfree.util.LogTarget}
- * implementation -- the given class is loaded and instantiated and added as the primary logging
- * target. This defaults to <code>"com.jrefinery.report.util.SystemOutLogTarget"</code>.
+ * The default log target. This should be set to the classname of a  valid
+ * {@link org.jfree.util.LogTarget} implementation -- the given class is loaded and instantiated
+ * and added as the primary logging target. This defaults to
+ * <code>"com.jrefinery.report.util.SystemOutLogTarget"</code>.
  * <p>
- * An alternative {@link org.jfree.util.LogTarget} for Log4J output can be found in the "Extension" package.
+ * An alternative {@link org.jfree.util.LogTarget} for Log4J output can be found in the
+ * "Extension" package.
  * <p>
- *
  * <li><code>com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT</code>
  * <p>AutoInit the PDFTarget when the class is loaded? This will search and register
  * all ttf-fonts on the system. The search will access the system-directorys and can
@@ -707,7 +708,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @return the global configuration.
    */
-  public synchronized static ReportConfiguration getGlobalConfig()
+  public static synchronized ReportConfiguration getGlobalConfig()
   {
     if (globalConfig == null)
     {
@@ -725,7 +726,7 @@ public class ReportConfiguration implements Configuration, Serializable
       globalConfig.insertConfiguration(systemConfig);
 
       // todo; loadExtensions ();
-      // rootProperty.insertConfiguration(); 
+      // rootProperty.insertConfiguration();
     }
     return globalConfig;
   }
@@ -736,7 +737,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param config the new report configuration.
    */
-  protected void insertConfiguration (ReportConfiguration config)
+  protected void insertConfiguration(ReportConfiguration config)
   {
     config.setParentConfig(getParentConfig());
     setParentConfig(config);
@@ -1201,7 +1202,7 @@ public class ReportConfiguration implements Configuration, Serializable
    * @throws IOException if errors occur while writing the stream.
    */
   private void writeObject(ObjectOutputStream out)
-     throws IOException
+      throws IOException
   {
     out.defaultWriteObject();
     if (parentConfiguration == globalConfig)
@@ -1224,7 +1225,7 @@ public class ReportConfiguration implements Configuration, Serializable
    * could not be found.
    */
   private void readObject(ObjectInputStream in)
-     throws IOException, ClassNotFoundException
+      throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     boolean readParent = in.readBoolean();
@@ -1239,12 +1240,12 @@ public class ReportConfiguration implements Configuration, Serializable
   }
 
   /**
-   * Searches all property keys that start with a given prefix. 
+   * Searches all property keys that start with a given prefix.
    *
    * @param prefix the prefix that all selected property keys should share
    * @return the properties as iterator.
    */
-  public Iterator findPropertyKeys (String prefix)
+  public Iterator findPropertyKeys(String prefix)
   {
     ArrayList keys = new ArrayList();
     collectPropertyKeys(prefix, this, keys);
@@ -1259,8 +1260,8 @@ public class ReportConfiguration implements Configuration, Serializable
    * @param config the currently processed report configuration.
    * @param collector the target list, that should receive all valid keys.
    */
-  private void collectPropertyKeys (String prefix, ReportConfiguration config,
-                                    ArrayList collector)
+  private void collectPropertyKeys(String prefix, ReportConfiguration config,
+                                   ArrayList collector)
   {
     Enumeration enum = config.getConfigProperties();
     while (enum.hasMoreElements())

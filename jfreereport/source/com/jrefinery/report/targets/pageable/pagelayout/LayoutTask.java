@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutTask.java,v 1.4 2003/02/02 23:43:52 taqua Exp $
+ * $Id: LayoutTask.java,v 1.5 2003/05/02 12:40:35 taqua Exp $
  *
  * Changes
  * -------
@@ -56,16 +56,16 @@ public class LayoutTask
   {
     /** The flag name. */
     private String flagName;
-    
+
     /** The flag object. */
     private Object flagObject;
 
     /**
-     * Creates a new layout flag. 
+     * Creates a new layout flag.
      *
      * @param name  the name (null not permitted).
      */
-    public LayoutFlag (String name)
+    public LayoutFlag(String name)
     {
       if (name == null)
       {
@@ -79,7 +79,7 @@ public class LayoutTask
      *
      * @return the flag name.
      */
-    public String getName ()
+    public String getName()
     {
       return flagName;
     }
@@ -107,17 +107,17 @@ public class LayoutTask
 
   /** The event type. */
   private EventType eventType;
-  
+
   /** A 'done' flag. */
   private boolean done;
-  
+
   /** The report event. */
   private ReportEvent event;
-  
+
   /** Storage for progress flags. */
   private Hashtable progressFlags;
 
-  /** 
+  /**
    * Creates a new layout task.
    */
   public LayoutTask()
@@ -162,7 +162,7 @@ public class LayoutTask
    *
    * @return true or false.
    */
-  public boolean isDone ()
+  public boolean isDone()
   {
     return done;
   }
@@ -182,9 +182,9 @@ public class LayoutTask
    *
    * @param flag  the flag.
    */
-  public void setFlag (LayoutFlag flag)
+  public void setFlag(LayoutFlag flag)
   {
-    this.progressFlags.put (flag.getName(), flag);
+    this.progressFlags.put(flag.getName(), flag);
   }
 
   /**
@@ -194,9 +194,9 @@ public class LayoutTask
    *
    * @return the layout flag.
    */
-  public LayoutFlag getFlag (String name)
+  public LayoutFlag getFlag(String name)
   {
-    return (LayoutFlag) progressFlags.get (name);
+    return (LayoutFlag) progressFlags.get(name);
   }
 
   /*

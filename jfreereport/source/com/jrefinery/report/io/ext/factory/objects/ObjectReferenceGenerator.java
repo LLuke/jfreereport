@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceGenerator.java,v 1.8 2003/06/15 21:26:29 taqua Exp $
+ * $Id: ObjectReferenceGenerator.java,v 1.9 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.objects;
@@ -50,21 +50,28 @@ import org.jfree.xml.factory.objects.ClassFactoryCollector;
 
 /**
  * An application that creates a report documenting the object references.
- * 
+ *
  * @author Thomas Morgner
  */
-public class ObjectReferenceGenerator
+public final class ObjectReferenceGenerator
 {
   /** The report definition. */
   private static final String REFERENCE_REPORT =
-    "/com/jrefinery/report/io/ext/factory/objects/ObjectReferenceReport.xml";
+      "/com/jrefinery/report/io/ext/factory/objects/ObjectReferenceReport.xml";
+
+  /**
+   * DefaultConstructor.
+   */
+  private ObjectReferenceGenerator()
+  {
+  }
 
   /**
    * Creates the default tablemodel for the object reference generator.
    *
    * @return the tablemodel for the object reference generator.
    */
-  public static TableModel createData ()
+  public static TableModel createData()
   {
     ClassFactoryCollector cc = new ClassFactoryCollector();
     cc.addFactory(new DefaultClassFactory());
@@ -74,20 +81,21 @@ public class ObjectReferenceGenerator
     ObjectReferenceTableModel model = new ObjectReferenceTableModel(cc);
     return model;
   }
+
   /**
    * Starting point for the application.
-   * 
+   *
    * @param args  ignored.
    */
-  public static void main (String [] args)
+  public static void main(String[] args)
   {
 
     ReportGenerator gen = ReportGenerator.getInstance();
     URL reportURL = gen.getClass().getResource(REFERENCE_REPORT);
     if (reportURL == null)
     {
-      System.err.println ("The report was not found in the classpath");
-      System.err.println ("File: " + REFERENCE_REPORT);
+      System.err.println("The report was not found in the classpath");
+      System.err.println("File: " + REFERENCE_REPORT);
       System.exit(1);
       return;
     }
@@ -99,8 +107,8 @@ public class ObjectReferenceGenerator
     }
     catch (Exception e)
     {
-      System.err.println ("The report could not be parsed.");
-      System.err.println ("File: " + REFERENCE_REPORT);
+      System.err.println("The report could not be parsed.");
+      System.err.println("File: " + REFERENCE_REPORT);
       e.printStackTrace(System.err);
       System.exit(1);
       return;
@@ -108,15 +116,15 @@ public class ObjectReferenceGenerator
     report.setData(createData());
     try
     {
-      ReportProcessorUtil.createStreamHTML(report, System.getProperty("user.home") 
-                                                   + "/object-reference.html");
-      ReportProcessorUtil.createPDF(report, 
-                                    System.getProperty("user.home") + "/object-reference.pdf");
+      ReportProcessorUtil.createStreamHTML(report, System.getProperty("user.home")
+          + "/object-reference.html");
+      ReportProcessorUtil.createPDF(report,
+          System.getProperty("user.home") + "/object-reference.pdf");
     }
     catch (Exception e)
     {
-      System.err.println ("The report processing failed.");
-      System.err.println ("File: " + REFERENCE_REPORT);
+      System.err.println("The report processing failed.");
+      System.err.println("File: " + REFERENCE_REPORT);
       e.printStackTrace(System.err);
       System.exit(1);
     }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.7 2003/06/19 18:44:09 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.8 2003/06/26 19:55:56 taqua Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,7 @@ import org.jfree.xml.ParseException;
 /**
  * A demonstration that shows how to generate a report and save it to PDF without displaying
  * the print preview or the PDF save-as dialog. The methods to save the report to the various
- * file formats are also implemented in 
+ * file formats are also implemented in
  * {@link com.jrefinery.report.targets.support.ReportProcessorUtil}.
  *
  * @author Thomas Morgner
@@ -85,7 +85,7 @@ public class StraightToEverything
    */
   public StraightToEverything(String filename) throws ParseException
   {
-    URL in  = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
+    URL in = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
     JFreeReport report = parseReport(in);
     TableModel data = new OpenSourceProjects();
     report.setData(data);
@@ -102,7 +102,7 @@ public class StraightToEverything
     }
     catch (Exception e)
     {
-      Log.error ("Failed to write report", e);
+      Log.error("Failed to write report", e);
     }
   }
 
@@ -155,7 +155,7 @@ public class StraightToEverything
     }
     catch (Exception e)
     {
-      Log.error ("Writing PDF failed.", e);
+      Log.error("Writing PDF failed.", e);
       return false;
     }
     finally
@@ -181,8 +181,8 @@ public class StraightToEverything
    * @param filename target file name.
    * @throws Exception if an error occurs.
    */
-  public static void createPlainText (JFreeReport report, String filename)
-    throws Exception
+  public static void createPlainText(JFreeReport report, String filename)
+      throws Exception
   {
     PageableReportProcessor pr = new PageableReportProcessor(report);
     OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
@@ -202,8 +202,8 @@ public class StraightToEverything
    * @param filename target file name.
    * @throws Exception if an error occurs.
    */
-  public static void createRTF (JFreeReport report, String filename)
-    throws Exception
+  public static void createRTF(JFreeReport report, String filename)
+      throws Exception
   {
     RTFProcessor pr = new RTFProcessor(report);
     pr.setStrictLayout(false);
@@ -220,8 +220,8 @@ public class StraightToEverything
    * @param filename target file name.
    * @throws Exception if an error occurs.
    */
-  public static void createCSV (JFreeReport report, String filename)
-    throws Exception
+  public static void createCSV(JFreeReport report, String filename)
+      throws Exception
   {
     CSVTableProcessor pr = new CSVTableProcessor(report);
     pr.setStrictLayout(false);
@@ -238,8 +238,8 @@ public class StraightToEverything
    * @param filename target file name.
    * @throws Exception if an error occurs.
    */
-  public static void createXLS (JFreeReport report, String filename)
-    throws Exception
+  public static void createXLS(JFreeReport report, String filename)
+      throws Exception
   {
     ExcelProcessor pr = new ExcelProcessor(report);
     pr.setStrictLayout(false);
@@ -256,13 +256,13 @@ public class StraightToEverything
    * @param filename target file name.
    * @throws Exception if an error occurs.
    */
-  public static void createStreamHTML (JFreeReport report, String filename)
-    throws Exception
+  public static void createStreamHTML(JFreeReport report, String filename)
+      throws Exception
   {
     HtmlProcessor pr = new HtmlProcessor(report);
     pr.setStrictLayout(false);
     OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
-    pr.setFilesystem(new StreamHtmlFilesystem (fout));
+    pr.setFilesystem(new StreamHtmlFilesystem(fout));
     pr.processReport();
     fout.close();
   }
@@ -274,11 +274,11 @@ public class StraightToEverything
    * @param filename target file name.
    * @throws Exception if an error occurs.
    */
-  public static void createDirectoryHTML (JFreeReport report, String filename)
-    throws Exception
+  public static void createDirectoryHTML(JFreeReport report, String filename)
+      throws Exception
   {
     HtmlProcessor pr = new HtmlProcessor(report);
-    pr.setFilesystem(new DirectoryHtmlFilesystem (new File(filename)));
+    pr.setFilesystem(new DirectoryHtmlFilesystem(new File(filename)));
     pr.processReport();
   }
 
@@ -289,12 +289,12 @@ public class StraightToEverything
    * @param filename target file name.
    * @throws Exception if an error occurs.
    */
-  public static void createZIPHTML (JFreeReport report, String filename)
-    throws Exception
+  public static void createZIPHTML(JFreeReport report, String filename)
+      throws Exception
   {
     HtmlProcessor pr = new HtmlProcessor(report);
     OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
-    pr.setFilesystem(new ZIPHtmlFilesystem (fout, "data"));
+    pr.setFilesystem(new ZIPHtmlFilesystem(fout, "data"));
     pr.processReport();
     fout.close();
   }
@@ -311,13 +311,13 @@ public class StraightToEverything
     try
     {
       StraightToEverything demo = new StraightToEverything(System.getProperty("user.home")
-                                                           + "/test-everything");
+          + "/test-everything");
       System.exit(0);
     }
     catch (Exception e)
     {
-      Log.error ("Failed to run demo", e);
-      System.exit (1);
+      Log.error("Failed to run demo", e);
+      System.exit(1);
     }
   }
 

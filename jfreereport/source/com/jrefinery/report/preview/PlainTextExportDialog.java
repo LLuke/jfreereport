@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.14 2003/06/13 22:54:00 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.15 2003/06/26 19:55:56 taqua Exp $
  *
  * Changes
  * --------
@@ -92,7 +92,7 @@ import org.jfree.ui.ExtensionFileFilter;
  *
  * @author Thomas Morgner.
  */
-public class PlainTextExportDialog extends JDialog 
+public class PlainTextExportDialog extends JDialog
 {
   /**
    * Internal action class to confirm the dialog and to validate the input.
@@ -415,6 +415,36 @@ public class PlainTextExportDialog extends JDialog
     bg.add(rbEpsonPrinterCommandSet);
     bg.add(rbIBMPrinterCommandSet);
 
+    JComponent contentPane = createContentPane();
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.NONE;
+    gbc.weightx = 1;
+    gbc.gridx = 0;
+    gbc.gridwidth = 4;
+    gbc.gridy = 8;
+    gbc.insets = new Insets(10, 0, 0, 0);
+    contentPane.add(createButtonPanel(), gbc);
+    setContentPane(contentPane);
+
+    clear();
+
+    addWindowListener(new WindowAdapter()
+    {
+      public void windowClosing(WindowEvent e)
+      {
+        new ActionCancel().actionPerformed(null);
+      }
+    }
+    );
+  }
+
+  /**
+   * Creates the content pane for the export dialog.
+   *
+   * @return the created content pane.
+   */
+  private JComponent createContentPane()
+  {
     JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
     contentPane.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
@@ -548,6 +578,16 @@ public class PlainTextExportDialog extends JDialog
     gbc.gridheight = 2;
     contentPane.add(btnSelect, gbc);
 
+    return contentPane;
+  }
+
+  /**
+   * Creates the button panel for the export dialog.
+   *
+   * @return the created button panel
+   */
+  private JPanel createButtonPanel()
+  {
     // button panel
     JButton btnCancel = new ActionButton(new ActionCancel());
     JButton btnConfirm = new ActionButton(new ActionConfirm());
@@ -559,26 +599,8 @@ public class PlainTextExportDialog extends JDialog
     buttonPanel.registerKeyboardAction(new ActionConfirm(),
         KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
         JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    gbc = new GridBagConstraints();
-    gbc.fill = GridBagConstraints.NONE;
-    gbc.weightx = 1;
-    gbc.gridx = 0;
-    gbc.gridwidth = 4;
-    gbc.gridy = 8;
-    gbc.insets = new Insets(10, 0, 0, 0);
-    contentPane.add(buttonPanel, gbc);
-    setContentPane(contentPane);
 
-    clear();
-
-    addWindowListener(new WindowAdapter()
-    {
-      public void windowClosing(WindowEvent e)
-      {
-        new ActionCancel().actionPerformed(null);
-      }
-    }
-    );
+    return buttonPanel;
   }
 
   /**

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextPage.java,v 1.13 2003/05/14 22:26:39 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.14 2003/06/13 16:21:39 taqua Exp $
  *
  * Changes
  * -------
@@ -218,7 +218,7 @@ public class PlainTextPage
     }
     if (x + w > width)
     {
-      throw new IllegalArgumentException("X+W [" + ( x+ w) + "] > bufferWidth [" + width + "]");
+      throw new IllegalArgumentException("X+W [" + (x + w) + "] > bufferWidth [" + width + "]");
     }
     if (y >= height)
     {

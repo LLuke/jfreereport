@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.10 2003/05/30 16:57:53 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.11 2003/06/10 16:07:52 taqua Exp $
  *
  * Changes
  * -------
@@ -65,14 +65,14 @@ import org.jfree.xml.factory.objects.ObjectDescription;
  * A report description writer.  The {@link ReportDefinitionWriter} class is responsible for
  * writing the complete XML report definition file, but it delegates one large section (the
  * report description) to this class.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 {
   /**
    * Creates a new report description writer.
-   * 
+   *
    * @param reportWriter  the report writer.
    * @param indent the current indention level.
    */
@@ -83,19 +83,19 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Writes a report description element to a character stream writer.
-   * 
+   *
    * @param writer  the character stream writer.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
   public void write(Writer writer) throws IOException, ReportWriterException
   {
     writeTag(writer, ExtReportHandler.REPORT_DESCRIPTION_TAG);
-    writeBand(writer, ReportDescriptionHandler.REPORT_HEADER_TAG, 
-              getReport().getReportHeader(), null);
-    writeBand(writer, ReportDescriptionHandler.REPORT_FOOTER_TAG, 
-              getReport().getReportFooter(), null);
+    writeBand(writer, ReportDescriptionHandler.REPORT_HEADER_TAG,
+        getReport().getReportHeader(), null);
+    writeBand(writer, ReportDescriptionHandler.REPORT_FOOTER_TAG,
+        getReport().getReportFooter(), null);
     writeBand(writer, ReportDescriptionHandler.PAGE_HEADER_TAG, getReport().getPageHeader(), null);
     writeBand(writer, ReportDescriptionHandler.PAGE_FOOTER_TAG, getReport().getPageFooter(), null);
     writeGroups(writer);
@@ -105,17 +105,17 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Writes an element for a report band.
-   * 
+   *
    * @param writer  a character stream writer.
    * @param tagName  the tag name (for the band).
    * @param band  the band.
    * @param parent  the parent band.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeBand (Writer writer, String tagName, Band band, Band parent)
-    throws IOException, ReportWriterException
+  private void writeBand(Writer writer, String tagName, Band band, Band parent)
+      throws IOException, ReportWriterException
   {
     writeTag(writer, tagName, "name", band.getName(), OPEN);
 
@@ -145,7 +145,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       }
       else
       {
-        writeDataSource (writer, band.getDataSource());
+        writeDataSource(writer, band.getDataSource());
       }
     }
 
@@ -159,7 +159,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       }
       else
       {
-        writeElement (writer, list[i], band);
+        writeElement(writer, list[i], band);
       }
     }
     writeCloseTag(writer, tagName);
@@ -167,25 +167,25 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Writes an element to a character stream writer.
-   * 
+   *
    * @param writer  the character stream writer.
    * @param element  the element.
    * @param parent  the band.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeElement (Writer writer, Element element, Band parent)
-    throws IOException, ReportWriterException
+  private void writeElement(Writer writer, Element element, Band parent)
+      throws IOException, ReportWriterException
   {
     if (parent.getElements().indexOf(element) == -1)
     {
       throw new IllegalArgumentException("The given Element is no child of the band");
     }
-    
+
     Properties p = new Properties();
-    p.setProperty ("name", element.getName());
-    p.setProperty ("type", element.getContentType());
+    p.setProperty("name", element.getName());
+    p.setProperty("type", element.getContentType());
     writeTag(writer, BandHandler.ELEMENT_TAG, p, OPEN);
 
     writeTag(writer, ElementHandler.STYLE_TAG);
@@ -204,7 +204,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       }
       else
       {
-        writeDataSource (writer, element.getDataSource());
+        writeDataSource(writer, element.getDataSource());
       }
     }
 
@@ -213,15 +213,15 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Writes a template to a character stream writer.
-   * 
+   *
    * @param writer  the character stream writer.
    * @param template  the template.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeTemplate (Writer writer, Template template)
-    throws IOException, ReportWriterException
+  private void writeTemplate(Writer writer, Template template)
+      throws IOException, ReportWriterException
   {
     Properties p = new Properties();
     if (template.getName() != null)
@@ -247,15 +247,15 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Writes a data source to a character stream writer.
-   * 
+   *
    * @param writer  the character stream writer.
    * @param datasource  the datasource.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeDataSource (Writer writer, DataSource datasource)
-    throws IOException, ReportWriterException
+  private void writeDataSource(Writer writer, DataSource datasource)
+      throws IOException, ReportWriterException
   {
     ObjectDescription od =
         getReportWriter().getClassFactoryCollector().getDescriptionForClass(datasource.getClass());
@@ -285,13 +285,13 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Writes groups to a character stream writer.
-   * 
+   *
    * @param writer  the character stream writer.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeGroups (Writer writer)
+  private void writeGroups(Writer writer)
       throws IOException, ReportWriterException
   {
     writeTag(writer, ReportDescriptionHandler.GROUPS_TAG);
@@ -305,9 +305,9 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       List fields = g.getFields();
       for (int f = 0; f < fields.size(); f++)
       {
-        writeTag (writer, GroupHandler.FIELD_TAG);
+        writeTag(writer, GroupHandler.FIELD_TAG);
         writer.write(normalize(String.valueOf(fields.get(f))));
-        writeCloseTag (writer, GroupHandler.FIELD_TAG);
+        writeCloseTag(writer, GroupHandler.FIELD_TAG);
       }
       writeCloseTag(writer, GroupHandler.FIELDS_TAG);
 

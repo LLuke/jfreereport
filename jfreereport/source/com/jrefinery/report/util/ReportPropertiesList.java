@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportPropertiesList.java,v 1.7 2003/02/05 17:56:03 taqua Exp $
+ * $Id: ReportPropertiesList.java,v 1.8 2003/02/26 13:58:05 mungady Exp $
  *
  * Changes
  * -------
@@ -34,7 +34,7 @@
  * 29-Nov-2002 : More Documentation and CheckStyle-Fixes
  * 09-Dec-2002 : Documentation
  * 12-Dec-2002 : Documentation
- * 16-Jan-2003 : BugFix: Properties could not be marked when no property value was set 
+ * 16-Jan-2003 : BugFix: Properties could not be marked when no property value was set
  */
 package com.jrefinery.report.util;
 
@@ -82,7 +82,7 @@ public class ReportPropertiesList
       String key = (String) enum.next();
       if (base.isMarked(key))
       {
-        columns.add (key);
+        columns.add(key);
       }
     }
   }
@@ -92,7 +92,7 @@ public class ReportPropertiesList
    *
    * @return the column count.
    */
-  public int getColumnCount ()
+  public int getColumnCount()
   {
     return columns.size();
   }
@@ -104,9 +104,9 @@ public class ReportPropertiesList
    *
    * @return the column name.
    */
-  public String getColumnName (int column)
+  public String getColumnName(int column)
   {
-    return (String) columns.get (column);
+    return (String) columns.get(column);
   }
 
   /**
@@ -123,10 +123,10 @@ public class ReportPropertiesList
 
   /**
    * Returns a string describing the object.
-   * 
+   *
    * @return The string.
    */
-  public String toString ()
+  public String toString()
   {
     StringBuffer b = new StringBuffer();
 

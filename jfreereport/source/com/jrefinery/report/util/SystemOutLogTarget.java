@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.13 2003/04/23 17:13:45 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.14 2003/04/24 18:08:59 taqua Exp $
  *
  * Changes
  * -------
@@ -67,14 +67,14 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    * @param level log level of the message.
    * @param message text to be logged.
    */
-  public void log (int level, Object message)
+  public void log(int level, Object message)
   {
     if (level > 3)
     {
       level = 3;
     }
-    System.out.print (LEVELS[level]);
-    System.out.println (message);
+    System.out.print(LEVELS[level]);
+    System.out.println(message);
   }
 
   /**
@@ -88,14 +88,14 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    * @param message text to be logged.
    * @param e the exception, which should be logged.
    */
-  public void log (int level, Object message, Exception e)
+  public void log(int level, Object message, Exception e)
   {
     if (level > 3)
     {
       level = 3;
     }
-    System.out.print (LEVELS[level]);
-    System.out.println (message);
-    e.printStackTrace (System.out);
+    System.out.print(LEVELS[level]);
+    System.out.println(message);
+    e.printStackTrace(System.out);
   }
 }

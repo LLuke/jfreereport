@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactoryCollector.java,v 1.5 2003/03/07 16:55:56 taqua Exp $
+ * $Id: ElementFactoryCollector.java,v 1.6 2003/05/02 12:40:10 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.elements;
@@ -45,7 +45,7 @@ import com.jrefinery.report.Element;
 
 /**
  * An element factory that encapsulates multiple element factories.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ElementFactoryCollector implements ElementFactory
@@ -54,7 +54,7 @@ public class ElementFactoryCollector implements ElementFactory
   private ArrayList factories;
 
   /**
-   * Creates a new element factory. 
+   * Creates a new element factory.
    */
   public ElementFactoryCollector()
   {
@@ -63,38 +63,38 @@ public class ElementFactoryCollector implements ElementFactory
 
   /**
    * Adds an element factory.
-   * 
+   *
    * @param factory  the factory.
    */
-  public void addFactory (ElementFactory factory)
+  public void addFactory(ElementFactory factory)
   {
-    factories.add (factory);
+    factories.add(factory);
   }
 
   /**
    * Returns an iterator that provides access to the factories.
-   * 
+   *
    * @return The iterator.
    */
-  public Iterator getFactories ()
+  public Iterator getFactories()
   {
     return factories.iterator();
   }
- 
+
   /**
    * Returns an element for the given type.
-   * 
+   *
    * @param type  the content type.
-   * 
+   *
    * @return The element.
-   */ 
+   */
   public Element getElementForType(String type)
   {
     for (int i = 0; i < factories.size(); i++)
     {
       ElementFactory fact = (ElementFactory) factories.get(i);
       Element element = fact.getElementForType(type);
-      if (element != null) 
+      if (element != null)
       {
         return element;
       }

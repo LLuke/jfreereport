@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.20 2003/04/01 20:25:38 taqua Exp $
+ * $Id: TableProducer.java,v 1.21 2003/05/11 13:39:18 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ import com.jrefinery.report.targets.style.ElementStyleSheet;
  * <p>
  * This class defines the global contract and provides some helper methods for
  * the implementors.
- * 
+ *
  * @author Thomas Morgner
  */
 public abstract class TableProducer
@@ -67,10 +67,10 @@ public abstract class TableProducer
 
   /** Literal text for the 'author' property name. */
   public static final String AUTHOR = "Author";
-  
+
   /** the grid, that stores the collected TableCellData. */
   private TableGrid grid;
-  
+
   /** the dummy mode flag. */
   private boolean dummy;
 
@@ -128,19 +128,19 @@ public abstract class TableProducer
    * @return the TableProducers TableCellDataFactory, which is used to create
    * the TableCellData.
    */
-  public abstract TableCellDataFactory getCellDataFactory ();
+  public abstract TableCellDataFactory getCellDataFactory();
 
   /**
    * Clears the grid, removes all created cells.
    */
-  public void clearCells ()
+  public void clearCells()
   {
     grid.clear();
   }
 
-  /** 
-   * Calculates the positions for the Excel cells. 
-   * 
+  /**
+   * Calculates the positions for the Excel cells.
+   *
    * @return The table grid layout.
    */
   protected TableGridLayout layoutGrid()
@@ -153,7 +153,7 @@ public abstract class TableProducer
    *
    * @return the number of stored cells in the grid.
    */
-  public int getCellCount ()
+  public int getCellCount()
   {
     return grid.size();
   }
@@ -163,7 +163,7 @@ public abstract class TableProducer
    *
    * @param data the new TableCellData.
    */
-  protected void addCell (TableCellData data)
+  protected void addCell(TableCellData data)
   {
     grid.addData(data);
   }
@@ -243,8 +243,8 @@ public abstract class TableProducer
    */
   private Rectangle2D translateSubRect(Rectangle2D outer, Rectangle2D inner)
   {
-    float w = (float) Math.min (outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
-    float h = (float) Math.min (outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
+    float w = (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
+    float h = (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
     Rectangle2D rc = new Rectangle2D.Float(
         (float) (outer.getX() + inner.getX()),
         (float) (outer.getY() + inner.getY()),
@@ -281,7 +281,7 @@ public abstract class TableProducer
    * @param background the collected backgrounds for a single table cell.
    * @return the merged TableCellBackground.
    */
-  protected TableCellBackground createTableCellStyle (List background)
+  protected TableCellBackground createTableCellStyle(List background)
   {
     if (background == null)
     {
@@ -296,7 +296,7 @@ public abstract class TableProducer
 
       if (bg == null)
       {
-        bg =  listBg;
+        bg = listBg;
       }
       else
       {
@@ -317,7 +317,7 @@ public abstract class TableProducer
    *
    * @return true, if the producer is working in dummy mode, no output is done.
    */
-  public boolean isDummy ()
+  public boolean isDummy()
   {
     return dummy;
   }
@@ -325,7 +325,7 @@ public abstract class TableProducer
   /**
    * Defines the dummy mode.
    *
-   * @param dummy set to true, to activate the dummy mode, so that all output is skipped. 
+   * @param dummy set to true, to activate the dummy mode, so that all output is skipped.
    */
   public void setDummy(boolean dummy)
   {
@@ -409,5 +409,5 @@ public abstract class TableProducer
    *
    * @param configuration the configuration supplied by the table processor.
    */
-  public abstract void configure (Properties configuration);
+  public abstract void configure(Properties configuration);
 }

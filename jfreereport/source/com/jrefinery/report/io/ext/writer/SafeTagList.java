@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SafeTagList.java,v 1.2 2003/02/21 11:31:13 mungady Exp $
+ * $Id: SafeTagList.java,v 1.3 2003/03/18 18:28:44 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ import java.util.HashMap;
 /**
  * A container for information relating to the tags in the JFreeReport XML report files.  Some tags
  * cannot be spread across multiple lines, because it causes problems for the parser.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class SafeTagList
@@ -57,13 +57,13 @@ public class SafeTagList
   {
     /** A flag indicating whether or not it is safe to put a new line after the open tag. */
     private boolean open;
-    
+
     /** A flag indicating whether or not it is safe to put a new line before the close tag. */
     private boolean close;
 
     /**
      * Creates a new tag description.
-     * 
+     *
      * @param open  the 'open' flag.
      * @param close  the 'close' flag.
      */
@@ -75,7 +75,7 @@ public class SafeTagList
 
     /**
      * Returns the 'open' flag.
-     * 
+     *
      * @return <code>true</code> or <code>false</code>.
      */
     public boolean isOpen()
@@ -85,9 +85,9 @@ public class SafeTagList
 
     /**
      * Returns the 'close' flag.
-     * 
+     *
      * @return <code>true</code> or <code>false</code>.
-     */  
+     */
     public boolean isClose()
     {
       return close;
@@ -104,34 +104,34 @@ public class SafeTagList
 
   /**
    * Adds a tag with both the 'open' and 'close' flags set to <code>true</code>.
-   * 
+   *
    * @param tag  the tag name.
    */
-  public void add (String tag)
+  public void add(String tag)
   {
     safeTags.put(tag, new SafeDescription(true, true));
   }
 
   /**
    * Adds a tag.
-   * 
+   *
    * @param tag  the tag name.
    * @param open  the 'open' flag.
    * @param closed  the 'close' flag.
    */
-  public void add (String tag, boolean open, boolean closed)
+  public void add(String tag, boolean open, boolean closed)
   {
     safeTags.put(tag, new SafeDescription(open, closed));
   }
 
   /**
    * Returns <code>true</code> if it is safe to start a new line immediately after an open tag.
-   * 
+   *
    * @param tag  the tag name.
-   * 
+   *
    * @return A boolean.
    */
-  public boolean isSafeForOpen (String tag)
+  public boolean isSafeForOpen(String tag)
   {
     SafeDescription sd = (SafeDescription) safeTags.get(tag);
     if (sd == null)
@@ -143,12 +143,12 @@ public class SafeTagList
 
   /**
    * Returns <code>true</code> if it is safe to start a new line immediately before a close tag.
-   * 
+   *
    * @param tag  the tag name.
-   * 
+   *
    * @return A boolean.
    */
-  public boolean isSafeForClose (String tag)
+  public boolean isSafeForClose(String tag)
   {
     SafeDescription sd = (SafeDescription) safeTags.get(tag);
     if (sd == null)

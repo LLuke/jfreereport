@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.13 2003/04/24 18:08:58 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.14 2003/05/02 12:40:40 taqua Exp $
  *
  * Changes
  * -------
@@ -51,20 +51,20 @@ import org.jfree.xml.factory.objects.ColorObjectDescription;
  * cell styles into Cascading StyleSheet code.
  * <p>
  * The collection reuses previously generated styles to create optimized code.
- * 
+ *
  * @author Thomas Morgner
  */
 public class HtmlStyleCollection
 {
-  /** 
-   * the ObjectDescription for color objects is used to translate colors into names or 
-   * RGB-values. 
+  /**
+   * the ObjectDescription for color objects is used to translate colors into names or
+   * RGB-values.
    */
   private ColorObjectDescription colorObjectDescription;
-  
+
   /** contains all generated style sheets. */
   private HashMap table;
-  
+
   /** the name counter helps to create unique names for the styles. */
   private int nameCounter;
 
@@ -82,20 +82,21 @@ public class HtmlStyleCollection
    *
    * @return the generated name.
    */
-  private String createName ()
+  private String createName()
   {
     String name = "style-" + nameCounter;
     nameCounter++;
     return name;
 
   }
+
   /**
    * Adds the given style to the cache, if not already contained in the cache.
    *
    * @param style the generated style, that should be added to the style cache.
    * @return the registered name for the stylesheet.
    */
-  public String addStyle (HtmlCellStyle style)
+  public String addStyle(HtmlCellStyle style)
   {
     String name = lookupName(style);
     if (name == null)
@@ -130,7 +131,7 @@ public class HtmlStyleCollection
    *
    * @return the styles as enumeration.
    */
-  public Iterator getDefinedStyles ()
+  public Iterator getDefinedStyles()
   {
     return table.keySet().iterator();
   }
@@ -143,7 +144,7 @@ public class HtmlStyleCollection
    * @return the registered name for this style, or null, if the style is not registed.
    * @see HtmlStyleCollection#isRegistered
    */
-  public String lookupName (HtmlCellStyle style)
+  public String lookupName(HtmlCellStyle style)
   {
     return (String) table.get(style);
   }
@@ -151,7 +152,7 @@ public class HtmlStyleCollection
   /**
    * Removes all registered styles.
    */
-  public void clear ()
+  public void clear()
   {
     table.clear();
   }
@@ -164,7 +165,7 @@ public class HtmlStyleCollection
    * @param font the font definition.
    * @return the translated html font name.
    */
-  private String translateFontName (FontDefinition font)
+  private String translateFontName(FontDefinition font)
   {
     if (font.isCourier())
     {
@@ -187,49 +188,48 @@ public class HtmlStyleCollection
    * @param style the HtmlCellStyle, that should be translated.
    * @return the generated stylesheet definition.
    */
-  public String createStyleSheetDefinition (HtmlCellStyle style)
+  public String createStyleSheetDefinition(HtmlCellStyle style)
   {
     FontDefinition font = style.getFont();
     String colorValue = getColorString(style.getFontColor());
 
     StringBuffer b = new StringBuffer();
-    b.append ("font-family:");
-    b.append (translateFontName(font));
-    b.append ("; font-size:");
-    b.append (font.getFontSize());
-    b.append ("pt");
+    b.append("font-family:");
+    b.append(translateFontName(font));
+    b.append("; font-size:");
+    b.append(font.getFontSize());
+    b.append("pt");
     if (font.isBold())
     {
-      b.append ("; font-weight:bold");
+      b.append("; font-weight:bold");
     }
     if (font.isItalic())
     {
-      b.append ("; font-style:italic");
+      b.append("; font-style:italic");
     }
     if (font.isUnderline() && font.isStrikeThrough())
     {
-      b.append ("; text-decoration:underline,line-through");
+      b.append("; text-decoration:underline,line-through");
     }
-    else
-    if (font.isUnderline())
+    else if (font.isUnderline())
     {
-      b.append ("; text-decoration:underline");
+      b.append("; text-decoration:underline");
     }
     else if (font.isStrikeThrough())
     {
-      b.append ("; text-decoration:line-through");
+      b.append("; text-decoration:line-through");
     }
     if (colorValue != null)
     {
-      b.append ("; color:");
-      b.append (colorValue);
+      b.append("; color:");
+      b.append(colorValue);
     }
 
-    b.append ("; vertical-align:");
-    b.append (translateVerticalAlignment(style.getVerticalAlignment()));
-    b.append ("; text-align:");
-    b.append (translateHorizontalAlignment(style.getHorizontalAlignment()));
-    b.append (";");
+    b.append("; vertical-align:");
+    b.append(translateVerticalAlignment(style.getVerticalAlignment()));
+    b.append("; text-align:");
+    b.append(translateHorizontalAlignment(style.getHorizontalAlignment()));
+    b.append(";");
     return b.toString();
   };
 
@@ -240,7 +240,7 @@ public class HtmlStyleCollection
    * @param ea the element alignment
    * @return the translated alignment name.
    */
-  private String translateHorizontalAlignment (ElementAlignment ea)
+  private String translateHorizontalAlignment(ElementAlignment ea)
   {
     if (ea == ElementAlignment.RIGHT)
     {
@@ -260,7 +260,7 @@ public class HtmlStyleCollection
    * @param ea the element alignment
    * @return the translated alignment name.
    */
-  private String translateVerticalAlignment (ElementAlignment ea)
+  private String translateVerticalAlignment(ElementAlignment ea)
   {
     if (ea == ElementAlignment.BOTTOM)
     {
@@ -281,12 +281,12 @@ public class HtmlStyleCollection
    * @param color the AWTColor that should be translated.
    * @return the translated html color definition
    */
-  private String getColorString (Color color)
+  private String getColorString(Color color)
   {
     try
     {
       colorObjectDescription.setParameterFromObject(color);
-      return (String) colorObjectDescription.getParameter ("value");
+      return (String) colorObjectDescription.getParameter("value");
     }
     catch (Exception ofe)
     {
@@ -301,63 +301,63 @@ public class HtmlStyleCollection
    * @param bg the background definition, that should be translated.
    * @return the generated stylesheet definition.
    */
-  public String getBackgroundStyle (TableCellBackground bg)
+  public String getBackgroundStyle(TableCellBackground bg)
   {
     ArrayList style = new ArrayList();
     Color c = bg.getColor();
     if (c != null)
     {
       StringBuffer b = new StringBuffer();
-      b.append ("background-color:");
-      b.append (getColorString(c));
-      style.add (b.toString());
+      b.append("background-color:");
+      b.append(getColorString(c));
+      style.add(b.toString());
     }
 
     if (bg.getColorTop() != null)
     {
       StringBuffer b = new StringBuffer();
-      b.append ("border-top: ");
-      b.append (bg.getBorderSizeTop());
-      b.append ("pt solid ");
-      b.append (getColorString(bg.getColorTop()));
-      style.add (b.toString());
+      b.append("border-top: ");
+      b.append(bg.getBorderSizeTop());
+      b.append("pt solid ");
+      b.append(getColorString(bg.getColorTop()));
+      style.add(b.toString());
     }
 
     if (bg.getColorBottom() != null)
     {
       StringBuffer b = new StringBuffer();
-      b.append ("border-bottom: ");
-      b.append (bg.getBorderSizeBottom());
-      b.append ("pt solid ");
-      b.append (getColorString(bg.getColorBottom()));
-      style.add (b.toString());
+      b.append("border-bottom: ");
+      b.append(bg.getBorderSizeBottom());
+      b.append("pt solid ");
+      b.append(getColorString(bg.getColorBottom()));
+      style.add(b.toString());
     }
 
     if (bg.getColorLeft() != null)
     {
       StringBuffer b = new StringBuffer();
-      b.append ("border-left: ");
-      b.append (bg.getBorderSizeLeft());
-      b.append ("pt solid ");
-      b.append (getColorString(bg.getColorLeft()));
-      style.add (b.toString());
+      b.append("border-left: ");
+      b.append(bg.getBorderSizeLeft());
+      b.append("pt solid ");
+      b.append(getColorString(bg.getColorLeft()));
+      style.add(b.toString());
     }
 
     if (bg.getColorRight() != null)
     {
       StringBuffer b = new StringBuffer();
-      b.append ("border-right: ");
-      b.append (bg.getBorderSizeRight());
-      b.append ("pt solid ");
-      b.append (getColorString(bg.getColorRight()));
-      style.add (b.toString());
+      b.append("border-right: ");
+      b.append(bg.getBorderSizeRight());
+      b.append("pt solid ");
+      b.append(getColorString(bg.getColorRight()));
+      style.add(b.toString());
     }
 
     StringBuffer b = new StringBuffer();
     Iterator styles = style.iterator();
     while (styles.hasNext())
     {
-      b.append (styles.next());
+      b.append(styles.next());
       if (styles.hasNext())
       {
         b.append("; ");

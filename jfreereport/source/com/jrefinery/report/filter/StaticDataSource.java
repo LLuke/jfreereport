@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticDataSource.java,v 1.10 2003/06/10 16:07:47 taqua Exp $
+ * $Id: StaticDataSource.java,v 1.11 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public class StaticDataSource implements DataSource, Serializable
   /**
    * Default constructor.
    */
-  public StaticDataSource ()
+  public StaticDataSource()
   {
   }
 
@@ -67,9 +67,9 @@ public class StaticDataSource implements DataSource, Serializable
    *
    * @param o The value.
    */
-  public StaticDataSource (Object o)
+  public StaticDataSource(Object o)
   {
-    setValue (o);
+    setValue(o);
   }
 
   /**
@@ -77,7 +77,7 @@ public class StaticDataSource implements DataSource, Serializable
    *
    * @param o The value.
    */
-  public void setValue (Object o)
+  public void setValue(Object o)
   {
     this.value = o;
   }
@@ -87,7 +87,7 @@ public class StaticDataSource implements DataSource, Serializable
    *
    * @return The value.
    */
-  public Object getValue ()
+  public Object getValue()
   {
     return value;
   }
@@ -99,9 +99,9 @@ public class StaticDataSource implements DataSource, Serializable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    return super.clone ();
+    return super.clone();
   }
 
   /**
@@ -111,7 +111,7 @@ public class StaticDataSource implements DataSource, Serializable
    * @throws IOException if errors occur while writing the stream.
    */
   private void writeObject(ObjectOutputStream out)
-     throws IOException
+      throws IOException
   {
     out.defaultWriteObject();
     SerializerHelper.getInstance().writeObject(value, out);
@@ -126,7 +126,7 @@ public class StaticDataSource implements DataSource, Serializable
    * could not be found.
    */
   private void readObject(java.io.ObjectInputStream in)
-     throws IOException, ClassNotFoundException
+      throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     value = SerializerHelper.getInstance().readObject(in);

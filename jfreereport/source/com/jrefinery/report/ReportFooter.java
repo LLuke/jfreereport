@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportFooter.java,v 1.7 2002/12/02 18:24:10 taqua Exp $
+ * $Id: ReportFooter.java,v 1.8 2002/12/06 17:18:33 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -58,7 +58,7 @@ public class ReportFooter extends Band
   /**
    * Constructs a report footer containing no elements.
    */
-  public ReportFooter ()
+  public ReportFooter()
   {
   }
 
@@ -67,10 +67,10 @@ public class ReportFooter extends Band
    *
    * @return true if the report footer should be shown on its own page.
    */
-  public boolean isOwnPage ()
+  public boolean isOwnPage()
   {
-    Boolean b = (Boolean) getStyle().getStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, 
-                                                      Boolean.FALSE);
+    Boolean b = (Boolean) getStyle().getStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE,
+        Boolean.FALSE);
     return b.booleanValue();
   }
 
@@ -79,8 +79,8 @@ public class ReportFooter extends Band
    *
    * @param b  the flag.
    */
-  public void setOwnPage (boolean b)
+  public void setOwnPage(boolean b)
   {
-    getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, new Boolean(b));
+    getStyle().setBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, b);
   }
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellDataFactory.java,v 1.8 2003/06/19 18:44:11 taqua Exp $
+ * $Id: RTFCellDataFactory.java,v 1.9 2003/06/26 19:55:57 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ import java.awt.geom.Rectangle2D;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
@@ -100,9 +99,9 @@ public class RTFCellDataFactory extends AbstractTableCellDataFactory
 
     FontDefinition font = e.getStyle().getFontDefinitionProperty();
     Color color = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
-    ElementAlignment valign = 
+    ElementAlignment valign =
         (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
-    ElementAlignment halign = 
+    ElementAlignment halign =
         (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
     /**
      * Images cause OutOfMemoryError so they get removed ...
@@ -114,18 +113,19 @@ public class RTFCellDataFactory extends AbstractTableCellDataFactory
       return new RTFImageCellData(rect, (ImageReference) value, style);
     }
 */
-    
+
     if (value instanceof String)
     {
       try
       {
         BaseFontRecord bf = baseFontSupport.createBaseFont(font, "Cp1252", false);
-        RTFTextCellStyle style = new RTFTextCellStyle(font, bf.getBaseFont(), color, valign, halign);
+        RTFTextCellStyle style = new RTFTextCellStyle
+            (font, bf.getBaseFont(), color, valign, halign);
         return new RTFTextCellData(rect, (String) value, style);
       }
       catch (OutputTargetException ex)
       {
-        Log.debug ("Unable to create font: ", ex);
+        Log.debug("Unable to create font: ", ex);
         return null;
       }
     }

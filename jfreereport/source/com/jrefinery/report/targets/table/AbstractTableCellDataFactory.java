@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTableCellDataFactory.java,v 1.11 2003/05/02 12:40:36 taqua Exp $
+ * $Id: AbstractTableCellDataFactory.java,v 1.12 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -96,7 +96,7 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
    * @return the generated {@link TableCellBackground} or <code>null</code> if the background
    *         shape is not supported.
    */
-  public TableCellBackground createBackground (Element e, Shape shape, Rectangle2D bounds)
+  public TableCellBackground createBackground(Element e, Shape shape, Rectangle2D bounds)
   {
     TableCellBackground bg = null;
 
@@ -105,15 +105,15 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
     Dimension2D dim = new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight());
 
     Shape s = ShapeTransform.transformShape(
-                  shape,
-                  e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
-                  e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
-                  dim);
+        shape,
+        e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
+        e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
+        dim);
     Rectangle2D shapeBounds = s.getBounds2D();
     shapeBounds.setRect(point.getX(),
-                        point.getY(),
-                        shapeBounds.getWidth(),
-                        shapeBounds.getHeight());
+        point.getY(),
+        shapeBounds.getWidth(),
+        shapeBounds.getHeight());
 
     if (e.getStyle().getBooleanStyleProperty(ShapeElement.DRAW_SHAPE))
     {

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportInterruptedException.java,v 1.3 2003/02/05 15:38:13 taqua Exp $
+ * $Id: ReportInterruptedException.java,v 1.4 2003/02/26 16:41:46 mungady Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@ package com.jrefinery.report;
 /**
  * This exception is thrown when the current thread received the Interrupt-signal
  * while the report is beeing processed. Depending on the ReportProcessor implementation
- * such an signal would abort the report generation. 
- * 
+ * such an signal would abort the report generation.
+ *
  * @author Thomas Morgner
  */
 public class ReportInterruptedException extends ReportProcessingException

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.28 2003/06/23 16:08:20 taqua Exp $
+ * $Id: GroupList.java,v 1.29 2003/06/26 19:55:55 taqua Exp $
  *
  * Changes:
  * --------
@@ -47,9 +47,9 @@ package com.jrefinery.report;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Collections;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 
 import com.jrefinery.report.targets.style.StyleSheetCollection;
 import com.jrefinery.report.targets.style.StyleSheetCollectionHelper;
@@ -169,7 +169,7 @@ public class GroupList implements Cloneable, Serializable
   {
     if (cache == null)
     {
-      cache = (Group[]) backend.toArray (new Group[backend.size()]);
+      cache = (Group[]) backend.toArray(new Group[backend.size()]);
     }
     return cache[i];
   }
@@ -211,7 +211,7 @@ public class GroupList implements Cloneable, Serializable
    * @param group the group that is searched.
    * @return the index of the group or -1 if this group is not contained in that list.
    */
-  private int findGroup (Group group)
+  private int findGroup(Group group)
   {
     for (int i = 0; i < backend.size(); i++)
     {
@@ -265,7 +265,7 @@ public class GroupList implements Cloneable, Serializable
    * @throws NullPointerException if the given collection is null.
    * @throws ClassCastException if the collection does not contain groups.
    */
-  public void addAll (Collection c)
+  public void addAll(Collection c)
   {
     Iterator it = c.iterator();
     while (it.hasNext())
@@ -295,7 +295,7 @@ public class GroupList implements Cloneable, Serializable
     }
     catch (CloneNotSupportedException cne)
     {
-      Log.error ("GroupsList was not cloned.");
+      Log.error("GroupsList was not cloned.");
       throw new IllegalStateException("GroupList was not cloneable.");
     }
   }
@@ -305,9 +305,9 @@ public class GroupList implements Cloneable, Serializable
    *
    * @return An iterator over all groups of the list.
    */
-  public Iterator iterator ()
+  public Iterator iterator()
   {
-    return new ReadOnlyIterator (backend.iterator());
+    return new ReadOnlyIterator(backend.iterator());
   }
 
   /**
@@ -325,7 +325,7 @@ public class GroupList implements Cloneable, Serializable
    *
    * @return A string.
    */
-  public String toString ()
+  public String toString()
   {
     StringBuffer b = new StringBuffer();
     b.append("GroupList={backend='");
@@ -383,17 +383,17 @@ public class GroupList implements Cloneable, Serializable
    * This method will replace all inherited stylesheets with clones from the stylesheet
    * collection.
    *
-   * @param styleSheetCollection the stylesheet collection that contains the updated information and
-   * that should be assigned with that element.
+   * @param styleSheetCollection the stylesheet collection that contains the updated
+   * information and that should be assigned with that element.
    * @throws NullPointerException if the given stylesheet collection is null.
-   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException if there is an other stylesheet
-   * collection already registered with that element.
+   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException if
+   * there is an other stylesheet collection already registered with that element.
    */
   public void updateStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
     if (cache == null)
     {
-      cache = (Group[]) backend.toArray (new Group[backend.size()]);
+      cache = (Group[]) backend.toArray(new Group[backend.size()]);
     }
     for (int i = 0; i < cache.length; i++)
     {

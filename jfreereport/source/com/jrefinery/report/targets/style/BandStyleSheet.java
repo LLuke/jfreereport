@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandStyleSheet.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
+ * $Id: BandStyleSheet.java,v 1.4 2003/01/29 03:13:04 taqua Exp $
  *
  * Changes
  * -------
@@ -43,24 +43,24 @@ package com.jrefinery.report.targets.style;
 public class BandStyleSheet extends ElementStyleSheet
 {
   /** A key for the band's 'page break before' flag. */
-  public static final StyleKey PAGEBREAK_BEFORE = StyleKey.getStyleKey("pagebreak-before", 
-                                                                       Boolean.class);
+  public static final StyleKey PAGEBREAK_BEFORE = StyleKey.getStyleKey("pagebreak-before",
+      Boolean.class);
 
   /** A key for the band's 'page break after' flag. */
-  public static final StyleKey PAGEBREAK_AFTER = StyleKey.getStyleKey("pagebreak-after", 
-                                                                      Boolean.class);
+  public static final StyleKey PAGEBREAK_AFTER = StyleKey.getStyleKey("pagebreak-after",
+      Boolean.class);
 
   /** A key for the band's 'display on first page' flag. */
-  public static final StyleKey DISPLAY_ON_FIRSTPAGE = StyleKey.getStyleKey("display-on-firstpage", 
-                                                                           Boolean.class);
+  public static final StyleKey DISPLAY_ON_FIRSTPAGE = StyleKey.getStyleKey("display-on-firstpage",
+      Boolean.class);
 
   /** A key for the band's 'display on last page' flag. */
-  public static final StyleKey DISPLAY_ON_LASTPAGE = StyleKey.getStyleKey("display-on-lastpage", 
-                                                                          Boolean.class);
+  public static final StyleKey DISPLAY_ON_LASTPAGE = StyleKey.getStyleKey("display-on-lastpage",
+      Boolean.class);
 
   /** A key for the band's 'repeat header' flag. */
-  public static final StyleKey REPEAT_HEADER = StyleKey.getStyleKey("repeat-header", 
-                                                                    Boolean.class);
+  public static final StyleKey REPEAT_HEADER = StyleKey.getStyleKey("repeat-header",
+      Boolean.class);
 
   /**
    * Creates a new band style-sheet.

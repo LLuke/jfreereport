@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   Stefan Prange;
  *
- * $Id: WaitingImageObserver.java,v 1.6 2003/03/26 22:55:52 taqua Exp $
+ * $Id: WaitingImageObserver.java,v 1.7 2003/04/09 15:55:14 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -37,7 +37,7 @@
  * 04-Jun-2002 : Documentation and added a NullPointerCheck for the constructor.
  * 14-Jul-2002 : BugFixed: WaitingImageObserver dead-locked (bugfix by Stefan Prange)
  * 18-Mar-2003 : Updated header and made minor Javadoc changes (DG);
- * 
+ *
  */
 
 package com.jrefinery.report.util;
@@ -77,11 +77,11 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
    *
    * @throws NullPointerException if the given image is null.
    */
-  public WaitingImageObserver (Image image)
+  public WaitingImageObserver(Image image)
   {
     if (image == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
     this.image = image;
     lock = true;
@@ -105,13 +105,13 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
    * @return    <code>false</code> if the infoflags indicate that the
    *            image is completely loaded; <code>true</code> otherwise.
    */
-  public boolean imageUpdate (
-          Image img,
-          int infoflags,
-          int x,
-          int y,
-          int width,
-          int height)
+  public boolean imageUpdate(
+      Image img,
+      int infoflags,
+      int x,
+      int y,
+      int width,
+      int height)
   {
     if ((infoflags & ImageObserver.ALLBITS) == ImageObserver.ALLBITS)
     {
@@ -119,7 +119,7 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
       error = false;
     }
     else if ((infoflags & ImageObserver.ABORT) == ImageObserver.ABORT
-            || (infoflags & ImageObserver.ERROR) == ImageObserver.ERROR)
+        || (infoflags & ImageObserver.ERROR) == ImageObserver.ERROR)
     {
       lock = false;
       error = true;
@@ -131,20 +131,20 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
    * The workerthread. Simply draws the image to a BufferedImage's Graphics-Object
    * and waits for the AWT to load the image.
    */
-  public void waitImageLoaded ()
+  public void waitImageLoaded()
   {
-    BufferedImage img = new BufferedImage (1, 1, BufferedImage.TYPE_INT_RGB);
-    Graphics g = img.getGraphics ();
+    BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+    Graphics g = img.getGraphics();
 
     while (lock)
     {
-      if (g.drawImage (image, 0, 0, img.getWidth (this), img.getHeight (this), this))
+      if (g.drawImage(image, 0, 0, img.getWidth(this), img.getHeight(this), this))
       {
         return;
       }
       try
       {
-        Thread.currentThread ().sleep (200);
+        Thread.currentThread().sleep(200);
       }
       catch (InterruptedException e)
       {
@@ -160,15 +160,15 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    WaitingImageObserver obs = (WaitingImageObserver) super.clone ();
+    WaitingImageObserver obs = (WaitingImageObserver) super.clone();
     return obs;
   }
 
   /**
    * Returns true if there is an error condition, and false otherwise.
-   * 
+   *
    * @return A boolean.
    */
   public boolean isError()

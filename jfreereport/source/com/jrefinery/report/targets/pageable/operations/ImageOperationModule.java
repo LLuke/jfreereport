@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageOperationModule.java,v 1.9 2003/04/05 18:57:17 taqua Exp $
+ * $Id: ImageOperationModule.java,v 1.10 2003/04/09 15:52:51 mungady Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public class ImageOperationModule extends OperationModule
    * @param value  the content.
    * @param bounds  the bounds.
    */
-  public void createOperations(PhysicalOperationsCollector col, Element e, Content value, 
+  public void createOperations(PhysicalOperationsCollector col, Element e, Content value,
                                Rectangle2D bounds)
   {
     Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
@@ -80,7 +80,7 @@ public class ImageOperationModule extends OperationModule
     {
       return;
     }
-    
+
     col.addOperation(new PhysicalOperation.SetBoundsOperation(bounds));
     col.addOperation(new PhysicalOperation.SetPaintOperation(paint));
     col.addOperation(new PhysicalOperation.PrintImageOperation(ic.getContent()));

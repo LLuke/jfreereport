@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.22 2003/06/10 12:11:55 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.23 2003/06/11 20:29:41 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 
 /**
- * A collection of utility methods for use by classes that implement the BandLayoutManager 
+ * A collection of utility methods for use by classes that implement the BandLayoutManager
  * interface.
  *
  * @author Thomas Morgner
@@ -63,7 +63,7 @@ public class BandLayoutManagerUtil
    *
    * @return the layout manager.
    */
-  public static BandLayoutManager getLayoutManager (Element e, LayoutSupport ot)
+  public static BandLayoutManager getLayoutManager(Element e, LayoutSupport ot)
   {
     BandLayoutManager lm =
         (BandLayoutManager) e.getStyle().getStyleProperty(BandLayoutManager.LAYOUTMANAGER);
@@ -92,7 +92,7 @@ public class BandLayoutManagerUtil
    * @return the element bounds.
    * @throws NullPointerException if the given element is null
    */
-  public static Rectangle2D getBounds (Element e, Rectangle2D bounds)
+  public static Rectangle2D getBounds(Element e, Rectangle2D bounds)
   {
     if (e == null)
     {
@@ -100,7 +100,7 @@ public class BandLayoutManagerUtil
     }
     if (bounds == null)
     {
-      bounds = new Rectangle2D.Float ();
+      bounds = new Rectangle2D.Float();
     }
     bounds.setRect((Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS));
     return bounds;
@@ -113,7 +113,7 @@ public class BandLayoutManagerUtil
    * @param bounds  the new bounds.
    * @throws NullPointerException if the given element or the bounds are null
    */
-  public static void setBounds (Element e, Rectangle2D bounds)
+  public static void setBounds(Element e, Rectangle2D bounds)
   {
     e.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds.getBounds2D());
   }
@@ -128,15 +128,15 @@ public class BandLayoutManagerUtil
    * to reflect the new layout settings.
    *
    * @param band  the band that should be laid out.
-   * @param support  the LayoutSupport implementation used to calculate the bounds of dynamic 
+   * @param support  the LayoutSupport implementation used to calculate the bounds of dynamic
    *                 content.
    * @param width  the initial maximum width of the container.
    * @param height  the initial maximum height of the container.
-   * 
+   *
    * @return the bounds for the layouted band. The band itself got updated to
    * contain the new element bounds.
    */
-  public static Rectangle2D doLayout (Band band, LayoutSupport support, float width, float height)
+  public static Rectangle2D doLayout(Band band, LayoutSupport support, float width, float height)
   {
     if (band == null)
     {

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableLayoutStyleKeyFactory.java,v 1.6 2003/03/07 16:55:58 taqua Exp $
+ * $Id: PageableLayoutStyleKeyFactory.java,v 1.7 2003/04/28 22:21:44 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.stylekey;
@@ -43,7 +43,7 @@ import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 
 /**
  * A style key factory.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PageableLayoutStyleKeyFactory extends AbstractStyleKeyFactory

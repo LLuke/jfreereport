@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.12 2003/06/12 19:50:11 taqua Exp $
+ * $Id: CharacterEntityParser.java,v 1.13 2003/06/12 23:17:16 taqua Exp $
  *
  * Changes
  * -------
@@ -44,14 +44,14 @@ import java.util.Properties;
 /**
  * The character entity parser replaces all known occurrences of an entity
  * in the format &amp;entityname;.
- * 
+ *
  * @author Thomas Morgner
  */
 public class CharacterEntityParser
 {
   /** the entities, keyed by entity name. */
   private Properties entities;
-  
+
   /** the reverse lookup entities, keyed by character. */
   private Properties reverse;
 
@@ -80,7 +80,7 @@ public class CharacterEntityParser
    *
    * @return the CharacterEntityParser initialized with HTML4 entities.
    */
-  public static CharacterEntityParser createHTMLEntityParser ()
+  public static CharacterEntityParser createHTMLEntityParser()
   {
     return new CharacterEntityParser(new HTMLCharacterEntities());
   }
@@ -91,7 +91,7 @@ public class CharacterEntityParser
    *
    * @return the CharacterEntityParser initialized with XML entities.
    */
-  public static CharacterEntityParser createXMLEntityParser ()
+  public static CharacterEntityParser createXMLEntityParser()
   {
     Properties entities = new Properties();
     entities.setProperty("amp", "&");
@@ -167,12 +167,12 @@ public class CharacterEntityParser
    * @param value the original string
    * @return the encoded string.
    */
-  public String encodeEntities (String value)
+  public String encodeEntities(String value)
   {
     StringBuffer writer = new StringBuffer();
     for (int i = 0; i < value.length(); i++)
     {
-      String character = String.valueOf (value.charAt(i));
+      String character = String.valueOf(value.charAt(i));
       String lookup = lookupEntity(character);
       if (lookup == null)
       {
@@ -202,7 +202,7 @@ public class CharacterEntityParser
     StringBuffer bufValue = new StringBuffer(value);
 
     while (((subStart = value.indexOf("&", parserIndex)) != -1)
-           && (subEnd = value.indexOf(";", parserIndex)) != -1)
+        && (subEnd = value.indexOf(";", parserIndex)) != -1)
     {
       parserIndex = subStart;
       StringBuffer buf = new StringBuffer();

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ItemBand.java,v 1.5 2002/09/13 15:38:04 mungady Exp $
+ * $Id: ItemBand.java,v 1.6 2002/12/06 17:18:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,7 +51,7 @@ public class ItemBand extends Band
   /**
    * Constructs an item band, containing no elements.
    */
-  public ItemBand ()
+  public ItemBand()
   {
   }
 }

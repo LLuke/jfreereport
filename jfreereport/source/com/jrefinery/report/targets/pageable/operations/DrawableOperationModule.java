@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperationsCollector.java,v 1.1 2003/04/05 19:22:16 taqua Exp $
+ * $Id: DrawableOperationModule.java,v 1.7 2003/04/09 15:52:51 mungady Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import com.jrefinery.report.targets.base.content.DrawableContent;
 
 /**
  * A DrawableOperation module.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class DrawableOperationModule extends OperationModule
@@ -65,7 +65,7 @@ public class DrawableOperationModule extends OperationModule
    * @param value  the value.
    * @param bounds  the bounds.
    */
-  public void createOperations(PhysicalOperationsCollector col, Element e, Content value, 
+  public void createOperations(PhysicalOperationsCollector col, Element e, Content value,
                                Rectangle2D bounds)
   {
     DrawableContent content = (DrawableContent) value.getContentForBounds(bounds);
@@ -73,7 +73,7 @@ public class DrawableOperationModule extends OperationModule
     {
       return;
     }
-    col.addOperation (new PhysicalOperation.SetBoundsOperation (bounds));
-    col.addOperation (new PhysicalOperation.ProcessDrawableOperation(content.getContent()));
+    col.addOperation(new PhysicalOperation.SetBoundsOperation(bounds));
+    col.addOperation(new PhysicalOperation.ProcessDrawableOperation(content.getContent()));
   }
 }

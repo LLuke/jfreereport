@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.13 2003/06/10 16:07:52 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.14 2003/06/10 17:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,8 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * @param writer  the writer.
    *
    * @throws IOException if there is an I/O problem.
-   * @throws ReportWriterException if the report function definition could not be written.
+   * @throws ReportWriterException if the report function definition
+   * could not be written.
    */
   public void write(Writer writer)
       throws IOException, ReportWriterException
@@ -90,8 +91,8 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     writeTag(writer, ExtReportHandler.FUNCTIONS_TAG);
 
     writePropertyRefs(writer);
-    writeExpressions (writer, getReport().getExpressions());
-    writeExpressions (writer, getReport().getFunctions());
+    writeExpressions(writer, getReport().getExpressions());
+    writeExpressions(writer, getReport().getFunctions());
 
     writeCloseTag(writer, ExtReportHandler.FUNCTIONS_TAG);
   }
@@ -103,8 +104,8 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * @param exp  the collection.
    *
    * @throws IOException if there is an I/O problem.
-    */
-  public void writeExpressions (Writer writer, ExpressionCollection exp)
+   */
+  public void writeExpressions(Writer writer, ExpressionCollection exp)
       throws IOException
   {
     for (int i = 0; i < exp.size(); i++)
@@ -162,7 +163,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if the report definition could not be written.
    */
-  private void writePropertyRefs (Writer writer)
+  private void writePropertyRefs(Writer writer)
       throws IOException, ReportWriterException
   {
     ReportProperties reportProperties = getReport().getProperties();
@@ -212,8 +213,8 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if the report definition could not be written.
    */
-  private void writeObjectDescription (Writer writer, ObjectDescription od, Object o)
-    throws IOException, ReportWriterException
+  private void writeObjectDescription(Writer writer, ObjectDescription od, Object o)
+      throws IOException, ReportWriterException
   {
     try
     {

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceTableModel.java,v 1.5 2003/04/24 18:08:51 taqua Exp $
+ * $Id: ObjectReferenceTableModel.java,v 1.6 2003/05/02 12:40:10 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.objects;
@@ -50,7 +50,7 @@ import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**
  * A table model for the objects referenced by the class factories.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class ObjectReferenceTableModel extends AbstractTableModel
@@ -62,19 +62,19 @@ public class ObjectReferenceTableModel extends AbstractTableModel
   {
     /** The class factory. */
     private ClassFactory classFactory;
-    
+
     /** The object class. */
     private Class object;
-    
+
     /** The parameter name. */
     private String paramName;
-    
+
     /** The parameter type. */
     private Class paramType;
 
     /**
      * Creates a new row.
-     * 
+     *
      * @param classFactory  the class factory.
      * @param object  the object class.
      * @param paramName  the parameter name.
@@ -91,7 +91,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
 
     /**
      * Returns the class factory.
-     * 
+     *
      * @return The class factory.
      */
     public ClassFactory getClassFactory()
@@ -101,7 +101,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
 
     /**
      * Returns the object class.
-     * 
+     *
      * @return The class.
      */
     public Class getObject()
@@ -111,9 +111,9 @@ public class ObjectReferenceTableModel extends AbstractTableModel
 
     /**
      * Returns the parameter name.
-     * 
+     *
      * @return the parameter name.
-     */ 
+     */
     public String getParamName()
     {
       return paramName;
@@ -121,7 +121,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
 
     /**
      * Returns the parameter type.
-     * 
+     *
      * @return the parameter type.
      */
     public Class getParamType()
@@ -142,11 +142,11 @@ public class ObjectReferenceTableModel extends AbstractTableModel
      *
      * @param o1 the first object to be compared.
      * @param o2 the second object to be compared.
-     * 
+     *
      * @return a negative integer, zero, or a positive integer as the
      *         first argument is less than, equal to, or greater than the second.
-     * 
-     * @throws ClassCastException if the arguments' types prevent them from being compared by 
+     *
+     * @throws ClassCastException if the arguments' types prevent them from being compared by
      *         this Comparator.
      */
     public int compare(Object o1, Object o2)
@@ -171,7 +171,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
 
   /**
    * Creates a new table model for a set of class factories.
-   * 
+   *
    * @param cf  the class factories.
    */
   public ObjectReferenceTableModel(ClassFactoryCollector cf)
@@ -182,10 +182,10 @@ public class ObjectReferenceTableModel extends AbstractTableModel
 
   /**
    * Adds a class factory collector.
-   * 
+   *
    * @param cf  the class factory collector.
    */
-  private void addClassFactoryCollector (ClassFactoryCollector cf)
+  private void addClassFactoryCollector(ClassFactoryCollector cf)
   {
     Iterator it = cf.getFactories();
     while (it.hasNext())
@@ -204,10 +204,10 @@ public class ObjectReferenceTableModel extends AbstractTableModel
 
   /**
    * Adds a class factory.
-   * 
+   *
    * @param cf  the class factory.
    */
-  private void addClassFactory (ClassFactory cf)
+  private void addClassFactory(ClassFactory cf)
   {
     Iterator it = cf.getRegisteredClasses();
     ArrayList factories = new ArrayList();
@@ -297,7 +297,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
    *
    * @param rowIndex  the row whose value is to be queried
    * @param columnIndex  the column whose value is to be queried
-   * 
+   *
    * @return  the value Object at the specified cell
    */
   public Object getValueAt(int rowIndex, int columnIndex)
@@ -305,12 +305,17 @@ public class ObjectReferenceTableModel extends AbstractTableModel
     ObjectDescriptionRow or = (ObjectDescriptionRow) rows.get(rowIndex);
     switch (columnIndex)
     {
-      case 0: return String.valueOf(or.getClassFactory().getClass().getName());
-      case 1: return String.valueOf(or.getObject().getName());
-      case 2: return String.valueOf(or.getParamName());
-      case 3: return String.valueOf(or.getParamType().getName());
+      case 0:
+        return String.valueOf(or.getClassFactory().getClass().getName());
+      case 1:
+        return String.valueOf(or.getObject().getName());
+      case 2:
+        return String.valueOf(or.getParamName());
+      case 3:
+        return String.valueOf(or.getParamType().getName());
+      default:
+        return null;
     }
-    return null;
   }
 
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableFilter.java,v 1.5 2003/04/24 18:08:47 taqua Exp $
+ * $Id: DrawableFilter.java,v 1.6 2003/05/02 12:39:43 taqua Exp $
  *
  * Changes
  * -------
  * 07-Mar-2003 : Version 1;
- *  
+ *
  */
 
 package com.jrefinery.report.filter;
@@ -45,8 +45,8 @@ import org.jfree.ui.Drawable;
 import org.jfree.ui.FloatDimension;
 
 /**
- * A filter that converts an Drawable to an DrawableContainer. The DataSource is expected to 
- * contain a <code>com.jrefinery.ui.Drawable</code>, the image is then wrapped into a Drawable 
+ * A filter that converts an Drawable to an DrawableContainer. The DataSource is expected to
+ * contain a <code>com.jrefinery.ui.Drawable</code>, the image is then wrapped into a Drawable
  * container and this DrawableContainer is returned to the caller.
  *
  * @author Thomas Morgner

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FormatFilter.java,v 1.13 2003/06/01 17:39:24 taqua Exp $
+ * $Id: FormatFilter.java,v 1.14 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,7 @@ public class FormatFilter implements DataFilter, Serializable
   /**
    * Default constructor.
    */
-  public FormatFilter ()
+  public FormatFilter()
   {
     nullvalue = null;
   }
@@ -83,11 +83,11 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @throws NullPointerException if the given format is null
    */
-  public void setFormatter (Format format)
+  public void setFormatter(Format format)
   {
     if (format == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
     this.format = format;
   }
@@ -97,7 +97,7 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @return The format.
    */
-  public Format getFormatter ()
+  public Format getFormatter()
   {
     return this.format;
   }
@@ -111,33 +111,33 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @return The formatted value.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    Format f = getFormatter ();
+    Format f = getFormatter();
     if (f == null)
     {
-      return getNullValue ();
+      return getNullValue();
     }
 
-    DataSource ds = getDataSource ();
+    DataSource ds = getDataSource();
     if (ds == null)
     {
-      return getNullValue ();
+      return getNullValue();
     }
 
-    Object o = ds.getValue ();
+    Object o = ds.getValue();
     if (o == null)
     {
-      return getNullValue ();
+      return getNullValue();
     }
 
     try
     {
-      return f.format (o);
+      return f.format(o);
     }
     catch (IllegalArgumentException e)
     {
-      return getNullValue ();
+      return getNullValue();
     }
   }
 
@@ -146,11 +146,11 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @param nullvalue The string.
    */
-  public void setNullValue (String nullvalue)
+  public void setNullValue(String nullvalue)
   {
     if (nullvalue == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
     this.nullvalue = nullvalue;
   }
@@ -160,7 +160,7 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @return The string.
    */
-  public String getNullValue ()
+  public String getNullValue()
   {
     return nullvalue;
   }
@@ -170,7 +170,7 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @return The data source.
    */
-  public DataSource getDataSource ()
+  public DataSource getDataSource()
   {
     return datasource;
   }
@@ -180,11 +180,11 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @param ds The data source.
    */
-  public void setDataSource (DataSource ds)
+  public void setDataSource(DataSource ds)
   {
     if (ds == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
     this.datasource = ds;
   }
@@ -196,16 +196,16 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    FormatFilter f = (FormatFilter) super.clone ();
+    FormatFilter f = (FormatFilter) super.clone();
     if (datasource != null)
     {
-      f.datasource = (DataSource) datasource.clone ();
+      f.datasource = (DataSource) datasource.clone();
     }
     if (format != null)
     {
-      f.format = (Format) format.clone ();
+      f.format = (Format) format.clone();
     }
     return f;
   }

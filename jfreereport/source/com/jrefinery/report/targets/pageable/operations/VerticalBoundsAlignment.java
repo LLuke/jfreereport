@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: VerticalBoundsAlignment.java,v 1.8 2003/04/05 18:57:19 taqua Exp $
+ * $Id: VerticalBoundsAlignment.java,v 1.9 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,7 @@ public abstract class VerticalBoundsAlignment extends BoundsAlignment
    *
    * @param bounds  the bounds.
    */
-  public void calculateShift (Rectangle2D bounds)
+  public void calculateShift(Rectangle2D bounds)
   {
     Rectangle2D alignBounds = align(bounds.getBounds2D());
     this.horizontalShift = (float) (alignBounds.getY() - bounds.getY());
@@ -89,13 +89,13 @@ public abstract class VerticalBoundsAlignment extends BoundsAlignment
    *
    * @return the shifted rectangle.
    */
-  public Rectangle2D applyShift (Rectangle2D bounds)
+  public Rectangle2D applyShift(Rectangle2D bounds)
   {
     //Rectangle2D retval = bounds.getBounds2D();
     bounds.setRect(bounds.getX(),
-                   bounds.getY() + getHorizontalShift(),
-                   bounds.getWidth(),
-                   bounds.getHeight());
+        bounds.getY() + getHorizontalShift(),
+        bounds.getWidth(),
+        bounds.getHeight());
     return bounds;
   }
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_fr.java,v 1.5 2003/04/09 16:16:07 mungady Exp $
+ * $Id: JFreeReportResources_nl.java,v 1.2 2003/05/16 13:24:42 taqua Exp $
  */
 package com.jrefinery.report.resources;
 
@@ -157,8 +157,8 @@ public class JFreeReportResources_nl extends JFreeReportResources
         {"pdfsavedialog.ownerpasswordconfirm", "Herhalen"},
         {"pdfsavedialog.ownerpasswordNoMatch", "De eigenaarswachtwoorden komen niet overeen."},
 
-        {"pdfsavedialog.ownerpasswordEmpty", "Het eigenaarswachtwoord is leeg. Gebruikers kunnen " 
-            + "beveiligingsinstellingen wijzigen. Doorgaan?"},
+        {"pdfsavedialog.ownerpasswordEmpty", "Het eigenaarswachtwoord is leeg. Gebruikers kunnen "
+      + "beveiligingsinstellingen wijzigen. Doorgaan?"},
 
         {"pdfsavedialog.errorTitle", "Fout"},
         {"pdfsavedialog.targetIsEmpty", "Geef een bestandsnaam voor het PDF bestand."},
@@ -197,10 +197,10 @@ public class JFreeReportResources_nl extends JFreeReportResources
         {"excelexportdialog.errorTitle", "Fout"},
         {"excelexportdialog.targetIsEmpty",
          "Geef een bestandsnaam voor het Excel bestand."},
-        {"excelexportdialog.targetIsNoFile", 
-            "Doelbestand is ongeldig."},
+        {"excelexportdialog.targetIsNoFile",
+         "Doelbestand is ongeldig."},
         {"excelexportdialog.targetIsNotWritable",
-            "Doelbestand kan niet worden beschreven."},
+         "Doelbestand kan niet worden beschreven."},
         {"excelexportdialog.targetOverwriteConfirmation",
          "Het bestand ''{0}'' bestaat reeds. Overschrijven?"},
         {"excelexportdialog.targetOverwriteTitle", "Bestand overschrijven?"},
@@ -217,10 +217,10 @@ public class JFreeReportResources_nl extends JFreeReportResources
         {"htmlexportdialog.errorTitle", "Fout"},
         {"htmlexportdialog.targetIsEmpty",
          "Geef een bestandsnaam voor het HTML bestand."},
-        {"htmlexportdialog.targetIsNoFile", 
-            "Doelbestand is ongeldig."},
+        {"htmlexportdialog.targetIsNoFile",
+         "Doelbestand is ongeldig."},
         {"htmlexportdialog.targetIsNotWritable",
-            "Doelbestand kan niet worden beschreven."},
+         "Doelbestand kan niet worden beschreven."},
         {"htmlexportdialog.targetOverwriteConfirmation",
          "Het bestand ''{0}'' bestaat reeds. Overschrijven?"},
         {"htmlexportdialog.targetOverwriteTitle", "Bestand overschrijven?"},
@@ -240,8 +240,8 @@ public class JFreeReportResources_nl extends JFreeReportResources
         {"htmlexportdialog.selectZipFile", "Selecteer Bestand"},
 
         {"htmlexportdialog.targetCreateDataDirConfirmation",
-            "De opgegeven data map bestaat niet, " 
-            + "moeten de ontbrekende submappen worden gecreëerd?"},
+         "De opgegeven data map bestaat niet, "
+      + "moeten de ontbrekende submappen worden gecreëerd?"},
         {"htmlexportdialog.targetCreateDataDirTitle", "Data map aanmaken?"},
         {"htmlexportdialog.targetDataDirIsNoDirectory",
          "Data map is ongeldig."},
@@ -256,8 +256,8 @@ public class JFreeReportResources_nl extends JFreeReportResources
 
         {"csvexportdialog.warningTitle", "Waarschuwing"},
         {"csvexportdialog.errorTitle", "Fout"},
-        {"csvexportdialog.targetIsEmpty", 
-            "Geef een bestandsnaam voor het CSV bestand."},
+        {"csvexportdialog.targetIsEmpty",
+         "Geef een bestandsnaam voor het CSV bestand."},
         {"csvexportdialog.targetIsNoFile", "Doelbestand is ongeldig."},
         {"csvexportdialog.targetIsNotWritable",
          "Doelbestand kan niet worden beschreven."},
@@ -277,8 +277,8 @@ public class JFreeReportResources_nl extends JFreeReportResources
 
         {"csvexportdialog.exporttype", "Selecteer export methode"},
         {"csvexportdialog.export.data", "Exporteer de brondata (Ruwe data)"},
-        {"csvexportdialog.export.printed_elements", 
-            "Afgedrukte elementen (Layout data)"},
+        {"csvexportdialog.export.printed_elements",
+         "Afgedrukte elementen (Layout data)"},
 
         {"convertdialog.action.convert.description", "Converteer de bronbestanden."},
         {"convertdialog.action.convert.name", "Converteren"},
@@ -317,8 +317,8 @@ public class JFreeReportResources_nl extends JFreeReportResources
         {"plain-text-exportdialog.targetIsEmpty", "Geef een bestandsnaam"},
         {"plain-text-exportdialog.targetIsNoFile", "Doelbestand is ongeldig"},
         {"plain-text-exportdialog.targetIsNotWritable", "Doelbestand kan niet worden beschreven."},
-        {"plain-text-exportdialog.targetOverwriteConfirmation", 
-	    "Het bestand ''{0}'' bestaat reeds. Overschrijven?"},
+        {"plain-text-exportdialog.targetOverwriteConfirmation",
+         "Het bestand ''{0}'' bestaat reeds. Overschrijven?"},
         {"plain-text-exportdialog.targetOverwriteTitle", "Bestand overschrijven?"},
         {"plain-text-exportdialog.warningTitle", "Waarschuwing"},
 
@@ -329,9 +329,9 @@ public class JFreeReportResources_nl extends JFreeReportResources
    *
    * @param args not used
    */
-  public static void main (String [] args)
+  public static void main(String[] args)
   {
     ResourceCompareTool.main(new String[]{"nl"});
   }
-  
+
 }

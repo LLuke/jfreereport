@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultStyleKeyFactory.java,v 1.6 2003/05/23 20:12:15 taqua Exp $
+ * $Id: DefaultStyleKeyFactory.java,v 1.7 2003/06/10 17:14:39 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.stylekey;
@@ -45,7 +45,7 @@ import com.jrefinery.report.targets.table.excel.ExcelProcessor;
 
 /**
  * A default implementation of the {@link StyleKeyFactory} interface.
- * 
+ *
  * @author Thomas Morgner
  */
 public class DefaultStyleKeyFactory extends AbstractStyleKeyFactory

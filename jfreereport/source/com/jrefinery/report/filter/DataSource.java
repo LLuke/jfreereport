@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSource.java,v 1.6 2002/09/13 15:38:07 mungady Exp $
+ * $Id: DataSource.java,v 1.7 2002/12/06 17:21:45 mungady Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public interface DataSource extends Serializable, Cloneable
    *
    * @return the value.
    */
-  public Object getValue ();
+  public Object getValue();
 
   /**
    * Clones this <code>DataSource</code>.
@@ -70,6 +70,6 @@ public interface DataSource extends Serializable, Cloneable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone () throws CloneNotSupportedException;
+  public Object clone() throws CloneNotSupportedException;
 
 }

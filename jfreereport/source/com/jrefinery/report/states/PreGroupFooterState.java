@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupFooterState.java,v 1.8 2003/05/07 20:27:26 taqua Exp $
+ * $Id: PreGroupFooterState.java,v 1.9 2003/05/16 17:26:45 taqua Exp $
  *
  * Changes
  * -------
@@ -53,9 +53,9 @@ public final class PreGroupFooterState extends ReportState
    *
    * @param previous  the previous report state.
    */
-  public PreGroupFooterState (ReportState previous)
+  public PreGroupFooterState(ReportState previous)
   {
-    super (previous);
+    super(previous);
   }
 
   /**
@@ -64,13 +64,13 @@ public final class PreGroupFooterState extends ReportState
    *
    * @return the next report state ('<code>POST-GROUP-FOOTER</code>').
    */
-  public ReportState advance ()
+  public ReportState advance()
   {
     // There is a header and enough space to print it. The finishGroup event is
     // fired and PostGroupFooterState activated after all work is done.
     firePrepareEvent(ReportEvent.GROUP_FINISHED);
 
-    fireGroupFinishedEvent ();
-    return new PostGroupFooterState (this);
+    fireGroupFinishedEvent();
+    return new PostGroupFooterState(this);
   }
 }

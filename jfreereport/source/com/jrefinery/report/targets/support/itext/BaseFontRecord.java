@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecord.java,v 1.3 2003/02/25 15:42:30 taqua Exp $
+ * $Id: BaseFontRecord.java,v 1.4 2003/04/08 14:20:49 mungady Exp $
  *
  * Changes
  * -------
@@ -52,20 +52,20 @@ public class BaseFontRecord
 {
   /** The AWT font. */
   private FontDefinition awtFont;
-  
+
   /** The iText base font. */
   private BaseFont baseFont;
-  
+
   /** The logical name. */
   private String logicalName;
-  
+
   /** A flag indicating whether this font record describes an embedded PDF font. */
   private boolean embedded;
-  
+
   /** The encoding. */
   private String encoding;
 
-  /** 
+  /**
    * Creates a new font record.
    */
   public BaseFontRecord()
@@ -77,7 +77,7 @@ public class BaseFontRecord
    *
    * @return the font record key.
    */
-  public BaseFontRecordKey createKey ()
+  public BaseFontRecordKey createKey()
   {
     return new BaseFontRecordKey(getLogicalName(), getEncoding());
   }
@@ -189,7 +189,7 @@ public class BaseFontRecord
    */
   public float getFontHeight()
   {
-    if (awtFont == null) 
+    if (awtFont == null)
     {
       return -1;
     }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultLayoutSupport.java,v 1.5 2003/04/06 18:11:30 taqua Exp $
+ * $Id: DefaultLayoutSupport.java,v 1.6 2003/04/09 15:50:33 mungady Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ import com.jrefinery.report.targets.pageable.OutputTargetException;
  *
  * @see com.jrefinery.report.targets.base.content.Content
  * @see com.jrefinery.report.targets.pageable.operations.OperationModule
- * 
+ *
  * @author Thomas Morgner
  */
 public class DefaultLayoutSupport implements LayoutSupport
@@ -67,10 +67,10 @@ public class DefaultLayoutSupport implements LayoutSupport
 
   /**
    * Returns the single instance of this class.
-   * 
+   *
    * @return The single instance of this class.
    */
-  public static DefaultLayoutSupport getDefaultInstance ()
+  public static DefaultLayoutSupport getDefaultInstance()
   {
     if (singleton == null)
     {

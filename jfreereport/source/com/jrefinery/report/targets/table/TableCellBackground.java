@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.5 2003/04/07 18:08:10 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.6 2003/04/09 16:09:51 mungady Exp $
  *
  * Changes
  * -------
@@ -49,35 +49,35 @@ import java.awt.image.BufferedImage;
  * The TableCellBackground contains the format information for the table cells.
  * Background information is used to format the tablecells in the {@link TableWriter}.
  * CellBackgrounds can be shared for multiple cells.
- * 
+ *
  * @author Thomas Morgner
  */
 public class TableCellBackground extends TableCellData
 {
   /** The top border's size. */
   private float borderSizeTop;
-  
+
   /** The bottom border's size. */
   private float borderSizeBottom;
-  
+
   /** The left border's size. */
   private float borderSizeLeft;
-  
+
   /** The right border's size. */
   private float borderSizeRight;
-  
+
   /** The top border's color. */
   private Color colorTop;
-  
+
   /** The left border's color. */
   private Color colorLeft;
-  
+
   /** The bottom border's color. */
   private Color colorBottom;
-  
+
   /** The right border's color. */
   private Color colorRight;
-  
+
   /** The cell background color. */
   private Color color;
 
@@ -96,9 +96,9 @@ public class TableCellBackground extends TableCellData
 
   /**
    * Returns <code>true</code>, as this is a cell background definition.
-   *  
+   *
    * @return always true, this is a data cell.
-   * 
+   *
    * @see TableCellData#isBackground
    */
   public boolean isBackground()
@@ -123,7 +123,7 @@ public class TableCellBackground extends TableCellData
    * @param color the color of the top border.
    * @param size the line width of the top border.
    */
-  public void setBorderTop (Color color, float size)
+  public void setBorderTop(Color color, float size)
   {
     colorTop = color;
     borderSizeTop = size;
@@ -136,7 +136,7 @@ public class TableCellBackground extends TableCellData
    * @param color the color of the left border.
    * @param size the line width of the left border.
    */
-  public void setBorderLeft (Color color, float size)
+  public void setBorderLeft(Color color, float size)
   {
     colorLeft = color;
     borderSizeLeft = size;
@@ -149,7 +149,7 @@ public class TableCellBackground extends TableCellData
    * @param color the color of the bottom border.
    * @param size the line width of the bottom border.
    */
-  public void setBorderBottom (Color color, float size)
+  public void setBorderBottom(Color color, float size)
   {
     colorBottom = color;
     borderSizeBottom = size;
@@ -162,7 +162,7 @@ public class TableCellBackground extends TableCellData
    * @param color the color of the right border.
    * @param size the line width of the right border.
    */
-  public void setBorderRight (Color color, float size)
+  public void setBorderRight(Color color, float size)
   {
     colorRight = color;
     borderSizeRight = size;
@@ -256,7 +256,7 @@ public class TableCellBackground extends TableCellData
    * @param background the other background cell
    * @return a union of the background informations.
    */
-  public TableCellBackground merge (TableCellBackground background)
+  public TableCellBackground merge(TableCellBackground background)
   {
     Color color = getColor();
     if (color == null)
@@ -283,7 +283,7 @@ public class TableCellBackground extends TableCellData
    * @param background the background cell that should be merged with this cell.
    * @param merged the resulting cell background.
    */
-  private void mergeBorders  (TableCellBackground background, TableCellBackground merged)
+  private void mergeBorders(TableCellBackground background, TableCellBackground merged)
   {
     if (getColorTop() == null || getBorderSizeTop() == 0)
     {
@@ -329,9 +329,9 @@ public class TableCellBackground extends TableCellData
    * @param paint the overlay color
    * @return the merged colors.
    */
-  private Color addColor (Color base, Color paint)
+  private Color addColor(Color base, Color paint)
   {
-    BufferedImage img = new BufferedImage (1, 1, BufferedImage.TYPE_INT_ARGB);
+    BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     Graphics g = img.getGraphics();
 
     g.setColor(Color.white);
@@ -342,7 +342,7 @@ public class TableCellBackground extends TableCellData
     g.setColor(paint);
     g.drawRect(0, 0, 1, 1);
 
-    return new Color (img.getRGB(0, 0), true);
+    return new Color(img.getRGB(0, 0), true);
   }
 
   /**
@@ -350,7 +350,7 @@ public class TableCellBackground extends TableCellData
    *
    * @return the string representation of this cell background.
    */
-  public String toString ()
+  public String toString()
   {
     StringBuffer b = new StringBuffer();
     b.append("TableCellBackground={color=");
@@ -377,18 +377,18 @@ public class TableCellBackground extends TableCellData
 
   /**
    * Tests this object for equality with another object.
-   * 
+   *
    * @param o  the other object.
-   * 
+   *
    * @return A boolean.
    */
   public boolean equals(Object o)
   {
-    if (this == o) 
+    if (this == o)
     {
       return true;
     }
-    if (!(o instanceof TableCellBackground)) 
+    if (!(o instanceof TableCellBackground))
     {
       return false;
     }
@@ -396,43 +396,43 @@ public class TableCellBackground extends TableCellData
     final TableCellBackground tableCellBackground = (TableCellBackground) o;
 
     if (borderSizeBottom != tableCellBackground.borderSizeBottom)
-    { 
-      return false;
-    }
-    if (borderSizeLeft != tableCellBackground.borderSizeLeft) 
     {
       return false;
     }
-    if (borderSizeRight != tableCellBackground.borderSizeRight) 
+    if (borderSizeLeft != tableCellBackground.borderSizeLeft)
     {
       return false;
     }
-    if (borderSizeTop != tableCellBackground.borderSizeTop) 
+    if (borderSizeRight != tableCellBackground.borderSizeRight)
     {
       return false;
     }
-    if (color != null ? !color.equals(tableCellBackground.color) 
-                      : tableCellBackground.color != null) 
+    if (borderSizeTop != tableCellBackground.borderSizeTop)
     {
       return false;
     }
-    if (colorBottom != null ? !colorBottom.equals(tableCellBackground.colorBottom) 
-                            : tableCellBackground.colorBottom != null) 
+    if (color != null ? !color.equals(tableCellBackground.color)
+        : tableCellBackground.color != null)
     {
       return false;
     }
-    if (colorLeft != null ? !colorLeft.equals(tableCellBackground.colorLeft) 
-                          : tableCellBackground.colorLeft != null) 
+    if (colorBottom != null ? !colorBottom.equals(tableCellBackground.colorBottom)
+        : tableCellBackground.colorBottom != null)
     {
       return false;
     }
-    if (colorRight != null ? !colorRight.equals(tableCellBackground.colorRight) 
-                           : tableCellBackground.colorRight != null) 
+    if (colorLeft != null ? !colorLeft.equals(tableCellBackground.colorLeft)
+        : tableCellBackground.colorLeft != null)
     {
       return false;
     }
-    if (colorTop != null ? !colorTop.equals(tableCellBackground.colorTop) 
-                         : tableCellBackground.colorTop != null) 
+    if (colorRight != null ? !colorRight.equals(tableCellBackground.colorRight)
+        : tableCellBackground.colorRight != null)
+    {
+      return false;
+    }
+    if (colorTop != null ? !colorTop.equals(tableCellBackground.colorTop)
+        : tableCellBackground.colorTop != null)
     {
       return false;
     }
@@ -441,7 +441,7 @@ public class TableCellBackground extends TableCellData
 
   /**
    * Returns a hash code for this object.
-   * 
+   *
    * @return A hash code.
    */
   public int hashCode()

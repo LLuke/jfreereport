@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.24 2003/05/11 13:39:20 taqua Exp $
+ * $Id: Log.java,v 1.25 2003/06/01 19:11:42 taqua Exp $
  *
  * Changes
  * -------
@@ -37,7 +37,7 @@
  * 10-Dec-2002 : Updated Javadocs (DG);
  * 17-Dec-2002 : Removed LEVELS since it is not used (it is also declared in LogTarget) (DG);
  * 05-Feb-2003 : Interface cleanUp, switched from ArrayList to LogTarget[]
- * 07-Feb-2003 : BugFix, last cleanup caused a NullPointer, I removed too much ;( 
+ * 07-Feb-2003 : BugFix, last cleanup caused a NullPointer, I removed too much ;(
  */
 
 package com.jrefinery.report.util;
@@ -76,11 +76,11 @@ public final class Log extends org.jfree.util.Log
      *
      * @return the string.
      */
-    public String toString ()
+    public String toString()
     {
       return (message
-                + "Free: " + Runtime.getRuntime().freeMemory() + "; "
-                + "Total: " + Runtime.getRuntime().totalMemory());
+          + "Free: " + Runtime.getRuntime().freeMemory() + "; "
+          + "Total: " + Runtime.getRuntime().totalMemory());
     }
   }
 
@@ -99,7 +99,7 @@ public final class Log extends org.jfree.util.Log
   /**
    * Private to prevent creating instances.
    */
-  private Log ()
+  private Log()
   {
   }
 
@@ -130,18 +130,15 @@ public final class Log extends org.jfree.util.Log
     {
       l.setDebuglevel(ERROR);
     }
-    else
-    if (logLevel.equalsIgnoreCase("warn"))
+    else if (logLevel.equalsIgnoreCase("warn"))
     {
       l.setDebuglevel(WARN);
     }
-    else
-    if (logLevel.equalsIgnoreCase("info"))
+    else if (logLevel.equalsIgnoreCase("info"))
     {
       l.setDebuglevel(INFO);
     }
-    else
-    if (logLevel.equalsIgnoreCase("debug"))
+    else if (logLevel.equalsIgnoreCase("debug"))
     {
       l.setDebuglevel(DEBUG);
     }
@@ -152,9 +149,9 @@ public final class Log extends org.jfree.util.Log
    *
    * @param message  the message.
    */
-  public static void debug (Object message)
+  public static void debug(Object message)
   {
-    log (LogTarget.DEBUG, message);
+    log(LogTarget.DEBUG, message);
   }
 
   /**
@@ -163,9 +160,9 @@ public final class Log extends org.jfree.util.Log
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void debug (Object message, Exception e)
+  public static void debug(Object message, Exception e)
   {
-    log (LogTarget.DEBUG, message, e);
+    log(LogTarget.DEBUG, message, e);
   }
 
   /**
@@ -173,9 +170,9 @@ public final class Log extends org.jfree.util.Log
    *
    * @param message  the message.
    */
-  public static void info (Object message)
+  public static void info(Object message)
   {
-    log (LogTarget.INFO, message);
+    log(LogTarget.INFO, message);
   }
 
   /**
@@ -184,9 +181,9 @@ public final class Log extends org.jfree.util.Log
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void info (Object message, Exception e)
+  public static void info(Object message, Exception e)
   {
-    log (LogTarget.INFO, message, e);
+    log(LogTarget.INFO, message, e);
   }
 
   /**
@@ -194,9 +191,9 @@ public final class Log extends org.jfree.util.Log
    *
    * @param message  the message.
    */
-  public static void warn (Object message)
+  public static void warn(Object message)
   {
-    log (LogTarget.WARN, message);
+    log(LogTarget.WARN, message);
   }
 
   /**
@@ -205,9 +202,9 @@ public final class Log extends org.jfree.util.Log
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void warn (Object message, Exception e)
+  public static void warn(Object message, Exception e)
   {
-    log (LogTarget.WARN, message, e);
+    log(LogTarget.WARN, message, e);
   }
 
   /**
@@ -215,9 +212,9 @@ public final class Log extends org.jfree.util.Log
    *
    * @param message  the message.
    */
-  public static void error (Object message)
+  public static void error(Object message)
   {
-    log (LogTarget.ERROR, message);
+    log(LogTarget.ERROR, message);
   }
 
   /**
@@ -226,9 +223,9 @@ public final class Log extends org.jfree.util.Log
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void error (Object message, Exception e)
+  public static void error(Object message, Exception e)
   {
-    log (LogTarget.ERROR, message, e);
+    log(LogTarget.ERROR, message, e);
   }
 
   /**
@@ -239,7 +236,7 @@ public final class Log extends org.jfree.util.Log
    * @param level  log level of the message.
    * @param message  text to be logged.
    */
-  public static void log (int level, Object message)
+  public static void log(int level, Object message)
   {
     org.jfree.util.Log.log(level, message);
   }
@@ -255,7 +252,7 @@ public final class Log extends org.jfree.util.Log
    * @param message  text to be logged.
    * @param e  the exception, which should be logged.
    */
-  public static void log (int level, Object message, Exception e)
+  public static void log(int level, Object message, Exception e)
   {
     org.jfree.util.Log.log(level, message, e);
   }

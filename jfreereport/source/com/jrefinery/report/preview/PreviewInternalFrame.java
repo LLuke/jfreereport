@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewInternalFrame.java,v 1.3 2003/05/02 12:40:25 taqua Exp $
+ * $Id: PreviewInternalFrame.java,v 1.4 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes
  * -------
  * 25-Feb-2003 : Added standard header and Javadocs (DG);
- * 
+ *
  */
 
 package com.jrefinery.report.preview;
@@ -51,7 +51,7 @@ import com.jrefinery.report.action.CloseAction;
 
 /**
  * An internal frame that is used to preview reports.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
@@ -90,7 +90,7 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
 
   /** A preview proxy. */
   private PreviewProxyBase base;
-  
+
   /** Localised resources. */
   private ResourceBundle resources;
 
@@ -108,9 +108,9 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
 
   /**
    * Initialise.
-   * 
+   *
    * @param report  the report.
-   * 
+   *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
   private void init(JFreeReport report) throws ReportProcessingException
@@ -138,7 +138,7 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
 
   /**
    * Creates a default close action.
-   * 
+   *
    * @return The action.
    */
   public Action createDefaultCloseAction()
@@ -169,7 +169,7 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
       public void internalFrameClosing(InternalFrameEvent e)
       {
         base.getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
-                                                         "CloseFrame"));
+            "CloseFrame"));
       }
     }
     );
@@ -177,7 +177,7 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
 
   /**
    * Returns the preview proxy.
-   * 
+   *
    * @return The proxy.
    */
   public PreviewProxyBase getBase()

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionDataSource.java,v 1.15 2003/02/25 14:07:20 taqua Exp $
+ * $Id: FunctionDataSource.java,v 1.16 2003/06/01 17:39:24 taqua Exp $
  *
  * Changes
  * -------
@@ -82,9 +82,9 @@ public class FunctionDataSource implements DataSource, DataRowConnectable, Seria
    * Default constructor. The function name is empty ("", not null), the value initially
    * null.
    */
-  public FunctionDataSource ()
+  public FunctionDataSource()
   {
-    setFunction ("");
+    setFunction("");
   }
 
   /**
@@ -92,9 +92,9 @@ public class FunctionDataSource implements DataSource, DataRowConnectable, Seria
    *
    * @param function The function.
    */
-  public FunctionDataSource (String function)
+  public FunctionDataSource(String function)
   {
-    setFunction (function);
+    setFunction(function);
   }
 
   /**
@@ -102,11 +102,11 @@ public class FunctionDataSource implements DataSource, DataRowConnectable, Seria
    *
    * @param field the name of the function as defined in the function collection.
    */
-  public void setFunction (String field)
+  public void setFunction(String field)
   {
     if (field == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
     this.function = field;
   }
@@ -116,7 +116,7 @@ public class FunctionDataSource implements DataSource, DataRowConnectable, Seria
    *
    * @return the registered function name
    */
-  public String getFunction ()
+  public String getFunction()
   {
     return function;
   }
@@ -126,13 +126,13 @@ public class FunctionDataSource implements DataSource, DataRowConnectable, Seria
    *
    * @return The value.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    if (getDataRow () == null)
+    if (getDataRow() == null)
     {
-      throw new IllegalStateException ("No Datarow connected");
+      throw new IllegalStateException("No Datarow connected");
     }
-    return getDataRow ().get (getFunction ());
+    return getDataRow().get(getFunction());
   }
 
   /**
@@ -141,9 +141,9 @@ public class FunctionDataSource implements DataSource, DataRowConnectable, Seria
    * @return a clone of this object.
    * @throws CloneNotSupportedException if the cloning failed.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    return super.clone ();
+    return super.clone();
   }
 
   /**
@@ -154,16 +154,16 @@ public class FunctionDataSource implements DataSource, DataRowConnectable, Seria
    *
    * @throws IllegalStateException if there is already a data row connected.
    */
-  public void connectDataRow (DataRow row) throws IllegalStateException
+  public void connectDataRow(DataRow row) throws IllegalStateException
   {
     if (row == null)
     {
-      throw new NullPointerException ("Null-DataRowBackend cannot be set.");
+      throw new NullPointerException("Null-DataRowBackend cannot be set.");
     }
     if (dataRow != null)
     {
-      throw new IllegalStateException ("A datarow is already connected for Function-Datasource "
-                                      + getFunction());
+      throw new IllegalStateException("A datarow is already connected for Function-Datasource "
+          + getFunction());
     }
     dataRow = row;
   }
@@ -175,15 +175,15 @@ public class FunctionDataSource implements DataSource, DataRowConnectable, Seria
    *
    * @throws IllegalStateException if there is no data row connected.
    */
-  public void disconnectDataRow (DataRow row) throws IllegalStateException
+  public void disconnectDataRow(DataRow row) throws IllegalStateException
   {
     if (row == null)
     {
-      throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
+      throw new NullPointerException("Null-DataRowBackend cannot be disconnected.");
     }
     if (dataRow == null)
     {
-      throw new IllegalStateException ("There is no datarow connected");
+      throw new IllegalStateException("There is no datarow connected");
     }
     dataRow = null;
   }
@@ -193,7 +193,7 @@ public class FunctionDataSource implements DataSource, DataRowConnectable, Seria
    *
    * @return the data row.
    */
-  protected DataRow getDataRow ()
+  protected DataRow getDataRow()
   {
     return dataRow;
   }

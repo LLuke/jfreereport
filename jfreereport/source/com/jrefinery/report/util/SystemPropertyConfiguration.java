@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morger
  * Contributor(s):   Stefan Prange;
  *
- * $Id: SystemPropertyConfiguration.java,v 1.2 2003/02/05 17:56:03 taqua Exp $
+ * $Id: SystemPropertyConfiguration.java,v 1.3 2003/02/26 13:58:05 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -39,7 +39,7 @@ package com.jrefinery.report.util;
 
 /**
  * A property configuration based on system properties.
- * 
+ *
  * @author Thomas Morgner
  */
 public class SystemPropertyConfiguration extends ReportConfiguration
@@ -83,7 +83,7 @@ public class SystemPropertyConfiguration extends ReportConfiguration
     try
     {
       String value = System.getProperty(key);
-      if (value != null) 
+      if (value != null)
       {
         return value;
       }

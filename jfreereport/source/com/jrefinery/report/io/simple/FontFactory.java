@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
- * $Id: FontFactory.java,v 1.8 2003/04/24 18:08:54 taqua Exp $
+ * $Id: FontFactory.java,v 1.9 2003/05/11 13:39:17 taqua Exp $
  *
  * Changes
  * -------
@@ -55,28 +55,28 @@ public class FontFactory implements ReportDefinitionTags
   {
     /** the font name. */
     private String fontname;
-    
+
     /** the font size. */
     private Integer fontSize;
-    
+
     /** the bold flag for the font. */
     private Boolean isBold;
-    
+
     /** the italic flag for the font. */
     private Boolean isItalic;
-    
+
     /** the strikeThrough flag for the font. */
     private Boolean isStrikeThrough;
-    
+
     /** the underlined flag for the font. */
     private Boolean isUnderlined;
-    
+
     /** the embedded flag for the font. */
     private Boolean isEmbedded;
-    
+
     /** the font encoding for the font. */
     private String fontencoding;
-    
+
     /** the line height for the font. */
     private Float lineHeight;
 
@@ -271,7 +271,7 @@ public class FontFactory implements ReportDefinitionTags
   /**
    * Default constructor.
    */
-  public FontFactory ()
+  public FontFactory()
   {
   }
 
@@ -281,7 +281,7 @@ public class FontFactory implements ReportDefinitionTags
    * @param es the element style sheet that should receive the font definition.
    * @param fi the previously parsed font information.
    */
-  public static void applyFontInformation (ElementStyleSheet es, FontInformation fi)
+  public static void applyFontInformation(ElementStyleSheet es, FontInformation fi)
   {
     if (fi.getFontname() != null)
     {
@@ -329,9 +329,9 @@ public class FontFactory implements ReportDefinitionTags
    *
    * @return the int value.
    */
-  protected Integer readInt (Attributes attr, String name)
+  protected Integer readInt(Attributes attr, String name)
   {
-    String val = attr.getValue (name);
+    String val = attr.getValue(name);
     if (val == null)
     {
       return null;
@@ -355,32 +355,32 @@ public class FontFactory implements ReportDefinitionTags
    * @param target the font information, that should be used to store the defined values.
    * @return the read font information.
    */
-  private FontInformation readSimpleFontStyle (Attributes attr, FontInformation target)
+  private FontInformation readSimpleFontStyle(Attributes attr, FontInformation target)
   {
     if (target == null)
     {
       target = new FontInformation();
     }
-    String fontStyle = attr.getValue (FONT_STYLE_ATT);
+    String fontStyle = attr.getValue(FONT_STYLE_ATT);
 
     if (fontStyle != null)
     {
-      if (fontStyle.equals ("bold"))
+      if (fontStyle.equals("bold"))
       {
         target.setBold(Boolean.TRUE);
         target.setItalic(Boolean.FALSE);
       }
-      else if (fontStyle.equals ("italic"))
+      else if (fontStyle.equals("italic"))
       {
         target.setBold(Boolean.FALSE);
         target.setItalic(Boolean.TRUE);
       }
-      else if (fontStyle.equals ("bold-italic"))
+      else if (fontStyle.equals("bold-italic"))
       {
         target.setBold(Boolean.TRUE);
         target.setItalic(Boolean.TRUE);
       }
-      else if (fontStyle.equals ("plain"))
+      else if (fontStyle.equals("plain"))
       {
         target.setBold(Boolean.FALSE);
         target.setItalic(Boolean.FALSE);
@@ -389,39 +389,39 @@ public class FontFactory implements ReportDefinitionTags
 
     if (attr.getValue(FS_BOLD) != null)
     {
-      target.setBold(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_BOLD), false)));
+      target.setBold(getBoolean(ParserUtil.parseBoolean(attr.getValue(FS_BOLD), false)));
     }
 
     if (attr.getValue(FS_ITALIC) != null)
     {
-      target.setItalic(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_ITALIC), false)));
+      target.setItalic(getBoolean(ParserUtil.parseBoolean(attr.getValue(FS_ITALIC), false)));
     }
 
     if (attr.getValue(FS_STRIKETHR) != null)
     {
-      target.setStrikeThrough(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_STRIKETHR),
-                                                                   false)));
+      target.setStrikeThrough(getBoolean(ParserUtil.parseBoolean(attr.getValue(FS_STRIKETHR),
+          false)));
     }
 
     if (attr.getValue(FS_UNDERLINE) != null)
     {
-      target.setUnderlined(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_UNDERLINE),
-                                                                false)));
+      target.setUnderlined(getBoolean(ParserUtil.parseBoolean(attr.getValue(FS_UNDERLINE),
+          false)));
     }
 
     if (attr.getValue(FS_EMBEDDED) != null)
     {
-      target.setEmbedded(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_EMBEDDED), false)));
+      target.setEmbedded(getBoolean(ParserUtil.parseBoolean(attr.getValue(FS_EMBEDDED), false)));
     }
 
     if (attr.getValue(FS_ENCODING) != null)
     {
-      target.setFontencoding(attr.getValue (FS_UNDERLINE));
+      target.setFontencoding(attr.getValue(FS_UNDERLINE));
     }
 
     if (attr.getValue(LINEHEIGHT) != null)
     {
-      target.setLineHeight(new Float(ParserUtil.parseFloat(attr.getValue (LINEHEIGHT), 0)));
+      target.setLineHeight(new Float(ParserUtil.parseFloat(attr.getValue(LINEHEIGHT), 0)));
     }
 
     return target;
@@ -434,11 +434,11 @@ public class FontFactory implements ReportDefinitionTags
    * @param target the target element style sheet, that should receive the created font definition.
    * @throws ElementDefinitionException if the font cannot be created.
    */
-  public void createFont (Attributes attr, ElementStyleSheet target)
-          throws ElementDefinitionException
+  public void createFont(Attributes attr, ElementStyleSheet target)
+      throws ElementDefinitionException
   {
     // get the font name...
-    String elementFontName = attr.getValue (FONT_NAME_ATT);
+    String elementFontName = attr.getValue(FONT_NAME_ATT);
     if (elementFontName != null)
     {
       target.setStyleProperty(ElementStyleSheet.FONT, elementFontName);
@@ -446,10 +446,10 @@ public class FontFactory implements ReportDefinitionTags
 
     FontInformation fi = new FontInformation();
     // get the font style...
-    applyFontInformation(target, readSimpleFontStyle (attr, fi));
+    applyFontInformation(target, readSimpleFontStyle(attr, fi));
 
     // get the font size...
-    Integer elementFontSize = readInt (attr, FONT_SIZE_ATT);
+    Integer elementFontSize = readInt(attr, FONT_SIZE_ATT);
     if (elementFontSize != null)
     {
       target.setStyleProperty(ElementStyleSheet.FONTSIZE, elementFontSize);
@@ -463,23 +463,23 @@ public class FontFactory implements ReportDefinitionTags
    * @return the created font information.
    * @throws ElementDefinitionException if the font cannot be created.
    */
-  public FontInformation createFont (Attributes attr)
-          throws ElementDefinitionException
+  public FontInformation createFont(Attributes attr)
+      throws ElementDefinitionException
   {
     // get the font name...
     FontInformation fi = new FontInformation();
 
-    String elementFontName = attr.getValue (FONT_NAME_ATT);
+    String elementFontName = attr.getValue(FONT_NAME_ATT);
     if (elementFontName != null)
     {
       fi.setFontname(elementFontName);
     }
 
     // get the font style...
-    readSimpleFontStyle (attr, fi);
+    readSimpleFontStyle(attr, fi);
 
     // get the font size...
-    Integer elementFontSize = readInt (attr, FONT_SIZE_ATT);
+    Integer elementFontSize = readInt(attr, FONT_SIZE_ATT);
     if (elementFontSize != null)
     {
       fi.setFontSize(elementFontSize);
@@ -487,4 +487,18 @@ public class FontFactory implements ReportDefinitionTags
     return fi;
   }
 
+  /**
+   * Returns the correct Boolean object for the given primitive boolean variable.
+   *
+   * @param bool the primitive boolean.
+   * @return the Boolean object.
+   */
+  private Boolean getBoolean (boolean bool)
+  {
+    if (bool == true)
+    {
+      return Boolean.TRUE;
+    }
+    return Boolean.FALSE;
+  }
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellStyle.java,v 1.6 2003/05/02 12:40:43 taqua Exp $
+ * $Id: RTFCellStyle.java,v 1.7 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -44,14 +44,14 @@ import com.lowagie.text.Element;
  * The RTFCellStyle is used to define the style for the generated RTF-TableCell.
  * <p>
  * iText only supports the predefined logical fonts for RTF documents.
- * 
+ *
  * @author Thomas Morgner
  */
 public class RTFCellStyle
 {
   /** The vertical alignment of the cell content. */
   private ElementAlignment verticalAlignment;
-  
+
   /** The horizontal alignment of the cell content. */
   private ElementAlignment horizontalAlignment;
 
@@ -68,7 +68,7 @@ public class RTFCellStyle
     {
       throw new NullPointerException("VAlign");
     }
-    if (horizontalAlignment == null) 
+    if (horizontalAlignment == null)
     {
       throw new NullPointerException("HAlign");
     }
@@ -106,7 +106,7 @@ public class RTFCellStyle
    */
   public boolean equals(Object o)
   {
-    if (this == o) 
+    if (this == o)
     {
       return true;
     }
@@ -147,7 +147,7 @@ public class RTFCellStyle
    *
    * @param cell the iText cell, that should be formated.
    */
-  public void applyAlignment (Cell cell)
+  public void applyAlignment(Cell cell)
   {
     if (horizontalAlignment == ElementAlignment.LEFT)
     {

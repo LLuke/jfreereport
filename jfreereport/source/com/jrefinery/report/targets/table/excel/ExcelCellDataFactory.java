@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellDataFactory.java,v 1.13 2003/06/19 18:44:11 taqua Exp $
+ * $Id: ExcelCellDataFactory.java,v 1.14 2003/06/26 19:55:57 taqua Exp $
  *
  * Changes
  * -------
  * 15-Jan-2003 : Initial version
- * 23-May-2003 : Enabled configurable enhanced POI cell formats.  
+ * 23-May-2003 : Enabled configurable enhanced POI cell formats.
  */
 package com.jrefinery.report.targets.table.excel;
 
@@ -57,7 +57,7 @@ import com.jrefinery.report.util.Log;
  * excel cell data. The element style is converted using an external
  * style factory. This factory reuses previously defined styles if
  * possible, to increase the file creating efficiency.
- * 
+ *
  * @author Heiko Evermann
  */
 public class ExcelCellDataFactory extends AbstractTableCellDataFactory
@@ -75,7 +75,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
    */
   public ExcelCellDataFactory(ExcelCellStyleFactory styleFactory)
   {
-    if (styleFactory == null) 
+    if (styleFactory == null)
     {
       throw new NullPointerException();
     }
@@ -111,7 +111,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
    *
    * @param defineDataFormats set to true if cells should contain a custom data
    * format for numeric or date cells or false when all cells should contain strings.
-   */ 
+   */
   public void setDefineDataFormats(boolean defineDataFormats)
   {
     this.defineDataFormats = defineDataFormats;
@@ -142,7 +142,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
    * in points.
    * @return null if element type is not supported or the generated TableCellData object.
    */
-  public TableCellData createCellData (Element element, Rectangle2D bounds)
+  public TableCellData createCellData(Element element, Rectangle2D bounds)
   {
     if (element.isVisible() == false)
     {
@@ -169,7 +169,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
     }
 
     // fallback, no template or unknown template
-    return handleFormats (element, bounds);
+    return handleFormats(element, bounds);
   }
 
   /**
@@ -183,11 +183,11 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
    *
    * @param e the element that should be converted into data or backgrounds.
    * @param bounds the layouted bounds of the element.
-   * 
+   *
    * @return the generated data or null, if the data is not handled by this
    * implementation.
    */
-  private TableCellData handleFormats (Element e, Rectangle2D bounds)
+  private TableCellData handleFormats(Element e, Rectangle2D bounds)
   {
     ExcelCellData retval = null;
 
@@ -196,7 +196,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
     {
       ExcelDataCellStyle style = styleFactory.getExcelDataCellStyle(e);
       String svalue = String.valueOf(e.getValue());
-      retval = new DefaultExcelCellData (bounds, style, svalue);
+      retval = new DefaultExcelCellData(bounds, style, svalue);
     }
     else if (value instanceof Shape)
     {
@@ -217,7 +217,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
    * @return the generated content or null, if the content is not handled by
    * this implementation.
    */
-  private ExcelCellData handleTemplate (Template template, Element e, Rectangle2D bounds)
+  private ExcelCellData handleTemplate(Template template, Element e, Rectangle2D bounds)
   {
 
     /**
@@ -240,7 +240,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
       }
       catch (ParseException pe)
       {
-        Log.debug ("Unable to restore date:", pe);
+        Log.debug("Unable to restore date:", pe);
       }
     }
     else if (template instanceof NumberFieldTemplate)
@@ -258,7 +258,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
       }
       catch (ParseException pe)
       {
-        Log.debug ("Unable to restore number:", pe);
+        Log.debug("Unable to restore number:", pe);
       }
     }
     return null;

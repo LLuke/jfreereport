@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ShapeElement.java,v 1.23 2003/04/05 18:57:09 taqua Exp $
+ * $Id: ShapeElement.java,v 1.24 2003/04/09 00:10:34 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -57,7 +57,7 @@ import com.jrefinery.report.targets.style.StyleKey;
 /**
  * Used to draw shapes (typically lines and boxes) on a report band. The drawing style
  * of the shapes contained in that element can be controled by using the StyleKeys
- * FILL_SHAPE and DRAW_SHAPE. 
+ * FILL_SHAPE and DRAW_SHAPE.
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -65,11 +65,11 @@ import com.jrefinery.report.targets.style.StyleKey;
 public class ShapeElement extends Element
 {
   /** The default stroke. */
-  public static final BasicStroke DEFAULT_STROKE = new BasicStroke (0.5f);
+  public static final BasicStroke DEFAULT_STROKE = new BasicStroke(0.5f);
 
   /** A key for the 'fill-shape' style. */
   public static final StyleKey FILL_SHAPE = StyleKey.getStyleKey("fill-shape", Boolean.class);
-  
+
   /** A key for the 'draw-shape' style. */
   public static final StyleKey DRAW_SHAPE = StyleKey.getStyleKey("draw-shape", Boolean.class);
 
@@ -100,7 +100,7 @@ public class ShapeElement extends Element
    *
    * @return a default style sheet that can be shared among shape elements.
    */
-  public static ShapeElementDefaultStyleSheet getDefaultStyle ()
+  public static ShapeElementDefaultStyleSheet getDefaultStyle()
   {
     if (defaultShapeStyle == null)
     {
@@ -112,7 +112,7 @@ public class ShapeElement extends Element
   /**
    * Constructs a shape element.
    */
-  public ShapeElement ()
+  public ShapeElement()
   {
     getStyle().addDefaultParent(getDefaultStyle());
   }
@@ -122,16 +122,16 @@ public class ShapeElement extends Element
    *
    * @return the string.
    */
-  public String toString ()
+  public String toString()
   {
-    StringBuffer b = new StringBuffer ();
-    b.append ("Shape={ name=");
-    b.append (getName ());
-    b.append (", shape=");
-    b.append (getValue());
-    b.append ("}");
+    StringBuffer b = new StringBuffer();
+    b.append("Shape={ name=");
+    b.append(getName());
+    b.append(", shape=");
+    b.append(getValue());
+    b.append("}");
 
-    return b.toString ();
+    return b.toString();
   }
 
   /**
@@ -141,7 +141,7 @@ public class ShapeElement extends Element
    *
    * @return true or false.
    */
-  public boolean isShouldDraw ()
+  public boolean isShouldDraw()
   {
     return getStyle().getBooleanStyleProperty(DRAW_SHAPE);
   }
@@ -153,7 +153,7 @@ public class ShapeElement extends Element
    *
    * @return true or false.
    */
-  public boolean isShouldFill ()
+  public boolean isShouldFill()
   {
     return getStyle().getBooleanStyleProperty(FILL_SHAPE);
   }
@@ -163,7 +163,7 @@ public class ShapeElement extends Element
    *
    * @param shouldDraw  the flag.
    */
-  public void setShouldDraw (boolean shouldDraw)
+  public void setShouldDraw(boolean shouldDraw)
   {
     getStyle().setStyleProperty(DRAW_SHAPE, shouldDraw ? Boolean.TRUE : Boolean.FALSE);
   }
@@ -173,13 +173,13 @@ public class ShapeElement extends Element
    *
    * @param shouldFill  the flag.
    */
-  public void setShouldFill (boolean shouldFill)
+  public void setShouldFill(boolean shouldFill)
   {
     getStyle().setStyleProperty(FILL_SHAPE, shouldFill ? Boolean.TRUE : Boolean.FALSE);
   }
 
   /**
-   * Returns true if the shape should be scaled, and false otherwise. 
+   * Returns true if the shape should be scaled, and false otherwise.
    * <p>
    * This is determined by the element's style-sheet.
    *
@@ -201,7 +201,7 @@ public class ShapeElement extends Element
   }
 
   /**
-   * Returns true if the shape's aspect ratio should be preserved, and false otherwise. 
+   * Returns true if the shape's aspect ratio should be preserved, and false otherwise.
    * <p>
    * This is determined by the element's style-sheet.
    *
@@ -219,8 +219,8 @@ public class ShapeElement extends Element
    */
   public void setKeepAspectRatio(boolean kar)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, 
-                                kar ? Boolean.TRUE : Boolean.FALSE);
+    getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO,
+        kar ? Boolean.TRUE : Boolean.FALSE);
   }
 
   /** A string for the content type. */
@@ -241,7 +241,7 @@ public class ShapeElement extends Element
    *
    * @return the stroke.
    */
-  public Stroke getStroke ()
+  public Stroke getStroke()
   {
     return (Stroke) getStyle().getStyleProperty(ElementStyleSheet.STROKE);
   }
@@ -251,7 +251,7 @@ public class ShapeElement extends Element
    *
    * @param stroke  the stroke.
    */
-  public void setStroke (Stroke stroke)
+  public void setStroke(Stroke stroke)
   {
     getStyle().setStyleProperty(ElementStyleSheet.STROKE, stroke);
   }

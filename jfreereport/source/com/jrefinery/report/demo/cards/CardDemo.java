@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardDemo.java,v 1.4 2003/05/02 12:39:41 taqua Exp $
+ * $Id: CardDemo.java,v 1.5 2003/06/12 23:17:13 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import org.jfree.ui.RefineryUtilities;
 
 /**
  * A JFreeReport demo.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class CardDemo extends JFreeReportDemo
@@ -63,10 +63,10 @@ public class CardDemo extends JFreeReportDemo
   /**
    * Creates a <code>TableModel</code> containing data for the demo.
    * <!-- used in JUnit tests -->
-   * 
+   *
    * @return A <code>TableModel</code>.
    */
-  public static TableModel createSimpleDemoModel ()
+  public static TableModel createSimpleDemoModel()
   {
     CardTableModel model = new CardTableModel();
     model.addCard(new AdminCard("Jared", "Diamond", "NR123123", "login", "secret", new Date()));
@@ -79,10 +79,10 @@ public class CardDemo extends JFreeReportDemo
 
   /**
    * Creates a <code>TableModel</code> containing data for the demo.
-   * 
+   *
    * @return A <code>TableModel</code>.
    */
-  private TableModel createEmptyStartDemoModel ()
+  private TableModel createEmptyStartDemoModel()
   {
     CardTableModel model = new CardTableModel();
     model.addCard(new NoPrintCard());
@@ -97,31 +97,31 @@ public class CardDemo extends JFreeReportDemo
   }
 
   /**
-   * Creates a list of the available demos. 
-   * 
+   * Creates a list of the available demos.
+   *
    * @return A list.
    */
   protected List createAvailableDemos()
   {
     ArrayList demos = new ArrayList();
-    
-    demos.add(new DemoDefinition("Simple Card printing", 
-              createSimpleDemoModel(), 
-              new URLDemoHandler("/com/jrefinery/report/demo/cards/usercards.xml")));
-              
-    demos.add(new DemoDefinition("First 3 cards empty", 
-              createEmptyStartDemoModel(), 
-              new URLDemoHandler("/com/jrefinery/report/demo/cards/usercards.xml")));
-              
+
+    demos.add(new DemoDefinition("Simple Card printing",
+        createSimpleDemoModel(),
+        new URLDemoHandler("/com/jrefinery/report/demo/cards/usercards.xml")));
+
+    demos.add(new DemoDefinition("First 3 cards empty",
+        createEmptyStartDemoModel(),
+        new URLDemoHandler("/com/jrefinery/report/demo/cards/usercards.xml")));
+
     return demos;
   }
 
   /**
    * The starting point for the demo application.
-   * 
+   *
    * @param args  ignored.
    */
-  public static void main (String [] args)
+  public static void main(String[] args)
   {
     try
     {

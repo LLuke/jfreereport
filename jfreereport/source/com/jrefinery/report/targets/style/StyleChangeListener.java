@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleChangeListener.java,v 1.1 2003/03/18 22:36:13 taqua Exp $
+ * $Id: StyleChangeListener.java,v 1.2 2003/04/09 16:10:30 mungady Exp $
  *
  * Changes
  * -------
@@ -37,27 +37,27 @@
 package com.jrefinery.report.targets.style;
 
 /**
- * The interface that must be supported by objects that wish to receive notification of 
+ * The interface that must be supported by objects that wish to receive notification of
  * style change events.
- * 
+ *
  * @author Thomas Morgner
  */
 public interface StyleChangeListener
 {
   /**
    * Receives notification that a style has changed.
-   * 
+   *
    * @param source  the source of the change.
    * @param key  the style key.
    * @param value  the value.
    */
-  public void styleChanged (ElementStyleSheet source, StyleKey key, Object value);
+  public void styleChanged(ElementStyleSheet source, StyleKey key, Object value);
 
   /**
    * Receives notification that a style has been removed.
-   * 
+   *
    * @param source  the source of the change.
    * @param key  the style key.
    */
-  public void styleRemoved (ElementStyleSheet source, StyleKey key);
+  public void styleRemoved(ElementStyleSheet source, StyleKey key);
 }

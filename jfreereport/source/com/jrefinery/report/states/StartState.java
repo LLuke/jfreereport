@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.17 2003/06/13 16:21:35 taqua Exp $
+ * $Id: StartState.java,v 1.18 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes
  * -------
@@ -63,10 +63,10 @@ public final class StartState extends ReportState
    * @param report  the report.
    * @throws CloneNotSupportedException if the initial cloning of the report definition fails.
    */
-  public StartState (JFreeReport report)
-    throws CloneNotSupportedException
+  public StartState(JFreeReport report)
+      throws CloneNotSupportedException
   {
-    super (report);
+    super(report);
     Iterator it = getLevels();
     if (it.hasNext())
     {
@@ -87,26 +87,26 @@ public final class StartState extends ReportState
    *
    * @throws ReportProcessingException if the State could not be initialized properly.
    */
-  public StartState (FinishState fstate, int level) throws ReportProcessingException
+  public StartState(FinishState fstate, int level) throws ReportProcessingException
   {
-    super (fstate, true);
+    super(fstate, true);
     getFunctions().setLevel(level);
   }
 
   /**
-   * Advances from the '<code>START</code>' state to the '<code>PRE-GROUP-HEADER</code>' state (the 
+   * Advances from the '<code>START</code>' state to the '<code>PRE-GROUP-HEADER</code>' state (the
    * only transition that is possible from this state).
    * <p>
    * Initialises the 'report.date' property, and fires a 'report-started' event.
    *
    * @return the next state (<code>PRE-GROUP-HEADER</code>').
    */
-  public ReportState advance ()
+  public ReportState advance()
   {
-    setCurrentPage (0);
+    setCurrentPage(0);
 
     // a PropertyHandler should set the properties.
-    setProperty (JFreeReport.REPORT_DATE_PROPERTY, new Date ());
+    setProperty(JFreeReport.REPORT_DATE_PROPERTY, new Date());
 
     fireReportInitializedEvent();
     return new PostReportInitializedState(this);
@@ -117,7 +117,7 @@ public final class StartState extends ReportState
    *
    * @return always true, as this state starts the report processing.
    */
-  public boolean isStart ()
+  public boolean isStart()
   {
     return true;
   }
@@ -128,7 +128,7 @@ public final class StartState extends ReportState
    *
    * @return true; Header related states preview the next itemband DataRow.
    */
-  public boolean isPrefetchState ()
+  public boolean isPrefetchState()
   {
     return true;
   }

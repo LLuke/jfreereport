@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.11 2003/06/10 16:07:48 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.12 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -55,14 +55,14 @@ import com.jrefinery.report.event.ReportEvent;
 /**
  * Paints a AWT or Swing Component. The component must be contained in the
  * dataRow.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PaintDynamicComponentFunction extends AbstractFunction implements Serializable
 {
   /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
-  
+
   /** Literal text for the 'scale' property. */
   public static final String SCALE_PROPERTY = "scale";
 
@@ -219,8 +219,8 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
       peerSupply.validate();
 
       BufferedImage bi = new BufferedImage((int) (scale * dim.width),
-                                           (int) (scale * dim.height),
-                                           BufferedImage.TYPE_INT_ARGB);
+          (int) (scale * dim.height),
+          BufferedImage.TYPE_INT_ARGB);
       Graphics2D graph = bi.createGraphics();
       graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
       comp.paint(graph);
@@ -256,7 +256,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    *
    * @param scale the scale factor.
    */
-  public void setScale (float scale)
+  public void setScale(float scale)
   {
     setProperty(SCALE_PROPERTY, String.valueOf(scale));
   }
@@ -269,7 +269,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    *
    * @return the scale factor.
    */
-  public float getScale ()
+  public float getScale()
   {
     String scale = getProperty(SCALE_PROPERTY, "1");
     try
@@ -327,7 +327,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    * could not be found.
    */
   private void readObject(ObjectInputStream in)
-     throws IOException, ClassNotFoundException
+      throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     peerSupply = new Frame();

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.34 2003/06/23 16:08:20 taqua Exp $
+ * $Id: Element.java,v 1.35 2003/06/26 19:55:55 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -68,9 +68,9 @@ import com.jrefinery.report.filter.DataTarget;
 import com.jrefinery.report.filter.EmptyDataSource;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException;
 import com.jrefinery.report.targets.style.StyleSheetCollection;
 import com.jrefinery.report.targets.style.StyleSheetCollectionHelper;
-import com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException;
 
 /**
  * Base class for all report elements (display items that can appear within a report band).
@@ -361,7 +361,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    *
    * @return the content-type as string.
    */
-  public abstract String getContentType ();
+  public abstract String getContentType();
 
   /**
    * Returns the stylesheet collection which is assigned with this element and
@@ -407,7 +407,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   /**
    * Handles the unregistration of the stylesheet collection.
    */
-  protected void handleUnregisterStyleSheetCollection ()
+  protected void handleUnregisterStyleSheetCollection()
   {
     getStyle().unregisterStyleSheetCollection(getStyleSheetCollection());
   }
@@ -415,7 +415,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   /**
    * Handles the registration of the stylesheet collection.
    */
-  protected void handleRegisterStyleSheetCollection ()
+  protected void handleRegisterStyleSheetCollection()
   {
     getStyle().registerStyleSheetCollection(getStyleSheetCollection());
 
@@ -445,7 +445,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * @throws InvalidStyleSheetCollectionException if there is an other stylesheet
    * collection already registered with that element.
    */
-  public void updateStyleSheetCollection (StyleSheetCollection sc)
+  public void updateStyleSheetCollection(StyleSheetCollection sc)
   {
     if (sc == null)
     {
@@ -453,7 +453,8 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     }
     if (getStyleSheetCollection() != null)
     {
-      throw new InvalidStyleSheetCollectionException("There is a stylesheet collection already registered.");
+      throw new InvalidStyleSheetCollectionException
+          ("There is a stylesheet collection already registered.");
     }
 
     sc.updateStyleSheet(getStyle());
@@ -502,8 +503,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     {
       getStyle().setStyleProperty(ElementStyleSheet.PAINT, null);
     }
-    else
-    if (p instanceof Color)
+    else if (p instanceof Color)
     {
       getStyle().setStyleProperty(ElementStyleSheet.PAINT, p);
     }

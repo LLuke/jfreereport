@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRow.java,v 1.6 2002/12/06 17:59:15 taqua Exp $
+ * $Id: DataRow.java,v 1.7 2002/12/10 21:04:16 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public interface DataRow
    *
    * @return the value.
    */
-  public Object get (int col);
+  public Object get(int col);
 
   /**
    * Returns the value of the function, expression or column using its specific name.
@@ -88,7 +88,7 @@ public interface DataRow
    * @return the value.
    * @throws IllegalStateException if the datarow detected a deadlock.
    */
-  public Object get (String col) throws IllegalStateException;
+  public Object get(String col) throws IllegalStateException;
 
   /**
    * Returns the name of the column, expression or function. For columns from the tablemodel,
@@ -99,7 +99,7 @@ public interface DataRow
    *
    * @return the name.
    */
-  public String getColumnName (int col);
+  public String getColumnName(int col);
 
   /**
    * Returns the column position of the column, expression or function with the given name or
@@ -109,7 +109,7 @@ public interface DataRow
    *
    * @return the item index.
    */
-  public int findColumn (String name);
+  public int findColumn(String name);
 
   /**
    * Returns the number of columns, expressions and functions and marked ReportProperties
@@ -117,5 +117,5 @@ public interface DataRow
    *
    * @return the item count.
    */
-  public int getColumnCount ();
+  public int getColumnCount();
 }

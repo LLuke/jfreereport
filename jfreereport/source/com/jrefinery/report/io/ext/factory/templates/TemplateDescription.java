@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateDescription.java,v 1.4 2003/04/23 13:43:04 taqua Exp $
+ * $Id: TemplateDescription.java,v 1.5 2003/04/24 18:08:52 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.templates;
@@ -43,28 +43,28 @@ import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**
  * A template description.
- * 
+ *
  * @author Thomas Morgner
  */
 public interface TemplateDescription extends ObjectDescription
 {
-  /** 
+  /**
    * Creates a new template.
-   * 
+   *
    * @return The template.
    */
   public Template createTemplate();
 
   /**
    * Returns the name.
-   * 
+   *
    * @return The name.
    */
   public String getName();
- 
+
   /**
    * Sets the name.
-   * 
+   *
    * @param name  the name.
    */
   public void setName(String name);

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,14 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.6 2003/02/26 13:58:01 mungady Exp $
+ * $Id: BaseFontSupport.java,v 1.7 2003/04/08 14:20:54 mungady Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Added Javadocs (DG);
  * 29-Jan-2003 : moved from pageable.output to support.itext package.
  * 07-Feb-2003 : Documentation updated
- * 
+ *
  */
 
 package com.jrefinery.report.targets.support.itext;
@@ -70,7 +70,7 @@ public class BaseFontSupport
   }
 
   /**
-   * Close the font support. 
+   * Close the font support.
    */
   public void close()
   {
@@ -89,7 +89,7 @@ public class BaseFontSupport
    *
    * @throws OutputTargetException if there was a problem setting the font for the target.
    */
-  public BaseFontRecord createBaseFont(FontDefinition font, String encoding, boolean embedded) 
+  public BaseFontRecord createBaseFont(FontDefinition font, String encoding, boolean embedded)
       throws OutputTargetException
   {
     if (font == null)
@@ -128,7 +128,7 @@ public class BaseFontSupport
     {
       fontKey = createSerifName(bold, italic);
     }
-    else if (font.isSansSerif ())
+    else if (font.isSansSerif())
     { // default, this catches Dialog and SansSerif
       fontKey = createSansSerifName(bold, italic);
     }
@@ -175,7 +175,7 @@ public class BaseFontSupport
         // filename is null, so no ttf file registered for the fontname, maybe this is
         // one of the internal fonts ...
         BaseFont f = BaseFont.createFont(fontKey, stringEncoding, embedded,
-                                         false, null, null);
+            false, null, null);
 
         if (f != null)
         {
@@ -198,7 +198,7 @@ public class BaseFontSupport
     try
     {
       BaseFont f = BaseFont.createFont(BaseFont.HELVETICA, stringEncoding, embedded,
-                                       false, null, null);
+          false, null, null);
       if (f != null)
       {
         fontRecord = new BaseFontRecord();
@@ -233,15 +233,15 @@ public class BaseFontSupport
    * @throws IOException if there is an I/O problem.
    * @throws DocumentException if the BaseFont could not be created.
    */
-  private BaseFontRecord createFontFromTTF (FontDefinition font, String filename,
+  private BaseFontRecord createFontFromTTF(FontDefinition font, String filename,
                                            String encoding, String stringEncoding,
                                            boolean embedded)
-    throws IOException, DocumentException
+      throws IOException, DocumentException
   {
 
     // TrueType fonts need extra handling if the font is a symbolic font.
     if ((StringUtil.endsWithIgnoreCase(filename, ".ttf")
-         || StringUtil.endsWithIgnoreCase(filename, ".ttc")) == false)
+        || StringUtil.endsWithIgnoreCase(filename, ".ttc")) == false)
     {
       return null;
     }
@@ -262,10 +262,10 @@ public class BaseFontSupport
     }
 
     // check if this font is in the cache ...
-    //Log.warn ("TrueTypeFontKey : " + fontKey + " Font: " + font.isItalic() + " Encoding: " 
+    //Log.warn ("TrueTypeFontKey : " + fontKey + " Font: " + font.isItalic() + " Encoding: "
     //          + encoding);
     BaseFontRecord fontRec = getFromCache(fontKey, encoding);
-    if (fontRec != null) 
+    if (fontRec != null)
     {
       return fontRec;
     }
@@ -300,9 +300,9 @@ public class BaseFontSupport
    *
    * @param record  the record.
    */
-  private void putToCache (BaseFontRecord record)
+  private void putToCache(BaseFontRecord record)
   {
-    baseFonts.put (record.createKey(), record);
+    baseFonts.put(record.createKey(), record);
   }
 
   /**
@@ -313,9 +313,9 @@ public class BaseFontSupport
    *
    * @return the PDF font record.
    */
-  private BaseFontRecord getFromCache (String fontKey, String encoding)
+  private BaseFontRecord getFromCache(String fontKey, String encoding)
   {
-    BaseFontRecord r = (BaseFontRecord) baseFonts.get (new BaseFontRecordKey(fontKey, encoding));
+    BaseFontRecord r = (BaseFontRecord) baseFonts.get(new BaseFontRecordKey(fontKey, encoding));
     return r;
   }
 
@@ -327,7 +327,7 @@ public class BaseFontSupport
    *
    * @return the font name.
    */
-  private String createSansSerifName (boolean bold, boolean italic)
+  private String createSansSerifName(boolean bold, boolean italic)
   {
     if (bold && italic)
     {
@@ -355,7 +355,7 @@ public class BaseFontSupport
    *
    * @return the font name.
    */
-  private String createSerifName (boolean bold, boolean italic)
+  private String createSerifName(boolean bold, boolean italic)
   {
     if (bold && italic)
     {
@@ -383,7 +383,7 @@ public class BaseFontSupport
    *
    * @return the font name.
    */
-  private String createCourierName (boolean bold, boolean italic)
+  private String createCourierName(boolean bold, boolean italic)
   {
     if (bold && italic)
     {

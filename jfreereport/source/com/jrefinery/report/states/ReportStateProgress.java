@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportStateProgress.java,v 1.1 2003/04/06 20:44:12 taqua Exp $
+ * $Id: ReportStateProgress.java,v 1.2 2003/04/09 16:16:07 mungady Exp $
  *
  * Changes
  * -------
@@ -38,20 +38,20 @@ package com.jrefinery.report.states;
 
 /**
  * Report state progress.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class ReportStateProgress
 {
   /** The current group index. */
   private int currentGroupIndex;
-  
+
   /** The current data item. */
   private int currentDataItem;
-  
+
   /** The current page. */
   private int currentPage;
-  
+
   /** The state class. */
   private Class stateClass;
 
@@ -64,13 +64,13 @@ public class ReportStateProgress
 
   /**
    * Creates a new instance.
-   * 
+   *
    * @param currentGroupIndex  the current group index.
    * @param currentDataItem  the current data item.
    * @param currentPage  the current page.
    * @param stateClass  the state class.
    */
-  public ReportStateProgress(int currentGroupIndex, int currentDataItem, int currentPage, 
+  public ReportStateProgress(int currentGroupIndex, int currentDataItem, int currentPage,
                              Class stateClass)
   {
     this.currentGroupIndex = currentGroupIndex;
@@ -85,7 +85,7 @@ public class ReportStateProgress
 
   /**
    * Sets the current group index.
-   * 
+   *
    * @param currentGroupIndex  the new index value.
    */
   public void setCurrentGroupIndex(int currentGroupIndex)
@@ -95,7 +95,7 @@ public class ReportStateProgress
 
   /**
    * Sets the current data item.
-   * 
+   *
    * @param currentDataItem  the current data item.
    */
   public void setCurrentDataItem(int currentDataItem)
@@ -105,7 +105,7 @@ public class ReportStateProgress
 
   /**
    * Sets the current page.
-   * 
+   *
    * @param currentPage  the current page.
    */
   public void setCurrentPage(int currentPage)
@@ -115,7 +115,7 @@ public class ReportStateProgress
 
   /**
    * Sets the state class.
-   * 
+   *
    * @param stateClass  the state class.
    */
   public void setStateClass(Class stateClass)
@@ -139,7 +139,7 @@ public class ReportStateProgress
 
   /**
    * Returns the current data item.
-   * 
+   *
    * @return The current data item.
    */
   public int getCurrentDataItem()
@@ -149,7 +149,7 @@ public class ReportStateProgress
 
   /**
    * Returns the current page.
-   * 
+   *
    * @return The current page.
    */
   public int getCurrentPage()
@@ -159,7 +159,7 @@ public class ReportStateProgress
 
   /**
    * Returns the state class.
-   * 
+   *
    * @return The state class.
    */
   public Class getStateClass()

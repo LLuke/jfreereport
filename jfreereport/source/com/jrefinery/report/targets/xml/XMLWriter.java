@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLWriter.java,v 1.8 2003/03/18 22:35:27 taqua Exp $
+ * $Id: XMLWriter.java,v 1.9 2003/04/09 16:06:34 mungady Exp $
  *
  * Changes
  * -------
@@ -56,14 +56,14 @@ import com.jrefinery.report.util.Log;
  * the XML-code generated is very simple and easy to understand. If you seek
  * complexer XML-Outputs, have a look at the HTML-Writer, this implementation is able
  * to write XHTML output.
- * 
+ *
  * @author Thomas Morgner
  */
 public class XMLWriter extends AbstractFunction
 {
   /** the writer used to write the generated document. */
   private Writer w;
-  
+
   /** the dependency level. */
   private int depLevel;
 
@@ -106,8 +106,8 @@ public class XMLWriter extends AbstractFunction
    * @param b the band that should be written.
    * @throws IOException if an IO-Error occurs.
    */
-  private void writeBand (Band b)
-    throws IOException
+  private void writeBand(Band b)
+      throws IOException
   {
     Element[] elements = b.getElementArray();
     for (int i = 0; i < elements.length; i++)
@@ -115,11 +115,11 @@ public class XMLWriter extends AbstractFunction
       Element e = elements[i];
       if (e.getContentType().startsWith("text"))
       {
-        w.write ("<element name=\"");
-        w.write (entityParser.encodeEntities(e.getName()));
-        w.write ("\">");
+        w.write("<element name=\"");
+        w.write(entityParser.encodeEntities(e.getName()));
+        w.write("\">");
         w.write(entityParser.encodeEntities(String.valueOf(e.getValue())));
-        w.write ("</element>");
+        w.write("</element>");
       }
       else if (e instanceof Band)
       {
@@ -146,7 +146,7 @@ public class XMLWriter extends AbstractFunction
     }
     catch (IOException ioe)
     {
-      Log.error ("Error writing the band", ioe);
+      Log.error("Error writing the band", ioe);
     }
   }
 
@@ -166,7 +166,7 @@ public class XMLWriter extends AbstractFunction
     }
     catch (IOException ioe)
     {
-      Log.error ("Error writing the band", ioe);
+      Log.error("Error writing the band", ioe);
     }
   }
 
@@ -188,7 +188,7 @@ public class XMLWriter extends AbstractFunction
     }
     catch (IOException ioe)
     {
-      Log.error ("Error writing the band", ioe);
+      Log.error("Error writing the band", ioe);
     }
   }
 
@@ -210,7 +210,7 @@ public class XMLWriter extends AbstractFunction
     }
     catch (IOException ioe)
     {
-      Log.error ("Error writing the band", ioe);
+      Log.error("Error writing the band", ioe);
     }
   }
 
@@ -229,7 +229,7 @@ public class XMLWriter extends AbstractFunction
     }
     catch (IOException ioe)
     {
-      Log.error ("Error writing the band", ioe);
+      Log.error("Error writing the band", ioe);
     }
   }
 
@@ -248,7 +248,7 @@ public class XMLWriter extends AbstractFunction
     }
     catch (IOException ioe)
     {
-      Log.error ("Error writing the items tag", ioe);
+      Log.error("Error writing the items tag", ioe);
     }
   }
 
@@ -267,7 +267,7 @@ public class XMLWriter extends AbstractFunction
     }
     catch (IOException ioe)
     {
-      Log.error ("Error writing the items tag", ioe);
+      Log.error("Error writing the items tag", ioe);
     }
   }
 
@@ -282,9 +282,9 @@ public class XMLWriter extends AbstractFunction
   }
 
   /**
-   * The dependency level defines the level of execution for this function. Higher dependency 
-   * functions are executed before lower dependency functions. For ordinary functions and 
-   * expressions, the range for dependencies is defined to start from 0 (lowest dependency 
+   * The dependency level defines the level of execution for this function. Higher dependency
+   * functions are executed before lower dependency functions. For ordinary functions and
+   * expressions, the range for dependencies is defined to start from 0 (lowest dependency
    * possible) to 2^31 (upper limit of int).
    * <p>
    * PageLayouter functions override the default behaviour an place them self at depency level -1,

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageURLFieldTemplate.java,v 1.4 2003/03/07 16:55:54 taqua Exp $
+ * $Id: ImageURLFieldTemplate.java,v 1.5 2003/05/02 12:39:44 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
  * 18-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.filter.templates;
@@ -49,17 +49,17 @@ import com.jrefinery.report.filter.URLFilter;
 /**
  * An image URL field template, which reads the image from an URL supplied from
  * a column in the DataRow.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ImageURLFieldTemplate extends AbstractTemplate implements DataRowConnectable
 {
   /** An image load filter. */
   private ImageLoadFilter imageLoadFilter;
-  
+
   /** A data row accessor. */
   private DataRowDataSource dataRowDataSource;
-  
+
   /** A URL filter. */
   private URLFilter urlFilter;
 
@@ -77,7 +77,7 @@ public class ImageURLFieldTemplate extends AbstractTemplate implements DataRowCo
 
   /**
    * Returns the name of the field from the data-row that the template gets images from.
-   * 
+   *
    * @return The field name.
    */
   public String getField()
@@ -87,7 +87,7 @@ public class ImageURLFieldTemplate extends AbstractTemplate implements DataRowCo
 
   /**
    * Sets the field name.
-   * 
+   *
    * @param field  the field name.
    */
   public void setField(String field)
@@ -97,7 +97,7 @@ public class ImageURLFieldTemplate extends AbstractTemplate implements DataRowCo
 
   /**
    * Returns the base URL.
-   * 
+   *
    * @return The base URL.
    */
   public URL getBaseURL()
@@ -107,7 +107,7 @@ public class ImageURLFieldTemplate extends AbstractTemplate implements DataRowCo
 
   /**
    * Sets the base URL.
-   * 
+   *
    * @param baseURL  the base URL.
    */
   public void setBaseURL(URL baseURL)

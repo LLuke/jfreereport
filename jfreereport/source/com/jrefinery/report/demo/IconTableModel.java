@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: IconTableModel.java,v 1.9 2003/05/14 22:26:37 taqua Exp $
+ * $Id: IconTableModel.java,v 1.10 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -57,9 +57,9 @@ public class IconTableModel extends AbstractTableModel
   /**
    * Constructs a new IconTableModel, initially empty.
    */
-  public IconTableModel ()
+  public IconTableModel()
   {
-    this.data = new ArrayList ();
+    this.data = new ArrayList();
   }
 
   /**
@@ -70,14 +70,14 @@ public class IconTableModel extends AbstractTableModel
    * @param icon The icon.
    * @param size The size of the icon image in bytes.
    */
-  protected void addIconEntry (String name, String category, Image icon, Long size)
+  protected void addIconEntry(String name, String category, Image icon, Long size)
   {
     Object[] item = new Object[4];
     item[0] = name;
     item[1] = category;
     item[2] = icon;
     item[3] = size;
-    data.add (0, item);
+    data.add(0, item);
   }
 
   /**
@@ -85,9 +85,9 @@ public class IconTableModel extends AbstractTableModel
    *
    * @return The row count.
    */
-  public int getRowCount ()
+  public int getRowCount()
   {
-    return data.size ();
+    return data.size();
   }
 
   /**
@@ -95,7 +95,7 @@ public class IconTableModel extends AbstractTableModel
    *
    * @return The column count.
    */
-  public int getColumnCount ()
+  public int getColumnCount()
   {
     return 4;
   }
@@ -108,9 +108,9 @@ public class IconTableModel extends AbstractTableModel
    *
    * @return The data item.
    */
-  public Object getValueAt (int row, int column)
+  public Object getValueAt(int row, int column)
   {
-    Object[] item = (Object[]) data.get (row);
+    Object[] item = (Object[]) data.get(row);
     return item[column];
   }
 
@@ -121,7 +121,7 @@ public class IconTableModel extends AbstractTableModel
    *
    * @return The column class.
    */
-  public Class getColumnClass (int column)
+  public Class getColumnClass(int column)
   {
     if (column == 2)
     {
@@ -140,7 +140,7 @@ public class IconTableModel extends AbstractTableModel
    *
    * @return The column name.
    */
-  public String getColumnName (int column)
+  public String getColumnName(int column)
   {
     switch (column)
     {

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageEventListener.java,v 1.1 2003/06/13 18:59:08 taqua Exp $
+ * $Id: PageEventListener.java,v 1.2 2003/06/15 21:26:29 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 13.06.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.event;
@@ -61,21 +61,21 @@ public interface PageEventListener
    *
    * @param event The event.
    */
-  public void pageStarted (ReportEvent event);
+  public void pageStarted(ReportEvent event);
 
   /**
    * Receives notification that a page is completed.
    *
    * @param event The event.
    */
-  public void pageFinished (ReportEvent event);
+  public void pageFinished(ReportEvent event);
 
   /**
    * Receives notification that a page was canceled by the ReportProcessor.
    * This method is called, when a page was removed from the report after
-   * it was generated. 
+   * it was generated.
    *
    * @param event The event.
    */
-  public void pageCanceled (ReportEvent event);
+  public void pageCanceled(ReportEvent event);
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardLayoutBLayoutManager.java,v 1.6 2003/04/24 18:08:56 taqua Exp $
+ * $Id: CardLayoutBLayoutManager.java,v 1.7 2003/05/02 12:40:30 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ import org.jfree.ui.FloatDimension;
  * to show a specified card. The CardLayout.addLayoutComponent method can be
  * used to associate a string identifier with a given card for fast random
  * access.
- * 
+ *
  * @author Thomas Morgner
  */
 public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
@@ -69,7 +69,7 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
   public CardLayoutBLayoutManager()
   {
   }
-  
+
   /**
    * Calculates the minimum layout size for a band.
    *
@@ -123,14 +123,14 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
   /**
    * Sets the size of <code>retval</code> to have the maximum width and height from the two
    * dimensions.
-   * 
+   *
    * @param retval  the first dimension (and return value carrier).
    * @param elementDim  the second dimension.
    */
-  private void unionMax (Dimension2D retval, Dimension2D elementDim)
+  private void unionMax(Dimension2D retval, Dimension2D elementDim)
   {
     retval.setSize(Math.max(elementDim.getWidth(), retval.getWidth()),
-                   Math.max(elementDim.getHeight(), retval.getHeight()));
+        Math.max(elementDim.getHeight(), retval.getHeight()));
   }
 
   /**
@@ -147,13 +147,13 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
     }
 
     Dimension2D parentDim = new FloatDimension((float) parentBounds.getWidth(),
-                                               (float) parentBounds.getHeight());
+        (float) parentBounds.getHeight());
 
     Dimension2D dim = preferredLayoutSize(b, parentDim);
     Element[] elements = b.getElementArray();
     LayoutSupport layoutSupport = getLayoutSupport();
     dim.setSize(align((float) dim.getWidth(), layoutSupport.getHorizontalAlignmentBorder()),
-                align((float) dim.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
+        align((float) dim.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
 
     for (int i = 0; i < elements.length; i++)
     {
@@ -164,7 +164,7 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
       }
 
       // here apply the bounds ...
-      Rectangle2D bounds 
+      Rectangle2D bounds
           = new Rectangle2D.Float(0, 0, (float) dim.getWidth(), (float) dim.getHeight());
       BandLayoutManagerUtil.setBounds(e, bounds);
       if (e instanceof Band)
@@ -177,7 +177,7 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
 
   /**
    * Clears any cached items used by the layout manager. Invalidates the layout.
-   * 
+   *
    * @param container  the container band.
    */
   public void invalidateLayout(Band container)

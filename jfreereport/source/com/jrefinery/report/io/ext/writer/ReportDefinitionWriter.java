@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionWriter.java,v 1.9 2003/05/02 12:40:17 taqua Exp $
+ * $Id: ReportDefinitionWriter.java,v 1.10 2003/05/30 16:57:52 taqua Exp $
  *
  * Changes
  * -------
@@ -77,25 +77,25 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void write (Writer w) throws IOException, ReportWriterException
+  public void write(Writer w) throws IOException, ReportWriterException
   {
     String reportName = getReport().getName();
-    w.write ("<?xml version=\"1.0\" encoding=\"" + getReportWriter().getEncoding() + "\"?>\n");
-    w.write ("<!DOCTYPE report-definition PUBLIC \"");
-    w.write (ParserEntityResolver.PUBLIC_ID_EXTENDED);
-    w.write ("\"\n");
-    w.write ("                         \"http://jfreereport.sourceforge.net/extreport.dtd\">\n");
-    w.write ("<!--\n");
-    w.write (" This report definition was created by the ReportDefinitionWriter.\n");
-    w.write ("-->\n");
+    w.write("<?xml version=\"1.0\" encoding=\"" + getReportWriter().getEncoding() + "\"?>\n");
+    w.write("<!DOCTYPE report-definition PUBLIC \"");
+    w.write(ParserEntityResolver.PUBLIC_ID_EXTENDED);
+    w.write("\"\n");
+    w.write("                         \"http://jfreereport.sourceforge.net/extreport.dtd\">\n");
+    w.write("<!--\n");
+    w.write(" This report definition was created by the ReportDefinitionWriter.\n");
+    w.write("-->\n");
     writeTag(w, "report-definition", "name", reportName, OPEN);
 
     ParserConfigWriter parserConfigWriter =
-        new ParserConfigWriter(getReportWriter(),getIndentLevel());
+        new ParserConfigWriter(getReportWriter(), getIndentLevel());
     parserConfigWriter.write(w);
 
     ReportConfigWriter reportConfigWriter =
-        new ReportConfigWriter(getReportWriter(),getIndentLevel());
+        new ReportConfigWriter(getReportWriter(), getIndentLevel());
     reportConfigWriter.write(w);
 
     StylesWriter stylesWriter =
@@ -113,8 +113,8 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
     FunctionsWriter functionsWriter = new FunctionsWriter(getReportWriter(), getIndentLevel());
     functionsWriter.write(w);
 
-    w.write ("</report-definition>");
-    w.write (getLineSeparator());
+    w.write("</report-definition>");
+    w.write(getLineSeparator());
   }
 
 }

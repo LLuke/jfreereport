@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AdminCard.java,v 1.1 2003/04/02 21:23:59 taqua Exp $
+ * $Id: AdminCard.java,v 1.2 2003/04/09 15:30:26 mungady Exp $
  *
  * Changes
  * -------
@@ -40,15 +40,15 @@ import java.util.Date;
 
 /**
  * An administrator's account card.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class AdminCard extends UserCard
 {
-    
+
   /**
    * Creates a new administrator account card.
-   * 
+   *
    * @param firstName  the first name.
    * @param lastName  the last name.
    * @param cardNr  the card number.
@@ -56,7 +56,7 @@ public class AdminCard extends UserCard
    * @param password  the password.
    * @param expires  the card expiry date.
    */
-  public AdminCard(String firstName, String lastName, String cardNr, 
+  public AdminCard(String firstName, String lastName, String cardNr,
                    String login, String password, Date expires)
   {
     super(firstName, lastName, cardNr, login, password, expires);
@@ -64,7 +64,7 @@ public class AdminCard extends UserCard
 
   /**
    * Returns the account type (<code>CardType.ADMIN</code>).
-   * 
+   *
    * @return The account type.
    */
   public CardType getType()

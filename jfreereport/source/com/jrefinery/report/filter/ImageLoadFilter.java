@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.17 2003/06/01 17:39:25 taqua Exp $
+ * $Id: ImageLoadFilter.java,v 1.18 2003/06/23 14:36:56 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -79,9 +79,9 @@ public class ImageLoadFilter implements DataFilter, Serializable
   /**
    * creates a new ImageLoadFilter with a cache size of 10.
    */
-  public ImageLoadFilter ()
+  public ImageLoadFilter()
   {
-    this (1);
+    this(1);
   }
 
   /**
@@ -89,9 +89,9 @@ public class ImageLoadFilter implements DataFilter, Serializable
    *
    * @param cacheSize  the cache size.
    */
-  public ImageLoadFilter (int cacheSize)
+  public ImageLoadFilter(int cacheSize)
   {
-    imageCache = new KeyedQueue (cacheSize);
+    imageCache = new KeyedQueue(cacheSize);
   }
 
   /**
@@ -101,14 +101,14 @@ public class ImageLoadFilter implements DataFilter, Serializable
    *
    * @return  the current value for this filter.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    DataSource ds = getDataSource ();
+    DataSource ds = getDataSource();
     if (ds == null)
     {
       return null;
     }
-    Object o = ds.getValue ();
+    Object o = ds.getValue();
     if (o == null)
     {
       return null;
@@ -122,21 +122,21 @@ public class ImageLoadFilter implements DataFilter, Serializable
     // a valid url is found, lookup the url in the cache, maybe the image is loaded and
     // still there.
     URL url = (URL) o;
-    Object retval = imageCache.get (url);
+    Object retval = imageCache.get(url);
     if (retval == null)
     {
       try
       {
-        retval = new ImageReference (url);
+        retval = new ImageReference(url);
       }
       catch (IOException ioe)
       {
-        Log.warn ("Error while loading the image from " + url, ioe);
+        Log.warn("Error while loading the image from " + url, ioe);
         return null;
       }
     }
     // update the cache and put the image at the top of the list
-    imageCache.put (url, retval);
+    imageCache.put(url, retval);
     return retval;
   }
 
@@ -145,7 +145,7 @@ public class ImageLoadFilter implements DataFilter, Serializable
    *
    * @return The data source.
    */
-  public DataSource getDataSource ()
+  public DataSource getDataSource()
   {
     return source;
   }
@@ -155,11 +155,11 @@ public class ImageLoadFilter implements DataFilter, Serializable
    *
    * @param ds The data source.
    */
-  public void setDataSource (DataSource ds)
+  public void setDataSource(DataSource ds)
   {
     if (ds == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
 
     source = ds;
@@ -172,13 +172,13 @@ public class ImageLoadFilter implements DataFilter, Serializable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    ImageLoadFilter il = (ImageLoadFilter) super.clone ();
-    il.imageCache = (KeyedQueue) imageCache.clone ();
+    ImageLoadFilter il = (ImageLoadFilter) super.clone();
+    il.imageCache = (KeyedQueue) imageCache.clone();
     if (source != null)
     {
-      il.source = (DataSource) source.clone ();
+      il.source = (DataSource) source.clone();
     }
     return il;
   }

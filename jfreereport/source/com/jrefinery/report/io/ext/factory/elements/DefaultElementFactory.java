@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultElementFactory.java,v 1.4 2003/03/07 16:55:56 taqua Exp $
+ * $Id: DefaultElementFactory.java,v 1.5 2003/05/02 12:40:09 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.elements;
@@ -45,7 +45,7 @@ import com.jrefinery.report.TextElement;
 
 /**
  * A default implementation of the {@link ElementFactory} interface.
- * 
+ *
  * @author Thomas Morgner
  */
 public class DefaultElementFactory extends AbstractElementFactory

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicStyleKeyHandler.java,v 1.12 2003/06/10 16:07:49 taqua Exp $
+ * $Id: BasicStyleKeyHandler.java,v 1.13 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -83,6 +83,7 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
 
   /** The ClassFactory used to create the basic key objects. */
   private ClassFactory classFactory;
+
   /**
    * Creates a new BasicStyleKeyHandler handler.
    *
@@ -94,7 +95,7 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public BasicStyleKeyHandler(Parser parser, String finishTag, String name, Class c)
-    throws SAXException
+      throws SAXException
   {
     this.entityParser = CharacterEntityParser.createXMLEntityParser();
     this.parser = parser;
@@ -146,9 +147,9 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char ch[], int start, int length) throws SAXException
+  public void characters(char[] ch, int start, int length) throws SAXException
   {
-    buffer.append(ch, start,  length);
+    buffer.append(ch, start, length);
   }
 
   /**
@@ -182,7 +183,7 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
    *
    * @return The style key.
    */
-  public StyleKey getStyleKey ()
+  public StyleKey getStyleKey()
   {
     return key;
   }
@@ -192,10 +193,10 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
    *
    * @return The value.
    */
-  public Object getValue ()
+  public Object getValue()
   {
     return keyfactory.createBasicObject(key, entityParser.decodeEntities(buffer.toString()),
-                                        keyValueClass, classFactory);
+        keyValueClass, classFactory);
   }
 
   /**

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.42 2003/06/13 16:21:34 taqua Exp $
+ * $Id: ReportState.java,v 1.43 2003/06/13 17:55:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -134,45 +134,45 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * @param reportPar  the report.
    * @throws CloneNotSupportedException if the initial cloning of the report definition fails.
    */
-  protected ReportState (JFreeReport reportPar) throws CloneNotSupportedException
+  protected ReportState(JFreeReport reportPar) throws CloneNotSupportedException
   {
     setReport(new ReportDefinition(reportPar));
     numberOfRows = reportPar.getData().getRowCount();
-    reportProperties = getReport().getProperties ();
+    reportProperties = getReport().getProperties();
 
-    DataRowConnector dc = new DataRowConnector ();
-    DataRowConnector.connectDataSources (getReport (), dc);
+    DataRowConnector dc = new DataRowConnector();
+    DataRowConnector.connectDataSources(getReport(), dc);
     setDataRowConnector(dc);
 
     LevelledExpressionList functions = new LevelledExpressionList(reportPar.getExpressions(),
-                                                                  reportPar.getFunctions());
-    setFunctions (functions);
+        reportPar.getFunctions());
+    setFunctions(functions);
     functions.connectDataRow(dc);
 
 
-    DataRowBackend dr = new DataRowBackend ();
-    dr.setTablemodel (reportPar.getData ());
-    dr.setFunctions (getFunctions ());
+    DataRowBackend dr = new DataRowBackend();
+    dr.setTablemodel(reportPar.getData());
+    dr.setFunctions(getFunctions());
     dr.setReportProperties(new ReportPropertiesList(reportProperties));
-    setDataRowBackend (dr);
+    setDataRowBackend(dr);
 
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
 
     // we have no clone-ancestor, so forget everyting
     setAncestorHashcode(this.hashCode());
 
-    // reset the current data row ... 
+    // reset the current data row ...
     resetState();
   }
 
   /**
    * Resets the state, so that the datarow points to the first row.
    */
-  protected void resetState ()
+  protected void resetState()
   {
-    setCurrentItem (BEFORE_FIRST_ROW);
-    setCurrentPage (BEFORE_FIRST_PAGE);
-    setCurrentGroupIndex (BEFORE_FIRST_GROUP);
+    setCurrentItem(BEFORE_FIRST_ROW);
+    setCurrentPage(BEFORE_FIRST_PAGE);
+    setCurrentGroupIndex(BEFORE_FIRST_GROUP);
     getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
   }
 
@@ -183,16 +183,16 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * @param clone the base report state from which to initialize.
    * @param reset true, if the state should be reseted, false otherwise.
    */
-  protected ReportState (ReportState clone, boolean reset)
+  protected ReportState(ReportState clone, boolean reset)
   {
-    setReport (clone.getReport ());
+    setReport(clone.getReport());
     reportProperties = clone.reportProperties;
     numberOfRows = clone.getNumberOfRows();
 
-    setFunctions (clone.getFunctions ());
-    setDataRowConnector (clone.getDataRowConnector ());
+    setFunctions(clone.getFunctions());
+    setDataRowConnector(clone.getDataRowConnector());
 
-    setDataRowBackend (clone.getDataRowBackend ());
+    setDataRowBackend(clone.getDataRowBackend());
 
     if (reset)
     {
@@ -200,10 +200,10 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     }
     else
     {
-      setCurrentItem (clone.getCurrentDataItem ());
-      setCurrentPage (clone.getCurrentPage ());
-      setCurrentGroupIndex (clone.getCurrentGroupIndex ());
-      getDataRowBackend ().setCurrentRow (getCurrentDisplayItem ());
+      setCurrentItem(clone.getCurrentDataItem());
+      setCurrentPage(clone.getCurrentPage());
+      setCurrentGroupIndex(clone.getCurrentGroupIndex());
+      getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
     }
     // we have no clone-ancestor, so forget everything
     setAncestorHashcode(this.hashCode());
@@ -214,7 +214,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param clone  the existing state.
    */
-  protected ReportState (ReportState clone)
+  protected ReportState(ReportState clone)
   {
     this(clone, false);
   }
@@ -236,7 +236,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the data row connector.
    */
-  protected DataRowConnector getDataRowConnector ()
+  protected DataRowConnector getDataRowConnector()
   {
     return dataRowConnector;
   }
@@ -246,7 +246,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param dataRowConnector  the data row connector.
    */
-  private void setDataRowConnector (DataRowConnector dataRowConnector)
+  private void setDataRowConnector(DataRowConnector dataRowConnector)
   {
     this.dataRowConnector = dataRowConnector;
   }
@@ -256,9 +256,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return  the current data row.
    */
-  public DataRow getDataRow ()
+  public DataRow getDataRow()
   {
-    return getDataRowConnector ();
+    return getDataRowConnector();
   }
 
   /**
@@ -266,7 +266,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the data row backend.
    */
-  protected DataRowBackend getDataRowBackend ()
+  protected DataRowBackend getDataRowBackend()
   {
     return dataRow;
   }
@@ -276,7 +276,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param dataRow  the data row backend.
    */
-  private void setDataRowBackend (DataRowBackend dataRow)
+  private void setDataRowBackend(DataRowBackend dataRow)
   {
     this.dataRow = dataRow;
   }
@@ -286,7 +286,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the report.
    */
-  public ReportDefinition getReport ()
+  public ReportDefinition getReport()
   {
     return report;
   }
@@ -298,7 +298,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * @return the next report state.
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public abstract ReportState advance () throws ReportProcessingException;
+  public abstract ReportState advance() throws ReportProcessingException;
 
   /**
    * Sets the report for this state.
@@ -307,11 +307,11 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @throws NullPointerException if the given report is null
    */
-  private void setReport (ReportDefinition report)
+  private void setReport(ReportDefinition report)
   {
     if (report == null)
     {
-      throw new NullPointerException ("A ReportState without a report is not allowed");
+      throw new NullPointerException("A ReportState without a report is not allowed");
     }
     this.report = report;
   }
@@ -321,7 +321,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return The current row index.
    */
-  public int getCurrentDataItem ()
+  public int getCurrentDataItem()
   {
     return this.currentItem;
   }
@@ -333,9 +333,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the row to use for obtaining data from the TableModel.
    */
-  public final int getCurrentDisplayItem ()
+  public final int getCurrentDisplayItem()
   {
-    if (isPrefetchState ())
+    if (isPrefetchState())
     {
       return this.currentItem + 1;
     }
@@ -353,7 +353,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return always false (subclasses may override).
    */
-  public boolean isPrefetchState ()
+  public boolean isPrefetchState()
   {
     return false;
   }
@@ -364,7 +364,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param itemIndex The new item index.
    */
-  public void setCurrentItem (int itemIndex)
+  public void setCurrentItem(int itemIndex)
   {
     this.currentItem = itemIndex;
   }
@@ -374,7 +374,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the page number.
    */
-  public int getCurrentPage ()
+  public int getCurrentPage()
   {
     return this.currentPage;
   }
@@ -384,11 +384,11 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param page The new page number.
    */
-  public void setCurrentPage (int page)
+  public void setCurrentPage(int page)
   {
     if (page < 0)
     {
-      throw new IllegalArgumentException ("Page must be >= 0");
+      throw new IllegalArgumentException("Page must be >= 0");
     }
     this.currentPage = page;
   }
@@ -400,7 +400,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return The current group index.
    */
-  public int getCurrentGroupIndex ()
+  public int getCurrentGroupIndex()
   {
     return currentGroupIndex;
   }
@@ -410,11 +410,11 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param index The new group index.
    */
-  public void setCurrentGroupIndex (int index)
+  public void setCurrentGroupIndex(int index)
   {
     if (index < -1)
     {
-      throw new IllegalArgumentException ("GroupIndex must be >= 0 or BEFORE_FIRST_GROUP");
+      throw new IllegalArgumentException("GroupIndex must be >= 0 or BEFORE_FIRST_GROUP");
     }
     this.currentGroupIndex = index;
   }
@@ -424,7 +424,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the functions.
    */
-  protected final LevelledExpressionList getFunctions ()
+  protected final LevelledExpressionList getFunctions()
   {
     return this.functions;
   }
@@ -435,11 +435,11 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param functions  the functions.
    */
-  protected void setFunctions (LevelledExpressionList functions)
+  protected void setFunctions(LevelledExpressionList functions)
   {
     if (functions == null)
     {
-      throw new NullPointerException ("Empty function collection?");
+      throw new NullPointerException("Empty function collection?");
     }
     this.functions = functions;
   }
@@ -451,9 +451,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the property value.
    */
-  public Object getProperty (String key)
+  public Object getProperty(String key)
   {
-    return reportProperties.get (key);
+    return reportProperties.get(key);
   }
 
   /**
@@ -465,9 +465,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the property value.
    */
-  public Object getProperty (String key, Object def)
+  public Object getProperty(String key, Object def)
   {
-    return reportProperties.get (key, def);
+    return reportProperties.get(key, def);
   }
 
   /**
@@ -476,9 +476,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * @param key  the property name.
    * @param o  the property value.
    */
-  public void setProperty (String key, Object o)
+  public void setProperty(String key, Object o)
   {
-    reportProperties.put (key, o);
+    reportProperties.put(key, o);
   }
 
   /**
@@ -486,7 +486,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the report properties.
    */
-  public ReportProperties getProperties ()
+  public ReportProperties getProperties()
   {
     return reportProperties;
   }
@@ -498,11 +498,11 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return true, if this is a prepare run of the report engine.
    */
-  public boolean isPrepareRun ()
+  public boolean isPrepareRun()
   {
-    Boolean bool = (Boolean) getProperty (JFreeReportConstants.REPORT_PREPARERUN_PROPERTY,
-                                          Boolean.FALSE);
-    return bool.booleanValue ();
+    Boolean bool = (Boolean) getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY,
+        Boolean.FALSE);
+    return bool.booleanValue();
   }
 
   /**
@@ -517,7 +517,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return a progress object of this state.
    */
-  public ReportStateProgress createStateProgress (ReportStateProgress progress)
+  public ReportStateProgress createStateProgress(ReportStateProgress progress)
   {
     if (progress == null)
     {
@@ -539,12 +539,12 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ReportState result = (ReportState) super.clone ();
-    LevelledExpressionList functions = (LevelledExpressionList) getFunctions ().clone();
-    result.setFunctions (functions);
+    ReportState result = (ReportState) super.clone();
+    LevelledExpressionList functions = (LevelledExpressionList) getFunctions().clone();
+    result.setFunctions(functions);
     result.report = (ReportDefinition) report.clone();
-    result.dataRow = (DataRowBackend) dataRow.clone ();
-    result.dataRow.setFunctions (functions);
+    result.dataRow = (DataRowBackend) dataRow.clone();
+    result.dataRow.setFunctions(functions);
     result.dataRowConnector = new DataRowConnector();
     // disconnect the old datarow from all clones
     DataRowConnector.disconnectDataSources(result.report, dataRowConnector);
@@ -568,15 +568,15 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return true if some progress has been made, false otherwise.
    */
-  public boolean isProceeding (ReportStateProgress oldstate)
+  public boolean isProceeding(ReportStateProgress oldstate)
   {
     // a state is proceeding if it changed its group
-    if (getCurrentGroupIndex () != oldstate.getCurrentGroupIndex ())
+    if (getCurrentGroupIndex() != oldstate.getCurrentGroupIndex())
     {
       return true;
     }
     // a state is proceeding if it changed the current row in the datamodel
-    if (getCurrentDataItem () > oldstate.getCurrentDataItem ())
+    if (getCurrentDataItem() > oldstate.getCurrentDataItem())
     {
       return true;
     }
@@ -631,25 +631,25 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      *
      * @return the string.
      */
-    public String toString ()
+    public String toString()
     {
       return message + currentState.getCurrentGroupIndex() + ", DataItem: "
-                     + currentState.getCurrentDataItem() + ",Page: "
-                     + currentState.getCurrentPage() + " Class: "
-                     + currentState.getClass() + "\n"
-                     + "Old State: " + oldState.getCurrentGroupIndex() + ", DataItem: "
-                     + oldState.getCurrentDataItem() + ",Page: "
-                     + oldState.getCurrentPage() + " Class: "
-                     + oldState.getClass() + "\n";
+          + currentState.getCurrentDataItem() + ",Page: "
+          + currentState.getCurrentPage() + " Class: "
+          + currentState.getClass() + "\n"
+          + "Old State: " + oldState.getCurrentGroupIndex() + ", DataItem: "
+          + oldState.getCurrentDataItem() + ",Page: "
+          + oldState.getCurrentPage() + " Class: "
+          + oldState.getClass() + "\n";
     }
   }
 
   /**
    * Advances the current page by one.
    */
-  public void nextPage ()
+  public void nextPage()
   {
-    setCurrentPage (getCurrentPage () + 1);
+    setCurrentPage(getCurrentPage() + 1);
   }
 
   /**
@@ -657,7 +657,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return false (subclasses may override).
    */
-  public boolean isStart ()
+  public boolean isStart()
   {
     return false;
   }
@@ -667,7 +667,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return false (subclasses may override).
    */
-  public boolean isFinish ()
+  public boolean isFinish()
   {
     return false;
   }
@@ -676,44 +676,44 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * Activates the next group by incrementing the current group index.  The outer-most group is
    * given an index of zero, and this increases for each subgroup that is defined.
    */
-  public void enterGroup ()
+  public void enterGroup()
   {
-    setCurrentGroupIndex (getCurrentGroupIndex () + 1);
+    setCurrentGroupIndex(getCurrentGroupIndex() + 1);
   }
 
   /**
    * Deactivates the current group by decrementing the current group index.
    */
-  public void leaveGroup ()
+  public void leaveGroup()
   {
-    setCurrentGroupIndex (getCurrentGroupIndex () - 1);
+    setCurrentGroupIndex(getCurrentGroupIndex() - 1);
   }
 
   /**
    * Advances the active data row to the next line.
    */
-  public void advanceItem ()
+  public void advanceItem()
   {
-    setCurrentItem (getCurrentDataItem () + 1);
-    getDataRowBackend ().setCurrentRow (getCurrentDisplayItem ());
+    setCurrentItem(getCurrentDataItem() + 1);
+    getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
   }
 
   /**
    * Fires a 'report-started' event.
    */
-  public void fireReportInitializedEvent ()
+  public void fireReportInitializedEvent()
   {
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.reportInitialized (new ReportEvent(this, ReportEvent.REPORT_INITIALIZED));
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    this.functions.reportInitialized(new ReportEvent(this, ReportEvent.REPORT_INITIALIZED));
   }
 
   /**
    * Fires a 'report-started' event.
    */
-  public void fireReportStartedEvent ()
+  public void fireReportStartedEvent()
   {
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.reportStarted (new ReportEvent(this, ReportEvent.REPORT_STARTED));
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    this.functions.reportStarted(new ReportEvent(this, ReportEvent.REPORT_STARTED));
   }
 
   /**
@@ -721,27 +721,27 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param type the event type of the event that should be prepared.
    */
-  public void firePrepareEvent (int type)
+  public void firePrepareEvent(int type)
   {
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
     this.functions.firePrepareEvent(new ReportEvent(this, (ReportEvent.PREPARE_EVENT | type)));
   }
 
   /**
    * Fires a 'report-finished' event.
    */
-  public void fireReportFinishedEvent ()
+  public void fireReportFinishedEvent()
   {
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.reportFinished (new ReportEvent(this, ReportEvent.REPORT_FINISHED));
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    this.functions.reportFinished(new ReportEvent(this, ReportEvent.REPORT_FINISHED));
   }
 
   /**
    * Fires a 'report-finished' event.
    */
-  public void fireReportDoneEvent ()
+  public void fireReportDoneEvent()
   {
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
     this.functions.reportDone(new ReportEvent(this, ReportEvent.REPORT_DONE));
   }
 
@@ -751,76 +751,76 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * @param baseEvent the type of the base event which caused the page start to be
    * triggered.
    */
-  public void firePageStartedEvent (int baseEvent)
+  public void firePageStartedEvent(int baseEvent)
   {
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.pageStarted (new ReportEvent(this, ReportEvent.PAGE_STARTED | baseEvent));
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    this.functions.pageStarted(new ReportEvent(this, ReportEvent.PAGE_STARTED | baseEvent));
   }
 
   /**
    * Fires a '<code>page-finished</code>' event.  The <code>pageFinished(...)</code> method is
    * called for every report function.
    */
-  public void firePageFinishedEvent ()
+  public void firePageFinishedEvent()
   {
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.pageFinished (new ReportEvent(this, ReportEvent.PAGE_FINISHED));
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    this.functions.pageFinished(new ReportEvent(this, ReportEvent.PAGE_FINISHED));
   }
 
   /**
    * Fires a '<code>page-canceled</code>' event.  The <code>pageCanceled(...)</code> method is
    * called for every report function that implements the PageListener interface.
    */
-  public void firePageCanceledEvent ()
+  public void firePageCanceledEvent()
   {
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.pageCanceled (new ReportEvent(this, ReportEvent.PAGE_CANCELED));
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    this.functions.pageCanceled(new ReportEvent(this, ReportEvent.PAGE_CANCELED));
   }
 
   /**
    * Fires a '<code>group-started</code>' event.  The <code>groupStarted(...)</code> method is
    * called for every report function.
    */
-  public void fireGroupStartedEvent ()
+  public void fireGroupStartedEvent()
   {
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.groupStarted (new ReportEvent(this, ReportEvent.GROUP_STARTED));
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    this.functions.groupStarted(new ReportEvent(this, ReportEvent.GROUP_STARTED));
   }
 
   /**
    * Fires a 'group-finished' event.
    */
-  public void fireGroupFinishedEvent ()
+  public void fireGroupFinishedEvent()
   {
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.groupFinished (new ReportEvent(this, ReportEvent.GROUP_FINISHED));
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    this.functions.groupFinished(new ReportEvent(this, ReportEvent.GROUP_FINISHED));
   }
 
   /**
    * Fires an 'items-started' event.
    */
-  public void fireItemsStartedEvent ()
+  public void fireItemsStartedEvent()
   {
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.itemsStarted (new ReportEvent(this, ReportEvent.ITEMS_STARTED));
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    this.functions.itemsStarted(new ReportEvent(this, ReportEvent.ITEMS_STARTED));
   }
 
   /**
    * Fires an 'items-finished' event.
    */
-  public void fireItemsFinishedEvent ()
+  public void fireItemsFinishedEvent()
   {
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.itemsFinished (new ReportEvent(this, ReportEvent.ITEMS_FINISHED));
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    this.functions.itemsFinished(new ReportEvent(this, ReportEvent.ITEMS_FINISHED));
   }
 
   /**
    * Fires an 'items-advanced' event.
    */
-  public void fireItemsAdvancedEvent ()
+  public void fireItemsAdvancedEvent()
   {
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    functions.itemsAdvanced (new ReportEvent(this, ReportEvent.ITEMS_ADVANCED));
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    functions.itemsAdvanced(new ReportEvent(this, ReportEvent.ITEMS_ADVANCED));
   }
 
   /**
@@ -831,7 +831,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   public void fireLayoutCompleteEvent(Band band, int type)
   {
-    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
+    getDataRowConnector().setDataRowBackend(getDataRowBackend());
     functions.layoutComplete(new LayoutEvent(this, band, LayoutEvent.LAYOUT_EVENT | type));
   }
 
@@ -840,7 +840,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the function level.
    */
-  public int getLevel ()
+  public int getLevel()
   {
     return getFunctions().getLevel();
   }
@@ -850,7 +850,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return an iterator.
    */
-  public Iterator getLevels ()
+  public Iterator getLevels()
   {
     return getFunctions().getLevelsDescending();
   }
@@ -883,7 +883,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean isAncestor (ReportState state)
+  public boolean isAncestor(ReportState state)
   {
     return (state.getAncestorHashcode() == getAncestorHashcode());
   }
@@ -894,7 +894,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the error list.
    */
-  public List getErrors ()
+  public List getErrors()
   {
     return functions.getErrors();
   }
@@ -904,7 +904,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return true, if there were errors recorded, false otherwise.
    */
-  public boolean isErrorOccured ()
+  public boolean isErrorOccured()
   {
     return functions.hasErrors();
   }
@@ -915,7 +915,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param band the band that should be updated.
    */
-  public void updateDataRow (Band band)
+  public void updateDataRow(Band band)
   {
     // docmark: at the moment, the DataRow connector is not checked, so we can
     // give any instance. This may change later..

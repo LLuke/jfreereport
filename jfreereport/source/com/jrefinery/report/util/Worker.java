@@ -1,9 +1,9 @@
-/*/**
+/**
  * ========================================
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.5 2003/02/26 13:58:05 mungady Exp $
+ * $Id: Worker.java,v 1.6 2003/04/08 14:10:48 mungady Exp $
  *
  *
  * Changes
@@ -42,7 +42,7 @@ package com.jrefinery.report.util;
  * A simple worker implementation.
  * The worker executes a assigned workload and then sleeps until
  * another workload is set or the worker is killed.
- * 
+ *
  * @author Thomas Morgner
  */
 public class Worker extends Thread
@@ -79,7 +79,7 @@ public class Worker extends Thread
    * Set the next workload for this worker.
    *
    * @param r  the next workload for the worker.
-   * 
+   *
    * @throws IllegalStateException if the worker is not idle.
    */
   public void setWorkload(Runnable r)

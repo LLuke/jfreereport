@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportEvent.java,v 1.18 2003/06/13 16:20:48 taqua Exp $
+ * $Id: ReportEvent.java,v 1.19 2003/06/13 17:54:32 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -39,7 +39,7 @@
  * 28-Jul-2002 : Added DataRow support
  * 28-Aug-2002 : Documentation update
  * 03-Jan-2003 : Javadoc update (DG);
- * 
+ *
  */
 
 package com.jrefinery.report.event;
@@ -100,12 +100,12 @@ public class ReportEvent extends EventObject
    * @param state  the current state of the processed report (<code>null</code> not permmitted).
    * @param type the event type for this event object.
    */
-  public ReportEvent (ReportState state, int type)
+  public ReportEvent(ReportState state, int type)
   {
-    super (state);
+    super(state);
     if (state == null)
     {
-     throw new NullPointerException ("ReportEvent(ReportState) : null not permitted.");
+      throw new NullPointerException("ReportEvent(ReportState) : null not permitted.");
     }
     if (type <= 0)
     {
@@ -129,9 +129,9 @@ public class ReportEvent extends EventObject
    *
    * @return the state (never <code>null</code>).
    */
-  public ReportState getState ()
+  public ReportState getState()
   {
-    return (ReportState) getSource ();
+    return (ReportState) getSource();
   }
 
   /**
@@ -141,23 +141,23 @@ public class ReportEvent extends EventObject
    *
    * @return the report.
    */
-  public ReportDefinition getReport ()
+  public ReportDefinition getReport()
   {
-    return getState ().getReport ();
+    return getState().getReport();
   }
 
   /**
-   * Returns the currently assigned dataRow for this event. 
+   * Returns the currently assigned dataRow for this event.
    * <p>
-   * The {@link DataRow} is used to access the fields of the 
-   * {@link com.jrefinery.report.filter.DataSource} and other functions and expressions within the 
+   * The {@link DataRow} is used to access the fields of the
+   * {@link com.jrefinery.report.filter.DataSource} and other functions and expressions within the
    * current row of the report.
    *
    * @return the data row.
    */
-  public DataRow getDataRow ()
+  public DataRow getDataRow()
   {
-    return getState ().getDataRow ();
+    return getState().getDataRow();
   }
 
   /**
@@ -165,7 +165,7 @@ public class ReportEvent extends EventObject
    *
    * @return the function level.
    */
-  public int getLevel ()
+  public int getLevel()
   {
     return getState().getLevel();
   }

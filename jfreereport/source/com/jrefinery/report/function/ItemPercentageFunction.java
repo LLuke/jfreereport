@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemPercentageFunction.java,v 1.19 2003/06/19 18:44:09 taqua Exp $
+ * $Id: ItemPercentageFunction.java,v 1.20 2003/06/26 15:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -146,7 +146,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
   {
     totalSumFunction.itemsAdvanced(event);
 
-    Object fieldValue = event.getDataRow().get (getField());
+    Object fieldValue = event.getDataRow().get(getField());
     if (fieldValue == null)
     {
       // No add, field is null

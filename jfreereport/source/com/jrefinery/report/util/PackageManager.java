@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PackageManager.java,v 1.1 2003/06/26 20:19:32 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 26-Jun-2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.util;
@@ -54,7 +54,7 @@ public class PackageManager
    *
    * @return the package manager.
    */
-  public static PackageManager getInstance ()
+  public static PackageManager getInstance()
   {
     if (singleton == null)
     {

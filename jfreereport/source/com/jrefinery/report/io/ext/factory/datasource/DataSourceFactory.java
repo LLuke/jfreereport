@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceFactory.java,v 1.6 2003/04/24 18:08:50 taqua Exp $
+ * $Id: DataSourceFactory.java,v 1.7 2003/06/10 17:14:39 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.datasource;
@@ -45,28 +45,28 @@ import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**
  * A data source factory.
- * 
+ *
  * @author Thomas Morgner
  */
 public interface DataSourceFactory extends ClassFactory
 {
-  /** 
+  /**
    * Returns a data source description.
-   * 
+   *
    * @param name  the name.
-   * 
+   *
    * @return The description.
    */
-  public ObjectDescription getDataSourceDescription (String name);
+  public ObjectDescription getDataSourceDescription(String name);
 
   /**
    * Returns a data source name.
-   * 
+   *
    * @param od  the description.
-   * 
+   *
    * @return The name.
    */
-  public String getDataSourceName (ObjectDescription od);
+  public String getDataSourceName(ObjectDescription od);
 
   /**
    * Returns the names of all registered datasources as iterator.

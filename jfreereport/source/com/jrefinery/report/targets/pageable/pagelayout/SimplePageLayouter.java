@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.52 2003/06/15 19:05:48 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.53 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -123,7 +123,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
      *
      * @return The string.
      */
-    public String toString ()
+    public String toString()
     {
       return "State={" + band + "}";
     }
@@ -194,7 +194,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @return the highest page number.
    */
-  public int getMaxPage ()
+  public int getMaxPage()
   {
     return pageCarrier.maxPages;
   }
@@ -204,7 +204,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param maxPage the highest page number.
    */
-  protected void setMaxPage (int maxPage)
+  protected void setMaxPage(int maxPage)
   {
     pageCarrier.maxPages = maxPage;
   }
@@ -482,7 +482,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
 
       Object prepareRun =
           event.getState().getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY,
-                                       Boolean.FALSE);
+              Boolean.FALSE);
       if (prepareRun.equals(Boolean.TRUE))
       {
         setMaxPage(event.getState().getCurrentPage());
@@ -698,7 +698,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     boolean spool = getLogicalPage().isEmpty();
     Rectangle2D bounds = doLayout(b, true);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
-                   bounds.getWidth(), bounds.getHeight());
+        bounds.getWidth(), bounds.getHeight());
     return doPrint(bounds, b, spool);
   }
 
@@ -716,9 +716,9 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     float width = getLogicalPage().getWidth();
     float height = getCursor().getPageBottomReserved() - getCursor().getPageTop();
     Rectangle2D bounds = BandLayoutManagerUtil.doLayout(band,
-                                          getLogicalPage().getOutputTarget(),
-                                          width,
-                                          height);
+        getLogicalPage().getOutputTarget(),
+        width,
+        height);
     if (fireEvent == true)
     {
       ReportEvent event = getCurrentEvent();
@@ -969,7 +969,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @throws ReportProcessingException if restarting the page failed.
    */
-  public void restartPage () throws ReportProcessingException
+  public void restartPage() throws ReportProcessingException
   {
     if (isPageRestartDone() || isRestartingPage() || isFinishingPage())
     {
@@ -1076,6 +1076,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
   {
     this.startNewPage = startNewPage;
   }
+
   /**
    * Clones the layouter.
    *

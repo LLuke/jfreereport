@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlImageCellData.java,v 1.7 2003/04/23 13:43:06 taqua Exp $
+ * $Id: HtmlImageCellData.java,v 1.8 2003/06/12 19:50:11 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import com.jrefinery.report.util.StringUtil;
 /**
  * A wrapper for Image content within the generated HtmlTable. The image content
  * will be inserted using a HtmlReference from the provided FileSystem.
- * 
+ *
  * @author Thomas Morgner
  */
 public class HtmlImageCellData extends HtmlCellData
@@ -63,11 +63,11 @@ public class HtmlImageCellData extends HtmlCellData
    * @param style the assigned cell style.
    * @param useXHTML a flag indicating whether to create XHTML instead of HTML4 code.
    */
-  public HtmlImageCellData(Rectangle2D outerBounds, ImageReference image, HtmlCellStyle style, 
+  public HtmlImageCellData(Rectangle2D outerBounds, ImageReference image, HtmlCellStyle style,
                            boolean useXHTML)
   {
     super(outerBounds, style, useXHTML);
-    if (image == null) 
+    if (image == null)
     {
       throw new NullPointerException("Image must not be null.");
     }
@@ -118,7 +118,7 @@ public class HtmlImageCellData extends HtmlCellData
     }
     catch (IOException ioe)
     {
-      Log.warn ("Writing the image failed" , ioe);
+      Log.warn("Writing the image failed", ioe);
     }
   }
 

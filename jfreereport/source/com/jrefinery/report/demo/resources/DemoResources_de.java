@@ -1,9 +1,9 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_de.java,v 1.12 2003/06/16 16:06:56 taqua Exp $
+ * $Id: DemoResources_de.java,v 1.13 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ public class DemoResources_de extends JFreeReportResources
    *
    * @return an array of localised resources.
    */
-  public Object[][] getContents ()
+  public Object[][] getContents()
   {
     return CONTENTS;
   }
@@ -67,20 +67,20 @@ public class DemoResources_de extends JFreeReportResources
 
     {"action.close.name", "Schliessen"},
     {"action.close.description", "Beendet JFreeReportDemo"},
-    {"action.close.mnemonic", new Integer (KeyEvent.VK_B)},
+    {"action.close.mnemonic", new Integer(KeyEvent.VK_B)},
 
     {"action.print-preview.name", "Seitenansicht ..."},
     {"action.print-preview.description", "Den Bericht in der Seitenansicht betrachten."},
-    {"action.print-preview.mnemonic", new Integer (KeyEvent.VK_P)},
+    {"action.print-preview.mnemonic", new Integer(KeyEvent.VK_P)},
 
     {"action.about.name", "Über..."},
     {"action.about.description", "Informationen über JFreeReport"},
-    {"action.about.mnemonic", new Integer (KeyEvent.VK_A)},
+    {"action.about.mnemonic", new Integer(KeyEvent.VK_A)},
 
     {"menu.file.name", "Demo"},
-    {"menu.file.mnemonic", new Character ('D')},
+    {"menu.file.mnemonic", new Character('D')},
     {"menu.help.name", "Hilfe"},
-    {"menu.help.mnemonic", new Character ('H')},
+    {"menu.help.mnemonic", new Character('H')},
 
     {"exitdialog.title", "Programmende"},
     {"exitdialog.message", "Möchten Sie das Programm beenden?"},

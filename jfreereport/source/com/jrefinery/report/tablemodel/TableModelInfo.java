@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableModelInfo.java,v 1.2 2003/04/23 13:43:06 taqua Exp $
+ * $Id: TableModelInfo.java,v 1.3 2003/05/11 13:39:17 taqua Exp $
  *
  * Changes
  * -------
@@ -52,16 +52,16 @@ public class TableModelInfo
    *
    * @param mod  the model.
    */
-  public static void printTableModel (TableModel mod)
+  public static void printTableModel(TableModel mod)
   {
-    System.out.println ("Tablemodel contains " + mod.getRowCount() + " rows.");
+    System.out.println("Tablemodel contains " + mod.getRowCount() + " rows.");
     for (int i = 0; i < mod.getColumnCount(); i++)
     {
-      System.out.println ("Column: " + i + " Name = " + mod.getColumnName(i) + "; DataType = "
-                          + mod.getColumnClass(i));
+      System.out.println("Column: " + i + " Name = " + mod.getColumnName(i) + "; DataType = "
+          + mod.getColumnClass(i));
     }
 
-    System.out.println ("Checking the data inside");
+    System.out.println("Checking the data inside");
     for (int rows = 0; rows < mod.getRowCount(); rows++)
     {
       for (int i = 0; i < mod.getColumnCount(); i++)
@@ -70,7 +70,7 @@ public class TableModelInfo
         Class c = mod.getColumnClass(i);
         if (value == null)
         {
-          System.out.println ("ValueAt (" + rows + ", " + i + ") is null");
+          System.out.println("ValueAt (" + rows + ", " + i + ") is null");
         }
         else
         {
@@ -95,23 +95,23 @@ public class TableModelInfo
    *
    * @param mod  the model.
    */
-  public static void printTableModelContents (TableModel mod)
+  public static void printTableModelContents(TableModel mod)
   {
-    System.out.println ("Tablemodel contains " + mod.getRowCount() + " rows.");
+    System.out.println("Tablemodel contains " + mod.getRowCount() + " rows.");
     for (int i = 0; i < mod.getColumnCount(); i++)
     {
-      System.out.println ("Column: " + i + " Name = " + mod.getColumnName(i) + "; DataType = "
-                          + mod.getColumnClass(i));
+      System.out.println("Column: " + i + " Name = " + mod.getColumnName(i) + "; DataType = "
+          + mod.getColumnClass(i));
     }
 
-    System.out.println ("Checking the data inside");
+    System.out.println("Checking the data inside");
     for (int rows = 0; rows < mod.getRowCount(); rows++)
     {
       for (int i = 0; i < mod.getColumnCount(); i++)
       {
         Object value = mod.getValueAt(rows, i);
         Class c = mod.getColumnClass(i);
-        System.out.println ("ValueAt (" + rows + ", " + i + ") is " + value);
+        System.out.println("ValueAt (" + rows + ", " + i + ") is " + value);
       }
     }
   }

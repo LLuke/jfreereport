@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKey.java,v 1.6 2003/03/18 19:39:16 taqua Exp $
+ * $Id: StyleKey.java,v 1.7 2003/04/06 18:11:31 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import java.util.Hashtable;
  * A style key represents a (key, class) pair.  Style keys are used to access style attributes
  * defined in a <code>BandStyleSheet</code> or an <code>ElementStyleSheet</code>
  * <p>
- * Note that this class also defines a static Hashtable in which all defined keys are 
+ * Note that this class also defines a static Hashtable in which all defined keys are
  * stored.
  *
  * @see BandStyleSheet
@@ -61,7 +61,7 @@ public class StyleKey implements Serializable, Cloneable
 
   /** The name of the style key. */
   private String name;
-  
+
   /** The class of the value. */
   private Class valueType;
 
@@ -122,7 +122,7 @@ public class StyleKey implements Serializable, Cloneable
    */
   private void setValueType(Class valueType)
   {
-    if (valueType == null) 
+    if (valueType == null)
     {
       throw new NullPointerException("ValueType must not be null");
     }
@@ -134,20 +134,20 @@ public class StyleKey implements Serializable, Cloneable
    *
    * @param name  the name.
    * @param valueType  the class.
-   * 
+   *
    * @return the style key.
    */
-  public static StyleKey getStyleKey (String name, Class valueType)
+  public static StyleKey getStyleKey(String name, Class valueType)
   {
     if (definedKeys == null)
     {
       definedKeys = new Hashtable();
     }
-    StyleKey key = (StyleKey) definedKeys.get (name);
+    StyleKey key = (StyleKey) definedKeys.get(name);
     if (key == null)
     {
       key = new StyleKey(name, valueType);
-      definedKeys.put (name, key);
+      definedKeys.put(name, key);
     }
     return key;
   }
@@ -156,10 +156,10 @@ public class StyleKey implements Serializable, Cloneable
    * Returns the key with the specified name.
    *
    * @param name  the name.
-   * 
+   *
    * @return the style key.
    */
-  public static StyleKey getStyleKey (String name)
+  public static StyleKey getStyleKey(String name)
   {
     if (definedKeys == null)
     {
@@ -167,7 +167,7 @@ public class StyleKey implements Serializable, Cloneable
     }
     else
     {
-      return (StyleKey) definedKeys.get (name);
+      return (StyleKey) definedKeys.get(name);
     }
   }
 
@@ -180,22 +180,22 @@ public class StyleKey implements Serializable, Cloneable
    */
   public boolean equals(Object o)
   {
-    if (this == o) 
+    if (this == o)
     {
       return true;
     }
-    if (!(o instanceof StyleKey)) 
+    if (!(o instanceof StyleKey))
     {
       return false;
     }
 
     final StyleKey key = (StyleKey) o;
 
-    if (!name.equals(key.name)) 
+    if (!name.equals(key.name))
     {
       return false;
     }
-    if (!valueType.equals(key.valueType)) 
+    if (!valueType.equals(key.valueType))
     {
       return false;
     }
@@ -221,17 +221,17 @@ public class StyleKey implements Serializable, Cloneable
    * stylekey instances or creates a new stylekey.
    *
    * @return the resolved element
-   * 
+   *
    * @throws ObjectStreamException if the element could not be resolved.
    */
   protected Object readResolve() throws ObjectStreamException
   {
     StyleKey key = getStyleKey(name);
-    if (key != null) 
+    if (key != null)
     {
       return key;
     }
     return getStyleKey(name, valueType);
   }
-  
+
 }

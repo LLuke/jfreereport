@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxy.java,v 1.3 2003/05/02 12:40:26 taqua Exp $
+ * $Id: PreviewProxy.java,v 1.4 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes
  * --------
@@ -43,7 +43,7 @@ import javax.swing.JMenuBar;
 
 /**
  * A proxy for the report preview component.
- * 
+ *
  * @author Thomas Morgner.
  */
 public interface PreviewProxy
@@ -52,7 +52,7 @@ public interface PreviewProxy
    * Packs the preview component.
    */
   public void pack();
-  
+
   /**
    * Disposes the preview component.
    */
@@ -60,38 +60,38 @@ public interface PreviewProxy
 
   /**
    * Adds a component listener to the preview component.
-   * 
+   *
    * @param listener  the listener.
    */
   public void addComponentListener(ComponentListener listener);
 
   /**
    * Removes the component listener.
-   * 
+   *
    * @param listener  the listener.
    */
-  public void removeComponentListener (ComponentListener listener);
+  public void removeComponentListener(ComponentListener listener);
 
   /**
    * Creates a default close action.
-   * 
+   *
    * @return The close action.
    */
-  public Action createDefaultCloseAction ();
-  
+  public Action createDefaultCloseAction();
+
   /**
    * Sets the menu bar for the preview component.
-   * 
+   *
    * @param bar  the menu bar.
    */
-  public void setJMenuBar (JMenuBar bar);
+  public void setJMenuBar(JMenuBar bar);
 
   /**
    * Sets the title for the preview component.
-   * 
+   *
    * @param title  the title.
    */
-  public void setTitle (String title);
+  public void setTitle(String title);
 
   /**
    * Returns the proxybase used to implement the behaviour of the report
@@ -99,5 +99,5 @@ public interface PreviewProxy
    *
    * @return the proxybase of this preview component.
    */
-  public PreviewProxyBase getBase ();
+  public PreviewProxyBase getBase();
 }

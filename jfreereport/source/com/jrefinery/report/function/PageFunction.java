@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.16 2003/06/13 17:55:25 taqua Exp $
+ * $Id: PageFunction.java,v 1.17 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ import com.jrefinery.report.states.ReportState;
  * <p>
  * As with all page dependent functions: The function will only be active, when
  * the page events get fired, this usually only happens during the last pagination
- * run and the printing. The function level will be negative when this happens.  
+ * run and the printing. The function level will be negative when this happens.
  *
  * @author Thomas Morgner
  */

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -26,7 +26,7 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  *
- * $Id: SampleData4.java,v 1.8 2002/12/12 12:26:55 mungady Exp $
+ * $Id: SampleData4.java,v 1.9 2003/05/02 12:39:37 taqua Exp $
  *
  */
 package com.jrefinery.report.demo;
@@ -57,14 +57,14 @@ public class SampleData4 extends AbstractTableModel
      *
      * @return an integer representing the relative order of the two fonts.
      */
-    public int compare (Object o, Object o1)
+    public int compare(Object o, Object o1)
     {
       Font f1 = (Font) o;
       Font f2 = (Font) o1;
-      int comp = f1.getFamily ().compareTo (f2.getFamily ());
+      int comp = f1.getFamily().compareTo(f2.getFamily());
       if (comp == 0)
       {
-        comp = f1.getName ().compareTo (f2.getName ());
+        comp = f1.getName().compareTo(f2.getName());
       }
       return comp;
     }
@@ -76,10 +76,10 @@ public class SampleData4 extends AbstractTableModel
   /**
    * Sample dataset.
    */
-  public SampleData4 ()
+  public SampleData4()
   {
-    fonts = GraphicsEnvironment.getLocalGraphicsEnvironment ().getAllFonts ();
-    Arrays.sort (fonts, new FontComparator ());
+    fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+    Arrays.sort(fonts, new FontComparator());
   }
 
   /**
@@ -87,7 +87,7 @@ public class SampleData4 extends AbstractTableModel
    *
    * @return the row count.
    */
-  public int getRowCount ()
+  public int getRowCount()
   {
     return fonts.length;
   }
@@ -97,7 +97,7 @@ public class SampleData4 extends AbstractTableModel
    *
    * @return the column count.
    */
-  public int getColumnCount ()
+  public int getColumnCount()
   {
     return 3;
   }
@@ -109,7 +109,7 @@ public class SampleData4 extends AbstractTableModel
    *
    * @return the column class.
    */
-  public Class getColumnClass (int column)
+  public Class getColumnClass(int column)
   {
     return String.class;
   }
@@ -121,7 +121,7 @@ public class SampleData4 extends AbstractTableModel
    *
    * @return the column name.
    */
-  public String getColumnName (int column)
+  public String getColumnName(int column)
   {
     if (column == 0)
     {
@@ -145,15 +145,15 @@ public class SampleData4 extends AbstractTableModel
    *
    * @return the value.
    */
-  public Object getValueAt (int row, int column)
+  public Object getValueAt(int row, int column)
   {
     if (column == 0)
     {
-      return fonts[row].getFamily ();
+      return fonts[row].getFamily();
     }
     else if (column == 1)
     {
-      return fonts[row].getName ();
+      return fonts[row].getName();
     }
     return "The five boxing wizards jump quickly.";
   }

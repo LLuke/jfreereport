@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: GroupFooter.java,v 1.7 2002/12/06 17:17:24 mungady Exp $
+ * $Id: GroupFooter.java,v 1.8 2002/12/06 18:05:49 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,7 +51,7 @@ public class GroupFooter extends Band
   /**
    * Constructs a group footer band, containing no elements.
    */
-  public GroupFooter ()
+  public GroupFooter()
   {
   }
 }

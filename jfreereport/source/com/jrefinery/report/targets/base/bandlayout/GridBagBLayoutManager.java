@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GridBagBLayoutManager.java,v 1.1 2003/03/29 20:18:49 taqua Exp $
+ * $Id: GridBagBLayoutManager.java,v 1.2 2003/04/09 15:49:54 mungady Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@ package com.jrefinery.report.targets.base.bandlayout;
 
 /**
  * A grid bag style layout manager for reports.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class GridBagBLayoutManager

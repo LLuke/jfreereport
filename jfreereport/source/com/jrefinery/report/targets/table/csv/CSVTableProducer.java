@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,13 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProducer.java,v 1.8 2003/05/02 12:40:38 taqua Exp $
+ * $Id: CSVTableProducer.java,v 1.9 2003/05/11 13:39:18 taqua Exp $
  *
  * Changes
  * -------
  * 21-Jan-2003 : Initial version
  * 24-Feb-2003 : Fixed Checkstyle issues (DG);
- * 
+ *
  */
 
 package com.jrefinery.report.targets.table.csv;
@@ -57,17 +57,17 @@ import com.jrefinery.report.targets.table.TableProducer;
  * <p>
  * This class defines the global contract and provides some helper methods for
  * the implementors.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class CSVTableProducer extends TableProducer
 {
   /** The (character stream) writer that is used to write the generated contents. */
   private PrintWriter writer;
-  
+
   /** The CSVQuoter that is used when writing the content. */
   private CSVQuoter quoter;
-  
+
   /**
    * The class used to convert each {@link com.jrefinery.report.Element}
    * into a {@link CSVCellData} instance.
@@ -87,7 +87,7 @@ public class CSVTableProducer extends TableProducer
   public CSVTableProducer(PrintWriter writer, boolean strict)
   {
     super(strict);
-    if (writer == null) 
+    if (writer == null)
     {
       throw new NullPointerException("Writer is null");
     }
@@ -130,7 +130,7 @@ public class CSVTableProducer extends TableProducer
    *
    * @param layout  contains the layouted CSVCellData objects.
    */
-  private void generatePage (TableGridLayout layout)
+  private void generatePage(TableGridLayout layout)
   {
     for (int y = 0; y < layout.getHeight(); y++)
     {

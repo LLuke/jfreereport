@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageRenderFunction.java,v 1.9 2003/06/01 17:39:24 taqua Exp $
+ * $Id: ImageRenderFunction.java,v 1.1 2003/06/19 18:46:35 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -82,7 +82,7 @@ public class ImageRenderFunction extends AbstractFunction implements Serializabl
     g2.setPaint(Color.green);
     g2.setFont(new Font("Serif", Font.PLAIN, 10));
     g2.drawString("You are viewing a graphics of JFreeReport on index "
-                  + event.getState().getCurrentDisplayItem(), 10, 10);
+        + event.getState().getCurrentDisplayItem(), 10, 10);
 
     functionValue = new ImageReference(image);
   }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -25,18 +25,18 @@
  * -------------------------
  * (C)opyright 2000-2003, by Thomas Morgner and Contributors.
  *
-<<<<<<< ExpressionCollection.java
-<<<<<<< ExpressionCollection.java
+ <<<<<<< ExpressionCollection.java
+ <<<<<<< ExpressionCollection.java
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
- * 
- * $Id: ExpressionCollection.java,v 1.11 2003/06/01 17:39:26 taqua Exp $
-=======
- * $Id: ExpressionCollection.java,v 1.11 2003/06/01 17:39:26 taqua Exp $
->>>>>>> 1.7
-=======
- * $Id: ExpressionCollection.java,v 1.11 2003/06/01 17:39:26 taqua Exp $
->>>>>>> 1.8
+ *
+ * $Id: ExpressionCollection.java,v 1.12 2003/06/19 18:44:09 taqua Exp $
+ =======
+ * $Id: ExpressionCollection.java,v 1.12 2003/06/19 18:44:09 taqua Exp $
+ >>>>>>> 1.7
+ =======
+ * $Id: ExpressionCollection.java,v 1.12 2003/06/19 18:44:09 taqua Exp $
+ >>>>>>> 1.8
  *
  * Changes
  * -------
@@ -135,7 +135,7 @@ public class ExpressionCollection implements Cloneable, Serializable
     {
       return null;
     }
-    return getExpression (position.intValue());
+    return getExpression(position.intValue());
   }
 
   /**

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited)
  *                   for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientFunction.java,v 1.10 2003/06/01 17:39:27 taqua Exp $
+ * $Id: TotalGroupSumQuotientFunction.java,v 1.11 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -151,10 +151,10 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
    * <P>
    * Initially the function has no name...be sure to assign one before using the function.
    */
-  public TotalGroupSumQuotientFunction ()
+  public TotalGroupSumQuotientFunction()
   {
     groupDividend = new GroupSum();
-    groupDivisor  = new GroupSum();
+    groupDivisor = new GroupSum();
     datasource = new StaticDataSource();
     parser = new DecimalFormatParser();
     parser.setNullValue(ZERO);
@@ -207,7 +207,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
         // Activate the current group, which was filled in the prepare run.
         currentIndex += 1;
         groupDividend = (GroupSum) dividendResults.get(currentIndex);
-        groupDivisor  = (GroupSum) divisorResults.get(currentIndex);
+        groupDivisor = (GroupSum) divisorResults.get(currentIndex);
       }
     }
   }
@@ -230,32 +230,32 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
     // do not add when field is null
     if (fieldValue != null)
     {
-        try
-        {
-          datasource.setValue(fieldValue);
-          Number n = (Number) parser.getValue();
-          groupDividend.add(n);
-        }
-        catch (Exception e)
-        {
-          Log.error("ItemSumFunction.advanceItems(): problem adding dividend.");
-        }
+      try
+      {
+        datasource.setValue(fieldValue);
+        Number n = (Number) parser.getValue();
+        groupDividend.add(n);
+      }
+      catch (Exception e)
+      {
+        Log.error("ItemSumFunction.advanceItems(): problem adding dividend.");
+      }
     }
     // sum up divisor column
     fieldValue = event.getDataRow().get(getDivisor());
     // do not add when field is null
     if (fieldValue != null)
     {
-        try
-        {
-          datasource.setValue(fieldValue);
-          Number n = (Number) parser.getValue();
-          groupDivisor.add(n);
-        }
-        catch (Exception e)
-        {
-          Log.error("ItemSumFunction.advanceItems(): problem adding divisor.");
-        }
+      try
+      {
+        datasource.setValue(fieldValue);
+        Number n = (Number) parser.getValue();
+        groupDivisor.add(n);
+      }
+      catch (Exception e)
+      {
+        Log.error("ItemSumFunction.advanceItems(): problem adding divisor.");
+      }
     }
   }
 
@@ -291,10 +291,10 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
   public Object getValue()
   {
     BigDecimal dividend = groupDividend.getResult();
-    BigDecimal divisor  = groupDivisor.getResult();
+    BigDecimal divisor = groupDivisor.getResult();
     if (divisor.intValue() == 0)
     {
-        return "n/a";
+      return "n/a";
     }
     return new Double(dividend.doubleValue() / divisor.doubleValue());
   }

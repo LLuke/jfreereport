@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -26,7 +26,7 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  *
- * $Id: SampleData3.java,v 1.7 2002/11/07 21:45:27 taqua Exp $
+ * $Id: SampleData3.java,v 1.8 2002/12/12 12:26:55 mungady Exp $
  *
  */
 package com.jrefinery.report.demo;
@@ -47,32 +47,32 @@ public class SampleData3 extends AbstractTableModel
    * Default constructor - builds a sample data source.
    *
    */
-  public SampleData3 ()
+  public SampleData3()
   {
     data = new Object[][]
     {
       {"Mr. Black", "1666 Pennsylvania Ave.", "012345 Washington", "01212",
-       "Robert A. Heinlein - Starship Trooper", new Integer (1), new Double (12.49)},
+       "Robert A. Heinlein - Starship Trooper", new Integer(1), new Double(12.49)},
       {"Mr. Black", "1666 Pennsylvania Ave.", "012345 Washington", "01231",
-       "Robert A. Heinlein - Glory Road", new Integer (1), new Double (12.99)},
+       "Robert A. Heinlein - Glory Road", new Integer(1), new Double(12.99)},
       {"Mr. Black", "1666 Pennsylvania Ave.", "012345 Washington", "12121",
-       "Frank Herbert - Dune", new Integer (1), new Double (10.99)},
+       "Frank Herbert - Dune", new Integer(1), new Double(10.99)},
       {"Mr. Black", "1666 Pennsylvania Ave.", "012345 Washington", "A1232",
-       "Bierce Ambrose - The Devils Dictionary", new Integer (2), new Double (19.99)},
+       "Bierce Ambrose - The Devils Dictionary", new Integer(2), new Double(19.99)},
       {"John F. Google", "12a Nowaday Road", "99999 Boston", "12333",
-       "Samuel Adams - How to sell tea ", new Integer (100), new Double (10.99)},
+       "Samuel Adams - How to sell tea ", new Integer(100), new Double(10.99)},
       {"John F. Google", "12a Nowaday Road", "99999 Boston", "88812",
-       "Adam Smith - The wealth of nations", new Integer (1), new Double (49.95)},
+       "Adam Smith - The wealth of nations", new Integer(1), new Double(49.95)},
       {"John F. Google", "12a Nowaday Road", "99999 Boston", "33123",
-       "D. Khan - How to conquer friends", new Integer (1), new Double (15.99)},
+       "D. Khan - How to conquer friends", new Integer(1), new Double(15.99)},
       {"John F. Google", "12a Nowaday Road", "99999 Boston", "33123",
-       "D. Khan - How to conquer friends", new Integer (1), new Double (19.49)},
+       "D. Khan - How to conquer friends", new Integer(1), new Double(19.49)},
       {"Cleeve Johnson", "87 Oakham Drive", "99999 Boston", "33123",
-       "D. Khan - How to conquer friends", new Integer (1), new Double (15.99)},
+       "D. Khan - How to conquer friends", new Integer(1), new Double(15.99)},
       {"Cleeve Johnson", "87 Oakham Drive", "99999 Boston", "33123",
-       "J. Ceaser - Choosing the right friends", new Integer (1), new Double (25.99)},
+       "J. Ceaser - Choosing the right friends", new Integer(1), new Double(25.99)},
       {"Cleeve Johnson", "87 Oakham Drive", "99999 Boston", "33123",
-       "Galileo - When to tell the truth", new Integer (1), new Double (29.59)}
+       "Galileo - When to tell the truth", new Integer(1), new Double(29.59)}
     };
   }
 
@@ -81,7 +81,7 @@ public class SampleData3 extends AbstractTableModel
    *
    * @return the row count.
    */
-  public int getRowCount ()
+  public int getRowCount()
   {
     return data.length;
   }
@@ -91,7 +91,7 @@ public class SampleData3 extends AbstractTableModel
    *
    * @return the column count.
    */
-  public int getColumnCount ()
+  public int getColumnCount()
   {
     return 8;
   }
@@ -103,7 +103,7 @@ public class SampleData3 extends AbstractTableModel
    *
    * @return the column class.
    */
-  public Class getColumnClass (int column)
+  public Class getColumnClass(int column)
   {
     if (column == 5)
     {
@@ -126,7 +126,7 @@ public class SampleData3 extends AbstractTableModel
    *
    * @return the column name.
    */
-  public String getColumnName (int column)
+  public String getColumnName(int column)
   {
     if (column == 0)
     {
@@ -174,13 +174,13 @@ public class SampleData3 extends AbstractTableModel
    *
    * @return the value.
    */
-  public Object getValueAt (int row, int column)
+  public Object getValueAt(int row, int column)
   {
     if (column == 7)
     {
       Integer i = (Integer) data[row][5];
       Double d = (Double) data[row][6];
-      return new Double (i.intValue () * d.doubleValue ());
+      return new Double(i.intValue() * d.doubleValue());
     }
     else
     {

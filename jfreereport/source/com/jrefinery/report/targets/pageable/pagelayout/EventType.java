@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventType.java,v 1.2 2002/12/04 16:20:57 mungady Exp $
+ * $Id: EventType.java,v 1.3 2002/12/07 14:58:33 taqua Exp $
  *
  * Changes
  * -------
@@ -46,29 +46,29 @@ package com.jrefinery.report.targets.pageable.pagelayout;
 public class EventType
 {
   /** A 'page start' event. */
-  public static final EventType PAGE_START   = new EventType("PAGE_START");
-  
+  public static final EventType PAGE_START = new EventType("PAGE_START");
+
   /** A 'page end' event. */
-  public static final EventType PAGE_END     = new EventType("PAGE_END");
-  
+  public static final EventType PAGE_END = new EventType("PAGE_END");
+
   /** A 'group start' event. */
-  public static final EventType GROUP_START  = new EventType("GROUP_START");
-  
+  public static final EventType GROUP_START = new EventType("GROUP_START");
+
   /** A 'group end' event. */
-  public static final EventType GROUP_END    = new EventType("GROUP_END");
-  
+  public static final EventType GROUP_END = new EventType("GROUP_END");
+
   /** A 'report start' event. */
   public static final EventType REPORT_START = new EventType("REPORT_START");
-  
+
   /** A 'report end' event. */
-  public static final EventType REPORT_END   = new EventType("REPORT_END");
-  
+  public static final EventType REPORT_END = new EventType("REPORT_END");
+
   /** An 'item start' event. */
-  public static final EventType ITEM_START   = new EventType("ITEM_START");
-  
+  public static final EventType ITEM_START = new EventType("ITEM_START");
+
   /** An 'item end' event. */
-  public static final EventType ITEM_END     = new EventType("ITEM_END");
-  
+  public static final EventType ITEM_END = new EventType("ITEM_END");
+
   /** An 'item advance' event. */
   public static final EventType ITEM_ADVANCE = new EventType("ITEM_ADVANCE");
 
@@ -95,5 +95,5 @@ public class EventType
   {
     return myName;
   }
-  
+
 }

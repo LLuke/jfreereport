@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceReferenceTableModel.java,v 1.1 2003/06/10 18:14:28 taqua Exp $
+ * $Id: DataSourceReferenceTableModel.java,v 1.2 2003/06/15 21:26:29 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.datasource;
@@ -47,7 +47,7 @@ import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**
  * A table model for the style key reference generator.
- * 
+ *
  * @author Thomas Morgner
  */
 public class DataSourceReferenceTableModel extends AbstractTableModel
@@ -59,7 +59,7 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
   {
     /** The factory. */
     private DataSourceFactory datasourceFactory;
-    
+
     /** The key. */
     private String datasourceName;
 
@@ -74,7 +74,7 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
      * @param implementingClass the class that implements the named datasource.
      */
     public DataSourceDescriptionRow(DataSourceFactory datasourceFactory,
-                                  String name, Class implementingClass)
+                                    String name, Class implementingClass)
     {
       this.datasourceFactory = datasourceFactory;
       this.datasourceName = name;
@@ -83,7 +83,7 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
 
     /**
      * Returns the factory.
-     * 
+     *
      * @return The factory.
      */
     public DataSourceFactory getFactory()
@@ -93,7 +93,7 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
 
     /**
      * Returns the datasource name.
-     * 
+     *
      * @return The datasource name.
      */
     public String getName()
@@ -125,7 +125,7 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
 
   /**
    * Creates a new table model.
-   * 
+   *
    * @param cf  the factory collection.
    */
   public DataSourceReferenceTableModel(DataSourceCollector cf)
@@ -136,10 +136,10 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
 
   /**
    * Adds a factory.
-   * 
+   *
    * @param cf  the factory.
    */
-  private void addFactoryCollector (DataSourceCollector cf)
+  private void addFactoryCollector(DataSourceCollector cf)
   {
     Iterator it = cf.getFactories();
     while (it.hasNext())
@@ -158,10 +158,10 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
 
   /**
    * Adds a factory.
-   * 
+   *
    * @param cf  the factory.
    */
-  private void addDataSourceFactory (DataSourceFactory cf)
+  private void addDataSourceFactory(DataSourceFactory cf)
   {
     Iterator it = cf.getRegisteredNames();
     ArrayList factories = new ArrayList();
@@ -212,7 +212,7 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
 
   /**
    * Returns the column name.
-   * 
+   *
    * @param column  the column being queried
    * @return a string containing the default name of <code>column</code>
    */
@@ -238,7 +238,7 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
    *
    * @param rowIndex  the row whose value is to be queried
    * @param columnIndex  the column whose value is to be queried
-   * 
+   *
    * @return the value Object at the specified cell
    */
   public Object getValueAt(int rowIndex, int columnIndex)
@@ -246,10 +246,14 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
     DataSourceDescriptionRow or = (DataSourceDescriptionRow) rows.get(rowIndex);
     switch (columnIndex)
     {
-      case 0: return String.valueOf(or.getFactory().getClass().getName());
-      case 1: return String.valueOf(or.getName());
-      case 2: return String.valueOf(or.getImplementingClass().getName());
+      case 0:
+        return String.valueOf(or.getFactory().getClass().getName());
+      case 1:
+        return String.valueOf(or.getName());
+      case 2:
+        return String.valueOf(or.getImplementingClass().getName());
+      default:
+        return null;
     }
-    return null;
   }
 }

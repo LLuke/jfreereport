@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: KeyedQueue.java,v 1.14 2003/02/25 15:42:47 taqua Exp $
+ * $Id: KeyedQueue.java,v 1.15 2003/03/18 18:28:46 taqua Exp $
  *
  * Changes
  * -------
@@ -62,9 +62,9 @@ public class KeyedQueue implements Serializable, Cloneable
   /**
    * Creates a KeyedQueue with an initial limit of 10 items.
    */
-  public KeyedQueue ()
+  public KeyedQueue()
   {
-    this (10);
+    this(10);
   }
 
   /**
@@ -72,11 +72,11 @@ public class KeyedQueue implements Serializable, Cloneable
    *
    * @param limit  the maximum number of items.
    */
-  public KeyedQueue (int limit)
+  public KeyedQueue(int limit)
   {
-    table = new HashMap ();
-    list = new LinkedList ();
-    setLimit (limit);
+    table = new HashMap();
+    list = new LinkedList();
+    setLimit(limit);
   }
 
   /**
@@ -84,11 +84,11 @@ public class KeyedQueue implements Serializable, Cloneable
    *
    * @param limit  the maximum number of items.
    */
-  public void setLimit (int limit)
+  public void setLimit(int limit)
   {
     if (limit < 1)
     {
-      throw new IllegalArgumentException ("Limit must be at least 1.");
+      throw new IllegalArgumentException("Limit must be at least 1.");
     }
     this.limit = limit;
   }
@@ -98,7 +98,7 @@ public class KeyedQueue implements Serializable, Cloneable
    *
    * @return the maximum number of elements in the queue.
    */
-  public int getLimit ()
+  public int getLimit()
   {
     return limit;
   }
@@ -110,27 +110,27 @@ public class KeyedQueue implements Serializable, Cloneable
    * @param key  the key.
    * @param ob  the value.
    */
-  public void put (Object key, Object ob)
+  public void put(Object key, Object ob)
   {
     if (key == null)
     {
-      throw new NullPointerException ("Key must not be null");
+      throw new NullPointerException("Key must not be null");
     }
     if (ob == null)
     {
-      throw new NullPointerException ("Value must not be null");
+      throw new NullPointerException("Value must not be null");
     }
 
-    Object oldval = table.put (key, ob);
+    Object oldval = table.put(key, ob);
     if (oldval != null)
     {
-      list.remove (oldval);
+      list.remove(oldval);
     }
-    list.add (ob);
+    list.add(ob);
 
-    if (list.size () > getLimit ())
+    if (list.size() > getLimit())
     {
-      removeLast ();
+      removeLast();
     }
   }
 
@@ -141,14 +141,14 @@ public class KeyedQueue implements Serializable, Cloneable
    *
    * @return the value.
    */
-  public Object get (Object key)
+  public Object get(Object key)
   {
     if (key == null)
     {
-      throw new NullPointerException ("Key must not be null");
+      throw new NullPointerException("Key must not be null");
     }
 
-    return table.get (key);
+    return table.get(key);
   }
 
   /**
@@ -156,33 +156,33 @@ public class KeyedQueue implements Serializable, Cloneable
    *
    * @param key  the key.
    */
-  public void remove (Object key)
+  public void remove(Object key)
   {
     if (key == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
-    table.remove (key);
-    list.remove (key);
+    table.remove(key);
+    list.remove(key);
   }
 
   /**
    * Removes the last element in the queue.
    */
-  public void removeLast ()
+  public void removeLast()
   {
-    Object o = list.getLast ();
-    table.remove (o);
-    list.remove (o);
+    Object o = list.getLast();
+    table.remove(o);
+    list.remove(o);
   }
 
   /**
    * Removes all elements in the queue.
    */
-  public void clear ()
+  public void clear()
   {
-    table.clear ();
-    list.clear ();
+    table.clear();
+    list.clear();
   }
 
   /**
@@ -192,11 +192,11 @@ public class KeyedQueue implements Serializable, Cloneable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    KeyedQueue q = (KeyedQueue) super.clone ();
-    q.list = (LinkedList) list.clone ();
-    q.table = (HashMap) table.clone ();
+    KeyedQueue q = (KeyedQueue) super.clone();
+    q.list = (LinkedList) list.clone();
+    q.table = (HashMap) table.clone();
     return q;
   }
 

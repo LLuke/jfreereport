@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionHandler.java,v 1.9 2003/04/24 18:08:49 taqua Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.10 2003/06/04 21:09:07 taqua Exp $
  *
  * Changes
  * -------
@@ -94,13 +94,13 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
    */
   public ReportDescriptionHandler(Parser parser, String finishTag)
   {
-    if (parser == null) 
+    if (parser == null)
     {
       throw new NullPointerException("Parser is null");
     }
-    if (finishTag == null) 
+    if (finishTag == null)
     {
-      throw new NullPointerException("FinishTag is null"); 
+      throw new NullPointerException("FinishTag is null");
     }
     this.parser = parser;
     this.finishTag = finishTag;
@@ -115,7 +115,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
-    throws SAXException
+      throws SAXException
   {
     if (tagName.equals(REPORT_HEADER_TAG))
     {
@@ -179,13 +179,13 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + REPORT_HEADER_TAG + ", "
-                              + REPORT_FOOTER_TAG + ", "
-                              + PAGE_HEADER_TAG + ", "
-                              + PAGE_FOOTER_TAG + ", "
-                              + ITEMBAND_TAG + ", "
-                              + GROUPS_TAG);
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + REPORT_HEADER_TAG + ", "
+          + REPORT_FOOTER_TAG + ", "
+          + PAGE_HEADER_TAG + ", "
+          + PAGE_FOOTER_TAG + ", "
+          + ITEMBAND_TAG + ", "
+          + GROUPS_TAG);
     }
 
   }
@@ -197,7 +197,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
   {
     // ignore the characters ...
   }
@@ -207,7 +207,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
    *
    * @return The report.
    */
-  private JFreeReport getReport ()
+  private JFreeReport getReport()
   {
     return (JFreeReport) getParser().getHelperObject(
         InitialReportHandler.REPORT_DEFINITION_TAG);
@@ -221,7 +221,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName)
-    throws SAXException
+      throws SAXException
   {
     if (tagName.equals(REPORT_HEADER_TAG))
     {
@@ -253,14 +253,14 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + REPORT_HEADER_TAG + ", "
-                              + REPORT_FOOTER_TAG + ", "
-                              + PAGE_HEADER_TAG + ", "
-                              + PAGE_FOOTER_TAG + ", "
-                              + ITEMBAND_TAG + ", "
-                              + GROUPS_TAG + ", "
-                              + finishTag);
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + REPORT_HEADER_TAG + ", "
+          + REPORT_FOOTER_TAG + ", "
+          + PAGE_HEADER_TAG + ", "
+          + PAGE_FOOTER_TAG + ", "
+          + ITEMBAND_TAG + ", "
+          + GROUPS_TAG + ", "
+          + finishTag);
     }
   }
 

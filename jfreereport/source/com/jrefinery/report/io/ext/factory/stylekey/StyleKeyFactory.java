@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyFactory.java,v 1.10 2003/06/04 21:09:08 taqua Exp $
+ * $Id: StyleKeyFactory.java,v 1.11 2003/06/10 16:07:51 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.stylekey;
@@ -45,23 +45,23 @@ import org.jfree.xml.factory.objects.ClassFactory;
 
 /**
  * A style key factory.
- * 
+ *
  * @author Thomas Morgner
  */
 public interface StyleKeyFactory
 {
-  /** 
+  /**
    * Returns a style key.
-   * 
+   *
    * @param name  the name.
-   * 
+   *
    * @return The style key.
    */
-  public StyleKey getStyleKey (String name);
+  public StyleKey getStyleKey(String name);
 
   /**
    * Creates an object.
-   * 
+   *
    * @param k  the style key.
    * @param value  the value.
    * @param c  the class.
@@ -73,7 +73,7 @@ public interface StyleKeyFactory
 
   /**
    * Returns an iterator that provides access to the registered keys.
-   * 
+   *
    * @return The iterator.
    */
   public Iterator getRegisteredKeys();

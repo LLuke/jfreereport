@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigWriter.java,v 1.7 2003/05/30 16:57:51 taqua Exp $
+ * $Id: ParserConfigWriter.java,v 1.8 2003/06/10 16:07:52 taqua Exp $
  *
  * Changes
  * -------
@@ -48,14 +48,14 @@ import com.jrefinery.report.util.Log;
 
 /**
  * A parser configuration writer.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ParserConfigWriter extends AbstractXMLDefinitionWriter
 {
   /**
    * Creates a new writer.
-   * 
+   *
    * @param reportWriter  the report writer.
    * @param indentLevel the current indention level.
    */
@@ -66,9 +66,9 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Writes the XML.
-   * 
+   *
    * @param writer  the writer.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    */
   public void write(Writer writer) throws IOException
@@ -76,25 +76,25 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
     writeTag(writer, ExtReportHandler.PARSER_CONFIG_TAG);
     writer.write(getLineSeparator());
 
-    writeFactory (writer, ParserConfigHandler.OBJECT_FACTORY_TAG,
-                  getReportWriter().getClassFactoryCollector().getFactories());
-    writeFactory (writer, ParserConfigHandler.ELEMENT_FACTORY_TAG,
-                  getReportWriter().getElementFactoryCollector().getFactories());
-    writeFactory (writer, ParserConfigHandler.STYLEKEY_FACTORY_TAG,
-                  getReportWriter().getStyleKeyFactoryCollector().getFactories());
-    writeFactory (writer, ParserConfigHandler.TEMPLATE_FACTORY_TAG,
-                  getReportWriter().getTemplateCollector().getFactories());
-    writeFactory (writer, ParserConfigHandler.DATASOURCE_FACTORY_TAG,
-                  getReportWriter().getDataSourceCollector().getFactories());
+    writeFactory(writer, ParserConfigHandler.OBJECT_FACTORY_TAG,
+        getReportWriter().getClassFactoryCollector().getFactories());
+    writeFactory(writer, ParserConfigHandler.ELEMENT_FACTORY_TAG,
+        getReportWriter().getElementFactoryCollector().getFactories());
+    writeFactory(writer, ParserConfigHandler.STYLEKEY_FACTORY_TAG,
+        getReportWriter().getStyleKeyFactoryCollector().getFactories());
+    writeFactory(writer, ParserConfigHandler.TEMPLATE_FACTORY_TAG,
+        getReportWriter().getTemplateCollector().getFactories());
+    writeFactory(writer, ParserConfigHandler.DATASOURCE_FACTORY_TAG,
+        getReportWriter().getDataSourceCollector().getFactories());
     // datadefinition not yet implemented ...
 
-    writeCloseTag (writer, ExtReportHandler.PARSER_CONFIG_TAG);
+    writeCloseTag(writer, ExtReportHandler.PARSER_CONFIG_TAG);
     writer.write(getLineSeparator());
   }
 
   /**
    * Writes a factory element.
-   * 
+   *
    * @param w  the writer.
    * @param tagName  the tag name.
    * @param it  an iterator over a collection of factories, which should be defined
@@ -102,8 +102,8 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
    *
    * @throws IOException if there is an I/O problem.
    */
-  public void writeFactory (Writer w, String tagName, Iterator it)
-    throws IOException
+  public void writeFactory(Writer w, String tagName, Iterator it)
+      throws IOException
   {
     while (it.hasNext())
     {
@@ -119,8 +119,8 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
       }
       catch (Exception e)
       {
-        Log.warn ("FactoryClass " + itObject.getClass() 
-                  + " has no default constructor. This class will be ignored"); 
+        Log.warn("FactoryClass " + itObject.getClass()
+            + " has no default constructor. This class will be ignored");
         continue;
       }
 

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreItemGroupState.java,v 1.8 2003/05/07 20:27:26 taqua Exp $
+ * $Id: PreItemGroupState.java,v 1.9 2003/05/16 17:26:46 taqua Exp $
  *
  * Changes
  * -------
@@ -54,31 +54,31 @@ public final class PreItemGroupState extends ReportState
    *
    * @param previous  the previous state.
    */
-  public PreItemGroupState (ReportState previous)
+  public PreItemGroupState(ReportState previous)
   {
-    super (previous);
+    super(previous);
   }
 
   /**
-   * Advances to the next state.  Normally this will be the '<code>IN-ITEM-GROUP</code>' state, 
-   * but if the report's data (TableModel) has no rows, proceed to the 
+   * Advances to the next state.  Normally this will be the '<code>IN-ITEM-GROUP</code>' state,
+   * but if the report's data (TableModel) has no rows, proceed to the
    * '<code>POST-ITEM-GROUP</code>' state.
    *
    * @return the next state.
    */
-  public ReportState advance ()
+  public ReportState advance()
   {
     firePrepareEvent(ReportEvent.ITEMS_STARTED);
 
     // inform everybody, that now items will be processed
-    fireItemsStartedEvent ();
+    fireItemsStartedEvent();
 
     // if the report has no data, proceed to PostItemGroup ...
     if (getNumberOfRows() == 0)
     {
       return new PostItemGroupState(this);
     }
-    return new InItemGroupState (this);
+    return new InItemGroupState(this);
   }
 
   /**
@@ -87,7 +87,7 @@ public final class PreItemGroupState extends ReportState
    *
    * @return true; Header related states preview the next itemband DataRow.
    */
-  public boolean isPrefetchState ()
+  public boolean isPrefetchState()
   {
     return true;
   }

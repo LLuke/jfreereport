@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.12 2003/06/19 18:44:10 taqua Exp $
+ * $Id: StylesWriter.java,v 1.13 2003/06/23 16:08:27 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,6 @@ import com.jrefinery.report.io.ext.StylesHandler;
 import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.util.Log;
 
 /**
  * A styles writer.
@@ -107,7 +106,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    *
    * @return The styles.
    */
-  private ElementStyleSheet[] collectStyles ()
+  private ElementStyleSheet[] collectStyles()
   {
     JFreeReport report = getReport();
     collectStylesFromBand(report.getReportHeader());
@@ -130,7 +129,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
     {
       System.out.println(styles[i].getName());
     }
-*/    
+*/
     return styles;
   }
 
@@ -139,7 +138,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    *
    * @param band  the band.
    */
-  private void collectStylesFromBand (Band band)
+  private void collectStylesFromBand(Band band)
   {
     ElementStyleSheet bandDefaults = band.getBandDefaults();
 
@@ -172,7 +171,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    *
    * @param element  the element.
    */
-  private void collectStylesFromElement (Element element)
+  private void collectStylesFromElement(Element element)
   {
     ElementStyleSheet elementSheet = element.getStyle();
 
@@ -190,7 +189,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    *
    * @param es  the element style sheet.
    */
-  private void addCollectableStyleSheet (ElementStyleSheet es)
+  private void addCollectableStyleSheet(ElementStyleSheet es)
   {
     if (es == BandDefaultStyleSheet.getBandDefaultStyle())
     {

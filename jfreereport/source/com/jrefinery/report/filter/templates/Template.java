@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Template.java,v 1.4 2003/03/07 16:55:55 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
  * 18-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.filter.templates;
@@ -43,30 +43,30 @@ import com.jrefinery.report.filter.DataSource;
 /**
  * A template defines a common use case for a DataSource and one or more
  * predefined Filters.
- * 
+ *
  * @author Thomas Morgner
  */
 public interface Template extends DataSource
 {
   /**
    * Sets the name of this template.
-   * 
+   *
    * @param name  the name.
    */
-  public void setName (String name);
+  public void setName(String name);
 
   /**
    * Returns the template name.
-   * 
+   *
    * @return The name.
    */
-  public String getName ();
+  public String getName();
 
   /**
    * Returns an instance of the template.
-   * 
+   *
    * @return A template instance.
    */
-  public Template getInstance ();
+  public Template getInstance();
 
 }

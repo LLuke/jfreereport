@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -59,15 +59,15 @@ public abstract class LastPageAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  protected LastPageAction (ResourceBundle resources)
+  protected LastPageAction(ResourceBundle resources)
   {
-    putValue (NAME, resources.getString ("action.lastpage.name"));
-    putValue (SHORT_DESCRIPTION, resources.getString ("action.lastpage.description"));
-    putValue (ActionDowngrade.MNEMONIC_KEY, 
-              resources.getObject ("action.lastpage.mnemonic"));
-    putValue (ActionDowngrade.ACCELERATOR_KEY, 
-              resources.getObject ("action.lastpage.accelerator"));
-    putValue (SMALL_ICON, resources.getObject ("action.lastpage.small-icon"));
-    putValue ("ICON24", resources.getObject ("action.lastpage.icon"));
+    putValue(NAME, resources.getString("action.lastpage.name"));
+    putValue(SHORT_DESCRIPTION, resources.getString("action.lastpage.description"));
+    putValue(ActionDowngrade.MNEMONIC_KEY,
+        resources.getObject("action.lastpage.mnemonic"));
+    putValue(ActionDowngrade.ACCELERATOR_KEY,
+        resources.getObject("action.lastpage.accelerator"));
+    putValue(SMALL_ICON, resources.getObject("action.lastpage.small-icon"));
+    putValue("ICON24", resources.getObject("action.lastpage.icon"));
   }
 }

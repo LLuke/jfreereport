@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: URLFilterObjectDescription.java,v 1.4 2003/06/04 21:09:08 taqua Exp $
+ * $Id: URLFilterObjectDescription.java,v 1.5 2003/06/10 16:07:50 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 16-05-2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.datasource;

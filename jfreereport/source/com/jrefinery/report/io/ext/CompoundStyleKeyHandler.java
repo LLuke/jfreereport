@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundStyleKeyHandler.java,v 1.14 2003/06/10 16:07:49 taqua Exp $
+ * $Id: CompoundStyleKeyHandler.java,v 1.15 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import org.xml.sax.SAXException;
 
 /**
  * A compound style-key handler. Handles the creation of compound objects, which
- * should be stored in the element style sheet. 
+ * should be stored in the element style sheet.
  *
  * @author Thomas Morgner.
  */
@@ -79,9 +79,9 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public CompoundStyleKeyHandler(Parser parser, String finishTag, String name, Class c)
-    throws SAXException
+      throws SAXException
   {
-    super (parser, finishTag, name, c);
+    super(parser, finishTag, name, c);
     ClassFactory fact = (ClassFactory) getParser().getHelperObject(
         ParserConfigHandler.OBJECT_FACTORY_TAG);
     keyObjectDescription = fact.getDescriptionForClass(getKeyValueClass());
@@ -101,7 +101,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
    *
    * @return The description.
    */
-  private ObjectDescription getKeyObjectDescription ()
+  private ObjectDescription getKeyObjectDescription()
   {
     return keyObjectDescription;
   }
@@ -121,7 +121,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
       parameterName = attrs.getValue("name");
       if (parameterName == null)
       {
-        throw new ParseException ("Attribute 'name' is missing.", getParser().getLocator());
+        throw new ParseException("Attribute 'name' is missing.", getParser().getLocator());
       }
       ObjectDescription od = getKeyObjectDescription();
       Class parameter = od.getParameterDefinition(parameterName);
@@ -150,7 +150,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
       parameterName = attrs.getValue("name");
       if (parameterName == null)
       {
-        throw new ParseException ("Attribute 'name' is missing.", getParser().getLocator());
+        throw new ParseException("Attribute 'name' is missing.", getParser().getLocator());
       }
 
       ObjectDescription od = getKeyObjectDescription();
@@ -177,9 +177,9 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + COMPOUND_OBJECT_TAG + ", "
-                              + BASIC_OBJECT_TAG + ". ");
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + COMPOUND_OBJECT_TAG + ", "
+          + BASIC_OBJECT_TAG + ". ");
     }
 
   }
@@ -193,7 +193,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char ch[], int start, int length) throws SAXException
+  public void characters(char[] ch, int start, int length) throws SAXException
   {
     // ignore ...
   }
@@ -223,10 +223,10 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + getFinishTag() + ", "
-                              + COMPOUND_OBJECT_TAG + ", "
-                              + BASIC_OBJECT_TAG + ". ");
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + getFinishTag() + ", "
+          + COMPOUND_OBJECT_TAG + ", "
+          + BASIC_OBJECT_TAG + ". ");
     }
   }
 
@@ -235,7 +235,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
    *
    * @return The value.
    */
-  public Object getValue ()
+  public Object getValue()
   {
     return getKeyObjectDescription().createObject();
   }

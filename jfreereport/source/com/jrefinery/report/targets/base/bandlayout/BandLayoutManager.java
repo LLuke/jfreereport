@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManager.java,v 1.7 2003/04/06 18:11:30 taqua Exp $
+ * $Id: BandLayoutManager.java,v 1.8 2003/04/09 15:49:51 mungady Exp $
  *
  * Changes
  * -------
  * 09-Apr-2003 : Checkstyle fixes (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.targets.base.bandlayout;
@@ -45,7 +45,7 @@ import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.StyleKey;
 
 /**
- * An interface that defines the methods to be supported by a band layout manager.  
+ * An interface that defines the methods to be supported by a band layout manager.
  * <p>
  * See the AWT LayoutManager for the idea :)
  *
@@ -60,7 +60,7 @@ public interface BandLayoutManager
    * this key when using the PageableReportProcessor.
    */
   public static final StyleKey LAYOUTMANAGER = StyleKey.getStyleKey("layoutmanager",
-                                                                    BandLayoutManager.class);
+      BandLayoutManager.class);
 
   /**
    * Calculates the preferred layout size for a band.
@@ -78,7 +78,7 @@ public interface BandLayoutManager
    * @param b  the band.
    * @param containerDims the bounds of the surrounding container.
    *
-   * @return the minimum size. 
+   * @return the minimum size.
    */
   public Dimension2D minimumLayoutSize(Band b, Dimension2D containerDims);
 
@@ -94,7 +94,7 @@ public interface BandLayoutManager
    *
    * @param target  the target.
    */
-  public void setLayoutSupport (LayoutSupport target);
+  public void setLayoutSupport(LayoutSupport target);
 
   /**
    * Returns the output target for the layout manager.
@@ -105,8 +105,8 @@ public interface BandLayoutManager
 
   /**
    * Clears any cached items used by the layout manager. Invalidates the layout.
-   * 
+   *
    * @param container  the container.
-   */  
+   */
   public void invalidateLayout(Band container);
 }

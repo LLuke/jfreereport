@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FlowPageLayouter.java,v 1.8 2003/02/27 10:35:40 mungady Exp $
+ * $Id: FlowPageLayouter.java,v 1.9 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ public class FlowPageLayouter extends PageLayouter
 {
   /** Tasks. */
   private Stack tasks;
-  
+
   /** ??. */
   private ArrayList taskWorker;
 
@@ -64,7 +64,7 @@ public class FlowPageLayouter extends PageLayouter
   public FlowPageLayouter()
   {
     tasks = new Stack();
-    taskWorker = new ArrayList ();
+    taskWorker = new ArrayList();
   }
 
   /**
@@ -74,7 +74,7 @@ public class FlowPageLayouter extends PageLayouter
    *
    * @return the layout task.
    */
-  public LayoutTask getTaskForEvent (ReportEvent event)
+  public LayoutTask getTaskForEvent(ReportEvent event)
   {
     LayoutTask task = new LayoutTask();
     tasks.push(task);
@@ -86,7 +86,7 @@ public class FlowPageLayouter extends PageLayouter
    *
    * @param task  the task.
    */
-  public void endTask (LayoutTask task)
+  public void endTask(LayoutTask task)
   {
     tasks.pop();
   }
@@ -96,7 +96,7 @@ public class FlowPageLayouter extends PageLayouter
    *
    * @param event  the event.
    */
-  public void performLayout (ReportEvent event)
+  public void performLayout(ReportEvent event)
   {
     LayoutTask task = getTaskForEvent(event);
 
@@ -105,19 +105,18 @@ public class FlowPageLayouter extends PageLayouter
     {
       for (int i = 0; i < taskWorker.size(); i++)
       {
-        LayoutAgent agent = (LayoutAgent) taskWorker.get (i);
+        LayoutAgent agent = (LayoutAgent) taskWorker.get(i);
         LayoutAgentProgress progress = agent.processTask(task);
         if (progress == LayoutAgentProgress.PROCESSING_COMPLETE)
         {
           isProceeding = true;
         }
       }
-    }
-    while (isProceeding);
+    } while (isProceeding);
 
-    if (task.isDone ())
+    if (task.isDone())
     {
-      endTask (task);
+      endTask(task);
     }
   }
 
@@ -173,7 +172,7 @@ public class FlowPageLayouter extends PageLayouter
 
   /**
    * Returns <code>false</code>.
-   * 
+   *
    * @return <code>false</code>.
    */
   public boolean isNewPageStarted()

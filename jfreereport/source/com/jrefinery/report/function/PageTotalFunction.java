@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.23 2003/06/13 17:55:25 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.24 2003/06/19 18:44:09 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -177,7 +177,7 @@ public class PageTotalFunction extends PageFunction
         if (pageStorage == null)
         {
           throw new IllegalStateException("No page-storage for the current state: "
-                                          + event.getState().getCurrentDataItem());
+              + event.getState().getCurrentDataItem());
 
         }
       }
@@ -245,7 +245,7 @@ public class PageTotalFunction extends PageFunction
   {
     if (this.pageStorage == null)
     {
-//      Log.warn ("CurrentPage is null, no repagination done?: " + this.hashCode() + " -> " 
+//      Log.warn ("CurrentPage is null, no repagination done?: " + this.hashCode() + " -> "
 //                + (o == this));
       return 0;
     }

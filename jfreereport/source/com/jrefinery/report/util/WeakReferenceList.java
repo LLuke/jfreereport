@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WeakReferenceList.java,v 1.16 2003/02/25 15:42:51 taqua Exp $
+ * $Id: WeakReferenceList.java,v 1.17 2003/02/26 13:58:05 mungady Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @param maxChildCount  the maximum number of elements.
    */
-  public WeakReferenceList (int maxChildCount)
+  public WeakReferenceList(int maxChildCount)
   {
     this.maxChilds = maxChildCount;
     this.childs = new Reference[maxChildCount - 1];
@@ -97,7 +97,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return the maximum number of elements in this list.
    */
-  protected final int getMaxChildCount ()
+  protected final int getMaxChildCount()
   {
     return maxChilds;
   }
@@ -108,7 +108,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return the master element
    */
-  protected Object getMaster ()
+  protected Object getMaster()
   {
     return master;
   }
@@ -120,7 +120,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return null if the child could not be restored or the restored child.
    */
-  protected abstract Object restoreChild (int index);
+  protected abstract Object restoreChild(int index);
 
   /**
    * Returns the child stored at the given index. If the child has been garbage collected,
@@ -130,24 +130,24 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return the object.
    */
-  public Object get (int index)
+  public Object get(int index)
   {
-    if (isMaster (index))
+    if (isMaster(index))
     {
       return master;
     }
     else
     {
-      Reference ref = childs[getChildPos (index)];
-      if (ref == null) 
+      Reference ref = childs[getChildPos(index)];
+      if (ref == null)
       {
         throw new IllegalStateException("State: " + index);
       }
-      Object ob = ref.get ();
+      Object ob = ref.get();
       if (ob == null)
       {
-        ob = restoreChild (index);
-        childs[getChildPos (index)] = createReference (ob);
+        ob = restoreChild(index);
+        childs[getChildPos(index)] = createReference(ob);
       }
       return ob;
     }
@@ -160,15 +160,15 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    * @param index  the index.
    *
    */
-  public void set (Object report, int index)
+  public void set(Object report, int index)
   {
-    if (isMaster (index))
+    if (isMaster(index))
     {
       master = report;
     }
     else
     {
-      childs[getChildPos (index)] = createReference (report);
+      childs[getChildPos(index)] = createReference(report);
     }
   }
 
@@ -179,9 +179,9 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return a WeakReference for the object o without any ReferenceQueue attached.
    */
-  protected Reference createReference (Object o)
+  protected Reference createReference(Object o)
   {
-    return new WeakReference (o);
+    return new WeakReference(o);
   }
 
   /**
@@ -192,7 +192,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return true, if the object was successfully added to the list, false otherwise
    */
-  public boolean add (Object rs)
+  public boolean add(Object rs)
   {
     if (size == 0)
     {
@@ -202,9 +202,9 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
     }
     else
     {
-      if (size < getMaxChildCount ())
+      if (size < getMaxChildCount())
       {
-        childs[size - 1] = createReference (rs);
+        childs[size - 1] = createReference(rs);
         size++;
         return true;
       }
@@ -223,9 +223,9 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return true if the index is a master index.
    */
-  protected boolean isMaster (int index)
+  protected boolean isMaster(int index)
   {
-    return index % getMaxChildCount () == 0;
+    return index % getMaxChildCount() == 0;
   }
 
   /**
@@ -235,9 +235,9 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return the internal storage index.
    */
-  protected int getChildPos (int index)
+  protected int getChildPos(int index)
   {
-    return index % getMaxChildCount () - 1;
+    return index % getMaxChildCount() - 1;
   }
 
   /**
@@ -245,7 +245,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return the size.
    */
-  public int getSize ()
+  public int getSize()
   {
     return size;
   }
@@ -257,14 +257,14 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @throws IOException if there is an I/O error.
    */
-  private void writeObject (java.io.ObjectOutputStream out)
-          throws IOException
+  private void writeObject(java.io.ObjectOutputStream out)
+      throws IOException
   {
     Reference[] orgChilds = childs;
     try
     {
       childs = null;
-      out.defaultWriteObject ();
+      out.defaultWriteObject();
     }
     finally
     {
@@ -280,14 +280,14 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    * @throws IOException if there is an I/O error.
    * @throws ClassNotFoundException if a serialized class is not defined on this system.
    */
-  private void readObject (java.io.ObjectInputStream in)
-          throws IOException, ClassNotFoundException
+  private void readObject(java.io.ObjectInputStream in)
+      throws IOException, ClassNotFoundException
   {
-    in.defaultReadObject ();
-    childs = new Reference[getMaxChildCount () - 1];
+    in.defaultReadObject();
+    childs = new Reference[getMaxChildCount() - 1];
     for (int i = 0; i < childs.length; i++)
     {
-      childs[i] = createReference (null);
+      childs[i] = createReference(null);
     }
   }
 }

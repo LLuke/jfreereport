@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -24,7 +24,7 @@
  * ResourceCompareTool.java
  * ------------------------
  *
- * $Id: ResourceCompareTool.java,v 1.6 2003/02/26 16:42:22 mungady Exp $
+ * $Id: ResourceCompareTool.java,v 1.7 2003/05/02 12:40:27 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import java.util.Hashtable;
  * default resource bundle, but defined in the localized version.
  * <p>
  * Using the automated comparing will help to make translations more easier.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ResourceCompareTool
@@ -58,7 +58,7 @@ public class ResourceCompareTool
    * @param s the locale specification as ISO country code.
    * @return the loaded resources or null, if there is no such translation.
    */
-  private static JFreeReportResources loadLocale (String s)
+  private static JFreeReportResources loadLocale(String s)
   {
     try
     {
@@ -76,7 +76,7 @@ public class ResourceCompareTool
    *
    * @param args a string array with only one element, the ISO code of the localisation.
    */
-  public static void main (String [] args)
+  public static void main(String[] args)
   {
     if (args.length != 1)
     {
@@ -104,13 +104,13 @@ public class ResourceCompareTool
     {
       String name = (String) contentsRes[i][0];
       Object value = contentsRes[i][1];
-      baseContentTable.put (name, value);
+      baseContentTable.put(name, value);
     }
     for (int i = 0; i < contentsComp.length; i++)
     {
       String name = (String) contentsComp[i][0];
       Object value = contentsComp[i][1];
-      compContentTable.put (name, value);
+      compContentTable.put(name, value);
     }
 
     ArrayList notImplemented = new ArrayList();
@@ -125,7 +125,7 @@ public class ResourceCompareTool
       Object valueComp = compContentTable.get(key);
       if (valueComp == null)
       {
-        notImplemented.add (key);
+        notImplemented.add(key);
       }
       else if (valueBase.getClass().isAssignableFrom(valueComp.getClass()) == false)
       {
@@ -148,36 +148,36 @@ public class ResourceCompareTool
     Collections.sort(invalidKey);
     Collections.sort(notImplemented);
 
-    System.out.println ("The following keys return values, which are not of the same baseclass as "
+    System.out.println("The following keys return values, which are not of the same baseclass as "
         + "the original key.");
     for (int i = 0; i < wrongType.size(); i++)
     {
       System.out.println(wrongType.get(i));
     }
-    System.out.println ("---------------------------------------");
-    System.out.println ("  " + wrongType.size() + " elements listed ");
-    System.out.println ("---------------------------------------\n\n");
+    System.out.println("---------------------------------------");
+    System.out.println("  " + wrongType.size() + " elements listed ");
+    System.out.println("---------------------------------------\n\n");
 
-    System.out.println ("The following keys are not implemented by the localisation.");
-    System.out.println ("This does not always indicate an error, if the key does not need to be "
+    System.out.println("The following keys are not implemented by the localisation.");
+    System.out.println("This does not always indicate an error, if the key does not need to be "
         + "translated.");
     for (int i = 0; i < notImplemented.size(); i++)
     {
       System.out.println(notImplemented.get(i));
     }
-    System.out.println ("---------------------------------------");
-    System.out.println ("  " + notImplemented.size() + " elements listed ");
-    System.out.println ("---------------------------------------\n\n");
+    System.out.println("---------------------------------------");
+    System.out.println("  " + notImplemented.size() + " elements listed ");
+    System.out.println("---------------------------------------\n\n");
 
-    System.out.println ("The following are invalid. These keys are not implemented by the base "
+    System.out.println("The following are invalid. These keys are not implemented by the base "
         + "class.");
     for (int i = 0; i < invalidKey.size(); i++)
     {
       System.out.println(invalidKey.get(i));
     }
-    System.out.println ("---------------------------------------");
-    System.out.println ("  " + invalidKey.size() + " elements listed ");
-    System.out.println ("---------------------------------------\n\n");
+    System.out.println("---------------------------------------");
+    System.out.println("  " + invalidKey.size() + " elements listed ");
+    System.out.println("---------------------------------------\n\n");
 
     System.exit(0);
   }

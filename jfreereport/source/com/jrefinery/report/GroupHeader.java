@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: GroupHeader.java,v 1.10 2002/12/06 17:17:31 mungady Exp $
+ * $Id: GroupHeader.java,v 1.11 2002/12/06 18:05:53 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -55,7 +55,7 @@ public class GroupHeader extends Band
   /**
    * Constructs a group header band, containing no elements.
    */
-  public GroupHeader ()
+  public GroupHeader()
   {
   }
 
@@ -69,7 +69,7 @@ public class GroupHeader extends Band
    * @deprecated use the ElementStyleSheet to access this property as every band is able
    * to request such a pageBreak
    */
-  public boolean hasPageBreakBeforePrint ()
+  public boolean hasPageBreakBeforePrint()
   {
     return getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, false);
   }
@@ -81,8 +81,8 @@ public class GroupHeader extends Band
    * @deprecated use the ElementStyleSheet to access this property as every band is able
    * to request such a pageBreak
    */
-  public void setPageBreakBeforePrint (boolean pageBreakBefore)
+  public void setPageBreakBeforePrint(boolean pageBreakBefore)
   {
-    getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, new Boolean(pageBreakBefore));
+    getStyle().setBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, pageBreakBefore);
   }
 }

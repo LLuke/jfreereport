@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DecimalFormatParser.java,v 1.9 2002/12/02 17:19:47 taqua Exp $
+ * $Id: DecimalFormatParser.java,v 1.10 2002/12/11 01:10:40 mungady Exp $
  *
  * ChangeLog
  * ---------
@@ -66,9 +66,9 @@ public class DecimalFormatParser extends NumberFormatParser
    * DefaultConstructor, this object is initialized using a DecimalFormat with the
    * default pattern for this locale.
    */
-  public DecimalFormatParser ()
+  public DecimalFormatParser()
   {
-    setFormatter (new DecimalFormat ());
+    setFormatter(new DecimalFormat());
   }
 
   /**
@@ -77,9 +77,9 @@ public class DecimalFormatParser extends NumberFormatParser
    *
    * @return the formatter.
    */
-  public DecimalFormat getDecimalFormat ()
+  public DecimalFormat getDecimalFormat()
   {
-    return (DecimalFormat) getFormatter ();
+    return (DecimalFormat) getFormatter();
   }
 
   /**
@@ -89,9 +89,9 @@ public class DecimalFormatParser extends NumberFormatParser
    *
    * @throws NullPointerException if the given format is null.
    */
-  public void setDecimalFormat (DecimalFormat format)
+  public void setDecimalFormat(DecimalFormat format)
   {
-    setFormatter (format);
+    setFormatter(format);
   }
 
   /**
@@ -103,10 +103,10 @@ public class DecimalFormatParser extends NumberFormatParser
    * @throws NullPointerException if the given format is null
    * @throws ClassCastException if the format is no decimal format
    */
-  public void setFormatter (Format format)
+  public void setFormatter(Format format)
   {
     DecimalFormat dfmt = (DecimalFormat) format;
-    super.setFormatter (dfmt);
+    super.setFormatter(dfmt);
   }
 
   /**
@@ -115,9 +115,9 @@ public class DecimalFormatParser extends NumberFormatParser
    *
    * @return the pattern string of the format object contained in this filter.
    */
-  public String getFormatString ()
+  public String getFormatString()
   {
-    return getDecimalFormat ().toPattern ();
+    return getDecimalFormat().toPattern();
   }
 
   /**
@@ -125,9 +125,9 @@ public class DecimalFormatParser extends NumberFormatParser
    *
    * @param format  the format string.
    */
-  public void setFormatString (String format)
+  public void setFormatString(String format)
   {
-    getDecimalFormat ().applyPattern (format);
+    getDecimalFormat().applyPattern(format);
   }
 
   /**
@@ -136,9 +136,9 @@ public class DecimalFormatParser extends NumberFormatParser
    *
    * @return the localized pattern string of the format-object.
    */
-  public String getLocalizedFormatString ()
+  public String getLocalizedFormatString()
   {
-    return getDecimalFormat ().toLocalizedPattern ();
+    return getDecimalFormat().toLocalizedPattern();
   }
 
   /**
@@ -146,9 +146,9 @@ public class DecimalFormatParser extends NumberFormatParser
    *
    * @param format  the format string.
    */
-  public void setLocalizedFormatString (String format)
+  public void setLocalizedFormatString(String format)
   {
-    getDecimalFormat ().applyLocalizedPattern (format);
+    getDecimalFormat().applyLocalizedPattern(format);
   }
 
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFormatFilter.java,v 1.8 2002/12/02 17:19:43 taqua Exp $
+ * $Id: DateFormatFilter.java,v 1.9 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -59,9 +59,9 @@ public class DateFormatFilter extends FormatFilter
    * Default constructor.  Creates a new filter using the default date format for the current
    * locale.
    */
-  public DateFormatFilter ()
+  public DateFormatFilter()
   {
-    setFormatter (DateFormat.getInstance ());
+    setFormatter(DateFormat.getInstance());
   }
 
   /**
@@ -69,9 +69,9 @@ public class DateFormatFilter extends FormatFilter
    *
    * @return The date format object.
    */
-  public DateFormat getDateFormat ()
+  public DateFormat getDateFormat()
   {
-    return (DateFormat) getFormatter ();
+    return (DateFormat) getFormatter();
   }
 
   /**
@@ -80,9 +80,9 @@ public class DateFormatFilter extends FormatFilter
    * @param format The format.
    * @throws NullPointerException if the format given is null
    */
-  public void setDateFormat (DateFormat format)
+  public void setDateFormat(DateFormat format)
   {
-    super.setFormatter (format);
+    super.setFormatter(format);
   }
 
   /**
@@ -92,10 +92,10 @@ public class DateFormatFilter extends FormatFilter
    * @throws ClassCastException if the format given is no DateFormat
    * @throws NullPointerException if the format given is null
    */
-  public void setFormatter (Format format)
+  public void setFormatter(Format format)
   {
     DateFormat dfmt = (DateFormat) format;
-    super.setFormatter (dfmt);
+    super.setFormatter(dfmt);
   }
 
 }

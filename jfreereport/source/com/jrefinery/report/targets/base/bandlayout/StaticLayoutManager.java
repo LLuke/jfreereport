@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.36 2003/06/10 12:11:55 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.37 2003/06/10 16:07:53 taqua Exp $
  *
  * Changes
  * -------
@@ -148,8 +148,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     Dimension2D maxSize = correctDimension((Dimension2D)
         e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), containerBounds, null);
 
-    maxSize.setSize(Math.min (containerBounds.getWidth() - absPos.getX(), maxSize.getWidth()),
-                    Math.min (containerBounds.getHeight() - absPos.getY(), maxSize.getHeight()));
+    maxSize.setSize(Math.min(containerBounds.getWidth() - absPos.getX(), maxSize.getWidth()),
+        Math.min(containerBounds.getHeight() - absPos.getY(), maxSize.getHeight()));
 
     // docmark: minimum size also checks the dynamic height.
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
@@ -157,8 +157,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       retval = getElementContentBounds(retval, e, maxSize);
     }
 
-    retval.setSize(Math.min (retval.getWidth(), maxSize.getWidth()),
-                   Math.min (retval.getHeight(), maxSize.getHeight()));
+    retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
+        Math.min(retval.getHeight(), maxSize.getHeight()));
     //Log.debug ("-- calculate MinimumSize: " + retval);
     // layouting has failed, if negative values are returned ... !
     if (retval.getWidth() < 0 || retval.getHeight() < 0)
@@ -227,17 +227,17 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     // the maximum bounds are defined by the element and the elements container.
     Dimension2D maxSize = correctDimension(
         (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE),
-                                                    containerBounds, null);
-    maxSize.setSize(Math.min (containerBounds.getWidth() - absPos.getX(), maxSize.getWidth()),
-                    Math.min (containerBounds.getHeight() - absPos.getY(), maxSize.getHeight()));
+        containerBounds, null);
+    maxSize.setSize(Math.min(containerBounds.getWidth() - absPos.getX(), maxSize.getWidth()),
+        Math.min(containerBounds.getHeight() - absPos.getY(), maxSize.getHeight()));
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
       retval = getElementContentBounds(retval, e, maxSize);
     }
 
-    retval.setSize(Math.min (retval.getWidth(), maxSize.getWidth()),
-                   Math.min (retval.getHeight(), maxSize.getHeight()));
+    retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
+        Math.min(retval.getHeight(), maxSize.getHeight()));
 
     // layouting has failed, if negative values are returned ... !
     if (retval.getWidth() < 0 || retval.getHeight() < 0)
@@ -342,7 +342,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       if (staticWidth == false || staticHeight == false)
       {
         absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS),
-                                      base, absPos);
+            base, absPos);
         // check whether the element would be visible .. if not visible, then
         // dont do anything ...
         if (absPos.getX() > base.getWidth() || absPos.getY() > base.getHeight())
@@ -376,7 +376,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
 
     // now align the calculated data ...
     base.setSize(align(width, getLayoutSupport().getHorizontalAlignmentBorder()),
-                 align(height, getLayoutSupport().getVerticalAlignmentBorder()));
+        align(height, getLayoutSupport().getVerticalAlignmentBorder()));
     return base;
   }
 
@@ -533,7 +533,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     }
 
     Dimension2D parentDim = new FloatDimension((float) parentBounds.getWidth(),
-                                               (float) parentBounds.getHeight());
+        (float) parentBounds.getHeight());
 
     //Log.debug ("My LayoutSize: " + b.getName() + " " + parentDim);
 
@@ -549,14 +549,14 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
         continue;
       }
       absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim,
-                            absPos);
+          absPos);
       // check whether the element would be visible .. if not visible, then
       // dont do anything ...
       if (absPos.getX() > parentDim.getWidth() || absPos.getY() > parentDim.getHeight())
       {
         // dont display, as this element is larger than the container ...
         // Log.debug ("Element Out of Bounds: " + e);
-        BandLayoutManagerUtil.setBounds(e, new Rectangle2D.Float(0,0,0,0));
+        BandLayoutManagerUtil.setBounds(e, new Rectangle2D.Float(0, 0, 0, 0));
         continue;
       }
 
@@ -588,13 +588,13 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @return <code>true</code> or </code>false</code>.
    */
-  protected boolean isElementStaticWidth (Element e)
+  protected boolean isElementStaticWidth(Element e)
   {
     Point2D absPos = (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS);
     if (absPos == null)
     {
       throw new IllegalArgumentException("Element " + e
-                                         + " has no valid constraints. ABSOLUTE_POS is missing");
+          + " has no valid constraints. ABSOLUTE_POS is missing");
     }
     if (absPos.getX() < 0)
     {
@@ -610,13 +610,13 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @return true or false.
    */
-  protected boolean isElementStaticHeight (Element e)
+  protected boolean isElementStaticHeight(Element e)
   {
     Point2D absPos = (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS);
     if (absPos == null)
     {
       throw new IllegalArgumentException("Element " + e
-                                         + " has no valid constraints. ABSOLUTE_POS is missing");
+          + " has no valid constraints. ABSOLUTE_POS is missing");
     }
     if (absPos.getY() < 0)
     {

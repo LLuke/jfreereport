@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources.java,v 1.15 2003/06/16 16:06:56 taqua Exp $
+ * $Id: DemoResources.java,v 1.16 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ public class DemoResources extends JFreeReportResources
    *
    * @return an array of localised resources.
    */
-  public Object[][] getContents ()
+  public Object[][] getContents()
   {
     return CONTENTS;
   }
@@ -65,7 +65,7 @@ public class DemoResources extends JFreeReportResources
   private static final Object[][] CONTENTS = {
     {"project.name", "JFreeReport"},
     {"project.version", "0.8.3c"},
-    {"project.info", "http://www.object-refinery.com/jfreereport/index.html"},
+    {"project.info", "http://www.jfree.org/jfreereport/index.html"},
     {"project.copyright", "(C)opyright 2000-2003, by Simba Management Limited and Contributors"},
 
     // in the title pattern, leave in the '{0}' as it gets replaced with the version number
@@ -73,27 +73,27 @@ public class DemoResources extends JFreeReportResources
 
     {"action.close.name", "Exit"},
     {"action.close.description", "exits JFreeReportDemo"},
-    {"action.close.mnemonic", new Integer (KeyEvent.VK_E)},
-    {"action.close.accelerator", createMenuKeystroke (KeyEvent.VK_X)},
+    {"action.close.mnemonic", new Integer(KeyEvent.VK_E)},
+    {"action.close.accelerator", createMenuKeystroke(KeyEvent.VK_X)},
 
     {"action.print-preview.name", "Print Preview..."},
     {"action.print-preview.description", "Preview the report"},
-    {"action.print-preview.mnemonic", new Integer (KeyEvent.VK_P)},
-    {"action.print-preview.accelerator", createMenuKeystroke (KeyEvent.VK_P)},
+    {"action.print-preview.mnemonic", new Integer(KeyEvent.VK_P)},
+    {"action.print-preview.accelerator", createMenuKeystroke(KeyEvent.VK_P)},
     {"action.print-preview.small-icon",
-        getIcon ("com/jrefinery/report/resources/PrintPreview16.gif")},
-    {"action.print-preview.icon", getIcon ("com/jrefinery/report/resources/PrintPreview24.gif")},
+     getIcon("com/jrefinery/report/resources/PrintPreview16.gif")},
+    {"action.print-preview.icon", getIcon("com/jrefinery/report/resources/PrintPreview24.gif")},
 
     {"action.about.name", "About..."},
     {"action.about.description", "Information about the application"},
-    {"action.about.mnemonic", new Integer (KeyEvent.VK_A)},
-    {"action.about.small-icon", getIcon ("com/jrefinery/report/resources/About16.gif")},
-    {"action.about.icon", getIcon ("com/jrefinery/report/resources/About24.gif")},
+    {"action.about.mnemonic", new Integer(KeyEvent.VK_A)},
+    {"action.about.small-icon", getIcon("com/jrefinery/report/resources/About16.gif")},
+    {"action.about.icon", getIcon("com/jrefinery/report/resources/About24.gif")},
 
     {"menu.file.name", "File"},
-    {"menu.file.mnemonic", new Character ('F')},
+    {"menu.file.mnemonic", new Character('F')},
     {"menu.help.name", "Help"},
-    {"menu.help.mnemonic", new Character ('H')},
+    {"menu.help.mnemonic", new Character('H')},
     {"exitdialog.title", "Confirmation .."},
     {"exitdialog.message", "Are you sure that you want to exit the program?"},
 

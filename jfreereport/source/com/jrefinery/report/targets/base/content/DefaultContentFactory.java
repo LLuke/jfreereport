@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultContentFactory.java,v 1.3 2003/02/25 18:46:54 taqua Exp $
+ * $Id: DefaultContentFactory.java,v 1.4 2003/02/27 10:35:38 mungady Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,8 @@ import com.jrefinery.report.targets.base.layout.LayoutSupport;
  * which support all known content types.
  * <p>
  * The implementation provides support for <code>text</code>, <code>image</code>
- * and <code>shape</code> content. 
- * 
+ * and <code>shape</code> content.
+ *
  * @author Thomas Morgner
  */
 public class DefaultContentFactory implements ContentFactory
@@ -70,9 +70,9 @@ public class DefaultContentFactory implements ContentFactory
    * @param module the ContentFactoryModule that should be added to the list of
    * available modules.
    */
-  public void addModule (ContentFactoryModule module)
+  public void addModule(ContentFactoryModule module)
   {
-    if (module == null) 
+    if (module == null)
     {
       throw new NullPointerException();
     }
@@ -85,9 +85,9 @@ public class DefaultContentFactory implements ContentFactory
    * @param module removes a ContentFactoryModules from the list of available
    * modules.
    */
-  public void removeModule (ContentFactoryModule module)
+  public void removeModule(ContentFactoryModule module)
   {
-    if (module == null) 
+    if (module == null)
     {
       throw new NullPointerException();
     }
@@ -108,7 +108,7 @@ public class DefaultContentFactory implements ContentFactory
    * @throws ContentCreationException if there is a problem with the OutputTarget or
    * this factory is not able to handle this content type.
    */
-  public Content createContentForElement(Element e, ElementLayoutInformation bounds, 
+  public Content createContentForElement(Element e, ElementLayoutInformation bounds,
                                          LayoutSupport ot)
       throws ContentCreationException
   {

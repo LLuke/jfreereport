@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDataSourceFactory.java,v 1.10 2003/06/04 21:09:07 taqua Exp $
+ * $Id: AbstractDataSourceFactory.java,v 1.11 2003/06/10 17:14:38 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.datasource;
@@ -46,7 +46,7 @@ import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**
  * A base class for implementing the {@link DataSourceFactory} interface.
- * 
+ *
  * @author Thomas Morgner
  */
 public abstract class AbstractDataSourceFactory
@@ -65,11 +65,11 @@ public abstract class AbstractDataSourceFactory
 
   /**
    * Registers a data source.
-   * 
+   *
    * @param name  the name.
    * @param o  the object description.
    */
-  public void registerDataSources (String name, ObjectDescription o)
+  public void registerDataSources(String name, ObjectDescription o)
   {
     dataSources.put(name, o);
     registerClass(o.getObjectClass(), o);
@@ -77,9 +77,9 @@ public abstract class AbstractDataSourceFactory
 
   /**
    * Returns a data source description.
-   * 
+   *
    * @param name  the data source name.
-   * 
+   *
    * @return The object description.
    */
   public ObjectDescription getDataSourceDescription(String name)
@@ -94,9 +94,9 @@ public abstract class AbstractDataSourceFactory
 
   /**
    * Returns a data source name given a description.
-   * 
+   *
    * @param od  the object description.
-   * 
+   *
    * @return The name.
    */
   public String getDataSourceName(ObjectDescription od)

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportProperties.java,v 1.18 2003/03/18 18:28:46 taqua Exp $
+ * $Id: ReportProperties.java,v 1.19 2003/04/09 15:55:13 mungady Exp $
  *
  * Changes
  * -------
@@ -224,7 +224,7 @@ public class ReportProperties implements Serializable, Cloneable
   {
     if (marked)
     {
-      this.markedProperties.add (property);
+      this.markedProperties.add(property);
     }
     else
     {

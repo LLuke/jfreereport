@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.16 2003/06/23 16:08:27 taqua Exp $
+ * $Id: TableProcessor.java,v 1.17 2003/06/26 19:55:57 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,7 @@ public abstract class TableProcessor
    * @throws ReportProcessingException if the report initialization failed
    * @throws FunctionInitializeException if the table writer initialization failed.
    */
-  public TableProcessor (JFreeReport report)
+  public TableProcessor(JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
     if (report == null)
@@ -240,7 +240,7 @@ public abstract class TableProcessor
         {
           if (state.isErrorOccured() == true)
           {
-            throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
+            throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
           }
         }
 
@@ -271,8 +271,7 @@ public abstract class TableProcessor
           throw new IllegalStateException("Repaginate did not produce an finish state");
         }
       }
-    }
-    while (hasNext == true);
+    } while (hasNext == true);
 
     // root of evilness here ... pagecount should not be handled specially ...
     // The pagecount should not be added as report property, there are functions to
@@ -300,7 +299,7 @@ public abstract class TableProcessor
    *
    * @throws ReportProcessingException if the report processing failed.
    */
-  public void processReport () throws ReportProcessingException
+  public void processReport() throws ReportProcessingException
   {
     try
     {
@@ -321,7 +320,7 @@ public abstract class TableProcessor
         state = state.advance();
         if (failOnError && state.isErrorOccured() == true)
         {
-          throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
+          throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
         }
         if (!state.isFinish())
         {
@@ -344,7 +343,7 @@ public abstract class TableProcessor
    * @param dummy true, if dummy mode is enabled, and no writing should be done, false otherwise.
    * @return the created table producer, never null.
    */
-  protected abstract TableProducer createProducer (boolean dummy);
+  protected abstract TableProducer createProducer(boolean dummy);
 
   /**
    * Defines a property for this output target. Properties are the standard way of configuring
@@ -427,7 +426,7 @@ public abstract class TableProcessor
    *
    * @return the internal properties storage.
    */
-  protected Properties getProperties ()
+  protected Properties getProperties()
   {
     return properties;
   }
@@ -438,13 +437,13 @@ public abstract class TableProcessor
    *
    * @return the report configuration prefix.
    */
-  protected abstract String getReportConfigurationPrefix ();
+  protected abstract String getReportConfigurationPrefix();
 
   /**
    * Copies all report configuration properties which match the configuration
    * prefix of this table processor into the property set of this processor.
    */
-  protected void configure ()
+  protected void configure()
   {
     ReportConfiguration rc = getReport().getReportConfiguration();
     Enumeration enum = rc.getConfigProperties();
@@ -453,7 +452,7 @@ public abstract class TableProcessor
     while (enum.hasMoreElements())
     {
       String key = (String) enum.nextElement();
-      if (key.startsWith(prefix)  == false)
+      if (key.startsWith(prefix) == false)
       {
         continue;
       }

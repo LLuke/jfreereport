@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PageSetupAction.java,v 1.17 2003/05/14 22:26:37 taqua Exp $
+ * $Id: PageSetupAction.java,v 1.18 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes
  * -------
@@ -63,13 +63,13 @@ public abstract class PageSetupAction extends AbstractActionDowngrade implements
    *
    * @param resources  localised resources.
    */
-  protected PageSetupAction (ResourceBundle resources)
+  protected PageSetupAction(ResourceBundle resources)
   {
-    this.putValue (NAME, resources.getString ("action.page-setup.name"));
-    this.putValue (SHORT_DESCRIPTION, resources.getString ("action.page-setup.description"));
-    this.putValue (ActionDowngrade.MNEMONIC_KEY,
-                   resources.getObject ("action.page-setup.mnemonic"));
-    this.putValue (SMALL_ICON, resources.getObject ("action.page-setup.small-icon"));
-    this.putValue ("ICON24", resources.getObject ("action.page-setup.icon"));
+    this.putValue(NAME, resources.getString("action.page-setup.name"));
+    this.putValue(SHORT_DESCRIPTION, resources.getString("action.page-setup.description"));
+    this.putValue(ActionDowngrade.MNEMONIC_KEY,
+        resources.getObject("action.page-setup.mnemonic"));
+    this.putValue(SMALL_ICON, resources.getObject("action.page-setup.small-icon"));
+    this.putValue("ICON24", resources.getObject("action.page-setup.icon"));
   }
 }

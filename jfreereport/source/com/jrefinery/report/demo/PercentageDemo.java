@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.6 2003/06/12 23:17:13 taqua Exp $
+ * $Id: PercentageDemo.java,v 1.7 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -116,10 +116,10 @@ public class PercentageDemo extends AbstractDemoFrame
   {
     JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-    
+
     String d = "In this demo, the TableModel contains two columns A and B. The generated "
-             + "report displays the values in these columns, plus a third value (A/B) "
-             + "formatted as a percentage.";
+        + "report displays the values in these columns, plus a third value (A/B) "
+        + "formatted as a percentage.";
     JTextArea textArea = new JTextArea(d);
     textArea.setLineWrap(true);
     textArea.setWrapStyleWord(true);
@@ -129,7 +129,7 @@ public class PercentageDemo extends AbstractDemoFrame
     this.data = createData();
     JTable table = new JTable(data);
     JScrollPane scrollPane = new JScrollPane(table);
-    
+
     JButton previewButton = new ActionButton(getPreviewAction());
 
     content.add(scroll, BorderLayout.NORTH);
@@ -149,7 +149,7 @@ public class PercentageDemo extends AbstractDemoFrame
     {
       JOptionPane.showMessageDialog(this,
           MessageFormat.format(getResources().getString("report.definitionnotfound"),
-                               new Object[]{in}),
+              new Object[]{in}),
           getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
@@ -206,22 +206,22 @@ public class PercentageDemo extends AbstractDemoFrame
 
   /**
    * Creates a sample dataset. <!-- (Used in JUnitTest) -->
-   * 
+   *
    * @return A <code>TableModel</code>.
    */
   public static TableModel createData()
   {
-      DefaultTableModel data = new DefaultTableModel();
-      data.addColumn("A");
-      data.addColumn("B");
-      data.addRow(new Object[] { new Double(43.0), new Double(127.5) });    
-      data.addRow(new Object[] { new Double(57.0), new Double(108.5) });    
-      data.addRow(new Object[] { new Double(35.0), new Double(164.8) });    
-      data.addRow(new Object[] { new Double(86.0), new Double(164.0) });    
-      data.addRow(new Object[] { new Double(12.0), new Double(103.2) });    
-      return data;
+    DefaultTableModel data = new DefaultTableModel();
+    data.addColumn("A");
+    data.addColumn("B");
+    data.addRow(new Object[]{new Double(43.0), new Double(127.5)});
+    data.addRow(new Object[]{new Double(57.0), new Double(108.5)});
+    data.addRow(new Object[]{new Double(35.0), new Double(164.8)});
+    data.addRow(new Object[]{new Double(86.0), new Double(164.0)});
+    data.addRow(new Object[]{new Double(12.0), new Double(103.2)});
+    return data;
   }
-  
+
   /**
    * Entry point for running the demo application...
    *

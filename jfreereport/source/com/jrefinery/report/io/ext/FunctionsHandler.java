@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.13 2003/06/10 17:13:55 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.14 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ import org.xml.sax.SAXException;
 
 /**
  * A functions handler. Handles the initialization of Functions, Expressions
- * and Property-References. 
+ * and Property-References.
  *
  * @author Thomas Morgner.
  */
@@ -107,7 +107,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
-    throws SAXException
+      throws SAXException
   {
     if (tagName.equals(EXPRESSION_TAG))
     {
@@ -170,18 +170,18 @@ public class FunctionsHandler implements ElementDefinitionHandler
       }
       else
       {
-        propertyRefHandler  = new CompoundObjectHandler(getParser(), tagName, od);
+        propertyRefHandler = new CompoundObjectHandler(getParser(), tagName, od);
       }
       getParser().pushFactory(propertyRefHandler);
 
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + EXPRESSION_TAG + ", "
-                              + FUNCTION_TAG + ", "
-                              + PROPERTY_REF_TAG + ", "
-                              + finishTag);
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + EXPRESSION_TAG + ", "
+          + FUNCTION_TAG + ", "
+          + PROPERTY_REF_TAG + ", "
+          + finishTag);
     }
   }
 
@@ -194,8 +194,8 @@ public class FunctionsHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  private ObjectDescription loadObjectDescription (String className)
-    throws SAXException
+  private ObjectDescription loadObjectDescription(String className)
+      throws SAXException
   {
     try
     {
@@ -226,31 +226,31 @@ public class FunctionsHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  private Expression loadExpression (String className, String expName, int depLevel)
-    throws SAXException
+  private Expression loadExpression(String className, String expName, int depLevel)
+      throws SAXException
   {
     try
     {
       Class fnC = getClass().getClassLoader().loadClass(className);
-      Expression retVal = (Expression) fnC.newInstance ();
-      retVal.setName (expName);
+      Expression retVal = (Expression) fnC.newInstance();
+      retVal.setName(expName);
       retVal.setDependencyLevel(depLevel);
       return retVal;
     }
     catch (ClassNotFoundException e)
     {
-      throw new ParseException ("Expression " + expName + " class=" + className
-                            + " is not valid. " , e, getParser().getLocator());
+      throw new ParseException("Expression " + expName + " class=" + className
+          + " is not valid. ", e, getParser().getLocator());
     }
     catch (IllegalAccessException e)
     {
-      throw new ParseException ("Expression " + expName + " class=" + className
-                            + " is not valid. " , e, getParser().getLocator());
+      throw new ParseException("Expression " + expName + " class=" + className
+          + " is not valid. ", e, getParser().getLocator());
     }
     catch (InstantiationException e)
     {
-      throw new ParseException ("Expression " + expName + " class=" + className
-                            + " is not valid. " , e, getParser().getLocator());
+      throw new ParseException("Expression " + expName + " class=" + className
+          + " is not valid. ", e, getParser().getLocator());
     }
   }
 
@@ -261,7 +261,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
   {
     // ignore ..
   }
@@ -274,7 +274,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName)
-    throws SAXException
+      throws SAXException
   {
     if (tagName.equals(EXPRESSION_TAG))
     {
@@ -286,7 +286,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
       catch (FunctionInitializeException fe)
       {
         expressionHandler = null;
-        throw new ParseException("Unable to initialize function." , fe, getParser().getLocator());
+        throw new ParseException("Unable to initialize function.", fe, getParser().getLocator());
       }
     }
     else if (tagName.equals(FUNCTION_TAG))
@@ -299,7 +299,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
       catch (FunctionInitializeException fe)
       {
         expressionHandler = null;
-        throw new ParseException("Unable to initialize function." , fe, getParser().getLocator());
+        throw new ParseException("Unable to initialize function.", fe, getParser().getLocator());
       }
     }
     else if (tagName.equals(PROPERTY_REF_TAG))
@@ -317,11 +317,11 @@ public class FunctionsHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + EXPRESSION_TAG + ", "
-                              + FUNCTION_TAG + ", "
-                              + PROPERTY_REF_TAG + ", "
-                              + finishTag);
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + EXPRESSION_TAG + ", "
+          + FUNCTION_TAG + ", "
+          + PROPERTY_REF_TAG + ", "
+          + finishTag);
     }
   }
 
@@ -340,7 +340,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
    *
    * @return The report.
    */
-  private JFreeReport getReport ()
+  private JFreeReport getReport()
   {
     return (JFreeReport) getParser().getHelperObject(
         InitialReportHandler.REPORT_DEFINITION_TAG);

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlTextCellData.java,v 1.8 2003/05/11 13:39:20 taqua Exp $
+ * $Id: HtmlTextCellData.java,v 1.9 2003/06/12 19:50:11 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import com.jrefinery.report.util.LineBreakIterator;
 
 /**
  * A wrapper for text content within the generated HtmlTable.
- * 
+ *
  * @author Thomas Morgner
  */
 public class HtmlTextCellData extends HtmlCellData
@@ -59,11 +59,11 @@ public class HtmlTextCellData extends HtmlCellData
    * @param style the style definition for the cell.
    * @param useXHTML a flag indicating whether to use XHTML.
    */
-  public HtmlTextCellData(Rectangle2D outerBounds, String value, HtmlCellStyle style, 
+  public HtmlTextCellData(Rectangle2D outerBounds, String value, HtmlCellStyle style,
                           boolean useXHTML)
   {
     super(outerBounds, style, useXHTML);
-    if (value == null) 
+    if (value == null)
     {
       throw new NullPointerException();
     }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: NumericExcelCellData.java,v 1.8 2003/02/26 16:42:25 mungady Exp $
+ * $Id: NumericExcelCellData.java,v 1.9 2003/05/09 17:12:13 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@ import java.awt.geom.Rectangle2D;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 
 /**
- * A excel cell that stores a number. 
- * 
+ * A excel cell that stores a number.
+ *
  * @author Heiko Evermann
  */
 public class NumericExcelCellData extends ExcelCellData

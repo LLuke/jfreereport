@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionHandler.java,v 1.6 2003/04/23 13:39:20 taqua Exp $
+ * $Id: ExpressionHandler.java,v 1.7 2003/04/24 18:08:49 taqua Exp $
  *
  * Changes
  * -------
@@ -113,7 +113,7 @@ public class ExpressionHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char ch[], int start, int length) throws SAXException
+  public void characters(char[] ch, int start, int length) throws SAXException
   {
     // ignore ...
   }

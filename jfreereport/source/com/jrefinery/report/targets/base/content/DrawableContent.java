@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContent.java,v 1.11 2003/03/20 18:28:34 taqua Exp $
+ * $Id: DrawableContent.java,v 1.4 2003/04/09 15:50:23 mungady Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import com.jrefinery.report.DrawableContainer;
 /**
  * A simple wrapper around the DrawableContainer. The ContentImplementation
  * is able to adjust the Clipping Bounds of the DrawableContainer.
- * 
+ *
  * @author Thomas Morgner
  */
 public class DrawableContent implements Content
@@ -64,13 +64,13 @@ public class DrawableContent implements Content
 
   /**
    * Creates a new instance.
-   * 
+   *
    * @param drawable  the drawable object.
    * @param contentOrigin  the origin.
    */
   public DrawableContent(DrawableContainer drawable, Point2D contentOrigin)
   {
-    if (drawable == null) 
+    if (drawable == null)
     {
       throw new NullPointerException();
     }
@@ -99,9 +99,9 @@ public class DrawableContent implements Content
   {
     Rectangle2D clippBounds = drawable.getClippingBounds();
     return new Rectangle2D.Float((float) contentOrigin.getX(),
-                                 (float) contentOrigin.getY(),
-                                 (float) clippBounds.getWidth(),
-                                 (float) clippBounds.getHeight());
+        (float) contentOrigin.getY(),
+        (float) clippBounds.getWidth(),
+        (float) clippBounds.getHeight());
   }
 
   /**
@@ -134,16 +134,16 @@ public class DrawableContent implements Content
       return null;
     }
     Rectangle2D newBounds = bounds.createIntersection(myBounds);
-    Rectangle2D clipBounds 
+    Rectangle2D clipBounds
         = new Rectangle2D.Float((float) (newBounds.getX() - contentOrigin.getX()),
-                                (float) (newBounds.getY() - contentOrigin.getY()),
-                                (float) newBounds.getWidth(),
-                                (float) newBounds.getHeight());
+            (float) (newBounds.getY() - contentOrigin.getY()),
+            (float) newBounds.getWidth(),
+            (float) newBounds.getHeight());
     DrawableContainer newContainer = new DrawableContainer(drawable,
-                                                           clipBounds);
+        clipBounds);
 
     return new DrawableContent(newContainer, new Point2D.Float((float) newBounds.getX(),
-                                                               (float) newBounds.getY()));
+        (float) newBounds.getY()));
   }
 
   /**
@@ -173,7 +173,7 @@ public class DrawableContent implements Content
 
   /**
    * Returns the content.
-   * 
+   *
    * @return The content.
    */
   public DrawableContainer getContent()

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -45,7 +45,7 @@
  * Expression.java
  * ---------------
  *
- * $Id: Expression.java,v 1.16 2003/02/26 13:57:57 mungady Exp $
+ * $Id: Expression.java,v 1.17 2003/05/23 20:12:15 taqua Exp $
  *
  * ChangeLog
  * ------------
@@ -164,9 +164,9 @@ public interface Expression extends Cloneable
   public Object clone() throws CloneNotSupportedException;
 
   /**
-   * The dependency level defines the level of execution for this function. Higher dependency 
-   * functions are executed before lower dependency functions. For ordinary functions and 
-   * expressions, the range for dependencies is defined to start from 0 (lowest dependency 
+   * The dependency level defines the level of execution for this function. Higher dependency
+   * functions are executed before lower dependency functions. For ordinary functions and
+   * expressions, the range for dependencies is defined to start from 0 (lowest dependency
    * possible) to 2^31 (upper limit of int).
    * <p>
    * Levels below 0 are reserved for system-functionality (printing and layouting).
@@ -189,5 +189,5 @@ public interface Expression extends Cloneable
    *
    * @return a copy of this function.
    */
-  public Expression getInstance ();
+  public Expression getInstance();
 }

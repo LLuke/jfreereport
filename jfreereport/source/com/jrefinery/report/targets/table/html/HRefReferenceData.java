@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HRefReferenceData.java,v 1.4 2003/02/25 15:42:38 taqua Exp $
+ * $Id: HRefReferenceData.java,v 1.5 2003/02/26 16:42:26 mungady Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,7 @@ package com.jrefinery.report.targets.table.html;
 /**
  * Denotes a untagged href-reference. This reference is used to address external
  * stylesheet definitions.
- * 
+ *
  * @author Thomas Morgner
  */
 public class HRefReferenceData extends HtmlReferenceData
@@ -55,7 +55,7 @@ public class HRefReferenceData extends HtmlReferenceData
   public HRefReferenceData(String reference)
   {
     super(true);
-    if (reference == null) 
+    if (reference == null)
     {
       throw new NullPointerException();
     }

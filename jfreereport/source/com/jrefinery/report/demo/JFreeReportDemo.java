@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.66 2003/06/12 23:17:13 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.67 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -79,7 +79,6 @@ import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.util.ActionMenuItem;
-import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.Log;
 import org.jfree.ui.RefineryUtilities;
@@ -103,10 +102,10 @@ public class JFreeReportDemo extends AbstractDemoFrame
   {
     /**
      * Launches a preview of the report demo.
-     * 
+     *
      * @param def  the demo definition.
      */
-    public abstract void performPreview (DemoDefinition def);
+    public abstract void performPreview(DemoDefinition def);
   }
 
   /**
@@ -119,7 +118,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
 
     /**
      * Creates a new handler.
-     * 
+     *
      * @param definitionURL  the URL for the report definition.
      */
     public URLDemoHandler(String definitionURL)
@@ -129,7 +128,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
 
     /**
      * Performs the preview.
-     * 
+     *
      * @param def  the demo definition.
      */
     public void performPreview(DemoDefinition def)
@@ -145,16 +144,16 @@ public class JFreeReportDemo extends AbstractDemoFrame
   {
     /** The demo name. */
     private String name;
-    
+
     /** The data for the demo. */
     private TableModel data;
-    
+
     /** The demo handler. */
     private DemoHandler handler;
 
     /**
      * Creates a new demo definition.
-     * 
+     *
      * @param name  the demo name.
      * @param data  the data.
      * @param handler  the demo handler.
@@ -181,7 +180,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
 
     /**
      * Returns the name of the demo.
-     * 
+     *
      * @return The name.
      */
     public String getName()
@@ -191,7 +190,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
 
     /**
      * Returns the data for the demo.
-     * 
+     *
      * @return The data.
      */
     public TableModel getData()
@@ -201,7 +200,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
 
     /**
      * Returns the demo handler.
-     * 
+     *
      * @return The demo handler.
      */
     public DemoHandler getHandler()
@@ -270,9 +269,9 @@ public class JFreeReportDemo extends AbstractDemoFrame
     tabbedPane.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
     for (int i = 0; i < availableDemos.size(); i++)
     {
-      DemoDefinition dd = (DemoDefinition) availableDemos.get (i);
+      DemoDefinition dd = (DemoDefinition) availableDemos.get(i);
       tabbedPane.addTab(dd.getName(),
-            RefineryUtilities.createTablePanel (dd.getData()));
+          RefineryUtilities.createTablePanel(dd.getData()));
     }
 
     content.add(tabbedPane);
@@ -281,18 +280,18 @@ public class JFreeReportDemo extends AbstractDemoFrame
     buttons.setLayout(new GridLayout());
 
     ActionButton helpButton = new ActionButton();
-    helpButton.setAction (aboutAction);
-    FloatingButtonEnabler.getInstance ().addButton (helpButton);
+    helpButton.setAction(aboutAction);
+    FloatingButtonEnabler.getInstance().addButton(helpButton);
     buttons.add(helpButton);
 
-    ActionButton previewButton = new ActionButton ();
-    previewButton.setAction (getPreviewAction());
-    FloatingButtonEnabler.getInstance ().addButton (previewButton);
+    ActionButton previewButton = new ActionButton();
+    previewButton.setAction(getPreviewAction());
+    FloatingButtonEnabler.getInstance().addButton(previewButton);
     buttons.add(previewButton);
 
     ActionButton closeButton = new ActionButton();
-    closeButton.setAction (getCloseAction());
-    FloatingButtonEnabler.getInstance ().addButton (closeButton);
+    closeButton.setAction(getCloseAction());
+    FloatingButtonEnabler.getInstance().addButton(closeButton);
     buttons.add(closeButton);
 
     buttons.setBorder(BorderFactory.createEmptyBorder(0, 4, 4, 4));
@@ -302,10 +301,10 @@ public class JFreeReportDemo extends AbstractDemoFrame
 
   /**
    * Creates a list of the available demos.
-   * 
+   *
    * @return The list.
    */
-  protected List createAvailableDemos ()
+  protected List createAvailableDemos()
   {
     // create a couple of sample data sets
     TableModel data1 = new SampleData1();
@@ -314,56 +313,58 @@ public class JFreeReportDemo extends AbstractDemoFrame
     TableModel data4 = new SampleData4();
 
     ArrayList list = new ArrayList();
-    list.add (new DemoDefinition(createExampleName(1), data1, 
-              new URLDemoHandler("/com/jrefinery/report/demo/report1.xml")));
-              
-    list.add (new DemoDefinition(createExampleName(2), data2, 
-              new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
-              
-    list.add (new DemoDefinition(createExampleName(3), data3, 
-              new URLDemoHandler("/com/jrefinery/report/demo/report3.xml")));
-              
-    list.add (new DemoDefinition(createExampleName(4), data4, 
-              new URLDemoHandler("/com/jrefinery/report/demo/report4.xml")));
-              
-    list.add (new DemoDefinition("Report created by API", data1, new DemoHandler(){
+    list.add(new DemoDefinition(createExampleName(1), data1,
+        new URLDemoHandler("/com/jrefinery/report/demo/report1.xml")));
+
+    list.add(new DemoDefinition(createExampleName(2), data2,
+        new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
+
+    list.add(new DemoDefinition(createExampleName(3), data3,
+        new URLDemoHandler("/com/jrefinery/report/demo/report3.xml")));
+
+    list.add(new DemoDefinition(createExampleName(4), data4,
+        new URLDemoHandler("/com/jrefinery/report/demo/report4.xml")));
+
+    list.add(new DemoDefinition("Report created by API", data1, new DemoHandler()
+    {
       public void performPreview(DemoDefinition def)
       {
         previewAPIReport(def.getData());
       }
     }));
-    
-    list.add (new DemoDefinition("Example 1 - using Extended Report Definition format", data1, 
-              new URLDemoHandler("/com/jrefinery/report/demo/report1a.xml")));
-              
-    list.add (new DemoDefinition("Example 2 - with Image-Function", data2, 
-              new URLDemoHandler("/com/jrefinery/report/demo/report2a.xml")));
-              
-    list.add (new DemoDefinition("ItemHideFunction-Demo", data2, 
-              new URLDemoHandler("/com/jrefinery/report/demo/report2b.xml")));
-              
-    list.add (new DemoDefinition("Dynamic-Demo", data2, 
-              new URLDemoHandler("/com/jrefinery/report/demo/report2c.xml")));
-              
-    list.add (new DemoDefinition("Band in Band Stacking", data2, new DemoHandler() {
+
+    list.add(new DemoDefinition("Example 1 - using Extended Report Definition format", data1,
+        new URLDemoHandler("/com/jrefinery/report/demo/report1a.xml")));
+
+    list.add(new DemoDefinition("Example 2 - with Image-Function", data2,
+        new URLDemoHandler("/com/jrefinery/report/demo/report2a.xml")));
+
+    list.add(new DemoDefinition("ItemHideFunction-Demo", data2,
+        new URLDemoHandler("/com/jrefinery/report/demo/report2b.xml")));
+
+    list.add(new DemoDefinition("Dynamic-Demo", data2,
+        new URLDemoHandler("/com/jrefinery/report/demo/report2c.xml")));
+
+    list.add(new DemoDefinition("Band in Band Stacking", data2, new DemoHandler()
+    {
       public void performPreview(DemoDefinition def)
       {
         previewBandInBandStacking();
       }
     }));
-    
-    list.add (new DemoDefinition("Shape and Drawable", new DefaultTableModel(), 
-              new URLDemoHandler("/com/jrefinery/report/demo/shape-and-drawable.xml")));
-              
-    list.add (new DemoDefinition("Example 2 - table with cell borders", data2, 
-              new URLDemoHandler("/com/jrefinery/report/demo/report2d.xml")));
-              
+
+    list.add(new DemoDefinition("Shape and Drawable", new DefaultTableModel(),
+        new URLDemoHandler("/com/jrefinery/report/demo/shape-and-drawable.xml")));
+
+    list.add(new DemoDefinition("Example 2 - table with cell borders", data2,
+        new URLDemoHandler("/com/jrefinery/report/demo/report2d.xml")));
+
     return list;
   }
 
   /**
    * Returns a list of the available demos.
-   * 
+   *
    * @return The list.
    */
   public List getAvailableDemos()
@@ -381,7 +382,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
   protected String createExampleName(int ex)
   {
     return MessageFormat.format(getResources().getString("example"),
-                                new Object[]{new Integer(ex)});
+        new Object[]{new Integer(ex)});
   }
 
   /**
@@ -397,7 +398,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
 
   /**
    * Preview a report created by using the API.
-   * 
+   *
    * @param data  the data for the report.
    */
   private void previewAPIReport(TableModel data)
@@ -459,12 +460,12 @@ public class JFreeReportDemo extends AbstractDemoFrame
     {
       JOptionPane.showMessageDialog(this,
           MessageFormat.format(getResources().getString("report.definitionnotfound"),
-                               new Object[]{urlname}),
+              new Object[]{urlname}),
           getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
       return;
     }
 
-    Log.debug ("Processing Report: " + in);
+    Log.debug("Processing Report: " + in);
     ReportGenerator gen = ReportGenerator.getInstance();
 
     try
@@ -474,7 +475,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
       {
         JOptionPane.showMessageDialog(this,
             MessageFormat.format(getResources().getString("report.definitionnull"),
-                                 new Object[]{urlname}),
+                new Object[]{urlname}),
             getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
         return;
       }
@@ -512,7 +513,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
     if (aboutFrame == null)
     {
       aboutFrame = new AboutFrame(getResources().getString("action.about.name"),
-                                  JFreeReport.getInfo());
+          JFreeReport.getInfo());
 
       aboutFrame.pack();
       RefineryUtilities.centerFrameOnScreen(aboutFrame);
@@ -544,7 +545,8 @@ public class JFreeReportDemo extends AbstractDemoFrame
     JMenu fileMenu = createJMenuItem("menu.file");
 
     JMenuItem printItem = new ActionMenuItem(getPreviewAction());
-    KeyStroke accelerator = (KeyStroke) getPreviewAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
+    KeyStroke accelerator = (KeyStroke)
+        getPreviewAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
     {
       printItem.setAccelerator(accelerator);
@@ -579,7 +581,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
    */
   protected JButton createButton(Action action)
   {
-    ActionButton button = new ActionButton (action);
+    ActionButton button = new ActionButton(action);
     button.setMargin(new Insets(0, 0, 0, 0));
     button.setText(null);
     FloatingButtonEnabler.getInstance().addButton(button);

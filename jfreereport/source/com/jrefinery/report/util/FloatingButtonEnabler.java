@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FloatingButtonEnabler.java,v 1.10 2003/05/02 12:40:46 taqua Exp $
+ * $Id: FloatingButtonEnabler.java,v 1.11 2003/05/14 22:26:40 taqua Exp $
  *
  */
 package com.jrefinery.report.util;
@@ -51,7 +51,7 @@ public class FloatingButtonEnabler extends MouseAdapter
   /**
    * Default constructor.
    */
-  private FloatingButtonEnabler ()
+  private FloatingButtonEnabler()
   {
   }
 
@@ -60,11 +60,11 @@ public class FloatingButtonEnabler extends MouseAdapter
    *
    * @return a shared instance of this class.
    */
-  public static FloatingButtonEnabler getInstance ()
+  public static FloatingButtonEnabler getInstance()
   {
     if (singleton == null)
     {
-      singleton = new FloatingButtonEnabler ();
+      singleton = new FloatingButtonEnabler();
     }
     return singleton;
   }
@@ -74,10 +74,10 @@ public class FloatingButtonEnabler extends MouseAdapter
    *
    * @param button  the button.
    */
-  public void addButton (AbstractButton button)
+  public void addButton(AbstractButton button)
   {
-    button.addMouseListener (this);
-    button.setBorderPainted (false);
+    button.addMouseListener(this);
+    button.setBorderPainted(false);
   }
 
   /**
@@ -85,10 +85,10 @@ public class FloatingButtonEnabler extends MouseAdapter
    *
    * @param button  the button.
    */
-  public void removeButton (AbstractButton button)
+  public void removeButton(AbstractButton button)
   {
-    button.addMouseListener (this);
-    button.setBorderPainted (true);
+    button.addMouseListener(this);
+    button.setBorderPainted(true);
   }
 
   /**
@@ -96,14 +96,14 @@ public class FloatingButtonEnabler extends MouseAdapter
    *
    * @param e  the mouse event.
    */
-  public void mouseEntered (MouseEvent e)
+  public void mouseEntered(MouseEvent e)
   {
-    if (e.getSource () instanceof AbstractButton)
+    if (e.getSource() instanceof AbstractButton)
     {
-      AbstractButton button = (AbstractButton) e.getSource ();
-      if (button.isEnabled ())
+      AbstractButton button = (AbstractButton) e.getSource();
+      if (button.isEnabled())
       {
-        button.setBorderPainted (true);
+        button.setBorderPainted(true);
       }
     }
   }
@@ -113,12 +113,12 @@ public class FloatingButtonEnabler extends MouseAdapter
    *
    * @param e  the mouse event.
    */
-  public void mouseExited (MouseEvent e)
+  public void mouseExited(MouseEvent e)
   {
-    if (e.getSource () instanceof AbstractButton)
+    if (e.getSource() instanceof AbstractButton)
     {
-      AbstractButton button = (AbstractButton) e.getSource ();
-      button.setBorderPainted (false);
+      AbstractButton button = (AbstractButton) e.getSource();
+      button.setBorderPainted(false);
     }
   }
 

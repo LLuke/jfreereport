@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LeftAlignment.java,v 1.11 2003/04/05 18:57:18 taqua Exp $
+ * $Id: LeftAlignment.java,v 1.12 2003/05/11 13:39:18 taqua Exp $
  *
  * Changes
  * -------
@@ -74,8 +74,8 @@ public class LeftAlignment extends HorizontalBoundsAlignment
     inner = getReferenceBounds().createIntersection(inner);
     float x = (float) getReferenceBounds().getX();
     float y = (float) inner.getY();
-    float w = (float) Math.min (inner.getWidth(), getReferenceBounds().getWidth());
-    float h = (float) Math.min (inner.getHeight(), getReferenceBounds().getHeight());
+    float w = (float) Math.min(inner.getWidth(), getReferenceBounds().getWidth());
+    float h = (float) Math.min(inner.getHeight(), getReferenceBounds().getHeight());
 
     inner.setRect(x, y, w, h);
     return inner;

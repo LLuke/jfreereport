@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.12 2003/06/10 16:07:50 taqua Exp $
+ * $Id: StylesHandler.java,v 1.13 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -84,11 +84,11 @@ public class StylesHandler implements ElementDefinitionHandler
    */
   public StylesHandler(Parser parser, String finishTag)
   {
-    if (parser == null) 
+    if (parser == null)
     {
       throw new NullPointerException("Parser is null");
     }
-    if (finishTag == null) 
+    if (finishTag == null)
     {
       throw new NullPointerException("FinishTag is null");
     }
@@ -121,7 +121,7 @@ public class StylesHandler implements ElementDefinitionHandler
       styleSheet = new ElementStyleSheet(name);
 
       StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getParser(),
-                                                                  STYLE_TAG, styleSheet);
+          STYLE_TAG, styleSheet);
       getParser().pushFactory(styleSheetFactory);
     }
     else
@@ -139,7 +139,7 @@ public class StylesHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char ch[], int start, int length) throws SAXException
+  public void characters(char[] ch, int start, int length) throws SAXException
   {
     // no such events ...
   }
@@ -155,7 +155,7 @@ public class StylesHandler implements ElementDefinitionHandler
   {
     if (tagName.equals(STYLE_TAG))
     {
-      styleCollection.put (styleSheet.getName(), styleSheet);
+      styleCollection.put(styleSheet.getName(), styleSheet);
     }
     else if (tagName.equals(finishTag))
     {
@@ -164,7 +164,7 @@ public class StylesHandler implements ElementDefinitionHandler
     else
     {
       throw new SAXException("Expected '" + STYLE_TAG + "' or "
-                             + finishTag + "', found : " + tagName);
+          + finishTag + "', found : " + tagName);
     }
   }
 

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,13 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriterCursor.java,v 1.3 2003/02/24 15:02:20 mungady Exp $
+ * $Id: TableWriterCursor.java,v 1.4 2003/02/25 15:42:33 taqua Exp $
  *
  * Changes
  * -------
  * 14-Jan-2003 : Initial version
  * 17-Feb-2003 : Documentation
- * 
+ *
  */
 package com.jrefinery.report.targets.table;
 
@@ -42,7 +42,7 @@ package com.jrefinery.report.targets.table;
  * A utility class for keeping track of the current output position on a table sheet.  Only the
  * vertical location is tracked, it begins at zero (the top of the page) and increases as the
  * cursor moves down the page.
- * 
+ *
  * @author Thomas Morgner
  */
 public class TableWriterCursor
@@ -61,11 +61,11 @@ public class TableWriterCursor
    * Adds the specified amount to the y-coordinate.
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advance (float amount)
+  public void advance(float amount)
   {
     if (amount < 0)
     {
-      throw new IllegalArgumentException ("Cannot advance negative");
+      throw new IllegalArgumentException("Cannot advance negative");
     }
     y += amount;
   }
@@ -77,11 +77,11 @@ public class TableWriterCursor
    *
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advanceTo (float amount)
+  public void advanceTo(float amount)
   {
     if (amount < y)
     {
-      throw new IllegalArgumentException ("Cannot advance negative");
+      throw new IllegalArgumentException("Cannot advance negative");
     }
     y = amount;
   }
@@ -91,7 +91,7 @@ public class TableWriterCursor
    *
    * @return the current y-position of this cursor.
    */
-  public float getY ()
+  public float getY()
   {
     return y;
   }

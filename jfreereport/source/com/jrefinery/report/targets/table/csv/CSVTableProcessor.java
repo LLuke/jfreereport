@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,13 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.9 2003/05/02 12:40:38 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.10 2003/05/11 13:39:18 taqua Exp $
  *
  * Changes
  * -------
  * 21-Jan-2003 : Initial version;
  * 24-Feb-2003 : Fixed Checkstyle issues (DG);
- * 
+ *
  */
 
 package com.jrefinery.report.targets.table.csv;
@@ -62,9 +62,9 @@ import com.jrefinery.report.util.NullOutputStream;
  * create tab-separated files.
  *
  * @see CSVProcessor
- * 
+ *
  * @author Thomas Morgner
- * 
+ *
  */
 public class CSVTableProcessor extends TableProcessor
 {
@@ -81,13 +81,13 @@ public class CSVTableProcessor extends TableProcessor
   public static final String SEPARATOR_DEFAULT = ",";
 
   /**
-   * Creates a new CSV table processor for the given report. 
+   * Creates a new CSV table processor for the given report.
    * <p>
-   * The default separator is a comma (","), but this can be overridden in the 
+   * The default separator is a comma (","), but this can be overridden in the
    * report configuration (key: <code>com.jrefinery.report.targets.csv.separator</code>).
    *
    * @param report  the report to process.
-   * 
+   *
    * @throws ReportProcessingException if the report initialization failed
    * @throws FunctionInitializeException if the table writer initialization failed.
    */
@@ -99,10 +99,10 @@ public class CSVTableProcessor extends TableProcessor
     // on fail: query for the old separator property
     // on fail: set ","
     this(report,
-         report.getReportConfiguration().getConfigProperty(
-             CONFIGURATION_PREFIX + SEPARATOR_KEY,
-             report.getReportConfiguration().getConfigProperty(
-                 CSVProcessor.CSV_SEPARATOR, ",")));
+        report.getReportConfiguration().getConfigProperty(
+            CONFIGURATION_PREFIX + SEPARATOR_KEY,
+            report.getReportConfiguration().getConfigProperty(
+                CSVProcessor.CSV_SEPARATOR, ",")));
   }
 
   /**
@@ -111,16 +111,16 @@ public class CSVTableProcessor extends TableProcessor
    *
    * @param report  the report to process.
    * @param separator  the value separator (<code>null</code> not permitted).
-   * 
+   *
    * @throws ReportProcessingException if the report initialization failed
    * @throws FunctionInitializeException if the table writer initialization failed.
    * @throws NullPointerException if the given separator is <code>null</code>.
    */
-  public CSVTableProcessor(JFreeReport report, String separator) 
+  public CSVTableProcessor(JFreeReport report, String separator)
       throws ReportProcessingException, FunctionInitializeException
   {
     super(report);
-    if (separator == null) 
+    if (separator == null)
     {
       throw new NullPointerException("Separator is null");
     }
@@ -141,12 +141,12 @@ public class CSVTableProcessor extends TableProcessor
    * Defines the separator string for the generated output.
    *
    * @param separator the defined separator for the output (<code>null</code> not permitted).
-   * 
+   *
    * @throws NullPointerException if the given separator is <code>null</code>.
    */
   public void setSeparator(String separator)
   {
-    if (separator == null) 
+    if (separator == null)
     {
       throw new NullPointerException("Separator is null");
     }
@@ -177,7 +177,7 @@ public class CSVTableProcessor extends TableProcessor
    * Creates the CSVTableProducer. The TableProducer is responsible to create the table.
    *
    * @param dummy true, if dummy mode is enabled, and no writing should be done, false otherwise.
-   * 
+   *
    * @return the created table producer, never null.
    */
   public TableProducer createProducer(boolean dummy)
@@ -185,8 +185,8 @@ public class CSVTableProcessor extends TableProcessor
     CSVTableProducer prod;
     if (dummy)
     {
-      prod = new CSVTableProducer(new PrintWriter(new NullOutputStream()), 
-                                  isStrictLayout());
+      prod = new CSVTableProducer(new PrintWriter(new NullOutputStream()),
+          isStrictLayout());
     }
     else
     {

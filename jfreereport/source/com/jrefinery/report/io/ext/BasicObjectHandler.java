@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicObjectHandler.java,v 1.13 2003/06/10 16:07:49 taqua Exp $
+ * $Id: BasicObjectHandler.java,v 1.14 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,7 @@ public class BasicObjectHandler implements ElementDefinitionHandler
    * @throws SAXException  if a parser error occurs.
    */
   public BasicObjectHandler(Parser parser, String finishTag, Class targetObject)
-    throws SAXException
+      throws SAXException
   {
     this.entityParser = CharacterEntityParser.createXMLEntityParser();
     this.parser = parser;
@@ -143,9 +143,9 @@ public class BasicObjectHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if an parser error occurs.
    */
-  public void characters(char ch[], int start, int length) throws SAXException
+  public void characters(char[] ch, int start, int length) throws SAXException
   {
-    buffer.append(ch, start,  length);
+    buffer.append(ch, start, length);
   }
 
   /**
@@ -181,7 +181,7 @@ public class BasicObjectHandler implements ElementDefinitionHandler
    *
    * @return The object.
    */
-  public Object getValue ()
+  public Object getValue()
   {
     return getTargetObjectDescription().createObject();
   }
@@ -191,7 +191,7 @@ public class BasicObjectHandler implements ElementDefinitionHandler
    *
    * @return The object description.
    */
-  protected ObjectDescription getTargetObjectDescription ()
+  protected ObjectDescription getTargetObjectDescription()
   {
     return objectDescription;
   }

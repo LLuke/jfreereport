@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProcessor.java,v 1.12 2003/03/04 20:29:00 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.13 2003/05/11 13:39:19 taqua Exp $
  *
  * Changes
  * -------
@@ -64,14 +64,14 @@ import com.jrefinery.report.util.NullOutputStream;
  * at least UTF-8 and US-ASCII encoding.
  *
  * @see HtmlFilesystem
- * 
+ *
  * @author Thomas Morgner
  */
 public class HtmlProcessor extends TableProcessor
 {
   /** the filesystem implementation used for writing the generated content. */
   private HtmlFilesystem filesystem;
-  
+
   /** a flag indicating whether to generate XHTML output instead of HTML4 code. */
   private boolean useXHTML;
 
@@ -84,9 +84,9 @@ public class HtmlProcessor extends TableProcessor
    * @throws FunctionInitializeException if the table writer initialization failed.
    */
   public HtmlProcessor(JFreeReport report)
-    throws ReportProcessingException, FunctionInitializeException
+      throws ReportProcessingException, FunctionInitializeException
   {
-    this (report, false);
+    this(report, false);
   }
 
   /**
@@ -94,11 +94,11 @@ public class HtmlProcessor extends TableProcessor
    *
    * @param report  the report that should be processed.
    * @param useXHTML  true, if XML output should be generated, false for HTML4 compatible output.
-   * 
+   *
    * @throws ReportProcessingException if the report initialization failed
    * @throws FunctionInitializeException if the table writer initialization failed.
    */
-  public HtmlProcessor(JFreeReport report, boolean useXHTML) 
+  public HtmlProcessor(JFreeReport report, boolean useXHTML)
       throws ReportProcessingException, FunctionInitializeException
   {
     super(report);
@@ -159,13 +159,13 @@ public class HtmlProcessor extends TableProcessor
     if (dummy == true)
     {
       prod = new HtmlProducer(new StreamHtmlFilesystem(new NullOutputStream()),
-                              isStrictLayout(), useXHTML);
+          isStrictLayout(), useXHTML);
       prod.setDummy(true);
     }
     else
     {
       prod = new HtmlProducer(getFilesystem(),
-                              isStrictLayout(), useXHTML);
+          isStrictLayout(), useXHTML);
       prod.setDummy(false);
     }
 

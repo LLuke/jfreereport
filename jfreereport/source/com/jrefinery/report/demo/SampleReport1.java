@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.20 2003/05/02 12:39:38 taqua Exp $
+ * $Id: SampleReport1.java,v 1.21 2003/06/01 19:11:41 taqua Exp $
  *
  * Changes:
  * --------
@@ -104,7 +104,7 @@ public class SampleReport1
             "date1",
             new Rectangle2D.Float(0, 0, -100, 14),
             null,
-            ElementAlignment.RIGHT.getOldAlignment(), 
+            ElementAlignment.RIGHT.getOldAlignment(),
             ElementAlignment.MIDDLE.getOldAlignment(),
             null,
             "<null>",
@@ -145,8 +145,8 @@ public class SampleReport1
 
   /**
    * Creates a page footer.
-   * 
-   * @return The page footer. 
+   *
+   * @return The page footer.
    */
   private PageFooter createPageFooter()
   {
@@ -164,8 +164,7 @@ public class SampleReport1
         " 111111111 2222222222 333333333 4444444444444 5555 66666666 777 88888888888888 99999999 "
         + "10101011 "
     );
-    field3.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                       new Boolean(true));
+    field3.getStyle().setBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT, true);
     pageFooter.addElement(field3);
     return pageFooter;
   }

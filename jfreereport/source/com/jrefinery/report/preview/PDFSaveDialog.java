@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.33 2003/06/19 18:44:10 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.34 2003/06/26 19:55:56 taqua Exp $
  *
  * Changes
  * --------
@@ -89,7 +89,7 @@ import com.jrefinery.report.util.ReportConfiguration;
 
 /**
  * A dialog that is used to perform the printing of a report into a PDF file. It is primarily
- * used to edit the properties of the {@link PDFOutputTarget} before the target is used to print 
+ * used to edit the properties of the {@link PDFOutputTarget} before the target is used to print
  * the report.
  * <p>
  * The main method to call the dialog is PDFSaveDialog.savePDF(). Given a report and a pageformat,
@@ -98,7 +98,7 @@ import com.jrefinery.report.util.ReportConfiguration;
  *
  * @author Thomas Morgner
  */
-public class PDFSaveDialog extends JDialog 
+public class PDFSaveDialog extends JDialog
 {
   /** Useful constant. */
   private static final int CBMODEL_NOPRINTING = 0;
@@ -289,7 +289,7 @@ public class PDFSaveDialog extends JDialog
 
   /** A combo-box for selecting the encoding. */
   private JComboBox cbEncoding;
-  
+
   /** A model for the available encodings. */
   private EncodingComboBoxModel encodingModel;
 
@@ -567,9 +567,9 @@ public class PDFSaveDialog extends JDialog
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
-    buttonPanel.registerKeyboardAction(getActionConfirm(), 
-                                       KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
-                                       JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    buttonPanel.registerKeyboardAction(getActionConfirm(),
+        KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
@@ -585,10 +585,10 @@ public class PDFSaveDialog extends JDialog
 
   /**
    * Creates a panel for the security settings.
-   * 
+   *
    * @return The panel.
    */
-  private JPanel createSecurityPanel ()
+  private JPanel createSecurityPanel()
   {
     JPanel securityPanel = new JPanel();
     securityPanel.setLayout(new GridBagLayout());
@@ -835,10 +835,10 @@ public class PDFSaveDialog extends JDialog
 
   /**
    * Returns the selected encoding.
-   * 
+   *
    * @return The encoding.
    */
-  public String getEncoding ()
+  public String getEncoding()
   {
     if (cbEncoding.getSelectedIndex() == -1)
     {
@@ -852,10 +852,10 @@ public class PDFSaveDialog extends JDialog
 
   /**
    * Sets the encoding.
-   * 
+   *
    * @param encoding  the encoding (name).
    */
-  public void setEncoding (String encoding)
+  public void setEncoding(String encoding)
   {
     cbEncoding.setSelectedIndex(encodingModel.indexOf(encoding));
   }
@@ -1143,7 +1143,7 @@ public class PDFSaveDialog extends JDialog
   /**
    * Gets the confirmation state of the dialog. A confirmed dialog has no invalid
    * settings and the user confirmed any resource conflicts.
-   * 
+   *
    * @return true, if the dialog has been confirmed and the pdf should be saved, false otherwise.
    */
   public boolean isConfirmed()
@@ -1186,7 +1186,7 @@ public class PDFSaveDialog extends JDialog
     getActionSecuritySelection().actionPerformed(null);
 
     cbEncoding.setSelectedIndex(
-        encodingModel.indexOf(System.getProperty ("file.encoding", "Cp1251")));
+        encodingModel.indexOf(System.getProperty("file.encoding", "Cp1251")));
   }
 
   /**
@@ -1250,9 +1250,9 @@ public class PDFSaveDialog extends JDialog
     if (filename.trim().length() == 0)
     {
       JOptionPane.showMessageDialog(this,
-                                    getResources().getString("pdfsavedialog.targetIsEmpty"),
-                                    getResources().getString("pdfsavedialog.errorTitle"),
-                                    JOptionPane.ERROR_MESSAGE);
+          getResources().getString("pdfsavedialog.targetIsEmpty"),
+          getResources().getString("pdfsavedialog.errorTitle"),
+          JOptionPane.ERROR_MESSAGE);
       return false;
     }
     File f = new File(filename);
@@ -1261,28 +1261,28 @@ public class PDFSaveDialog extends JDialog
       if (f.isFile() == false)
       {
         JOptionPane.showMessageDialog(this,
-                                      getResources().getString("pdfsavedialog.targetIsNoFile"),
-                                      getResources().getString("pdfsavedialog.errorTitle"),
-                                      JOptionPane.ERROR_MESSAGE);
+            getResources().getString("pdfsavedialog.targetIsNoFile"),
+            getResources().getString("pdfsavedialog.errorTitle"),
+            JOptionPane.ERROR_MESSAGE);
         return false;
       }
       if (f.canWrite() == false)
       {
         JOptionPane.showMessageDialog(this,
-                                      getResources().getString("pdfsavedialog.targetIsNotWritable"),
-                                      getResources().getString("pdfsavedialog.errorTitle"),
-                                      JOptionPane.ERROR_MESSAGE);
+            getResources().getString("pdfsavedialog.targetIsNotWritable"),
+            getResources().getString("pdfsavedialog.errorTitle"),
+            JOptionPane.ERROR_MESSAGE);
         return false;
       }
       String key1 = "pdfsavedialog.targetOverwriteConfirmation";
       String key2 = "pdfsavedialog.targetOverwriteTitle";
       if (JOptionPane.showConfirmDialog(this,
-                                        MessageFormat.format(getResources().getString(key1),
-                                            new Object[]{getFilename()}
-                                        ),
-                                        getResources().getString(key2),
-                                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-                                        == JOptionPane.NO_OPTION)
+          MessageFormat.format(getResources().getString(key1),
+              new Object[]{getFilename()}
+          ),
+          getResources().getString(key2),
+          JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+          == JOptionPane.NO_OPTION)
       {
         return false;
       }
@@ -1294,11 +1294,11 @@ public class PDFSaveDialog extends JDialog
       if (txOwnerPassword.getText().trim().length() == 0)
       {
         if (JOptionPane.showConfirmDialog(this,
-                                          getResources().getString(
-                                              "pdfsavedialog.ownerpasswordEmpty"),
-                                          getResources().getString("pdfsavedialog.warningTitle"),
-                                          JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)
-                                          == JOptionPane.NO_OPTION)
+            getResources().getString(
+                "pdfsavedialog.ownerpasswordEmpty"),
+            getResources().getString("pdfsavedialog.warningTitle"),
+            JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)
+            == JOptionPane.NO_OPTION)
         {
           return false;
         }
@@ -1315,7 +1315,7 @@ public class PDFSaveDialog extends JDialog
    * @return true, if the export was performed without errors or the user canceled the dialog,
    * or false on errors during the export.
    */
-  public boolean performExport (JFreeReport report)
+  public boolean performExport(JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
     setModal(true);
@@ -1348,19 +1348,19 @@ public class PDFSaveDialog extends JDialog
       target.setProperty(PDFOutputTarget.SECURITY_ENCRYPTION, getEncryptionValue());
       target.setProperty(PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword());
       target.setProperty(PDFOutputTarget.SECURITY_USERPASSWORD, getUserPassword());
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY, new Boolean(isAllowAssembly()));
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_COPY, new Boolean(isAllowCopy()));
+      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY, createBoolean(isAllowAssembly()));
+      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_COPY, createBoolean(isAllowCopy()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_DEGRADED_PRINTING,
-                         new Boolean(isAllowDegradedPrinting()));
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_FILLIN, new Boolean(isAllowFillIn()));
+          createBoolean(isAllowDegradedPrinting()));
+      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_FILLIN, createBoolean(isAllowFillIn()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_MODIFY_ANNOTATIONS,
-                         new Boolean(isAllowModifyAnnotations()));
+          createBoolean(isAllowModifyAnnotations()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_MODIFY_CONTENTS,
-                         new Boolean(isAllowModifyContents()));
+          createBoolean(isAllowModifyContents()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_PRINTING,
-                         new Boolean(isAllowPrinting()));
+          createBoolean(isAllowPrinting()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_SCREENREADERS,
-                         new Boolean(isAllowScreenreaders()));
+          createBoolean(isAllowScreenreaders()));
       target.setProperty(PDFOutputTarget.ENCODING, getEncoding());
       target.open();
 
@@ -1392,6 +1392,20 @@ public class PDFSaveDialog extends JDialog
     }
   }
 
+  /**
+   * Wrapps the given boolean variable into a java.lang.Boolean.
+   *
+   * @param bool the boolean that should be wrapped.
+   * @return the corresponding java.lang.Boolean.
+   */
+  private Boolean createBoolean (boolean bool)
+  {
+    if (bool == true)
+    {
+      return Boolean.TRUE;
+    }
+    return Boolean.FALSE;
+  }
 
   /**
    * Shows the exception dialog by using localized messages. The message base is
@@ -1420,33 +1434,33 @@ public class PDFSaveDialog extends JDialog
   public void initFromConfiguration(ReportConfiguration config)
   {
     setAllowAssembly(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY, config,
-                                  isAllowAssembly()));
+        isAllowAssembly()));
     setAllowCopy(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_COPY, config, isAllowCopy()));
     setAllowFillIn(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_FILLIN, config, isAllowFillIn()));
     setAllowModifyAnnotations(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_MODIFY_ANNOTATIONS,
-                                           config, isAllowModifyAnnotations()));
+        config, isAllowModifyAnnotations()));
     setAllowModifyContents(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_MODIFY_CONTENTS, config,
-                                        isAllowModifyContents()));
+        isAllowModifyContents()));
     setAllowScreenreaders(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_SCREENREADERS, config,
-                                       isAllowScreenreaders()));
+        isAllowScreenreaders()));
 
     boolean printing = parseBoolean(PDFOutputTarget.SECURITY_ALLOW_PRINTING, config,
-                                    isAllowPrinting());
+        isAllowPrinting());
     boolean degraded = parseBoolean(PDFOutputTarget.SECURITY_ALLOW_DEGRADED_PRINTING, config,
-                                    isAllowDegradedPrinting());
+        isAllowDegradedPrinting());
     setPrintLevel(printing, degraded);
 
     setEncryptionValue(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX
-                                    + PDFOutputTarget.SECURITY_ENCRYPTION, getEncryptionValue()));
+        + PDFOutputTarget.SECURITY_ENCRYPTION, getEncryptionValue()));
     setAuthor(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX
-                                    + PDFOutputTarget.AUTHOR, getAuthor()));
+        + PDFOutputTarget.AUTHOR, getAuthor()));
     setUserPassword(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX
-                                    + PDFOutputTarget.SECURITY_USERPASSWORD, getUserPassword()));
+        + PDFOutputTarget.SECURITY_USERPASSWORD, getUserPassword()));
     setOwnerPassword(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX
-                                    + PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword()));
+        + PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword()));
     encodingModel.ensureEncodingAvailable(config.getPdfTargetEncoding());
     setEncoding(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX
-                                    + PDFOutputTarget.ENCODING, getEncoding()));
+        + PDFOutputTarget.ENCODING, getEncoding()));
   }
 
   /**
@@ -1461,20 +1475,21 @@ public class PDFSaveDialog extends JDialog
   private boolean parseBoolean(String key, ReportConfiguration config, boolean orgVal)
   {
     String val = config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + key,
-                                          String.valueOf(orgVal));
+        String.valueOf(orgVal));
     return (val.equalsIgnoreCase("true"));
   }
 
   /**
    * For debugging.
-   * 
+   *
    * @param args  ignored.
    */
-  public static void main (String [] args)
+  public static void main(String[] args)
   {
     JDialog d = new PDFSaveDialog();
     d.pack();
-    d.addWindowListener(new WindowAdapter(){
+    d.addWindowListener(new WindowAdapter()
+    {
       /**
        * Invoked when a window is in the process of being closed.
        * The close operation can be overridden at this point.

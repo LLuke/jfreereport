@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupFooterState.java,v 1.6 2003/02/25 18:46:46 taqua Exp $
+ * $Id: PostGroupFooterState.java,v 1.7 2003/04/05 18:57:12 taqua Exp $
  *
  * Changes
  * -------
@@ -62,9 +62,9 @@ public final class PostGroupFooterState extends ReportState
    *
    * @param previous  the previous report state.
    */
-  public PostGroupFooterState (ReportState previous)
+  public PostGroupFooterState(ReportState previous)
   {
-    super (previous);
+    super(previous);
   }
 
   /**
@@ -72,9 +72,9 @@ public final class PostGroupFooterState extends ReportState
    *
    * @return true, if there is at least one more row to read.
    */
-  private boolean hasMoreData ()
+  private boolean hasMoreData()
   {
-    return (this.getCurrentDataItem () < this.getNumberOfRows() - 1);
+    return (this.getCurrentDataItem() < this.getNumberOfRows() - 1);
   }
 
   /**
@@ -82,9 +82,9 @@ public final class PostGroupFooterState extends ReportState
    *
    * @return true if this is the last (outer-most) group.
    */
-  private boolean isLastGroup ()
+  private boolean isLastGroup()
   {
-    return this.getCurrentGroupIndex () == BEFORE_FIRST_GROUP;
+    return this.getCurrentGroupIndex() == BEFORE_FIRST_GROUP;
   }
 
   /**
@@ -92,48 +92,48 @@ public final class PostGroupFooterState extends ReportState
    *
    * @return the next report state.
    */
-  public ReportState advance ()
+  public ReportState advance()
   {
     // leave the current group and activate the parent group.
     // if this was the last active group, the group index is now BEFORE_FIRST_GROUP
-    leaveGroup ();
+    leaveGroup();
 
-    if (isLastGroup ())
+    if (isLastGroup())
     {
       // group finished, but there is more data - start a new group...
-      if (hasMoreData ())
+      if (hasMoreData())
       {
-        return new PreGroupHeaderState (this);
+        return new PreGroupHeaderState(this);
       }
       else
       {
-        return new PreReportFooterState (this);
+        return new PreReportFooterState(this);
       }
     }
     else
     {
       // There are more groups active
-      if (hasMoreData ())
+      if (hasMoreData())
       {
         // we have more data to work on
         // If the group is done, print the GroupFooter of the parent
-        Group group = getReport ().getGroup (getCurrentGroupIndex ());
-        if (group.isLastItemInGroup (getDataRowBackend (),
-                                     getDataRowBackend ().previewNextRow ()))
+        Group group = getReport().getGroup(getCurrentGroupIndex());
+        if (group.isLastItemInGroup(getDataRowBackend(),
+            getDataRowBackend().previewNextRow()))
         {
           // Parent is finished, print the footer
-          return new PreGroupFooterState (this);
+          return new PreGroupFooterState(this);
         }
         else
         {
           // more data in parent group, print the next header
-          return new PreGroupHeaderState (this);
+          return new PreGroupHeaderState(this);
         }
       }
       else
       {
         // no more data, print the footer of the parent group
-        return new PreGroupFooterState (this);
+        return new PreGroupFooterState(this);
       }
     }
   }

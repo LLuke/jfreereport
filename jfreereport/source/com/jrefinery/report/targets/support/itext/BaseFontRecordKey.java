@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecordKey.java,v 1.1 2003/02/01 22:10:36 taqua Exp $
+ * $Id: BaseFontRecordKey.java,v 1.2 2003/02/10 21:23:37 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ public class BaseFontRecordKey
 {
   /** The logical name. */
   private String logicalName;
-  
+
   /** The encoding. */
   private String encoding;
 
@@ -87,14 +87,14 @@ public class BaseFontRecordKey
 
     if (encoding != null)
     {
-       if (!encoding.equals(key.encoding))
-       {
-         return false;
-       }
-       if (key.encoding == null)
-       {
-         return false;
-       }
+      if (!encoding.equals(key.encoding))
+      {
+        return false;
+      }
+      if (key.encoding == null)
+      {
+        return false;
+      }
     }
     if (logicalName != null)
     {

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractElementFactory.java,v 1.4 2003/03/18 18:28:43 taqua Exp $
+ * $Id: AbstractElementFactory.java,v 1.5 2003/06/23 14:36:56 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.elements;
@@ -44,7 +44,7 @@ import com.jrefinery.report.Element;
 
 /**
  * A base class for implementing the {@link ElementFactory} interface.
- * 
+ *
  * @author Thomas Morgner
  */
 public class AbstractElementFactory implements ElementFactory
@@ -62,21 +62,21 @@ public class AbstractElementFactory implements ElementFactory
 
   /**
    * Registers an element.
-   * 
+   *
    * @param e  the element.
    */
-  public void registerElement (Element e)
+  public void registerElement(Element e)
   {
     registerElement(e.getContentType(), e);
   }
 
   /**
    * Registers an element.
-   * 
+   *
    * @param type  the element type.
    * @param e  the element.
    */
-  public void registerElement (String type, Element e)
+  public void registerElement(String type, Element e)
   {
     elements.put(type, e);
   }
@@ -85,15 +85,15 @@ public class AbstractElementFactory implements ElementFactory
    * Returns an element for the specified type. This implementation assumes, that
    * all elements have a public default constructor and uses Class.newInstance()
    * to create a new instance of that element.
-   * 
+   *
    * @param type  the type.
-   * 
+   *
    * @return The element.
    */
   public Element getElementForType(String type)
   {
     Element e = (Element) elements.get(type);
-    if (e == null) 
+    if (e == null)
     {
       return null;
     }

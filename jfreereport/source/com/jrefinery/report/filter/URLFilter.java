@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * --------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: URLFilter.java,v 1.11 2003/05/02 12:39:43 taqua Exp $
+ * $Id: URLFilter.java,v 1.12 2003/06/01 17:39:25 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public class URLFilter implements DataFilter, Serializable
   /**
    * DefaultConstructor.
    */
-  public URLFilter ()
+  public URLFilter()
   {
   }
 
@@ -72,7 +72,7 @@ public class URLFilter implements DataFilter, Serializable
    *
    * @return The data source.
    */
-  public DataSource getDataSource ()
+  public DataSource getDataSource()
   {
     return source;
   }
@@ -82,11 +82,11 @@ public class URLFilter implements DataFilter, Serializable
    *
    * @param ds The data source.
    */
-  public void setDataSource (DataSource ds)
+  public void setDataSource(DataSource ds)
   {
     if (ds == null)
     {
-     throw new NullPointerException ();
+      throw new NullPointerException();
     }
 
     source = ds;
@@ -103,14 +103,14 @@ public class URLFilter implements DataFilter, Serializable
    *
    * @return created url or null if something went wrong on url creation.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    if (getDataSource () == null)
+    if (getDataSource() == null)
     {
       return null;
     }
 
-    Object o = getDataSource ().getValue ();
+    Object o = getDataSource().getValue();
     if (o == null)
     {
       return null;
@@ -125,14 +125,14 @@ public class URLFilter implements DataFilter, Serializable
       if (o instanceof File)
       {
         File f = (File) o;
-        if (f.canRead ())
+        if (f.canRead())
         {
-          return f.toURL ();
+          return f.toURL();
         }
       }
       else if (o instanceof String)
       {
-        return new URL (getBaseURL (), (String) o);
+        return new URL(getBaseURL(), (String) o);
       }
     }
     catch (MalformedURLException mfe)
@@ -148,7 +148,7 @@ public class URLFilter implements DataFilter, Serializable
    *
    * @return the base url used to complete relative urls.
    */
-  public URL getBaseURL ()
+  public URL getBaseURL()
   {
     return baseURL;
   }
@@ -158,7 +158,7 @@ public class URLFilter implements DataFilter, Serializable
    *
    * @param baseURL  the base URL.
    */
-  public void setBaseURL (URL baseURL)
+  public void setBaseURL(URL baseURL)
   {
     this.baseURL = baseURL;
   }
@@ -170,12 +170,12 @@ public class URLFilter implements DataFilter, Serializable
    *
    * @throws CloneNotSupportedException should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    URLFilter f = (URLFilter) super.clone ();
+    URLFilter f = (URLFilter) super.clone();
     if (source != null)
     {
-      f.source = (DataSource) source.clone ();
+      f.source = (DataSource) source.clone();
     }
     return f;
   }

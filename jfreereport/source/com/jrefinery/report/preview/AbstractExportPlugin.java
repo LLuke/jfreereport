@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.1 2003/06/19 18:50:18 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.2 2003/06/26 19:55:56 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 18-Jun-2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.preview;
@@ -152,23 +152,23 @@ public abstract class AbstractExportPlugin implements ExportPlugin
    *
    * @param text the new status line text.
    */
-  protected void updateStatusText (String text)
+  protected void updateStatusText(String text)
   {
     getBase().setStatusText(text);
   }
 
   /**
    * Provides a default implementation to handle export errors.
-   * This implementation updates the status line of the preview component. 
+   * This implementation updates the status line of the preview component.
    *
    * @param result the result of the export operation.
    * @return the value of result unmodified.
    */
-  protected boolean handleExportResult (final boolean result)
+  protected boolean handleExportResult(final boolean result)
   {
     if (isControlPlugin() == false && result == false)
     {
-      updateStatusText ("Export failed: " + getFailureDescription());
+      updateStatusText("Export failed: " + getFailureDescription());
     }
     return result;
   }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDataSource.java,v 1.10 2002/12/12 12:26:55 mungady Exp $
+ * $Id: ReportDataSource.java,v 1.11 2003/06/01 17:39:25 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ public class ReportDataSource implements DataSource, DataRowConnectable, Seriali
   /**
    * Default constructor.
    */
-  public ReportDataSource ()
+  public ReportDataSource()
   {
   }
 
@@ -73,9 +73,9 @@ public class ReportDataSource implements DataSource, DataRowConnectable, Seriali
    *
    * @param field The field name.
    */
-  public ReportDataSource (String field)
+  public ReportDataSource(String field)
   {
-    setField (field);
+    setField(field);
   }
 
   /**
@@ -85,11 +85,11 @@ public class ReportDataSource implements DataSource, DataRowConnectable, Seriali
    *
    * @param field The field name.
    */
-  public void setField (String field)
+  public void setField(String field)
   {
     if (field == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
     this.fieldName = field;
   }
@@ -99,7 +99,7 @@ public class ReportDataSource implements DataSource, DataRowConnectable, Seriali
    *
    * @return The field name.
    */
-  public String getField ()
+  public String getField()
   {
     return fieldName;
   }
@@ -109,13 +109,13 @@ public class ReportDataSource implements DataSource, DataRowConnectable, Seriali
    *
    * @return The value.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    if (getDataRow () == null)
+    if (getDataRow() == null)
     {
-      throw new IllegalStateException ("No DataRowBackend Connected");
+      throw new IllegalStateException("No DataRowBackend Connected");
     }
-    return getDataRow ().get (getField ());
+    return getDataRow().get(getField());
   }
 
   /**
@@ -125,9 +125,9 @@ public class ReportDataSource implements DataSource, DataRowConnectable, Seriali
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    ReportDataSource rd = (ReportDataSource) super.clone ();
+    ReportDataSource rd = (ReportDataSource) super.clone();
     return rd;
   }
 
@@ -140,15 +140,15 @@ public class ReportDataSource implements DataSource, DataRowConnectable, Seriali
    *
    * @throws IllegalStateException if there is already a data row connected.
    */
-  public void connectDataRow (DataRow row) throws IllegalStateException
+  public void connectDataRow(DataRow row) throws IllegalStateException
   {
     if (row == null)
     {
-      throw new NullPointerException ("Null-DataRowBackend cannot be set.");
+      throw new NullPointerException("Null-DataRowBackend cannot be set.");
     }
     if (dataRow != null)
     {
-      throw new IllegalStateException ("There is a datarow already connected: " + getField());
+      throw new IllegalStateException("There is a datarow already connected: " + getField());
     }
     dataRow = row;
   }
@@ -160,15 +160,15 @@ public class ReportDataSource implements DataSource, DataRowConnectable, Seriali
    *
    * @throws IllegalStateException if no datarow is connected.
    */
-  public void disconnectDataRow (DataRow row) throws IllegalStateException
+  public void disconnectDataRow(DataRow row) throws IllegalStateException
   {
     if (row == null)
     {
-      throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
+      throw new NullPointerException("Null-DataRowBackend cannot be disconnected.");
     }
     if (dataRow == null)
     {
-      throw new IllegalStateException ("There is no datarow connected");
+      throw new IllegalStateException("There is no datarow connected");
     }
     dataRow = null;
   }
@@ -178,7 +178,7 @@ public class ReportDataSource implements DataSource, DataRowConnectable, Seriali
    *
    * @return the data row.
    */
-  protected DataRow getDataRow ()
+  protected DataRow getDataRow()
   {
     return dataRow;
   }

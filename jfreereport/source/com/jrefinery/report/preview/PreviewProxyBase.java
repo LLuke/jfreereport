@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.22 2003/06/26 15:18:56 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.23 2003/06/26 19:55:56 taqua Exp $
  *
  * Changes
  * -------
@@ -608,7 +608,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @return The worker.
    */
-  protected Worker getWorker ()
+  protected Worker getWorker()
   {
     if (paginationWorker == null)
     {
@@ -710,7 +710,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public void init (JFreeReport report) throws ReportProcessingException
+  public void init(JFreeReport report) throws ReportProcessingException
   {
     setLargeIconsEnabled(true);
 
@@ -791,7 +791,7 @@ public class PreviewProxyBase extends JComponent
     applyDefinedDimension(report);
 
     performPagination();
-    Log.info ("Pagination started");
+    Log.info("Pagination started");
   }
 
   /**
@@ -801,12 +801,12 @@ public class PreviewProxyBase extends JComponent
    *
    * @param report the report of this dialog.
    */
-  private void applyDefinedDimension (JFreeReport report)
+  private void applyDefinedDimension(JFreeReport report)
   {
     String width = report.getReportConfiguration().getConfigProperty(
-                   ReportConfiguration.PREVIEW_PREFERRED_WIDTH);
+        ReportConfiguration.PREVIEW_PREFERRED_WIDTH);
     String height = report.getReportConfiguration().getConfigProperty(
-                    ReportConfiguration.PREVIEW_PREFERRED_HEIGHT);
+        ReportConfiguration.PREVIEW_PREFERRED_HEIGHT);
 
     // only apply if both values are set.
     if (width != null && height != null)
@@ -814,19 +814,19 @@ public class PreviewProxyBase extends JComponent
       try
       {
         Dimension pref = createCorrectedDimensions((int) ParserUtil.parseRelativeFloat(width, ""),
-                                                   (int) ParserUtil.parseRelativeFloat(height, ""));
+            (int) ParserUtil.parseRelativeFloat(height, ""));
         setPreferredSize(pref);
       }
       catch (SAXException nfe)
       {
-        Log.warn ("Preferred viewport size is defined, but the specified values are invalid.");
+        Log.warn("Preferred viewport size is defined, but the specified values are invalid.");
       }
     }
 
     width = report.getReportConfiguration().getConfigProperty(
-            ReportConfiguration.PREVIEW_MAXIMUM_WIDTH);
+        ReportConfiguration.PREVIEW_MAXIMUM_WIDTH);
     height = report.getReportConfiguration().getConfigProperty(
-             ReportConfiguration.PREVIEW_MAXIMUM_HEIGHT);
+        ReportConfiguration.PREVIEW_MAXIMUM_HEIGHT);
 
     // only apply if at least one value is set.
     if (width != null || height != null)
@@ -843,7 +843,7 @@ public class PreviewProxyBase extends JComponent
       }
       catch (SAXException nfe)
       {
-        Log.warn ("Maximum viewport size is defined, but the specified values are invalid.");
+        Log.warn("Maximum viewport size is defined, but the specified values are invalid.");
       }
     }
   }
@@ -857,7 +857,7 @@ public class PreviewProxyBase extends JComponent
    * @param h the height that should be corrected
    * @return the dimension of width and height, where all relative values are normalized.
    */
-  private Dimension createCorrectedDimensions (int w, int h)
+  private Dimension createCorrectedDimensions(int w, int h)
   {
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     if (w < 0)
@@ -981,7 +981,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @return the report pane.
    */
-  protected Pageable getPageable ()
+  protected Pageable getPageable()
   {
     return reportPane;
   }
@@ -991,7 +991,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @return the report pane.
    */
-  protected Printable getPrintable ()
+  protected Printable getPrintable()
   {
     return reportPane;
   }
@@ -1250,6 +1250,7 @@ public class PreviewProxyBase extends JComponent
   {
     statusHolder.setText(text);
   }
+
   /**
    * Creates the statusbar for this frame. Use setStatus() to display text on the status bar.
    *
@@ -1285,11 +1286,11 @@ public class PreviewProxyBase extends JComponent
     fileMenu.setMnemonic(mnemonic.charValue());
 
     Iterator it = exportPlugIns.iterator();
-    boolean addedItem= it.hasNext();
+    boolean addedItem = it.hasNext();
     while (it.hasNext())
     {
       ExportPlugin plugIn = (ExportPlugin) it.next();
-      ExportAction action = (ExportAction) pluginActions.get (plugIn);
+      ExportAction action = (ExportAction) pluginActions.get(plugIn);
       if (plugIn.isSeparated())
       {
         fileMenu.addSeparator();
@@ -1320,12 +1321,12 @@ public class PreviewProxyBase extends JComponent
     mnemonic = (Character) resources.getObject("menu.zoom.mnemonic");
     zoomMenu.setMnemonic(mnemonic.charValue());
 
-    zoomMenu.add (createMenuItem(zoomInAction));
-    zoomMenu.add (createMenuItem(zoomOutAction));
+    zoomMenu.add(createMenuItem(zoomInAction));
+    zoomMenu.add(createMenuItem(zoomOutAction));
     zoomMenu.add(new JSeparator());
     for (int i = 0; i < ZOOM_FACTORS.length; i++)
     {
-      zoomMenu.add (createMenuItem(new ZoomSetAction(i)));
+      zoomMenu.add(createMenuItem(new ZoomSetAction(i)));
     }
 
     // then the help menu
@@ -1375,7 +1376,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @return the menu item.
    */
-  protected JMenuItem createMenuItem (Action action)
+  protected JMenuItem createMenuItem(Action action)
   {
     JMenuItem menuItem = new ActionMenuItem(action);
     KeyStroke accelerator = (KeyStroke) action.getValue(ActionDowngrade.ACCELERATOR_KEY);
@@ -1397,7 +1398,7 @@ public class PreviewProxyBase extends JComponent
     JToolBar toolbar = new JToolBar();
 
     Iterator it = exportPlugIns.iterator();
-    boolean addedItem= it.hasNext();
+    boolean addedItem = it.hasNext();
     while (it.hasNext())
     {
       ExportPlugin plugIn = (ExportPlugin) it.next();
@@ -1405,7 +1406,7 @@ public class PreviewProxyBase extends JComponent
       {
         continue;
       }
-      ExportAction action = (ExportAction) pluginActions.get (plugIn);
+      ExportAction action = (ExportAction) pluginActions.get(plugIn);
       if (plugIn.isSeparated())
       {
         toolbar.addSeparator();
@@ -1516,7 +1517,7 @@ public class PreviewProxyBase extends JComponent
   /**
    * Disables the buttons.
    */
-  protected void disableButtons ()
+  protected void disableButtons()
   {
     getLastPageAction().setEnabled(false);
     getNextPageAction().setEnabled(false);
@@ -1749,9 +1750,9 @@ public class PreviewProxyBase extends JComponent
   /**
    * Updates the pageformat of the ReportPane.
    *
-   * @param pf
+   * @param pf the new page format object.
    */
-  public void updatePageFormat (PageFormat pf)
+  public void updatePageFormat(PageFormat pf)
   {
     reportPane.setPageFormat(pf);
     performPagination();
@@ -1760,7 +1761,7 @@ public class PreviewProxyBase extends JComponent
   /**
    * Paginates the report.
    */
-  public void performPagination ()
+  public void performPagination()
   {
     disableButtons();
     setStatusText(getResources().getString("statusline.repaginate"));
@@ -1773,7 +1774,7 @@ public class PreviewProxyBase extends JComponent
         // wait until the worker is done with his current job
       }
     }
-    getWorker().setWorkload(new Runnable ()
+    getWorker().setWorkload(new Runnable()
     {
       public void run()
       {
@@ -1787,7 +1788,7 @@ public class PreviewProxyBase extends JComponent
         }
         catch (Exception e)
         {
-          Log.warn ("Failed to repaginate" , e);
+          Log.warn("Failed to repaginate", e);
           reportPane.setError(e);
         }
       }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.11 2003/06/13 22:54:00 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.12 2003/06/26 19:55:56 taqua Exp $
  *
  * Changes
  * --------
@@ -84,7 +84,7 @@ import org.jfree.ui.ExtensionFileFilter;
 
 /**
  * A dialog for exporting a report to CSV format.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class CSVExportDialog extends JDialog
@@ -194,31 +194,31 @@ public class CSVExportDialog extends JDialog
 
   /** The encoding combo-box. */
   private JComboBox cbEncoding;
-  
+
   /** The encoding model. */
   private EncodingComboBoxModel encodingModel;
-  
+
   /** The strict layout check-box. */
   private JCheckBox cbxStrictLayout;
 
   /** A radio button for tab separators. */
   private JRadioButton rbSeparatorTab;
-  
+
   /** A radio button for colon separators. */
   private JRadioButton rbSeparatorColon;
-  
+
   /** A radio button for semi-colon separators. */
   private JRadioButton rbSeparatorSemicolon;
 
   /** A radio button for other separators. */
   private JRadioButton rbSeparatorOther;
-  
+
   /** A text field for the 'other' separator. */
   private JTextField txSeparatorOther;
 
   /** A radio button for exporting data only. */
   private JRadioButton rbExportData;
-  
+
   /** A radio button for exporting all printed elements. */
   private JRadioButton rbExportPrintedElements;
 
@@ -362,7 +362,7 @@ public class CSVExportDialog extends JDialog
     gbc.insets = new Insets(1, 1, 1, 1);
     contentPane.add(cbxStrictLayout, gbc);
 
-    JPanel p = new JPanel (new GridLayout());
+    JPanel p = new JPanel(new GridLayout());
     p.add(createSeparatorPanel());
     p.add(createExportTypePanel());
 
@@ -391,9 +391,9 @@ public class CSVExportDialog extends JDialog
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
-    buttonPanel.registerKeyboardAction(new ActionConfirm(), 
-                                       KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
-                                       JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    buttonPanel.registerKeyboardAction(new ActionConfirm(),
+        KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
     gbc.weightx = 1;
@@ -406,11 +406,11 @@ public class CSVExportDialog extends JDialog
   }
 
   /**
-   * Creates a panel for the export type. 
-   * 
+   * Creates a panel for the export type.
+   *
    * @return The panel.
    */
-  private JPanel createExportTypePanel ()
+  private JPanel createExportTypePanel()
   {
     // separator panel
     JPanel exportTypePanel = new JPanel();
@@ -424,8 +424,8 @@ public class CSVExportDialog extends JDialog
         getResources().getString("csvexportdialog.export.printed_elements"));
 
     ButtonGroup btg = new ButtonGroup();
-    btg.add (rbExportData);
-    btg.add (rbExportPrintedElements);
+    btg.add(rbExportData);
+    btg.add(rbExportPrintedElements);
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.WEST;
@@ -450,10 +450,10 @@ public class CSVExportDialog extends JDialog
 
   /**
    * Creates a separator panel.
-   * 
+   *
    * @return The panel.
    */
-  private JPanel createSeparatorPanel ()
+  private JPanel createSeparatorPanel()
   {
     // separator panel
     JPanel separatorPanel = new JPanel();
@@ -471,10 +471,10 @@ public class CSVExportDialog extends JDialog
         getResources().getString("csvexportdialog.separator.other"));
 
     ButtonGroup btg = new ButtonGroup();
-    btg.add (rbSeparatorTab);
-    btg.add (rbSeparatorColon);
-    btg.add (rbSeparatorSemicolon);
-    btg.add (rbSeparatorOther);
+    btg.add(rbSeparatorTab);
+    btg.add(rbSeparatorColon);
+    btg.add(rbSeparatorSemicolon);
+    btg.add(rbSeparatorOther);
 
     Action selectAction = new ActionSelectSeparator();
     rbSeparatorTab.addActionListener(selectAction);
@@ -568,7 +568,7 @@ public class CSVExportDialog extends JDialog
   }
 
   /**
-   * Returns <code>true</code> if the user confirmed the selection, and <code>false</code> 
+   * Returns <code>true</code> if the user confirmed the selection, and <code>false</code>
    * otherwise.  The file should only be saved if the result is <code>true</code>.
    *
    * @return  A boolean.
@@ -595,7 +595,7 @@ public class CSVExportDialog extends JDialog
   {
     txFilename.setText("");
     cbEncoding.setSelectedIndex(
-        encodingModel.indexOf(System.getProperty ("file.encoding", "Cp1251")));
+        encodingModel.indexOf(System.getProperty("file.encoding", "Cp1251")));
     rbExportPrintedElements.setSelected(true);
     rbSeparatorColon.setSelected(true);
     cbxStrictLayout.setSelected(false);
@@ -604,10 +604,10 @@ public class CSVExportDialog extends JDialog
 
   /**
    * Returns the separator string, which is controlled by the selection of radio buttons.
-   * 
+   *
    * @return The separator string.
    */
-  public String getSeparatorString ()
+  public String getSeparatorString()
   {
     if (rbSeparatorColon.isSelected())
     {
@@ -630,10 +630,10 @@ public class CSVExportDialog extends JDialog
 
   /**
    * Sets the separator string.
-   * 
+   *
    * @param s  the separator.
    */
-  public void setSeparatorString (String s)
+  public void setSeparatorString(String s)
   {
     if (s == null)
     {
@@ -662,10 +662,10 @@ public class CSVExportDialog extends JDialog
 
   /**
    * Returns the encoding.
-   * 
+   *
    * @return The encoding.
    */
-  public String getEncoding ()
+  public String getEncoding()
   {
     if (cbEncoding.getSelectedIndex() == -1)
     {
@@ -679,10 +679,10 @@ public class CSVExportDialog extends JDialog
 
   /**
    * Sets the encoding.
-   * 
+   *
    * @param encoding  the encoding.
    */
-  public void setEncoding (String encoding)
+  public void setEncoding(String encoding)
   {
     cbEncoding.setSelectedIndex(encodingModel.indexOf(encoding));
   }
@@ -690,20 +690,20 @@ public class CSVExportDialog extends JDialog
   /**
    * Returns <code>true</code> if the user selected to export raw data only, and <code>false</code>
    * otherwise.
-   * 
+   *
    * @return A boolean.
    */
-  public boolean isExportRawData ()
+  public boolean isExportRawData()
   {
     return rbExportData.isSelected();
   }
 
   /**
    * Sets a flag that controls whether raw data is exported.
-   * 
+   *
    * @param b  the new flag value.
    */
-  public void setExportRawData (boolean b)
+  public void setExportRawData(boolean b)
   {
     if (b == true)
     {
@@ -756,9 +756,9 @@ public class CSVExportDialog extends JDialog
     if (filename.trim().length() == 0)
     {
       JOptionPane.showMessageDialog(this,
-                                    getResources().getString("csvexportdialog.targetIsEmpty"),
-                                    getResources().getString("csvexportdialog.errorTitle"),
-                                    JOptionPane.ERROR_MESSAGE);
+          getResources().getString("csvexportdialog.targetIsEmpty"),
+          getResources().getString("csvexportdialog.errorTitle"),
+          JOptionPane.ERROR_MESSAGE);
       return false;
     }
     File f = new File(filename);
@@ -767,29 +767,29 @@ public class CSVExportDialog extends JDialog
       if (f.isFile() == false)
       {
         JOptionPane.showMessageDialog(this,
-                                      getResources().getString("csvexportdialog.targetIsNoFile"),
-                                      getResources().getString("csvexportdialog.errorTitle"),
-                                      JOptionPane.ERROR_MESSAGE);
+            getResources().getString("csvexportdialog.targetIsNoFile"),
+            getResources().getString("csvexportdialog.errorTitle"),
+            JOptionPane.ERROR_MESSAGE);
         return false;
       }
       if (f.canWrite() == false)
       {
         JOptionPane.showMessageDialog(this,
-                                      getResources().getString(
-                                          "csvexportdialog.targetIsNotWritable"),
-                                      getResources().getString("csvexportdialog.errorTitle"),
-                                      JOptionPane.ERROR_MESSAGE);
+            getResources().getString(
+                "csvexportdialog.targetIsNotWritable"),
+            getResources().getString("csvexportdialog.errorTitle"),
+            JOptionPane.ERROR_MESSAGE);
         return false;
       }
       String key1 = "csvexportdialog.targetOverwriteConfirmation";
       String key2 = "csvexportdialog.targetOverwriteTitle";
       if (JOptionPane.showConfirmDialog(this,
-                                        MessageFormat.format(getResources().getString(key1),
-                                            new Object[]{getFilename()}
-                                        ),
-                                        getResources().getString(key2),
-                                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-                                        == JOptionPane.NO_OPTION)
+          MessageFormat.format(getResources().getString(key1),
+              new Object[]{getFilename()}
+          ),
+          getResources().getString(key2),
+          JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+          == JOptionPane.NO_OPTION)
       {
         return false;
       }
@@ -820,7 +820,7 @@ public class CSVExportDialog extends JDialog
     }
     else
     {
-      return writeLayoutedCSV (report);
+      return writeLayoutedCSV(report);
     }
   }
 
@@ -960,7 +960,7 @@ public class CSVExportDialog extends JDialog
 
   /**
    * Returns the current setting of the 'strict layout' combo-box.
-   * 
+   *
    * @return A boolean.
    */
   public boolean isStrictLayout()
@@ -970,24 +970,25 @@ public class CSVExportDialog extends JDialog
 
   /**
    * Sets the 'strict layout' combo-box setting.
-   * 
+   *
    * @param strictLayout  the new setting.
    */
   public void setStrictLayout(boolean strictLayout)
   {
     cbxStrictLayout.setSelected(strictLayout);
   }
-  
+
   /**
    * This method exists for debugging purposes.
-   * 
+   *
    * @param args  ignored.
    */
-  public static void main (String [] args)
+  public static void main(String[] args)
   {
     JDialog d = new CSVExportDialog();
     d.pack();
-    d.addWindowListener(new WindowAdapter(){
+    d.addWindowListener(new WindowAdapter()
+    {
       /**
        * Invoked when a window is in the process of being closed.
        * The close operation can be overridden at this point.

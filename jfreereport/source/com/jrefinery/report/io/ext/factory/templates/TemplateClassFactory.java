@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateClassFactory.java,v 1.4 2003/04/23 13:43:04 taqua Exp $
+ * $Id: TemplateClassFactory.java,v 1.5 2003/04/24 18:08:52 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.templates;
@@ -42,7 +42,7 @@ import org.jfree.xml.factory.objects.ClassFactoryImpl;
 
 /**
  * A template class factory.
- * 
+ *
  * @author Thomas Morgner
  */
 public class TemplateClassFactory extends ClassFactoryImpl
@@ -65,10 +65,10 @@ public class TemplateClassFactory extends ClassFactoryImpl
 
   /**
    * Adds a template.
-   * 
+   *
    * @param td  the template description.
    */
-  private void addTemplate (TemplateDescription td)
+  private void addTemplate(TemplateDescription td)
   {
     registerClass(td.getObjectClass(), td);
   }

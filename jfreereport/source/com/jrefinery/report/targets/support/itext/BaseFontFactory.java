@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.14 2003/06/15 21:26:30 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.15 2003/06/26 19:55:57 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ import com.lowagie.text.pdf.DefaultFontMapper;
 /**
  * The BaseFontFactory is used to find and register all TrueType fonts for embedding them
  * in the PDF file.
- * 
+ *
  * @author Thomas Morgner
  */
 public class BaseFontFactory extends DefaultFontMapper
@@ -125,7 +125,7 @@ public class BaseFontFactory extends DefaultFontMapper
   }
 
   /** The singleton instance of the font path filter. */
-  private static final FontPathFilter fontPathFilter = new FontPathFilter();
+  private static final FontPathFilter FONTPATHFILTER = new FontPathFilter();
 
   /**
    * Creates a new factory.
@@ -161,11 +161,11 @@ public class BaseFontFactory extends DefaultFontMapper
     if (System.getProperty("mrj.version") != null)
     {
       String userhome = System.getProperty("user.home");
-      Log.debug ("Detected MacOS (Property 'mrj.version' is present.");
-      registerFontPath(new File (userhome + "/Library/Fonts"), encoding);
-      registerFontPath(new File ("/Library/Fonts"), encoding);
-      registerFontPath(new File ("/Network/Library/Fonts"), encoding);
-      registerFontPath(new File ("/System/Library/Fonts"), encoding);
+      Log.debug("Detected MacOS (Property 'mrj.version' is present.");
+      registerFontPath(new File(userhome + "/Library/Fonts"), encoding);
+      registerFontPath(new File("/Library/Fonts"), encoding);
+      registerFontPath(new File("/Network/Library/Fonts"), encoding);
+      registerFontPath(new File("/System/Library/Fonts"), encoding);
     }
     else if (StringUtil.startsWithIgnoreCase(osname, "windows"))
     {
@@ -175,8 +175,8 @@ public class BaseFontFactory extends DefaultFontMapper
     {
       Log.debug("Assuming unix like file structures");
       // Assume X11 is installed in the default location.
-      registerFontPath(new File ("/usr/X11R6/lib/X11/fonts"), encoding);
-      registerFontPath(new File ("/usr/share/fonts"), encoding);
+      registerFontPath(new File("/usr/X11R6/lib/X11/fonts"), encoding);
+      registerFontPath(new File("/usr/share/fonts"), encoding);
     }
     registerFontPath(new File(jrepath, "lib" + fs + "fonts"), encoding);
   }
@@ -186,7 +186,7 @@ public class BaseFontFactory extends DefaultFontMapper
    *
    * @param encoding the default font encoding.
    */
-  private void registerWindowsFontPath (String encoding)
+  private void registerWindowsFontPath(String encoding)
   {
     Log.debug("Found windows in os name, assuming DOS/Win32 structures");
     // Assume windows
@@ -233,7 +233,7 @@ public class BaseFontFactory extends DefaultFontMapper
   {
     if (file.exists() && file.isDirectory() && file.canRead())
     {
-      File[] files = file.listFiles(fontPathFilter);
+      File[] files = file.listFiles(FONTPATHFILTER);
       for (int i = 0; i < files.length; i++)
       {
         if (files[i].isDirectory())
@@ -272,7 +272,7 @@ public class BaseFontFactory extends DefaultFontMapper
       }
       catch (Exception e)
       {
-        Log.warn(new Log.SimpleMessage("Font ",filename, " is invalid. Message:", e.getMessage()));
+        Log.warn(new Log.SimpleMessage("Font ", filename, " is invalid. Message:", e.getMessage()));
       }
     }
   }

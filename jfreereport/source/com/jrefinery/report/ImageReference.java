@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.31 2003/05/09 18:44:36 taqua Exp $
+ * $Id: ImageReference.java,v 1.32 2003/06/12 23:16:26 taqua Exp $
  *
  * Changes:
  * --------
@@ -75,18 +75,18 @@ public class ImageReference implements Serializable, Cloneable
 
   /** The area of the unscaled image that hould be displayed. */
   private Rectangle2D bounds = new Rectangle2D.Float();
-  
+
   /** The width scale factor. */
-  private float scaleX = 1.0f; 
-  
+  private float scaleX = 1.0f;
+
   /** The height scale factor. */
-  private float scaleY = 1.0f; 
+  private float scaleY = 1.0f;
 
   /** The width of the (unscaled) image. */
-  private int width;  
-  
+  private int width;
+
   /** The height of the (unscaled) image. */
-  private int height; 
+  private int height;
 
   /**
    * Creates a new ImageReference with an origin of 0,0 and the desired
@@ -134,7 +134,7 @@ public class ImageReference implements Serializable, Cloneable
       }
     }
 
-    setBounds (new Rectangle2D.Float(0, 0, image.getWidth(null), image.getHeight(null)));
+    setBounds(new Rectangle2D.Float(0, 0, image.getWidth(null), image.getHeight(null)));
     this.width = image.getWidth(null);
     this.height = image.getHeight(null);
   }
@@ -154,7 +154,7 @@ public class ImageReference implements Serializable, Cloneable
     this.image = img;
     WaitingImageObserver obs = new WaitingImageObserver(image);
     obs.waitImageLoaded();
-    setBounds (new Rectangle2D.Float(0, 0, image.getWidth(null), image.getHeight(null)));
+    setBounds(new Rectangle2D.Float(0, 0, image.getWidth(null), image.getHeight(null)));
     this.width = image.getWidth(null);
     this.height = image.getHeight(null);
   }
@@ -166,7 +166,7 @@ public class ImageReference implements Serializable, Cloneable
    * @param h  the height of the unscaled image.
    * @param bounds  the area of the unscaled image to draw.
    */
-  public ImageReference (int w, int h, Rectangle2D bounds)
+  public ImageReference(int w, int h, Rectangle2D bounds)
   {
     this.width = w;
     this.height = h;
@@ -190,7 +190,7 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @param bounds  the bounds.
    */
-  public void setBounds (Rectangle2D bounds)
+  public void setBounds(Rectangle2D bounds)
   {
     this.bounds.setRect(bounds);
   }
@@ -212,7 +212,7 @@ public class ImageReference implements Serializable, Cloneable
    */
   public void setScaleX(float scaleX)
   {
-    if (scaleX == 0) 
+    if (scaleX == 0)
     {
       throw new IllegalArgumentException("Scale factor must not be 0");
     }
@@ -236,7 +236,7 @@ public class ImageReference implements Serializable, Cloneable
    */
   public void setScaleY(float scaleY)
   {
-    if (scaleY == 0) 
+    if (scaleY == 0)
     {
       throw new IllegalArgumentException("Scale factor must not be 0");
     }
@@ -248,13 +248,13 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @param bounds  the bounds.
    */
-  public void setBoundsScaled (Rectangle2D bounds)
+  public void setBoundsScaled(Rectangle2D bounds)
   {
     Rectangle2D boundsNew = getBounds();
     boundsNew.setRect(bounds.getX() / getScaleX(),
-                   bounds.getY() / getScaleY(),
-                   bounds.getWidth() / getScaleX(),
-                   bounds.getHeight() / getScaleY());
+        bounds.getY() / getScaleY(),
+        bounds.getWidth() / getScaleX(),
+        bounds.getHeight() / getScaleY());
     setBounds(boundsNew);
   }
 
@@ -263,13 +263,13 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @return the scaled bounds.
    */
-  public Rectangle2D getBoundsScaled ()
+  public Rectangle2D getBoundsScaled()
   {
     Rectangle2D bounds = getBounds();
     bounds.setRect(bounds.getX() * getScaleX(),
-                   bounds.getY() * getScaleY(),
-                   bounds.getWidth() * getScaleX(),
-                   bounds.getHeight() * getScaleY());
+        bounds.getY() * getScaleY(),
+        bounds.getWidth() * getScaleX(),
+        bounds.getHeight() * getScaleY());
     return bounds;
   }
 
@@ -362,7 +362,7 @@ public class ImageReference implements Serializable, Cloneable
 
   /**
    * compute a hashcode for this imageReference.
-   * 
+   *
    * @return the hashcode
    */
   public int hashCode()
@@ -392,7 +392,7 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @return the image width.
    */
-  public int getImageWidth ()
+  public int getImageWidth()
   {
     return width;
   }
@@ -402,7 +402,7 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @return the image height.
    */
-  public int getImageHeight ()
+  public int getImageHeight()
   {
     return height;
   }

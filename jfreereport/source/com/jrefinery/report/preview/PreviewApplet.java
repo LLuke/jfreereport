@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,17 +28,16 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewApplet.java,v 1.1 2003/06/19 18:50:18 taqua Exp $
+ * $Id: PreviewApplet.java,v 1.2 2003/06/26 19:55:56 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 17.06.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.preview;
 
-import java.applet.Applet;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 import javax.swing.Action;
@@ -116,9 +115,9 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
    * The implementation of this method provided by the
    * <code>Applet</code> class does nothing.
    *
-   * @see     Applet#init()
-   * @see     Applet#start()
-   * @see     Applet#stop()
+   * @see     java.applet.Applet#init()
+   * @see     java.applet.Applet#start()
+   * @see     java.applet.Applet#stop()
    */
   public void destroy()
   {
@@ -140,9 +139,9 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
    * The implementation of this method provided by the
    * <code>Applet</code> class does nothing.
    *
-   * @see     Applet#destroy()
-   * @see     Applet#start()
-   * @see     Applet#stop()
+   * @see     java.applet.Applet#destroy()
+   * @see     java.applet.Applet#start()
+   * @see     java.applet.Applet#stop()
    */
   public void init()
   {
@@ -168,7 +167,7 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
    *
    * @return the report that should be previewed.
    */
-  public abstract JFreeReport getReport ();
+  public abstract JFreeReport getReport();
 
   /**
    * Packs the preview component.

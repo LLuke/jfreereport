@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFTextCellStyle.java,v 1.1 2003/06/19 18:50:18 taqua Exp $
+ * $Id: RTFTextCellStyle.java,v 1.2 2003/06/26 19:55:57 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 18-Jun-2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.targets.table.rtf;
@@ -73,7 +73,7 @@ public class RTFTextCellStyle extends RTFCellStyle
    * @throws NullPointerException if one of the alignment parameters is null.
    */
   public RTFTextCellStyle(FontDefinition font, BaseFont baseFont, Color fontColor,
-      ElementAlignment verticalAlignment, ElementAlignment horizontalAlignment)
+                          ElementAlignment verticalAlignment, ElementAlignment horizontalAlignment)
   {
     super(verticalAlignment, horizontalAlignment);
     this.font = font;
@@ -106,7 +106,7 @@ public class RTFTextCellStyle extends RTFCellStyle
    *
    * @param p the iText chunk, which should be formated.
    */
-  public void applyTextStyle (Chunk p)
+  public void applyTextStyle(Chunk p)
   {
     int style = Font.NORMAL;
     if (font.isBold())
@@ -136,7 +136,7 @@ public class RTFTextCellStyle extends RTFCellStyle
       family = Font.TIMES_ROMAN;
     }
 */
-   // p.setFont(new Font(family, font.getFontSize(), style, getFontColor()));
-    p.setFont(new Font (baseFont, font.getFontSize(), style, getFontColor()));
+    // p.setFont(new Font(family, font.getFontSize(), style, getFontColor()));
+    p.setFont(new Font(baseFont, font.getFontSize(), style, getFontColor()));
   }
 }

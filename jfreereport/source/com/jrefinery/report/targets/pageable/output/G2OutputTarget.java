@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.38 2003/05/14 22:26:39 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.39 2003/06/13 16:21:37 taqua Exp $
  *
  * Changes
  * -------
@@ -129,19 +129,19 @@ public class G2OutputTarget extends AbstractOutputTarget
   private static void applyStandardRenderingHints(Graphics2D g2)
   {
     g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-                        RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        RenderingHints.VALUE_FRACTIONALMETRICS_ON);
     if (DefaultSizeCalculator.getFrcDetector().isAliased())
     {
       g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                          RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+          RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     }
     else
     {
       g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                          RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+          RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
     }
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_OFF);
+        RenderingHints.VALUE_ANTIALIAS_OFF);
   }
 
   /**
@@ -306,9 +306,9 @@ public class G2OutputTarget extends AbstractOutputTarget
     Rectangle2D pageBounds = currentPage.getBounds();
     PageFormat currentPageFormat = page.getPageFormat();
     Rectangle2D bounds = new Rectangle2D.Float((float) currentPageFormat.getImageableX(),
-                                               (float) currentPageFormat.getImageableY(),
-                                               (float) currentPageFormat.getImageableWidth() + 1,
-                                               (float) currentPageFormat.getImageableHeight() + 1);
+        (float) currentPageFormat.getImageableY(),
+        (float) currentPageFormat.getImageableWidth() + 1,
+        (float) currentPageFormat.getImageableHeight() + 1);
     g2.clip(bounds);
     g2.transform(AffineTransform.getTranslateInstance(
         currentPageFormat.getImageableX() + pageBounds.getX(),
@@ -327,9 +327,9 @@ public class G2OutputTarget extends AbstractOutputTarget
     Rectangle2D pageBounds = currentPage.getBounds();
     g2.setClip(originalClip);
     g2.transform(AffineTransform.getTranslateInstance(0 - currentPageFormat.getImageableX()
-                                                      - pageBounds.getX(),
-                                                      0 - currentPageFormat.getImageableY()
-                                                      - pageBounds.getY()));
+        - pageBounds.getX(),
+        0 - currentPageFormat.getImageableY()
+        - pageBounds.getY()));
     restoreState();
   }
 
@@ -442,19 +442,19 @@ public class G2OutputTarget extends AbstractOutputTarget
       try
       {
         g2.clip(
-          new Rectangle2D.Float(0, 0,
-                                (float) (Math.min(bounds.getWidth(), myBounds.getWidth())),
-                                (float) (Math.min(bounds.getHeight(), myBounds.getHeight())))
+            new Rectangle2D.Float(0, 0,
+                (float) (Math.min(bounds.getWidth(), myBounds.getWidth())),
+                (float) (Math.min(bounds.getHeight(), myBounds.getHeight())))
         );
         g2.transform(AffineTransform.getScaleInstance(image.getScaleX(), image.getScaleY()));
         while (g2.drawImage(image.getImage(),
-                            (int) -myBounds.getX(), (int) -myBounds.getY(), null) == false)
+            (int) -myBounds.getX(), (int) -myBounds.getY(), null) == false)
         {
           WaitingImageObserver obs = new WaitingImageObserver(image.getImage());
           obs.waitImageLoaded();
           if (obs.isError())
           {
-            Log.warn ("The image observer detected an error while loading the Image");
+            Log.warn("The image observer detected an error while loading the Image");
             break;
           }
         }
@@ -470,7 +470,7 @@ public class G2OutputTarget extends AbstractOutputTarget
     }
     else
     {
-      Log.warn ("The image-reference contained no content!");
+      Log.warn("The image-reference contained no content!");
     }
   }
 
@@ -604,13 +604,13 @@ public class G2OutputTarget extends AbstractOutputTarget
     Graphics2D target = (Graphics2D) g2.create();
     target.translate(-clipBounds.getX(), -clipBounds.getY());
     target.clip(new Rectangle2D.Float(0, 0,
-                                      (float) clipBounds.getWidth(),
-                                      (float) clipBounds.getHeight()));
+        (float) clipBounds.getWidth(),
+        (float) clipBounds.getHeight()));
 
     Dimension2D drawableSize = drawable.getDrawableSize();
     Rectangle2D drawBounds = new Rectangle2D.Float(0, 0,
-                                                   (float) drawableSize.getWidth(),
-                                                   (float) drawableSize.getHeight());
+        (float) drawableSize.getWidth(),
+        (float) drawableSize.getHeight());
     drawable.getDrawable().draw(target, drawBounds);
     target.dispose();
   }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProducer.java,v 1.8 2003/06/16 15:34:00 taqua Exp $
+ * $Id: RTFProducer.java,v 1.9 2003/06/26 15:18:57 taqua Exp $
  *
  * Changes
  * -------
@@ -87,7 +87,7 @@ public class RTFProducer extends TableProducer
   public RTFProducer(OutputStream outputStream, boolean strictLayout)
   {
     super(strictLayout);
-    if (outputStream == null) 
+    if (outputStream == null)
     {
       throw new NullPointerException();
     }
@@ -102,7 +102,7 @@ public class RTFProducer extends TableProducer
   {
     // rtf does not support PageFormats or other meta data...
     document = new Document();
-    RtfWriter.getInstance(document, new NoCloseOutputStream (outputStream));
+    RtfWriter.getInstance(document, new NoCloseOutputStream(outputStream));
     document.open();
   }
 
@@ -164,9 +164,9 @@ public class RTFProducer extends TableProducer
     {
       return;
     }
-    if (bT.equals(bB) && bT.equals(bL) && bT.equals(bR) 
-        && bg.getBorderSizeBottom() == bg.getBorderSizeTop() 
-        && bg.getBorderSizeBottom() == bg.getBorderSizeLeft() 
+    if (bT.equals(bB) && bT.equals(bL) && bT.equals(bR)
+        && bg.getBorderSizeBottom() == bg.getBorderSizeTop()
+        && bg.getBorderSizeBottom() == bg.getBorderSizeLeft()
         && bg.getBorderSizeBottom() == bg.getBorderSizeRight())
     {
       cell.setBorderColor(bT);
@@ -180,8 +180,8 @@ public class RTFProducer extends TableProducer
    * @param layout the layouted table content.
    * @throws DocumentException if an error occured when generating the document.
    */
-  private void generatePage (TableGridLayout layout)
-    throws DocumentException
+  private void generatePage(TableGridLayout layout)
+      throws DocumentException
   {
     Table table = new Table(layout.getWidth(), layout.getHeight());
     table.setAutoFillEmptyCells(false);

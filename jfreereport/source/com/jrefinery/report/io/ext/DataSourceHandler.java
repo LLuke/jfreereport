@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceHandler.java,v 1.11 2003/06/10 16:07:49 taqua Exp $
+ * $Id: DataSourceHandler.java,v 1.12 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public class DataSourceHandler extends CompoundObjectHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public DataSourceHandler(Parser parser, String finishTag, String type)
-    throws SAXException
+      throws SAXException
   {
     super(parser, finishTag, lookupObjectDescription(parser, type));
   }
@@ -90,8 +90,8 @@ public class DataSourceHandler extends CompoundObjectHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  private static ObjectDescription lookupObjectDescription (Parser parser, String type)
-    throws SAXException
+  private static ObjectDescription lookupObjectDescription(Parser parser, String type)
+      throws SAXException
   {
     DataSourceCollector fc = (DataSourceCollector) parser.getHelperObject(
         ParserConfigHandler.DATASOURCE_FACTORY_TAG);

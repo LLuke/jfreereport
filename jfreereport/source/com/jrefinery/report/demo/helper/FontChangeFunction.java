@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontChangeFunction.java,v 1.14 2003/06/01 17:39:24 taqua Exp $
+ * $Id: FontChangeFunction.java,v 1.1 2003/06/19 18:46:35 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
   /**
    * DefaultConstructor.
    */
-  public FontChangeFunction ()
+  public FontChangeFunction()
   {
   }
 
@@ -77,17 +77,17 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
    *
    * @param event the report event.
    */
-  public void itemsAdvanced (ReportEvent event)
+  public void itemsAdvanced(ReportEvent event)
   {
     // if this is a preparerun, nothing gets printed and so no font change is required.
-    if (event.getState ().isPrepareRun ())
+    if (event.getState().isPrepareRun())
     {
       return;
     }
 
     // Try to get the name of the font to be set.
     // If the name is null, return without an excpetion, just do nothing.
-    String fontname = (String) event.getDataRow().get (1);
+    String fontname = (String) event.getDataRow().get(1);
     if (fontname == null)
     {
       return;
@@ -95,14 +95,14 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
 
     // Lookup the element by name. If there no element found, the getElement function
     // returns null, so we have to check this case.
-    Element e = event.getReport ().getItemBand ().getElement (getElement ());
+    Element e = event.getReport().getItemBand().getElement(getElement());
 
     // set the font if an element was found.
     if (e != null && (e instanceof TextElement))
     {
       TextElement tx = (TextElement) e;
-      tx.getStyle().setFontDefinitionProperty (
-          new FontDefinition(new Font (fontname, Font.PLAIN, 10)));
+      tx.getStyle().setFontDefinitionProperty(
+          new FontDefinition(new Font(fontname, Font.PLAIN, 10)));
     }
   }
 
@@ -112,14 +112,14 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
    * <p>
    * @see #setElement(java.lang.String)
    *
-   * @throws com.jrefinery.report.function.FunctionInitializeException if the element name has not been specified.
+   * @throws FunctionInitializeException if the element name has not been specified.
    */
-  public void initialize () throws FunctionInitializeException
+  public void initialize() throws FunctionInitializeException
   {
-    super.initialize ();
-    if (getProperty ("element") == null)
+    super.initialize();
+    if (getProperty("element") == null)
     {
-      throw new FunctionInitializeException ("Element name must be specified");
+      throw new FunctionInitializeException("Element name must be specified");
     }
   }
 
@@ -131,9 +131,9 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
    *
    * @param name  the element name.
    */
-  public void setElement (String name)
+  public void setElement(String name)
   {
-    setProperty ("element", name);
+    setProperty("element", name);
   }
 
   /**
@@ -142,9 +142,9 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
    *
    * @return the element name.
    */
-  public String getElement ()
+  public String getElement()
   {
-    return getProperty ("element", "");
+    return getProperty("element", "");
   }
 
   /**
@@ -153,7 +153,7 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
    *
    * @return always null, as this function does not calculate something.
    */
-  public Object getValue ()
+  public Object getValue()
   {
     return null;
   }

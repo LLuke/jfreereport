@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.12 2003/04/05 18:57:18 taqua Exp $
+ * $Id: ShapeOperationModule.java,v 1.13 2003/04/09 15:52:54 mungady Exp $
  *
  * Changes
  * -------
@@ -75,8 +75,8 @@ public class ShapeOperationModule extends OperationModule
    * @param bounds  the bounds.
    *
    */
-  public void createOperations (PhysicalOperationsCollector col, Element e, Content value, 
-                                Rectangle2D bounds)
+  public void createOperations(PhysicalOperationsCollector col, Element e, Content value,
+                               Rectangle2D bounds)
   {
     Stroke stroke = (Stroke) e.getStyle().getStyleProperty(ElementStyleSheet.STROKE);
     Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
@@ -96,17 +96,17 @@ public class ShapeOperationModule extends OperationModule
     }
 
     Shape s = sc.getShape();
-    col.addOperation (new PhysicalOperation.SetBoundsOperation (bounds));
-    col.addOperation (new PhysicalOperation.SetStrokeOperation (stroke));
-    col.addOperation (new PhysicalOperation.SetPaintOperation(paint));
+    col.addOperation(new PhysicalOperation.SetBoundsOperation(bounds));
+    col.addOperation(new PhysicalOperation.SetStrokeOperation(stroke));
+    col.addOperation(new PhysicalOperation.SetPaintOperation(paint));
     if (shouldDraw == true)
     {
-      col.addOperation (new PhysicalOperation.PrintShapeOperation(s));
+      col.addOperation(new PhysicalOperation.PrintShapeOperation(s));
     }
 
     if (shouldFill == true)
     {
-      col.addOperation (new PhysicalOperation.PrintFilledShapeOperation(s));
+      col.addOperation(new PhysicalOperation.PrintFilledShapeOperation(s));
     }
   }
 }

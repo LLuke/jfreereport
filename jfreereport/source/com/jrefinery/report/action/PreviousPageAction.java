@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviousPageAction.java,v 1.17 2003/05/02 12:39:33 taqua Exp $
+ * $Id: PreviousPageAction.java,v 1.18 2003/05/14 22:26:37 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import com.jrefinery.report.util.ActionDowngrade;
  * Creates a new PreviousPageAction used by the PreviewPane to directly jump to the previous
  * page of the report. This abstract class is used for initializing the default locales,
  * the actual work is done in an internal subclass in PreviewFrame.
- * 
+ *
  * @author David Gilbert
  */
 public abstract class PreviousPageAction extends AbstractActionDowngrade
@@ -58,16 +58,16 @@ public abstract class PreviousPageAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  protected PreviousPageAction (ResourceBundle resources)
+  protected PreviousPageAction(ResourceBundle resources)
   {
-    putValue (NAME, resources.getString ("action.back.name"));
-    putValue (SHORT_DESCRIPTION, resources.getString ("action.back.description"));
-    putValue (ActionDowngrade.MNEMONIC_KEY, 
-              resources.getObject ("action.back.mnemonic"));
-    putValue (ActionDowngrade.ACCELERATOR_KEY, 
-              resources.getObject ("action.back.accelerator"));
-    putValue (SMALL_ICON, resources.getObject ("action.back.small-icon"));
-    putValue ("ICON24", resources.getObject ("action.back.icon"));
+    putValue(NAME, resources.getString("action.back.name"));
+    putValue(SHORT_DESCRIPTION, resources.getString("action.back.description"));
+    putValue(ActionDowngrade.MNEMONIC_KEY,
+        resources.getObject("action.back.mnemonic"));
+    putValue(ActionDowngrade.ACCELERATOR_KEY,
+        resources.getObject("action.back.accelerator"));
+    putValue(SMALL_ICON, resources.getObject("action.back.small-icon"));
+    putValue("ICON24", resources.getObject("action.back.icon"));
   }
 
 }

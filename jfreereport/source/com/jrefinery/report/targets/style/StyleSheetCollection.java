@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetCollection.java,v 1.6 2003/06/23 16:08:27 taqua Exp $
+ * $Id: StyleSheetCollection.java,v 1.7 2003/06/26 19:55:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -77,7 +77,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
      */
     public StyleCollectionEntry(ElementStyleSheet styleSheet)
     {
-      this (0, styleSheet);
+      this(0, styleSheet);
     }
 
     /**
@@ -158,7 +158,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * @param es the element stylesheet
    * @throws NullPointerException if the given stylesheet is null.
    */
-  public void addStyleSheet (ElementStyleSheet es)
+  public void addStyleSheet(ElementStyleSheet es)
   {
     addStyleSheet(es, true);
   }
@@ -175,7 +175,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * a different stylesheet collection assigned.
    * @throws NullPointerException if the given element stylesheet is null.
    */
-  protected void addStyleSheet (ElementStyleSheet es, boolean updateRefs)
+  protected void addStyleSheet(ElementStyleSheet es, boolean updateRefs)
   {
     if (es == null)
     {
@@ -203,7 +203,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
         }
       }
     }
-  //  */
+    //  */
   }
 
   /**
@@ -212,7 +212,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * @param es the stylesheet that is searched.
    * @return true, if the stylesheet is contained in that collection, false otherwise.
    */
-  private boolean contains (ElementStyleSheet es)
+  private boolean contains(ElementStyleSheet es)
   {
     if (styleSheets.containsKey(es.getName()))
     {
@@ -237,7 +237,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * @param name the name of the stylesheet.
    * @return the found stylesheets as object array or null.
    */
-  public ElementStyleSheet[] getAll (String name)
+  public ElementStyleSheet[] getAll(String name)
   {
     StyleCollectionEntry[] data = (StyleCollectionEntry[])
         styleSheets.toArray(name, new StyleCollectionEntry[styleSheets.getValueCount(name)]);
@@ -360,11 +360,13 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * @param id the instance id of the stylesheet
    * @return the found stylesheet entry or null if not found.
    */
-  private StyleCollectionEntry findStyleSheet (String name, InstanceID id)
+  private StyleCollectionEntry findStyleSheet(String name, InstanceID id)
   {
     int len = styleSheets.getValueCount(name);
     if (len == 0)
+    {
       return null;
+    }
 
     StyleCollectionEntry[] data = (StyleCollectionEntry[])
         styleSheets.toArray(name, new StyleCollectionEntry[len]);
@@ -432,7 +434,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    *
    * @param es the element style sheet whose parents should be added.
    */
-  protected void addParents (ElementStyleSheet es)
+  protected void addParents(ElementStyleSheet es)
   {
     List parents = es.getParents();
     for (int i = 0; i < parents.size(); i++)
@@ -453,7 +455,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * This method is expensive and is (like the whole class) a candidate for
    * an performance redesign ...
    */
-  protected void updateReferences ()
+  protected void updateReferences()
   {
     Iterator keyIterator = styleSheets.keys();
     StyleCollectionEntry[] allElements = new StyleCollectionEntry[0];
@@ -512,7 +514,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * @param es the element stylesheet that should be removed.
    * @return true, if the stylesheet was removed, false otherwise.
    */
-  public boolean remove (ElementStyleSheet es)
+  public boolean remove(ElementStyleSheet es)
   {
     return remove(es, true);
   }
@@ -525,7 +527,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * @param es the element stylesheet that should be removed.
    * @return true, if the stylesheet was removed, false otherwise.
    */
-  protected boolean remove (ElementStyleSheet es, boolean update)
+  protected boolean remove(ElementStyleSheet es, boolean update)
   {
     if (contains(es) == false)
     {
@@ -556,7 +558,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
         ElementStyleSheet esp = (ElementStyleSheet) parents.get(i);
         StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
         sep.setReferenceCount(sep.getReferenceCount() - 1);
-        remove (esp, false);
+        remove(esp, false);
       }
       List defaultParents = es.getDefaultParents();
       for (int i = 0; i < defaultParents.size(); i++)
@@ -564,7 +566,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
         ElementStyleSheet esp = (ElementStyleSheet) defaultParents.get(i);
         StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
         sep.setReferenceCount(sep.getReferenceCount() - 1);
-        remove (esp, false);
+        remove(esp, false);
       }
       if (update)
       {
@@ -581,7 +583,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    *
    * @return the names of all stylesheets.
    */
-  public Iterator keys ()
+  public Iterator keys()
   {
     Set keySet = styleSheets.keySet();
     return Collections.unmodifiableSet(keySet).iterator();

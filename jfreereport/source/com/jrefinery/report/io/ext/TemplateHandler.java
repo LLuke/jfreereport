@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateHandler.java,v 1.12 2003/06/10 16:07:50 taqua Exp $
+ * $Id: TemplateHandler.java,v 1.13 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -85,15 +85,15 @@ public class TemplateHandler implements ElementDefinitionHandler
    */
   public TemplateHandler(Parser parser, String finishTag, TemplateDescription template)
   {
-    if (parser == null) 
+    if (parser == null)
     {
       throw new NullPointerException("Parser is null");
     }
-    if (finishTag == null) 
+    if (finishTag == null)
     {
       throw new NullPointerException("FinishTag is null");
     }
-    if (template == null) 
+    if (template == null)
     {
       throw new NullPointerException("Template is null");
     }
@@ -118,7 +118,7 @@ public class TemplateHandler implements ElementDefinitionHandler
       parameterName = attrs.getValue("name");
       if (parameterName == null)
       {
-        throw new ParseException ("Attribute 'name' is missing.", getParser().getLocator());
+        throw new ParseException("Attribute 'name' is missing.", getParser().getLocator());
       }
       ObjectDescription od = getTemplate();
       Class parameter = od.getParameterDefinition(parameterName);
@@ -148,7 +148,7 @@ public class TemplateHandler implements ElementDefinitionHandler
       parameterName = attrs.getValue("name");
       if (parameterName == null)
       {
-        throw new ParseException ("Attribute 'name' is missing.", getParser().getLocator());
+        throw new ParseException("Attribute 'name' is missing.", getParser().getLocator());
       }
       ObjectDescription od = getTemplate();
       Class parameter = od.getParameterDefinition(parameterName);
@@ -174,8 +174,8 @@ public class TemplateHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + COMPOUND_OBJECT_TAG + ", " + BASIC_OBJECT_TAG + ". ");
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + COMPOUND_OBJECT_TAG + ", " + BASIC_OBJECT_TAG + ". ");
     }
   }
 
@@ -188,7 +188,7 @@ public class TemplateHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char ch[], int start, int length) throws SAXException
+  public void characters(char[] ch, int start, int length) throws SAXException
   {
     // ignore ...
   }
@@ -219,10 +219,10 @@ public class TemplateHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + finishTag + ", "
-                              + COMPOUND_OBJECT_TAG + ", "
-                              + BASIC_OBJECT_TAG + ". ");
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + finishTag + ", "
+          + COMPOUND_OBJECT_TAG + ", "
+          + BASIC_OBJECT_TAG + ". ");
     }
   }
 

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann;
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellData.java,v 1.6 2003/02/26 13:58:02 mungady Exp $
+ * $Id: ExcelCellData.java,v 1.7 2003/05/02 12:40:38 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
  * The cell implementation is responsible for updating the externaly
  * created HSSFCell, so that the format and the data applied to the
  * cell.
- * 
+ *
  * @author Heiko Evermann.
  */
 public abstract class ExcelCellData extends TableCellData
@@ -79,7 +79,7 @@ public abstract class ExcelCellData extends TableCellData
    *
    * @param cell the cell, that should be formated.
    */
-  public abstract void applyContent (HSSFCell cell);
+  public abstract void applyContent(HSSFCell cell);
 
   /**
    * Gets the defined style for this cell.
@@ -120,5 +120,5 @@ public abstract class ExcelCellData extends TableCellData
    *
    * @return true, if the cell is empty, false otherwise.
    */
-  public abstract boolean isEmpty ();
+  public abstract boolean isEmpty();
 }

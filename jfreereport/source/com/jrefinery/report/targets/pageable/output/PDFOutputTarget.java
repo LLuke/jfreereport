@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.40 2003/06/19 18:44:11 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.41 2003/06/26 19:55:57 taqua Exp $
  *
  * Changes
  * -------
@@ -336,14 +336,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
       Image image = getImage(imageRef);
       image.setAbsolutePosition(x, (float) (getPageHeight() - y - bounds.getHeight()));
       image.scaleAbsolute((float) imageBounds.getWidth(),
-                          (float) imageBounds.getHeight());
+          (float) imageBounds.getHeight());
 
       PdfContentByte cb = this.writer.getDirectContent();
 
       cb.rectangle((float) (imageBounds.getX() + x),
-                   (float) (getPageHeight() - imageBounds.getY() - y - bounds.getHeight()),
-                   (float) imageBounds.getWidth(),
-                   (float) imageBounds.getHeight());
+          (float) (getPageHeight() - imageBounds.getY() - y - bounds.getHeight()),
+          (float) imageBounds.getWidth(),
+          (float) imageBounds.getHeight());
       cb.clip();
       cb.newPath();
       cb.addImage(image);
@@ -389,7 +389,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     try
     {
       Rectangle2D drawArea = new Rectangle2D.Float(0, 0, (float) bounds.getWidth(),
-                                                   (float) bounds.getHeight());
+          (float) bounds.getHeight());
       if ((imageRef.getSourceURL() != null) && (drawArea.contains(imageBounds)))
       {
         return Image.getInstance(imageRef.getSourceURL());
@@ -409,9 +409,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
       // since version 0.99 iText supports Alpha-PNGs
       WaitingImageObserver obs = new WaitingImageObserver(imageRef.getImage());
       obs.waitImageLoaded();
- 
+
       PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.ENCODE_ALPHA,
-                                          PngEncoder.FILTER_NONE, 5);
+          PngEncoder.FILTER_NONE, 5);
       byte[] data = encoder.pngEncode();
       return Image.getInstance(data);
     }
@@ -478,14 +478,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
         case PathIterator.SEG_CUBICTO:
           {
             cb.curveTo(params[0], params[1],
-                       params[2], params[3],
-                       params[4], params[5]);
+                params[2], params[3],
+                params[4], params[5]);
             break;
           }
         case PathIterator.SEG_QUADTO:
           {
             cb.curveTo(params[0], params[1],
-                       params[2], params[3]);
+                params[2], params[3]);
             break;
           }
         case PathIterator.SEG_CLOSE:
@@ -548,14 +548,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
         case PathIterator.SEG_CUBICTO:
           {
             cb.curveTo(params[0], params[1],
-                       params[2], params[3],
-                       params[4], params[5]);
+                params[2], params[3],
+                params[4], params[5]);
             break;
           }
         case PathIterator.SEG_QUADTO:
           {
             cb.curveTo(params[0], params[1],
-                       params[2], params[3]);
+                params[2], params[3]);
             break;
           }
         case PathIterator.SEG_CLOSE:
@@ -646,7 +646,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
             ownerpasswordbytes = PDF_PASSWORD_PAD;
           }
           writer.setEncryption(userpasswordbytes, ownerpasswordbytes, getPermissions(),
-                               encrypt.equals(SECURITY_ENCRYPTION_128BIT));
+              encrypt.equals(SECURITY_ENCRYPTION_128BIT));
         }
       }
 
@@ -1007,6 +1007,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     updateBooleanProperty(SECURITY_USERPASSWORD, config);
 
     // encryption needs more info: <undefined> <none> <40> <128>.
+    updateProperty(SECURITY_ENCRYPTION, config);
   }
 
   /**
@@ -1019,7 +1020,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
   {
     String configValue = config.getConfigProperty(CONFIGURATION_PREFIX + key);
     String propertyValue = (String) getProperty(key, configValue);
-    setProperty(key, propertyValue);
+    if (propertyValue != null)
+    {
+      setProperty(key, propertyValue);
+    }
   }
 
   /**
@@ -1122,8 +1126,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
   public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException
   {
     BaseFontRecord record = fontSupport.createBaseFont(font,
-                                                       font.getFontEncoding(getFontEncoding()),
-                                                       false);
+        font.getFontEncoding(getFontEncoding()),
+        false);
     return new PDFSizeCalculator(record.getBaseFont(), font.getFont().getSize2D());
   }
 
@@ -1137,8 +1141,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
     super.setOperationBounds(bounds);
     internalOperationBounds
         = new Rectangle2D.Float((float) (bounds.getX() + currentPageFormat.getImageableX()),
-                                (float) (bounds.getY() + currentPageFormat.getImageableY()),
-                                (float) bounds.getWidth(), (float) bounds.getHeight());
+            (float) (bounds.getY() + currentPageFormat.getImageableY()),
+            (float) bounds.getWidth(), (float) bounds.getHeight());
   }
 
   /**
@@ -1170,16 +1174,16 @@ public class PDFOutputTarget extends AbstractOutputTarget
     Rectangle2D clipBounds = drawable.getClippingBounds();
 
     Graphics2D target = writer.getDirectContent().createGraphics((float) clipBounds.getWidth(),
-                                                                 (float) clipBounds.getHeight());
+        (float) clipBounds.getHeight());
     target.translate(-clipBounds.getX(), -clipBounds.getY());
     target.clip(new Rectangle2D.Float(0, 0,
-                                      (float) clipBounds.getWidth(),
-                                      (float) clipBounds.getHeight()));
+        (float) clipBounds.getWidth(),
+        (float) clipBounds.getHeight()));
 
     Dimension2D drawableSize = drawable.getDrawableSize();
     Rectangle2D drawBounds = new Rectangle2D.Float(0, 0,
-                                                   (float) drawableSize.getWidth(),
-                                                   (float) drawableSize.getHeight());
+        (float) drawableSize.getWidth(),
+        (float) drawableSize.getHeight());
     drawable.getDrawable().draw(target, drawBounds);
     target.dispose();
   }

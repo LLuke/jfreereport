@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyHandler.java,v 1.11 2003/06/10 16:07:49 taqua Exp $
+ * $Id: PropertyHandler.java,v 1.12 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,7 @@ public class PropertyHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public PropertyHandler (Parser parser, String finishTag)
+  public PropertyHandler(Parser parser, String finishTag)
   {
     entityParser = CharacterEntityParser.createXMLEntityParser();
     properties = new Properties();
@@ -126,12 +126,12 @@ public class PropertyHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char ch[], int start, int length) throws SAXException
+  public void characters(char[] ch, int start, int length) throws SAXException
   {
     // accumulate the characters in case the text is split into several chunks...
     if (this.buffer != null)
     {
-      this.buffer.append (String.copyValueOf (ch, start, length));
+      this.buffer.append(String.copyValueOf(ch, start, length));
     }
   }
 

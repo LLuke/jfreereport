@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutAgent.java,v 1.2 2002/12/04 16:20:57 mungady Exp $
+ * $Id: LayoutAgent.java,v 1.3 2002/12/07 14:58:33 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@ package com.jrefinery.report.targets.pageable.pagelayout;
 /**
  * An abstract base class that decides how some layout tasks are done.
  *  No real implementation ... next release ..
- * 
+ *
  * @author Thomas Morgner
  */
 public abstract class LayoutAgent
@@ -65,5 +65,5 @@ public abstract class LayoutAgent
    *
    * @return the progress status.
    */
-  public abstract LayoutAgentProgress processTask (LayoutTask task);
+  public abstract LayoutAgentProgress processTask(LayoutTask task);
 }

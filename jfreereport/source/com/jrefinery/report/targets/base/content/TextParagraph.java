@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.20 2003/05/14 22:26:39 taqua Exp $
+ * $Id: TextParagraph.java,v 1.21 2003/06/16 15:33:51 taqua Exp $
  *
  * Changes
  * -------
@@ -205,7 +205,7 @@ public class TextParagraph extends ContentContainer
     int lineLength = mytext.length();
     if (lineLength == 0)
     {
-      returnLines.add ("");
+      returnLines.add("");
       return returnLines;
     }
 
@@ -256,7 +256,7 @@ public class TextParagraph extends ContentContainer
    * @return true, if this is a whitespace character, but not a
    * linebreak character, false otherwise.
    */
-  private boolean isWhitespace (char c)
+  private boolean isWhitespace(char c)
   {
     if (c == '\n' || c == '\r')
     {

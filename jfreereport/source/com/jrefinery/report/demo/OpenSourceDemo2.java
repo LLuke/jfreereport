@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -162,23 +162,23 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
   {
 
     JFreeReport result = new JFreeReport();
-    
+
     ReportConfiguration config = result.getReportConfiguration();
     config.setConfigProperty("com.jrefinery.report.preview.PreferredWidth", "640.0");
     config.setConfigProperty("com.jrefinery.report.preview.PreferredHeight", "480.0");
 
     // set up the functions...
     PageFunction f1 = new PageFunction("page_number");
-    try 
+    try
     {
       result.addFunction(f1);
     }
-    catch (Exception e) 
+    catch (Exception e)
     {
-        System.err.println(e.toString());
+      System.err.println(e.toString());
     }
-    
-    // set up the item band...    
+
+    // set up the item band...
     ItemBand itemBand = result.getItemBand();
     configureItemBand(itemBand);
 
@@ -211,7 +211,7 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
         "Name"
     );
     field1.getStyle().setFontDefinitionProperty(new FontDefinition("SansSerif",
-                                                                   10, true, false, false, false));
+        10, true, false, false, false));
     band.addElement(field1);
 
     TextElement field2 = ItemFactory.createStringElement(
@@ -237,8 +237,8 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
         "No description available", // null string
         "Description"
     );
-    field3.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
-                                       new Boolean(true));
+    field3.getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, true);
     band.addElement(field3);
 
   }
@@ -264,10 +264,10 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
         "page_number"
     );
     pageNumberField.getStyle().setFontDefinitionProperty(new FontDefinition("SansSerif",
-                                                                   10, true, false, false, false));
+        10, true, false, false, false));
     footer.addElement(pageNumberField);
   }
-  
+
   /**
    * Entry point for running the demo application...
    *

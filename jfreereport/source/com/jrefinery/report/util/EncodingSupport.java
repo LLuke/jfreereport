@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingSupport.java,v 1.5 2003/04/24 18:08:58 taqua Exp $
+ * $Id: EncodingSupport.java,v 1.6 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
  * 13.03.2003 : Initial version
- * 
+ *
  */
 package com.jrefinery.report.util;
 
@@ -44,7 +44,7 @@ import org.jfree.util.Log;
 
 /**
  * A global registry for all supported encodings.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class EncodingSupport
@@ -62,7 +62,7 @@ public class EncodingSupport
    *
    * @return A boolean.
    */
-  public static boolean isSupportedEncoding (String encoding)
+  public static boolean isSupportedEncoding(String encoding)
   {
     if (encoding == null)
     {
@@ -82,13 +82,13 @@ public class EncodingSupport
     try
     {
       TEST_STRING.getBytes(encoding);
-      knownEncodings.put (encoding, Boolean.TRUE);
+      knownEncodings.put(encoding, Boolean.TRUE);
       return true;
     }
     catch (UnsupportedEncodingException ue)
     {
-      knownEncodings.put (encoding, Boolean.FALSE);
-      Log.info (new Log.SimpleMessage ("Encoding ", encoding, " is not supported."));
+      knownEncodings.put(encoding, Boolean.FALSE);
+      Log.info(new Log.SimpleMessage("Encoding ", encoding, " is not supported."));
       return false;
     }
   }

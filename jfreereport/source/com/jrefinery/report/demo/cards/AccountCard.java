@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AccountCard.java,v 1.1 2003/04/02 21:23:59 taqua Exp $
+ * $Id: AccountCard.java,v 1.2 2003/04/09 15:30:26 mungady Exp $
  *
  * Changes
  * -------
@@ -38,35 +38,35 @@ package com.jrefinery.report.demo.cards;
 
 /**
  * A user account card.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class AccountCard extends PersonBoundCard
 {
   /** The login id. */
   private String login;
-  
+
   /** The password. */
   private String password;
 
   /**
    * Creates a new user account card.
-   * 
+   *
    * @param firstName  the first name.
    * @param lastName  the last name.
    * @param cardNr  the card number.
    * @param login  the login id.
    * @param password  the password.
    */
-  public AccountCard(String firstName, String lastName, String cardNr, 
+  public AccountCard(String firstName, String lastName, String cardNr,
                      String login, String password)
   {
     super(firstName, lastName, cardNr);
-    if (login == null) 
+    if (login == null)
     {
       throw new NullPointerException();
     }
-    if (password == null) 
+    if (password == null)
     {
       throw new NullPointerException();
     }
@@ -77,7 +77,7 @@ public class AccountCard extends PersonBoundCard
 
   /**
    * Returns the login id.
-   * 
+   *
    * @return The login id.
    */
   public String getLogin()
@@ -87,7 +87,7 @@ public class AccountCard extends PersonBoundCard
 
   /**
    * Returns the password.
-   * 
+   *
    * @return The password.
    */
   public String getPassword()
@@ -97,7 +97,7 @@ public class AccountCard extends PersonBoundCard
 
   /**
    * Returns the account type (<code>CardType.ACCOUNT</code>).
-   * 
+   *
    * @return The account type.
    */
   public CardType getType()

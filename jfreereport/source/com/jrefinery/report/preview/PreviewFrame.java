@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewFrame.java,v 1.50 2003/05/02 12:40:24 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.51 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -114,7 +114,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
 
   /** A preview proxy. */
   private PreviewProxyBase base;
-  
+
   /** Localised resources. */
   private ResourceBundle resources;
 
@@ -132,9 +132,9 @@ public class PreviewFrame extends JFrame implements PreviewProxy
 
   /**
    * Initialise.
-   * 
+   *
    * @param report  the report.
-   * 
+   *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
   private void init(JFreeReport report) throws ReportProcessingException
@@ -147,7 +147,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
 
   /**
    * Returns the default close action.
-   * 
+   *
    * @return The action.
    */
   public Action createDefaultCloseAction()
@@ -165,7 +165,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
   }
 
   /**
-   * Registers close actions. 
+   * Registers close actions.
    */
   protected void registerCloseActions()
   {
@@ -178,7 +178,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
       public void windowClosing(WindowEvent e)
       {
         base.getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
-                                                         "CloseFrame"));
+            "CloseFrame"));
       }
     }
     );
@@ -201,7 +201,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
 
   /**
    * Returns the preview proxy.
-   * 
+   *
    * @return The proxy.
    */
   public PreviewProxyBase getBase()

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellData.java,v 1.10 2003/05/02 12:40:40 taqua Exp $
+ * $Id: HtmlCellData.java,v 1.11 2003/06/12 19:50:10 taqua Exp $
  *
  * Changes
  * -------
@@ -44,14 +44,14 @@ import com.jrefinery.report.targets.table.TableCellData;
 /**
  * The baseclass for all HTML-Content cells. The cell has a HtmlCellStyle assigned
  * and carries a flag to indicate whether to create XHTML output.
- * 
+ *
  * @author Thomas Morgner
  */
 public abstract class HtmlCellData extends TableCellData
 {
   /** The assigned cell style. */
   private HtmlCellStyle style;
-  
+
   /** a flag indicating whether to generate XHTML for the output. */
   private boolean useXHTML;
 

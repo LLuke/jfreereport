@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldTemplate.java,v 1.6 2003/03/07 16:55:54 taqua Exp $
+ * $Id: NumberFieldTemplate.java,v 1.7 2003/05/02 12:39:44 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
  * 18-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.filter.templates;
@@ -48,14 +48,14 @@ import com.jrefinery.report.filter.StringFilter;
 
 /**
  * A number field template.
- * 
+ *
  * @author Thomas Morgner
  */
 public class NumberFieldTemplate extends AbstractTemplate implements DataRowConnectable
 {
   /** A decimal format filter. */
   private DecimalFormatFilter decimalFormatFilter;
-  
+
   /** A data-row accessor. */
   private DataRowDataSource dataRowDataSource;
 
@@ -63,7 +63,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
   private StringFilter stringFilter;
 
   /**
-   * Creates a new number field template. 
+   * Creates a new number field template.
    */
   public NumberFieldTemplate()
   {
@@ -76,7 +76,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
 
   /**
    * Returns the number formatter.
-   * 
+   *
    * @return The number formatter.
    */
   public DecimalFormat getDecimalFormat()
@@ -86,7 +86,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
 
   /**
    * Sets the number formatter.
-   * 
+   *
    * @param decimalFormat  the number formatter.
    */
   public void setDecimalFormat(DecimalFormat decimalFormat)
@@ -96,7 +96,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
 
   /**
    * Returns the format string.
-   * 
+   *
    * @return The format string.
    */
   public String getFormat()
@@ -106,7 +106,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
 
   /**
    * Sets the format string.
-   * 
+   *
    * @param format  the format string.
    */
   public void setFormat(String format)
@@ -116,7 +116,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
 
   /**
    * Returns the field name.
-   * 
+   *
    * @return The field name.
    */
   public String getField()
@@ -126,7 +126,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
 
   /**
    * Sets the field name.
-   * 
+   *
    * @param field  the field name.
    */
   public void setField(String field)
@@ -136,7 +136,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
 
   /**
    * Returns the string that represents a <code>null</code> value.
-   * 
+   *
    * @return A string.
    */
   public String getNullValue()
@@ -146,7 +146,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
 
   /**
    * Sets the string that represents a <code>null</code> value.
-   * 
+   *
    * @param nullValue  the string that represents a <code>null</code> value.
    */
   public void setNullValue(String nullValue)

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WordBreakIterator.java,v 1.5 2003/05/02 16:35:04 taqua Exp $
+ * $Id: WordBreakIterator.java,v 1.6 2003/05/11 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -41,14 +41,14 @@ package com.jrefinery.report.util;
  * delimeters as simple whitespaces.
  * <p>
  * This class is not synchronized.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class WordBreakIterator
 {
   /** A useful constant. */
   public static final int DONE = -1;
-  
+
   /** The current position. */
   private int position;
 
@@ -57,7 +57,7 @@ public class WordBreakIterator
 
   /**
    * Creates a new iterator.
-   * 
+   *
    * @param text  the text to break.
    */
   public WordBreakIterator(String text)
@@ -67,20 +67,20 @@ public class WordBreakIterator
 
   /**
    * Returns the next word boundary.
-   * 
+   *
    * @return The index of the next word boundary.
    */
   public int next()
   {
-    if (position == DONE) 
+    if (position == DONE)
     {
       return DONE;
     }
-    if (text == null) 
+    if (text == null)
     {
       return DONE;
     }
-    if (position == text.length) 
+    if (position == text.length)
     {
       return DONE;
     }
@@ -110,10 +110,10 @@ public class WordBreakIterator
   /**
    * Same like next(), but returns the End-Of-Text as
    * if there was a linebreak added (Reader.readLine() compatible)
-   * 
+   *
    * @return  The next position.
    */
-  public int nextWithEnd ()
+  public int nextWithEnd()
   {
     int pos = position;
     if (pos == DONE || pos == text.length)
@@ -130,7 +130,7 @@ public class WordBreakIterator
 
   /**
    * Returns the position of the previous break.
-   * 
+   *
    * @return The index.
    */
   public int previous()
@@ -175,7 +175,7 @@ public class WordBreakIterator
 
   /**
    * Returns the text to be broken up.
-   * 
+   *
    * @return the text.
    */
   public String getText()
@@ -185,7 +185,7 @@ public class WordBreakIterator
 
   /**
    * Sets the text to be broken up.
-   * 
+   *
    * @param text  the text.
    */
   public void setText(String text)
@@ -238,5 +238,5 @@ public class WordBreakIterator
       System.out.println ("Pos: " + wb.getPosition());
     }
   }
-*/  
+*/
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SerializeMethod.java,v 1.3 2003/06/15 21:26:30 taqua Exp $
+ * $Id: SerializeMethod.java,v 1.4 2003/06/19 18:44:11 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 30-May-2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.util;
@@ -57,7 +57,7 @@ public interface SerializeMethod
    * @param out the outputstream that should receive the object.
    * @throws IOException if an I/O error occured.
    */
-  public void writeObject (Object o, ObjectOutputStream out) throws IOException;
+  public void writeObject(Object o, ObjectOutputStream out) throws IOException;
 
   /**
    * Reads the object from the object input stream.
@@ -67,12 +67,12 @@ public interface SerializeMethod
    * @throws IOException if reading the stream failed.
    * @throws ClassNotFoundException if serialized object class cannot be found.
    */
-  public Object readObject (ObjectInputStream in) throws IOException, ClassNotFoundException;
+  public Object readObject(ObjectInputStream in) throws IOException, ClassNotFoundException;
 
   /**
    * The class of the object, which this object can serialize.
    *
    * @return the class of the object type, which this method handles.
    */
-  public Class getObjectClass ();
+  public Class getObjectClass();
 }

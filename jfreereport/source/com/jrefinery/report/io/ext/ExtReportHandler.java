@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.12 2003/05/14 22:26:38 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.13 2003/06/04 21:09:06 taqua Exp $
  *
  * Changes
  * -------
@@ -112,14 +112,14 @@ public class ExtReportHandler implements ElementDefinitionHandler
     createDataSourceFactoryHolder();
     createElementFactoryHolder();
 
-    DataSourceCollector dsfc =
-        (DataSourceCollector) getParser().getHelperObject(ParserConfigHandler.DATASOURCE_FACTORY_TAG);
+    DataSourceCollector dsfc = (DataSourceCollector)
+        getParser().getHelperObject(ParserConfigHandler.DATASOURCE_FACTORY_TAG);
     dsfc.configure(getParser());
-    ClassFactoryCollector cffc =
-        (ClassFactoryCollector) getParser().getHelperObject(ParserConfigHandler.OBJECT_FACTORY_TAG);
+    ClassFactoryCollector cffc = (ClassFactoryCollector)
+        getParser().getHelperObject(ParserConfigHandler.OBJECT_FACTORY_TAG);
     cffc.configure(getParser());
-    TemplateCollector tffc =
-        (TemplateCollector) getParser().getHelperObject(ParserConfigHandler.TEMPLATE_FACTORY_TAG);
+    TemplateCollector tffc = (TemplateCollector)
+        getParser().getHelperObject(ParserConfigHandler.TEMPLATE_FACTORY_TAG);
     tffc.configure(getParser());
 
   }
@@ -133,7 +133,7 @@ public class ExtReportHandler implements ElementDefinitionHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
-    throws SAXException
+      throws SAXException
   {
     if (tagName.equals(PARSER_CONFIG_TAG))
     {
@@ -166,21 +166,21 @@ public class ExtReportHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + PARSER_CONFIG_TAG + ", "
-                              + REPORT_DESCRIPTION_TAG + ", "
-                              + REPORT_CONFIG_TAG + ", "
-                              + STYLES_TAG + ", "
-                              + TEMPLATES_TAG + ", "
-                              + FUNCTIONS_TAG + ", "
-                              + DATA_DEFINITION_TAG + ".");
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + PARSER_CONFIG_TAG + ", "
+          + REPORT_DESCRIPTION_TAG + ", "
+          + REPORT_CONFIG_TAG + ", "
+          + STYLES_TAG + ", "
+          + TEMPLATES_TAG + ", "
+          + FUNCTIONS_TAG + ", "
+          + DATA_DEFINITION_TAG + ".");
     }
   }
 
   /**
    * Creates a class factory collector.
    */
-  private void createClassFactoryHolder ()
+  private void createClassFactoryHolder()
   {
     ClassFactoryCollector fc = (ClassFactoryCollector) getParser().getHelperObject(
         ParserConfigHandler.OBJECT_FACTORY_TAG);
@@ -197,7 +197,7 @@ public class ExtReportHandler implements ElementDefinitionHandler
   /**
    * Creates a style-key factory collector.
    */
-  private void createStyleKeyFactoryHolder ()
+  private void createStyleKeyFactoryHolder()
   {
     StyleKeyFactoryCollector fc = (StyleKeyFactoryCollector) getParser().getHelperObject(
         ParserConfigHandler.STYLEKEY_FACTORY_TAG);
@@ -211,7 +211,7 @@ public class ExtReportHandler implements ElementDefinitionHandler
   /**
    * Creates a template collector.
    */
-  private void createTemplateFactoryHolder ()
+  private void createTemplateFactoryHolder()
   {
     TemplateCollector fc = (TemplateCollector) getParser().getHelperObject(
         ParserConfigHandler.TEMPLATE_FACTORY_TAG);
@@ -225,7 +225,7 @@ public class ExtReportHandler implements ElementDefinitionHandler
   /**
    * Creates a data source collector.
    */
-  private void createDataSourceFactoryHolder ()
+  private void createDataSourceFactoryHolder()
   {
     DataSourceCollector fc = (DataSourceCollector) getParser().getHelperObject(
         ParserConfigHandler.DATASOURCE_FACTORY_TAG);
@@ -243,7 +243,7 @@ public class ExtReportHandler implements ElementDefinitionHandler
   /**
    * Creates an element factory collector.
    */
-  private void createElementFactoryHolder ()
+  private void createElementFactoryHolder()
   {
     ElementFactoryCollector fc = (ElementFactoryCollector) getParser().getHelperObject(
         ParserConfigHandler.ELEMENT_FACTORY_TAG);
@@ -261,7 +261,7 @@ public class ExtReportHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
   {
     // characters are ignored at this point...
   }
@@ -309,14 +309,14 @@ public class ExtReportHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
-                              + REPORT_DESCRIPTION_TAG + ", "
-                              + PARSER_CONFIG_TAG + ", "
-                              + REPORT_CONFIG_TAG + ", "
-                              + STYLES_TAG + ", "
-                              + TEMPLATES_TAG + ", "
-                              + FUNCTIONS_TAG + ", "
-                              + DATA_DEFINITION_TAG + ".");
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
+          + REPORT_DESCRIPTION_TAG + ", "
+          + PARSER_CONFIG_TAG + ", "
+          + REPORT_CONFIG_TAG + ", "
+          + STYLES_TAG + ", "
+          + TEMPLATES_TAG + ", "
+          + FUNCTIONS_TAG + ", "
+          + DATA_DEFINITION_TAG + ".");
     }
   }
 

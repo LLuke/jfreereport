@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SampleData5.java,v 1.6 2003/01/07 15:10:12 taqua Exp $
+ * $Id: SampleData5.java,v 1.7 2003/04/02 21:13:50 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,7 +51,7 @@ public class SampleData5 extends AbstractTableModel
   /**
    * Default constructor - builds a sample data source.
    */
-  public SampleData5 ()
+  public SampleData5()
   {
   }
 
@@ -60,7 +60,7 @@ public class SampleData5 extends AbstractTableModel
    *
    * @return the row count.
    */
-  public int getRowCount ()
+  public int getRowCount()
   {
     return 120000;
   }
@@ -70,7 +70,7 @@ public class SampleData5 extends AbstractTableModel
    *
    * @return the column count.
    */
-  public int getColumnCount ()
+  public int getColumnCount()
   {
     return 5;
   }
@@ -82,7 +82,7 @@ public class SampleData5 extends AbstractTableModel
    *
    * @return the column class.
    */
-  public Class getColumnClass (int column)
+  public Class getColumnClass(int column)
   {
     return Number.class;
   }
@@ -94,7 +94,7 @@ public class SampleData5 extends AbstractTableModel
    *
    * @return the column name.
    */
-  public String getColumnName (int column)
+  public String getColumnName(int column)
   {
     if (column == 0)
     {
@@ -130,9 +130,9 @@ public class SampleData5 extends AbstractTableModel
    *
    * @return the value.
    */
-  public Object getValueAt (int row, int column)
+  public Object getValueAt(int row, int column)
   {
-    return new Long ((long) (row / Math.pow (10, 4 - column)));
+    return new Long((long) (row / Math.pow(10, 4 - column)));
   }
 
 }

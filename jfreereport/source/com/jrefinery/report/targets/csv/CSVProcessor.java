@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.13 2003/04/09 16:13:25 mungady Exp $
+ * $Id: CSVProcessor.java,v 1.14 2003/05/02 12:40:31 taqua Exp $
  *
  * Changes
  * -------
@@ -37,7 +37,7 @@
  * 04-Feb-2003 : Consistency checks
  * 09-Feb-2003 : Documentation
  * 24-Feb-2003 : Fixed Checkstyle issues (DG);
- * 
+ *
  */
 
 package com.jrefinery.report.targets.csv;
@@ -67,17 +67,17 @@ import com.jrefinery.report.util.NullOutputStream;
  */
 public class CSVProcessor
 {
-  /** 
-   * A key for accessing the separator string in the 
-   * {@link com.jrefinery.report.util.ReportConfiguration}. 
+  /**
+   * A key for accessing the separator string in the
+   * {@link com.jrefinery.report.util.ReportConfiguration}.
    */
   public static final String CSV_SEPARATOR = "com.jrefinery.report.targets.csv.separator";
-  
-  /** 
-   * A key for accessing the 'print data row names' flag in the 
-   * {@link com.jrefinery.report.util.ReportConfiguration}. 
+
+  /**
+   * A key for accessing the 'print data row names' flag in the
+   * {@link com.jrefinery.report.util.ReportConfiguration}.
    */
-  public static final String CSV_DATAROWNAME 
+  public static final String CSV_DATAROWNAME
       = "com.jrefinery.report.targets.csv.write-datarow-names";
 
   /** The default name for the csv writer function used by this processor. */
@@ -85,7 +85,7 @@ public class CSVProcessor
 
   /** The character stream writer to be used by the {@link CSVWriter} function. */
   private Writer writer;
-  
+
   /** The report to be processed. */
   private JFreeReport report;
 
@@ -97,14 +97,14 @@ public class CSVProcessor
    * are not written.
    *
    * @param report  the report to be processed.
-   * 
+   *
    * @throws ReportProcessingException if the report initialisation failed.
    * @throws FunctionInitializeException if the writer initialisation failed.
    */
   public CSVProcessor(JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
-    this (report, report.getReportConfiguration().getConfigProperty(CSV_SEPARATOR, ","));
+    this(report, report.getReportConfiguration().getConfigProperty(CSV_SEPARATOR, ","));
   }
 
   /**
@@ -117,14 +117,14 @@ public class CSVProcessor
    *
    * @param report the report to be processed.
    * @param separator the separator string to mark column boundaries.
-   * 
+   *
    * @throws ReportProcessingException if the report initialisation failed.
    * @throws FunctionInitializeException if the writer initialisation failed.
    */
   public CSVProcessor(JFreeReport report, String separator)
       throws ReportProcessingException, FunctionInitializeException
   {
-    this (report, separator, false);
+    this(report, separator, false);
   }
 
   /**
@@ -137,14 +137,14 @@ public class CSVProcessor
    * @param report  the report to be processed.
    * @param separator the separator string to mark column boundaries.
    * @param writeDataRowNames  controls whether or not the data row names are output.
-   * 
+   *
    * @throws ReportProcessingException if the report initialisation failed.
    * @throws FunctionInitializeException if the writer initialization failed.
    */
   public CSVProcessor(JFreeReport report, String separator, boolean writeDataRowNames)
       throws ReportProcessingException, FunctionInitializeException
   {
-    if (report == null) 
+    if (report == null)
     {
       throw new NullPointerException();
     }
@@ -264,7 +264,7 @@ public class CSVProcessor
       // inner loop: process the complete report, calculate the function values
       // for the current level. Higher level functions are not available in the
       // dataRow.
-      boolean failOnError 
+      boolean failOnError
           = (level == -1) && getReport().getReportConfiguration().isStrictErrorHandling();
 
       while (!state.isFinish())
@@ -275,7 +275,7 @@ public class CSVProcessor
         {
           if (state.isErrorOccured() == true)
           {
-            throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
+            throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
           }
         }
         if (!state.isFinish())
@@ -336,7 +336,7 @@ public class CSVProcessor
    */
   public void processReport() throws ReportProcessingException
   {
-    if (writer == null) 
+    if (writer == null)
     {
       throw new IllegalStateException("No writer defined");
     }
@@ -356,7 +356,7 @@ public class CSVProcessor
         state = state.advance();
         if (failOnError && state.isErrorOccured() == true)
         {
-          throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
+          throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
         }
         if (!state.isFinish())
         {
