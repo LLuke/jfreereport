@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.4 2003/01/22 19:38:28 taqua Exp $
+ * $Id: ElementFactory.java,v 1.5 2003/01/23 18:07:46 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.CharacterEntityParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -108,6 +109,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /** The text element format string. */
   private String textElementFormatString;
 
+  private String resourceBase;
+
   /** Dynamic flag. */
   private boolean textElementDynamic;
 
@@ -154,6 +157,14 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     if (elementName.equals(LABEL_TAG))
     {
       startLabel(atts);
+    }
+    else if (elementName.equals(RESOURCELABEL_TAG))
+    {
+       startResourceLabel(atts);
+    }
+    else if (elementName.equals(RESOURCEFIELD_TAG))
+    {
+       startResourceField(atts);
     }
     else if (elementName.equals(IMAGEREF_TAG))
     {
@@ -277,6 +288,14 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     if (elementName.equals(LABEL_TAG))
     {
       endLabel();
+    }
+    else if (elementName.equals(RESOURCELABEL_TAG))
+    {
+       endResourceLabel();
+    }
+    else if (elementName.equals(RESOURCEFIELD_TAG))
+    {
+       endResourceField();
     }
     else if (elementName.equals(IMAGEREF_TAG))
     {
@@ -761,6 +780,77 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   protected void endImageRef() throws SAXException
   {
   }
+
+  protected void startResourceLabel (Attributes attrs)
+      throws SAXException
+  {
+    getTextElementAttributes(attrs);
+    resourceBase = attrs.getValue(RESOURCEBASE_ATTR);
+
+    if (resourceBase == null)
+    {
+      ReportConfiguration config = getReport().getReportConfiguration();
+      resourceBase = config.getConfigProperty(ReportConfiguration.REPORT_RESOURCE_BUNDLE);
+      if (resourceBase == null)
+      {
+        throw new SAXException("Resourcebase is not defined");
+      }
+    }
+
+    clearCurrentText();
+  }
+
+  protected void startResourceField (Attributes attrs)
+    throws SAXException
+  {
+    getDataElementAttributes(attrs);
+    resourceBase = attrs.getValue(RESOURCEBASE_ATTR);
+
+    if (resourceBase == null)
+    {
+      ReportConfiguration config = getReport().getReportConfiguration();
+      resourceBase = config.getConfigProperty(ReportConfiguration.REPORT_RESOURCE_BUNDLE);
+      if (resourceBase == null)
+      {
+        throw new SAXException("Resourcebase is not defined");
+      }
+    }
+  }
+
+  protected void endResourceLabel ()
+  {
+    TextElement te = ItemFactory.createResourceLabel(textElementName,
+        textElementBounds,
+        textElementColor,
+        textElementAlignment,
+        textElementVerticalAlignment,
+        null,
+        textElementNullString,
+        resourceBase,
+        getCurrentText());
+    FontFactory.applyFontInformation(te.getStyle(), textElementFont);
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (textElementDynamic));
+    getCurrentBand().addElement(te);
+  }
+
+  protected void endResourceField ()
+  {
+    TextElement te = ItemFactory.createResourceElement(textElementName,
+        textElementBounds,
+        textElementColor,
+        textElementAlignment,
+        textElementVerticalAlignment,
+        null,
+        textElementNullString,
+        resourceBase,
+        textElementSourceName);
+    FontFactory.applyFontInformation(te.getStyle(), textElementFont);
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (textElementDynamic));
+    getCurrentBand().addElement(te);
+  }
+
 
   /**
    * Ends the multiline text element and adds it to the current band.

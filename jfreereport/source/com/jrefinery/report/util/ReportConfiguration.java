@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.26 2003/01/14 23:48:12 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.27 2003/01/24 16:39:10 taqua Exp $
  *
  * Changes
  * -------
@@ -360,6 +360,8 @@ public class ReportConfiguration
 
   /** disable DTD validation by default */
   public static final String PARSER_VALIDATE_DEFAULT = "false";
+
+  public static final String REPORT_RESOURCE_BUNDLE = "com.jrefinery.report.ResourceBundle";
 
   /** Storage for the configuration properties. */
   private Properties configuration;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowDataSource.java,v 1.4 2002/12/06 17:21:42 mungady Exp $
+ * $Id: DataRowDataSource.java,v 1.5 2002/12/18 20:31:47 taqua Exp $
  *
  * Changes
  * -------
@@ -191,7 +191,7 @@ public class DataRowDataSource implements DataSource, DataRowConnectable
    *
    * @return the data-row.
    */
-  protected DataRow getDataRow ()
+  public DataRow getDataRow ()
   {
     return dataRow;
   }

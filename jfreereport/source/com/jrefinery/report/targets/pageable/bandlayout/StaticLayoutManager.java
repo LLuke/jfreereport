@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.9 2003/01/07 15:10:34 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.10 2003/01/21 17:11:38 taqua Exp $
  *
  * Changes
  * -------
@@ -204,27 +204,15 @@ public class StaticLayoutManager implements BandLayoutManager
       ElementLayoutInformation eli = new ElementLayoutInformation(absPos, minSize, maxSize, prefSize);
       Content content = mod.createContentForElement(e, eli, getOutputTarget());
       Rectangle2D contentBounds = content.getMinimumContentSize();
-      if (e.getName().equals("trace"))
-      {
-        Log.debug ("Calc: Content: " + contentBounds);
-        Log.debug ("Calc: Container: " + conBounds);
-        Log.debug ("Calc: Min: " + minSize);
-        Log.debug ("Calc: Max: " + maxSize);
-        Log.debug ("Calc: Pref: " + prefSize);
-        Log.debug ("Calc: Point: " + absPos);
-      }
-
       if (contentBounds == null)
       {
-        Log.debug ("Null-Content: " + content);
-        Log.debug ("Elemnt: " + e);
         return new FloatDimension();
       }
       return new FloatDimension(contentBounds.getWidth(), contentBounds.getHeight());
     }
     catch (Exception ex)
     {
-      Log.warn ("Unable to calculate the content bounds: ", ex);
+      Log.warn ("Error while calculating the content bounds: ", ex);
       return new FloatDimension(bounds.getWidth(), bounds.getHeight());
     }
 

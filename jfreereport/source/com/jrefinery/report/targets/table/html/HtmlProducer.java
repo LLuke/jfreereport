@@ -2,15 +2,17 @@
  * Date: Jan 18, 2003
  * Time: 8:06:54 PM
  *
- * $Id: HtmlProducer.java,v 1.3 2003/01/22 19:38:32 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.4 2003/01/23 18:07:46 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.io.ext.factory.objects.ColorObjectDescription;
 import com.jrefinery.report.targets.table.TableCellDataFactory;
 import com.jrefinery.report.targets.table.TableGridPosition;
 import com.jrefinery.report.targets.table.TableProducer;
+import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.util.CharacterEntityParser;
 import com.jrefinery.report.util.Log;
 
@@ -102,13 +104,13 @@ public class HtmlProducer extends TableProducer
                        "\" colspan=\"" +
                        gridPosition.getColSpan() +
                        "\">");
-          Font font = cellData.getStyle().getFont();
+          FontDefinition font = cellData.getStyle().getFont();
           String colorValue = getColorString(cellData.getStyle().getFontColor());
 
           pout.print("<span style=\"font-family:'");
-          pout.print(font.getName());
+          pout.print(font.getFontName());
           pout.print("';font-size:");
-          pout.print(font.getSize());
+          pout.print(font.getFontSize());
           if (font.isBold())
           {
             pout.print(";font-weight:bold");
@@ -117,11 +119,29 @@ public class HtmlProducer extends TableProducer
           {
             pout.print(";font-style:italic");
           }
+          if (font.isUnderline() && font.isStrikeThrough())
+          {
+            pout.print(";text-decoration:underline,line-through");
+          }
+          else
+          if (font.isUnderline())
+          {
+            pout.print(";text-decoration:underline");
+          }
+          else if (font.isStrikeThrough())
+          {
+            pout.print(";text-decoration:line-through");
+          }
           if (colorValue != null)
           {
             pout.print(";color:");
             pout.print(colorValue);
           }
+
+          pout.print(";vertical-align:");
+          pout.print(translateVerticalAlignment(cellData.getStyle().getVerticalAlignment()));
+          pout.print(";text-align:");
+          pout.print(translateHorizontalAlignment(cellData.getStyle().getHorizontalAlignment()));
           pout.print("\">");
           printText(entityParser.encodeEntities(cellData.getValue()));
           pout.println("</div>");
@@ -132,6 +152,24 @@ public class HtmlProducer extends TableProducer
       }
       pout.println("</tr>");
     }
+  }
+
+  private String translateHorizontalAlignment (ElementAlignment ea)
+  {
+    if (ea == ElementAlignment.RIGHT)
+      return "right";
+    if (ea == ElementAlignment.CENTER)
+      return "center";
+    return "left";
+  }
+
+  private String translateVerticalAlignment (ElementAlignment ea)
+  {
+    if (ea == ElementAlignment.BOTTOM)
+      return "bottom";
+    if (ea == ElementAlignment.MIDDLE)
+      return "middle";
+    return "top";
   }
 
   private String getColorString (Color color)

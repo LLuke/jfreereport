@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.25 2003/01/15 15:55:39 taqua Exp $
+ * $Id: ItemFactory.java,v 1.26 2003/01/21 17:11:36 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,8 @@ import com.jrefinery.report.filter.templates.ImageURLFieldTemplate;
 import com.jrefinery.report.filter.templates.LabelTemplate;
 import com.jrefinery.report.filter.templates.NumberFieldTemplate;
 import com.jrefinery.report.filter.templates.StringFieldTemplate;
+import com.jrefinery.report.filter.templates.ResourceLabelTemplate;
+import com.jrefinery.report.filter.templates.ResourceFieldTemplate;
 import com.jrefinery.report.function.ExpressionCollection;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
@@ -68,6 +70,7 @@ import java.awt.Font;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.Color;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -1689,5 +1692,77 @@ public class ItemFactory
     e.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
                                   new FloatDimension((float) bounds.getWidth(),
                                                      (float) bounds.getHeight()));
+  }
+
+  public static TextElement createResourceElement(String name,
+                                                  Rectangle2D bounds,
+                                                  Color color,
+                                                  int alignment,
+                                                  int valignment,
+                                                  Font font,
+                                                  String nullValue,
+                                                  String resourceBase,
+                                                  String field)
+  {
+    ResourceFieldTemplate template = new ResourceFieldTemplate();
+    template.setField(field);
+    template.setNullValue(nullValue);
+    template.setResourceClassName(resourceBase);
+
+    TextElement element = new TextElement();
+    if (name != null)
+    {
+      element.setName(name);
+    }
+    setElementBounds(element, bounds);
+    if (color != null)
+    {
+      element.getStyle().setStyleProperty(ElementStyleSheet.PAINT, color);
+    }
+    element.setAlignment(alignment);
+    if (font != null)
+    {
+      element.setFont(font);
+    }
+    element.setDataSource(template);
+    element.setVerticalAlignment(valignment);
+    return element;
+
+  }
+
+  public static TextElement createResourceLabel(String name,
+                                                Rectangle2D bounds,
+                                                Color paint,
+                                                int alignment,
+                                                int valign,
+                                                Font font,
+                                                String nullValue,
+                                                String resourceBase,
+                                                String resourceKey)
+  {
+    ResourceLabelTemplate template = new ResourceLabelTemplate();
+    template.setResourceClassName(resourceBase);
+    template.setContent(resourceKey);
+    template.setNullValue(nullValue);
+
+    TextElement label = new TextElement();
+    if (name != null)
+    {
+      label.setName(name);
+    }
+    setElementBounds(label, bounds);
+    if (paint != null)
+    {
+      label.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
+    }
+    label.setAlignment(alignment);
+    if (font != null)
+    {
+      label.setFont(font);
+    }
+    label.setDataSource(template);
+    label.setVerticalAlignment(valign);
+    return label;
+
   }
 }

@@ -2,7 +2,7 @@
  * Date: Jan 11, 2003
  * Time: 3:13:18 PM
  *
- * $Id: DefaultTemplateCollection.java,v 1.2 2003/01/13 19:01:03 taqua Exp $
+ * $Id: DefaultTemplateCollection.java,v 1.3 2003/01/14 21:08:17 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.templates;
 
@@ -19,5 +19,7 @@ public class DefaultTemplateCollection extends TemplateCollection
     addTemplate(new LabelTemplateDescription("label"));
     addTemplate(new NumberFieldTemplateDescription("number-field"));
     addTemplate(new StringFieldTemplateDescription("string-field"));
+    addTemplate(new ResourceFieldTemplateDescription("resource-field"));
+    addTemplate(new ResourceLabelTemplateDescription("resource-label"));
   }
 }

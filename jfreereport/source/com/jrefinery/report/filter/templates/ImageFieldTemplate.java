@@ -2,11 +2,12 @@
  * Date: Jan 14, 2003
  * Time: 1:42:50 PM
  *
- * $Id$
+ * $Id: ImageFieldTemplate.java,v 1.1 2003/01/14 21:04:50 taqua Exp $
  */
 package com.jrefinery.report.filter.templates;
 
 import com.jrefinery.report.DataRow;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.filter.ImageRefFilter;
 import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.filter.DataRowConnectable;
@@ -52,9 +53,11 @@ public class ImageFieldTemplate extends AbstractTemplate implements DataRowConne
    */
   public Object clone() throws CloneNotSupportedException
   {
+    Log.debug ("PreClone: dataRow = " + dataRowDataSource.getDataRow());
     ImageFieldTemplate template = (ImageFieldTemplate) super.clone();
     template.imageRefFilter = (ImageRefFilter) imageRefFilter.clone();
-    template.dataRowDataSource = (DataRowDataSource) imageRefFilter.getDataSource();
+    template.dataRowDataSource = (DataRowDataSource) template.imageRefFilter.getDataSource();
+    Log.debug ("PostClone: dataRow = " + template.dataRowDataSource.getDataRow());
     return template;
   }
 
@@ -67,6 +70,7 @@ public class ImageFieldTemplate extends AbstractTemplate implements DataRowConne
    */
   public void connectDataRow(DataRow row) throws IllegalStateException
   {
+    Log.debug ("Connect dataRow");
     dataRowDataSource.connectDataRow(row);
   }
 
@@ -82,6 +86,7 @@ public class ImageFieldTemplate extends AbstractTemplate implements DataRowConne
    */
   public void disconnectDataRow(DataRow row) throws IllegalStateException
   {
+    Log.debug ("Dis-Connect dataRow");
     dataRowDataSource.disconnectDataRow(row);
   }
 }

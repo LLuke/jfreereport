@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportDefinitionTags.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: ReportDefinitionTags.java,v 1.2 2003/01/24 16:39:04 taqua Exp $
  *
  * Changes
  * -------
@@ -140,6 +140,15 @@ public interface ReportDefinitionTags
 
   /** Literal text for an XML report element. */
   public static final String MULTILINE_FUNCTION_TAG = "multiline-function";
+
+  /** */
+  public static final String RESOURCELABEL_TAG = "resource-label";
+
+  /** */
+  public static final String RESOURCEFIELD_TAG = "resource-field";
+
+  /** */
+  public static final String RESOURCEBASE_ATTR = "resource-base";
 
   /** Literal text for an XML attribute. */
   public static final String FUNCTIONS_TAG = "functions";

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: First.java,v 1.14 2002/12/18 10:13:15 mungady Exp $
+ * $Id: First.java,v 1.15 2003/01/14 21:03:52 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,6 @@
 
 package com.jrefinery.report.demo;
 
-import com.jrefinery.io.FileUtilities;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.io.ReportGenerator;
@@ -50,7 +49,6 @@ import com.jrefinery.ui.ApplicationFrame;
 import com.jrefinery.ui.RefineryUtilities;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -59,17 +57,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 import java.awt.BorderLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /**
  * A demonstration application.
@@ -152,49 +142,7 @@ public class First extends ApplicationFrame implements ActionListener
    */
   private TableModel readData()
   {
-
-    IconTableModel result = new IconTableModel();
-
-    // find the file on the classpath...
-    File f = FileUtilities.findFileOnClassPath("jlfgr-1_0.jar");
-    if (f == null)
-    {
-      ExceptionDialog.showExceptionDialog("Unable to find jlfgr-1_0.jar",
-          "<html>Unable to load the icons.<br>Please make sure you have the Java Look and Feel "
-          + "Graphics Repository in your classpath.<p>You may download this jar-file from "
-          + "http://developer.java.sun.com/developer/techDocs/hi/repository</html>", null);
-      return result;
-    }
-
-    try
-    {
-      ZipFile iconJar = new ZipFile(f);
-      Enumeration e = iconJar.entries();
-      while (e.hasMoreElements())
-      {
-        ZipEntry ze = (ZipEntry) e.nextElement();
-        String fullName = ze.getName();
-        if (fullName.endsWith(".gif"))
-        {
-          String category = getCategory(fullName);
-          String name = getName(fullName);
-          Image image = getImage(iconJar, ze);
-          Long bytes = new Long(ze.getSize());
-          result.addIconEntry(name, category, image, bytes);
-        }
-      }
-    }
-    catch (IOException e)
-    {
-      ExceptionDialog.showExceptionDialog("Unable to load",
-          "<html>Unable to load the icons.<br>Please make sure you have the Java Look and Feel "
-          + "Graphics Repository in your classpath.<p>You may download this jar-file from "
-          + "http://developer.java.sun.com/developer/techDocs/hi/repository</html>", e
-      );
-    }
-
-    return result;
-
+    return new FirstDemoTableModel();
   }
 
   /**
@@ -272,68 +220,6 @@ public class First extends ApplicationFrame implements ActionListener
     }
     return result;
 
-  }
-
-  /**
-   * Reads an icon from the zip file.
-   *
-   * @param file The zip file.
-   * @param entry The zip entry.
-   *
-   * @return The image.
-   */
-  private Image getImage(ZipFile file, ZipEntry entry)
-  {
-
-    Image result = null;
-    try
-    {
-      InputStream in = new BufferedInputStream(file.getInputStream(entry));
-      byte[] bytes = new byte[(int) entry.getSize()];
-      int count = 0;
-      while (count != bytes.length)
-      {
-        int readBytes = in.read(bytes, count, bytes.length - count);
-        count += readBytes;
-      }
-      ImageIcon temp = new ImageIcon(bytes);
-      result = temp.getImage();
-    }
-    catch (IOException e)
-    {
-      ExceptionDialog.showExceptionDialog("Error on reading ZIP-File",
-                                          "Error the reading an ZIP-Entry", e);
-    }
-    return result;
-
-  }
-
-  /**
-   * For the category, use the subdirectory name.
-   *
-   * @param fullName  the complete file name.
-   *
-   * @return the category.
-   */
-  private String getCategory(String fullName)
-  {
-    int start = fullName.indexOf("/") + 1;
-    int end = fullName.lastIndexOf("/");
-    return fullName.substring(start, end);
-  }
-
-  /**
-   * For the name, strip off the ".gif".
-   *
-   * @param fullName  the complete file name.
-   *
-   * @return the name.
-   */
-  private String getName(String fullName)
-  {
-    int start = fullName.lastIndexOf("/") + 1;
-    int end = fullName.indexOf(".");
-    return fullName.substring(start, end);
   }
 
   /**

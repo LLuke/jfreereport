@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.10 2002/11/07 21:45:27 taqua Exp $
+ * $Id: ImageLoadFilter.java,v 1.11 2002/12/12 12:26:55 mungady Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -175,7 +175,6 @@ public class ImageLoadFilter implements DataFilter
    */
   public Object clone () throws CloneNotSupportedException
   {
-    System.out.println ("ImageLoadFilter: cloned");
     ImageLoadFilter il = (ImageLoadFilter) super.clone ();
     il.imageCache = (KeyedQueue) imageCache.clone ();
     if (source != null)

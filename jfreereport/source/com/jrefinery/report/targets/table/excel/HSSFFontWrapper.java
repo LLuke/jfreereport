@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 4:14:39 PM
  *
- * $Id: HSSFFontWrapper.java,v 1.1 2003/01/14 21:14:15 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
  */
 package com.jrefinery.report.targets.table.excel;
 
@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import com.jrefinery.report.util.StringUtil;
+import com.jrefinery.report.targets.FontDefinition;
 
 public class HSSFFontWrapper
 {
@@ -28,11 +29,13 @@ public class HSSFFontWrapper
   private int fontHeight;
   private boolean bold;
   private boolean italic;
+  private boolean underline;
+  private boolean strikethrough;
   private HSSFFont font;
 
-  public HSSFFontWrapper(Font font, Color color)
+  public HSSFFontWrapper(FontDefinition font, Color color)
   {
-    String fName = font.getName();
+    String fName = font.getFontName();
     if (isSansSerif(fName))
     {
       fontName = "Arial";
@@ -51,9 +54,11 @@ public class HSSFFontWrapper
     }
     
     colorIndex = getNearestColor(color).getIndex();
-    fontHeight = (short) (font.getSize());
+    fontHeight = (short) (font.getFontSize());
     bold = font.isBold();
     italic = font.isItalic();
+    underline = font.isUnderline();
+    strikethrough = font.isStrikeThrough();
     this.font = null;
   }
 
@@ -64,6 +69,8 @@ public class HSSFFontWrapper
     fontHeight = font.getFontHeightInPoints();
     italic = font.getItalic();
     bold = (font.getBoldweight() == HSSFFont.BOLDWEIGHT_BOLD);
+    underline = (font.getUnderline() != HSSFFont.U_NONE);
+    strikethrough = font.getStrikeout();
     this.font = font;
   }
 
@@ -77,6 +84,15 @@ public class HSSFFontWrapper
       font.setFontName(fontName);
       font.setFontHeightInPoints((short) fontHeight);
       font.setItalic(italic);
+      font.setStrikeout(strikethrough);
+      if (underline)
+      {
+        font.setUnderline(HSSFFont.U_SINGLE);
+      }
+      else
+      {
+        font.setUnderline(HSSFFont.U_NONE);
+      }
     }
     return font;
   }
@@ -89,6 +105,8 @@ public class HSSFFontWrapper
     final HSSFFontWrapper wrapper = (HSSFFontWrapper) o;
 
     if (bold != wrapper.bold) return false;
+    if (underline != wrapper.strikethrough) return false;
+    if (strikethrough != wrapper.strikethrough) return false;
     if (colorIndex != wrapper.colorIndex) return false;
     if (fontHeight != wrapper.fontHeight) return false;
     if (italic != wrapper.italic) return false;

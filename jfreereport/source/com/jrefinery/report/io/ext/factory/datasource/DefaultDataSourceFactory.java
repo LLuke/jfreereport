@@ -2,12 +2,21 @@
  * Date: Jan 12, 2003
  * Time: 4:36:42 PM
  *
- * $Id: DefaultDataSourceFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: DefaultDataSourceFactory.java,v 1.2 2003/01/22 19:38:25 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.datasource;
 
 import com.jrefinery.report.io.ext.factory.objects.BeanObjectDescription;
 import com.jrefinery.report.io.ext.factory.datasource.AbstractDataSourceFactory;
+import com.jrefinery.report.io.ext.factory.templates.DateFieldTemplateDescription;
+import com.jrefinery.report.io.ext.factory.templates.ImageFieldTemplateDescription;
+import com.jrefinery.report.io.ext.factory.templates.ImageURLFieldTemplateDescription;
+import com.jrefinery.report.io.ext.factory.templates.ImageURLElementTemplateDescription;
+import com.jrefinery.report.io.ext.factory.templates.LabelTemplateDescription;
+import com.jrefinery.report.io.ext.factory.templates.NumberFieldTemplateDescription;
+import com.jrefinery.report.io.ext.factory.templates.StringFieldTemplateDescription;
+import com.jrefinery.report.io.ext.factory.templates.ResourceFieldTemplateDescription;
+import com.jrefinery.report.io.ext.factory.templates.ResourceLabelTemplateDescription;
 import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.filter.DateFormatFilter;
 import com.jrefinery.report.filter.DateFormatParser;
@@ -25,6 +34,7 @@ import com.jrefinery.report.filter.SimpleDateFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.filter.StringFilter;
 import com.jrefinery.report.filter.URLFilter;
+import com.jrefinery.report.filter.ResourceFileFilter;
 
 public class DefaultDataSourceFactory extends AbstractDataSourceFactory
 {
@@ -47,6 +57,18 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
     registerDataSources("StaticDataSource", new BeanObjectDescription(StaticDataSource.class));
     registerDataSources("StringFilter", new BeanObjectDescription(StringFilter.class));
     registerDataSources("URLFilter", new BeanObjectDescription(URLFilter.class));
+    registerDataSources("ResourceFileFilter", new BeanObjectDescription(ResourceFileFilter.class));
+
+    // templates are also datasources ...
+    registerDataSources("DateFieldTemplate", new DateFieldTemplateDescription("date-field"));
+    registerDataSources("ImageFieldTemplate", new ImageFieldTemplateDescription("image-field"));
+    registerDataSources("ImageURLFieldTemplate", new ImageURLFieldTemplateDescription("image-url-field"));
+    registerDataSources("ImageURLElementTemplate", new ImageURLElementTemplateDescription("image-url-element"));
+    registerDataSources("LabelTemplate", new LabelTemplateDescription("label"));
+    registerDataSources("NumberFieldTemplate", new NumberFieldTemplateDescription("number-field"));
+    registerDataSources("StringFieldTemplate", new StringFieldTemplateDescription("string-field"));
+    registerDataSources("ResourceFieldTemplate", new ResourceFieldTemplateDescription("resource-field"));
+    registerDataSources("ResourceLabelTemplate", new ResourceLabelTemplateDescription("resource-label"));
   }
   
 

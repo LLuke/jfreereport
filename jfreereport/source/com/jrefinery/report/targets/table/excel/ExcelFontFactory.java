@@ -29,7 +29,7 @@
  * based on ideas and code from JRXlsExporter.java of JasperReports
  * Contributor(s):   -;
  *
- * $Id: ExcelFontFactory.java,v 1.1 2003/01/14 21:13:25 taqua Exp $
+ * $Id: ExcelFontFactory.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 
 import com.jrefinery.report.util.StringUtil;
+import com.jrefinery.report.targets.FontDefinition;
 
 /**
  * This class keeps track of all fonts that we have used so far in our Excel file.
@@ -69,7 +70,7 @@ public class ExcelFontFactory
     this.workbook = workbook;
 	}
 
-	public HSSFFont getExcelFont(Font font, Color forecolor)
+	public HSSFFont getExcelFont(FontDefinition font, Color forecolor)
   {
     HSSFFontWrapper wrapper = new HSSFFontWrapper(font, forecolor);
     if (fontList.contains(wrapper))

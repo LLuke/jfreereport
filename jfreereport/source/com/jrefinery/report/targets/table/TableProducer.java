@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 7:19:44 PM
  *
- * $Id$
+ * $Id: TableProducer.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -268,21 +268,14 @@ public abstract class TableProducer
    */
   private void processElement(Rectangle2D bounds, Element e)
   {
-    if (e.isVisible() == false)
-    {
-      return;
-    }
-    if (e.getContentType().equals(TextElement.CONTENT_TYPE) == false)
-    {
-      return;
-    }
-
     Rectangle2D elementBounds = (Rectangle2D)
         e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+
     if (elementBounds == null)
     {
       throw new NullPointerException("No layout for element");
     }
+    
     Rectangle2D drawBounds = translateSubRect(bounds, elementBounds);
     addCell(getCellDataFactory().createCellData(e, drawBounds));
   }

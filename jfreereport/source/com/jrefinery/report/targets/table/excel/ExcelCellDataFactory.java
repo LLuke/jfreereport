@@ -2,20 +2,23 @@
  * Date: Jan 15, 2003
  * Time: 5:01:29 PM
  *
- * $Id: ExcelCellDataFactory.java,v 1.1 2003/01/15 16:54:52 taqua Exp $
+ * $Id: ExcelCellDataFactory.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
  */
 package com.jrefinery.report.targets.table.excel;
 
 import com.jrefinery.report.Element;
+import com.jrefinery.report.filter.DataSource;
+import com.jrefinery.report.filter.templates.DateFieldTemplate;
+import com.jrefinery.report.filter.templates.NumberFieldTemplate;
+import com.jrefinery.report.filter.templates.Template;
 import com.jrefinery.report.targets.table.TableCellData;
 import com.jrefinery.report.targets.table.TableCellDataFactory;
-import com.jrefinery.report.targets.table.excel.DefaultExcelCellData;
-import com.jrefinery.report.targets.table.excel.ExcelCellData;
-import com.jrefinery.report.filter.DataSource;
-import com.jrefinery.report.filter.templates.Template;
+import com.jrefinery.report.util.Log;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 
 import java.awt.geom.Rectangle2D;
+import java.text.ParseException;
+import java.util.Date;
 
 public class ExcelCellDataFactory implements TableCellDataFactory
 {
@@ -31,12 +34,13 @@ public class ExcelCellDataFactory implements TableCellDataFactory
     DataSource ds = element.getDataSource();
     if (ds instanceof Template)
     {
-      return handleTemplate((Template) ds, element, bounds);
+      TableCellData retval = handleTemplate((Template) ds, element, bounds);
+      if (retval != null)
+        return retval;
     }
-    else
-    {
-      return handleFormats (element ,bounds);
-    }
+
+    // fallback, no template or unknown template
+    return handleFormats (element ,bounds);
   }
 
   /**
@@ -48,8 +52,16 @@ public class ExcelCellDataFactory implements TableCellDataFactory
   private ExcelCellData handleFormats (Element e, Rectangle2D bounds)
   {
     HSSFCellStyle style = styleFactory.getExcelCellStyle(e);
-    String value = String.valueOf(e.getValue());
-    return new DefaultExcelCellData (bounds, style, value);
+    Object value = e.getValue();
+    if ((value != null) && (value instanceof String))
+    {
+      String svalue = String.valueOf(e.getValue());
+      return new DefaultExcelCellData (bounds, style, svalue);
+    }
+    else
+    {
+      return new DefaultExcelCellData (bounds, style, "");
+    }
   }
 
   private ExcelCellData handleTemplate (Template template, Element e, Rectangle2D bounds)
@@ -59,7 +71,7 @@ public class ExcelCellDataFactory implements TableCellDataFactory
      * DataFormats will need at least POI 1.9, we are currently using the
      * latest stable version 1.5.1, so we have to wait ...
      */
-    /*
+
     if (template instanceof DateFieldTemplate)
     {
       try
@@ -88,9 +100,7 @@ public class ExcelCellDataFactory implements TableCellDataFactory
         Log.debug ("Unable to restore date:", pe);
       }
     }
-    */
-    String value = String.valueOf(e.getValue());
-    return new DefaultExcelCellData (bounds, style, value);
+    return null;
   }
 
 }
