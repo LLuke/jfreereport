@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.17 2003/01/29 03:13:04 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.18 2003/01/29 18:37:13 taqua Exp $
  *
  * Changes
  * -------
@@ -534,6 +534,10 @@ public class SimplePageLayouter extends PageLayouter
     Rectangle2D bounds = doLayout(b);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
                    bounds.getWidth(), bounds.getHeight());
+    Log.debug ("PrintBottom: " + bounds);
+    Log.debug ("PrintBottom: Reserve_ " + getCursor());
+    Log.debug ("PrintBottom: Bounds_ " + bounds.getHeight());
+    Log.debug ("PrintBottom: LogPage_ " + getLogicalPage().getHeight());
     return doPrint(bounds, b, false);
   }
 

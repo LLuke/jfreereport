@@ -2,7 +2,7 @@
  * Date: Jan 29, 2003
  * Time: 2:30:07 PM
  *
- * $Id$
+ * $Id: PlainTextPage.java,v 1.1 2003/01/29 18:37:12 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
@@ -74,6 +74,16 @@ public class PlainTextPage
     pageBuffer = new TextDataChunk[w][h];
     width = w;
     height = h;
+  }
+
+  public int getWidth()
+  {
+    return width;
+  }
+
+  public int getHeight()
+  {
+    return height;
   }
 
   public void addTextChunk (int x, int y, int w, String text, FontDefinition format)

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.2 2002/12/05 16:49:44 mungady Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.3 2003/01/07 15:10:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -43,6 +43,8 @@
  */
 
 package com.jrefinery.report.targets.pageable.pagelayout;
+
+import com.jrefinery.report.util.Log;
 
 import java.io.Serializable;
 
@@ -118,6 +120,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
     {
       throw new IllegalArgumentException ("Cannot advance negative");
     }
+    Log.debug ("Advanced: " + amount);
     y += amount;
   }
 
@@ -199,6 +202,8 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
     b.append(y);
     b.append(", pagebottom=");
     b.append(pageBottom);
+    b.append(", reserved=");
+    b.append(reserved);
     b.append("}");
 
     return b.toString();

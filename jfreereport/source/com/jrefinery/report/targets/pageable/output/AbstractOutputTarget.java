@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.4 2003/01/29 03:13:03 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.5 2003/01/29 18:37:12 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.LogicalPage;
+import com.jrefinery.report.targets.pageable.AlignedLogicalPageWrapper;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
@@ -107,9 +108,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
   public AbstractOutputTarget(LogicalPage logicalPage)
   {
     properties = new Hashtable();
-    this.logicalPage = logicalPage.newInstance();
+    this.logicalPage = new AlignedLogicalPageWrapper (logicalPage.newInstance(), this);
     this.logicalPage.setOutputTarget(this);
     operationBounds = new Rectangle2D.Double();
+
   }
 
   /**

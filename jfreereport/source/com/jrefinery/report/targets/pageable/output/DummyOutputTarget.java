@@ -2,13 +2,14 @@
  * Date: Jan 29, 2003
  * Time: 8:56:27 PM
  *
- * $Id$
+ * $Id: DummyOutputTarget.java,v 1.1 2003/01/29 21:59:33 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.SizeCalculator;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
@@ -236,5 +237,41 @@ public class DummyOutputTarget extends AbstractOutputTarget
   public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException
   {
     return backend.createTextSizeCalculator(font);
+  }
+
+  /**
+   * Creates and returns a default layout manager for this output target.
+   * <p>
+   * Note that a new layout manager is created every time this method is called.
+   *
+   * @return a default layout manager.
+   */
+  public BandLayoutManager getDefaultLayoutManager()
+  {
+    return backend.getDefaultLayoutManager();
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this
+   * border, so that <code>mod(X, horizontalAlignment) == 0</code> and
+   * <code>mod(Y, verticalAlignment) == 0</code>
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public float getHorizontalAlignmentBorder()
+  {
+    return backend.getHorizontalAlignmentBorder();
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this
+   * border, so that <code>mod(X, horizontalAlignment) == 0</code> and
+   * <code>mod(Y, verticalAlignment) == 0</code>
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public float getVerticalAlignmentBorder()
+  {
+    return backend.getVerticalAlignmentBorder();
   }
 }
