@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementAlignment.java,v 1.4 2003/08/24 15:13:21 taqua Exp $
+ * $Id: ElementAlignment.java,v 1.5 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------
@@ -53,40 +53,35 @@ import org.jfree.report.util.ObjectStreamResolveException;
 public final class ElementAlignment implements Serializable
 {
   /** A constant for left alignment. */
-  public static final ElementAlignment LEFT = new ElementAlignment("LEFT", 1);
+  public static final ElementAlignment LEFT = new ElementAlignment("LEFT");
 
   /** A constant for center alignment (horizontal). */
-  public static final ElementAlignment CENTER = new ElementAlignment("CENTER", 3);
+  public static final ElementAlignment CENTER = new ElementAlignment("CENTER");
 
   /** A constant for right alignment. */
-  public static final ElementAlignment RIGHT = new ElementAlignment("RIGHT", 2);
+  public static final ElementAlignment RIGHT = new ElementAlignment("RIGHT");
 
   /** A constant for top alignment. */
-  public static final ElementAlignment TOP = new ElementAlignment("TOP", 14);
+  public static final ElementAlignment TOP = new ElementAlignment("TOP");
 
   /** A constant for middle alignment (vertical). */
-  public static final ElementAlignment MIDDLE = new ElementAlignment("MIDDLE", 15);
+  public static final ElementAlignment MIDDLE = new ElementAlignment("MIDDLE");
 
   /** A constant for bottom alignment. */
-  public static final ElementAlignment BOTTOM = new ElementAlignment("BOTTOM", 16);
+  public static final ElementAlignment BOTTOM = new ElementAlignment("BOTTOM");
 
   /** The alignment name. */
   private final String myName; // for debug only
-
-  /** The corresponding constant defined in the <code>Element<code> class. */
-  private final int oldAlignment;
 
   /**
    * Creates a new alignment object.  Since this constructor is private, you cannot create new
    * alignment objects, you can only use the predefined constants.
    *
    * @param name  the alignment name.
-   * @param oldAlignment  the old alignment code.
    */
-  private ElementAlignment(final String name, final int oldAlignment)
+  private ElementAlignment(final String name)
   {
     myName = name;
-    this.oldAlignment = oldAlignment;
   }
 
   /**
@@ -120,10 +115,6 @@ public final class ElementAlignment implements Serializable
 
     final ElementAlignment alignment = (ElementAlignment) o;
 
-    if (oldAlignment != alignment.oldAlignment)
-    {
-      return false;
-    }
     if (!myName.equals(alignment.myName))
     {
       return false;
@@ -141,7 +132,6 @@ public final class ElementAlignment implements Serializable
   {
     int result;
     result = myName.hashCode();
-    result = 29 * result + oldAlignment;
     return result;
   }
 

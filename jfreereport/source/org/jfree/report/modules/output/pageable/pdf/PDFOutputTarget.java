@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.9 2003/08/24 15:05:18 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.10 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -114,23 +114,9 @@ import org.jfree.report.util.WaitingImageObserver;
  */
 public class PDFOutputTarget extends AbstractOutputTarget
 {
-  /** The 'PDF embed fonts' property key. */
-  public static final String PDFTARGET_EMBED_FONTS
-      = "org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.EmbedFonts";
-
-  /** The default 'PDF embed fonts' property value. */
-  public static final String PDFTARGET_EMBED_FONTS_DEFAULT = "true";
-
-  /** The 'PDF encoding' property key. */
-  public static final String PDFTARGET_ENCODING
-      = "org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.Encoding";
-
-  /** The default 'PDF encoding' property value. */
-  public static final String PDFTARGET_ENCODING_DEFAULT = "Cp1252";
-
   /** The configuration prefix. */
   public static final String CONFIGURATION_PREFIX
-      = "org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.";
+      = "org.jfree.report.modules.output.pageable.pdf.";
 
   /** Literal text for the 'EmbedFonts' property name. */
   public static final String EMBED_FONTS = "EmbedFonts";
@@ -172,10 +158,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
   public static final String SECURITY_ENCRYPTION_128BIT = "128bit";
 
   /** Literal text for the 'userpassword' property name. */
-  public static final String SECURITY_USERPASSWORD = "userpassword";
+  public static final String SECURITY_USERPASSWORD = "UserPassword";
 
   /** Literal text for the 'ownerpassword' property name. */
-  public static final String SECURITY_OWNERPASSWORD = "ownerpassword";
+  public static final String SECURITY_OWNERPASSWORD = "OwnerPassword";
 
   /** A useful constant for specifying the PDF creator. */
   private static final String CREATOR = JFreeReport.getInfo().getName() + " version "
@@ -183,6 +169,20 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /** The encoding key. */
   public static final String ENCODING = "Encoding";
+
+  /** The 'PDF embed fonts' property key. */
+  public static final String PDFTARGET_EMBED_FONTS
+      = CONFIGURATION_PREFIX + EMBED_FONTS;
+
+  /** The default 'PDF embed fonts' property value. */
+  public static final String PDFTARGET_EMBED_FONTS_DEFAULT = "true";
+
+  /** The 'PDF encoding' property key. */
+  public static final String PDFTARGET_ENCODING
+      = CONFIGURATION_PREFIX + ENCODING;
+
+  /** The default 'PDF encoding' property value. */
+  public static final String PDFTARGET_ENCODING_DEFAULT = "Cp1252";
 
   /** The output stream. */
   private final OutputStream out;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
+ * $Id: ConverterResources.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -84,6 +84,10 @@ public class ConverterResources extends JFreeReportResources
 
         {"convertdialog.title", "Report-Converter"},
 
+        {"ResultTableModel.Severity", "Severity"},
+        {"ResultTableModel.Message", "Message"},
+        {"ResultTableModel.Line", "Line"},
+        {"ResultTableModel.Column", "Column"},
       };
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateClassFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: TemplateClassFactory.java,v 1.2 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -61,6 +61,10 @@ public class TemplateClassFactory extends ClassFactoryImpl
     addTemplate(new StringFieldTemplateDescription("string-field"));
     addTemplate(new ResourceFieldTemplateDescription("resource-field"));
     addTemplate(new ResourceLabelTemplateDescription("resource-label"));
+    addTemplate(new ShapeFieldTemplateDescription("shape-field"));
+    addTemplate(new RectangleTemplateDescription("rectangle"));
+    addTemplate(new HorizontalLineTemplateDescription("horizontal-line"));
+    addTemplate(new VerticalLineTemplateDescription("vertical-line"));
   }
 
   /**

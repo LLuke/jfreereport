@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.4 2003/08/24 15:13:23 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.5 2003/08/25 14:29:34 taqua Exp $
  *
  * Changes
  * -------
@@ -282,14 +282,14 @@ public class ReportConfiguration implements Configuration, Serializable
 {
   /** The text aliasing configuration key. */
   public static final String FONTRENDERER_USEALIASING
-      = "org.jfree.report.layout.FontRenderer.useAliasing";
+      = "org.jfree.report.layout.fontrenderer.UseAliasing";
 
   /** The text aliasing configuration default value. Is "false". */
   public static final String FONTRENDERER_USEALIASING_DEFAULT = "false";
 
   /** The G2 fontrenderer bug override configuration key. */
   public static final String FONTRENDERER_ISBUGGY_FRC
-      = "org.jfree.report.layout.FontRenderer.isBuggyFRC";
+      = "org.jfree.report.layout.fontrenderer.IsBuggyFRC";
 
   /** The G2 fontrenderer bug override. Is "false". */
   public static final String FONTRENDERER_ISBUGGY_FRC_DEFAULT = "false";

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultDataSourceFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: DefaultDataSourceFactory.java,v 1.2 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -68,6 +68,9 @@ import org.jfree.report.modules.parser.ext.factory.templates.ResourceFieldTempla
 import org.jfree.report.modules.parser.ext.factory.templates.ResourceLabelTemplateDescription;
 import org.jfree.report.modules.parser.ext.factory.templates.ShapeFieldTemplateDescription;
 import org.jfree.report.modules.parser.ext.factory.templates.StringFieldTemplateDescription;
+import org.jfree.report.modules.parser.ext.factory.templates.RectangleTemplateDescription;
+import org.jfree.report.modules.parser.ext.factory.templates.HorizontalLineTemplateDescription;
+import org.jfree.report.modules.parser.ext.factory.templates.VerticalLineTemplateDescription;
 import org.jfree.xml.factory.objects.BeanObjectDescription;
 
 /**
@@ -108,21 +111,33 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
     registerDataSources("ShapeFilter", new BeanObjectDescription(ShapeFilter.class));
 
     // templates are also datasources ...
-    registerDataSources("DateFieldTemplate", new DateFieldTemplateDescription("date-field"));
-    registerDataSources("ImageFieldTemplate", new ImageFieldTemplateDescription("image-field"));
+    registerDataSources("DateFieldTemplate",
+        new DateFieldTemplateDescription("date-field"));
+    registerDataSources("ImageFieldTemplate",
+        new ImageFieldTemplateDescription("image-field"));
     registerDataSources("ImageURLFieldTemplate",
         new ImageURLFieldTemplateDescription("image-url-field"));
     registerDataSources("ImageURLElementTemplate",
         new ImageURLElementTemplateDescription("image-url-element"));
-    registerDataSources("LabelTemplate", new LabelTemplateDescription("label"));
-    registerDataSources("NumberFieldTemplate", new NumberFieldTemplateDescription("number-field"));
-    registerDataSources("StringFieldTemplate", new StringFieldTemplateDescription("string-field"));
+    registerDataSources("LabelTemplate",
+        new LabelTemplateDescription("label"));
+    registerDataSources("NumberFieldTemplate",
+        new NumberFieldTemplateDescription("number-field"));
+    registerDataSources("StringFieldTemplate",
+        new StringFieldTemplateDescription("string-field"));
     registerDataSources("ResourceFieldTemplate",
         new ResourceFieldTemplateDescription("resource-field"));
     registerDataSources("ResourceLabelTemplate",
         new ResourceLabelTemplateDescription("resource-label"));
     registerDataSources("ShapeFieldTemplate",
         new ShapeFieldTemplateDescription("shape-field"));
+    registerDataSources("RectangleTemplate",
+        new RectangleTemplateDescription("rectangle"));
+    registerDataSources("HorizontalLineTemplate",
+        new HorizontalLineTemplateDescription("horizontal-line"));
+    registerDataSources("VerticalLineTemplate",
+        new VerticalLineTemplateDescription("vertical-line"));
+
   }
 
 }

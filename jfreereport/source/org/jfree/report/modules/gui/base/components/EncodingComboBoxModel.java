@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.6 2003/08/24 15:08:18 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * --------
@@ -332,11 +332,13 @@ public class EncodingComboBoxModel implements ComboBoxModel
   }
 
   /**
-   * Sorts the encodings.
+   * Sorts the encodings. Keep the selected object ...
    */
   public void sort()
   {
+    Object selectedObject = getSelectedItem();
     Collections.sort(encodings, new EncodingCarrierComparator());
+    setSelectedItem(selectedObject);
     fireContentsChanged();
   }
 

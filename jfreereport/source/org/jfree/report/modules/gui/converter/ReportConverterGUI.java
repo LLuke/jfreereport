@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.6 2003/08/24 15:08:18 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  */
 package org.jfree.report.modules.gui.converter;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -44,10 +46,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.Writer;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -55,16 +63,33 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
-import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.FilesystemFilter;
+import org.jfree.report.modules.gui.converter.components.OperationResultTableModel;
+import org.jfree.report.modules.gui.converter.parser.ConverterParserFrontend;
 import org.jfree.report.modules.gui.converter.resources.ConverterResources;
-import org.jfree.report.modules.parser.extwriter.ReportConverter;
+import org.jfree.report.modules.parser.extwriter.ReportWriter;
+import org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory;
+import org.jfree.report.modules.parser.ext.factory.objects.BandLayoutClassFactory;
+import org.jfree.report.modules.parser.ext.factory.stylekey.DefaultStyleKeyFactory;
+import org.jfree.report.modules.parser.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
+import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
+import org.jfree.report.modules.parser.ext.factory.elements.DefaultElementFactory;
+import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.StringUtil;
+import org.jfree.report.JFreeReport;
+import org.jfree.util.DefaultConfiguration;
+import org.jfree.xml.Parser;
+import org.jfree.xml.factory.objects.URLClassFactory;
+import org.jfree.xml.factory.objects.ArrayClassFactory;
 
 /**
  * A utility application for converting XML report files from the old format to the
@@ -74,24 +99,9 @@ import org.jfree.report.util.StringUtil;
  */
 public class ReportConverterGUI extends JFrame
 {
-  /** The source field. */
-  private final JTextField sourceField;
-
-  /** The target field. */
-  private final JTextField targetField;
-
-  /** A file chooser. */
-  private final JFileChooser fileChooser;
-
-  /** Localised resources. */
-  private ResourceBundle resources;
-
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
       ConverterResources.class.getName();
-
-  /** The encoding combo box model used to select the target file encoding. */
-  private final EncodingComboBoxModel encodingModel;
 
   /**
    * An action for selecting the target.
@@ -174,6 +184,25 @@ public class ReportConverterGUI extends JFrame
     }
   }
 
+  /** The source field. */
+  private final JTextField sourceField;
+
+  /** The target field. */
+  private final JTextField targetField;
+
+  /** A file chooser. */
+  private final JFileChooser fileChooser;
+
+  /** Localised resources. */
+  private ResourceBundle resources;
+
+  /** The encoding combo box model used to select the target file encoding. */
+  private final EncodingComboBoxModel encodingModel;
+
+  private OperationResultTableModel resultTableModel;
+
+  private JLabel statusHolder;
+
   /**
    * Default constructor.
    */
@@ -184,15 +213,69 @@ public class ReportConverterGUI extends JFrame
     encodingModel.setSelectedIndex(encodingModel.indexOf("UTF-16"));
     encodingModel.sort();
 
+    resultTableModel = new OperationResultTableModel();
+
     sourceField = new JTextField();
     targetField = new JTextField();
 
+    JTable table = new JTable(resultTableModel);
+    table.setMinimumSize(new Dimension (100, 100));
+    JSplitPane componentPane = new JSplitPane
+        (JSplitPane.VERTICAL_SPLIT, createMainPane(), new JScrollPane(table));
+    componentPane.setOneTouchExpandable(true);
+    componentPane.resetToPreferredSizes();
+
+    JPanel contentPane = new JPanel();
+    contentPane.setLayout(new BorderLayout());
+    contentPane.add(componentPane, BorderLayout.CENTER);
+    contentPane.add(createStatusBar(), BorderLayout.SOUTH);
+    setContentPane(contentPane);
+
+    fileChooser = new JFileChooser();
+    fileChooser.addChoosableFileFilter(new FilesystemFilter(new String[]{".xml"},
+        "XML-Report definitions", true));
+    fileChooser.setMultiSelectionEnabled(false);
+
+    setTitle(getResources().getString("convertdialog.title"));
+  }
+
+  /**
+   * Creates the statusbar for this frame. Use setStatus() to display text on the status bar.
+   *
+   * @return the status bar.
+   */
+  protected JPanel createStatusBar()
+  {
+    final JPanel statusPane = new JPanel();
+    statusPane.setLayout(new BorderLayout());
+    statusPane.setBorder(
+        BorderFactory.createLineBorder(UIManager.getDefaults().getColor("controlShadow")));
+    statusHolder = new JLabel(" ");
+    statusPane.setMinimumSize(statusHolder.getPreferredSize());
+    statusPane.add(statusHolder, BorderLayout.WEST);
+
+    return statusPane;
+  }
+
+  public void setStatusText (String text)
+  {
+    statusHolder.setText(text);
+  }
+
+  public String getStatusText ()
+  {
+    return statusHolder.getText();
+  }
+
+  private JPanel createMainPane ()
+  {
     final JButton selectSourceButton = new ActionButton(new SelectSourceAction());
     final JButton selectTargetButton = new ActionButton(new SelectTargetAction());
     final JButton convertFilesButton = new ActionButton(new ConvertAction());
 
     final JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
+    contentPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
@@ -269,16 +352,8 @@ public class ReportConverterGUI extends JFrame
     gbc.fill = GridBagConstraints.HORIZONTAL;
     contentPane.add(convertFilesButton, gbc);
 
-    setContentPane(contentPane);
-
-    fileChooser = new JFileChooser();
-    fileChooser.addChoosableFileFilter(new FilesystemFilter(new String[]{".xml"},
-        "XML-Report definitions", true));
-    fileChooser.setMultiSelectionEnabled(false);
-
-    setTitle(getResources().getString("convertdialog.title"));
+    return contentPane;
   }
-
   /**
    * Starting point for the utility application.
    *
@@ -461,34 +536,55 @@ public class ReportConverterGUI extends JFrame
 
     if (performSourceValidate(getSourceFile()) == false)
     {
-      JOptionPane.showMessageDialog(this, "Validating the source file input failed",
-          "Check the source file", JOptionPane.WARNING_MESSAGE);
+      setStatusText("Validating the source file failed. Please check your inputs.");
       return false;
     }
     if (performTargetValidate(getTargetFile()) == false)
     {
-      JOptionPane.showMessageDialog(this, "Validating the source file input failed",
-          "Check the source file", JOptionPane.WARNING_MESSAGE);
+      setStatusText("Validating the target file failed. Please check your inputs.");
       return false;
     }
 
-    final ReportConverter converter = new ReportConverter();
     try
     {
-      Log.debug("Converting report ...");
+      ConverterParserFrontend frontend = new ConverterParserFrontend();
+      File sourceFile = new File (getSourceFile());
+      File targetFile = new File (getTargetFile());
       final String encoding = encodingModel.getSelectedEncoding();
-      converter.convertReport(getSourceFile(), getTargetFile(), encoding);
+      JFreeReport report = (JFreeReport)
+          frontend.parse(sourceFile.toURL(), sourceFile.toURL());
+
+      DefaultConfiguration config = new DefaultConfiguration();
+      config.setProperty(Parser.CONTENTBASE_KEY, targetFile.toURL().toExternalForm());
+
+      // adding all factories will make sure that all stylekeys are found,
+      // even if the report was parsed from a simple report definition  
+      ReportWriter writer = new ReportWriter(report, encoding, config);
+      writer.addClassFactoryFactory(new URLClassFactory());
+      writer.addClassFactoryFactory(new DefaultClassFactory());
+      writer.addClassFactoryFactory(new BandLayoutClassFactory());
+      writer.addClassFactoryFactory(new ArrayClassFactory());
+
+      writer.addStyleKeyFactory(new DefaultStyleKeyFactory());
+      writer.addStyleKeyFactory(new PageableLayoutStyleKeyFactory());
+      writer.addTemplateCollection(new DefaultTemplateCollection());
+      writer.addElementFactory(new DefaultElementFactory());
+      writer.addDataSourceFactory(new DefaultDataSourceFactory());
+
+      final OutputStream base = new FileOutputStream(targetFile);
+      final Writer w = new BufferedWriter(new OutputStreamWriter(base, encoding));
+      writer.write(w);
+      w.close();
+      setStatusText("Conversion done.");
       return true;
     }
     catch (Exception e)
     {
-      Log.error("Failed to convert.", e);
-      ExceptionDialog.showExceptionDialog
-          ("Failed to convert.", "Error while converting the reports.", e);
+      Log.warn ("Failed to convert the report. ", e);
+      setStatusText("Failed to convert the report:" + e.getMessage());
       return false;
     }
   }
-
   /**
    * Selects a file to use.
    *

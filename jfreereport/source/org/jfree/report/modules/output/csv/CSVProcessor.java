@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.3 2003/08/24 15:06:42 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -70,17 +70,19 @@ public class CSVProcessor
    * A key for accessing the separator string in the
    * {@link org.jfree.report.util.ReportConfiguration}.
    */
-  public static final String CSV_SEPARATOR = "org.jfree.report.modules.output.csv.Separator";
+  public static final String CSV_SEPARATOR =
+      "org.jfree.report.modules.output.csv.Separator";
 
   /**
    * A key for accessing the 'print data row names' flag in the
    * {@link org.jfree.report.util.ReportConfiguration}.
    */
   public static final String CSV_DATAROWNAME
-      = "org.jfree.report.modules.output.csv.write-datarow-names";
+      = "org.jfree.report.modules.output.csv.WriteDatarowNames";
 
   /** The default name for the csv writer function used by this processor. */
-  private static final String CSV_WRITER = "org.jfree.report.modules.output.csv.csv-writer";
+  private static final String CSV_WRITER =
+      "org.jfree.report.modules.output.csv.csv-writer";
 
   /** The character stream writer to be used by the {@link CSVWriter} function. */
   private Writer writer;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.8 2003/08/24 15:08:18 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.9 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -126,10 +126,10 @@ public class PreviewProxyBase extends JComponent
       = "org.jfree.report.modules.gui.base.MaximumHeight";
 
   public static final String LARGE_ICONS_ENABLED_PROPERTY
-      = "org.jfree.report.modules.gui.base.PreviewBase.LargeIcons";
+      = "org.jfree.report.modules.gui.base.LargeIcons";
 
   public static final String TOOLBAR_FLOATABLE_PROPERTY
-      = "org.jfree.report.modules.gui.base.PreviewBase.ToolbarFloatable";
+      = "org.jfree.report.modules.gui.base.ToolbarFloatable";
 
   /**
    * A wrapper action.
