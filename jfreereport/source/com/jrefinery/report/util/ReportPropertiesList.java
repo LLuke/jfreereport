@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportPropertiesList.java,v 1.4 2002/12/09 03:56:34 taqua Exp $
+ * $Id: ReportPropertiesList.java,v 1.5 2002/12/12 12:26:57 mungady Exp $
  *
  * Changes
  * -------
@@ -33,7 +33,7 @@
 package com.jrefinery.report.util;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.Iterator;
 
 /**
  * A collection of report properties arranged into columns to provide access for the
@@ -70,10 +70,10 @@ public class ReportPropertiesList
     this.base = base;
     this.columns = new ArrayList();
 
-    Enumeration enum = base.keys();
-    while (enum.hasMoreElements())
+    Iterator enum = base.keys();
+    while (enum.hasNext())
     {
-      String key = (String) enum.nextElement();
+      String key = (String) enum.next();
       if (base.isMarked(key))
       {
         columns.add (key);
@@ -115,4 +115,12 @@ public class ReportPropertiesList
     return (base.get(getColumnName(column)));
   }
 
+  public String toString ()
+  {
+    StringBuffer b = new StringBuffer();
+
+    b.append("ReportPropertiesList: ");
+    b.append(columns);
+    return b.toString();
+  }
 }

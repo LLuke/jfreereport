@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportProperties.java,v 1.12 2002/11/29 12:07:29 mungady Exp $
+ * $Id: ReportProperties.java,v 1.13 2002/12/05 16:48:12 mungady Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@
 package com.jrefinery.report.util;
 
 import java.io.Serializable;
-import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 /**
@@ -170,9 +170,12 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @return an enumeration of the property keys.
    */
-  public Enumeration keys()
+  public Iterator keys()
   {
-    return properties.keys();
+    TreeSet list = new TreeSet();
+    list.addAll(properties.keySet());
+    list.addAll(markedProperties);
+    return list.iterator();
   }
 
   /**

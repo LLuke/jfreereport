@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.25 2002/12/12 20:24:02 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.26 2003/01/14 23:48:09 taqua Exp $
  *
  * Changes
  * -------
@@ -643,6 +643,7 @@ public class DataRowBackend implements Cloneable
       throw new NullPointerException();
     }
     this.reportProperties = properties;
+    Log.debug ("ReportProperties: " + properties);
     revalidateColumnLock();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.13 2002/12/18 20:31:47 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.14 2003/01/14 21:14:46 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,10 @@ package com.jrefinery.report.targets.pageable.physicals;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
+import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
-import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.contents.Content;
 import com.jrefinery.report.targets.pageable.operations.OperationFactory;
 import com.jrefinery.report.targets.pageable.operations.OperationModule;
@@ -385,6 +385,7 @@ public class LogicalPageImpl implements LogicalPage
     {
       operations.addOperation(new PhysicalOperation.AddComment ("Begin Element: " + e.getClass()
                               + " -> " + e.getName()));
+      operations.addOperation(new PhysicalOperation.AddComment (" ...  Element: " + drawBounds));
     }
 
     Content content = mod.createContentForElement(e, drawBounds, getOutputTarget());

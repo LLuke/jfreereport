@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.5 2002/12/12 20:24:03 taqua Exp $
+ * $Id: TextLine.java,v 1.6 2002/12/16 17:31:01 mungady Exp $
  *
  * Changes
  * -------
@@ -166,7 +166,7 @@ public class TextLine implements Content
    */
   public Rectangle2D getBounds()
   {
-    return bounds.getBounds();
+    return bounds.getBounds2D();
   }
 
   /**
