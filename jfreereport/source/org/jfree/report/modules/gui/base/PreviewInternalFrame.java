@@ -28,23 +28,22 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewInternalFrame.java,v 1.8 2003/09/24 16:41:04 taqua Exp $
+ * $Id: PreviewInternalFrame.java,v 1.9 2003/09/24 16:41:54 taqua Exp $
  *
  * Changes
  * -------
  * 25-Feb-2003 : Added standard header and Javadocs (DG);
+ * 08-Oct-2003 : Removed event mapping from WindowClosing to CloseAction
  *
  */
 
 package org.jfree.report.modules.gui.base;
 
 import java.awt.event.ActionEvent;
-import java.util.ResourceBundle;
 import java.beans.PropertyVetoException;
+import java.util.ResourceBundle;
 import javax.swing.Action;
 import javax.swing.JInternalFrame;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
@@ -124,7 +123,6 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
   {
     base = new PreviewProxyBase(this);
     base.init(report);
-    registerCloseActions();
     setContentPane(base);
   }
 
@@ -158,8 +156,8 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
    */
   public void dispose()
   {
-    base.dispose();
     super.dispose();
+    base.dispose();
   }
 
   /**
@@ -169,26 +167,6 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
   public void close()
   {
     base.close();
-  }
-
-  /**
-   * Registers close actions.
-   */
-  protected void registerCloseActions()
-  {
-    addInternalFrameListener(new InternalFrameAdapter()
-    {
-      /**
-       * Invoked when an internal frame is in the process of being closed.
-       * The close operation can be overridden at this point.
-       */
-      public void internalFrameClosing(final InternalFrameEvent e)
-      {
-        getBase().getCloseAction().actionPerformed
-            (new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "CloseFrame"));
-      }
-    }
-    );
   }
 
   /**

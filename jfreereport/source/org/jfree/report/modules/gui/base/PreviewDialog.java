@@ -28,12 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.6 2003/09/06 18:09:16 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.7 2003/09/09 21:31:36 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
  * 04-Dec-2002 : Forked from PreviewFrame (TM);
  * 10-Dec-2002 : Updated Javadocs (DG);
+ * 08-Oct-2003 : Removed event mapping from WindowClosing to CloseAction
  *
  */
 
@@ -42,8 +43,6 @@ package org.jfree.report.modules.gui.base;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ResourceBundle;
 import javax.swing.Action;
 import javax.swing.JDialog;
@@ -189,7 +188,6 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   {
     base = new PreviewProxyBase(this);
     base.init(report);
-    registerCloseActions();
     setContentPane(base);
   }
 
@@ -219,26 +217,6 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   public void close()
   {
     base.close();
-  }
-
-  /**
-   * Registers the close actions.
-   */
-  protected void registerCloseActions()
-  {
-    addWindowListener(new WindowAdapter()
-    {
-      /**
-       * Invoked when a window is in the process of being closed.
-       * The close operation can be overridden at this point.
-       */
-      public void windowClosing(final WindowEvent e)
-      {
-        getBase().getCloseAction().actionPerformed
-            (new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "CloseFrame"));
-      }
-    }
-    );
   }
 
   /**

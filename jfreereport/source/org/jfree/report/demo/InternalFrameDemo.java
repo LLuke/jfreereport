@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: InternalFrameDemo.java,v 1.1 2003/09/24 13:43:37 taqua Exp $
+ * $Id: InternalFrameDemo.java,v 1.2 2003/09/24 16:40:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,35 +43,31 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.beans.PropertyChangeListener;
-import javax.swing.table.TableModel;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.BorderFactory;
-import javax.swing.JTextArea;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JInternalFrame;
-import javax.swing.JDesktopPane;
-import javax.swing.JComponent;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
+import javax.swing.JTextArea;
+import javax.swing.table.TableModel;
 
-import org.jfree.report.demo.helper.AbstractDemoFrame;
-import org.jfree.report.modules.gui.base.components.ActionMenuItem;
-import org.jfree.report.modules.gui.base.components.ActionButton;
-import org.jfree.report.modules.gui.base.PreviewFrame;
-import org.jfree.report.modules.gui.base.PreviewInternalFrame;
-import org.jfree.report.modules.parser.base.ReportGenerator;
+import org.jfree.report.Boot;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.Boot;
-import org.jfree.report.util.WaitingImageObserver;
+import org.jfree.report.demo.helper.AbstractDemoFrame;
+import org.jfree.report.modules.gui.base.PreviewInternalFrame;
+import org.jfree.report.modules.gui.base.components.ActionButton;
+import org.jfree.report.modules.gui.base.components.ActionMenuItem;
+import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.WaitingImageObserver;
 import org.jfree.ui.RefineryUtilities;
 
 public class InternalFrameDemo extends AbstractDemoFrame
@@ -149,8 +145,14 @@ public class InternalFrameDemo extends AbstractDemoFrame
     frame.pack();
 
     desktop = new JDesktopPane();
+    //desktop.setDesktopManager(new MyDesktopManager());
+    desktop.setDoubleBuffered(false);
     desktop.add(frame);
-    return desktop;
+
+    JPanel panel = new JPanel();
+    panel.setLayout(new BorderLayout());
+    panel.add(new JScrollPane(desktop), BorderLayout.CENTER);
+    return panel;
   }
 
   /**
@@ -174,11 +176,6 @@ public class InternalFrameDemo extends AbstractDemoFrame
       report = parseReport(in);
       report.setData(this.data);
 
-      //ReportConfiguration config = report.getReportConfiguration();
-      //config.setEnableExportExcel(false);
-      //config.setEnableExportCSV(false);
-      //config.setEnableExportHTML(false);
-
       // add an image as a report property...
       final URL imageURL = getClass().getResource("/org/jfree/report/demo/gorilla.jpg");
       final Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
@@ -197,33 +194,16 @@ public class InternalFrameDemo extends AbstractDemoFrame
     try
     {
       final PreviewInternalFrame frame = new PreviewInternalFrame(report);
-      frame.addInternalFrameListener(new InternalFrameAdapter(){
-        /**
-         * Invoked when an internal frame is in the process of being closed.
-         * The close operation can be overridden at this point.
-         */
-        public void internalFrameClosing(InternalFrameEvent e)
-        {
-          //desktop.remove(frame);
-        }
-
-        /**
-         * Invoked when an internal frame has been closed.
-         */
-        public void internalFrameClosed(InternalFrameEvent e)
-        {
-          frame.dispose();
-        }
-      });
       frame.getBase().setToolbarFloatable(true);
-      frame.pack();
       frame.setClosable(true);
       frame.setResizable(true);
-      desktop.add(frame);
       frame.setVisible(true);
+      //frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+      frame.pack();
+      desktop.add(frame);
       frame.requestFocus();
 
-      Log.debug ("" + desktop.getComponentCount());
+      Log.debug("Number of Desktop Components: " + desktop.getComponentCount());
     }
     catch (ReportProcessingException rpe)
     {
@@ -266,7 +246,7 @@ public class InternalFrameDemo extends AbstractDemoFrame
     Boot.start();
 
     final InternalFrameDemo frame = new InternalFrameDemo("Open Source Demo");
-    frame.setSize(300, 400);
+    frame.setSize(500, 400);
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.20 2003/09/24 16:41:04 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.21 2003/09/30 19:47:29 taqua Exp $
  *
  * Changes
  * -------
@@ -1750,9 +1750,12 @@ public class PreviewProxyBase extends JComponent
     // I dont want this here, as PreviewFrames are evil and resource expensive ...
 
     // I hope this helps as well ...
-    //RepaintManager.currentManager(this).removeInvalidComponent(this);
-    //RepaintManager.currentManager(this).markCompletelyClean(this);
-    RepaintManager.setCurrentManager(null);
+    // Setting the repaint manager to null is invalid, as the silly swing
+    // seems to loose all update requests.
+    //
+    // So we have to choose beween a memory leak or an invalid repaint operation
+    RepaintManager.currentManager(this).removeInvalidComponent(this);
+    RepaintManager.currentManager(this).markCompletelyClean(this);
   }
 
   /**

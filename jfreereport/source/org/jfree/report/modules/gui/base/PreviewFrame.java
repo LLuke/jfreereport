@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewFrame.java,v 1.6 2003/09/06 18:09:16 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.7 2003/09/09 21:31:36 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,13 +51,12 @@
  *               Without this Construct, the PreviewFrame would never be GarbageCollected and
  *               would cause OutOfMemoryExceptions when the program runs a longer time.
  * 10-Dec-2002 : Updated Javadocs (DG);
+ * 08-Oct-2003 : Removed event mapping from WindowClosing to CloseAction
  */
 
 package org.jfree.report.modules.gui.base;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ResourceBundle;
 import javax.swing.Action;
 import javax.swing.JFrame;
@@ -140,7 +139,6 @@ public class PreviewFrame extends JFrame implements PreviewProxy
   {
     base = new PreviewProxyBase(this);
     base.init(report);
-    registerCloseActions();
     setContentPane(base);
   }
 
@@ -170,26 +168,6 @@ public class PreviewFrame extends JFrame implements PreviewProxy
   public void close()
   {
     base.close();
-  }
-
-  /**
-   * Registers close actions.
-   */
-  protected void registerCloseActions()
-  {
-    addWindowListener(new WindowAdapter()
-    {
-      /**
-       * Invoked when a window is in the process of being closed.
-       * The close operation can be overridden at this point.
-       */
-      public void windowClosing(final WindowEvent e)
-      {
-        getBase().getCloseAction().actionPerformed
-            (new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "CloseFrame"));
-      }
-    }
-    );
   }
 
   /**

@@ -28,14 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.7 2003/08/27 20:19:54 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.8 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Added Javadocs (DG);
  * 29-Jan-2003 : moved from pageable.output to support.itext package.
  * 07-Feb-2003 : Documentation updated
- *
+ * 08-Oct-2003 : Not embeddable fonts are now used non-embedded. 
  */
 
 package org.jfree.report.modules.output.support.itext;
@@ -159,12 +159,20 @@ public class BaseFontSupport
       return fontRecord;
     }
 
+    BaseFontFactory factory = BaseFontFactory.getFontFactory();
     try
     {
       final String filename = BaseFontFactory.getFontFactory().getFontfileForName(fontKey);
       if (filename != null)
       {
-        fontRecord = createFontFromTTF(font, filename, encoding, stringEncoding, embedded);
+        boolean embeddedOverride = embedded;
+        if (embedded == true && factory.isEmbeddable(filename) == false)
+        {
+          Log.warn ("License of font forbids embedded usage for font: " + fontKey);
+          // strict mode here?
+          embeddedOverride = false;
+        }
+        fontRecord = createFontFromTTF(font, filename, encoding, stringEncoding, embeddedOverride);
         if (fontRecord != null)
         {
           return fontRecord;
