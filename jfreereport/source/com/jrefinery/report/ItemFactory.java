@@ -29,6 +29,14 @@
  */
 package com.jrefinery.report;
 
+import com.jrefinery.report.filter.DateFormatFilter;
+import com.jrefinery.report.filter.SimpleDateFormatFilter;
+import com.jrefinery.report.filter.ReportDataSource;
+import com.jrefinery.report.filter.FunctionDataSource;
+import com.jrefinery.report.filter.StaticDataSource;
+import com.jrefinery.report.filter.NumberFormatFilter;
+import com.jrefinery.report.filter.DecimalFormatFilter;
+
 import javax.swing.table.TableModel;
 import java.awt.Font;
 import java.awt.Paint;
@@ -57,15 +65,18 @@ public class ItemFactory
                                                String format,
                                                String field)
   {
-    DateElement dateElement = new DateElement();
+    SimpleDateFormatFilter filter = new SimpleDateFormatFilter();
+    filter.setFormatString(format);
+    filter.setDataSource(new ReportDataSource(field));
+
+    TextElement dateElement = new TextElement();
     dateElement.setName (name);
     dateElement.setBounds(bounds);
     dateElement.setPaint(paint);
     dateElement.setAlignment(alignment);
     dateElement.setFont(font);
     dateElement.setNullString(nullString);
-    dateElement.setFormatString(format);
-    dateElement.setField(field);
+    dateElement.getTextFilter().setDataSource(filter);
     return dateElement;
   }
 
@@ -78,15 +89,18 @@ public class ItemFactory
                                                DateFormat format,
                                                String field)
   {
-    DateElement dateElement = new DateElement();
+    DateFormatFilter filter = new DateFormatFilter();
+    filter.setFormatter(format);
+    filter.setDataSource(new ReportDataSource(field));
+
+    TextElement dateElement = new TextElement();
     dateElement.setName (name);
     dateElement.setBounds(bounds);
     dateElement.setPaint(paint);
     dateElement.setAlignment(alignment);
     dateElement.setFont(font);
     dateElement.setNullString(nullString);
-    dateElement.setFormatter(format);
-    dateElement.setField(field);
+    dateElement.getTextFilter().setDataSource(filter);
     return dateElement;
   }
 
@@ -99,15 +113,18 @@ public class ItemFactory
                                                String format,
                                                String function)
   {
-    DateFunctionElement dateElement = new DateFunctionElement();
+    SimpleDateFormatFilter filter = new SimpleDateFormatFilter();
+    filter.setFormatString(format);
+    filter.setDataSource(new FunctionDataSource(function));
+
+    TextElement dateElement = new TextElement();
     dateElement.setName (name);
     dateElement.setBounds(bounds);
     dateElement.setPaint(paint);
     dateElement.setAlignment(alignment);
     dateElement.setFont(font);
     dateElement.setNullString(nullString);
-    dateElement.setFormatString(format);
-    dateElement.setFunctionName(function);
+    dateElement.getTextFilter().setDataSource(filter);
     return dateElement;
   }
 
@@ -120,15 +137,18 @@ public class ItemFactory
                                                DateFormat format,
                                                String function)
   {
-    DateFunctionElement dateElement = new DateFunctionElement();
+    DateFormatFilter filter = new DateFormatFilter();
+    filter.setFormatter(format);
+    filter.setDataSource(new FunctionDataSource(function));
+
+    TextElement dateElement = new TextElement();
     dateElement.setName (name);
     dateElement.setBounds(bounds);
     dateElement.setPaint(paint);
     dateElement.setAlignment(alignment);
     dateElement.setFont(font);
     dateElement.setNullString(nullString);
-    dateElement.setFormatter(format);
-    dateElement.setFunctionName(function);
+    dateElement.getTextFilter().setDataSource(filter);
     return dateElement;
   }
 
@@ -140,14 +160,14 @@ public class ItemFactory
                                                String nullString,
                                                String function)
   {
-    GeneralElement gElement = new GeneralElement();
+    TextElement gElement = new TextElement();
     gElement.setName (name);
     gElement.setBounds(bounds);
     gElement.setPaint(paint);
     gElement.setAlignment(alignment);
     gElement.setFont(font);
     gElement.setNullString(nullString);
-    gElement.setField(function);
+    gElement.getTextFilter().setDataSource(new ReportDataSource(function));
     return gElement;
   }
 
@@ -157,10 +177,11 @@ public class ItemFactory
                                                URL source)
     throws IOException
   {
-    ImageReference reference = new ImageReference(source, bounds);
+    ImageReference reference = new ImageReference(source);
     ImageElement element = new ImageElement();
     element.setName(name);
     element.setPaint(paint);
+    element.setBounds(bounds);
     element.setImageReference(reference);
     return element;
   }
@@ -172,13 +193,13 @@ public class ItemFactory
                                                 Font font,
                                                 String labeltext)
   {
-    LabelElement label = new LabelElement ();
+    TextElement label = new TextElement ();
     label.setName (name);
     label.setBounds (bounds);
     label.setPaint (paint);
     label.setAlignment (alignment);
     label.setFont (font);
-    label.setLabel (labeltext);
+    label.getTextFilter().setDataSource(new StaticDataSource(labeltext));
     return label;
   }
 
@@ -201,14 +222,14 @@ public class ItemFactory
                                                 String nullstring,
                                                 String field)
   {
-    MultilineTextElement text = new MultilineTextElement ();
+    TextElement text = new TextElement ();
     text.setName (name);
     text.setBounds (bounds);
     text.setPaint (paint);
     text.setAlignment (alignment);
     text.setFont (font);
     text.setNullString(nullstring);
-    text.setField(field);
+    text.getTextFilter().setDataSource(new ReportDataSource(field));
     return text;
   }
 
@@ -221,15 +242,18 @@ public class ItemFactory
                                                NumberFormat format,
                                                String field)
   {
-    NumberElement element = new NumberElement();
+    NumberFormatFilter filter = new NumberFormatFilter();
+    filter.setFormatter(format);
+    filter.setDataSource(new ReportDataSource(field));
+
+    TextElement element = new TextElement();
     element.setName (name);
     element.setBounds(bounds);
     element.setPaint(paint);
     element.setAlignment(alignment);
     element.setFont(font);
     element.setNullString(nullString);
-    element.setFormatter(format);
-    element.setField(field);
+    element.getTextFilter().setDataSource(filter);
     return element;
   }
 
@@ -242,15 +266,18 @@ public class ItemFactory
                                                String format,
                                                String field)
   {
-    NumberElement element = new NumberElement();
+    DecimalFormatFilter filter = new DecimalFormatFilter();
+    filter.setFormatString(format);
+    filter.setDataSource(new ReportDataSource(field));
+
+    TextElement element = new TextElement();
     element.setName (name);
     element.setBounds(bounds);
     element.setPaint(paint);
     element.setAlignment(alignment);
     element.setFont(font);
     element.setNullString(nullString);
-    element.setDecimalFormatString(format);
-    element.setField(field);
+    element.getTextFilter().setDataSource(filter);
     return element;
   }
 
@@ -263,15 +290,18 @@ public class ItemFactory
                                                String format,
                                                String function)
   {
-    NumberFunctionElement element = new NumberFunctionElement();
+    DecimalFormatFilter filter = new DecimalFormatFilter();
+    filter.setFormatString(format);
+    filter.setDataSource(new FunctionDataSource(function));
+
+    TextElement element = new TextElement();
     element.setName (name);
     element.setBounds(bounds);
     element.setPaint(paint);
     element.setAlignment(alignment);
     element.setFont(font);
     element.setNullString(nullString);
-    element.setDecimalFormatString(format);
-    element.setFunctionName(function);
+    element.getTextFilter().setDataSource(filter);
     return element;
   }
 
@@ -284,15 +314,18 @@ public class ItemFactory
                                                NumberFormat format,
                                                String function)
   {
-    NumberFunctionElement element = new NumberFunctionElement();
+    NumberFormatFilter filter = new NumberFormatFilter();
+    filter.setFormatter(format);
+    filter.setDataSource(new FunctionDataSource(function));
+
+    TextElement element = new TextElement();
     element.setName (name);
     element.setBounds(bounds);
     element.setPaint(paint);
     element.setAlignment(alignment);
     element.setFont(font);
     element.setNullString(nullString);
-    element.setFormatter(format);
-    element.setFunctionName(function);
+    element.getTextFilter().setDataSource(filter);
     return element;
   }
 
@@ -304,14 +337,14 @@ public class ItemFactory
                                                String nullString,
                                                String field)
   {
-    StringElement element = new StringElement();
+    TextElement element = new TextElement();
     element.setName (name);
     element.setBounds(bounds);
     element.setPaint(paint);
     element.setAlignment(alignment);
     element.setFont(font);
     element.setNullString(nullString);
-    element.setField(field);
+    element.getTextFilter().setDataSource(new ReportDataSource(field));
     return element;
   }
 
@@ -323,14 +356,14 @@ public class ItemFactory
                                                String nullString,
                                                String function)
   {
-    StringFunctionElement element = new StringFunctionElement ();
+    TextElement element = new TextElement ();
     element.setName (name);
     element.setBounds(bounds);
     element.setPaint(paint);
     element.setAlignment(alignment);
     element.setFont(font);
     element.setNullString(nullString);
-    element.setFunctionName(function);
+    element.getTextFilter().setDataSource(new FunctionDataSource(function));
     return element;
   }
 

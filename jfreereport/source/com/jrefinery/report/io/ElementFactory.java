@@ -218,11 +218,10 @@ public class ElementFactory
     try
     {
       ImageReference imgRef =
-        new ImageReference(
-          new URL(handler.getContentBase(), elementSource),
-          getElementPosition(atts));
+        new ImageReference(new URL(handler.getContentBase(), elementSource));
       ImageElement element = new ImageElement();
       element.setName(elementName);
+      element.setBounds(getElementPosition(atts));
       element.setImageReference(imgRef);
 
       return element;
@@ -246,7 +245,6 @@ public class ElementFactory
     LineShapeElement element = new LineShapeElement();
     element.setStroke(parseStroke(atts.getValue("weight")));
     element.setPaint(parseColor(atts.getValue("color")));
-    element.setBounds(new Rectangle2D.Float(x1, y1, x2 - x1, y2 - y1));
     element.setName(name);
     element.setLine(line);
     return element;
@@ -412,13 +410,32 @@ public class ElementFactory
 
   protected Rectangle2D getElementPosition(Attributes atts) throws SAXException
   {
-    // x
-    float x = parseFloat(atts.getValue("x"), "Element x not specified");
-    float y = parseFloat(atts.getValue("y"), "Element y not specified");
-    float w = parseFloat(atts.getValue("width"), "Element width not specified");
-    float h = parseFloat(atts.getValue("height"), "Element height not specified");
+    float x = parseRelativeFloat(atts.getValue("x"), "Element x not specified");
+    float y = parseRelativeFloat(atts.getValue("y"), "Element y not specified");
+    float w = parseRelativeFloat(atts.getValue("width"), "Element width not specified");
+    float h = parseRelativeFloat(atts.getValue("height"), "Element height not specified");
+    if (w == 0) Log.warn ("Element width is 0. Use xxx% to specify a relative width.");
     Rectangle2D.Float retval = new Rectangle2D.Float(x, y, w, h);
     return retval;
+  }
+
+  /**
+   * parses a position of an element. If a relative postion is given, the returnvalue
+   * is a negative number between 0 and -100.
+   */
+  public float parseRelativeFloat (String value, String exceptionMessage) throws SAXException
+  {
+    if (value == null) throw new SAXException(exceptionMessage);
+    String tvalue = value.trim();
+    if (tvalue.endsWith("%"))
+    {
+      String number = tvalue.substring(0, tvalue.indexOf("%"));
+      float f = parseFloat(number, exceptionMessage) * -1.0f;
+      Log.debug ("  Parsed Relative value: " + f);
+      return f;
+    }
+    else
+      return parseFloat(tvalue, exceptionMessage);
   }
 
   public JFreeReport getReport()

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.3 2002/05/16 10:20:40 mungady Exp $
+ * $Id: ImageElement.java,v 1.4 2002/05/16 12:15:10 jaosch Exp $
  *
  * Changes:
  * --------
@@ -41,6 +41,11 @@
  */
 
 package com.jrefinery.report;
+
+import com.jrefinery.report.targets.OutputTarget;
+import com.jrefinery.report.targets.OutputTargetException;
+
+import java.awt.geom.Rectangle2D;
 
 /**
  * Used to draw images (Gif, JPEG, PNG or wmf) on a report band.
@@ -57,7 +62,6 @@ public class ImageElement extends Element
   /**
    * Constructs a image element.
    */
-
   public ImageElement()
   {
   }
@@ -70,14 +74,11 @@ public class ImageElement extends Element
    *
    * @throws NullPointerException if the reference is null.
    */
-
   public void setImageReference(ImageReference reference)
   {
 
     if (reference == null)
       throw new NullPointerException("ImageElement.setImageReference: null not allowed.");
-
-    setBounds(reference.getBounds());
 
     this.image = reference;
   }
@@ -87,7 +88,6 @@ public class ImageElement extends Element
    *
    * @return The image reference.
    */
-
   public ImageReference getImageReference()
   {
 
@@ -102,19 +102,62 @@ public class ImageElement extends Element
    * @param bandX The x-coordinate for the element within its band.
    * @param bandY The y-coordinate for the element within its band.
    */
-
-  public void draw(OutputTarget target, Band band, float bandX, float bandY)
+  public void draw(OutputTarget target, Band band) throws OutputTargetException
   {
     // set the paint...
     if (m_paint != null)
     {
       target.setPaint(m_paint);
-
     }
     else
     {
       target.setPaint(band.getDefaultPaint());
     }
-    target.drawImage(getImageReference(), bandX, bandY);
+    target.drawImage(getImageReference());
+  }
+
+
+  /**
+   * Returns the required width of the image (in points, 1/72 inch).
+   *
+   * @return The width.
+   */
+  public float getWidth()
+  {
+
+    return (float) getBounds().getWidth();
+  }
+
+  /**
+   * Returns the required height of the image (in points, 1/72 inch).
+   *
+   * @return the desired height of the image.
+   */
+  public float getHeight()
+  {
+
+    return (float) getBounds().getHeight();
+  }
+
+  /**
+   * Returns the required left origin of the image.
+   *
+   * @return The left origin.
+   */
+  public float getX()
+  {
+
+    return (float) getBounds().getX();
+  }
+
+  /**
+   * Returns the upper origin of the image.
+   *
+   * @return The upper origin.
+   */
+  public float getY()
+  {
+
+    return (float) getBounds().getY();
   }
 }

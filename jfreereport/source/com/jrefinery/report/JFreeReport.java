@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.7 2002/05/17 22:13:13 taqua Exp $
+ * $Id: JFreeReport.java,v 1.8 2002/05/18 16:23:49 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -53,6 +53,8 @@ import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.targets.OutputTarget;
+import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.ui.about.ProjectInfo;
 
 import javax.swing.table.DefaultTableModel;
@@ -505,19 +507,16 @@ public class JFreeReport implements JFreeReportConstants
   public ReportState processReport(OutputTarget target, boolean draw)
     throws ReportProcessingException
   {
-
     int page = 1;
     ReportState rs = new ReportState.Start(this);
     ReportProcessor prc = new ReportProcessor(target, draw, getPageFooter());
 
     rs = rs.advance(prc);
     rs = processPage(target, rs, draw);
-    target.endPage();
 
     while (!(rs instanceof ReportState.Finish))
     {
       ReportState nrs = processPage(target, rs, draw);
-      target.endPage();
       Log.error (String.valueOf (getProperty(REPORT_DATE_PROPERTY)));
       if (nrs.isProceeding(rs) == false)
       {
@@ -546,7 +545,7 @@ public class JFreeReport implements JFreeReportConstants
   public ReportState processPage(
     OutputTarget target,
     final ReportState currPage,
-    boolean draw)
+    boolean draw) throws ReportProcessingException
   {
     if (currPage.isStart())
     {
@@ -557,6 +556,15 @@ public class JFreeReport implements JFreeReportConstants
       throw new IllegalArgumentException("No finish state for processpage allowed");
     }
     ReportState state = (ReportState) currPage.clone();
+    try
+    {
+      target.beginPage();
+    }
+    catch (OutputTargetException e)
+    {
+      Log.error ("Failed to start page " + state.getCurrentPage(), e);
+      throw new ReportProcessingException("Failed to start page " + state.getCurrentPage());
+    }
 
     int page = state.getCurrentPage();
     boolean pageDone = false;
@@ -604,6 +612,15 @@ public class JFreeReport implements JFreeReportConstants
     }
 
     // return the state at the end of the page...
+    try
+    {
+      target.endPage();
+    }
+    catch (OutputTargetException e)
+    {
+      Log.error ("Failed to end page " + state.getCurrentPage(), e);
+      throw new ReportProcessingException("Failed to end page " + state.getCurrentPage());
+    }
     state.nextPage();
     return state;
   }

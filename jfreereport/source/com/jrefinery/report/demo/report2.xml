@@ -3,23 +3,29 @@
 	<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
 -->
 
+<!--
+  ChangeLog:
+   2002-May-20: Adjusted the width of 0 to be "100%". The parser does translate values of 0 to
+                the full width, but will issue at least a warning.
+
+-->
 <report name="Sample Report 2" width="0" height="0">
 
     <!-- REPORT HEADER -->
     <reportheader height="144" fontname="SansSerif" fontstyle="bold" fontsize="18">
-        <label name="label1" x="0" y="0" width="0" height="20" alignment="center">Sample Report Two</label>
-        <label name="label2" x="0" y="24" width="0" height="10" fontsize="10" alignment="center">Generated using JFreeReport (version 0.7.0)</label>
+        <label name="label1" x="0" y="0" width="100%" height="20" alignment="center">Sample Report Two</label>
+        <label name="label2" x="0" y="24" width="100%" height="10" fontsize="10" alignment="center">Generated using JFreeReport (version 0.7.0)</label>
     </reportheader>
 
     <!-- REPORT FOOTER -->
     <reportfooter height="24" fontname="SansSerif" fontstyle="bold" fontsize="10">
-        <label name="label3" x="0" y="0" width="0" height="20" alignment="center">END OF REPORT</label>
+        <label name="label3" x="0" y="0" width="100%" height="20" alignment="center">END OF REPORT</label>
     </reportfooter>
 
     <!-- PAGE HEADER -->
     <pageheader height="32" onfirstpage="false" fontname="Serif" fontstyle="bold" fontsize="10">
         <line name="line1" x1="0" y1="30" x2="0" y2="30" weight="0.5"></line>
-        <label name="label4" x="0" y="0" width="0" height="20" alignment="center">PAGE HEADER</label>
+        <label name="label4" x="0" y="0" width="100%" height="20" alignment="center">PAGE HEADER</label>
     </pageheader>
 
     <!-- PAGE FOOTER -->

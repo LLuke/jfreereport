@@ -28,19 +28,23 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StringElement.java,v 1.1.1.1 2002/04/25 17:02:20 taqua Exp $
+ * $Id: StringElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 05-Mar-2002 : Integrated Thomas Morgner's code plus PDF report generation (DG);
  * 10-May-2002 : removed all complex constructors (TM)
+ * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
+ *               TextElements instead which get different filters attached.
  */
 
 package com.jrefinery.report;
 
 /**
  * A data element that handles String objects.
+ *
+ * @deprecated Use a plain text element and add a report datasource to the element.
  */
 public class StringElement extends DataElement
 {

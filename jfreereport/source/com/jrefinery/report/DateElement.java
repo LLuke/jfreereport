@@ -28,15 +28,21 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DateElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: DateElement.java,v 1.3 2002/05/17 13:22:32 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 10-May-2002 : Removed all compelex constructors
+ * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
+ *               TextElements instead which get different filters attached.
  */
 
 package com.jrefinery.report;
+
+import com.jrefinery.report.filter.DateFormatFilter;
+import com.jrefinery.report.filter.DataSource;
+import com.jrefinery.report.filter.DataFilter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -44,23 +50,33 @@ import java.util.Date;
 
 /**
  * A data element that handles java.util.Date objects.
+ *
+ * @deprecated form this element by stacking it together by using filters
  */
 public class DateElement extends DataElement
 {
 
   /** The formatting object for this data element. */
-  private DateFormat formatter;
+  private DateFormatFilter formatter;
 
   /**
    * Constructs a date element using float coordinates.
+   *
+   * @deprecated form this element by stacking it together by using filters
    */
   public DateElement()
   {
+    formatter = new DateFormatFilter();
     setFormatString(null);
+    DataFilter df = getTextFilter();
+    df.setDataSource(formatter);
+    formatter.setDataSource(getReportDataSource());
   }
 
   /**
    * sets the format of the element to SimpleDate using the given formatString.
+   *
+   * @deprecated form this element by stacking it together by using filters
    */
   public void setFormatString(String s)
   {
@@ -77,15 +93,17 @@ public class DateElement extends DataElement
   /**
    * @return the current formater for this element. This function will never
    * return null.
+   * @deprecated form this element by stacking it together by using filters
    */
   public DateFormat getFormatter()
   {
-    return formatter;
+    return formatter.getDateFormat();
   }
 
   /**
    * Defines the current formater for the element. If the formater is null,
    * an exception is thrown.
+   * @deprecated form this element by stacking it together by using filters
    */
   public void setFormatter(DateFormat format)
   {
@@ -93,23 +111,11 @@ public class DateElement extends DataElement
     {
       throw new NullPointerException("Given format may not be null");
     }
-    this.formatter = format;
-  }
-
-  /**
-   * Returns a string representing the formatted date.
-   * @return A formatted version of the data value.
-   */
-  public String getFormattedText()
-  {
-
-    if (getValue() instanceof Date)
+    if (format instanceof SimpleDateFormat)
     {
-      return formatter.format(getValue());
+      this.formatter.setDateFormat((SimpleDateFormat) format);
     }
     else
-      return "-";
-
+      throw new ClassCastException("DEPRECATION: Only simple dateformat supported by default implementation");
   }
-
 }

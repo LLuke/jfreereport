@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OutputTarget.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: OutputTarget.java,v 1.3 2002/05/16 17:05:24 jaosch Exp $
  *
  * Changes
  * -------
@@ -36,14 +36,20 @@
  * 18-Apr-2002 : Introduced drawImage and drawMultiLine
  * 10-May-2002 : Documentation
  * 16-May-2002 : Interface of drawShape changed
- * 
+ * 20-May-2002 : Moved into new package. Extended to support Strokes, cursors and saveable states.
+ *               Created beginPage() state callback to property initialize new pages. FillShape
+ *               added.
  */
 
-package com.jrefinery.report;
+package com.jrefinery.report.targets;
+
+import com.jrefinery.report.ImageReference;
 
 import java.awt.Font;
 import java.awt.Paint;
 import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 
 /**
@@ -60,12 +66,12 @@ public interface OutputTarget
    * @param title The report title.
    * @param author The report author.
    */
-  public void open (String title, String author);
+  public void open (String title, String author) throws OutputTargetException;
 
   /**
    * Closes the target.
    */
-  public void close ();
+  public void close () throws OutputTargetException;
 
   /**
    * Returns the page format for the target.
@@ -142,65 +148,110 @@ public interface OutputTarget
    *
    * @param font The font.
    */
-  public void setFont (Font font);
+  public void setFont (Font font) throws OutputTargetException;
+
+  /**
+   * returns the currently defined font for this Target.
+   */
+  public Font getFont ();
+
+  /**
+   * Defines the current stroke for the target. The stroke is used to draw the outlines
+   * of shapes.
+   */
+  public void setStroke (Stroke stroke) throws OutputTargetException;
+
+  /**
+   * Returns the current stroke assigned with this target.
+   */
+  public Stroke getStroke ();
 
   /**
    * Sets the paint.
    *
    * @param paint The paint.
    */
-  public void setPaint (Paint paint);
+  public void setPaint (Paint paint) throws OutputTargetException;
+
+  /**
+   * Returns the paint currently set for this target.
+   */
+  public Paint getPaint ();
+
+  /**
+   * defines the bounds for the current band. This will also adjust the bandBounds of the
+   * assigned cursor.
+   */
+  public void setClippingArea (Rectangle2D bounds);
+
+  /**
+   * Returns the defined bound to the current band.
+   */
+  public Rectangle2D getClippingArea ();
+
+  /**
+   * Returns the cursor assigned with is outputtarget. The cursor is used to translate between
+   * the different coordinate spaces.
+   */
+  public BandCursor getCursor ();
 
   /**
    * Draws a string inside a rectangular area (the lower edge is aligned with the baseline of
    * the text).
    *
    * @param text The text.
-   * @param x1 The x-coordinate for the upper left corner.
-   * @param y1 The y-coordinate for the upper left corner.
-   * @param x2 The x-coordinate for the lower right corner.
-   * @param y2 The y-coordinate for the lower right corner.
    * @param alignment The horizontal alignment.
    */
-  public void drawString (String text,
-                          float x1, float y1, float x2, float y2,
-                          int alignment);
+  public void drawString (String text, int alignment);
 
-  /**
-   * Draws a shape relative to the specified coordinates.
-   *
-   * @param shape The shape to draw.
-   * @param x The x coordinate.
-   * @param y The y coordinate.
-   */
-  public void drawShape (ShapeElement shape, float x, float y);
-
-
-  /**
-   * Draws a image relative to the specified coordinates.
-   *
-   * @param shape The shape to draw.
-   * @param x The x coordinate.
-   * @param y The y coordinate.
-   */
-  public void drawImage (ImageReference image, float x, float y);
 
   /**
    * Draws a string inside a rectangular area (the lower edge is aligned with the baseline of
    * the text). The text is split at the end of the line and continued in the next line.
    *
    * @param text The text.
-   * @param x1 The x-coordinate for the upper left corner.
-   * @param y1 The y-coordinate for the upper left corner.
-   * @param x2 The x-coordinate for the lower right corner.
-   * @param y2 The y-coordinate for the lower right corner.
    * @param alignment The horizontal alignment.
    */
-  public void drawMultiLineText (String mytext, float x, float y, float w, float h, int align);
+  public void drawMultiLineText (String mytext, int align);
+
+  /**
+   * Draws a shape relative to the specified coordinates.
+   *
+   * @param shape The shape to draw.
+   */
+  public void drawShape (Shape shape);
+
+  /**
+   * Fills the shape relative to the current position
+   */
+  public void fillShape (Shape shape);
+
+  /**
+   * Draws a image relative to the specified coordinates.
+   *
+   * @param image The image to draw as imagereference for possible embedding of rawdata.
+   */
+  public void drawImage (ImageReference image) throws OutputTargetException;
 
   /**
    * Signals that the current page is ended.  Some targets need to know when a page is finished,
    * others can simply ignore this message.
    */
-  public void endPage ();
+  public void endPage () throws OutputTargetException;
+
+  /**
+   * Signals that the current page is ended.  Some targets need to know when a page is being started,
+   * others can simply ignore this message.
+   */
+  public void beginPage () throws OutputTargetException;
+
+  /**
+   * Saves this state and returns a state encapsulation suitable to be restored by restoreState().
+   */
+  public Object saveState () throws OutputTargetException;
+
+  /**
+   * Restores a previously saved state.
+   */
+  public void restoreState (Object o) throws OutputTargetException;
 }

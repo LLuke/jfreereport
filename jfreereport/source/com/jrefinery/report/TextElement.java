@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.4 2002/05/16 13:20:09 jaosch Exp $
+ * $Id: TextElement.java,v 1.5 2002/05/17 13:24:40 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -38,9 +38,18 @@
  * 15-May-2002 : The null value is handled specially, initiated by thomas.rynne@edftrading.com
  * 16-May-2002 : Line delimiters adjusted
  *               using protected member m_paint instead of getter methode
+ * 20-May-2002 : TextElement is now line break capable. (Functionality moved from MultilineTextElement)
+ *               This class is no longer abstract. The filter/datasource interfaces are used to feed
+ *               and convert data.
  */
 
 package com.jrefinery.report;
+
+import com.jrefinery.report.filter.DataSource;
+import com.jrefinery.report.filter.StringFilter;
+import com.jrefinery.report.filter.DataFilter;
+import com.jrefinery.report.targets.OutputTarget;
+import com.jrefinery.report.targets.OutputTargetException;
 
 import java.awt.Font;
 import java.awt.Paint;
@@ -49,22 +58,24 @@ import java.awt.geom.Rectangle2D;
 /**
  * The base class for all elements that display text in a report band.
  */
-public abstract class TextElement extends Element
+public class TextElement extends Element
 {
-  /** A string representing the text which is displayed when the elements value is null */
-  private String nullString;
+  private StringFilter stringfilter;
 
   /** Font for displaying text. */
   private Font font;
 
   /** Text alignment: LEFT, CENTER, RIGHT. */
   private int alignment;
+  private float baseline;
 
   /**
    * Constructs an element using a Rectangle2D.
    */
   protected TextElement()
   {
+    stringfilter = new StringFilter ();
+    super.setDataSource(stringfilter);
     setNullString("-");
   }
 
@@ -115,7 +126,7 @@ public abstract class TextElement extends Element
    */
   public String getNullString()
   {
-    return nullString;
+    return stringfilter.getNullValue();
   }
 
   /**
@@ -123,7 +134,8 @@ public abstract class TextElement extends Element
    */
   public void setNullString(String s)
   {
-    nullString = (s == null) ? "null" : s;
+    String nstring = (s == null) ? "null" : s;
+    stringfilter.setNullValue(nstring);
   }
 
   /**
@@ -156,58 +168,27 @@ public abstract class TextElement extends Element
    *
    * @param target The output target.
    * @param band The band.
-   * @param bandX The x-coordinate of the report band.
-   * @param bandY The y-coordinate of the report band.
    */
-  public void draw(OutputTarget target, Band band, float bandX, float bandY)
+  public void draw (OutputTarget target, Band band) throws OutputTargetException
   {
-    // set the paint...
     if (m_paint != null)
     {
       target.setPaint(m_paint);
     }
     else
     {
-      target.setPaint(band.getDefaultPaint());
+      target.setPaint (band.getDefaultPaint ());
     }
 
     // set the font...
-
-    // what if no font is set in both band and element?
-
-    Font currentFont = getFont(band);
-    if (currentFont != null)
+    if (getFont (band) != null)
     {
-      target.setFont(currentFont);
-    }
-    else
-    {
-      throw new NullPointerException("Neither band nor Item have a font set");
+      target.setFont (getFont (band));
     }
 
     // draw the text...
-
-    Rectangle2D area = getBounds();
-    float x1 = bandX + (float) area.getX();
-    float y1 = bandY + (float) area.getY();
-    float x2 = bandX + (float) area.getMaxX();
-    float y2 = bandY + (float) area.getMaxY();
-
-    if (x2 > x1)
-    {
-      target.drawString(this.getFormattedText(), x1, y1, x2, y2, getAlignment());
-    }
-    else
-    {
-      target.drawString(
-        this.getFormattedText(),
-        bandX,
-        y1,
-        bandX + target.getUsableWidth(),
-        y2,
-        getAlignment());
-    }
-
+    Rectangle2D area = getBounds ();
+    target.drawMultiLineText (this.getFormattedText (), getAlignment ());
   }
 
   /**
@@ -215,8 +196,25 @@ public abstract class TextElement extends Element
    * can be formatted in various ways.
    *
    * @return A formatted version of the data value.
+   * @deprecated this method is replaced by Element.getValue().
    */
-  public abstract String getFormattedText();
+  public String getFormattedText()
+  {
+    return String.valueOf(super.getValue());
+  }
+
+  /**
+   * Makes sure that getFormattedText is called and evaluated.
+   */
+  public final Object getValue ()
+  {
+    return getFormattedText();
+  }
+
+  protected DataFilter getTextFilter ()
+  {
+    return stringfilter;
+  }
 
   /**
    * Debugging: returns the String representation of this element.
@@ -232,8 +230,17 @@ public abstract class TextElement extends Element
     b.append(", font=");
     b.append(getFont());
     b.append(", text=");
+    b.append(getValue());
+    b.append(", getFormattedText=");
     b.append(getFormattedText());
     b.append("}");
     return b.toString();
   }
+
+  public void setDataSource (DataSource ds)
+  {
+    if (ds == null) throw new NullPointerException();
+    stringfilter.setDataSource(ds);
+  }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.1.1.1 2002/04/25 17:02:25 taqua Exp $
+ * $Id: Band.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -38,20 +38,33 @@
  * 10-May-2002 : Declared Abstract, Removed complex constructors
  * 11-May-2002 : Bug: when adding multiple data fields referencing to the same column in the
  *               data model only the first field was filled with data on populateElements.
+ * 20-May-2002 : Changed to support new drawing scheme. The state of the OutputTarget is stored
+ *               before any element starts to draw and restored afterwards. This will greatly
+ *               reduce sideeffects from changed fonts or paints which are not restored by the
+ *               element.
  */
 
 package com.jrefinery.report;
 
+import com.jrefinery.report.filter.DataSource;
+import com.jrefinery.report.filter.DataTarget;
+import com.jrefinery.report.filter.FunctionDataSource;
+import com.jrefinery.report.filter.ReportDataSource;
 import com.jrefinery.report.function.Function;
+import com.jrefinery.report.util.HashNMap;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.targets.OutputTarget;
+import com.jrefinery.report.targets.OutputTargetException;
 
 import javax.swing.table.TableModel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
+import java.awt.geom.Rectangle2D;
 import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.Vector;
 
 /**
@@ -82,13 +95,13 @@ public abstract class Band
   private Paint defaultPaint;
 
   /** All the elements for this band, stored by name. */
-  private SortedMap allElements;
+  private Hashtable allElements;
 
   /** Data elements for this band, stored by field name. */
-  private SortedMap dataElements;
+  private HashNMap dataElements;
 
   /** Function elements for this band, stored by function name. */
-  private SortedMap functionElements;
+  private HashNMap functionElements;
 
   /**
    * Constructs a new band (initially empty).
@@ -96,9 +109,11 @@ public abstract class Band
    */
   protected Band ()
   {
-    allElements = new TreeMap ();
-    dataElements = new TreeMap ();
-    functionElements = new TreeMap ();
+    setDefaultFont(DEFAULT_FONT);
+    setDefaultPaint(DEFAULT_PAINT);
+    allElements = new Hashtable();
+    dataElements = new HashNMap ();
+    functionElements = new HashNMap ();
   }
 
   /**
@@ -134,6 +149,7 @@ public abstract class Band
    */
   public void setDefaultFont (Font font)
   {
+    if (font == null) throw new NullPointerException();
     this.defaultFont = font;
   }
 
@@ -154,6 +170,7 @@ public abstract class Band
    */
   public void setDefaultPaint (Paint paint)
   {
+    if (paint == null) throw new NullPointerException();
     this.defaultPaint = paint;
   }
 
@@ -166,22 +183,16 @@ public abstract class Band
 
     allElements.put (element.getName (), element);
 
-    if (element instanceof DataElement)
+    DataSource ds = getLastDatasource (element);
+    if (ds instanceof ReportDataSource)
     {
-      DataElement de = (DataElement) element;
-      Vector v = (Vector) dataElements.get (de.getField());
-      if (v == null)
-      {
-        v = new Vector ();
-        dataElements.put (de.getField(), v);
-      }
-      v.add (de);
+      ReportDataSource rds = (ReportDataSource) ds;
+      dataElements.add (rds.getField (), rds);
     }
-
-    if (element instanceof FunctionElement)
+    else if (ds instanceof FunctionDataSource)
     {
-      FunctionElement fe = (FunctionElement) element;
-      functionElements.put (fe.getName (), fe);
+      FunctionDataSource fe = (FunctionDataSource) ds;
+      functionElements.add (fe.getFunction (), fe);
     }
 
   }
@@ -213,11 +224,10 @@ public abstract class Band
    */
   public void populateElements (ReportState state)
   {
-    TableModel data = state.getReport().getData();
-    int row = state.getCurrentDisplayItem();
-    FunctionCollection functions = state.getFunctions();
+    TableModel data = state.getReport ().getData ();
+    int row = state.getCurrentDisplayItem ();
 
-    if (data.getRowCount() < 1)
+    if (data.getRowCount () < 1)
       return;
 
     row = Math.min (row, data.getRowCount () - 1);
@@ -225,7 +235,7 @@ public abstract class Band
     {
       Object value = data.getValueAt (row, column);
       String name = data.getColumnName (column);
-      Vector elements = (Vector) dataElements.get (name);
+      Enumeration elements = dataElements.getAll (name);
       if (elements == null)
       {
         // No data elements for this column in this band
@@ -233,26 +243,30 @@ public abstract class Band
       }
 
       // Fill the value into all elements
-      for (int i = 0; i < elements.size(); i++)
+      while (elements.hasMoreElements())
       {
-        DataElement element = (DataElement) elements.elementAt(i);
+        ReportDataSource element = (ReportDataSource) elements.nextElement();
         element.setValue (value);
       }
     }
 
     // iterate through the function elements
-    Iterator iterator = this.functionElements.values ().iterator ();
-    while (iterator.hasNext ())
+    FunctionCollection functions = state.getFunctions ();
+    Enumeration enum = this.functionElements.keys ();
+    while (enum.hasMoreElements ())
     {
-      FunctionElement fe = (FunctionElement) iterator.next ();
-      Function f = functions.get (fe.getFunctionName ());
-      if (f != null)
+
+      String name = (String) enum.nextElement ();
+      Function f = functions.get (name);
+      if (f == null) continue;
+
+      Enumeration functionsources = functionElements.getAll(name);
+      if (functionsources == null) continue;
+
+      while (functionsources.hasMoreElements())
       {
-        fe.setValue (f.getValue ());
-      }
-      else
-      {
-        fe.setValue ("-");
+        FunctionDataSource fds = (FunctionDataSource) functionsources.nextElement();
+        fds.setValue (f.getValue ());
       }
     }
 
@@ -264,26 +278,79 @@ public abstract class Band
    * @param x The x-coordinate.
    * @param y The y-coordinate.
    */
-  public void draw (OutputTarget target, float x, float y)
+  public void draw (OutputTarget target, float x, float y) throws OutputTargetException
   {
-    target.setPaint (Color.black);
+    Rectangle2D bounds = new Rectangle2D.Float();
+    bounds.setRect(x,y, target.getUsableWidth(), getHeight());
+    target.setClippingArea(bounds);
+
+    target.setPaint (getDefaultPaint());
     Iterator iterator = allElements.values ().iterator ();
     while (iterator.hasNext ())
     {
       Element e = (Element) iterator.next ();
-      e.draw (target, this, x, y);
+      target.getCursor().setElementBounds(translateBounds(target, e.getBounds()));
+      try
+      {
+        Object state = target.saveState();
+        e.draw (target, this);
+        target.restoreState(state);
+      }
+      catch (OutputTargetException ex)
+      {
+        Log.error ("Failed to draw band", ex);
+      }
     }
   }
+
+  /**
+   * Translates the elements bounds from relative values (-100 .. 0) to absolute values.
+   */
+  private Rectangle2D translateBounds (OutputTarget target, Rectangle2D bounds)
+  {
+    float x = fixValue(bounds.getX(), target.getUsableWidth());
+    float y = fixValue(bounds.getY(), getHeight());
+    float w = fixValue(bounds.getWidth(), target.getUsableWidth());
+    float h = fixValue(bounds.getHeight(), getHeight());
+    return new Rectangle2D.Float (x,y,w,h);
+  }
+
+  /**
+   * Helperfunction:
+   * Translates the elements bounds from relative values (-100 .. 0) to absolute values.
+   */
+  private float fixValue (double value, double full)
+  {
+    if (value >= 0) return (float) value;
+    float retval = (float) (value * full / -100);
+    Log.debug ("Adjusted Relative value: " + retval);
+    return retval;
+  }
+
 
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();
-    b.append (this.getClass().getName());
+    b.append (this.getClass ().getName ());
     b.append ("={functions=");
     b.append (functionElements);
     b.append (", dataelements=");
     b.append (dataElements);
     b.append ("}");
     return b.toString ();
+  }
+
+  /**
+   * Queries the last datasource in the chain of targets and filters.
+   */
+  public static DataSource getLastDatasource (DataTarget e)
+  {
+    DataSource s = e.getDataSource ();
+    if (s instanceof DataTarget)
+    {
+      DataTarget tgt = (DataTarget) s;
+      return getLastDatasource (tgt);
+    }
+    return s;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageReference.java,v 1.5 2002/05/16 12:14:12 jaosch Exp $
+ * $Id: ImageReference.java,v 1.6 2002/05/17 13:22:32 jaosch Exp $
  *
  * Changes:
  * --------
@@ -67,25 +67,6 @@ public class ImageReference
   /** The image URL. */
   private URL url;
 
-  /** The image bounds. */
-  private Rectangle2D bounds;
-
-  /**
-   * Creates a new ImageReference with an origin of 0,0 and the desired
-   * width. The image data is read from the given URL.
-   *
-   * @param url the source url. The url must be readable while generating reports.
-   * @param width the desired width of the image in report-units (1/72 inch).
-   * @param height the desired height of the image in report-units (1/72 inch).
-   *
-   * @throws IOException if the url could not be read.
-   */
-  public ImageReference(URL url, float width, float height) throws IOException
-  {
-
-    this(url, new Rectangle2D.Float(0, 0, width, height));
-  }
-
   /**
    * Creates a new ImageReference with an origin of 0,0 and the desired
    * width. The image data is read from the given URL.
@@ -96,14 +77,9 @@ public class ImageReference
    *
    * @throws IOException if the url could not be read.
    */
-  public ImageReference(URL url, Rectangle2D bounds) throws IOException
+  public ImageReference(URL url) throws IOException
   {
-
-    if (bounds.getWidth() < 1 || bounds.getHeight() < 1)
-      throw new IllegalArgumentException("Width and height have to be > 0");
-
     InputStream is = null;
-    setBounds(bounds);
     setSourceURL(url);
 
     try
@@ -175,97 +151,6 @@ public class ImageReference
   }
 
   /**
-   * Sets the required size for the image.
-   *
-   * @param bounds The size.
-   */
-  protected void setBounds(Rectangle2D bounds)
-  {
-
-    if (bounds == null)
-      throw new NullPointerException();
-
-    this.bounds = bounds;
-  }
-
-  /**
-   * Returns the required width of the image (in points, 1/72 inch).
-   *
-   * @return The width.
-   */
-  public float getWidth()
-  {
-
-    return (float) bounds.getWidth();
-  }
-
-  /**
-   * Returns the required height of the image (in points, 1/72 inch).
-   *
-   * @return the desired height of the image.
-   */
-  public float getHeight()
-  {
-
-    return (float) bounds.getHeight();
-  }
-
-  /**
-   * Returns the required left origin of the image.
-   *
-   * @return The left origin.
-   */
-  public float getX()
-  {
-
-    return (float) bounds.getX();
-  }
-
-  /**
-   * Returns the upper origin of the image.
-   *
-   * @return The upper origin.
-   */
-  public float getY()
-  {
-
-    return (float) bounds.getY();
-  }
-
-  /**
-   * Returns the required size of the image.
-   *
-   * @param carrier You can supply a rectangle in which to store the result, if you want to avoid
-   *                creating new objects unnecessarily.
-   *
-   * @return The size.
-   */
-  public Rectangle2D getBounds(Rectangle2D carrier)
-  {
-
-    if (carrier == null)
-      carrier = new Rectangle2D.Float();
-
-    carrier.setRect(bounds);
-
-    return carrier;
-  }
-
-  /**
-   * Returns the required size of the image.
-   * <P>
-   * See also the getBounds(Rectangle2D) method, if you prefer not to create a new Rectangle2D for
-   * each call to this method.
-   *
-   * @return The size.
-   */
-  public Rectangle2D getBounds()
-  {
-
-    return getBounds(null);
-  }
-
-  /**
    * Returns a String representing this object.  Useful for debugging.
    *
    * @return The string.
@@ -277,10 +162,19 @@ public class ImageReference
 
     buf.append("ImageReference={ URL=");
     buf.append(getSourceURL());
-    buf.append(" bounds=");
-    buf.append(getBounds());
     buf.append("}");
 
     return buf.toString();
+  }
+
+  public boolean equals (Object o)
+  {
+    if (o == null) return false;
+    if (o instanceof ImageReference == false) return false;
+    ImageReference ref = (ImageReference) o;
+    if (ref.url == null && url == null) return true;
+    if (ref.url == null) return false;
+    if (url == null) return false;
+    return ref.url.equals(url);
   }
 }

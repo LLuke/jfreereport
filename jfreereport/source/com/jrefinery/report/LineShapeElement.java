@@ -34,6 +34,9 @@
  */
 package com.jrefinery.report;
 
+import com.jrefinery.report.targets.OutputTarget;
+import com.jrefinery.report.targets.OutputTargetException;
+
 import java.awt.geom.Line2D;
 import java.awt.Shape;
 
@@ -90,7 +93,7 @@ public class LineShapeElement extends ShapeElement
    * this line a horizontal line and adjust the length of this line. This should be done
    * by some sort of relative addressing as in HTML with &lt;hr width="100%"&gt;
    */
-  public void draw(OutputTarget target, Band band, float bandX, float bandY)
+  public void draw(OutputTarget target, Band band) throws OutputTargetException
   {
     Line2D l = getLine();
 
@@ -98,7 +101,7 @@ public class LineShapeElement extends ShapeElement
     {
       l.setLine(0.0d, m_line.getY1(), target.getUsableWidth(), m_line.getY1());
     }
-    super.draw(target, band, bandX, bandY);
+    super.draw(target, band);
   }
 
   public String toString()

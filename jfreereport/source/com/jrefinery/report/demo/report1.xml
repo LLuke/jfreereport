@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!--
         <!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
+
+ -->
+<!--
+  ChangeLog:
+   2002-May-20: Adjusted the width of 0 to be "100%". The parser does translate values of 0 to
+                the full width, but will issue at least a warning.
+                The element width of "Country Element" was unreasonably low and is now 176.
+
 -->
 <report name="Sample Report 1" width="468" height="648">
 
     <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="20">
-        <label name="Label 1" x="0" y="0" width="0" height="24" alignment="center" baseline="20">LIST OF COUNTRIES BY CONTINENT</label>
+        <label name="Label 1" x="0" y="0" width="100%" height="24" alignment="center" baseline="20">LIST OF COUNTRIES BY CONTINENT</label>
     </reportheader>
 
     <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
         <!-- insert a number field here showing the total population -->
-        <label name="Label 2" x="0" y="0" width="450" height="24" alignment="center">*** END OF REPORT ***</label>
+        <label name="Label 2" x="0" y="0" width="100%" height="24" alignment="center">*** END OF REPORT ***</label>
     </reportfooter>
 
     <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
-        <date-function name="date1" x="0" y="0" width="0" height="14" alignment="right" baseline="12" format="d-MMM-yyyy" function="report_date"/>
+        <date-function name="date1" x="0" y="0" width="100%" height="14" alignment="right" baseline="12" format="d-MMM-yyyy" function="report_date"/>
         <line name="line1" x1="0" y1="16" x2="0" y2="16" color="blue" weight="2.0"/>
     </pageheader>
 
@@ -40,7 +48,7 @@
     </groups>
 
     <items height="10" fontname="Monospaced" fontstyle="plain" fontsize="8">
-        <string-field name="Country Element" x="0" y="0" width="76" height="8" alignment="left" fieldname="Country" />
+        <string-field name="Country Element" x="0" y="0" width="176" height="8" alignment="left" fieldname="Country" />
         <string-field name="Code Element" x="180" y="0" width="76" height="8" alignment="left" fieldname="ISO Code"/>
         <number-field name="Population Element" x="260" y="0" width="76" height="8" alignment="right" format="#,##0" fieldname="Population"/>
     </items>

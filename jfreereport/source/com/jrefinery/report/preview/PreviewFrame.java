@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.5 2002/05/16 23:08:02 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.6 2002/05/17 15:02:25 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -87,7 +87,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import com.jrefinery.layout.CenterLayout;
-import com.jrefinery.report.G2OutputTarget;
+import com.jrefinery.report.targets.G2OutputTarget;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
@@ -96,7 +96,8 @@ import com.jrefinery.report.action.CloseAction;
 import com.jrefinery.report.action.PageSetupAction;
 import com.jrefinery.report.action.PrintAction;
 import com.jrefinery.report.action.SaveAsAction;
-import com.jrefinery.report.pdf.PDFOutputTarget;
+import com.jrefinery.report.targets.PDFOutputTarget;
+import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.ui.ExtensionFileFilter;
 
 /**
@@ -330,8 +331,7 @@ public class PreviewFrame
   protected ReportPane createReportPane()
   {
     JFreeReport report = getReport();
-    ReportPane reportPane =
-      new ReportPane(report, new G2OutputTarget(null, getDefaultPageFormat()));
+    ReportPane reportPane = new ReportPane(report, new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), getDefaultPageFormat()));
     reportPane.addPropertyChangeListener(ReportPane.PAGECOUNT_PROPERTY, this);
     reportPane.addPropertyChangeListener(ReportPane.PAGENUMBER_PROPERTY, this);
     return reportPane;
@@ -434,12 +434,25 @@ public class PreviewFrame
       {
         selFileName = selFileName + ".pdf";
       }
-      OutputStream out = new FileOutputStream(new File(selFileName));
-      PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
-      target.open("Title", "Author");
       try
       {
+        OutputStream out = new FileOutputStream(new File(selFileName));
+        PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
+        target.open("Title", "Author");
         getReport().processReport(target, true);
+        target.close();
+      }
+      catch (IOException ioe)
+      {
+        JOptionPane.showMessageDialog(
+          this,
+          "Error on saving PDF: " + ioe.getMessage());
+      }
+      catch (OutputTargetException re)
+      {
+        JOptionPane.showMessageDialog(
+          this,
+          "Error on processing this report: " + re.getMessage());
       }
       catch (ReportProcessingException re)
       {
@@ -447,7 +460,6 @@ public class PreviewFrame
           this,
           "Error on processing this report: " + re.getMessage());
       }
-      target.close();
     }
   }
 

@@ -28,12 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFunctionElement.java,v 1.1.1.1 2002/04/25 17:02:18 taqua Exp $
+ * $Id: StringFunctionElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes
  * -------
  * 18-Feb-2002 : Version 1, contributed by Thomas Morgner, with modifications by DG (DG);
  * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
+ * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
+ *               TextElements instead which get different filters attached.
  */
 
 package com.jrefinery.report;
@@ -43,6 +45,7 @@ package com.jrefinery.report;
  * A function element that displays String values.
  * <P>
  * This class adds nothing to the FunctionElement class apart from a descriptive name.
+ * @deprecated Use a plain text element and add a function datasource to the element.
  */
 public class StringFunctionElement extends FunctionElement
 {

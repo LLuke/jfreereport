@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<body bgcolor="white">
+The filter interface replaces all specialized Elements. The to be deprecated
+elements are
+<ul>
+<li>DataElement
+<li>DateElement
+<li>DateFunctionElement
+<li>FunctionElement
+<li>LabelElement
+<li>LineShapeElement
+<li>MultilineTextElement
+<li>NumberElement
+<li>NumberFunctionElement
+<li>StringElement
+<li>StringFunctionElement
+</ul>
+<p>
+<h2>How to use the FilterInterface</h2>
+<p>
+All data is read from DataSource implementations. A DataSource encapsulates a single
+value, which is read by an DataTarget. An object which implements both DataSource and
+DataTarget acts as filter, it modifies the value before it is returned to the next
+DataTarget.
+</p>
+</body>
+</html>

@@ -28,15 +28,22 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionElement.java,v 1.1.1.1 2002/04/25 17:02:23 taqua Exp $
+ * $Id: FunctionElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes
  * -------
  * 15-Feb-2002 : Version 1, contributed by Thomas Morgner, with modifications by DG (DG);
  * 10-May-2002 : Removed all complex constructors
+ * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
+ *               TextElements instead which get different filters attached.
  */
 
 package com.jrefinery.report;
+
+import com.jrefinery.report.filter.ReportDataSource;
+import com.jrefinery.report.filter.DataSource;
+import com.jrefinery.report.filter.FunctionDataSource;
+import com.jrefinery.report.filter.DataFilter;
 
 import java.awt.Font;
 import java.awt.Paint;
@@ -47,67 +54,48 @@ import java.awt.geom.Rectangle2D;
  * This class separates the functional part (@see ReportFunction) from the presentation
  * layer.  The report-function given at construction time is used as key for the
  * function collection.
+ * @deprecated form this element by stacking it together by using filters
  */
 public abstract class FunctionElement extends TextElement
 {
 
   /** The name of the function that this element gets its value from. */
-  private String functionName;
-
-  /** The current value of the function. */
-  private Object value;
+  private FunctionDataSource functionsource;
 
   /**
    * Constructs a function element using float coordinates.
+   * @deprecated form this element by stacking it together by using filters
    */
   protected FunctionElement ()
   {
+    functionsource = new FunctionDataSource();
+    DataFilter df = getTextFilter ();
+    df.setDataSource (functionsource);
   }
 
   /**
    * Returns the name of the function that this element obtains its value from.
    * @return The function name.
+   * @deprecated form this element by stacking it together by using filters
    */
   public String getFunctionName ()
   {
-    return this.functionName;
+    return functionsource.getFunction();
   }
 
   /**
    * defines the name of the function that this element obtains its value from.
    * @param function The function name.
+   * @deprecated form this element by stacking it together by using filters
    */
   public void setFunctionName (String function)
   {
-    if (function == null)
-      throw new NullPointerException ("Function must not be null");
-
-    this.functionName = function;
+    functionsource.setFunction(function);
   }
 
-  /**
-   * Returns the value for the element.
-   */
-  public Object getValue ()
+  protected FunctionDataSource getFunctionDataSource ()
   {
-    return this.value;
+    return functionsource;
   }
 
-  /**
-   * Sets the current value of the element.
-   * @param value The new value for the element;
-   */
-  public void setValue (Object value)
-  {
-    this.value = value;
-  }
-
-  /**
-   * Returns a string representing the formatted data.
-   * @return A formatted version of the data value.
-   */
-  public String getFormattedText ()
-  {
-    return String.valueOf (getValue ());
-  }
 }

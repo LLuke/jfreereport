@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.6 2002/05/16 23:08:02 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.7 2002/05/17 12:45:06 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -230,6 +230,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     }
     catch (Exception ioe)
     {
+      ioe.printStackTrace();
       JOptionPane.showMessageDialog(
         this,
         ioe.getMessage(),
@@ -274,6 +275,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     }
     catch (Exception ioe)
     {
+      ioe.printStackTrace();
       JOptionPane.showMessageDialog(
         this,
         ioe.getMessage(),
@@ -316,6 +318,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     }
     catch (Exception ioe)
     {
+      ioe.printStackTrace();
       JOptionPane.showMessageDialog(
         this,
         ioe.getMessage(),

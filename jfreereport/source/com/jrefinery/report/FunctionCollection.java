@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionCollection.java,v 1.3 2002/05/15 20:47:23 taqua Exp $
+ * $Id: FunctionCollection.java,v 1.4 2002/05/18 16:23:49 taqua Exp $
  *
  * Changes
  * -------
  * 15-Feb-2002 : Version 1, contributed by Thomas Morgner (DG);
- *
+ * 10-May-2002 : Adjusted to support new EventInterface.
  */
 
 package com.jrefinery.report;

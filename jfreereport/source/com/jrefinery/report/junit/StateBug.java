@@ -28,9 +28,9 @@
  */
 package com.jrefinery.report.junit;
 
-import com.jrefinery.report.G2OutputTarget;
+import com.jrefinery.report.targets.G2OutputTarget;
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.OutputTarget;
+import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.ReportState;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.preview.ReportPane;

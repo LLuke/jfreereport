@@ -28,84 +28,74 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DataElement.java,v 1.3 2002/05/16 22:06:09 jaosch Exp $
+ * $Id: DataElement.java,v 1.4 2002/05/17 13:22:32 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 05-Mar-2002 : Changed constructors from public --> protected (DG);
  * 10-May-2002 : Removed all complex constructors and declared abstract
+ * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
+ *               TextElements instead which get different filters attached.
  */
 
 package com.jrefinery.report;
 
+import com.jrefinery.report.filter.DataSource;
+import com.jrefinery.report.filter.ReportDataSource;
+import com.jrefinery.report.filter.DataFilter;
+
 /**
  * The base class for all report elements that display data (that is, information from the report's
  * data source) rather than just static information.
+ *
+ * @deprecated form this element by stacking it together by using filters
  */
 public abstract class DataElement extends TextElement
 {
-
-  /** The name of the field in the data source that this element obtains its data from. */
-  private String field;
-
-  /** The current value from the data source. */
-  private Object value;
+  private ReportDataSource fieldsource;
 
   /**
    * Constructs a data element using float coordinates.
+   * @deprecated Use filters to form a data element
    */
   protected DataElement()
   {
+    fieldsource = new ReportDataSource();
+    DataFilter df = getTextFilter ();
+    df.setDataSource (fieldsource);
   }
 
   /**
    * Sets the fieldname for this element.
    *
    * @throws NullPointerException if the field is null.
+   * @deprecated Use filters to form a data element
    */
   public void setField(String fieldname)
   {
     if (fieldname == null)
       throw new NullPointerException("Fieldname must not be null for field " + getName());
 
-    this.field = fieldname;
+    fieldsource.setField(fieldname);
   }
 
   /**
    * Returns the name of the field in the data source that this element obtains its data from.
    * @return The field name.
+   * @deprecated Use filters to form a data element
    */
   public String getField()
   {
-    return this.field;
+    return fieldsource.getField();
   }
 
   /**
-   * Sets the current value of the element.
-   * @param value The new value for the element;
+   * Returns the reportdatasource assigned to this field. Make sure you add this to the
+   * end of the chain or you will not see any results.
    */
-  public void setValue(Object value)
+  protected ReportDataSource getReportDataSource ()
   {
-    this.value = value;
-  }
-
-  /**
-   * Queries the current value of the element.
-   * @return the value for the element;
-   */
-  public Object getValue()
-  {
-    return value;
-  }
-
-  /**
-   * Returns a string representing the formatted data.
-   * @return A formatted version of the data value or "null" if the element
-   * is null
-   */
-  public String getFormattedText()
-  {
-    return value == null ? "" : value.toString();
+    return fieldsource;
   }
 }

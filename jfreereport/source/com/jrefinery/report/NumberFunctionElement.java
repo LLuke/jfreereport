@@ -28,37 +28,44 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFunctionElement.java,v 1.1.1.1 2002/04/25 17:02:15 taqua Exp $
+ * $Id: NumberFunctionElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes
  * -------
  * 15-Feb-2002 : Version 1, contributed by Thomas Morgner (DG);
  * 10-May-2002 : Removed all complex constructors
+ * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
+ *               TextElements instead which get different filters attached.
  */
 
 package com.jrefinery.report;
+
+import com.jrefinery.report.filter.NumberFormatFilter;
+import com.jrefinery.report.filter.DataFilter;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 /**
  * Presentation Element for numerical functions.
+ *
+ * @deprecated Use a plain text element and add a number format filter to the element.
+ * Add a function datasource to the filter.
  */
 public class NumberFunctionElement extends FunctionElement
 {
-
-  /** Useful constant for zero. */
-  private static final Number ZERO = new Double (0.0);
-
-  /** The formatting object for this data element. */
-  private NumberFormat formatter;
+  private NumberFormatFilter filter;
 
   /**
    * Constructs a number element using float coordinates.
    */
   public NumberFunctionElement ()
   {
+    filter = new NumberFormatFilter();
     setDecimalFormatString(null);
+    DataFilter df = getTextFilter();
+    df.setDataSource(filter);
+    filter.setDataSource(getFunctionDataSource());
   }
 
   /**
@@ -66,7 +73,7 @@ public class NumberFunctionElement extends FunctionElement
    */
   public NumberFormat getFormatter ()
   {
-    return formatter;
+    return filter.getNumberFormat();
   }
 
   /**
@@ -78,7 +85,7 @@ public class NumberFunctionElement extends FunctionElement
     if (nf == null)
       throw new NullPointerException ("NumberFormat may not be null");
 
-    this.formatter = nf;
+    filter.setNumberFormat(nf);
   }
 
   /**
@@ -94,28 +101,4 @@ public class NumberFunctionElement extends FunctionElement
     }
     setFormatter (new DecimalFormat (df));
   }
-
-  /**
-   * Returns a formatted version of the number.
-   * @return A formatted version of the number.
-   */
-  public String getFormattedText ()
-  {
-
-    String result = "";
-
-    Object value = getValue ();
-    if (value instanceof Number)
-    {
-      result = getFormatter ().format (value);
-    }
-    else
-    {
-      String.valueOf (value);
-    }
-
-    return result;
-
-  }
-
 }

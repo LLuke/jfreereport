@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: Element.java,v 1.3 2002/05/16 12:14:56 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -38,9 +38,16 @@
  *               generic parsers.
  * 16-May-2002 : Line delimiters adjusted
  *               paint now protected member
+ * 20-May-2002 : Support for DataTarget interface added. The drawing scheme has changed to fit
+ *               the new OutputTarget implementation
  */
 
 package com.jrefinery.report;
+
+import com.jrefinery.report.filter.DataTarget;
+import com.jrefinery.report.filter.DataSource;
+import com.jrefinery.report.targets.OutputTarget;
+import com.jrefinery.report.targets.OutputTargetException;
 
 import java.awt.Color;
 import java.awt.Paint;
@@ -49,8 +56,9 @@ import java.awt.geom.Rectangle2D;
 /**
  * Base class for all report elements (display items that can appear within a report band).
  */
-public abstract class Element implements ElementConstants
+public abstract class Element implements ElementConstants, DataTarget
 {
+  private DataSource datasource;
 
   /** The name of the element. */
   private String name;
@@ -132,6 +140,25 @@ public abstract class Element implements ElementConstants
     m_paint = p;
   }
 
+  public final DataSource getDataSource ()
+  {
+    return datasource;
+  }
+
+  public void setDataSource (DataSource ds)
+  {
+    if (ds == null)
+      throw new NullPointerException("Null datasource is invalid");
+    this.datasource = ds;
+  }
+
+  public Object getValue ()
+  {
+    DataSource ds = getDataSource();
+    if (ds == null) return null;
+    return ds.getValue();
+  }
+
   /**
    * Queries the bounds of this element using a new Rectangle2D object.
    */
@@ -159,13 +186,7 @@ public abstract class Element implements ElementConstants
    *
    * @param target The output target.
    * @param band The band that the element is being drawn inside of.
-   * @param bandX The x-coordinate for the element within its band.
-   * @param bandY The y-coordinate for the element within its band.
    */
-  public abstract void draw(
-    OutputTarget target,
-    Band band,
-    float bandX,
-    float bandY);
+  public abstract void draw(OutputTarget target, Band band) throws OutputTargetException;
 
 }

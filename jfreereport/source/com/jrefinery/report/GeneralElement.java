@@ -28,12 +28,14 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GeneralElement.java,v 1.1.1.1 2002/04/25 17:02:19 taqua Exp $
+ * $Id: GeneralElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 10-May-2002 : Removed all complex constructors
+ * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
+ *               TextElements instead which get different filters attached.
  */
 
 package com.jrefinery.report;
@@ -44,11 +46,13 @@ import java.awt.geom.Rectangle2D;
 /**
  * This class displays data items that are not Dates, Numbers or Strings.  That is, general
  * java.lang.Object subclasses - converts to strings using the toString() method.
+ * @deprecated form this element by stacking it together by using filters
  */
 public class GeneralElement extends DataElement {
 
     /**
      * Constructs a general element using float coordinates.
+     * @deprecated form this element by stacking it together by using filters
      */
     public GeneralElement()
     {

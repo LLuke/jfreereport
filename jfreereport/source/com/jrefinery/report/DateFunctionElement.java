@@ -28,15 +28,20 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFunctionElement.java,v 1.1.1.1 2002/04/25 17:02:12 taqua Exp $
+ * $Id: DateFunctionElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes
  * -------
  * 18-Feb-2002 : Version 1, contributed by Thomas Morgner (DG);
  * 10-May-2002 : Removed all complex constructors.
+ * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
+ *               TextElements instead which get different filters attached.
  */
 
 package com.jrefinery.report;
+
+import com.jrefinery.report.filter.DataFilter;
+import com.jrefinery.report.filter.DateFormatFilter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -44,23 +49,30 @@ import java.util.Date;
 
 /**
  * Presentation element for date functions.
+ * @deprecated form this element by stacking it together by using filters
  */
 public class DateFunctionElement extends FunctionElement
 {
 
   /** The formatting object for this data element. */
-  private DateFormat formatter;
+  private DateFormatFilter formatter;
 
   /**
    * Constructs a date element using float coordinates.
+   * @deprecated form this element by stacking it together by using filters
    */
   public DateFunctionElement ()
   {
-    setFormatString (null);
+    formatter = new DateFormatFilter();
+    setFormatString(null);
+    DataFilter df = getTextFilter();
+    df.setDataSource(formatter);
+    formatter.setDataSource(getFunctionDataSource());
   }
 
   /**
    * sets the format of the element to SimpleDate using the given formatString.
+   * @deprecated form this element by stacking it together by using filters
    */
   public void setFormatString (String s)
   {
@@ -77,15 +89,17 @@ public class DateFunctionElement extends FunctionElement
   /**
    * returns the current formater for this element. This function will never
    * return null.
+   * @deprecated form this element by stacking it together by using filters
    */
   public DateFormat getFormatter ()
   {
-    return formatter;
+    return formatter.getDateFormat();
   }
 
   /**
    * Defines the current formater for the element. If the formater is null,
    * an exception is thrown.
+   * @deprecated form this element by stacking it together by using filters
    */
   public void setFormatter (DateFormat format)
   {
@@ -93,26 +107,6 @@ public class DateFunctionElement extends FunctionElement
     {
       throw new NullPointerException ("Given format may not be null");
     }
-    this.formatter = format;
-  }
-
-  /**
-   * Returns a string representing the formatted date.
-   * @return A formatted version of the data value;
-   */
-  public String getFormattedText ()
-  {
-
-    String result = "";
-
-    Object value = getValue ();
-    if (value instanceof Date)
-    {
-      return formatter.format (value);
-    }
-    else
-    {
-      return String.valueOf (value);
-    }
+    this.formatter.setDateFormat(format);
   }
 }

@@ -28,16 +28,21 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: NumberElement.java,v 1.1.1.1 2002/04/25 17:02:25 taqua Exp $
+ * $Id: NumberElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
+ * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
+ *               TextElements instead which get different filters attached.
  *
  */
 
 package com.jrefinery.report;
+
+import com.jrefinery.report.filter.DataFilter;
+import com.jrefinery.report.filter.NumberFormatFilter;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -47,9 +52,8 @@ import java.text.NumberFormat;
  */
 public class NumberElement extends DataElement
 {
-
   /** The formatting object for this data element. */
-  private NumberFormat formatter;
+  private NumberFormatFilter formatter;
 
   /**
    * Constructs a number element using float coordinates.
@@ -63,7 +67,11 @@ public class NumberElement extends DataElement
    */
   public NumberElement ()
   {
+    formatter = new NumberFormatFilter();
     setDecimalFormatString (null);
+    DataFilter df = getTextFilter ();
+    df.setDataSource (formatter);
+    formatter.setDataSource (getReportDataSource ());
   }
 
   /**
@@ -71,7 +79,7 @@ public class NumberElement extends DataElement
    */
   public NumberFormat getFormatter ()
   {
-    return formatter;
+    return formatter.getNumberFormat ();
   }
 
   /**
@@ -83,15 +91,15 @@ public class NumberElement extends DataElement
     if (nf == null)
       throw new NullPointerException ("NumberFormat may not be null");
 
-    this.formatter = nf;
+    this.formatter.setNumberFormat (nf);
   }
 
   /**
-    * Defines the numberformater for this element using a DecimalFormat and initializing it
-    * with the given format string. If the format string is null, a reasonable default value
-    * is choosen.
-    */
-   public void setDecimalFormatString (String df)
+   * Defines the numberformater for this element using a DecimalFormat and initializing it
+   * with the given format string. If the format string is null, a reasonable default value
+   * is choosen.
+   */
+  public void setDecimalFormatString (String df)
   {
     if (df == null)
     {
@@ -99,21 +107,4 @@ public class NumberElement extends DataElement
     }
     setFormatter (new DecimalFormat (df));
   }
-
-  /**
-   * Returns a formatted version of the number.
-   * @return A formatted version of the number.
-   */
-  public String getFormattedText ()
-  {
-
-    if (getValue () instanceof Number)
-    {
-      return formatter.format (getValue ());
-    }
-    else
-      return "-";
-
-  }
-
 }

@@ -25,12 +25,16 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportProcessor.java,v 1.1 2002/05/14 21:35:02 taqua Exp $
+ * $Id: ReportProcessor.java,v 1.2 2002/05/17 22:13:13 taqua Exp $
  * Changes
  * -------------------------
  * 10-May-2002 : Initial version
  */
 package com.jrefinery.report;
+
+import com.jrefinery.report.targets.OutputTarget;
+import com.jrefinery.report.targets.OutputTargetException;
+import com.jrefinery.report.util.Log;
 
 /**
  * Processes a page of an report. This is an abstraction to protect the reportState from
@@ -90,7 +94,14 @@ public class ReportProcessor implements JFreeReportConstants
   {
     if (isDraw())
     {
-      band.draw (target, cursor.getPageLeft (), y);
+      try
+      {
+        band.draw (target, cursor.getPageLeft (), y);
+      }
+      catch (OutputTargetException e)
+      {
+        Log.error ("Unable to draw band", e);
+      }
     }
     cursor.advance (y - cursor.getY() + band.getHeight ());
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.4 2002/05/16 15:50:05 jaosch Exp $
+ * $Id: ShapeElement.java,v 1.5 2002/05/18 16:23:49 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -49,6 +49,8 @@ import java.awt.Shape;
 import java.awt.Stroke;
 
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.targets.OutputTarget;
+import com.jrefinery.report.targets.OutputTargetException;
 
 /**
  * Used to draw shapes (typically lines and boxes) on a report band. This is the abstract
@@ -57,7 +59,7 @@ import com.jrefinery.report.util.Log;
 public abstract class ShapeElement extends Element
 {
   /** default stroke size. */
-  private final static BasicStroke STROKE = new BasicStroke(0.5f);
+  public final static BasicStroke DEFAULT_STROKE = new BasicStroke(0.5f);
 
   /** The shape to draw. */
   private Shape shape;
@@ -69,7 +71,7 @@ public abstract class ShapeElement extends Element
    */
   public ShapeElement()
   {
-    m_stroke = STROKE;
+    setStroke (DEFAULT_STROKE);
   }
 
   /**
@@ -104,6 +106,8 @@ public abstract class ShapeElement extends Element
     b.append(getBounds());
     b.append(", shape=");
     b.append(getShape());
+    b.append(", stroke=");
+    b.append(getStroke());
     b.append("}");
 
     return b.toString();
@@ -114,23 +118,21 @@ public abstract class ShapeElement extends Element
    *
    * @param target The output target on which to draw.
    * @param band The band.
-   * @param bandX The x-coordinate for the element within its band.
-   * @param bandY The y-coordinate for the element within its band.
    */
-  public void draw(OutputTarget target, Band band, float bandX, float bandY)
+  public void draw(OutputTarget target, Band band) throws OutputTargetException
   {
     // set the paint...
     if (m_paint != null)
     {
+      System.out.println ("Paint set to : "+ m_paint);
       target.setPaint(m_paint);
     }
     else
     {
       target.setPaint(band.getDefaultPaint());
     }
-
-    Shape s = getShape();
-    target.drawShape(this, bandX, bandY);
+    target.setStroke(getStroke());
+    target.drawShape(getShape());
   }
 
   /**
@@ -148,8 +150,7 @@ public abstract class ShapeElement extends Element
    */
   public void setStroke(Stroke stroke)
   {
-    if (stroke != null) {
-      m_stroke = stroke;
-    }
+    if (stroke == null) throw new NullPointerException();
+    m_stroke = stroke;
   }
 }

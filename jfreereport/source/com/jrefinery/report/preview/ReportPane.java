@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPane.java,v 1.3 2002/05/17 22:13:13 taqua Exp $
+ * $Id: ReportPane.java,v 1.4 2002/05/18 16:23:51 taqua Exp $
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
@@ -33,16 +33,17 @@
  * 18-Apr-2002 : Caching painted graphics for performance reasons if the cached graphic is not
  *               greater than 1500 pixels. Provides propertyChangeEvents for zoom and paginating.
  * 10-May-2002 : Updated code to work with last changes in report processing.
+ * 20-May-2002 : Adjusted to catch ReportProcessingException on processPage.
  */
 
 package com.jrefinery.report.preview;
 
-import com.jrefinery.report.G2OutputTarget;
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.OutputTarget;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.ReportProcessor;
 import com.jrefinery.report.ReportState;
+import com.jrefinery.report.targets.G2OutputTarget;
+import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.util.Log;
 
 import javax.swing.JComponent;
@@ -69,7 +70,6 @@ import java.util.List;
  * to display a report.
  *
  */
-
 public class ReportPane extends JComponent implements Printable
 {
   public static final String PAGINATED_PROPERTY = "paginated";
@@ -332,7 +332,15 @@ public class ReportPane extends JComponent implements Printable
       g2.setPaint (Color.lightGray);
       g2.draw (printingArea);
       ReportState state = (ReportState) this.pageStates.get (pageNumber - 1);
-      ReportState s2 = report.processPage (target, state, true);
+      try
+      {
+        ReportState s2 = report.processPage (target, state, true);
+      }
+      catch (ReportProcessingException rpe)
+      {
+        Log.error ("Repaginate failed: ", rpe);
+        setError (rpe);
+      }
 
       /** Paint Page Shadow */
       Rectangle2D southborder =
@@ -423,6 +431,13 @@ public class ReportPane extends JComponent implements Printable
       {
         repaginate (g2);
       }
+
+      if (pageIndex > pageCount - 1)
+        return NO_SUCH_PAGE;
+
+      ReportState state = (ReportState) this.pageStates.get (pageIndex);
+      G2OutputTarget target = new G2OutputTarget (g2, pf);
+      report.processPage (target, state, true);
     }
     catch (ReportProcessingException rpe)
     {
@@ -431,14 +446,6 @@ public class ReportPane extends JComponent implements Printable
       rpe.printStackTrace ();
       setError (rpe);
     }
-
-    if (pageIndex > pageCount - 1)
-      return NO_SUCH_PAGE;
-
-    ReportState state = (ReportState) this.pageStates.get (pageIndex);
-    G2OutputTarget target = new G2OutputTarget (g2, pf);
-    report.processPage (target, state, true);
-
     return PAGE_EXISTS;
   }
 

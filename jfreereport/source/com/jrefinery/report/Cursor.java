@@ -28,16 +28,19 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Cursor.java,v 1.3 2002/05/16 19:58:24 jaosch Exp $
+ * $Id: Cursor.java,v 1.4 2002/05/17 13:22:32 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 10-May-2002 : Declared all fields private and created accessor functions. Functionaltiy is
  *               encapsulated in functions.
+ * 20-May-2002 : Added advanceTo to better support PageFooter drawing.
  */
 
 package com.jrefinery.report;
+
+import com.jrefinery.report.targets.OutputTarget;
 
 /**
  * A utility class for keeping track of the current position on a report page.
@@ -83,6 +86,17 @@ public class Cursor
     if (amount < 0)
       throw new IllegalArgumentException("Cannot advance negative");
     y += amount;
+  }
+
+  /**
+   * Adds the specified amount to the y-coordinate.
+   * @param amount The amount that the cursor should advance down the page.
+   */
+  public void advanceTo(float amount)
+  {
+    if (amount < y)
+      throw new IllegalArgumentException("Cannot advance negative");
+    y = amount;
   }
 
   /**
