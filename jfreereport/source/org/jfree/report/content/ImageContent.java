@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.3 2003/08/25 14:29:28 taqua Exp $
+ * $Id: ImageContent.java,v 1.4 2003/09/09 02:29:00 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import org.jfree.report.ImageReference;
  *
  * @author Thomas Morgner.
  */
-public class ImageContent implements Content
+public strictfp class ImageContent implements Content
 {
   /** The image reference. */
   private final ImageReference reference;

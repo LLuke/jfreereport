@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GridBLayoutManager.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
+ * $Id: GridBLayoutManager.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import org.jfree.report.util.ElementLayoutInformation;
  *
  * @author Thomas Morgner.
  */
-public class GridBLayoutManager extends AbstractBandLayoutManager
+public strictfp class GridBLayoutManager extends AbstractBandLayoutManager
 {
   /**
    * Default constructor.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriterCursor.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: TableWriterCursor.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ package org.jfree.report.modules.output.table.base;
  *
  * @author Thomas Morgner
  */
-public class TableWriterCursor
+public strictfp class TableWriterCursor
 {
   /** The y-coordinate. */
   private float y;

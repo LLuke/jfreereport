@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContent.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
+ * $Id: ShapeContent.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @author Thomas Morgner.
  */
-public class ShapeContent implements Content
+public strictfp class ShapeContent implements Content
 {
   /** The shape. */
   private Shape shape;

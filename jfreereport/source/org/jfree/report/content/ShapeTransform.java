@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @author Thomas Morgner
  */
-public final class ShapeTransform
+public final strictfp class ShapeTransform
 {
   /**
    * Default constructor.
@@ -105,7 +105,7 @@ public final class ShapeTransform
 
         if (keepAR)
         {
-          final double scaleFact = Math.min(scaleX, scaleY);
+          final double scaleFact = StrictMath.min(scaleX, scaleY);
           af = AffineTransform.getScaleInstance(scaleFact, scaleFact);
         }
         else

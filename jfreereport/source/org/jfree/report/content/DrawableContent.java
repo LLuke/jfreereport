@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableContent.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: DrawableContent.java,v 1.3 2003/09/09 02:29:00 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import org.jfree.report.DrawableContainer;
  *
  * @author Thomas Morgner
  */
-public class DrawableContent implements Content
+public strictfp class DrawableContent implements Content
 {
   /**
    * The drawable content. The content will be drawn using the drawable bounds,

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableContentFactoryModule.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import org.jfree.report.util.ElementLayoutInformation;
  *
  * @author Thomas Morgner.
  */
-public class DrawableContentFactoryModule implements ContentFactoryModule
+public strictfp class DrawableContentFactoryModule implements ContentFactoryModule
 {
   /**
    * Returns <code>true</code> if the module can handle the specified content type, and

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);;
  *
- * $Id: PrinterCommandSet.java,v 1.4 2003/08/24 15:05:18 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.5 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import org.jfree.report.util.PageFormatFactory;
  *
  * @author Thomas Morgner
  */
-public class PrinterCommandSet
+public strictfp class PrinterCommandSet
 {
   /** the roman font. */
   public static final byte SELECT_FONT_ROMAN = 0x00;

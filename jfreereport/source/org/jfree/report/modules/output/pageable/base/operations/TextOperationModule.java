@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.6 2003/09/09 02:29:13 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.7 2003/09/12 17:47:03 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ import org.jfree.report.util.Log;
  * @see TextLine
  * @author Thomas Morgner
  */
-public class TextOperationModule extends OperationModule
+public strictfp class TextOperationModule extends OperationModule
 {
   /**
    * Default constructor.

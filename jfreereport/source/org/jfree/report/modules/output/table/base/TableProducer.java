@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.8 2003/09/07 15:27:08 taqua Exp $
+ * $Id: TableProducer.java,v 1.9 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ import org.jfree.report.style.ElementStyleSheet;
  *
  * @author Thomas Morgner
  */
-public abstract class TableProducer
+public strictfp abstract class TableProducer
 {
   /** Literal text for the 'title' property name. */
   public static final String TITLE = "Title";
@@ -360,14 +360,14 @@ public abstract class TableProducer
   private Rectangle2D translateSubRect(final Rectangle2D outer, final Rectangle2D inner)
   {
     final float w =
-        (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
+        (float) StrictMath.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
     final float h =
-        (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
+        (float) StrictMath.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
     final Rectangle2D rc = new Rectangle2D.Float(
         (float) (outer.getX() + inner.getX()),
         (float) (outer.getY() + inner.getY()),
-        Math.max(0, w),
-        Math.max(0, h));
+        StrictMath.max(0, w),
+        StrictMath.max(0, h));
 
     return rc;
   }

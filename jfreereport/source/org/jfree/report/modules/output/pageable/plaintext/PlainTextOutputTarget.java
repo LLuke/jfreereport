@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.6 2003/08/25 14:29:31 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.7 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,7 @@ import org.jfree.report.util.ReportConfiguration;
  *
  * @author Thomas Morgner
  */
-public class PlainTextOutputTarget extends AbstractOutputTarget
+public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
 {
   /** The configuration prefix for all properties. */
   public static final String CONFIGURATION_PREFIX =
@@ -504,8 +504,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    */
   private int correctedDivisionFloor(float c, float d)
   {
-    c = Math.round(c * 100);
-    d = Math.round(d * 100);
+    c = StrictMath.round(c * 100f);
+    d = StrictMath.round(d * 100f);
     return (int) Math.floor(c / d);
   }
 

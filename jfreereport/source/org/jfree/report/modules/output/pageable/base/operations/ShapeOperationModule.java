@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.5 2003/09/07 15:27:08 taqua Exp $
+ * $Id: ShapeOperationModule.java,v 1.6 2003/09/09 02:29:13 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ import org.jfree.report.style.ElementStyleSheet;
  * @see ShapeContent
  * @author Thomas Morgner
  */
-public class ShapeOperationModule extends OperationModule
+public strictfp class ShapeOperationModule extends OperationModule
 {
   /**
    * Default constructor.

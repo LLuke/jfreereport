@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.5 2003/09/09 02:29:13 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import org.jfree.ui.FloatDimension;
  *
  * @author Thomas Morgner
  */
-public final class BandLayoutManagerUtil
+public strictfp final class BandLayoutManagerUtil
 {
   /**
    * Default constructor.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: TextLine.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import org.jfree.report.layout.SizeCalculator;
  *
  * @author Thomas Morgner
  */
-public class TextLine implements Content
+public strictfp class TextLine implements Content
 {
   /** The size calculator. */
   private final SizeCalculator sizeCalc;
@@ -138,10 +138,10 @@ public class TextLine implements Content
     }
 
     this.content = content;
-    width = Math.min(width, getSizeCalculator().getStringWidth(content, 0, content.length()));
-    height = Math.min(height, getSizeCalculator().getLineHeight());
+    width = StrictMath.min(width, getSizeCalculator().getStringWidth(content, 0, content.length()));
+    height = StrictMath.min(height, getSizeCalculator().getLineHeight());
     // apply custom lineheight if greater than the current height ...
-    height = Math.max(height, lineHeight);
+    height = StrictMath.max(height, lineHeight);
     bounds.setRect(x, y, width, height);
   }
 

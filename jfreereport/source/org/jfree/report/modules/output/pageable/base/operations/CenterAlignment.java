@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CenterAlignment.java,v 1.3 2003/09/09 02:29:13 taqua Exp $
+ * $Id: CenterAlignment.java,v 1.4 2003/09/11 22:17:10 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @author Thomas Morgner
  */
-public class CenterAlignment extends HorizontalBoundsAlignment
+public strictfp class CenterAlignment extends HorizontalBoundsAlignment
 {
   /**
    * Creates a new alignment object.
@@ -73,7 +73,7 @@ public class CenterAlignment extends HorizontalBoundsAlignment
     }
 
     final float y = (float) inner.getY();
-    final float w = (float) Math.min (inner.getWidth(), getReferenceBounds().getWidth());
+    final float w = (float) StrictMath.min (inner.getWidth(), getReferenceBounds().getWidth());
     final float x = (float) (getReferenceBounds().getX()
         + ((getReferenceBounds().getWidth() - w) / 2));
     final float h = (float) inner.getHeight();

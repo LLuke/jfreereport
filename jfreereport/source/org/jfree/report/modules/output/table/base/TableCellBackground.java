@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.3 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import java.awt.image.BufferedImage;
  *
  * @author Thomas Morgner
  */
-public class TableCellBackground extends TableCellData
+public strictfp class TableCellBackground extends TableCellData
 {
   /** The top border's size. */
   private float borderSizeTop;

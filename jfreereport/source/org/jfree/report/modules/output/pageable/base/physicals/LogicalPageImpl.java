@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.5 2003/08/24 15:03:59 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.6 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,7 @@ import org.jfree.report.util.ReportConfiguration;
  *
  * @author Thomas Morgner
  */
-public class LogicalPageImpl implements LogicalPage
+public strictfp class LogicalPageImpl implements LogicalPage
 {
   /** The output target. */
   private OutputTarget outputTarget;
@@ -397,14 +397,14 @@ public class LogicalPageImpl implements LogicalPage
   private Rectangle2D translateSubRect(final Rectangle2D outer, final Rectangle2D inner)
   {
     final float w =
-        (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
+        (float) StrictMath.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
     final float h =
-        (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
+        (float) StrictMath.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
     final Rectangle2D rc = new Rectangle2D.Float(
         (float) (outer.getX() + inner.getX()),
         (float) (outer.getY() + inner.getY()),
-        Math.max(0, w),
-        Math.max(0, h));
+        StrictMath.max(0, w),
+        StrictMath.max(0, h));
 
     return rc;
   }

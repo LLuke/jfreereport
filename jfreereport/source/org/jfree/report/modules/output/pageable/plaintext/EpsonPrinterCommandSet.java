@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EpsonPrinterCommandSet.java,v 1.5 2003/08/24 15:05:18 taqua Exp $
+ * $Id: EpsonPrinterCommandSet.java,v 1.6 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ import org.jfree.report.util.StringUtil;
  *
  * @author Thomas Morgner
  */
-public class EpsonPrinterCommandSet extends PrinterCommandSet
+public strictfp class EpsonPrinterCommandSet extends PrinterCommandSet
 {
   /**
    * Creates a new EpsonPrinterCommandSet.

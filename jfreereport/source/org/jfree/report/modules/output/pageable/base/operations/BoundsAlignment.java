@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BoundsAlignment.java,v 1.3 2003/08/24 15:03:59 taqua Exp $
+ * $Id: BoundsAlignment.java,v 1.4 2003/09/09 02:29:13 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @author Thomas Morgner
  */
-public abstract class BoundsAlignment
+public strictfp abstract class BoundsAlignment
 {
   /** The bounds against which the alignment is performed. */
   private Rectangle2D referenceBounds;

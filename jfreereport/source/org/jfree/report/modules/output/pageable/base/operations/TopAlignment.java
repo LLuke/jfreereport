@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TopAlignment.java,v 1.2 2003/08/24 15:03:59 taqua Exp $
+ * $Id: TopAlignment.java,v 1.3 2003/09/09 02:29:13 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @author Thomas Morgner
  */
-public class TopAlignment extends VerticalBoundsAlignment
+public strictfp class TopAlignment extends VerticalBoundsAlignment
 {
   /**
    * Creates a new alignment object.
@@ -72,8 +72,8 @@ public class TopAlignment extends VerticalBoundsAlignment
     }
     final float x = (float) r.getX();
     final float y = (float) getReferenceBounds().getY();
-    final float h = (float) Math.min (r.getHeight(), getReferenceBounds().getHeight());
-    final float w = (float) Math.min(r.getWidth(), getReferenceBounds().getWidth());
+    final float h = (float) StrictMath.min (r.getHeight(), getReferenceBounds().getHeight());
+    final float w = (float) StrictMath.min(r.getWidth(), getReferenceBounds().getWidth());
 
     r.setRect(x, y, w, h);
     return r;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.5 2003/09/11 22:17:09 taqua Exp $
+ * $Id: TextParagraph.java,v 1.6 2003/09/12 18:46:18 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ import org.jfree.report.util.WordBreakIterator;
  *
  * @author Thomas Morgner.
  */
-public class TextParagraph extends ContentContainer
+public strictfp class TextParagraph extends ContentContainer
 {
   /** The reserved size. */
   private float reservedSize = 0;
@@ -132,7 +132,7 @@ public class TextParagraph extends ContentContainer
 
     float usedHeight = 0;
 
-    final int maxLines = (int) Math.floor(height / getSizeCalculator().getLineHeight());
+    final int maxLines = (int) StrictMath.floor(height / getSizeCalculator().getLineHeight());
 
     if (maxLines > 0)
     {

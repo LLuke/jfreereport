@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.5 2003/09/11 22:17:09 taqua Exp $
+ * $Id: TextContent.java,v 1.6 2003/09/12 18:46:18 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import org.jfree.report.util.LineBreakIterator;
  *
  * @author Thomas Morgner
  */
-public class TextContent extends ContentContainer
+public strictfp class TextContent extends ContentContainer
 {
   /** A size calculator. */
   private final SizeCalculator sizeCalculator;

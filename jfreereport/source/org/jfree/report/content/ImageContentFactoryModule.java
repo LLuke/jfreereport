@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.3 2003/09/07 15:27:07 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import org.jfree.report.util.StringUtil;
  *
  * @author Thomas Morgner
  */
-public class ImageContentFactoryModule implements ContentFactoryModule
+public strictfp class ImageContentFactoryModule implements ContentFactoryModule
 {
   /**
    * DefaultConstructor.
@@ -122,7 +122,7 @@ public class ImageContentFactoryModule implements ContentFactoryModule
       {
         if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO))
         {
-          final float scale = (float) Math.min(scaleX, scaleY);
+          final float scale = (float) StrictMath.min(scaleX, scaleY);
           ir.setScaleX(scale);
           ir.setScaleY(scale);
         }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BoxBLayoutManager.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: BoxBLayoutManager.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,6 @@ package org.jfree.report.layout;
  *
  * @author Thomas Morgner
  */
-public class BoxBLayoutManager
+public strictfp class BoxBLayoutManager
 {
 }

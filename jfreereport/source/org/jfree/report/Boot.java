@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Boot.java,v 1.1 2003/09/02 15:06:25 taqua Exp $
+ * $Id: Boot.java,v 1.2 2003/09/08 18:11:47 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -104,6 +104,17 @@ public final class Boot
       return;
     }
     bootInProgress = true;
+
+    if (isStrictFP() == false)
+    {
+      Log.warn ("The used VM seems to use a non-strict floating point arithmetics");
+      Log.warn ("Layouts computed with this Java Virtual Maschine may be invalid.");
+      Log.warn ("JFreeReport and the library 'iText' depend on the strict floating point rules");
+      Log.warn ("of Java1.1 as implemented by the Sun Virtual Maschines.");
+      Log.warn ("If you are using the BEA JRockit VM, start the Java VM with the option");
+      Log.warn ("'-Xstrictfp' to restore the default behaviour."); 
+    }
+
     PackageManager mgr = PackageManager.getInstance();
 
     mgr.addModule(JFreeReportCoreModule.class.getName());
@@ -135,6 +146,30 @@ public final class Boot
 
     mgr.initializeModules();
     bootDone = true;
+  }
+
+  /**
+   * This method returns true on non-strict floating point systems.
+   * <p>
+   * Since Java1.2 VMs may implement the floating point arithmetics
+   * in a more performant way, which does not put the old strict constraints
+   * on the floating point types <code>float</code> and <code>double</code>
+   * <p>
+   * As iText and this library requires strict (in the sense of Java1.1)
+   * floating point operations, we have to test for that feature here.
+   * <p>
+   * The only known VM that seems to implement that feature is the
+   * JRockit VM. The strict mode can be restored on that VM by adding
+   * the "-Xstrictfp" VM parameter.
+   *
+   * @return
+   */
+  public static boolean isStrictFP ()
+  {
+    double d = 8e+307;
+    double result1 = 4.0 * d * 0.5;
+    double result2 = 2.0 * d;
+    return (result1 != result2 && (result1 == Double.POSITIVE_INFINITY));
   }
 }
 

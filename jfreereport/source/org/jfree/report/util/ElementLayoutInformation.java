@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementLayoutInformation.java,v 1.4 2003/08/25 14:29:34 taqua Exp $
+ * $Id: ElementLayoutInformation.java,v 1.5 2003/09/11 22:17:10 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import org.jfree.ui.FloatDimension;
  *
  * @author Thomas Morgner
  */
-public class ElementLayoutInformation
+public strictfp class ElementLayoutInformation
 {
   /** The absolute position of the element. */
   private Point2D absolutePosition;
@@ -206,8 +206,8 @@ public class ElementLayoutInformation
     {
       return max;
     }
-    return new FloatDimension((float) Math.min(pref.getWidth(), max.getWidth()),
-        (float) Math.min(pref.getHeight(), max.getHeight()));
+    return new FloatDimension((float) StrictMath.min(pref.getWidth(), max.getWidth()),
+        (float) StrictMath.min(pref.getHeight(), max.getHeight()));
   }
 
   /**

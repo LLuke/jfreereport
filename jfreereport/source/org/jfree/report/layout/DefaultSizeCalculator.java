@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ import org.jfree.report.util.ReportConfiguration;
  *
  * @author Thomas Morgner
  */
-public class DefaultSizeCalculator implements SizeCalculator
+public strictfp class DefaultSizeCalculator implements SizeCalculator
 {
   /**
    * A helper class that is able to detect whether the implementation is considered

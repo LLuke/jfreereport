@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridLayout.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
+ * $Id: TableGridLayout.java,v 1.3 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -257,8 +257,8 @@ public class TableGridLayout
 
     final int col = findBoundary(xCuts, (int) bounds.getX());
     final int row = findBoundary(yCuts, (int) bounds.getY());
-    final int colspan = Math.max(1, findBoundary(xCuts, maxBoundsX, true) - col);
-    final int rowspan = Math.max(1, findBoundary(yCuts, maxBoundsY, true) - row);
+    final int colspan = StrictMath.max(1, findBoundary(xCuts, maxBoundsX, true) - col);
+    final int rowspan = StrictMath.max(1, findBoundary(yCuts, maxBoundsY, true) - row);
     final TableGridPosition gPos = new TableGridPosition(pos, col, row, colspan, rowspan);
 
 /*

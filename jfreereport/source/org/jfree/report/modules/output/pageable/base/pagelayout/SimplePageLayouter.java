@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.7 2003/08/25 14:29:31 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.8 2003/09/11 22:17:10 taqua Exp $
  *
  * Changes
  * -------
@@ -89,7 +89,7 @@ import org.jfree.report.style.BandStyleSheet;
  *
  * @author Thomas Morgner
  */
-public class SimplePageLayouter extends PageLayouter implements PrepareEventListener
+public strictfp class SimplePageLayouter extends PageLayouter implements PrepareEventListener
 {
   /**
    * Represents the current state of the page layouter.

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.10 2003/08/25 14:29:31 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.11 2003/08/26 17:35:51 taqua Exp $
  *
  * Changes
  * -------
@@ -112,7 +112,7 @@ import org.jfree.report.util.WaitingImageObserver;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class PDFOutputTarget extends AbstractOutputTarget
+public strictfp class PDFOutputTarget extends AbstractOutputTarget
 {
   /** The configuration prefix. */
   public static final String CONFIGURATION_PREFIX
@@ -183,6 +183,15 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /** The default 'PDF encoding' property value. */
   public static final String PDFTARGET_ENCODING_DEFAULT = "Cp1252";
+
+  /** The pdf specification version that should be created. */
+  public static final String PDF_VERSION ="Version";
+
+  /** The global key name for the pdf specification version that should be created. */
+  public static final String PDFTARGET_PDF_VERSION =
+      CONFIGURATION_PREFIX + PDF_VERSION;
+  /** The default version number for the PDF specification version. */
+  public static final String PDF_VERSION_DEFAULT = "1.4";
 
   /** The output stream. */
   private final OutputStream out;
@@ -629,6 +638,26 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
   }
 
+  private char getVersion (String version)
+  {
+    if (version == null)
+    {
+      return '4';
+    }
+    if (version.length() < 3)
+    {
+      Log.warn ("PDF version specification is invalid.");
+      return '4';
+    }
+    char retval = version.charAt(2);
+    if (retval < '2' || retval > '5')
+    {
+      Log.warn ("PDF version specification is invalid.");
+      return '4';
+    }
+    return retval;
+  }
+
   /**
    * Opens the document.
    *
@@ -655,15 +684,24 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     try
     {
-      if (pageFormat.getOrientation() != PageFormat.PORTRAIT)
-      {
-        pageSize.rotate();
-      }
-
+//      if (pageFormat.getOrientation() == PageFormat.LANDSCAPE)
+//      {
+//        pageSize.rotate();
+//      }
+//      else if (pageFormat.getOrientation() == PageFormat.REVERSE_LANDSCAPE)
+//      {
+//        pageSize.rotate();
+//        pageSize.rotate();
+//        pageSize.rotate();
+//      }
+//
       setDocument(new Document(pageSize, marginLeft, marginRight, marginTop, marginBottom));
 
       writer = PdfWriter.getInstance(getDocument(), out);
       writer.setLinearPageMode();
+
+      char version = getVersion(getProperty(PDF_VERSION, PDF_VERSION_DEFAULT));
+      writer.setPdfVersion(version);
 
       final String encrypt = getProperty(SECURITY_ENCRYPTION);
 
@@ -1041,6 +1079,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     updateProperty(SECURITY_USERPASSWORD, config);
     updateProperty(AUTHOR, config);
     updateProperty(ENCODING, config);
+    updateProperty(PDF_VERSION, config);
     updateBooleanProperty(EMBED_FONTS, config);
     updateBooleanProperty(SECURITY_ALLOW_ASSEMBLY, config);
     updateBooleanProperty(SECURITY_ALLOW_COPY, config);
@@ -1117,7 +1156,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * A PDF size calculator.
    */
-  private static final class PDFSizeCalculator implements SizeCalculator
+  private static strictfp final class PDFSizeCalculator implements SizeCalculator
   {
     /** The base font. */
     private final BaseFont baseFont;

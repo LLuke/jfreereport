@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AlignedLogicalPageWrapper.java,v 1.2 2003/07/20 19:31:15 taqua Exp $
+ * $Id: AlignedLogicalPageWrapper.java,v 1.3 2003/08/24 15:03:52 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import org.jfree.report.layout.LayoutSupport;
  *
  * @author Thomas Morgner
  */
-public class AlignedLogicalPageWrapper implements LogicalPage
+public strictfp class AlignedLogicalPageWrapper implements LogicalPage
 {
   /** the base logical page which is wrapped by this implementation. */
   private LogicalPage logicalPage;
@@ -93,7 +93,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
     {
       return value;
     }
-    return (float) Math.floor(value / boundary) * boundary;
+    return (float) StrictMath.floor(value / boundary) * boundary;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.5 2003/08/25 14:29:31 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.6 2003/09/12 17:47:03 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ import org.jfree.report.util.WaitingImageObserver;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class G2OutputTarget extends AbstractOutputTarget
+public strictfp class G2OutputTarget extends AbstractOutputTarget
 {
   /** The graphics device. */
   private Graphics2D g2;
@@ -450,8 +450,8 @@ public class G2OutputTarget extends AbstractOutputTarget
       {
         g2.clip(
             new Rectangle2D.Float(0, 0,
-                (float) (Math.min(bounds.getWidth(), myBounds.getWidth())),
-                (float) (Math.min(bounds.getHeight(), myBounds.getHeight())))
+                (float) (StrictMath.min(bounds.getWidth(), myBounds.getWidth())),
+                (float) (StrictMath.min(bounds.getHeight(), myBounds.getHeight())))
         );
         g2.transform(AffineTransform.getScaleInstance(image.getScaleX(), image.getScaleY()));
         while (g2.drawImage(image.getImage(),

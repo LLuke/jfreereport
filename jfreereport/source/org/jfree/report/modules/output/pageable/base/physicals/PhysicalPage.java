@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.4 2003/08/24 15:03:59 taqua Exp $
+ * $Id: PhysicalPage.java,v 1.5 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ import org.jfree.report.modules.output.pageable.base.operations.PhysicalOperatio
  *
  * @author Thomas Morgner.
  */
-public class PhysicalPage
+public strictfp class PhysicalPage
 {
   /** Storage for band operations. */
   private final ArrayList bandOperations;
