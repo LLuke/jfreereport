@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------------
  * JFreeReportResources.java
  * -------------------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.44 2003/02/19 22:14:01 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.45 2003/02/22 18:52:28 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -47,7 +47,7 @@ import java.util.Hashtable;
 import java.util.ListResourceBundle;
 
 /**
- * English Language Resources.
+ * English language resources.
  *
  * @author Thomas Morgner
  */
@@ -413,7 +413,7 @@ public class JFreeReportResources extends ListResourceBundle
                 "Shall the missing subdirectories be created?"},
             {"htmlexportdialog.targetCreateDataDirTitle", "Create data directory?"},
 
-            {"csvexportdialog.dialogtitle", "Export Report into an CSV-File ..."},
+            {"csvexportdialog.dialogtitle", "Export Report into a CSV File ..."},
             {"csvexportdialog.filename", "Filename"},
             {"csvexportdialog.encoding", "Encoding"},
             {"csvexportdialog.separatorchar", "Separator Character"},
@@ -432,7 +432,7 @@ public class JFreeReportResources extends ListResourceBundle
             {"csvexportdialog.confirm", "Confirm"},
 
             {"csvexportdialog.separator.tab", "Tabulator"},
-            {"csvexportdialog.separator.colon", "Colon (,)"},
+            {"csvexportdialog.separator.colon", "Comma (,)"},
             {"csvexportdialog.separator.semicolon", "Semicolon (;)"},
             {"csvexportdialog.separator.other", "Other"},
 
