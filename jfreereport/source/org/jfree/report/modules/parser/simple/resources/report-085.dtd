@@ -246,18 +246,18 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT reportheader ( %itemelements; )>
 <!ATTLIST reportheader
-height           CDATA           #IMPLIED
-fixed-position   CDATA           #IMPLIED
-pagebreak-after  CDATA           #IMPLIED
+height                 CDATA           #IMPLIED
+fixed-position         CDATA           #IMPLIED
+pagebreak-after-print     (%boolean;)   #IMPLIED
 %basicform;
 %fontdef;
 >
 
 <!ELEMENT reportfooter ( %itemelements; )>
 <!ATTLIST reportfooter
-fixed-position    CDATA          #IMPLIED
-pagebreak-before  CDATA          #IMPLIED
-height            CDATA          #IMPLIED
+fixed-position          CDATA          #IMPLIED
+pagebreak-before-print    (%boolean;)   #IMPLIED
+height                  CDATA          #IMPLIED
 %basicform;
 %fontdef;
 >

@@ -2,6 +2,7 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+0.8.5-2: (18-Mar-2005)
         * [BUG] FontPath caching did not validate the cache integrety. This way,
           some fonts might be left unregistered.
 
