@@ -25,7 +25,7 @@
  * -------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: ElementFactory.java,v 1.23 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes
  * -------
@@ -96,6 +96,9 @@ public class ElementFactory extends DefaultHandler
 
   /** The text element alignment. */
   private int textElementAlignment;
+
+  /** The text element vertical alignment. */
+  private int textElementVerticalAlignment;
 
   /** The text element color. */
   private Paint textElementColor;
@@ -661,10 +664,12 @@ public class ElementFactory extends DefaultHandler
    */
   protected void endLabel() throws SAXException
   {
-    TextElement te = ItemFactory.createLabelElement(textElementName,
+    TextElement te = ItemFactory.createLabelElement(
+        textElementName,
         textElementBounds,
         textElementColor,
         textElementAlignment,
+        textElementVerticalAlignment,
         textElementFont,
         getCurrentText());
 
@@ -747,6 +752,7 @@ public class ElementFactory extends DefaultHandler
         textElementBounds,
         textElementColor,
         textElementAlignment,
+        textElementVerticalAlignment,
         textElementFont,
         textElementNullString,
         textElementSourceName);
@@ -765,6 +771,7 @@ public class ElementFactory extends DefaultHandler
         textElementBounds,
         textElementColor,
         textElementAlignment,
+        textElementVerticalAlignment,
         textElementFont,
         textElementNullString,
         textElementSourceName);
@@ -783,6 +790,7 @@ public class ElementFactory extends DefaultHandler
         textElementBounds,
         textElementColor,
         textElementAlignment,
+        textElementVerticalAlignment,
         textElementFont,
         textElementNullString,
         textElementSourceName);
@@ -801,6 +809,7 @@ public class ElementFactory extends DefaultHandler
         textElementBounds,
         textElementColor,
         textElementAlignment,
+        textElementVerticalAlignment,
         textElementFont,
         textElementNullString,
         textElementFormatString,
@@ -820,6 +829,7 @@ public class ElementFactory extends DefaultHandler
         textElementBounds,
         textElementColor,
         textElementAlignment,
+        textElementVerticalAlignment,
         textElementFont,
         textElementNullString,
         textElementFormatString,
@@ -839,6 +849,7 @@ public class ElementFactory extends DefaultHandler
         textElementBounds,
         textElementColor,
         textElementAlignment,
+        textElementVerticalAlignment,
         textElementFont,
         textElementNullString,
         textElementFormatString,
@@ -858,6 +869,7 @@ public class ElementFactory extends DefaultHandler
         textElementBounds,
         textElementColor,
         textElementAlignment,
+        textElementVerticalAlignment,
         textElementFont,
         textElementNullString,
         textElementSourceName);
@@ -876,6 +888,7 @@ public class ElementFactory extends DefaultHandler
         textElementBounds,
         textElementColor,
         textElementAlignment,
+        textElementVerticalAlignment,
         textElementFont,
         textElementNullString,
         textElementFormatString,
@@ -894,12 +907,14 @@ public class ElementFactory extends DefaultHandler
    */
   protected void getTextElementAttributes(Attributes atts) throws SAXException
   {
-    textElementName = handler.generateName(atts.getValue(NAME_ATT));
-    textElementBounds = ParserUtil.getElementPosition(atts);
-    textElementFont = fontFactory.createFont(atts);
-    textElementAlignment = parseTextAlignment(atts.getValue(ALIGNMENT_ATT), TextElement.LEFT);
-    textElementColor = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
-    textElementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
+    this.textElementName = handler.generateName(atts.getValue(NAME_ATT));
+    this.textElementBounds = ParserUtil.getElementPosition(atts);
+    this.textElementFont = fontFactory.createFont(atts);
+    this.textElementAlignment = parseTextAlignment(atts.getValue(ALIGNMENT_ATT), TextElement.LEFT);
+    this.textElementVerticalAlignment = parseTextVerticalAlignment(atts.getValue(VALIGNMENT_ATT),
+                                                                   TextElement.TOP);
+    this.textElementColor = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
+    this.textElementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
   }
 
   /**
@@ -928,6 +943,38 @@ public class ElementFactory extends DefaultHandler
       if (alignment.equals("right"))
       {
         elementAlignment = Element.RIGHT;
+      }
+    }
+    return elementAlignment;
+  }
+
+  /**
+   * Parses the text looking for a text alignment, which is one of "top", "middle"/"center"
+   * or "bottom".
+   * <p>
+   * The method returns one of the values:  Element.TOP, Element.BOTTOM and Element.MIDDLE.
+   *
+   * @param alignment  the alignment.
+   * @param defaultAlignment  the default alignment.
+   *
+   * @return an alignment code.
+   */
+  protected int parseTextVerticalAlignment(String alignment, int defaultAlignment)
+  {
+    int elementAlignment = defaultAlignment;
+    if (alignment != null)
+    {
+      if (alignment.equals("top"))
+      {
+        elementAlignment = Element.TOP;
+      }
+      if ((alignment.equals("center")) || (alignment.equals("middle")))
+      {
+        elementAlignment = Element.MIDDLE;
+      }
+      if (alignment.equals("bottom"))
+      {
+        elementAlignment = Element.BOTTOM;
       }
     }
     return elementAlignment;

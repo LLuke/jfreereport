@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: ReportDefinitionTags.java,v 1.17 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -191,6 +191,9 @@ public interface ReportDefinitionTags
 
   /** Literal text for an XML attribute. */
   public static final String ALIGNMENT_ATT = "alignment";
+
+  /** Literal text for an XML attribute. */
+  public static final String VALIGNMENT_ATT = "vertical-alignment";
 
   /** Literal text for an XML attribute. */
   public static final String COLOR_ATT = "color";
