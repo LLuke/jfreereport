@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewInternalFrame.java,v 1.7 2003/09/09 21:31:36 taqua Exp $
+ * $Id: PreviewInternalFrame.java,v 1.8 2003/09/24 16:41:04 taqua Exp $
  *
  * Changes
  * -------
@@ -84,13 +84,13 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
       else
       {
         setVisible(false);
-        try
-        {
-          setClosed(true);
-        }
-        catch (PropertyVetoException pe)
-        {
-        }
+      }
+      try
+      {
+        setClosed(true);
+      }
+      catch (PropertyVetoException pe)
+      {
       }
     }
   }
