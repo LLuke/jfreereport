@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.7 2003/02/26 13:57:57 mungady Exp $
+ * $Id: PaintComponentFunction.java,v 1.8 2003/02/27 18:31:12 taqua Exp $
  *
  * Changes
  * -------
@@ -40,21 +40,22 @@
  */
 package com.jrefinery.report.function;
 
+import com.jrefinery.report.Band;
+import com.jrefinery.report.Element;
+import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.event.LayoutEvent;
+import com.jrefinery.report.event.LayoutListener;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
+import com.jrefinery.report.util.Log;
+
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-
-import com.jrefinery.report.Band;
-import com.jrefinery.report.Element;
-import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.event.LayoutEvent;
-import com.jrefinery.report.event.LayoutListener;
-import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 
 /**
  * Paints a AWT or Swing Component, fitting the component into the element bounds.
@@ -76,11 +77,15 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
   /** the created image, cached for getValue(). */
   private Image image;
 
+  /** supplies a valid peer for the draw operation. */
+  private Frame peerSupply;
+
   /**
    * DefaultConstructor.
    */
   public PaintComponentFunction()
   {
+    peerSupply = new Frame();
   }
 
   /**
@@ -207,31 +212,23 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     Dimension dim = new Dimension((int) (bounds.getWidth()), (int) (bounds.getHeight()));
     comp.setSize(dim);
     comp.validate();
-    if (comp.getParent() != null)
-    {
-      // if the parent is not visible, the component will not be painted...
-      Log.info ("This component has a parent, this may influence the paint process.");
-    }
-    // this may be deprecated, but it is the only way to check whether the
-    // component has a peer ...
-    if (comp.getPeer() == null)
-    {
-      Log.warn ("This component has no peer, and may be invisible. This could prevent painting.");
-    }
-    if (comp.isShowing() == false)
-    {
-      // isShowing == false means,that nothing is painted ...
-      Log.warn ("This component is not visible and may deny painting.");
-    }
 
-    BufferedImage bi = new BufferedImage((int) (scale * dim.width),
-                                         (int) (scale * dim.height),
-                                         BufferedImage.TYPE_INT_ARGB);
-    Graphics2D graph = bi.createGraphics();
-    graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
-    comp.paint(graph);
-    graph.dispose();
-    image = bi;
+    // supplies the peer and allows drawing ...
+    synchronized (peerSupply)
+    {
+      peerSupply.add(comp);
+
+      BufferedImage bi = new BufferedImage((int) (scale * dim.width),
+                                           (int) (scale * dim.height),
+                                           BufferedImage.TYPE_INT_ARGB);
+      Graphics2D graph = bi.createGraphics();
+      graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
+      comp.paint(graph);
+      graph.dispose();
+      image = bi;
+
+      peerSupply.remove(comp);
+    }
   }
 
   /**
@@ -289,6 +286,19 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     {
       return 1;
     }
+  }
+
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    PaintComponentFunction pc = (PaintComponentFunction) super.getInstance();
+    pc.peerSupply = new Frame();
+    return pc;
   }
 
   /**

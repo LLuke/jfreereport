@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.4 2003/02/25 14:10:46 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.5 2003/02/26 13:57:57 mungady Exp $
  *
  * Changes
  * -------
@@ -37,15 +37,16 @@
  */
 package com.jrefinery.report.function;
 
+import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.event.ReportEvent;
+
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-
-import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.event.ReportEvent;
 
 /**
  * Paints a AWT or Swing Component. The component must be contained in the
@@ -64,11 +65,15 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   /** the created image, cached for getValue(). */
   private Image image;
 
+  /** supplies a valid peer for the draw operation. */
+  private Frame peerSupply;
+
   /**
    * DefaultConstructor.
    */
   public PaintDynamicComponentFunction()
   {
+    peerSupply = new Frame();
   }
 
   /**
@@ -185,16 +190,23 @@ public class PaintDynamicComponentFunction extends AbstractFunction
     float scale = getScale();
 
     Component comp = (Component) o;
-    Dimension dim = comp.getSize();
-    comp.validate(); // validating is never wrong :)
-    BufferedImage bi = new BufferedImage((int) (scale * dim.width),
-                                         (int) (scale * dim.height),
-                                         BufferedImage.TYPE_INT_ARGB);
-    Graphics2D graph = bi.createGraphics();
-    graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
-    comp.paint(graph);
-    graph.dispose();
-    return bi;
+
+    // supplies the peer and allows drawing ...
+    synchronized (peerSupply)
+    {
+      peerSupply.add(comp);
+
+      Dimension dim = comp.getSize();
+      comp.validate(); // validating is never wrong :)
+      BufferedImage bi = new BufferedImage((int) (scale * dim.width),
+                                           (int) (scale * dim.height),
+                                           BufferedImage.TYPE_INT_ARGB);
+      Graphics2D graph = bi.createGraphics();
+      graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
+      comp.paint(graph);
+      graph.dispose();
+      return bi;
+    }
   }
 
   /**
@@ -270,4 +282,18 @@ public class PaintDynamicComponentFunction extends AbstractFunction
       throw new FunctionInitializeException("No Such Property : field");
     }
   }
+
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    PaintDynamicComponentFunction pc = (PaintDynamicComponentFunction) super.getInstance();
+    pc.peerSupply = new Frame();
+    return pc;
+  }
+
 }
