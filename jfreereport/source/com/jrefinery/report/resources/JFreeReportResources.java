@@ -193,11 +193,11 @@ public class JFreeReportResources extends ListResourceBundle
             {"pdfsavedialog.ownerpasswordconfirm", "Confirm"},
             {"pdfsavedialog.ownerpasswordNoMatch", "The owner-passwords do not match."},
 
-            {"pdfsavedialog.errorTitle", "The owner-passwords do not match."},
-            {"pdfsavedialog.targetIsNoFile", "The owner-passwords do not match."},
-            {"pdfsavedialog.targetIsNotWritable", "The owner-passwords do not match."},
-            {"pdfsavedialog.targetOverwriteConfirmation", "The owner-passwords do not match."},
-            {"pdfsavedialog.targetOverwriteTitle", "The owner-passwords do not match."},
+            {"pdfsavedialog.errorTitle", "Error"},
+            {"pdfsavedialog.targetIsNoFile", "The selected target is no ordinary file."},
+            {"pdfsavedialog.targetIsNotWritable", "The selected file is not writable."},
+            {"pdfsavedialog.targetOverwriteConfirmation", "The file '{0}' exists. Overwrite it?"},
+            {"pdfsavedialog.targetOverwriteTitle", "Overwrite file?"},
 
 
             {"pdfsavedialog.allowCopy", "Allow Copy"},

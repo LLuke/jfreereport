@@ -681,16 +681,34 @@ public class PDFSaveDialog extends JDialog
     this.txTitle.setText(title);
   }
 
+  /**
+   * @returns the name of the author of this report.
+   */
   public String getAuthor()
   {
     return txAuthor.getText();
   }
 
+  /**
+   * Defines the Author of the report. Any freeform text is valid. This defaults to the value of
+   * the systemProperty "user.name".
+   *
+   * @param author the name of the author.
+   */
   public void setAuthor(String author)
   {
     this.txAuthor.setText(author);
   }
 
+  /**
+   * Queries the currently selected encryption. If an encryption is selected this method returns either
+   * Boolean.TRUE or Boolean.FALSE, when no encryption is set, <code>null</code> is returned. If no encryption
+   * is set, the security properties have no defined state.
+   *
+   * @returns the selection state for the encryption. If no encryption is set, this method returns
+   * null, if 40-bit encryption is set, the method returns Boolean.FALSE and on 128-Bit-encryption,
+   * Boolean.TRUE is returned.
+   */
   public Boolean getEncryptionValue()
   {
     if (rbSecurity40Bit.isSelected()) return PDFOutputTarget.SECURITY_ENCRYPTION_40BIT;
@@ -698,6 +716,11 @@ public class PDFSaveDialog extends JDialog
     return null;
   }
 
+  /**
+   * Defines the currently selected encryption.
+   *
+   * @param the new encryption state, one of null, Boolean.TRUE or Boolean.FALSE
+   */
   public void setEncryptionValue(Boolean b)
   {
     if (b == null) rbSecurityNone.setSelected(true);
@@ -715,6 +738,11 @@ public class PDFSaveDialog extends JDialog
     return confirmed;
   }
 
+  /**
+   * Defines whether this dialog has been finished using the 'OK' or the 'Cancel' option.
+   *
+   * @param confirmed set to true, if OK was pressed, false otherwise
+   */
   protected void setConfirmed(boolean confirmed)
   {
     this.confirmed = confirmed;
@@ -771,7 +799,8 @@ public class PDFSaveDialog extends JDialog
   }
 
   /**
-   * Validates the contents of the dialogs input fields.
+   * Validates the contents of the dialogs input fields. If the selected file exists, it is also checked
+   * for validity.
    *
    * @returns true, if the input is valid, false otherwise
    */
@@ -809,8 +838,15 @@ public class PDFSaveDialog extends JDialog
         return false;
       }
       if (JOptionPane.showConfirmDialog(this,
-          getResources().getString("pdfsavedialog.targetOverwriteConfirmation"),
-          getResources().getString("pdfsavedialog.targetOverwriteTitle"), JOptionPane.QUESTION_MESSAGE);
+          MessageFormat.format(
+              getResources().getString("pdfsavedialog.targetOverwriteConfirmation"),
+              new Object[]{getFilename()}
+          ),
+          getResources().getString("pdfsavedialog.targetOverwriteTitle"),
+          JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
+      {
+        return false;
+      }
     }
     return true;
   }
