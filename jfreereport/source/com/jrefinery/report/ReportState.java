@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.13 2002/06/05 21:45:11 taqua Exp $
+ * $Id: ReportState.java,v 1.14 2002/06/09 14:46:04 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -44,6 +44,7 @@
  * 26-May-2002 : Moved ReportProperties into the state so that different runs do not affect
  *               each other. Added Property isPrepareRun() to signal whether the report is currently
  *               repaginated.
+ * 11-May-2002 : A bug in the ReportPropertyHandling is fixed.
  */
 
 package com.jrefinery.report;
@@ -619,7 +620,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   protected ReportState (JFreeReport report)
   {
     setReport (report);
-    reportProperties = new ReportProperties ();
+    reportProperties = new ReportProperties (report.getProperties());
+
     setCurrentItem (BEFORE_FIRST_ROW);
     setCurrentPage (FIRST_PAGE);
     setCurrentGroupIndex (BEFORE_FIRST_GROUP);

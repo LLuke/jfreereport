@@ -25,6 +25,9 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * Changes
+ * -------
+ * 2002-Jun-11 : The ReportProperty Bug is included
  */
 package com.jrefinery.report.junit;
 
@@ -106,6 +109,8 @@ public class StateBug extends TestCase
       throw new FileNotFoundException ();
     File in = new File (url.getFile ());
     report = ReportGenerator.getInstance ().parseReport (in);
+    report.setProperty("test", "not null");
+    assertNotNull(report.getProperty("test"));
     report.setData (new SampleData1 ());
     BufferedImage buffer = new BufferedImage (100, 100, BufferedImage.TYPE_INT_RGB);
     Graphics2D g2 = (Graphics2D) buffer.getGraphics ();
@@ -149,6 +154,7 @@ public class StateBug extends TestCase
 
       ReportState s2 = report.processPage (pane.getOutputTarget(), state, true);
 
+      assertNotNull(s2.getProperty("test"));
       Object afterCollection = state.getFunctions();
       Object afterFunction = state.getFunctions().get("sum");
       Object afterValue = state.getFunctions().get("sum").getValue();
