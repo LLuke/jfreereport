@@ -1,11 +1,21 @@
 <html>
-  <body>
+<body>
+<p>
+This module provides basic preview capabilities for JFreeReport. The
+preview components use worker threads to perform the pagination and
+exports.
+</p><p>
+The various export dialogs will register at this module an plug their
+functionality into the preview components.
+</p><p>
+The preview components should be closed when they are no longer used,
+by calling "close()" to shutdown the workerthreads and to free the used
+resources.
+</p> 
+<p>This module requires the Graphics2D output target to be present.</p>
+<h2>Configuration keys:</h2>
 
-    <p>Provides the basic preview capabilities of JFreeReport.</p>
-    <p>This module requires the Graphics2D output target to be present.</p>
-    <h2>Configuration keys:</h2>
-
-    <table>
+    <table border="1">
 
       <tr>
         <th>Property name</th>
@@ -77,5 +87,6 @@
       </tr>
 
     </table>
+
   </body>
 </html>
