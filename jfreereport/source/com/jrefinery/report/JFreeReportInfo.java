@@ -27,7 +27,8 @@
  *
  * Changes:
  * ------------
- * 10-May-2002: Extracted from JFreeReport to declare this class public.
+ * 10-May-2002 : Extracted from JFreeReport to declare this class public.
+ * 16-May-2002 : added my name to the developer list ;-) (JS)
  */
 package com.jrefinery.report;
 
@@ -69,7 +70,8 @@ public class JFreeReportInfo extends ProjectInfo
             new Contributor[]
             {
               new Contributor ("David Gilbert", "david.gilbert@object-refinery.com"),
-              new Contributor ("Thomas Morgner", "-")
+              new Contributor ("Thomas Morgner", "-"),
+              new Contributor ("Jörg Schömer", "joerg.schoemer@nikocity.de")
             }
     );
 
@@ -85,8 +87,6 @@ public class JFreeReportInfo extends ProjectInfo
                       "http://sourceforge.net/projects/jfreereport/")
             }
     );
-
   }
-
 }
 
