@@ -7,9 +7,9 @@
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id: TextElementTestCase.java,v 1.1 2002/07/08 22:10:35 taqua Exp $
+ * $Id: TextElementTestCase.java,v 1.2 2002/07/10 19:22:47 taqua Exp $
  * $Author: taqua $
- * $Date: 2002/07/08 22:10:35 $
+ * $Date: 2002/07/10 19:22:47 $
  */
 package com.jrefinery.report.ext.junit.base;
 
@@ -224,7 +224,8 @@ public class TextElementTestCase extends TestCase
   public void testGetNullString ()
   {
     varTextElement.setNullString ((String) null);
-    assertEquals ((String) "null", varTextElement.getNullString ());
+    // default val if nullstring is <null> is "-"
+    assertEquals ((String) "-", varTextElement.getNullString ());
     varTextElement.setNullString ((String) "");
     assertEquals ((String) "", varTextElement.getNullString ());
     varTextElement.setNullString ((String) "\u0000");

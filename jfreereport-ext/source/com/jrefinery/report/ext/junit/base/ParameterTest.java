@@ -9,6 +9,8 @@ package com.jrefinery.report.ext.junit.base;
 
 import junit.framework.TestCase;
 import junit.framework.Assert;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.ItemBand;
 import com.jrefinery.report.PageHeader;
@@ -50,6 +52,14 @@ public class ParameterTest extends TestCase
     super (name);
   }
 
+  /**
+   * Returns all tests which should be performed for testing class.
+   * By default it returns only name of testing class. Instance of this
+   * is then created with its constructor.
+   */
+  public static Test suite() {
+    return new TestSuite(ParameterTest.class);
+  } // end of suite()
   public void performTestBand (Band band)
   {
     try {

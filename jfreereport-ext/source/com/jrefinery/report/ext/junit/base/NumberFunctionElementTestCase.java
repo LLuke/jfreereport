@@ -7,9 +7,9 @@
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id: NumberFunctionElementTestCase.java,v 1.2 2002/07/10 19:22:47 taqua Exp $
+ * $Id: NumberFunctionElementTestCase.java,v 1.3 2002/07/15 21:20:19 taqua Exp $
  * $Author: taqua $
- * $Date: 2002/07/10 19:22:47 $
+ * $Date: 2002/07/15 21:20:19 $
  */
 package com.jrefinery.report.ext.junit.base;
 
@@ -20,6 +20,7 @@ import java.awt.AWTEvent;
 import java.awt.event.AWTEventListener;
 import java.awt.event.WindowEvent;
 import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 import com.jrefinery.report.NumberFunctionElement;
 
@@ -138,8 +139,10 @@ public class NumberFunctionElementTestCase extends TestCase
     varNumberFunctionElement.setDecimalFormatString("##0");
     assertEquals(varNumberFunctionElement.getFormatter().format(0), "0");
 
+
+    DecimalFormat fo = new DecimalFormat("0.00");
     varNumberFunctionElement.setDecimalFormatString("##0.00");
-    assertEquals(varNumberFunctionElement.getFormatter().format(0), "0.00");
+    assertEquals(varNumberFunctionElement.getFormatter().format(0), fo.format(0));
 
   } // end of testSetDecimalFormatString1195259493(java.lang.String)
 

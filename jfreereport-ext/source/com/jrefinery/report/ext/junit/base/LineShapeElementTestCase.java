@@ -7,9 +7,9 @@
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id: LineShapeElementTestCase.java,v 1.2 2002/07/10 19:22:47 taqua Exp $
+ * $Id: LineShapeElementTestCase.java,v 1.3 2002/07/15 21:20:19 taqua Exp $
  * $Author: taqua $
- * $Date: 2002/07/10 19:22:47 $
+ * $Date: 2002/07/15 21:20:19 $
  */
 package com.jrefinery.report.ext.junit.base;
 
@@ -147,9 +147,20 @@ public class LineShapeElementTestCase extends TestCase
     }
     Line2D line = new Line2D.Float (0,0,1,1);
     varLineShapeElement.setLine(line);
-    assertEquals(line, varLineShapeElement.getLine());
-    assertEquals(line, varLineShapeElement.getShape());
+    assertTrue(lineEquals(line, varLineShapeElement.getLine()));
+    assertTrue(lineEquals(line, (Line2D) varLineShapeElement.getShape()));
+
+
   } // end of testGetLine()
+
+  private boolean lineEquals (Line2D l1, Line2D l2)
+  {
+    if (l1.getX1() != l2.getX1()) return false;
+    if (l1.getX2() != l2.getX2()) return false;
+    if (l1.getY1() != l2.getY1()) return false;
+    if (l1.getY2() != l2.getY2()) return false;
+    return true;
+  }
 
   /**
    * Method for testing how works original method:

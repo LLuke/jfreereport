@@ -7,9 +7,9 @@
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id: LabelElementTestCase.java,v 1.2 2002/07/10 19:22:47 taqua Exp $
+ * $Id: LabelElementTestCase.java,v 1.3 2002/07/15 21:20:19 taqua Exp $
  * $Author: taqua $
- * $Date: 2002/07/10 19:22:47 $
+ * $Date: 2002/07/15 21:20:19 $
  */
 package com.jrefinery.report.ext.junit.base;
 
@@ -69,10 +69,6 @@ import com.jrefinery.report.LabelElement;
  */
 public class LabelElementTestCase extends TestCase
 {
-  /**
-   * Instance of tested class.
-   */
-  protected LabelElement varLabelElement;
 
   /**
    * Public constructor for creating testing class.
@@ -93,7 +89,6 @@ public class LabelElementTestCase extends TestCase
    * actions which are necessary for performs tests.
    */
   protected void setUp() {
-    varLabelElement = new LabelElement();
   } // end of setUp()
   /**
    * Returns all tests which should be performed for testing class.
@@ -117,8 +112,9 @@ public class LabelElementTestCase extends TestCase
    */
   public void testGetLabel() {
 
+    LabelElement varLabelElement = new LabelElement();
     varLabelElement.setLabel((String)null);
-    assertEquals((String)null, varLabelElement.getLabel());
+    assertEquals(varLabelElement.getNullString(), varLabelElement.getLabel());
     varLabelElement.setLabel((String)"");
     assertEquals((String)"", varLabelElement.getLabel());
     varLabelElement.setLabel((String)"\u0000");
@@ -132,31 +128,12 @@ public class LabelElementTestCase extends TestCase
 
   /**
    * Method for testing how works original method:
-   * void setLabel(java.lang.String)
-   * from tested class
-   */
-  public void testSetLabel1195259493() {
-
-    varLabelElement.setLabel((String)null);
-    assertEquals((String)null, varLabelElement.getLabel());
-    varLabelElement.setLabel((String)"");
-    assertEquals((String)"", varLabelElement.getLabel());
-    varLabelElement.setLabel((String)"\u0000");
-    assertEquals((String)"\u0000", varLabelElement.getLabel());
-    varLabelElement.setLabel((String)" ");
-    assertEquals((String)" ", varLabelElement.getLabel());
-    varLabelElement.setLabel((String)"\n");
-    assertEquals((String)"\n", varLabelElement.getLabel());
-
-  } // end of testSetLabel1195259493(java.lang.String)
-
-  /**
-   * Method for testing how works original method:
    * java.lang.String toString()
    * from tested class
    */
   public void testToString() {
 
+    LabelElement varLabelElement = new LabelElement();
     varLabelElement.toString();
 
   } // end of testToString()
