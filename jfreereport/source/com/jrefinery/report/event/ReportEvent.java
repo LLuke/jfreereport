@@ -40,6 +40,7 @@ package com.jrefinery.report.event;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportState;
+import com.jrefinery.report.DataRow;
 
 import java.util.EventObject;
 
@@ -88,4 +89,8 @@ public class ReportEvent extends EventObject
     return getState ().getReport ();
   }
 
+  public DataRow getDataRow ()
+  {
+    return getState ().getDataRow ();
+  }
 }

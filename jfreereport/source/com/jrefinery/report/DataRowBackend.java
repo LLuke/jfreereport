@@ -56,7 +56,8 @@ public class DataRowBackend implements Cloneable
 
     public int getCurrentRow ()
     {
-      return db.currentRow + 1;
+      System.out.println ("CUR" + db.getCurrentRow());
+      return db.getCurrentRow() + 1;
     }
 
     public void setCurrentRow (int currentRow)
@@ -175,7 +176,7 @@ public class DataRowBackend implements Cloneable
       }
       else
       {
-        System.out.println ("OK: CurrentRow: " + getCurrentRow ());
+        System.out.println ("OK: " + this + " CurrentRow: " + getCurrentRow ());
         return getTablemodel ().getValueAt (getCurrentRow (), col);
       }
     }
@@ -248,12 +249,14 @@ public class DataRowBackend implements Cloneable
 
   public boolean isLastRow ()
   {
-    return getCurrentRow () > (getTablemodel ().getRowCount () - 2);
+    return getCurrentRow () > (getTablemodel ().getRowCount () - 1);
   }
 
   public Object clone () throws CloneNotSupportedException
   {
-    return super.clone ();
+    DataRowBackend db = (DataRowBackend) super.clone ();
+    db.preview = null;
+    return db;
   }
 
   /**
