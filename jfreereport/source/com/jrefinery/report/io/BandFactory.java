@@ -62,13 +62,26 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class BandFactory extends DefaultHandler implements ReportDefinitionTags
 {
-
+  /**
+   * The ReportDefinitionContentHandler that is used to parse the report. This is
+   * a general coordination object for all parsers subfactories.
+   */
   private ReportDefinitionContentHandler handler;
 
+  /**
+   * The FontFactory is used to create java.awt.Font instances based on the data given
+   * in the Band and Element definition.
+   */
   private FontFactory fontFactory;
 
+  /**
+   * The report that is currently build.
+   */
   private JFreeReport report;
 
+  /**
+   * Initializes this BandFactory based on the data contained in the ReportFactory.
+   */
   public BandFactory (ReportFactory base)
   {
     this.handler = base.getHandler ();
@@ -76,21 +89,38 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     this.fontFactory = handler.getFontFactory ();
   }
 
-  private JFreeReport getReport ()
+  /**
+   * returns the current report.
+   */
+  protected JFreeReport getReport ()
   {
     return report;
   }
 
+  /**
+   * Returns the current band, that is being build.
+   */
   public Band getCurrentBand ()
   {
-    return handler.getReportFactory().getCurrentBand();
+    return handler.getReportFactory ().getCurrentBand ();
   }
 
+  /**
+   * defines the current band that gets currently build.
+   */
   protected void setCurrentBand (Band band)
   {
-    handler.getReportFactory().setCurrentBand(band);
+    handler.getReportFactory ().setCurrentBand (band);
   }
 
+  /**
+   * SAX-Handler function that is forwarded from the ReportDefinitionContentHandler.
+   * StartTag-occurences for ReportFooter and -header, PageFooter and -header and
+   * the itemBand are handled. If an unknown element is encountered, a SAXException is
+   * thrown.
+   *
+   * @throws SAXException if an unknown tag is encountered.
+   */
   public void startElement (String namespaceURI,
                             String localName,
                             String qName,
@@ -127,6 +157,15 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     }
   }
 
+
+  /**
+   * SAX-Handler function that is forwarded from the ReportDefinitionContentHandler.
+   * EndTag-occurences for ReportFooter and -header, PageFooter and -header and
+   * the itemBand are handled. If an unknown element is encountered, a SAXException is
+   * thrown.
+   *
+   * @throws SAXException if an unknown tag is encountered.
+   */
   public void endElement (String namespaceURI,
                           String localName,
                           String qName) throws SAXException
@@ -161,6 +200,11 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     }
   }
 
+  /**
+   * Handles the start of an reportheader definition.
+   *
+   * @see com.jrefinery.report.ReportHeader
+   */
   public void startReportHeader (Attributes attr)
           throws SAXException
   {
@@ -177,6 +221,11 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     handler.setExpectedHandler (handler.createElementFactory ());
   }
 
+  /**
+   * Handles the start of an reportfooter definition.
+   *
+   * @see com.jrefinery.report.ReportFooter
+   */
   public void startReportFooter (Attributes attr)
           throws SAXException
   {
@@ -194,6 +243,11 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     handler.setExpectedHandler (handler.createElementFactory ());
   }
 
+  /**
+   * Handles the start of an pageheader definition.
+   *
+   * @see com.jrefinery.report.PageHeader
+   */
   public void startPageHeader (Attributes attr)
           throws SAXException
   {
@@ -213,6 +267,11 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     handler.setExpectedHandler (handler.createElementFactory ());
   }
 
+  /**
+   * Handles the start of an pagefooter definition.
+   *
+   * @see com.jrefinery.report.PageFooter
+   */
   public void startPageFooter (Attributes attr)
           throws SAXException
   {
@@ -232,6 +291,11 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     handler.setExpectedHandler (handler.createElementFactory ());
   }
 
+  /**
+   * Handles the start of an ItemBand definition.
+   *
+   * @see com.jrefinery.report.ItemBand
+   */
   public void startItems (Attributes attr)
           throws SAXException
   {
@@ -245,26 +309,51 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     handler.setExpectedHandler (handler.createElementFactory ());
   }
 
+  /**
+   * Handles the end of an ItemBand definition.
+   *
+   * @see com.jrefinery.report.ItemBand
+   */
   public void endItems ()
   {
     handler.finishedHandler ();
   }
 
+  /**
+   * Handles the end of an PageHeader definition.
+   *
+   * @see com.jrefinery.report.PageHeader
+   */
   public void endPageHeader ()
   {
     handler.finishedHandler ();
   }
 
+  /**
+   * Handles the end of an PageFooter definition.
+   *
+   * @see com.jrefinery.report.PageFooter
+   */
   public void endPageFooter ()
   {
     handler.finishedHandler ();
   }
 
+  /**
+   * Handles the end of an ReportHeader definition.
+   *
+   * @see com.jrefinery.report.ReportHeader
+   */
   public void endReportHeader ()
   {
     handler.finishedHandler ();
   }
 
+  /**
+   * Handles the end of an ReportFooter definition.
+   *
+   * @see com.jrefinery.report.ReportFooter
+   */
   public void endReportFooter ()
   {
     handler.finishedHandler ();

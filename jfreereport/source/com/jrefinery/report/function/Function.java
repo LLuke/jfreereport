@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.3 2002/05/28 19:36:41 taqua Exp $
+ * $Id: Function.java,v 1.4 2002/06/05 23:21:47 mungady Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,8 @@
 
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.Group;
-import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.event.ReportListener;
 
-import javax.swing.table.TableModel;
 import java.util.Properties;
 
 /**

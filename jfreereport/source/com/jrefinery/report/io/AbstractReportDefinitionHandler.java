@@ -51,7 +51,10 @@ public abstract class AbstractReportDefinitionHandler extends DefaultHandler
   /** Base URL for loading resources. */
   private URL contentBase;
 
-  /** ??? */
+  /**
+   * the namecounter is used to create unique element names. After a name has been
+   * created, the counter is increased by one.
+   */
   private int nameCounter;
 
   /**

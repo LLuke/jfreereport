@@ -28,12 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.5 2002/05/28 19:36:41 taqua Exp $
+ * $Id: ElementVisiblitySwitchFunction.java,v 1.4 2002/06/05 23:21:47 mungady Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
  * 05-Jun-2002 : Changed name from ElementVisiblity --> ElementVisibility.  Updated Javadoc
  *               comments (DG);
+ * 08-Jun-2002 : Completed Javadoc comments.
  */
 package com.jrefinery.report.function;
 
@@ -70,7 +71,9 @@ public class ElementVisiblitySwitchFunction extends AbstractFunction
   }
 
   /**
-   * Maps the pageStarted-method to the legacy function startPage (int).
+   * Triggers the visibility of an element. If the named element was visible at the last
+   * itemsAdvanced call, it gets now invisible and vice versa. This creates the effect,
+   * that an element is printed every other line.
    */
   public void itemsAdvanced (ReportEvent event)
   {
@@ -85,8 +88,11 @@ public class ElementVisiblitySwitchFunction extends AbstractFunction
   }
 
   /**
-   * Checks that the function has been correctly initialized.  If there is a problem, this method
-   * throws a FunctionInitializeException.
+   * Checks that the function has been correctly initialized. The functions name or the
+   * elements name have not been set, and FunctionInitializeException is thrown.
+   *
+   * @throws FunctionInitializeException if required parameters were missing and initialisation
+   * cannot be performed.
    */
   public void initialize () throws FunctionInitializeException
   {
@@ -96,9 +102,11 @@ public class ElementVisiblitySwitchFunction extends AbstractFunction
   }
 
   /**
-   * Sets the element name.
+   * Sets the element name. The name denotes an element within the item band. The element
+   * will be retrieved using the getElement(String) function.
    *
    * @param name The element name.
+   * @see com.jrefinery.report.Band#getElement(String)
    */
   public void setElement (String name)
   {
@@ -115,6 +123,9 @@ public class ElementVisiblitySwitchFunction extends AbstractFunction
     return getProperty("element", "");
   }
 
+  /**
+   * @returns the visibility of the element, either Boolean.TRUE or Boolean.FALSE.
+   */
   public Object getValue ()
   {
     if (trigger)

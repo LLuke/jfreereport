@@ -98,4 +98,16 @@ public class DateFormatParser extends FormatParser
   {
     super.setNullValue ((Date)nullvalue);
   }
+
+  /**
+   * Checks whether the given value is already a valid result. IF the datasource already returned
+   * a valid value, and no parsing is required, a parser can skip the parsing process by returning
+   * true in this function.
+   *
+   * @returns true, if the given value is already an instance of date.
+   */
+  protected boolean isValidOutput (Object o)
+  {
+    return o instanceof Date;
+  }
 }

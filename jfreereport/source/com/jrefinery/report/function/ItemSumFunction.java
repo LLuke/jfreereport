@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.6 2002/05/28 19:36:41 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.7 2002/06/05 23:21:47 mungady Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,10 @@ package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.filter.DataFilter;
+import com.jrefinery.report.filter.NumberFormatParser;
+import com.jrefinery.report.filter.DecimalFormatParser;
+import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 
@@ -56,9 +60,19 @@ import java.math.BigDecimal;
  * <li>to calculate a sum for the entire report;</li>
  * <li>to calculate a sum within a particular group;</li>
  * </ul>
+ * This function expects its input values to be either java.lang.Number instances or Strings
+ * that can be parsed to java.lang.Number instances using a java.text.DecimalFormat.
+ * <p>
+ * The function undestands two parameters, the <code>field</code> parameter is required and
+ * denotes the name of an ItemBand-field which gets summed up.
+ * <p>
+ * The parameter <code>group</code> denotes the name of a group. When this group is started,
+ * the counter gets reseted to null.
  */
 public class ItemSumFunction extends AbstractFunction
 {
+  /** Zero. */
+  private static final BigDecimal ZERO = new BigDecimal (0.0);
 
   /** The group name. */
   private String group;
@@ -66,20 +80,26 @@ public class ItemSumFunction extends AbstractFunction
   /** The field name. */
   private String field;
 
-  /** Zero. */
-  private static final BigDecimal ZERO = new BigDecimal (0.0);
-
   /** The sum. */
   private BigDecimal sum;
 
+  /** The parser for performing data conversion */
+  private NumberFormatParser parser;
+
+  /** The datasource of the parser */
+  private StaticDataSource datasource;
+
   /**
-   * Constructs an unnamed function.
-   * <P>
-   * This constructor is intended for use by the SAX handler class only.
+   * Constructs an unnamed function. Make sure to set a Name or function initialisation
+   * will fail.
    */
   public ItemSumFunction ()
   {
-    this.sum = ZERO;
+    sum = ZERO;
+    datasource = new StaticDataSource();
+    parser = new DecimalFormatParser();
+    parser.setNullValue(ZERO);
+    parser.setDataSource(datasource);
   }
 
   /**
@@ -105,7 +125,7 @@ public class ItemSumFunction extends AbstractFunction
    */
   public void reportStarted (ReportEvent event)
   {
-//    this.sum = ZERO;
+    this.sum = ZERO;
   }
 
   /**
@@ -116,17 +136,18 @@ public class ItemSumFunction extends AbstractFunction
    */
   public void groupStarted (ReportEvent event)
   {
-    Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
-
     String mygroup = getGroup();
-    if (mygroup != null)
+    if (mygroup == null)
     {
-      if (  this.group.equals (group.getName ()))
-      {
-        this.sum = ZERO;
-      }
+      return;
     }
-  }
+
+    Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
+    if (  this.group.equals (group.getName ()))
+    {
+      this.sum = ZERO;
+    }
+}
 
   /**
    * Returns the group name.
@@ -203,21 +224,19 @@ public class ItemSumFunction extends AbstractFunction
       }
     }
 
-    if (fieldValue != null)
+    if (fieldValue == null)
     {
-      if (fieldValue instanceof Number)
-      {
-        Number n = (Number) fieldValue;
-        try
-        {
-          sum = sum.add (new BigDecimal (n.toString ()));
-        }
-        catch (Exception e)
-        {
-          Log.error ("ItemSumFunction.advanceItems(): problem adding number.");
-        }
-      }
-
+      return;
+    }
+    datasource.setValue(fieldValue);
+    Number n = (Number) parser.getValue();
+    try
+    {
+      sum = sum.add (new BigDecimal (n.doubleValue()));
+    }
+    catch (Exception e)
+    {
+      Log.error ("ItemSumFunction.advanceItems(): problem adding number.");
     }
   }
 
@@ -233,7 +252,10 @@ public class ItemSumFunction extends AbstractFunction
   }
 
   /**
-   * ???
+   * Initializes the function and tests that all required properties are set. If the required
+   * field property is not set, a FunctionInitializeException is thrown.
+   *
+   * @throws FunctionInitializeException when no field is set.
    */
   public void initialize ()
     throws FunctionInitializeException

@@ -36,17 +36,26 @@ import org.xml.sax.Attributes;
 
 import java.awt.Font;
 
+/**
+ * Parses the font specifications for bands and text elements.
+ */
 public class FontFactory implements ReportDefinitionTags
 {
+  private String defaultFontName;
+  private int defaultFontStyle;
+  private int defaultFontSize;
+
+  /**
+   * Default Constructor
+   */
   public FontFactory ()
   {
     init ();
   }
 
-  private String defaultFontName;
-  private int defaultFontStyle;
-  private int defaultFontSize;
-
+  /**
+   * Initializes the factory to the default values.
+   */
   public void init ()
   {
     Font defaultFont = Band.DEFAULT_FONT;
@@ -55,6 +64,9 @@ public class FontFactory implements ReportDefinitionTags
     defaultFontSize = defaultFont.getSize ();
   }
 
+  /**
+   * Reads an attribute as int and returns <code>def</code> if that fails
+   */
   protected int readInt (Attributes attr, String name, int def)
   {
     String val = attr.getValue (name);
@@ -72,6 +84,13 @@ public class FontFactory implements ReportDefinitionTags
     return def;
   }
 
+  /**
+   * Reads the fontstyle for an attribute set. The font style is appended to the given
+   * font style definition.
+   * <p>
+   * This implementation does not support underline or strikethrough
+   * attributes of the DTD.
+   */
   protected int readSimpleFontStyle (Attributes attr, int def)
   {
     String fontStyle = attr.getValue (FONT_STYLE_ATT);
@@ -107,6 +126,9 @@ public class FontFactory implements ReportDefinitionTags
     return fs;
   }
 
+  /**
+   * Parses an element font. Missing attributes are replaces with the default fonts attributes.
+   */
   public Font createFont (Attributes attr)
           throws ReportDefinitionException
   {
@@ -126,6 +148,11 @@ public class FontFactory implements ReportDefinitionTags
     return new Font (elementFontName, elementFontStyle, elementFontSize);
   }
 
+  /**
+   * Parses an band font.
+   * Missing attributes are replaces with the default fonts attributes. The result of this parsing
+   * will set the default values for element fonts
+   */
   public Font createDefaultFont (Attributes attr)
   {
     init ();

@@ -32,7 +32,7 @@
  * --------------------------
  *
  * 10-May-2002 : Created the EventInterface for JFreeReport
- * 05-Jun-2002 : cleared the interface.
+ * 05-Jun-2002 : cleared the interface,Documentation
  */
 package com.jrefinery.report.event;
 

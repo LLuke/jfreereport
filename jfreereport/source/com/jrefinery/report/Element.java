@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.7 2002/05/28 19:28:22 taqua Exp $
+ * $Id: Element.java,v 1.8 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,6 +51,7 @@ package com.jrefinery.report;
 
 import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.DataTarget;
+import com.jrefinery.report.filter.EmptyDataSource;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 
@@ -62,15 +63,7 @@ import java.awt.geom.Rectangle2D;
  */
 public abstract class Element implements ElementConstants, DataTarget
 {
-  private static final class NullDataSource implements DataSource
-  {
-    public Object getValue ()
-    {
-      return null;
-    }
-  }
-
-  private static final DataSource NULL_DATASOURCE = new NullDataSource ();
+  private static final DataSource NULL_DATASOURCE = new EmptyDataSource ();
 
   private DataSource datasource;
 

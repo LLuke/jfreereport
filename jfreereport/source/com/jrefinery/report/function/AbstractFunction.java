@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.5 2002/05/28 19:36:41 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.6 2002/06/05 23:21:47 mungady Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,8 @@ package com.jrefinery.report.function;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportState;
-import com.jrefinery.report.event.ReportListenerAdapter;
 import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.event.ReportListenerAdapter;
 
 import javax.swing.table.TableModel;
 import java.util.Properties;
@@ -94,6 +94,7 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
    * Sets the function name.
    *
    * @param name The function name (null not permitted).
+   * @throws NullPointerException if the given name is null
    */
   public void setName (String name)
   {
@@ -110,11 +111,13 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
    * The default implementation checks that the function name is not null, and calls the
    * isInitialized() method (now deprecated).
    *
+   * @throws FunctionInitializeException if the function name is not set or the call to
+   * isInitialized returns false.
    */
   public void initialize () throws FunctionInitializeException
   {
-    if (name == null) throw new FunctionInitializeException("FunctionName is null");
-    if (!isInitialized()) throw new FunctionInitializeException("isInitialized failed.");
+    if (name == null) throw new FunctionInitializeException ("FunctionName is null");
+    if (!isInitialized ()) throw new FunctionInitializeException ("isInitialized failed.");
   }
 
   /**
@@ -173,7 +176,7 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   public void pageStarted (ReportEvent event)
   {
     ReportState state = event.getState ();
-    startPage (state.getCurrentPage());
+    startPage (state.getCurrentPage ());
   }
 
   /**
@@ -196,7 +199,7 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   public void pageFinished (ReportEvent event)
   {
     ReportState state = event.getState ();
-    endPage (state.getCurrentPage());
+    endPage (state.getCurrentPage ());
   }
 
   /**
@@ -220,7 +223,7 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   {
     JFreeReport report = event.getReport ();
     ReportState state = event.getState ();
-    startGroup (report.getGroup (state.getCurrentGroupIndex()));
+    startGroup (report.getGroup (state.getCurrentGroupIndex ()));
   }
 
   /**
@@ -244,7 +247,7 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   {
     JFreeReport report = event.getReport ();
     ReportState state = event.getState ();
-    endGroup (report.getGroup (state.getCurrentGroupIndex()));
+    endGroup (report.getGroup (state.getCurrentGroupIndex ()));
   }
 
   /**
@@ -268,7 +271,7 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   {
     JFreeReport report = event.getReport ();
     ReportState state = event.getState ();
-    advanceItems (report.getData(), state.getCurrentDataItem());
+    advanceItems (report.getData (), state.getCurrentDataItem ());
   }
 
   /**
@@ -356,10 +359,12 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
     if (value == null)
       properties.remove (name);
     else
-      properties.setProperty(name, value);
+      properties.setProperty (name, value);
   }
 
   /**
+   * returns true, to signal that this part of initialisation resulted in no error.
+   *
    * @deprecated initialize() is used to initialize a function.
    */
   public boolean isInitialized ()

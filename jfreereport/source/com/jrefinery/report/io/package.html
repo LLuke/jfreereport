@@ -1,9 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html>
 <body bgcolor="white">
-Classes for reading XML-based report definitions.
-
-ToDo: Adjust the ParserFactories to be more abstract, so that extending one or all factories
-would be easier. Adjust ElementFactory to support ItemFactory as intended a long time ago.
+Classes for reading XML-based report definitions. The parser is able to ues all features
+of JFreeReport 0.7.2 and most features or 0.7.3.
+<p>
+The DTD for the reportdefinition files can be found at
+<a href="http://jfreereport.sourceforge.net/report.dtd">http://jfreereport.sourceforge.net/report.dtd</a>
+or in the distribution package.
+<p>
+This parser uses deprecated element classes. These classes will get not extension
+for new features and as soon as the discrepancy beween implemented and possible features
+gets too huge, this parser will be discontinued.
 </body>
 </html>

@@ -37,6 +37,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * The group factory is used to construct groups.
+ */
 public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
 {
   private JFreeReport report;

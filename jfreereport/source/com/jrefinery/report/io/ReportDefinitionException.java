@@ -31,6 +31,10 @@ package com.jrefinery.report.io;
 
 import org.xml.sax.SAXException;
 
+/**
+ * A reportdefinition exception is thrown when the parsing of the report definition
+ * failed because invalid or missing attributes are encountered.
+ */
 public class ReportDefinitionException extends SAXException
 {
   private Exception parent;

@@ -40,8 +40,16 @@ import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Field;
 
+/**
+ * basic helper functions to ease up the process of parsing.
+ */
 public class ParserUtil
 {
+  /**
+   * parses the string <code>text</code> into an int. If text is null or does not
+   * contain a parsable value, the message given in <code>message</code> is used to
+   * throw a SAXException.
+   */
   public static int parseInt (String text, String message) throws SAXException
   {
     if (text == null)
@@ -57,6 +65,11 @@ public class ParserUtil
     }
   }
 
+  /**
+   * parses the string <code>text</code> into an float. If text is null or does not
+   * contain a parsable value, the message given in <code>message</code> is used to
+   * throw a SAXException.
+   */
   public static float parseFloat (String text, String message) throws SAXException
   {
     if (text == null)
@@ -71,6 +84,10 @@ public class ParserUtil
     }
   }
 
+  /**
+   * Parses a boolean. If the string <code>text</code> contains the value of "true", the
+   * true value is returned, else false is returned.
+   */
   public static boolean parseBoolean (String text, boolean defaultVal)
   {
     if (text == null)
@@ -78,6 +95,9 @@ public class ParserUtil
     return text.equalsIgnoreCase ("true");
   }
 
+  /**
+   * Parses a string. If the <code>text</code> is null, defaultval is returned.
+   */
   public static String parseString (String text, String defaultVal)
   {
     if (text == null)
@@ -85,6 +105,11 @@ public class ParserUtil
     return text;
   }
 
+  /**
+   * Creates a basic stroke given the width contained as float in the given string.
+   * If the string could not be parsed into a float, a basic stroke with the width of
+   * 1 is returned.
+   */
   public static Stroke parseStroke (String weight)
   {
     try
@@ -102,6 +127,13 @@ public class ParserUtil
     return new BasicStroke (1);
   }
 
+  /**
+   * Parses a color entry. If the entry is in hexadecimal or ocal notation, the color is
+   * created using Color.decode(). If the string denotes a constant name of on of the color
+   * constants defined in java.awt.Color, this constant is used.
+   * <p>
+   * As fallback the color black is returned if no color can be parsed.
+   */
   public static Paint parseColor (String color)
   {
     if (color == null)
@@ -152,6 +184,10 @@ public class ParserUtil
       return parseFloat (tvalue, exceptionMessage);
   }
 
+  /**
+   * Parses an element position. The position is stored in the attributes "x", "y", "width" and
+   * "height". The attributes are allowed to have relative notion.
+   */
   public static Rectangle2D getElementPosition (Attributes atts) throws SAXException
   {
     float x = ParserUtil.parseRelativeFloat (atts.getValue ("x"), "Element x not specified");

@@ -29,6 +29,8 @@
  * -------
  * 20-May-2002 : Initial version
  * 06-Jun-2002 : Updated Javadoc comments
+ * 08-Jun-2002 : added isValidOutput for skipping the parsing when a valid (parsed) value is
+ *               already read from the assigned datasource.
  */
 package com.jrefinery.report.filter;
 
@@ -106,6 +108,8 @@ public class FormatParser implements DataFilter
     Object o = ds.getValue();
     if (o == null)  return getNullValue();
 
+    if (isValidOutput(o)) return o;
+
     try
     {
       return f.parseObject(String.valueOf(o));
@@ -114,6 +118,18 @@ public class FormatParser implements DataFilter
     {
       return null;
     }
+  }
+
+  /**
+   * Checks whether the given value is already a valid result. IF the datasource already returned
+   * a valid value, and no parsing is required, a parser can skip the parsing process by returning
+   * true in this function.
+   *
+   * @returns false as this class does not know anything about the format of input or result objects.
+   */
+  protected boolean isValidOutput (Object o)
+  {
+    return false;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.3 2002/05/18 16:23:51 taqua Exp $
+ * $Id: GroupCountFunction.java,v 1.4 2002/05/28 19:36:41 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,9 @@ import com.jrefinery.report.event.ReportEvent;
 /**
  * A report function that counts groups in a report.
  * If a null-groupname is given, all groups are counted.
+ * <p>
  * A group can be defined using the property "group".
+ * If the group property is not set, all group starts get counted.
  */
 public class GroupCountFunction extends AbstractFunction implements Cloneable
 {
@@ -91,7 +93,7 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
   public void setGroup (String group)
   {
     this.groupName = group;
-    setProperty("group", group);
+    setProperty ("group", group);
   }
 
   /**
@@ -107,16 +109,16 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
    */
   public void groupStarted (ReportEvent event)
   {
-    if (getGroup() == null)
+    if (getGroup () == null)
     {
       this.count++;  // count all groups...
       return;
     }
 
-    JFreeReport report = event.getReport();
-    ReportState state = event.getState();
-    Group group = report.getGroup(state.getCurrentGroupIndex());
-    if (getGroup().equals (group.getName ()))
+    JFreeReport report = event.getReport ();
+    ReportState state = event.getState ();
+    Group group = report.getGroup (state.getCurrentGroupIndex ());
+    if (getGroup ().equals (group.getName ()))
     {
       this.count++;
     }
@@ -136,10 +138,10 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
    * If the property "group" is present, the group will be set to the properties value.
    */
   public void initialize ()
-     throws FunctionInitializeException
+          throws FunctionInitializeException
   {
     super.initialize ();
-    setGroup(getProperty("group"));
+    setGroup (getProperty ("group"));
   }
 
 }

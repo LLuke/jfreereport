@@ -39,6 +39,10 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.Properties;
 
+/**
+ * The functionFactory creates functions and adds these functions to the FunctionCollection
+ * of the current report.
+ */
 public class FunctionFactory extends DefaultHandler implements ReportDefinitionTags
 {
   private JFreeReport report;
@@ -54,6 +58,13 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     this.handler = baseFactory.getHandler ();
   }
 
+  /**
+   * SAX-Handler function that is forwarded from the ReportDefinitionContentHandler.
+   * StartTag-occurences of function definitions get handled by this factory. If an unknown
+   * tag is encountered, a SAXException is thrown.
+   *
+   * @throws SAXException if an unknown tag is encountered.
+   */
   public void startElement (String namespaceURI,
                             String localName,
                             String qName,
@@ -81,40 +92,62 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
       startDataRef (atts);
     }
     else
-      throw new SAXException ("Expected function tag");
+      throw new SAXException ("Expected one of 'function', 'functions', 'data-ref', 'properties', 'property' tag");
   }
 
+  /**
+   * returns the current properties bundle for the function that is currently created
+   */
   protected Properties getProperties ()
   {
     return currentProperties;
   }
 
+  /**
+   * defines the properties for the current function.
+   */
   protected void setProperties (Properties p)
   {
     this.currentProperties = p;
   }
 
+  /**
+   * @returns the current function to be produced
+   */
   protected Function getCurrentFunction ()
   {
     return currentFunction;
   }
 
+  /**
+   * defines the current function. This function gets properties set and is then added
+   * to the reports function collection.
+   */
   protected void setCurrentFunction (Function function)
   {
     this.currentFunction = function;
   }
 
+  /**
+   * returns the report to be processed.
+   */
   protected JFreeReport getReport ()
   {
     return report;
   }
 
+  /**
+   * starts the Properties tag to create a new property bundle for a function.
+   */
   protected void startProperties (Attributes atts)
           throws SAXException
   {
     setProperties (new Properties ());
   }
 
+  /**
+   * starts a new property entry for the current function
+   */
   protected void startProperty (Attributes atts)
           throws SAXException
   {
@@ -123,7 +156,7 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   }
 
   /**
-   * Does nothing.
+   * starts a new data-reference. This is not implemented yet.
    */
   protected void startDataRef (Attributes atts)
           throws SAXException
@@ -131,7 +164,8 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   }
 
   /**
-   * Does nothing.
+   * starts a new function collection. Function collections are already contained in
+   * the report, so this function does nothing.
    */
   protected void startFunctions (Attributes atts)
           throws SAXException
@@ -139,6 +173,10 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   }
 
 
+  /**
+   * starts and loads a function by instantating the functions class. The function must
+   * have a default constructor defined.
+   */
   protected void startFunction (Attributes attr)
           throws SAXException
   {
@@ -180,6 +218,9 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
       this.currentText.append (String.copyValueOf (ch, start, length));
   }
 
+  /**
+   * Ends the current element.
+   */
   public void endElement (String namespaceURI,
                           String localName,
                           String qName) throws SAXException
@@ -210,6 +251,10 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
 
   }
 
+  /**
+   * Ends the function. The current function is added to the report and initialized during
+   * this process.
+   */
   protected void endFunction ()
           throws SAXException
   {
@@ -223,17 +268,27 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     }
   }
 
+  /**
+   * Ends the parsing of functions.
+   */
   protected void endFunctions ()
           throws SAXException
   {
     handler.finishedHandler ();
   }
 
+  /**
+   * Data-refs are not yet implemented
+   */
   protected void endDataRef ()
           throws SAXException
   {
   }
 
+  /**
+   * Ends the properties parsing for the current function. The properties are added to the
+   * current function.
+   */
   protected void endProperties ()
           throws SAXException
   {
@@ -243,6 +298,9 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     f.setProperties (currentProperties);
   }
 
+  /**
+   * Ends the definition of a single property entry.
+   */
   protected void endProperty ()
           throws SAXException
   {

@@ -184,4 +184,15 @@ public class NumberFormatParser extends FormatParser
     return getNumberFormat ().getMaximumFractionDigits ();
   }
 
+  /**
+   * Checks whether the given value is already a valid result. IF the datasource already returned
+   * a valid value, and no parsing is required, a parser can skip the parsing process by returning
+   * true in this function.
+   *
+   * @returns true, if the given object is already an instance of number.
+   */
+  protected boolean isValidOutput (Object o)
+  {
+    return o instanceof Number;
+  }
 }

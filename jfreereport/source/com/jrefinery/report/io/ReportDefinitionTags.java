@@ -29,6 +29,9 @@
  */
 package com.jrefinery.report.io;
 
+/**
+ * Defines the tags used in the parsing process.
+ */
 public interface ReportDefinitionTags
 {
   public static final String REPORT_TAG = "report";
