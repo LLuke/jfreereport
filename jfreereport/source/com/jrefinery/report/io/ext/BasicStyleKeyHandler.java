@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicStyleKeyHandler.java,v 1.6 2003/02/24 10:37:53 mungady Exp $
+ * $Id: BasicStyleKeyHandler.java,v 1.7 2003/02/24 17:33:56 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,12 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * Creates a new handler.
+ * A basic style key handler. Basic stylekeys simplify the description of
+ * simple data types, like Float, String, Integer etc..
+ * <p>
+ * Simple data types only have one string property, which is called "value".
+ * The property value is parsed by the ObjectDescription object to create
+ * the object.
  *
  * @author Thomas Morgner.
  */
@@ -75,7 +80,7 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
   private CharacterEntityParser entityParser;
 
   /**
-   * Creates a new handler.
+   * Creates a new BasicStyleKeyHandler handler.
    *
    * @param parser  the parser.
    * @param finishTag  the finish tag.

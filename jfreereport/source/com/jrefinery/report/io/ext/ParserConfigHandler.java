@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigHandler.java,v 1.6 2003/02/24 10:37:53 mungady Exp $
+ * $Id: ParserConfigHandler.java,v 1.7 2003/02/24 17:34:05 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,11 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * A parser configuration handler.
+ * A parser configuration handler. Handles the configuration of the parser itself.
+ * The parser uses the factories defined here, to create the referenced Elements,
+ * styles and objects.
+ * <p>
+ * The parser configuration must be the first tag in the report definition.
  *
  * @author Thomas Morgner
  */
@@ -96,6 +100,8 @@ public class ParserConfigHandler implements ReportDefinitionHandler
    */
   public ParserConfigHandler(Parser parser, String finishTag)
   {
+    if (parser == null) throw new NullPointerException("Parser is null");
+    if (finishTag == null) throw new NullPointerException("FinishTag is null");
     this.parser = parser;
     this.finishTag = finishTag;
   }

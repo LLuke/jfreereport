@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupsHandler.java,v 1.3 2003/02/24 10:37:53 mungady Exp $
+ * $Id: GroupsHandler.java,v 1.4 2003/02/24 17:34:04 taqua Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,11 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * A groups handler.
+ * A groups handler. Handles the group definition for the report. The defined groups
+ * need to define all fields of their parent group and at least one additional field.
  *
+ * @see com.jrefinery.report.JFreeReport#setGroups
+ * @see GroupList
  * @author Thomas Morgner.
  */
 public class GroupsHandler implements ReportDefinitionHandler

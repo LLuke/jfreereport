@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionHandler.java,v 1.4 2003/02/24 10:37:54 mungady Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.5 2003/02/24 17:34:06 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * A report description handler.
+ * A report description handler. The report description defines the visual
+ * appearance of an report and defines the various bands and elements.
  *
  * @author Thomas Morgner
  */
@@ -93,6 +94,8 @@ public class ReportDescriptionHandler implements ReportDefinitionHandler
    */
   public ReportDescriptionHandler(Parser parser, String finishTag)
   {
+    if (parser == null) throw new NullPointerException("Parser is null");
+    if (finishTag == null) throw new NullPointerException("FinishTag is null");
     this.parser = parser;
     this.finishTag = finishTag;
   }

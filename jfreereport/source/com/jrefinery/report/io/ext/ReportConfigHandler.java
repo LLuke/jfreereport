@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.5 2003/02/24 10:37:54 mungady Exp $
+ * $Id: ReportConfigHandler.java,v 1.6 2003/02/24 17:34:05 taqua Exp $
  *
  * Changes
  * -------
@@ -55,9 +55,13 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 /**
- * A report configuration handler.
+ * A report configuration handler. Handles the report configuration and the
+ * definition of the default page format.
  *
  * @author Thomas Morgner.
+ * @see ReportConfiguration
+ * @see JFreeReport#setDefaultPageFormat
+ * @see JFreeReport#getDefaultPageFormat
  */
 public class ReportConfigHandler implements ReportDefinitionHandler
 {
@@ -120,6 +124,8 @@ public class ReportConfigHandler implements ReportDefinitionHandler
    */
   public ReportConfigHandler(Parser parser, String finishTag)
   {
+    if (parser == null) throw new NullPointerException("Parser is null");
+    if (finishTag == null) throw new NullPointerException("FinishTag is null");
     this.parser = parser;
     this.finishTag = finishTag;
   }
@@ -225,16 +231,6 @@ public class ReportConfigHandler implements ReportDefinitionHandler
   public Parser getParser()
   {
     return parser;
-  }
-
-  /**
-   * Sets the parser.
-   *
-   * @param parser  the parser.
-   */
-  public void setParser(Parser parser)
-  {
-    this.parser = parser;
   }
 
   /**

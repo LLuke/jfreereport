@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: DataDefinitionHandler.java,v 1.3 2003/02/24 10:37:53 mungady Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,8 @@ import com.jrefinery.report.io.ReportDefinitionHandler;
 import org.xml.sax.Attributes;
 
 /**
- * Not fully implemented.
+ * Not fully implemented. Will serve as description of the used tables for the
+ * subreports ... not usefull or even implemented ...
  * 
  * @author Thomas Morgner.
  */

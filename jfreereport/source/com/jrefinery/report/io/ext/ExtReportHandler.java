@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.4 2003/02/24 10:37:53 mungady Exp $
+ * $Id: ExtReportHandler.java,v 1.5 2003/02/24 17:34:00 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,8 @@ import java.net.URL;
 import java.util.Hashtable;
 
 /**
- * A handler for the extended report definition format.
+ * A handler for the extended report definition format. This is the root handler for
+ * the report definition format.
  *
  * @author Thomas Morgner.
  */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundObjectHandler.java,v 1.5 2003/02/24 10:37:53 mungady Exp $
+ * $Id: CompoundObjectHandler.java,v 1.6 2003/02/24 17:33:56 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * A compound object handler.
+ * A compound object handler. Handles the creation of compound objects. Compound
+ * objects are complex objects, which have several properties to be filled and may
+ * contain other compound objects.
  *
  * @author Thomas Morgner.
  */

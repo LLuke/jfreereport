@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyHandler.java,v 1.5 2003/02/24 10:37:54 mungady Exp $
+ * $Id: PropertyHandler.java,v 1.6 2003/02/24 17:34:05 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,9 @@ import org.xml.sax.SAXException;
 import java.util.Properties;
 
 /**
- * A property handler.
+ * A property handler. Handles the defintion of properties. The defined properties
+ * are collected in a java.util.Properties object and returned when the finishTag
+ * was reached on endElement.
  *
  * @author Thomas Morgner.
  */

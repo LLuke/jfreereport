@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.4 2003/02/24 10:37:54 mungady Exp $
+ * $Id: StylesHandler.java,v 1.5 2003/02/24 17:34:09 taqua Exp $
  *
  * Changes
  * -------
@@ -47,9 +47,13 @@ import org.xml.sax.SAXException;
 import java.util.Hashtable;
 
 /**
- * A styles handler.
+ * A styles handler. This handler processes the styles collection and collects
+ * all predefined style sheets of the report definition. If the contained stylesheets
+ * extend an other stylesheet, the extended stylesheet must be defined before it
+ * is referenced.
  *
  * @author Thomas Morgner.
+ * @see ElementStyleSheet
  */
 public class StylesHandler implements ReportDefinitionHandler
 {
@@ -79,6 +83,8 @@ public class StylesHandler implements ReportDefinitionHandler
    */
   public StylesHandler(Parser parser, String finishTag)
   {
+    if (parser == null) throw new NullPointerException("Parser is null");
+    if (finishTag == null) throw new NullPointerException("FinishTag is null");
     this.parser = parser;
     this.finishTag = finishTag;
     styleCollection = (Hashtable) getParser().getConfigurationValue(STYLES_COLLECTION);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.7 2003/02/24 10:37:54 mungady Exp $
+ * $Id: StyleSheetHandler.java,v 1.8 2003/02/24 17:34:06 taqua Exp $
  *
  * Changes
  * -------
@@ -47,9 +47,11 @@ import org.xml.sax.SAXException;
 import java.util.Hashtable;
 
 /**
- * A style sheet handler.
+ * A style sheet handler. Handles the definition of a single style sheet, either
+ * for an element/band or for the styles collection.
  *
  * @author Thomas Morgner.
+ * @see ElementStyleSheet
  */
 public class StyleSheetHandler implements ReportDefinitionHandler
 {
@@ -86,6 +88,10 @@ public class StyleSheetHandler implements ReportDefinitionHandler
    */
   public StyleSheetHandler(Parser parser, String finishTag, ElementStyleSheet styleSheet)
   {
+    if (parser == null) throw new NullPointerException("Parser is null");
+    if (finishTag == null) throw new NullPointerException("FinishTag is null");
+    if (styleSheet == null) throw new NullPointerException("StyleSheet is null");
+
     this.parser = parser;
     this.finishTag = finishTag;
     this.sheet = styleSheet;
@@ -124,6 +130,8 @@ public class StyleSheetHandler implements ReportDefinitionHandler
       catch (Exception e)
       {
         // ignore me ...
+        // if the specified class could not be loaded, the default implementation
+        // will be used.
       }
 
       basicFactory = new BasicStyleKeyHandler(getParser(), tagName, name, c);
@@ -224,15 +232,5 @@ public class StyleSheetHandler implements ReportDefinitionHandler
   public Parser getParser()
   {
     return parser;
-  }
-
-  /**
-   * Sets the parser.
-   *
-   * @param parser  the parser.
-   */
-  public void setParser(Parser parser)
-  {
-    this.parser = parser;
   }
 }

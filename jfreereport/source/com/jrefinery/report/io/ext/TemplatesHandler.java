@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesHandler.java,v 1.5 2003/02/24 10:37:54 mungady Exp $
+ * $Id: TemplatesHandler.java,v 1.6 2003/02/24 17:34:13 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,12 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * A templates handler.
+ * A templates handler. The Templates collection can be used to predefine
+ * common datasource definitions for elements. This allows the definition of
+ * global format strings, f.i. for Number or Date fields.
  *
  * @author Thomas Morgner.
+ * @see com.jrefinery.report.filter.templates.Template 
  */
 public class TemplatesHandler implements ReportDefinitionHandler
 {
@@ -75,6 +78,9 @@ public class TemplatesHandler implements ReportDefinitionHandler
    */
   public TemplatesHandler(Parser parser, String finishTag)
   {
+    if (parser == null) throw new NullPointerException("Parser is null");
+    if (finishTag == null) throw new NullPointerException("FinishTag is null");
+
     this.parser = parser;
     this.finishTag = finishTag;
     templateCollector = (TemplateCollector)
@@ -166,15 +172,5 @@ public class TemplatesHandler implements ReportDefinitionHandler
   public Parser getParser()
   {
     return parser;
-  }
-
-  /**
-   * Sets the parser.
-   *
-   * @param parser  the parser.
-   */
-  public void setParser(Parser parser)
-  {
-    this.parser = parser;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceHandler.java,v 1.4 2003/02/24 10:37:53 mungady Exp $
+ * $Id: DataSourceHandler.java,v 1.5 2003/02/24 17:33:59 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,14 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * A datasource handler.
+ * A datasource handler. Handles the creation of a DataSource or DataFilter.
+ * This allows a fine grained element content processing. Templates can be used
+ * to create predefined DataSource compositions.
  *
  * @author Thomas Morgner.
+ * @see DataSource
+ * @see com.jrefinery.report.filter.DataFilter
+ * @see TemplateHandler
  */
 public class DataSourceHandler extends CompoundObjectHandler
 {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundStyleKeyHandler.java,v 1.6 2003/02/24 10:37:53 mungady Exp $
+ * $Id: CompoundStyleKeyHandler.java,v 1.7 2003/02/24 17:33:57 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * A compound style-key handler.
+ * A compound style-key handler. Handles the creation of compound objects, which
+ * should be stored in the element style sheet. 
  *
  * @author Thomas Morgner.
  */

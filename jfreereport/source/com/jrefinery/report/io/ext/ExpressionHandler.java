@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionHandler.java,v 1.3 2003/02/24 10:37:53 mungady Exp $
+ * $Id: ExpressionHandler.java,v 1.4 2003/02/24 17:33:59 taqua Exp $
  *
  * Changes
  * -------
@@ -45,8 +45,11 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * An expression handler.
+ * An expression handler. Handles the creation of a single expression or
+ * function.
  *
+ * @see Expression
+ * @see com.jrefinery.report.function.Function
  * @author Thomas Morgner
  */
 public class ExpressionHandler implements ReportDefinitionHandler

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.4 2003/02/24 10:37:53 mungady Exp $
+ * $Id: FunctionsHandler.java,v 1.5 2003/02/24 17:34:01 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,8 @@ import org.xml.sax.SAXException;
 import java.util.Iterator;
 
 /**
- * A functions handler.
+ * A functions handler. Handles the initialization of Functions, Expressions
+ * and Property-References. 
  *
  * @author Thomas Morgner.
  */

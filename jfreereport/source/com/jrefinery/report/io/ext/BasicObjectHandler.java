@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicObjectHandler.java,v 1.5 2003/02/24 10:37:53 mungady Exp $
+ * $Id: BasicObjectHandler.java,v 1.6 2003/02/24 17:33:55 taqua Exp $
  *
  * Changes
  * -------
@@ -47,9 +47,14 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * A basic object handler.
+ * A basic object handler. Basic objects simplify the description of
+ * simple data types, like Float, String, Integer etc..
+ * <p>
+ * Simple data types only have one string property, which is called "value".
+ * The property value is parsed by the ObjectDescription object to create
+ * the object.
  *
- * @author Thomas Morgner
+ * @author Thomas Morgner.
  */
 public class BasicObjectHandler implements ReportDefinitionHandler
 {

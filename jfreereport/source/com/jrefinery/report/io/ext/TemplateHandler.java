@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateHandler.java,v 1.5 2003/02/24 10:37:54 mungady Exp $
+ * $Id: TemplateHandler.java,v 1.6 2003/02/24 17:34:12 taqua Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * A template handler.
+ * A template handler. A template is a predefined usecase for some DataSources.
  *
+ * @see com.jrefinery.report.filter.templates.Template
  * @author Thomas Morgner.
  */
 public class TemplateHandler implements ReportDefinitionHandler
@@ -74,7 +75,8 @@ public class TemplateHandler implements ReportDefinitionHandler
   private TemplateDescription template;
 
   /**
-   * Creates a new template handler.
+   * Creates a new template handler. The handler will be deactivated when the
+   * finishTag was reached on endElement.
    *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
@@ -82,13 +84,13 @@ public class TemplateHandler implements ReportDefinitionHandler
    */
   public TemplateHandler(Parser parser, String finishTag, TemplateDescription template)
   {
+    if (parser == null) throw new NullPointerException("Parser is null");
+    if (finishTag == null) throw new NullPointerException("FinishTag is null");
+    if (template == null) throw new NullPointerException("Template is null");
+
     this.parser = parser;
     this.finishTag = finishTag;
     this.template = template;
-    if (template == null)
-    {
-      throw new NullPointerException();
-    }
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandHandler.java,v 1.5 2003/02/24 10:37:53 mungady Exp $
+ * $Id: BandHandler.java,v 1.6 2003/02/24 17:33:54 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * A band handler.
+ * A band handler. Handles the creation of a band. Bands can contain other bands
+ * or elements and have a DefaultStyle, which is assigned to all child elements.
  *
  * @author Thomas Morgner
  */

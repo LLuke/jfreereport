@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupHandler.java,v 1.4 2003/02/24 10:37:53 mungady Exp $
+ * $Id: GroupHandler.java,v 1.5 2003/02/24 17:34:03 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * A group handler.
+ * A group handler. Handles the definition of a single group.
  *
  * @author Thomas Morgner.
  */

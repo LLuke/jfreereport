@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementHandler.java,v 1.4 2003/02/24 10:37:53 mungady Exp $
+ * $Id: ElementHandler.java,v 1.5 2003/02/24 17:33:59 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,10 @@ import org.xml.sax.SAXException;
 import java.util.Hashtable;
 
 /**
- * An element handler.
+ * An element handler. Handles the creation and initialization of an Element.
+ * The element is created using an ElementFactory and the element's content type
+ * as creation key. All requested element definitions must be defined in one of
+ * the ElementFactories, or the report definition will fail.
  *
  * @author Thomas Morgner.
  */
