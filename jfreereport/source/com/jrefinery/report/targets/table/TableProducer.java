@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 7:19:44 PM
  *
- * $Id: TableProducer.java,v 1.8 2003/01/30 00:04:54 taqua Exp $
+ * $Id: TableProducer.java,v 1.9 2003/02/01 18:27:04 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -177,12 +177,6 @@ public abstract class TableProducer
       {
         parentClass = parent.getClass();
       }
-      data.debugChunk = new Log.SimpleMessage("Element ",
-                                              e.getClass().getName(),
-                                              " -> " ,
-                                              new Log.SimpleMessage(
-                                                  e.getName() ,
-                                                  " (" , parentClass , ")"));
     }
   }
 

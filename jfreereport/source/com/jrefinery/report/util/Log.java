@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.17 2003/02/07 20:26:26 taqua Exp $
+ * $Id: Log.java,v 1.18 2003/02/07 22:44:38 taqua Exp $
  *
  * Changes
  * -------
@@ -278,6 +278,31 @@ public final class Log
 
     LogTarget[] targets = new LogTarget[l.size()];
     logTargets = (LogTarget[]) l.toArray(targets);
+  }
+
+  /**
+   * Returns the registered logtargets.
+   *
+   * @return the logtargets.
+   */
+  public LogTarget[] getTargets ()
+  {
+    LogTarget[] targets = new LogTarget[logTargets.length];
+    System.arraycopy(targets, 0, logTargets, 0, logTargets.length);
+    return targets;
+  }
+
+  /**
+   * Replaces all log targets by the given target.
+   *
+   * @param target the new and only logtarget.
+   */
+  public synchronized static void replaceTargets (LogTarget target)
+  {
+    if (target == null)
+      throw new NullPointerException();
+
+    logTargets = new LogTarget[]{ target };
   }
 
   /**
