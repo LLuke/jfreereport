@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.39 2003/06/12 23:17:15 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.40 2003/06/13 16:21:36 taqua Exp $
  *
  * Changes
  * -------
@@ -118,7 +118,7 @@ public class PageableReportProcessor
 
   /**
    * Adds a listener.
-   * 
+   *
    * @param l  the listener.
    */
   public void addRepaginationListener (RepaginationListener l)
@@ -136,7 +136,7 @@ public class PageableReportProcessor
 
   /**
    * Removes a listener.
-   * 
+   *
    * @param l  the listener.
    */
   public void removeRepaginationListener (RepaginationListener l)
@@ -154,7 +154,7 @@ public class PageableReportProcessor
 
   /**
    * Sends a repagination update to all registered listeners.
-   * 
+   *
    * @param state  the state.
    */
   protected void fireStateUpdate (RepaginationState state)
@@ -187,7 +187,7 @@ public class PageableReportProcessor
    * If this is set to true and the thread was interrupted, then the report processing
    * is aborted.
    *
-   * @param handleInterruptedState true, if the processor should check the current thread state, 
+   * @param handleInterruptedState true, if the processor should check the current thread state,
    *                               false otherwise.
    */
   public void setHandleInterruptedState(boolean handleInterruptedState)
@@ -385,7 +385,13 @@ public class PageableReportProcessor
             // if layout level has reached, and some content was generated, then add the page
             if (isEmptyPageGenerated(state) == false)
             {
+              // add the page start event ..
               pageStates.add(oldstate);
+            }
+            else
+            {
+              // inform the next page, that the last one was canceled ...
+              state.firePageCanceledEvent();
             }
           }
         }
@@ -496,13 +502,13 @@ public class PageableReportProcessor
    *
    * @param out The output target.
    * @param currPage The report state at the beginning of the current page.
-   * @param failOnError if set to true, then errors in the report event handling will cause the 
+   * @param failOnError if set to true, then errors in the report event handling will cause the
    *                    reporting to fail.
    *
    * @return The report state suitable for the next page or ReportState.FinishState.
    *
    * @throws IllegalArgumentException if the given state is a start or a finish state.
-   * @throws ReportProcessingException if there is a problem processing the report or the 
+   * @throws ReportProcessingException if there is a problem processing the report or the
    *                                   current thread has been interrupted.
    */
   public ReportState processPage(final ReportState currPage, OutputTarget out, boolean failOnError)

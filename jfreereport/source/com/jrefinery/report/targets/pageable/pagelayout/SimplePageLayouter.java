@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.48 2003/05/14 15:25:12 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.49 2003/05/16 17:26:47 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.PrepareEventListener;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.Expression;
@@ -61,6 +62,7 @@ import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
+import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 
 /**
@@ -488,7 +490,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
         setMaxPage(event.getState().getCurrentPage());
       }
 
-      // force the last pagebreak ...
+      // force that this last pagebreak ...
       isLastPageBreak = true;
 
       Band b = getReport().getReportFooter();
@@ -664,7 +666,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @throws ReportProcessingException if the printing failed
    */
-  protected boolean print(Band b, boolean spool)
+  private boolean print(Band b, boolean spool)
       throws ReportProcessingException
   {
     float y = getCursor().getY();
@@ -687,7 +689,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @throws ReportProcessingException if the printing failed
    */
-  protected boolean printBottom(Band b)
+  private boolean printBottom(Band b)
       throws ReportProcessingException
   {
     // don't save the state if the current page is currently beeing finished
@@ -699,6 +701,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     Rectangle2D bounds = doLayout(b, true);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
                    bounds.getWidth(), bounds.getHeight());
+    Log.debug ("The PageFooter will be spooled?" + spool);
     return doPrint(bounds, b, spool);
   }
 
@@ -753,12 +756,39 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
       // handle the end of the page
       if (isFinishingPage())
       {
-        if (spooledBand != null)
+        if (spool)
         {
-          getLogicalPage().replaySpool(spooledBand);
-          spooledBand = null;
+          Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+          if (spooledBand == null)
+          {
+            spooledBand = newSpool;
+          }
+          else
+          {
+            spooledBand.merge(newSpool);
+          }
         }
-        getLogicalPage().addBand(bounds, band);
+        else
+        {
+          Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+          if (newSpool.isEmpty() == false)
+          {
+            if (spooledBand != null)
+            {
+              getLogicalPage().replaySpool(spooledBand);
+              spooledBand = null;
+            }
+/*
+            PhysicalOperation [] pop = newSpool.getOperations();
+            Log.debug ("--->" + band.getClass());
+            for (int i = 0; i < pop.length; i++)
+            {
+              Log.debug (pop[i]);
+            }
+*/
+            getLogicalPage().replaySpool(newSpool);
+          }
+        }
         cursor.advance(height);
         return true;
       }
@@ -808,7 +838,14 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
               getLogicalPage().replaySpool(spooledBand);
               spooledBand = null;
             }
-
+/*
+            PhysicalOperation [] pop = newSpool.getOperations();
+            Log.debug ("--->" + band.getClass());
+            for (int i = 0; i < pop.length; i++)
+            {
+              Log.debug (pop[i]);
+            }
+*/
             getLogicalPage().replaySpool(newSpool);
           }
 
@@ -842,10 +879,17 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    */
   public boolean isSpaceFor(float height)
   {
-    Band b = getReport().getPageFooter();
-    // perform layout, but do not fire the event, as we don't print the band ...
-    Rectangle2D rect = doLayout(b, false);
-    getCursor().setReservedSpace((float) rect.getHeight());
+    if (isLastPageBreak && (getReport().getPageFooter().isDisplayOnLastPage() == false))
+    {
+      getCursor().setReservedSpace(0);
+    }
+    else
+    {
+      Band b = getReport().getPageFooter();
+      // perform layout, but do not fire the event, as we don't print the band ...
+      Rectangle2D rect = doLayout(b, false);
+      getCursor().setReservedSpace((float) rect.getHeight());
+    }
     return getCursor().isSpaceFor(height);
   }
 
@@ -996,11 +1040,13 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    */
   protected boolean endPage(boolean force) throws ReportProcessingException
   {
+    Log.debug (getLogicalPage().isEmpty() + " LogicalPAge Empty");
     if (getLogicalPage().isEmpty() == false || force)
     {
       if (spooledBand != null)
       {
-        getLogicalPage().replaySpool(spooledBand);
+       // getLogicalPage().replaySpool(spooledBand);
+        Log.warn ("Spool contained data, this data is lost now ...!");
         spooledBand = null;
       }
       super.endPage();

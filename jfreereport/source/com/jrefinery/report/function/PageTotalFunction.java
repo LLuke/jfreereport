@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.21 2003/05/16 17:26:42 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.22 2003/06/01 17:39:26 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -228,7 +228,7 @@ public class PageTotalFunction extends PageFunction
    *
    * @param page  the page number.
    */
-  public void setPage(int page)
+  protected void setPage(int page)
   {
     if (this.pageStorage != null)
     {
@@ -241,7 +241,7 @@ public class PageTotalFunction extends PageFunction
    *
    * @return the page number.
    */
-  public int getPage()
+  protected int getPage()
   {
     if (this.pageStorage == null)
     {
@@ -284,36 +284,6 @@ public class PageTotalFunction extends PageFunction
   }
 
   /**
-   * Returns the name of the group that this function acts upon.
-   *
-   * @return the group name.
-   */
-  public String getGroup()
-  {
-    return getProperty("group");
-  }
-
-  /**
-   * Sets the name of the group that the function acts upon.
-   *
-   * @param group  the group name.
-   */
-  public void setGroup(String group)
-  {
-    setProperty("group", group);
-  }
-
-  /**
-   * Returns the starting page number (defaults to 1).
-   *
-   * @return the starting page number.
-   */
-  public int getStartPage()
-  {
-    return Integer.parseInt(getProperty("start", "1"));
-  }
-
-  /**
    * Return a completly separated copy of this function. The copy does no
    * longer share any changeable objects with the original function.
    *
@@ -323,7 +293,6 @@ public class PageTotalFunction extends PageFunction
   {
     PageTotalFunction function = (PageTotalFunction) super.getInstance();
     function.groupPages = new HashMap();
-//    Log.debug ("PageStorage Will Be null: " + this.hashCode() + " -> " + (o == this));
     function.pageStorage = null;
     return function;
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.41 2003/06/01 19:11:42 taqua Exp $
+ * $Id: ReportState.java,v 1.42 2003/06/13 16:21:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -765,6 +765,16 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     this.functions.pageFinished (new ReportEvent(this, ReportEvent.PAGE_FINISHED));
+  }
+
+  /**
+   * Fires a '<code>page-canceled</code>' event.  The <code>pageCanceled(...)</code> method is
+   * called for every report function that implements the PageListener interface.
+   */
+  public void firePageCanceledEvent ()
+  {
+    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
+    this.functions.pageCanceled (new ReportEvent(this, ReportEvent.PAGE_CANCELED));
   }
 
   /**

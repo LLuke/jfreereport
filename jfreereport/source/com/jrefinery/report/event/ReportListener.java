@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: ReportListener.java,v 1.8 2003/02/17 16:06:34 taqua Exp $
+ * $Id: ReportListener.java,v 1.9 2003/05/16 17:26:39 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -88,15 +88,25 @@ public interface ReportListener extends EventListener
 
   /**
    * Receives notification that a new page is being started.
+   * <p>
+   * This method is deprecated and moved to the PageEventListener interface.
+   * PageEvents will no longer be forwarded through this interface as soon as
+   * version 0.8.5 is published
    *
    * @param event The event.
+   * @deprecated Implement the PageEventListener interface to receive page events.
    */
   public void pageStarted (ReportEvent event);
 
   /**
    * Receives notification that a page is completed.
+   * <p>
+   * This method is deprecated and moved to the PageEventListener interface.
+   * PageEvents will no longer be forwarded through this interface as soon as
+   * version 0.8.5 is published
    *
    * @param event The event.
+   * @deprecated Implement the PageEventListener interface to receive page events.
    */
   public void pageFinished (ReportEvent event);
 

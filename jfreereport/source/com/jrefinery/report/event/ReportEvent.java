@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportEvent.java,v 1.17 2003/05/26 13:30:58 taqua Exp $
+ * $Id: ReportEvent.java,v 1.18 2003/06/13 16:20:48 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -81,6 +81,8 @@ public class ReportEvent extends EventObject
   public static final int REPORT_DONE = 0x200;
   /** The event type constant, that the page finished event is invoked. */
   public static final int PAGE_FINISHED = 0x400;
+  /** The event type constant, that the page finished event is invoked. */
+  public static final int PAGE_CANCELED = 0x800;
 
   /**
    * The event type constant, that this event is a prepare event. Use this constant

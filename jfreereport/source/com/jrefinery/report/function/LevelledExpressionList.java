@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.12 2003/05/16 17:26:40 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.13 2003/06/13 16:21:23 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import com.jrefinery.report.event.LayoutListener;
 import com.jrefinery.report.event.PrepareEventListener;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.event.ReportListener;
+import com.jrefinery.report.event.PageEventListener;
 import com.jrefinery.report.util.LevelList;
 import com.jrefinery.report.util.Log;
 
@@ -58,7 +59,8 @@ import com.jrefinery.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class LevelledExpressionList implements ReportListener, Cloneable, LayoutListener
+public class LevelledExpressionList implements ReportListener,
+    Cloneable, LayoutListener, PageEventListener
 {
   /** A list of expressions and associated levels. */
   private LevelList expressionList;
@@ -278,7 +280,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
-        if (e instanceof Function)
+        if (e instanceof Function)  // todo 0.8.5 limit event to PageEventListeners
         {
           Function f = (Function) e;
           try
@@ -309,6 +311,42 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
   }
 
   /**
+   * Receives notification that a new page is being started.
+   *
+   * @param event  the event.
+   */
+  public void pageCanceled(ReportEvent event)
+  {
+    // this is an internal event, don't fire prepare or clear the errors.
+    for (int i = 0; i < levels.length; i++)
+    {
+      int level = levels[i];
+      if (level < getLevel())
+      {
+        break;
+      }
+      Iterator itLevel = expressionList.getElementsForLevel(level);
+      while (itLevel.hasNext())
+      {
+        Expression e = (Expression) itLevel.next();
+        if (e instanceof PageEventListener)
+        {
+          PageEventListener f = (PageEventListener) e;
+          try
+          {
+            f.pageCanceled(event);
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
+          }
+        }
+      }
+    }
+  }
+
+
+  /**
    * Receives notification that a page is completed.
    *
    * @param event  the event.
@@ -327,7 +365,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
-        if (e instanceof Function)
+        if (e instanceof Function) // todo 0.8.5 limit event to PageEventListeners
         {
           Function f = (Function) e;
           try

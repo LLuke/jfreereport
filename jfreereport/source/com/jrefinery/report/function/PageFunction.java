@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.14 2003/06/01 17:39:26 taqua Exp $
+ * $Id: PageFunction.java,v 1.15 2003/06/13 16:21:24 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import java.io.Serializable;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.event.PageEventListener;
 import com.jrefinery.report.states.ReportState;
 
 /**
@@ -60,7 +61,8 @@ import com.jrefinery.report.states.ReportState;
  *
  * @author Thomas Morgner
  */
-public class PageFunction extends AbstractFunction implements Serializable
+public class PageFunction extends AbstractFunction
+    implements Serializable, PageEventListener
 {
 
   /** The page. */
@@ -105,6 +107,21 @@ public class PageFunction extends AbstractFunction implements Serializable
     {
       setPage(getPage() + 1);
     }
+  }
+
+  /**
+   * Receives notification that a page was canceled by the ReportProcessor.
+   *
+   * @param event The event.
+   */
+  public void pageCanceled(ReportEvent event)
+  {
+    if (isIgnorePageCancelEvents())
+    {
+      return;
+    }
+
+    this.setPage(getPage() - 1);
   }
 
   /**
@@ -181,6 +198,16 @@ public class PageFunction extends AbstractFunction implements Serializable
   }
 
   /**
+   * Sets the name of the group that the function acts upon.
+   *
+   * @param group  the group name.
+   */
+  public void setGroup(String group)
+  {
+    setProperty("group", group);
+  }
+
+  /**
    * Returns the start page.
    *
    * @return the start page.
@@ -191,11 +218,23 @@ public class PageFunction extends AbstractFunction implements Serializable
   }
 
   /**
+   * Returns whether this function will ignore PageCancel events.
+   * This defaults to false, so that there will be no gaps between
+   * the generated pages.
+   *
+   * @return true, if canceled pages should be ignored, false otherwise.
+   */
+  public boolean isIgnorePageCancelEvents()
+  {
+    return getProperty("ignore-cancel", "false").equalsIgnoreCase("true");
+  }
+
+  /**
    * Returns the current page.
    *
    * @return the current page.
    */
-  public int getPage()
+  protected int getPage()
   {
     return page;
   }
@@ -205,7 +244,7 @@ public class PageFunction extends AbstractFunction implements Serializable
    *
    * @param page  the page.
    */
-  public void setPage(int page)
+  protected void setPage(int page)
   {
     this.page = page;
   }
