@@ -33,7 +33,6 @@
  *
  * 10-May-2002 : Created the EventInterface for JFreeReport
  * 17-Jul-2002 : Updated header and Javadoc comments (DG);
- *
  */
 package com.jrefinery.report.event;
 

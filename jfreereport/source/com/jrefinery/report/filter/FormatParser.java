@@ -31,6 +31,7 @@
  * 06-Jun-2002 : Updated Javadoc comments
  * 08-Jun-2002 : added isValidOutput for skipping the parsing when a valid (parsed) value is
  *               already read from the assigned datasource.
+ * 03-Jul-2002 : Cloneable implemented
  */
 package com.jrefinery.report.filter;
 
@@ -176,6 +177,9 @@ public class FormatParser implements DataFilter
     return nullvalue;
   }
 
+  /**
+   * @returns a clone of this FormatParser
+   */
   public Object clone () throws CloneNotSupportedException
   {
     FormatParser p = (FormatParser) super.clone ();

@@ -28,12 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFormatFilter.java,v 1.4 2002/06/06 21:40:40 taqua Exp $
+ * $Id: DateFormatFilter.java,v 1.5 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
+ * 21-May-2002 : Initial version
  * 06-Jun-2002 : Updated Javadoc comments (DG);
- *
+ * 08-Aug-2002 : Removed unused imports
  */
 package com.jrefinery.report.filter;
 

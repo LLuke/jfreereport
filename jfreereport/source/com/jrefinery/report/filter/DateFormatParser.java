@@ -25,6 +25,11 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * ChangeLog
+ * ---------
+ * 21-May-2002 : Initial version
+ * 06-Jun-2002 : Documentation updated
+ * 08-Aug-2002 : Removed unused Imports
  */
 package com.jrefinery.report.filter;
 

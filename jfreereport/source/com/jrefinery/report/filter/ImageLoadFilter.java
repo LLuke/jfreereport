@@ -25,6 +25,11 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * ChangeLog
+ * 21-May-2002 : Initial version
+ * 06-Jun-2002 : Documentation
+ * 03-Jul-2002 : Serializable, Cloneable implemented
+ * 28-Aug-2002 : Documentation again
  */
 package com.jrefinery.report.filter;
 
@@ -47,6 +52,9 @@ import java.net.URL;
  * <p>
  * This filter can be used to dynamicly change images of a report, a very nice feature
  * for photo albums and catalogs for instance.
+ * <p>
+ * This filter will return null, if something else than an URL was retrieved from the
+ * assigned datasource
  */
 public class ImageLoadFilter implements DataFilter
 {
@@ -140,6 +148,9 @@ public class ImageLoadFilter implements DataFilter
     source = ds;
   }
 
+  /**
+   * @returns a clone of this Filter
+   */
   public Object clone () throws CloneNotSupportedException
   {
     ImageLoadFilter il = (ImageLoadFilter) super.clone ();

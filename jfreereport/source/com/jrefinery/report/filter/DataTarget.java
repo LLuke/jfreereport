@@ -28,12 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataTarget.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
+ * $Id: DataTarget.java,v 1.4 2002/07/03 18:49:48 taqua Exp $
  *
  * Changes
  * -------
  * 20-May-2002 : Initial version
  * 06-Jun-2002 : Updated Javadoc comments.
+ * 03-Jul-2002 : Cloneable and Serializable
  */
 
 package com.jrefinery.report.filter;
@@ -60,5 +61,10 @@ public interface DataTarget extends Serializable, Cloneable
    */
   public void setDataSource (DataSource ds);
 
+  /**
+   * Clones this datatarget.
+   *
+   * @returns a clone of the datatarget.
+   */
   public Object clone () throws CloneNotSupportedException;
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: First.java,v 1.4 2002/08/08 15:28:43 taqua Exp $
+ * $Id: First.java,v 1.5 2002/08/22 21:08:24 taqua Exp $
  *
  * Changes
  * -------
@@ -93,11 +93,11 @@ public class First extends ApplicationFrame implements ActionListener
    *
    * @param title The frame title.
    */
-  public First (String title)
+  public First(String title)
   {
-    super (title);
-    setJMenuBar (createMenuBar ());
-    setContentPane (createContent ());
+    super(title);
+    setJMenuBar(createMenuBar());
+    setContentPane(createContent());
   }
 
   /**
@@ -105,23 +105,23 @@ public class First extends ApplicationFrame implements ActionListener
    *
    * @return The menu bar.
    */
-  public JMenuBar createMenuBar ()
+  public JMenuBar createMenuBar()
   {
-    JMenuBar mb = new JMenuBar ();
-    JMenu fileMenu = new JMenu ("File");
+    JMenuBar mb = new JMenuBar();
+    JMenu fileMenu = new JMenu("File");
 
-    JMenuItem previewItem = new JMenuItem ("Preview Report");
-    previewItem.setActionCommand ("PREVIEW");
-    previewItem.addActionListener (this);
+    JMenuItem previewItem = new JMenuItem("Preview Report");
+    previewItem.setActionCommand("PREVIEW");
+    previewItem.addActionListener(this);
 
-    JMenuItem exitItem = new JMenuItem ("Exit");
-    exitItem.setActionCommand ("EXIT");
-    exitItem.addActionListener (this);
+    JMenuItem exitItem = new JMenuItem("Exit");
+    exitItem.setActionCommand("EXIT");
+    exitItem.addActionListener(this);
 
-    fileMenu.add (previewItem);
-    fileMenu.addSeparator ();
-    fileMenu.add (exitItem);
-    mb.add (fileMenu);
+    fileMenu.add(previewItem);
+    fileMenu.addSeparator();
+    fileMenu.add(exitItem);
+    mb.add(fileMenu);
     return mb;
   }
 
@@ -130,16 +130,16 @@ public class First extends ApplicationFrame implements ActionListener
    *
    * @return A panel containing the basic user interface.
    */
-  public JPanel createContent ()
+  public JPanel createContent()
   {
-    JPanel content = new JPanel (new BorderLayout ());
-    content.setBorder (BorderFactory.createEmptyBorder (4, 4, 4, 4));
-    this.data = readData ();
-    JTable table = new JTable (data);
-    table.setDefaultRenderer (java.awt.Image.class, new ImageCellRenderer ());
-    table.setRowHeight (26);
-    JScrollPane scrollPane = new JScrollPane (table);
-    content.add (scrollPane);
+    JPanel content = new JPanel(new BorderLayout());
+    content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+    this.data = readData();
+    JTable table = new JTable(data);
+    table.setDefaultRenderer(java.awt.Image.class, new ImageCellRenderer());
+    table.setRowHeight(26);
+    JScrollPane scrollPane = new JScrollPane(table);
+    content.add(scrollPane);
     return content;
   }
 
@@ -148,51 +148,51 @@ public class First extends ApplicationFrame implements ActionListener
    *
    * @return The report data.
    */
-  private TableModel readData ()
+  private TableModel readData()
   {
 
-    IconTableModel result = new IconTableModel ();
+    IconTableModel result = new IconTableModel();
 
     // find the file on the classpath...
-    File f = FileUtilities.findFileOnClassPath ("jlfgr-1_0.jar");
+    File f = FileUtilities.findFileOnClassPath("jlfgr-1_0.jar");
     if (f == null)
     {
-      ExceptionDialog.showExceptionDialog ("Unable to find jlfgr-1_0.jar",
-              "<html>Unable to load the icons.<br>" +
-              "Please make sure you have the Java Look and Feel Graphics Repository in your classpath. <br>" +
-              "<p>" +
-              "You may download this jar-file from http://developer.java.sun.com/developer/techDocs/hi/repository</html>",
-              null
+      ExceptionDialog.showExceptionDialog("Unable to find jlfgr-1_0.jar",
+          "<html>Unable to load the icons.<br>" +
+          "Please make sure you have the Java Look and Feel Graphics Repository in your classpath. <br>" +
+          "<p>" +
+          "You may download this jar-file from http://developer.java.sun.com/developer/techDocs/hi/repository</html>",
+          null
       );
       return result;
     }
 
     try
     {
-      ZipFile iconJar = new ZipFile (f);
-      Enumeration e = iconJar.entries ();
-      while (e.hasMoreElements ())
+      ZipFile iconJar = new ZipFile(f);
+      Enumeration e = iconJar.entries();
+      while (e.hasMoreElements())
       {
-        ZipEntry ze = (ZipEntry) e.nextElement ();
-        String fullName = ze.getName ();
-        if (fullName.endsWith (".gif"))
+        ZipEntry ze = (ZipEntry) e.nextElement();
+        String fullName = ze.getName();
+        if (fullName.endsWith(".gif"))
         {
-          String category = getCategory (fullName);
-          String name = getName (fullName);
-          Image image = getImage (iconJar, ze);
-          Long bytes = new Long (ze.getSize ());
-          result.addIconEntry (name, category, image, bytes);
+          String category = getCategory(fullName);
+          String name = getName(fullName);
+          Image image = getImage(iconJar, ze);
+          Long bytes = new Long(ze.getSize());
+          result.addIconEntry(name, category, image, bytes);
         }
       }
     }
     catch (IOException e)
     {
-      ExceptionDialog.showExceptionDialog ("Unable to load",
-              "<html>Unable to load the icons.<br>" +
-              "Please make sure you have the Java Look and Feel Graphics Repository in your classpath. <br>" +
-              "<p>" +
-              "You may download this jar-file from http://developer.java.sun.com/developer/techDocs/hi/repository</html>",
-              e
+      ExceptionDialog.showExceptionDialog("Unable to load",
+          "<html>Unable to load the icons.<br>" +
+          "Please make sure you have the Java Look and Feel Graphics Repository in your classpath. <br>" +
+          "<p>" +
+          "You may download this jar-file from http://developer.java.sun.com/developer/techDocs/hi/repository</html>",
+          e
       );
     }
 
@@ -205,41 +205,41 @@ public class First extends ApplicationFrame implements ActionListener
    *
    * @param e The event.
    */
-  public void actionPerformed (ActionEvent e)
+  public void actionPerformed(ActionEvent e)
   {
-    String command = e.getActionCommand ();
-    if (command.equals ("PREVIEW"))
+    String command = e.getActionCommand();
+    if (command.equals("PREVIEW"))
     {
-      previewReport ();
+      previewReport();
     }
-    else if (command.equals ("EXIT"))
+    else if (command.equals("EXIT"))
     {
-      dispose ();
-      System.exit (0);
+      dispose();
+      System.exit(0);
     }
   }
 
   /**
    * Displays a print preview screen for the sample report.
    */
-  protected void previewReport ()
+  protected void previewReport()
   {
 
     if (this.report == null)
     {
-      URL in = getClass ().getResource ("/com/jrefinery/report/demo/first.xml");
-      this.report = parseReport (in);
-      this.report.setData (this.data);
+      URL in = getClass().getResource("/com/jrefinery/report/demo/first.xml");
+      this.report = parseReport(in);
+      this.report.setData(this.data);
     }
 
     if (this.report != null)
     {
-      PreviewFrame frame = new PreviewFrame (this.report);
-      frame.setToolbarFloatable (true);
-      frame.pack ();
-      RefineryUtilities.positionFrameRandomly (frame);
-      frame.setVisible (true);
-      frame.requestFocus ();
+      PreviewFrame frame = new PreviewFrame(this.report);
+      frame.setToolbarFloatable(true);
+      frame.pack();
+      RefineryUtilities.positionFrameRandomly(frame);
+      frame.setVisible(true);
+      frame.requestFocus();
     }
 
   }
@@ -251,14 +251,14 @@ public class First extends ApplicationFrame implements ActionListener
    *
    * @return A report.
    */
-  private JFreeReport parseReport (URL templateURL)
+  private JFreeReport parseReport(URL templateURL)
   {
 
     JFreeReport result = null;
-    ReportGenerator generator = ReportGenerator.getInstance ();
+    ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
-      result = generator.parseReport (templateURL);
+      result = generator.parseReport(templateURL);
     }
     catch (Exception e)
     {
@@ -276,17 +276,17 @@ public class First extends ApplicationFrame implements ActionListener
    *
    * @return The image.
    */
-  private Image getImage (ZipFile file, ZipEntry entry)
+  private Image getImage(ZipFile file, ZipEntry entry)
   {
 
     Image result = null;
     try
     {
-      InputStream in = new BufferedInputStream (file.getInputStream (entry));
-      byte[] bytes = new byte[(int) entry.getSize ()];
-      int count = in.read (bytes);
-      ImageIcon temp = new ImageIcon (bytes);
-      result = temp.getImage ();
+      InputStream in = new BufferedInputStream(file.getInputStream(entry));
+      byte[] bytes = new byte[(int) entry.getSize()];
+      int count = in.read(bytes);
+      ImageIcon temp = new ImageIcon(bytes);
+      result = temp.getImage();
     }
     catch (IOException e)
     {
@@ -299,31 +299,31 @@ public class First extends ApplicationFrame implements ActionListener
   /**
    * For the category, use the subdirectory name.
    */
-  private String getCategory (String fullName)
+  private String getCategory(String fullName)
   {
-    int start = fullName.indexOf ("/") + 1;
-    int end = fullName.lastIndexOf ("/");
-    return fullName.substring (start, end);
+    int start = fullName.indexOf("/") + 1;
+    int end = fullName.lastIndexOf("/");
+    return fullName.substring(start, end);
   }
 
   /**
    * For the name, strip off the ".gif".
    */
-  private String getName (String fullName)
+  private String getName(String fullName)
   {
-    int start = fullName.lastIndexOf ("/") + 1;
-    int end = fullName.indexOf (".");
-    return fullName.substring (start, end);
+    int start = fullName.lastIndexOf("/") + 1;
+    int end = fullName.indexOf(".");
+    return fullName.substring(start, end);
   }
 
   /**
    * Entry point for running the demo application...
    */
-  public static void main (String[] args)
+  public static void main(String[] args)
   {
-    First frame = new First ("First Report");
-    frame.pack ();
-    frame.setVisible (true);
+    First frame = new First("First Report");
+    frame.pack();
+    frame.setVisible(true);
   }
 
 }

@@ -28,7 +28,7 @@
  * Changes
  * -------
  * 27-Jul-2002 : Initial version
- *
+ * 28-Aug-2002 : Documentation
  */
 package com.jrefinery.report.filter;
 
@@ -39,6 +39,8 @@ import com.jrefinery.report.DataRow;
  * Expressions are simple stateless functions which do not maintain any state and get
  * not informed of reportstate changes. All informations for expressions are queried
  * using the datarow given in the connectDataRow method.
+ * <p>
+ * @see com.jrefinery.report.function.Expression
  */
 public class ExpressionDataSource implements DataSource, DataRowConnectable
 {
@@ -50,6 +52,9 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable
    */
   private String expression;
 
+  /**
+   * the DataRow connected with this DataSource.
+   */
   private DataRow dataRow;
 
   /**
@@ -106,6 +111,9 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable
     return getDataRow ().get (getExpression ());
   }
 
+  /**
+   * @returns a clone of this ExpressionDataSource
+   */
   public Object clone () throws CloneNotSupportedException
   {
     return super.clone ();
@@ -135,6 +143,9 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable
     dataRow = null;
   }
 
+  /**
+   * @returns the datarow connected with this datasource.
+   */
   protected DataRow getDataRow ()
   {
     return dataRow;

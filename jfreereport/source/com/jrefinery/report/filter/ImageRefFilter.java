@@ -28,13 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageRefFilter.java,v 1.4 2002/08/08 15:28:43 taqua Exp $
+ * $Id: ImageRefFilter.java,v 1.5 2002/08/14 21:14:09 taqua Exp $
  *
  * Changes
  * -------
  * 28-Jun-2002 : Version 1 (TM);
  * 16-Jul-2002 : Added standard header and Javadoc comments (DG);
- *
+ * 08-Aug-2002 : unused imports removed
+ * 14-Aug-2002 : BugFix: If the value from the datasource is already an ImageRef, then
  */
 
 package com.jrefinery.report.filter;

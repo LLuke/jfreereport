@@ -28,12 +28,17 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionDataSource.java,v 1.8 2002/08/14 21:14:09 taqua Exp $
+ * $Id: FunctionDataSource.java,v 1.9 2002/08/22 21:08:24 taqua Exp $
  *
  * Changes
  * -------
  * 20-May-2002 : Initial version
  * 06-Jun-2002 : Updated Javadoc comments (DG);
+ * 28-Jul-2002 : Added support for the DataRow
+ * 08-Aug-2002 : removed unused Import statements
+ * 14-Aug-2002 : Logging added, Modified Exception messages to help debugging
+ * 22-Aug-2002 : Removed System.out statements
+ * 28-Aug-2002 : Removed Logging, Documentation updated
  *
  */
 
@@ -117,7 +122,6 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
   public Object getValue ()
   {
     if (getDataRow () == null) throw new IllegalStateException ("No Datarow connected");
-    Log.debug ("GetValue of function " + getFunction());
     return getDataRow ().get (getFunction ());
   }
 
@@ -150,6 +154,9 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
     dataRow = null;
   }
 
+  /**
+   * returns the datarow assigned with this DataSource.
+   */
   protected DataRow getDataRow ()
   {
     return dataRow;

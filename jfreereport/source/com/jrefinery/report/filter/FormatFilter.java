@@ -28,13 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FormatFilter.java,v 1.6 2002/07/03 18:49:48 taqua Exp $
+ * $Id: FormatFilter.java,v 1.7 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
  * 20-May-2002 : Initial version
  * 06-Jun-2002 : Updated Javadoc comments (DG);
- *
+ * 03-Jul-2002 : Cloneable implemented
  */
 
 package com.jrefinery.report.filter;
@@ -167,6 +167,9 @@ public class FormatFilter implements DataFilter
     this.datasource = ds;
   }
 
+  /**
+   * @returns a clone of this FormatFilter
+   */
   public Object clone () throws CloneNotSupportedException
   {
     FormatFilter f = (FormatFilter) super.clone ();

@@ -28,13 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSource.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
+ * $Id: DataSource.java,v 1.4 2002/07/03 18:49:48 taqua Exp $
  *
  * Changes
  * -------
  * 20-May-2002 : Initial version
  * 06-Jun-2002 : Updated Javadoc comments (DG);
- *
+ * 03-Jul-2002 : Cloneable and Serializable added
  */
 package com.jrefinery.report.filter;
 
@@ -44,6 +44,10 @@ import java.io.Serializable;
  * A DataSource is a producer in the data chain. Common Sources are StaticSources (predefined
  * data), ReportDataSources (data filled from the reports data set) or FunctionDataSource (the
  * data is filled by querying an assigned function).
+ * <p>
+ * All DataSources have to support the Cloneable interface so that a report can be completley cloned
+ * with all assigned filters and DataSources. Reports are cloned before they are processed to remove the
+ * sideeffect when having multiple report processors working on the same object.
  */
 public interface DataSource extends Serializable, Cloneable
 {
@@ -54,6 +58,11 @@ public interface DataSource extends Serializable, Cloneable
    */
   public Object getValue ();
 
+  /**
+   * Clones this datasource.
+   *
+   * @returns a clone of the datasource.
+   */
   public Object clone () throws CloneNotSupportedException;
 
 }

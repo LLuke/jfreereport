@@ -34,7 +34,8 @@
  * 10-May-2002 : Created the EventInterface for JFreeReport
  * 05-Jun-2002 : cleared the interface,Documentation
  * 17-Jul-2002 : Updated header and Javadocs (DG);
- *
+ * 28-Jul-2002 : Added DataRow support
+ * 28-Aug-2002 : Documentation update
  */
 package com.jrefinery.report.event;
 
@@ -89,6 +90,13 @@ public class ReportEvent extends EventObject
     return getState ().getReport ();
   }
 
+  /**
+   * Returns the currently assigned dataRow for this event. The DataRow is used to access the
+   * fields of the DataSource and other Functions and Expressions within the current row of the
+   * report.
+   *
+   * @returns the DataRow of the report
+   */
   public DataRow getDataRow ()
   {
     return getState ().getDataRow ();

@@ -28,13 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EmptyDataSource.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
+ * $Id: EmptyDataSource.java,v 1.4 2002/07/03 18:49:48 taqua Exp $
  *
  * Changes
  * -------
  * 20-May-2002 : Initial version
  * 06-Jun-2002 : Updated source header (DG);
- *
+ * 03-Jul-2002 : Implemented the Cloneable functionality
  */
 
 package com.jrefinery.report.filter;
@@ -55,6 +55,9 @@ public class EmptyDataSource implements DataSource
     return null;
   }
 
+  /**
+   * @returns a clone of this EmptyDataSource
+   */
   public Object clone () throws CloneNotSupportedException
   {
     return super.clone ();

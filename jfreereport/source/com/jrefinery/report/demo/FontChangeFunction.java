@@ -25,6 +25,11 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * Changes
+ * -------
+ * 26-May-2002 : Initial version
+ * 05-Jun-2002 : Documentation
+ * 28-Aug-2002 : ChangeLog
  */
 package com.jrefinery.report.demo;
 
