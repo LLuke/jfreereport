@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OutputTarget.java,v 1.7 2002/10/15 20:37:31 taqua Exp $
+ * $Id: OutputTarget.java,v 1.8 2002/11/06 22:15:29 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,8 @@
  *               Created beginPage() state callback to property initialize new pages. FillShape
  *               added.
  * 31-Aug-2002 : Added properties to support a generic configuration interface
+ * 13-Nov-2002 : Added new drawString(...) method to support vertical alignment options (DG)
+ *
  */
 
 package com.jrefinery.report.targets;
@@ -299,13 +301,37 @@ public interface OutputTarget
   public BandCursor getCursor ();
 
   /**
-   * Draws a string at the current cursor position.
+   * Draws a string inside the current cursor bounds.
    *
    * @param text  the text.
    * @param alignment  the horizontal alignment.
    */
   public void drawString (String text, int alignment);
 
+  /**
+   * Draws a string inside the current cursor bounds.
+   * <p>
+   * The horizontal alignment should be one of the constants defined in
+   * <code>ElementConstants</code>:
+   * <ul>
+   * <li><code>LEFT</code></li>
+   * <li><code>RIGHT</code></li>
+   * <li><code>CENTER</code></li>
+   * </ul>
+   * <p>
+   * The vertical alignment should be one of the constants defined in
+   * <code>ElementConstants</code>:
+   * <ul>
+   * <li><code>TOP</code></li>
+   * <li><code>BOTTOM</code></li>
+   * <li><code>MIDDLE</code></li>
+   * </ul>
+   *
+   * @param text  the text.
+   * @param horizontalAlignment  the horizontal alignment.
+   * @param verticalAlignment  the vertical alignment.
+   */
+  public void drawString (String text, int horizontalAlignment, int verticalAlignment);
 
   /**
    * Draws a string at the current cursor position. The text is split at the end of the line and
@@ -324,7 +350,7 @@ public interface OutputTarget
    * @param alignment  the horizontal alignment.
    * @param dynamic  ??
    */
-  public void drawMultiLineText (String text, int alignment, boolean dynamic);
+  public void drawMultiLineText (String text, int alignment, int verticalAlignment, boolean dynamic);
 
   /**
    * Draws a shape relative to the current position.

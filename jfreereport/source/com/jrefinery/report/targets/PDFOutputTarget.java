@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.34 2002/11/25 18:12:46 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.35 2002/11/27 12:36:32 taqua Exp $
  *
  * Changes
  * -------
@@ -44,12 +44,16 @@
  * 13-Sep-2002 : Removed caching of fonts for FontFactory as it causes OutOfMemoryErrors when a huge
  *               font collection is used
  * 04-Nov-2002 : BugFix: PDFFonts need caching on setFont() or OutOfMemoryErrors occur
+ * 13-Nov-2002 : Deprecated getFontHeight() and replaced it with getLineHeight(), in the
+ *               process of aligning text positioning in print preview and PDF (DG)
+ *
  */
 
 package com.jrefinery.report.targets;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
+import com.jrefinery.report.ElementConstants;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ShapeElement;
@@ -1332,13 +1336,43 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Draws the band onto the specified graphics device. The Text is printed on the
-   * bottom of the elements bounds.
+   * Draws a string inside the current cursor bounds.
+   * <P>
+   * There is now another method that uses both horizontal and vertical alignment.  This method
+   * passes control to the new method using a vertical alignment equal to <code>TOP</code>.
    *
-   * @param text The text to be printed.
-   * @param alignment The vertical alignment for the text.
+   * @param text  the text.
+   * @param alignment  the horizontal alignment.
    */
   public void drawString(String text, int alignment)
+  {
+    drawString(text, alignment, ElementConstants.TOP);
+  }
+
+  /**
+   * Draws a string inside the current cursor bounds.
+   * <p>
+   * The horizontal alignment should be one of the constants defined in
+   * <code>ElementConstants</code>:
+   * <ul>
+   * <li><code>LEFT</code></li>
+   * <li><code>RIGHT</code></li>
+   * <li><code>CENTER</code></li>
+   * </ul>
+   * <p>
+   * The vertical alignment should be one of the constants defined in
+   * <code>ElementConstants</code>:
+   * <ul>
+   * <li><code>TOP</code></li>
+   * <li><code>BOTTOM</code></li>
+   * <li><code>MIDDLE</code></li>
+   * </ul>
+   *
+   * @param text  the text.
+   * @param horizontalAlignment  the horizontal alignment.
+   * @param verticalAlignment  the vertical alignment.
+   */
+  public void drawString(String text, int horizontalAlignment, int verticalAlignment)
   {
     Rectangle2D bounds = getCursor().getDrawBounds();
 
@@ -1346,34 +1380,56 @@ public class PDFOutputTarget extends AbstractOutputTarget
     cb.beginText();
     cb.setFontAndSize(this.baseFont, getFontSize());
 
-    float y2 = (float) (bounds.getY() + bounds.getHeight());
-    if (alignment == Element.LEFT)
+    float x = (float) bounds.getX();
+    float y2 = (float) bounds.getY();
+
+    // adjust y2 for vertical alignment
+    switch (verticalAlignment) {
+      case Element.BOTTOM:
+      {
+        // note that the descent returned by iText is a negative number
+        y2 += bounds.getHeight()
+              + this.baseFont.getFontDescriptor(BaseFont.DESCENT, getFontSize());
+        break;
+      }
+      case Element.MIDDLE:
+      {
+        y2 += bounds.getHeight() / 2
+              + this.baseFont.getFontDescriptor(BaseFont.ASCENT, getFontSize()) / 2;
+        break;
+      }
+      case Element.TOP:
+      default:
+      {
+        y2 += this.baseFont.getFontDescriptor(BaseFont.ASCENT, getFontSize());
+        break;
+      }
+    }
+
+    if (horizontalAlignment == Element.LEFT)
     {
       cb.showTextAligned(
           PdfContentByte.ALIGN_LEFT,
-          text,
-          (float) bounds.getX(),
-          this.getPageHeight() - y2,
+          text, x, getPageHeight() - y2,
           0);
     }
-    else if (alignment == Element.CENTER)
+    else if (horizontalAlignment == Element.CENTER)
     {
+      x += bounds.getWidth() / 2;
       cb.showTextAligned(
           PdfContentByte.ALIGN_CENTER,
-          text,
-          (float) (bounds.getX() + (bounds.getWidth() / 2)),
-          this.getPageHeight() - y2,
+          text, x, getPageHeight() - y2,
           0);
     }
-    else if (alignment == Element.RIGHT)
+    else if (horizontalAlignment == Element.RIGHT)
     {
+      x += bounds.getWidth();
       cb.showTextAligned(
           PdfContentByte.ALIGN_RIGHT,
-          text,
-          (float) (bounds.getX() + bounds.getWidth()),
-          this.getPageHeight() - y2,
+          text, x, getPageHeight() - y2,
           0);
     }
+
     cb.endText();
   }
 
@@ -1396,9 +1452,24 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * 2 base lines.
    *
    * @return  the font height.
+   *
+   * @deprecated replaced by getLineHeight().
    */
   protected float getFontHeight()
   {
+    return getFontSize();
+  }
+
+  /**
+   * Returns the height of a line of text.  This is equal to the font's ascent, descent and
+   * leading.
+   *
+   * @return the line height.
+   */
+  protected float getLineHeight()
+  {
+    // there doesn't seem to be a reliable way to get the leading from iText, so just assume that
+    // the font size is equal to the line height...
     return getFontSize();
   }
 

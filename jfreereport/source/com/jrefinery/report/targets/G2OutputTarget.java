@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.21 2002/11/06 22:15:29 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.22 2002/11/25 19:20:59 taqua Exp $
  *
  * Changes
  * -------
@@ -39,11 +39,15 @@
  * 17-Jul-2002 : Fixed a nullpointer when an ImageReference did not contain a graphics
  * 26-Aug-2002 : Fixed drawString: Text was placed too deep, Fontheight is defined MaxAscent,
  *               not font.getFontheight()!
+ * 13-Nov-2002 : Deprecated getFontHeight() and replaced it with getLineHeight(), in the
+ *               process of aligning text positioning in print preview and PDF (DG)
+ *
  */
 
 package com.jrefinery.report.targets;
 
 import com.jrefinery.report.Element;
+import com.jrefinery.report.ElementConstants;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
@@ -354,38 +358,95 @@ public class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Draws a string inside a rectangular area (the lower edge is aligned with the baseline of
-   * the text).
+   * Draws a string inside the current cursor bounds.
+   * <P>
+   * There is now another method that uses both horizontal and vertical alignment.  This method
+   * passes control to the new method using a vertical alignment equal to <code>TOP</code>.
    *
-   * @param text The text.
-   * @param alignment The horizontal alignment.
+   * @param text  the text.
+   * @param alignment  the horizontal alignment.
    */
   public void drawString(String text, int alignment)
+  {
+    drawString(text, alignment, ElementConstants.TOP);
+  }
+
+  /**
+   * Draws a string inside the current cursor bounds.
+   * <p>
+   * The horizontal alignment should be one of the constants defined in
+   * <code>ElementConstants</code>:
+   * <ul>
+   * <li><code>LEFT</code></li>
+   * <li><code>RIGHT</code></li>
+   * <li><code>CENTER</code></li>
+   * </ul>
+   * <p>
+   * The vertical alignment should be one of the constants defined in
+   * <code>ElementConstants</code>:
+   * <ul>
+   * <li><code>TOP</code></li>
+   * <li><code>BOTTOM</code></li>
+   * <li><code>MIDDLE</code></li>
+   * </ul>
+   *
+   * @param text  the text.
+   * @param horizontalAlignment  the horizontal alignment.
+   * @param verticalAlignment  the vertical alignment.
+   */
+  public void drawString(String text, int horizontalAlignment, int verticalAlignment)
   {
     Rectangle2D bounds = getCursor().getDrawBounds();
 
     float x = (float) bounds.getX();
+    float baseline = (float) bounds.getY();
 
     FontRenderContext frc = g2.getFontRenderContext();
     Rectangle2D textBounds = g2.getFont().getStringBounds(text, frc);
     float textLength = (float) textBounds.getWidth();
     float elementLength = (float) bounds.getWidth();
 
-    //GlyphVector gv = g2.getFont().createGlyphVector(frc, text);
     FontMetrics fm = g2.getFontMetrics();
-    float baseline = (float) (bounds.getY() + fm.getMaxAscent());
-    if (alignment == Element.LEFT)
-    {
-      // no adjustment required
+
+    // adjust x for horizontal alignment
+    switch (horizontalAlignment) {
+      case Element.CENTER:
+      {
+        x = (float) (bounds.getX() + ((elementLength / 2) - (textLength / 2)));
+        break;
+      }
+      case Element.RIGHT:
+      {
+        x = (float) (bounds.getX() + elementLength - textLength);
+      }
+      case Element.LEFT:
+      default:
+      {
+        // no adjustment required
+        break;
+      }
     }
-    else if (alignment == Element.CENTER)
-    {
-      x = (float) (bounds.getX() + ((elementLength / 2) - (textLength / 2)));
+
+    // adjust y for vertical alignment
+    switch (verticalAlignment) {
+      case Element.BOTTOM:
+      {
+        baseline += bounds.getHeight() - fm.getDescent() - fm.getLeading();
+        break;
+      }
+      case Element.MIDDLE:
+      {
+        baseline += bounds.getHeight() / 2 + fm.getAscent() / 2;
+        break;
+      }
+      case Element.TOP:
+      default:
+      {
+        baseline += fm.getAscent();
+        break;
+      }
     }
-    else if (alignment == Element.RIGHT)
-    {
-      x = (float) (bounds.getX() + elementLength - textLength);
-    }
+
     int display = getFont().canDisplayUpTo(text);
     if (display > 0 && display < text.length())
     {
@@ -400,10 +461,23 @@ public class G2OutputTarget extends AbstractOutputTarget
    * 2 base lines.
    *
    * @return the font height.
+   *
+   * @deprecated replaced with getLineHeight().
    */
   protected float getFontHeight()
   {
     return getFont().getSize2D();
+  }
+
+  /**
+   * Returns the line height, given the current font setting.
+   *
+   * @return the line height.
+   */
+  protected float getLineHeight()
+  {
+    FontMetrics fm = g2.getFontMetrics();
+    return fm.getHeight();
   }
 
   /**
