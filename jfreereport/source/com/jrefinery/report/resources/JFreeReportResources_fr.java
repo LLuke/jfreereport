@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.34 2002/12/19 17:43:59 taqua Exp $
+ * $Id: JFreeReportResources_fr.java,v 1.1 2003/03/04 23:21:49 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -148,7 +148,7 @@ public class JFreeReportResources_fr extends JFreeReportResources
             {"menu.help.mnemonic", new Character ('H')},
 
             {"file.save.pdfdescription", "PDF documents"},
-            {"statusline.pages", "Page {0} of {1}"},
+            {"statusline.pages", "Page {0} de {1}"},
             {"statusline.error", "Reportgeneration produced an error: {0}"},
             {"error.processingfailed.title", "Report processing failed"},
             {"error.processingfailed.message", "Error on processing this report: {0}"},
