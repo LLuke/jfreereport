@@ -4,8 +4,8 @@
  -->
 <!--
 
-<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
 -->
+<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
 <report name="Open Source Java Projects" pageformat="A4">
 
     <!-- REPORT HEADER -->

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.5 2002/12/07 14:58:33 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.6 2002/12/11 01:10:41 mungady Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package com.jrefinery.report.targets.pageable.pagelayout;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.states.ReportState;
@@ -537,6 +538,7 @@ public class SimplePageLayouter extends PageLayouter
   protected void doPrint(Rectangle2D bounds, Band band, boolean spool)
     throws ReportProcessingException
   {
+    Log.debug ("Print Band: " + band.getClass() + " @ " + bounds);
     if ((spooledBand != null) && (spool == false))
     {
       getLogicalPage().replaySpool (spooledBand);

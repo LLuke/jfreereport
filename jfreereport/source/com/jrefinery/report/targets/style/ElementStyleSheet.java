@@ -28,17 +28,19 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.5 2002/12/08 20:30:32 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.6 2002/12/11 00:48:49 mungady Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Added Javadocs (DG);
- *
+ * 12-Dec-2002 : First BugFix: setFontStyle must use font.getName instead of font.getFontName
+ *               or a totaly different font family is used. 
  */
 
 package com.jrefinery.report.targets.style;
 
 import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.util.Log;
 
 import java.awt.Font;
 import java.awt.Paint;
@@ -371,6 +373,8 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     {
       style += Font.ITALIC;
     }
+
+    Log.debug ("Create Font in Style: " + name + ", " + style + ", " + size);
     Font retval = new Font(name, style, size);
     return retval;
   }
@@ -386,7 +390,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     {
       throw new NullPointerException("ElementStyleSheet.setFontStyleProperty: font is null.");
     }
-    setStyleProperty(FONT, font.getFontName());
+    setStyleProperty(FONT, font.getName());
     setStyleProperty(BOLD, new Boolean(font.isBold()));
     setStyleProperty(ITALIC, new Boolean(font.isItalic()));
     setStyleProperty(FONTSIZE, new Integer(font.getSize()));

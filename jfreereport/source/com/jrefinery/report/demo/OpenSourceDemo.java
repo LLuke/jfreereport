@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.3 2002/12/10 15:57:43 mungady Exp $
+ * $Id: OpenSourceDemo.java,v 1.4 2002/12/11 01:03:13 mungady Exp $
  *
  * Changes
  * -------
@@ -174,6 +174,8 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
       {
         Log.error ("Failed", pre);
       }
+      // force reparsing on next preview ... for debugging ...
+      report = null;
     }
 
     /**
