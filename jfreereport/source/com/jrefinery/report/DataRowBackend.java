@@ -328,6 +328,10 @@ public class DataRowBackend implements Cloneable
         returnValue = getExpressions().getExpression(col).getValue();
       }
     }
+    catch (Exception e)
+    {
+      Log.error ("Column " + column + " caused an error on get()", e);
+    }
     finally
     {
       columnlocks[column] = false;

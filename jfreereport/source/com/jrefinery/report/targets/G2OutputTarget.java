@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.16 2002/09/01 15:49:31 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.17 2002/09/06 17:02:42 taqua Exp $
  *
  * Changes
  * -------
@@ -293,8 +293,8 @@ public class G2OutputTarget extends AbstractOutputTarget
       catch (Throwable th)
       {
         th.printStackTrace();
-        Log.debug ("System.FreeMem: " + Runtime.getRuntime().freeMemory());
-        Log.debug ("System.TotalMem: " + Runtime.getRuntime().totalMemory());
+        Log.debug("System.FreeMem: " + Runtime.getRuntime().freeMemory());
+        Log.debug("System.TotalMem: " + Runtime.getRuntime().totalMemory());
       }
     }
   }
@@ -315,7 +315,7 @@ public class G2OutputTarget extends AbstractOutputTarget
     FontRenderContext frc = g2.getFontRenderContext();
     Rectangle2D textBounds = g2.getFont().getStringBounds(text, frc);
     float textLength = (float) textBounds.getWidth();
-    float elementLength = (float) (bounds.getX() + bounds.getWidth());
+    float elementLength = (float) bounds.getWidth();
 
     GlyphVector gv = g2.getFont().createGlyphVector(frc, text);
     FontMetrics fm = g2.getFontMetrics();
@@ -326,11 +326,11 @@ public class G2OutputTarget extends AbstractOutputTarget
     }
     else if (alignment == Element.CENTER)
     {
-      x = (float) ((elementLength / 2) - (textLength / 2));
+      x = (float) (bounds.getX() + ((elementLength / 2) - (textLength / 2)));
     }
     else if (alignment == Element.RIGHT)
     {
-      x = (float) (elementLength - textLength);
+      x = (float) (bounds.getX() + elementLength - textLength);
     }
     int display = getFont().canDisplayUpTo(text);
     if (display > 0 && display < text.length())

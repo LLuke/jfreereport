@@ -88,7 +88,7 @@
     <number-field x="350" y="0" width="50" height="12" alignment="left" format="'$' #,##0.00" fieldname="price"/>
     <number-field x="400" y="0" width="70" height="12" alignment="left" format="'$' #,##0.00" fieldname="total"/>
   </items>
-  <functions>
+<functions>
     <expression name="expr" class="com.jrefinery.report.function.TextFormatExpression">
       <properties>
         <property name="pattern">Invoice for your order from {0, date, EEE, MMM d, yyyy}</property>

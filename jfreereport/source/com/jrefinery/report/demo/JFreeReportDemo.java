@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.31 2002/09/06 17:02:31 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.32 2002/09/06 17:56:38 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -517,6 +517,7 @@ public class JFreeReportDemo extends JFrame
    */
   public static void main(String[] args)
   {
+
     try
     {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
