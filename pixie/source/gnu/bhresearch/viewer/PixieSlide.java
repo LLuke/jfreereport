@@ -13,6 +13,7 @@ import gnu.bhresearch.pixie.Constants;
 import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Event;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -37,6 +38,9 @@ import java.net.URLConnection;
  */
 public class PixieSlide extends Applet implements Runnable
 {
+  private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+  private Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
+  
   public String getAppletInfo ()
   {
     return
@@ -221,8 +225,8 @@ public class PixieSlide extends Applet implements Runnable
       if (fg != null)
       {
         fg.setColor (getForeground ());
-        fg.fillRect (0, size ().height - 4,
-                (int) (progress * size ().width), 4);
+        fg.fillRect (0, getSize ().height - 4,
+                (int) (progress * getSize ().width), 4);
       }
 
       // Show first image as soon as it's loaded.
@@ -256,8 +260,8 @@ public class PixieSlide extends Applet implements Runnable
 
   public void update (Graphics g)
   {
-    int iWidth = size ().width;
-    int iHeight = size ().height;
+    int iWidth = getSize ().width;
+    int iHeight = getSize ().height;
 
     if (fgImage == null)
     {
@@ -728,7 +732,7 @@ public class PixieSlide extends Applet implements Runnable
     int cmd = Constants.HOT_SPOT_TOGGLE_PAUSE;
     String arg = null;
     for (hotSpot = hotSpotCount - 1; hotSpot >= 0; hotSpot--)
-      if (hotSpots[hotSpot].inside (e.x, e.y))
+      if (hotSpots[hotSpot].contains(e.x, e.y))
       {
         cmd = hotSpotCmds[hotSpot];
         arg = hotSpotArgs[hotSpot];
@@ -775,7 +779,7 @@ public class PixieSlide extends Applet implements Runnable
       {
         ((Frame) c).setCursor (
                 (cmd == Constants.HOT_SPOT_URL) ?
-                Frame.HAND_CURSOR : Frame.DEFAULT_CURSOR);
+                handCursor : defaultCursor);
         break;
       }
 
