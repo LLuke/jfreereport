@@ -28,21 +28,17 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.10 2002/12/06 17:17:38 mungady Exp $
+ * $Id: GroupList.java,v 1.11 2002/12/06 19:27:28 taqua Exp $
  *
  * Changes:
  * --------
  * 11-May-2002 : Version 1 (TM);
  * 16-May-2002 : Added Javadoc comments (DG);
  * 29-Aug-2002 : TreeSet does no cloning in JDK 1.2.2, it returns a "new TreeSet()".
-<<<<<<< GroupList.java
  *               Why would a sane programmer mess up the source like this?
  * 06-Dec-2002 : Added validity check to the group list.
-=======
- *               Why would a sane programmer mess up the source like this?
- * 06-Dec-2002 : Updated Javadocs (DG);
+ * 10-Dec-2002 : Updated Javadocs (DG);
  *
->>>>>>> 1.10
  */
 
 package com.jrefinery.report;
@@ -240,7 +236,10 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
    */
   public boolean isValid ()
   {
-    if (size() == 0) return true;
+    if (size() == 0)
+    {
+      return true;
+    }
 
     Group parent = get(0);
     for (int i = 1; i < size(); i++)

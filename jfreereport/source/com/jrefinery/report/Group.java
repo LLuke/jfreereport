@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.17 2002/12/06 17:17:22 mungady Exp $
+ * $Id: Group.java,v 1.18 2002/12/06 18:05:41 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -40,15 +40,12 @@
  * 03-Jul-2002 : Serializable and cloneable, replaces own ReadOnlyList with standard implementation
  * 26-Jul-2002 : Introduced DataRowBackend as replacement for the raw data access
  * 05-Sep-2002 : Documentation
-<<<<<<< Group.java
  * 09-Sep-2002 : Removed log messages
  * 13-Sep-2002 : Ran checkstyle against the source
  * 02-Dec-2002 : Removed To-Do item, caching of field-name to index pos is done.
  * 06-Dec-2002 : Updated changelog, removed Iterator-usage for performance reasons
-=======
- * 06-Dec-2002 : Updated Javadocs (DG);
+ * 10-Dec-2002 : Updated Javadocs (DG);
  *
->>>>>>> 1.17
  */
 
 package com.jrefinery.report;
@@ -62,12 +59,13 @@ import java.util.List;
 /**
  * A report group.  Reports can contain any number of (nested) groups.
  * The order of the fields is important. If the group does not contain
- * any fields, the Group spans the whole report from the first to the last
+ * any fields, the group spans the whole report from the first to the last
  * row.
  *
  * @see GroupList
  *
  * @author David Gilbert
+ * @author Thomas Morgner
  */
 public class Group implements Serializable, Cloneable
 {
@@ -136,7 +134,8 @@ public class Group implements Serializable, Cloneable
   /**
    * Sets the header for the group.
    *
-   * @param header  the header.
+   * @param header  the header (null not permitted).
+   *
    * @throws NullPointerException if the given header is null
    */
   public void setHeader(GroupHeader header)
@@ -178,11 +177,15 @@ public class Group implements Serializable, Cloneable
    * not supported in th groupfield definition.
    *
    * @param c  the list containing strings.
-   * @throws NullPointerException if the given list is null or the list contains null-values
+   *
+   * @throws NullPointerException if the given list is null or the list contains null-values.
    */
   public void setFields(List c)
   {
-    if (c == null) throw new NullPointerException();
+    if (c == null)
+    {
+      throw new NullPointerException();
+    }
     fields.clear();
     Iterator it = c.iterator();
     while (it.hasNext())
@@ -196,12 +199,16 @@ public class Group implements Serializable, Cloneable
    * Adds a field to the group.  The field names must correspond to the column names in the
    * report's TableModel.
    *
-   * @param name  the field name.
+   * @param name  the field name (null not permitted).
+   *
    * @throws NullPointerException if the name is null
    */
   public void addField(String name)
   {
-    if (name == null) throw new NullPointerException();
+    if (name == null)
+    {
+      throw new NullPointerException("Group.addField(...): name is null.");
+    }
     fields.add(name);
   }
 
@@ -300,25 +307,40 @@ public class Group implements Serializable, Cloneable
 
   /**
    * Compares this group with an other object.
-   * @param o the object which should be compared with this group
+   *
+   * @param o the object which should be compared with this group.
+   *
    * @return true, if the given object is a group with the same name and fields,
    * false otherwise
    */
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof Group)) return false;
+    if (this == o)
+    {
+      return true;
+    }
+    if (!(o instanceof Group))
+    {
+      return false;
+    }
 
     final Group group = (Group) o;
 
-    if (fields != null ? !fields.equals(group.fields) : group.fields != null) return false;
-    if (name != null ? !name.equals(group.name) : group.name != null) return false;
+    if (fields != null ? !fields.equals(group.fields) : group.fields != null)
+    {
+      return false;
+    }
+    if (name != null ? !name.equals(group.name) : group.name != null)
+    {
+      return false;
+    }
 
     return true;
   }
 
   /**
    * Calculates the hashcode for this group.
+   *
    * @return the hashcode.
    */
   public int hashCode()

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: HelloWorld.java,v 1.1 2002/12/10 15:55:48 mungady Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,6 @@ import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.TextElement;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.preview.PreviewFrame;
-import com.jrefinery.report.util.ReportConfiguration;
 
 /**
  * A very simple JFreeReport demo.  The purpose of this demo is to illustrate the basic steps
@@ -58,22 +57,26 @@ import com.jrefinery.report.util.ReportConfiguration;
  *
  * @author David Gilbert
  */
-public class HelloWorld {
+public class HelloWorld
+{
 
     /**
      * Creates and displays a simple report.
      */
-    public HelloWorld() {
+    public HelloWorld()
+    {
 
         TableModel data = createData();
         JFreeReport report = createReportDefinition();
         report.setData(data);
-        try {
+        try
+        {
             PreviewFrame preview = new PreviewFrame(report);
             preview.pack();
             preview.setVisible(true);
         }
-        catch (ReportProcessingException e) {
+        catch (ReportProcessingException e)
+        {
             System.out.println(e);
         }
 
@@ -85,7 +88,8 @@ public class HelloWorld {
      *
      * @return a dataset.
      */
-    private TableModel createData() {
+    private TableModel createData()
+    {
 
         Object[] columnNames = new String[] { "Column1", "Column2" };
         DefaultTableModel result = new DefaultTableModel(columnNames, 1);
@@ -100,7 +104,8 @@ public class HelloWorld {
      *
      * @return a report definition.
      */
-    private JFreeReport createReportDefinition() {
+    private JFreeReport createReportDefinition()
+    {
 
         JFreeReport report = new JFreeReport();
         report.setName("A Very Simple Report");
@@ -139,10 +144,9 @@ public class HelloWorld {
      *
      * @param args  ignored.
      */
-    public static void main(String[] args) {
-
+    public static void main(String[] args)
+    {
         HelloWorld app = new HelloWorld();
-
     }
 
 }

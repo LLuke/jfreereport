@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowConnector.java,v 1.9 2002/12/06 17:17:13 mungady Exp $
+ * $Id: DataRowConnector.java,v 1.10 2002/12/06 17:59:21 taqua Exp $
  *
  * Changes
  * -------
@@ -96,12 +96,16 @@ public class DataRowConnector implements DataRow
    *
    * @param col  the column, function or expression index.
    *
-   * @return The column, function or expression value.
-   * @throws IllegalStateException if there is no backend connected
+   * @return the column, function or expression value.
+   *
+   * @throws IllegalStateException if there is no backend connected.
    */
   public Object get (int col)
   {
-    if (dataRow == null) throw new IllegalStateException("Not connected");
+    if (dataRow == null)
+    {
+      throw new IllegalStateException("Not connected");
+    }
     return dataRow.get (col);
   }
 
@@ -115,7 +119,7 @@ public class DataRowConnector implements DataRow
    */
   public Object get (String col)
   {
-    if (dataRow == null) 
+    if (dataRow == null)
     {
       throw new IllegalStateException("Not connected");
     }
@@ -127,12 +131,16 @@ public class DataRowConnector implements DataRow
    *
    * @param col  the column, function or expression index.
    *
-   * @return The column, function or expression name.
-   * @throws IllegalStateException if there is no backend connected
+   * @return the column, function or expression name.
+   *
+   * @throws IllegalStateException if there is no backend connected.
    */
   public String getColumnName (int col)
   {
-    if (dataRow == null) throw new IllegalStateException("Not connected");
+    if (dataRow == null)
+    {
+      throw new IllegalStateException("Not connected");
+    }
     return dataRow.getColumnName (col);
   }
 
@@ -144,11 +152,15 @@ public class DataRowConnector implements DataRow
    *
    * @return the column position of the column, expression or function with the given name or
    * -1 if the given name does not exist in this DataRow.
-   * @throws IllegalStateException if there is no backend connected
+   *
+   * @throws IllegalStateException if there is no backend connected.
    */
   public int findColumn (String name)
   {
-    if (dataRow == null) throw new IllegalStateException("Not connected");
+    if (dataRow == null)
+    {
+      throw new IllegalStateException("Not connected");
+    }
     return getDataRowBackend ().findColumn (name);
   }
 
@@ -156,12 +168,16 @@ public class DataRowConnector implements DataRow
    * Returns the count of columns in this datarow. The columncount is the sum of all
    * DataSource columns, all functions and all expressions.
    *
-   * @return the number of accessible columns in this datarow
-   * @throws IllegalStateException if there is no backend connected
+   * @return the number of accessible columns in this datarow.
+   *
+   * @throws IllegalStateException if there is no backend connected.
    */
   public int getColumnCount ()
   {
-    if (dataRow == null) throw new IllegalStateException("Not connected");
+    if (dataRow == null)
+    {
+      throw new IllegalStateException("Not connected");
+    }
     return getDataRowBackend ().getColumnCount ();
   }
 
@@ -192,6 +208,7 @@ public class DataRowConnector implements DataRow
    * Connects the Band and all Elements within the band to this DataRow.
    *
    * @param band the band which will be connected.
+   * @param con  the connector.
    */
   public static void connectDataSources (Band band, DataRowConnector con)
   {
@@ -219,7 +236,8 @@ public class DataRowConnector implements DataRow
    * Removes the reference to this DataRow from the Report and all contained Bands and all
    * Elements contained in the Bands.
    *
-   * @param report the report which will be disconnected from this DataRow.
+   * @param report  the report which will be disconnected from this DataRow.
+   * @param con  the connector.
    */
   public static void disconnectDataSources (JFreeReport report, DataRowConnector con)
   {
@@ -241,7 +259,8 @@ public class DataRowConnector implements DataRow
   /**
    * Removes the reference to this DataRow from the Band and all Elements contained in the Band.
    *
-   * @param band the band which will be disconnected from this DataRow.
+   * @param band  the band which will be disconnected from this DataRow.
+   * @param con  the connector.
    */
   public static void disconnectDataSources (Band band, DataRowConnector con)
   {

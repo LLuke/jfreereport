@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.2 2002/12/02 17:16:56 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.3 2002/12/10 15:57:43 mungady Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ import java.net.URL;
  *
  * @author David Gilbert
  */
-public class OpenSourceDemo extends ApplicationFrame implements ActionListener 
+public class OpenSourceDemo extends ApplicationFrame implements ActionListener
 {
 
     /** The data for the report. */
@@ -78,7 +78,7 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
      *
      * @param title  the frame title.
      */
-    public OpenSourceDemo(String title) 
+    public OpenSourceDemo(String title)
     {
         super(title);
         setJMenuBar(createMenuBar());
@@ -90,7 +90,7 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
      *
      * @return the menu bar.
      */
-    public JMenuBar createMenuBar() 
+    public JMenuBar createMenuBar()
     {
         JMenuBar mb = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
@@ -115,7 +115,7 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
      *
      * @return a panel containing the basic user interface.
      */
-    public JPanel createContent() 
+    public JPanel createContent()
     {
         JPanel content = new JPanel(new BorderLayout());
         content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
@@ -131,14 +131,14 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
      *
      * @param e  the event.
      */
-    public void actionPerformed(ActionEvent e) 
+    public void actionPerformed(ActionEvent e)
     {
         String command = e.getActionCommand();
-        if (command.equals("PREVIEW")) 
+        if (command.equals("PREVIEW"))
         {
             previewReport();
         }
-        else if (command.equals("EXIT")) 
+        else if (command.equals("EXIT"))
         {
             dispose();
             System.exit(0);
@@ -148,18 +148,19 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
     /**
      * Displays a print preview screen for the sample report.
      */
-    protected void previewReport() 
+    protected void previewReport()
     {
 
       try
       {
-        if (this.report==null) {
+        if (this.report == null)
+        {
             URL in  = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
             this.report = parseReport(in);
             this.report.setData(this.data);
         }
 
-        if (this.report != null) 
+        if (this.report != null)
         {
             PreviewFrame frame = new PreviewFrame(this.report);
             frame.setToolbarFloatable(true);
@@ -182,16 +183,16 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
      *
      * @return a report.
      */
-    private JFreeReport parseReport(URL templateURL) 
+    private JFreeReport parseReport(URL templateURL)
     {
 
         JFreeReport result = null;
         ReportGenerator generator = ReportGenerator.getInstance();
-        try 
+        try
         {
             result = generator.parseReport(templateURL);
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
             System.out.println(e.toString());
 
@@ -205,7 +206,7 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
      *
      * @param args  ignored.
      */
-    public static void main(String[] args) 
+    public static void main(String[] args)
     {
         OpenSourceDemo frame = new OpenSourceDemo("Open Source Demo");
         frame.pack();

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceProjects.java,v 1.1 2002/11/29 11:54:49 mungady Exp $
+ * $Id: OpenSourceProjects.java,v 1.2 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes
  * -------
@@ -49,8 +49,8 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author David Gilbert
  */
-public class OpenSourceProjects extends AbstractTableModel {
-
+public class OpenSourceProjects extends AbstractTableModel
+{
     /** The number of projects. */
     private int projectCount;
 
@@ -72,7 +72,8 @@ public class OpenSourceProjects extends AbstractTableModel {
     /**
      * Creates a new TableModel, populated with data about various software projects.
      */
-    public OpenSourceProjects() {
+    public OpenSourceProjects()
+    {
         this.projectCount = 19;
         this.category = new String[this.projectCount];
         this.name = new String[this.projectCount];
@@ -87,7 +88,8 @@ public class OpenSourceProjects extends AbstractTableModel {
      *
      * @return the row count.
      */
-    public int getRowCount() {
+    public int getRowCount()
+    {
         return this.projectCount;
     }
 
@@ -96,7 +98,8 @@ public class OpenSourceProjects extends AbstractTableModel {
      *
      * @return the column count.
      */
-    public int getColumnCount() {
+    public int getColumnCount()
+    {
         return 5;
     }
 
@@ -107,8 +110,10 @@ public class OpenSourceProjects extends AbstractTableModel {
      *
      * @return the column name.
      */
-    public String getColumnName(int column) {
-        switch (column) {
+    public String getColumnName(int column)
+    {
+        switch (column)
+        {
             case 0: return "Category";
             case 1: return "Name";
             case 2: return "Description";
@@ -127,31 +132,40 @@ public class OpenSourceProjects extends AbstractTableModel {
      *
      * @return the value.
      */
-    public Object getValueAt(int row, int column) {
-        if (column==0) {
+    public Object getValueAt(int row, int column)
+    {
+        if (column == 0)
+        {
             return this.category[row];
         }
-        else if (column==1) {
+        else if (column == 1)
+        {
             return this.name[row];
         }
-        else if (column==2) {
+        else if (column == 2)
+        {
             return this.description[row];
         }
-        else if (column==3) {
+        else if (column == 3)
+        {
             return this.url[row];
         }
-        else if (column==4) {
+        else if (column == 4)
+        {
             return this.licence[row];
         }
-        else return null;
+        else
+        {
+            return null;
+        }
     }
 
     /**
      * Initialises the data.  This has been hard-coded for demo purposes only.  Typically you
      * would read data from a database, a file or some other data source.
      */
-    private void initialiseData() {
-
+    private void initialiseData()
+    {
         int c = 0;
 
         this.category[c] = "Applications";
@@ -177,7 +191,8 @@ public class OpenSourceProjects extends AbstractTableModel {
         c += 1;
         this.category[c] = "IDEs";
         this.name[c] = "Eclipse";
-        this.description[c] = "\"a kind of universal tool platform - an open extensible IDE for anything and nothing in particular.\"";
+        this.description[c] = "\"a kind of universal tool platform - an open extensible IDE for "
+                            + "anything and nothing in particular.\"";
         this.licence[c] = "IBM Public Licence (BSD Style, with extra rights granted for IBM)";
         this.url[c] = "http://www.eclipse.org";
 
@@ -185,13 +200,15 @@ public class OpenSourceProjects extends AbstractTableModel {
         this.category[c] = "IDEs";
         this.name[c] = "NetBeans";
         this.description[c] = "Sun's open source IDE.";
-        this.licence[c] = "Sun Public Licence (BSD Style, with extra rights granted for Sun Microsystems)";
+        this.licence[c] = "Sun Public Licence (BSD Style, with extra rights granted for Sun "
+                        + "Microsystems)";
         this.url[c] = "http://www.netbeans.org";
 
         c += 1;
         this.category[c] = "Project Tools";
         this.name[c] = "Checkstyle";
-        this.description[c] = "A development tool to help programmers write Java code that adheres to a coding standard.";
+        this.description[c] = "A development tool to help programmers write Java code that "
+                            + "adheres to a coding standard.";
         this.licence[c] = "LGPL";
         this.url[c] = "http://checkstyle.sourceforge.net";
 
@@ -212,7 +229,10 @@ public class OpenSourceProjects extends AbstractTableModel {
         c += 1;
         this.category[c] = "Class Libraries";
         this.name[c] = "Batik";
-        this.description[c] = "Batik is a Java(tm) technology based toolkit for applications or applets that want to use images in the Scalable Vector Graphics (SVG) format for various purposes, such as viewing, generation or manipulation.";
+        this.description[c] = "Batik is a Java(tm) technology based toolkit for applications or "
+                            + "applets that want to use images in the Scalable Vector Graphics "
+                            + "(SVG) format for various purposes, such as viewing, generation or "
+                            + "manipulation.";
         this.licence[c] = "Apache License";
         this.url[c] = "http://xml.apache.org";
 
@@ -276,14 +296,16 @@ public class OpenSourceProjects extends AbstractTableModel {
         c += 1;
         this.category[c] = "Server Side";
         this.name[c] = "JBoss";
-        this.description[c] = "An Open Source, standards-compliant, application server implemented in 100% Pure Java and distributed for free.";
+        this.description[c] = "An Open Source, standards-compliant, application server "
+                            + "implemented in 100% Pure Java and distributed for free.";
         this.licence[c] = "GPL";
         this.url[c] = "http://www.jboss.org";
 
         c += 1;
         this.category[c] = "Server Side";
         this.name[c] = "Tapestry";
-        this.description[c] = "A powerful, open-source, all-Java framework for creating leading edge web applications in Java.";
+        this.description[c] = "A powerful, open-source, all-Java framework for creating leading "
+                            + "edge web applications in Java.";
         this.licence[c] = "GPL";
         this.url[c] = "http://tapestry.sourceforge.net";
 

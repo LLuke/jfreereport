@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.11 2002/12/07 14:58:33 taqua Exp $
+ * $Id: SampleReport1.java,v 1.12 2002/12/10 16:01:06 mungady Exp $
  *
  * Changes:
  * --------
@@ -85,8 +85,9 @@ public class SampleReport1
    */
   private PageHeader createPageHeader ()
   {
-    PageHeader header = (PageHeader) ItemFactory.createPageHeader(18, new Font ("Serif", Font.PLAIN, 10), null, true, false);
-    // Is by default true, but it is defined in the xml template, so I add it here too.
+    PageHeader header = (PageHeader)
+        ItemFactory.createPageHeader(18, new Font ("Serif", Font.PLAIN, 10), null, true, false);
+    // is by default true, but it is defined in the xml template, so I add it here too.
     header.addElement (
             ItemFactory.createRectangleShapeElement (
                     "anonymous",
@@ -147,7 +148,8 @@ public class SampleReport1
    */
   private ReportFooter createReportFooter ()
   {
-    ReportFooter footer = (ReportFooter) ItemFactory.createReportFooter (48, new Font ("Serif", Font.BOLD, 16), null, false);
+    ReportFooter footer = (ReportFooter)
+        ItemFactory.createReportFooter (48, new Font ("Serif", Font.BOLD, 16), null, false);
     footer.addElement (
             ItemFactory.createLabelElement (
                     "Label 2",
@@ -173,7 +175,8 @@ public class SampleReport1
    */
   private ReportHeader createReportHeader ()
   {
-    ReportHeader header = (ReportHeader) ItemFactory.createReportHeader (48, new Font ("Serif", Font.BOLD, 20), null, false);
+    ReportHeader header = (ReportHeader)
+        ItemFactory.createReportHeader (48, new Font ("Serif", Font.BOLD, 20), null, false);
     header.addElement (
             ItemFactory.createLabelElement (
                     "Label 1",
@@ -209,7 +212,8 @@ public class SampleReport1
    */
   private ItemBand createItemBand ()
   {
-    ItemBand items = (ItemBand) ItemFactory.createItemBand (10, new Font ("Monospaced", Font.PLAIN, 8), Color.black);
+    ItemBand items = (ItemBand)
+        ItemFactory.createItemBand (10, new Font ("Monospaced", Font.PLAIN, 8), Color.black);
     items.addElement (
             ItemFactory.createRectangleShapeElement (
                     "background",
@@ -368,7 +372,8 @@ public class SampleReport1
     continentGroup.setName ("Continent Group");
     continentGroup.addField ("Continent");
 
-    GroupHeader header = (GroupHeader) ItemFactory.createGroupHeader (18, new Font ("Monospaced", Font.BOLD, 9), null, false);
+    GroupHeader header = (GroupHeader)
+        ItemFactory.createGroupHeader (18, new Font ("Monospaced", Font.BOLD, 9), null, false);
     header.addElement (
             ItemFactory.createLabelElement (
                     "Label 5",
@@ -400,7 +405,8 @@ public class SampleReport1
     );
     continentGroup.setHeader (header);
 
-    GroupFooter footer = (GroupFooter) ItemFactory.createGroupFooter (18,new Font ("Monospaced", Font.BOLD, 9), null);
+    GroupFooter footer = (GroupFooter)
+        ItemFactory.createGroupFooter (18, new Font ("Monospaced", Font.BOLD, 9), null);
     footer.addElement (
             ItemFactory.createLabelElement (
                     "Label 6",

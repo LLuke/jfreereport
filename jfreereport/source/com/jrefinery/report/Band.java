@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.30 2002/12/09 03:56:28 taqua Exp $
+ * $Id: Band.java,v 1.31 2002/12/10 21:04:15 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -213,14 +213,19 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Removes the given element from this band. You should not use this
-   * method on an band aquired from an ReportState or Function.
+   * Removes an element from the band.
+   * <p>
+   * You should not use this method on a band acquired from a <code>ReportState</code> or
+   * <code>Function</code>.
    *
-   * @param e the element to be removed
+   * @param e  the element to be removed.
    */
   public void removeElement (Element e)
   {
-    if (e == null) throw new NullPointerException();
+    if (e == null)
+    {
+      throw new NullPointerException();
+    }
     e.getStyle().removeParent(getBandDefaults());
     allElements.remove(e);
   }
