@@ -1,90 +1,87 @@
-##############################
-# JFREEREPORT: Version 0.7.0 #
-##############################
+***********************************************
+* JFREEREPORT 0.7.2 INSTALLATION INSTRUCTIONS *
+***********************************************
 
-8 March 2002
+Written by David Gilbert, 15 May 2002.
 
-Written by David Gilbert (david.gilbert@jrefinery.com).
-(C)opyright 2000-2002, by Simba Management Limited.
+1. INTRODUCTION
+---------------
+This document describes how to download and install the latest version
+of JFreeReport (0.7.2).  The procedure has changed from the previous
+version, as the release is now being packaged up by Thomas Morgner,
+the new Project Leader for JFreeReport.
 
------------------
-1.  INTRODUCTION
------------------
-JFreeReport is an open-source Java class library for generating
-reports.  It runs on the Java 2 Platform (JDK1.3 or later).
+2. DOWNLOAD
+-----------
+You can download the latest version of JFreeReport from the
+JFreeReport project page on SourceForge:
 
-JFreeReport is licensed, free of charge, under the terms of the GNU
-Lesser General Public Licence (LGPL).  A copy of the licence is
-included in the download.
+http://sourceforge.net/projects/jfreereport
 
-Please note that JFreeReport is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  Please refer refer to the licence for details.
+You need to download all of the following files (I'd recommend saving
+them to a new directory called jfreereport-0.7.2):
 
--------------------
-2.  LATEST VERSION
--------------------
-The latest version of this class library can be obtained from:
+- jfreereport-0.7.2.jar     : the JFreeReport runtime jar file;
+- jfreereport-res-0.7.2.jar : icons and other resources;
+- jfreereport-src-0.7.2.jar : source code files;
+- pixie.jar                 : the Pixie runtime jar file;
+- pixie-res.jar             : resources for Pixie;
+- pixie-src.jar             : Pixie source code;
+- libs.jar                  : runtime jar files for the libraries used
+                              by JFreeReport.
 
-    http://www.object-refinery.com/jfreereport
+3. UNPACKING
+------------
+You need to unpack some of the jar files in order to run the
+demonstration application.
 
-If you have an comments, suggestions or bugs to report, please post a
-message in the JFreeReport discussion forum.
+First, create a subdirectory called resources, within the
+jfreereport-0.7.2 directory that you created.  Move the
+jfreereport-res-0.7.2.jar file to this new subdirectory, then run the
+jar utility to unpack the files:
 
------------------
-3.  DEPENDENCIES
------------------
-JFreeReport requires JDK 1.3 or later.  
+jar -xvf jfreereport-res-0.7.2.jar
 
-JFreeReport uses classes from the JCommon class library (also available from
-http://www.object-refinery.com), version 0.5.6 or later.  The JCommon
-jar file is included in the JFreeReport download, but you may want to
-download JCommon separately to obtain the full source code (also under
-the GNU Lesser General Public Licence).
+Second, create a subdirectory called libs within the
+jfreereport-0.7.2 directory.  Move the libs.zip file to this new
+subdirectory, and unzip it:
 
-JFreeReport uses icons from the Java Look and Feel Graphics Repository
-that are the copyright of Sun Microsystems, Inc.  See the icons
-directory for details.
+unzip libs.zip
 
-JFreeReport uses the open source iText library to create reports in Acrobat PDF
-format.  You can download the latest version of iText from 
-http://www.lowagie.com/iText/index.html 
+This extracts the following jar files:
 
-Finally, JFreeReport requires a SAX parser to read report definition
-files.  Any JAXP1.1 parser should work - Xerces
-(http://xml.apache.org) is a good choice, but we've included the jar
-file from the GNU JAXP project
-(http://www.gnu.org/software/classpathx/jaxp/) because of its size.
-The licence is GPL with a "library exception".
+gnujaxp.jar
+iText.jar
+jcommon-0.6.1.jar
+junit.jar
+pixie.jar
 
+As an optional last step, create a subdirectory called source within
+the jfreereport-0.7.2 directory.  Move the jfreereport-src-0.7.2.jar
+and pixie-src.jar files to this new subdirectory, then run the jar
+utility to unpack the files:
 
-------------------------
-4. THE DEMO APPLICATION
-------------------------
-There is a demonstration application included with JFreeReport.  To run
-it you need the files jfreereport-0.7.0.jar, jcommon-0.5.6.jar,
-iText.jar and gnujaxp.jar.  In addition the files report1.xml and
-report2.xml must be on your classpath.
+jar -xvf jfreereport-src-0.7.2.jar
+jar -xvf pixie-src.jar
 
-Using JDK 1.3 (or later) you can start the demo by running the class:
+This extracts all the source code files.
 
-    com.jrefinery.report.demo.JFreeReportDemo.
+4. RUNNING THE DEMONSTRATION APPLICATION
+----------------------------------------
+To run the demonstration application, type the following command from
+the jfreereport-0.7.2 directory:
 
-For example, on Linux, the following command line will run the demo
-application (when the current working directory is
-jfreereport-0.7.2/libs):
+java -classpath
+jfreereport-0.7.2.jar:libs/jcommon-0.6.1.jar:libs/gnujaxp.jar:libs/iText.jar:libs/pixie.jar:./resources
+com.jrefinery.report.demo.JFreeReportDemo
 
-java -classpath .:libs/pixie.jar:libs/jcommon-0.6.1.jar:libs/jfreereport-0.7.2.jar:libs/iText.jar:libs/gnujaxp.jar:./resources com.jrefinery.report.demo.JFreeReportDemo
+Note that the above command should be entered on a single command
+line.  On Windows, substitute a semi-colon for the colon as the path
+separator in the classpath setting, and use backslashes instead of
+forward slashes.
 
-Depending on your system configuration and the current working
-directory, you may need to specify different paths in the above
-command line.  
+5. FEEDBACK
+-----------
+Please post your feedback in the JFreeReport forum at:
 
-Windows users should separate entries in the classpath
-with a semi-colon, not a colon.
-
-Note that the demo application looks for the files report1.xml and
-report2.xml on the classpath.  These files contain sample report
-definitions.
-
-
+http://www.object-refinery.com/jfreereport/index.html
