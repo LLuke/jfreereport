@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.4 2003/02/21 11:31:13 mungady Exp $
+ * $Id: ReportConverterGUI.java,v 1.5 2003/02/25 14:07:29 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 /**
- * A utility application for reporting XML report files from the old format to the 
+ * A utility application for converting XML report files from the old format to the 
  * new format.
  * 
  * @author Thomas Morgner.
