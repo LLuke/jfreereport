@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Spool.java,v 1.7 2003/02/02 23:43:52 taqua Exp $
+ * $Id: Spool.java,v 1.8 2003/02/07 22:40:40 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  */
 
 package com.jrefinery.report.targets.pageable;
+
+import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
 
 import java.util.ArrayList;
 
@@ -59,6 +61,11 @@ public class Spool implements Cloneable
     this.operations = new ArrayList();
   }
 
+  /**
+   * Checks whether this spool contains operations.
+   *
+   * @return true, if the spool is empty, false otherwise.
+   */
   public boolean isEmpty ()
   {
     return operations.isEmpty();
@@ -69,10 +76,10 @@ public class Spool implements Cloneable
    *
    * @return an array of operations.
    */
-  public com.jrefinery.report.targets.pageable.operations.PhysicalOperation[] getOperations ()
+  public PhysicalOperation[] getOperations ()
   {
-    com.jrefinery.report.targets.pageable.operations.PhysicalOperation[] ops = new com.jrefinery.report.targets.pageable.operations.PhysicalOperation[operations.size()];
-    ops = (com.jrefinery.report.targets.pageable.operations.PhysicalOperation[]) operations.toArray(ops);
+    PhysicalOperation[] ops = new PhysicalOperation[operations.size()];
+    ops = (PhysicalOperation[]) operations.toArray(ops);
     return ops;
   }
 
@@ -81,7 +88,7 @@ public class Spool implements Cloneable
    *
    * @param op  the operation.
    */
-  public void addOperation (com.jrefinery.report.targets.pageable.operations.PhysicalOperation op)
+  public void addOperation (PhysicalOperation op)
   {
     operations.add (op);
   }

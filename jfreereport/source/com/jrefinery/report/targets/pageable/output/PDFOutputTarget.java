@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.19 2003/02/06 17:38:19 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.20 2003/02/07 22:40:43 taqua Exp $
  *
  * Changes
  * -------
@@ -61,6 +61,7 @@ import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.support.itext.BaseFontRecord;
 import com.jrefinery.report.targets.support.itext.BaseFontSupport;
+import com.jrefinery.report.targets.support.itext.BaseFontFactory;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.keypoint.PngEncoder;
@@ -296,7 +297,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public static final String getDefaultFontEncoding()
   {
-    return com.jrefinery.report.targets.support.itext.BaseFontFactory.getDefaultFontEncoding();
+    return BaseFontFactory.getDefaultFontEncoding();
   }
 
   /**

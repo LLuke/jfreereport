@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.38 2003/02/02 23:43:51 taqua Exp $
+ * $Id: ReportPane.java,v 1.39 2003/02/04 17:56:19 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -706,7 +706,6 @@ public class ReportPane extends JComponent implements Printable, Pageable
   public void repaginate ()
           throws ReportProcessingException
   {
-//    Log.error ("Why repaginate?", new Exception());
     if (isPaginated ())
     {
       // Is already done
@@ -747,12 +746,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
         int pageNr = 0;
         if (list.size() > 0)
         {
-          Number i = (Number) (list.get(0)).getProperty (JFreeReport.REPORT_PAGECOUNT_PROPERTY);
-          if (i != null)
-          {
-            pageCount = i.intValue();
-            pageNr = 1;
-          }
+          // the report state list stores one state for every page. 
+          pageNr = 1;
+          pageCount = list.size();
         }
         setCurrentPageCount (pageCount);
         setPageNumber (pageNr);

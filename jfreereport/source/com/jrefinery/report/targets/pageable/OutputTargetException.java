@@ -25,16 +25,17 @@
  * --------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: OutputTargetException.java,v 1.4 2002/12/12 12:26:56 mungady Exp $
+ * $Id: OutputTargetException.java,v 1.5 2003/02/07 22:40:40 taqua Exp $
  *
  * Changes
  * -------
  * 16-May-2002 : Version 1 (DG);
  * 31-Aug-2002 : Changed PrintStackTrace implementation to reveal the parent exception
+ * 07-Feb-2003 : OutputTargetException now extendes SizeCalculator exception, the size
+ *               calculator is now a separated from the pageable output classes.
  */
 package com.jrefinery.report.targets.pageable;
 
-import com.jrefinery.report.util.StackableException;
 import com.jrefinery.report.targets.base.layout.SizeCalculatorException;
 
 /**

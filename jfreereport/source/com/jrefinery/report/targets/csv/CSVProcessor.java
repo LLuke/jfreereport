@@ -28,13 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.4 2003/02/04 17:56:27 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.5 2003/02/08 20:43:45 taqua Exp $
  *
  * Changes
  * -------
  * 18-Jan-2003 : Initial Version
  * 22-Jan-2003 : The separator is now configurable
  * 04-Feb-2003 : Consistency checks
+ * 09-Feb-2003 : Documentation
  */
 
 package com.jrefinery.report.targets.csv;
@@ -56,29 +57,74 @@ import java.util.Iterator;
 
 /**
  * The CSVProcessor coordinates the writing process for the Raw-CSV output.
+ * A CSVWriter is added to the private copy of the report to handle the
+ * output process.
+ *
+ * @see CSVWriter
  */
 public class CSVProcessor
 {
+  /** The ReportConfiguration key that defines the separator string. */
   public static final String CSV_SEPARATOR = "com.jrefinery.report.targets.csv.separator";
+  /** The ReportConfiguration key that defines whether to print data row names. */
   public static final String CSV_DATAROWNAME = "com.jrefinery.report.targets.csv.write-datarow-names";
-  
+  /** The default name for the csv writer function used by this processor. */
   private static final String CSV_WRITER = "com.jrefinery.report.targets.csv.csv-writer";
 
+  /** The writer that shoud be used by the CSVWriter function */
   private Writer writer;
+  /** The report which should be processed. */
   private JFreeReport report;
 
+  /**
+   * Creates a new CSVProcessor. The processor will use a colon to separate
+   * the column values, unless defined otherwise in the report configuration.
+   * The processor creates a private copy of the clone, so that no change to
+   * the original report will influence the report processing. DataRow names
+   * are not written.
+   *
+   * @param report the to be processed report.
+   * @throws ReportProcessingException if the report initialisation failed.
+   * @throws FunctionInitializeException if the writer initialisation failed.
+   */
   public CSVProcessor(JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
     this (report, report.getReportConfiguration().getConfigProperty(CSV_SEPARATOR, ","));
   }
 
+  /**
+   *
+   * Creates a new CSVProcessor. The processor will use the specified separator,
+   * the report configuration is not queried for an separator.
+   * The processor creates a private copy of the clone, so that no change to
+   * the original report will influence the report processing. DataRowNames
+   * are not written.
+   *
+   * @param report the to be processed report.
+   * @param separator the separator string to mark column boundries.
+   * @throws ReportProcessingException if the report initialisation failed.
+   * @throws FunctionInitializeException if the writer initialisation failed.
+   */
   public CSVProcessor(JFreeReport report, String separator)
       throws ReportProcessingException, FunctionInitializeException
   {
     this (report, separator, false);
   }
 
+  /**
+   *
+   * Creates a new CSVProcessor. The processor will use the specified separator,
+   * the report configuration is not queried for an separator.
+   * The processor creates a private copy of the clone, so that no change to
+   * the original report will influence the report processing. The first row
+   * will contain the datarow names.
+   *
+   * @param report the to be processed report.
+   * @param separator the separator string to mark column boundries.
+   * @throws ReportProcessingException if the report initialisation failed.
+   * @throws FunctionInitializeException if the writer initialization failed.
+   */
   public CSVProcessor(JFreeReport report, String separator, boolean writeDataRowNames)
       throws ReportProcessingException, FunctionInitializeException
   {
@@ -92,6 +138,9 @@ public class CSVProcessor
       throw new ReportProcessingException("Initial Clone of Report failed");
     }
 
+    // Add the writer function as highest priority function to the report.
+    // this function is executed as last function, after all other function values
+    // have been calculated.
     CSVWriter lm = new CSVWriter();
     lm.setName(CSV_WRITER);
     lm.setSeparator(separator);
@@ -99,16 +148,33 @@ public class CSVProcessor
     this.report.addFunction(lm);
   }
 
-  public JFreeReport getReport()
+  /**
+   * Gets the local copy of the report. This report is initialized to handle the
+   * report writing, changes to the report can have funny results, so be carefull,
+   * when using the report object.
+   *
+   * @return the local copy of the report.
+   */
+  protected JFreeReport getReport()
   {
     return report;
   }
 
+  /**
+   * Returns the writer used in this Processor.
+   *
+   * @return the writer
+   */
   public Writer getWriter()
   {
     return writer;
   }
 
+  /**
+   * Defines the writer which should be used to write the contents of the report.
+   *
+   * @param writer the writer.
+   */
   public void setWriter(Writer writer)
   {
     this.writer = writer;
@@ -123,44 +189,69 @@ public class CSVProcessor
    */
   private ReportState repaginate() throws ReportProcessingException, CloneNotSupportedException
   {
+    // every report processing starts with an StartState.
     StartState startState = new StartState(getReport());
     ReportState state = startState;
     ReportState retval = null;
-
-    // PrepareRuns, part 1: resolve the function dependencies by running the report
-    // until all function levels are completed.
     JFreeReport report = state.getReport();
 
-    // all prepare runs have this property set, test details with getLevel()
+    // the report processing can be splitted into 2 separate processes.
+    // The first is the ReportPreparation; all function values are resolved and
+    // a dummy run is done to calculate the final layout. This dummy run is
+    // also necessary to resolve functions which use or depend on the PageCount.
+
+    // the second process is the printing of the report, this is done in the
+    // processReport() method.
+
+    // during a prepare run the REPORT_PREPARERUN_PROPERTY is set to true.
     state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
+
+    // the pageformat is added to the report properties, PageFormat is not serializable,
+    // so a repaginated report is no longer serializable.
+    //
+    // The pageformat will cause trouble in later versions, when printing over
+    // multiple pages gets implemented. This property will be replaced by a more
+    // suitable alternative.
     PageFormat p = report.getDefaultPageFormat();
     state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
-    // now set a dummy writer into the xml-processor.
+    // now change the writer function to be a dummy writer. We don't want any
+    // output in the prepare runs.
     CSVWriter w = (CSVWriter) state.getDataRow().get(CSV_WRITER);
     w.setWriter(new OutputStreamWriter(new NullOutputStream()));
 
+    // now process all function levels.
+    // there is at least one level defined, as we added the CSVWriter
+    // to the report.
     Iterator it = startState.getLevels();
-    boolean hasNext;
-    int level = 0;
-    if (it.hasNext())
+    if (it.hasNext() == false)
     {
-      level = ((Integer) it.next()).intValue();
+      throw new IllegalStateException("No functions defined, invalid implementation.");
     }
 
+    boolean hasNext;
+    int level = ((Integer) it.next()).intValue();
+    // outer loop: process all function levels
     do
     {
-      Log.debug(new Log.SimpleMessage("Processing Level ", new Integer(level)));
+      // if the current level is the output-level, then save the report state.
+      // The state is used later to restart the report processing.
       if (level == -1)
       {
         retval = state.copyState();
       }
+
+      // inner loop: process the complete report, calculate the function values
+      // for the current level. Higher level functions are not available in the
+      // dataRow.
       while (!state.isFinish())
       {
         ReportState oldstate = state;
         state = oldstate.copyState().advance();
         if (!state.isFinish())
         {
+          // if the report processing is stalled, throw an exception; an infinite
+          // loop would be caused.
           if (!state.isProceeding(oldstate))
           {
             throw new ReportProcessingException("State did not proceed, bailing out!");
@@ -168,6 +259,9 @@ public class CSVProcessor
         }
       }
 
+      // if there is an other level to process, then use the finish state to
+      // create a new start state, which will continue the report processing on
+      // the next higher level.
       hasNext = it.hasNext();
       if (hasNext)
       {
@@ -184,23 +278,35 @@ public class CSVProcessor
     } while (hasNext == true);
 
     // root of evilness here ... pagecount should not be handled specially ...
-
+    // The pagecount should not be added as report property, there are functions to
+    // do this.
+    /*
     state.setProperty(JFreeReportConstants.REPORT_PAGECOUNT_PROPERTY,
                       new Integer(state.getCurrentPage() - 1));
+    */
     state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
-    // part 3: (done by processing the ReportStateList:) Print the report
+    // finally prepeare the returned start state.
     StartState sretval = (StartState) retval;
     if (sretval == null)
     {
       throw new IllegalStateException("There was no valid pagination done.");
     }
+    // reset the state, so that the datarow points to the first row of the tablemodel.
     sretval.resetState();
     return sretval;
   }
 
+  /**
+   * Processes the report. The generated output is written using the defined
+   * writer, the report is repaginated before the final writing.
+   *
+   * @throws ReportProcessingException if the report processing failed.
+   * @throws IllegalStateException if there is no writer defined.
+   */
   public void processReport() throws ReportProcessingException
   {
+    if (writer == null) throw new IllegalStateException("No writer defined");
     try
     {
       ReportState state = repaginate();
@@ -226,5 +332,4 @@ public class CSVProcessor
       throw new ReportProcessingException("StateCopy was not supported");
     }
   }
-
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.3 2003/01/30 22:52:41 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.4 2003/02/04 17:56:14 taqua Exp $
  *
  * Changes
  * -------
@@ -360,7 +360,6 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    */
   public void characters (char[] ch, int start, int length)
   {
-    // todo: Parse the default entities
     // accumulate the characters in case the text is split into several chunks...
     if (this.currentText != null)
     {

@@ -28,12 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.19 2003/02/02 23:43:52 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.20 2003/02/04 17:56:27 taqua Exp $
  *
  * Changes
  * -------
  * 03-Dec-2002 : Added Javadocs (DG);
- *
+ * 02-Feb-2003 : added Interrupt handling and removed log messages.
+ * 04-Feb-2003 : Code-Optimizations
  */
 
 package com.jrefinery.report.targets.pageable;
@@ -54,13 +55,15 @@ import java.awt.print.PageFormat;
 import java.util.Iterator;
 
 /**
- * A report processor.
+ * A report processor for Pageable OutputTargets. The processor coordinates
+ * and initializes the output process for all page- and print-oriented output
+ * formats.
  *
  * @author Thomas Morgner
  */
 public class PageableReportProcessor
 {
-  /** The layout manager name. */
+  /** The page layout manager name. */
   public static final String LAYOUTMANAGER_NAME = "pageable.layoutManager";
 
   /** The report being processed. */
@@ -69,6 +72,7 @@ public class PageableReportProcessor
   /** The output target. */
   private OutputTarget outputTarget;
 
+  /** A flag defining whether to check for Thread-Interrupts. */
   private boolean handleInterruptedState;
 
   /**
@@ -96,11 +100,25 @@ public class PageableReportProcessor
     this.report.addFunction(lm);
   }
 
+  /**
+   * Returns whether the processor should check the threads interrupted state.
+   * If this is set to true and the thread was interrupted, then the report processing
+   * is aborted.
+   *
+   * @return true, if the processor should check the current thread state, false otherwise.
+   */
   public boolean isHandleInterruptedState()
   {
     return handleInterruptedState;
   }
 
+  /**
+   * Defines, whether the processor should check the threads interrupted state.
+   * If this is set to true and the thread was interrupted, then the report processing
+   * is aborted.
+   *
+   * @param handleInterruptedState true, if the processor should check the current thread state, false otherwise.
+   */
   public void setHandleInterruptedState(boolean handleInterruptedState)
   {
     this.handleInterruptedState = handleInterruptedState;
@@ -210,39 +228,65 @@ public class PageableReportProcessor
   {
     try
     {
+      // every report processing starts with an StartState.
       StartState startState = new StartState(getReport());
       ReportState state = startState;
-
-      // PrepareRuns, part 1: resolve the function dependencies by running the report
-      // until all function levels are completed.
       JFreeReport report = state.getReport();
+      ReportStateList pageStates = null;
 
-      // all prepare runs have this property set, test details with getLevel()
+      // the report processing can be splitted into 2 separate processes.
+      // The first is the ReportPreparation; all function values are resolved and
+      // a dummy run is done to calculate the final layout. This dummy run is
+      // also necessary to resolve functions which use or depend on the PageCount.
+
+      // the second process is the printing of the report, this is done in the
+      // processReport() method.
+
+      // during a prepare run the REPORT_PREPARERUN_PROPERTY is set to true.
       state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
+
+      // the pageformat is added to the report properties, PageFormat is not serializable,
+      // so a repaginated report is no longer serializable.
+      //
+      // The pageformat will cause trouble in later versions, when printing over
+      // multiple pages gets implemented. This property will be replaced by a more
+      // suitable alternative.
       PageFormat p = getOutputTarget().getLogicalPage().getPhysicalPageFormat();
       state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
-      // the levels are defined from +inf to 0
-      // we don't draw and we do not collect states in a StateList yet
-      ReportStateList pageStates = null;
+
+      // now change the writer function to be a dummy writer. We don't want any
+      // output in the prepare runs.
       OutputTarget dummyOutput = getOutputTarget().createDummyWriter();
       dummyOutput.configure(report.getReportConfiguration());
       dummyOutput.open();
 
+      // now process all function levels.
+      // there is at least one level defined, as we added the CSVWriter
+      // to the report.
+      // the levels are defined from +inf to 0
+      // we don't draw and we do not collect states in a StateList yet
       Iterator it = startState.getLevels();
-      boolean hasNext;
-      int level = 0;
-      if (it.hasNext())
+      if (it.hasNext() == false)
       {
-        level = ((Integer) it.next()).intValue();
+        throw new IllegalStateException("No functions defined, invalid implementation.");
       }
 
+      boolean hasNext;
+      int level = ((Integer) it.next()).intValue();
+      // outer loop: process all function levels
       do
       {
+        // if the current level is the output-level, then save the report state.
+        // The state is used later to restart the report processing.
         if (level == -1)
         {
           pageStates = new ReportStateList(this);
         }
+
+        // inner loop: process the complete report, calculate the function values
+        // for the current level. Higher level functions are not available in the
+        // dataRow.
         while (!state.isFinish())
         {
           if (level == -1)
@@ -253,6 +297,8 @@ public class PageableReportProcessor
           state = processPage(state, dummyOutput);
           if (!state.isFinish())
           {
+            // if the report processing is stalled, throw an exception; an infinite
+            // loop would be caused.
             if (!state.isProceeding(oldstate))
             {
               throw new ReportProcessingException("State did not proceed, bailing out!");
@@ -260,6 +306,9 @@ public class PageableReportProcessor
           }
         }
 
+        // if there is an other level to process, then use the finish state to
+        // create a new start state, which will continue the report processing on
+        // the next higher level.
         hasNext = it.hasNext();
         if (hasNext)
         {
@@ -278,18 +327,20 @@ public class PageableReportProcessor
 
       dummyOutput.close();
       // root of evilness here ... pagecount should not be handled specially ...
-
-      state.setProperty(JFreeReportConstants.REPORT_PAGECOUNT_PROPERTY, 
+      // The pagecount should not be added as report property, there are functions to
+      // do this.
+      /*
+      state.setProperty(JFreeReportConstants.REPORT_PAGECOUNT_PROPERTY,
                         new Integer(state.getCurrentPage() - 1));
+      */
       state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
-      // part 3: (done by processing the ReportStateList:) Print the report
+      // finally return the saved page states.
       return pageStates;
     }
     catch (OutputTargetException ote)
     {
-      Log.error("Unable to repaginate Report:", ote);
-      throw new ReportProcessingException(ote.getMessage());
+      throw new ReportProcessingException("Unable to repaginate Report", ote);
     }
   }
 
@@ -330,7 +381,8 @@ public class PageableReportProcessor
       throw new NullPointerException("State != null");
     }
 
-    // just crash to make sure that FinishStates are caught outside, we cannot handle them here
+    // if a finish state is set to be processed, crash to make sure that FinishStates
+    // are caught outside, we won't handle them here
     if (currPage.isFinish())
     {
       throw new IllegalArgumentException("No finish state for processpage allowed: ");
@@ -341,9 +393,12 @@ public class PageableReportProcessor
     lm.setLogicalPage(out.getLogicalPage());
     lm.restoreSaveState(state);
 
-    // todo find a better way of handling the end of the report
+    // docmark: page spanning bands will affect this badly designed code.
     // this code will definitly be affected by the Band-intenal-pagebreak code
     // to this is non-fatal. the next redesign is planed here :)
+
+    // The state restoration must not finish the current page, except the whole
+    // report processing will be finished.
     if (lm.isPageEnded())
     {
       state = state.advance();
@@ -355,6 +410,8 @@ public class PageableReportProcessor
       // Do some real work.  The report header and footer, and the page headers and footers are
       // just decorations, as far as the report state is concerned.  The state only changes in
       // the following code...
+
+      // this loop advances the report state until the next end-of-page is reached.
       while ((lm.isStartNewPage() == false) && (state.isFinish() == false))
       {
         PageLayouter org = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
@@ -362,7 +419,8 @@ public class PageableReportProcessor
         lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
         if (org != lm)
         {
-          throw new IllegalStateException();
+          // assertation check, the pagelayouter must not change during the processing.
+          throw new IllegalStateException("Lost the layout manager");
         }
       }
     }

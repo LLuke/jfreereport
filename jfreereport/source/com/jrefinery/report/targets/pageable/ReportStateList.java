@@ -24,13 +24,20 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.7 2003/01/07 15:10:33 taqua Exp $
+ * $Id: ReportStateList.java,v 1.8 2003/02/04 17:56:27 taqua Exp $
  *
  * Changes
  * -------
  * 31-May-2002 : Initial version
  * 09-Jun-2002 : Documentation
  * 10-Jul-2002 : additional checks for method-input-parameters
+ * 02-Dec-2002 : Moved to the new OutputSystem
+ * 06-Dec-2002 : ReportStateList optimization: using different lists for
+ *               bigger reports.
+ * 07-Dec-2002 : Documentation
+ * 09-Dec-2002 : Documentation
+ * 12-Dec-2002 : Documentation
+ * 07-Jan-2003 : BugFix: States were added to the wrong position
  */
 package com.jrefinery.report.targets.pageable;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.31 2003/02/01 18:27:04 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.32 2003/02/05 17:56:03 taqua Exp $
  *
  * Changes
  * -------
@@ -358,9 +358,16 @@ public class ReportConfiguration
   /** disable DTD validation by default */
   public static final String PARSER_VALIDATE_DEFAULT = "true";
 
+  /**
+   * The default resourcebundle that should be used for ResourceFileFilter.
+   * This property must be applied by the parser.
+   */
   public static final String REPORT_RESOURCE_BUNDLE = "com.jrefinery.report.ResourceBundle";
 
+  /** Enable stricter table layouting for all TableProcessors? */
   public static final String STRICT_TABLE_LAYOUT = "com.jrefinery.report.targets.table.StrictLayout";
+
+  /** Disable strict layout by default */ 
   public static final String STRICT_TABLE_LAYOUT_DEFAULT = "false";
 
   /** Storage for the configuration properties. */

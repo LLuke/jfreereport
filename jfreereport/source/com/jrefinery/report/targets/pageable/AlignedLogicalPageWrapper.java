@@ -1,8 +1,39 @@
 /**
- * Date: Jan 29, 2003
- * Time: 11:11:17 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: AlignedLogicalPageWrapper.java,v 1.2 2003/02/02 23:43:52 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------
+ * AlignedLogicalPageWrapper.java
+ * ----------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: AlignedLogicalPageWrapper.java,v 1.3 2003/02/07 22:40:40 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 29-Jan-2003 : Initial version
+ *
  */
 package com.jrefinery.report.targets.pageable;
 
@@ -12,11 +43,26 @@ import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 
+/**
+ * The AlignedLogicalPageWrapper corrects all values of the wrapped LogicalPage
+ * so that the bounds are aligned for a given LayoutSupport.  
+ */
 public class AlignedLogicalPageWrapper implements LogicalPage
 {
+  /** the base logical page which is wrapped by this implementation */
   private LogicalPage logicalPage;
+
+  /** the layout support implementation which defines the alignments */
   private LayoutSupport layoutSupport;
 
+  /**
+   * Creates a AlignedLogicalPageWrapper, which wraps the logicalpage to obey
+   * to the alignment defined by the LayoutSupport.
+   *
+   * @param logicalPage the logical page that is aligned
+   * @param support the layout support which defines the alignment.
+   * @throws NullPointerException if one of the parameters is null.
+   */
   public AlignedLogicalPageWrapper(LogicalPage logicalPage, LayoutSupport support)
   {
     if (logicalPage == null)
@@ -29,6 +75,13 @@ public class AlignedLogicalPageWrapper implements LogicalPage
     this.layoutSupport = support;
   }
 
+  /**
+   * A helper function which alignes the given value along the boundry.
+   *
+   * @param value the value that should be aligned
+   * @param boundry the alignment boundry
+   * @return the aligned value
+   */
   private double alignDown (double value, double boundry)
   {
     if (boundry == 0)
@@ -38,7 +91,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
   }
 
   /**
-   * Returns the page width.
+   * Returns the page width, aligned by the horizontal alignment of the layout support.
    *
    * @return the page width.
    */
@@ -48,7 +101,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
   }
 
   /**
-   * Returns the page height.
+   * Returns the page height, aligned by the vertical alignment of the layout support.
    *
    * @return the page height.
    */
@@ -138,8 +191,6 @@ public class AlignedLogicalPageWrapper implements LogicalPage
 
   /**
    * Returns the physical page format.
-   * todo: Find a better way of handling this. Support different pageformats in one
-   * logical Page (BookStyle).
    *
    * @return the physical page format.
    */

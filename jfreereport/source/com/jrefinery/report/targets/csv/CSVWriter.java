@@ -1,8 +1,39 @@
 /**
- * Date: Jan 7, 2003
- * Time: 5:15:08 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: CSVWriter.java,v 1.3 2003/02/03 18:52:46 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------
+ * CSVWriter.java
+ * ----------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: CSVWriter.java,v 1.4 2003/02/08 20:43:45 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 07-Jan-2003 : Initial Version
+ * 09-Feb-2003 : Documentation
  */
 package com.jrefinery.report.targets.csv;
 
@@ -10,21 +41,31 @@ import com.jrefinery.report.DataRow;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.function.FunctionProcessingException;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ *
+ */
 public class CSVWriter extends AbstractFunction
 {
+  /**
+   *
+   */
   private static class CSVRow
   {
     private ArrayList data;
     private CSVQuoter quoter;
     private String lineSeparator;
 
+    /**
+     *
+     * @param quoter
+     */
     public CSVRow(CSVQuoter quoter)
     {
       data = new ArrayList();
@@ -32,16 +73,29 @@ public class CSVWriter extends AbstractFunction
       lineSeparator = System.getProperty("line.separator", "\n");
     }
 
+    /**
+     *
+     * @param d
+     */
     public void append (int d)
     {
       data.add (new Integer (d));
     }
 
+    /**
+     *
+     * @param o
+     */
     public void append (Object o)
     {
       data.add (o);
     }
 
+    /**
+     *
+     * @param w
+     * @throws IOException
+     */
     public void write (Writer w) throws IOException
     {
       Iterator it = data.iterator();
@@ -55,48 +109,97 @@ public class CSVWriter extends AbstractFunction
     }
   }
 
+  /** the writer used to output the generated data */
   private Writer w;
+  /** the functions dependency level, -1 by default */
   private int depLevel;
+  /** the CSVQuoter used to encode the column values */
   private CSVQuoter quoter;
+  /** a flag indicating whether to writer data row names as column header */
   private boolean writeDataRowNames;
 
+  /**
+   * DefaulConstructor. Creates a CSVWriter with a dependency level of -1 and
+   * a default CSVQuoter.
+   */
   public CSVWriter()
   {
     setDependencyLevel(-1);
     quoter = new CSVQuoter();
   }
 
+  /**
+   * Returns whether to print dataRow column names as header.
+   *
+   * @return true, if column names are printed, false otherwise.
+   */
   public boolean isWriteDataRowNames()
   {
     return writeDataRowNames;
   }
 
+  /**
+   * Defines, whether to print column names in the first row.
+   *
+   * @param writeDataRowNames true, if column names are printed, false otherwise
+   */
   public void setWriteDataRowNames(boolean writeDataRowNames)
   {
     this.writeDataRowNames = writeDataRowNames;
   }
 
+  /**
+   * Returns the writer used to output the generated data.
+   *
+   * @return the writer
+   */
   public Writer getWriter()
   {
     return w;
   }
 
+  /**
+   * Defines the writer which should be used to output the generated data.
+   *
+   * @param w the writer
+   */
   public void setWriter(Writer w)
   {
     this.w = w;
   }
 
+  /**
+   * Defines the sepator, which is used to separate columns in a row.
+   *
+   * @param separator the separator string, never null.
+   * @throws NullPointerException if the separator is null.
+   * @throws IllegalArgumentException if the separator is an empty string.
+   */
   public void setSeparator(String separator)
   {
-    if (separator == null) throw new NullPointerException();
+    if (separator == null)
+      throw new NullPointerException();
+    if (separator.length() == 0)
+      throw new IllegalArgumentException("Separator must not be an empty string");
     this.quoter.setSeparator(separator);
   }
 
+  /**
+   * Gets the separator which is used to separate columns in a row.
+   *
+   * @return the separator, never null.
+   */
   public String getSeparator()
   {
     return quoter.getSeparator();
   }
 
+  /**
+   * Writes the contents of the dataRow into the CSVRow.
+   *
+   * @param dr the dataRow which should be written
+   * @param row the CSVRow used to collect the RowData.
+   */
   private void writeDataRow (DataRow dr,CSVRow row)
   {
     for (int i = 0; i < dr.getColumnCount(); i++)
@@ -113,6 +216,12 @@ public class CSVWriter extends AbstractFunction
     }
   }
 
+  /**
+   * Writes the names of the columns of the dataRow into the CSVRow.
+   *
+   * @param dr the dataRow which should be written
+   * @param row the CSVRow used to collect the RowData.
+   */
   private void writeDataRowNames (DataRow dr,CSVRow row)
   {
     for (int i = 0; i < dr.getColumnCount(); i++)
@@ -122,9 +231,10 @@ public class CSVWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that the report has started.
+   * Writes the ReportHeader and (if defined) the dataRow names.
    *
    * @param event  the event.
+   * @throws FunctionProcessingException if the writing failed.
    */
   public void reportStarted(ReportEvent event)
   {
@@ -133,7 +243,8 @@ public class CSVWriter extends AbstractFunction
       if (isWriteDataRowNames())
       {
         CSVRow names = new CSVRow(quoter);
-        names.append ("level");
+        names.append ("report.currentgroup");
+        names.append ("report.eventtype");
         writeDataRowNames(event.getDataRow(), names);
         names.write(getWriter());
       }
@@ -146,14 +257,15 @@ public class CSVWriter extends AbstractFunction
     }
     catch (IOException ioe)
     {
-      Log.error ("Error writing the band", ioe);
+      throw new FunctionProcessingException ("Error writing the current datarow", ioe);
     }
   }
 
   /**
-   * Receives notification that the report has finished.
+   * Writes the ReportFooter.
    *
    * @param event  the event.
+   * @throws FunctionProcessingException if the writing failed.
    */
   public void reportFinished(ReportEvent event)
   {
@@ -167,14 +279,15 @@ public class CSVWriter extends AbstractFunction
     }
     catch (IOException ioe)
     {
-      Log.error ("Error writing the band", ioe);
+      throw new FunctionProcessingException ("Error writing the current datarow", ioe);
     }
   }
 
   /**
-   * Receives notification that a group has started.
+   * Writes the GroupHeader of the current group.
    *
    * @param event  the event.
+   * @throws FunctionProcessingException if the writing failed.
    */
   public void groupStarted(ReportEvent event)
   {
@@ -193,14 +306,15 @@ public class CSVWriter extends AbstractFunction
     }
     catch (IOException ioe)
     {
-      Log.error ("Error writing the band", ioe);
+      throw new FunctionProcessingException ("Error writing the current datarow", ioe);
     }
   }
 
   /**
-   * Receives notification that a group has finished.
+   * Writes the GroupFooter of the active group.
    *
    * @param event  the event.
+   * @throws FunctionProcessingException if the writing failed.
    */
   public void groupFinished(ReportEvent event)
   {
@@ -219,14 +333,15 @@ public class CSVWriter extends AbstractFunction
     }
     catch (IOException ioe)
     {
-      Log.error ("Error writing the band", ioe);
+      throw new FunctionProcessingException ("Error writing the current datarow", ioe);
     }
   }
 
   /**
-   * Receives notification that a row of data is being processed.
+   * Writes the current ItemBand.
    *
    * @param event  the event.
+   * @throws FunctionProcessingException if the writing failed.
    */
   public void itemsAdvanced(ReportEvent event)
   {
@@ -240,16 +355,15 @@ public class CSVWriter extends AbstractFunction
     }
     catch (IOException ioe)
     {
-      Log.error ("Error writing the band", ioe);
+      throw new FunctionProcessingException ("Error writing the current datarow", ioe);
     }
   }
 
   /**
-   * Return the current expression value.
-   * <P>
-   * The value depends (obviously) on the expression implementation.
+   * Return a selfreference of this CSVWriter. This selfreference is used to
+   * confiugre the output process.
    *
-   * @return the value of the function.
+   * @return this CSVWriter.
    */
   public Object getValue()
   {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.7 2003/02/02 23:43:52 taqua Exp $
+ * $Id: OutputTarget.java,v 1.8 2003/02/07 22:40:40 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@
  *               added.
  * 31-Aug-2002 : Added properties to support a generic configuration interface
  * 10-Dec-2002 : Javadoc updates (DG);
- *
+ * 29-Jan-2003 : Extracted SizeCalculator super-interface.
  */
 
 package com.jrefinery.report.targets.pageable;
@@ -59,8 +59,8 @@ import java.awt.geom.Rectangle2D;
 
 /**
  * An interface that defines the methods that must be supported by a report output target.
- * JFreeReport currently implements two targets:  one for Graphics2D (screen and printer) and
- * one for Acrobat PDF files.
+ * JFreeReport currently implements three targets:  one for Graphics2D (screen and printer),
+ * one for Acrobat PDF files and an other target for PlainText output.
  *
  * @author David Gilbert
  */

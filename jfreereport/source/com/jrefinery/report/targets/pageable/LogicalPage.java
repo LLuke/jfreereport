@@ -28,14 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPage.java,v 1.3 2002/12/05 16:57:58 mungady Exp $
+ * $Id: LogicalPage.java,v 1.4 2002/12/07 14:58:33 taqua Exp $
  *
  * Changes
  * -------
  * 03-Dec-2002 : Javadocs (DG);
  *
  */
-
 package com.jrefinery.report.targets.pageable;
 
 import com.jrefinery.report.Band;
