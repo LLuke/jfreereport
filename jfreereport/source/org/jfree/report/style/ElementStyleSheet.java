@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.38 2003/07/03 15:59:29 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -549,11 +549,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       }
     }
 
-    if (parentsCached == null)
-    {
-      parentsCached = (ElementStyleSheet[])
-          parents.toArray(new ElementStyleSheet[parents.size()]);
-    }
+    parentsToCache();
 
     for (int i = 0; i < parentsCached.length; i++)
     {
@@ -563,22 +559,11 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       {
         continue;
       }
-      if (isAllowCaching())
-      {
-        if (styleCache == null)
-        {
-          styleCache = new HashMap();
-        }
-        styleCache.put(key, value);
-      }
+      putInCache(key, value);
       return value;
     }
 
-    if (defaultCached == null)
-    {
-      defaultCached = (ElementStyleSheet[])
-          defaultSheets.toArray(new ElementStyleSheet[defaultSheets.size()]);
-    }
+    defaultToCache();
 
     for (int i = 0; i < defaultCached.length; i++)
     {
@@ -588,17 +573,22 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       {
         continue;
       }
-      if (isAllowCaching())
-      {
-        if (styleCache == null)
-        {
-          styleCache = new HashMap();
-        }
-        styleCache.put(key, value);
-      }
+      putInCache(key, value);
       return value;
     }
     return defaultValue;
+  }
+
+  private void putInCache (StyleKey key, Object value)
+  {
+    if (isAllowCaching())
+    {
+      if (styleCache == null)
+      {
+        styleCache = new HashMap();
+      }
+      styleCache.put(key, value);
+    }
   }
 
   /**
@@ -637,10 +627,6 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
     if (value == null)
     {
-      if (styleCache != null)
-      {
-        styleCache.remove(key);
-      }
       properties.remove(key);
       styleChangeSupport.fireStyleRemoved(key);
     }
@@ -651,10 +637,6 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
         throw new ClassCastException("Value for key " + key.getName()
             + " is not assignable: " + value.getClass()
             + " is not assignable from " + key.getValueType());
-      }
-      if (styleCache != null)
-      {
-        styleCache.put(key, value);
       }
       properties.put(key, value);
       styleChangeSupport.fireStyleChanged(key, value);
@@ -687,12 +669,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       sc.collectionHelper = new ElementStyleSheetCollectionHelper(sc);
 
       // Clone all parents ...
-      if (parentsCached == null)
-      {
-        parentsCached = (ElementStyleSheet[])
-            parents.toArray(new ElementStyleSheet[parents.size()]);
-      }
-
+      parentsToCache();
       for (int i = parentsCached.length - 1; i >= 0; i--)
       {
         sc.addParent(parentsCached[i]);
@@ -700,13 +677,8 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       }
 
       // Clone all default parents ...
+      defaultToCache();
       sc.defaultSheets = new ArrayList();// defaultSheets.clone();
-
-      if (defaultCached == null)
-      {
-        defaultCached = (ElementStyleSheet[])
-            defaultSheets.toArray(new ElementStyleSheet[defaultSheets.size()]);
-      }
 
       for (int i = defaultCached.length - 1; i >= 0; i--)
       {
@@ -720,6 +692,24 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     catch (CloneNotSupportedException cne)
     {
       throw new IllegalStateException("Clone failed.");
+    }
+  }
+
+  private void defaultToCache ()
+  {
+    if (defaultCached == null)
+    {
+      defaultCached = (ElementStyleSheet[])
+          defaultSheets.toArray(new ElementStyleSheet[defaultSheets.size()]);
+    }
+  }
+
+  private void parentsToCache ()
+  {
+    if (parentsCached == null)
+    {
+      parentsCached = (ElementStyleSheet[])
+          parents.toArray(new ElementStyleSheet[parents.size()]);
     }
   }
 

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,7 @@ import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.modules.output.table.html.HtmlProducer;
 import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
 import org.jfree.report.modules.output.table.html.ZIPHtmlFilesystem;
-import org.jfree.report.util.FilesystemFilter;
+import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 
@@ -1046,7 +1046,7 @@ public class HtmlExportDialog extends JDialog
     if (fileChooserStream == null)
     {
       fileChooserStream = new JFileChooser();
-      fileChooserStream.addChoosableFileFilter(new FilesystemFilter(new String[]{".html", ".htm"},
+      fileChooserStream.addChoosableFileFilter(new org.jfree.report.modules.gui.base.components.FilesystemFilter(new String[]{".html", ".htm"},
           getResources().getString("htmlexportdialog.html-documents"), true));
       fileChooserStream.setMultiSelectionEnabled(false);
     }
@@ -1079,7 +1079,7 @@ public class HtmlExportDialog extends JDialog
     if (fileChooserZip == null)
     {
       fileChooserZip = new JFileChooser();
-      fileChooserZip.addChoosableFileFilter(new FilesystemFilter(new String[]{".zip", ".jar"},
+      fileChooserZip.addChoosableFileFilter(new org.jfree.report.modules.gui.base.components.FilesystemFilter(new String[]{".zip", ".jar"},
           getResources().getString("htmlexportdialog.zip-archives"), true));
       fileChooserZip.setMultiSelectionEnabled(false);
     }
@@ -1109,7 +1109,7 @@ public class HtmlExportDialog extends JDialog
     if (fileChooserDir == null)
     {
       fileChooserDir = new JFileChooser();
-      fileChooserDir.addChoosableFileFilter(new FilesystemFilter(new String[]{".html", ".htm"},
+      fileChooserDir.addChoosableFileFilter(new org.jfree.report.modules.gui.base.components.FilesystemFilter(new String[]{".html", ".htm"},
           getResources().getString("htmlexportdialog.html-documents"), true));
       fileChooserDir.setMultiSelectionEnabled(false);
     }

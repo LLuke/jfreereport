@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.4 2003/07/14 20:16:04 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.5 2003/07/23 16:02:19 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,7 @@ import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.FloatingButtonEnabler;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.util.Log;
-import org.jfree.report.util.WindowSizeLimiter;
+import org.jfree.report.modules.gui.base.components.WindowSizeLimiter;
 import org.jfree.report.util.Worker;
 import org.jfree.xml.ParserUtil;
 
@@ -845,7 +845,7 @@ public class PreviewProxyBase extends JComponent
             ? Short.MAX_VALUE : (int) ParserUtil.parseRelativeFloat(height, "");
         final Dimension pref = createCorrectedDimensions(iWidth, iHeight);
         setMaximumSize(pref);
-        addComponentListener(new WindowSizeLimiter());
+        addComponentListener(new org.jfree.report.modules.gui.base.components.WindowSizeLimiter());
       }
       catch (Exception nfe)
       {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.2 2003/07/14 19:37:53 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.3 2003/07/23 16:02:20 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.converter.resources.ConverterResources;
 import org.jfree.report.modules.parser.extwriter.ReportConverter;
-import org.jfree.report.util.FilesystemFilter;
+import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.StringUtil;
 
@@ -271,7 +271,7 @@ public class ReportConverterGUI extends JFrame
     setContentPane(contentPane);
 
     fileChooser = new JFileChooser();
-    fileChooser.addChoosableFileFilter(new FilesystemFilter(new String[]{".xml"},
+    fileChooser.addChoosableFileFilter(new org.jfree.report.modules.gui.base.components.FilesystemFilter(new String[]{".xml"},
         "XML-Report definitions", true));
     fileChooser.setMultiSelectionEnabled(false);
 

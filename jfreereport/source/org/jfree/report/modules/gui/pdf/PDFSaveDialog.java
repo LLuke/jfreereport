@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.3 2003/07/14 20:16:05 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.4 2003/07/23 16:02:20 taqua Exp $
  *
  * Changes
  * --------
@@ -86,7 +86,7 @@ import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.pdf.resources.PDFExportResources;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
-import org.jfree.report.util.FilesystemFilter;
+import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
@@ -1208,7 +1208,7 @@ public class PDFSaveDialog extends JDialog
     if (fileChooser == null)
     {
       fileChooser = new JFileChooser();
-      final FilesystemFilter filter = new FilesystemFilter(".pdf", "PDF Documents");
+      final org.jfree.report.modules.gui.base.components.FilesystemFilter filter = new org.jfree.report.modules.gui.base.components.FilesystemFilter(".pdf", "PDF Documents");
       fileChooser.addChoosableFileFilter(filter);
       fileChooser.setMultiSelectionEnabled(false);
     }

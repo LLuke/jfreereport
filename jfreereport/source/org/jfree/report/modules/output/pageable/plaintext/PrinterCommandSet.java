@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);;
  *
- * $Id: PrinterCommandSet.java,v 1.13 2003/06/29 16:59:29 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.EncodingSupport;
+import org.jfree.report.modules.gui.base.components.EncodingSupport;
 import org.jfree.report.util.PageFormatFactory;
 
 /**
@@ -702,7 +702,7 @@ public class PrinterCommandSet
    */
   public boolean isEncodingSupported(final String encoding)
   {
-    if (EncodingSupport.isSupportedEncoding(encoding))
+    if (org.jfree.report.modules.gui.base.components.EncodingSupport.isSupportedEncoding(encoding))
     {
       // if already checked there, then use it ...
       return true;

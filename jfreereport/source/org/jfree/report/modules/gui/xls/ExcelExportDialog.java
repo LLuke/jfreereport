@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.17 2003/07/03 15:59:28 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * --------
@@ -74,7 +74,7 @@ import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.xls.resources.XLSExportResources;
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
-import org.jfree.report.util.FilesystemFilter;
+import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 
@@ -451,7 +451,7 @@ public class ExcelExportDialog extends JDialog
     if (fileChooser == null)
     {
       fileChooser = new JFileChooser();
-      final FilesystemFilter filter = new FilesystemFilter("Excel Documents", ".xls");
+      final org.jfree.report.modules.gui.base.components.FilesystemFilter filter = new org.jfree.report.modules.gui.base.components.FilesystemFilter("Excel Documents", ".xls");
       fileChooser.addChoosableFileFilter(filter);
       fileChooser.setMultiSelectionEnabled(false);
     }
