@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: ExcelPrintSetupFactory.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
+ * $Id: ExcelPrintSetupFactory.java,v 1.3 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -280,17 +280,25 @@ public final class ExcelPrintSetupFactory
    * @param paperdef the excel paper size property (may be null).
    */
   public static void performPageSetup(final HSSFPrintSetup printSetup,
-                                      final PageFormat pageformat, final String paperdef)
+                                      final PageFormat pageformat,
+                                      final String paperdef, final String paperOrientation)
   {
     short pageCode = parsePaperSizeProperty(paperdef);
     if (pageCode == -1)
     {
       pageCode = computePaperSize(pageformat);
     }
-    printSetup.setLandscape(pageformat.getOrientation() != PageFormat.PORTRAIT);
     if (pageCode != -1)
     {
       printSetup.setPaperSize(pageCode);
+    }
+    if (paperOrientation != null)
+    {
+      printSetup.setLandscape(paperOrientation.equalsIgnoreCase("Landscape"));
+    }
+    else
+    {
+      printSetup.setLandscape(pageformat.getOrientation() != PageFormat.PORTRAIT);
     }
   }
 

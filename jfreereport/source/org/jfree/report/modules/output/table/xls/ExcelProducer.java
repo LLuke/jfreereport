@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.8 2003/08/24 15:06:10 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.9 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -253,7 +253,8 @@ public class ExcelProducer extends TableProducer
 
     final HSSFPrintSetup printSetup = sheet.getPrintSetup();
     ExcelPrintSetupFactory.performPageSetup
-        (printSetup, getGridBoundsCollection().getPageFormat(), getProperty("Paper"));
+        (printSetup, getGridBoundsCollection().getPageFormat(),
+            getProperty("Paper"), getProperty("PaperOrientation"));
 
     final int startY = layoutRowCount;
 
