@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.5 2003/07/21 20:46:56 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.6 2003/07/23 13:56:43 taqua Exp $
  *
  * Changes
  * -------
@@ -92,9 +92,15 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
   /** The finish tag. */
   private String finishTag;
 
+  /** A flag indicating whether to update the report name. */
   private boolean updateReportName;
 
-  public static final String EXT_PARSER_TYPE_HINT_VALUE = "org.jfree.report.modules.parser.ext";
+  /**
+   * The common hint name used to store report builder hints generated
+   * by the ext-parser. 
+   */
+  public static final String EXT_PARSER_TYPE_HINT_VALUE = 
+    "org.jfree.report.modules.parser.ext";
 
   /**
    * Instantiates the handler. The handler must be initialized properly before
@@ -109,8 +115,10 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
    *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
+   * @throws SAXException if an error occurs.
    */
-  public void init (final ReportParser parser, final String finishTag) throws SAXException
+  public void init (final ReportParser parser, final String finishTag) 
+    throws SAXException
   {
     this.parser = parser;
     this.finishTag = finishTag;
@@ -370,12 +378,24 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
     }
   }
 
+  /**
+   * Adds an comment to the report builder hints collection.
+   * 
+   * @param tagName the tag name for which to store the comment.
+   * @param commentHint the comment hint path.
+   */
   private void addComment (String tagName, String commentHint)
   {
     parser.getReport().getReportBuilderHints().putHint
         (createCommentHintPath(tagName), commentHint, parser.getComments());
   }
 
+  /**
+   * Creates a comment hint path for the given name.
+   * 
+   * @param tagName the path name
+   * @return the created comment hint path.
+   */
   private CommentHintPath createCommentHintPath (String tagName)
   {
     CommentHintPath path = new CommentHintPath();

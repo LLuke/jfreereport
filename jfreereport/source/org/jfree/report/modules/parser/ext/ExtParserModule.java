@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModule.java,v 1.3 2003/07/12 14:00:43 taqua Exp $
+ * $Id: ExtParserModule.java,v 1.4 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,13 +41,29 @@ package org.jfree.report.modules.parser.ext;
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 
+/**
+ * The module definition for the extended parser module.
+ * 
+ * @author Thomas Morgner
+ */
 public class ExtParserModule  extends AbstractModule
 {
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public ExtParserModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module. This performs the external initialization
+   * and checks that an JAXP1.1 parser is available. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
     if (isClassLoadable("org.xml.sax.ext.LexicalHandler") == false)

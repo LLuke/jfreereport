@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Graphics2DPageableModule.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,13 +41,28 @@ package org.jfree.report.modules.output.pageable.graphics;
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 
+/**
+ * The module definition for the Graphics2D pagable export module.
+ * 
+ * @author Thomas Morgner
+ */
 public class Graphics2DPageableModule extends AbstractModule
 {
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public Graphics2DPageableModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module. This method is empty. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
   }

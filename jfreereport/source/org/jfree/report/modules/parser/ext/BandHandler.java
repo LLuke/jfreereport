@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandHandler.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
+ * $Id: BandHandler.java,v 1.5 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------
@@ -75,6 +75,8 @@ public class BandHandler extends ElementHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param band  the band.
+   * @param path the path on where to search for ext-parser comments
+   * in the report builder hints.
    */
   public BandHandler(final ReportParser parser, final String finishTag,
                      final Band band, final CommentHintPath path)

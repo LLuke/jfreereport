@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.5 2003/07/23 13:56:43 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.6 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------
@@ -75,6 +75,10 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
   /** The style collection. */
   private StyleSheetCollection styleCollection;
 
+  /** 
+   * The comment hint path is used to store xml comments in the 
+   * report builder hints collection. 
+   */
   private CommentHintPath commentKey;
 
   /**
@@ -83,6 +87,8 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param styleSheet  the style sheet.
+   * @param path the path on where to search for ext-parser comments
+   * in the report builder hints.
    */
   public StyleSheetHandler(final ReportParser parser, final String finishTag,
                            final ElementStyleSheet styleSheet, final CommentHintPath path)
@@ -247,6 +253,13 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
     }
   }
 
+  /**
+   * Creates a new comment hint path for the given name by appending
+   * it to a copy of the current path.
+   * 
+   * @param name the name of the new path segment.
+   * @return the new comment path.
+   */
   private CommentHintPath createCommentPath (Object name)
   {
     CommentHintPath path = commentKey.getInstance();

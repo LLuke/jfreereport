@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupHandler.java,v 1.5 2003/07/23 13:56:43 taqua Exp $
+ * $Id: GroupHandler.java,v 1.6 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -80,6 +80,7 @@ public class GroupHandler extends AbstractExtReportParserHandler
   /** A character entity parser. */
   private CharacterEntityParser entityParser;
 
+  /** temporary storage of group field comments. */
   private String[] fieldComments;
 
   /**
@@ -228,6 +229,11 @@ public class GroupHandler extends AbstractExtReportParserHandler
     return group;
   }
 
+  /**
+   * Adds group fields comments for the given name.
+   * 
+   * @param name the field name for which to add comments.
+   */
   private void addFieldComment (String name)
   {
     CommentHintPath path = new CommentHintPath();
@@ -241,6 +247,12 @@ public class GroupHandler extends AbstractExtReportParserHandler
         (path, CommentHandler.OPEN_TAG_COMMENT, fieldComments);
   }
 
+  /**
+   * Creates the root comment path for all groups tags. All comment
+   * path will be descendents from this path.
+   *   
+   * @return the root path.
+   */
   private CommentHintPath createRootCommentPath ()
   {
     CommentHintPath path = new CommentHintPath();
@@ -251,6 +263,13 @@ public class GroupHandler extends AbstractExtReportParserHandler
     return path;
   }
 
+  /**
+   * Creates a new comment hint path for the given name by appending
+   * it to a copy of the root comment path.
+   * 
+   * @param name the name of the new path segment.
+   * @return the new comment path.
+   */
   private CommentHintPath createCommentPath (Object name)
   {
     CommentHintPath path = createRootCommentPath();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: VerticalLineTemplateDescription.java,v 1.1 2003/07/14 17:38:31 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,8 +41,18 @@ package org.jfree.report.modules.parser.ext.factory.templates;
 
 import org.jfree.report.filter.templates.VerticalLineTemplate;
 
+/**
+ * A vertical line template description.
+ * 
+ * @author Thomas Morgner
+ */
 public class VerticalLineTemplateDescription extends AbstractTemplateDescription
 {
+  /**
+   * Creates a new template description.
+   *
+   * @param name  the name.
+   */
   public VerticalLineTemplateDescription(final String name)
   {
     super(name, VerticalLineTemplate.class, true);

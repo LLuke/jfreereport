@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
+ * $Id: TemplateWriter.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------------------------
- * 17.07.2003 : Initial version
+ * 17-Jul-2003 : Initial version
  *
  */
 
@@ -49,11 +49,30 @@ import org.jfree.report.modules.parser.ext.ElementHandler;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.util.ObjectUtils;
 
+/**
+ * The template writer writes a single template definition to the xml-definition
+ * stream. This writer requires report builder hints to be present for all 
+ * templates. 
+ * 
+ * @author Thomas Morgner
+ */
 public class TemplateWriter extends ObjectWriter
 {
+  /** The template that should be written. */
   private TemplateDescription template;
+  /** The parent of the current template. */
   private TemplateDescription parent;
 
+  /**
+   * Creates a new template writer.
+   * 
+   * @param reportWriter the report writer that is used to coordinate the writing.
+   * @param indentLevel the current indention level.
+   * @param template the template that should be written.
+   * @param parent the parent of the template.
+   * @param path the comment hint path used to resolve xml-comments from the 
+   * parser.
+   */
   public TemplateWriter(final ReportWriter reportWriter, final int indentLevel,
                         final TemplateDescription template, final TemplateDescription parent,
                         final CommentHintPath path)
@@ -124,6 +143,14 @@ public class TemplateWriter extends ObjectWriter
     }
   }
 
+  /**
+   * Tests, whether the given parameter should be written in this template.
+   * This will return false, if the parameter is not set, or the parent
+   * contains the same value.
+   * 
+   * @param parameterName the name of the parameter that should be tested
+   * @return true, if the parameter should be written, false otherwise.
+   */
   private boolean shouldWriteParameter (String parameterName)
   {
     Object parameterObject = template.getParameter(parameterName);

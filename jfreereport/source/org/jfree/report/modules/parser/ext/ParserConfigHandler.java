@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigHandler.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
+ * $Id: ParserConfigHandler.java,v 1.5 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------
@@ -88,14 +88,19 @@ public class ParserConfigHandler extends AbstractExtReportParserHandler
   /** The class attribute name. */
   public static final String CLASS_ATTRIBUTE = "class";
 
+  /** A constant defining a style key factory parser hint. */
   public static final String STYLEKEY_FACTORY_HINT = 
     "ext.parser.parser-config.stylekeyfactories";
+  /** A constant defining an object factory parser hint. */
   public static final String OBJECT_FACTORY_HINT = 
     "ext.parser.parser-config.objectfactories";
+  /** A constant defining a datasource factory parser hint. */
   public static final String DATASOURCE_FACTORY_HINT = 
     "ext.parser.parser-config.datasourcefactories";
+  /** A constant defining a template factory parser hint. */
   public static final String TEMPLATE_FACTORY_HINT = 
     "ext.parser.parser-config.templatefactories";
+  /** A constant defining a element factory parser hint. */
   public static final String ELEMENT_FACTORY_HINT = 
     "ext.parser.parser-config.elementfactories";
 
@@ -275,6 +280,13 @@ public class ParserConfigHandler extends AbstractExtReportParserHandler
     }
   }
 
+  /**
+   * Adds a xml comment to the report builder hints using the given
+   * parameters as last segments in a predefined comment hint path.
+   * 
+   * @param tagName the tag name that holds the comment
+   * @param className the classname that describes the factory of the tag. 
+   */
   private void addComment (String tagName, String className)
   {
     CommentHintPath path = new CommentHintPath();

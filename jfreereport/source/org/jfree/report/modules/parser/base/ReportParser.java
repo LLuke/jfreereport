@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.6 2003/07/23 16:02:21 taqua Exp $
+ * $Id: ReportParser.java,v 1.7 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,9 @@ import org.xml.sax.SAXException;
  */
 public class ReportParser extends Parser
 {
+  /** The key that stores the report defintion in the helper objects collection. */ 
   public static final String HELPER_OBJ_REPORT_NAME = "report";
+  /** The current comment handler used to receive xml comments. */
   private CommentHandler commentHandler;
 
   /**
@@ -98,8 +100,12 @@ public class ReportParser extends Parser
   }
 
   /**
-   *
-   * @return
+   * Returns the report builder hints instance used to collect all 
+   * comments and other valueable information that cannot be restored
+   * with just the parsed object model. This information is optional
+   * but may support other automated tools like the ReportWriter.
+   *  
+   * @return the report builder hints used to build this report.
    */
   public ReportBuilderHints getParserHints ()
   {
@@ -110,27 +116,64 @@ public class ReportParser extends Parser
     return getReport().getReportBuilderHints();
   }
 
+  /**
+   * Returns the comment handler that is used to collect comments.
+   *
+   * * @return the comment handler.
+   */
   public CommentHandler getCommentHandler()
   {
     return commentHandler;
   }
 
+  /**
+   * Returns the currently collected comments.
+   * @return the comments.
+   */
   public String[] getComments ()
   {
     return getCommentHandler().getComments();
   }
 
+  /**
+   * Checks whether this report is a included report and not the main
+   * report definition.
+   *  
+   * @return true, if the report is included, false otherwise.
+   */
   public boolean isIncluded ()
   {
     return getConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "false").equals("true");
   }
 
+  /**
+   * Handles the end of an element. 
+   *  
+   * @see org.xml.sax.ContentHandler#endElement
+   * (java.lang.String, java.lang.String, java.lang.String)
+   * 
+   * @param tagName the tagname of the element.
+   * @param namespace the current namespace 
+   * @param qName the fully qualified name
+   * @throws SAXException if an error occured.
+   */
   public void endElement(String tagName, String namespace, String qName) throws SAXException
   {
     super.endElement(tagName, namespace, qName);
     getCommentHandler().clearComments();
   }
 
+  /**
+   * Handles the start of an element. 
+   * @see org.xml.sax.ContentHandler#startElement
+   * (java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+   * 
+   * @param tagName the tagname of the element.
+   * @param namespace the current namespace 
+   * @param qName the fully qualified name
+   * @param attributes the elements attributes.
+   * @throws SAXException if an error occured.
+   */
   public void startElement(String tagName, String namespace, 
                            String qName, Attributes attributes) throws SAXException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundStyleKeyHandler.java,v 1.3 2003/07/23 13:56:42 taqua Exp $
+ * $Id: CompoundStyleKeyHandler.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,12 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
   /** A parameter name. */
   private String parameterName;
 
+  /** 
+   * The comment hint path is used to store xml comments in the 
+   * report builder hints collection. 
+   */
   private CommentHintPath commentPath;
+  
   /**
    * Creates a new handler.
    *
@@ -100,11 +105,24 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
     }
   }
 
+  /**
+   * Returns the current comment hint path for this handler.
+   * 
+   * @return the comment hint path.
+   */
   public CommentHintPath getCommentPath()
   {
     return commentPath;
   }
 
+  /**
+   * Defines the comment hint path that should be used in this handler.
+   * The comment hint path is used to store xml comments in the 
+   * report builder hints collection.
+   *  
+   * @param commentPath the comment hint path that should be used in this
+   * handler.
+   */
   public void setCommentPath(CommentHintPath commentPath)
   {
     this.commentPath = commentPath;
@@ -202,6 +220,13 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
 
   }
 
+  /**
+   * Creates a new comment hint path for the given name by appending
+   * it to a copy of the current path.
+   * 
+   * @param name the name of the new path segment.
+   * @return the new comment path.
+   */
   protected CommentHintPath createCommentKey(Object name)
   {
     CommentHintPath path = commentPath.getInstance();

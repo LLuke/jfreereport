@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollection.java,v 1.4 2003/07/23 16:02:22 taqua Exp $
+ * $Id: TemplateCollection.java,v 1.5 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -160,6 +160,13 @@ public class TemplateCollection implements Serializable
     return config;
   }
 
+  /**
+   * Indicated whether an other object is equal to this one. 
+   * @see java.lang.Object#equals(java.lang.Object)
+   * 
+   * @param o the other object.
+   * @return true, if the object is equal, false otherwise.
+   */
   public boolean equals(Object o)
   {
     if (this == o)
@@ -181,6 +188,12 @@ public class TemplateCollection implements Serializable
     return true;
   }
 
+  /**
+   * Computes an hashcode for this factory. 
+   * @see java.lang.Object#hashCode()
+   * 
+   * @return the hashcode.
+   */
   public int hashCode()
   {
     return templates.hashCode();

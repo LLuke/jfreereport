@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------
@@ -110,6 +110,12 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     }
   }
 
+  /**
+   * Tests, whether to start a functions section.
+   * 
+   * @return true, if there are functions, marked properties or
+   * expressions defined, false otherwise.
+   */
   private boolean shouldWriteFunctions ()
   {
     if (getReport().getProperties().containsMarkedProperties())
@@ -262,6 +268,8 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * @param writer  the writer.
    * @param od  the object description.
    * @param o  the object.
+   * @param path the path on where to search for ext-parser comments
+   * in the report builder hints.
    *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if the report definition could not be written.

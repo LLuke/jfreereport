@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,11 @@ public class DataSourceWriter extends ObjectWriter
    * @param baseObject  the base object.
    * @param objectDescription the object description.
    * @param indent the current indention level.
+   * @param commentHintPath the path on where to search for ext-parser comments
+   * in the report builder hints.
+   * @throws ReportWriterException if an error occured.
+   * @throws IllegalArgumentException if the object description does
+   * not describe a datasource.
    */
   public DataSourceWriter(final ReportWriter reportWriter,
                           final DataSource baseObject,

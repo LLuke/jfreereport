@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupsHandler.java,v 1.5 2003/07/23 13:56:43 taqua Exp $
+ * $Id: GroupsHandler.java,v 1.6 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------
@@ -60,6 +60,7 @@ public class GroupsHandler extends AbstractExtReportParserHandler
 
   /** Contains the reference to the new group. Contains null if the group is redefined. */
   private Group currentGroup;
+  /** A flag indicating whether the current group is a new group or a redefinition. */
   private boolean isNewGroup;
 
   /**
@@ -156,6 +157,13 @@ public class GroupsHandler extends AbstractExtReportParserHandler
     }
   }
 
+  /**
+   * Adds a comment for the given object and hint key. The object
+   * will be the last segment in the standard groups comment path.
+   * 
+   * @param name the object that should be part of the comment path
+   * @param hint the hint name for the comment.
+   */
   private void addComment (Object name, String hint)
   {
     CommentHintPath path = new CommentHintPath();

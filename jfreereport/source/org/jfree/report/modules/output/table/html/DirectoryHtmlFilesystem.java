@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
  *
  * Changes
  * -------
@@ -97,6 +97,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
   /** A flag indicating whether to copy external references into the data directory. */
   private boolean copyExternalImages;
 
+  /** A flag defining whether to use the digest image compare method. */
   private boolean digestImageCompare;
 
   /**
@@ -370,12 +371,26 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     rootStream.close();
   }
 
-
+  /**
+   * Returns, whether to use digest image compare instead of internal
+   * java methods. This method reduces memory consumption for the price
+   * of complexer computations (and reduced execution speed).
+   * 
+   * @return true, if the digest compare should be used, false otherwise.
+   */
   public boolean isDigestImageCompare()
   {
     return digestImageCompare;
   }
 
+  /**
+   * Defines, whether to use digest image compare instead of internal
+   * java methods. This method reduces memory consumption for the price
+   * of complexer computations (and reduced execution speed).
+   * 
+   * @param digestImageCompare set to true, if the digest compare should 
+   * be used, false otherwise.
+   */
   public void setDigestImageCompare(boolean digestImageCompare)
   {
     this.digestImageCompare = digestImageCompare;

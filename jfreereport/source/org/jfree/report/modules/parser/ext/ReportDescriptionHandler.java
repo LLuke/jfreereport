@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionHandler.java,v 1.5 2003/07/23 13:56:43 taqua Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.6 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,12 @@ import org.xml.sax.SAXException;
  */
 public class ReportDescriptionHandler extends AbstractExtReportParserHandler
 {
+  /** The predefined comment hint path for all root-level bands. */
+  private static final CommentHintPath ROOT_BAND_PATH = new CommentHintPath(new String[]{
+    ExtParserModuleInit.REPORT_DEFINITION_TAG,
+    ExtReportHandler.REPORT_DESCRIPTION_TAG
+  });
+
 
   /** The 'report-header' tag name. */
   public static final String REPORT_HEADER_TAG = "report-header";
@@ -243,12 +249,14 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
           + getFinishTag());
     }
   }
-
-  private static final CommentHintPath ROOT_BAND_PATH = new CommentHintPath(new String[]{
-    ExtParserModuleInit.REPORT_DEFINITION_TAG,
-    ExtReportHandler.REPORT_DESCRIPTION_TAG
-  });
-
+  
+  /**
+   * Creates a new comment hint path for the given name by appending
+   * it to a copy of the current path.
+   * 
+   * @param name the name of the new path segment.
+   * @return the new comment path.
+   */
   private CommentHintPath createCommentPath (Object name)
   {
     CommentHintPath path = new CommentHintPath();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollector.java,v 1.2 2003/07/18 18:16:54 taqua Exp $
+ * $Id: TemplateCollector.java,v 1.3 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -155,6 +155,13 @@ public class TemplateCollector extends TemplateCollection
 
   }
 
+  /**
+   * Indicated whether an other object is equal to this one. 
+   * @see java.lang.Object#equals(java.lang.Object)
+   * 
+   * @param o the other object.
+   * @return true, if the object is equal, false otherwise.
+   */
   public boolean equals(Object o)
   {
     if (this == o)
@@ -180,6 +187,12 @@ public class TemplateCollector extends TemplateCollection
     return true;
   }
 
+  /**
+   * Computes an hashcode for this factory. 
+   * @see java.lang.Object#hashCode()
+   * 
+   * @return the hashcode.
+   */
   public int hashCode()
   {
     int result = super.hashCode();

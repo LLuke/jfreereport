@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.5 2003/07/23 16:02:21 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.6 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------
@@ -336,9 +336,11 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
   }
 
   /**
+   * Creates a comment hint path for the given object.
    *
-   * @param target
-   * @return
+   * @param target the target object that should be the last segment in
+   * the path.
+   * @return the created path object.
    */
   private CommentHintPath createPath (Object target)
   {

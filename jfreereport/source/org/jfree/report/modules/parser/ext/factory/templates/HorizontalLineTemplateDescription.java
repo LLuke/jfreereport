@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: HorizontalLineTemplateDescription.java,v 1.1 2003/07/14 17:38:31 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 12.07.2003 : Initial version
+ * 12-Jul-2003 : Initial version
  *  
  */
 
@@ -40,8 +40,18 @@ package org.jfree.report.modules.parser.ext.factory.templates;
 
 import org.jfree.report.filter.templates.HorizontalLineTemplate;
 
+/**
+ * A horizontal line template description.
+ * 
+ * @author Thomas Morgner
+ */
 public class HorizontalLineTemplateDescription extends AbstractTemplateDescription
 {
+  /**
+   * Creates a new template description.
+   *
+   * @param name  the name.
+   */
   public HorizontalLineTemplateDescription(final String name)
   {
     super(name, HorizontalLineTemplate.class, true);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ParserBaseModule.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,13 +41,30 @@ package org.jfree.report.modules.parser.base;
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 
+/**
+ * The module definition for the parser base classes module. This
+ * module provides base implementations used by all parsers and provides
+ * a public interface to access all parsers in a unified way. 
+ * 
+ * @author Thomas Morgner
+ */
 public class ParserBaseModule  extends AbstractModule
 {
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public ParserBaseModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module. This method is empty. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
   }

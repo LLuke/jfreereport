@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractElementFactory.java,v 1.2 2003/07/18 18:16:46 taqua Exp $
+ * $Id: AbstractElementFactory.java,v 1.3 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -107,6 +107,16 @@ public class AbstractElementFactory implements ElementFactory
     }
   }
 
+  /**
+   * Compares this object with the given object for equality.
+   * The object will be considered equal if it is a element factory
+   * and contains the same elements.
+   *  
+   * @see java.lang.Object#equals(java.lang.Object)
+   * 
+   * @param o the object that should be compared.
+   * @return true, if the given object is equal, false otherwise.
+   */
   public boolean equals(Object o)
   {
     if (this == o)
@@ -128,6 +138,12 @@ public class AbstractElementFactory implements ElementFactory
     return true;
   }
 
+  /**
+   * Computes an hashcode for this factory. 
+   * @see java.lang.Object#hashCode()
+   * 
+   * @return the hashcode.
+   */
   public int hashCode()
   {
     return elements.hashCode();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.5 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------
@@ -144,12 +144,12 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(DEFAULT_PAGEFORMAT_TAG))
     {
-      addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
+      addComment(createPath(tagName), CommentHandler.OPEN_TAG_COMMENT);
       handlePageFormat(attrs);
     }
     else if (tagName.equals(CONFIGURATION_TAG))
     {
-      addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
+      addComment(createPath(tagName), CommentHandler.OPEN_TAG_COMMENT);
       CommentHintPath path = createPath(tagName);
       currentPropertyFactory = new PropertyHandler(getReportParser(), CONFIGURATION_TAG, path);
       getParser().pushFactory(currentPropertyFactory);
@@ -191,7 +191,7 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(DEFAULT_PAGEFORMAT_TAG))
     {
-      addComment(tagName, CommentHandler.CLOSE_TAG_COMMENT);
+      addComment(createPath(tagName), CommentHandler.CLOSE_TAG_COMMENT);
       // ignore this event ...
     }
     else if (tagName.equals(OUTPUT_TARGET_TAG))
@@ -200,7 +200,7 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
     }
     else if (tagName.equals(CONFIGURATION_TAG))
     {
-      addComment(tagName, CommentHandler.CLOSE_TAG_COMMENT);
+      addComment(createPath(tagName), CommentHandler.CLOSE_TAG_COMMENT);
       // add all properties of the PropertyHandler to the report configuration
       final Properties p = currentPropertyFactory.getProperties();
       final ReportConfiguration rc = getReport().getReportConfiguration();
@@ -353,6 +353,13 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
     return format;
   }
 
+  /**
+   * Creates a new comment hint path for the given name by appending
+   * it to a copy of the current path.
+   * 
+   * @param tagName the name of the new path segment.
+   * @return the new comment path.
+   */
   private CommentHintPath createPath (String tagName)
   {
     CommentHintPath path = new CommentHintPath();
@@ -360,12 +367,6 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
     path.addName(ExtReportHandler.REPORT_CONFIG_TAG);
     path.addName(tagName);
     return path;
-  }
-
-  private void addComment (String tagName, String hintName)
-  {
-    getReport().getReportBuilderHints().putHint
-        (createPath(tagName), hintName, getReportParser().getComments());
   }
 
 }

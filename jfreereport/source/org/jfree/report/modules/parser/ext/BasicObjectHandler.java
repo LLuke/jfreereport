@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicObjectHandler.java,v 1.3 2003/07/23 13:56:42 taqua Exp $
+ * $Id: BasicObjectHandler.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -59,15 +59,19 @@ import org.xml.sax.SAXException;
  */
 public class BasicObjectHandler extends AbstractExtReportParserHandler
 {
-  /** A buffer. */
+  /** A buffer to store CDATA. */
   private StringBuffer buffer;
 
-  /** An object description. */
+  /** An object description of the to be generated object. */
   private ObjectDescription objectDescription;
 
-  /** A character entity parser. */
+  /** A character entity parser to resolve CDATA entities. */
   private CharacterEntityParser entityParser;
 
+  /** 
+   * The comment hint path is used to store xml comments in the 
+   * report builder hints collection. 
+   */
   private CommentHintPath commentKey;
 
 
@@ -76,7 +80,9 @@ public class BasicObjectHandler extends AbstractExtReportParserHandler
    *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
-   * @param od  the object description.
+   * @param od  the object description of the target object.
+   * @param commentHintPath the path on where to search for ext-parser comments
+   * in the report builder hints.
    */
   public BasicObjectHandler(final ReportParser parser, final String finishTag,
                             final ObjectDescription od, final CommentHintPath commentHintPath)
@@ -93,7 +99,9 @@ public class BasicObjectHandler extends AbstractExtReportParserHandler
    *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
-   * @param targetObject  the class.
+   * @param targetObject  the object type that should be created by this handler.
+   * @param commentHintPath the path on where to search for ext-parser comments
+   * in the report builder hints.
    *
    * @throws SAXException  if a parser error occurs.
    */
@@ -105,6 +113,15 @@ public class BasicObjectHandler extends AbstractExtReportParserHandler
         commentHintPath);
   }
 
+  /**
+   * Tries to find a matching object description for the given class.
+   * 
+   * @param parser the current report parser which holds all factories.
+   * @param targetObject the target object class that should be built.
+   * @return the object description for the target object, never null.
+   * @throws ParseException if no object description was found for this
+   * object type.
+   */
   private static ObjectDescription createObjectDescriptionFromObject
       (ReportParser parser, Class targetObject)
     throws ParseException
@@ -189,11 +206,24 @@ public class BasicObjectHandler extends AbstractExtReportParserHandler
     return objectDescription;
   }
 
+  /**
+   * Returns the comment hint path used in this factory. This path
+   * is used to mark the parse position in the report builder hints.
+   * 
+   * @return the comment hint path.
+   */
   protected CommentHintPath getCommentKey()
   {
     return commentKey;
   }
 
+  /**
+   * Creates a new comment hint path for the given name by appending
+   * it to a copy of the current path.
+   * 
+   * @param name the name of the new path segment.
+   * @return the new comment path.
+   */
   protected CommentHintPath createCommentKey(Object name)
   {
     CommentHintPath path = commentKey.getInstance();

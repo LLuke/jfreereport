@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceHandler.java,v 1.3 2003/07/23 13:56:43 taqua Exp $
+ * $Id: DataSourceHandler.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -73,6 +73,8 @@ public class DataSourceHandler extends CompoundObjectHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param type  the datasource type.
+   * @param commentKey the path on where to search for ext-parser comments
+   * in the report builder hints.
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */

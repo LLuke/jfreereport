@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesHandler.java,v 1.5 2003/07/23 16:02:21 taqua Exp $
+ * $Id: TemplatesHandler.java,v 1.6 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,7 @@ import org.xml.sax.SAXException;
  */
 public class TemplatesHandler extends AbstractExtReportParserHandler
 {
+  /** the predefined comment hint path for all template definitions. */ 
   private static final CommentHintPath TEMPLATES_PATH = new CommentHintPath(new String[]{
     ExtParserModuleInit.REPORT_DEFINITION_TAG,
     ExtReportHandler.REPORT_DESCRIPTION_TAG,
@@ -140,6 +141,13 @@ public class TemplatesHandler extends AbstractExtReportParserHandler
     getParser().pushFactory(templateFactory);
   }
 
+  /**
+   * Creates a new comment hint path for the given name by appending
+   * it to a copy of the current path.
+   * 
+   * @param tdesc the name of the new path segment.
+   * @return the new comment path.
+   */
   private CommentHintPath createPath (ObjectDescription tdesc)
   {
     CommentHintPath path = TEMPLATES_PATH.getInstance();

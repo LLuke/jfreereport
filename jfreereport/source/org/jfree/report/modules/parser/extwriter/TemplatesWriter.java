@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
+ * $Id: TemplatesWriter.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------
@@ -51,12 +51,13 @@ import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription
 import org.jfree.report.util.Log;
 
 /**
- * A templates writer.
+ * The templates writer is responsible to write the templates section.
  *
  * @author Thomas Morgner
  */
 public class TemplatesWriter extends AbstractXMLDefinitionWriter
 {
+  /** the standard templates comment hint path. */
   private static final CommentHintPath TEMPLATES_PATH = new CommentHintPath
         (new String[] { ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.TEMPLATES_TAG});
 
@@ -146,7 +147,18 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
     writer.write(getLineSeparator());
   }
 
-  public static TemplateDescription getTemplateDescription (ReportWriter writer, String name)
+  /**
+   * Searches the template description that has the given name using
+   * the factories defined in the report writer.
+   * 
+   * @param writer the report writer
+   * @param name the template description name, never null
+   * @return the template description or null, if there is no such
+   * description.
+   * @throws NullPointerException if the name is null.
+   */
+  public static TemplateDescription getTemplateDescription 
+      (ReportWriter writer, String name)
   {
     // search by name in the parser hints ...
     if (name == null)

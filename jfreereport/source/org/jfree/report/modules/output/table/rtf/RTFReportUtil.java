@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFReportUtil.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: RTFReportUtil.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,6 +47,12 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
 
+/**
+ * Utility class to provide an easy to use default implementation of
+ * RTF exports.
+ * 
+ * @author Thomas Morgner
+ */
 public final class RTFReportUtil
 {
   /**

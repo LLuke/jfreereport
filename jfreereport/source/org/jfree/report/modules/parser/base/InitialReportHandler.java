@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
 
- * $Id: InitialReportHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
+ * $Id: InitialReportHandler.java,v 1.3 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------
@@ -60,38 +60,59 @@ import org.xml.sax.SAXException;
  */
 public class InitialReportHandler implements ElementDefinitionHandler
 {
+  /** A collection of all defined element handlers. */
   private static Hashtable definedHandlers;
 
-  public static void registerHandler (String handler, String handlerClass)
+  /**
+   * Registers a new handler for the given tagname.
+   * 
+   * @param tagname the tagname for which this handler class should be registered.
+   * @param handlerClass the handler class name.
+   */
+  public static void registerHandler (String tagname, String handlerClass)
   {
     if (definedHandlers == null)
     {
       definedHandlers = new Hashtable();
     }
-    definedHandlers.put(handler, handlerClass);
+    definedHandlers.put(tagname, handlerClass);
   }
 
-  public static void unregisterHandler (String handler)
+  /**
+   * Removes the tagname and its assigned handler from the list of 
+   * registered report definition handlers.
+   * 
+   * @param tagname the tagname that should be removed from the list.
+   */
+  public static void unregisterHandler (String tagname)
   {
     if (definedHandlers == null)
     {
       return;
     }
-    definedHandlers.remove(handler);
+    definedHandlers.remove(tagname);
   }
 
-  public static String getRegisteredHandler (String handler)
+  /**
+   * Looks up a handler for the given tagname.
+   *  
+   * @param tagname the tagname for which we search an handler.
+   * @return the handler class name or null, if no handler is registered
+   * for this tag.
+   */
+  public static String getRegisteredHandler (String tagname)
   {
     if (definedHandlers == null)
     {
       return null;
     }
-    return (String) definedHandlers.get(handler);
+    return (String) definedHandlers.get(tagname);
   }
 
   /** the parser that is used to coordinate the report parsing process. */
   private Parser parser;
 
+  /** THe currently processed document element tag. */
   private String activeRootTag;
 
   /**
@@ -104,6 +125,13 @@ public class InitialReportHandler implements ElementDefinitionHandler
     this.parser = parser;
   }
 
+  /**
+   * Tries to resolve the handler and to load the specified class.
+   * 
+   * @param className the name of the handler implementation.
+   * @return the instantiated handler
+   * @throws SAXException if the handler could not be loaded.
+   */
   private ReportRootHandler loadHandler (String className) throws SAXException
   {
     try

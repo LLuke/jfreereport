@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExtReportParserHandler.java,v 1.2 2003/07/23 13:56:42 taqua Exp $
+ * $Id: AbstractExtReportParserHandler.java,v 1.3 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------------------------
- * 15.07.2003 : Initial version
+ * 15-Jul-2003 : Initial version
  *
  */
 
@@ -45,17 +45,27 @@ import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
 
+/**
+ * An abstract base implementation of the extended parser handlers.
+ * This is used to reduce the codesize and the ammount of common code.
+ * 
+ * @author Thomas Morgner
+ */
 public abstract class AbstractExtReportParserHandler
     implements ElementDefinitionHandler
 {
   /** The finish tag. */
   private String finishTag;
 
+  /** The report parser is used to coordinate the whole parsing process. */
   private ReportParser parser;
 
   /**
    * Initializes this ElementDefinitionHandler implementation with the give parser.
-   * @param parser
+   * 
+   * @param parser the parser used to process the xml events.
+   * @param finishTag the finish tag specifies on what tag the handler should
+   * deactivate itself. 
    */
   public AbstractExtReportParserHandler(final ReportParser parser, final String finishTag)
   {
@@ -71,31 +81,72 @@ public abstract class AbstractExtReportParserHandler
     this.finishTag = finishTag;
   }
 
+  /**
+   * Returns the parser instance used to coordinate the parsing process. 
+   * @see org.jfree.xml.ElementDefinitionHandler#getParser()
+   * 
+   * @return the parser.
+   */
   public Parser getParser()
   {
     return parser;
   }
 
+  /**
+   * Returns the parser instance as ReportParser implementation. This method
+   * is implemented to reduce the ammount of casts and to support lazy
+   * programmers. :)
+   * 
+   * @return the parser.
+   */
   public ReportParser getReportParser()
   {
     return parser;
   }
 
+  /**
+   * Returns the JFreeReport instance currently processed by the parser.
+   * This method may return null, if the parsing is currently being started.
+   * 
+   * @return the jfreereport instance processed.
+   */
   public JFreeReport getReport()
   {
     return parser.getReport();
   }
 
+  /**
+   * Returns the report builder hints instance used to collect all 
+   * comments and other valueable information that cannot be restored
+   * with just the parsed object model. This information is optional
+   * but may support other automated tools like the ReportWriter.
+   *  
+   * @return the report builder hints used to build this report.
+   */
   public ReportBuilderHints getParserHints ()
   {
     return parser.getParserHints();
   }
 
+  /**
+   * Returns the current finish tag. When this tag is encountered, the
+   * handler should deactivate itself.
+   * 
+   * @return the finish tag.
+   */
   public String getFinishTag()
   {
     return finishTag;
   }
 
+  /**
+   * An helper function to add an comment to the report builder hints
+   * under the given path and hint name. The comment itself is read from
+   * the parser. 
+   * 
+   * @param path the comment hint path used to mark the parse location.
+   * @param hint the hint name to store the comment on the given position.
+   */
   protected void addComment (CommentHintPath path, String hint)
   {
     String[] comments = getReportParser().getComments();

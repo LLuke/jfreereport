@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HSSFCellStyleProducer.java,v 1.1 2003/07/14 17:40:06 taqua Exp $
+ * $Id: HSSFCellStyleProducer.java,v 1.2 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 13.07.2003 : Initial version
+ * 13-Jul-2003 : Initial version
  *  
  */
 
@@ -47,6 +47,13 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
 
+/**
+ * The cellstyle producer converts the JFreeReport content into excel
+ * cell styles. This class is able to use the POI 2.0 features to build
+ * data cells.
+ * 
+ * @author Thomas Morgner
+ */
 public class HSSFCellStyleProducer
 {
   /** The workbook wide singleton instance of an empty cell. */
@@ -58,10 +65,10 @@ public class HSSFCellStyleProducer
   /** The workbook, which creates all cells and styles. */
   private HSSFWorkbook workbook;
 
-  /** POI 2_0: the data format is used to create format strings. */
+  /** The data format is used to create format strings. */
   private HSSFDataFormat dataFormat;
 
-  /** White backgroud. Other backgrounds are not supported so far. */
+  /** White background. This is the default background if not specified otherwise. */
   private static final short WHITE_INDEX = (new HSSFColor.WHITE()).getIndex();
 
   /** The cache for all generated styles. */

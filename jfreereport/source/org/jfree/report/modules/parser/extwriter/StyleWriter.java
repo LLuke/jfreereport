@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
+ * $Id: StyleWriter.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------
@@ -71,6 +71,10 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
   /** The default style sheet. */
   private ElementStyleSheet defaultStyleSheet;
 
+  /** 
+   * The comment hint path is used to read xml comments from the 
+   * report builder hints collection. 
+   */
   private CommentHintPath commentPath;
 
   /**
@@ -80,6 +84,8 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    * @param elementStyleSheet  the element style sheet (never null).
    * @param defaultStyleSheet  the band default style sheet (can be null).
    * @param indentLevel the current indention level.
+   * @param commentPath the path on where to search for ext-parser comments
+   * in the report builder hints.
    */
   public StyleWriter(final ReportWriter reportWriter,
                      final ElementStyleSheet elementStyleSheet,
@@ -171,7 +177,18 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     return od;
   }
 
-  private boolean isUseKeyObjectDescription (final StyleKey key, final Object o)
+  /**
+   * Checks, whether this key object would use the default object description
+   * for this key type. If this method returns true, the object class can be
+   * omitted in the xml definition.
+   * 
+   * @param key the style key that should be used as base
+   * @param o the value object for this key type. 
+   * @return true, of the object can be described using the default object description,
+   * false otherwise.
+   */
+  private boolean isUseKeyObjectDescription 
+    (final StyleKey key, final Object o)
   {
     final ClassFactoryCollector cc = getReportWriter().getClassFactoryCollector();
     ObjectDescription odObject = cc.getDescriptionForClass(o.getClass());
@@ -193,8 +210,8 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    * Writes a stylekey.
    *
    * @param w  the character stream writer.
-   * @param key  the key.
-   * @param o  the object.
+   * @param key  the style key that should be written.
+   * @param o  the object that was stored at that key.
    *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.

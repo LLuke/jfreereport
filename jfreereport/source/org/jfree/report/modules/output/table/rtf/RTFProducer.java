@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProducer.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
+ * $Id: RTFProducer.java,v 1.3 2003/08/20 14:06:36 taqua Exp $
  *
  * Changes
  * -------
@@ -73,8 +73,16 @@ public class RTFProducer extends TableProducer
   /** the cell factory. */
   private RTFCellDataFactory cellDataFactory;
 
+  /** A flag that stores the open-state of this producer. */
   private boolean open;
 
+  /**
+   * Creates a new RTFProducer to create the output based on the given
+   * layout information.
+   * 
+   * @param gridBoundsCollection the precomputed layout from the pagination run.
+   * @param outputStream the output stream that should receive the content.
+   */
   public RTFProducer(final RTFLayoutInfo gridBoundsCollection, final OutputStream outputStream)
   {
     super(gridBoundsCollection);
@@ -90,6 +98,8 @@ public class RTFProducer extends TableProducer
    * Creates a new RTFProducer.
    *
    * @param strictLayout the stric layout flag.
+   * @param gridBoundsCollection the grid layout inforrmation that is used to
+   * store the cell grid position.
    * @throws NullPointerException if the outputstream is null.
    */
   public RTFProducer(final RTFLayoutInfo gridBoundsCollection, final boolean strictLayout)

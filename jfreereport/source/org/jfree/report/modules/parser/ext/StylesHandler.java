@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.4 2003/07/23 13:56:43 taqua Exp $
+ * $Id: StylesHandler.java,v 1.5 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,7 @@ import org.xml.sax.SAXException;
  */
 public class StylesHandler extends AbstractExtReportParserHandler
 {
+  /** The predefined comment hint path for all external style sheets. */
   private static final CommentHintPath STYLES_PATH = new CommentHintPath(new String[]{
     ExtParserModuleInit.REPORT_DEFINITION_TAG,
     ExtReportHandler.REPORT_DESCRIPTION_TAG,
@@ -159,6 +160,13 @@ public class StylesHandler extends AbstractExtReportParserHandler
     }
   }
 
+  /**
+   * Creates a new comment hint path for the given name by appending
+   * it to a copy of the current path.
+   * 
+   * @param tdesc the name of the new path segment.
+   * @return the new comment path.
+   */
   private CommentHintPath createPath (ElementStyleSheet tdesc)
   {
     CommentHintPath path = STYLES_PATH.getInstance();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateHandler.java,v 1.3 2003/07/23 13:56:43 taqua Exp $
+ * $Id: TemplateHandler.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,12 @@ public class TemplateHandler extends AbstractExtReportParserHandler
   /** The template description. */
   private TemplateDescription template;
 
+  /** 
+   * The comment hint path is used to store xml comments in the 
+   * report builder hints collection. 
+   */
   private CommentHintPath commentPath;
+  
   /**
    * Creates a new template handler. The handler will be deactivated when the
    * finishTag was reached on endElement.
@@ -78,6 +83,8 @@ public class TemplateHandler extends AbstractExtReportParserHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param template  the template description.
+   * @param path the path on where to search for ext-parser comments
+   * in the report builder hints.
    */
   public TemplateHandler(final ReportParser parser, final String finishTag,
                          final TemplateDescription template, final CommentHintPath path)

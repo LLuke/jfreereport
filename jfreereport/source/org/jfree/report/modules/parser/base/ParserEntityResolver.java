@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserEntityResolver.java,v 1.11 2003/06/29 16:59:25 taqua Exp $
+ * $Id: ParserEntityResolver.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -48,21 +48,22 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * Resolves the JFreeReport DTD specification and routes the parser to a local copy.
+ * Resolves the JFreeReport DTD specification and routes the parser 
+ * to a local copy.
  *
  * @author Thomas Morgner
  */
-public class ParserEntityResolver implements EntityResolver
+public final class ParserEntityResolver implements EntityResolver
 {
   /** The hashtable for the known entities. */
   private Hashtable dtds;
-
+  /** The singleton instance of this entity resolver. */ 
   private static ParserEntityResolver singleton;
 
   /**
    * Creates a new, uninitialized ParserEntityResolver.
    */
-  public ParserEntityResolver()
+  private ParserEntityResolver()
   {
     dtds = new Hashtable();
   }

@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVReportUtil.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: CSVReportUtil.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *  
  */
 
@@ -47,6 +47,12 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
 
+/**
+ * Utility class to provide an easy to use default implementation of
+ * CSV table exports.
+ * 
+ * @author Thomas Morgner
+ */
 public final class CSVReportUtil
 {
   /**

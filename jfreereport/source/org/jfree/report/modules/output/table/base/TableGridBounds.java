@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TableGridBounds.java,v 1.1 2003/07/14 17:40:06 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 12.07.2003 : Initial version
+ * 12-Jul-2003 : Initial version
  *  
  */
 
@@ -42,6 +42,13 @@ import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+/**
+ * The table grid bounds are used to collect the cell boundaries during
+ * the repagination process and to recall these boundries later during the
+ * content creation process.
+ * 
+ * @author Thomas Morgner
+ */
 public final class TableGridBounds
 {
   /** A flag, defining whether to use strict layout mode. */
@@ -63,10 +70,10 @@ public final class TableGridBounds
   }
 
   /**
-   * Creates a new TableGrid-object. If strict mode is enabled, all cell bounds are
-   * used to create the table grid, resulting in a more complex layout.
+   * Creates a new TableGrid-object and reuses the grid bounds from the given
+   * copy object. 
    *
-   * @param copy
+   * @param copy the precomputed table grid bounds.
    */
   public TableGridBounds(final TableGridBounds copy)
   {

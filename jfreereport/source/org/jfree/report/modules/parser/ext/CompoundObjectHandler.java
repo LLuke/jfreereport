@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundObjectHandler.java,v 1.3 2003/07/23 13:56:42 taqua Exp $
+ * $Id: CompoundObjectHandler.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -68,11 +68,13 @@ public class CompoundObjectHandler extends BasicObjectHandler
   private String parameterName;
 
   /**
-   * Creates a new handler.
+   * Creates a new compund object handler.
    *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param od  the object description.
+   * @param path the path on where to search for ext-parser comments
+   * in the report builder hints.
    */
   public CompoundObjectHandler(final ReportParser parser, final String finishTag,
                                final ObjectDescription od, final CommentHintPath path)
@@ -81,11 +83,13 @@ public class CompoundObjectHandler extends BasicObjectHandler
   }
 
   /**
-   * Creates a new handler.
+   * Creates a new compund object handler.
    *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param targetObject  the class.
+   * @param path the path on where to search for ext-parser comments
+   * in the report builder hints.
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */

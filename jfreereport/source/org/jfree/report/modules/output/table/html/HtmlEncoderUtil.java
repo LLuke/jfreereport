@@ -28,16 +28,22 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlEncoderUtil.java,v 1.1 2003/07/25 00:21:43 taqua Exp $
+ * $Id: HtmlEncoderUtil.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 25.07.2003 : Initial version
+ * 25-Jul-2003 : Initial version
  *  
  */
 
 package org.jfree.report.modules.output.table.html;
 
+/**
+ * Utility methods to support HTML style encodings like the UTF and 
+ * CSS encodings.
+ * 
+ * @author Thomas Morgner
+ */
 public final class HtmlEncoderUtil
 {
   /**

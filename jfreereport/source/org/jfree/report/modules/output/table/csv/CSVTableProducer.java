@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProducer.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
+ * $Id: CSVTableProducer.java,v 1.3 2003/08/20 14:06:36 taqua Exp $
  *
  * Changes
  * -------
@@ -80,10 +80,12 @@ public class CSVTableProducer extends TableProducer
   private boolean isOpen;
 
   /**
-   * Creates a new <code>CSVTableProducer</code>, using the given writer,
-   * strict mode and separator.
+   * Creates a new <code>CSVTableProducer</code> that will compute
+   * a layout for the output. 
    *
    * @param strict  the strict mode that is used for the layouting.
+   * @param gridBoundsCollection the table layout that will contain the
+   * computed grid boundaries.
    */
   public CSVTableProducer(final TableLayoutInfo gridBoundsCollection, final boolean strict)
   {
@@ -92,8 +94,12 @@ public class CSVTableProducer extends TableProducer
   }
 
   /**
+   * Creates a CSVTableProducer that will use the given table layout to 
+   * produce an output.
    *
-   * @param gridBoundsCollection
+   * @param writer the writer that will receive the generated contents.
+   * @param gridBoundsCollection the tablelayout that contains the grid 
+   * boundries from the repagination process.
    */
   public CSVTableProducer(final TableLayoutInfo gridBoundsCollection, final Writer writer)
   {
@@ -226,6 +232,12 @@ public class CSVTableProducer extends TableProducer
     this.quoter = new CSVQuoter(separator);
   }
 
+  /**
+   * Returns always true, as the CSV module always generates a global layout. 
+   * @see org.jfree.report.modules.output.table.base.TableProducer#isGlobalLayout()
+   * 
+   * @return true.
+   */
   public boolean isGlobalLayout()
   {
     return true;
