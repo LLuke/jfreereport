@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 8:05:56 PM
  *
- * $Id: HtmlProcessor.java,v 1.5 2003/01/29 21:57:13 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.6 2003/02/02 22:46:44 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -37,6 +37,15 @@ public class HtmlProcessor extends TableProcessor
     this (report, useXHTML, System.getProperty("file.encoding", "UTF-8"));
   }
 
+  public boolean isGenerateXHTML()
+  {
+    return useXHTML;
+  }
+
+  public void setGenerateXHTML(boolean useXHTML)
+  {
+    this.useXHTML = useXHTML;
+  }
 
   public HtmlFilesystem getFilesystem()
   {

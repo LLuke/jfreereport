@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.39 2003/02/02 22:46:43 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.40 2003/02/02 23:43:51 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -296,6 +296,8 @@ public class JFreeReportResources extends ListResourceBundle
             {"error.savefailed.title", "Error on save"},
             {"error.printfailed.message", "Error on printing the report: {0}"},
             {"error.printfailed.title", "Error on printing"},
+            {"error.validationfailed.message", "Error while validating the user input."},
+            {"error.validationfailed.title", "Error on validation"},
 
             {"pdfsavedialog.dialogtitle", "Saving Report into a PDF-File ..."},
             {"pdfsavedialog.filename", "Filename"},
@@ -375,6 +377,8 @@ public class JFreeReportResources extends ListResourceBundle
             {"htmlexportdialog.selectDirFile", "Select File"},
 
             {"htmlexportdialog.strict-layout", "Perform strict table layouting on export."},
+            {"htmlexportdialog.generate-xhtml", "Generate XHTML 1.0 output"},
+            {"htmlexportdialog.generate-html4", "Generate HTML 4.0 output"},
 
             {"htmlexportdialog.warningTitle", "Warning"},
             {"htmlexportdialog.errorTitle", "Error"},
@@ -387,6 +391,14 @@ public class JFreeReportResources extends ListResourceBundle
 
             {"htmlexportdialog.cancel", "Cancel"},
             {"htmlexportdialog.confirm", "Confirm"},
+            {"htmlexportdialog.targetPathIsAbsolute",
+                "The specified target path denotes an absolute directory.\n" +
+                "Please enter a data directory within the ZIP file."},
+            {"htmlexportdialog.targetDataDirIsNoDirectory", "The specified data directory is not valid."},
+            {"htmlexportdialog.targetCreateDataDirConfirmation",
+                "The specified data directory does not exist.\n" +
+                "Shall the missing subdirectories be created?"},
+            {"htmlexportdialog.targetCreateDataDirTitle", "Create data directory?"},
 
             {"csvexportdialog.dialogtitle", "Export Report into an CSV-File ..."},
             {"csvexportdialog.filename", "Filename"},
@@ -415,6 +427,32 @@ public class JFreeReportResources extends ListResourceBundle
             {"csvexportdialog.export.data", "Export the DataRow (Raw Data)"},
             {"csvexportdialog.export.printed_elements", "Printed Elements  (Layouted Data)"},
             {"csvexportdialog.strict-layout", "Perform strict table layouting on export."},
+
+
+            {"plain-text-exportdialog.dialogtitle", "Export Report into an Plain-Text-File ..."},
+            {"plain-text-exportdialog.filename", "Filename"},
+            {"plain-text-exportdialog.encoding", "Encoding"},
+            {"plain-text-exportdialog.printer", "Printer type"},
+            {"plain-text-exportdialog.printer.plain", "Plain text output"},
+            {"plain-text-exportdialog.printer.epson", "Epson ESC/P compatible"},
+            {"plain-text-exportdialog.printer.ibm", "IBM compatible"},
+            {"plain-text-exportdialog.selectFile", "Select File"},
+
+            {"plain-text-exportdialog.warningTitle", "Warning"},
+            {"plain-text-exportdialog.errorTitle", "Error"},
+            {"plain-text-exportdialog.targetIsEmpty", "Please specify a filename for the CSV file."},
+            {"plain-text-exportdialog.targetIsNoFile", "The selected target is no ordinary file."},
+            {"plain-text-exportdialog.targetIsNotWritable", "The selected file is not writable."},
+            {"plain-text-exportdialog.targetOverwriteConfirmation",
+                "The file ''{0}'' exists. Overwrite it?"},
+            {"plain-text-exportdialog.targetOverwriteTitle", "Overwrite file?"},
+
+            {"plain-text-exportdialog.cancel", "Cancel"},
+            {"plain-text-exportdialog.confirm", "Confirm"},
+
+            {"plain-text-exportdialog.chars-per-inch", "cpi (Characters per inch)"},
+            {"plain-text-exportdialog.lines-per-inch", "lpi (Lines per inch)"},
+            {"plain-text-exportdialog.font-settings", "Font settings"},
 
             {"convertdialog.targetIsEmpty", "The target file is not specified"},
             {"convertdialog.errorTitle", "Error"},

@@ -2,7 +2,7 @@
  * Date: Jan 26, 2003
  * Time: 7:06:56 PM
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.4 2003/02/02 22:46:44 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.5 2003/02/02 23:43:52 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -20,6 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.File;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.zip.Deflater;
@@ -46,6 +47,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
   private boolean copyExternalImages;
 
   public ZIPHtmlFilesystem(OutputStream out, String dataDirectory)
+    throws IOException
   {
     if (out == null) throw new NullPointerException();
     if (dataDirectory == null) throw new NullPointerException();
@@ -55,6 +57,16 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
 
     this.rootBase = new ByteArrayOutputStream();
     this.rootStream = new DeflaterOutputStream(rootBase, new Deflater(Deflater.BEST_COMPRESSION));
+
+    // dataDirectory creation ...
+    File dataDir = new File (dataDirectory);
+    File baseDir = new File ("");
+    if (dataDir.isAbsolute() || IOUtils.getInstance().isSubDirectory(baseDir, dataDir))
+    {
+      throw new IllegalArgumentException("The data directory is no relative directory in the zip file");
+    }
+
+    dataDirectory = IOUtils.getInstance().createRelativeURL(dataDir.toURL(), baseDir.toURL());
     if (dataDirectory.endsWith("/") == false)
     {
       this.dataDirectory = dataDirectory + "/";

@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 4:44:58 PM
  *
- * $Id: CSVCellDataFactory.java,v 1.2 2003/01/25 02:47:10 taqua Exp $
+ * $Id: CSVCellDataFactory.java,v 1.3 2003/02/02 23:43:52 taqua Exp $
  */
 package com.jrefinery.report.targets.table.csv;
 
@@ -23,7 +23,7 @@ public class CSVCellDataFactory implements TableCellDataFactory
     }
     else
     {
-      return new CSVCellData("", rect);
+      return null;
     }
   }
 }

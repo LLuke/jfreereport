@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 7:54:06 PM
  *
- * $Id: EncodingComboBoxModel.java,v 1.2 2003/01/29 03:13:00 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.3 2003/02/02 23:43:51 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -390,6 +390,12 @@ public class EncodingComboBoxModel implements ComboBoxModel
   {
     EncodingCarrier ec = (EncodingCarrier) encodings.get(index);
     return ec.getName();
+  }
+
+  public String getDescription (int index)
+  {
+    EncodingCarrier ec = (EncodingCarrier) encodings.get(index);
+    return ec.getDescription();
   }
 
   public static void main (String [] args)

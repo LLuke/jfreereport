@@ -2,7 +2,7 @@
  * Date: Feb 2, 2003
  * Time: 6:52:56 PM
  *
- * $Id: ExportPluginFactory.java,v 1.1 2003/02/02 22:47:39 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -23,6 +23,7 @@ public class ExportPluginFactory
     ExcelExportDialog excelExportDialog = null;
     HtmlExportDialog htmlExportDialog = null;
     CSVExportDialog csvExportDialog = null;
+    PlainTextExportDialog plainTextExportDialog = null;
 
     if (proxy instanceof Frame)
     {
@@ -30,6 +31,7 @@ public class ExportPluginFactory
       excelExportDialog = new ExcelExportDialog((Frame) proxy);
       htmlExportDialog = new HtmlExportDialog((Frame) proxy);
       csvExportDialog = new CSVExportDialog((Frame) proxy);
+      plainTextExportDialog = new PlainTextExportDialog((Frame) proxy);
     }
     else if (proxy instanceof Dialog)
     {
@@ -37,6 +39,7 @@ public class ExportPluginFactory
       excelExportDialog = new ExcelExportDialog((Dialog) proxy);
       htmlExportDialog = new HtmlExportDialog((Dialog) proxy);
       csvExportDialog = new CSVExportDialog((Dialog) proxy);
+      plainTextExportDialog = new PlainTextExportDialog((Dialog) proxy);
     }
     else
     {
@@ -44,13 +47,16 @@ public class ExportPluginFactory
       excelExportDialog = new ExcelExportDialog();
       htmlExportDialog = new HtmlExportDialog();
       csvExportDialog = new CSVExportDialog();
+      plainTextExportDialog = new PlainTextExportDialog();
     }
     pdfSaveDialog.pack();
     excelExportDialog.pack();
     htmlExportDialog.pack();
     csvExportDialog.pack();
+    plainTextExportDialog.pack();
 
     ArrayList retval = new ArrayList();
+    retval.add (plainTextExportDialog);
     retval.add (pdfSaveDialog);
     retval.add (excelExportDialog);
     retval.add (htmlExportDialog);

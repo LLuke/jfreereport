@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 4:47:35 PM
  *
- * $Id: CSVTableProducer.java,v 1.2 2003/01/25 20:34:12 taqua Exp $
+ * $Id: CSVTableProducer.java,v 1.3 2003/01/29 21:57:12 taqua Exp $
  */
 package com.jrefinery.report.targets.table.csv;
 
@@ -66,20 +66,38 @@ public class CSVTableProducer extends TableProducer
       {
         TableGridLayout.Element gridPosition = layout.getData(x,y);
         if (gridPosition == null)
-          continue;
-
-        if (gridPosition.getRoot() != null)
         {
-          TableGridPosition pos = gridPosition.getRoot();
-          if ((pos.getCol() == x && pos.getRow() == y) &&
-              (pos.getElement() != null))
-          {
-            CSVCellData cellData = (CSVCellData) pos.getElement();
+          writer.print(quoter.getSeparator());
+          continue;
+        }
 
-            writer.print(quoter.doQuoting(cellData.getValue()));
-            writer.print(quoter.getSeparator());
-            x += pos.getColSpan() - 1;
-          }
+        if (gridPosition.getRoot() == null)
+        {
+          writer.print(quoter.getSeparator());
+          continue;
+        }
+
+        TableGridPosition pos = gridPosition.getRoot();
+        if (pos.isOrigin(x,y) == false)
+        {
+          // colspanned cell
+          writer.print(quoter.getSeparator());
+          continue;
+        }
+
+        if (pos.getElement() != null)
+        {
+          CSVCellData cellData = (CSVCellData) pos.getElement();
+
+          writer.print(quoter.doQuoting(cellData.getValue()));
+          writer.print(quoter.getSeparator());
+          //x += pos.getColSpan() - 1;
+        }
+        else
+        {
+          // pure background cell
+          writer.print(quoter.getSeparator());
+          continue;
         }
       }
       writer.println();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.28 2003/01/29 03:12:52 taqua Exp $
+ * $Id: ItemFactory.java,v 1.29 2003/02/02 23:43:35 taqua Exp $
  *
  * Changes
  * -------
@@ -61,6 +61,7 @@ import com.jrefinery.report.filter.templates.ResourceLabelTemplate;
 import com.jrefinery.report.filter.templates.StringFieldTemplate;
 import com.jrefinery.report.function.ExpressionCollection;
 import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
@@ -1386,7 +1387,7 @@ public class ItemFactory
                                        new FloatDimension(0, height));
     if (defaultFont != null)
     {
-      footer.getBandDefaults().setFontStyleProperty(defaultFont);
+      footer.getBandDefaults().setFontDefinitionProperty(new FontDefinition(defaultFont));
     }
     if (defaultPaint != null)
     {
@@ -1414,7 +1415,7 @@ public class ItemFactory
                                        new FloatDimension(0, height));
     if (defaultFont != null)
     {
-      header.getBandDefaults().setFontStyleProperty(defaultFont);
+      header.getBandDefaults().setFontDefinitionProperty(new FontDefinition(defaultFont));
     }
     if (defaultPaint != null)
     {
@@ -1446,7 +1447,7 @@ public class ItemFactory
                                        new FloatDimension (0, height));
     if (defaultFont != null)
     {
-      footer.getBandDefaults().setFontStyleProperty(defaultFont);
+      footer.getBandDefaults().setFontDefinitionProperty(new FontDefinition(defaultFont));
     }
     if (defaultPaint != null)
     {
@@ -1480,7 +1481,7 @@ public class ItemFactory
                                        new FloatDimension (0, height));
     if (defaultFont != null)
     {
-      header.getBandDefaults().setFontStyleProperty(defaultFont);
+      header.getBandDefaults().setFontDefinitionProperty(new FontDefinition(defaultFont));
     }
     if (defaultPaint != null)
     {
@@ -1511,7 +1512,7 @@ public class ItemFactory
                                        new FloatDimension (0, height));
     if (defaultFont != null)
     {
-      footer.getBandDefaults().setFontStyleProperty(defaultFont);
+      footer.getBandDefaults().setFontDefinitionProperty(new FontDefinition(defaultFont));
     }
     if (defaultPaint != null)
     {
@@ -1541,7 +1542,7 @@ public class ItemFactory
                                        new FloatDimension (0, height));
     if (defaultFont != null)
     {
-      header.getBandDefaults().setFontStyleProperty(defaultFont);
+      header.getBandDefaults().setFontDefinitionProperty(new FontDefinition(defaultFont));
     }
     if (defaultPaint != null)
     {
@@ -1567,7 +1568,7 @@ public class ItemFactory
     band.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension (0, height));
     if (defaultFont != null)
     {
-      band.getBandDefaults().setFontStyleProperty(defaultFont);
+      band.getBandDefaults().setFontDefinitionProperty(new FontDefinition(defaultFont));
     }
     if (defaultPaint != null)
     {

@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 8:06:54 PM
  *
- * $Id: HtmlProducer.java,v 1.12 2003/02/02 22:46:44 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.13 2003/02/02 23:43:52 taqua Exp $
  *
  * This file now produces valid HTML4
  */
@@ -157,12 +157,12 @@ public class HtmlProducer extends TableProducer
 
       if (useXHTML)
       {
+        writer.print ("<?xml version=\"1.0\" encoding=\"");
+        writer.print (getEncoding());
+        writer.println ("\"?>");
         // now finish the style sheet definition
         for (int i = 0; i < XHTML_HEADER.length; i++)
         {
-          writer.print ("<?xml version=\"1.0\" encoding=\"");
-          writer.print (getEncoding());
-          writer.print ("\"?>");
           writer.println(XHTML_HEADER[i]);
         }
       }

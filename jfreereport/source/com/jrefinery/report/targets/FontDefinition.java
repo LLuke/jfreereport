@@ -2,7 +2,7 @@
  * Date: Jan 24, 2003
  * Time: 4:08:26 PM
  *
- * $Id: FontDefinition.java,v 1.4 2003/02/02 22:46:44 taqua Exp $
+ * $Id: FontDefinition.java,v 1.5 2003/02/02 23:43:51 taqua Exp $
  */
 package com.jrefinery.report.targets;
 
@@ -52,6 +52,11 @@ public class FontDefinition implements Serializable, Cloneable
   public FontDefinition(String fontName, int fontSize)
   {
     this (fontName, fontSize, false, false, false, false, null, false);
+  }
+
+  public FontDefinition(Font font)
+  {
+    this (font.getName(), font.getSize(), font.isBold(), font.isItalic(), false, false, null, false);
   }
 
   public String getFontName()

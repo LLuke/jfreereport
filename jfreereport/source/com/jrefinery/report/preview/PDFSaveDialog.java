@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.21 2003/01/30 22:52:44 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.22 2003/02/02 22:46:43 taqua Exp $
  *
  * Changes
  * --------
@@ -79,6 +79,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.KeyEvent;
 import java.awt.print.PageFormat;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -287,6 +288,9 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
   /** Combo box for selecting the printing model. */
   private DefaultComboBoxModel printingModel;
 
+  private JComboBox cbEncoding;
+  private EncodingComboBoxModel encodingModel;
+
   /** Confirmed flag. */
   private boolean confirmed;
 
@@ -461,6 +465,9 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     txAuthor = new JTextField();
     txFilename = new JTextField();
     txTitle = new JTextField();
+    encodingModel = EncodingComboBoxModel.createDefaultModel();
+    encodingModel.sort();
+    cbEncoding = new JComboBox(encodingModel);
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
@@ -517,6 +524,56 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     gbc.gridheight = 2;
     contentPane.add(btnSelect, gbc);
 
+    gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weightx = 1;
+    gbc.gridx = 1;
+    gbc.gridy = 3;
+    gbc.ipadx = 120;
+    gbc.insets = new Insets(1, 1, 1, 1);
+    contentPane.add(cbEncoding, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weightx = 1;
+    gbc.weighty = 1;
+    gbc.gridx = 0;
+    gbc.gridwidth = 3;
+    gbc.gridy = 4;
+    gbc.insets = new Insets(10, 0, 0, 0);
+    gbc.anchor = GridBagConstraints.NORTH;
+    contentPane.add(createSecurityPanel(), gbc);
+
+    btnCancel = new ActionButton(getActionCancel());
+    btnConfirm = new ActionButton(getActionConfirm());
+    JPanel buttonPanel = new JPanel();
+    buttonPanel.setLayout(new GridLayout());
+    buttonPanel.add(btnConfirm);
+    buttonPanel.add(btnCancel);
+    btnConfirm.setDefaultCapable(true);
+    buttonPanel.registerKeyboardAction(getActionConfirm(), KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+                                       JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+    gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.NONE;
+    gbc.weightx = 1;
+    gbc.gridx = 0;
+    gbc.gridwidth = 3;
+    gbc.gridy = 6;
+    gbc.insets = new Insets(10, 0, 0, 0);
+    contentPane.add(buttonPanel, gbc);
+
+    setContentPane(contentPane);
+
+    fileChooser = new JFileChooser();
+    FilesystemFilter filter = new FilesystemFilter(".pdf", "PDF Documents");
+    fileChooser.addChoosableFileFilter(filter);
+    fileChooser.setMultiSelectionEnabled(false);
+
+  }
+
+  private JPanel createSecurityPanel ()
+  {
     JPanel securityPanel = new JPanel();
     securityPanel.setLayout(new GridBagLayout());
     securityPanel.setBorder(
@@ -570,7 +627,7 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
 
     rbSecurity128Bit.setSelected(true);
 
-    gbc = new GridBagConstraints();
+    GridBagConstraints gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 1;
     gbc.gridx = 0;
@@ -699,45 +756,7 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     gbc.anchor = GridBagConstraints.WEST;
     securityPanel.add(cbAllowPrinting, gbc);
 
-    gbc = new GridBagConstraints();
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.weightx = 1;
-    gbc.weighty = 1;
-    gbc.gridx = 0;
-    gbc.gridwidth = 3;
-    gbc.gridy = 4;
-    gbc.insets = new Insets(10, 0, 0, 0);
-    gbc.anchor = GridBagConstraints.NORTH;
-    contentPane.add(securityPanel, gbc);
-
-    btnCancel = new ActionButton(getActionCancel());
-    btnConfirm = new ActionButton(getActionConfirm());
-    JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new GridLayout());
-    buttonPanel.add(btnConfirm);
-    buttonPanel.add(btnCancel);
-    btnConfirm.setDefaultCapable(true);
-    buttonPanel.registerKeyboardAction(getActionConfirm(), KeyStroke.getKeyStroke('\n'),
-                                       JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    securityPanel.registerKeyboardAction(getActionConfirm(), KeyStroke.getKeyStroke('\n'),
-                                         JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
-    gbc = new GridBagConstraints();
-    gbc.fill = GridBagConstraints.NONE;
-    gbc.weightx = 1;
-    gbc.gridx = 0;
-    gbc.gridwidth = 3;
-    gbc.gridy = 6;
-    gbc.insets = new Insets(10, 0, 0, 0);
-    contentPane.add(buttonPanel, gbc);
-
-    setContentPane(contentPane);
-
-    fileChooser = new JFileChooser();
-    FilesystemFilter filter = new FilesystemFilter(".pdf", "PDF Documents");
-    fileChooser.addChoosableFileFilter(filter);
-    fileChooser.setMultiSelectionEnabled(false);
-
+    return securityPanel;
   }
 
   /**
@@ -796,6 +815,23 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
   {
     txOwnerPassword.setText(ownerPassword);
     txConfOwnerPassword.setText(ownerPassword);
+  }
+
+  public String getEncoding ()
+  {
+    if (cbEncoding.getSelectedIndex() == -1)
+    {
+      return System.getProperty("file.encoding");
+    }
+    else
+    {
+      return encodingModel.getEncoding(cbEncoding.getSelectedIndex());
+    }
+  }
+
+  public void setEncoding (String encoding)
+  {
+    cbEncoding.setSelectedIndex(encodingModel.indexOf(encoding));
   }
 
   /**
@@ -1114,6 +1150,8 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
 
     rbSecurityNone.setSelected(true);
     getActionSecuritySelection().actionPerformed(null);
+
+    cbEncoding.setSelectedIndex(encodingModel.indexOf(System.getProperty ("file.encoding", "Cp1251")));
   }
 
   /**
@@ -1278,7 +1316,7 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
                          new Boolean(isAllowPrinting()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_SCREENREADERS,
                          new Boolean(isAllowScreenreaders()));
-
+      target.setProperty(PDFOutputTarget.ENCODING, getEncoding());
       target.open();
 
       PageableReportProcessor proc = new PageableReportProcessor(report);
@@ -1358,6 +1396,8 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
                                     + PDFOutputTarget.SECURITY_USERPASSWORD, getUserPassword()));
     setOwnerPassword(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX
                                     + PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword()));
+    setEncoding(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX
+                                    + PDFOutputTarget.ENCODING, getEncoding()));
   }
 
   /**
@@ -1415,4 +1455,23 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
   {
     return true;
   }
+
+  public static void main (String [] args)
+  {
+    JDialog d = new PDFSaveDialog();
+    d.pack();
+    d.addWindowListener(new WindowAdapter(){
+      /**
+       * Invoked when a window is in the process of being closed.
+       * The close operation can be overridden at this point.
+       */
+      public void windowClosing(WindowEvent e)
+      {
+        System.exit(0);
+      }
+    });
+    d.setVisible(true);
+  }
+
+
 }

@@ -30,7 +30,7 @@
                      based on PDFSaveDialog by Thomas Morgner, David Gilbert (for Simba Management Limited) and contributors
  * Contributor(s):
  *
- * $Id: HtmlExportDialog.java,v 1.5 2003/02/02 22:46:43 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.6 2003/02/02 23:43:51 taqua Exp $
  *
  * Changes
  * --------
@@ -49,10 +49,13 @@ import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FilesystemFilter;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.StringUtil;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.IOUtils;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -63,6 +66,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -80,6 +84,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
@@ -294,6 +299,8 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
   private EncodingComboBoxModel encodingModel;
 
   private JCheckBox cbxStrictLayout;
+  private JRadioButton rbGenerateXHTML;
+  private JRadioButton rbGenerateHTML4;
   private JCheckBox cbxCopyExternalReferencesZip;
   private JCheckBox cbxCopyExternalReferencesDir;
 
@@ -402,6 +409,11 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     encodingModel.sort();
     cbEncoding = new JComboBox(encodingModel);
     cbxStrictLayout = new JCheckBox(getResources().getString("htmlexportdialog.strict-layout"));
+    rbGenerateHTML4 = new JRadioButton(getResources().getString("htmlexportdialog.generate-html4"));
+    rbGenerateXHTML = new JRadioButton(getResources().getString("htmlexportdialog.generate-xhtml"));
+    ButtonGroup bg = new ButtonGroup();
+    bg.add(rbGenerateHTML4);
+    bg.add(rbGenerateXHTML);
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
@@ -460,6 +472,24 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     gbc.insets = new Insets(1, 1, 1, 1);
     contentPane.add(cbxStrictLayout, gbc);
 
+    gbc = new GridBagConstraints();
+    gbc.anchor = GridBagConstraints.NORTHWEST;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridx = 1;
+    gbc.gridy = 4;
+    gbc.ipadx = 120;
+    gbc.insets = new Insets(1, 1, 1, 1);
+    contentPane.add(rbGenerateHTML4, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.anchor = GridBagConstraints.NORTHWEST;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridx = 1;
+    gbc.gridy = 5;
+    gbc.ipadx = 120;
+    gbc.insets = new Insets(1, 1, 1, 1);
+    contentPane.add(rbGenerateXHTML, gbc);
+
     exportSelection = new JTabbedPane();
     exportSelection.add("Stream export", createStreamExportPanel());
     exportSelection.add("Directory export", createDirExportPanel());
@@ -469,7 +499,7 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     gbc.anchor = GridBagConstraints.NORTHWEST;
     gbc.fill = GridBagConstraints.BOTH;
     gbc.gridx = 0;
-    gbc.gridy = 4;
+    gbc.gridy = 6;
     gbc.gridwidth = 2;
     gbc.weightx = 1;
     gbc.weighty = 1;
@@ -761,6 +791,11 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     txZipDataFilename.setText("");
     txStreamFilename.setText("");
     txTitle.setText("");
+    cbEncoding.setSelectedIndex(encodingModel.indexOf(System.getProperty ("file.encoding", "Cp1251")));
+    cbxCopyExternalReferencesDir.setSelected(false);
+    cbxCopyExternalReferencesZip.setSelected(false);
+    cbxStrictLayout.setSelected(false);
+    rbGenerateHTML4.setSelected(true);
   }
 
   public String getDirDataFilename()
@@ -813,6 +848,50 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     this.txStreamFilename.setText(streamFilename);
   }
 
+  public void setGenerateXHTML (boolean generateXHTML)
+  {
+    if (generateXHTML)
+    {
+      this.rbGenerateXHTML.setSelected(true);
+    }
+    else
+    {
+      this.rbGenerateHTML4.setSelected(true);
+    }
+  }
+
+  public boolean isGenerateXHTML ()
+  {
+    return rbGenerateXHTML.isSelected();
+  }
+
+  public boolean isStrictLayout ()
+  {
+    return cbxStrictLayout.isSelected();
+  }
+
+  public void setStrictLayout (boolean s)
+  {
+    cbxStrictLayout.setSelected(s);
+  }
+
+  public String getEncoding ()
+  {
+    if (cbEncoding.getSelectedIndex() == -1)
+    {
+      return System.getProperty("file.encoding");
+    }
+    else
+    {
+      return encodingModel.getEncoding(cbEncoding.getSelectedIndex());
+    }
+  }
+
+  public void setEncoding (String encoding)
+  {
+    cbEncoding.setSelectedIndex(encodingModel.indexOf(encoding));
+  }
+
   /**
    * selects a file to use as target for the report processing.
    */
@@ -827,7 +906,7 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
       File selFile = fileChooserStream.getSelectedFile();
       String selFileName = selFile.getAbsolutePath();
 
-      // Test if ends on xls
+      // Test if ends on html
       if ((StringUtil.endsWithIgnoreCase(selFileName,".html") == false) &&
           (StringUtil.endsWithIgnoreCase(selFileName,".htm") == false))
       {
@@ -866,14 +945,20 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
   protected void performSelectFileDir()
   {
     File file = new File(getDirFilename());
-    fileChooserZip.setCurrentDirectory(file);
-    fileChooserZip.setSelectedFile(file);
-    int option = fileChooserZip.showSaveDialog(this);
+    fileChooserDir.setCurrentDirectory(file);
+    fileChooserDir.setSelectedFile(file);
+    int option = fileChooserDir.showSaveDialog(this);
     if (option == JFileChooser.APPROVE_OPTION)
     {
-      File selFile = fileChooserZip.getSelectedFile();
+      File selFile = fileChooserDir.getSelectedFile();
       String selFileName = selFile.getAbsolutePath();
-      setZipFilename(selFileName);
+      // Test if ends on html
+      if ((StringUtil.endsWithIgnoreCase(selFileName,".html") == false) &&
+          (StringUtil.endsWithIgnoreCase(selFileName,".htm") == false))
+      {
+        selFileName = selFileName + ".html";
+      }
+      setDirFilename(selFileName);
     }
   }
 
@@ -980,6 +1065,25 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
       }
     }
 
+    try
+    {
+      File dataDir = new File (getZipDataFilename());
+      File baseDir = new File ("");
+
+      if (dataDir.isAbsolute() || IOUtils.getInstance().isSubDirectory(baseDir, dataDir))
+      {
+        JOptionPane.showMessageDialog(this,
+                                      getResources().getString("htmlexportdialog.targetPathIsAbsolute"),
+                                      getResources().getString("htmlexportdialog.errorTitle"),
+                                      JOptionPane.ERROR_MESSAGE);
+        return false;
+      }
+    }
+    catch (Exception e)
+    {
+      showExceptionDialog("error.validationfailed", e);
+      return false;
+    }
     return true;
   }
 
@@ -1071,6 +1175,36 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
       }
     }
 
+    File dataDir = new File (f.getParentFile(), getDirDataFilename());
+    Log.debug ("Validate DataDirectory: " + dataDir);
+    if (dataDir.exists())
+    {
+      // dataDirectory does exist ... if no directory : fail
+      if (dataDir.isDirectory() == false)
+      {
+        JOptionPane.showMessageDialog(this,
+                                      getResources().getString("htmlexportdialog.targetDataDirIsNoDirectory"),
+                                      getResources().getString("htmlexportdialog.errorTitle"),
+                                      JOptionPane.ERROR_MESSAGE);
+        return false;
+
+      }
+    }
+    else
+    {
+      String key1 = "htmlexportdialog.targetCreateDataDirConfirmation";
+      String key2 = "htmlexportdialog.targetCreateDataDirTitle";
+      if (JOptionPane.showConfirmDialog(this,
+                                        MessageFormat.format(getResources().getString(key1),
+                                            new Object[]{getDirFilename()}
+                                        ),
+                                        getResources().getString(key2),
+                                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+                                        == JOptionPane.NO_OPTION)
+      {
+        return false;
+      }
+    }
     return true;
   }
 
@@ -1079,10 +1213,12 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     OutputStream out = null;
     try
     {
-
       out = new BufferedOutputStream(new FileOutputStream(new File(getStreamFilename())));
       HtmlProcessor target = new HtmlProcessor(report);
       target.setFilesystem(new StreamHtmlFilesystem (out));
+      target.setStrictLayout(isStrictLayout());
+      target.setEncoding(getEncoding());
+      target.setGenerateXHTML(isGenerateXHTML());
       target.processReport();
       out.close();
       return true;
@@ -1114,6 +1250,9 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
       out = new BufferedOutputStream(new FileOutputStream(new File(getZipFilename())));
       HtmlProcessor target = new HtmlProcessor(report);
       target.setFilesystem(new ZIPHtmlFilesystem (out, getZipDataFilename()));
+      target.setStrictLayout(isStrictLayout());
+      target.setEncoding(getEncoding());
+      target.setGenerateXHTML(isGenerateXHTML());
       target.processReport();
       out.close();
       return true;
@@ -1140,10 +1279,16 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     try
     {
       File targetFile = new File(getDirFilename());
-      File targetDataFile = new File(getDirDataFilename());
-
+      File targetDataFile = new File(targetFile.getParentFile(), getDirDataFilename());
+      if (targetDataFile.mkdirs() == false)
+      {
+        throw new IOException ("Unable to create the mssing directories.");
+      }
       DirectoryHtmlFilesystem fs = new DirectoryHtmlFilesystem(targetFile, targetDataFile);
       HtmlProcessor target = new HtmlProcessor(report);
+      target.setEncoding(getEncoding());
+      target.setStrictLayout(isStrictLayout());
+      target.setGenerateXHTML(isGenerateXHTML());
       target.setFilesystem(fs);
       target.processReport();
       return true;
@@ -1225,6 +1370,7 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
   }
 
   public static void main (String [] args)
+    throws Exception
   {
     HtmlExportDialog dialog = new HtmlExportDialog();
     dialog.addWindowListener(new WindowAdapter(){
@@ -1237,6 +1383,7 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
         System.exit(0);
       }
     });
+    dialog.pack();
     dialog.setVisible(true);
   }
 }

@@ -2,7 +2,7 @@
  * Date: Jan 30, 2003
  * Time: 4:44:46 PM
  *
- * $Id$
+ * $Id: IBMPrinterCommandSet.java,v 1.1 2003/01/30 22:58:44 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
@@ -280,5 +280,18 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
   public void endPage() throws IOException
   {
     getOut().write(FORM_FEED);
+  }
+
+  public boolean isEncodingSupported(String encoding)
+  {
+    try
+    {
+      translateCodePage(encoding);
+      return true;
+    }
+    catch (UnsupportedEncodingException use)
+    {
+      return false;
+    }
   }
 }

@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 7:48:58 PM
  *
- * $Id: CSVExportDialog.java,v 1.2 2003/02/02 22:46:42 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.3 2003/02/02 23:43:50 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -13,6 +13,7 @@ import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.LengthLimitingDocument;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.StringUtil;
 import com.jrefinery.ui.ExtensionFileFilter;
 
 import javax.swing.AbstractAction;
@@ -42,6 +43,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -152,15 +154,6 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     }
   }
 
-  /** Confirm action. */
-  private Action actionConfirm;
-
-  /** Cancel action. */
-  private Action actionCancel;
-
-  /** Select file action. */
-  private Action actionSelectFile;
-
   /** Filename text field. */
   private JTextField txFilename;
 
@@ -177,14 +170,10 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   private JRadioButton rbExportData;
   private JRadioButton rbExportPrintedElements;
 
+  private JFileChooser fileChooser;
+
   /** Confirmed flag. */
   private boolean confirmed;
-
-  /** Confirm button. */
-  private JButton btnConfirm;
-
-  /** Cancel button. */
-  private JButton btnCancel;
 
   /** Localised resources. */
   private ResourceBundle resources;
@@ -239,7 +228,7 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     {
       public void windowClosing(WindowEvent e)
       {
-        getActionCancel().actionPerformed(null);
+        new ActionCancel().actionPerformed(null);
       }
     }
     );
@@ -261,59 +250,21 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Returns a single instance of the file selection action.
-   *
-   * @return the action.
-   */
-  private Action getActionSelectFile()
-  {
-    if (actionSelectFile == null)
-    {
-      actionSelectFile = new ActionSelectFile();
-    }
-    return actionSelectFile;
-  }
-
-  /**
-   * Returns a single instance of the dialog confirm action.
-   *
-   * @return the action.
-   */
-  private Action getActionConfirm()
-  {
-    if (actionConfirm == null)
-    {
-      actionConfirm = new ActionConfirm();
-    }
-    return actionConfirm;
-  }
-
-  /**
-   * Returns a single instance of the dialog cancel action.
-   *
-   * @return the action.
-   */
-  private Action getActionCancel()
-  {
-    if (actionCancel == null)
-    {
-      actionCancel = new ActionCancel();
-    }
-    return actionCancel;
-  }
-
-  /**
    * Initializes the Swing components of this dialog.
    */
   private void initialize()
   {
+    fileChooser = new JFileChooser();
+    fileChooser.addChoosableFileFilter(new ExtensionFileFilter("Comma Separated Value files", ".csv"));
+    fileChooser.setMultiSelectionEnabled(false);
+
     JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
     contentPane.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
     JLabel lblFileName = new JLabel(getResources().getString("csvexportdialog.filename"));
     JLabel lblEncoding = new JLabel(getResources().getString("csvexportdialog.encoding"));
-    JButton btnSelect = new ActionButton(getActionSelectFile());
+    JButton btnSelect = new ActionButton(new ActionSelectFile());
     cbxStrictLayout = new JCheckBox(getResources().getString("csvexportdialog.strict-layout"));
 
     txFilename = new JTextField();
@@ -385,14 +336,14 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     contentPane.add(btnSelect, gbc);
 
     // button panel
-    btnCancel = new ActionButton(getActionCancel());
-    btnConfirm = new ActionButton(getActionConfirm());
+    JButton btnCancel = new ActionButton(new ActionCancel());
+    JButton btnConfirm = new ActionButton(new ActionConfirm());
     JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new GridLayout());
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
-    buttonPanel.registerKeyboardAction(getActionConfirm(), KeyStroke.getKeyStroke('\n'),
+    buttonPanel.registerKeyboardAction(new ActionConfirm(), KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0),
                                        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
@@ -580,6 +531,7 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     cbEncoding.setSelectedIndex(encodingModel.indexOf(System.getProperty ("file.encoding", "Cp1251")));
     rbExportPrintedElements.setSelected(true);
     rbSeparatorColon.setSelected(true);
+    cbxStrictLayout.setSelected(false);
     performSeparatorSelection();
   }
 
@@ -670,10 +622,6 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
    */
   protected void performSelectFile()
   {
-    JFileChooser fileChooser = new JFileChooser();
-    ExtensionFileFilter filter = new ExtensionFileFilter("Comma Separated Value files", ".csv");
-    fileChooser.addChoosableFileFilter(filter);
-    fileChooser.setMultiSelectionEnabled(false);
     fileChooser.setSelectedFile(new File(getFilename()));
     int option = fileChooser.showSaveDialog(this);
     if (option == JFileChooser.APPROVE_OPTION)
@@ -681,8 +629,8 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
       File selFile = fileChooser.getSelectedFile();
       String selFileName = selFile.getAbsolutePath();
 
-      // Test if ends on xls
-      if (selFileName.toUpperCase().endsWith(".CSV") == false)
+      // Test if ends on csv
+      if (StringUtil.endsWithIgnoreCase(selFileName, ".csv") == false)
       {
         selFileName = selFileName + ".csv";
       }
@@ -787,8 +735,8 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
                   new File(getFilename())), getEncoding()));
       CSVTableProcessor target = new CSVTableProcessor(report, getSeparatorString());
       target.setWriter(out);
+      target.setStrictLayout(isStrictLayout());
       target.processReport();
-      out.close();
       return true;
     }
     catch (Exception re)

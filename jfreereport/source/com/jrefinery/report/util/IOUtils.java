@@ -2,7 +2,7 @@
  * Date: Jan 26, 2003
  * Time: 6:19:12 PM
  *
- * $Id: IOUtils.java,v 1.4 2003/01/29 18:37:14 taqua Exp $
+ * $Id: IOUtils.java,v 1.5 2003/02/02 23:43:53 taqua Exp $
  */
 package com.jrefinery.report.util;
 
@@ -88,10 +88,10 @@ public class IOUtils
   public static void main (String [] args) throws Exception
   {
 
-    URL base = new File ("C:/").toURL();
-    URL test = new File ("C:/localhost/test/piacs/noc").toURL();
+    File dataDir = new File ("").getCanonicalFile();
+    File baseDir = new File ("").getCanonicalFile();
 
-    Log.debug (getInstance().createRelativeURL(test, base));
+    Log.debug (""  + getInstance().isSubDirectory(baseDir, dataDir));
   }
 
   private boolean isSameService (URL url, URL baseUrl)
@@ -220,5 +220,21 @@ public class IOUtils
     if (idx < 1) return file;
     return file.substring(0, idx);
   }
-  
+
+  public boolean isSubDirectory (File base, File child)
+      throws IOException
+  {
+    base = base.getCanonicalFile();
+    child = child.getCanonicalFile();
+
+    File parentFile = child;
+    while (parentFile != null)
+    {
+      if (base.equals(parentFile))
+        return true;
+
+      parentFile = parentFile.getParentFile();
+    }
+    return false;
+  }
 }

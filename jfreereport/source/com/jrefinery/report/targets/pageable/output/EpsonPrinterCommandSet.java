@@ -2,7 +2,7 @@
  * Date: Jan 30, 2003
  * Time: 5:58:45 PM
  *
- * $Id$
+ * $Id: EpsonPrinterCommandSet.java,v 1.1 2003/01/30 22:58:44 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
@@ -275,5 +275,17 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
   public void startLine() throws IOException
   {
   }
-  
+
+  public boolean isEncodingSupported(String encoding)
+  {
+    try
+    {
+      translateCodePage(encoding);
+      return true;
+    }
+    catch (UnsupportedEncodingException use)
+    {
+      return false;
+    }
+  }
 }

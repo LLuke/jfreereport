@@ -2,7 +2,7 @@
  * Date: Jan 30, 2003
  * Time: 3:46:18 PM
  *
- * $Id: PrinterCommandSet.java,v 1.1 2003/01/30 22:58:44 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.2 2003/02/02 23:43:52 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
@@ -14,6 +14,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 public class PrinterCommandSet
@@ -321,5 +322,18 @@ public class PrinterCommandSet
   public void flush() throws IOException
   {
     getOut().flush();
+  }
+
+  public boolean isEncodingSupported (String encoding)
+  {
+    try
+    {
+      " ".getBytes(encoding);
+      return true;
+    }
+    catch (UnsupportedEncodingException e)
+    {
+      return false;
+    }
   }
 }
