@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.19 2002/08/26 10:54:50 taqua Exp $
+ * $Id: Band.java,v 1.20 2002/08/31 14:00:17 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,6 +51,7 @@
  *               This is a temprary fix and gets reomved with the next layout update
  * 31-Aug-2002 : Removed separate stoage of Function and ReportDataSource elements. This stuff was no longer
  *                in use.
+ * 05-Sep-2002 : Documentation
  */
 
 package com.jrefinery.report;
@@ -348,6 +349,13 @@ public abstract class Band implements Serializable, Cloneable
     return s;
   }
 
+  /**
+   * Clones this Band and all Elements contained in this band.
+   *
+   * @returns the clone of this band.
+   * @throws CloneNotSupportedException if this band or an element contained in this band does not support
+   * cloning.
+   */
   public Object clone() throws CloneNotSupportedException
   {
     Band b = (Band) super.clone();
@@ -361,11 +369,21 @@ public abstract class Band implements Serializable, Cloneable
     return b;
   }
 
+  /**
+   * Checks whether this band is visible. Invisible band are not printed and do not consume any height.
+   *
+   * @returns true, if this band is visible.
+   */
   public boolean isVisible()
   {
     return visible;
   }
 
+  /**
+   * Defines whether this band is visible. Invisible band are not printed and do not consume any height.
+   *
+   * @param visible set to true, to make this band visible, false otherwise.
+   */
   public void setVisible(boolean visible)
   {
     this.visible = visible;

@@ -23,7 +23,7 @@
                 field now uses multiple lines and uses the autolinebreak capabilities of TextElement.
 
 -->
-<report name="Invoice" width="450" height="699">
+<report name="Invoice"  pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
 <!--
   Needs some better control when to display the page header. Group should be able to declare whether a
   pageheader should be displayed or not

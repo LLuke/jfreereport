@@ -1012,6 +1012,19 @@ public class PDFSaveDialog extends JDialog
         return false;
       }
     }
+    if (getEncryptionValue() != null)
+    {
+      if (txOwnerPassword.getText().trim().length() == 0)
+      {
+        if (JOptionPane.showConfirmDialog(this,
+            getResources().getString("pdfsavedialog.ownerpasswordEmpty"),
+            getResources().getString("pdfsavedialog.warningTitle"),
+        JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.NO_OPTION)
+        {
+          return false;
+        }
+      }
+    }
     return true;
   }
 

@@ -155,7 +155,7 @@ public class ImageLoadFilter implements DataFilter
   {
     ImageLoadFilter il = (ImageLoadFilter) super.clone ();
     il.imageCache = (KeyedQueue) imageCache.clone ();
-    il.source = (DataSource) source.clone ();
+    if (source != null) il.source = (DataSource) source.clone ();
     return il;
   }
 

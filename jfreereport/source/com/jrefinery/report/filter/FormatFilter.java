@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FormatFilter.java,v 1.7 2002/08/08 15:28:43 taqua Exp $
+ * $Id: FormatFilter.java,v 1.8 2002/08/28 15:27:39 taqua Exp $
  *
  * Changes
  * -------
@@ -173,8 +173,8 @@ public class FormatFilter implements DataFilter
   public Object clone () throws CloneNotSupportedException
   {
     FormatFilter f = (FormatFilter) super.clone ();
-    f.datasource = (DataSource) datasource.clone ();
-    f.format = (Format) format.clone ();
+    if (datasource != null) f.datasource = (DataSource) datasource.clone ();
+    if (format != null) f.format = (Format) format.clone ();
     return f;
   }
 }

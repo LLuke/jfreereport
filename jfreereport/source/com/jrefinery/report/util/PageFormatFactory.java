@@ -239,6 +239,13 @@ public class PageFormatFactory
 
   private static PageFormatFactory singleton;
 
+  protected PageFormatFactory()
+  {
+  }
+
+  /**
+   * @returns an instance of a PageFormatFactory.
+   */
   public static PageFormatFactory getInstance ()
   {
     if (singleton == null)
@@ -248,6 +255,14 @@ public class PageFormatFactory
     return singleton;
   }
 
+  /**
+   * Creates a paper by using the paper size in points found in the int-array. The array must have
+   * a length of 2 and the first value of this array has to contain the width and the second the height
+   * parameter. The created Paper has no ImagableArea defined.
+   *
+   * @param papersize the definition of the papersize in a 2-element int-array
+   * @returns the created paper
+   */
   public Paper createPaper (int[] papersize)
   {
     if (papersize.length != 2) throw new IllegalArgumentException("Paper must have a width and a height");
@@ -255,6 +270,13 @@ public class PageFormatFactory
     return createPaper(papersize[0], papersize[1]);
   }
 
+  /**
+   * Creates a paper by using the paper size in points. The created Paper has no ImagableArea defined.
+   *
+   * @param width the width of the paper in points
+   * @param height the height of the paper in points
+   * @returns the created paper
+   */
   public Paper createPaper (int width, int heigth)
   {
     Paper p = new Paper();
@@ -263,34 +285,83 @@ public class PageFormatFactory
     return p;
   }
 
+  /**
+   * Defines the imageable area of the given paper by adjusting the border around the imagable area.
+   * The bordersizes are given in points.
+   *
+   * @param paper the paper that should be modified
+   * @param top the bordersize of the top-border
+   * @param left the border in points in the left
+   * @param bottom the border in points in the bottom
+   * @param right the border in points in the right
+   */
   public void setBorders (Paper paper, double top, double left, double bottom, double right)
   {
     double w = paper.getWidth() - right - left;
     double b = paper.getHeight() - bottom - top;
     paper.setImageableArea(top, left, w, b);
-    Log.debug(paper.getImageableX() + ", " + paper.getImageableY() + ", " + paper.getImageableWidth() + ", " + paper.getImageableHeight());
   }
 
+  /**
+   * Defines the imageable area of the given paper by adjusting the border around the imagable area.
+   * The bordersizes are given in inches.
+   *
+   * @param paper the paper that should be modified
+   * @param top the bordersize of the top-border
+   * @param left the border in points in the left
+   * @param bottom the border in points in the bottom
+   * @param right the border in points in the right
+   */
   public void setBordersInch (Paper paper, double top, double left, double bottom, double right)
   {
     setBorders(paper, convertInchToPoints(top), convertInchToPoints(left), convertInchToPoints(bottom), convertInchToPoints(right));
   }
 
+  /**
+   * Defines the imageable area of the given paper by adjusting the border around the imagable area.
+   * The bordersizes are given in millimeters.
+   *
+   * @param paper the paper that should be modified
+   * @param top the bordersize of the top-border
+   * @param left the border in points in the left
+   * @param bottom the border in points in the bottom
+   * @param right the border in points in the right
+   */
   public void setBordersMm (Paper paper, double top, double left, double bottom, double right)
   {
     setBorders(paper, convertMmToPoints(top), convertMmToPoints(left), convertMmToPoints(bottom), convertMmToPoints(right));
   }
 
-  public double convertInchToPoints (double points)
+  /**
+   * Converts the given inch value to a valid point-value.
+   *
+   * @param inches the size in inch
+   * @return the size in points
+   */
+  protected double convertInchToPoints (double inches)
   {
-    return points * 72;
+    return inches * 72;
   }
 
-  public double convertMmToPoints (double points)
+  /**
+   * Converts the given millimeter value to a valid point-value.
+   *
+   * @param mm the size in inch
+   * @return the size in points
+   */
+  public double convertMmToPoints (double mm)
   {
-    return points * (72d/254d);
+    return mm * (72d/254d);
   }
 
+  /**
+   * Creates a new pageformat using the given paper and the given orientation.
+   *
+   * @param paper the paper to use in the new pageformat
+   * @param orientation one of PageFormat.PORTRAIT, PageFormat.LANDSCAPE or PageFormat.REVERSE_LANDSCAPE
+   * @returns the created Pageformat
+   * @throws NullPointerException if the paper given was null
+   */
   public PageFormat createPageFormat (Paper paper, int orientation)
   {
     if (paper == null) throw new NullPointerException("Paper given must not be null");
@@ -300,6 +371,14 @@ public class PageFormatFactory
     return pf;
   }
 
+  /**
+   * Creates a paper by looking up the given Uppercase name in this classes defined constants.
+   * The value if looked up by introspection, if the value is not defined in this class, null
+   * is returned.
+   *
+   * @param name the name of the constant defining the papersize
+   * @returns the defined paper or null, if the name was invalid.
+   */
   public Paper createPaper (String name)
   {
     try

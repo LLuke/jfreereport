@@ -183,8 +183,8 @@ public class FormatParser implements DataFilter
   public Object clone () throws CloneNotSupportedException
   {
     FormatParser p = (FormatParser) super.clone ();
-    p.datasource = (DataSource) datasource.clone ();
-    p.format = (Format) format.clone ();
+    if (datasource != null) p.datasource = (DataSource) datasource.clone ();
+    if (format != null) p.format = (Format) format.clone ();
     return p;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Cursor.java,v 1.9 2002/07/20 20:48:47 taqua Exp $
+ * $Id: Cursor.java,v 1.10 2002/08/08 15:28:37 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -38,6 +38,7 @@
  * 20-May-2002 : Added advanceTo to better support PageFooter drawing.
  * 04-Jun-2002 : Documentation updated.
  * 04-Jul-2002 : Serializable and Cloneable
+ * 05-Sep-2002 : Documentation
  */
 
 package com.jrefinery.report;
@@ -146,6 +147,9 @@ public class Cursor implements Cloneable, Serializable
     return pageBottom;
   }
 
+  /**
+   * @returns a clone of this cursor.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     return super.clone ();

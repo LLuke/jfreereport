@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageRefFilter.java,v 1.6 2002/08/28 15:27:39 taqua Exp $
+ * $Id: ImageRefFilter.java,v 1.7 2002/08/31 14:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -119,7 +119,7 @@ public class ImageRefFilter implements DataFilter
   public Object clone () throws CloneNotSupportedException
   {
     ImageRefFilter r = (ImageRefFilter) super.clone ();
-    r.dataSource = (DataSource) dataSource.clone ();
+    if (dataSource != null) r.dataSource = (DataSource) dataSource.clone ();
     return r;
   }
 

@@ -9,7 +9,7 @@
                 the full width, but will issue at least a warning. PageFooter adjusted.
 
 -->
-<report name="Sample Report 2" width="0" height="0">
+<report name="Sample Report 2"  pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
 
     <!-- REPORT HEADER -->
     <reportheader height="144" fontname="SansSerif" fontstyle="bold" fontsize="18">

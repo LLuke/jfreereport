@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DataElement.java,v 1.12 2002/08/08 15:28:37 taqua Exp $
+ * $Id: DataElement.java,v 1.13 2002/08/14 21:14:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -40,11 +40,12 @@
  * 04-Jun-2002 : Documentation, declared the internal function getReportDataSource final.
  * 02-Jul-2002 : Simpliefied TextElements filter handling
  * 04-Jul-2002 : Serializable and Cloneable
+ * 05-Sep-2002 : Documentation
  */
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.filter.ReportDataSource;
+import com.jrefinery.report.filter.DataRowDataSource;
 
 /**
  * The base class for all report elements that display data (that is, information from the report's
@@ -58,7 +59,7 @@ import com.jrefinery.report.filter.ReportDataSource;
  */
 public abstract class DataElement extends TextElement
 {
-  private ReportDataSource fieldsource;
+  private DataRowDataSource fieldsource;
 
   /**
    * Constructs a data element using float coordinates.
@@ -67,8 +68,8 @@ public abstract class DataElement extends TextElement
    */
   protected DataElement ()
   {
-    fieldsource = new ReportDataSource ();
-    fieldsource.setField ("");
+    fieldsource = new DataRowDataSource ();
+    fieldsource.setDataSourceColumnName("");
 
     // Register this elements data source with the text elements string filter.
     setDataSource (fieldsource);
@@ -85,7 +86,7 @@ public abstract class DataElement extends TextElement
     if (fieldname == null)
       throw new NullPointerException ("Fieldname must not be null for field " + getName ());
 
-    fieldsource.setField (fieldname);
+    fieldsource.setDataSourceColumnName (fieldname);
   }
 
   /**
@@ -95,23 +96,27 @@ public abstract class DataElement extends TextElement
    */
   public String getField ()
   {
-    return fieldsource.getField ();
+    return fieldsource.getDataSourceColumnName ();
   }
 
   /**
    * @returns the reportdatasource assigned to this field. Make sure you add this to the
    * end of the chain or you will not see any results.
    */
-  protected final ReportDataSource getReportDataSource ()
+  protected final DataRowDataSource getReportDataSource ()
   {
     return fieldsource;
   }
 
-
+  /**
+   * Clones this Element.
+   *
+   * @return a clone of this element.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     DataElement e = (DataElement) super.clone ();
-    e.fieldsource = (ReportDataSource) fieldsource.clone ();
+    e.fieldsource = (DataRowDataSource) fieldsource.clone ();
     e.setDataSource (e.fieldsource);
     return e;
   }

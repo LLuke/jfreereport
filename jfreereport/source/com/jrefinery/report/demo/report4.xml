@@ -9,7 +9,7 @@
   1: "name" = String;
   2: "sample"   = String;
 -->
-<report name="Fonts" width="450" height="699">
+<report name="Fonts" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
   <groups>
     <group name="fontfamily">
       <groupheader height="16" fontname="SansSerif" fontstyle="plain" fontsize="11" baseline="11">

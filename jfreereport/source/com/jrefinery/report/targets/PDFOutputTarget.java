@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.21 2002/08/26 22:02:13 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.22 2002/09/01 15:49:31 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,7 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.DocWriter;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.DefaultFontMapper;
 import com.lowagie.text.pdf.PdfContentByte;
@@ -144,6 +145,18 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /** The current encoding */
   private String encoding;
+
+  /**
+   * An bytearray containing an empty password. iText replaces the owner password with random
+   * values, but Adobe allows to have encryption without an owner password set.
+   */
+  private static final byte PDF_PASSWORD_PAD[] = {
+      (byte)0x28, (byte)0xBF, (byte)0x4E, (byte)0x5E, (byte)0x4E, (byte)0x75,
+      (byte)0x8A, (byte)0x41, (byte)0x64, (byte)0x00, (byte)0x4E, (byte)0x56,
+      (byte)0xFF, (byte)0xFA, (byte)0x01, (byte)0x08, (byte)0x2E, (byte)0x2E,
+      (byte)0x00, (byte)0xB6, (byte)0xD0, (byte)0x68, (byte)0x3E, (byte)0x80,
+      (byte)0x2F, (byte)0x0C, (byte)0xA9, (byte)0xFE, (byte)0x64, (byte)0x53,
+      (byte)0x69, (byte)0x7A};
 
   /**
    * The PDFBandCursor is used to translate between the band specific coordinate space
@@ -1003,8 +1016,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
         }
         String userpassword = (String) getProperty(SECURITY_USERPASSWORD);
         String ownerpassword = (String) getProperty(SECURITY_OWNERPASSWORD);
-        Log.debug ("UserPassword: " + userpassword + " - OwnerPassword: " + ownerpassword);
-        writer.setEncryption(encrypt.booleanValue(), userpassword, ownerpassword, getPermissions());
+        //Log.debug ("UserPassword: " + userpassword + " - OwnerPassword: " + ownerpassword);
+        byte[] userpasswordbytes = DocWriter.getISOBytes(userpassword);
+        byte[] ownerpasswordbytes = DocWriter.getISOBytes(ownerpassword);
+        if (ownerpasswordbytes == null)
+        {
+          ownerpasswordbytes = PDF_PASSWORD_PAD;
+        }
+        writer.setEncryption(userpasswordbytes, ownerpasswordbytes, getPermissions(), encrypt.booleanValue());
       }
 
       this.document.open();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFunctionElement.java,v 1.9 2002/08/08 15:28:38 taqua Exp $
+ * $Id: DateFunctionElement.java,v 1.10 2002/08/14 21:14:04 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,7 @@
  * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
  *               TextElements instead which get different filters attached.
  * 04-Jul-2002 : Serializable and Cloneable
+ * 05-Sep-2002 : Documentation
  */
 
 package com.jrefinery.report;
@@ -109,7 +110,11 @@ public class DateFunctionElement extends FunctionElement
     this.formatter.setDateFormat (format);
   }
 
-
+  /**
+   * Clones this Element.
+   *
+   * @return a clone of this element.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     if ((getDataSource () instanceof DateFormatFilter) == false)

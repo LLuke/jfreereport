@@ -140,7 +140,7 @@ public class URLFilter implements DataFilter
   public Object clone () throws CloneNotSupportedException
   {
     URLFilter f = (URLFilter) super.clone ();
-    f.source = (DataSource) source.clone ();
+    if (source != null) f.source = (DataSource) source.clone ();
     return f;
   }
 }

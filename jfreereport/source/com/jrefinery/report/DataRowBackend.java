@@ -187,13 +187,11 @@ public class DataRowBackend implements Cloneable
     Object returnValue = null;
     try
     {
-      Log.debug ("Locking " + column);
       columnlocks[column] = true;
       int col = column;
       if (col < getTableEndIndex())
       {
         // Handle Pos == BEFORE_FIRST_ROW
-
         if (getCurrentRow() < 0 || getCurrentRow() >= getTablemodel().getRowCount())
         {
           returnValue = null;
@@ -219,7 +217,6 @@ public class DataRowBackend implements Cloneable
     }
     finally
     {
-      Log.debug ("UnLocking " + column);
       columnlocks[column] = false;
     }
     return returnValue;

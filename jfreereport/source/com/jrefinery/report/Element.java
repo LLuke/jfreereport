@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.10 2002/07/03 18:49:45 taqua Exp $
+ * $Id: Element.java,v 1.11 2002/07/20 20:48:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -46,6 +46,7 @@
  *               getPaint (Band) method. If neither band nor element have a paint declared, fail
  *               with and exception.
  * 04-Jul-2002 : Serializable and Cloneable
+ * 05-Sep-2002 : Documentation
  */
 
 package com.jrefinery.report;
@@ -299,6 +300,11 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
    */
   public abstract void draw (OutputTarget target, Band band) throws OutputTargetException;
 
+  /**
+   * Clones this Element.
+   *
+   * @return a clone of this element.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     Element e = (Element) super.clone ();

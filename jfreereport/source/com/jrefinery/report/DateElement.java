@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DateElement.java,v 1.10 2002/08/08 15:28:37 taqua Exp $
+ * $Id: DateElement.java,v 1.11 2002/08/14 21:14:03 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -38,6 +38,7 @@
  *               TextElements instead which get different filters attached.
  * 04-May-2002 : cleanup, documentation.
  * 04-Jul-2002 : Serializable and Cloneable
+ * 05-Sep-2002 : Documentation
  */
 
 package com.jrefinery.report;
@@ -117,6 +118,11 @@ public class DateElement extends DataElement
       throw new ClassCastException ("DEPRECATION: Only simple dateformat supported by default implementation");
   }
 
+  /**
+   * Clones this Element.
+   *
+   * @return a clone of this element.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     if ((getDataSource () instanceof DateFormatFilter) == false)

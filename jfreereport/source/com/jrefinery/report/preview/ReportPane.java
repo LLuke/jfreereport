@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPane.java,v 1.18 2002/08/29 19:15:35 taqua Exp $
+ * $Id: ReportPane.java,v 1.19 2002/09/01 15:49:31 taqua Exp $
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
@@ -363,180 +363,188 @@ public class ReportPane extends JComponent implements Printable, Pageable
    */
   public void paintComponent (Graphics g)
   {
-    Graphics2D g2org = (Graphics2D) g;
-
-    if (graphCache == null)
+    try
     {
-      PageFormat pageFormat = getPageFormat ();
+      Graphics2D g2org = (Graphics2D) g;
 
-      Dimension size = getSize ();
-      Insets insets = getInsets ();
-
-      double outerX = 0;
-      double outerY = 0;
-
-      double realouterW = size.getWidth () - 1;
-      double realouterH = size.getHeight () - 1;
-
-      double outerW = pageFormat.getWidth ();
-      double outerH = pageFormat.getHeight ();
-
-      float innerX = (float) pageFormat.getImageableX ();
-      float innerY = (float) pageFormat.getImageableY ();
-      float innerW = (float) pageFormat.getImageableWidth ();
-      float innerH = (float) pageFormat.getImageableHeight ();
-
-      double paperBorder = PaperBorderPixel * zoomFactor;
-
-      Graphics2D g2 = null;
-      if (realouterW > 1500 || realouterH > 1500)
+      if (graphCache == null)
       {
-        graphCache = null;
-        g2 = g2org;
-      }
-      else
-      {
-        graphCache =
-                g2org.getDeviceConfiguration ().createCompatibleImage (
-                        (int) (realouterW),
-                        (int) (realouterH));
-        g2 = graphCache.createGraphics ();
-      }
+        PageFormat pageFormat = getPageFormat ();
 
+        Dimension size = getSize ();
+        Insets insets = getInsets ();
 
-      g2.setRenderingHint (
-              RenderingHints.KEY_TEXT_ANTIALIASING,
-              RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-      //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      //g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        double outerX = 0;
+        double outerY = 0;
 
-      /** Prepare background **/
-      Rectangle2D pageArea = new Rectangle2D.Double (outerX, outerY, realouterW, realouterH);
-      g2.setPaint (getBackground ());
-      g2.fill (pageArea);
-      g2.transform (AffineTransform.getScaleInstance (zoomFactor, zoomFactor));
+        double realouterW = size.getWidth () - 1;
+        double realouterH = size.getHeight () - 1;
 
-      /** Prepare background **/
-      pageArea = new Rectangle2D.Double (outerX, outerY, outerW - 2, outerH - 2);
+        double outerW = pageFormat.getWidth ();
+        double outerH = pageFormat.getHeight ();
 
-      g2.setPaint (Color.white);
-      g2.fill (pageArea);
+        float innerX = (float) pageFormat.getImageableX ();
+        float innerY = (float) pageFormat.getImageableY ();
+        float innerW = (float) pageFormat.getImageableWidth ();
+        float innerH = (float) pageFormat.getImageableHeight ();
 
-      /**
-       * The border around the printable area is painted when the corresponding property is
-       * set to true.
-       */
-      Rectangle2D printingArea = new Rectangle2D.Float (innerX, innerY, innerW, innerH);
-      synchronized (target)
-      {
-        target.setGraphics2D (g2);
-        try
+        double paperBorder = PaperBorderPixel * zoomFactor;
+
+        Graphics2D g2 = null;
+        if (realouterW > 1500 || realouterH > 1500)
         {
-          if (!isPaginated ())
-          {
-            repaginate (target);
-          }
+          graphCache = null;
+          g2 = g2org;
         }
-        catch (ReportProcessingException rpe)
+        else
         {
-          Log.error ("Repaginate failed: ", rpe);
-          setError (rpe);
+          graphCache =
+                  g2org.getDeviceConfiguration ().createCompatibleImage (
+                          (int) (realouterW),
+                          (int) (realouterH));
+          g2 = graphCache.createGraphics ();
         }
 
-        int pageNumber = getPageNumber ();
-        if (pageNumber > 0)
+
+        g2.setRenderingHint (
+                RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        //g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+        /** Prepare background **/
+        Rectangle2D pageArea = new Rectangle2D.Double (outerX, outerY, realouterW, realouterH);
+        g2.setPaint (getBackground ());
+        g2.fill (pageArea);
+        g2.transform (AffineTransform.getScaleInstance (zoomFactor, zoomFactor));
+
+        /** Prepare background **/
+        pageArea = new Rectangle2D.Double (outerX, outerY, outerW - 2, outerH - 2);
+
+        g2.setPaint (Color.white);
+        g2.fill (pageArea);
+
+        /**
+         * The border around the printable area is painted when the corresponding property is
+         * set to true.
+         */
+        Rectangle2D printingArea = new Rectangle2D.Float (innerX, innerY, innerW, innerH);
+        synchronized (target)
         {
-          ReportState state = (ReportState) getPageStateList ().get (pageNumber - 1);
+          target.setGraphics2D (g2);
           try
           {
-            ReportState s2 = report.processPage (target, state, true);
+            if (!isPaginated ())
+            {
+              repaginate (target);
+            }
           }
           catch (ReportProcessingException rpe)
           {
             Log.error ("Repaginate failed: ", rpe);
             setError (rpe);
           }
+
+          int pageNumber = getPageNumber ();
+          if (pageNumber > 0)
+          {
+            ReportState state = (ReportState) getPageStateList ().get (pageNumber - 1);
+            try
+            {
+              ReportState s2 = report.processPage (target, state, true);
+            }
+            catch (ReportProcessingException rpe)
+            {
+              Log.error ("Repaginate failed: ", rpe);
+              setError (rpe);
+            }
+          }
+          target.setGraphics2D (G2OutputTarget.createEmptyGraphics ());
         }
-        target.setGraphics2D (G2OutputTarget.createEmptyGraphics ());
+        /** Paint Page Shadow */
+        Rectangle2D southborder =
+                new Rectangle2D.Double (
+                        outerX + PaperBorderPixel - 2,
+                        outerY + outerH - 2,
+                        outerW,
+                        PaperBorderPixel);
+
+        g2.setPaint (UIManager.getColor ("controlShadow"));
+
+        g2.fill (southborder);
+        Rectangle2D eastborder =
+                new Rectangle2D.Double (
+                        outerW - 2,
+                        outerY - 2 + PaperBorderPixel,
+                        PaperBorderPixel,
+                        outerH);
+        g2.fill (eastborder);
+
+        // Above Title
+        Rectangle2D unprintArea =
+                new Rectangle2D.Double (outerX, outerY, outerW - 2, (innerY - outerY));
+        g2.setPaint (Color.white);
+        g2.fill (unprintArea);
+
+        // Under Footer
+        unprintArea =
+                new Rectangle2D.Double (
+                        outerX,
+                        innerY + innerH,
+                        outerW - 2,
+                        (outerH - innerY - innerH) - 2);
+        g2.fill (unprintArea);
+
+        // Left
+        unprintArea = new Rectangle2D.Double (outerX, innerY, innerX, (innerH));
+        g2.fill (unprintArea);
+
+        // Right
+        unprintArea =
+                new Rectangle2D.Double (
+                        (innerX + innerW),
+                        innerY,
+                        outerW - (innerX + innerW) - 2,
+                        (innerH));
+        g2.fill (unprintArea);
+        Rectangle2D transPageArea = null;
+        if (zoomFactor > 1.49)
+        {
+          transPageArea = new Rectangle2D.Double (outerX, outerY, outerW - 1, outerH - 1);
+        }
+        else
+        {
+          transPageArea = new Rectangle2D.Double (outerX, outerY, outerW - 2, outerH - 2);
+        }
+
+        g2.setPaint (Color.black);
+        g2.draw (transPageArea);
+        if (isBorderPainted ())
+        {
+          g2.setPaint (Color.gray);
+          g2.draw (printingArea);
+        }
       }
-      /** Paint Page Shadow */
-      Rectangle2D southborder =
-              new Rectangle2D.Double (
-                      outerX + PaperBorderPixel - 2,
-                      outerY + outerH - 2,
-                      outerW,
-                      PaperBorderPixel);
 
-      g2.setPaint (UIManager.getColor ("controlShadow"));
-
-      g2.fill (southborder);
-      Rectangle2D eastborder =
-              new Rectangle2D.Double (
-                      outerW - 2,
-                      outerY - 2 + PaperBorderPixel,
-                      PaperBorderPixel,
-                      outerH);
-      g2.fill (eastborder);
-
-      // Above Title
-      Rectangle2D unprintArea =
-              new Rectangle2D.Double (outerX, outerY, outerW - 2, (innerY - outerY));
-      g2.setPaint (Color.white);
-      g2.fill (unprintArea);
-
-      // Under Footer
-      unprintArea =
-              new Rectangle2D.Double (
-                      outerX,
-                      innerY + innerH,
-                      outerW - 2,
-                      (outerH - innerY - innerH) - 2);
-      g2.fill (unprintArea);
-
-      // Left
-      unprintArea = new Rectangle2D.Double (outerX, innerY, innerX, (innerH));
-      g2.fill (unprintArea);
-
-      // Right
-      unprintArea =
-              new Rectangle2D.Double (
-                      (innerX + innerW),
-                      innerY,
-                      outerW - (innerX + innerW) - 2,
-                      (innerH));
-      g2.fill (unprintArea);
-      Rectangle2D transPageArea = null;
-      if (zoomFactor > 1.49)
+      if (graphCache != null)
       {
-        transPageArea = new Rectangle2D.Double (outerX, outerY, outerW - 1, outerH - 1);
+        g2org.drawImage (
+                graphCache,
+                new AffineTransformOp (
+                        g2org.getDeviceConfiguration ().getDefaultTransform (),
+                        g2org.getRenderingHints ()),
+                0,
+                0);
       }
       else
       {
-        transPageArea = new Rectangle2D.Double (outerX, outerY, outerW - 2, outerH - 2);
-      }
-
-      g2.setPaint (Color.black);
-      g2.draw (transPageArea);
-      if (isBorderPainted ())
-      {
-        g2.setPaint (Color.gray);
-        g2.draw (printingArea);
+        super.paintComponent (g);
       }
     }
-
-    if (graphCache != null)
+    catch (Exception e)
     {
-      g2org.drawImage (
-              graphCache,
-              new AffineTransformOp (
-                      g2org.getDeviceConfiguration ().getDefaultTransform (),
-                      g2org.getRenderingHints ()),
-              0,
-              0);
-    }
-    else
-    {
-      super.paintComponent (g);
+      setError(e);
+      super.paintComponent(g);
     }
   }
 

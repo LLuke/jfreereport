@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.18 2002/08/26 10:54:50 taqua Exp $
+ * $Id: TextElement.java,v 1.19 2002/08/29 19:15:33 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -45,6 +45,7 @@
  * 04-Jun-2002 : Documentation.
  * 19-Jun-2002 : More documentation
  * 02-Jul-2002 : TextElements constructor has to be public, of course.
+ * 05-Sep-2002 : Cloning added
  */
 
 package com.jrefinery.report;
@@ -276,11 +277,24 @@ public class TextElement extends Element
     return stringfilter.getValue();
   }
 
+  /**
+   * Use this function with care, and don't depend on this too much, it gets removed as soon as the
+   * layouting is implemented.
+   *
+   * @returns true, if the height of this textelement should be calculated dynamicly
+   *
+   */
   public boolean isDynamic()
   {
     return dynamic;
   }
 
+  /**
+   * Use this function with care, and don't depend on this too much, it gets removed as soon as the
+   * layouting is implemented.
+   *
+   * @param dynamic, set to true, if the height of this textelement should be calculated dynamicly
+   */
   public void setDynamic(boolean dynamic)
   {
     this.dynamic = dynamic;
@@ -305,5 +319,17 @@ public class TextElement extends Element
     b.append(getFormattedText());
     b.append("}");
     return b.toString();
+  }
+
+  /**
+   * Clones this Element.
+   *
+   * @return a clone of this element.
+   */
+  public Object clone () throws CloneNotSupportedException
+  {
+    TextElement te = (TextElement) super.clone();
+    te.stringfilter = (StringFilter) stringfilter.clone();
+    return te;
   }
 }

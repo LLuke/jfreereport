@@ -27,7 +27,7 @@
  *
  * Changes
  * ------------------------------
- * 27.07.2002 : Inital version
+ * 27-Jul-2002 : Inital version
  */
 package com.jrefinery.report;
 
@@ -54,7 +54,8 @@ public interface DataRow
   public String getColumnName (int col);
 
   /**
-   * returns the column position of the column, expression or function with the given name
+   * returns the column position of the column, expression or function with the given name or
+   * -1 if the given name does not exist in this DataRow.
    */
   public int findColumn (String name);
 

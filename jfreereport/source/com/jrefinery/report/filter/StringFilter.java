@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFilter.java,v 1.7 2002/08/08 15:28:43 taqua Exp $
+ * $Id: StringFilter.java,v 1.8 2002/08/31 14:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -125,7 +125,7 @@ public class StringFilter implements DataFilter
   public Object clone () throws CloneNotSupportedException
   {
     StringFilter f = (StringFilter) super.clone ();
-    f.source = (DataSource) source.clone ();
+    if (source != null) f.source = (DataSource) source.clone ();
     return f;
   }
 }
