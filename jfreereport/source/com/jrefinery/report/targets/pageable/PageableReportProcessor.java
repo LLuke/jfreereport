@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.6 2002/12/05 16:57:59 mungady Exp $
+ * $Id: PageableReportProcessor.java,v 1.7 2002/12/06 19:28:03 taqua Exp $
  *
  * Changes
  * -------
@@ -228,14 +228,6 @@ public class PageableReportProcessor
       if (it.hasNext())
       {
         level = ((Integer) it.next()).intValue();
-        try
-        {
-          Thread.sleep(100);
-        }
-        catch (Exception e)
-        {
-          // suppress
-        }
       }
 
       do
@@ -335,7 +327,6 @@ public class PageableReportProcessor
     ReportState state = (ReportState) currPage.clone();
     PageLayouter lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
     lm.setLogicalPage(out.getLogicalPage());
-//    Log.info ("Restoring SaveState... " + lm.hashCode() + " -> " + state.getAnchestorHashcode());
     lm.restoreSaveState(state);
 
     if (lm.isPageEnded())
@@ -356,8 +347,6 @@ public class PageableReportProcessor
       }
     }
 
-//    Log.info ("End ProcessPage: " + state.getCurrentPage() + " -> " + state.getCurrentDataItem());
-//    Log.info ("End ProcessPage: " + state.getClass());
     return state;
   }
   

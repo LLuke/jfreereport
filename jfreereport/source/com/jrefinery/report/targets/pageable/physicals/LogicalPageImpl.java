@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.5 2002/12/06 20:34:16 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.6 2002/12/07 14:58:33 taqua Exp $
  *
  * Changes
  * -------
@@ -269,12 +269,17 @@ public class LogicalPageImpl implements LogicalPage
 
     // do nothing if the band is invisble
     if (band.isVisible() == false)
+    {
+      Log.debug ("Band Is Not Visible");
       return null;
-
+    }
     // do nothing if the band has a height of 0 (also invisible)
     if (bounds.getHeight() == 0)
+    {
+      Log.debug ("Band Height is 0");
       return null;
-    
+    }
+
     PageFormat pf = getPageFormat();
     Rectangle2D logicalPageBounds = new Rectangle2D.Double(0,0, pf.getImageableWidth(), pf.getImageableHeight());
     Rectangle2D ibounds = logicalPageBounds.createIntersection(bounds);

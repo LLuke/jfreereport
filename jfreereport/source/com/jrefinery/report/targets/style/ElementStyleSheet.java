@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.3 2002/12/06 17:37:33 mungady Exp $
+ * $Id: ElementStyleSheet.java,v 1.4 2002/12/07 20:53:13 taqua Exp $
  *
  * Changes
  * -------
@@ -168,6 +168,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
    */
   public void addParent(ElementStyleSheet parent)
   {
+    addParent(0, parent);
   }
 
   /**
@@ -255,7 +256,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
       for (int i = 0; i < parents.size(); i++)
       {
         ElementStyleSheet st = (ElementStyleSheet) parents.get (i);
-        value = st.getStyleProperty(key, defaultValue);
+        value = st.getStyleProperty(key, null);
         if (value != null) 
         {
           return value;

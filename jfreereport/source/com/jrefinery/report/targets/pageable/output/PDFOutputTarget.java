@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.4 2002/12/07 14:58:33 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.5 2002/12/08 19:06:32 taqua Exp $
  *
  * Changes
  * -------
@@ -95,7 +95,7 @@ import java.util.StringTokenizer;
  * An output target for the report engine that generates a PDF file using the iText class library
  * (see <code>http://www.lowagie.com/iText</code>, note that the URL is case-sensitive!).
  * <p>
- * If the system property "com.jrefinery.report.targets.pageable.output.PDFOutputTarget.AUTOINIT" 
+ * If the system property "com.jrefinery.report.targets.pageable.output.PDFOutputTarget.AUTOINIT"
  * is set to "true",
  * the PDF-FontFactory is automatically initialized when this class is loaded. Be aware that
  * embedding many fonts will result in larger files.
@@ -104,13 +104,13 @@ import java.util.StringTokenizer;
  * "Identity-H", to enable horizontal unicode printing. This will result in larger files.
  * <p>
  * The Encoding property is now a string with one of the values of "none" "40bit" or "128bit".
- * 
+ *
  * @author David Gilbert
  */
 public class PDFOutputTarget extends AbstractOutputTarget
 {
   /** The configuration prefix. */
-  public static final String CONFIGURATION_PREFIX 
+  public static final String CONFIGURATION_PREFIX
       = "com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.";
 
   /** Literal text for the 'AllowPrinting' property name. */
@@ -455,7 +455,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /**
    * Initialialize the font factory when this class is loaded and the system property
-   * of  <code>"com.jrefinery.report.targets.pageable.output.PDFOutputTarget.AUTOINIT"</code> is 
+   * of  <code>"com.jrefinery.report.targets.pageable.output.PDFOutputTarget.AUTOINIT"</code> is
    * set to <code>true</code>.
    */
   static
@@ -503,7 +503,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param physPageFormat  the physical page format.
    * @param embedFonts  embed the fonts?
    */
-  public PDFOutputTarget(OutputStream out, PageFormat logPageFormat, PageFormat physPageFormat, 
+  public PDFOutputTarget(OutputStream out, PageFormat logPageFormat, PageFormat physPageFormat,
                          boolean embedFonts)
   {
     this(out, new LogicalPageImpl(logPageFormat, physPageFormat), embedFonts);
@@ -584,7 +584,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     this.fontSize = font.getSize();
 
     this.baseFont = fontSupport.createBaseFont(font, getFontEncoding()).getBaseFont();
-    if (baseFont == null) 
+    if (baseFont == null)
     {
       throw new NullPointerException();
     }
@@ -961,7 +961,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public void beginPage(PhysicalPage format) throws OutputTargetException
   {
-    if (isOpen() == false) 
+    if (isOpen() == false)
     {
       throw new IllegalStateException("Target " + hashCode() + " is not open");
     }
@@ -1232,7 +1232,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public OutputTarget createDummyWriter()
   {
-    PDFOutputTarget dummy = new PDFOutputTarget(new NullOutputStream(), 
+    PDFOutputTarget dummy = new PDFOutputTarget(new NullOutputStream(),
                                                 getLogicalPage().newInstance(), isEmbedFonts());
     Enumeration enum = getPropertyNames();
     while (enum.hasMoreElements())
@@ -1260,7 +1260,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   protected void setDocument(Document document)
   {
-    if (document == null) 
+    if (document == null)
     {
       throw new NullPointerException();
     }
@@ -1269,11 +1269,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /**
    * Configures the output target.
-   * 
+   *
    * @param config  the configuration.
    */
   public void configure(ReportConfiguration config)
   {
+    updateProperty(SECURITY_OWNERPASSWORD, config);
+    updateProperty(SECURITY_USERPASSWORD, config);
     updateProperty(AUTHOR, config);
     updateProperty(ENCODING, config);
     updateBooleanProperty(SECURITY_ALLOW_ASSEMBLY, config);
@@ -1292,7 +1294,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /**
    * Updates a property.
-   * 
+   *
    * @param key  the key.
    * @param config  the config.
    */
@@ -1303,7 +1305,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /**
    * Updates a boolean property.
-   *  
+   *
    * @param key  the key.
    * @param config  the config.
    */
@@ -1340,11 +1342,11 @@ public class PDFOutputTarget extends AbstractOutputTarget
   {
     /** The base font. */
     private BaseFont baseFont;
-    
+
     /** The font size. */
     private float fontSize;
 
-    /** 
+    /**
      * Creates a new size calculator.
      *
      * @param font  the font.
@@ -1384,11 +1386,11 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /** The current page format. */
   private PageFormat currentPageFormat;
-  
+
   /** The internal operation bounds. */
   private Rectangle2D internalOperationBounds;
 
-  /** 
+  /**
    * Creates a size calculator for the current state of the outputtarget. that calculator
    * is used to calc. the string width and line height and later maybe more.
    *
@@ -1410,7 +1412,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   public void setOperationBounds(Rectangle2D bounds)
   {
     super.setOperationBounds(bounds);
-    internalOperationBounds 
+    internalOperationBounds
         = new Rectangle2D.Double (bounds.getX() + currentPageFormat.getImageableX(),
                                   bounds.getY() + currentPageFormat.getImageableY(),
                                   bounds.getWidth(), bounds.getHeight());

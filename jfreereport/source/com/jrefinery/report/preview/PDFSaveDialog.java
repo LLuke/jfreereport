@@ -24,7 +24,7 @@
  * PDFSaveDialog.java
  * ------------------
  *
- * $Id: PDFSaveDialog.java,v 1.14 2002/12/02 17:40:53 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.15 2002/12/08 19:06:32 taqua Exp $
  *
  * Changes
  * --------
@@ -1283,7 +1283,6 @@ public class PDFSaveDialog extends JDialog
 
   public void initFromConfiguration(ReportConfiguration config)
   {
-    setAuthor(config.getConfigProperty(PDFOutputTarget.AUTHOR, getAuthor()));
     setAllowAssembly(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY, config, isAllowAssembly()));
     setAllowCopy(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_COPY, config, isAllowCopy()));
     setAllowDegradedPrinting(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_DEGRADED_PRINTING, config, isAllowDegradedPrinting()));
@@ -1292,8 +1291,11 @@ public class PDFSaveDialog extends JDialog
     setAllowModifyContents(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_MODIFY_CONTENTS, config, isAllowModifyContents()));
     setAllowPrinting(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_PRINTING, config, isAllowPrinting()));
     setAllowScreenreaders(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_SCREENREADERS, config, isAllowScreenreaders()));
-    setUserPassword(config.getConfigProperty(PDFOutputTarget.SECURITY_USERPASSWORD, getUserPassword()));
-    setOwnerPassword(config.getConfigProperty(PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword()));
+
+    setEncryptionValue(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_ENCRYPTION, getAuthor()));
+    setAuthor(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.AUTHOR, getAuthor()));
+    setUserPassword(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_USERPASSWORD, getUserPassword()));
+    setOwnerPassword(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword()));
   }
 
   private boolean parseBoolean(String key, ReportConfiguration config, boolean orgVal)
