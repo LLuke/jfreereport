@@ -2,7 +2,7 @@
 
 <!-- This file builds all parser and writer modules. -->
 
-<project name="jfreereport" default="all" basedir=".">
+<project name="jfreereport" default="all" basedir="..">
 
   <target name="init">
     <dirname property="antfile.dir" file="${ant.file}"/>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.4 2003/07/14 17:37:07 taqua Exp $
+ * $Id: PackageManager.java,v 1.5 2003/07/23 16:02:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -221,6 +221,7 @@ public class PackageManager
     catch (ClassNotFoundException cnfe)
     {
       Log.warn (new Log.SimpleMessage("Unresolved dependency for package: ", moduleInfo.getModuleClass()));
+      Log.debug ("ClassNotFound: ", cnfe);
       return false;
     }
     catch (Exception e)

@@ -2,7 +2,7 @@
 
 <!-- This file builds the reference doc modules. -->
 
-<project name="jfreereport" default="all" basedir=".">
+<project name="jfreereport" default="all" basedir="..">
 
   <target name="init">
     <dirname property="antfile.dir" file="${ant.file}"/>

@@ -2,7 +2,7 @@
 
 <!-- This file builds all parser and writer modules. -->
 
-<project name="jfreereport" default="all" basedir=".">
+<project name="jfreereport" default="all" basedir="..">
 
   <target name="init">
     <dirname property="antfile.dir" file="${ant.file}"/>
@@ -294,7 +294,7 @@
     <jar jarfile="${module-output-table-xls-file}"
          basedir="build">
       <manifest>
-          <attribute name="Class-Path" value="${core-jar-file} ${module-output-table-base-file}"/>
+          <attribute name="Class-Path" value="${core-jar-file} ${manifest-lib-prefix}${jakarta-poi-jar-file} ${module-output-table-base-file}"/>
       </manifest>
     </jar>
 

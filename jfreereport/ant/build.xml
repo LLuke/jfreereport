@@ -4,6 +4,52 @@
 
 <project name="jfreereport" default="all" basedir="..">
 
+  <target name="init">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-core.xml" target="init"/>
+    <property file="${antfile.dir}/build.properties"/>
+
+    <antcall target="rebuild-core"/>
+  </target>
+
+  <target name="check-core">
+    <available file="${core-jar-file}" type="file" property="core-jar-file-present"/>
+  </target>
+
+  <target name="rebuild-core" unless="core-jar-file-present" depends="check-core">
+    <echo>
+      Rebuilding core ...
+    </echo>
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-core.xml" target="all"/>
+  </target>
+
+  <target name="check-module-file" depends="init">
+    <tempfile property="resolve.tmp" prefix="jfreereport-build-" suffix="-tmp.properties"/>
+
+    <echo file="${resolve.tmp}">#
+# temporary build property file for ${module}
+module-file=$${module-${module}-file}
+    </echo>
+    <property file="${resolve.tmp}"/>
+    <delete file="${resolve.tmp}"/>
+    <available file="${module-file}" property="module-file-present"/>
+  </target>
+
+  <target name="rebuild-module-file" unless="module-file-present" depends="check-module-file">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/${buildfile}" target="compile-module-${module}"/>
+  </target>
+
+  <!-- Usage :
+  <target name="check-build">
+    <antcall target="rebuild-module-file" inheritAll="false">
+      <property name="buildfile" value="build-parser.xml"/>
+      <property name="module" value="parser-base"/>
+    </antcall>
+  </target>
+  -->
+
   <!-- core tasks                              -->
   <!-- These tasks are needed for all modules  -->
   <!-- ......................................  -->
@@ -13,9 +59,6 @@
 
   <target name="all">
     <dirname property="antfile.dir" file="${ant.file}"/>
-    <echo>
-      ${antfile.dir}
-    </echo>
     <ant antfile="${antfile.dir}/build-core.xml" target="all"/>
     <ant antfile="${antfile.dir}/build-misc.xml" target="all"/>
     <ant antfile="${antfile.dir}/build-output-misc.xml" target="all"/>
@@ -24,6 +67,7 @@
     <ant antfile="${antfile.dir}/build-parser.xml" target="all"/>
     <ant antfile="${antfile.dir}/build-reference.xml" target="all"/>
     <ant antfile="${antfile.dir}/build-gui.xml" target="all"/>
+    <ant antfile="${antfile.dir}/build-demo.xml" target="all"/>
   </target>
 
 </project>

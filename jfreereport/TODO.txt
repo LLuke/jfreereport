@@ -16,14 +16,9 @@
 * Formated Text support for printing (RTF, HTML)
 * Implement JFreeChart adapter and Barcode stuff
 * Allow access to the last datarow to make reporting results available outside.
-* Modularize JFreeReport to create a lightweight package (a 700 kb jar is huge!)
-* Reconfigure the table sheet name definition process, it is almost impossible
-  to disable that!
 * Implement function sets (see #note-1030630)
-
-* maybe it would be wise to change the parser factories to be more
-  extensible in a way that they can be configured at runtime.
-* Complete the module definition ...
-  Document the changes and write a converter for report definitions
+*  Document the changes and write a converter for report definitions
   from 0.8.3 to 0.8.4
 * pluggable input support (WMF, SVG etc)
+* export to OpenOffice 
+

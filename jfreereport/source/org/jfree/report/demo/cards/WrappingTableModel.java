@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WrappingTableModel.java,v 1.6 2003/06/29 16:59:23 taqua Exp $
+ * $Id: WrappingTableModel.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,6 @@ import java.util.ArrayList;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-
-import org.jfree.report.modules.misc.tablemodel.TableModelInfo;
 
 /**
  * A wrapping table model.
@@ -356,15 +354,5 @@ public class WrappingTableModel implements TableModel
   public void removeTableModelListener(final TableModelListener l)
   {
     translator.removeTableModelListener(l);
-  }
-
-  /**
-   * Test code - please ignore.
-   *
-   * @param args  ignored.
-   */
-  public static void main(final String[] args)
-  {
-    TableModelInfo.printTableModel(new WrappingTableModel(new CardTableModel()));
   }
 }
