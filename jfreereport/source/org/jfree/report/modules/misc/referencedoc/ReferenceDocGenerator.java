@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReferenceDocGenerator.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: ReferenceDocGenerator.java,v 1.2 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  */
 
 package org.jfree.report.modules.misc.referencedoc;
+
+import org.jfree.report.Boot;
 
 
 /**
@@ -61,6 +63,7 @@ public class ReferenceDocGenerator
    */
   public static void main(final String[] args)
   {
+    Boot.start();
     StyleKeyReferenceGenerator.main(args);
     ObjectReferenceGenerator.main(args);
     DataSourceReferenceGenerator.main(args);
