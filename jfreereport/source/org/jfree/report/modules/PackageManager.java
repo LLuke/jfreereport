@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.16 2003/10/30 18:09:44 taqua Exp $
+ * $Id: PackageManager.java,v 1.17 2003/11/07 18:33:50 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,10 +41,12 @@ package org.jfree.report.modules;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.io.PrintStream;
 
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PackageConfiguration;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.Boot;
 
 /**
  * The PackageManager is used to load and configure the modules of JFreeReport.
@@ -527,14 +529,50 @@ public final class PackageManager
     return (Module[]) mods.toArray(new Module[mods.size()]);
   }
 
-//  public static void main (String [] args)
-//  {
-//    Boot.start();
-//    Module[] mods = PackageManager.getInstance().getAllModules();
-//    for (int i = 0; i < mods.length; i++)
-//    {
-//      System.out.println (mods[i].getSubSystem() + " " + mods[i].getName());
-//    }
-//    System.out.println ("A total of " + mods.length + " modules is available.");
-//  }
+  public void printUsedModules (PrintStream p)
+  {
+    Module[] allMods = PackageManager.getInstance().getAllModules();
+    ArrayList activeModules = new ArrayList();
+    ArrayList failedModules = new ArrayList();
+
+    for (int i = 0; i < allMods.length; i++)
+    {
+      if (isModuleAvailable(allMods[i]))
+      {
+        activeModules.add (allMods[i]);
+      }
+      else
+      {
+        failedModules.add (allMods[i]);
+      }
+    }
+
+    p.print("Active modules: ");
+    p.println(activeModules.size());
+    p.println("----------------------------------------------------------");
+    for (int i = 0; i < activeModules.size(); i++)
+    {
+      Module mod = (Module) activeModules.get(i);
+      p.print(new Log.PadMessage(mod.getModuleClass(), 70));
+      p.print(" [");
+      p.print(mod.getSubSystem());
+      p.println("]");
+      p.print("  Version: ");
+      p.print(mod.getMajorVersion());
+      p.print("-");
+      p.print(mod.getMinorVersion());
+      p.print("-");
+      p.print(mod.getPatchLevel());
+      p.print (" Producer: ");
+      p.println(mod.getProducer());
+      p.print("  Description: ");
+      p.println(mod.getDescription());
+    }
+  }
+
+  public static void main (String [] args)
+  {
+    Boot.start();
+    PackageManager.getInstance().printUsedModules(System.out);
+  }
 }

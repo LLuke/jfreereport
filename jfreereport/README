@@ -1,8 +1,8 @@
 ************************
-* JFREEREPORT 0.8.4_5  *
+* JFREEREPORT 0.8.4_6  *
 ************************
 
-7 Nov 2003
+25 Nov 2003
 
 1. INTRODUCTION
 ---------------
@@ -34,14 +34,14 @@ file.
 To edit the properties file, you may use the graphical configuration editor
 from the module "gui-config". The editor can be started by calling
 
-  java -jar jfreereport-0.8.4_5-gui-config.jar
+  java -jar jfreereport-0.8.4_6-gui-config.jar
 
 
 4. RUNNING THE DEMO
 -------------------
 The demo for JFreeReport can be started with
 
-  java -jar jfreereport-0.8.4_5-demo.jar
+  java -jar jfreereport-0.8.4_6-demo.jar
 
 
 5. OTHER LIBRARIES
@@ -88,7 +88,7 @@ java class
 
 or by starting the misc-referencedoc module with
 
-  java -jar jfreereport-0.8.4_5-misc-referencedoc.jar
+  java -jar jfreereport-0.8.4_6-misc-referencedoc.jar
 
 The reference manual documents all currently defined StyleKeys and
 the object definitions used in the stylekeys and when defining

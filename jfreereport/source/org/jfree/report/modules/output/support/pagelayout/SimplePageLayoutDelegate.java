@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.4 2003/11/07 18:33:55 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.5 2003/11/23 16:32:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -295,7 +295,13 @@ public class SimplePageLayoutDelegate implements
        * processed.
        */
       // was currentEffectiveGroupIndex - 1
-      for (int gidx = 0; gidx < getCurrentEffectiveGroupIndex(); gidx++)
+      int groupsPrinted = getCurrentEffectiveGroupIndex();
+      if (isGroupFinishPending())
+      {
+        groupsPrinted += 1;
+      }
+
+      for (int gidx = 0; gidx < groupsPrinted; gidx++)
       {
         final Group g = report.getGroup(gidx);
         if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
@@ -305,12 +311,12 @@ public class SimplePageLayoutDelegate implements
         }
       }
 
-      if (groupFinishPending)
+      if (isGroupFinishPending())
       {
         // now as the group footer should get printed soon, we correct the
         // active groups ..
-        currentEffectiveGroupIndex -= 1;
-        groupFinishPending = false;
+        setCurrentEffectiveGroupIndex(getCurrentEffectiveGroupIndex()- 1);
+        setGroupFinishPending(false);
       }
 
       // mark the current position to calculate the maxBand-Height
@@ -335,7 +341,6 @@ public class SimplePageLayoutDelegate implements
   {
     try
     {
-
       worker.setReservedSpace(0);
       final Band b = event.getReport().getPageFooter();
       if (event.getState().getCurrentPage() == 1)
@@ -408,7 +413,7 @@ public class SimplePageLayoutDelegate implements
     }
     try
     {
-      currentEffectiveGroupIndex = -1;
+      setCurrentEffectiveGroupIndex(-1);
       worker.print(event.getReport().getReportHeader(), 
         SimplePageLayoutWorker.BAND_PRINTED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
     }
@@ -437,7 +442,7 @@ public class SimplePageLayoutDelegate implements
     }
     try
     {
-      currentEffectiveGroupIndex -= 1;
+      setCurrentEffectiveGroupIndex(getCurrentEffectiveGroupIndex()- 1);
 
       final Object prepareRun =
           event.getState().getProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY,
@@ -492,7 +497,7 @@ public class SimplePageLayoutDelegate implements
     }
     try
     {
-      currentEffectiveGroupIndex += 1;
+      setCurrentEffectiveGroupIndex(getCurrentEffectiveGroupIndex() + 1);
 
       final int gidx = event.getState().getCurrentGroupIndex();
       final Group g = event.getReport().getGroup(gidx);
@@ -527,7 +532,7 @@ public class SimplePageLayoutDelegate implements
     try
     {
       //currentEffectiveGroupIndex -= 1;
-      groupFinishPending = true;
+      setGroupFinishPending(true);
 
       final int gidx = event.getState().getCurrentGroupIndex();
       final Group g = event.getReport().getGroup(gidx);
@@ -535,8 +540,8 @@ public class SimplePageLayoutDelegate implements
       if (worker.print(b, SimplePageLayoutWorker.BAND_PRINTED,
         SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED))
       {
-        groupFinishPending = false;
-        currentEffectiveGroupIndex -= 1;
+        setGroupFinishPending(false);
+        setCurrentEffectiveGroupIndex(getCurrentEffectiveGroupIndex() - 1);
       }
     }
     catch (FunctionProcessingException fe)
@@ -563,7 +568,7 @@ public class SimplePageLayoutDelegate implements
     {
       throw new IllegalStateException("AssertationFailed: Page is closed.");
     }
-    currentEffectiveGroupIndex += 1;
+    setCurrentEffectiveGroupIndex(getCurrentEffectiveGroupIndex() + 1);
   }
 
   /**
@@ -580,7 +585,7 @@ public class SimplePageLayoutDelegate implements
     {
       throw new IllegalStateException("AssertationFailed: Page is closed.");
     }
-    currentEffectiveGroupIndex -= 1;
+    setCurrentEffectiveGroupIndex(getCurrentEffectiveGroupIndex() - 1);
   }
 
   /**
@@ -611,5 +616,32 @@ public class SimplePageLayoutDelegate implements
     {
       throw new FunctionProcessingException("ItemsAdvanced failed", e);
     }
+  }
+
+  /**
+   * Checks, whether the printing of the last group footer was delayed.
+   * This influences the repeating group headers.
+   * <p>
+   * This is part of a Q&D hack and will be removed in 0.8.5, when a
+   * proper pagebreak handing gets implemented.
+   *
+   * @return true, if the printing of the last group footer is still
+   * pending, false otherwise.
+   */
+  protected boolean isGroupFinishPending()
+  {
+    return groupFinishPending;
+  }
+
+  /**
+   * Defines, whether the printing of the current group footer is pending.
+   * <p>
+   * Will be removed in release 0.8.5
+   *
+   * @param groupFinishPending true or false
+   */
+  protected void setGroupFinishPending(boolean groupFinishPending)
+  {
+    this.groupFinishPending = groupFinishPending;
   }
 }
