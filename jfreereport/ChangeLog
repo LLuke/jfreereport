@@ -2,7 +2,15 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
-0.8.1_02 : (
+0.8.2    :
+
+0.8.1_02 : (09-Mar-2003):
+        * BugFix: Shape handling was invalid. All Shapes were painted at position
+          (0,0) within the element, regardless what was defined for the shape.
+
+        * BugFix: The ReportWriters validity checks were buggy and caused exceptions
+          when writting Object-Descriptions.
+
 0.8.1_01 : (04-Mar-2003):
         * BugFix: The PlainTextOutputDialog was not modal and caused trouble.
 

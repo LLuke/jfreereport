@@ -18,4 +18,6 @@
 * Create a report configuration interface for the TableTargets
 * Add Drawable Support
 * Implement JFreeChart adapter and Barcode stuff
+
 * Writer Support for GeneralPath and Shapes
+* BugFix: HugeReport printing speedup and MemoryLeak
