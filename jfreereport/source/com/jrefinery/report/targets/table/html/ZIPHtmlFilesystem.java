@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.12 2003/03/04 20:29:02 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.13 2003/03/18 18:28:46 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.Hashtable;
 import java.util.HashMap;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
@@ -57,6 +56,7 @@ import com.jrefinery.report.util.IOUtils;
 import com.jrefinery.report.util.ImageComparator;
 import com.jrefinery.report.util.NoCloseOutputStream;
 import com.jrefinery.report.util.StringUtil;
+import com.jrefinery.report.util.WaitingImageObserver;
 import com.keypoint.PngEncoder;
 
 /**
@@ -261,6 +261,9 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
   {
     if (reference.getSourceURL() == null)
     {
+      WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
+      obs.waitImageLoaded();
+
       PngEncoder encoder = new PngEncoder (reference.getImage(), true, 0, 9);
       byte[] data = encoder.pngEncode();
 
@@ -288,6 +291,9 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
       String name = (String) usedURLs.get(url);
       if (name == null)
       {
+        WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
+        obs.waitImageLoaded();
+
         PngEncoder encoder = new PngEncoder (reference.getImage(), true, 0, 9);
         byte[] data = encoder.pngEncode();
 

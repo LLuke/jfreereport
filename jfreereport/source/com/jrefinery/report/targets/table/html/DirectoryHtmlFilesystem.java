@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.10 2003/02/26 16:42:26 mungady Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.11 2003/03/18 18:28:45 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.util.IOUtils;
 import com.jrefinery.report.util.ImageComparator;
 import com.jrefinery.report.util.StringUtil;
+import com.jrefinery.report.util.WaitingImageObserver;
 import com.keypoint.PngEncoder;
 
 /**
@@ -239,6 +240,9 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
   {
     if (reference.getSourceURL() == null)
     {
+      WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
+      obs.waitImageLoaded();
+
       PngEncoder encoder = new PngEncoder (reference.getImage(), true, 0, 9);
       byte[] data = encoder.pngEncode();
 
@@ -264,6 +268,9 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
       String name = (String) usedURLs.get(url);
       if (name == null)
       {
+        WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
+        obs.waitImageLoaded();
+
         PngEncoder encoder = new PngEncoder (reference.getImage(), true, 0, 9);
         byte[] data = encoder.pngEncode();
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFImageCellData.java,v 1.6 2003/02/25 11:57:58 taqua Exp $
+ * $Id: RTFImageCellData.java,v 1.7 2003/02/26 16:42:30 mungady Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import java.net.URL;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.StringUtil;
+import com.jrefinery.report.util.WaitingImageObserver;
 import com.keypoint.PngEncoder;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Cell;
@@ -153,6 +154,9 @@ public class RTFImageCellData extends RTFCellData
 
     if (imageRef.getImage() != null)
     {
+      WaitingImageObserver obs = new WaitingImageObserver(imageRef.getImage());
+      obs.waitImageLoaded();
+
       PngEncoder encoder = new PngEncoder(imageRef.getImage());
       byte[] data = encoder.pngEncode();
       return Image.getInstance(data);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.45 2003/03/18 22:34:25 taqua Exp $
+ * $Id: Band.java,v 1.46 2003/03/26 10:48:54 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -71,7 +71,6 @@ import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Dimension2D;
 import java.io.Serializable;
@@ -137,6 +136,17 @@ public class Band extends Element implements Serializable, Cloneable
     // band style sheets are not accessed by names. Names are important
     // for the xml-parser when stacking the stylesheets together.
     bandDefaults = new BandStyleSheet("default");
+  }
+
+  public BandLayoutManager getLayout ()
+  {
+    return (BandLayoutManager) getStyle().getStyleProperty(BandLayoutManager.LAYOUTMANAGER);
+  }
+
+  public void setLayout (BandLayoutManager layoutManager)
+  {
+
+    getStyle().setStyleProperty(BandLayoutManager.LAYOUTMANAGER, layoutManager);
   }
 
   /**

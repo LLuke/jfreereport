@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.10 2003/02/26 16:42:18 mungady Exp $
+ * $Id: StyleSheetHandler.java,v 1.11 2003/03/18 18:28:42 taqua Exp $
  *
  * Changes
  * -------
@@ -219,6 +219,9 @@ public class StyleSheetHandler implements ReportDefinitionHandler
     {
       sheet.setStyleProperty(basicFactory.getStyleKey(), basicFactory.getValue());
       basicFactory = null;
+    }
+    else if (tagName.equals(EXTENDS_TAG))
+    {
     }
     else if (tagName.equals(finishTag))
     {

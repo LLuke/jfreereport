@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.31 2003/03/07 16:56:04 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.32 2003/03/13 17:43:04 taqua Exp $
  *
  * Changes
  * -------
@@ -79,6 +79,7 @@ import com.jrefinery.report.targets.support.itext.BaseFontRecord;
 import com.jrefinery.report.targets.support.itext.BaseFontSupport;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.WaitingImageObserver;
 import com.keypoint.PngEncoder;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocWriter;
@@ -405,6 +406,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
     if (imageRef.getImage() != null)
     {
       // use best compression but iText does not support the Alpha-Channel ...
+      WaitingImageObserver obs = new WaitingImageObserver(imageRef.getImage());
+      obs.waitImageLoaded();
+
       PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.NO_ALPHA,
                                           PngEncoder.FILTER_NONE, 9);
       byte[] data = encoder.pngEncode();

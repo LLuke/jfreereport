@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManager.java,v 1.4 2003/02/25 18:46:51 taqua Exp $
+ * $Id: BandLayoutManager.java,v 1.5 2003/03/26 10:49:22 taqua Exp $
  *
  * Changes
  * -------
@@ -64,21 +64,21 @@ public interface BandLayoutManager
    * Calculates the preferred layout size for a band.
    *
    * @param b  the band.
-   * @param containerBounds the bounds of the surrounding container.
+   * @param containerDims the bounds of the surrounding container.
    *
    * @return the preferred size.
    */
-  public Dimension2D preferredLayoutSize(Band b, Dimension2D containerBounds);
+  public Dimension2D preferredLayoutSize(Band b, Dimension2D containerDims);
 
   /**
    * Calculates the minimum layout size for a band.
    *
    * @param b  the band.
-   * @param containerBounds the bounds of the surrounding container.
+   * @param containerDims the bounds of the surrounding container.
    *
    * @return the minimum size. 
    */
-  public Dimension2D minimumLayoutSize(Band b, Dimension2D containerBounds);
+  public Dimension2D minimumLayoutSize(Band b, Dimension2D containerDims);
 
   /**
    * Performs the layout of a band.
@@ -102,9 +102,9 @@ public interface BandLayoutManager
   public LayoutSupport getLayoutSupport();
 
   /**
-   * Clears any cached items used by the layout manager.
+   * Clears any cached items used by the layout manager. Invalidates the layout.
    */  
-  public void flushLayout();
+  public void invalidateLayout(Band container);
 
   /**
    * Adds the specified component to the layout, the specified constraints are stored

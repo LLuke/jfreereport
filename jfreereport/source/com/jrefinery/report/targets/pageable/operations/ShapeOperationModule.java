@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.9 2003/03/08 16:08:07 taqua Exp $
+ * $Id: ShapeOperationModule.java,v 1.10 2003/03/26 23:32:23 taqua Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,7 @@ public class ShapeOperationModule extends OperationModule
    * @param value  the content.
    * @param bounds  the bounds.
    *
-   * @return a list of operations.
+   * @return a list of operations, never null.
    */
   public List createOperations (Element e, Content value, Rectangle2D bounds)
   {
@@ -87,7 +87,7 @@ public class ShapeOperationModule extends OperationModule
 
     if (shouldFill == false && shouldDraw == false)
     {
-      return null;
+      return new ArrayList();
     }
 
     ShapeContent sc = (ShapeContent) value.getContentForBounds(bounds);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.37 2003/02/27 10:35:40 mungady Exp $
+ * $Id: SimplePageLayouter.java,v 1.38 2003/03/26 10:49:24 taqua Exp $
  *
  * Changes
  * -------
@@ -52,9 +52,8 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.event.PrepareEventListener;
+import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.states.ReportState;
@@ -490,7 +489,6 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
 
       Band b = getReport().getReportFooter();
       printBand(b);
-      Log.debug ("Printing Report Footer");
     }
     catch (FunctionProcessingException fe)
     {
@@ -655,7 +653,6 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     Rectangle2D bounds = doLayout(b, true);
     bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
     boolean retval = doPrint(bounds, b, spool);
-    //Log.debug ("Printing Successfull: " + retval);
     return retval;
   }
 
@@ -748,7 +745,6 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
           spooledBand = null;
         }
 
-        //Log.debug ("Y=" + getCursor().getY() + " Height=" + height + " band=" + band);
         createSaveState(band);
         endPage(ENDPAGE_FORCED);
         return false;
@@ -909,11 +905,8 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
   {
     if (isPageRestartDone() || isRestartingPage() || isFinishingPage())
     {
-      Log.debug ("Won't restart page for event " + getCurrentEvent());
-      Log.debug (isPageRestartDone() + ", " + isRestartingPage() + ", " + isFinishingPage());
       return;
     }
-    Log.debug ("Restart page for event " + getCurrentEvent());
     startPage();
 
     if (state == null)
@@ -973,7 +966,6 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
         spooledBand = null;
       }
       super.endPage();
-//      Log.debug ("Ended Page: " , new Exception());
       return true;
     }
     else
@@ -1025,7 +1017,6 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
   {
     try
     {
-      Log.debug ("PrepareEvent received: " + event);
       setCurrentEvent(event);
       restartPage();
     }

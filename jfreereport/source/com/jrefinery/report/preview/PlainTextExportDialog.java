@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.8 2003/03/13 18:38:59 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.9 2003/03/18 19:38:31 taqua Exp $
  *
  * Changes
  * --------
@@ -560,6 +560,15 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
     setContentPane(contentPane);
 
     clear();
+
+    addWindowListener(new WindowAdapter()
+    {
+      public void windowClosing(WindowEvent e)
+      {
+        new ActionCancel().actionPerformed(null);
+      }
+    }
+    );
   }
 
   /**
