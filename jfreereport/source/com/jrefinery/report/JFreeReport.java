@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.34 2002/11/05 18:56:24 taqua Exp $
+ * $Id: JFreeReport.java,v 1.35 2002/11/06 21:03:07 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -728,6 +728,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
       // the levels are defined from +inf to 0
       // we dont draw and we do not collect states in a StateList yet
       OutputTarget dummyOutput = output.createDummyWriter();
+      dummyOutput.configure(report.getReportConfiguration());
       dummyOutput.open();
       Iterator it = startState.getLevels();
       while (it.hasNext())

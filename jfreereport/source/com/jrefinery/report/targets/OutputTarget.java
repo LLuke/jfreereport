@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OutputTarget.java,v 1.6 2002/09/13 15:38:09 mungady Exp $
+ * $Id: OutputTarget.java,v 1.7 2002/10/15 20:37:31 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@
 package com.jrefinery.report.targets;
 
 import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.util.ReportConfiguration;
 
 import java.awt.Font;
 import java.awt.Paint;
@@ -98,6 +99,8 @@ public interface OutputTarget
    * @throws OutputTargetException if there is some problem opening the target.
    */
   public void open () throws OutputTargetException;
+
+  public boolean isOpen ();
 
   /**
    * Closes the target.
@@ -352,4 +355,6 @@ public interface OutputTarget
    * write to the NullStream, but NEVER EVER do any real output.
    */
   public OutputTarget createDummyWriter ();
+
+  public void configure (ReportConfiguration config);
 }

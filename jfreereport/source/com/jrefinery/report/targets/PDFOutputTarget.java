@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.31 2002/11/05 18:56:44 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.32 2002/11/06 21:03:15 taqua Exp $
  *
  * Changes
  * -------
@@ -88,6 +88,8 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * An output target for the report engine that generates a PDF file using the iText class library
@@ -104,6 +106,8 @@ import java.util.TreeMap;
  */
 public class PDFOutputTarget extends AbstractOutputTarget
 {
+  public static final String CONFIGURATION_PREFIX = "com.jrefinery.report.targets.PDFOutputTarget.default.";
+
   /** Literal text for the 'AllowPrinting' property name. */
   public static final String SECURITY_ALLOW_PRINTING = "AllowPrinting";
 
@@ -486,6 +490,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   static
   {
+    System.out.println ("PDFOutputTarget loaded");
     if (ReportConfiguration.getGlobalConfig().isPDFTargetAutoInit())
     {
       getFontFactory().registerDefaultFontPath();
@@ -1276,6 +1281,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
   public void close()
   {
     this.getDocument().close();
+    this.baseFonts.clear();
+    this.document = null;
   }
 
   /**
@@ -1543,5 +1550,46 @@ public class PDFOutputTarget extends AbstractOutputTarget
   protected void setDocument(Document document)
   {
     this.document = document;
+  }
+
+  public void configure(ReportConfiguration config)
+  {
+    updateProperty(AUTHOR, config);
+    updateProperty(ENCODING, config);
+    updateBooleanProperty(SECURITY_ALLOW_ASSEMBLY, config);
+    updateBooleanProperty(SECURITY_ALLOW_COPY, config);
+    updateBooleanProperty(SECURITY_ALLOW_DEGRADED_PRINTING, config);
+    updateBooleanProperty(SECURITY_ALLOW_FILLIN, config);
+    updateBooleanProperty(SECURITY_ALLOW_MODIFY_ANNOTATIONS, config);
+    updateBooleanProperty(SECURITY_ALLOW_MODIFY_CONTENTS, config);
+    updateBooleanProperty(SECURITY_ALLOW_PRINTING, config);
+    updateBooleanProperty(SECURITY_ALLOW_SCREENREADERS, config);
+    updateBooleanProperty(SECURITY_OWNERPASSWORD, config);
+    updateBooleanProperty(SECURITY_USERPASSWORD, config);
+
+    // encryption needs more info: <undefined> <none> <40> <128>.
+  }
+
+  private void updateProperty (String key, ReportConfiguration config)
+  {
+    setProperty(key, getProperty(key, config.getConfigProperty(CONFIGURATION_PREFIX + key)));
+  }
+
+  private void updateBooleanProperty (String key, ReportConfiguration config)
+  {
+    String value = config.getConfigProperty(key, "");
+    Boolean bValue = Boolean.FALSE;
+    if (value.equalsIgnoreCase("true"))
+    {
+      bValue = Boolean.TRUE;
+    }
+    setProperty(key, getProperty(key, bValue));
+  }
+
+  public boolean isOpen()
+  {
+    if (document == null)
+      return false;
+    return document.isOpen();
   }
 }

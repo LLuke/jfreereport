@@ -25,7 +25,7 @@ public class ReportConfiguration
 
   // Debug, Warn, Error, Off
   public static final String LOGLEVEL = "com.jrefinery.report.LogLevel";
-  public static final String LOGLEVEL_DEFAULT = "debug";
+  public static final String LOGLEVEL_DEFAULT = "Info";
 
   // Debug, Warn, Error, Off
   public static final String LOGTARGET = "com.jrefinery.report.LogTarget";
@@ -58,7 +58,7 @@ public class ReportConfiguration
       getConfiguration().put (PDFTARGET_AUTOINIT, PDFTARGET_AUTOINIT_DEFAULT);
       getConfiguration().put (PDFTARGET_ENCODING, PDFTARGET_ENCODING_DEFAULT);
 
-      InputStream in = this.getClass().getResourceAsStream("com/jrefinery/report/jfreereport.properties");
+      InputStream in = this.getClass().getResourceAsStream("/com/jrefinery/report/jfreereport.properties");
       if (in != null)
       {
         try

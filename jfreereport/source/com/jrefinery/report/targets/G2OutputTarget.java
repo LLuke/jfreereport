@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.19 2002/09/13 15:38:09 mungady Exp $
+ * $Id: G2OutputTarget.java,v 1.20 2002/10/15 20:37:30 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import com.jrefinery.report.Element;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.NullOutputStream;
+import com.jrefinery.report.util.ReportConfiguration;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -80,6 +81,8 @@ public class G2OutputTarget extends AbstractOutputTarget
 
   /** A dummy graphics2D. */
   private static Graphics2D dummyGraphics;
+
+  private boolean isOpen;
 
   /**
    * Creates an empty graphics by using a 1x1 pixel buffered image.
@@ -201,6 +204,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   public void open()
   {
     // do nothing.
+    isOpen = true;
   }
 
   /**
@@ -209,6 +213,12 @@ public class G2OutputTarget extends AbstractOutputTarget
   public void close()
   {
     // do nothing.
+    isOpen = false;
+  }
+
+  public boolean isOpen()
+  {
+    return isOpen;
   }
 
   /**
@@ -486,4 +496,10 @@ public class G2OutputTarget extends AbstractOutputTarget
     }
     return dummy;
   }
+
+  public void configure(ReportConfiguration config)
+  {
+    // nothing to do here, G2OuputTarget is not configured in any way.
+  }
+
 }

@@ -39,6 +39,8 @@ import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.NullOutputStream;
+import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.ui.ExtensionFileFilter;
 
 import javax.swing.AbstractAction;
@@ -57,6 +59,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.KeyStroke;
+import javax.swing.JComponent;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -702,6 +706,9 @@ public class PDFSaveDialog extends JDialog
     buttonPanel.setLayout(new GridLayout());
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
+    btnConfirm.setDefaultCapable(true);
+    buttonPanel.registerKeyboardAction(getActionConfirm(), KeyStroke.getKeyStroke('\n'), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    securityPanel.registerKeyboardAction(getActionConfirm(), KeyStroke.getKeyStroke('\n'), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
@@ -1191,6 +1198,7 @@ public class PDFSaveDialog extends JDialog
    */
   public boolean savePDF(JFreeReport report, PageFormat pf)
   {
+    initFromConfiguration(report.getReportConfiguration());
     setVisible(true);
     if (isConfirmed() == false)
     {
@@ -1206,6 +1214,7 @@ public class PDFSaveDialog extends JDialog
     {
       out = new BufferedOutputStream(new FileOutputStream(new File(getFilename())));
       PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
+      target.configure(report.getReportConfiguration());
       target.setProperty(PDFOutputTarget.AUTHOR, getAuthor());
       target.setProperty(PDFOutputTarget.TITLE, getPDFTitle());
       target.setProperty(PDFOutputTarget.SECURITY_ENCRYPTION, getEncryptionValue());
@@ -1225,16 +1234,11 @@ public class PDFSaveDialog extends JDialog
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_SCREENREADERS,
                          new Boolean(isAllowScreenreaders()));
 
-      target.setFontEncoding("Identity-H");
       target.open();
       report.processReport(target);
       target.close();
       return true;
     }
-/*    catch (IOException ioe)
-    {
-      showExceptionDialog("error.savefailed", ioe);
-    }*/
     catch (Exception re)
     {
       showExceptionDialog("error.processingfailed", re);
@@ -1271,5 +1275,26 @@ public class PDFSaveDialog extends JDialog
             new Object[]{e.getLocalizedMessage()}
         ),
         e);
+  }
+
+  public void initFromConfiguration (ReportConfiguration config)
+  {
+    setAuthor(config.getConfigProperty(PDFOutputTarget.AUTHOR, getAuthor()));
+    setAllowAssembly(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY, config, isAllowAssembly()));
+    setAllowCopy(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_COPY, config, isAllowCopy()));
+    setAllowDegradedPrinting(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_DEGRADED_PRINTING, config, isAllowDegradedPrinting()));
+    setAllowFillIn(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_FILLIN, config, isAllowFillIn()));
+    setAllowModifyAnnotations(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_MODIFY_ANNOTATIONS, config, isAllowModifyAnnotations()));
+    setAllowModifyContents(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_MODIFY_CONTENTS, config, isAllowModifyContents()));
+    setAllowPrinting(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_PRINTING, config, isAllowPrinting()));
+    setAllowScreenreaders(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_SCREENREADERS, config, isAllowScreenreaders()));
+    setUserPassword(config.getConfigProperty(PDFOutputTarget.SECURITY_USERPASSWORD, getUserPassword()));
+    setOwnerPassword(config.getConfigProperty(PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword()));
+  }
+
+  private boolean parseBoolean (String key, ReportConfiguration config, boolean orgVal)
+  {
+    String val = config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + key, String.valueOf(orgVal));
+    return (val.equalsIgnoreCase("true"));
   }
 }

@@ -42,6 +42,7 @@
 package com.jrefinery.report.targets;
 
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
@@ -614,4 +615,5 @@ public abstract class AbstractOutputTarget implements OutputTarget
   {
     return properties.keys();
   }
+
 }
