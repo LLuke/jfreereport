@@ -80,9 +80,6 @@
     <!-- copy across LICENCE -->
     <copy file="${projectdir}/licence-LGPL.txt" tofile="${projectdir}/distribution/licence-LGPL.txt"/>
 
-    <!-- copy across migration.txt -->
-    <copy file="${projectdir}/migration.txt" tofile="${projectdir}/distribution/migration.txt"/>
-
     <!-- copy across runtime jar file and demo jar file -->
     <copy file="${projectdir}/${pixie.name}-${pixie.version}.jar" tofile="${projectdir}/distribution/${pixie.name}-${pixie.version}.jar"/>
 
@@ -93,7 +90,7 @@
 
     <!-- copy across resource files -->
     <copy todir="${projectdir}/distribution/resource">
-      <fileset dir="${projectdir}/resource"/>
+      <fileset dir="${projectdir}/res"/>
     </copy>
 
     <!-- copy across lib files -->
@@ -107,10 +104,11 @@
     </copy>
 
     <!-- copy across checkstyle property file -->
+    <!--
     <copy todir="${projectdir}/distribution/checkstyle">
       <fileset dir="${projectdir}/checkstyle"/>
     </copy>
-
+    -->
     <!-- convert end-of-line characters in text files -->
     <!-- end of file does not need to be marked, and causes trouble if it is -->
     <fixcrlf srcdir="${projectdir}/distribution/source"
@@ -145,9 +143,6 @@
     <!-- copy across LICENCE -->
     <copy file="${projectdir}/licence-LGPL.txt" tofile="${projectdir}/distribution/licence-LGPL.txt"/>
 
-    <!-- copy across migration.txt -->
-    <copy file="${projectdir}/migration.txt" tofile="${projectdir}/distribution/migration.txt"/>
-
     <!-- copy across runtime jar file and demo jar file -->
     <copy file="${projectdir}/${pixie.name}-${pixie.version}.jar" tofile="${projectdir}/distribution/${pixie.name}-${pixie.version}.jar"/>
 
@@ -156,9 +151,9 @@
       <fileset dir="${projectdir}/source"/>
     </copy>
 
-    <!-- copy across resource files (DTD and example PDFs) -->
+    <!-- copy across resource files -->
     <copy todir="${projectdir}/distribution/resource">
-      <fileset dir="${projectdir}/resource"/>
+      <fileset dir="${projectdir}/res"/>
     </copy>
 
     <!-- copy across lib files -->
@@ -172,10 +167,11 @@
     </copy>
 
     <!-- copy across checkstyle property file -->
+    <!--
     <copy todir="${projectdir}/distribution/checkstyle">
       <fileset dir="${projectdir}/checkstyle"/>
     </copy>
-
+    -->
     <!-- convert end-of-line characters in text files -->
     <fixcrlf srcdir="${projectdir}/distribution/source"
       eol="lf" eof="remove"
