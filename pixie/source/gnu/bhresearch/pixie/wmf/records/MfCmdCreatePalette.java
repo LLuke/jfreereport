@@ -24,6 +24,16 @@ public class MfCmdCreatePalette extends MfCmd
   {
   }
 
+  /**
+   * Writer function
+   *
+   * Need to implement a dummy
+   */
+  public MfRecord getRecord ()
+  {
+    return null;
+  }
+
   public void replay (WmfFile file)
   {
     MfLogPalette pal = new MfLogPalette ();

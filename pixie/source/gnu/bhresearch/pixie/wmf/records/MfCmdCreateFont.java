@@ -83,6 +83,36 @@ public class MfCmdCreateFont extends MfCmd
     return new MfCmdCreateFont ();
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    String fontFace = getFontFace();
+    if (fontFace.length() > 31)
+    {
+      fontFace = fontFace.substring(0, 31);
+    }
+    MfRecord record = new MfRecord(9 + fontFace.length());
+    record.setParam(0, getHeight());
+    record.setParam(1, getWidth());
+    record.setParam(2, getEscapement());
+    record.setParam(3, getOrientation());
+    record.setParam(4, getWeight());
+
+    record.setParam(5, formFlags(isUnderline(), isItalic()));
+    record.setParam(6, formFlags(isStrikeout(), false) + getCharset());
+    record.setParam(7, getOutputPrecision() << 8 + getClipPrecision());
+    record.setParam(8, getQuality() << 8 + getPitchAndFamily());
+    record.setStringParam(9, fontFace);
+    return record;
+  }
+
+  private int formFlags (boolean f1, boolean f2)
+  {
+    int retval = 0;
+    if (f1) retval += 0x0100;
+    if (f2) retval += 1;
+    return (retval);
+  }
   public void setRecord (MfRecord record)
   {
     int height = record.getParam (0);
