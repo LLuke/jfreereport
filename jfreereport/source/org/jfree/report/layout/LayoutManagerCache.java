@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.11 2005/02/19 13:29:55 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.12 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -37,7 +37,7 @@
  */
 package org.jfree.report.layout;
 
-import java.util.WeakHashMap;
+import java.util.HashMap;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
@@ -129,14 +129,14 @@ public class LayoutManagerCache
   /**
    * The element cache.
    */
-  private final WeakHashMap elementCache;
+  private final HashMap elementCache;
 
   /**
    * Default constructor.
    */
   public LayoutManagerCache ()
   {
-    elementCache = new WeakHashMap();
+    elementCache = new HashMap();
   }
 
   /**
@@ -156,8 +156,9 @@ public class LayoutManagerCache
     if (dim != null)
     {
       getCount++;
+      return dim.getUnlockedInstance();
     }
-    return dim;
+    return null;
   }
 
   /**
@@ -177,8 +178,9 @@ public class LayoutManagerCache
     if (dim != null)
     {
       getCount++;
+      return dim.getUnlockedInstance();
     }
-    return dim;
+    return null;
   }
 
   /**
@@ -193,24 +195,19 @@ public class LayoutManagerCache
     {
       throw new NullPointerException("Element is null");
     }
-
-    if (isCachable(element) == false)
-    {
-      return;
-    }
     putCount++;
 
     ElementCacheCarrier ec = (ElementCacheCarrier)
-            elementCache.get(element.getTreeLock());
+            elementCache.get(element.getObjectID());
     if (ec == null)
     {
       ec = new ElementCacheCarrier();
-      ec.setMinSize(d);
-      elementCache.put(element.getTreeLock(), ec);
+      ec.setMinSize(d.getLockedInstance());
+      elementCache.put(element.getObjectID(), ec);
     }
     else
     {
-      ec.setMinSize(d);
+      ec.setMinSize(d.getLockedInstance());
     }
   }
 
@@ -227,22 +224,19 @@ public class LayoutManagerCache
       throw new IllegalArgumentException("LayoutCacheKey: Element is null");
     }
 
-    if (isCachable(element) == false)
-    {
-      return;
-    }
     putCount++;
 
-    ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(element.getTreeLock());
+    ElementCacheCarrier ec = (ElementCacheCarrier)
+            elementCache.get(element.getObjectID());
     if (ec == null)
     {
       ec = new ElementCacheCarrier();
-      ec.setPrefSize(d);
-      elementCache.put(element.getTreeLock(), ec);
+      ec.setPrefSize(d.getLockedInstance());
+      elementCache.put(element.getObjectID(), ec);
     }
     else
     {
-      ec.setPrefSize(d);
+      ec.setPrefSize(d.getLockedInstance());
     }
   }
 

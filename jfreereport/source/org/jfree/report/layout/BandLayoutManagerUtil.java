@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.14 2005/02/19 13:29:55 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.15 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -148,9 +148,11 @@ public final strictfp class BandLayoutManagerUtil
     {
       throw new IllegalArgumentException("Width or height is negative.");
     }
+    final long alignedWidth = AbstractBandLayoutManager.alignDown
+            (width, support.getInternalHorizontalAlignmentBorder());
     if (band.isVisible() == false)
     {
-      final StrictBounds bounds = new StrictBounds(0, 0, width, 0);
+      final StrictBounds bounds = new StrictBounds(0, 0, alignedWidth, 0);
       band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
       return bounds;
     }
@@ -160,7 +162,7 @@ public final strictfp class BandLayoutManagerUtil
     // in this layouter the width of a band is always the full page width
     //final Dimension2D fdim = lm.minimumLayoutSize(band, new FloatDimension(width, height));
     final StrictDimension fdim = lm.preferredLayoutSize
-            (band, new StrictDimension(width, height), support);
+            (band, new StrictDimension(alignedWidth, height), support);
 
     // the height is redefined by the band's requirements to support
     // the dynamic elements.
@@ -168,7 +170,7 @@ public final strictfp class BandLayoutManagerUtil
     // This should always be the default, the width is given, and the height is
     // computed. We can't compute both, as this is impossible - but we can make
     // the given computation as reliable as possible.
-    final StrictBounds bounds = new StrictBounds(0, 0, width, fdim.getHeight());
+    final StrictBounds bounds = new StrictBounds(0, 0, alignedWidth, fdim.getHeight());
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
     lm.doLayout(band, support);
     return bounds;
@@ -207,9 +209,11 @@ public final strictfp class BandLayoutManagerUtil
       throw new IllegalArgumentException
               ("Width or height is negative. [Width=" + width + ",Height=" + height + "]");
     }
+    final long alignedWidth = AbstractBandLayoutManager.alignDown
+            (width, support.getInternalHorizontalAlignmentBorder());
     if (band.isVisible() == false)
     {
-      final StrictBounds bounds = new StrictBounds(0, 0, width, 0);
+      final StrictBounds bounds = new StrictBounds(0, 0, alignedWidth, 0);
       band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
       return bounds;
     }
@@ -217,7 +221,7 @@ public final strictfp class BandLayoutManagerUtil
     final BandLayoutManager lm
             = BandLayoutManagerUtil.getLayoutManager(band);
 
-    final StrictBounds bounds = new StrictBounds(0, 0, width, height);
+    final StrictBounds bounds = new StrictBounds(0, 0, alignedWidth, height);
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
     lm.doLayout(band, support);
     return bounds;

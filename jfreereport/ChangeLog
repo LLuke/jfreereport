@@ -215,6 +215,9 @@ A list of changes in recent versions:
           All the annoying popup windows have been replaced by a less annyoing
           status bar.
 
+        * BugFix: The layout manager did not align elements according to the
+          output target's properties. This made plain text output almost impossible.
+
 0.8.4-11: (13-Oct-2004)
 
         * BugFix: Watermark-Band elements were not connected to the

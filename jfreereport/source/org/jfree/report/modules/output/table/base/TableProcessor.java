@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableProcessor.java,v 1.17 2005/02/19 13:30:01 taqua Exp $
+ * $Id: TableProcessor.java,v 1.18 2005/02/23 21:05:33 taqua Exp $
  *
  * Changes
  * -------
@@ -255,6 +255,7 @@ public abstract class TableProcessor
       final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
       layoutCreator = createLayoutCreator();
       w.setTableCreator(layoutCreator);
+      state.setProperty(JFreeReport.REPORT_LAYOUT_SUPPORT, w.getLayoutSupport());
 
       // now process all function levels.
       // there is at least one level defined, as we added the CSVWriter

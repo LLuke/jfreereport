@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.20 2005/02/19 13:29:57 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.21 2005/02/23 21:05:28 taqua Exp $
  *
  * Changes
  * -------
@@ -242,9 +242,10 @@ public class PageableReportProcessor
    *
    * @param outputTarget the output target.
    */
-  public void setOutputTarget (final OutputTarget outputTarget)
+  public synchronized void setOutputTarget (final OutputTarget outputTarget)
   {
     this.outputTarget = outputTarget;
+    report.setProperty(JFreeReport.REPORT_LAYOUT_SUPPORT, outputTarget);
   }
 
   /**
@@ -310,6 +311,11 @@ public class PageableReportProcessor
       repaginate();
     }
 
+    if (getOutputTarget().isOpen() == false)
+    {
+      throw new ReportProcessingException("Given output target is not open.");
+    }
+    
     // do a repagination
     final ReportStateList list = stateList;
     if (list.size() == 0)

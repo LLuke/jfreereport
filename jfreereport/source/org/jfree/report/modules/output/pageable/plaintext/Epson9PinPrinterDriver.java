@@ -13,7 +13,9 @@ public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
   public static final String EPSON_9PIN_PRINTER_TYPE =
           "org.jfree.report.modules.output.pageable.plaintext.epson.9PinPrinterType";
 
-  public Epson9PinPrinterDriver (final OutputStream out, final int charsPerInch, final int linesPerInch,
+  public Epson9PinPrinterDriver (final OutputStream out,
+                                 final float charsPerInch,
+                                 final float linesPerInch,
                                  final String printerModel)
   {
     super(out, charsPerInch, linesPerInch, printerModel);

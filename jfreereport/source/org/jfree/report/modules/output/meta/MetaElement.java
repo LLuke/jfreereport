@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaElement.java,v 1.5 2005/02/19 13:29:57 taqua Exp $
+ * $Id: MetaElement.java,v 1.6 2005/02/23 21:05:27 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -62,6 +62,7 @@ public class MetaElement implements Cloneable
 {
   private ElementStyleSheet styleProperties;
   private Content elementContent;
+  private String name;
 
   public MetaElement (final Content elementContent, final ElementStyleSheet style)
   {
@@ -116,6 +117,16 @@ public class MetaElement implements Cloneable
     s.append(getContent());
     s.append("}");
     return s.toString();
+  }
+
+  public String getName ()
+  {
+    return name;
+  }
+
+  public void setName (String name)
+  {
+    this.name = name;
   }
 
   /**

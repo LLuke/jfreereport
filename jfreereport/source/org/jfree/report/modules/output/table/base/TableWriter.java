@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.18 2005/02/22 20:18:55 taqua Exp $
+ * $Id: TableWriter.java,v 1.19 2005/02/23 21:05:33 taqua Exp $
  *
  * Changes
  * -------
@@ -122,6 +122,8 @@ public strictfp class TableWriter
    */
   private MetaBandProducer metaBandProducer;
 
+  private LayoutSupport layoutSupport;
+
   /**
    * Creates a new TableWriter. The dependency level is set to -1 and the maxwidth is
    * defined to be 1000.
@@ -129,8 +131,9 @@ public strictfp class TableWriter
   public TableWriter (final MetaBandProducer metaBandProducer)
   {
     setDependencyLevel(OUTPUT_LEVEL);
-    delegate = new SimplePageLayoutDelegate(this);
+    this.delegate = new SimplePageLayoutDelegate(this);
     this.metaBandProducer = metaBandProducer;
+    this.layoutSupport = new DefaultLayoutSupport();
   }
 
   /**
@@ -371,9 +374,9 @@ public strictfp class TableWriter
    *
    * @return a dummy output target.
    */
-  private LayoutSupport getLayoutSupport ()
+  public LayoutSupport getLayoutSupport ()
   {
-    return DefaultLayoutSupport.getDefaultInstance();
+    return layoutSupport;
   }
 
   /**

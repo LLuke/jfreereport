@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.19 2005/02/23 21:04:29 taqua Exp $
+ * $Id: Element.java,v 1.20 2005/03/02 18:23:51 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -546,6 +546,10 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     return treeLock;
   }
 
+  public final Object getObjectID ()
+  {
+    return treeLock;
+  }
   /**
    * Checks, whether the layout manager should compute the size of this self based on the
    * current content.

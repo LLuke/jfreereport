@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LayoutSupport.java,v 1.3 2004/05/07 08:03:41 mungady Exp $
+ * $Id: LayoutSupport.java,v 1.4 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -81,9 +81,33 @@ public interface LayoutSupport
   public float getHorizontalAlignmentBorder ();
 
   /**
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>. Returning 0 will disable the alignment.
+   * <p>
+   * Q&D Hack: Save some cycles of processor time by computing that thing only once.
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public long getInternalVerticalAlignmentBorder ();
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>. Returning 0 will disable the alignment.
+   * <p>
+   * Q&D Hack: Save some cycles of processor time by computing that thing only once.
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public long getInternalHorizontalAlignmentBorder ();
+
+  /**
    * Returns the assigned content factory for the target.
    *
    * @return the content factory.
    */
   public ContentFactory getContentFactory ();
+
+  public LayoutManagerCache getCache();
 }

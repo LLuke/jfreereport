@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultLayoutSupport.java,v 1.5 2005/01/30 23:37:19 taqua Exp $
+ * $Id: DefaultLayoutSupport.java,v 1.6 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -61,24 +61,7 @@ public class DefaultLayoutSupport implements LayoutSupport
    */
   private final DefaultContentFactory contentFactory;
 
-  /**
-   * A singleton instance of the DefaultLayoutSupport.
-   */
-  private static DefaultLayoutSupport singleton;
-
-  /**
-   * Returns the single instance of this class.
-   *
-   * @return The single instance of this class.
-   */
-  public static DefaultLayoutSupport getDefaultInstance ()
-  {
-    if (singleton == null)
-    {
-      singleton = new DefaultLayoutSupport();
-    }
-    return singleton;
-  }
+  private LayoutManagerCache cache;
 
   /**
    * Default-Constructor.
@@ -91,6 +74,7 @@ public class DefaultLayoutSupport implements LayoutSupport
     contentFactory.addModule(new ShapeContentFactoryModule());
     contentFactory.addModule(new DrawableContentFactoryModule());
     contentFactory.addModule(new AnchorContentFactoryModule());
+    cache = new LayoutManagerCache();
   }
 
   /**
@@ -133,6 +117,34 @@ public class DefaultLayoutSupport implements LayoutSupport
   }
 
   /**
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>. Returning 0 will disable the alignment.
+   * <p/>
+   * Q&D Hack: Save some cycles of processor time by computing that thing only once.
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public long getInternalHorizontalAlignmentBorder ()
+  {
+    return 0;
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>. Returning 0 will disable the alignment.
+   * <p/>
+   * Q&D Hack: Save some cycles of processor time by computing that thing only once.
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public long getInternalVerticalAlignmentBorder ()
+  {
+    return 0;
+  }
+
+  /**
    * Returns the assigned content factory for the target.
    *
    * @return the content factory.
@@ -140,5 +152,10 @@ public class DefaultLayoutSupport implements LayoutSupport
   public ContentFactory getContentFactory ()
   {
     return contentFactory;
+  }
+
+  public LayoutManagerCache getCache ()
+  {
+    return cache;
   }
 }

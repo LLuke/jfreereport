@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.16 2005/02/19 20:10:26 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.17 2005/02/23 21:05:29 taqua Exp $
  *
  * Changes
  * -------
@@ -60,6 +60,7 @@ import java.util.Properties;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.ShapeElement;
+import org.jfree.report.layout.LayoutManagerCache;
 import org.jfree.report.content.AnchorContentFactoryModule;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentFactory;
@@ -112,6 +113,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
 
   private StrictBounds operationBounds;
   private StrictBounds pageBounds;
+  private LayoutManagerCache cache;
 
   protected AbstractOutputTarget ()
   {
@@ -119,6 +121,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
     contentFactory = createContentFactory();
     operationBounds = new StrictBounds();
     pageBounds = new StrictBounds();
+    cache = new LayoutManagerCache();
   }
 
   /**
@@ -215,6 +218,34 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
    * @return the vertical alignment grid boundry
    */
   public float getVerticalAlignmentBorder ()
+  {
+    return 0;
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>. Returning 0 will disable the alignment.
+   * <p/>
+   * Q&D Hack: Save some cycles of processor time by computing that thing only once.
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public long getInternalVerticalAlignmentBorder ()
+  {
+    return 0;
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>. Returning 0 will disable the alignment.
+   * <p/>
+   * Q&D Hack: Save some cycles of processor time by computing that thing only once.
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public long getInternalHorizontalAlignmentBorder ()
   {
     return 0;
   }
@@ -668,6 +699,11 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
     {
       setStroke(stroke);
     }
+  }
+
+  public LayoutManagerCache getCache ()
+  {
+    return cache;
   }
 
   protected abstract void setStroke (Stroke s)

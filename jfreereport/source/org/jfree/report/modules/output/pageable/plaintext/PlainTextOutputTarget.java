@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.17 2005/02/19 13:29:59 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.18 2005/02/23 21:05:31 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,7 @@ import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
  * An outputtarget, that generates plaintext. The text can be enriched with escape
@@ -269,6 +270,10 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   private PrinterDriver driver;
   private String encoding;
+  private float characterHeightInPoint;
+  private long internalCharacterHeight;
+  private float characterWidthInPoint;
+  private long internalCharacterWidth;
 
   /**
    * Creates a new PlainTextOutputTarget which uses the given command set to write the
@@ -284,6 +289,10 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
       throw new NullPointerException();
     }
     this.driver = commandSet;
+    characterHeightInPoint = (72f / driver.getLinesPerInch());
+    characterWidthInPoint = (72f / driver.getCharactersPerInch());
+    internalCharacterHeight = StrictGeomUtility.toInternalValue(characterHeightInPoint);
+    internalCharacterWidth = StrictGeomUtility.toInternalValue(characterHeightInPoint);
   }
 
   /**
@@ -448,9 +457,6 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
   {
     final Rectangle2D bounds = getOperationBounds();
 
-    final float characterWidthInPoint = (72f / driver.getCharactersPerInch());
-    final float characterHeightInPoint = (72f / driver.getLinesPerInch());
-
     final int x = correctedDivisionFloor((float) bounds.getX(), characterWidthInPoint);
     final int y = correctedDivisionFloor((float) bounds.getY(), characterHeightInPoint);
     final int w = correctedDivisionFloor((float) bounds.getWidth(), characterWidthInPoint);
@@ -555,9 +561,6 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
   public SizeCalculator createTextSizeCalculator (final FontDefinition font)
           throws OutputTargetException
   {
-    final float characterWidthInPoint = (72f / driver.getCharactersPerInch());
-    final float characterHeightInPoint = (72f / driver.getLinesPerInch());
-
     return new PlainTextSizeCalculator(characterWidthInPoint, characterHeightInPoint);
   }
 
@@ -570,7 +573,6 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   public float getHorizontalAlignmentBorder ()
   {
-    final float characterWidthInPoint = (72f / driver.getCharactersPerInch());
     return characterWidthInPoint;
   }
 
@@ -583,8 +585,35 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   public float getVerticalAlignmentBorder ()
   {
-    final float characterHeightInPoint = (72f / driver.getLinesPerInch());
     return characterHeightInPoint;
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>. Returning 0 will disable the alignment.
+   * <p/>
+   * Q&D Hack: Save some cycles of processor time by computing that thing only once.
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public long getInternalHorizontalAlignmentBorder ()
+  {
+    return internalCharacterWidth;
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>. Returning 0 will disable the alignment.
+   * <p/>
+   * Q&D Hack: Save some cycles of processor time by computing that thing only once.
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public long getInternalVerticalAlignmentBorder ()
+  {
+    return internalCharacterHeight;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.15 2005/02/25 00:12:53 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.16 2005/03/01 10:09:21 taqua Exp $
  *
  * Changes
  * --------
@@ -255,37 +255,37 @@ public class PlainTextExportDialog extends AbstractExportDialog
   /**
    * 6 lines per inch.
    */
-  public static final Integer LPI_6 = new Integer(6);
+  public static final Float LPI_6 = new Float(6);
 
   /**
    * 10 lines per inch.
    */
-  public static final Integer LPI_10 = new Integer(10);
+  public static final Float LPI_10 = new Float(10);
 
   /**
    * 10 characters per inch.
    */
-  public static final Integer CPI_10 = new Integer(10);
+  public static final Float CPI_10 = new Float(10);
 
   /**
    * 12 characters per inch.
    */
-  public static final Integer CPI_12 = new Integer(12);
+  public static final Float CPI_12 = new Float(12);
 
   /**
    * 15 characters per inch.
    */
-  public static final Integer CPI_15 = new Integer(15);
+  public static final Float CPI_15 = new Float(15);
 
   /**
    * 17 characters per inch.
    */
-  public static final Integer CPI_17 = new Integer(17);
+  public static final Float CPI_17 = new Float(17.14f);
 
   /**
    * 20 characters per inch.
    */
-  public static final Integer CPI_20 = new Integer(20);
+  public static final Float CPI_20 = new Float(20);
 
   /**
    * A combo-box for selecting the encoding.
@@ -382,12 +382,12 @@ public class PlainTextExportDialog extends AbstractExportDialog
     cbEpson24PrinterType = new JComboBox(epson24Printers);
     cbEpson24PrinterType.addActionListener(new SelectEpsonModelAction());
 
-    final Integer[] lpiModel = {
+    final Float[] lpiModel = {
       LPI_6,
       LPI_10
     };
 
-    final Integer[] cpiModel = {
+    final Float[] cpiModel = {
       CPI_10,
       CPI_12,
       CPI_15,
@@ -824,8 +824,8 @@ public class PlainTextExportDialog extends AbstractExportDialog
   {
     setSelectedPrinter(StringUtil.parseInt(p.getProperty("selected-printer"), getSelectedPrinter()));
 
-    setCharsPerInch(StringUtil.parseInt(p.getProperty("chars-per-inch"), getCharsPerInch()));
-    setLinesPerInch(StringUtil.parseInt(p.getProperty("lines-per-inch"), getLinesPerInch()));
+    setCharsPerInch(StringUtil.parseFloat(p.getProperty("chars-per-inch"), getCharsPerInch()));
+    setLinesPerInch(StringUtil.parseFloat(p.getProperty("lines-per-inch"), getLinesPerInch()));
 
     setEncoding(p.getProperty("encoding", getEncoding()));
     setFilename(p.getProperty("filename", getFilename()));
@@ -840,14 +840,14 @@ public class PlainTextExportDialog extends AbstractExportDialog
    *
    * @return The lines-per-inch setting.
    */
-  public int getLinesPerInch ()
+  public float getLinesPerInch ()
   {
-    final Integer i = (Integer) cbLinesPerInch.getSelectedItem();
+    final Float i = (Float) cbLinesPerInch.getSelectedItem();
     if (i == null)
     {
-      return LPI_6.intValue();
+      return LPI_6.floatValue();
     }
-    return i.intValue();
+    return i.floatValue();
   }
 
   /**
@@ -855,9 +855,9 @@ public class PlainTextExportDialog extends AbstractExportDialog
    *
    * @param lpi the lines per inch.
    */
-  public void setLinesPerInch (final int lpi)
+  public void setLinesPerInch (final float lpi)
   {
-    final Integer lpiObj = new Integer(lpi);
+    final Float lpiObj = new Float(lpi);
     final ComboBoxModel model = cbLinesPerInch.getModel();
     for (int i = 0; i < model.getSize(); i++)
     {
@@ -875,14 +875,14 @@ public class PlainTextExportDialog extends AbstractExportDialog
    *
    * @return The characters-per-inch setting.
    */
-  public int getCharsPerInch ()
+  public float getCharsPerInch ()
   {
-    final Integer i = (Integer) cbCharsPerInch.getSelectedItem();
+    final Float i = (Float) cbCharsPerInch.getSelectedItem();
     if (i == null)
     {
-      return CPI_10.intValue();
+      return CPI_10.floatValue();
     }
-    return i.intValue();
+    return i.floatValue();
   }
 
   /**
@@ -890,9 +890,9 @@ public class PlainTextExportDialog extends AbstractExportDialog
    *
    * @param cpi the characters per inch.
    */
-  public void setCharsPerInch (final int cpi)
+  public void setCharsPerInch (final float cpi)
   {
-    final Integer cpiObj = new Integer(cpi);
+    final Float cpiObj = new Float(cpi);
     final ComboBoxModel model = cbCharsPerInch.getModel();
     for (int i = 0; i < model.getSize(); i++)
     {
@@ -946,7 +946,7 @@ public class PlainTextExportDialog extends AbstractExportDialog
 
     try
     {
-      setLinesPerInch(StringUtil.parseInt(config.getConfigProperty
+      setLinesPerInch(StringUtil.parseFloat(config.getConfigProperty
               (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.LINES_PER_INCH, "6"),
               getLinesPerInch()));
     }
@@ -956,7 +956,7 @@ public class PlainTextExportDialog extends AbstractExportDialog
     }
     try
     {
-      setCharsPerInch(StringUtil.parseInt(config.getConfigProperty
+      setCharsPerInch(StringUtil.parseFloat(config.getConfigProperty
               (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.CHARS_PER_INCH, "10"),
               getCharsPerInch()));
     }

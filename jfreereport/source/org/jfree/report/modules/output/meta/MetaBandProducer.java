@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaBandProducer.java,v 1.8 2005/02/19 13:29:57 taqua Exp $
+ * $Id: MetaBandProducer.java,v 1.9 2005/02/23 21:05:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -147,9 +147,11 @@ public class MetaBandProducer
     final MetaElement[] metaElementArray = (MetaElement[]) metaElements.toArray
             (new MetaElement[metaElements.size()]);
 
-    return new MetaBand(EmptyContent.getDefaultEmptyContent(),
+    final MetaBand mband = new MetaBand(EmptyContent.getDefaultEmptyContent(),
             createStyleForBand(band, parentX, parentY),
             metaElementArray, spool);
+    mband.setName(band.getName());
+    return mband;
   }
 
   /**
@@ -187,6 +189,7 @@ public class MetaBandProducer
             support.getContentFactory().createContentForElement(e, eli, support);
     final MetaElement element = new MetaElement
             (content, styleSheet);
+    element.setName(e.getName());
     return element;
   }
 

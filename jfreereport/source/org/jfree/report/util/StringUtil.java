@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StringUtil.java,v 1.9 2004/05/07 08:14:23 mungady Exp $
+ * $Id: StringUtil.java,v 1.10 2005/02/23 21:06:06 taqua Exp $
  *
  * Changes
  * -------
@@ -109,6 +109,30 @@ public final class StringUtil
     }
   }
 
+
+  /**
+   * Parses the given string and returns the parsed integer value or the given default if
+   * the parsing failed.
+   *
+   * @param value        the to be parsed string
+   * @param defaultValue the default value
+   * @return the parsed string.
+   */
+  public static float parseFloat (final String value, final float defaultValue)
+  {
+    if (value == null)
+    {
+      return defaultValue;
+    }
+    try
+    {
+      return Float.parseFloat(value);
+    }
+    catch (Exception e)
+    {
+      return defaultValue;
+    }
+  }
   /**
    * Parses the given string into a boolean value. This returns true, if the string's
    * value is "true".

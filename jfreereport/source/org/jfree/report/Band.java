@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.14 2005/02/19 13:29:51 taqua Exp $
+ * $Id: Band.java,v 1.15 2005/02/23 19:31:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -250,8 +250,6 @@ public class Band extends Element implements Serializable, Cloneable
 
     // then add the parents, or the band's parent will be unregistered ..
     element.setParent(this);
-
-    invalidateLayout();
   }
 
   /**
@@ -332,7 +330,6 @@ public class Band extends Element implements Serializable, Cloneable
     e.setParent(null);
     allElements.remove(e);
     allElementsCached = null;
-    invalidateLayout();
   }
 
   /**
@@ -459,20 +456,6 @@ public class Band extends Element implements Serializable, Cloneable
   public String getContentType ()
   {
     return CONTENT_TYPE;
-  }
-
-  /**
-   * Invalidates the layout. This method is called whenever a new element has been added.
-   * You should also call this method if you modified one of the elements of the band (eg.
-   * redefined the max, min or preferred size).
-   */
-  public void invalidateLayout ()
-  {
-    getLayout().invalidateLayout(this);
-    if (getParent() != null)
-    {
-      getParent().invalidateLayout();
-    }
   }
 
   /**

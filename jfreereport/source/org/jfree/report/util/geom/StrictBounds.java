@@ -8,6 +8,7 @@ public class StrictBounds implements Serializable, Cloneable
   private long y;
   private long width;
   private long height;
+  private boolean locked;
 
   public StrictBounds ()
   {
@@ -20,6 +21,16 @@ public class StrictBounds implements Serializable, Cloneable
     this.y = y;
     this.width = width;
     this.height = height;
+  }
+
+  public boolean isLocked ()
+  {
+    return locked;
+  }
+
+  public void setLocked (final boolean locked)
+  {
+    this.locked = locked;
   }
 
   /**
@@ -36,6 +47,10 @@ public class StrictBounds implements Serializable, Cloneable
   public void setRect (final long x, final long y,
                        final long w, final long h)
   {
+    if (locked)
+    {
+      throw new IllegalStateException();
+    }
     this.x = x;
     this.y = y;
     this.width = w;

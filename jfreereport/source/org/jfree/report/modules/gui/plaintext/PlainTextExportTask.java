@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.13 2005/02/23 21:05:02 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.14 2005/03/01 10:09:39 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -85,11 +85,11 @@ public class PlainTextExportTask extends ExportTask
   /**
    * The chars per inch for the export.
    */
-  private final int charPerInch;
+  private final float charPerInch;
   /**
    * The lines per inch for the export.
    */
-  private final int linesPerInch;
+  private final float linesPerInch;
 
   private String printer;
 
@@ -120,10 +120,10 @@ public class PlainTextExportTask extends ExportTask
     this.exportType = exportType;
     this.printer = printer;
 
-    charPerInch = StringUtil.parseInt(report.getReportConfiguration().getConfigProperty
-            (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.CHARS_PER_INCH), 10);
-    linesPerInch = StringUtil.parseInt(report.getReportConfiguration().getConfigProperty
-            (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.LINES_PER_INCH), 6);
+    charPerInch = StringUtil.parseFloat(report.getReportConfiguration().getConfigProperty
+            (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.CHARS_PER_INCH), 10f);
+    linesPerInch = StringUtil.parseFloat(report.getReportConfiguration().getConfigProperty
+            (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.LINES_PER_INCH), 6f);
   }
 
   /**

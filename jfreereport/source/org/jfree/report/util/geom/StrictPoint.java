@@ -6,6 +6,7 @@ public class StrictPoint implements Serializable, Cloneable
 {
   private long x;
   private long y;
+  private boolean locked;
 
   public StrictPoint ()
   {
@@ -53,8 +54,23 @@ public class StrictPoint implements Serializable, Cloneable
    */
   public void setLocation (final long x, final long y)
   {
+    if (locked)
+    {
+      throw new IllegalStateException();
+    }
+
     this.x = x;
     this.y = y;
+  }
+
+  public boolean isLocked ()
+  {
+    return locked;
+  }
+
+  public void setLocked (boolean locked)
+  {
+    this.locked = locked;
   }
 
   public Object clone ()
@@ -67,5 +83,14 @@ public class StrictPoint implements Serializable, Cloneable
     {
       throw new InternalError("Clone must always be supported.");
     }
+  }
+
+
+  public String toString ()
+  {
+    return "org.jfree.report.util.geom.StrictPoint{" +
+            "x=" + x +
+            ", y=" + y +
+            "}";
   }
 }

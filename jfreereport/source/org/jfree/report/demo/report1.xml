@@ -26,7 +26,6 @@
         <property name="org.jfree.report.modules.gui.base.MaximumHeight">600</property>
     -->
   </configuration>
-
   <reportheader height="90" fontname="Arial Unicode MS" fontstyle="bold" fontsize="18">
     <label name="RH0" x="0" y="0" width="100%" height="18" fsunderline="true" alignment="center">LIST OF COUNTRIES BY CONTINENT (${title})</label>
     <label name="RH1" x="0" y="18" width="100%" height="30" vertical-alignment="bottom" alignment="center">Sample Thai chars: &#3648;&#3614;&#3636;&#3656;&#3617;, &#3621;&#3641;&#3585;&#3588;&#3657;&#3634;</label>
@@ -54,7 +53,7 @@
 
     The water mark band accepts all element types, and is printed together with the
     page header.
-  -->
+    -->
   <watermark>
     <imageref x="10%" y="10%" width="80%" height="80%" src="earth.png" keepAspectRatio="true" scale="true"/>
   </watermark>
@@ -68,6 +67,7 @@
         <number-field name="Continent-H3" x="350" y="0" width="116" height="9" alignment="right" format="#0" fieldname="count"/>
         <line name="Continent-H2" x1="0" y1="10" x2="100%" y2="10" weight="0.5"/>
       </groupheader>
+
       <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
         <label name="Continent-F0" x="0" y="0" width="220" height="12" alignment="left" fontname="SansSerif" fsunderline="true">Population:</label>
         <number-field name="Continent-F1" x="220" y="0" width="116" height="12" alignment="right" format="#,##0" fieldname="sum"/>
@@ -101,10 +101,6 @@
           // and perform own calculations here ...
           Object getValue()
           {
-          if (dataRow == null)
-          {
-            return null;
-          }
 
           Number population = (Number) dataRow.get ("Population");
           if (population == null)

@@ -6,6 +6,7 @@ public class StrictDimension implements Serializable, Cloneable
 {
   private long width;
   private long height;
+  private boolean locked;
 
   public StrictDimension ()
   {
@@ -15,6 +16,25 @@ public class StrictDimension implements Serializable, Cloneable
   {
     this.width = width;
     this.height = height;
+  }
+
+  public boolean isLocked ()
+  {
+    return locked;
+  }
+
+  public StrictDimension getLockedInstance ()
+  {
+    final StrictDimension retval = (StrictDimension) clone();
+    retval.locked = true;
+    return retval;
+  }
+
+  public StrictDimension getUnlockedInstance ()
+  {
+    final StrictDimension retval = (StrictDimension) clone();
+    retval.locked = false;
+    return retval;
   }
 
   public long getHeight ()
@@ -37,17 +57,30 @@ public class StrictDimension implements Serializable, Cloneable
    */
   public void setSize (final long width, final long height)
   {
+    if (locked)
+    {
+      throw new IllegalStateException();
+    }
+
     this.width = width;
     this.height = height;
   }
 
   public void setHeight (final long height)
   {
+    if (locked)
+    {
+      throw new IllegalStateException();
+    }
     this.height = height;
   }
 
   public void setWidth (final long width)
   {
+    if (locked)
+    {
+      throw new IllegalStateException();
+    }
     this.width = width;
   }
 
@@ -55,11 +88,21 @@ public class StrictDimension implements Serializable, Cloneable
   {
     try
     {
-      return super.clone();
+      final StrictDimension sdim = (StrictDimension) super.clone();
+      return sdim;
     }
     catch (CloneNotSupportedException e)
     {
       throw new InternalError("Clone must always be supported.");
     }
+  }
+
+
+  public String toString ()
+  {
+    return "org.jfree.report.util.geom.StrictDimension{" +
+            "width=" + width +
+            ", height=" + height +
+            "}";
   }
 }

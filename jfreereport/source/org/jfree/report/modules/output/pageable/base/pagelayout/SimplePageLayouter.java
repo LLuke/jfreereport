@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.24 2005/02/19 13:29:58 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.25 2005/02/23 21:05:29 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,7 @@ import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.layout.BandLayoutManagerUtil;
+import org.jfree.report.layout.AbstractBandLayoutManager;
 import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.modules.output.pageable.base.LogicalPage;
@@ -186,8 +187,12 @@ public strictfp class SimplePageLayouter extends PageLayouter
   public void resetCursor ()
   {
     final LogicalPage lp = getLogicalPage();
+    final long internalVerticalAlignmentBorder =
+            lp.getLayoutSupport().getInternalVerticalAlignmentBorder();
     setCursor(new SimplePageLayoutCursor
-            (StrictGeomUtility.toInternalValue(lp.getHeight())));
+            (AbstractBandLayoutManager.alignDown
+            (StrictGeomUtility.toInternalValue(lp.getHeight()),
+                    internalVerticalAlignmentBorder)));
   }
 
   /**
@@ -990,8 +995,12 @@ public strictfp class SimplePageLayouter extends PageLayouter
   public void setLogicalPage (final LogicalPage logicalPage)
   {
     super.setLogicalPage(logicalPage);
-    setCursor(new SimplePageLayoutCursor(StrictGeomUtility.toInternalValue
-            (getLogicalPage().getHeight())));
+    final long internalVerticalAlignmentBorder =
+            logicalPage.getLayoutSupport().getInternalVerticalAlignmentBorder();
+    setCursor(new SimplePageLayoutCursor
+            (AbstractBandLayoutManager.alignDown
+            (StrictGeomUtility.toInternalValue(logicalPage.getHeight()),
+                    internalVerticalAlignmentBorder)));
   }
 
   /**

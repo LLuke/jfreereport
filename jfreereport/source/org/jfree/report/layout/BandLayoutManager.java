@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BandLayoutManager.java,v 1.6 2005/02/19 13:29:55 taqua Exp $
+ * $Id: BandLayoutManager.java,v 1.7 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -88,11 +88,4 @@ public interface BandLayoutManager
    * @param support the layout support used to compute sizes.
    */
   public void doLayout (Band b, LayoutSupport support);
-
-  /**
-   * Clears any cached items used by the layout manager. Invalidates the layout.
-   *
-   * @param container the container.
-   */
-  public void invalidateLayout (Band container);
 }
