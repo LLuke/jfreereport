@@ -26,7 +26,7 @@
 
   <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
     <rectangle name="PH0" x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
-    <date-field name="PH1" x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" fieldname="report.date"/>
+    <date-field name="PH1" x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" fieldname="report.date"  line-height="20"/>
     <line name="PH2" x1="0" y1="18" x2="0" y2="18" color="#CFCFCF" weight="2.0"/>
   </pageheader>
 

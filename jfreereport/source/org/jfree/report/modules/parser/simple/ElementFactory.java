@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.9 2003/09/09 15:52:53 taqua Exp $
+ * $Id: ElementFactory.java,v 1.10 2003/10/11 20:44:06 taqua Exp $
  *
  * Changes
  * -------
@@ -609,7 +609,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * @param value the string that represents the boolean.
    * @return Boolean.TRUE or Boolean.FALSE
    */
-  private Boolean parseBoolean(final String value)
+  private Boolean parseBoolean(final String value) throws SAXException
   {
     if (value == null)
     {
@@ -619,7 +619,11 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     {
       return Boolean.TRUE;
     }
-    return Boolean.FALSE;
+    else if (value.equals("false"))
+    {
+      return Boolean.FALSE;
+    }
+    throw new SAXException("Failed to parse value: Expected 'true' or 'false'");
   }
 
   /**
@@ -865,12 +869,28 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     factory.setFontName(atts.getValue(FONT_NAME_ATT));
     factory.setFontSize(parseInteger(atts.getValue(FONT_SIZE_ATT)));
     factory.setItalic(parseBoolean(atts.getValue(FS_ITALIC)));
-    factory.setLineHeight(parseInteger(atts.getValue(LINEHEIGHT)));
+    factory.setLineHeight(parseFloat(atts.getValue(LINEHEIGHT)));
     factory.setStrikethrough(parseBoolean(atts.getValue(FS_STRIKETHR)));
     factory.setUnderline(parseBoolean(atts.getValue(FS_UNDERLINE)));
     parseSimpleFontStyle(atts.getValue(FONT_STYLE_ATT), factory);
 
 
+  }
+
+  private Float parseFloat(String value) throws SAXException
+  {
+    if (value == null)
+    {
+      return null;
+    }
+    try
+    {
+      return new Float(value);
+    }
+    catch (Exception ex)
+    {
+      throw new SAXException("Failed to parse value", ex);
+    }
   }
 
   /**
@@ -902,7 +922,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @return the int value.
    */
-  private Integer parseInteger(final String val)
+  private Integer parseInteger(final String val) throws SAXException
   {
     if (val == null)
     {
@@ -914,9 +934,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     catch (NumberFormatException e)
     {
-      // swallow the exception, the default value will be returned
+      throw new SAXException("Failed to parse value", e);
     }
-    return null;
   }
 
   /**

@@ -23,6 +23,10 @@ A list of changes in recent versions:
 
         * BugFix: Serialization issues fixed for various functions.
         
+        * BugFix: The line-height definition of the TextElementFactory used
+          the wrong type causing ClassCastExceptions to be thrown by the
+          stylesheet implementation.
+        
         * The preview components can now perform multiple exports at the
           same time. Currently 10 parallel exports are possible, this will
           be configurable later.

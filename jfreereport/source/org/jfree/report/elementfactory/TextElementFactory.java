@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextElementFactory.java,v 1.6 2003/08/25 14:29:28 taqua Exp $
+ * $Id: TextElementFactory.java,v 1.7 2003/09/24 15:27:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,7 +43,6 @@ import java.awt.Color;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.style.StyleKey;
 
 /**
  * The text element factory is the abstract base class for all
@@ -69,7 +68,7 @@ public abstract class TextElementFactory extends ElementFactory
   /** Defines the font size of the used font. */
   private Integer fontSize;
   /** Defines the lineheight. The lineheight must be >= the font size, or it is ignored. */
-  private Integer lineHeight;
+  private Float lineHeight;
   /** Defines the text color. */
   private Color color;
   /** Defines the font encoding used when writing the text. */
@@ -243,7 +242,7 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @return the line height.
    */
-  public Integer getLineHeight()
+  public Float getLineHeight()
   {
     return lineHeight;
   }
@@ -254,7 +253,7 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @param lineHeight the line height.
    */
-  public void setLineHeight(final Integer lineHeight)
+  public void setLineHeight(final Float lineHeight)
   {
     this.lineHeight = lineHeight;
   }
