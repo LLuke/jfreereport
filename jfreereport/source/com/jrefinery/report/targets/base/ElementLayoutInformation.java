@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementLayoutInformation.java,v 1.8 2003/03/19 16:04:14 taqua Exp $
+ * $Id: ElementLayoutInformation.java,v 1.9 2003/04/05 18:57:14 taqua Exp $
  *
  * Changes
  * -------
@@ -206,9 +206,14 @@ public class ElementLayoutInformation
                               (float) Math.min(pref.getHeight(), max.getHeight()));
   }
 
+  /**
+   * Returns a string representing the object (useful for debugging).
+   * 
+   * @return A string.
+   */
   public String toString ()
   {
-    StringBuffer b= new StringBuffer();
+    StringBuffer b = new StringBuffer();
     b.append("ElementLayoutInformation: \n");
     b.append("    AbsolutePos: ");
     b.append(absolutePosition);

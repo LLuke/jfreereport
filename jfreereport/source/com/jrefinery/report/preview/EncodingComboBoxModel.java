@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.12 2003/03/13 18:38:58 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.13 2003/04/05 18:57:12 taqua Exp $
  *
  * Changes
  * --------
@@ -40,6 +40,7 @@ package com.jrefinery.report.preview;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -121,7 +122,9 @@ public class EncodingComboBoxModel implements ComboBoxModel
     /** The encoding description. */
     private String description;
 
+    /** The display name. */
     private String displayName;
+    
     /**
      * Creates a new encoding.
      *
@@ -410,7 +413,6 @@ public class EncodingComboBoxModel implements ComboBoxModel
   public static EncodingComboBoxModel createDefaultModel ()
   {
     EncodingComboBoxModel ecb = new EncodingComboBoxModel();
-
     // basic encoding set, base encodings
     ecb.addEncoding("ASCII", "American Standard Code for Information Interchange");
     ecb.addEncoding("Cp1252", "Windows Latin-1");
@@ -419,7 +421,6 @@ public class EncodingComboBoxModel implements ComboBoxModel
     ecb.addEncoding("UTF-8", "8 Bit UCS Transformation Format");
     ecb.addEncoding("UTF-16", "16 Bit UCS Transformation Format");
     // missing: UTF-16BE, UTF-16LE are no base need in EndUser environments
-
     //extended encoding set, contained in lib/charsets.jar
     ecb.addEncoding("Cp1250", "Windows Eastern Europe");
     ecb.addEncoding("Cp1253", "Windows Greek");

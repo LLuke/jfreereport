@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.7 2003/03/19 22:13:00 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.8 2003/03/20 18:28:34 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,8 @@ public class ShapeTransform
          * Apply the normalisation shape transform ... bring the shape to pos (0,0)
          */
         Rectangle2D bounds = s.getBounds2D();
-        AffineTransform af = AffineTransform.getTranslateInstance(0 - bounds.getX(), 0 - bounds.getY());
+        AffineTransform af 
+            = AffineTransform.getTranslateInstance(0 - bounds.getX(), 0 - bounds.getY());
         // apply normalisation translation ...
         s = af.createTransformedShape(s);
 

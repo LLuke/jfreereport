@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.35 2003/04/05 18:57:15 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.36 2003/04/06 20:43:00 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@
 package com.jrefinery.report.targets.pageable;
 
 import java.awt.print.PageFormat;
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
@@ -53,12 +53,12 @@ import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
-import com.jrefinery.report.states.StartState;
 import com.jrefinery.report.states.ReportStateProgress;
-import com.jrefinery.report.targets.pageable.pagelayout.PageLayouter;
-import com.jrefinery.report.targets.pageable.pagelayout.SimplePageLayouter;
+import com.jrefinery.report.states.StartState;
 import com.jrefinery.report.targets.base.event.RepaginationListener;
 import com.jrefinery.report.targets.base.event.RepaginationState;
+import com.jrefinery.report.targets.pageable.pagelayout.PageLayouter;
+import com.jrefinery.report.targets.pageable.pagelayout.SimplePageLayouter;
 import com.jrefinery.report.util.Log;
 
 /**
@@ -82,6 +82,7 @@ public class PageableReportProcessor
   /** A flag defining whether to check for Thread-Interrupts. */
   private boolean handleInterruptedState;
 
+  /** Storage for listener references. */
   private ArrayList listeners;
 
   /**
@@ -114,6 +115,11 @@ public class PageableReportProcessor
     this.report.addFunction(lm);
   }
 
+  /**
+   * Adds a listener.
+   * 
+   * @param l  the listener.
+   */
   public void addRepaginationListener (RepaginationListener l)
   {
     if (l == null)
@@ -127,6 +133,11 @@ public class PageableReportProcessor
     listeners.add (l);
   }
 
+  /**
+   * Removes a listener.
+   * 
+   * @param l  the listener.
+   */
   public void removeRepaginationListener (RepaginationListener l)
   {
     if (l == null)
@@ -134,16 +145,23 @@ public class PageableReportProcessor
       throw new NullPointerException("Listener == null");
     }
     if (listeners == null)
+    {
       return;
-
+    }
     listeners.remove(l);
   }
 
+  /**
+   * Sends a repagination update to all registered listeners.
+   * 
+   * @param state  the state.
+   */
   protected void fireStateUpdate (RepaginationState state)
   {
     if (listeners == null)
+    {
       return;
-
+    }
     for (int i = 0; i < listeners.size(); i++)
     {
       RepaginationListener l = (RepaginationListener) listeners.get(i);
@@ -257,8 +275,7 @@ public class PageableReportProcessor
     }
     ReportState rs = list.get(0);
 
-    boolean failOnError =
-        getReport().getReportConfiguration().isStrictErrorHandling();
+    boolean failOnError = getReport().getReportConfiguration().isStrictErrorHandling();
 
     rs = processPage(rs, getOutputTarget(), failOnError);
     ReportStateProgress progress = null;
@@ -469,7 +486,8 @@ public class PageableReportProcessor
    *
    * @param out The output target.
    * @param currPage The report state at the beginning of the current page.
-   * @param failOnError if set to true, then errors in the report event handling will cause the reporting to fail.
+   * @param failOnError if set to true, then errors in the report event handling will cause the 
+   *                    reporting to fail.
    *
    * @return The report state suitable for the next page or ReportState.FinishState.
    *
@@ -560,7 +578,7 @@ public class PageableReportProcessor
             if (state.isErrorOccured() == true)
             {
               Log.error("Failed to dispatch an event.",
-                        new ReportEventException ("Failed to dispatch an event.", state.getErrors()));
+                  new ReportEventException ("Failed to dispatch an event.", state.getErrors()));
             }
           }
           lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);

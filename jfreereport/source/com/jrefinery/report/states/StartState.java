@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.11 2003/03/31 20:49:53 taqua Exp $
+ * $Id: StartState.java,v 1.12 2003/04/08 14:23:11 mungady Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ import java.util.Iterator;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.ReportInitialisationException;
 
 /**
  * The first state in the JFreeReport state transition diagram.

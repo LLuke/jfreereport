@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.9 2003/03/13 17:41:53 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.10 2003/04/06 18:11:29 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -258,6 +258,13 @@ public class PreviewDialog extends JDialog implements PreviewProxy
     return base;
   }
 
+  /**
+   * Debugging code - please ignore.
+   * 
+   * @param args  ignored.
+   * 
+   * @throws Exception if there is a problem.
+   */
   public static void main (String[] args) throws Exception
   {
     long start = System.currentTimeMillis();

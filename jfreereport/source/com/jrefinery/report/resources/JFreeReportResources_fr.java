@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------------
- * JFreeReportResources.java
- * -------------------------
+ * ----------------------------
+ * JFreeReportResources_fr.java
+ * ----------------------------
  * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
+ * Original Author:  PR;
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources_fr.java,v 1.3 2003/03/23 17:45:57 mimil Exp $
+ * $Id: JFreeReportResources_fr.java,v 1.4 2003/03/27 00:46:30 mimil Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -192,7 +192,8 @@ public class JFreeReportResources_fr extends JFreeReportResources
             {"error.savefailed.title", "Erreur durant la sauvegarde"},
             {"error.printfailed.message", "Erreur à l'impression du rapport: {0}"},
             {"error.printfailed.title", "Erreur à l'impression"},
-            {"error.validationfailed.message", "Erreur pendant la validation des entrées utilisateur."},
+            {"error.validationfailed.message", 
+                "Erreur pendant la validation des entrées utilisateur."},
             {"error.validationfailed.title", "Erreur de validation"},
             
             {"tabletarget.page", "Page {0}"},
@@ -213,8 +214,10 @@ public class JFreeReportResources_fr extends JFreeReportResources
             {"pdfsavedialog.userpasswordNoMatch", "Le mot de passe ne correspond pas."},
             {"pdfsavedialog.ownerpassword", "Mot de passe du propriétaire"},
             {"pdfsavedialog.ownerpasswordconfirm", "Confirmer"},
-            {"pdfsavedialog.ownerpasswordNoMatch", "Le mot de passe du propriétaire est incorrect."},
-            {"pdfsavedialog.ownerpasswordEmpty", "Le mot de passe du propriétaire est vide. Les utilisateurs "
+            {"pdfsavedialog.ownerpasswordNoMatch", 
+                "Le mot de passe du propriétaire est incorrect."},
+            {"pdfsavedialog.ownerpasswordEmpty", 
+                "Le mot de passe du propriétaire est vide. Les utilisateurs "
              + "pourront modifier la sécurité. Continuer ?" },
 
             {"pdfsavedialog.warningTitle", "Attention"},
@@ -251,16 +254,19 @@ public class JFreeReportResources_fr extends JFreeReportResources
 
             {"excelexportdialog.warningTitle", "Attention"},
             {"excelexportdialog.errorTitle", "Erreur"},
-            {"excelexportdialog.targetIsEmpty", "Veuillez spécifier un nom de fichier pour le fichier Excel."},
+            {"excelexportdialog.targetIsEmpty", 
+                "Veuillez spécifier un nom de fichier pour le fichier Excel."},
             {"excelexportdialog.targetIsNoFile", "Le chemin spécifié est incorrect."},
-            {"excelexportdialog.targetIsNotWritable", "Le fichier sélectionner est en lecture seule."},
+            {"excelexportdialog.targetIsNotWritable", 
+                "Le fichier sélectionner est en lecture seule."},
             {"excelexportdialog.targetOverwriteConfirmation",
                 "Le fichier ''{0}'' existe. Voulez vous l'écraser?"},
             {"excelexportdialog.targetOverwriteTitle", "Ecraser le fichier?"},
 
             {"excelexportdialog.cancel", "Annuler"},
             {"excelexportdialog.confirm", "Confirmer"},
-            {"excelexportdialog.strict-layout", "Effectuer une disposition stricte pendant l'export."},
+            {"excelexportdialog.strict-layout", 
+                "Effectuer une disposition stricte pendant l'export."},
 
             {"htmlexportdialog.dialogtitle", "Exporter le rapport vers un fichier Html ..."},
 
@@ -275,7 +281,8 @@ public class JFreeReportResources_fr extends JFreeReportResources
             {"htmlexportdialog.selectStreamFile", "Sélectionner un fichier"},
             {"htmlexportdialog.selectDirFile", "Sélectionner un fichier"},
 
-            {"htmlexportdialog.strict-layout", "Effectuer une disposition stricte pendant l'export."},
+            {"htmlexportdialog.strict-layout", 
+                "Effectuer une disposition stricte pendant l'export."},
             {"htmlexportdialog.generate-xhtml", "Génération XHTML 1.0"},
             {"htmlexportdialog.generate-html4", "Génération HTML 4.0"},
 
@@ -283,7 +290,8 @@ public class JFreeReportResources_fr extends JFreeReportResources
             {"htmlexportdialog.errorTitle", "Erreur"},
             {"htmlexportdialog.targetIsEmpty", "Caractére de séparationHtml."},
             {"htmlexportdialog.targetIsNoFile", "Le chemin spécifié est incorrect."},
-            {"htmlexportdialog.targetIsNotWritable", "Le fichier sélectionner est en lecture seule."},
+            {"htmlexportdialog.targetIsNotWritable", 
+                "Le fichier sélectionner est en lecture seule."},
             {"htmlexportdialog.targetOverwriteConfirmation",
                 "Le fichier ''{0}'' existe. Voulez vous l'écraser?"},
             {"htmlexportdialog.targetOverwriteTitle", "Ecraser le fichier?"},
@@ -308,9 +316,11 @@ public class JFreeReportResources_fr extends JFreeReportResources
 
             {"csvexportdialog.warningTitle", "Attention"},
             {"csvexportdialog.errorTitle", "Erreur"},
-            {"csvexportdialog.targetIsEmpty", "Veuillez spécifier un nom de fichier pour le fichier CSV."},
+            {"csvexportdialog.targetIsEmpty", 
+                "Veuillez spécifier un nom de fichier pour le fichier CSV."},
             {"csvexportdialog.targetIsNoFile", "Le chemin spécifié est incorrect."},
-            {"csvexportdialog.targetIsNotWritable", "Le fichier sélectionner est en lecture seule."},
+            {"csvexportdialog.targetIsNotWritable", 
+                "Le fichier sélectionner est en lecture seule."},
             {"csvexportdialog.targetOverwriteConfirmation",
                 "Le fichier ''{0}'' existe. Voulez vous l'écraser?"},
             {"csvexportdialog.targetOverwriteTitle", "Ecraser le fichier?"},
@@ -326,10 +336,12 @@ public class JFreeReportResources_fr extends JFreeReportResources
             {"csvexportdialog.exporttype", "Sélectionner un moteur d'exportation"},
             {"csvexportdialog.export.data", "Exporter par ligne (Raw Data)"},
             {"csvexportdialog.export.printed_elements", "Eléments imprimés  (Layouted Data)"},
-            {"csvexportdialog.strict-layout", "Effectuer une disposition stricte pendant l'export."},
+            {"csvexportdialog.strict-layout", 
+                "Effectuer une disposition stricte pendant l'export."},
 
 
-            {"plain-text-exportdialog.dialogtitle", "Exporter le rapport vers un fichier Text (Plain-Text)..."},
+            {"plain-text-exportdialog.dialogtitle", 
+                "Exporter le rapport vers un fichier Text (Plain-Text)..."},
             {"plain-text-exportdialog.filename", "Nom de fichier"},
             {"plain-text-exportdialog.encoding", "Encodage"},
             {"plain-text-exportdialog.printer", "Type d'imprimante"},
@@ -343,7 +355,8 @@ public class JFreeReportResources_fr extends JFreeReportResources
             {"plain-text-exportdialog.targetIsEmpty", 
                 "Veuillez spécifier un nom de fichier pour le fichier CSV."},
             {"plain-text-exportdialog.targetIsNoFile", "Le chemin spécifié est incorrect."},
-            {"plain-text-exportdialog.targetIsNotWritable", "Le fichier sélectionner est en lecture seule."},
+            {"plain-text-exportdialog.targetIsNotWritable", 
+                "Le fichier sélectionner est en lecture seule."},
             {"plain-text-exportdialog.targetOverwriteConfirmation",
                 "Le fichier ''{0}'' existe. Voulez vous l'écraser?"},
             {"plain-text-exportdialog.targetOverwriteTitle", "Ecraser le fichier?"},

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------
  * OutputTarget.java
  * -----------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, 2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.11 2003/03/07 13:47:40 taqua Exp $
+ * $Id: OutputTarget.java,v 1.12 2003/03/07 16:56:02 taqua Exp $
  *
  * Changes
  * -------
@@ -46,18 +46,17 @@
 
 package com.jrefinery.report.targets.pageable;
 
-import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.DrawableContainer;
-import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.base.layout.LayoutSupport;
-import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
-import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.ui.Drawable;
-
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
+
+import com.jrefinery.report.DrawableContainer;
+import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.base.layout.LayoutSupport;
+import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
+import com.jrefinery.report.util.ReportConfiguration;
 
 /**
  * An interface that defines the methods that must be supported by a report output target.

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.32 2003/04/06 20:42:58 taqua Exp $
+ * $Id: ReportState.java,v 1.33 2003/04/08 14:23:09 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -197,6 +197,11 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     setAncestorHashcode(this.hashCode());
   }
 
+  /**
+   * Returns the number of rows.
+   * 
+   * @return The number of row.
+   */
   protected int getNumberOfRows()
   {
     return numberOfRows;
@@ -487,6 +492,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * Don't use that function to store/copy a report state for a longer storage time.
    * The next few advances may render the reportstate copy invalid.
    *
+   * @param progress  a carrier for the result.
+   * 
    * @return a progress object of this state.
    */
   public ReportStateProgress createStateProgress (ReportStateProgress progress)
@@ -506,9 +513,10 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * Clones the report state.
    *
    * @return a clone.
-   * @throws CloneNotSupportedException
+   * 
+   * @throws CloneNotSupportedException if there is a cloning problem.
    */
-  public Object clone ()  throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
     ReportState result = (ReportState) super.clone ();
     LevelledExpressionList functions = (LevelledExpressionList) getFunctions ().clone();
@@ -593,7 +601,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      * @param oldState  the old state.
      * @param message  the message.
      */
-    public StateProceedMessage(ReportState currentState, ReportStateProgress oldState, String message)
+    public StateProceedMessage(ReportState currentState, ReportStateProgress oldState, 
+                               String message)
     {
       this.currentState = currentState;
       this.oldState = oldState;
