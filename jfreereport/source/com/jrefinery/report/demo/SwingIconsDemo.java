@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.2 2003/04/24 18:08:46 taqua Exp $
+ * $Id: SwingIconsDemo.java,v 1.3 2003/05/02 12:39:41 taqua Exp $
  *
  * Changes
  * -------
@@ -41,13 +41,14 @@
 package com.jrefinery.report.demo;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.URL;
+import java.text.MessageFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -55,12 +56,14 @@ import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.demo.helper.AbstractDemoFrame;
+import com.jrefinery.report.demo.helper.ImageCellRenderer;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
-import com.jrefinery.report.util.ExceptionDialog;
+import com.jrefinery.report.util.ActionMenuItem;
 import com.jrefinery.report.util.ReportConfiguration;
-import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.xml.ElementDefinitionException;
 
 /**
  * A demonstration application.
@@ -72,13 +75,10 @@ import org.jfree.ui.RefineryUtilities;
  *
  * @author David Gilbert
  */
-public class SwingIconsDemo extends ApplicationFrame implements ActionListener
+public class SwingIconsDemo extends AbstractDemoFrame
 {
   /** The data for the report. */
   private TableModel data;
-
-  /** The report (read from first.xml template). */
-  private JFreeReport report;
 
   /**
    * Constructs the demo application.
@@ -87,7 +87,7 @@ public class SwingIconsDemo extends ApplicationFrame implements ActionListener
    */
   public SwingIconsDemo(String title)
   {
-    super(title);
+    setTitle(title);
     setJMenuBar(createMenuBar());
     setContentPane(createContent());
   }
@@ -100,15 +100,10 @@ public class SwingIconsDemo extends ApplicationFrame implements ActionListener
   public JMenuBar createMenuBar()
   {
     JMenuBar mb = new JMenuBar();
-    JMenu fileMenu = new JMenu("File");
+    JMenu fileMenu = createJMenuItem("menu.file");
 
-    JMenuItem previewItem = new JMenuItem("Preview Report");
-    previewItem.setActionCommand("PREVIEW");
-    previewItem.addActionListener(this);
-
-    JMenuItem exitItem = new JMenuItem("Exit");
-    exitItem.setActionCommand("EXIT");
-    exitItem.addActionListener(this);
+    JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
+    JMenuItem exitItem = new ActionMenuItem(getCloseAction());
 
     fileMenu.add(previewItem);
     fileMenu.addSeparator();
@@ -146,40 +141,34 @@ public class SwingIconsDemo extends ApplicationFrame implements ActionListener
   }
 
   /**
-   * Handles action events.
-   *
-   * @param e  the event.
-   */
-  public void actionPerformed(ActionEvent e)
-  {
-    String command = e.getActionCommand();
-    if (command.equals("PREVIEW"))
-    {
-      previewReport();
-    }
-    else if (command.equals("EXIT"))
-    {
-      dispose();
-      System.exit(0);
-    }
-  }
-
-  /**
    * Displays a print preview screen for the sample report.
    */
-  protected void previewReport()
+  protected void attemptPreview()
   {
+    URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
+    if (in == null)
+    {
+      JOptionPane.showMessageDialog(this,
+          MessageFormat.format(getResources().getString("report.definitionnotfound"),
+                               new Object[]{in}),
+          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+    }
+
+    JFreeReport report;
+    try
+    {
+      report = parseReport(in);
+      report.setData(this.data);
+    }
+    catch (Exception ex)
+    {
+      showExceptionDialog("report.definitionfailure", ex);
+      return;
+    }
 
     try
     {
-      if (this.report == null)
-      {
-        URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
-        this.report = parseReport(in);
-        this.report.setData(this.data);
-      }
-
-      PreviewFrame frame = new PreviewFrame(this.report);
+      PreviewFrame frame = new PreviewFrame(report);
       frame.getBase().setLargeIconsEnabled(true);
       frame.getBase().setToolbarFloatable(false);
       frame.pack();
@@ -189,7 +178,7 @@ public class SwingIconsDemo extends ApplicationFrame implements ActionListener
     }
     catch (ReportProcessingException rpe)
     {
-      ExceptionDialog.showExceptionDialog("Error", "Unable to init", rpe);
+      showExceptionDialog("report.previewfailure", rpe);
     }
 
   }
@@ -202,20 +191,11 @@ public class SwingIconsDemo extends ApplicationFrame implements ActionListener
    * @return A report.
    */
   private JFreeReport parseReport(URL templateURL)
+      throws IOException, ElementDefinitionException
   {
 
-    JFreeReport result = null;
     ReportGenerator generator = ReportGenerator.getInstance();
-    try
-    {
-      result = generator.parseReport(templateURL);
-    }
-    catch (Exception e)
-    {
-      ExceptionDialog.showExceptionDialog("Error on parsing",
-                                          "Error while parsing " + templateURL, e);
-    }
-    return result;
+    return generator.parseReport(templateURL);
 
   }
 

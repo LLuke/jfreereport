@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.16 2003/06/12 19:49:38 taqua Exp $
+ * $Id: ReportConverter.java,v 1.17 2003/06/15 21:26:29 taqua Exp $
  *
  * Changes
  * -------
@@ -42,9 +42,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.io.OutputStream;
 import java.net.URL;
 
 import com.jrefinery.report.JFreeReport;

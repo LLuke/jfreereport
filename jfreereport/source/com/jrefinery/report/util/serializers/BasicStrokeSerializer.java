@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: BasicStrokeSerializer.java,v 1.1 2003/05/30 18:47:49 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,11 +38,11 @@
 
 package com.jrefinery.report.util.serializers;
 
-import java.io.ObjectOutputStream;
+import java.awt.BasicStroke;
+import java.awt.Stroke;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.awt.Stroke;
-import java.awt.BasicStroke;
+import java.io.ObjectOutputStream;
 
 import com.jrefinery.report.util.SerializeMethod;
 import org.jfree.io.SerialUtilities;

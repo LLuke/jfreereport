@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.57 2003/06/13 18:55:45 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.58 2003/06/15 21:26:29 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -41,7 +41,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.ListResourceBundle;
-
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
@@ -175,7 +174,7 @@ public class JFreeReportResources extends ListResourceBundle
   private static final Object[][] CONTENTS =
       {
         {"project.name", "JFreeReport"},
-        {"project.version", "0.8.3b"},
+        {"project.version", "0.8.3c"},
         {"project.info", "http://www.jfree.org/jfreereport/index.html"},
         {"project.copyright",
          "(C)opyright 2000-2003, by Thomas Morgner, Object Refinery Limited and Contributors"},

@@ -2,12 +2,12 @@
  * Date: Mar 7, 2003
  * Time: 6:36:32 PM
  *
- * $Id: TotalCalculationFunction.java,v 1.4 2003/05/16 19:29:50 taqua Exp $
+ * $Id: TotalCalculationFunction.java,v 1.5 2003/06/01 17:39:27 taqua Exp $
  */
 package com.jrefinery.report.function;
 
-import java.util.ArrayList;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import com.jrefinery.report.event.ReportEvent;
 

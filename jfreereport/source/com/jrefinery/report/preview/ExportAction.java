@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportAction.java,v 1.4 2003/05/02 12:40:22 taqua Exp $
+ * $Id: ExportAction.java,v 1.5 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes
  * --------
@@ -160,13 +160,9 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
   public void run()
   {
     boolean retval = plugin.performExport(report);
-    if (plugin.isRepaginateOnSuccess() && retval == true)
-    {
-      proxyBase.performPagination();
-    }
     if (plugin.isControlPlugin() == false && retval == false)
     {
-      proxyBase.setStatusText("Export failed: " + plugin.getDisplayName());
+      proxyBase.setStatusText(plugin.getFailureDescription());
     }
   }
 }

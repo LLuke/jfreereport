@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: IconTableModel.java,v 1.8 2003/05/02 12:39:34 taqua Exp $
+ * $Id: IconTableModel.java,v 1.9 2003/05/14 22:26:37 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,8 @@
 package com.jrefinery.report.demo;
 
 import java.awt.Image;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 /**

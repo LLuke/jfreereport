@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToXML.java,v 1.7 2003/04/08 13:58:32 mungady Exp $
+ * $Id: StraightToXML.java,v 1.8 2003/05/02 12:39:41 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.targets.xml.XMLProcessor;
 import com.jrefinery.report.util.Log;
+import org.jfree.xml.ParseException;
 
 /**
  * A demonstration that shows how to generate a report and save it to XML without displaying
@@ -64,7 +65,7 @@ public class StraightToXML
    *
    * @param filename  the output filename.
    */
-  public StraightToXML(String filename)
+  public StraightToXML(String filename) throws ParseException
   {
     URL in  = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
     JFreeReport report = parseReport(in);
@@ -80,19 +81,17 @@ public class StraightToXML
    *
    * @return a report.
    */
-  private JFreeReport parseReport(URL templateURL)
+  private JFreeReport parseReport(URL templateURL) throws ParseException
   {
-    JFreeReport result = null;
     ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
-      result = generator.parseReport(templateURL);
+      return generator.parseReport(templateURL);
     }
     catch (Exception e)
     {
-      Log.error ("Failed to parse", e);
+      throw new ParseException("Failed to parse the report", e);
     }
-    return result;
   }
 
   /**
@@ -145,8 +144,16 @@ public class StraightToXML
    */
   public static void main(String args[])
   {
-    StraightToXML demo = new StraightToXML(System.getProperty("user.home") + "/test99.xml");
-    System.exit(0);
+    try
+    {
+      StraightToXML demo = new StraightToXML(System.getProperty("user.home") + "/test99.xml");
+      System.exit(0);
+    }
+    catch (Exception e)
+    {
+      Log.error ("Failed to run demo", e);
+      System.exit (1);
+    }
   }
 
 }

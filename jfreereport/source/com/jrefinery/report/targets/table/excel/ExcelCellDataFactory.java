@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellDataFactory.java,v 1.11 2003/05/14 22:26:40 taqua Exp $
+ * $Id: ExcelCellDataFactory.java,v 1.12 2003/05/23 20:12:15 taqua Exp $
  *
  * Changes
  * -------
@@ -44,10 +44,10 @@ import java.util.Date;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
+import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.templates.DateFieldTemplate;
 import com.jrefinery.report.filter.templates.NumberFieldTemplate;
 import com.jrefinery.report.filter.templates.Template;
-import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.targets.table.AbstractTableCellDataFactory;
 import com.jrefinery.report.targets.table.TableCellData;
 import com.jrefinery.report.util.Log;

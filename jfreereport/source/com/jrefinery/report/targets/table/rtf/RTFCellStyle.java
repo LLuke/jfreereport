@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellStyle.java,v 1.5 2003/03/26 22:55:52 taqua Exp $
+ * $Id: RTFCellStyle.java,v 1.6 2003/05/02 12:40:43 taqua Exp $
  *
  * Changes
  * -------
@@ -36,14 +36,9 @@
  */
 package com.jrefinery.report.targets.table.rtf;
 
-import java.awt.Color;
-
 import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.targets.FontDefinition;
 import com.lowagie.text.Cell;
-import com.lowagie.text.Chunk;
 import com.lowagie.text.Element;
-import com.lowagie.text.Font;
 
 /**
  * The RTFCellStyle is used to define the style for the generated RTF-TableCell.
@@ -54,12 +49,6 @@ import com.lowagie.text.Font;
  */
 public class RTFCellStyle
 {
-  /** The used font definition. */
-  private FontDefinition font;
-  
-  /** The text color. */
-  private Color fontColor;
-  
   /** The vertical alignment of the cell content. */
   private ElementAlignment verticalAlignment;
   
@@ -69,24 +58,13 @@ public class RTFCellStyle
   /**
    * Creates a new RTFCellStyle.
    *
-   * @param font the font definition.
-   * @param fontColor the font color.
    * @param verticalAlignment the vertical text alignment.
    * @param horizontalAlignment the horizontal text alignment.
-   * @throws NullPointerException if any of the parameters is null.
+   * @throws NullPointerException if one of the alignment parameters is null.
    */
-  public RTFCellStyle(FontDefinition font, Color fontColor,
-                      ElementAlignment verticalAlignment, ElementAlignment horizontalAlignment)
+  public RTFCellStyle(ElementAlignment verticalAlignment, ElementAlignment horizontalAlignment)
   {
-    if (font == null) 
-    {
-      throw new NullPointerException("Font");
-    }
-    if (fontColor == null) 
-    {
-      throw new NullPointerException("FontColor");
-    }
-    if (verticalAlignment == null) 
+    if (verticalAlignment == null)
     {
       throw new NullPointerException("VAlign");
     }
@@ -95,30 +73,8 @@ public class RTFCellStyle
       throw new NullPointerException("HAlign");
     }
 
-    this.font = font;
-    this.fontColor = fontColor;
     this.verticalAlignment = verticalAlignment;
     this.horizontalAlignment = horizontalAlignment;
-  }
-
-  /**
-   * Gets the font definition used in the cell.
-   *
-   * @return the font definition.
-   */
-  public FontDefinition getFont()
-  {
-    return font;
-  }
-
-  /**
-   * Gets the font color for the cell.
-   *
-   * @return the font color.
-   */
-  public Color getFontColor()
-  {
-    return fontColor;
   }
 
   /**
@@ -161,14 +117,6 @@ public class RTFCellStyle
 
     final RTFCellStyle style = (RTFCellStyle) o;
 
-    if (!font.equals(style.font))
-    {
-      return false;
-    }
-    if (!fontColor.equals(style.fontColor))
-    {
-      return false;
-    }
     if (!horizontalAlignment.equals(style.horizontalAlignment))
     {
       return false;
@@ -189,48 +137,9 @@ public class RTFCellStyle
   public int hashCode()
   {
     int result;
-    result = font.hashCode();
-    result = 29 * result + fontColor.hashCode();
-    result = 29 * result + verticalAlignment.hashCode();
+    result = verticalAlignment.hashCode();
     result = 29 * result + horizontalAlignment.hashCode();
     return result;
-  }
-
-  /**
-   * Define the font for the given iText Chunk.
-   *
-   * @param p the iText chunk, which should be formated.
-   */
-  public void applyTextStyle (Chunk p)
-  {
-    int style = Font.NORMAL;
-    if (font.isBold())
-    {
-      style += Font.BOLD;
-    }
-    if (font.isItalic())
-    {
-      style += Font.ITALIC;
-    }
-    if (font.isStrikeThrough())
-    {
-      style += Font.STRIKETHRU;
-    }
-    if (font.isUnderline())
-    {
-      style += Font.UNDERLINE;
-    }
-
-    int family = Font.HELVETICA;
-    if (font.isCourier())
-    {
-      family = Font.COURIER;
-    }
-    else if (font.isSerif())
-    {
-      family = Font.TIMES_ROMAN;
-    }
-    p.setFont(new Font(family, font.getFontSize(), style, getFontColor()));
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources.java,v 1.14 2003/06/04 21:09:05 taqua Exp $
+ * $Id: DemoResources.java,v 1.15 2003/06/16 16:06:56 taqua Exp $
  *
  * Changes
  * -------
@@ -64,9 +64,9 @@ public class DemoResources extends JFreeReportResources
   /** The resources to be localised. */
   private static final Object[][] CONTENTS = {
     {"project.name", "JFreeReport"},
-    {"project.version", "0.8.3b"},
+    {"project.version", "0.8.3c"},
     {"project.info", "http://www.object-refinery.com/jfreereport/index.html"},
-    {"project.copyright", "(C)opyright 2000-2002, by Simba Management Limited and Contributors"},
+    {"project.copyright", "(C)opyright 2000-2003, by Simba Management Limited and Contributors"},
 
     // in the title pattern, leave in the '{0}' as it gets replaced with the version number
     {"main-frame.title.pattern", "JFreeReport {0} Demo"},
@@ -103,7 +103,11 @@ public class DemoResources extends JFreeReportResources
     {"report.definitionfailure.title", "Loader error"},
     {"report.definitionnull", "Reportdefinition was not generated"},
     {"error", "Error"},
-    {"example", "Example {0}"}
+    {"example", "Example {0}"},
+
+    {"report.previewfailure.message", "An error occured while initializing the preview frame."},
+    {"report.previewfailure.title", "Report preview error"},
+
   };
 
 }

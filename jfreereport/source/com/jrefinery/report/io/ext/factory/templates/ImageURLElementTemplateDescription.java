@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageURLElementTemplateDescription.java,v 1.5 2003/05/16 15:28:59 taqua Exp $
+ * $Id: ImageURLElementTemplateDescription.java,v 1.6 2003/06/04 21:09:09 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -41,9 +41,7 @@ package com.jrefinery.report.io.ext.factory.templates;
 import java.net.URL;
 
 import com.jrefinery.report.filter.templates.ImageURLElementTemplate;
-import org.jfree.util.Configuration;
 import org.jfree.util.Log;
-import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.Parser;
 
 /**

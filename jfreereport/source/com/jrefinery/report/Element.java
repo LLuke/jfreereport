@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.30 2003/05/30 18:47:48 taqua Exp $
+ * $Id: Element.java,v 1.31 2003/06/15 19:05:41 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -68,6 +68,9 @@ import com.jrefinery.report.filter.DataTarget;
 import com.jrefinery.report.filter.EmptyDataSource;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.style.StyleSheetCollection;
+import com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException;
+import com.jrefinery.report.targets.style.StyleSheetCollectionHelper;
 
 /**
  * Base class for all report elements (display items that can appear within a report band).
@@ -81,6 +84,30 @@ import com.jrefinery.report.targets.style.ElementStyleSheet;
  */
 public abstract class Element implements DataTarget, Serializable, Cloneable
 {
+  private static class ElementStyleSheetCollectionHelper extends StyleSheetCollectionHelper
+  {
+    private Element element;
+
+    public ElementStyleSheetCollectionHelper(Element e)
+    {
+      if (e == null)
+      {
+        throw new NullPointerException();
+      }
+      this.element = e;
+    }
+
+    protected void registerStyleSheetCollection()
+    {
+      element.registerStyleSheetCollection();
+    }
+
+    protected void unregisterStyleSheetCollection()
+    {
+      element.unregisterStyleSheetCollection();
+    }
+  }
+
   /** A null datasource. */
   private static final DataSource NULL_DATASOURCE = new EmptyDataSource();
 
@@ -92,6 +119,8 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
 
   /** The stylesheet defines global appearance for elements. */
   private ElementStyleSheet style;
+
+  private ElementStyleSheetCollectionHelper styleSheetCollectionHelper;
 
   /**
    * ElementStyle constant for horizontal left alignment.
@@ -156,6 +185,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     style = new ElementStyleSheet(getName());
     style.setAllowCaching(true);
     style.addDefaultParent(ElementDefaultStyleSheet.getDefaultStyle());
+    styleSheetCollectionHelper = new ElementStyleSheetCollectionHelper(this);
   }
 
   /**
@@ -266,6 +296,9 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
 
   /**
    * Clones this Element, the datasource and the private stylesheet of this element.
+   * If this element was previously assigned with an stylesheet collection, then the
+   * clone is no longer assiged with that collection. You will have to register the
+   * element manually again.
    *
    * @return a clone of this element.
    *
@@ -276,6 +309,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     Element e = (Element) super.clone();
     e.style = style.getCopy();
     e.datasource = (DataSource) datasource.clone();
+    e.styleSheetCollectionHelper = new ElementStyleSheetCollectionHelper(e);
     return e;
   }
 
@@ -306,6 +340,26 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   public abstract String getContentType ();
 
+
+  public StyleSheetCollection getStyleSheetCollection()
+  {
+    return styleSheetCollectionHelper.getStyleSheetCollection();
+  }
+
+  public void setStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  {
+    styleSheetCollectionHelper.setStyleSheetCollection(styleSheetCollection);
+  }
+
+  protected void unregisterStyleSheetCollection ()
+  {
+    getStyleSheetCollection().remove(getStyle());
+  }
+
+  protected void registerStyleSheetCollection ()
+  {
+    getStyleSheetCollection().addStyleSheet(getStyle());
+  }
 
   /// DEPRECATED METHODS //////////////////////////////////////////////////////////////////////////
 

@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.13 2003/05/02 12:40:32 taqua Exp $
+ * $Id: ReportStateList.java,v 1.14 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -344,7 +344,8 @@ public class ReportStateList
   {
     if (index >= size () || index < 0)
     {
-      throw new IndexOutOfBoundsException ();
+      throw new IndexOutOfBoundsException
+          ("Index is invalid. Index was " + index + "; size was " + size());
     }
     if (index < PRIMARY_MAX)
     {

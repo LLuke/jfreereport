@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.5 2003/05/02 12:39:35 taqua Exp $
+ * $Id: PercentageDemo.java,v 1.6 2003/06/12 23:17:13 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,8 @@
 package com.jrefinery.report.demo;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URL;
+import java.text.MessageFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JMenu;
@@ -57,10 +56,12 @@ import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.demo.helper.AbstractDemoFrame;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
+import com.jrefinery.report.util.ActionButton;
+import com.jrefinery.report.util.ActionMenuItem;
 import com.jrefinery.report.util.Log;
-import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -68,14 +69,11 @@ import org.jfree.ui.RefineryUtilities;
  *
  * @author David Gilbert
  */
-public class PercentageDemo extends ApplicationFrame implements ActionListener
+public class PercentageDemo extends AbstractDemoFrame
 {
 
   /** The data for the report. */
   private TableModel data;
-
-  /** The report (read from the PercentageDemo.xml template). */
-  private JFreeReport report;
 
   /**
    * Constructs the demo application.
@@ -84,7 +82,7 @@ public class PercentageDemo extends ApplicationFrame implements ActionListener
    */
   public PercentageDemo(String title)
   {
-    super(title);
+    setTitle(title);
     setJMenuBar(createMenuBar());
     setContentPane(createContent());
   }
@@ -97,15 +95,10 @@ public class PercentageDemo extends ApplicationFrame implements ActionListener
   public JMenuBar createMenuBar()
   {
     JMenuBar mb = new JMenuBar();
-    JMenu fileMenu = new JMenu("File");
+    JMenu fileMenu = createJMenuItem("menu.file");
 
-    JMenuItem previewItem = new JMenuItem("Preview Report");
-    previewItem.setActionCommand("PREVIEW");
-    previewItem.addActionListener(this);
-
-    JMenuItem exitItem = new JMenuItem("Exit");
-    exitItem.setActionCommand("EXIT");
-    exitItem.addActionListener(this);
+    JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
+    JMenuItem exitItem = new ActionMenuItem(getCloseAction());
 
     fileMenu.add(previewItem);
     fileMenu.addSeparator();
@@ -137,10 +130,8 @@ public class PercentageDemo extends ApplicationFrame implements ActionListener
     JTable table = new JTable(data);
     JScrollPane scrollPane = new JScrollPane(table);
     
-    JButton previewButton = new JButton("Preview Report");
-    previewButton.setActionCommand("PREVIEW");
-    previewButton.addActionListener(this);
-    
+    JButton previewButton = new ActionButton(getPreviewAction());
+
     content.add(scroll, BorderLayout.NORTH);
     content.add(scrollPane);
     content.add(previewButton, BorderLayout.SOUTH);
@@ -148,46 +139,35 @@ public class PercentageDemo extends ApplicationFrame implements ActionListener
   }
 
   /**
-   * Handles action events.
-   *
-   * @param e  the event.
-   */
-  public void actionPerformed(ActionEvent e)
-  {
-    String command = e.getActionCommand();
-    if (command.equals("PREVIEW"))
-    {
-        previewReport();
-    }
-    else if (command.equals("EXIT"))
-    {
-      dispose();
-      System.exit(0);
-    }
-  }
-
-  /**
    * Displays a print preview screen for the sample report.
    */
-  protected void previewReport()
+  protected void attemptPreview()
   {
+    URL in = getClass().getResource("/com/jrefinery/report/demo/PercentageDemo.xml");
+
+    if (in == null)
+    {
+      JOptionPane.showMessageDialog(this,
+          MessageFormat.format(getResources().getString("report.definitionnotfound"),
+                               new Object[]{in}),
+          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+    }
+
+    JFreeReport report;
+    try
+    {
+      report = parseReport(in);
+      report.setData(this.data);
+    }
+    catch (Exception ex)
+    {
+      showExceptionDialog("report.definitionfailure", ex);
+      return;
+    }
 
     try
     {
-      if (this.report == null)
-      {
-        URL in = getClass().getResource("/com/jrefinery/report/demo/PercentageDemo.xml");
-        this.report = parseReport(in);
-      }
-      if (this.report == null)
-      {
-        JOptionPane.showMessageDialog(this, "The report definition is null");
-        return;
-      }
-      
-      this.report.setData(this.data);
-            
-      PreviewFrame frame = new PreviewFrame(this.report);
+      PreviewFrame frame = new PreviewFrame(report);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
       RefineryUtilities.positionFrameRandomly(frame);
@@ -196,10 +176,8 @@ public class PercentageDemo extends ApplicationFrame implements ActionListener
     }
     catch (ReportProcessingException pre)
     {
-      Log.error("Failed", pre);
+      showExceptionDialog("report.previewfailure", pre);
     }
-    // force reparsing on next preview ... for debugging ...
-    report = null;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.15 2003/06/13 16:21:24 taqua Exp $
+ * $Id: PageFunction.java,v 1.16 2003/06/13 17:55:25 taqua Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,8 @@ package com.jrefinery.report.function;
 import java.io.Serializable;
 
 import com.jrefinery.report.Group;
-import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.event.PageEventListener;
+import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.states.ReportState;
 
 /**

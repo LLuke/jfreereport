@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_sv.java,v 1.2 2003/06/04 21:34:01 taqua Exp $
+ * $Id: JFreeReportResources_sv.java,v 1.3 2003/06/13 18:55:45 taqua Exp $
  *
  * Changes
  * -------
@@ -34,7 +34,6 @@
 package com.jrefinery.report.resources;
 
 import java.awt.event.KeyEvent;
-import javax.swing.KeyStroke;
 
 /**
  * Swedish Language Resources.

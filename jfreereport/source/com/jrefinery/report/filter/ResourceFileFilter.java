@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2003, by Thomas Morgner.
  *
- * $Id: ResourceFileFilter.java,v 1.7 2003/04/24 18:08:47 taqua Exp $
+ * $Id: ResourceFileFilter.java,v 1.8 2003/06/01 17:39:25 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -34,8 +34,8 @@
  */
 package com.jrefinery.report.filter;
 
-import java.util.ResourceBundle;
 import java.io.Serializable;
+import java.util.ResourceBundle;
 
 import com.jrefinery.report.util.Log;
 

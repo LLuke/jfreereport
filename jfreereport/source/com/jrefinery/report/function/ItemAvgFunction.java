@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemAvgFunction.java,v 1.10 2003/05/16 17:26:40 taqua Exp $
+ * $Id: ItemAvgFunction.java,v 1.11 2003/06/01 17:39:26 taqua Exp $
  *
  * Changes
  * -------
@@ -38,8 +38,8 @@
 
 package com.jrefinery.report.function;
 
-import java.math.BigDecimal;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.event.ReportEvent;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.65 2003/05/14 22:26:37 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.66 2003/06/12 23:17:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,17 +51,13 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -76,6 +72,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.demo.helper.AboutAction;
+import com.jrefinery.report.demo.helper.AbstractDemoFrame;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.ActionButton;
@@ -96,11 +94,8 @@ import org.jfree.ui.about.AboutFrame;
  *
  * @author David Gilbert
  */
-public class JFreeReportDemo extends JFrame
+public class JFreeReportDemo extends AbstractDemoFrame
 {
-  /** The base resource class. */
-  private static final String RESOURCE_BASE = "com.jrefinery.report.demo.resources.DemoResources";
-
   /**
    * A demo handler class.
    */
@@ -240,87 +235,14 @@ public class JFreeReportDemo extends JFrame
     }
   }
 
-  /**
-   * Preview action.
-   */
-  private class DemoPreviewAction extends PreviewAction
-  {
-    /**
-     * Default constructor.
-     */
-    public DemoPreviewAction()
-    {
-      super(getResources());
-    }
-
-    /**
-     * Receives notification of an action event.
-     *
-     * @param event  the event.
-     */
-    public void actionPerformed(ActionEvent event)
-    {
-      attemptPreview();
-    }
-  }
-
-  /**
-   * Close action.
-   */
-  private class DemoCloseAction extends CloseAction
-  {
-    /**
-     * Default constructor.
-     */
-    public DemoCloseAction()
-    {
-      super(getResources());
-    }
-
-    /**
-     * Receives notification of an action event.
-     *
-     * @param event  the event.
-     */
-    public void actionPerformed(ActionEvent event)
-    {
-      attemptExit();
-    }
-  }
-
-  /**
-   * Window close handler.
-   */
-  private class CloseHandler extends WindowAdapter
-  {
-    /**
-     * Handles the window closing event.
-     *
-     * @param event  the window event.
-     */
-    public void windowClosing(WindowEvent event)
-    {
-      attemptExit();
-    }
-  }
-
-  /** Preview action. */
-  private PreviewAction previewAction;
-
   /** About action. */
   private AboutAction aboutAction;
-
-  /** Close action. */
-  private CloseAction closeAction;
 
   /** A frame for displaying information about the demo application. */
   private AboutFrame aboutFrame;
 
   /** A tabbed pane for displaying the sample data sets. */
   private JTabbedPane tabbedPane;
-
-  /** Localised resources. */
-  private ResourceBundle resources;
 
   /** A list of the available demos. */
   private List availableDemos;
@@ -330,12 +252,8 @@ public class JFreeReportDemo extends JFrame
    */
   public JFreeReportDemo()
   {
-    resources = ResourceBundle.getBundle(RESOURCE_BASE);
-    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-    addWindowListener(new CloseHandler());
-
     Object[] arguments = new Object[]{JFreeReport.getInfo().getVersion()};
-    String pattern = resources.getString("main-frame.title.pattern");
+    String pattern = getResources().getString("main-frame.title.pattern");
     setTitle(MessageFormat.format(pattern, arguments));
 
     availableDemos = createAvailableDemos();
@@ -368,12 +286,12 @@ public class JFreeReportDemo extends JFrame
     buttons.add(helpButton);
 
     ActionButton previewButton = new ActionButton ();
-    previewButton.setAction (previewAction);
+    previewButton.setAction (getPreviewAction());
     FloatingButtonEnabler.getInstance ().addButton (previewButton);
     buttons.add(previewButton);
 
     ActionButton closeButton = new ActionButton();
-    closeButton.setAction (closeAction);
+    closeButton.setAction (getCloseAction());
     FloatingButtonEnabler.getInstance ().addButton (closeButton);
     buttons.add(closeButton);
 
@@ -454,16 +372,6 @@ public class JFreeReportDemo extends JFrame
   }
 
   /**
-   * Returns the localised resources.
-   *
-   * @return localised resources.
-   */
-  private ResourceBundle getResources()
-  {
-    return this.resources;
-  }
-
-  /**
    * Forms the localized example string.
    *
    * @param ex  the example number.
@@ -480,7 +388,7 @@ public class JFreeReportDemo extends JFrame
    * Handles a request to preview a report.  First determines which data set is visible, then
    * calls the appropriate preview method.
    */
-  public void attemptPreview()
+  protected void attemptPreview()
   {
     int index = tabbedPane.getSelectedIndex();
     DemoDefinition dd = (DemoDefinition) getAvailableDemos().get(index);
@@ -549,7 +457,6 @@ public class JFreeReportDemo extends JFrame
     URL in = getClass().getResource(urlname);
     if (in == null)
     {
-
       JOptionPane.showMessageDialog(this,
           MessageFormat.format(getResources().getString("report.definitionnotfound"),
                                new Object[]{urlname}),
@@ -588,25 +495,6 @@ public class JFreeReportDemo extends JFrame
   }
 
   /**
-   * Shows the exception dialog by using localized messages. The message base is
-   * used to construct the localisation key by appending ".title" and ".message" to the
-   * base name.
-   *
-   * @param localisationBase  the resource prefix.
-   * @param e  the exception.
-   */
-  private void showExceptionDialog(String localisationBase, Exception e)
-  {
-    ExceptionDialog.showExceptionDialog(
-        getResources().getString(localisationBase + ".title"),
-        MessageFormat.format(
-            getResources().getString(localisationBase + ".message"),
-            new Object[]{e.getLocalizedMessage()}
-        ),
-        e);
-  }
-
-  /**
    * Returns the preferred size of the frame.
    *
    * @return the preferred size.
@@ -614,30 +502,6 @@ public class JFreeReportDemo extends JFrame
   public Dimension getPreferredSize()
   {
     return new Dimension(440, 300);
-  }
-
-  /**
-   * Exits the application, but only if the user agrees.
-   *
-   * @return false if the user decides not to exit the application.
-   */
-  protected boolean attemptExit()
-  {
-    boolean close =
-        JOptionPane.showConfirmDialog(
-            this,
-            getResources().getString("exitdialog.message"),
-            getResources().getString("exitdialog.title"),
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE)
-        == JOptionPane.YES_OPTION;
-    if (close)
-    {
-      dispose();
-      System.exit(0);
-    }
-
-    return close;
   }
 
   /**
@@ -662,9 +526,7 @@ public class JFreeReportDemo extends JFrame
    */
   private void createActions()
   {
-    previewAction = new DemoPreviewAction();
     aboutAction = new DemoAboutAction();
-    closeAction = new DemoCloseAction();
   }
 
   /**
@@ -681,8 +543,8 @@ public class JFreeReportDemo extends JFrame
     // first the file menu
     JMenu fileMenu = createJMenuItem("menu.file");
 
-    JMenuItem printItem = new ActionMenuItem(previewAction);
-    KeyStroke accelerator = (KeyStroke) previewAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
+    JMenuItem printItem = new ActionMenuItem(getPreviewAction());
+    KeyStroke accelerator = (KeyStroke) getPreviewAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
     {
       printItem.setAccelerator(accelerator);
@@ -691,7 +553,7 @@ public class JFreeReportDemo extends JFrame
 
     fileMenu.add(new JSeparator());
 
-    JMenuItem exitItem = new ActionMenuItem(closeAction);
+    JMenuItem exitItem = new ActionMenuItem(getCloseAction());
     fileMenu.add(exitItem);
 
     // then the help menu
@@ -705,26 +567,6 @@ public class JFreeReportDemo extends JFrame
     menuBar.add(helpMenu);
 
     return menuBar;
-  }
-
-  /**
-   * Creates a JMenu which gets initialized from the current resource bundle.
-   *
-   * @param base the resource prefix.
-   *
-   * @return the menu.
-   */
-  private JMenu createJMenuItem(String base)
-  {
-    String label = this.resources.getString(base + ".name");
-    Character mnemonic = (Character) this.resources.getObject(base + ".mnemonic");
-
-    JMenu menu = new JMenu(label);
-    if (mnemonic != null)
-    {
-      menu.setMnemonic(mnemonic.charValue());
-    }
-    return menu;
   }
 
   /**
@@ -754,7 +596,7 @@ public class JFreeReportDemo extends JFrame
     JToolBar toolbar = new JToolBar();
     toolbar.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
 
-    toolbar.add(createButton(previewAction));
+    toolbar.add(createButton(getPreviewAction()));
     toolbar.addSeparator();
     toolbar.add(createButton(aboutAction));
 

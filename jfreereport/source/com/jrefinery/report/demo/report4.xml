@@ -33,7 +33,7 @@
 
   <functions>
     <!-- The fontmod function will change the font of the Element to the fontname specified in field font -->
-    <function name="fontmod" class="com.jrefinery.report.demo.FontChangeFunction">
+    <function name="fontmod" class="com.jrefinery.report.demo.helper.FontChangeFunction">
       <properties>
         <property name="element">SampleElement</property>
       </properties>

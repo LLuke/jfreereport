@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ExcelExportPlugin.java,v 1.1 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,7 +46,7 @@ import javax.swing.KeyStroke;
 
 import com.jrefinery.report.JFreeReport;
 
-public class ExcelExportPlugin implements ExportPlugin
+public class ExcelExportPlugin extends AbstractExportPlugin
 {
   private ExcelExportDialog exportDialog;
 
@@ -70,6 +70,7 @@ public class ExcelExportPlugin implements ExportPlugin
    */
   public void init (PreviewProxy proxy)
   {
+    super.init(proxy);
     if (proxy instanceof Frame)
     {
       exportDialog = new ExcelExportDialog((Frame) proxy);
@@ -83,17 +84,6 @@ public class ExcelExportPlugin implements ExportPlugin
       exportDialog = new ExcelExportDialog();
     }
     exportDialog.pack();
-  }
-
-  /**
-   * Returns true, when this export plugin is used to configure the report or an other
-   * plugin.
-   *
-   * @return true if this is a control plugin, false otherwise.
-   */
-  public boolean isControlPlugin()
-  {
-    return false;
   }
 
   /**
@@ -177,27 +167,6 @@ public class ExcelExportPlugin implements ExportPlugin
   public boolean isSeparated()
   {
     return true;
-  }
-
-  /**
-   * Returns <code>false</code>.
-   *
-   * @return A boolean.
-   */
-  public boolean isAddToToolbar()
-  {
-    return false;
-  }
-
-  /**
-   * Returns true, if the report should be repaginated after the plugin was sucessfully
-   * executed.
-   *
-   * @return a boolean.
-   */
-  public boolean isRepaginateOnSuccess()
-  {
-    return false;
   }
 
 }

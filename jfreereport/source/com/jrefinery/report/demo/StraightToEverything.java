@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.5 2003/02/26 16:42:11 mungady Exp $
+ * $Id: StraightToEverything.java,v 1.6 2003/05/02 12:39:40 taqua Exp $
  *
  * Changes
  * -------
@@ -64,6 +64,7 @@ import com.jrefinery.report.targets.table.html.ZIPHtmlFilesystem;
 import com.jrefinery.report.targets.table.rtf.RTFProcessor;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
+import org.jfree.xml.ParseException;
 
 /**
  * A demonstration that shows how to generate a report and save it to PDF without displaying
@@ -81,7 +82,7 @@ public class StraightToEverything
    *
    * @param filename  the output filename.
    */
-  public StraightToEverything(String filename)
+  public StraightToEverything(String filename) throws ParseException
   {
     URL in  = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
     JFreeReport report = parseReport(in);
@@ -111,19 +112,17 @@ public class StraightToEverything
    *
    * @return a report.
    */
-  private JFreeReport parseReport(URL templateURL)
+  private JFreeReport parseReport(URL templateURL) throws ParseException
   {
-    JFreeReport result = null;
     ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
-      result = generator.parseReport(templateURL);
+      return generator.parseReport(templateURL);
     }
     catch (Exception e)
     {
-      Log.error ("Failed to parse the report", e);
+      throw new ParseException("Failed to parse the report", e);
     }
-    return result;
   }
 
   /**
@@ -307,9 +306,17 @@ public class StraightToEverything
   {
     ReportConfiguration.getGlobalConfig().setLogLevel("Warn");
     ReportConfiguration.getGlobalConfig().setPDFTargetAutoInit(false);
-    StraightToEverything demo = new StraightToEverything(System.getProperty("user.home") 
-                                                         + "/test-everything");
-    System.exit(0);
+    try
+    {
+      StraightToEverything demo = new StraightToEverything(System.getProperty("user.home")
+                                                           + "/test-everything");
+      System.exit(0);
+    }
+    catch (Exception e)
+    {
+      Log.error ("Failed to run demo", e);
+      System.exit (1);
+    }
   }
 
 }

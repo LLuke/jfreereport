@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.22 2003/06/01 17:39:26 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.23 2003/06/13 17:55:25 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -40,8 +40,8 @@
 
 package com.jrefinery.report.function;
 
-import java.util.HashMap;
 import java.io.Serializable;
+import java.util.HashMap;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.ReportDefinition;

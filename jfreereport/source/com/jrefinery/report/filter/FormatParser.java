@@ -25,7 +25,7 @@
  * -----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FormatParser.java,v 1.12 2003/02/25 14:07:19 taqua Exp $
+ * $Id: FormatParser.java,v 1.13 2003/06/01 17:39:24 taqua Exp $
  *
  * Changes
  * -------
@@ -37,9 +37,9 @@
  */
 package com.jrefinery.report.filter;
 
+import java.io.Serializable;
 import java.text.Format;
 import java.text.ParseException;
-import java.io.Serializable;
 
 /**
  * A format parser tries to parse a string into an object. If the value returned by the

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.10 2003/05/14 22:26:38 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.11 2003/06/18 17:57:15 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,9 @@ package com.jrefinery.report.targets;
 
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Area;
 
 /**
  * Utility class, which resizes a Shape.

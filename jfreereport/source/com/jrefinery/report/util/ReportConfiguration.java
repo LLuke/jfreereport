@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.46 2003/06/01 17:39:27 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.47 2003/06/10 16:07:55 taqua Exp $
  *
  * Changes
  * -------
@@ -41,12 +41,12 @@
 
 package com.jrefinery.report.util;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Properties;
-import java.io.Serializable;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
 
 import org.jfree.util.Configuration;
 

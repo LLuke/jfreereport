@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.10 2003/05/11 13:39:17 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.11 2003/06/12 19:49:38 taqua Exp $
  *
  * Changes
  * -------
@@ -57,10 +57,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.jrefinery.report.util.ActionButton;
+import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FilesystemFilter;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.StringUtil;
-import com.jrefinery.report.util.ExceptionDialog;
 
 /**
  * A utility application for converting XML report files from the old format to the 

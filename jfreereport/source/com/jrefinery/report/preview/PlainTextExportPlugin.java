@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PlainTextExportPlugin.java,v 1.1 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,15 +38,15 @@
 
 package com.jrefinery.report.preview;
 
-import java.util.ResourceBundle;
-import java.awt.Frame;
 import java.awt.Dialog;
+import java.awt.Frame;
+import java.util.ResourceBundle;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import com.jrefinery.report.JFreeReport;
 
-public class PlainTextExportPlugin implements ExportPlugin
+public class PlainTextExportPlugin extends AbstractExportPlugin
 {
   private PlainTextExportDialog exportDialog;
 
@@ -70,6 +70,7 @@ public class PlainTextExportPlugin implements ExportPlugin
    */
   public void init(PreviewProxy proxy)
   {
+    super.init(proxy);
     if (proxy instanceof Frame)
     {
       exportDialog = new PlainTextExportDialog((Frame) proxy);
@@ -96,17 +97,6 @@ public class PlainTextExportPlugin implements ExportPlugin
   public boolean performExport(JFreeReport report)
   {
     return exportDialog.performExport(report);
-  }
-
-  /**
-   * Returns true, when this export plugin is used to configure the report or an other
-   * plugin.
-   *
-   * @return true if this is a control plugin, false otherwise.
-   */
-  public boolean isControlPlugin()
-  {
-    return false;
   }
 
   /**
@@ -167,36 +157,5 @@ public class PlainTextExportPlugin implements ExportPlugin
   public Integer getMnemonicKey()
   {
     return (Integer) resources.getObject("action.export-to-plaintext.mnemonic");
-  }
-
-  /**
-   * Returns <code>false</code>.
-   *
-   * @return A boolean.
-   */
-  public boolean isSeparated()
-  {
-    return false;
-  }
-
-  /**
-   * Returns <code>false</code>.
-   *
-   * @return A boolean.
-   */
-  public boolean isAddToToolbar()
-  {
-    return false;
-  }
-
-  /**
-   * Returns true, if the report should be repaginated after the plugin was sucessfully
-   * executed.
-   *
-   * @return a boolean.
-   */
-  public boolean isRepaginateOnSuccess()
-  {
-    return false;
   }
 }

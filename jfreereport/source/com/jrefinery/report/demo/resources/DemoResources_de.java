@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_de.java,v 1.11 2003/05/02 12:39:42 taqua Exp $
+ * $Id: DemoResources_de.java,v 1.12 2003/06/16 16:06:56 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,6 @@
 package com.jrefinery.report.demo.resources;
 
 import java.awt.event.KeyEvent;
-import javax.swing.KeyStroke;
 
 import com.jrefinery.report.resources.JFreeReportResources;
 

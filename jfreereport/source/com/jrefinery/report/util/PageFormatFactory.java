@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.24 2003/06/01 17:39:27 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.25 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes
  * -------
@@ -766,6 +766,9 @@ public class PageFormatFactory
   public static boolean isEqual (PageFormat pf1, PageFormat pf2)
   {
     if (pf1 == pf2) return true;
+    if (pf1 == null) return false;
+    if (pf2 == null) return false;
+    
     if (pf1.getOrientation() != pf2.getOrientation()) return false;
     Paper p1 = pf1.getPaper();
     Paper p2 = pf2.getPaper();

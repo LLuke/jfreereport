@@ -3,8 +3,38 @@
 ---------------
 A list of changes in recent versions:
 
-        * There are still open bugs, so expect some more updates here :)
-        + RTF Output has a memory leak
+0.8.3c: (19-Jun-2003)
+        * BugFix: The Area class is not able to clip lines, any attemp results
+          in an empty area. Clipping for lines is now disabled, if the output
+          target does not support clipping, the results may look weird if the
+          shape exceeds the element bounds.
+
+        * BugFix: The RTF writer does no longer support images. Using images
+          seems to cause a memory leak, so this function is disabled until a
+          fix is found.
+
+        * BugFix: The ExportDialogs now disables all plugins during the repagination.
+          PageSetup works again.
+
+        * BugFix: The demos now report all errors in a proper way.
+
+        * BugFix: The AbstractBandLayoutManager is now able to handle null content
+          without crashes.
+
+        * BugFix: The StyleSheet collection now clones all substylesheets correctly
+          and gets updated when stylesheets are added or removed from already
+          registered stylesheets.
+
+        * The RTF target now supports all fonts by using the PDF base font support
+          classes.
+
+        * The StyleSheet collection is available from all Bands and Elements, as
+          soon as the element is connected with the report. Independent elements
+          have no stylesheet collection.
+
+        * A new PreviewApplet was created to enable the direct preview of
+          Reports within a webpage. The OpenSourceDemoApplet demonstrates the
+          new component.
 
 0.8.3b:  (16-Jun-2003)
         * BugFix: StyleSheets were not deeply cloned, so inherited stylesheets

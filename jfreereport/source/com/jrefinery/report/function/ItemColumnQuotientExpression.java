@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemColumnQuotientExpression.java,v 1.1 2003/05/20 16:54:18 taqua Exp $
+ * $Id: ItemColumnQuotientExpression.java,v 1.2 2003/06/01 17:39:26 taqua Exp $
  *
  * Changes
  * -------
@@ -38,8 +38,8 @@
 
 package com.jrefinery.report.function;
 
-import java.math.BigDecimal;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.filter.NumberFormatParser;

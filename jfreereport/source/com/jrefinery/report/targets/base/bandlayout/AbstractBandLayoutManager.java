@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.11 2003/05/02 12:40:29 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.12 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -217,6 +217,10 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     {
 
       Content content = contentFactory.createContentForElement(e, eli, getLayoutSupport());
+      if (content == null)
+      {
+        return new FloatDimension();
+      }
       Rectangle2D contentBounds = content.getMinimumContentSize();
       if (contentBounds == null)
       {

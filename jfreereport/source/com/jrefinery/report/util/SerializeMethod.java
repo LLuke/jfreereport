@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SerializeMethod.java,v 1.2 2003/06/10 16:07:56 taqua Exp $
+ * $Id: SerializeMethod.java,v 1.3 2003/06/15 21:26:30 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,9 +38,9 @@
 
 package com.jrefinery.report.util;
 
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * The SerializeMethod is used to define a serialization strategy for a

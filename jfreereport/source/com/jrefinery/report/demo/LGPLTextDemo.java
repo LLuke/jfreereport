@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: LGPLTextDemo.java,v 1.7 2003/05/02 12:39:35 taqua Exp $
+ * $Id: LGPLTextDemo.java,v 1.8 2003/05/14 22:26:37 taqua Exp $
  *
  * Changes
  * -------
@@ -39,13 +39,13 @@
 package com.jrefinery.report.demo;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URL;
+import java.text.MessageFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -53,10 +53,11 @@ import javax.swing.table.DefaultTableModel;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.demo.helper.AbstractDemoFrame;
 import com.jrefinery.report.io.ReportGenerator;
-import com.jrefinery.report.preview.PreviewFrame;
+import com.jrefinery.report.preview.PreviewDialog;
+import com.jrefinery.report.util.ActionMenuItem;
 import com.jrefinery.report.util.Log;
-import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -65,144 +66,133 @@ import org.jfree.ui.RefineryUtilities;
  *
  * @author Thomas Morgner
  */
-public class LGPLTextDemo extends ApplicationFrame implements ActionListener
+public class LGPLTextDemo extends AbstractDemoFrame
 {
 
-    /**
-     * Constructs the demo application.
-     *
-     * @param title  the frame title.
-     */
-    public LGPLTextDemo(String title)
+  /**
+   * Constructs the demo application.
+   *
+   * @param title  the frame title.
+   */
+  public LGPLTextDemo(String title)
+  {
+    setTitle(title);
+    setJMenuBar(createMenuBar());
+    setContentPane(createContent());
+  }
+
+  /**
+   * Creates a menu bar.
+   *
+   * @return the menu bar.
+   */
+  private JMenuBar createMenuBar()
+  {
+    JMenuBar mb = new JMenuBar();
+    JMenu fileMenu = createJMenuItem("menu.file");
+
+    JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
+    JMenuItem exitItem = new ActionMenuItem(getCloseAction());
+
+    fileMenu.add(previewItem);
+    fileMenu.addSeparator();
+    fileMenu.add(exitItem);
+    mb.add(fileMenu);
+    return mb;
+  }
+
+  /**
+   * Creates the content for the application frame.
+   *
+   * @return a panel containing the basic user interface.
+   */
+  private JPanel createContent()
+  {
+    JPanel content = new JPanel(new BorderLayout());
+    content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+    JTable table = new JTable();
+    JScrollPane scrollPane = new JScrollPane(table);
+    content.add(scrollPane);
+    return content;
+  }
+
+  /**
+   * Displays a print preview screen for the sample report.
+   */
+  protected void attemptPreview()
+  {
+    URL in = getClass().getResource("/com/jrefinery/report/demo/lgpl.xml");
+    if (in == null)
     {
-        super(title);
-        setJMenuBar(createMenuBar());
-        setContentPane(createContent());
+      JOptionPane.showMessageDialog(this,
+          MessageFormat.format(getResources().getString("report.definitionnotfound"),
+                               new Object[]{in}),
+          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
-    /**
-     * Creates a menu bar.
-     *
-     * @return the menu bar.
-     */
-    private JMenuBar createMenuBar()
+    JFreeReport report;
+    try
     {
-        JMenuBar mb = new JMenuBar();
-        JMenu fileMenu = new JMenu("File");
-
-        JMenuItem previewItem = new JMenuItem("Preview Report");
-        previewItem.setActionCommand("PREVIEW");
-        previewItem.addActionListener(this);
-
-        JMenuItem exitItem = new JMenuItem("Exit");
-        exitItem.setActionCommand("EXIT");
-        exitItem.addActionListener(this);
-
-        fileMenu.add(previewItem);
-        fileMenu.addSeparator();
-        fileMenu.add(exitItem);
-        mb.add(fileMenu);
-        return mb;
+      report = parseReport(in);
+      report.setData(new DefaultTableModel());
+    }
+    catch (Exception ex)
+    {
+      showExceptionDialog("report.definitionfailure", ex);
+      return;
     }
 
-    /**
-     * Creates the content for the application frame.
-     *
-     * @return a panel containing the basic user interface.
-     */
-    private JPanel createContent()
+    try
     {
-        JPanel content = new JPanel(new BorderLayout());
-        content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-        JTable table = new JTable();
-        JScrollPane scrollPane = new JScrollPane(table);
-        content.add(scrollPane);
-        return content;
+      PreviewDialog frame = new PreviewDialog(report);
+      frame.getBase().setToolbarFloatable(true);
+      frame.pack();
+      RefineryUtilities.positionFrameRandomly(frame);
+      frame.setVisible(true);
+      frame.requestFocus();
     }
-
-    /**
-     * Handles action events.
-     *
-     * @param e  the event.
-     */
-    public void actionPerformed(ActionEvent e)
+    catch (ReportProcessingException pre)
     {
-        String command = e.getActionCommand();
-        if (command.equals("PREVIEW"))
-        {
-            previewReport();
-        }
-        else if (command.equals("EXIT"))
-        {
-            dispose();
-            System.exit(0);
-        }
+      showExceptionDialog("report.previewfailure", pre);
     }
+  }
 
-    /**
-     * Displays a print preview screen for the sample report.
-     */
-    protected void previewReport()
+  /**
+   * Reads the report from the specified template file.
+   *
+   * @param templateURL  the template location.
+   *
+   * @return a report.
+   */
+  private JFreeReport parseReport(URL templateURL)
+  {
+
+    JFreeReport result = null;
+    ReportGenerator generator = ReportGenerator.getInstance();
+    try
     {
-      try
-      {
-        URL in  = getClass().getResource("/com/jrefinery/report/demo/lgpl.xml");
-        JFreeReport report = parseReport(in);
-        if (report == null)
-        {
-          Log.error ("Report could not be parsed");
-          return;
-        }
-        report.setData(new DefaultTableModel());
-        PreviewFrame frame = new PreviewFrame(report);
-        frame.getBase().setToolbarFloatable(true);
-        frame.pack ();
-        RefineryUtilities.positionFrameRandomly(frame);
-        frame.setVisible(true);
-        frame.requestFocus();
-      }
-      catch (ReportProcessingException pre)
-      {
-        Log.error ("Failed", pre);
-      }
+      result = generator.parseReport(templateURL);
     }
-
-    /**
-     * Reads the report from the specified template file.
-     *
-     * @param templateURL  the template location.
-     *
-     * @return a report.
-     */
-    private JFreeReport parseReport(URL templateURL)
+    catch (Exception e)
     {
-
-        JFreeReport result = null;
-        ReportGenerator generator = ReportGenerator.getInstance();
-        try
-        {
-            result = generator.parseReport(templateURL);
-        }
-        catch (Exception e)
-        {
-            Log.error("Failed to parses", e);
-
-        }
-        return result;
+      Log.error("Failed to parses", e);
 
     }
+    return result;
 
-    /**
-     * Entry point for running the demo application...
-     *
-     * @param args  ignored.
-     */
-    public static void main(String[] args)
-    {
-        LGPLTextDemo frame = new LGPLTextDemo("LGPL text Demo");
-        frame.pack();
-        RefineryUtilities.centerFrameOnScreen(frame);
-        frame.setVisible(true);
-    }
+  }
+
+  /**
+   * Entry point for running the demo application...
+   *
+   * @param args  ignored.
+   */
+  public static void main(String[] args)
+  {
+    LGPLTextDemo frame = new LGPLTextDemo("LGPL text Demo");
+    frame.pack();
+    RefineryUtilities.centerFrameOnScreen(frame);
+    frame.setVisible(true);
+  }
 
 }

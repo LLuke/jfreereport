@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.7 2003/03/18 17:14:19 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.8 2003/05/02 12:39:41 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import com.jrefinery.report.targets.pageable.PageableReportProcessor;
 import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
+import org.jfree.xml.ParseException;
 
 /**
  * A demonstration that shows how to generate a report and save it to PDF without displaying
@@ -67,7 +68,7 @@ public class StraightToPDF
    *
    * @param filename  the output filename.
    */
-  public StraightToPDF(String filename)
+  public StraightToPDF(String filename) throws ParseException
   {
     URL in  = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
     JFreeReport report = parseReport(in);
@@ -83,19 +84,17 @@ public class StraightToPDF
    *
    * @return a report.
    */
-  private JFreeReport parseReport(URL templateURL)
+  private JFreeReport parseReport(URL templateURL) throws ParseException
   {
-    JFreeReport result = null;
     ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
-      result = generator.parseReport(templateURL);
+      return generator.parseReport(templateURL);
     }
     catch (Exception e)
     {
-      Log.error ("Failed to parse", e);
+      throw new ParseException("Failed to parse the report", e);
     }
-    return result;
   }
 
   /**
@@ -156,8 +155,16 @@ public class StraightToPDF
   {
     ReportConfiguration.getGlobalConfig().setDisableLogging(true);
     ReportConfiguration.getGlobalConfig().setPDFTargetAutoInit(false);
-    StraightToPDF demo = new StraightToPDF(System.getProperty("user.home") + "/test99.pdf");
-    System.exit(0);
+    try
+    {
+      StraightToPDF demo = new StraightToPDF(System.getProperty("user.home") + "/test99.pdf");
+      System.exit(0);
+    }
+    catch (Exception e)
+    {
+      Log.error ("Failed to run demo", e);
+      System.exit (1);
+    }
   }
 
 }

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner; 
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.9 2003/05/11 13:39:19 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.10 2003/05/23 20:12:16 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,9 @@ import java.io.OutputStream;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.targets.style.StyleKey;
 import com.jrefinery.report.targets.table.TableProcessor;
 import com.jrefinery.report.targets.table.TableProducer;
-import com.jrefinery.report.targets.style.StyleKey;
 import com.jrefinery.report.util.NullOutputStream;
 
 /**

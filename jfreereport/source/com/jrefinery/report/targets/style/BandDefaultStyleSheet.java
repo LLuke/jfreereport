@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandDefaultStyleSheet.java,v 1.14 2003/05/02 12:40:36 taqua Exp $
+ * $Id: BandDefaultStyleSheet.java,v 1.15 2003/06/15 19:05:48 taqua Exp $
  *
  * Changes
  * -------
@@ -147,10 +147,10 @@ public class BandDefaultStyleSheet extends BandStyleSheet
    * <p>
    * Default StyleSheets are shared among all reports, as they are unmodifyable.
    *
-   * @param collection
+   * @param styleSheetCollection
    * @throws IllegalArgumentException
    */
-  public void setCollection(StyleSheetCollection collection)
+  public final void setStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
   }
 }

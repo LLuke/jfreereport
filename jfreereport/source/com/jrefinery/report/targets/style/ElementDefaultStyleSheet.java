@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.14 2003/06/10 12:11:56 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.15 2003/06/15 19:05:48 taqua Exp $
  *
  * Changes
  * -------
@@ -163,10 +163,10 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
    * <p>
    * DefaultStylesheets are shared among all reports, as they are unmodifyable.
    *
-   * @param collection
+   * @param styleSheetCollection
    * @throws IllegalArgumentException
    */
-  public void setCollection(StyleSheetCollection collection)
+  public final void setStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
   }
 }

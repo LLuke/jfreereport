@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.57 2003/06/10 12:11:15 taqua Exp $
+ * $Id: Band.java,v 1.58 2003/06/15 19:05:41 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -117,7 +117,7 @@ public class Band extends Element implements Serializable, Cloneable
   private ArrayList allElements;
 
   /** Cached elements. */
-  private Element[] allElementsCached;
+  private transient Element[] allElementsCached;
 
   /** The default style-sheet for the elements contained in the band. */
   private ElementStyleSheet bandDefaults;
@@ -137,7 +137,7 @@ public class Band extends Element implements Serializable, Cloneable
 
     // band style sheets are not accessed by names. Names are important
     // for the xml-parser when stacking the stylesheets together.
-    bandDefaults = new BandStyleSheet("default");
+    bandDefaults = new BandStyleSheet("band-default");
     bandDefaults.setAllowCaching(true);
   }
 
@@ -242,6 +242,7 @@ public class Band extends Element implements Serializable, Cloneable
     allElementsCached = null;
     element.getStyle().addDefaultParent(getBandDefaults());
     element.setParent(this);
+    element.setStyleSheetCollection(getStyleSheetCollection());
     invalidateLayout();
   }
 
@@ -319,6 +320,7 @@ public class Band extends Element implements Serializable, Cloneable
       // this is none of my childs, ignore the request ...
       return;
     }
+    e.setStyleSheetCollection(null);
     e.getStyle().removeDefaultParent(getBandDefaults());
     e.setParent(null);
     allElements.remove(e);
@@ -502,5 +504,17 @@ public class Band extends Element implements Serializable, Cloneable
     Dimension2D d = (Dimension2D) getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE,
                                                               new FloatDimension(0, 0));
     return (float) d.getHeight();
+  }
+
+  protected void unregisterStyleSheetCollection()
+  {
+    getStyleSheetCollection().remove(getBandDefaults());
+    super.unregisterStyleSheetCollection();
+  }
+
+  protected void registerStyleSheetCollection()
+  {
+    getStyleSheetCollection().addStyleSheet(getBandDefaults());
+    super.registerStyleSheetCollection();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.31 2003/05/02 12:40:23 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.32 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes
  * --------
@@ -65,7 +65,6 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PageSetupPlugin.java,v 1.1 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,7 +47,7 @@ import javax.swing.KeyStroke;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.util.PageFormatFactory;
 
-public class PageSetupPlugin implements ExportPlugin
+public class PageSetupPlugin extends AbstractExportPlugin
 {
   /** Localised resources. */
   private ResourceBundle resources;
@@ -55,15 +55,6 @@ public class PageSetupPlugin implements ExportPlugin
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
       "com.jrefinery.report.resources.JFreeReportResources";
-
-  /**
-   * Initializes the plugin to work with the given PreviewProxy.
-   *
-   * @param proxy
-   */
-  public void init(PreviewProxy proxy)
-  {
-  }
 
   /**
    * Default Constructor.
@@ -97,12 +88,12 @@ public class PageSetupPlugin implements ExportPlugin
     PageFormat pf = pj.pageDialog(report.getDefaultPageFormat());
     if (PageFormatFactory.isEqual(pf, report.getDefaultPageFormat()))
     {
-      report.setDefaultPageFormat(pf);
-      return true;
+      return false;
     }
     else
     {
-      return false;
+      getBase().updatePageFormat(pf);
+      return true;
     }
   }
 
@@ -176,24 +167,4 @@ public class PageSetupPlugin implements ExportPlugin
     return true;
   }
 
-  /**
-   * Returns true if the action should be added to the toolbar, and false otherwise.
-   *
-   * @return A boolean.
-   */
-  public boolean isAddToToolbar()
-  {
-    return false;
-  }
-
-  /**
-   * Returns true, if the report should be repaginated after the plugin was sucessfully
-   * executed.
-   *
-   * @return a boolean.
-   */
-  public boolean isRepaginateOnSuccess()
-  {
-    return true;
-  }
 }

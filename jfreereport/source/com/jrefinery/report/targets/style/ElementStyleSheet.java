@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.30 2003/06/12 19:50:10 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.31 2003/06/15 19:05:48 taqua Exp $
  *
  * Changes
  * -------
@@ -46,10 +46,10 @@ import java.awt.Font;
 import java.awt.Stroke;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
-import java.io.Serializable;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,8 +57,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.util.SerializerHelper;
 import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.util.SerializerHelper;
+import com.jrefinery.report.util.InstanceID;
 
 /**
  * An element style-sheet contains zero, one or many attributes that affect the appearance of
@@ -77,6 +78,31 @@ import com.jrefinery.report.targets.FontDefinition;
  */
 public class ElementStyleSheet implements Serializable, StyleChangeListener, Cloneable
 {
+  private static class ElementStyleSheetCollectionHelper
+      extends StyleSheetCollectionHelper
+  {
+    private ElementStyleSheet es;
+
+    public ElementStyleSheetCollectionHelper(ElementStyleSheet es)
+    {
+      if (es == null)
+      {
+        throw new NullPointerException("ElementStyleSheet must not be null.");
+      }
+      this.es = es;
+    }
+
+    protected void registerStyleSheetCollection()
+    {
+      getStyleSheetCollection().addStyleSheet(es);
+    }
+
+    protected void unregisterStyleSheetCollection()
+    {
+      getStyleSheetCollection().remove(es);
+    }
+  }
+
   /** A key for the 'minimum size' of an element. */
   public static final StyleKey MINIMUMSIZE   = StyleKey.getStyleKey("min-size", Dimension2D.class);
 
@@ -154,6 +180,8 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   public static final StyleKey ELEMENT_LAYOUT_CACHEABLE = StyleKey.getStyleKey("layout-cacheable",
                                                                     Boolean.class);
 
+  private InstanceID id;
+
   /** The style-sheet name. */
   private String name;
 
@@ -181,6 +209,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   /** A flag that controls whether or not caching is allowed. */
   private boolean allowCaching;
 
+  private transient List parentsListCached;
+  private transient List defaultParentsListCached;
+  private transient ElementStyleSheetCollectionHelper collectionHelper;
+
   /**
    * Creates a new element style-sheet with the given name.  The style-sheet initially contains
    * no attributes, and has no parent style-sheets.
@@ -193,11 +225,13 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     {
       throw new NullPointerException("ElementStyleSheet constructor: name is null.");
     }
+    this.id = new InstanceID();
     this.name = name;
     this.properties = new HashMap();
     this.parents = new ArrayList(5);
     this.defaultSheets = new ArrayList(5);
     this.styleChangeSupport = new StyleChangeSupport(this);
+    this.collectionHelper = new ElementStyleSheetCollectionHelper(this);
   }
 
   /**
@@ -275,6 +309,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     {
       parents.add (position, parent);
       parentsCached = null;
+      parentsListCached = null;
       parent.addListener(this);
     }
     else
@@ -308,6 +343,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     {
       defaultSheets.add (position, parent);
       defaultCached = null;
+      defaultParentsListCached = null;
     }
     else
     {
@@ -368,6 +404,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     parents.remove (parent);
     parent.removeListener(this);
     parentsCached = null;
+    parentsListCached = null;
   }
 
   /**
@@ -384,6 +421,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     defaultSheets.remove (parent);
     parent.removeListener(this);
     defaultCached = null;
+    defaultParentsListCached = null;
   }
 
   /**
@@ -395,7 +433,11 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    */
   public List getParents ()
   {
-    return Collections.unmodifiableList(parents);
+    if (parentsListCached == null)
+    {
+      parentsListCached = Collections.unmodifiableList(parents);
+    }
+    return parentsListCached;
   }
 
   /**
@@ -407,7 +449,11 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    */
   public List getDefaultParents ()
   {
-    return Collections.unmodifiableList(defaultSheets);
+    if (defaultParentsListCached == null)
+    {
+      defaultParentsListCached = Collections.unmodifiableList(defaultSheets);
+    }
+    return defaultParentsListCached;
   }
 
   /**
@@ -582,6 +628,11 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       }
       sc.styleChangeSupport = new StyleChangeSupport(sc);
       sc.parents = new ArrayList();// parents.clone();
+      ElementStyleSheet[] cl_parentsCached = new ElementStyleSheet[parents.size()];
+      ElementStyleSheet[] cl_defaultCached = new ElementStyleSheet[defaultSheets.size()];
+      sc.parentsListCached = null;
+      sc.defaultParentsListCached = null;
+      sc.collectionHelper = new ElementStyleSheetCollectionHelper(sc);
 
       if (parentsCached == null)
       {
@@ -592,6 +643,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       for (int i = parentsCached.length - 1; i >= 0; i--)
       {
         sc.addParent(parentsCached[i]);
+        cl_parentsCached[i] = parentsCached[i];
       }
 
       sc.defaultSheets = new ArrayList();// defaultSheets.clone();
@@ -605,7 +657,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       for (int i = defaultCached.length - 1; i >= 0; i--)
       {
         sc.addDefaultParent(defaultCached[i]);
+        cl_defaultCached[i] = defaultCached[i];
       }
+      sc.parentsCached = cl_parentsCached;
+      sc.defaultCached = cl_defaultCached;
       return sc;
     }
     catch (CloneNotSupportedException cne)
@@ -850,14 +905,6 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
   }
 
-  /**
-   * Tests, whether this ElementStyleSheet is equal to another stylesheet.
-   * ElementStyleSheets are equal, if both stylesheets have the same name.
-   * The contents or parents are not checked.
-   *
-   * @param o the other object to check.
-   * @return true, if both objects are equal, false otherwise.
-   */
   public boolean equals(Object o)
   {
     if (this == o) return true;
@@ -865,22 +912,17 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
 
     final ElementStyleSheet elementStyleSheet = (ElementStyleSheet) o;
 
+    if (!id.equals(elementStyleSheet.id)) return false;
     if (!name.equals(elementStyleSheet.name)) return false;
 
     return true;
   }
 
-  /**
-   * Returns a hash code value for the object. This method is
-   * supported for the benefit of hashtables such as those provided by
-   * <code>java.util.Hashtable</code>.
-   *
-   * @return the hashCode for this style sheet.
-   */
   public int hashCode()
   {
     int result;
-    result = name.hashCode();
+    result = id.hashCode();
+    result = 29 * result + name.hashCode();
     return result;
   }
 
@@ -893,5 +935,34 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   public Object clone()
   {
     return getCopy();
+  }
+
+  /**
+   * Returns the stylesheet collection of this element stylesheet, or null,
+   * if this stylessheet is not assigned with an collection.
+   *
+   * @return the collection or null.
+   */
+  public StyleSheetCollection getStyleSheetCollection()
+  {
+    return collectionHelper.getStyleSheetCollection();
+  }
+
+  /**
+   * Defines the stylesheet collection for this stylesheet.
+   *
+   * @param styleSheetCollection
+   */
+  public void setStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  {
+    collectionHelper.setStyleSheetCollection(styleSheetCollection);
+  }
+
+  /**
+   * @return the ID of this stylesheet.
+   */
+  public InstanceID getId()
+  {
+    return id;
   }
 }

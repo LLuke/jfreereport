@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PrintingPlugin.java,v 1.1 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,10 +45,8 @@ import javax.swing.KeyStroke;
 
 import com.jrefinery.report.JFreeReport;
 
-public class PrintingPlugin implements ExportPlugin
+public class PrintingPlugin extends AbstractExportPlugin
 {
-  private PreviewProxyBase proxyBase;
-
   /** Localised resources. */
   private ResourceBundle resources;
 
@@ -74,7 +72,7 @@ public class PrintingPlugin implements ExportPlugin
     try
     {
       PrinterJob pj = PrinterJob.getPrinterJob();
-      pj.setPageable(proxyBase.getPageable());
+      pj.setPageable(getBase().getPageable());
       if (pj.printDialog())
       {
         pj.print();
@@ -148,16 +146,6 @@ public class PrintingPlugin implements ExportPlugin
   }
 
   /**
-   * Returns true if the action is separated, and false otherwise.
-   *
-   * @return A boolean.
-   */
-  public boolean isSeparated()
-  {
-    return false;
-  }
-
-  /**
    * Returns true if the action should be added to the toolbar, and false otherwise.
    *
    * @return A boolean.
@@ -165,37 +153,5 @@ public class PrintingPlugin implements ExportPlugin
   public boolean isAddToToolbar()
   {
     return true;
-  }
-
-  /**
-   * Returns true, if the report should be repaginated after the plugin was sucessfully
-   * executed.
-   *
-   * @return a boolean.
-   */
-  public boolean isRepaginateOnSuccess()
-  {
-    return false;
-  }
-
-  /**
-   * Initializes the plugin to work with the given PreviewProxy.
-   *
-   * @param proxy
-   */
-  public void init(PreviewProxy proxy)
-  {
-    proxyBase = proxy.getBase();
-  }
-
-  /**
-   * Returns true, when this export plugin is used to configure the report or an other
-   * plugin.
-   *
-   * @return true if this is a control plugin, false otherwise.
-   */
-  public boolean isControlPlugin()
-  {
-    return false;
   }
 }

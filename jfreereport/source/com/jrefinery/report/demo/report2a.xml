@@ -107,7 +107,7 @@
           <property name="group">Color Group</property>
         </properties>
       </function>
-      <function name="imageRenderer" class="com.jrefinery.report.demo.ImageRenderFunction"/>
+      <function name="imageRenderer" class="com.jrefinery.report.demo.helper.ImageRenderFunction"/>
       <function name="Count2" class="com.jrefinery.report.function.ItemCountFunction">
         <properties>
           <property name="group">Letter Group</property>

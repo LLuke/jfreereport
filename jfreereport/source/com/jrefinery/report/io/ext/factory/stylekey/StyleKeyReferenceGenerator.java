@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyReferenceGenerator.java,v 1.5 2003/06/12 23:17:13 taqua Exp $
+ * $Id: StyleKeyReferenceGenerator.java,v 1.6 2003/06/15 21:26:29 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,7 +39,6 @@
 package com.jrefinery.report.io.ext.factory.stylekey;
 
 import java.net.URL;
-
 import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;

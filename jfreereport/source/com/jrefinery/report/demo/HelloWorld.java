@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.6 2003/02/27 15:02:34 mungady Exp $
+ * $Id: HelloWorld.java,v 1.7 2003/05/02 12:39:34 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
 package com.jrefinery.report.demo;
 
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -48,7 +50,7 @@ import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.TextElement;
-import com.jrefinery.report.preview.PreviewFrame;
+import com.jrefinery.report.preview.PreviewDialog;
 import com.jrefinery.report.util.Log;
 
 /**
@@ -62,93 +64,110 @@ import com.jrefinery.report.util.Log;
  */
 public class HelloWorld
 {
+  /**
+   * Window close handler.
+   */
+  protected class CloseHandler extends WindowAdapter
+  {
     /**
-     * Creates and displays a simple report.
-     */
-    public HelloWorld()
-    {
-        
-        TableModel data = createData();
-        JFreeReport report = createReportDefinition();
-        report.setData(data);
-        try
-        {
-            PreviewFrame preview = new PreviewFrame(report);
-            preview.pack();
-            preview.setVisible(true);
-        }
-        catch (ReportProcessingException e)
-        {
-            Log.error("Failed to generate report ", e);
-        }
-
-    }
-
-    /**
-     * Creates a small dataset to use in a report.  JFreeReport always reads data from a
-     * <code>TableModel</code> instance.
+     * Handles the window closing event.
      *
-     * @return a dataset.
+     * @param event  the window event.
      */
-    private TableModel createData()
+    public void windowClosing(WindowEvent event)
     {
+      System.exit(0);
+    }
+  }
 
-        Object[] columnNames = new String[] { "Column1", "Column2" };
-        DefaultTableModel result = new DefaultTableModel(columnNames, 1);
-        result.setValueAt("Hello", 0, 0);
-        result.setValueAt("World!", 0, 1);
-        return result;
+  /**
+   * Creates and displays a simple report.
+   */
+  public HelloWorld()
+  {
 
+    TableModel data = createData();
+    JFreeReport report = createReportDefinition();
+    report.setData(data);
+    try
+    {
+      PreviewDialog preview = new PreviewDialog(report);
+      preview.addWindowListener(new CloseHandler());
+      preview.pack();
+      preview.setVisible(true);
+    }
+    catch (ReportProcessingException e)
+    {
+      Log.error("Failed to generate report ", e);
     }
 
-    /**
-     * Creates a report definition.
-     *
-     * @return a report definition.
-     */
-    private JFreeReport createReportDefinition()
-    {
+  }
 
-        JFreeReport report = new JFreeReport();
-        report.setName("A Very Simple Report");
+  /**
+   * Creates a small dataset to use in a report.  JFreeReport always reads data from a
+   * <code>TableModel</code> instance.
+   *
+   * @return a dataset.
+   */
+  private TableModel createData()
+  {
 
-        TextElement t1 = ItemFactory.createStringElement(
-            "T1",
-            new Rectangle2D.Double(0.0, 0.0, 150.0, 20.0),
-            Color.black,
-            ElementAlignment.LEFT.getOldAlignment(),
-            ElementAlignment.MIDDLE.getOldAlignment(),
-            null, // font
-            "-",  // null string
-            "Column1"
-        );
+    Object[] columnNames = new String[]{"Column1", "Column2"};
+    DefaultTableModel result = new DefaultTableModel(columnNames, 1);
+    result.setValueAt("Hello", 0, 0);
+    result.setValueAt("World!", 0, 1);
+    return result;
 
-        report.getItemBand().addElement(t1);
+  }
 
-        TextElement t2 = ItemFactory.createStringElement(
-            "T2",
-            new Rectangle2D.Double(200.0, 0.0, 150.0, 20.0),
-            Color.black,
-            ElementAlignment.LEFT.getOldAlignment(),
-            ElementAlignment.MIDDLE.getOldAlignment(),
-            null, // font
-            "-",  // null string
-            "Column2"
-        );
+  /**
+   * Creates a report definition.
+   *
+   * @return a report definition.
+   */
+  private JFreeReport createReportDefinition()
+  {
 
-        report.getItemBand().addElement(t2);
-        return report;
+    JFreeReport report = new JFreeReport();
+    report.setName("A Very Simple Report");
 
-    }
+    TextElement t1 = ItemFactory.createStringElement(
+        "T1",
+        new Rectangle2D.Double(0.0, 0.0, 150.0, 20.0),
+        Color.black,
+        ElementAlignment.LEFT.getOldAlignment(),
+        ElementAlignment.MIDDLE.getOldAlignment(),
+        null, // font
+        "-", // null string
+        "Column1"
+    );
 
-    /**
-     * The starting point for the "Hello World" demo application.
-     *
-     * @param args  ignored.
-     */
-    public static void main(String[] args)
-    {
-        HelloWorld app = new HelloWorld();
-    }
+    report.getItemBand().addElement(t1);
+
+    TextElement t2 = ItemFactory.createStringElement(
+        "T2",
+        new Rectangle2D.Double(200.0, 0.0, 150.0, 20.0),
+        Color.black,
+        ElementAlignment.LEFT.getOldAlignment(),
+        ElementAlignment.MIDDLE.getOldAlignment(),
+        null, // font
+        "-", // null string
+        "Column2"
+    );
+
+    report.getItemBand().addElement(t2);
+    return report;
+
+  }
+
+  /**
+   * The starting point for the "Hello World" demo application.
+   *
+   * @param args  ignored.
+   */
+  public static void main(String[] args)
+  {
+    HelloWorld app = new HelloWorld();
+  }
 
 }

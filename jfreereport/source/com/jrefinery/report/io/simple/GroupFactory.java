@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.14 2003/06/10 12:11:55 taqua Exp $
+ * $Id: GroupFactory.java,v 1.15 2003/06/10 16:07:53 taqua Exp $
  *
  * Changes
  * -------
@@ -47,9 +47,9 @@ import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.CharacterEntityParser;
 import org.jfree.ui.FloatDimension;
+import org.jfree.xml.ParseException;
 import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
-import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

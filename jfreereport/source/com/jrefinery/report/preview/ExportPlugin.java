@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPlugin.java,v 1.3 2003/02/25 14:45:31 mungady Exp $
+ * $Id: ExportPlugin.java,v 1.4 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes
  * --------
@@ -116,14 +116,6 @@ public interface ExportPlugin
   public boolean isAddToToolbar();
 
   /**
-   * Returns true, if the report should be repaginated after the plugin was sucessfully
-   * executed.
-   *
-   * @return a boolean.
-   */
-  public boolean isRepaginateOnSuccess();
-
-  /**
    * Initializes the plugin to work with the given PreviewProxy.
    *
    * @param proxy
@@ -138,4 +130,10 @@ public interface ExportPlugin
    */
   public boolean isControlPlugin ();
 
+  /**
+   * Returns an error description for the last operation.
+   *
+   * @return returns a error description.
+   */
+  public String getFailureDescription ();
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellDataFactory.java,v 1.6 2003/05/02 12:40:43 taqua Exp $
+ * $Id: RTFCellDataFactory.java,v 1.7 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -43,11 +43,14 @@ import java.awt.geom.Rectangle2D;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.support.itext.BaseFontRecord;
+import com.jrefinery.report.targets.support.itext.BaseFontSupport;
 import com.jrefinery.report.targets.table.AbstractTableCellDataFactory;
 import com.jrefinery.report.targets.table.TableCellData;
+import com.jrefinery.report.util.Log;
 
 /**
  * Creates a {@link TableCellData} object from the given {@link Element}
@@ -58,9 +61,12 @@ import com.jrefinery.report.targets.table.TableCellData;
  */
 public class RTFCellDataFactory extends AbstractTableCellDataFactory
 {
+  private BaseFontSupport baseFontSupport;
+
   /** Default Constructor. */
   public RTFCellDataFactory()
   {
+    baseFontSupport = new BaseFontSupport();
   }
 
   /**
@@ -96,17 +102,30 @@ public class RTFCellDataFactory extends AbstractTableCellDataFactory
         (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
     ElementAlignment halign = 
         (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
-
+    /**
+     * Images cause OutOfMemoryError so they get removed ...
+     */
+    /*
     if (value instanceof ImageReference)
     {
-      RTFCellStyle style = new RTFCellStyle(font, color, valign, halign);
+      RTFCellStyle style = new RTFCellStyle(valign, halign);
       return new RTFImageCellData(rect, (ImageReference) value, style);
     }
-
+    */
+    
     if (value instanceof String)
     {
-      RTFCellStyle style = new RTFCellStyle(font, color, valign, halign);
-      return new RTFTextCellData(rect, (String) value, style);
+      try
+      {
+        BaseFontRecord bf = baseFontSupport.createBaseFont(font, "Cp1252", false);
+        RTFTextCellStyle style = new RTFTextCellStyle(font, bf.getBaseFont(), color, valign, halign);
+        return new RTFTextCellData(rect, (String) value, style);
+      }
+      catch (OutputTargetException ex)
+      {
+        Log.debug ("Unable to create font: ", ex);
+        return null;
+      }
     }
 
     if (value instanceof Shape)

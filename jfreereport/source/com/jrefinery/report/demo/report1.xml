@@ -24,13 +24,10 @@
   </configuration>
 
   <reportheader height="90" fontname="Arial Unicode MS" fontstyle="bold" fontsize="18">
-<!--
+
     <label x="0" y="0" width="100%" height="18" fsunderline="true" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
     <label x="0" y="18" width="100%" height="30" vertical-alignment="bottom" alignment="center">Sample Thai chars: &#3648;&#3614;&#3636;&#3656;&#3617;, &#3621;&#3641;&#3585;&#3588;&#3657;&#3634;</label>
--->
-    <line x1="40" y1="70" x2="140" y2="70" weight="1" color="black"/>
   </reportheader>
-<!--
   <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
     <label x="0" y="0" width="100%" height="24" alignment="center">*** &gt; END OF REPORT &lt; ***</label>
   </reportfooter>
@@ -63,9 +60,8 @@
   </groups>
 
   <items height="10" fontname="Serif" fontstyle="plain" fontsize="8" vertical-alignment="middle">
-  -->
     <!-- the rectangle is named as it is referenced later in the function section -->
-<!--    <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
+    <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
     <line x1="0" y1="10" x2="0" y2="10" color="#0FDFDF" weight="0.1"/>
     <line x1="0" y1="0" x2="0" y2="0" color="#FF0FFF" weight="0.1"/>
     <string-field x="0" y="0" width="176" height="10" alignment="left" fieldname="Country"/>
@@ -123,5 +119,4 @@
       </properties>
     </function>
   </functions>
-  -->
 </report>

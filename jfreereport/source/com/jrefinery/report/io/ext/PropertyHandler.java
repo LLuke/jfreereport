@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyHandler.java,v 1.10 2003/05/02 12:40:06 taqua Exp $
+ * $Id: PropertyHandler.java,v 1.11 2003/06/10 16:07:49 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@ import java.util.Properties;
 
 import com.jrefinery.report.util.CharacterEntityParser;
 import org.jfree.xml.ElementDefinitionHandler;
-import org.jfree.xml.Parser;
 import org.jfree.xml.ParseException;
+import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.44 2003/02/25 20:15:42 taqua Exp $
+ * $Id: ReportPane.java,v 1.45 2003/05/02 12:40:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -72,6 +72,7 @@ import com.jrefinery.report.targets.pageable.ReportStateList;
 import com.jrefinery.report.targets.pageable.output.DummyOutputTarget;
 import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.PageFormatFactory;
 
 /**
  * A panel used to display one page of a report. Works in tandem with a ReportPreviewFrame
@@ -185,7 +186,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
     }
     catch (FunctionInitializeException fe)
     {
-      throw new ReportProcessingException("unable to create the PageableReportProcessor", fe);
+      throw new ReportProcessingException("Unable to create the PageableReportProcessor", fe);
     }
 
     borderPainted = false;
@@ -283,7 +284,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
    */
   protected boolean isPaginated ()
   {
-    return pageStateList != null;
+    return (pageStateList != null);
   }
 
   /**
@@ -299,6 +300,11 @@ public class ReportPane extends JComponent implements Printable, Pageable
       throw new NullPointerException ("PageFormat must not be null");
     }
 
+    if (PageFormatFactory.isEqual(pageFormat, this.report.getDefaultPageFormat()))
+    {
+      // do nothing if the pageformat is equal, no pagination needed
+      return;
+    }
     this.report.setDefaultPageFormat(pageFormat);
     setPageStateList (null);
     graphCache = null;
@@ -735,6 +741,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
     if (isPaginated ())
     {
       // Is already done
+      Log.debug ("No Pagination done!");
       return;
     }
     if (isPaginating ())
@@ -779,6 +786,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
         setCurrentPageCount (pageCount);
         setPageNumber (pageNr);
         setPageStateList (list);
+
       }
       finally
       {

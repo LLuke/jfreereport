@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.19 2003/05/02 12:40:26 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.20 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes
  * -------
@@ -48,12 +48,14 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.print.PageFormat;
 import java.awt.print.Pageable;
 import java.awt.print.Printable;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
@@ -687,8 +689,10 @@ public class PreviewProxyBase extends JComponent
   /** A preview proxy. */
   private PreviewProxy proxy;
 
-  /** The export plug-ins. */
   private ArrayList exportPlugIns;
+
+  /** A collection of actions, keyed by the export plugin. */
+  private HashMap pluginActions;
 
   /**
    * Creates a preview proxy.
@@ -713,6 +717,16 @@ public class PreviewProxyBase extends JComponent
 
     ExportPluginFactory factory = new ExportPluginFactory();
     exportPlugIns = factory.createExportPlugIns(proxy, report.getReportConfiguration());
+    pluginActions = new HashMap(exportPlugIns.size());
+    Iterator it = exportPlugIns.iterator();
+    while (it.hasNext())
+    {
+      ExportPlugin ep = (ExportPlugin) it.next();
+      ExportAction ea = new ExportAction(ep);
+      ea.setProxyBase(this);
+      ea.setReport(report);
+      pluginActions.put(ep, ea);
+    }
 
     // handle a JDK bug: windows are not garbage collected if dispose is not called manually.
     // DisposedState is undone when show() or pack() is called, so this does no harm.
@@ -747,12 +761,12 @@ public class PreviewProxyBase extends JComponent
     createDefaultActions(proxy.createDefaultCloseAction());
 
     // set up the menu
-    proxy.setJMenuBar(createMenuBar(resources, report));
+    proxy.setJMenuBar(createMenuBar());
 
     // set up the content with a toolbar and a report pane
     setLayout(new BorderLayout());
     setDoubleBuffered(false);
-    toolbar = createToolBar(report);
+    toolbar = createToolBar();
     add(toolbar, BorderLayout.NORTH);
 
     reportPane = createReportPane(report);
@@ -1254,13 +1268,11 @@ public class PreviewProxyBase extends JComponent
   /**
    * Creates and returns a menu-bar for the frame.
    *
-   * @param resources  a resource bundle containing localised resources for the menu.
-   * @param report  the report.
-   *
    * @return A ready-made JMenuBar.
    */
-  protected JMenuBar createMenuBar(ResourceBundle resources, JFreeReport report)
+  protected JMenuBar createMenuBar()
   {
+    ResourceBundle resources = getResources();
     // create the menus
     JMenuBar menuBar = new JMenuBar();
     // first the file menu
@@ -1274,10 +1286,7 @@ public class PreviewProxyBase extends JComponent
     while (it.hasNext())
     {
       ExportPlugin plugIn = (ExportPlugin) it.next();
-      ExportAction action = new ExportAction(plugIn);
-      action.setReport(report);
-      action.setProxyBase(this);
-
+      ExportAction action = (ExportAction) pluginActions.get (plugIn);
       if (plugIn.isSeparated())
       {
         fileMenu.addSeparator();
@@ -1378,16 +1387,14 @@ public class PreviewProxyBase extends JComponent
    * Creates and returns a toolbar containing controls for print, page forward and backward, zoom
    * in and out, and an about box.
    *
-   * @param report  the report.
-   *
    * @return A completely initialized JToolBar.
    */
-  protected JToolBar createToolBar(JFreeReport report)
+  protected JToolBar createToolBar()
   {
     JToolBar toolbar = new JToolBar();
 
     Iterator it = exportPlugIns.iterator();
-    boolean addedItem = it.hasNext();
+    boolean addedItem= it.hasNext();
     while (it.hasNext())
     {
       ExportPlugin plugIn = (ExportPlugin) it.next();
@@ -1395,9 +1402,7 @@ public class PreviewProxyBase extends JComponent
       {
         continue;
       }
-      ExportAction action = new ExportAction(plugIn);
-      action.setReport(report);
-      action.setProxyBase(this);
+      ExportAction action = (ExportAction) pluginActions.get (plugIn);
       if (plugIn.isSeparated())
       {
         toolbar.addSeparator();
@@ -1486,6 +1491,21 @@ public class PreviewProxyBase extends JComponent
     // no goto, if there is only one page
     getGotoAction().setEnabled(mp > 1);
 
+    Iterator it = exportPlugIns.iterator();
+    while (it.hasNext())
+    {
+      ExportPlugin ep = (ExportPlugin) it.next();
+      ExportAction ea = (ExportAction) pluginActions.get(ep);
+      if (ep.isControlPlugin())
+      {
+        ea.setEnabled(true);
+      }
+      else
+      {
+        ea.setEnabled(mp > 0);
+      }
+    }
+
     getZoomOutAction().setEnabled(zoomSelect.getSelectedIndex() != 0);
     getZoomInAction().setEnabled(zoomSelect.getSelectedIndex() != (ZOOM_FACTORS.length - 1));
   }
@@ -1501,6 +1521,13 @@ public class PreviewProxyBase extends JComponent
     getFirstPageAction().setEnabled(false);
     getZoomOutAction().setEnabled(false);
     getZoomInAction().setEnabled(false);
+
+    Iterator it = pluginActions.values().iterator();
+    while (it.hasNext())
+    {
+      ExportAction ea = (ExportAction) it.next();
+      ea.setEnabled(false);
+    }
   }
 
   /**
@@ -1714,6 +1741,17 @@ public class PreviewProxyBase extends JComponent
   public void setGotoAction(Action gotoAction)
   {
     this.gotoAction.setParent(gotoAction);
+  }
+
+  /**
+   * Updates the pageformat of the ReportPane.
+   *
+   * @param pf
+   */
+  public void updatePageFormat (PageFormat pf)
+  {
+    reportPane.setPageFormat(pf);
+    performPagination();
   }
 
   /**

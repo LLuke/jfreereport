@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.19 2003/05/14 22:26:39 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.20 2003/06/13 16:21:38 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,6 @@ import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.report.util.Log;
 
 /**
  * An outputtarget, that generates plaintext. The text can be enriched with

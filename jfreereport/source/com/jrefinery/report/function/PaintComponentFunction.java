@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.12 2003/06/01 17:39:26 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.13 2003/06/10 16:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -49,9 +49,9 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.Serializable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serializable;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ImageReference;

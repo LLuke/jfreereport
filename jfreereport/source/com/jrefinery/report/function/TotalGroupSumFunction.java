@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumFunction.java,v 1.22 2003/06/01 17:39:27 taqua Exp $
+ * $Id: TotalGroupSumFunction.java,v 1.23 2003/06/13 16:21:25 taqua Exp $
  *
  * Changes
  * -------
@@ -42,9 +42,9 @@
 
 package com.jrefinery.report.function;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.io.Serializable;
 
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.util.Log;

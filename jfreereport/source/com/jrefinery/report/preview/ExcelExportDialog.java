@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  * 
- * $Id: ExcelExportDialog.java,v 1.11 2003/05/02 12:40:22 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.12 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes
  * --------
@@ -58,7 +58,6 @@ import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;

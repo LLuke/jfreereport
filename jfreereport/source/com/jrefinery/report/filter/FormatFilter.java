@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FormatFilter.java,v 1.12 2002/12/12 12:26:55 mungady Exp $
+ * $Id: FormatFilter.java,v 1.13 2003/06/01 17:39:24 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,8 @@
 
 package com.jrefinery.report.filter;
 
-import java.text.Format;
 import java.io.Serializable;
+import java.text.Format;
 
 /**
  * The base class for filters that format data.  Data is received from a DataSource and formatted.

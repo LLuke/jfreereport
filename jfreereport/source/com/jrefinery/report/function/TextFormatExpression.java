@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *
 
- * $Id: TextFormatExpression.java,v 1.8 2003/05/02 12:39:51 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.9 2003/06/01 17:39:27 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,10 @@
  */
 package com.jrefinery.report.function;
 
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.io.Serializable;
 
 import com.jrefinery.report.util.PropertiesIterator;
 

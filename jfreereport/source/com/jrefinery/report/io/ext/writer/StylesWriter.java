@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.10 2003/06/10 17:14:40 taqua Exp $
+ * $Id: StylesWriter.java,v 1.11 2003/06/12 23:17:14 taqua Exp $
  *
  * Changes
  * -------
@@ -47,12 +47,12 @@ import com.jrefinery.report.Element;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ShapeElement;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.io.ext.ExtReportHandler;
 import com.jrefinery.report.io.ext.StylesHandler;
 import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.util.Log;
 
 /**
  * A styles writer.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HashNMap.java,v 1.11 2002/12/11 00:41:42 mungady Exp $
+ * $Id: HashNMap.java,v 1.12 2003/03/18 18:28:46 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -54,6 +54,57 @@ import java.util.Set;
  */
 public class HashNMap implements Serializable, Cloneable
 {
+  private static class EmptyIterator implements Iterator
+  {
+    public EmptyIterator()
+    {
+    }
+
+    /**
+     * Returns <tt>true</tt> if the iteration has more elements. (In other
+     * words, returns <tt>true</tt> if <tt>next</tt> would return an element
+     * rather than throwing an exception.)
+     *
+     * @return <tt>true</tt> if the iterator has more elements.
+     */
+    public boolean hasNext()
+    {
+      return false;
+    }
+
+    /**
+     * Returns the next element in the iteration.
+     *
+     * @return the next element in the iteration.
+     * @exception NoSuchElementException iteration has no more elements.
+     */
+    public Object next()
+    {
+      throw new NoSuchElementException("This iterator is empty.");
+    }
+
+    /**
+     *
+     * Removes from the underlying collection the last element returned by the
+     * iterator (optional operation).  This method can be called only once per
+     * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
+     * the underlying collection is modified while the iteration is in
+     * progress in any way other than by calling this method.
+     *
+     * @exception UnsupportedOperationException if the <tt>remove</tt>
+     *		  operation is not supported by this Iterator.
+
+     * @exception IllegalStateException if the <tt>next</tt> method has not
+     *		  yet been called, or the <tt>remove</tt> method has already
+     *		  been called after the last call to the <tt>next</tt>
+     *		  method.
+     */
+    public void remove()
+    {
+      throw new UnsupportedOperationException("This iterator is empty, no remove supported.");
+    }
+  }
+
   /** The underlying storage. */
   private HashMap table = null;
 
@@ -74,7 +125,7 @@ public class HashNMap implements Serializable, Cloneable
    */
   public void put (Object key, Object val)
   {
-    List v = new ArrayList ();
+    ArrayList v = new ArrayList ();
     v.add (val);
     table.put (key, v);
   }
@@ -88,7 +139,7 @@ public class HashNMap implements Serializable, Cloneable
    */
   public void add (Object key, Object val)
   {
-    List v = (List) table.get (key);
+    ArrayList v = (ArrayList) table.get (key);
     if (v == null)
     {
       put (key, val);
@@ -107,7 +158,7 @@ public class HashNMap implements Serializable, Cloneable
    *
    * @return the value.
    */
-  public Object get (Object key)
+  public Object getFirst (Object key)
   {
     return get (key, 0);
   }
@@ -124,7 +175,7 @@ public class HashNMap implements Serializable, Cloneable
    */
   public Object get (Object key, int n)
   {
-    List v = (List) table.get (key);
+    ArrayList v = (ArrayList) table.get (key);
     if (v == null)
     {
       return null;
@@ -141,10 +192,10 @@ public class HashNMap implements Serializable, Cloneable
    */
   public Iterator getAll (Object key)
   {
-    List v = (List) table.get (key);
+    ArrayList v = (ArrayList) table.get (key);
     if (v == null)
     {
-      return null;
+      return new EmptyIterator();
     }
     return v.iterator ();
   }
@@ -178,7 +229,7 @@ public class HashNMap implements Serializable, Cloneable
    */
   public void remove (Object key, Object value)
   {
-    List v = (List) table.get (key);
+    ArrayList v = (ArrayList) table.get (key);
     if (v == null)
     {
       return;
@@ -234,7 +285,7 @@ public class HashNMap implements Serializable, Cloneable
     boolean found = false;
     while (e.hasNext() && !found)
     {
-      List v = (List) e.next();
+      ArrayList v = (ArrayList) e.next();
       found = v.contains (value);
     }
     return found;
@@ -271,12 +322,32 @@ public class HashNMap implements Serializable, Cloneable
     while (enum.hasNext())
     {
       Object key = enum.next();
-      Iterator it = getAll (key);
-      while (it.hasNext ())
+      ArrayList list = (ArrayList) map.table.get(key);
+      if (list != null)
       {
-        map.add (key, it.next ());
+        map.table.put(key, list.clone());
       }
     }
     return map;
+  }
+
+  public Object[] toArray (Object key)
+  {
+    ArrayList list = (ArrayList) table.get(key);
+    if (list != null)
+    {
+      return list.toArray();
+    }
+    return null;
+  }
+
+  public int getValueCount (String key)
+  {
+    ArrayList list = (ArrayList) table.get(key);
+    if (list != null)
+    {
+      return list.size();
+    }
+    return 0;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.24 2003/05/30 18:47:48 taqua Exp $
+ * $Id: GroupList.java,v 1.25 2003/06/01 17:39:23 taqua Exp $
  *
  * Changes:
  * --------
@@ -46,9 +46,13 @@
 package com.jrefinery.report;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.Collections;
+import java.util.Collection;
 
+import com.jrefinery.report.targets.style.StyleSheetCollection;
+import com.jrefinery.report.targets.style.StyleSheetCollectionHelper;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReadOnlyIterator;
 
@@ -66,18 +70,54 @@ import com.jrefinery.report.util.ReadOnlyIterator;
  */
 public class GroupList implements Cloneable, Serializable
 {
+  private static class GroupListStyleSheetCollectionHelper extends StyleSheetCollectionHelper
+  {
+    private GroupList groupList;
+
+    public GroupListStyleSheetCollectionHelper(GroupList groupList)
+    {
+      this.groupList = groupList;
+    }
+
+    protected void registerStyleSheetCollection()
+    {
+      if (groupList.cache == null)
+      {
+        groupList.cache = groupList.backend.toArray();
+      }
+      for (int i = 0; i < groupList.cache.length; i++)
+      {
+        Group g = (Group) groupList.cache[i];
+        g.setStyleSheetCollection(getStyleSheetCollection());
+      }
+    }
+
+    protected void unregisterStyleSheetCollection()
+    {
+      if (groupList.cache == null)
+      {
+        groupList.cache = groupList.backend.toArray();
+      }
+      for (int i = 0; i < groupList.cache.length; i++)
+      {
+        Group g = (Group) groupList.cache[i];
+        g.setStyleSheetCollection(null);
+      }
+    }
+  }
+
   /** Cache (this is a set, we need list functionality, but creating Iterators is expensive). */
   private Object[] cache;
-  
-  /** Storage for the groups. */
-  private TreeSet backend;
+  private ArrayList backend;
+  private GroupListStyleSheetCollectionHelper styleSheetCollectionHelper;
 
   /**
    * Constructs a new empty group list.
    */
   public GroupList()
   {
-    backend = new TreeSet ();
+    this.backend = new ArrayList();
+    styleSheetCollectionHelper = new GroupListStyleSheetCollectionHelper(this);
   }
 
   /**
@@ -87,8 +127,9 @@ public class GroupList implements Cloneable, Serializable
    */
   public GroupList(GroupList list)
   {
-    backend = new TreeSet();
+    this();
     backend.addAll(list.backend);
+    setStyleSheetCollection(list.getStyleSheetCollection());
   }
 
   /**
@@ -114,10 +155,32 @@ public class GroupList implements Cloneable, Serializable
    *
    * @return a boolean indicating whether or not the object was removed.
    */
-  public boolean remove(Object o)
+  public boolean remove(Group o)
   {
     cache = null;
-    return backend.remove(o);
+    int idxOf = findGroup(o);
+    if (idxOf == -1)
+    {
+      // the object was not in the list ...
+      return false;
+    }
+    Group go = (Group) backend.get(idxOf);
+    go.setStyleSheetCollection(null);
+    backend.remove(idxOf);
+    return true;
+  }
+
+  private int findGroup (Group group)
+  {
+    for (int i = 0; i < backend.size(); i++)
+    {
+      Group gList = (Group) backend.get(i);
+      if (gList.compareTo(group) == 0)
+      {
+        return i;
+      }
+    }
+    return -1;
   }
 
   /**
@@ -141,10 +204,21 @@ public class GroupList implements Cloneable, Serializable
       throw new NullPointerException("Try to add null");
     }
     cache = null;
-    if (backend.add(o) == false)
+    if (findGroup(o) != -1)
     {
-      backend.remove(o);
-      backend.add(o);
+      remove(o);
+    }
+    o.setStyleSheetCollection(getStyleSheetCollection());
+    backend.add(o);
+    Collections.sort(backend);
+  }
+
+  public void addAll (Collection c)
+  {
+    Iterator it = c.iterator();
+    while (it.hasNext())
+    {
+      add((Group) it.next());
     }
   }
 
@@ -158,7 +232,8 @@ public class GroupList implements Cloneable, Serializable
     try
     {
       GroupList l = (GroupList) super.clone();
-      l.backend = new TreeSet();
+      l.styleSheetCollectionHelper = new GroupListStyleSheetCollectionHelper(l);
+      l.backend = new ArrayList();
       l.clear();
       for (int i = 0; i < backend.size(); i++)
       {
@@ -205,5 +280,15 @@ public class GroupList implements Cloneable, Serializable
     b.append(backend);
     b.append("'} ");
     return b.toString();
+  }
+
+  public StyleSheetCollection getStyleSheetCollection()
+  {
+    return styleSheetCollectionHelper.getStyleSheetCollection();
+  }
+
+  public void setStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  {
+    styleSheetCollectionHelper.setStyleSheetCollection(styleSheetCollection);
   }
 }

@@ -228,4 +228,28 @@ Stylesheets can be accessed by their name by using the StyleSheet collection.Thi
   The currently valid instance of the stylesheet collection can be queried by using
   the ReportEvent object.
 
-  
+----------------------------------------------------------------------------------
+Changes from 0.8.3b to 0.8.3c
+
+Lines and other non-area shapes are no longer clipped. Depending on your report and
+  the used shapes, your report ma look weird until the shapes are clipped manually.
+  The AWT does not support easy clipping of shapes (except when drawing them), and
+  the Area class is not able to handle non-areal shapes. That means: Unless the
+  clippping is implemented manually, there will be no full support for it.
+
+Report components, which have an StyleSheetCollection assigned cannot be added to
+  other report components, which were assigned to a different StyleSheetCollection.
+  Every attempt to do this will result in an Exception.
+
+  All StyleSheets used within an Report can be queried from the StyleSheet collection,
+  once a element is added to the JFreeReport object, it gets the StyleSheetCollection
+  of the report assigned.
+
+  Cloning Elements or StyleSheets removed the stylesheet collection from the clone,
+  as the clone is not connected to the original report anymore.
+
+  All elements of a report share the same stylesheet collection. The collection can
+  contain more than one element with the same name, but it is wise to give all
+  stylesheets an unique name.
+
+             

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleChangeSupport.java,v 1.3 2003/04/05 18:57:19 taqua Exp $
+ * $Id: StyleChangeSupport.java,v 1.4 2003/04/09 16:10:31 mungady Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import java.util.ArrayList;
  * 
  * @author Thomas Morgner.
  */
-public class StyleChangeSupport
+public class StyleChangeSupport 
 {
   /** Storage for the listeners. */
   private ArrayList listeners;

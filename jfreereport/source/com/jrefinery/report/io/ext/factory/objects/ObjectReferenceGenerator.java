@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceGenerator.java,v 1.7 2003/06/12 23:17:13 taqua Exp $
+ * $Id: ObjectReferenceGenerator.java,v 1.8 2003/06/15 21:26:29 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,7 +39,6 @@
 package com.jrefinery.report.io.ext.factory.objects;
 
 import java.net.URL;
-
 import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;

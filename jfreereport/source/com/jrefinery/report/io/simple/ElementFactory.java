@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.23 2003/05/09 17:12:13 taqua Exp $
+ * $Id: ElementFactory.java,v 1.24 2003/06/10 16:07:53 taqua Exp $
  *
  * Changes
  * -------
@@ -59,11 +59,11 @@ import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.filter.DrawableFilter;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.CharacterEntityParser;
-import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
+import org.jfree.xml.ParseException;
 import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
-import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

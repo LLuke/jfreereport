@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.11 2003/06/04 21:09:07 taqua Exp $
+ * $Id: StylesHandler.java,v 1.12 2003/06/10 16:07:50 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@ import java.util.HashMap;
 
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.jfree.xml.ElementDefinitionHandler;
-import org.jfree.xml.Parser;
 import org.jfree.xml.ParseException;
+import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

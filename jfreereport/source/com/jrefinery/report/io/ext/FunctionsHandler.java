@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.12 2003/06/10 16:07:49 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.13 2003/06/10 17:13:55 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,9 @@ import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.io.InitialReportHandler;
 import org.jfree.xml.ElementDefinitionHandler;
+import org.jfree.xml.ParseException;
 import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
-import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.xml.sax.Attributes;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.14 2003/04/24 18:08:45 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.15 2003/05/02 12:39:35 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,8 @@ package com.jrefinery.report.demo;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URL;
+import java.text.MessageFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JMenu;
@@ -58,11 +57,13 @@ import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.demo.helper.AbstractDemoFrame;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
+import com.jrefinery.report.util.ActionButton;
+import com.jrefinery.report.util.ActionMenuItem;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.WaitingImageObserver;
-import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -71,14 +72,11 @@ import org.jfree.ui.RefineryUtilities;
  *
  * @author David Gilbert
  */
-public class OpenSourceDemo extends ApplicationFrame implements ActionListener
+public class OpenSourceDemo extends AbstractDemoFrame
 {
 
   /** The data for the report. */
   private TableModel data;
-
-  /** The report (read from OpenSourceDemo.xml template). */
-  private JFreeReport report;
 
   /**
    * Constructs the demo application.
@@ -87,7 +85,7 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
    */
   public OpenSourceDemo(String title)
   {
-    super(title);
+    setTitle(title);
     this.data = new OpenSourceProjects();
     setJMenuBar(createMenuBar());
     setContentPane(createContent()); 
@@ -101,15 +99,10 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
   public JMenuBar createMenuBar()
   {
     JMenuBar mb = new JMenuBar();
-    JMenu fileMenu = new JMenu("File");
+    JMenu fileMenu = createJMenuItem("menu.file");
 
-    JMenuItem previewItem = new JMenuItem("Preview Report");
-    previewItem.setActionCommand("PREVIEW");
-    previewItem.addActionListener(this);
-
-    JMenuItem exitItem = new JMenuItem("Exit");
-    exitItem.setActionCommand("EXIT");
-    exitItem.addActionListener(this);
+    JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
+    JMenuItem exitItem = new ActionMenuItem(getCloseAction());
 
     fileMenu.add(previewItem);
     fileMenu.addSeparator();
@@ -138,10 +131,8 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
     JTable table = new JTable(this.data);
     JScrollPane scrollPane = new JScrollPane(table);
     
-    JButton previewButton = new JButton("Preview Report");
-    previewButton.setActionCommand("PREVIEW");
-    previewButton.addActionListener(this);
-    
+    JButton previewButton = new ActionButton(getPreviewAction());
+
     content.add(scroll, BorderLayout.NORTH);
     content.add(scrollPane);
     content.add(previewButton, BorderLayout.SOUTH);
@@ -150,45 +141,26 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
   }
 
   /**
-   * Handles action events.
-   *
-   * @param e  the event.
-   */
-  public void actionPerformed(ActionEvent e)
-  {
-    String command = e.getActionCommand();
-    if (command.equals("PREVIEW"))
-    {
-      previewReport();
-    }
-    else if (command.equals("EXIT"))
-    {
-      dispose();
-      System.exit(0);
-    }
-  }
-
-  /**
    * Displays a print preview screen for the sample report.
    */
-  protected void previewReport()
+  protected void attemptPreview()
   {
+    URL in = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
 
+    if (in == null)
+    {
+      JOptionPane.showMessageDialog(this,
+          MessageFormat.format(getResources().getString("report.definitionnotfound"),
+                               new Object[]{in}),
+          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+    }
+
+    JFreeReport report;
     try
     {
-      if (this.report == null)
-      {
-        URL in = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
-        this.report = parseReport(in);
-      }
-      if (this.report == null)
-      {
-        JOptionPane.showMessageDialog(this, "The report definition is null");
-        return;
-      }
-      
-      this.report.setData(this.data);
-      
+      report = parseReport(in);
+      report.setData(this.data);
+
       //ReportConfiguration config = report.getReportConfiguration();
       //config.setEnableExportExcel(false);
       //config.setEnableExportCSV(false);
@@ -199,22 +171,29 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
       Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
       WaitingImageObserver obs = new WaitingImageObserver(image);
       obs.waitImageLoaded();
-      this.report.setProperty("logo", image);
-      this.report.setPropertyMarked("logo", true);
-      
-      PreviewFrame frame = new PreviewFrame(this.report);
+      report.setProperty("logo", image);
+      report.setPropertyMarked("logo", true);
+
+    }
+    catch (Exception ex)
+    {
+      showExceptionDialog("report.definitionfailure", ex);
+      return;
+    }
+
+    try
+    {
+      PreviewFrame frame = new PreviewFrame(report);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
       RefineryUtilities.positionFrameRandomly(frame);
       frame.setVisible(true);
       frame.requestFocus();
     }
-    catch (ReportProcessingException pre)
+    catch (ReportProcessingException rpe)
     {
-      Log.error("Failed", pre);
+      showExceptionDialog("report.previewfailure", rpe);
     }
-    // force reparsing on next preview ... for debugging ...
-    report = null;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Ellipse2DSerializer.java,v 1.1 2003/05/30 18:47:49 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,7 +39,6 @@
 package com.jrefinery.report.util.serializers;
 
 import java.awt.Shape;
-import java.awt.geom.Line2D;
 import java.awt.geom.Ellipse2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.14 2003/05/02 12:40:31 taqua Exp $
+ * $Id: TextContent.java,v 1.15 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.util.List;
 
 import com.jrefinery.report.targets.base.layout.SizeCalculator;
 import com.jrefinery.report.util.LineBreakIterator;
-import com.jrefinery.report.util.Log;
 
 /**
  * A container for text content. The content will be split into paragraphs.

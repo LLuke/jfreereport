@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticDataSource.java,v 1.9 2003/06/01 17:39:25 taqua Exp $
+ * $Id: StaticDataSource.java,v 1.10 2003/06/10 16:07:47 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,9 @@
 
 package com.jrefinery.report.filter;
 
-import java.io.Serializable;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import com.jrefinery.report.util.SerializerHelper;
 

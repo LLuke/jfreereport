@@ -41,8 +41,6 @@ package com.jrefinery.report.demo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
@@ -60,13 +58,13 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.PageFooter;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.TextElement;
+import com.jrefinery.report.demo.helper.AbstractDemoFrame;
 import com.jrefinery.report.function.PageFunction;
-import com.jrefinery.report.preview.PreviewFrame;
+import com.jrefinery.report.preview.PreviewDialog;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ActionMenuItem;
 import com.jrefinery.report.util.ReportConfiguration;
-import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -75,14 +73,10 @@ import org.jfree.ui.RefineryUtilities;
  *
  * @author David Gilbert
  */
-public class OpenSourceDemo2 extends ApplicationFrame implements ActionListener
+public class OpenSourceDemo2 extends AbstractDemoFrame
 {
-
   /** The data for the report. */
   private TableModel data;
-
-  /** The report (created in code). */
-  private JFreeReport report;
 
   /**
    * Constructs the demo application.
@@ -91,7 +85,7 @@ public class OpenSourceDemo2 extends ApplicationFrame implements ActionListener
    */
   public OpenSourceDemo2(String title)
   {
-    super(title);
+    setTitle(title);
     setJMenuBar(createMenuBar());
     setContentPane(createContent());
   }
@@ -104,15 +98,10 @@ public class OpenSourceDemo2 extends ApplicationFrame implements ActionListener
   public JMenuBar createMenuBar()
   {
     JMenuBar mb = new JMenuBar();
-    JMenu fileMenu = new JMenu("File");
+    JMenu fileMenu = createJMenuItem("menu.file");
 
-    JMenuItem previewItem = new JMenuItem("Preview Report");
-    previewItem.setActionCommand("PREVIEW");
-    previewItem.addActionListener(this);
-
-    JMenuItem exitItem = new JMenuItem("Exit");
-    exitItem.setActionCommand("EXIT");
-    exitItem.addActionListener(this);
+    JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
+    JMenuItem exitItem = new ActionMenuItem(getCloseAction());
 
     fileMenu.add(previewItem);
     fileMenu.addSeparator();
@@ -138,51 +127,27 @@ public class OpenSourceDemo2 extends ApplicationFrame implements ActionListener
   }
 
   /**
-   * Handles action events.
-   *
-   * @param e  the event.
-   */
-  public void actionPerformed(ActionEvent e)
-  {
-    String command = e.getActionCommand();
-    if (command.equals("PREVIEW"))
-    {
-      previewReport();
-    }
-    else if (command.equals("EXIT"))
-    {
-      dispose();
-      System.exit(0);
-    }
-  }
-
-  /**
    * Displays a print preview screen for the sample report.
    */
-  protected void previewReport()
+  protected void attemptPreview()
   {
 
     try
     {
-      if (this.report == null)
-      {
-        this.report = createReport();
-      }
+      JFreeReport report = createReport();
 
       report.setData(this.data);
-      PreviewFrame frame = new PreviewFrame(this.report);
+      PreviewDialog frame = new PreviewDialog(report);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
       RefineryUtilities.positionFrameRandomly(frame);
       frame.setVisible(true);
       frame.requestFocus();
     }
-    catch (ReportProcessingException pre)
+    catch (ReportProcessingException rpe)
     {
-      Log.error("Failed", pre);
+      showExceptionDialog("report.previewfailure", rpe);
     }
-    // force regeneration on next preview ... for debugging ...
-    report = null;
   }
 
   /**

@@ -23,7 +23,7 @@
     <expression name="drawable" class="com.jrefinery.report.function.BSHExpression">
       <properties>
         <property name="expression">
-          import com.jrefinery.report.demo.DemoDrawable;
+          import com.jrefinery.report.demo.helper.DemoDrawable;
 
           Object getValue()
           {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.8 2003/06/01 17:39:25 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.9 2003/06/10 16:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -37,16 +37,16 @@
 package com.jrefinery.report.function;
 
 import java.awt.Color;
-import java.io.Serializable;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.util.SerializerHelper;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.util.SerializerHelper;
 import org.jfree.xml.factory.objects.ColorObjectDescription;
 
 /**

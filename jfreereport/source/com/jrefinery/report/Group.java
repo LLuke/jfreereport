@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.22 2003/06/01 17:39:23 taqua Exp $
+ * $Id: Group.java,v 1.23 2003/06/10 12:11:16 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -57,6 +57,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
+import com.jrefinery.report.targets.style.StyleSheetCollection;
+import com.jrefinery.report.targets.style.StyleSheetCollectionHelper;
+
 /**
  * A report group.  Reports can contain any number of (nested) groups.
  * The order of the fields is important. If the group does not contain
@@ -73,6 +76,28 @@ import java.util.TreeSet;
  */
 public class Group implements Serializable, Cloneable, Comparable
 {
+  private static class GroupStyleSheetCollectionHelper extends StyleSheetCollectionHelper
+  {
+    private Group group;
+
+    public GroupStyleSheetCollectionHelper(Group group)
+    {
+      this.group = group;
+    }
+
+    protected void registerStyleSheetCollection()
+    {
+      group.footer.setStyleSheetCollection(getStyleSheetCollection());
+      group.header.setStyleSheetCollection(getStyleSheetCollection());
+    }
+
+    protected void unregisterStyleSheetCollection()
+    {
+      group.footer.setStyleSheetCollection(null);
+      group.header.setStyleSheetCollection(null);
+    }
+  }
+
   /** The name of the group. */
   private String name;
 
@@ -88,6 +113,8 @@ public class Group implements Serializable, Cloneable, Comparable
   /** The group footer (optional). */
   private GroupFooter footer;
 
+  private GroupStyleSheetCollectionHelper styleSheetCollectionHelper;
+
   /**
    * Constructs a group with no fields, and an empty header and footer.
    */
@@ -95,8 +122,9 @@ public class Group implements Serializable, Cloneable, Comparable
   {
     name = "anonymousGroup@" + super.hashCode();
     fields = new TreeSet();
-    setFooter(new GroupFooter());
-    setHeader(new GroupHeader());
+    this.styleSheetCollectionHelper = new GroupStyleSheetCollectionHelper(this);
+    this.footer = new GroupFooter();
+    this.header = new GroupHeader();
   }
 
   /**
@@ -151,7 +179,9 @@ public class Group implements Serializable, Cloneable, Comparable
     {
       throw new NullPointerException("Header must not be null");
     }
+    this.header.setStyleSheetCollection(null);
     this.header = header;
+    this.header.setStyleSheetCollection(getStyleSheetCollection());
   }
 
   /**
@@ -175,7 +205,9 @@ public class Group implements Serializable, Cloneable, Comparable
     {
       throw new NullPointerException("The footer must not be null");
     }
+    this.footer.setStyleSheetCollection(null);
     this.footer = footer;
+    this.footer.setStyleSheetCollection(getStyleSheetCollection());
   }
 
   /**
@@ -274,6 +306,7 @@ public class Group implements Serializable, Cloneable, Comparable
     g.fieldsCached = fieldsCached;
     g.footer = (GroupFooter) footer.clone();
     g.header = (GroupHeader) header.clone();
+    g.styleSheetCollectionHelper = new GroupStyleSheetCollectionHelper(g);
     return g;
   }
 
@@ -426,4 +459,15 @@ public class Group implements Serializable, Cloneable, Comparable
     b.append("} ");
     return b.toString();
   }
+
+  public StyleSheetCollection getStyleSheetCollection()
+  {
+    return styleSheetCollectionHelper.getStyleSheetCollection();
+  }
+
+  public void setStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  {
+    styleSheetCollectionHelper.setStyleSheetCollection(styleSheetCollection);
+  }
+
 }

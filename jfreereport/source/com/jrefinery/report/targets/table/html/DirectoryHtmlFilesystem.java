@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.15 2003/05/02 12:40:40 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.16 2003/05/09 17:12:13 taqua Exp $
  *
  * Changes
  * -------
@@ -244,7 +244,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
       obs.waitImageLoaded();
 
       PngEncoder encoder = new PngEncoder (reference.getImage(),
-          PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 9);
+          PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
       byte[] data = encoder.pngEncode();
 
       Object object = comparator.createCompareData(data);
@@ -273,7 +273,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
         obs.waitImageLoaded();
 
         PngEncoder encoder = new PngEncoder (reference.getImage(),
-            PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 9);
+            PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
         byte[] data = encoder.pngEncode();
 
         // encode the picture ...

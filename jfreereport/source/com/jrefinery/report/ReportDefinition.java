@@ -28,27 +28,24 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinition.java,v 1.5 2003/06/15 21:26:29 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.6 2003/06/18 17:57:14 taqua Exp $
  *
  * Changes
  * -------
  * 05.04.2003 : Initial version
- * 
+ *
  */
 
 package com.jrefinery.report;
 
-import java.util.List;
-
-import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.targets.style.StyleSheetCollection;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.ReportProperties;
+import com.jrefinery.report.targets.style.StyleSheetCollection;
 
 /**
  * A report definition. This the working copy of the JFreeReport object. This object
  * is not serializable, as it is used internally.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class ReportDefinition implements Cloneable
@@ -77,14 +74,13 @@ public class ReportDefinition implements Cloneable
   /** The report configuration. */
   private ReportConfiguration reportConfiguration;
 
-  /** The StyleSheet collection can be used to access stylesheets by their name. */
   private StyleSheetCollection styleSheetCollection;
-  
+
   /**
    * Creates a report definition from a report object.
-   * 
+   *
    * @param report  the report.
-   * 
+   *
    * @throws CloneNotSupportedException if there is a problem cloning.
    */
   public ReportDefinition(JFreeReport report) throws CloneNotSupportedException
@@ -98,12 +94,17 @@ public class ReportDefinition implements Cloneable
     itemBand = (ItemBand) report.getItemBand().clone();
     reportConfiguration = report.getReportConfiguration();
     styleSheetCollection = new StyleSheetCollection();
-    collectStyles();
+    groups.setStyleSheetCollection(styleSheetCollection);
+    reportFooter.setStyleSheetCollection(styleSheetCollection);
+    reportHeader.setStyleSheetCollection(styleSheetCollection);
+    pageFooter.setStyleSheetCollection(styleSheetCollection);
+    pageHeader.setStyleSheetCollection(styleSheetCollection);
+    itemBand.setStyleSheetCollection(styleSheetCollection);
   }
 
   /**
    * Returns the list of groups for the report.
-   * 
+   *
    * @return The list of groups.
    */
   public GroupList getGroups()
@@ -113,7 +114,7 @@ public class ReportDefinition implements Cloneable
 
   /**
    * Returns the report header.
-   * 
+   *
    * @return The report header.
    */
   public ReportHeader getReportHeader()
@@ -123,7 +124,7 @@ public class ReportDefinition implements Cloneable
 
   /**
    * Returns the report footer.
-   * 
+   *
    * @return The report footer.
    */
   public ReportFooter getReportFooter()
@@ -133,7 +134,7 @@ public class ReportDefinition implements Cloneable
 
   /**
    * Returns the page header.
-   * 
+   *
    * @return The page header.
    */
   public PageHeader getPageHeader()
@@ -143,7 +144,7 @@ public class ReportDefinition implements Cloneable
 
   /**
    * Returns the page footer.
-   * 
+   *
    * @return The page footer.
    */
   public PageFooter getPageFooter()
@@ -153,7 +154,7 @@ public class ReportDefinition implements Cloneable
 
   /**
    * Returns the item band.
-   * 
+   *
    * @return The item band.
    */
   public ItemBand getItemBand()
@@ -163,7 +164,7 @@ public class ReportDefinition implements Cloneable
 
   /**
    * Returns the report properties.
-   * 
+   *
    * @return The report properties.
    */
   public ReportProperties getProperties()
@@ -173,7 +174,7 @@ public class ReportDefinition implements Cloneable
 
   /**
    * Returns the report configuration.
-   * 
+   *
    * @return The report configuration.
    */
   public ReportConfiguration getReportConfiguration()
@@ -241,150 +242,12 @@ public class ReportDefinition implements Cloneable
     report.reportFooter = (ReportFooter) reportFooter.clone ();
     report.reportHeader = (ReportHeader) reportHeader.clone ();
     report.styleSheetCollection = new StyleSheetCollection();
-    report.updateStyles();
+    report.groups.setStyleSheetCollection(report.styleSheetCollection);
+    report.itemBand.setStyleSheetCollection(report.styleSheetCollection);
+    report.reportFooter.setStyleSheetCollection(report.styleSheetCollection);
+    report.reportHeader.setStyleSheetCollection(report.styleSheetCollection);
+    report.pageFooter.setStyleSheetCollection(report.styleSheetCollection);
+    report.pageHeader.setStyleSheetCollection(report.styleSheetCollection);
     return report;
-  }
-
-  /**
-   * Returns the style sheet collection assigned with this report definition.
-   * The style sheet collection can be used to access inherited stylesheets by
-   * their name.
-   *
-   * @return the StyleSheetCollection of this report definition.
-   */
-  public StyleSheetCollection getStyleSheetCollection()
-  {
-    return styleSheetCollection;
-  }
-
-  /**
-   * Updates all styles from all the bands in the report after cloning.
-   */
-  protected void updateStyles ()
-  {
-    updateStylesFromBand(getReportHeader());
-    updateStylesFromBand(getReportFooter());
-    updateStylesFromBand(getPageHeader());
-    updateStylesFromBand(getPageFooter());
-    updateStylesFromBand(getItemBand());
-    for (int i = 0; i < getGroupCount(); i++)
-    {
-      Group g = getGroup(i);
-      updateStylesFromBand(g.getHeader());
-      updateStylesFromBand(g.getFooter());
-    }
-
-  }
-
-  /**
-   * Collects the styles from a band.
-   *
-   * @param band  the band.
-   */
-  private void updateStylesFromBand (Band band)
-  {
-    styleSheetCollection.updateStyleSheet(band.getStyle());
-    styleSheetCollection.updateStyleSheet(band.getBandDefaults());
-
-    Element[] elements = band.getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      if (elements[i] instanceof Band)
-      {
-        updateStylesFromBand((Band) elements[i]);
-      }
-      else
-      {
-        styleSheetCollection.updateStyleSheet(elements[i].getStyle());
-      }
-    }
-
-  }
-
-  /**
-   * Collects styles from all the bands in the report.
-   */
-  protected void collectStyles ()
-  {
-    collectStylesFromBand(getReportHeader());
-    collectStylesFromBand(getReportFooter());
-    collectStylesFromBand(getPageHeader());
-    collectStylesFromBand(getPageFooter());
-    collectStylesFromBand(getItemBand());
-    for (int i = 0; i < getGroupCount(); i++)
-    {
-      Group g = getGroup(i);
-      collectStylesFromBand(g.getHeader());
-      collectStylesFromBand(g.getFooter());
-    }
-
-  }
-
-  /**
-   * Collects the styles from a band.
-   *
-   * @param band  the band.
-   */
-  private void collectStylesFromBand (Band band)
-  {
-    ElementStyleSheet bandDefaults = band.getBandDefaults();
-
-    List parents = bandDefaults.getParents();
-    for (int i = 0; i < parents.size(); i++)
-    {
-      ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
-      addCollectableStyleSheet(es);
-    }
-
-    collectStylesFromElement(band);
-
-    Element[] elements = band.getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      if (elements[i] instanceof Band)
-      {
-        collectStylesFromBand((Band) elements[i]);
-      }
-      else
-      {
-        collectStylesFromElement(elements[i]);
-      }
-    }
-
-  }
-
-  /**
-   * Collects the styles from an element.
-   *
-   * @param element  the element.
-   */
-  private void collectStylesFromElement (Element element)
-  {
-    ElementStyleSheet elementSheet = element.getStyle();
-
-    List parents = elementSheet.getParents();
-    for (int i = 0; i < parents.size(); i++)
-    {
-      ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
-      addCollectableStyleSheet(es);
-    }
-  }
-
-  /**
-   * Adds a defined stylesheet to the styles collection. If the stylesheet
-   * is one of the default stylesheets, then it is not collected.
-   *
-   * @param es  the element style sheet.
-   */
-  private void addCollectableStyleSheet (ElementStyleSheet es)
-  {
-    List parents = es.getParents();
-    for (int i = 0; i < parents.size(); i++)
-    {
-      ElementStyleSheet parentsheet = (ElementStyleSheet) parents.get(i);
-      addCollectableStyleSheet(parentsheet);
-    }
-
-    styleSheetCollection.updateStyleSheet(es);
   }
 }

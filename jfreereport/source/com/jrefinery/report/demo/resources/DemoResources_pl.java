@@ -28,7 +28,7 @@
  * Original Author:  Piotr Bzdyl;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_pl.java,v 1.5 2003/06/04 21:09:05 taqua Exp $
+ * $Id: DemoResources_pl.java,v 1.6 2003/06/16 16:06:56 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@
 package com.jrefinery.report.demo.resources;
 
 import java.awt.event.KeyEvent;
-import javax.swing.KeyStroke;
 
 import com.jrefinery.report.resources.JFreeReportResources;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PageFormatSerializer.java,v 1.1 2003/06/01 20:35:26 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,13 +38,13 @@
 
 package com.jrefinery.report.util.serializers;
 
-import java.io.ObjectOutputStream;
+import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.awt.print.PageFormat;
+import java.io.ObjectOutputStream;
 
-import com.jrefinery.report.util.SerializeMethod;
 import com.jrefinery.report.util.PageFormatFactory;
+import com.jrefinery.report.util.SerializeMethod;
 
 public class PageFormatSerializer implements SerializeMethod
 {
