@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EpsonPrinterCommandSet.java,v 1.6 2003/02/25 18:47:05 taqua Exp $
+ * $Id: EpsonPrinterCommandSet.java,v 1.7 2003/02/27 10:35:40 mungady Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import com.jrefinery.report.util.StringUtil;
  *
  * @see PrinterCommandSet
  * @see PlainTextOutputTarget
- * 
+ *
  * @author Thomas Morgner
  */
 public class EpsonPrinterCommandSet extends PrinterCommandSet
@@ -76,7 +76,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * the available fonts are defined in PrinterCommandSet. You may use additional fonts,
    * if your printer supports them.
    * <p>
-   * To use these fonts, specify the font parameter for the escape sequence 0x1b, 0x6b, 
+   * To use these fonts, specify the font parameter for the escape sequence 0x1b, 0x6b,
    * [font-selection] as defined in your printers reference manual.
    *
    * @param fontSelection the printers font selection token.
@@ -88,9 +88,9 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
     {
       return;
     }
-    getOut().write (0x1b);
-    getOut().write (0x6b);
-    getOut().write (fontSelection);
+    getOut().write(0x1b);
+    getOut().write(0x6b);
+    getOut().write(fontSelection);
     super.setFont(fontSelection);
   }
 
@@ -100,8 +100,8 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    *
    * @throws IOException if there was an IOError while writing the command.
    */
-  private void disableCompressedPrint ()
-    throws IOException
+  private void disableCompressedPrint()
+      throws IOException
   {
     if (getCharacterWidth() > 15)
     {
@@ -115,8 +115,8 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    *
    * @throws IOException if there was an IOError while writing the command.
    */
-  private void enableCompressedPrint ()
-    throws IOException
+  private void enableCompressedPrint()
+      throws IOException
   {
     if (getCharacterWidth() <= 15)
     {
@@ -134,7 +134,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    */
   public void setCharacterWidth(byte charWidth) throws IOException
   {
-    if (charWidth == getCharacterWidth()) 
+    if (charWidth == getCharacterWidth())
     {
       return;
     }
@@ -412,8 +412,8 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * @return the epson byte code.
    * @throws UnsupportedEncodingException if the encoding is not supported.
    */
-  public static int[] translateCodePage (String cp)
-    throws UnsupportedEncodingException
+  public static int[] translateCodePage(String cp)
+      throws UnsupportedEncodingException
   {
     if (StringUtil.startsWithIgnoreCase(cp, "cp"))
     {

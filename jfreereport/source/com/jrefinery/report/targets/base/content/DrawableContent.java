@@ -2,43 +2,40 @@
  * Date: Mar 5, 2003
  * Time: 6:25:58 PM
  *
- * $Id$
+ * $Id: DrawableContent.java,v 1.1 2003/03/07 13:49:37 taqua Exp $
  */
 package com.jrefinery.report.targets.base.content;
 
-import com.jrefinery.ui.Drawable;
+import com.jrefinery.report.DrawableContainer;
+import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
 
+/**
+ * A simple wrapper around the DrawableContainer. The ContentImplementation
+ * is able to adjust the Clipping Bounds of the DrawableContainer.
+ */
 public class DrawableContent implements Content
 {
-  /**
-   * The bounds for that part of the content that should be painted. This can
-   * be a sub-rectangle of the original bounds.
-   */
-  private Rectangle2D contentBounds;
-
-  /**
-   * The original bounds of the complete drawable. The drawable is already scaled,
-   * if external scaling must be applied.
-   */
-  private Rectangle2D drawableBounds;
-
   /**
    * The drawable content. The content will be drawn using the drawable bounds,
    * but only the rectangle contentBounds will be visible.
    */
-  private Drawable drawable;
+  private DrawableContainer drawable;
 
-  public DrawableContent(Drawable drawable, Rectangle2D drawableBounds, Rectangle2D contentBounds)
+  /**
+   * The content bounds define the position of this content in the global
+   * coordinate space (where to print on the page).
+   */
+  private Rectangle2D contentBounds;
+
+  public DrawableContent(DrawableContainer drawable)
   {
     if (drawable == null) throw new NullPointerException();
-    if (drawableBounds == null) throw new NullPointerException();
-    if (contentBounds == null) throw new NullPointerException();
 
+    Log.debug ("Created Content ");
     this.drawable = drawable;
-    this.drawableBounds = drawableBounds;
-    this.contentBounds = contentBounds;
+    Log.debug ("Create bounds: " + getBounds());
   }
 
   /**
@@ -59,7 +56,7 @@ public class DrawableContent implements Content
    */
   public Rectangle2D getBounds()
   {
-    return contentBounds.getBounds2D();
+    return drawable.getClippingBounds();
   }
 
   /**
@@ -86,7 +83,10 @@ public class DrawableContent implements Content
   public Content getContentForBounds(Rectangle2D bounds)
   {
     Rectangle2D newBounds = bounds.createIntersection(getBounds());
-    return new DrawableContent(drawable, drawableBounds, newBounds);
+    DrawableContainer newContainer = new DrawableContainer(drawable,
+                                                           newBounds);
+    Log.debug ("Create Content for bounds: " + drawable);
+    return new DrawableContent(newContainer);
   }
 
   /**
@@ -112,5 +112,10 @@ public class DrawableContent implements Content
   public Content getContentPart(int part)
   {
     return null;
+  }
+
+  public DrawableContainer getContent()
+  {
+    return drawable;
   }
 }

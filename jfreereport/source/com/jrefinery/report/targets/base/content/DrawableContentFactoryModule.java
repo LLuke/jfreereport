@@ -2,11 +2,13 @@
  * Date: Mar 5, 2003
  * Time: 6:38:16 PM
  *
- * $Id$
+ * $Id: DrawableContentFactoryModule.java,v 1.1 2003/03/07 13:49:38 taqua Exp $
  */
 package com.jrefinery.report.targets.base.content;
 
 import com.jrefinery.report.Element;
+import com.jrefinery.report.DrawableContainer;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.ui.Drawable;
@@ -55,11 +57,13 @@ public class DrawableContentFactoryModule implements ContentFactoryModule
     // this could be a show-stopper for WMF-Drawables, so we'll start subclassing
     // the drawable stuff soon ...
 
-    Drawable drawable = (Drawable) e.getValue();
+    DrawableContainer drawable = (DrawableContainer) e.getValue();
     Rectangle2D drawableBounds = new Rectangle2D.Float((float) point.getX(),
                                                        (float) point.getY(),
                                                        (float) iBounds.getWidth(),
                                                        (float)iBounds.getHeight());
-    return new DrawableContent(drawable, drawableBounds.getBounds2D(), drawableBounds.getBounds2D());
+    Log.debug ("Created Container for: " + drawableBounds);
+    DrawableContainer con = new DrawableContainer(drawable, drawableBounds);
+    return new DrawableContent(con);
   }
 }

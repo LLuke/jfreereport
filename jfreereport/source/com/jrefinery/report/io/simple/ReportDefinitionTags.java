@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportDefinitionTags.java,v 1.5 2003/02/25 14:07:31 taqua Exp $
+ * $Id: ReportDefinitionTags.java,v 1.6 2003/02/26 13:57:58 mungady Exp $
  *
  * Changes
  * -------
@@ -113,6 +113,9 @@ public interface ReportDefinitionTags
 
   /** Literal text for an XML report element. */
   public static final String MULTILINE_FIELD_TAG = "multiline-field";
+
+  /** Literal text for an XML report element. */
+  public static final String DRAWABLE_FIELD_TAG = "drawable-field";
 
   /** Literal text for an XML report element. */
   public static final String IMAGEFIELD_TAG = "image-field";

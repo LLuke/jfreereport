@@ -4,106 +4,117 @@
 
 <report name="Sample Report 1" orientation="portrait" pageformat="LETTER" topmargin="72" leftmargin="72" bottommargin="72" rightmargin="72">
 
-    <configuration>
-      <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Encoding">iso-8859-15</property>
-      <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Author">Darkwing Duck</property>
-<!--
-      <property name="com.jrefinery.report.preview.PreferredWidth">640</property>
-      <property name="com.jrefinery.report.preview.PreferredHeight">480</property>
-      <property name="com.jrefinery.report.preview.MaximumWidth">800</property>
-      <property name="com.jrefinery.report.preview.MaximumHeight">600</property>
--->
-    </configuration>
-    <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="18">
-        <label x="0" y="0" width="100%" height="48" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
-        <label x="0" y="0" width="100%" height="48" vertical-alignment="bottom" alignment="center">This text is valign="bottom"</label>
-    </reportheader>
-    <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
-        <label x="0" y="0" width="100%" height="24" alignment="center">*** END OF REPORT ***</label>
-    </reportfooter>
+  <configuration>
+    <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Encoding">iso-8859-15</property>
+    <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Author">Darkwing Duck</property>
+    <!--
+        <property name="com.jrefinery.report.preview.PreferredWidth">640</property>
+        <property name="com.jrefinery.report.preview.PreferredHeight">480</property>
+        <property name="com.jrefinery.report.preview.MaximumWidth">800</property>
+        <property name="com.jrefinery.report.preview.MaximumHeight">600</property>
+    -->
+  </configuration>
+  <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="18">
+    <label x="0" y="0" width="100%" height="48" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
+    <label x="0" y="0" width="100%" height="48" vertical-alignment="bottom" alignment="center">This text is valign="bottom"</label>
+  </reportheader>
+  <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
+    <label x="0" y="0" width="100%" height="24" alignment="center">*** END OF REPORT ***</label>
+    <drawable-field x="0" y="0" width="100%" fieldname="drawable" height="48"/>
+  </reportfooter>
+  <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
+    <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
+    <date-field x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" fieldname="report.date"/>
+    <line x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0"/>
+  </pageheader>
 
-    <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
-        <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
-        <date-field x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" fieldname="report.date"/>
-        <line x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0"/>
-    </pageheader>
+  <pagefooter height="18">
+    <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0" draw="false" fill="true"/>
+  </pagefooter>
+  <groups>
+    <group name="Continent Group">
+      <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" vertical-alignment="middle" pagebreak="false">
+        <label x="0" y="1" width="100" height="9" alignment="left">CONTINENT:</label>
+        <string-field x="100" y="1" width="250" height="9" alignment="left" fieldname="Continent"/>
+        <line x1="0" y1="10" x2="0" y2="10" weight="0.5"/>
+      </groupheader>
+      <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
+        <label x="0" y="0" width="450" height="12" alignment="left">Population:</label>
+        <number-field x="220" y="0" width="116" height="12" alignment="right" format="#,##0" fieldname="sum"/>
+      </groupfooter>
+      <fields>
+        <field>Continent</field>
+      </fields>
+    </group>
+  </groups>
 
-    <pagefooter height="18">
-        <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0" draw="false" fill="true"/>
-    </pagefooter>
-    <groups>
-        <group name="Continent Group">
-            <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" vertical-alignment="middle" pagebreak="false">
-                <label x="0" y="1" width="100" height="9" alignment="left">CONTINENT:</label>
-                <string-field x="100" y="1" width="250" height="9" alignment="left" fieldname="Continent"/>
-                <line x1="0" y1="10" x2="0" y2="10" weight="0.5"/>
-            </groupheader>
-            <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
-                <label x="0" y="0" width="450" height="12" alignment="left">Population:</label>
-                <number-field x="220" y="0" width="116" height="12" alignment="right" format="#,##0" fieldname="sum"/>
-            </groupfooter>
-            <fields>
-                 <field>Continent</field>
-            </fields>
-        </group>
-    </groups>
+  <items height="10" fontname="Serif" fontstyle="plain" fontsize="8" vertical-alignment="middle">
+    <!-- the rectangle is named as it is referenced later in the function section -->
+    <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
+    <line x1="0" y1="0" x2="0" y2="0" color="#FF0FFF" weight="0.1"/>
+    <line x1="0" y1="10" x2="0" y2="10" color="#0FDFDF" weight="0.1"/>
+    <string-field x="0" y="0" width="176" height="10" alignment="left" fieldname="Country"/>
+    <string-field x="180" y="0" width="50" height="10" alignment="left" fieldname="ISO Code"/>
+    <number-field x="240" y="0" width="76" height="10" alignment="right" format="#,##0" fieldname="Population"/>
+    <string-field x="330" y="0" width="76" height="10" alignment="right" fieldname="expression"/>
+    <number-field x="390" y="0" width="76" height="10" alignment="right" format="#,##0.00 '%'" fieldname="percent"/>
+  </items>
+  <functions>
+    <property-ref name="report.date"/>
+    <expression name="drawable" class="com.jrefinery.report.function.BSHExpression">
+      <properties>
+        <property name="expression">
+          import com.jrefinery.report.ext.junit.TestDrawable;
 
-    <items height="10" fontname="Serif" fontstyle="plain" fontsize="8" vertical-alignment="middle">
-        <!-- the rectangle is named as it is referenced later in the function section -->
-        <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
-        <line x1="0" y1="0" x2="0" y2="0" color="#FF0FFF" weight="0.1"/>
-        <line x1="0" y1="10" x2="0" y2="10" color="#0FDFDF" weight="0.1"/>
-        <string-field x="0" y="0" width="176" height="10" alignment="left" fieldname="Country" />
-        <string-field x="180" y="0" width="50" height="10" alignment="left" fieldname="ISO Code"/>
-        <number-field x="240" y="0" width="76" height="10" alignment="right" format="#,##0" fieldname="Population"/>
-        <string-field x="330" y="0" width="76" height="10" alignment="right" fieldname="expression"/>
-        <number-field x="390" y="0" width="76" height="10" alignment="right" format="#,##0.00 '%'" fieldname="percent"/>
-    </items>
+          Object getValue()
+          {
+          return new TestDrawable();
+          }
+        </property>
+      </properties>
+    </expression>
+    <expression name="expression" class="com.jrefinery.report.function.BSHExpression">
+      <properties>
+        <property name="expression">
+          import com.jrefinery.report.util.Log;
 
-    <functions>
-      <property-ref name="report.date"/>
-      <expression name="expression" class="com.jrefinery.report.function.BSHExpression">
-        <properties>
-          <property name="expression">
-import com.jrefinery.report.util.Log;
+          // This declaration is important. The script-method getValue is called by the
+          // BSHExpression to evaluate the expression. We override the default implementation
+          // and perform own calculations here ...
+          Object getValue()
+          {
+          // dataRow is null before the function is initialized
+          if (dataRow == null)
+          {
+          Log.info ("Returning null");
+          return "DataRow null";
+          }
 
-// This declaration is important. The script-method getValue is called by the
-// BSHExpression to evaluate the expression. We override the default implementation
-// and perform own calculations here ...
-Object getValue()
-{
-  // dataRow is null before the function is initialized
-  if (dataRow == null)
-  {
-    Log.info ("Returning null");
-    return "DataRow null";
-  }
+          Number population = (Number) dataRow.get ("Population");
+          long popK = (long)(population.longValue() / 1000);
 
-  Number population = (Number) dataRow.get ("Population");
-  long popK = (long)(population.longValue() / 1000);
-
-  // return a string with the number of people in 1000'er
-  return ("" + popK + " thousand people");
-}
-          </property>
-        </properties>
-      </expression>
-      <function name="percent" class="com.jrefinery.report.function.ItemPercentageFunction">
-        <properties>
-          <property name="field">Population</property>
-          <property name="group">Continent Group</property>
-        </properties>
-      </function>
-      <function name="sum" class="com.jrefinery.report.function.TotalGroupSumFunction">
-        <properties>
-          <property name="field">Population</property>
-          <property name="group">Continent Group</property>
-        </properties>
-      </function>
-      <function name="backgroundTrigger" class="com.jrefinery.report.function.ElementVisibilitySwitchFunction">
-        <properties>
-          <property name="element">background</property>
-        </properties>
-      </function>
-    </functions>
+          // return a string with the number of people in 1000'er
+          return ("" + popK + " thousand people");
+          }
+        </property>
+      </properties>
+    </expression>
+    <function name="percent" class="com.jrefinery.report.function.ItemPercentageFunction">
+      <properties>
+        <property name="field">Population</property>
+        <property name="group">Continent Group</property>
+      </properties>
+    </function>
+    <function name="sum" class="com.jrefinery.report.function.TotalGroupSumFunction">
+      <properties>
+        <property name="field">Population</property>
+        <property name="group">Continent Group</property>
+      </properties>
+    </function>
+    <function name="backgroundTrigger" class="com.jrefinery.report.function.ElementVisibilitySwitchFunction">
+      <properties>
+        <property name="element">background</property>
+      </properties>
+    </function>
+  </functions>
 </report>

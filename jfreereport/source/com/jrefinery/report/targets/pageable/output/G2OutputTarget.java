@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.24 2003/02/27 10:35:40 mungady Exp $
+ * $Id: G2OutputTarget.java,v 1.25 2003/03/07 13:47:40 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 
+import com.jrefinery.report.DrawableContainer;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.base.layout.DefaultSizeCalculator;
@@ -68,7 +69,6 @@ import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.ui.Drawable;
 
 /**
  * A report output target that uses a Graphics2D object to draw the report.  This allows reports
@@ -124,22 +124,22 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param g2 the graphics2D object that should be configured
    */
-  private static void applyStandardRenderingHints (Graphics2D g2)
+  private static void applyStandardRenderingHints(Graphics2D g2)
   {
     g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
                         RenderingHints.VALUE_FRACTIONALMETRICS_ON);
     if (DefaultSizeCalculator.getFrcDetector().isAliased())
     {
       g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                               RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                          RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     }
     else
     {
       g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                               RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+                          RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
     }
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                             RenderingHints.VALUE_ANTIALIAS_OFF);
+                        RenderingHints.VALUE_ANTIALIAS_OFF);
   }
 
   /**
@@ -198,7 +198,7 @@ public class G2OutputTarget extends AbstractOutputTarget
      * @throws OutputTargetException if restoring the state failes.
      */
     public void restore(G2OutputTarget target)
-      throws OutputTargetException
+        throws OutputTargetException
     {
       target.setStroke(mystroke);
       target.setFont(myfont);
@@ -215,7 +215,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    * @param page  the logical page.
    * @param graphics  the graphics device.
    */
-  public G2OutputTarget (LogicalPage page, Graphics2D graphics)
+  public G2OutputTarget(LogicalPage page, Graphics2D graphics)
   {
     super(page);
     setGraphics2D(graphics);
@@ -279,7 +279,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   public void open() throws OutputTargetException
   {
     originalClip = g2.getClip();
-    setFont(new FontDefinition (g2.getFont().getName(), g2.getFont().getSize()));
+    setFont(new FontDefinition(g2.getFont().getName(), g2.getFont().getSize()));
     isOpen = true;
   }
 
@@ -315,10 +315,10 @@ public class G2OutputTarget extends AbstractOutputTarget
     this.currentPage = page;
     Rectangle2D pageBounds = currentPage.getBounds();
     PageFormat currentPageFormat = page.getPageFormat();
-    Rectangle2D bounds = new Rectangle2D.Float ((float) currentPageFormat.getImageableX(),
-                                                (float) currentPageFormat.getImageableY(),
-                                                (float) currentPageFormat.getImageableWidth() + 1,
-                                                (float) currentPageFormat.getImageableHeight() + 1);
+    Rectangle2D bounds = new Rectangle2D.Float((float) currentPageFormat.getImageableX(),
+                                               (float) currentPageFormat.getImageableY(),
+                                               (float) currentPageFormat.getImageableWidth() + 1,
+                                               (float) currentPageFormat.getImageableHeight() + 1);
     g2.clip(bounds);
     g2.transform(AffineTransform.getTranslateInstance(
         currentPageFormat.getImageableX() + pageBounds.getX(),
@@ -450,17 +450,17 @@ public class G2OutputTarget extends AbstractOutputTarget
       AffineTransform transform = g2.getTransform();
       try
       {
-        g2.clip(new Rectangle2D.Float (0, 0,
-                    (float) (Math.min (bounds.getWidth(), myBounds.getWidth())),
-                    (float) (Math.min (bounds.getHeight(), myBounds.getHeight()))));
+        g2.clip(new Rectangle2D.Float(0, 0,
+                                      (float) (Math.min(bounds.getWidth(), myBounds.getWidth())),
+                                      (float) (Math.min(bounds.getHeight(), myBounds.getHeight()))));
         g2.transform(AffineTransform.getScaleInstance(image.getScaleX(), image.getScaleY()));
         g2.drawImage(image.getImage(), (int) -myBounds.getX(), (int) -myBounds.getY(), null);
       }
       catch (Throwable th)
       {
         // just in case the image drawing caused trouble ..
-        Log.warn (new Log.MemoryUsageMessage ("Failure at drawImage"));
-        Log.warn (th);
+        Log.warn(new Log.MemoryUsageMessage("Failure at drawImage"));
+        Log.warn(th);
       }
       g2.setTransform(transform);
       g2.setClip(s);
@@ -584,8 +584,10 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param drawable the drawable to draw.
    */
-  public void drawDrawable(Drawable drawable)
+  public void drawDrawable(DrawableContainer drawable)
   {
-    drawable.draw(g2, getOperationBounds());
+    Log.debug ("Will Draw Drawable on : " + drawable.getClippingBounds());
+    drawable.getDrawable().draw((Graphics2D) g2.create(), drawable.getClippingBounds());
+    Log.debug ("Done Draw Drawable on : " + drawable.getClippingBounds());
   }
 }

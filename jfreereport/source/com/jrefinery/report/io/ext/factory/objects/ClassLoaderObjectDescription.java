@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -87,7 +87,7 @@ public class ClassLoaderObjectDescription extends AbstractObjectDescription
   {
     if (o == null) 
     {
-      throw new ObjectFactoryException("The Object is invalid");
+      throw new ObjectFactoryException("The Object is null.");
     }
     try
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.10 2003/02/09 23:09:15 taqua Exp $
+ * $Id: PhysicalOperation.java,v 1.11 2003/02/27 10:35:39 mungady Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package com.jrefinery.report.targets.pageable.operations;
 
 import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.DrawableContainer;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
@@ -414,6 +415,44 @@ public abstract class PhysicalOperation
     public void performOperation(OutputTarget ot) throws OutputTargetException
     {
       ot.fillShape(shape);
+    }
+  }
+
+  /**
+   * An operation that processes a Drawable on an
+   * {@link com.jrefinery.report.targets.pageable.OutputTarget}.
+   */
+  public static class ProcessDrawableOperation extends PhysicalOperation
+  {
+    /** The drawable. */
+    private DrawableContainer drawableContainer;
+
+    /**
+     * Creates a new 'process Drawable' operation.
+     *
+     * @param drawableContainer the drawable.
+     */
+    public ProcessDrawableOperation(DrawableContainer drawableContainer)
+    {
+      Log.debug ("Draw Created: " + drawableContainer);
+      if (drawableContainer == null)
+      {
+        throw new NullPointerException();
+      }
+      this.drawableContainer = drawableContainer;
+    }
+
+    /**
+     * Draws a filled shape on an OutputTarget.
+     *
+     * @param ot  the output target.
+     *
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
+     */
+    public void performOperation(OutputTarget ot) throws OutputTargetException
+    {
+      Log.debug ("Will Draw: " + ot);
+      ot.drawDrawable(drawableContainer);
     }
   }
 

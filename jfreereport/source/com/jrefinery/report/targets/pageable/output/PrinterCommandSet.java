@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);;
  *
- * $Id: PrinterCommandSet.java,v 1.7 2003/02/25 18:47:09 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.8 2003/02/27 10:35:40 mungady Exp $
  *
  * Changes
  * -------
@@ -50,38 +50,38 @@ import com.jrefinery.report.util.PageFormatFactory;
 /**
  * Implements a printer command set for plain text output. The output is
  * not enriched with any printer specific control sequences.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PrinterCommandSet
 {
   /** the roman font. */
   public static final byte SELECT_FONT_ROMAN = 0x00;
-  
+
   /** the swiss font. */
   public static final byte SELECT_FONT_SWISS = 0x01;
-  
+
   /** the courier font. */
   public static final byte SELECT_FONT_COURIER = 0x02;
-  
+
   /** the prestige font. */
   public static final byte SELECT_FONT_PRESTIGE = 0x03;
-  
+
   /** the OCR-A font. */
   public static final byte SELECT_FONT_OCR_A = 0x05;
-  
+
   /** the OCR-B font. */
   public static final byte SELECT_FONT_OCR_B = 0x06;
-  
+
   /** the orator font. */
   public static final byte SELECT_FONT_ORATOR = 0x07;
-  
+
   /** the swiss-bold font. */
   public static final byte SELECT_FONT_SWISS_BOLD = 0x7A;
-  
+
   /** the gothic font. */
   public static final byte SELECT_FONT_GOTHIC = 0x7C;
-  
+
   /** selects the font, which is selected on the printer menu. */
   public static final byte SELECT_FONT_FROM_MENU = 0x7F;
 
@@ -90,49 +90,49 @@ public class PrinterCommandSet
    * the printer carriage returns to the start of the line.
    */
   public static final byte CARRIAGE_RETURN = 0x0D;
-  
+
   /** scrolls the paper up a single line. */
   public static final byte LINE_FEED = 0x0A;
-  
+
   /** the form feed character, ejects the current page and starts the next page. */
   public static final byte FORM_FEED = 0x0C;
-  
+
   /** the space character. */
   public static final byte SPACE = 0x20;
 
   /** the output stream. */
   private OutputStream out;
-  
+
   /** the font selector byte. */
   private byte font;
-  
+
   /** character width. */
   private byte characterWidth;
-  
+
   /** the paper height in lines. */
   private int paperSize;
-  
+
   /** the current bold state for the font. */
   private boolean bold;
-  
+
   /** the current italic state for the font. */
   private boolean italic;
-  
+
   /** the current underline state for the font. */
   private boolean underline;
-  
+
   /** the current strikethrough state for the font. */
   private boolean strikethrough;
 
   /** the left border in characters. */
   private int borderLeft;
-  
+
   /** the right border in characters. */
   private int borderRight;
-  
+
   /** the upper border in lines. */
   private int borderTop;
-  
+
   /** the bottom border in lines. */
   private int borderBottom;
 
@@ -141,22 +141,22 @@ public class PrinterCommandSet
 
   /** the current linespacing in 1/1440 inches. */
   private int lineSpacing;
-  
+
   /** the AutoLF state. */
   private boolean autoLf;
-  
+
   /** the printQuality flag, true for letter quality. */
   private boolean letterQuality;
 
   /** the lines per inch for this page. */
-  private int  defaultLPI;
-  
+  private int defaultLPI;
+
   /** the characters per inch for this page. */
-  private int  defaultCPI;
-  
+  private int defaultCPI;
+
   /** the pageformat used in this page. */
   private PageFormat pageFormat;
-  
+
   /** the emptyCellCounter is used to optimize the printing. */
   private int emptyCellCounter;
 
@@ -221,7 +221,7 @@ public class PrinterCommandSet
    * @param fontSelection the font selection byte.
    * @throws IOException is not thrown here.
    */
-  public void setFont (byte fontSelection) throws IOException
+  public void setFont(byte fontSelection) throws IOException
   {
     this.font = fontSelection;
   }
@@ -230,7 +230,7 @@ public class PrinterCommandSet
    * Returns the defined font selection byte.
    * @return the font selection byte.
    */
-  public byte getFont ()
+  public byte getFont()
   {
     return font;
   }
@@ -252,7 +252,7 @@ public class PrinterCommandSet
    * Gets the character width in CPI.
    * @return the character width.
    */
-  public byte getCharacterWidth ()
+  public byte getCharacterWidth()
   {
     return characterWidth;
   }
@@ -267,8 +267,8 @@ public class PrinterCommandSet
    * @param strike true, if the text should be strikethrough, false otherwise
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setFontStyle (boolean bold, boolean italic, boolean underline, boolean strike)
-   throws IOException
+  public void setFontStyle(boolean bold, boolean italic, boolean underline, boolean strike)
+      throws IOException
   {
     this.bold = bold;
     this.italic = italic;
@@ -322,7 +322,7 @@ public class PrinterCommandSet
    * @param lines the number of lines that could be printed on a single page.
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setPaperSize (int lines) throws IOException
+  public void setPaperSize(int lines) throws IOException
   {
     this.paperSize = lines;
   }
@@ -344,7 +344,7 @@ public class PrinterCommandSet
    * @param right the number of spaces left free on the right paper border.
    * @throws IOException if an IOException occured while updating the printer state.
    */
-  public void setHorizontalBorder (int left, int right) throws IOException
+  public void setHorizontalBorder(int left, int right) throws IOException
   {
     this.borderLeft = left;
     this.borderRight = right;
@@ -358,7 +358,7 @@ public class PrinterCommandSet
    * @param bottom the number of blank lines printed at the end of a page
    * @throws IOException if an IOException occured while updating the printer state.
    */
-  public void setVerticalBorder (int top, int bottom) throws IOException
+  public void setVerticalBorder(int top, int bottom) throws IOException
   {
     this.borderTop = top;
     this.borderBottom = bottom;
@@ -407,9 +407,9 @@ public class PrinterCommandSet
    * @param spaceInInch the linespacing in 1/1440 inches.
    * @throws IOException if an IOException occured while updating the printer state.
    */
-  public void setLineSpacing (int spaceInInch) throws IOException
+  public void setLineSpacing(int spaceInInch) throws IOException
   {
-    if (spaceInInch <= 0) 
+    if (spaceInInch <= 0)
     {
       throw new IllegalArgumentException();
     }
@@ -434,7 +434,7 @@ public class PrinterCommandSet
    * @param codepage the new codepage that should be used.
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setCodePage (String  codepage) throws IOException
+  public void setCodePage(String codepage) throws IOException
   {
     this.codepage = codepage;
   }
@@ -456,7 +456,7 @@ public class PrinterCommandSet
    * @param autoLF the new autoLF state
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setAutoLF (boolean autoLF) throws IOException
+  public void setAutoLF(boolean autoLF) throws IOException
   {
     this.autoLf = autoLF;
   }
@@ -468,7 +468,7 @@ public class PrinterCommandSet
    * @param letterQuality true, if letter quality should be used, false for draft-quality
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setPrintQuality (boolean letterQuality) throws IOException
+  public void setPrintQuality(boolean letterQuality) throws IOException
   {
     this.letterQuality = letterQuality;
   }
@@ -504,7 +504,8 @@ public class PrinterCommandSet
     // make sure that autoLF is disabled ..
     setCharacterWidth((byte) getDefaultCPI());
     setLineSpacing((byte) getDefaultLPI());
-    setAutoLF(true); setAutoLF(false);
+    setAutoLF(true);
+    setAutoLF(false);
     setCodePage("Cp437");
     setFont(SELECT_FONT_FROM_MENU);
     setFontStyle(false, false, false, false);
@@ -530,12 +531,13 @@ public class PrinterCommandSet
    *
    * @throws IOException if there was an IOError while writing the command
    */
-  public void startPage ()  throws IOException
+  public void startPage() throws IOException
   {
     int topBorderLines = ((getBorderTop() / 1440) / getLineSpacing());
     for (int i = 0; i < topBorderLines; i++)
     {
-      startLine(); endLine();
+      startLine();
+      endLine();
     }
   }
 
@@ -544,12 +546,13 @@ public class PrinterCommandSet
    *
    * @throws IOException if there was an IOError while writing the command
    */
-  public void endPage ()  throws IOException
+  public void endPage() throws IOException
   {
     int bottomBorderLines = ((getBorderBottom() / 1440) / getLineSpacing());
     for (int i = 0; i < bottomBorderLines; i++)
     {
-      startLine(); endLine();
+      startLine();
+      endLine();
     }
     out.write(FORM_FEED);
   }
@@ -559,7 +562,7 @@ public class PrinterCommandSet
    *
    * @throws IOException if an IOError occures.
    */
-  public void startLine ()  throws IOException
+  public void startLine() throws IOException
   {
     emptyCellCounter = getBorderLeft();
   }
@@ -569,7 +572,7 @@ public class PrinterCommandSet
    *
    * @throws IOException if an IOError occures.
    */
-  public void endLine () throws IOException
+  public void endLine() throws IOException
   {
     emptyCellCounter = 0;
     // CR = (ASCII #13) reset the print position to the start of the line
@@ -589,7 +592,7 @@ public class PrinterCommandSet
    * @param x the column where to start to print the chunk
    * @throws IOException if an IO error occured.
    */
-  public void printChunk (PlainTextPage.TextDataChunk chunk, int x)  throws IOException
+  public void printChunk(PlainTextPage.TextDataChunk chunk, int x) throws IOException
   {
     if (emptyCellCounter != 0)
     {
@@ -610,15 +613,15 @@ public class PrinterCommandSet
     byte[] text = chunk.getText().getBytes(getCodepage());
     byte[] data = new byte[chunk.getWidth()];
     Arrays.fill(data, SPACE);
-    System.arraycopy(text, 0, data, 0, Math.min (text.length, data.length));
-    out.write (data);
+    System.arraycopy(text, 0, data, 0, Math.min(text.length, data.length));
+    out.write(data);
   }
 
   /**
    * Prints an empty chunk. This is called for all undefined chunk-cells.
    * @throws IOException if an IOError occured.
    */
-  public void printEmptyChunk ()  throws IOException
+  public void printEmptyChunk() throws IOException
   {
     out.write(SPACE);
   }
@@ -638,7 +641,7 @@ public class PrinterCommandSet
    * @param encoding the encoding that should be tested.
    * @return true, if the encoding is supported, false otherwise.
    */
-  public boolean isEncodingSupported (String encoding)
+  public boolean isEncodingSupported(String encoding)
   {
     try
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -85,9 +85,9 @@ public class CharacterObjectDescription extends AbstractObjectDescription
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {
-    if (o instanceof Character)
+    if (o instanceof Character == false)
     {
-      throw new ObjectFactoryException("The given object is no character.");
+      throw new ObjectFactoryException("The given object is no java.lang.Character.");
     }
 
     setParameter("value", String.valueOf(o));

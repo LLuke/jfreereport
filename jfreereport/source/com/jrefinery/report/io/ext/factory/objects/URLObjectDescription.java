@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -93,7 +93,7 @@ public class URLObjectDescription extends AbstractObjectDescription
   {
     if (o instanceof URL == false)
     {
-      throw new ObjectFactoryException("Is no instance of URL");
+      throw new ObjectFactoryException("Is no instance of java.net.URL");
     }
 
     URL comp = (URL) o;

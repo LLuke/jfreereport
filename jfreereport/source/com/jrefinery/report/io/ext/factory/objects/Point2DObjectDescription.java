@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -100,9 +100,9 @@ public class Point2DObjectDescription extends AbstractObjectDescription
   {
     if (o instanceof Point2D == false)
     {
-      throw new ObjectFactoryException("In not assignable");
+      throw new ObjectFactoryException("The given object is no java.awt.geom.Point2D.");
     }
-    
+
     Point2D point = (Point2D) o;
     float x = (float) point.getX();
     float y = (float) point.getY();

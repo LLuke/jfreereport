@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -74,9 +74,11 @@ public class IntegerObjectDescription extends AbstractObjectDescription
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {
-    if (o instanceof Integer)
+    if (o instanceof Integer == false)
     {
-      setParameter("value", String.valueOf(o));
+      throw new ObjectFactoryException("The given object is no java.lang.Integer.");
     }
+
+    setParameter("value", String.valueOf(o));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -104,7 +104,7 @@ public class Line2DObjectDescription extends AbstractObjectDescription
   {
     if (o instanceof Line2D == false)
     {
-      throw new ObjectFactoryException("In not assignable");
+      throw new ObjectFactoryException("The given object is no java.awt.geom.Line2D.");
     }
     Line2D line = (Line2D) o;
     float x1 = (float) line.getX1();

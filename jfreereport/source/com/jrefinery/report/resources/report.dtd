@@ -57,8 +57,8 @@
 
 -->
 <!ENTITY % position
- "x           CDATA          #IMPLIED
-  y           CDATA          #IMPLIED
+ "x           CDATA          #REQUIRED
+  y           CDATA          #REQUIRED
   width       CDATA          #REQUIRED"
 >
 
@@ -101,7 +101,7 @@
 <!ENTITY % itemelements
   "(label | string-field | number-field | date-field |
 	imageref | image-field | imageurl-field | rectangle |
-  resource-label | resource-field | line)*">
+  resource-label | resource-field | line | drawable-field)*">
 
 
 <!--
@@ -431,7 +431,6 @@
   dynamic     (%boolean;)   #IMPLIED
   scale       (%boolean;)   #IMPLIED
   keepAspectRatio     (%boolean;)   #IMPLIED
-  dynamic        (%boolean;)    #IMPLIED
 >
 <!--
 
@@ -448,8 +447,21 @@
   dynamic     (%boolean;)   #IMPLIED
   scale       (%boolean;)   #IMPLIED
   keepAspectRatio     (%boolean;)   #IMPLIED
-  dynamic        (%boolean;)    #IMPLIED
 >
+
+<!--
+  Not yet complete, may change ...
+
+  Field may not be dynamic, as drawables have no content size
+-->
+<!ELEMENT drawable-field   EMPTY>
+<!ATTLIST drawable-field
+  %position;
+  fieldname   CDATA #REQUIRED
+  height      CDATA #REQUIRED
+  name        CDATA #IMPLIED
+>
+
 <!--
 
    The image reference links an external image into the report. This element expects an
@@ -495,6 +507,23 @@
   %position;
   %basicform;
   height         CDATA   #REQUIRED
+  draw     (%boolean;)   #IMPLIED
+  fill     (%boolean;)   #IMPLIED
+  weight    CDATA        #IMPLIED
+>
+
+<!--
+
+  A generic shape field. The shape is defined in the DataRow.
+
+  -->
+<!ELEMENT shape-field EMPTY>
+<!ATTLIST shape-field
+  %position;
+  %basicform;
+  height         CDATA   #REQUIRED
+  fieldname      CDATA   #REQUIRED
+  dynamic  (%boolean;)   #IMPLIED
   draw     (%boolean;)   #IMPLIED
   fill     (%boolean;)   #IMPLIED
   weight    CDATA        #IMPLIED

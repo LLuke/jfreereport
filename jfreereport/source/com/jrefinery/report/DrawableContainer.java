@@ -2,7 +2,7 @@
  * Date: Mar 5, 2003
  * Time: 6:50:46 PM
  *
- * $Id$
+ * $Id: DrawableContainer.java,v 1.1 2003/03/07 13:49:37 taqua Exp $
  */
 package com.jrefinery.report;
 
@@ -26,6 +26,11 @@ public class DrawableContainer
   private Drawable drawable;
   private Dimension2D drawableSize;
   private Rectangle2D clippingBounds;
+
+  public DrawableContainer(DrawableContainer container, Rectangle2D clippingBounds)
+  {
+    this (container.getDrawable(), container.getDrawableSize(), clippingBounds);
+  }
 
   public DrawableContainer(Drawable drawable, Dimension2D drawableSize, Rectangle2D clippingBounds)
   {
@@ -57,5 +62,19 @@ public class DrawableContainer
   public void setClippingBounds(Rectangle2D clippingBounds)
   {
     this.clippingBounds.setRect(clippingBounds);
+  }
+
+  public String toString ()
+  {
+    StringBuffer b = new StringBuffer();
+    b.append(getClass().getName());
+    b.append("={Drawable=");
+    b.append(getDrawable());
+    b.append(", drawableSize=");
+    b.append(getDrawableSize());
+    b.append(", ClippingBounds=");
+    b.append(getClippingBounds());
+    b.append("}");
+    return b.toString();
   }
 }

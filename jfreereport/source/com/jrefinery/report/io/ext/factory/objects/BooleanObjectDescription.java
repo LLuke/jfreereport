@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -75,9 +75,9 @@ public class BooleanObjectDescription extends AbstractObjectDescription
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {
-    if (o instanceof Boolean)
+    if (o instanceof Boolean == false)
     {
-      throw new ObjectFactoryException("The given object is no java.lang.Boolean.");
+      throw new ObjectFactoryException("The given object is no java.lang.Boolean. ");
     }
     setParameter("value", String.valueOf(o));
   }

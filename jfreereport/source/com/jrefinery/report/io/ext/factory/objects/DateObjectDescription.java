@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -113,7 +113,7 @@ public class DateObjectDescription extends AbstractObjectDescription
     }
     else
     {
-      throw new ObjectFactoryException("Is no instance of date");
+      throw new ObjectFactoryException("Is no instance of java.util.Date");
     }
 
   }

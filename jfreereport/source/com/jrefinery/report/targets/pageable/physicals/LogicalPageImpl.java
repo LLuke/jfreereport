@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.26 2003/02/25 15:42:26 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.27 2003/02/27 10:35:40 mungady Exp $
  *
  * Changes
  * -------
@@ -61,6 +61,7 @@ import com.jrefinery.report.targets.pageable.operations.OperationFactory;
 import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
 import com.jrefinery.report.targets.pageable.operations.ShapeOperationModule;
 import com.jrefinery.report.targets.pageable.operations.TextOperationModule;
+import com.jrefinery.report.targets.pageable.operations.DrawableOperationModule;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
@@ -173,6 +174,7 @@ public class LogicalPageImpl implements LogicalPage
     operationFactory.registerModule(new TextOperationModule());
     operationFactory.registerModule(new ImageOperationModule());
     operationFactory.registerModule(new ShapeOperationModule());
+    operationFactory.registerModule(new DrawableOperationModule());
     return operationFactory;
   }
 
@@ -419,6 +421,7 @@ public class LogicalPageImpl implements LogicalPage
   {
     if (e.isVisible() == false)
     {
+      Log.debug ("The Element " + e + " is not visible");
       return;
     }
     ContentFactory factory = outputTarget.getContentFactory();
@@ -449,6 +452,7 @@ public class LogicalPageImpl implements LogicalPage
       Content content = factory.createContentForElement(e, eli, getOutputTarget());
       if (content == null)
       {
+        Log.debug ("Content is null, no content created?");
         return;
       }
       // split the elements contents, then write ..

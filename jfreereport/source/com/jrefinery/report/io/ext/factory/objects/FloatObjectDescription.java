@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -74,9 +74,10 @@ public class FloatObjectDescription extends AbstractObjectDescription
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {
-    if (o instanceof Float)
+    if (o instanceof Float == false)
     {
-      setParameter("value", String.valueOf(o));
+      throw new ObjectFactoryException("The given object is no java.lang.Float.");
     }
+    setParameter("value", String.valueOf(o));
   }
 }

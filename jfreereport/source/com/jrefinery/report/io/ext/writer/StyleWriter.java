@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.4 2003/02/21 11:31:13 mungady Exp $
+ * $Id: StyleWriter.java,v 1.5 2003/02/22 18:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -147,7 +147,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     }
     catch (ObjectFactoryException e)
     {
-      throw new ReportWriterException ("Unable to fill the parameters.", e);
+      throw new ReportWriterException ("Unable to fill the parameters for key: " + key.getName(), e);
     }
 
     Properties p = new Properties();

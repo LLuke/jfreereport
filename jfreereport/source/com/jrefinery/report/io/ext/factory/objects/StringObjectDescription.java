@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -74,9 +74,11 @@ public class StringObjectDescription extends AbstractObjectDescription
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {
-    if (o instanceof String)
+    if (o instanceof String == false)
     {
-      setParameter("value", String.valueOf(o));
+      throw new ObjectFactoryException("The given object is no java.lang.String.");
     }
+
+    setParameter("value", String.valueOf(o));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -105,9 +105,9 @@ public class Rectangle2DObjectDescription extends AbstractObjectDescription
   {
     if (o instanceof Rectangle2D == false)
     {
-      throw new ObjectFactoryException("In not assignable");
+      throw new ObjectFactoryException("The given object is no java.awt.geom.Rectangle2D.");
     }
-    
+
     Rectangle2D rect = (Rectangle2D) o;
     float x = (float) rect.getX();
     float y = (float) rect.getY();

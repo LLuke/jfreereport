@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextPage.java,v 1.10 2003/02/25 18:47:08 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.11 2003/02/27 10:35:40 mungady Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import com.jrefinery.report.targets.FontDefinition;
 /**
  * The plain text page is used to buffer a complete page and to write the
  * buffered data when the page is closed.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PlainTextPage
@@ -56,16 +56,16 @@ public class PlainTextPage
   {
     /** The text that should be printed. */
     private String text;
-    
+
     /** The font definition stores the font style. */
     private FontDefinition font;
-    
+
     /** the column where the text starts. */
     private int x;
-    
+
     /** the row of the text. */
     private int y;
-    
+
     /** the text width. */
     private int width;
 
@@ -140,13 +140,13 @@ public class PlainTextPage
 
   /** the page buffer is used to store all TextDataChunks. */
   private TextDataChunk[][] pageBuffer;
-  
+
   /** The commandset that is used to finally print the content. */
   private PrinterCommandSet commandSet;
-  
+
   /** The width of the page in characters. */
   private int width;
-  
+
   /** the height of the page in lines. */
   private int height;
 
@@ -160,11 +160,11 @@ public class PlainTextPage
    */
   public PlainTextPage(int w, int h, PrinterCommandSet commandSet)
   {
-    if (w <= 0) 
+    if (w <= 0)
     {
       throw new IllegalArgumentException("W <= 0");
     }
-    if (h <= 0) 
+    if (h <= 0)
     {
       throw new IllegalArgumentException("W <= 0");
     }
@@ -204,23 +204,23 @@ public class PlainTextPage
    */
   public void addTextChunk(int x, int y, int w, String text, FontDefinition format)
   {
-    if (x < 0) 
+    if (x < 0)
     {
       throw new IllegalArgumentException("X < 0");
     }
-    if (y < 0) 
+    if (y < 0)
     {
       throw new IllegalArgumentException("y < 0");
     }
-    if (w < 0) 
+    if (w < 0)
     {
       throw new IllegalArgumentException("w < 0");
     }
-    if (x + w > width) 
+    if (x + w > width)
     {
       throw new IllegalArgumentException("X+W > bufferWidth");
     }
-    if (y > height) 
+    if (y > height)
     {
       throw new IllegalArgumentException("Y > bufferHeight: " + text + " y=" + y + " h=" + height);
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DummyOutputTarget.java,v 1.6 2003/02/27 10:35:39 mungady Exp $
+ * $Id: DummyOutputTarget.java,v 1.7 2003/03/07 13:47:40 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
 
+import com.jrefinery.report.DrawableContainer;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
@@ -51,7 +52,6 @@ import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.ui.Drawable;
 
 /**
  * The dummy output target wraps an output target for the layouting process,
@@ -61,7 +61,7 @@ import com.jrefinery.ui.Drawable;
  * functionality to the wrapped OutputTarget. All other method calls are ignored.
  *
  * @see com.jrefinery.report.targets.base.layout.LayoutSupport
- * 
+ *
  * @author Thomas Morgner
  */
 public class DummyOutputTarget extends AbstractOutputTarget
@@ -107,10 +107,10 @@ public class DummyOutputTarget extends AbstractOutputTarget
      * Copies the state back to the specified OutputTarget.
      *
      * @param target  the output target, that receives the restored state.
-     * @throws OutputTargetException if the state restoration failed. 
+     * @throws OutputTargetException if the state restoration failed.
      */
     public void restore(OutputTarget target)
-      throws OutputTargetException
+        throws OutputTargetException
     {
       target.setStroke(mystroke);
       target.setFont(myfont);
@@ -401,7 +401,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @param drawable the drawable to draw.
    */
-  public void drawDrawable(Drawable drawable)
+  public void drawDrawable(DrawableContainer drawable)
   {
   }
 }

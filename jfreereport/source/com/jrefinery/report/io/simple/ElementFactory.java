@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.14 2003/02/25 20:15:00 taqua Exp $
+ * $Id: ElementFactory.java,v 1.15 2003/02/26 13:57:57 mungady Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,9 @@ import com.jrefinery.report.ImageElement;
 import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.TextElement;
+import com.jrefinery.report.DrawableElement;
+import com.jrefinery.report.filter.DrawableFilter;
+import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
@@ -173,6 +176,10 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     else if (elementName.equals(RESOURCEFIELD_TAG))
     {
        startResourceField(atts);
+    }
+    else if (elementName.equals(DRAWABLE_FIELD_TAG))
+    {
+      startDrawableField(atts);
     }
     else if (elementName.equals(IMAGEREF_TAG))
     {
@@ -304,6 +311,10 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     else if (elementName.equals(RESOURCEFIELD_TAG))
     {
        endResourceField();
+    }
+    else if (elementName.equals(DRAWABLE_FIELD_TAG))
+    {
+      endDrawableField();
     }
     else if (elementName.equals(IMAGEREF_TAG))
     {
@@ -444,6 +455,24 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     getCurrentBand().addElement(element);
 
   }
+
+  protected void startDrawableField(Attributes atts) throws SAXException
+  {
+    String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    String elementSource = atts.getValue(FIELDNAME_ATT);
+
+    DrawableElement element = new DrawableElement();
+    element.setName(elementName);
+    ItemFactory.setElementBounds(element, ParserUtil.getElementPosition(atts));
+
+    DataRowDataSource drds = new DataRowDataSource(elementSource);
+    DrawableFilter filter = new DrawableFilter();
+    filter.setDataSource(drds);
+    element.setDataSource(filter);
+    getCurrentBand().addElement(element);
+
+  }
+
 
   /**
    * Create a ImageElement with an static ImageDataSource. The ImageData is read from
@@ -774,6 +803,15 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * @throws SAXException if there is a SAX problem.
    */
   protected void endImageRef() throws SAXException
+  {
+  }
+
+  /**
+   * Ends the drawable element.
+   *
+   * @throws SAXException if there is a SAX problem.
+   */
+  protected void endDrawableField() throws SAXException
   {
   }
 

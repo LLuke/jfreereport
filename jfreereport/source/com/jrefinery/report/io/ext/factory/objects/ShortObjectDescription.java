@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -74,9 +74,10 @@ public class ShortObjectDescription extends AbstractObjectDescription
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {
-    if (o instanceof Short)
+    if (o instanceof Short == false)
     {
-      setParameter("value", String.valueOf(o));
+      throw new ObjectFactoryException("The given object is no java.lang.Short.");
     }
+    setParameter("value", String.valueOf(o));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.28 2003/02/27 10:35:39 mungady Exp $
+ * $Id: PageableReportProcessor.java,v 1.29 2003/03/04 20:28:58 taqua Exp $
  *
  * Changes
  * -------
@@ -46,16 +46,16 @@ import java.util.Iterator;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
+import com.jrefinery.report.ReportEventException;
 import com.jrefinery.report.ReportInterruptedException;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.ReportEventException;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
 import com.jrefinery.report.targets.pageable.pagelayout.PageLayouter;
 import com.jrefinery.report.targets.pageable.pagelayout.SimplePageLayouter;
+import com.jrefinery.report.util.Log;
 
 /**
  * A report processor for Pageable OutputTargets. The processor coordinates
@@ -470,6 +470,14 @@ public class PageableReportProcessor
           if (state.isErrorOccured() == true)
           {
             throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
+          }
+        }
+        else
+        {
+          if (state.isErrorOccured() == true)
+          {
+            Log.error("Failed to dispatch an event.",
+                      new ReportEventException ("Failed to dispatch an event.", state.getErrors()));
           }
         }
         lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -109,7 +109,7 @@ public class ColorObjectDescription extends AbstractObjectDescription
   {
     if (o instanceof Color == false)
     {
-      throw new ObjectFactoryException("Is no instance of color");
+      throw new ObjectFactoryException("Is no instance of java.awt.Color");
     }
     Color c = (Color) o;
 

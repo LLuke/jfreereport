@@ -23,12 +23,12 @@
  * --------------------
  * PDFOutputTarget.java
  * --------------------
- * (C)opyright 2002, 2003, by Simba Management Limited.and Contributors; 
+ * (C)opyright 2002, 2003, by Simba Management Limited.and Contributors;
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.29 2003/02/27 10:35:40 mungady Exp $
+ * $Id: PDFOutputTarget.java,v 1.30 2003/03/07 13:47:40 taqua Exp $
  *
  * Changes
  * -------
@@ -60,6 +60,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 
+import com.jrefinery.report.DrawableContainer;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ShapeElement;
@@ -76,7 +77,6 @@ import com.jrefinery.report.targets.support.itext.BaseFontRecord;
 import com.jrefinery.report.targets.support.itext.BaseFontSupport;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.ui.Drawable;
 import com.keypoint.PngEncoder;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocWriter;
@@ -276,7 +276,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the iText BaseFont.
    */
-  public BaseFont getBaseFont ()
+  public BaseFont getBaseFont()
   {
     return baseFont;
   }
@@ -304,7 +304,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
     this.fontDefinition = font;
     this.baseFont = fontSupport.createBaseFont(font, font.getFontEncoding(getFontEncoding()),
-                        (isEmbedFonts() || font.isEmbeddedFont())).getBaseFont();
+                                               (isEmbedFonts() || font.isEmbeddedFont())).getBaseFont();
     if (baseFont == null)
     {
       throw new OutputTargetException("The font definition was not successfull.");
@@ -337,7 +337,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       PdfContentByte cb = this.writer.getDirectContent();
 
       cb.rectangle((float) (imageBounds.getX() + x),
-                   (float) (getPageHeight() - imageBounds.getY()  - y - bounds.getHeight()),
+                   (float) (getPageHeight() - imageBounds.getY() - y - bounds.getHeight()),
                    (float) imageBounds.getWidth(),
                    (float) imageBounds.getHeight());
       cb.clip();
@@ -373,7 +373,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return an image.
    *
-   * @throws DocumentException if no PDFImageElement could be created using the given 
+   * @throws DocumentException if no PDFImageElement could be created using the given
    *                           ImageReference.
    * @throws IOException if the image could not be read.
    */
@@ -384,8 +384,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     try
     {
-      Rectangle2D drawArea = new Rectangle2D.Float (0, 0, (float) bounds.getWidth(), 
-                                                          (float) bounds.getHeight());
+      Rectangle2D drawArea = new Rectangle2D.Float(0, 0, (float) bounds.getWidth(),
+                                                   (float) bounds.getHeight());
       if ((imageRef.getSourceURL() != null) && (drawArea.contains(imageBounds)))
       {
         return Image.getInstance(imageRef.getSourceURL());
@@ -403,7 +403,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     if (imageRef.getImage() != null)
     {
       // use best compression but iText does not support the Alpha-Channel ...
-      PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.NO_ALPHA, 
+      PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.NO_ALPHA,
                                           PngEncoder.FILTER_NONE, 9);
       byte[] data = encoder.pngEncode();
       return Image.getInstance(data);
@@ -785,12 +785,12 @@ public class PDFOutputTarget extends AbstractOutputTarget
     cb.setFontAndSize(this.baseFont, fontSize);
 
     float y2 = (float) (bounds.getY() + baseFont.getFontDescriptor(BaseFont.ASCENT, fontSize));
-      cb.showTextAligned(
-          PdfContentByte.ALIGN_LEFT,
-          text,
-          (float) bounds.getX(),
-          this.getPageHeight() - y2,
-          0);
+    cb.showTextAligned(
+        PdfContentByte.ALIGN_LEFT,
+        text,
+        (float) bounds.getX(),
+        this.getPageHeight() - y2,
+        0);
     cb.endText();
   }
 
@@ -1116,8 +1116,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
   public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException
   {
     BaseFontRecord record = fontSupport.createBaseFont(font,
-                                                      font.getFontEncoding(getFontEncoding()),
-                                                      false);
+                                                       font.getFontEncoding(getFontEncoding()),
+                                                       false);
     return new PDFSizeCalculator(record.getBaseFont(), font.getFont().getSize2D());
   }
 
@@ -1130,9 +1130,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   {
     super.setOperationBounds(bounds);
     internalOperationBounds
-        = new Rectangle2D.Float ((float) (bounds.getX() + currentPageFormat.getImageableX()),
-                                  (float) (bounds.getY() + currentPageFormat.getImageableY()),
-                                  (float) bounds.getWidth(), (float) bounds.getHeight());
+        = new Rectangle2D.Float((float) (bounds.getX() + currentPageFormat.getImageableX()),
+                                (float) (bounds.getY() + currentPageFormat.getImageableY()),
+                                (float) bounds.getWidth(), (float) bounds.getHeight());
   }
 
   /**
@@ -1150,7 +1150,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param drawable the drawable to draw.
    */
-  public void drawDrawable(Drawable drawable)
+  public void drawDrawable(DrawableContainer drawable)
   {
+    // not yet implemented, needs WMF Converter ...
   }
 }

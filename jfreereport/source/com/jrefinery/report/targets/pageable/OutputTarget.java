@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.10 2003/02/21 12:17:30 taqua Exp $
+ * $Id: OutputTarget.java,v 1.11 2003/03/07 13:47:40 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@
 package com.jrefinery.report.targets.pageable;
 
 import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.DrawableContainer;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
@@ -239,7 +240,7 @@ public interface OutputTarget extends LayoutSupport
    *
    * @param drawable the drawable to draw.
    */
-  public void drawDrawable (Drawable drawable);
+  public void drawDrawable (DrawableContainer drawable);
 
   /**
    * Draws a image relative to the specified coordinates.

@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   Thomas Morgner;
  *
- * $Id $
+ * $Id$
  *
  * Changes
  * -------

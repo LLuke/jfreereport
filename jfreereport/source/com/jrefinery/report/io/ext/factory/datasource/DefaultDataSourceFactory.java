@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -56,6 +56,7 @@ import com.jrefinery.report.filter.SimpleDateFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.filter.StringFilter;
 import com.jrefinery.report.filter.URLFilter;
+import com.jrefinery.report.filter.DrawableFilter;
 import com.jrefinery.report.io.ext.factory.objects.BeanObjectDescription;
 import com.jrefinery.report.io.ext.factory.templates.DateFieldTemplateDescription;
 import com.jrefinery.report.io.ext.factory.templates.ImageFieldTemplateDescription;
@@ -101,6 +102,7 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
     registerDataSources("StringFilter", new BeanObjectDescription(StringFilter.class));
     registerDataSources("URLFilter", new BeanObjectDescription(URLFilter.class));
     registerDataSources("ResourceFileFilter", new BeanObjectDescription(ResourceFileFilter.class));
+    registerDataSources("DrawableFilter", new BeanObjectDescription(DrawableFilter.class));
 
     // templates are also datasources ...
     registerDataSources("DateFieldTemplate", new DateFieldTemplateDescription("date-field"));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -41,6 +41,7 @@ package com.jrefinery.report.io.ext.factory.elements;
 import com.jrefinery.report.ImageElement;
 import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.TextElement;
+import com.jrefinery.report.DrawableElement;
 
 /**
  * A default implementation of the {@link ElementFactory} interface.
@@ -57,5 +58,6 @@ public class DefaultElementFactory extends AbstractElementFactory
     registerElement(new TextElement());
     registerElement(new ShapeElement());
     registerElement(new ImageElement());
+    registerElement(new DrawableElement());
   }
 }

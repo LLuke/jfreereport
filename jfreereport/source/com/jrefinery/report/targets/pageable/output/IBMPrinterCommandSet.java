@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IBMPrinterCommandSet.java,v 1.5 2003/02/25 18:47:07 taqua Exp $
+ * $Id: IBMPrinterCommandSet.java,v 1.6 2003/02/27 10:35:40 mungady Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import com.jrefinery.report.util.StringUtil;
  *
  * @see PrinterCommandSet
  * @see PlainTextOutputTarget
- * 
+ *
  * @author Thomas Morgner
  */
 public class IBMPrinterCommandSet extends PrinterCommandSet
@@ -75,22 +75,22 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * the available fonts are defined in PrinterCommandSet. You may use additional fonts,
    * if your printer supports them.
    * <p>
-   * To use these fonts, specify the font parameter for the escape sequence 0x1b, 0x6b, 
+   * To use these fonts, specify the font parameter for the escape sequence 0x1b, 0x6b,
    * [font-selection] as defined in your printers reference manual.
    *
    * @param fontSelection the printers font selection token.
    * @throws IOException if there was an IOError while writing the command.
    */
   public void setFont(byte fontSelection)
-    throws IOException
+      throws IOException
   {
     if (fontSelection == getFont())
     {
       return;
     }
-    getOut().write (0x1b);
-    getOut().write (0x6b);
-    getOut().write (fontSelection);
+    getOut().write(0x1b);
+    getOut().write(0x6b);
+    getOut().write(fontSelection);
     super.setFont(fontSelection);
   }
 
@@ -102,9 +102,9 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @throws IOException if there was an IOError while writing the command or if the
    *   character width is not supported by the printer.
    */
-  public void setCharacterWidth(byte charWidth)throws IOException
+  public void setCharacterWidth(byte charWidth) throws IOException
   {
-    if (charWidth == getCharacterWidth()) 
+    if (charWidth == getCharacterWidth())
     {
       return;
     }
@@ -160,7 +160,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @throws IOException if there was an IOError while writing the command
    */
   public void setFontStyle(boolean bold, boolean italic, boolean underline, boolean strike)
-    throws IOException
+      throws IOException
   {
     if (isBold())
     {
@@ -233,7 +233,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @throws IOException if there was an IOError while writing the command
    */
   public void setPaperSize(int lines)
-    throws IOException
+      throws IOException
   {
     getOut().write(0x1b);
     getOut().write(0x43);
@@ -250,7 +250,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @throws IOException if an IOException occured while updating the printer state.
    */
   public void setHorizontalBorder(int left, int right)
-    throws IOException
+      throws IOException
   {
     getOut().write(0x1b);
     getOut().write(0x58);
@@ -268,7 +268,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @throws IOException if an IOException occured while updating the printer state.
    */
   public void setVerticalBorder(int top, int bottom)
-    throws IOException
+      throws IOException
   {
     int top1 = (top / 256);
     int top2 = (top % 256);
@@ -293,7 +293,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @throws IOException if an IOException occured while updating the printer state.
    */
   public void setLineSpacing(int spaceInInch)
-    throws IOException
+      throws IOException
   {
     // round it to 1/72 inch, its easier this way...
     int spacePar = (spaceInInch / 20);
@@ -313,7 +313,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @throws IOException if there was an IOError while writing the command
    */
   public void setCodePage(String codepage)
-    throws IOException
+      throws IOException
   {
     int[] cp = translateCodePage(codepage);
     getOut().write(0x1b);
@@ -337,7 +337,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @throws IOException if there was an IOError while writing the command
    */
   public void setAutoLF(boolean autoLF)
-    throws IOException
+      throws IOException
   {
     if (autoLF == false)
     {
@@ -371,8 +371,8 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @return the epson byte code.
    * @throws UnsupportedEncodingException if the encoding is not supported.
    */
-  public static int[] translateCodePage (String cp)
-    throws UnsupportedEncodingException
+  public static int[] translateCodePage(String cp)
+      throws UnsupportedEncodingException
   {
     if (StringUtil.startsWithIgnoreCase(cp, "cp"))
     {

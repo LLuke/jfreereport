@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id $
+ * $Id$
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -41,7 +41,8 @@ package com.jrefinery.report.io.ext.factory.objects;
 import com.jrefinery.report.util.StackableException;
 
 /**
- * An exception.
+ * An exception that is thrown, if the creation of an Object failed in the
+ * ObjectFactory implementation.
  * 
  * @author Thomas Morgner.
  */

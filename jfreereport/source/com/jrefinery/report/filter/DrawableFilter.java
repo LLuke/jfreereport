@@ -2,16 +2,15 @@
  * Date: Mar 6, 2003
  * Time: 4:51:23 PM
  *
- * $Id$
+ * $Id: DrawableFilter.java,v 1.1 2003/03/07 13:49:37 taqua Exp $
  */
 package com.jrefinery.report.filter;
 
+import java.awt.geom.Rectangle2D;
+
 import com.jrefinery.report.DrawableContainer;
-import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.ui.Drawable;
-
-import java.awt.geom.Rectangle2D;
 
 /**
  * A filter that converts an Drawable to an DrawableContainer. The DataSource is expected to contain an
@@ -21,7 +20,7 @@ import java.awt.geom.Rectangle2D;
  * @author Thomas Morgner
  * @see Drawable
  */
-public class DrawableFilter
+public class DrawableFilter implements DataFilter
 {
 
   /**
@@ -83,18 +82,6 @@ public class DrawableFilter
      * can scale to any size, and has no minimum size by default.
      */
     return new DrawableContainer((Drawable) o, new FloatDimension(), new Rectangle2D.Float());
-  }
-
-  /**
-   * Returns the data type for the filter.
-   * <P>
-   * The type is ImageReference.
-   *
-   * @return The data type.
-   */
-  public Class getDataType()
-  {
-    return ImageReference.class;
   }
 
   /**

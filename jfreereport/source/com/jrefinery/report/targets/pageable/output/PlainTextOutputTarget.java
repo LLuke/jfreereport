@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.16 2003/02/27 10:35:40 mungady Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.17 2003/03/07 13:47:40 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.io.IOException;
 
+import com.jrefinery.report.DrawableContainer;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.base.content.ContentFactory;
@@ -55,7 +56,6 @@ import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.ui.Drawable;
 
 /**
  * An outputtarget, that generates plaintext. The text can be enriched with
@@ -87,7 +87,7 @@ import com.jrefinery.ui.Drawable;
  * @see IBMPrinterCommandSet
  * @see EpsonPrinterCommandSet
  * @see PlainTextPage
- * 
+ *
  * @author Thomas Morgner
  */
 public class PlainTextOutputTarget extends AbstractOutputTarget
@@ -152,7 +152,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     /** the current character width. */
     private float characterWidth;
-    
+
     /** the current character height. */
     private float characterHeight;
 
@@ -179,15 +179,15 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      */
     public float getStringWidth(String text, int lineStartPos, int endPos)
     {
-      if (lineStartPos < 0) 
+      if (lineStartPos < 0)
       {
         throw new IllegalArgumentException("LineStart < 0");
       }
-      if (endPos < lineStartPos) 
+      if (endPos < lineStartPos)
       {
         throw new IllegalArgumentException("LineEnd < LineStart");
       }
-      if (endPos > text.length()) 
+      if (endPos > text.length())
       {
         throw new IllegalArgumentException("EndPos > TextLength");
       }
@@ -208,34 +208,34 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
 
   /** a flag indicating whether this OutputTarget is open. */
   private boolean open;
-  
+
   /** the current font definition. */
   private FontDefinition font;
-  
+
   /** the current paint, is not used. */
   private Paint paint;
-  
+
   /** the current stroke, is not used. */
   private Stroke stroke;
-  
+
   /** the current page width in CPI. */
   private int currentPageWidth;
-  
+
   /** the current page height in LPI. */
   private int currentPageHeight;
-  
+
   /** the character width in points. */
   private float characterWidth;
-  
+
   /** the character height in points. */
   private float characterHeight;
-  
+
   /** the current save state of this output target. */
   private PlainTextState savedState;
-  
+
   /** the currently generated page. */
   private PlainTextPage pageBuffer;
-  
+
   /** the current printer command set used to write and format the page. */
   private PrinterCommandSet commandSet;
 
@@ -266,7 +266,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    * @param physical  the page format used by this target for printing.
    * @throws NullPointerException if the printer command set is null
    */
-  public PlainTextOutputTarget(PageFormat logical, PageFormat physical, 
+  public PlainTextOutputTarget(PageFormat logical, PageFormat physical,
                                PrinterCommandSet commandSet)
   {
     super(logical, physical);
@@ -465,8 +465,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     Rectangle2D bounds = getOperationBounds();
 
-    int x = correctedDivisionFloor((float) bounds.getX() , characterWidth);
-    int y = correctedDivisionFloor((float) bounds.getY() , characterHeight);
+    int x = correctedDivisionFloor((float) bounds.getX(), characterWidth);
+    int y = correctedDivisionFloor((float) bounds.getY(), characterHeight);
     int w = correctedDivisionFloor((float) bounds.getWidth(), characterWidth);
 
     pageBuffer.addTextChunk(x, y, w, text, getFont());
@@ -479,7 +479,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    * @param d the divident
    * @return the corrected division result.
    */
-  private int correctedDivisionFloor (float c, float d)
+  private int correctedDivisionFloor(float c, float d)
   {
     c = Math.round(c * 100);
     d = Math.round(d * 100);
@@ -594,11 +594,12 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Draws a drawable relative to the current position.
+   * Draws a drawable relative to the current position. Drawables are not
+   * supported, they do not provide text information...
    *
    * @param drawable the drawable to draw.
    */
-  public void drawDrawable(Drawable drawable)
+  public void drawDrawable(DrawableContainer drawable)
   {
   }
 }
