@@ -33,6 +33,7 @@
  * -------
  * 29-May-2002 : Initial version
  * 05-Jun-2002 : These comments an documentation
+ * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
  *
  */
 package com.jrefinery.report.action;
@@ -65,7 +66,5 @@ public abstract class FirstPageAction extends AbstractAction
     putValue(Action.ACCELERATOR_KEY, resources.getObject("action.firstpage.accelerator"));
     putValue(Action.SMALL_ICON, resources.getObject("action.firstpage.small-icon"));
     putValue("ICON24", resources.getObject("action.firstpage.icon"));
-
-    putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.FIRSTPAGE_COMMAND);
   }
 }

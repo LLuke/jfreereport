@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportProcessor.java,v 1.5 2002/05/31 19:31:14 taqua Exp $
+ * $Id: ReportProcessor.java,v 1.6 2002/06/04 21:44:34 taqua Exp $
  * Changes
  * -------------------------
  * 10-May-2002 : Initial version
@@ -40,7 +40,9 @@ import com.jrefinery.report.util.Log;
 /**
  * Processes a page of an report. This is an abstraction to protect the reportState from
  * detailed knowledge of the printing process. All printing centric state information is
- * collected in this class.
+ * concentrated in this class.
+ * <p>
+ * ToDo: Better support for layout
  */
 public class ReportProcessor implements JFreeReportConstants
 {

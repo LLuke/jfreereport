@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportConstants.java,v 1.7 2002/05/29 09:07:56 jaosch Exp $
+ * $Id: JFreeReportConstants.java,v 1.8 2002/05/31 19:31:14 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,7 @@
  * 07-May-2002 : Removed info constants, these are now in JFreeReportInfo class in the
  *               JFreeReport.java source file.  Added action constants (DG);
  * 10-May-2002 : Documentation
+ * 09-Jun-2002 : Removed the action commands, actions connect directly to their source.
  */
 
 package com.jrefinery.report;
@@ -51,20 +52,6 @@ public interface JFreeReportConstants
   public static final String REPORT_PAGEFORMAT_PROPERTY = "report.pageformat";
   public static final String REPORT_PAGECOUNT_PROPERTY = "report.pagecount";
   public static final String REPORT_PREPARERUN_PROPERTY = "report.preparerun";
-
-  public static final String SAVE_AS_COMMAND = "SAVE AS";
-  public static final String PAGE_SETUP_COMMAND = "PAGE SETUP";
-  public static final String PRINT_COMMAND = "PRINT";
-  public static final String ABOUT_COMMAND = "ABOUT";
-  public static final String CLOSE_COMMAND = "CLOSE";
-
-  public static final String FIRSTPAGE_COMMAND = "FIRSTPAGE";
-  public static final String LASTPAGE_COMMAND = "LASTPAGE";
-  public static final String NEXTPAGE_COMMAND = "PREVPAGE";
-  public static final String PREVPAGE_COMMAND = "NEXTPAGE";
-  public static final String ZOOMIN_COMMAND = "ZOOMIN";
-  public static final String ZOOMOUT_COMMAND = "ZOOMOUT";
-  public static final String GOTO_COMMAND = "GOTO";
 
   /** A useful constant that signals that a page is full. */
   public static final boolean PAGE_FULL = true;

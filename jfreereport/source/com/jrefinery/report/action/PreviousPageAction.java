@@ -25,6 +25,9 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * Changes
+ * -------
+ * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
  */
 package com.jrefinery.report.action;
 
@@ -47,7 +50,6 @@ public abstract class PreviousPageAction extends AbstractAction
     putValue(Action.ACCELERATOR_KEY, resources.getObject("action.back.accelerator"));
     putValue(Action.SMALL_ICON, resources.getObject("action.back.small-icon"));
     putValue("ICON24", resources.getObject("action.back.icon"));
-    putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.PREVPAGE_COMMAND);
   }
 
 }

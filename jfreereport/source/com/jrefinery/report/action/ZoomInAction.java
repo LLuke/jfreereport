@@ -25,6 +25,10 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * Changes
+ * -------------------
+ * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
+ *
  */
 package com.jrefinery.report.action;
 
@@ -53,7 +57,6 @@ public abstract class ZoomInAction extends AbstractAction
     putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.zoomIn.accelerator"));
     putValue (Action.SMALL_ICON, resources.getObject ("action.zoomIn.small-icon"));
     putValue ("ICON24", resources.getObject ("action.zoomIn.icon"));
-    putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.ZOOMIN_COMMAND);
   }
 
 }

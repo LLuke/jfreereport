@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.6 2002/05/28 19:28:23 taqua Exp $
+ * $Id: CloseAction.java,v 1.7 2002/06/05 21:20:47 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,7 @@
  *               target environment. (TM)
  * 16-May-2002 : Load images from jar (JS)
  * 04-Jun-2002 : Documentation.
+ * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
  */
 
 package com.jrefinery.report.action;
@@ -63,6 +64,5 @@ public abstract class CloseAction extends AbstractAction
     this.putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.close.description"));
     this.putValue (Action.MNEMONIC_KEY, resources.getObject ("action.close.mnemonic"));
     this.putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.close.accelerator"));
-    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.CLOSE_COMMAND);
   }
 }

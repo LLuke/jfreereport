@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SaveAsAction.java,v 1.4 2002/05/26 20:05:12 taqua Exp $
+ * $Id: SaveAsAction.java,v 1.5 2002/05/28 19:28:23 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,7 @@
  * 10-May-2002 : Removed actionhandling from class. Specific handling is implemented based on
  *               target environment. (TM)
  * 16-May-2002 : Load images from jar (JS)
- *
+ * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
  */
 
 package com.jrefinery.report.action;
@@ -67,6 +67,5 @@ public abstract class SaveAsAction extends AbstractAction
     this.putValue(Action.ACCELERATOR_KEY, resources.getObject("action.save-as.accelerator"));
     this.putValue(Action.SMALL_ICON, resources.getObject("action.save-as.small-icon"));
     this.putValue("ICON24", resources.getObject("action.save-as.icon"));
-    this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.SAVE_AS_COMMAND);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: NumberElement.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
+ * $Id: NumberElement.java,v 1.5 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -66,7 +66,7 @@ public class NumberElement extends DataElement
    */
   public NumberElement ()
   {
-    formatter = new NumberFormatFilter();
+    formatter = new NumberFormatFilter ();
     setDecimalFormatString (null);
     DataFilter df = getTextFilter ();
     df.setDataSource (formatter);

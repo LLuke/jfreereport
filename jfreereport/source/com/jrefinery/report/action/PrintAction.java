@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PrintAction.java,v 1.5 2002/05/28 19:28:23 taqua Exp $
+ * $Id: PrintAction.java,v 1.6 2002/06/05 21:20:47 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,7 @@
  *               target environment. (TM)
  * 16-May-2002 : Load images from jar (JS)
  * 05-Jun-2002 : Documentation, removed unused imports.
+ * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
  */
 
 package com.jrefinery.report.action;
@@ -64,6 +65,5 @@ public abstract class PrintAction extends AbstractAction implements Runnable
     this.putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.print.accelerator"));
     this.putValue (Action.SMALL_ICON, resources.getObject ("action.print.small-icon"));
     this.putValue ("ICON24", resources.getObject ("action.print.icon"));
-    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.PRINT_COMMAND);
   }
 }

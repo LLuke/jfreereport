@@ -27,6 +27,7 @@
  *
  * 29-May-2002 : Initial version
  * 05-Jun-2002 : Documentation update.
+ * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
  */
 
 package com.jrefinery.report.action;
@@ -57,7 +58,5 @@ public abstract class LastPageAction extends AbstractAction
     putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.lastpage.accelerator"));
     putValue (Action.SMALL_ICON, resources.getObject ("action.lastpage.small-icon"));
     putValue ("ICON24", resources.getObject ("action.lastpage.icon"));
-
-    putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.LASTPAGE_COMMAND);
   }
 }

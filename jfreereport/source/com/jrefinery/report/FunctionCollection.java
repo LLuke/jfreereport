@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionCollection.java,v 1.6 2002/05/28 19:28:22 taqua Exp $
+ * $Id: FunctionCollection.java,v 1.7 2002/05/31 19:31:14 taqua Exp $
  *
  * Changes
  * -------
@@ -44,12 +44,10 @@ import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.util.Log;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Enumeration;
-import java.util.ArrayList;
 
 /**
  * A function collection contains all function elements of a particular report.
@@ -58,6 +56,9 @@ import java.util.ArrayList;
  * <p>
  * Every event in JFreeReport is passed via callback to every function in the
  * collection.
+ * <p>
+ * A function collection gets immutable after it is passed to the report state.
+ * An immutable function collection cannot have functions added or removed.
  */
 public class FunctionCollection extends ReportListenerAdapter implements Cloneable
 {
@@ -66,14 +67,14 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     public ReadOnlyFunctionCollection (FunctionCollection copy)
     {
       functionPositions = copy.functionPositions;
-      functionList = new ArrayList(copy.functionList.size());
+      functionList = new ArrayList (copy.functionList.size ());
 
-      for (int i = 0; i < copy.functionList.size(); i++)
+      for (int i = 0; i < copy.functionList.size (); i++)
       {
-        Function f = (Function) copy.functionList.get(i);
+        Function f = (Function) copy.functionList.get (i);
         try
         {
-          functionList.add(f.clone ());
+          functionList.add (f.clone ());
         }
         catch (Exception e)
         {
@@ -91,29 +92,34 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     public void add (Function f)
             throws FunctionInitializeException
     {
-      throw new IllegalStateException("This is a readonly collection");
+      throw new IllegalStateException ("This is a readonly collection");
     }
 
-    protected void removeFunction (Function f)
+    public void removeFunction (Function f)
     {
-      throw new IllegalStateException("This is a readonly collection");
+      throw new IllegalStateException ("This is a readonly collection");
     }
   }
 
   /** Storage for the functions in the collection. */
   protected Hashtable functionPositions;
+
+  /** Ordered storage for the functions */
   protected ArrayList functionList;
+
   /**
    * Creates a new empty function collection.
    */
   public FunctionCollection ()
   {
     functionPositions = new Hashtable ();
-    functionList = new ArrayList();
+    functionList = new ArrayList ();
   }
 
   /**
    * Constructs a new function collection, populated with the supplied functions.
+   *
+   * @throws ClassCastException if the collection does not contain Functions
    */
   public FunctionCollection (Collection functions)
           throws FunctionInitializeException
@@ -133,22 +139,26 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
 
   /**
    * Returns a copy of the function collection.
-   * Not a cloning, a fully functional collection is made readonly.
+   * This is no cloning, a fully functional collection is made readonly by creating a
+   * ReadOnlyFunctionCollection (internal private class).
+   *
+   * @returns a function collection that is immutable
    */
   public FunctionCollection getCopy ()
   {
-    return new ReadOnlyFunctionCollection(this);
+    return new ReadOnlyFunctionCollection (this);
   }
 
   /**
    * Returns the function with the specified name (or null).
+   * @throws NullPointerException if the name given is null
    */
   public Function get (String name)
   {
     Integer result = (Integer) functionPositions.get (name);
     if (result == null) return null;
 
-    return (Function) functionList.get(result.intValue());
+    return (Function) functionList.get (result.intValue ());
   }
 
   /**
@@ -163,7 +173,7 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     if (f == null)
       throw new NullPointerException ("Function is null");
 
-    if (functionPositions.containsKey(f.getName()))
+    if (functionPositions.containsKey (f.getName ()))
     {
       removeFunction (f);
     }
@@ -175,22 +185,28 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
   /**
    * Adds a new function to the collection.
    * @param f the new function instance.
+   * @throws NullPointerException if the given function is null.
    */
   protected void privateAdd (Function f)
   {
-    functionPositions.put (f.getName (), new Integer(functionList.size()));
+    functionPositions.put (f.getName (), new Integer (functionList.size ()));
     functionList.add (f);
   }
 
-  protected void removeFunction (Function f)
+  /**
+   * removes the function from the collection.
+   *
+   * @throws NullPointerException if the given function is null.
+   */
+  public void removeFunction (Function f)
   {
-    Integer val = (Integer) functionPositions.get (f.getName());
+    Integer val = (Integer) functionPositions.get (f.getName ());
     if (val == null)
     {
       return;
     }
-    functionPositions.remove(f.getName());
-    functionList.remove(val.intValue());
+    functionPositions.remove (f.getName ());
+    functionList.remove (val.intValue ());
   }
 
   /**
@@ -201,9 +217,9 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void reportStarted (ReportEvent event)
   {
-    for (int i = 0; i < functionList.size(); i++)
+    for (int i = 0; i < functionList.size (); i++)
     {
-      Function f = (Function) functionList.get(i);
+      Function f = (Function) functionList.get (i);
       try
       {
         f.reportStarted (event);
@@ -222,9 +238,9 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void reportFinished (ReportEvent event)
   {
-    for (int i = 0; i < functionList.size(); i++)
+    for (int i = 0; i < functionList.size (); i++)
     {
-      Function f = (Function) functionList.get(i);
+      Function f = (Function) functionList.get (i);
       try
       {
         f.reportFinished (event);
@@ -242,9 +258,9 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void pageStarted (ReportEvent event)
   {
-    for (int i = 0; i < functionList.size(); i++)
+    for (int i = 0; i < functionList.size (); i++)
     {
-      Function f = (Function) functionList.get(i);
+      Function f = (Function) functionList.get (i);
       try
       {
         f.pageStarted (event);
@@ -266,9 +282,9 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void pageFinished (ReportEvent event)
   {
-    for (int i = 0; i < functionList.size(); i++)
+    for (int i = 0; i < functionList.size (); i++)
     {
-      Function f = (Function) functionList.get(i);
+      Function f = (Function) functionList.get (i);
       try
       {
         f.pageFinished (event);
@@ -289,9 +305,9 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void groupStarted (ReportEvent event)
   {
-    for (int i = 0; i < functionList.size(); i++)
+    for (int i = 0; i < functionList.size (); i++)
     {
-      Function f = (Function) functionList.get(i);
+      Function f = (Function) functionList.get (i);
       try
       {
         f.groupStarted (event);
@@ -312,9 +328,9 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void groupFinished (ReportEvent event)
   {
-    for (int i = 0; i < functionList.size(); i++)
+    for (int i = 0; i < functionList.size (); i++)
     {
-      Function f = (Function) functionList.get(i);
+      Function f = (Function) functionList.get (i);
       try
       {
         f.groupFinished (event);
@@ -333,9 +349,9 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void itemsAdvanced (ReportEvent event)
   {
-    for (int i = 0; i < functionList.size(); i++)
+    for (int i = 0; i < functionList.size (); i++)
     {
-      Function f = (Function) functionList.get(i);
+      Function f = (Function) functionList.get (i);
       try
       {
         f.itemsAdvanced (event);
@@ -353,9 +369,9 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void itemsStarted (ReportEvent event)
   {
-    for (int i = 0; i < functionList.size(); i++)
+    for (int i = 0; i < functionList.size (); i++)
     {
-      Function f = (Function) functionList.get(i);
+      Function f = (Function) functionList.get (i);
       try
       {
         f.itemsStarted (event);
@@ -374,9 +390,9 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void itemsFinished (ReportEvent event)
   {
-    for (int i = 0; i < functionList.size(); i++)
+    for (int i = 0; i < functionList.size (); i++)
     {
-      Function f = (Function) functionList.get(i);
+      Function f = (Function) functionList.get (i);
       try
       {
         f.itemsFinished (event);
@@ -387,32 +403,6 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
       }
     }
   }
-
-  /**
-   * Returns a string representation of the function collection.  Used in debugging only.
-   *
-   public String toString ()
-   {
-
-   StringBuffer result = new StringBuffer ();
-   result.append ("Function Collection:\n");
-
-   Iterator iterator = this.functions.values ().iterator ();
-   while (iterator.hasNext ())
-   {
-   Function f = (Function) iterator.next ();
-   result.append (f.getName ());
-   result.append (" = ");
-   result.append (f.getValue ());
-   result.append ("\n");
-   }
-
-   return result.toString();
-
-   }
-   */
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
    * Returns the number of active functions in this collection

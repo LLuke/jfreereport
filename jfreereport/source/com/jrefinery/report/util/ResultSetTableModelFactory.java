@@ -26,6 +26,7 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 25-Apr-2002 : Initial version
+ * 09-Jun-2002 : Documentation and changed the returnvalue to be an CloseableTableModel
  */
 package com.jrefinery.report.util;
 
@@ -35,6 +36,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Creates an TableModel which is backed up by an ResultSet.
@@ -47,7 +49,27 @@ import java.util.Vector;
  */
 public class ResultSetTableModelFactory
 {
-  public TableModel createTableModel (ResultSet rs)
+  /** Singleton instance of the factory */
+  private static ResultSetTableModelFactory defaultInstance;
+
+  /**
+   * DefaultConstructor
+   */
+  public ResultSetTableModelFactory ()
+  {
+  }
+
+  /**
+   * Creates a table model by using the given resultset as backend. If the resultset
+   * is scrollable (the type is not TYPE_FORWARD_ONLY), an instance of ScrollableResultSetTableModel
+   * is returned. This model uses the extended capabilities of scrollable resultsets to directly
+   * read data from the database without caching or the need of copying the complete resultset
+   * into the programms memory.
+   * <p>
+   * If the resultset lacks the scollable features, the data will be copied into an DefaultTableModel
+   * and the resultset gets closed.
+   */
+  public CloseableTableModel createTableModel (ResultSet rs)
           throws SQLException
   {
     // Allow for override, some jdbc drivers are buggy :(
@@ -65,7 +87,34 @@ public class ResultSetTableModelFactory
     }
   }
 
-  public DefaultTableModel generateDefaultTableModel (ResultSet rs)
+  /**
+   * A DefaultTableModel that implements the CloseableTableModel interface.
+   */
+  private class CloseableDefaultTableModel extends DefaultTableModel implements CloseableTableModel
+  {
+    public CloseableDefaultTableModel (Object[][] objects, Object[] objects1)
+    {
+      super (objects, objects1);
+    }
+
+    /**
+     * If this model has an resultset assgined, close it, if this is a DefaultTableModel,
+     * remove all data.
+     */
+    public void close ()
+    {
+      setDataVector(new Object[0][0], new Object[0]);
+    }
+  }
+
+  /**
+   * Generates a TableModel that gets its contents filled from the resultset. The column names
+   * of the resultset will form the column names of the table model.
+   * <p>
+   * Hint: To customize the names of the columns, use the SQL-Column aliasing (done with
+   * <code>SELECT nativecolumnname AS "JavaColumnName" FROM ....</code>
+   */
+  public CloseableTableModel generateDefaultTableModel (ResultSet rs)
           throws SQLException
   {
     ResultSetMetaData rsmd = rs.getMetaData ();
@@ -76,39 +125,24 @@ public class ResultSetTableModelFactory
       String name = rsmd.getColumnName (i + 1);
       header.add (name);
     }
-    Vector rows = new Vector ();
+    ArrayList rows = new ArrayList();
     while (rs.next ())
     {
       Vector column = new Vector (colcount);
       for (int i = 0; i < colcount; i++)
       {
         Object val = rs.getObject (i + 1);
-        if (val == null)
-        {
-          val = getNullValue ();
-        }
         header.add (val);
       }
-      rows.add (column);
+      rows.add (column.toArray());
     }
-    DefaultTableModel model = new DefaultTableModel (rows, header);
+    CloseableDefaultTableModel model = new CloseableDefaultTableModel ((Object[][]) rows.toArray(), header.toArray());
     return model;
   }
 
-  private Object nullValue;
-
-  public void setNullValue (Object nullval)
-  {
-    nullValue = nullval;
-  }
-
-  public Object getNullValue ()
-  {
-    return nullValue;
-  }
-
-  private static ResultSetTableModelFactory defaultInstance;
-
+  /**
+   * Returns the singleton instance of the factory.
+   */
   public static ResultSetTableModelFactory getInstance ()
   {
     if (defaultInstance == null)

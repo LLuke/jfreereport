@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Group.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
+ * $Id: Group.java,v 1.5 2002/05/31 19:31:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -44,10 +44,9 @@ package com.jrefinery.report;
 import com.jrefinery.report.util.ReadOnlyList;
 
 import javax.swing.table.TableModel;
-import java.util.Collection;
+import javax.swing.table.AbstractTableModel;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Vector;
 
 /**
@@ -228,6 +227,8 @@ public class Group
 
   /**
    * Compares two objects without crashing if one or both are null.
+   *
+   * @returns true, if both objects are null or both objects are equal, false otherwise.
    */
   private boolean secureEquals (Object item1, Object item2)
   {
@@ -247,7 +248,6 @@ public class Group
    */
   private int fieldNameToColumnIndex (TableModel data, String name)
   {
-
     int columns = data.getColumnCount ();
     for (int c = 0; c < columns; c++)
     {
@@ -259,5 +259,4 @@ public class Group
     return -1;  // no field with that name
 
   }
-
 }

@@ -42,9 +42,6 @@ import java.awt.Shape;
 
 /**
  * A LineShapeElement encapsulates an Line2D-Shape to display it on the report.
- * <p>
- * Still ToDo: How to print complexer shapes in a report? How about boxes? Or just a simple
- * line style. !!<b>Include WMF-Pixie-Commands into JFreeReport.</b>
  */
 public class LineShapeElement extends ShapeElement
 {
@@ -103,6 +100,9 @@ public class LineShapeElement extends ShapeElement
     super.draw(target, band);
   }
 
+  /**
+   * debugging info. Displays the contents of this element as string.
+   */
   public String toString()
   {
     Line2D line = getLine();

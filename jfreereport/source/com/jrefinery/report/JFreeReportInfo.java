@@ -79,7 +79,7 @@ public class JFreeReportInfo extends ProjectInfo
             new Library[]
             {
               new Library (JCommon.INFO),
-              new Library ("JUnit", "3.7.1", "BSD?", "http://www.junit.org/"),
+              new Library ("JUnit", "3.7.1", "IBM Public Licence", "http://www.junit.org/"),
               new Library ("iText", "0.92", "LGPL", "http://www.lowagie.com/iText/index.html"),
               new Library ("GNU JAXP", "1.0beta1", "GPL with library exception",
                       "http://www.gnu.org/software/classpathx/jaxp/"),

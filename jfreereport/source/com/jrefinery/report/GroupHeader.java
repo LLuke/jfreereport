@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupHeader.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
+ * $Id: GroupHeader.java,v 1.5 2002/06/04 19:20:37 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -45,7 +45,10 @@ package com.jrefinery.report;
  */
 public class GroupHeader extends Band
 {
-
+  /**
+   * internal property, indicating whether a pagebreka should be triggered before this
+   * header is printed.
+   */
   private boolean pageBreak;
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.3 2002/05/16 16:51:03 jaosch Exp $
+ * $Id: AboutAction.java,v 1.4 2002/05/28 19:28:23 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,7 @@
  * 10-May-2002 : Removed actionhandling from class. Specific handling is implemented based on
  *               target environment. (TM)
  * 16-May-2002 : Load images from jar and simplified (JS)
+ * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
  */
 
 package com.jrefinery.report.action;
@@ -69,6 +70,5 @@ public abstract class AboutAction extends AbstractAction
     putValue(Action.MNEMONIC_KEY, resources.getObject("action.about.mnemonic"));
     putValue(Action.SMALL_ICON, resources.getObject("action.about.small-icon"));
     putValue("ICON24", resources.getObject("action.about.icon"));
-    putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.ABOUT_COMMAND);
   }
 }

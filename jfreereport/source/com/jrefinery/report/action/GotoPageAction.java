@@ -25,10 +25,11 @@
  * -------------------
  * (C)opyright 2002, by Simba Management Limited.
  *
- *  Changes
- *  -------------------
- *  31-May-2002 : Initial version
- *  04-Jun-2002 : Documentation
+ * Changes
+ * -------------------
+ * 31-May-2002 : Initial version
+ * 04-Jun-2002 : Documentation
+ * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
  */
 package com.jrefinery.report.action;
 
@@ -56,7 +57,6 @@ public abstract class GotoPageAction extends AbstractAction
     this.putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.gotopage.description"));
     this.putValue (Action.MNEMONIC_KEY, resources.getObject ("action.gotopage.mnemonic"));
     this.putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.gotopage.accelerator"));
-    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.GOTO_COMMAND);
   }
 
 }

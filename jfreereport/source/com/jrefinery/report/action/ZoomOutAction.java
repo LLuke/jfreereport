@@ -25,6 +25,10 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * Changes
+ * -------
+ * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
+ *
  */
 package com.jrefinery.report.action;
 
@@ -53,7 +57,6 @@ public abstract class ZoomOutAction extends AbstractAction
     putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.zoomOut.accelerator"));
     putValue (Action.SMALL_ICON, resources.getObject ("action.zoomOut.small-icon"));
     putValue ("ICON24", resources.getObject ("action.zoomOut.icon"));
-    putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.ZOOMOUT_COMMAND);
   }
 
 }

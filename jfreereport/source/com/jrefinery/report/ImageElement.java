@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.6 2002/05/28 19:28:22 taqua Exp $
+ * $Id: ImageElement.java,v 1.7 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes:
  * --------
@@ -37,7 +37,7 @@
  *               properties (TM);
  * 16-May-2002 : Added Javadoc comments (DG);
  * 16-May-2002 : using protected member m_paint instead of getter methode (JS)
- *
+ * 09-Jun-2002 : documentation
  */
 
 package com.jrefinery.report;
@@ -45,14 +45,14 @@ package com.jrefinery.report;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 
-import java.awt.geom.Rectangle2D;
-
 /**
  * Used to draw images (Gif, JPEG, PNG or wmf) on a report band.
  * PNG Support needs JDK 1.3 or higher. This class encapsulates an
  * ImageReference into an element.
+ * <p>
+ * ToDo: Use the image filter to remove the static binding to the imageReference.
+ * Better scaling
  */
-
 public class ImageElement extends Element
 {
 
@@ -62,7 +62,7 @@ public class ImageElement extends Element
   /**
    * Constructs a image element.
    */
-  public ImageElement()
+  public ImageElement ()
   {
   }
 
@@ -74,11 +74,11 @@ public class ImageElement extends Element
    *
    * @throws NullPointerException if the reference is null.
    */
-  public void setImageReference(ImageReference reference)
+  public void setImageReference (ImageReference reference)
   {
 
     if (reference == null)
-      throw new NullPointerException("ImageElement.setImageReference: null not allowed.");
+      throw new NullPointerException ("ImageElement.setImageReference: null not allowed.");
 
     this.image = reference;
   }
@@ -88,7 +88,7 @@ public class ImageElement extends Element
    *
    * @return The image reference.
    */
-  public ImageReference getImageReference()
+  public ImageReference getImageReference ()
   {
 
     return image;
@@ -99,14 +99,12 @@ public class ImageElement extends Element
    *
    * @param target The target on which to print.
    * @param band The band.
-   * @param bandX The x-coordinate for the element within its band.
-   * @param bandY The y-coordinate for the element within its band.
    */
-  public void draw(OutputTarget target, Band band) throws OutputTargetException
+  public void draw (OutputTarget target, Band band) throws OutputTargetException
   {
     // set the paint...
-    target.setPaint(getPaint(band));
-    target.drawImage(getImageReference());
+    target.setPaint (getPaint (band));
+    target.drawImage (getImageReference ());
   }
 
 
@@ -115,10 +113,10 @@ public class ImageElement extends Element
    *
    * @return The width.
    */
-  public float getWidth()
+  public float getWidth ()
   {
 
-    return (float) getBounds().getWidth();
+    return (float) getBounds ().getWidth ();
   }
 
   /**
@@ -126,10 +124,10 @@ public class ImageElement extends Element
    *
    * @return the desired height of the image.
    */
-  public float getHeight()
+  public float getHeight ()
   {
 
-    return (float) getBounds().getHeight();
+    return (float) getBounds ().getHeight ();
   }
 
   /**
@@ -137,10 +135,10 @@ public class ImageElement extends Element
    *
    * @return The left origin.
    */
-  public float getX()
+  public float getX ()
   {
 
-    return (float) getBounds().getX();
+    return (float) getBounds ().getX ();
   }
 
   /**
@@ -148,9 +146,9 @@ public class ImageElement extends Element
    *
    * @return The upper origin.
    */
-  public float getY()
+  public float getY ()
   {
 
-    return (float) getBounds().getY();
+    return (float) getBounds ().getY ();
   }
 }
