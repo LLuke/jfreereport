@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log4JLogTarget.java,v 1.6 2003/02/25 14:07:30 taqua Exp $
+ * $Id: Log4JLogTarget.java,v 1.4 2003/02/25 20:32:43 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,7 @@
  */
 package com.jrefinery.report.ext.log;
 
-import com.jrefinery.report.util.LogTarget;
+import com.jrefinery.util.LogTarget;
 import org.apache.log4j.Category;
 import org.apache.log4j.Priority;
 

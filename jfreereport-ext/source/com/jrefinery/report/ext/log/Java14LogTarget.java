@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14LogTarget.java,v 1.6 2003/02/25 14:07:30 taqua Exp $
+ * $Id: Java14LogTarget.java,v 1.1 2003/02/25 20:32:42 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,7 @@
  */
 package com.jrefinery.report.ext.log;
 
-import com.jrefinery.report.util.LogTarget;
+import com.jrefinery.util.LogTarget;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
+<!--
+    <!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
+
+-->
 <report name="Central Cpy Third Party Report" orientation="landscape" pageformat="A4" leftmargin="50" rightmargin="50">
 
   <!-- REPORT HEADER -->
@@ -64,20 +67,22 @@
       <groupfooter height="20" fontname="Monospaced" fontstyle="bold" fontsize="6" vertical-alignment="middle">
         <line name="line1" x1="0"   y1="1" x2="0" y2="1" weight="1"></line>
         <line name="line2" x1="0"   y1="3" x2="0" y2="3" weight="1"></line>
-        <number-field name="subtotal" fieldname="SumPremiumL"    format="#,##0.00;-#,##0.00"   x="125"  y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumBrokerageL"  format="#,##0.00;-#,##0.00"   x="190"  y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumComissionL"  format="#,##0.00;-#,##0.00"   x="255" y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumNetPremiumL" format="#,##0.00;-#,##0.00"   x="320" y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumPrshaL"      format="#,##0.00;-#,##0.00"   x="385" y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumClaimL"      format="#,##0.00;-#,##0.00"   x="450" y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumClaimExpenseL" format="#,##0.00;-#,##0.00" x="515" y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumClaimPaidL"  format="#,##0.00;-#,##0.00"   x="580" y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumBalanceL"    format="#,##0.00;-#,##0.00"   x="645" y="4" width="60" height="8" alignment="right"/>
+        <number-function name="subtotal" function="SumPremiumL"    format="#,##0.00;-#,##0.00"   x="125"  y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumBrokerageL"  format="#,##0.00;-#,##0.00"   x="190"  y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumComissionL"  format="#,##0.00;-#,##0.00"   x="255" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumNetPremiumL" format="#,##0.00;-#,##0.00"   x="320" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumPrshaL"      format="#,##0.00;-#,##0.00"   x="385" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumClaimL"      format="#,##0.00;-#,##0.00"   x="450" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumClaimExpenseL" format="#,##0.00;-#,##0.00" x="515" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumClaimPaidL"  format="#,##0.00;-#,##0.00"   x="580" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumBalanceL"    format="#,##0.00;-#,##0.00"   x="645" y="4" width="60" height="8" alignment="right"></number-function>
         <line name="line3" x1="0"   y1="16" x2="0" y2="16" weight="1"></line>
         <line name="line4" x1="0"   y1="18" x2="0" y2="18" weight="1"></line>
       </groupfooter>
       <fields>
-        <field>Color</field>
+        <field>LBL_STAT_bank</field>
+        <field>LBL_STAT_mo</field>
+        <field>LBL_STAT_balanceBrougthForward</field>
       </fields>
     </group>
 
@@ -104,32 +109,34 @@
       </groupheader>
       <groupfooter height="25" fontname="Monospaced" fontstyle="bold" fontsize="6" vertical-alignment="middle">
         <line name="line1" x1="0"   y1="1" x2="0" y2="1" weight="1"></line>
-        <number-field name="subtotal" fieldname="SumJourPremiumL"    format="#,##0.00;-#,##0.00"   x="125"  y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumJourBrokerageL"  format="#,##0.00;-#,##0.00"   x="190"  y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumJourComissionL"  format="#,##0.00;-#,##0.00"   x="255" y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumJourNetPremiumL" format="#,##0.00;-#,##0.00"   x="320" y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumJourPrshaL"      format="#,##0.00;-#,##0.00"   x="385" y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumJourClaimL"      format="#,##0.00;-#,##0.00"   x="450" y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumJourClaimExpenseL" format="#,##0.00;-#,##0.00" x="515" y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumJourClaimPaidL"  format="#,##0.00;-#,##0.00"   x="580" y="4" width="60" height="8" alignment="right"/>
-        <number-field name="subtotal" fieldname="SumJourBalanceL"    format="#,##0.00;-#,##0.00"   x="645" y="4" width="60" height="8" alignment="right"/>
+        <number-function name="subtotal" function="SumJourPremiumL"    format="#,##0.00;-#,##0.00"   x="125"  y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourBrokerageL"  format="#,##0.00;-#,##0.00"   x="190"  y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourComissionL"  format="#,##0.00;-#,##0.00"   x="255" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourNetPremiumL" format="#,##0.00;-#,##0.00"   x="320" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourPrshaL"      format="#,##0.00;-#,##0.00"   x="385" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourClaimL"      format="#,##0.00;-#,##0.00"   x="450" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourClaimExpenseL" format="#,##0.00;-#,##0.00" x="515" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourClaimPaidL"  format="#,##0.00;-#,##0.00"   x="580" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourBalanceL"    format="#,##0.00;-#,##0.00"   x="645" y="4" width="60" height="8" alignment="right"></number-function>
         <line name="line3" x1="0"   y1="16" x2="0" y2="16" weight="1"></line>
       </groupfooter>
       <fields>
-        <field>Color</field>
-        <field>Letter</field>
+        <field>LBL_STAT_bank</field>
+        <field>LBL_STAT_mo</field>
+        <field>LBL_STAT_balanceBrougthForward</field>
+        <field>LBL_STAT_journalId</field>
       </fields>
     </group>
   </groups>
   <!-- ITEMS -->
-  <items height="10" fontname="Monospaced" fontstyle="plain" fontsize="8" vertical-alignment="middle">
+  <items height="10" fontname="Monospaced" fontstyle="plain" fontsize="6" vertical-alignment="middle">
 <!--
     <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
 -->
     <line name="top"    x1="0" y1="0"  x2="0" y2="0"  color="#DFDFDF" weight="0.1"/>
     <line name="bottom" x1="0" y1="10" x2="0" y2="10" color="#DFDFDF" weight="0.1"/>
 
-    <string-field name="Closing Element"     x="0"   y="0" width="40" height="8" alignment="left"  fieldname="Integer"/>
+    <string-field name="Closing Element"     x="0"   y="0" width="40" height="8" alignment="left"  fieldname="LBL_STAT_closing"/>
     <string-field name="DateRisk Element"    x="45"  y="0" width="40" height="8" alignment="left"  fieldname="LBL_STAT_dateRisk"/>
     <string-field name="Cover Element"       x="90"  y="0" width="30" height="8" alignment="left"  fieldname="LBL_STAT_coverId"/>
     <number-field name="PremiumL Element"    x="125"  y="0" width="60" height="8" fontstyle="bold"  alignment="right" format="#,##0.00;-#,##0.00" fieldname="LBL_STAT_premium"/>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestSystem.java,v 1.1 2003/03/26 22:52:44 taqua Exp $
+ * $Id: TestSystem.java,v 1.2 2003/04/11 19:29:27 taqua Exp $
  *
  * Changes
  * -------
@@ -82,9 +82,19 @@ public class TestSystem
   public static void showPreviewFrame (JFreeReport report1)
     throws ReportProcessingException
   {
+    showPreviewFrameWExit(report1, false);
+  }
+
+  public static void showPreviewFrameWExit (JFreeReport report1, boolean close)
+    throws ReportProcessingException
+  {
     PreviewFrame frame1 = new PreviewFrame (report1);
     frame1.pack ();
     RefineryUtilities.positionFrameRandomly (frame1);
+    if (close)
+    {
+      frame1.setDefaultCloseOperation(PreviewFrame.EXIT_ON_CLOSE);
+    }
     frame1.setVisible (true);
     frame1.requestFocus ();
   }

@@ -35,7 +35,7 @@
 package com.jrefinery.report.ext.barcode;
 
 import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.ui.FloatDimension;
 import com.jrefinery.report.targets.FontDefinition;
 
 import java.awt.Color;

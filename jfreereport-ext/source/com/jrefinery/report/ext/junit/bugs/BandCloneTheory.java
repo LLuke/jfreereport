@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: BandCloneTheory.java,v 1.1 2003/04/11 19:32:37 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import com.jrefinery.report.Element;
 import com.jrefinery.report.TextElement;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.base.bandlayout.LayoutCacheKey;
-import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.ui.FloatDimension;
 import com.jrefinery.report.util.Log;
 
 public class BandCloneTheory

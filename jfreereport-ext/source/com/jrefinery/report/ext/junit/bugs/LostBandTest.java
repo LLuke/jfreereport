@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: LostBandTest.java,v 1.1 2003/04/11 19:32:37 taqua Exp $
  *
  * Changes
  * -------
@@ -36,20 +36,46 @@
  */
 package com.jrefinery.report.ext.junit.bugs;
 
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Properties;
+import javax.swing.table.TableModel;
+
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.demo.SampleData2;
 import com.jrefinery.report.ext.junit.TestSystem;
+import com.jrefinery.report.tablemodel.ResultSetTableModelFactory;
 
 public class LostBandTest
 {
   public static void main (String [] args)
     throws Exception
   {
-    JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/ext/junit/bugs/resource/LostBands.xml", new SampleData2());
+    Class c = Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+
+    Driver d = (Driver)c.newInstance();
+    Connection con =  d.connect("jdbc:odbc:Arrgh", new Properties());
+/*
+    ResultSet resMeta = con.getMetaData().getTables(null, null, null, null);
+    TableModel modMeta = ResultSetTableModelFactory.getInstance().generateDefaultTableModel(resMeta);
+//    TableModelInfo.printTableModelContents(modMeta);
+    resMeta.close();
+*/
+    Statement stmt = con.createStatement();
+    ResultSet res = stmt.executeQuery("SELECT * FROM \"Sheet1$\"");
+    TableModel mod = ResultSetTableModelFactory.getInstance().generateDefaultTableModel(res);
+    res.close();
+    con.close();
+
+//    TableModelInfo.printTableModel(mod);
+
+    JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/ext/junit/bugs/resource/LostBands.xml", mod);
     if (report == null)
       System.exit (1);
 
     TestSystem.showPreviewFrame(report);
+    
   }
 
 }
