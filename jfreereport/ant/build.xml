@@ -27,8 +27,8 @@
         <property name="BeanShell-jar" value="bsh-1.2b6.jar" />
         <property name="GnuJAXP-jar" value="gnujaxp.jar" />
         <property name="iText-jar" value="itext-0.99.jar" />
-        <property name="JCommon-jar" value="jcommon-0.8.0.jar" />
-        <property name="Pixie-jar" value="pixie.jar" />
+        <property name="JCommon-jar" value="jcommon-0.8.1.jar" />
+        <property name="Pixie-jar" value="pixie-0.8.0.jar" />
         <property name="POI-jar" value="jakarta-poi-1.10.0-dev-20030222.jar" />
 
         <path id="build.classpath">
