@@ -11,6 +11,7 @@ package com.jrefinery.report.states;
 import com.jrefinery.report.ReportProcessor;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.GroupHeader;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 
 /**
@@ -54,11 +55,11 @@ public class PreGroupHeaderState extends ReportState
     GroupHeader header = group.getHeader ();
 
     if (handledPagebreak == false && header.hasPageBreakBeforePrint ()
-                                  && ((this.getCurrentGroupIndex() == 1
-                                  && this.getCurrentPage() == 1) == false))
+                                  && ((this.getCurrentGroupIndex() != 1 || this.getCurrentDataItem() != -1)))
     {
       handledPagebreak = true;
       rpc.setPageDone ();
+      Log.debug ("PageBreak! ");
     }
     else
     {

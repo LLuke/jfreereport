@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.17 2002/09/06 17:02:30 taqua Exp $
+ * $Id: ImageReference.java,v 1.18 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes:
  * --------
@@ -100,7 +100,10 @@ public class ImageReference implements Serializable, Cloneable
       else
       {
         this.url = url;
-        image = Toolkit.getDefaultToolkit ().getImage (url);
+        image = Toolkit.getDefaultToolkit ().createImage (url);
+        if (image == null)
+          throw new IOException("Image could not be instantiated.");
+
         WaitingImageObserver obs = new WaitingImageObserver (image);
         obs.waitImageLoaded ();
       }

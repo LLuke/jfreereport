@@ -110,7 +110,12 @@ public class JFreeReportResources extends ListResourceBundle
       Log.debug ("Unable to load file: " + filename);
       return new ImageIcon (new BufferedImage (BufferedImage.TYPE_INT_RGB, 1, 1));
     }
-    Image img = Toolkit.getDefaultToolkit ().getImage (in);
+    Image img = Toolkit.getDefaultToolkit ().createImage (in);
+    if (img == null)
+    {
+      Log.warn ("Unable to instantiate the image " + filename);
+      return new ImageIcon (new BufferedImage (BufferedImage.TYPE_INT_RGB, 1, 1));
+    }
     return new ImageIcon (img);
   }
 

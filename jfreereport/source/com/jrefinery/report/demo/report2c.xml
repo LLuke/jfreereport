@@ -31,7 +31,7 @@
     <!-- PAGE FOOTER -->
     <pagefooter height="24" onfirstpage="true" onlastpage="true" fontname="Serif" fontstyle="italic" fontsize="9">
         <line name="line2" x1="0" y1="4" x2="0" y2="4" weight="0.5"></line>
-        <date-function name="date1" function="Date" format="d-MMM-yyyy" x="0" y="4" width="100" height="18" alignment="left"></date-function>
+        <string-function name="date1" function="Date"   x="0" y="4" width="100" height="18" alignment="left"></string-function>
         <number-function name="pagenum1" function="PageNumber" format="Page 0" x="0" y="4" width="100%" height="18" alignment="right"></number-function>
     </pagefooter>
 
@@ -42,13 +42,12 @@
         <group name="Letter Group">
 
 	    <!-- GROUP HEADER -->
-            <groupheader height="20" fontname="Monospaced" fontstyle="bold" fontsize="9">
+            <groupheader height="20" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak="true">
                 <label name="Label 5" x="0" y="1" width="120" height="9" alignment="left">LETTER GROUP:</label>
                 <string-field name="Letter Element" x="120" y="1" width="76" height="9" alignment="left" fieldname="Letter"/>
                 <line name="line3" x1="0" y1="12" x2="0" y2="12" weight="0.25"></line>
                 <line name="line4" x1="0" y1="14" x2="0" y2="14" weight="0.25"></line>
             </groupheader>
-
             <!-- GROUP FOOTER -->
             <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
                 <label name="Label 6" x="0" y="0" width="100%" height="12" alignment="left">Total for letter:</label>
@@ -78,7 +77,7 @@
   <functions>
     <function name="Date" class="com.jrefinery.report.function.ReportPropertyFunction">
       <properties>
-        <property name="reportProperty">report.date</property>
+        <property name="reportProperty">report.pagecount</property>
       </properties>
     </function>
     <function name="PageNumber" class="com.jrefinery.report.function.PageFunction"/>
