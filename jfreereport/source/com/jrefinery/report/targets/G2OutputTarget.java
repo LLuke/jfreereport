@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.6 2002/05/31 19:16:01 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.7 2002/06/08 16:28:59 taqua Exp $
  *
  * Changes
  * -------
@@ -313,7 +313,7 @@ public class G2OutputTarget extends AbstractOutputTarget
       x = (float) ((bounds.getX () + bounds.getWidth ()) - textBounds.getWidth ());
     }
     int display = getFont ().canDisplayUpTo (text);
-    if (display != text.length ())
+    if (display > 0 && display < text.length ())
     {
       Log.warn ("Unable to display the string completely. Can display up to " + display + " chars.");
     }
