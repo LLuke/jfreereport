@@ -36,12 +36,12 @@ package com.jrefinery.report;
 import com.jrefinery.report.filter.DateFormatFilter;
 import com.jrefinery.report.filter.DecimalFormatFilter;
 import com.jrefinery.report.filter.FunctionDataSource;
+import com.jrefinery.report.filter.ImageLoadFilter;
+import com.jrefinery.report.filter.ImageRefFilter;
 import com.jrefinery.report.filter.NumberFormatFilter;
 import com.jrefinery.report.filter.ReportDataSource;
 import com.jrefinery.report.filter.SimpleDateFormatFilter;
 import com.jrefinery.report.filter.StaticDataSource;
-import com.jrefinery.report.filter.ImageRefFilter;
-import com.jrefinery.report.filter.ImageLoadFilter;
 import com.jrefinery.report.filter.URLFilter;
 
 import javax.swing.table.TableModel;
@@ -268,12 +268,12 @@ public class ItemFactory
           throws IOException
   {
     ImageReference reference = new ImageReference (source);
-    StaticDataSource sds = new StaticDataSource(reference);
+    StaticDataSource sds = new StaticDataSource (reference);
     ImageElement element = new ImageElement ();
     element.setName (name);
     element.setPaint (paint);
     element.setBounds (bounds);
-    element.setDataSource(sds);
+    element.setDataSource (sds);
     return element;
   }
 
@@ -294,16 +294,16 @@ public class ItemFactory
           throws IOException
   {
     URLFilter urlfilter = new URLFilter ();
-    urlfilter.setDataSource(new ReportDataSource(field));
+    urlfilter.setDataSource (new ReportDataSource (field));
 
-    ImageLoadFilter imagefilter = new ImageLoadFilter();
-    imagefilter.setDataSource(urlfilter);
+    ImageLoadFilter imagefilter = new ImageLoadFilter ();
+    imagefilter.setDataSource (urlfilter);
 
     ImageElement element = new ImageElement ();
     element.setName (name);
     element.setPaint (paint);
     element.setBounds (bounds);
-    element.setDataSource(imagefilter);
+    element.setDataSource (imagefilter);
     return element;
   }
 
@@ -318,22 +318,22 @@ public class ItemFactory
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static ImageElement createImageURLFunction (String name,
-                                                  Rectangle2D bounds,
-                                                  Paint paint,
-                                                  String function)
+                                                     Rectangle2D bounds,
+                                                     Paint paint,
+                                                     String function)
           throws IOException
   {
     URLFilter urlfilter = new URLFilter ();
-    urlfilter.setDataSource(new FunctionDataSource(function));
+    urlfilter.setDataSource (new FunctionDataSource (function));
 
-    ImageLoadFilter imagefilter = new ImageLoadFilter();
-    imagefilter.setDataSource(urlfilter);
+    ImageLoadFilter imagefilter = new ImageLoadFilter ();
+    imagefilter.setDataSource (urlfilter);
 
     ImageElement element = new ImageElement ();
     element.setName (name);
     element.setPaint (paint);
     element.setBounds (bounds);
-    element.setDataSource(imagefilter);
+    element.setDataSource (imagefilter);
     return element;
   }
 
@@ -348,19 +348,19 @@ public class ItemFactory
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static ImageElement createImageFieldElement (String name,
-                                                 Rectangle2D bounds,
-                                                 Paint paint,
-                                                 String field)
+                                                      Rectangle2D bounds,
+                                                      Paint paint,
+                                                      String field)
           throws IOException
   {
-    ImageRefFilter filter = new ImageRefFilter();
-    filter.setDataSource(new ReportDataSource(field));
+    ImageRefFilter filter = new ImageRefFilter ();
+    filter.setDataSource (new ReportDataSource (field));
 
-    ImageElement element = new ImageElement();
+    ImageElement element = new ImageElement ();
     element.setName (name);
     element.setPaint (paint);
     element.setBounds (bounds);
-    element.setDataSource(filter);
+    element.setDataSource (filter);
     return element;
   }
 
@@ -375,19 +375,19 @@ public class ItemFactory
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static ImageElement createImageFunctionElement (String name,
-                                                 Rectangle2D bounds,
-                                                 Paint paint,
-                                                 String function)
+                                                         Rectangle2D bounds,
+                                                         Paint paint,
+                                                         String function)
           throws IOException
   {
-    ImageRefFilter filter = new ImageRefFilter();
-    filter.setDataSource(new ReportDataSource(function));
+    ImageRefFilter filter = new ImageRefFilter ();
+    filter.setDataSource (new ReportDataSource (function));
 
-    ImageElement element = new ImageElement();
+    ImageElement element = new ImageElement ();
     element.setName (name);
     element.setPaint (paint);
     element.setBounds (bounds);
-    element.setDataSource(filter);
+    element.setDataSource (filter);
     return element;
   }
 
@@ -466,8 +466,8 @@ public class ItemFactory
     line.setPaint (paint);
     line.setStroke (stroke);
     line.setShape (shape);
-    line.setShouldDraw(shouldDraw);
-    line.setShouldFill(shouldFill);
+    line.setShouldDraw (shouldDraw);
+    line.setShouldFill (shouldFill);
     return line;
   }
 

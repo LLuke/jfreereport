@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.12 2002/07/28 13:25:24 taqua Exp $
+ * $Id: Band.java,v 1.13 2002/08/08 13:40:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -46,6 +46,7 @@
  *               "Visible".
  * 04-Jun-2002 : Public methods throw exceptions on illegal values. Documentation update.
  * 04-Jul-2002 : Serializable and Cloneable
+ * 08-Aug-2002 : Band visibility support added. Bands can be hidden using the visible-property
  */
 
 package com.jrefinery.report;
@@ -107,6 +108,8 @@ public abstract class Band implements Serializable, Cloneable
 
   /** Function elements for this band, stored by function name. */
   private HashNMap functionElements;
+
+  private boolean visible;
 
   /**
    * Constructs a new band (initially empty).
@@ -238,108 +241,16 @@ public abstract class Band implements Serializable, Cloneable
   }
 
   /**
-   * Updates the elements in the band with the data and functions for the specified row.
-   * @param data The data source.
-   * @param row The current row.
-   * @param functions The report functions.
-   * @throws NullPointerException if the state given is null
-   *
-   public void populateElements (ReportState state)
-   {
-   if (state == null) throw new NullPointerException ();
-
-   TableModel data = state.getReport ().getData ();
-
-   if (data.getRowCount () < 1)
-   return;
-
-   int row = state.getCurrentDisplayItem ();
-   row = Math.min (row, data.getRowCount () - 1);
-
-   for (int column = 0; column < data.getColumnCount (); column++)
-   {
-   Object value = data.getValueAt (row, column);
-   String name = data.getColumnName (column);
-   Iterator elements = dataElements.getAll (name);
-   if (elements == null)
-   {
-   // No data elements for this column in this band
-   continue;
-   }
-
-   // Fill the value into all elements
-   while (elements.hasNext ())
-   {
-   ReportDataSource element = (ReportDataSource) elements.next ();
-   element.setValue (value);
-   }
-   }
-
-   // iterate through the function elements
-   FunctionCollection functions = state.getFunctions ();
-   Enumeration enum = this.functionElements.keys ();
-   while (enum.hasMoreElements ())
-   {
-   // elements are keyed by function name
-   String name = (String) enum.nextElement ();
-   Function f = functions.get (name);
-   if (f == null) continue;
-
-   // get all functionElements for this function
-   Iterator functionsources = functionElements.getAll (name);
-   if (functionsources == null) continue;
-
-   Object functionValue = f.getValue ();
-   while (functionsources.hasNext ())
-   {
-   FunctionDataSource fds = (FunctionDataSource) functionsources.next ();
-   fds.setValue (functionValue);
-   }
-   }
-
-   }
-   */
-
-  /**
    * Draws the band onto the specified output target.
    * @param target The output target.
    * @param x The x-coordinate.
    * @param y The y-coordinate.
    * @throws NullPointerException if the target given is null
-   public void draw (OutputTarget target, float x, float y) throws OutputTargetException
-   {
-   if (target == null) throw new NullPointerException ();
-
-   Rectangle2D bounds = new Rectangle2D.Float ();
-   bounds.setRect (x, y, target.getUsableWidth (), getHeight ());
-   target.setClippingArea (bounds);
-
-   target.setPaint (getDefaultPaint ());
-   Iterator iterator = allElements.iterator ();
-   while (iterator.hasNext ())
-   {
-   Element e = (Element) iterator.next ();
-   if (e.isVisible ())
-   {
-   target.getCursor ().setElementBounds (translateBounds (target, e.getBounds ()));
-   try
-   {
-   Object state = target.saveState ();
-   e.draw (target, this);
-   target.restoreState (state);
-   }
-   catch (OutputTargetException ex)
-   {
-   Log.error ("Failed to draw band", ex);
-   }
-   }
-   }
-   }
    */
-
   public float draw (OutputTarget target, float x, float y) throws OutputTargetException
   {
     if (target == null) throw new NullPointerException ();
+    if (isVisible () == false) return 0;
     float maxheight = 0;
 
     Rectangle2D bounds = new Rectangle2D.Float ();
@@ -467,5 +378,15 @@ public abstract class Band implements Serializable, Cloneable
     b.dataElements = (HashNMap) dataElements.clone ();
     b.functionElements = (HashNMap) functionElements.clone ();
     return b;
+  }
+
+  public boolean isVisible ()
+  {
+    return visible;
+  }
+
+  public void setVisible (boolean visible)
+  {
+    this.visible = visible;
   }
 }

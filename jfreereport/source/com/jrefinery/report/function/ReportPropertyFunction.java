@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.6 2002/05/26 15:07:39 taqua Exp $
+ * $Id: ReportPropertyFunction.java,v 1.7 2002/05/28 19:36:41 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,6 @@
 
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportState;
 import com.jrefinery.report.event.ReportEvent;
 
@@ -94,7 +93,7 @@ public class ReportPropertyFunction extends AbstractFunction
    */
   public void reportStarted (ReportEvent event)
   {
-    ReportState state = event.getState();
+    ReportState state = event.getState ();
     value = state.getProperty (field);
   }
 
@@ -132,20 +131,20 @@ public class ReportPropertyFunction extends AbstractFunction
     if (field == null)
       throw new NullPointerException ();
     this.field = field;
-    setProperty("field", field);
+    setProperty ("field", field);
   }
 
   /**
    * Initialises the function.
    */
   public void initialize ()
-    throws FunctionInitializeException
+          throws FunctionInitializeException
   {
-    super.initialize();
+    super.initialize ();
     String fieldProp = getProperty ("reportProperty");
     if (fieldProp == null)
     {
-      throw new FunctionInitializeException("No Such Property : reportProperty");
+      throw new FunctionInitializeException ("No Such Property : reportProperty");
     }
     setField (fieldProp);
   }

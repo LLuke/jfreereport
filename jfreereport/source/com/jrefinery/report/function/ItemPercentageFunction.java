@@ -35,14 +35,13 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.filter.NumberFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
-import com.jrefinery.report.filter.DecimalFormatParser;
+import com.jrefinery.report.util.Log;
 
 import javax.swing.table.TableModel;
 import java.math.BigDecimal;
-import java.util.Properties;
 
 public class ItemPercentageFunction extends AbstractFunction
 {
@@ -59,13 +58,13 @@ public class ItemPercentageFunction extends AbstractFunction
 
   public ItemPercentageFunction ()
   {
-    totalSumFunction = new TotalGroupSumFunction();
-    totalSumFunction.setName("total");
+    totalSumFunction = new TotalGroupSumFunction ();
+    totalSumFunction.setName ("total");
 
-    datasource = new StaticDataSource();
-    parser = new DecimalFormatParser();
-    parser.setNullValue(ZERO);
-    parser.setDataSource(datasource);
+    datasource = new StaticDataSource ();
+    parser = new DecimalFormatParser ();
+    parser.setNullValue (ZERO);
+    parser.setDataSource (datasource);
   }
 
   /**
@@ -80,8 +79,8 @@ public class ItemPercentageFunction extends AbstractFunction
    */
   public void initialize () throws FunctionInitializeException
   {
-    super.initialize();
-    totalSumFunction.initialize();
+    super.initialize ();
+    totalSumFunction.initialize ();
   }
 
   /**
@@ -93,9 +92,9 @@ public class ItemPercentageFunction extends AbstractFunction
    */
   public void groupStarted (ReportEvent event)
   {
-    totalSumFunction.groupStarted(event);
+    totalSumFunction.groupStarted (event);
 
-    Object fieldValue = event.getDataRow().get (getField());
+    Object fieldValue = event.getDataRow ().get (getField ());
     if (fieldValue == null)
     {
       // No add, field is null
@@ -103,9 +102,9 @@ public class ItemPercentageFunction extends AbstractFunction
     }
     try
     {
-      datasource.setValue(fieldValue);
-      Number n = (Number) parser.getValue();
-      currentValue = new BigDecimal(n.toString());
+      datasource.setValue (fieldValue);
+      Number n = (Number) parser.getValue ();
+      currentValue = new BigDecimal (n.toString ());
     }
     catch (Exception e)
     {
@@ -123,16 +122,16 @@ public class ItemPercentageFunction extends AbstractFunction
   public void itemsAdvanced (ReportEvent event)
   {
     totalSumFunction.itemsAdvanced (event);
-    TableModel data = event.getReport().getData ();
-    int row = event.getState().getCurrentDisplayItem();
+    TableModel data = event.getReport ().getData ();
+    int row = event.getState ().getCurrentDisplayItem ();
 
     // Handle the case when the tablemodel contains no rows
-    if (data.getRowCount() == 0) return;
+    if (data.getRowCount () == 0) return;
 
     Object fieldValue = null;
     for (int c = 0; c < data.getColumnCount (); c++)
     {
-      if (getField().equals (data.getColumnName (c)))
+      if (getField ().equals (data.getColumnName (c)))
       {
         fieldValue = data.getValueAt (row, c);
       }
@@ -145,9 +144,9 @@ public class ItemPercentageFunction extends AbstractFunction
     }
     try
     {
-      datasource.setValue(fieldValue);
-      Number n = (Number) parser.getValue();
-      currentValue = new BigDecimal(n.toString());
+      datasource.setValue (fieldValue);
+      Number n = (Number) parser.getValue ();
+      currentValue = new BigDecimal (n.toString ());
     }
     catch (Exception e)
     {
@@ -165,7 +164,7 @@ public class ItemPercentageFunction extends AbstractFunction
    */
   public void reportStarted (ReportEvent event)
   {
-    totalSumFunction.reportStarted(event);
+    totalSumFunction.reportStarted (event);
     currentValue = ZERO;
   }
 
@@ -178,12 +177,12 @@ public class ItemPercentageFunction extends AbstractFunction
    */
   public Object getValue ()
   {
-    BigDecimal total = (BigDecimal) totalSumFunction.getValue();
+    BigDecimal total = (BigDecimal) totalSumFunction.getValue ();
 
-    if (total.longValue() == 0)
+    if (total.longValue () == 0)
       return null;
 
-    BigDecimal retval = currentValue.multiply(new BigDecimal(100)).divide(total, 4, BigDecimal.ROUND_HALF_UP);
+    BigDecimal retval = currentValue.multiply (new BigDecimal (100)).divide (total, 4, BigDecimal.ROUND_HALF_UP);
     return retval;
   }
 
@@ -192,7 +191,7 @@ public class ItemPercentageFunction extends AbstractFunction
    */
   public String getGroup ()
   {
-    return (String) getProperty("group");
+    return (String) getProperty ("group");
   }
 
   /**
@@ -213,7 +212,7 @@ public class ItemPercentageFunction extends AbstractFunction
    */
   public String getField ()
   {
-    return getProperty("field");
+    return getProperty ("field");
   }
 
   /**
@@ -253,7 +252,7 @@ public class ItemPercentageFunction extends AbstractFunction
   public Object clone () throws CloneNotSupportedException
   {
     ItemPercentageFunction clone = (ItemPercentageFunction) super.clone ();
-    clone.totalSumFunction = (TotalGroupSumFunction) totalSumFunction.clone();
+    clone.totalSumFunction = (TotalGroupSumFunction) totalSumFunction.clone ();
     return clone;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PageFooter.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
+ * $Id: PageFooter.java,v 1.5 2002/06/04 19:20:37 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -56,7 +56,7 @@ public class PageFooter extends Band
   /**
    * Constructs a page footer containing no elements.
    */
-  public PageFooter()
+  public PageFooter ()
   {
   }
 
@@ -64,7 +64,7 @@ public class PageFooter extends Band
    * Returns true if the footer should be shown on page 1, and false otherwise.
    * @return A flag indicating whether or not the footer is shown on the first page.
    */
-  public boolean isDisplayOnFirstPage()
+  public boolean isDisplayOnFirstPage ()
   {
     return this.displayOnFirstPage;
   }
@@ -74,7 +74,7 @@ public class PageFooter extends Band
    * true.
    * @param b A flag indicating whether or not the footer is shown on the first page.
    */
-  public void setDisplayOnFirstPage(boolean b)
+  public void setDisplayOnFirstPage (boolean b)
   {
     this.displayOnFirstPage = b;
   }
@@ -83,7 +83,7 @@ public class PageFooter extends Band
    * Returns true if the footer should be shown on the last page, and false otherwise.
    * @return A flag indicating whether or not the footer is shown on the last page.
    */
-  public boolean isDisplayOnLastPage()
+  public boolean isDisplayOnLastPage ()
   {
     return this.displayOnLastPage;
   }
@@ -93,7 +93,7 @@ public class PageFooter extends Band
    * true.
    * @param b A flag indicating whether or not the footer is shown on the first page.
    */
-  public void setDisplayOnLastPage(boolean b)
+  public void setDisplayOnLastPage (boolean b)
   {
     this.displayOnLastPage = b;
   }

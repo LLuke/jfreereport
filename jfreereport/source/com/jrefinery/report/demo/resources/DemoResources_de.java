@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources_de.java,v 1.5 2002/06/05 21:32:49 taqua Exp $
+ * $Id: DemoResources_de.java,v 1.6 2002/06/09 17:29:30 taqua Exp $
  *
  * Changes
  * -------
@@ -88,7 +88,7 @@ public class DemoResources_de extends JFreeReportResources
     {"report.definitionfailure.message", "Reportdefinition {0} konnte nicht geladen werden."},
     {"report.definitionfailure.title", "Das Laden der Berichtdefinition schlug fehl."},
     {"report.definitionnull", "Es wurde keine Reportdefinition erzeugt"},
-    {"error", "Fehler" },
+    {"error", "Fehler"},
     {"example", "Beispiel {0}"}
 
   };

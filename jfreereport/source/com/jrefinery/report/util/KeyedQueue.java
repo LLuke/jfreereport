@@ -29,9 +29,9 @@
  */
 package com.jrefinery.report.util;
 
-import java.util.LinkedList;
-import java.util.Hashtable;
 import java.io.Serializable;
+import java.util.Hashtable;
+import java.util.LinkedList;
 
 /**
  * A keyed queue is a hashtable like structure which will store a certain number of
@@ -48,7 +48,7 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public KeyedQueue ()
   {
-    this(10);
+    this (10);
   }
 
   /**
@@ -56,9 +56,9 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public KeyedQueue (int limit)
   {
-    table = new Hashtable();
-    list = new LinkedList();
-    setLimit(limit);
+    table = new Hashtable ();
+    list = new LinkedList ();
+    setLimit (limit);
   }
 
   /**
@@ -66,7 +66,7 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public void setLimit (int limit)
   {
-    if (limit < 1) throw new IllegalArgumentException();
+    if (limit < 1) throw new IllegalArgumentException ();
     this.limit = limit;
   }
 
@@ -84,15 +84,15 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public void put (Object key, Object ob)
   {
-    if (key == null) throw new NullPointerException("Key must not be null");
-    if (ob == null) throw new NullPointerException("Value must not be null");
+    if (key == null) throw new NullPointerException ("Key must not be null");
+    if (ob == null) throw new NullPointerException ("Value must not be null");
 
-    Object oldval = table.put(key, ob);
-    if (oldval != null) list.remove(oldval);
-    list.add(ob);
+    Object oldval = table.put (key, ob);
+    if (oldval != null) list.remove (oldval);
+    list.add (ob);
 
-    if (list.size() > getLimit ())
-        removeLast ();
+    if (list.size () > getLimit ())
+      removeLast ();
   }
 
   /**
@@ -100,7 +100,7 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public Object get (Object key)
   {
-    if (key == null) throw new NullPointerException("Key must not be null");
+    if (key == null) throw new NullPointerException ("Key must not be null");
 
     return table.get (key);
   }
@@ -110,9 +110,9 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public void remove (Object key)
   {
-    if (key == null) throw new NullPointerException();
-    table.remove(key);
-    list.remove(key);
+    if (key == null) throw new NullPointerException ();
+    table.remove (key);
+    list.remove (key);
   }
 
   /**
@@ -120,9 +120,9 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public void removeLast ()
   {
-    Object o = list.getLast();
-    table.remove(o);
-    list.remove(o);
+    Object o = list.getLast ();
+    table.remove (o);
+    list.remove (o);
   }
 
   /**
@@ -130,15 +130,15 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public void clear ()
   {
-    table.clear();
-    list.clear();
+    table.clear ();
+    list.clear ();
   }
 
   public Object clone () throws CloneNotSupportedException
   {
     KeyedQueue q = (KeyedQueue) super.clone ();
-    q.list = (LinkedList) list.clone();
-    q.table = (Hashtable) table.clone();
+    q.list = (LinkedList) list.clone ();
+    q.table = (Hashtable) table.clone ();
     return q;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Cursor.java,v 1.8 2002/07/03 18:49:45 taqua Exp $
+ * $Id: Cursor.java,v 1.9 2002/07/20 20:48:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -67,11 +67,11 @@ public class Cursor implements Cloneable, Serializable
   /**
    * Constructs a new cursor.
    */
-  public Cursor(OutputTarget target)
+  public Cursor (OutputTarget target)
   {
-    pageLeft = target.getUsableX();
-    y = target.getUsableY();
-    pageBottom = y + target.getUsableHeight();
+    pageLeft = target.getUsableX ();
+    y = target.getUsableY ();
+    pageBottom = y + target.getUsableHeight ();
   }
 
   /**
@@ -79,10 +79,10 @@ public class Cursor implements Cloneable, Serializable
    * and does not get filled by the various bands and elements. This functionality is
    * used to reserve space for the page footer.
    */
-  public void reserveSpace(float reserve)
+  public void reserveSpace (float reserve)
   {
     if (reserve < 0)
-      throw new IllegalArgumentException("Cannot free reserved space");
+      throw new IllegalArgumentException ("Cannot free reserved space");
 
     pageBottom -= reserve;
   }
@@ -91,10 +91,10 @@ public class Cursor implements Cloneable, Serializable
    * Adds the specified amount to the y-coordinate.
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advance(float amount)
+  public void advance (float amount)
   {
     if (amount < 0)
-      throw new IllegalArgumentException("Cannot advance negative");
+      throw new IllegalArgumentException ("Cannot advance negative");
     y += amount;
   }
 
@@ -105,10 +105,10 @@ public class Cursor implements Cloneable, Serializable
    *
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advanceTo(float amount)
+  public void advanceTo (float amount)
   {
     if (amount < y)
-      throw new IllegalArgumentException("Cannot advance negative");
+      throw new IllegalArgumentException ("Cannot advance negative");
     y = amount;
   }
 
@@ -117,7 +117,7 @@ public class Cursor implements Cloneable, Serializable
    * @param height The height of the proposed band.
    * @return A flag indicating whether or not there is room to print the band.
    */
-  public boolean isSpaceFor(float height)
+  public boolean isSpaceFor (float height)
   {
     return (y + height < pageBottom);
   }
@@ -125,7 +125,7 @@ public class Cursor implements Cloneable, Serializable
   /**
    * @return the current y-position of this cursor.
    */
-  public float getY()
+  public float getY ()
   {
     return y;
   }
@@ -133,7 +133,7 @@ public class Cursor implements Cloneable, Serializable
   /**
    * @return the left border of the printable area.
    */
-  public float getPageLeft()
+  public float getPageLeft ()
   {
     return pageLeft;
   }
@@ -141,7 +141,7 @@ public class Cursor implements Cloneable, Serializable
   /**
    * @return the bottom border of the printable area.
    */
-  public float getPageBottom()
+  public float getPageBottom ()
   {
     return pageBottom;
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.4 2002/05/31 19:15:13 taqua Exp $
+ * $Id: CloseAction.java,v 1.5 2002/06/05 21:20:47 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,6 @@ package com.jrefinery.report.demo;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.SwingUtilities;
-import javax.swing.JFrame;
-import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 
 /**
@@ -54,10 +51,10 @@ public abstract class CloseAction extends AbstractAction
   /**
    * Constructs a new action.
    */
-  public CloseAction(ResourceBundle resources)
+  public CloseAction (ResourceBundle resources)
   {
-    this.putValue(Action.NAME, resources.getString("action.close.name"));
-    this.putValue(Action.SHORT_DESCRIPTION, resources.getString("action.close.description"));
-    this.putValue(Action.MNEMONIC_KEY, resources.getObject("action.close.mnemonic"));
+    this.putValue (Action.NAME, resources.getString ("action.close.name"));
+    this.putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.close.description"));
+    this.putValue (Action.MNEMONIC_KEY, resources.getObject ("action.close.mnemonic"));
   }
 }

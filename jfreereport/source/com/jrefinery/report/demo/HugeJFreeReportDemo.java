@@ -44,21 +44,9 @@ import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.SystemOutLogTarget;
-import com.jrefinery.ui.RefineryUtilities;
 import com.jrefinery.ui.L1R2ButtonPanel;
+import com.jrefinery.ui.RefineryUtilities;
 import com.jrefinery.ui.about.AboutFrame;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.net.URL;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -76,6 +64,15 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.net.URL;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * The main frame in the report demonstration application. This demo has huge reports
@@ -147,26 +144,26 @@ public class HugeJFreeReportDemo extends JFrame
   private JTabbedPane tabbedPane;
 
   private previewConf[] previewData =
-    {
-      new previewConf(
-        "/com/jrefinery/report/demo/report1.xml",
-        new SampleData1()),
-      new previewConf(
-        "/com/jrefinery/report/demo/report2.xml",
-        new SampleData2()),
-      new previewConf(
-        "/com/jrefinery/report/demo/report3.xml",
-        new SampleData3()),
-      new previewConf(
-        "/com/jrefinery/report/demo/report4.xml",
-        new SampleData4()),
-      new previewConf(
-        "/com/jrefinery/report/demo/report2.xml",
-        new SampleData5()),
-      new previewConf(
-        "/com/jrefinery/report/demo/report2.xml",
-        new SampleData6()),
-      };
+          {
+            new previewConf (
+                    "/com/jrefinery/report/demo/report1.xml",
+                    new SampleData1 ()),
+            new previewConf (
+                    "/com/jrefinery/report/demo/report2.xml",
+                    new SampleData2 ()),
+            new previewConf (
+                    "/com/jrefinery/report/demo/report3.xml",
+                    new SampleData3 ()),
+            new previewConf (
+                    "/com/jrefinery/report/demo/report4.xml",
+                    new SampleData4 ()),
+            new previewConf (
+                    "/com/jrefinery/report/demo/report2.xml",
+                    new SampleData5 ()),
+            new previewConf (
+                    "/com/jrefinery/report/demo/report2.xml",
+                    new SampleData6 ()),
+          };
 
   private ResourceBundle m_resources;
 
@@ -183,7 +180,7 @@ public class HugeJFreeReportDemo extends JFrame
     setDefaultCloseOperation (DO_NOTHING_ON_CLOSE);
     addWindowListener (new CloseHandler ());
     m_resources = resources;
-    Object[] arguments = new Object[]{JFreeReport.getInfo().getVersion ()};
+    Object[] arguments = new Object[]{JFreeReport.getInfo ().getVersion ()};
     String pattern = resources.getString ("main-frame.title.pattern");
     setTitle (MessageFormat.format (pattern, arguments));
 
@@ -197,26 +194,26 @@ public class HugeJFreeReportDemo extends JFrame
     JToolBar toolbar = createToolBar (resources);
     content.add (toolbar, BorderLayout.NORTH);
 
-    tabbedPane = new JTabbedPane();
-    tabbedPane.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-    tabbedPane.addTab(
-      "Example 1",
-      RefineryUtilities.createTablePanel(previewData[0].m_data));
-    tabbedPane.addTab(
-      "Example 2",
-      RefineryUtilities.createTablePanel(previewData[1].m_data));
-    tabbedPane.addTab(
-      "Example 3",
-      RefineryUtilities.createTablePanel(previewData[2].m_data));
-    tabbedPane.addTab(
-      "Example 4",
-      RefineryUtilities.createTablePanel(previewData[3].m_data));
-    tabbedPane.addTab(
-      "Example 5 (HUGE)",
-      RefineryUtilities.createTablePanel(previewData[4].m_data));
-    tabbedPane.addTab(
-      "Example 6 (HUGE)",
-      RefineryUtilities.createTablePanel(previewData[5].m_data));
+    tabbedPane = new JTabbedPane ();
+    tabbedPane.setBorder (BorderFactory.createEmptyBorder (4, 4, 4, 4));
+    tabbedPane.addTab (
+            "Example 1",
+            RefineryUtilities.createTablePanel (previewData[0].m_data));
+    tabbedPane.addTab (
+            "Example 2",
+            RefineryUtilities.createTablePanel (previewData[1].m_data));
+    tabbedPane.addTab (
+            "Example 3",
+            RefineryUtilities.createTablePanel (previewData[2].m_data));
+    tabbedPane.addTab (
+            "Example 4",
+            RefineryUtilities.createTablePanel (previewData[3].m_data));
+    tabbedPane.addTab (
+            "Example 5 (HUGE)",
+            RefineryUtilities.createTablePanel (previewData[4].m_data));
+    tabbedPane.addTab (
+            "Example 6 (HUGE)",
+            RefineryUtilities.createTablePanel (previewData[5].m_data));
 
     content.add (tabbedPane);
 
@@ -224,15 +221,15 @@ public class HugeJFreeReportDemo extends JFrame
 
     JButton helpButton = buttons.getLeftButton ();
     helpButton.setAction (aboutAction);
-    FloatingButtonEnabler.getInstance().addButton (helpButton);
+    FloatingButtonEnabler.getInstance ().addButton (helpButton);
 
     JButton previewButton = buttons.getRightButton1 ();
     previewButton.setAction (previewAction);
-    FloatingButtonEnabler.getInstance().addButton (previewButton);
+    FloatingButtonEnabler.getInstance ().addButton (previewButton);
 
     JButton closeButton = buttons.getRightButton2 ();
     closeButton.setAction (closeAction);
-    FloatingButtonEnabler.getInstance().addButton (closeButton);
+    FloatingButtonEnabler.getInstance ().addButton (closeButton);
 
     buttons.setBorder (BorderFactory.createEmptyBorder (0, 4, 4, 4));
     content.add (buttons, BorderLayout.SOUTH);
@@ -249,7 +246,7 @@ public class HugeJFreeReportDemo extends JFrame
   {
     int index = tabbedPane.getSelectedIndex ();
 
-    preview(previewData[index].m_reportFile, previewData[index].m_data);
+    preview (previewData[index].m_reportFile, previewData[index].m_data);
   }
 
   /**
@@ -270,8 +267,8 @@ public class HugeJFreeReportDemo extends JFrame
     {
 
       JOptionPane.showMessageDialog (this,
-              MessageFormat.format(getResources().getString("report.definitionnotfound"), new Object[]{ urlname }),
-              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+              MessageFormat.format (getResources ().getString ("report.definitionnotfound"), new Object[]{urlname}),
+              getResources ().getString ("error"), JOptionPane.ERROR_MESSAGE);
       return;
     }
     ReportGenerator gen = ReportGenerator.getInstance ();
@@ -284,15 +281,15 @@ public class HugeJFreeReportDemo extends JFrame
     }
     catch (Exception ioe)
     {
-      showExceptionDialog("report.definitionfailure", ioe);
+      showExceptionDialog ("report.definitionfailure", ioe);
       return;
     }
 
     if (report1 == null)
     {
       JOptionPane.showMessageDialog (this,
-              MessageFormat.format(getResources().getString("report.definitionnull"), new Object[]{ urlname }),
-              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+              MessageFormat.format (getResources ().getString ("report.definitionnull"), new Object[]{urlname}),
+              getResources ().getString ("error"), JOptionPane.ERROR_MESSAGE);
     }
 
     report1.setData (data);
@@ -312,10 +309,10 @@ public class HugeJFreeReportDemo extends JFrame
   private void showExceptionDialog (String localisationBase, Exception e)
   {
     ExceptionDialog.showExceptionDialog (
-            getResources().getString(localisationBase + ".title"),
-            MessageFormat.format(
-                    getResources().getString(localisationBase + ".message"),
-                    new Object[]{ e.getLocalizedMessage()}
+            getResources ().getString (localisationBase + ".title"),
+            MessageFormat.format (
+                    getResources ().getString (localisationBase + ".message"),
+                    new Object[]{e.getLocalizedMessage ()}
             ),
             e);
   }
@@ -357,7 +354,7 @@ public class HugeJFreeReportDemo extends JFrame
   {
     if (aboutFrame == null)
     {
-      aboutFrame = new AboutFrame (getResources().getString("action.about.name"), JFreeReport.getInfo());
+      aboutFrame = new AboutFrame (getResources ().getString ("action.about.name"), JFreeReport.getInfo ());
 
       aboutFrame.pack ();
       RefineryUtilities.centerFrameOnScreen (aboutFrame);
@@ -428,16 +425,16 @@ public class HugeJFreeReportDemo extends JFrame
   }
 
 
-   /**
-    * Creates a new button based on the action. The button will be floating enabled,
-    * so that the buttons borders are only visible when the mouse has entered the button area.
-    */
+  /**
+   * Creates a new button based on the action. The button will be floating enabled,
+   * so that the buttons borders are only visible when the mouse has entered the button area.
+   */
   protected JButton createButton (Action action)
   {
     JButton button = new JButton (action);
     button.setMargin (new Insets (0, 0, 0, 0));
     button.setText (null);
-    FloatingButtonEnabler.getInstance().addButton (button);
+    FloatingButtonEnabler.getInstance ().addButton (button);
     return button;
   }
 
@@ -488,7 +485,7 @@ public class HugeJFreeReportDemo extends JFrame
     String m_reportFile;
     AbstractTableModel m_data;
 
-    public previewConf(String reportFile, AbstractTableModel data)
+    public previewConf (String reportFile, AbstractTableModel data)
     {
       m_reportFile = reportFile;
       m_data = data;

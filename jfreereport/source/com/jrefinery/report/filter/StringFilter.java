@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFilter.java,v 1.5 2002/06/06 16:00:59 mungady Exp $
+ * $Id: StringFilter.java,v 1.6 2002/07/03 18:49:48 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public class StringFilter implements DataFilter
    */
   public void setNullValue (String nullvalue)
   {
-    if (nullvalue == null) throw new NullPointerException();
+    if (nullvalue == null) throw new NullPointerException ();
     this.nullvalue = nullvalue;
   }
 
@@ -89,15 +89,15 @@ public class StringFilter implements DataFilter
    */
   public Object getValue ()
   {
-    DataSource ds = getDataSource();
+    DataSource ds = getDataSource ();
     if (ds == null)
     {
-      return getNullValue();
+      return getNullValue ();
     }
-    Object o = ds.getValue();
-    if (o == null) return getNullValue();
+    Object o = ds.getValue ();
+    if (o == null) return getNullValue ();
     if (o instanceof String) return (String) o;
-    return String.valueOf(o);
+    return String.valueOf (o);
   }
 
   /**
@@ -117,14 +117,14 @@ public class StringFilter implements DataFilter
    */
   public void setDataSource (DataSource ds)
   {
-    if (ds == null) throw new NullPointerException();
+    if (ds == null) throw new NullPointerException ();
     source = ds;
   }
 
   public Object clone () throws CloneNotSupportedException
   {
-    StringFilter f = (StringFilter) super.clone();
-    f.source = (DataSource) source.clone();
+    StringFilter f = (StringFilter) super.clone ();
+    f.source = (DataSource) source.clone ();
     return f;
   }
 }

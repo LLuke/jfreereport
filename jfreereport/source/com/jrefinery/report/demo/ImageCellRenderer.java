@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ImageCellRenderer.java,v 1.2 2002/07/16 13:29:11 mungady Exp $
  *
  * Changes
  * -------
@@ -38,56 +38,61 @@
 
 package com.jrefinery.report.demo;
 
-import java.awt.Component;
-import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.ImageIcon;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import java.awt.Component;
+import java.awt.Image;
 
 /**
  * A table cell renderer that draws an image in a table cell.
  * <P>
  * This class will be moved to the JCommon class library.
  */
-public class ImageCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
+public class ImageCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer
+{
 
-    protected ImageIcon icon = new ImageIcon();
+  protected ImageIcon icon = new ImageIcon ();
 
-    /**
-     * Constructs a new renderer.
-     */
-    public ImageCellRenderer() {
-        super();
-        setHorizontalAlignment(JLabel.CENTER);
-        setVerticalAlignment(JLabel.CENTER);
-        setIcon(icon);
+  /**
+   * Constructs a new renderer.
+   */
+  public ImageCellRenderer ()
+  {
+    super ();
+    setHorizontalAlignment (JLabel.CENTER);
+    setVerticalAlignment (JLabel.CENTER);
+    setIcon (icon);
+  }
+
+  /**
+   * Returns itself as the renderer. Supports the TableCellRenderer interface.
+   *
+   * @param table The table.
+   * @param value The data to be rendered.
+   * @param isSelected A boolean that indicates whether or not the cell is selected.
+   * @param hasFocus A boolean that indicates whether or not the cell has the focus.
+   * @param row The (zero-based) row index.
+   * @param column The (zero-based) column index.
+   * @return The component that can render the contents of the cell.
+   */
+  public Component getTableCellRendererComponent (JTable table, Object value, boolean isSelected,
+                                                  boolean hasFocus, int row, int column)
+  {
+
+    setFont (null);
+    icon.setImage ((Image) value);
+    if (isSelected)
+    {
+      setBackground (table.getSelectionBackground ());
     }
-
-    /**
-     * Returns itself as the renderer. Supports the TableCellRenderer interface.
-     *
-     * @param table The table.
-     * @param value The data to be rendered.
-     * @param isSelected A boolean that indicates whether or not the cell is selected.
-     * @param hasFocus A boolean that indicates whether or not the cell has the focus.
-     * @param row The (zero-based) row index.
-     * @param column The (zero-based) column index.
-     * @return The component that can render the contents of the cell.
-     */
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                                                   boolean hasFocus, int row, int column) {
-
-        setFont(null);
-        icon.setImage((Image)value);
-        if (isSelected) {
-            setBackground(table.getSelectionBackground());
-        }
-        else {
-            setBackground(null);
-        }
-        return this;
+    else
+    {
+      setBackground (null);
     }
+    return this;
+  }
 
 }

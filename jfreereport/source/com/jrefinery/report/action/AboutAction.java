@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.4 2002/05/28 19:28:23 taqua Exp $
+ * $Id: AboutAction.java,v 1.5 2002/06/09 14:46:06 taqua Exp $
  *
  * Changes
  * -------
@@ -41,13 +41,9 @@
 
 package com.jrefinery.report.action;
 
-import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
-
-import com.jrefinery.report.JFreeReportConstants;
+import java.util.ResourceBundle;
 
 /**
  * The About action is used to show some information about the current programm, to which
@@ -63,12 +59,12 @@ public abstract class AboutAction extends AbstractAction
    * Constructs a new action.
    */
 
-  public AboutAction(ResourceBundle resources)
+  public AboutAction (ResourceBundle resources)
   {
-    putValue(Action.NAME, resources.getString("action.about.name"));
-    putValue(Action.SHORT_DESCRIPTION, resources.getString("action.about.description"));
-    putValue(Action.MNEMONIC_KEY, resources.getObject("action.about.mnemonic"));
-    putValue(Action.SMALL_ICON, resources.getObject("action.about.small-icon"));
-    putValue("ICON24", resources.getObject("action.about.icon"));
+    putValue (Action.NAME, resources.getString ("action.about.name"));
+    putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.about.description"));
+    putValue (Action.MNEMONIC_KEY, resources.getObject ("action.about.mnemonic"));
+    putValue (Action.SMALL_ICON, resources.getObject ("action.about.small-icon"));
+    putValue ("ICON24", resources.getObject ("action.about.icon"));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionDataSource.java,v 1.5 2002/07/03 18:49:48 taqua Exp $
+ * $Id: FunctionDataSource.java,v 1.6 2002/07/28 13:25:26 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,6 @@
 
 package com.jrefinery.report.filter;
 
-import com.jrefinery.report.function.Function;
-import com.jrefinery.report.ReportState;
-import com.jrefinery.report.DataRowBackend;
 import com.jrefinery.report.DataRow;
 
 /**
@@ -77,7 +74,7 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
    */
   public FunctionDataSource ()
   {
-    setFunction("");
+    setFunction ("");
   }
 
   /**
@@ -87,7 +84,7 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
    */
   public FunctionDataSource (String function)
   {
-    setFunction(function);
+    setFunction (function);
   }
 
   /**
@@ -97,7 +94,7 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
    */
   public void setFunction (String field)
   {
-    if (field == null) throw new NullPointerException();
+    if (field == null) throw new NullPointerException ();
     this.function = field;
   }
 
@@ -118,13 +115,13 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
    */
   public Object getValue ()
   {
-    if (getDataRow() == null) throw new IllegalStateException("No Datarow connected");
-    return getDataRow().get (getFunction());
+    if (getDataRow () == null) throw new IllegalStateException ("No Datarow connected");
+    return getDataRow ().get (getFunction ());
   }
 
   public Object clone () throws CloneNotSupportedException
   {
-    return super.clone();
+    return super.clone ();
   }
 
   /**
@@ -135,8 +132,8 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
    */
   public void connectDataRow (DataRow row) throws IllegalStateException
   {
-    if (row == null) throw new NullPointerException("Null-DataRowBackend cannot be set.");
-    if (dataRow != null) throw new IllegalStateException("There is a datarow already connected");
+    if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be set.");
+    if (dataRow != null) throw new IllegalStateException ("There is a datarow already connected");
     dataRow = row;
   }
 
@@ -146,8 +143,8 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
    */
   public void disconnectDataRow (DataRow row) throws IllegalStateException
   {
-    if (row == null) throw new NullPointerException("Null-DataRowBackend cannot be disconnected.");
-    if (dataRow == null) throw new IllegalStateException("There is no datarow connected");
+    if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
+    if (dataRow == null) throw new IllegalStateException ("There is no datarow connected");
     dataRow = null;
   }
 

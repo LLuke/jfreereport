@@ -74,7 +74,7 @@ public class ExceptionDialog extends JDialog
     public void actionPerformed (ActionEvent event)
     {
       scroller.setVisible (!(scroller.isVisible ()));
-      if (scroller.isVisible())
+      if (scroller.isVisible ())
       {
         putValue (NAME, "<<");
       }
@@ -193,8 +193,8 @@ public class ExceptionDialog extends JDialog
     JButton ok = new JButton (okAction);
     JButton details = new JButton (detailsAction);
 
-    FloatingButtonEnabler.getInstance().addButton(ok);
-    FloatingButtonEnabler.getInstance().addButton(details);
+    FloatingButtonEnabler.getInstance ().addButton (ok);
+    FloatingButtonEnabler.getInstance ().addButton (details);
 
     buttonPane.add (ok);
     buttonPane.add (details);

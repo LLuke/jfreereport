@@ -43,7 +43,6 @@ import com.jrefinery.report.filter.NumberFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.util.Log;
 
-import javax.swing.table.TableModel;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -163,7 +162,7 @@ public class TotalGroupSumFunction extends AbstractFunction
       return;
     }
 
-    Object fieldValue = event.getDataRow().get(getField());
+    Object fieldValue = event.getDataRow ().get (getField ());
     if (fieldValue == null)
     {
       // No add, field is null

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportHeader.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
+ * $Id: ReportHeader.java,v 1.5 2002/06/04 19:20:37 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -57,7 +57,7 @@ public class ReportHeader extends Band
   /**
    * Constructs a report header, initially containing no elements.
    */
-  public ReportHeader()
+  public ReportHeader ()
   {
   }
 
@@ -65,7 +65,7 @@ public class ReportHeader extends Band
    * defines whether the report header appears on its own page.
    * @param b the new flag indicating whether to force a pagebreak.
    */
-  public void setOwnPage(boolean b)
+  public void setOwnPage (boolean b)
   {
     this.ownPage = b;
 
@@ -75,7 +75,7 @@ public class ReportHeader extends Band
    * Returns true if the report header appears on its own page, and false otherwise.
    * @return A flag indicating whether or not the header appears on its own page.
    */
-  public boolean isOwnPage()
+  public boolean isOwnPage ()
   {
     return this.ownPage;
   }

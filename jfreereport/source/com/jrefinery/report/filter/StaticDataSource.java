@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticDataSource.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
+ * $Id: StaticDataSource.java,v 1.4 2002/07/03 18:49:48 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public class StaticDataSource implements DataSource
    */
   public StaticDataSource (Object o)
   {
-    setValue(o);
+    setValue (o);
   }
 
   /**
@@ -71,7 +71,7 @@ public class StaticDataSource implements DataSource
    */
   public void setValue (Object o)
   {
-     this.value = o;
+    this.value = o;
   }
 
   /**
@@ -86,6 +86,6 @@ public class StaticDataSource implements DataSource
 
   public Object clone () throws CloneNotSupportedException
   {
-    return super.clone();
+    return super.clone ();
   }
 }

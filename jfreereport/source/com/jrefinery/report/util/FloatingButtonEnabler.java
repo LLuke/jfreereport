@@ -51,7 +51,7 @@ public class FloatingButtonEnabler extends MouseAdapter
   {
     if (singleton == null)
     {
-      singleton = new FloatingButtonEnabler();
+      singleton = new FloatingButtonEnabler ();
     }
     return singleton;
   }
@@ -61,8 +61,8 @@ public class FloatingButtonEnabler extends MouseAdapter
    */
   public void addButton (AbstractButton button)
   {
-    button.addMouseListener(this);
-    button.setBorderPainted(false);
+    button.addMouseListener (this);
+    button.setBorderPainted (false);
   }
 
   /**
@@ -70,34 +70,34 @@ public class FloatingButtonEnabler extends MouseAdapter
    */
   public void removeButton (AbstractButton button)
   {
-    button.addMouseListener(this);
-    button.setBorderPainted(true);
+    button.addMouseListener (this);
+    button.setBorderPainted (true);
   }
 
   /**
    * Triggers the drawing of the border when the mouse entered the button area
    */
-	public void mouseEntered(MouseEvent e)
-	{
-    if (e.getSource() instanceof AbstractButton)
+  public void mouseEntered (MouseEvent e)
+  {
+    if (e.getSource () instanceof AbstractButton)
     {
-      AbstractButton button = (AbstractButton) e.getSource();
-      if (button.isEnabled())
-        button.setBorderPainted(true);
+      AbstractButton button = (AbstractButton) e.getSource ();
+      if (button.isEnabled ())
+        button.setBorderPainted (true);
     }
-	}
+  }
 
   /**
    * disables the drawing of the border when the mouse leaves the button area
    */
-	public void mouseExited(MouseEvent e)
-	{
-    if (e.getSource() instanceof AbstractButton)
+  public void mouseExited (MouseEvent e)
+  {
+    if (e.getSource () instanceof AbstractButton)
     {
-      AbstractButton button = (AbstractButton) e.getSource();
-      button.setBorderPainted(false);
+      AbstractButton button = (AbstractButton) e.getSource ();
+      button.setBorderPainted (false);
     }
-	}
+  }
 
 
 }

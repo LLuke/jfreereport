@@ -61,20 +61,20 @@ public class OutputTargetException extends Exception
   public void printStackTrace (PrintStream stream)
   {
     super.printStackTrace (stream);
-    if (getParent() != null)
+    if (getParent () != null)
     {
-      stream.println("ParentException: ");
-      getParent().printStackTrace(stream);
+      stream.println ("ParentException: ");
+      getParent ().printStackTrace (stream);
     }
   }
 
   public void printStackTrace (PrintWriter writer)
   {
     super.printStackTrace (writer);
-    if (getParent() != null)
+    if (getParent () != null)
     {
-      writer.println("ParentException: ");
-      getParent().printStackTrace(writer);
+      writer.println ("ParentException: ");
+      getParent ().printStackTrace (writer);
     }
   }
 }

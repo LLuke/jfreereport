@@ -53,7 +53,7 @@ public class DecimalFormatParser extends NumberFormatParser
    */
   public DecimalFormatParser ()
   {
-    setFormatter(new DecimalFormat());
+    setFormatter (new DecimalFormat ());
   }
 
   /**
@@ -65,7 +65,7 @@ public class DecimalFormatParser extends NumberFormatParser
    */
   public DecimalFormat getDecimalFormat ()
   {
-    return (DecimalFormat) getFormatter();
+    return (DecimalFormat) getFormatter ();
   }
 
   /**
@@ -76,7 +76,7 @@ public class DecimalFormatParser extends NumberFormatParser
    */
   public void setDecimalFormat (DecimalFormat format)
   {
-    setFormatter(format);
+    setFormatter (format);
   }
 
   /**
@@ -89,7 +89,7 @@ public class DecimalFormatParser extends NumberFormatParser
    */
   public void setFormatter (Format format)
   {
-    super.setFormatter((DecimalFormat)format);
+    super.setFormatter ((DecimalFormat) format);
   }
 
   /**
@@ -98,7 +98,7 @@ public class DecimalFormatParser extends NumberFormatParser
    */
   public String getFormatString ()
   {
-    return getDecimalFormat().toPattern();
+    return getDecimalFormat ().toPattern ();
   }
 
   /**
@@ -116,7 +116,7 @@ public class DecimalFormatParser extends NumberFormatParser
    */
   public void setFormatString (String format)
   {
-    getDecimalFormat().applyPattern(format);
+    getDecimalFormat ().applyPattern (format);
   }
 
   /**
@@ -125,7 +125,7 @@ public class DecimalFormatParser extends NumberFormatParser
    */
   public String getLocalizedFormatString ()
   {
-    return getDecimalFormat().toLocalizedPattern();
+    return getDecimalFormat ().toLocalizedPattern ();
   }
 
   /**
@@ -144,7 +144,7 @@ public class DecimalFormatParser extends NumberFormatParser
    */
   public void setLocalizedFormatString (String format)
   {
-    getDecimalFormat().applyLocalizedPattern(format);
+    getDecimalFormat ().applyLocalizedPattern (format);
   }
 
 }

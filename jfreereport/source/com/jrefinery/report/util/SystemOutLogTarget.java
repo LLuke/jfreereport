@@ -37,42 +37,42 @@ import java.io.Serializable;
 public class SystemOutLogTarget implements LogTarget, Serializable
 {
   /**
- 	 * logs an message to the main-log stream. All attached logStreams will also
-	 * receive this message. If the given log-level is higher than the given debug-level
-	 * in the main config file, no logging will be done.
-	 *
-	 * @param level log level of the message.
-	 * @param message text to be logged.
-	 */
-	public void log (int level, String message)
-	{
-	  if (level > 3) level = 3;
-	  if (level <= Log.getDebugLevel())
-	  {
-	    System.out.println (levels [level] + message);
-	  }
-	}
+   * logs an message to the main-log stream. All attached logStreams will also
+   * receive this message. If the given log-level is higher than the given debug-level
+   * in the main config file, no logging will be done.
+   *
+   * @param level log level of the message.
+   * @param message text to be logged.
+   */
+  public void log (int level, String message)
+  {
+    if (level > 3) level = 3;
+    if (level <= Log.getDebugLevel ())
+    {
+      System.out.println (levels[level] + message);
+    }
+  }
 
-	/**
-	 * logs an message to the main-log stream. All attached logStreams will also
-	 * receive this message. If the given log-level is higher than the given debug-level
-	 * in the main config file, no logging will be done.
-	 *
-	 * The exception's stacktrace will be appended to the log-stream
-	 *
-	 * @param level log level of the message.
- 	 * @param message text to be logged.
-	 * @param e the exception, which should be logged.
-	 */
-	public void log (int level, String message, Exception e)
-	{
-	  if (level > 3) level = 3;
-	  if (level <= Log.getDebugLevel())
-	  {
-	    System.out.println (levels [level] + message);
-	    e.printStackTrace (System.out);
-	  }
-	}
+  /**
+   * logs an message to the main-log stream. All attached logStreams will also
+   * receive this message. If the given log-level is higher than the given debug-level
+   * in the main config file, no logging will be done.
+   *
+   * The exception's stacktrace will be appended to the log-stream
+   *
+   * @param level log level of the message.
+   * @param message text to be logged.
+   * @param e the exception, which should be logged.
+   */
+  public void log (int level, String message, Exception e)
+  {
+    if (level > 3) level = 3;
+    if (level <= Log.getDebugLevel ())
+    {
+      System.out.println (levels[level] + message);
+      e.printStackTrace (System.out);
+    }
+  }
 
   public void debug (String message)
   {
@@ -120,8 +120,8 @@ public class SystemOutLogTarget implements LogTarget, Serializable
   {
     if (defaultTarget == null)
     {
-      defaultTarget = new SystemOutLogTarget();
-      Log.addTarget(defaultTarget);
+      defaultTarget = new SystemOutLogTarget ();
+      Log.addTarget (defaultTarget);
     }
   }
 
@@ -129,7 +129,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
   {
     if (defaultTarget != null)
     {
-      Log.removeTarget(defaultTarget);
+      Log.removeTarget (defaultTarget);
       defaultTarget = null;
     }
   }

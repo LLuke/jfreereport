@@ -28,8 +28,8 @@
  */
 package com.jrefinery.report.filter;
 
-import java.text.SimpleDateFormat;
 import java.text.Format;
+import java.text.SimpleDateFormat;
 
 /**
  * A filter that creates string from dates. This filter will format java.util.
@@ -51,7 +51,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    */
   public SimpleDateFormatFilter ()
   {
-    setFormatter(new SimpleDateFormat());
+    setFormatter (new SimpleDateFormat ());
   }
 
   /**
@@ -72,7 +72,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    */
   public void setSimpleDateFormat (SimpleDateFormat format)
   {
-    super.setFormatter(format);
+    super.setFormatter (format);
   }
 
   /**
@@ -85,7 +85,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    */
   public void setFormatter (Format format)
   {
-    super.setFormatter((SimpleDateFormat) format);
+    super.setFormatter ((SimpleDateFormat) format);
   }
 
   /**
@@ -96,7 +96,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    */
   public String getFormatString ()
   {
-    return getSimpleDateFormat().toPattern();
+    return getSimpleDateFormat ().toPattern ();
   }
 
   /**
@@ -107,7 +107,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    */
   public void setFormatString (String format)
   {
-    getSimpleDateFormat().applyPattern(format);
+    getSimpleDateFormat ().applyPattern (format);
   }
 
   /**
@@ -118,7 +118,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    */
   public String getLocalizedFormatString ()
   {
-    return getSimpleDateFormat().toLocalizedPattern();
+    return getSimpleDateFormat ().toLocalizedPattern ();
   }
 
 
@@ -130,7 +130,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    */
   public void setLocalizedFormatString (String format)
   {
-    getSimpleDateFormat().applyLocalizedPattern(format);
+    getSimpleDateFormat ().applyLocalizedPattern (format);
   }
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.19 2002/06/08 17:03:55 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.20 2002/06/09 17:29:30 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -54,7 +54,6 @@ package com.jrefinery.report.preview;
 import com.jrefinery.layout.CenterLayout;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.action.AboutAction;
 import com.jrefinery.report.action.CloseAction;
 import com.jrefinery.report.action.FirstPageAction;
@@ -68,11 +67,9 @@ import com.jrefinery.report.action.SaveAsAction;
 import com.jrefinery.report.action.ZoomInAction;
 import com.jrefinery.report.action.ZoomOutAction;
 import com.jrefinery.report.targets.G2OutputTarget;
-import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.ui.ExtensionFileFilter;
 
 import javax.swing.Action;
@@ -111,8 +108,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ResourceBundle;
 import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * A standard print preview frame for any JFreeReport.  Allows the user to page back and forward
@@ -149,7 +146,7 @@ public class PreviewFrame
      */
     public void run ()
     {
-      attemptSaveAs();
+      attemptSaveAs ();
     }
   }
 
@@ -316,13 +313,13 @@ public class PreviewFrame
      */
     public void actionPerformed (ActionEvent e)
     {
-      if (getDefaultCloseOperation() == DISPOSE_ON_CLOSE)
+      if (getDefaultCloseOperation () == DISPOSE_ON_CLOSE)
       {
         dispose ();
       }
       else
       {
-        setVisible(false);
+        setVisible (false);
       }
     }
   }
@@ -359,8 +356,8 @@ public class PreviewFrame
     public void actionPerformed (ActionEvent e)
     {
       String result = JOptionPane.showInputDialog (PreviewFrame.this,
-              getResources().getString("dialog.gotopage.title"),
-              getResources().getString("dialog.gotopage.message"),
+              getResources ().getString ("dialog.gotopage.title"),
+              getResources ().getString ("dialog.gotopage.message"),
               JOptionPane.OK_CANCEL_OPTION);
       if (result == null)
         return;
@@ -564,11 +561,11 @@ public class PreviewFrame
       }
       catch (IOException ioe)
       {
-        showExceptionDialog("error.savefailed", ioe);
+        showExceptionDialog ("error.savefailed", ioe);
       }
       catch (Exception re)
       {
-        showExceptionDialog("error.processingfailed", re);
+        showExceptionDialog ("error.processingfailed", re);
       }
     }
   }
@@ -600,7 +597,7 @@ public class PreviewFrame
       }
       catch (PrinterException e)
       {
-        showExceptionDialog("error.printfailed", e);
+        showExceptionDialog ("error.printfailed", e);
       }
     }
   }
@@ -613,10 +610,10 @@ public class PreviewFrame
   private void showExceptionDialog (String localisationBase, Exception e)
   {
     ExceptionDialog.showExceptionDialog (
-            getResources().getString(localisationBase + ".title"),
-            MessageFormat.format(
-                    getResources().getString(localisationBase + ".message"),
-                    new Object[]{ e.getLocalizedMessage()}
+            getResources ().getString (localisationBase + ".title"),
+            MessageFormat.format (
+                    getResources ().getString (localisationBase + ".message"),
+                    new Object[]{e.getLocalizedMessage ()}
             ),
             e);
   }
@@ -976,7 +973,7 @@ public class PreviewFrame
     }
     button.setMargin (new Insets (0, 0, 0, 0));
     button.setText (null);
-    FloatingButtonEnabler.getInstance().addButton (button);
+    FloatingButtonEnabler.getInstance ().addButton (button);
     return button;
   }
 
@@ -1061,13 +1058,13 @@ public class PreviewFrame
             || property.equals (ReportPane.NUMBER_OF_PAGES_PROPERTY))
     {
 
-      Object[] params = new Object[] {
+      Object[] params = new Object[]{
         new Integer (reportPane.getPageNumber ()),
         new Integer (reportPane.getNumberOfPages ())
       };
       getStatus ().setText (
               MessageFormat.format (
-                      getResources().getString("statusline.pages"),
+                      getResources ().getString ("statusline.pages"),
                       params
               )
       );
@@ -1081,8 +1078,8 @@ public class PreviewFrame
 
         getStatus ().setText (
                 MessageFormat.format (
-                        getResources().getString("statusline.error"),
-                        new Object[] { ex.getMessage() }
+                        getResources ().getString ("statusline.error"),
+                        new Object[]{ex.getMessage ()}
                 )
         );
       }

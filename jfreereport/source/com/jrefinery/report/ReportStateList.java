@@ -118,7 +118,7 @@ public class ReportStateList
       {
         ReportState oldState = state;
         state = master.report.processPage (master.target, state, false);
-        set(state, i + 1);
+        set (state, i + 1);
         if (state.isFinish ())
         {
           return state;
@@ -189,7 +189,7 @@ public class ReportStateList
    */
   public void add (ReportState state)
   {
-    if (state == null) throw new NullPointerException();
+    if (state == null) throw new NullPointerException ();
 
     MasterList master = null;
     if (getMasterPos (size ()) >= masterStates.size ())

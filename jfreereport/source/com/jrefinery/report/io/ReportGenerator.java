@@ -29,12 +29,10 @@
  */
 package com.jrefinery.report.io;
 
-import com.jrefinery.io.FileUtilities;
 import com.jrefinery.report.JFreeReport;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;

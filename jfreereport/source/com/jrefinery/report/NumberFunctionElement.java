@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFunctionElement.java,v 1.7 2002/07/03 18:49:46 taqua Exp $
+ * $Id: NumberFunctionElement.java,v 1.8 2002/07/21 13:22:26 taqua Exp $
  *
  * Changes
  * -------
@@ -43,8 +43,6 @@
 package com.jrefinery.report;
 
 import com.jrefinery.report.filter.NumberFormatFilter;
-import com.jrefinery.report.filter.DataFilter;
-import com.jrefinery.report.util.Log;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -68,10 +66,10 @@ public class NumberFunctionElement extends FunctionElement
    */
   public NumberFunctionElement ()
   {
-    filter = new NumberFormatFilter();
-    setDecimalFormatString(null);
-    setDataSource(filter);
-    filter.setDataSource(getFunctionDataSource());
+    filter = new NumberFormatFilter ();
+    setDecimalFormatString (null);
+    setDataSource (filter);
+    filter.setDataSource (getFunctionDataSource ());
   }
 
   /**
@@ -79,7 +77,7 @@ public class NumberFunctionElement extends FunctionElement
    */
   public NumberFormat getFormatter ()
   {
-    return filter.getNumberFormat();
+    return filter.getNumberFormat ();
   }
 
   /**
@@ -91,7 +89,7 @@ public class NumberFunctionElement extends FunctionElement
     if (nf == null)
       throw new NullPointerException ("NumberFormat may not be null");
 
-    filter.setNumberFormat(nf);
+    filter.setNumberFormat (nf);
   }
 
   /**
@@ -110,14 +108,14 @@ public class NumberFunctionElement extends FunctionElement
 
   public Object clone () throws CloneNotSupportedException
   {
-    if ((getDataSource() instanceof NumberFormatFilter) == false)
+    if ((getDataSource () instanceof NumberFormatFilter) == false)
     {
-      throw new CloneNotSupportedException("Modified function element is not clonable");
+      throw new CloneNotSupportedException ("Modified function element is not clonable");
     }
-    NumberFunctionElement e = (NumberFunctionElement) super.clone();
-    e.filter = (NumberFormatFilter) filter.clone();
-    e.setDataSource(filter);
-    e.filter.setDataSource(getFunctionDataSource());
+    NumberFunctionElement e = (NumberFunctionElement) super.clone ();
+    e.filter = (NumberFormatFilter) filter.clone ();
+    e.setDataSource (filter);
+    e.filter.setDataSource (getFunctionDataSource ());
     return e;
   }
 

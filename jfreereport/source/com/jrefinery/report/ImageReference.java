@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.12 2002/07/15 16:50:31 mungady Exp $
+ * $Id: ImageReference.java,v 1.13 2002/07/20 20:48:47 taqua Exp $
  *
  * Changes:
  * --------
@@ -41,15 +41,14 @@
 
 package com.jrefinery.report;
 
+import gnu.bhresearch.pixie.wmf.WmfImageProducer;
+
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
-
-import gnu.bhresearch.pixie.wmf.WmfImageProducer;
 
 /**
  * An image reference encapsulates the source of an image together with an
@@ -79,44 +78,44 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @throws IOException if the url could not be read.
    */
-  public ImageReference(URL url) throws IOException
+  public ImageReference (URL url) throws IOException
   {
     InputStream is = null;
-    setSourceURL(url);
+    setSourceURL (url);
 
     try
     {
-      is = url.openStream();
-      int c1 = is.read();
-      int c2 = is.read();
-      is.close();
+      is = url.openStream ();
+      int c1 = is.read ();
+      int c2 = is.read ();
+      is.close ();
       is = null;
 
       if (c1 == 0xD7 && c2 == 0xCD)
       {
-        image = Toolkit.getDefaultToolkit().createImage(new WmfImageProducer(url));
+        image = Toolkit.getDefaultToolkit ().createImage (new WmfImageProducer (url));
       }
       else
       {
         this.url = url;
-        image = Toolkit.getDefaultToolkit().getImage(url);
-        WaitingImageObserver obs = new WaitingImageObserver(image);
+        image = Toolkit.getDefaultToolkit ().getImage (url);
+        WaitingImageObserver obs = new WaitingImageObserver (image);
 
-        obs.waitImageLoaded();
+        obs.waitImageLoaded ();
       }
     }
     finally
     {
       if (is != null)
       {
-        is.close();
+        is.close ();
       }
     }
   }
 
   public ImageReference (Image img)
   {
-    if (img == null) throw new NullPointerException();
+    if (img == null) throw new NullPointerException ();
     this.image = img;
   }
 
@@ -127,7 +126,7 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @return The current image instance.
    */
-  public Image getImage()
+  public Image getImage ()
   {
 
     return image;
@@ -138,7 +137,7 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @return The URL.
    */
-  public URL getSourceURL()
+  public URL getSourceURL ()
   {
 
     return url;
@@ -149,11 +148,11 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @param surl The URL.
    */
-  protected void setSourceURL(URL surl)
+  protected void setSourceURL (URL surl)
   {
 
     if (surl == null)
-      throw new NullPointerException();
+      throw new NullPointerException ();
 
     this.url = surl;
   }
@@ -163,16 +162,16 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @return The string.
    */
-  public String toString()
+  public String toString ()
   {
 
-    StringBuffer buf = new StringBuffer();
+    StringBuffer buf = new StringBuffer ();
 
-    buf.append("ImageReference={ URL=");
-    buf.append(getSourceURL());
-    buf.append("}");
+    buf.append ("ImageReference={ URL=");
+    buf.append (getSourceURL ());
+    buf.append ("}");
 
-    return buf.toString();
+    return buf.toString ();
   }
 
   public boolean equals (Object o)
@@ -183,11 +182,11 @@ public class ImageReference implements Serializable, Cloneable
     if (ref.url == null && url == null) return true;
     if (ref.url == null) return false;
     if (url == null) return false;
-    return ref.url.equals(url);
+    return ref.url.equals (url);
   }
 
   public Object clone () throws CloneNotSupportedException
   {
-    return super.clone();
+    return super.clone ();
   }
 }

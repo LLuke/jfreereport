@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.14 2002/07/21 13:22:26 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.15 2002/07/28 13:53:16 taqua Exp $
  *
  * Changes
  * -------
@@ -45,15 +45,12 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.filter.DataFilter;
-import com.jrefinery.report.filter.NumberFormatParser;
+import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.filter.DecimalFormatParser;
+import com.jrefinery.report.filter.NumberFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.event.ReportEvent;
 
-import javax.swing.table.TableModel;
 import java.math.BigDecimal;
 
 /**
@@ -101,10 +98,10 @@ public class ItemSumFunction extends AbstractFunction
   public ItemSumFunction ()
   {
     sum = ZERO;
-    datasource = new StaticDataSource();
-    parser = new DecimalFormatParser();
-    parser.setNullValue(ZERO);
-    parser.setDataSource(datasource);
+    datasource = new StaticDataSource ();
+    parser = new DecimalFormatParser ();
+    parser.setNullValue (ZERO);
+    parser.setDataSource (datasource);
   }
 
   /**
@@ -116,7 +113,7 @@ public class ItemSumFunction extends AbstractFunction
    */
   public ItemSumFunction (String name)
   {
-    this();
+    this ();
     setName (name);
   }
 
@@ -141,18 +138,18 @@ public class ItemSumFunction extends AbstractFunction
    */
   public void groupStarted (ReportEvent event)
   {
-    String mygroup = getGroup();
+    String mygroup = getGroup ();
     if (mygroup == null)
     {
       return;
     }
 
-    Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
-    if (  this.group.equals (group.getName ()))
+    Group group = event.getReport ().getGroup (event.getState ().getCurrentGroupIndex ());
+    if (this.group.equals (group.getName ()))
     {
       this.sum = ZERO;
     }
-}
+  }
 
   /**
    * Returns the group name.
@@ -217,12 +214,12 @@ public class ItemSumFunction extends AbstractFunction
    */
   public void itemsAdvanced (ReportEvent event)
   {
-    Object fieldValue = event.getDataRow().get(getField());
-    datasource.setValue(fieldValue);
-    Number n = (Number) parser.getValue();
+    Object fieldValue = event.getDataRow ().get (getField ());
+    datasource.setValue (fieldValue);
+    Number n = (Number) parser.getValue ();
     try
     {
-      sum = sum.add (new BigDecimal (n.doubleValue()));
+      sum = sum.add (new BigDecimal (n.doubleValue ()));
     }
     catch (Exception e)
     {
@@ -248,12 +245,12 @@ public class ItemSumFunction extends AbstractFunction
    * @throws FunctionInitializeException when no field is set.
    */
   public void initialize ()
-    throws FunctionInitializeException
+          throws FunctionInitializeException
   {
     String fieldProp = getProperty ("field");
     if (fieldProp == null)
     {
-      throw new FunctionInitializeException("No Such Property : field");
+      throw new FunctionInitializeException ("No Such Property : field");
     }
     setField (fieldProp);
     setGroup (getProperty ("group"));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FormatFilter.java,v 1.5 2002/07/02 20:33:09 taqua Exp $
+ * $Id: FormatFilter.java,v 1.6 2002/07/03 18:49:48 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ public class FormatFilter implements DataFilter
    */
   public void setFormatter (Format format)
   {
-    if (format == null) throw new NullPointerException();
+    if (format == null) throw new NullPointerException ();
     this.format = format;
   }
 
@@ -106,22 +106,22 @@ public class FormatFilter implements DataFilter
    */
   public Object getValue ()
   {
-    Format f = getFormatter();
-    if (f == null) return getNullValue();
+    Format f = getFormatter ();
+    if (f == null) return getNullValue ();
 
-    DataSource ds = getDataSource();
-    if (ds == null) return getNullValue();
+    DataSource ds = getDataSource ();
+    if (ds == null) return getNullValue ();
 
-    Object o = ds.getValue();
-    if (o == null)  return getNullValue();
+    Object o = ds.getValue ();
+    if (o == null) return getNullValue ();
 
     try
     {
-      return f.format(o);
+      return f.format (o);
     }
     catch (IllegalArgumentException e)
     {
-      return getNullValue();
+      return getNullValue ();
     }
   }
 
@@ -132,7 +132,7 @@ public class FormatFilter implements DataFilter
    */
   public void setNullValue (String nullvalue)
   {
-    if (nullvalue == null) throw new NullPointerException();
+    if (nullvalue == null) throw new NullPointerException ();
     this.nullvalue = nullvalue;
   }
 
@@ -163,15 +163,15 @@ public class FormatFilter implements DataFilter
    */
   public void setDataSource (DataSource ds)
   {
-    if (ds == null) throw new NullPointerException();
+    if (ds == null) throw new NullPointerException ();
     this.datasource = ds;
   }
 
   public Object clone () throws CloneNotSupportedException
   {
-    FormatFilter f = (FormatFilter) super.clone();
+    FormatFilter f = (FormatFilter) super.clone ();
     f.datasource = (DataSource) datasource.clone ();
-    f.format = (Format) format.clone();
+    f.format = (Format) format.clone ();
     return f;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.5 2002/06/08 14:31:53 taqua Exp $
+ * $Id: Function.java,v 1.6 2002/07/28 13:25:27 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,6 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.event.ReportListener;
-
-import java.util.Properties;
 
 /**
  * The interface for report functions.  A report function separates the business logic from

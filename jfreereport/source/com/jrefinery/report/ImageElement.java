@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.10 2002/06/27 19:16:54 taqua Exp $
+ * $Id: ImageElement.java,v 1.11 2002/07/17 20:43:38 taqua Exp $
  *
  * Changes:
  * --------
@@ -74,7 +74,7 @@ public class ImageElement extends Element
   {
     // set the paint...
     target.setPaint (getPaint (band));
-    ImageReference ref = (ImageReference) getValue();
+    ImageReference ref = (ImageReference) getValue ();
     if (ref != null) target.drawImage (ref);
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.18 2002/07/28 13:25:24 taqua Exp $
+ * $Id: ReportState.java,v 1.19 2002/07/28 13:53:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -52,8 +52,8 @@
 package com.jrefinery.report;
 
 import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.util.ReportProperties;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportProperties;
 
 import java.util.Date;
 
@@ -156,7 +156,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       JFreeReport report = getReport ();
 
       ReportHeader reportHeader = report.getReportHeader ();
-      getDataRowConnector().setDataRowBackend(getDataRowBackend());
+      getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
       rpc.printReportHeader (reportHeader);
       return new PostReportHeader (this);
     }
@@ -242,7 +242,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
           ReportEvent event = new ReportEvent (this);
           fireGroupStartedEvent (event);
           //header.populateElements (this);
-          getDataRowConnector().setDataRowBackend(getDataRowBackend());
+          getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
           rpc.printGroupHeader (header);
           return new PostGroupHeader (this);
         }
@@ -374,7 +374,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       // here after the pagebreak.
       if (rpc.isSpaceFor (itemBand))
       {
-        System.out.println ("RS::Item::advance: - " + getDataRowBackend().getCurrentRow());
+        System.out.println ("RS::Item::advance: - " + getDataRowBackend ().getCurrentRow ());
         advanceItem ();
 
         int currItem = getCurrentDataItem ();
@@ -384,14 +384,14 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         fireItemsAdvancedEvent (event);
         //itemBand.populateElements (this);
 
-        getDataRowConnector().setDataRowBackend(getDataRowBackend());
+        getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
         rpc.printItemBand (itemBand);
 
         // we have more data to work on
         // If the group is done, print the GroupFooter of the parent
         Group group = getReport ().getGroup (getCurrentGroupIndex ());
 
-        if (group.isLastItemInGroup (getDataRowBackend(), getDataRowBackend().previewNextRow()))
+        if (group.isLastItemInGroup (getDataRowBackend (), getDataRowBackend ().previewNextRow ()))
         //if (group.isLastItemInGroup (getReport ().getData (), getCurrentDataItem ()))
         {
           return new PostItemGroup (this);
@@ -450,7 +450,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         fireGroupFinishedEvent (event);
         //footer.populateElements (this);
 
-        getDataRowConnector().setDataRowBackend(getDataRowBackend());
+        getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
         rpc.printGroupFooter (footer);
         return new PostGroupFooter (this);
       }
@@ -522,7 +522,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
           // we have more data to work on
           // If the group is done, print the GroupFooter of the parent
           Group group = getReport ().getGroup (getCurrentGroupIndex ());
-          if (group.isLastItemInGroup (getDataRowBackend(), getDataRowBackend().previewNextRow()))
+          if (group.isLastItemInGroup (getDataRowBackend (), getDataRowBackend ().previewNextRow ()))
 //          if (group.isLastItemInGroup (getReport ().getData (), getCurrentDataItem ()))
           {
             // Parent is finished, print the footer
@@ -567,7 +567,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         fireReportFinishedEvent (event);
         //reportFooter.populateElements (this);
 
-        getDataRowConnector().setDataRowBackend(getDataRowBackend());
+        getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
         rpc.printReportFooter (reportFooter);
         return new Finish (this);
       }
@@ -638,22 +638,22 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   protected ReportState (JFreeReport report)
   {
     setReport (report);
-    reportProperties = new ReportProperties (report.getProperties());
+    reportProperties = new ReportProperties (report.getProperties ());
 
     setCurrentItem (BEFORE_FIRST_ROW);
     setCurrentPage (FIRST_PAGE);
     setCurrentGroupIndex (BEFORE_FIRST_GROUP);
     setFunctions (report.getFunctions ());
 
-    DataRowConnector dc = new DataRowConnector();
-    dc.connectDataSources(getReport());
-    setDataRowConnector(dc);
+    DataRowConnector dc = new DataRowConnector ();
+    dc.connectDataSources (getReport ());
+    setDataRowConnector (dc);
 
-    DataRowBackend dr = new DataRowBackend();
-    dr.setTablemodel(getReport().getData());
-    dr.setFunctions(getFunctions());
-    dr.setCurrentRow(getCurrentDisplayItem());
-    setDataRowBackend(dr);
+    DataRowBackend dr = new DataRowBackend ();
+    dr.setTablemodel (getReport ().getData ());
+    dr.setFunctions (getFunctions ());
+    dr.setCurrentRow (getCurrentDisplayItem ());
+    setDataRowBackend (dr);
   }
 
   protected DataRowConnector getDataRowConnector ()
@@ -668,7 +668,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   public DataRow getDataRow ()
   {
-    return getDataRowConnector();
+    return getDataRowConnector ();
   }
 
   /**
@@ -684,10 +684,10 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     setCurrentPage (clone.getCurrentPage ());
     setCurrentGroupIndex (clone.getCurrentGroupIndex ());
     setFunctions (clone.getFunctions ());
-    setDataRowConnector(clone.getDataRowConnector());
+    setDataRowConnector (clone.getDataRowConnector ());
 
-    setDataRowBackend(clone.getDataRowBackend());
-    getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
+    setDataRowBackend (clone.getDataRowBackend ());
+    getDataRowBackend ().setCurrentRow (getCurrentDisplayItem ());
   }
 
 
@@ -728,12 +728,12 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     }
     try
     {
-      this.report = (JFreeReport) report.clone();
+      this.report = (JFreeReport) report.clone ();
     }
     catch (CloneNotSupportedException cne)
     {
-      Log.error("Error setting the report definition", cne);
-      throw new IllegalArgumentException("Error setting the report definition");
+      Log.error ("Error setting the report definition", cne);
+      throw new IllegalArgumentException ("Error setting the report definition");
     }
   }
 
@@ -753,7 +753,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   public final int getCurrentDisplayItem ()
   {
-    if (isPrefetchState())
+    if (isPrefetchState ())
       return this.currentItem + 1;
     else
       return this.currentItem;
@@ -874,9 +874,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     {
       ReportState result = (ReportState) super.clone ();
       FunctionCollection functions = getFunctions ().getCopy ();
-      result.setFunctions(functions);
-      result.dataRow = (DataRowBackend) dataRow.clone();
-      result.dataRow.setFunctions(functions);
+      result.setFunctions (functions);
+      result.dataRow = (DataRowBackend) dataRow.clone ();
+      result.dataRow.setFunctions (functions);
       return result;
     }
     catch (CloneNotSupportedException cne)
@@ -949,60 +949,60 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   public void advanceItem ()
   {
     setCurrentItem (getCurrentDataItem () + 1);
-    getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
+    getDataRowBackend ().setCurrentRow (getCurrentDisplayItem ());
   }
 
   public void fireReportStartedEvent (ReportEvent event)
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.reportStarted (event);
   }
 
   public void fireReportFinishedEvent (ReportEvent event)
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.reportFinished (event);
   }
 
   public void firePageStartedEvent (ReportEvent event)
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.pageStarted (event);
   }
 
   public void firePageFinishedEvent (ReportEvent event)
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.pageFinished (event);
   }
 
   public void fireGroupStartedEvent (ReportEvent event)
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.groupStarted (event);
   }
 
   public void fireGroupFinishedEvent (ReportEvent event)
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.groupFinished (event);
   }
 
   public void fireItemsStartedEvent (ReportEvent event)
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.itemsStarted (event);
   }
 
   public void fireItemsFinishedEvent (ReportEvent event)
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.itemsFinished (event);
   }
 
   public void fireItemsAdvancedEvent (ReportEvent event)
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.itemsAdvanced (event);
   }
 }

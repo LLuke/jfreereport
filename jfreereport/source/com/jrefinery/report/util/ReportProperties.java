@@ -31,9 +31,9 @@
  */
 package com.jrefinery.report.util;
 
-import java.util.Hashtable;
-import java.util.Enumeration;
 import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 /**
  * The report properties is a hashtable with string keys. ReportProperties are bound to
@@ -88,11 +88,11 @@ public class ReportProperties implements Serializable, Cloneable
   {
     if (value == null)
     {
-      this.properties.remove(key);
+      this.properties.remove (key);
     }
     else
     {
-      this.properties.put(key, value);
+      this.properties.put (key, value);
     }
   }
 
@@ -127,7 +127,7 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public Enumeration keys ()
   {
-    return properties.keys();
+    return properties.keys ();
   }
 
   /**
@@ -135,7 +135,7 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public ReportProperties (ReportProperties props)
   {
-    properties = new Hashtable(props.properties);
+    properties = new Hashtable (props.properties);
   }
 
   /**
@@ -143,7 +143,7 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public ReportProperties ()
   {
-    properties = new Hashtable();
+    properties = new Hashtable ();
   }
 
   /**
@@ -151,7 +151,7 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public void clear ()
   {
-    properties.clear();
+    properties.clear ();
   }
 
   /**
@@ -161,13 +161,13 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public boolean containsKey (String key)
   {
-    return properties.containsKey(key);
+    return properties.containsKey (key);
   }
 
   public Object clone () throws CloneNotSupportedException
   {
     ReportProperties p = (ReportProperties) super.clone ();
-    p.properties = (Hashtable) properties.clone();
+    p.properties = (Hashtable) properties.clone ();
     return p;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.5 2002/06/08 14:31:53 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.1 2002/06/19 19:46:45 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -38,8 +38,8 @@
  */
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.Element;
+import com.jrefinery.report.event.ReportEvent;
 
 /**
  * A function that alternates between true and false for each item within a group.
@@ -77,13 +77,13 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    */
   public void itemsAdvanced (ReportEvent event)
   {
-    if (event.getState().isPrepareRun()) return;
+    if (event.getState ().isPrepareRun ()) return;
 
     trigger = (!trigger);
-    Element e = event.getReport().getItemBand().getElement(getElement());
+    Element e = event.getReport ().getItemBand ().getElement (getElement ());
     if (e != null)
     {
-      e.setVisible(trigger);
+      e.setVisible (trigger);
     }
   }
 
@@ -96,9 +96,9 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    */
   public void initialize () throws FunctionInitializeException
   {
-    super.initialize();
-    if (getProperty("element") == null)
-      throw new FunctionInitializeException("Element name must be specified");
+    super.initialize ();
+    if (getProperty ("element") == null)
+      throw new FunctionInitializeException ("Element name must be specified");
   }
 
   /**
@@ -110,7 +110,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    */
   public void setElement (String name)
   {
-    setProperty("element", name);
+    setProperty ("element", name);
   }
 
   /**
@@ -120,7 +120,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    */
   public String getElement ()
   {
-    return getProperty("element", "");
+    return getProperty ("element", "");
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.6 2002/07/18 18:47:27 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.7 2002/07/20 20:48:47 taqua Exp $
  *
  * Changes
  * -------
@@ -112,7 +112,7 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
   public void setGroup (String group)
   {
     this.group = group;
-    setProperty("group", group);
+    setProperty ("group", group);
   }
 
   /**
@@ -161,7 +161,7 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
    * ???
    */
   public void initialize ()
-    throws FunctionInitializeException
+          throws FunctionInitializeException
   {
     super.initialize ();
     setGroup (getProperty ("group"));

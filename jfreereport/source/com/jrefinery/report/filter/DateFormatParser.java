@@ -28,9 +28,8 @@
  */
 package com.jrefinery.report.filter;
 
-import java.text.SimpleDateFormat;
-import java.text.Format;
 import java.text.DateFormat;
+import java.text.Format;
 import java.util.Date;
 
 /**
@@ -47,7 +46,7 @@ public class DateFormatParser extends FormatParser
    */
   public DateFormatParser ()
   {
-    setDateFormat(DateFormat.getInstance());
+    setDateFormat (DateFormat.getInstance ());
   }
 
   /**
@@ -69,7 +68,7 @@ public class DateFormatParser extends FormatParser
    */
   public void setDateFormat (DateFormat format)
   {
-    super.setFormatter(format);
+    super.setFormatter (format);
   }
 
   /**
@@ -81,7 +80,7 @@ public class DateFormatParser extends FormatParser
    */
   public void setFormatter (Format format)
   {
-    super.setFormatter((DateFormat) format);
+    super.setFormatter ((DateFormat) format);
   }
 
   /**
@@ -96,7 +95,7 @@ public class DateFormatParser extends FormatParser
    */
   public void setNullValue (Object nullvalue)
   {
-    super.setNullValue ((Date)nullvalue);
+    super.setNullValue ((Date) nullvalue);
   }
 
   /**

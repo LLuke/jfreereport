@@ -36,41 +36,50 @@ package com.jrefinery.report.util;
 public interface LogTarget
 {
   /**
-  * Loglevel ERROR
-  */
+   * Loglevel ERROR
+   */
   public static final int ERROR = 0;
 
   /**
-  * Loglevel WARN
-  */
-  public static final int WARN  = 1;
+   * Loglevel WARN
+   */
+  public static final int WARN = 1;
 
   /**
-  * Loglevel INFO
-  */
-  public static final int INFO  = 2;
+   * Loglevel INFO
+   */
+  public static final int INFO = 2;
 
   /**
-  * Loglevel DEBUG
-  */
+   * Loglevel DEBUG
+   */
   public static final int DEBUG = 3;
 
-  public static final String [] levels =
-  {
-    "ERROR: ",
-    "WARN:  ",
-    "INFO:  ",
-    "DEBUG: "
-  };
+  public static final String[] levels =
+          {
+            "ERROR: ",
+            "WARN:  ",
+            "INFO:  ",
+            "DEBUG: "
+          };
 
-	public void log (int level, String message);
-	public void log (int level, String message, Exception e);
+  public void log (int level, String message);
+
+  public void log (int level, String message, Exception e);
+
   public void debug (String message);
+
   public void debug (String message, Exception e);
+
   public void info (String message);
+
   public void info (String message, Exception e);
+
   public void warn (String message);
+
   public void warn (String message, Exception e);
+
   public void error (String message);
+
   public void error (String message, Exception e);
 }

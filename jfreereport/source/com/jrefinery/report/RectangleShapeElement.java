@@ -34,8 +34,8 @@ package com.jrefinery.report;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 
-import java.awt.geom.Rectangle2D;
 import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 
 /**
  * A RectangleShapeElement encapsulates an Rectangle2D-Shape to display it on the report.
@@ -48,8 +48,8 @@ public class RectangleShapeElement extends ShapeElement
    */
   public RectangleShapeElement ()
   {
-    setShouldDraw(false);
-    setShouldFill(true);
+    setShouldDraw (false);
+    setShouldFill (true);
   }
 
   /**
@@ -57,7 +57,7 @@ public class RectangleShapeElement extends ShapeElement
    */
   public Rectangle2D getRectangle ()
   {
-    return (Rectangle2D) getBounds();
+    return (Rectangle2D) getBounds ();
   }
 
   /**
@@ -67,7 +67,7 @@ public class RectangleShapeElement extends ShapeElement
    */
   public void setRectangle (Rectangle2D rect)
   {
-    setShape(rect);
+    setShape (rect);
   }
 
   /**
@@ -78,8 +78,8 @@ public class RectangleShapeElement extends ShapeElement
    */
   public void setShape (Shape shape)
   {
-    super.setShape((Rectangle2D) shape);
-    super.setBounds((Rectangle2D) shape);
+    super.setShape ((Rectangle2D) shape);
+    super.setBounds ((Rectangle2D) shape);
   }
 
   /**
@@ -104,9 +104,9 @@ public class RectangleShapeElement extends ShapeElement
    * Draw the rectangle. The rectangle drawn is this elements bounds object. The bounds are
    * adjusted by the band if they contain relative values.
    */
-  public void draw(OutputTarget target, Band band) throws OutputTargetException
+  public void draw (OutputTarget target, Band band) throws OutputTargetException
   {
-    super.setShape(target.getCursor().getElementBounds());
-    super.draw(target, band);
+    super.setShape (target.getCursor ().getElementBounds ());
+    super.draw (target, band);
   }
 }

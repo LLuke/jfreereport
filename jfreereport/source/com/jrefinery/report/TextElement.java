@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.15 2002/07/21 13:22:26 taqua Exp $
+ * $Id: TextElement.java,v 1.16 2002/08/08 13:40:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -49,8 +49,6 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.filter.DataFilter;
-import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.StringFilter;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
@@ -253,7 +251,7 @@ public class TextElement extends Element
     // set the font...
     target.setFont (getFont (band));
     // draw the text...
-    target.drawMultiLineText (this.getFormattedText (), getAlignment (), isDynamic());
+    target.drawMultiLineText (this.getFormattedText (), getAlignment (), isDynamic ());
   }
 
   /**
@@ -273,8 +271,8 @@ public class TextElement extends Element
    */
   public final Object getValue ()
   {
-    stringfilter.setDataSource(getDataSource());
-    return stringfilter.getValue();
+    stringfilter.setDataSource (getDataSource ());
+    return stringfilter.getValue ();
   }
 
   public boolean isDynamic ()

@@ -52,7 +52,7 @@ public class ReportDefinitionException extends SAXException
   public ReportDefinitionException (Exception e, String message)
   {
     this (message);
-    e.printStackTrace();
+    e.printStackTrace ();
     parent = e;
   }
 
@@ -60,7 +60,6 @@ public class ReportDefinitionException extends SAXException
   {
     return parent;
   }
-
 
 
 }

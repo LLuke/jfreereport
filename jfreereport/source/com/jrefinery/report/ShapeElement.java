@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.12 2002/06/09 15:15:29 taqua Exp $
+ * $Id: ShapeElement.java,v 1.13 2002/08/08 13:40:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -44,14 +44,12 @@
 
 package com.jrefinery.report;
 
-import java.awt.BasicStroke;
-import java.awt.Paint;
-import java.awt.Shape;
-import java.awt.Stroke;
-
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
+
+import java.awt.BasicStroke;
+import java.awt.Shape;
+import java.awt.Stroke;
 
 /**
  * Used to draw shapes (typically lines and boxes) on a report band. This is the abstract
@@ -60,11 +58,11 @@ import com.jrefinery.report.targets.OutputTargetException;
 public abstract class ShapeElement extends Element
 {
   /** default stroke size. */
-  public final static BasicStroke DEFAULT_STROKE = new BasicStroke(0.5f);
+  public final static BasicStroke DEFAULT_STROKE = new BasicStroke (0.5f);
 
   /** The shape to draw. */
   private Shape shape;
-  
+
   private Stroke m_stroke;
 
   private boolean shouldFill;
@@ -73,7 +71,7 @@ public abstract class ShapeElement extends Element
   /**
    * Constructs a shape element.
    */
-  public ShapeElement()
+  public ShapeElement ()
   {
     setStroke (DEFAULT_STROKE);
   }
@@ -81,7 +79,7 @@ public abstract class ShapeElement extends Element
   /**
    * @return the shape to draw.
    */
-  public Shape getShape()
+  public Shape getShape ()
   {
     return shape;
   }
@@ -90,10 +88,10 @@ public abstract class ShapeElement extends Element
    * Defines the shape to draw in this element. subclasses should not override this element
    * directly instead they sould provide accessor functionality suitable for their shape-type.
    */
-  protected void setShape(Shape shape)
+  protected void setShape (Shape shape)
   {
     if (shape == null)
-      throw new NullPointerException("NullShape is not valid");
+      throw new NullPointerException ("NullShape is not valid");
 
     this.shape = shape;
   }
@@ -101,20 +99,20 @@ public abstract class ShapeElement extends Element
   /**
    * Debugging function.
    */
-  public String toString()
+  public String toString ()
   {
-    StringBuffer b = new StringBuffer();
-    b.append("Shape={ name=");
-    b.append(getName());
-    b.append(", bounds=");
-    b.append(getBounds());
-    b.append(", shape=");
-    b.append(getShape());
-    b.append(", stroke=");
-    b.append(getStroke());
-    b.append("}");
+    StringBuffer b = new StringBuffer ();
+    b.append ("Shape={ name=");
+    b.append (getName ());
+    b.append (", bounds=");
+    b.append (getBounds ());
+    b.append (", shape=");
+    b.append (getShape ());
+    b.append (", stroke=");
+    b.append (getStroke ());
+    b.append ("}");
 
-    return b.toString();
+    return b.toString ();
   }
 
   /**
@@ -123,20 +121,20 @@ public abstract class ShapeElement extends Element
    * @param target The output target on which to draw.
    * @param band The band.
    */
-  public void draw(OutputTarget target, Band band) throws OutputTargetException
+  public void draw (OutputTarget target, Band band) throws OutputTargetException
   {
     // set the paint...
-    target.setPaint(getPaint(band));
-    target.setStroke(getStroke());
-    if (isShouldDraw()) target.drawShape(getShape());
-    if (isShouldFill()) target.fillShape(getShape());
+    target.setPaint (getPaint (band));
+    target.setStroke (getStroke ());
+    if (isShouldDraw ()) target.drawShape (getShape ());
+    if (isShouldFill ()) target.fillShape (getShape ());
   }
 
   /**
    * Gets the stroke.
    * @return Returns a Stroke
    */
-  public Stroke getStroke()
+  public Stroke getStroke ()
   {
     return m_stroke;
   }
@@ -145,9 +143,9 @@ public abstract class ShapeElement extends Element
    * Sets the stroke.
    * @param stroke The stroke to set
    */
-  public void setStroke(Stroke stroke)
+  public void setStroke (Stroke stroke)
   {
-    if (stroke == null) throw new NullPointerException();
+    if (stroke == null) throw new NullPointerException ();
     m_stroke = stroke;
   }
 

@@ -31,8 +31,8 @@
  */
 package com.jrefinery.report;
 
-import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.DataRowConnectable;
+import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.DataTarget;
 
 import java.util.List;
@@ -59,17 +59,17 @@ public class DataRowConnector implements DataRow
 
   public Object get (int col)
   {
-    return dataRow.get(col);
+    return dataRow.get (col);
   }
 
   public Object get (String col)
   {
-    return dataRow.get(col);
+    return dataRow.get (col);
   }
 
   public String getColumnName (int col)
   {
-    return dataRow.getColumnName(col);
+    return dataRow.getColumnName (col);
   }
 
   public DataRowConnector ()
@@ -82,75 +82,75 @@ public class DataRowConnector implements DataRow
    */
   public int findColumn (String name)
   {
-    return getDataRowBackend().findColumn (name);
+    return getDataRowBackend ().findColumn (name);
   }
 
 
   public int getColumnCount ()
   {
-    return getDataRowBackend().getColumnCount ();
+    return getDataRowBackend ().getColumnCount ();
   }
 
   public void connectDataSources (JFreeReport report)
   {
-    connectDataSources(report.getPageFooter());
-    connectDataSources(report.getPageHeader());
-    connectDataSources(report.getReportFooter());
-    connectDataSources(report.getReportHeader());
-    connectDataSources(report.getItemBand());
+    connectDataSources (report.getPageFooter ());
+    connectDataSources (report.getPageHeader ());
+    connectDataSources (report.getReportFooter ());
+    connectDataSources (report.getReportHeader ());
+    connectDataSources (report.getItemBand ());
 
-    int groupCount= report.getGroupCount();
+    int groupCount = report.getGroupCount ();
     for (int i = 0; i < groupCount; i++)
     {
-      Group g = report.getGroup(i);
-      connectDataSources(g.getFooter());
-      connectDataSources(g.getHeader());
+      Group g = report.getGroup (i);
+      connectDataSources (g.getFooter ());
+      connectDataSources (g.getHeader ());
     }
   }
 
   public void connectDataSources (Band band)
   {
-    List l = band.getElements();
-    for (int i = 0; i < l.size(); i++)
+    List l = band.getElements ();
+    for (int i = 0; i < l.size (); i++)
     {
-      Element e = (Element) l.get(i);
-      DataSource ds = getLastDatasource(e);
+      Element e = (Element) l.get (i);
+      DataSource ds = getLastDatasource (e);
       if (ds instanceof DataRowConnectable)
       {
         DataRowConnectable dc = (DataRowConnectable) ds;
-        dc.connectDataRow(this);
+        dc.connectDataRow (this);
       }
     }
   }
 
   public void disconnectDataSources (JFreeReport report)
   {
-    disconnectDataSources(report.getPageFooter());
-    disconnectDataSources(report.getPageHeader());
-    disconnectDataSources(report.getReportFooter());
-    disconnectDataSources(report.getReportHeader());
-    disconnectDataSources(report.getItemBand());
+    disconnectDataSources (report.getPageFooter ());
+    disconnectDataSources (report.getPageHeader ());
+    disconnectDataSources (report.getReportFooter ());
+    disconnectDataSources (report.getReportHeader ());
+    disconnectDataSources (report.getItemBand ());
 
-    int groupCount= report.getGroupCount();
+    int groupCount = report.getGroupCount ();
     for (int i = 0; i < groupCount; i++)
     {
-      Group g = report.getGroup(i);
-      disconnectDataSources(g.getFooter());
-      disconnectDataSources(g.getHeader());
+      Group g = report.getGroup (i);
+      disconnectDataSources (g.getFooter ());
+      disconnectDataSources (g.getHeader ());
     }
   }
 
   public void disconnectDataSources (Band band)
   {
-    List l = band.getElements();
-    for (int i = 0; i < l.size(); i++)
+    List l = band.getElements ();
+    for (int i = 0; i < l.size (); i++)
     {
-      Element e = (Element) l.get(i);
-      DataSource ds = getLastDatasource(e);
+      Element e = (Element) l.get (i);
+      DataSource ds = getLastDatasource (e);
       if (ds instanceof DataRowConnectable)
       {
         DataRowConnectable dc = (DataRowConnectable) ds;
-        dc.disconnectDataRow(this);
+        dc.disconnectDataRow (this);
       }
     }
   }

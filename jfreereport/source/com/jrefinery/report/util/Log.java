@@ -29,10 +29,6 @@
  */
 package com.jrefinery.report.util;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.io.IOException;
 import java.util.Vector;
 
 /**
@@ -42,47 +38,47 @@ import java.util.Vector;
 public final class Log
 {
   private boolean logSystemOut;
-  
+
   /**
-  * Loglevel ERROR
-  */
+   * Loglevel ERROR
+   */
   public static final int ERROR = 0;
 
   /**
-  * Loglevel WARN
-  */
-  public static final int WARN  = 1;
+   * Loglevel WARN
+   */
+  public static final int WARN = 1;
 
   /**
-  * Loglevel INFO
-  */
-  public static final int INFO  = 2;
+   * Loglevel INFO
+   */
+  public static final int INFO = 2;
 
   /**
-  * Loglevel DEBUG
-  */
+   * Loglevel DEBUG
+   */
   public static final int DEBUG = 3;
 
-  public static final String [] levels = 
-  {
-    "ERROR: ",
-    "WARN:  ",
-    "INFO:  ",
-    "DEBUG: "
-  };
+  public static final String[] levels =
+          {
+            "ERROR: ",
+            "WARN:  ",
+            "INFO:  ",
+            "DEBUG: "
+          };
 
-	private static int debuglevel = 100;
+  private static int debuglevel = 100;
   private static Vector logTargets = new Vector ();
 
-	private Log ()
-	{
-	}
+  private Log ()
+  {
+  }
 
   static
   {
-    if (Boolean.getBoolean("com.jrefinery.report.NoDefaultDebug") == false)
+    if (Boolean.getBoolean ("com.jrefinery.report.NoDefaultDebug") == false)
     {
-      SystemOutLogTarget.activate();
+      SystemOutLogTarget.activate ();
     }
   }
 
@@ -99,126 +95,126 @@ public final class Log
    */
   public static void removeTarget (LogTarget target)
   {
-    logTargets.remove(target);
+    logTargets.remove (target);
   }
 
-	/**
- 	 * logs an message to the main-log stream. All attached logStreams will also
-	 * receive this message. If the given log-level is higher than the given debug-level
-	 * in the main config file, no logging will be done.
-	 *
-	 * @param level log level of the message. 
-	 * @param message text to be logged.
-	 */
-	public static void log (int level, String message)
-	{
-	  if (level > 3) level = 3;
-	  if (level <= debuglevel)
-	  {
-      for (int i = 0; i < logTargets.size(); i++)
+  /**
+   * logs an message to the main-log stream. All attached logStreams will also
+   * receive this message. If the given log-level is higher than the given debug-level
+   * in the main config file, no logging will be done.
+   *
+   * @param level log level of the message.
+   * @param message text to be logged.
+   */
+  public static void log (int level, String message)
+  {
+    if (level > 3) level = 3;
+    if (level <= debuglevel)
+    {
+      for (int i = 0; i < logTargets.size (); i++)
       {
-        LogTarget t = (LogTarget) logTargets.elementAt(i);
-        t.log(level, message);
+        LogTarget t = (LogTarget) logTargets.elementAt (i);
+        t.log (level, message);
       }
-	  }
-	}
+    }
+  }
 
-	/**
-	 * logs an message to the main-log stream. All attached logStreams will also
-	 * receive this message. If the given log-level is higher than the given debug-level
-	 * in the main config file, no logging will be done.
-	 *
-	 * The exception's stacktrace will be appended to the log-stream 
-	 *
-	 * @param level log level of the message. 
- 	 * @param message text to be logged.
-	 * @param e the exception, which should be logged.
-	 */
-	public static void log (int level, String message, Exception e)
-	{
-	  if (level > 3) level = 3;
-	  if (level <= debuglevel)
-	  {
-      for (int i = 0; i < logTargets.size(); i++)
+  /**
+   * logs an message to the main-log stream. All attached logStreams will also
+   * receive this message. If the given log-level is higher than the given debug-level
+   * in the main config file, no logging will be done.
+   *
+   * The exception's stacktrace will be appended to the log-stream
+   *
+   * @param level log level of the message.
+   * @param message text to be logged.
+   * @param e the exception, which should be logged.
+   */
+  public static void log (int level, String message, Exception e)
+  {
+    if (level > 3) level = 3;
+    if (level <= debuglevel)
+    {
+      for (int i = 0; i < logTargets.size (); i++)
       {
-        LogTarget t = (LogTarget) logTargets.elementAt(i);
-        t.log(level, message, e);
+        LogTarget t = (LogTarget) logTargets.elementAt (i);
+        t.log (level, message, e);
       }
-	  }
-	}
+    }
+  }
 
   public static void debug (String message)
   {
-    for (int i = 0; i < logTargets.size(); i++)
+    for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt(i);
-      t.debug(message);
+      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      t.debug (message);
     }
   }
-  
+
   public static void debug (String message, Exception e)
   {
-    for (int i = 0; i < logTargets.size(); i++)
+    for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt(i);
-      t.debug(message, e);
+      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      t.debug (message, e);
     }
   }
-  
+
   public static void info (String message)
   {
-    for (int i = 0; i < logTargets.size(); i++)
+    for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt(i);
-      t.info(message);
+      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      t.info (message);
     }
   }
-  
+
   public static void info (String message, Exception e)
   {
-    for (int i = 0; i < logTargets.size(); i++)
+    for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt(i);
-      t.info(message, e);
+      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      t.info (message, e);
     }
   }
-  
+
   public static void warn (String message)
   {
-    for (int i = 0; i < logTargets.size(); i++)
+    for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt(i);
+      LogTarget t = (LogTarget) logTargets.elementAt (i);
       t.warn (message);
     }
   }
-  
+
   public static void warn (String message, Exception e)
   {
-    for (int i = 0; i < logTargets.size(); i++)
+    for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt(i);
-      t.warn(message, e);
+      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      t.warn (message, e);
     }
   }
-  
+
   public static void error (String message)
   {
-    for (int i = 0; i < logTargets.size(); i++)
+    for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt(i);
-      t.error(message);
+      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      t.error (message);
     }
   }
-  
+
   public static void error (String message, Exception e)
   {
-    for (int i = 0; i < logTargets.size(); i++)
+    for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt(i);
-      t.error(message, e);
+      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      t.error (message, e);
     }
   }
-  
+
   public static int getDebugLevel ()
   {
     return debuglevel;

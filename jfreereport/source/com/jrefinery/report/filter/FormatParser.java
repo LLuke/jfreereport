@@ -71,7 +71,7 @@ public class FormatParser implements DataFilter
    */
   public void setFormatter (Format format)
   {
-    if (format == null) throw new NullPointerException();
+    if (format == null) throw new NullPointerException ();
     this.format = format;
   }
 
@@ -99,20 +99,20 @@ public class FormatParser implements DataFilter
    */
   public Object getValue ()
   {
-    Format f = getFormatter();
-    if (f == null) return getNullValue();
+    Format f = getFormatter ();
+    if (f == null) return getNullValue ();
 
-    DataSource ds = getDataSource();
-    if (ds == null) return getNullValue();
+    DataSource ds = getDataSource ();
+    if (ds == null) return getNullValue ();
 
-    Object o = ds.getValue();
-    if (o == null)  return getNullValue();
+    Object o = ds.getValue ();
+    if (o == null) return getNullValue ();
 
-    if (isValidOutput(o)) return o;
+    if (isValidOutput (o)) return o;
 
     try
     {
-      return f.parseObject(String.valueOf(o));
+      return f.parseObject (String.valueOf (o));
     }
     catch (ParseException e)
     {
@@ -149,7 +149,7 @@ public class FormatParser implements DataFilter
    */
   public void setDataSource (DataSource ds)
   {
-    if (ds == null) throw new NullPointerException();
+    if (ds == null) throw new NullPointerException ();
     this.datasource = ds;
   }
 
@@ -161,9 +161,9 @@ public class FormatParser implements DataFilter
    * @param nullvalue The value returned when the parsing failed.
    */
   public void setNullValue (Object nullvalue)
-   {
-     this.nullvalue = nullvalue;
-   }
+  {
+    this.nullvalue = nullvalue;
+  }
 
   /**
    * Returns the object representing a null value from the data source. This value will
@@ -171,16 +171,16 @@ public class FormatParser implements DataFilter
    *
    * @return The value returned when the parsing failed.
    */
-   public Object getNullValue ()
-   {
-     return nullvalue;
-   }
+  public Object getNullValue ()
+  {
+    return nullvalue;
+  }
 
   public Object clone () throws CloneNotSupportedException
   {
-    FormatParser p = (FormatParser) super.clone();
-    p.datasource = (DataSource) datasource.clone();
-    p.format = (Format) format.clone();
+    FormatParser p = (FormatParser) super.clone ();
+    p.datasource = (DataSource) datasource.clone ();
+    p.format = (Format) format.clone ();
     return p;
   }
 }

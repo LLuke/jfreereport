@@ -25,12 +25,13 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportProcessor.java,v 1.8 2002/07/10 18:38:05 taqua Exp $
+ * $Id: ReportProcessor.java,v 1.9 2002/08/08 13:40:14 taqua Exp $
  * Changes
  * -------------------------
  * 10-May-2002 : Initial version
  * 04-Jun-2002 : Documentation
  * 09-Jul-2002 : Docs
+ * 08-Aug-2002 : Band visibility support
  */
 package com.jrefinery.report;
 
@@ -96,6 +97,10 @@ public class ReportProcessor implements JFreeReportConstants
   protected void draw (Band band, float y)
   {
     float dheight = 0;
+
+    if (band.isVisible () == false)
+      return;
+
     if (isDraw ())
     {
       try
@@ -107,8 +112,8 @@ public class ReportProcessor implements JFreeReportConstants
         Log.error ("Unable to draw band", e);
       }
     }
-    //cursor.advance (y - cursor.getY() + band.getHeight ());
-    if (dheight < band.getHeight ()) dheight = band.getHeight ();
+    if (dheight < band.getHeight ())
+      dheight = band.getHeight ();
 
     cursor.advance (y - cursor.getY () + dheight);
   }
@@ -248,6 +253,9 @@ public class ReportProcessor implements JFreeReportConstants
 
     if (isPageDone ())
       return false;
+
+    if (band.isVisible () == false)
+      return true;
 
     if (cursor.isSpaceFor (band.getHeight ()) == false)
     {

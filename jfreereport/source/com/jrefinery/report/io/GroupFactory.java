@@ -128,8 +128,8 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
     groupHeader.setDefaultFont (fontFactory.createDefaultFont (attr));
     currentGroup.setHeader (groupHeader);
 
-    handler.getReportFactory().setCurrentBand(groupHeader);
-    ElementFactory factory = handler.createElementFactory();
+    handler.getReportFactory ().setCurrentBand (groupHeader);
+    ElementFactory factory = handler.createElementFactory ();
     handler.setExpectedHandler (factory);
   }
 
@@ -148,8 +148,8 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
     groupFooter.setDefaultFont (fontFactory.createDefaultFont (attr));
     currentGroup.setFooter (groupFooter);
 
-    handler.getReportFactory().setCurrentBand(groupFooter);
-    ElementFactory factory = handler.createElementFactory();
+    handler.getReportFactory ().setCurrentBand (groupFooter);
+    ElementFactory factory = handler.createElementFactory ();
     handler.setExpectedHandler (factory);
   }
 

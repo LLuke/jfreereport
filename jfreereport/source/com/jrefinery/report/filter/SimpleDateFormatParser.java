@@ -28,8 +28,8 @@
  */
 package com.jrefinery.report.filter;
 
-import java.text.SimpleDateFormat;
 import java.text.Format;
+import java.text.SimpleDateFormat;
 
 /**
  * Parses a String into a java.util.Date. The string is read from the given datasource
@@ -51,7 +51,7 @@ public class SimpleDateFormatParser extends DateFormatParser
    */
   public SimpleDateFormatParser ()
   {
-    setFormatter(new SimpleDateFormat());
+    setFormatter (new SimpleDateFormat ());
   }
 
 
@@ -73,7 +73,7 @@ public class SimpleDateFormatParser extends DateFormatParser
    */
   public void setSimpleDateFormat (SimpleDateFormat format)
   {
-    super.setFormatter(format);
+    super.setFormatter (format);
   }
 
   /**
@@ -86,7 +86,7 @@ public class SimpleDateFormatParser extends DateFormatParser
    */
   public void setFormatter (Format format)
   {
-    super.setFormatter((SimpleDateFormat) format);
+    super.setFormatter ((SimpleDateFormat) format);
   }
 
   /**
@@ -97,7 +97,7 @@ public class SimpleDateFormatParser extends DateFormatParser
    */
   public String getFormatString ()
   {
-    return getSimpleDateFormat().toPattern();
+    return getSimpleDateFormat ().toPattern ();
   }
 
   /**
@@ -108,7 +108,7 @@ public class SimpleDateFormatParser extends DateFormatParser
    */
   public void setFormatString (String format)
   {
-    getSimpleDateFormat().applyPattern(format);
+    getSimpleDateFormat ().applyPattern (format);
   }
 
   /**
@@ -119,7 +119,7 @@ public class SimpleDateFormatParser extends DateFormatParser
    */
   public String getLocalizedFormatString ()
   {
-    return getSimpleDateFormat().toLocalizedPattern();
+    return getSimpleDateFormat ().toLocalizedPattern ();
   }
 
 
@@ -131,7 +131,7 @@ public class SimpleDateFormatParser extends DateFormatParser
    */
   public void setLocalizedFormatString (String format)
   {
-    getSimpleDateFormat().applyLocalizedPattern(format);
+    getSimpleDateFormat ().applyLocalizedPattern (format);
   }
 
 }

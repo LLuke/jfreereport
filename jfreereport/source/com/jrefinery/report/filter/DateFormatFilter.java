@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFormatFilter.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
+ * $Id: DateFormatFilter.java,v 1.4 2002/06/06 21:40:40 taqua Exp $
  *
  * Changes
  * -------
@@ -37,9 +37,8 @@
  */
 package com.jrefinery.report.filter;
 
-import java.text.SimpleDateFormat;
-import java.text.Format;
 import java.text.DateFormat;
+import java.text.Format;
 
 /**
  * A filter that creates string from dates. This filter will format java.util.
@@ -59,7 +58,7 @@ public class DateFormatFilter extends FormatFilter
    */
   public DateFormatFilter ()
   {
-    setFormatter(DateFormat.getInstance());
+    setFormatter (DateFormat.getInstance ());
   }
 
   /**
@@ -80,7 +79,7 @@ public class DateFormatFilter extends FormatFilter
    */
   public void setDateFormat (DateFormat format)
   {
-    super.setFormatter(format);
+    super.setFormatter (format);
   }
 
   /**
@@ -92,7 +91,7 @@ public class DateFormatFilter extends FormatFilter
    */
   public void setFormatter (Format format)
   {
-    super.setFormatter((DateFormat) format);
+    super.setFormatter ((DateFormat) format);
   }
 
 }

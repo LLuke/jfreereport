@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SaveAsAction.java,v 1.5 2002/05/28 19:28:23 taqua Exp $
+ * $Id: SaveAsAction.java,v 1.6 2002/06/09 14:46:06 taqua Exp $
  *
  * Changes
  * -------
@@ -41,14 +41,9 @@
 
 package com.jrefinery.report.action;
 
-import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.KeyStroke;
-
-import com.jrefinery.report.JFreeReportConstants;
+import java.util.ResourceBundle;
 
 /**
  * Save (to PDF) action for a print preview frame.
@@ -59,13 +54,13 @@ public abstract class SaveAsAction extends AbstractAction
   /**
    * Constructs a new action.
    */
-  public SaveAsAction(ResourceBundle resources)
+  public SaveAsAction (ResourceBundle resources)
   {
-    this.putValue(Action.NAME, resources.getString("action.save-as.name"));
-    this.putValue(Action.SHORT_DESCRIPTION, resources.getString("action.save-as.description"));
-    this.putValue(Action.MNEMONIC_KEY, resources.getObject("action.save-as.mnemonic"));
-    this.putValue(Action.ACCELERATOR_KEY, resources.getObject("action.save-as.accelerator"));
-    this.putValue(Action.SMALL_ICON, resources.getObject("action.save-as.small-icon"));
-    this.putValue("ICON24", resources.getObject("action.save-as.icon"));
+    this.putValue (Action.NAME, resources.getString ("action.save-as.name"));
+    this.putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.save-as.description"));
+    this.putValue (Action.MNEMONIC_KEY, resources.getObject ("action.save-as.mnemonic"));
+    this.putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.save-as.accelerator"));
+    this.putValue (Action.SMALL_ICON, resources.getObject ("action.save-as.small-icon"));
+    this.putValue ("ICON24", resources.getObject ("action.save-as.icon"));
   }
 }

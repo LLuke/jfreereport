@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionElement.java,v 1.8 2002/07/20 20:48:47 taqua Exp $
+ * $Id: FunctionElement.java,v 1.9 2002/07/21 13:22:26 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.filter.DataFilter;
 import com.jrefinery.report.filter.FunctionDataSource;
 
 /**
@@ -100,9 +99,9 @@ public abstract class FunctionElement extends TextElement
 
   public Object clone () throws CloneNotSupportedException
   {
-    FunctionElement e = (FunctionElement) super.clone();
-    e.functionsource = (FunctionDataSource) functionsource.clone();
-    e.setDataSource(e.functionsource);
+    FunctionElement e = (FunctionElement) super.clone ();
+    e.functionsource = (FunctionDataSource) functionsource.clone ();
+    e.setDataSource (e.functionsource);
     return e;
   }
 }

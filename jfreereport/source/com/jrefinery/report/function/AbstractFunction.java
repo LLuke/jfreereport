@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.8 2002/06/23 16:42:24 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.9 2002/07/28 13:25:26 taqua Exp $
  *
  * Changes
  * -------
@@ -50,8 +50,8 @@ import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.event.ReportListenerAdapter;
 
 import javax.swing.table.TableModel;
-import java.util.Properties;
 import java.util.Enumeration;
+import java.util.Properties;
 
 /**
  * Base class for implementing new report functions.  Provides empty implementations of all the
@@ -318,12 +318,12 @@ public abstract class AbstractFunction implements Function
   {
     if (p != null)
     {
-      Enumeration names = p.keys();
-      while (names.hasMoreElements())
+      Enumeration names = p.keys ();
+      while (names.hasMoreElements ())
       {
-        String name = (String) names.nextElement();
+        String name = (String) names.nextElement ();
         String prop = (String) p.get (name);
-        setProperty(name, prop);
+        setProperty (name, prop);
       }
     }
   }

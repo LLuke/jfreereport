@@ -56,23 +56,23 @@ public class DataRowBackend implements Cloneable
 
     public int getCurrentRow ()
     {
-      System.out.println ("CUR" + db.getCurrentRow());
-      return db.getCurrentRow() + 1;
+      System.out.println ("CUR" + db.getCurrentRow ());
+      return db.getCurrentRow () + 1;
     }
 
     public void setCurrentRow (int currentRow)
     {
-      throw new IllegalStateException("This is a preview, not changable");
+      throw new IllegalStateException ("This is a preview, not changable");
     }
 
     public void setFunctions (FunctionCollection functions)
     {
-      throw new IllegalStateException("This is a preview, not changable");
+      throw new IllegalStateException ("This is a preview, not changable");
     }
 
     public void setTablemodel (TableModel tablemodel)
     {
-      throw new IllegalStateException("This is a preview, not changable");
+      throw new IllegalStateException ("This is a preview, not changable");
     }
 
     /**
@@ -110,7 +110,7 @@ public class DataRowBackend implements Cloneable
      */
     public DataRowBackend previewNextRow ()
     {
-      throw new IllegalStateException("Is already a preview version!");
+      throw new IllegalStateException ("Is already a preview version!");
     }
   }
 
@@ -267,7 +267,7 @@ public class DataRowBackend implements Cloneable
   {
     if (preview == null)
     {
-      preview = new DataRowPreview(this);
+      preview = new DataRowPreview (this);
     }
     return preview;
   }

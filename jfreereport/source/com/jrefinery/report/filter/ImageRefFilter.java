@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: First.java,v 1.2 2002/07/16 13:29:10 mungady Exp $
+ * $Id: ImageRefFilter.java,v 1.3 2002/07/16 16:41:23 mungady Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
 package com.jrefinery.report.filter;
 
 import com.jrefinery.report.ImageReference;
+
 import java.awt.Image;
-import java.io.IOException;
 
 /**
  * A filter that converts an Image to an ImageReference.
@@ -87,9 +87,9 @@ public class ImageRefFilter implements DataFilter
    */
   public Object getValue ()
   {
-    DataSource ds = getDataSource();
+    DataSource ds = getDataSource ();
     if (ds == null) return null;
-    Object o = ds.getValue();
+    Object o = ds.getValue ();
     if (o == null || (o instanceof Image) == false) return null;
 
     return new ImageReference ((Image) o);
@@ -115,7 +115,7 @@ public class ImageRefFilter implements DataFilter
   public Object clone () throws CloneNotSupportedException
   {
     ImageRefFilter r = (ImageRefFilter) super.clone ();
-    r.dataSource = (DataSource) clone();
+    r.dataSource = (DataSource) clone ();
     return r;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DataElement.java,v 1.10 2002/07/20 20:48:47 taqua Exp $
+ * $Id: DataElement.java,v 1.11 2002/07/21 13:22:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -44,10 +44,7 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.ReportDataSource;
-import com.jrefinery.report.filter.DataFilter;
-import com.jrefinery.report.filter.FunctionDataSource;
 
 /**
  * The base class for all report elements that display data (that is, information from the report's
@@ -68,13 +65,13 @@ public abstract class DataElement extends TextElement
    * The fieldname is initialized to an empty string.
    * @deprecated Use filters to form a data element
    */
-  protected DataElement()
+  protected DataElement ()
   {
-    fieldsource = new ReportDataSource();
-    fieldsource.setField("");
+    fieldsource = new ReportDataSource ();
+    fieldsource.setField ("");
 
     // Register this elements data source with the text elements string filter.
-    setDataSource(fieldsource);
+    setDataSource (fieldsource);
   }
 
   /**
@@ -83,12 +80,12 @@ public abstract class DataElement extends TextElement
    * @throws NullPointerException if the field is null.
    * @deprecated Use filters to form a data element
    */
-  public void setField(String fieldname)
+  public void setField (String fieldname)
   {
     if (fieldname == null)
-      throw new NullPointerException("Fieldname must not be null for field " + getName());
+      throw new NullPointerException ("Fieldname must not be null for field " + getName ());
 
-    fieldsource.setField(fieldname);
+    fieldsource.setField (fieldname);
   }
 
   /**
@@ -96,9 +93,9 @@ public abstract class DataElement extends TextElement
    * @return The field name.
    * @deprecated Use filters to form a data element
    */
-  public String getField()
+  public String getField ()
   {
-    return fieldsource.getField();
+    return fieldsource.getField ();
   }
 
   /**
@@ -113,9 +110,9 @@ public abstract class DataElement extends TextElement
 
   public Object clone () throws CloneNotSupportedException
   {
-    DataElement e = (DataElement) super.clone();
-    e.fieldsource = (ReportDataSource) fieldsource.clone();
-    e.setDataSource(fieldsource);
+    DataElement e = (DataElement) super.clone ();
+    e.fieldsource = (ReportDataSource) fieldsource.clone ();
+    e.setDataSource (fieldsource);
     return e;
   }
 

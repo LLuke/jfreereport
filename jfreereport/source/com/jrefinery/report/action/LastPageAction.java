@@ -32,8 +32,6 @@
 
 package com.jrefinery.report.action;
 
-import com.jrefinery.report.JFreeReportConstants;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.util.ResourceBundle;

@@ -31,12 +31,11 @@
 package com.jrefinery.report.util;
 
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.Vector;
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * Creates an TableModel which is backed up by an ResultSet.
@@ -103,7 +102,7 @@ public class ResultSetTableModelFactory
      */
     public void close ()
     {
-      setDataVector(new Object[0][0], new Object[0]);
+      setDataVector (new Object[0][0], new Object[0]);
     }
   }
 
@@ -125,7 +124,7 @@ public class ResultSetTableModelFactory
       String name = rsmd.getColumnName (i + 1);
       header.add (name);
     }
-    ArrayList rows = new ArrayList();
+    ArrayList rows = new ArrayList ();
     while (rs.next ())
     {
       Vector column = new Vector (colcount);
@@ -134,9 +133,9 @@ public class ResultSetTableModelFactory
         Object val = rs.getObject (i + 1);
         header.add (val);
       }
-      rows.add (column.toArray());
+      rows.add (column.toArray ());
     }
-    CloseableDefaultTableModel model = new CloseableDefaultTableModel ((Object[][]) rows.toArray(), header.toArray());
+    CloseableDefaultTableModel model = new CloseableDefaultTableModel ((Object[][]) rows.toArray (), header.toArray ());
     return model;
   }
 

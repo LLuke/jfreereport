@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: NumberElement.java,v 1.8 2002/07/03 18:49:45 taqua Exp $
+ * $Id: NumberElement.java,v 1.9 2002/07/21 13:22:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -42,9 +42,7 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.filter.DataFilter;
 import com.jrefinery.report.filter.NumberFormatFilter;
-import com.jrefinery.report.filter.StaticDataSource;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -111,10 +109,10 @@ public class NumberElement extends DataElement
 
   public Object clone () throws CloneNotSupportedException
   {
-    NumberElement e = (NumberElement) super.clone();
-    e.formatter = (NumberFormatFilter) formatter.clone();
-    e.setDataSource(formatter);
-    e.formatter.setDataSource(getReportDataSource());
+    NumberElement e = (NumberElement) super.clone ();
+    e.formatter = (NumberFormatFilter) formatter.clone ();
+    e.setDataSource (formatter);
+    e.formatter.setDataSource (getReportDataSource ());
     return e;
   }
 

@@ -28,10 +28,10 @@
  */
 package com.jrefinery.report.util;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
-import java.io.Serializable;
-import java.io.IOException;
 
 /**
  * The WeakReference list uses <code>java.lang.ref.WeakReference</code>s to store its
@@ -197,14 +197,14 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
     return size;
   }
 
-  private void writeObject(java.io.ObjectOutputStream out)
-       throws IOException
+  private void writeObject (java.io.ObjectOutputStream out)
+          throws IOException
   {
     Reference[] orgChilds = childs;
     try
     {
       childs = null;
-      out.defaultWriteObject();
+      out.defaultWriteObject ();
     }
     finally
     {
@@ -212,14 +212,14 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
     }
   }
 
-  private void readObject(java.io.ObjectInputStream in)
-       throws IOException, ClassNotFoundException
+  private void readObject (java.io.ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
-    in.defaultReadObject();
-    childs = new Reference [getMaxChildCount() - 1];
+    in.defaultReadObject ();
+    childs = new Reference[getMaxChildCount () - 1];
     for (int i = 0; i < childs.length; i++)
     {
-      childs[i] = createReference(null);
+      childs[i] = createReference (null);
     }
   }
 }

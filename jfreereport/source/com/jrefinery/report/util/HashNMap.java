@@ -29,14 +29,13 @@
  */
 package com.jrefinery.report.util;
 
-import java.util.Hashtable;
-import java.util.Vector;
-import java.util.Set;
-import java.util.Enumeration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Iterator;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * The HashNMap can be used to store multiple values by a single key value. The values stored
@@ -44,52 +43,52 @@ import java.io.Serializable;
  */
 public class HashNMap implements Serializable, Cloneable
 {
-	private Hashtable table = null;
+  private Hashtable table = null;
 
   /**
    * Default Constructor
    */
-	public HashNMap ()
-	{
-		table = new Hashtable ();
-	}
+  public HashNMap ()
+  {
+    table = new Hashtable ();
+  }
 
   /**
    * Inserts a new key/value pair into the map. If such a pair already exists, it gets replaced
    * with the given values.
    */
-	public void put (Object key, Object val)
-	{
-		List v = new ArrayList ();
-		v.add (val);
-		table.put (key, v);
-	}
+  public void put (Object key, Object val)
+  {
+    List v = new ArrayList ();
+    v.add (val);
+    table.put (key, v);
+  }
 
   /**
    * Adds a new key/value pair into this map. If the key is not yet in the map, it gets added
    * to the map and the call is equal to put(Object,Object).
    */
-	public void add (Object key, Object val)
-	{
-		List v = (List) table.get (key);
-		if (v == null)
-		{
-			put (key, val);
-		}
-		else
-		{
-			v.add (val);
-		}
-	}
+  public void add (Object key, Object val)
+  {
+    List v = (List) table.get (key);
+    if (v == null)
+    {
+      put (key, val);
+    }
+    else
+    {
+      v.add (val);
+    }
+  }
 
   /**
    * retrieves the first value registered for an key or null if there was no such key
    * in the list.
    */
-	public Object get (Object key)
-	{
+  public Object get (Object key)
+  {
     return get (key, 0);
-	}
+  }
 
   /**
    * retrieves the n-th value registered for an key or null if there was no such key
@@ -99,130 +98,130 @@ public class HashNMap implements Serializable, Cloneable
   public Object get (Object key, int i)
   {
     List v = (List) table.get (key);
-		if (v == null)
-		{
-			return null;
-		}
-		return v.get(i);
+    if (v == null)
+    {
+      return null;
+    }
+    return v.get (i);
   }
 
   /**
    * returns an iterator over all elements registered to the given key.
    */
-	public Iterator getAll (Object key)
-	{
-		List v = (List) table.get (key);
-		if (v == null)
-		{
-			return null;
-		}
-		return v.iterator ();
-	}
+  public Iterator getAll (Object key)
+  {
+    List v = (List) table.get (key);
+    if (v == null)
+    {
+      return null;
+    }
+    return v.iterator ();
+  }
 
   /**
    * returns all registered keys as enumeration.
    */
-	public Enumeration keys ()
-	{
-		return table.keys ();
-	}
+  public Enumeration keys ()
+  {
+    return table.keys ();
+  }
 
   /**
    * returns all registered keys as set.
    */
-	public Set keySet ()
-	{
-		return table.keySet ();
-	}
+  public Set keySet ()
+  {
+    return table.keySet ();
+  }
 
   /**
    * removes the key/value pair from the map. If the removed entry was the last entry
    * for this key, the key gets also removed.
    */
-	public void remove (Object key, Object value)
-	{
-		List v = (List) table.get (key);
-		if (v == null)
-		{
-			return;
-		}
-		
-		v.remove (value);
-		if (v.size () == 0)
-		{
-			table.remove (key);
-		}
-	}
+  public void remove (Object key, Object value)
+  {
+    List v = (List) table.get (key);
+    if (v == null)
+    {
+      return;
+    }
+
+    v.remove (value);
+    if (v.size () == 0)
+    {
+      table.remove (key);
+    }
+  }
 
   /**
    * removes all elements for the given key.
    */
-	public void removeAll (Object key)
-	{
-		table.remove (key);
-	}
+  public void removeAll (Object key)
+  {
+    table.remove (key);
+  }
 
   /**
    * clears all keys and values of this map
    */
-	public void clear ()
-	{
-		table.clear ();
-	}
+  public void clear ()
+  {
+    table.clear ();
+  }
 
   /**
    * tests whether this map contains the given key.
    *
    * @returns true if the key is contained in the map
    */
-	public boolean containsKey (Object key)
-	{
-		return table.containsKey (key);
-	}
-	
+  public boolean containsKey (Object key)
+  {
+    return table.containsKey (key);
+  }
+
   /**
    * tests whether this map contains the given value.
    *
    * @returns true if the value is registered in the map for an key
    */
-	public boolean containsValue (Object value)
-	{
-		Enumeration e = keys ();
-		boolean found = false;
-		while (e.hasMoreElements () && !found)
-		{
-			List v = (List) e.nextElement ();
-			found = v.contains (value);
-		}
-		return found;
-	}
-	
+  public boolean containsValue (Object value)
+  {
+    Enumeration e = keys ();
+    boolean found = false;
+    while (e.hasMoreElements () && !found)
+    {
+      List v = (List) e.nextElement ();
+      found = v.contains (value);
+    }
+    return found;
+  }
+
   /**
    * tests whether this map contains the given key or value.
    *
    * @returns true if the key or value is contained in the map
    */
-	public boolean contains (Object value)
-	{
-		if (containsKey (value) == true)
-		{
-			return true;
-		}
-		return containsValue (value);
-	}
+  public boolean contains (Object value)
+  {
+    if (containsKey (value) == true)
+    {
+      return true;
+    }
+    return containsValue (value);
+  }
 
   public Object clone () throws CloneNotSupportedException
   {
     HashNMap map = (HashNMap) super.clone ();
-    map.table = new Hashtable();
-    Enumeration enum = keys();
-    while (enum.hasMoreElements())
+    map.table = new Hashtable ();
+    Enumeration enum = keys ();
+    while (enum.hasMoreElements ())
     {
-      Object key = enum.nextElement();
-      Iterator it = getAll(key);
-      while (it.hasNext())
+      Object key = enum.nextElement ();
+      Iterator it = getAll (key);
+      while (it.hasNext ())
       {
-        map.add (key, it.next());
+        map.add (key, it.next ());
       }
     }
     return map;

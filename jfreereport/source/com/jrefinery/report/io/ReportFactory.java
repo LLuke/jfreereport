@@ -36,8 +36,8 @@
 
 package com.jrefinery.report.io;
 
-import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.Band;
+import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -84,7 +84,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     String elementName = qName.toLowerCase ().trim ();
     if (elementName.equals (REPORT_TAG))
     {
-      startReport(atts);
+      startReport (atts);
     }
     else if (elementName.equals (REPORT_HEADER_TAG) ||
             elementName.equals (REPORT_FOOTER_TAG) ||

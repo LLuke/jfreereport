@@ -37,8 +37,8 @@ package com.jrefinery.report;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 
-import java.awt.geom.Line2D;
 import java.awt.Shape;
+import java.awt.geom.Line2D;
 
 /**
  * A LineShapeElement encapsulates an Line2D-Shape to display it on the report.
@@ -47,11 +47,11 @@ public class LineShapeElement extends ShapeElement
 {
   private boolean m_clacWidth;
 
-  public LineShapeElement()
+  public LineShapeElement ()
   {
-    setLine(new Line2D.Float());
-    setShouldDraw(true);
-    setShouldFill(false);
+    setLine (new Line2D.Float ());
+    setShouldDraw (true);
+    setShouldFill (false);
   }
 
   /**
@@ -59,17 +59,17 @@ public class LineShapeElement extends ShapeElement
    *
    * @param line the shape for this element of type Line2D
    */
-  public void setLine(Line2D line)
+  public void setLine (Line2D line)
   {
-    setShape(line);
+    setShape (line);
   }
 
   /**
    * @return this elements Line2D shape.
    */
-  public Line2D getLine()
+  public Line2D getLine ()
   {
-    return (Line2D) getShape();
+    return (Line2D) getShape ();
   }
 
   /**
@@ -78,12 +78,12 @@ public class LineShapeElement extends ShapeElement
    *
    * @param shape the shape for this element of type Line2D
    */
-  protected void setShape(Shape shape)
+  protected void setShape (Shape shape)
   {
-    Line2D m_line = (Line2D) ((Line2D) shape).clone();
-    m_clacWidth = (m_line.getX1() == m_line.getX2()) && (m_line.getY1() == m_line.getY2());
+    Line2D m_line = (Line2D) ((Line2D) shape).clone ();
+    m_clacWidth = (m_line.getX1 () == m_line.getX2 ()) && (m_line.getY1 () == m_line.getY2 ());
 
-    super.setShape(m_line);
+    super.setShape (m_line);
   }
 
   /**
@@ -91,37 +91,37 @@ public class LineShapeElement extends ShapeElement
    * this line a horizontal line and adjust the length of this line. This should be done
    * by some sort of relative addressing as in HTML with &lt;hr width="100%"&gt;
    */
-  public void draw(OutputTarget target, Band band) throws OutputTargetException
+  public void draw (OutputTarget target, Band band) throws OutputTargetException
   {
-    Line2D l = getLine();
+    Line2D l = getLine ();
 
-    if (m_clacWidth && ((float) l.getX2()) != target.getUsableWidth())
+    if (m_clacWidth && ((float) l.getX2 ()) != target.getUsableWidth ())
     {
-      l.setLine(0.0d, l.getY1(), target.getUsableWidth(), l.getY1());
+      l.setLine (0.0d, l.getY1 (), target.getUsableWidth (), l.getY1 ());
     }
-    super.draw(target, band);
+    super.draw (target, band);
   }
 
   /**
    * debugging info. Displays the contents of this element as string.
    */
-  public String toString()
+  public String toString ()
   {
-    Line2D line = getLine();
-    StringBuffer b = new StringBuffer();
-    b.append("Line={ name=");
-    b.append(getName());
-    b.append(", bounds=");
-    b.append(getBounds());
-    b.append(", x1=");
-    b.append(line.getX1());
-    b.append(", y1=");
-    b.append(line.getY1());
-    b.append(", x2=");
-    b.append(line.getX2());
-    b.append(", y2=");
-    b.append(line.getY2());
-    b.append("}");
-    return b.toString();
+    Line2D line = getLine ();
+    StringBuffer b = new StringBuffer ();
+    b.append ("Line={ name=");
+    b.append (getName ());
+    b.append (", bounds=");
+    b.append (getBounds ());
+    b.append (", x1=");
+    b.append (line.getX1 ());
+    b.append (", y1=");
+    b.append (line.getY1 ());
+    b.append (", x2=");
+    b.append (line.getX2 ());
+    b.append (", y2=");
+    b.append (line.getY2 ());
+    b.append ("}");
+    return b.toString ();
   }
 }

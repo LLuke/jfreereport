@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.23 2002/07/03 18:49:48 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.24 2002/07/22 09:01:09 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -50,10 +50,8 @@ import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.SystemOutLogTarget;
-import com.jrefinery.ui.RefineryUtilities;
 import com.jrefinery.ui.L1R2ButtonPanel;
+import com.jrefinery.ui.RefineryUtilities;
 import com.jrefinery.ui.about.AboutFrame;
 
 import javax.swing.Action;
@@ -79,7 +77,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -178,7 +175,7 @@ public class JFreeReportDemo extends JFrame
     setDefaultCloseOperation (DO_NOTHING_ON_CLOSE);
     addWindowListener (new CloseHandler ());
     m_resources = resources;
-    Object[] arguments = new Object[]{JFreeReport.getInfo().getVersion ()};
+    Object[] arguments = new Object[]{JFreeReport.getInfo ().getVersion ()};
     String pattern = resources.getString ("main-frame.title.pattern");
     setTitle (MessageFormat.format (pattern, arguments));
 
@@ -199,10 +196,10 @@ public class JFreeReportDemo extends JFrame
 
     tabbedPane = new JTabbedPane ();
     tabbedPane.setBorder (BorderFactory.createEmptyBorder (4, 4, 4, 4));
-    tabbedPane.addTab (formExample(1), RefineryUtilities.createTablePanel (data1));
-    tabbedPane.addTab (formExample(2), RefineryUtilities.createTablePanel (data2));
-    tabbedPane.addTab (formExample(3), RefineryUtilities.createTablePanel (data3));
-    tabbedPane.addTab (formExample(4), RefineryUtilities.createTablePanel (data4));
+    tabbedPane.addTab (formExample (1), RefineryUtilities.createTablePanel (data1));
+    tabbedPane.addTab (formExample (2), RefineryUtilities.createTablePanel (data2));
+    tabbedPane.addTab (formExample (3), RefineryUtilities.createTablePanel (data3));
+    tabbedPane.addTab (formExample (4), RefineryUtilities.createTablePanel (data4));
     tabbedPane.addTab ("Manual Created Report (see Source)", RefineryUtilities.createTablePanel (data1));
 
     content.add (tabbedPane);
@@ -233,7 +230,7 @@ public class JFreeReportDemo extends JFrame
    */
   private String formExample (int ex)
   {
-    return MessageFormat.format(getResources().getString("example"), new Object[]{ new Integer(ex) });
+    return MessageFormat.format (getResources ().getString ("example"), new Object[]{new Integer (ex)});
   }
 
   /**
@@ -270,7 +267,7 @@ public class JFreeReportDemo extends JFrame
   {
     try
     {
-      JFreeReport report1 = new SampleReport1().createReport();
+      JFreeReport report1 = new SampleReport1 ().createReport ();
       report1.setData (data1);
 
       PreviewFrame frame1 = new PreviewFrame (report1);
@@ -281,7 +278,7 @@ public class JFreeReportDemo extends JFrame
     }
     catch (Exception e)
     {
-      showExceptionDialog("report.definitionfailure", e);
+      showExceptionDialog ("report.definitionfailure", e);
     }
   }
 
@@ -303,8 +300,8 @@ public class JFreeReportDemo extends JFrame
     {
 
       JOptionPane.showMessageDialog (this,
-              MessageFormat.format(getResources().getString("report.definitionnotfound"), new Object[]{ urlname }),
-              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+              MessageFormat.format (getResources ().getString ("report.definitionnotfound"), new Object[]{urlname}),
+              getResources ().getString ("error"), JOptionPane.ERROR_MESSAGE);
       return;
     }
     ReportGenerator gen = ReportGenerator.getInstance ();
@@ -317,15 +314,15 @@ public class JFreeReportDemo extends JFrame
     }
     catch (Exception ioe)
     {
-      showExceptionDialog("report.definitionfailure", ioe);
+      showExceptionDialog ("report.definitionfailure", ioe);
       return;
     }
 
     if (report1 == null)
     {
       JOptionPane.showMessageDialog (this,
-              MessageFormat.format(getResources().getString("report.definitionnull"), new Object[]{ urlname }),
-              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+              MessageFormat.format (getResources ().getString ("report.definitionnull"), new Object[]{urlname}),
+              getResources ().getString ("error"), JOptionPane.ERROR_MESSAGE);
     }
 
     report1.setData (data);
@@ -345,10 +342,10 @@ public class JFreeReportDemo extends JFrame
   private void showExceptionDialog (String localisationBase, Exception e)
   {
     ExceptionDialog.showExceptionDialog (
-            getResources().getString(localisationBase + ".title"),
-            MessageFormat.format(
-                    getResources().getString(localisationBase + ".message"),
-                    new Object[]{ e.getLocalizedMessage()}
+            getResources ().getString (localisationBase + ".title"),
+            MessageFormat.format (
+                    getResources ().getString (localisationBase + ".message"),
+                    new Object[]{e.getLocalizedMessage ()}
             ),
             e);
   }
@@ -390,7 +387,7 @@ public class JFreeReportDemo extends JFrame
   {
     if (aboutFrame == null)
     {
-      aboutFrame = new AboutFrame (getResources().getString("action.about.name"), JFreeReport.getInfo());
+      aboutFrame = new AboutFrame (getResources ().getString ("action.about.name"), JFreeReport.getInfo ());
 
       aboutFrame.pack ();
       RefineryUtilities.centerFrameOnScreen (aboutFrame);

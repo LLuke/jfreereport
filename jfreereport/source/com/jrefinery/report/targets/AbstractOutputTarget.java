@@ -44,7 +44,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.BreakIterator;
-import java.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -293,13 +292,13 @@ public abstract class AbstractOutputTarget implements OutputTarget
     }
 
     BreakIterator breakit = BreakIterator.getLineInstance ();
-    ArrayList returnLines = new ArrayList();
+    ArrayList returnLines = new ArrayList ();
 
     int linesToDo = 0;
     boolean limitedMode = false;
     if (maxLines > 0)
     {
-      linesToDo = Math.min(bareLines.size (), maxLines);
+      linesToDo = Math.min (bareLines.size (), maxLines);
       limitedMode = true;
     }
     else
@@ -390,7 +389,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    */
   public void drawMultiLineText (String mytext, int align)
   {
-    drawMultiLineText(mytext, align, false);
+    drawMultiLineText (mytext, align, false);
   }
 
   /**

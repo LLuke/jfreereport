@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.20 2002/07/03 18:49:45 taqua Exp $
+ * $Id: JFreeReport.java,v 1.21 2002/07/28 13:25:24 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -64,16 +64,15 @@ import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportProperties;
-import com.jrefinery.ui.about.ProjectInfo;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
-import java.io.Serializable;
-import java.io.IOException;
 
 /**
  * This class co-ordinates the process of generating a report from a TableModel.  The report is
@@ -714,28 +713,28 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     JFreeReport report = (JFreeReport) super.clone ();
     report._functions = (FunctionCollection) _functions.clone ();
     report.data = data; // data is defined to be immutable, so don't clone the thing
-    report.defaultPageFormat = (PageFormat) defaultPageFormat.clone();
-    report.groups = (GroupList) groups.clone();
-    report.itemBand = (ItemBand) itemBand.clone();
-    report.pageFooter = (PageFooter) pageFooter.clone();
-    report.pageHeader = (PageHeader) pageHeader.clone();
-    report.properties = (ReportProperties) properties.clone();
-    report.reportFooter = (ReportFooter) reportFooter.clone();
-    report.reportHeader = (ReportHeader) reportHeader.clone();
+    report.defaultPageFormat = (PageFormat) defaultPageFormat.clone ();
+    report.groups = (GroupList) groups.clone ();
+    report.itemBand = (ItemBand) itemBand.clone ();
+    report.pageFooter = (PageFooter) pageFooter.clone ();
+    report.pageHeader = (PageHeader) pageHeader.clone ();
+    report.properties = (ReportProperties) properties.clone ();
+    report.reportFooter = (ReportFooter) reportFooter.clone ();
+    report.reportHeader = (ReportHeader) reportHeader.clone ();
     return report;
   }
 
-  private void readObject(java.io.ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (java.io.ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
-    in.defaultReadObject();
+    in.defaultReadObject ();
   }
 
   public static final JFreeReportInfo getInfo ()
   {
     if (INFO == null)
     {
-      INFO = new JFreeReportInfo();
+      INFO = new JFreeReportInfo ();
     }
     return INFO;
   }

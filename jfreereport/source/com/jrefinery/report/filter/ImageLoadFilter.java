@@ -143,8 +143,8 @@ public class ImageLoadFilter implements DataFilter
   public Object clone () throws CloneNotSupportedException
   {
     ImageLoadFilter il = (ImageLoadFilter) super.clone ();
-    il.imageCache = (KeyedQueue) imageCache.clone();
-    il.source = (DataSource) source.clone();
+    il.imageCache = (KeyedQueue) imageCache.clone ();
+    il.source = (DataSource) source.clone ();
     return il;
   }
 

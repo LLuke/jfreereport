@@ -38,9 +38,9 @@
  */
 package com.jrefinery.report.event;
 
+import com.jrefinery.report.DataRow;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportState;
-import com.jrefinery.report.DataRow;
 
 import java.util.EventObject;
 

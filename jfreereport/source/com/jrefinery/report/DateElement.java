@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DateElement.java,v 1.8 2002/07/03 18:49:45 taqua Exp $
+ * $Id: DateElement.java,v 1.9 2002/07/20 20:48:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -42,9 +42,7 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.filter.DataFilter;
 import com.jrefinery.report.filter.DateFormatFilter;
-import com.jrefinery.report.filter.NumberFormatFilter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -121,12 +119,12 @@ public class DateElement extends DataElement
 
   public Object clone () throws CloneNotSupportedException
   {
-    DateElement e = (DateElement) super.clone();
-    if ((e.getDataSource() instanceof DateFormatFilter) == false)
+    DateElement e = (DateElement) super.clone ();
+    if ((e.getDataSource () instanceof DateFormatFilter) == false)
     {
-      throw new CloneNotSupportedException("Modified function element is not clonable");
+      throw new CloneNotSupportedException ("Modified function element is not clonable");
     }
-    e.formatter = (DateFormatFilter) e.getDataSource();
+    e.formatter = (DateFormatFilter) e.getDataSource ();
     return e;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportFooter.java,v 1.3 2002/05/16 19:58:24 jaosch Exp $
+ * $Id: ReportFooter.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -53,14 +53,14 @@ public class ReportFooter extends Band
    *
    * @param height The band height (in points).
    */
-  public ReportFooter()
+  public ReportFooter ()
   {
   }
 
   /**
    * Returns true if the report footer should be shown on its own page.
    */
-  public boolean isOwnPage()
+  public boolean isOwnPage ()
   {
     return this.ownPage;
   }
@@ -68,7 +68,7 @@ public class ReportFooter extends Band
   /**
    * defines whether the report header appears on its own page.
    */
-  public void setOwnPage(boolean b)
+  public void setOwnPage (boolean b)
   {
     this.ownPage = b;
   }

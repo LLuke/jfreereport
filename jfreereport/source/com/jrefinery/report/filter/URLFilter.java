@@ -31,9 +31,9 @@
  */
 package com.jrefinery.report.filter;
 
-import java.net.URL;
-import java.net.MalformedURLException;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * The URLFilter forms URLs from Strings ,Files and URLs. If an URL is relative, the
@@ -96,8 +96,8 @@ public class URLFilter implements DataFilter
    */
   public Object getValue ()
   {
-    if (getDataSource() == null) return null;
-    Object o = getDataSource().getValue();
+    if (getDataSource () == null) return null;
+    Object o = getDataSource ().getValue ();
     if (o == null) return null;
     if (o instanceof URL) return o;
 
@@ -106,13 +106,12 @@ public class URLFilter implements DataFilter
       if (o instanceof File)
       {
         File f = (File) o;
-        if (f.canRead())
-          return f.toURL();
+        if (f.canRead ())
+          return f.toURL ();
       }
-      else
-      if (o instanceof String)
+      else if (o instanceof String)
       {
-        return new URL (getBaseURL(), (String) o);
+        return new URL (getBaseURL (), (String) o);
       }
     }
     catch (MalformedURLException mfe)
@@ -140,8 +139,8 @@ public class URLFilter implements DataFilter
 
   public Object clone () throws CloneNotSupportedException
   {
-    URLFilter f = (URLFilter) super.clone();
-    f.source = (DataSource) source.clone();
+    URLFilter f = (URLFilter) super.clone ();
+    f.source = (DataSource) source.clone ();
     return f;
   }
 }
