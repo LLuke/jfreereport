@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.35 2002/11/06 21:03:07 taqua Exp $
+ * $Id: JFreeReport.java,v 1.36 2002/11/06 22:15:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -686,7 +686,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
       Log.debug ("Start PAGE " + rs.getCurrentPage() + "; " +
                  "Free: " + Runtime.getRuntime().freeMemory() + "; " +
                  "Total: " + Runtime.getRuntime().totalMemory());
-      if (nrs.isProceeding (rs) == false)
+      if ((!nrs.isFinish()) && nrs.isProceeding (rs) == false)
       {
         throw new ReportProcessingException ("Report is not proceeding");
       }
