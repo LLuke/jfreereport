@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.36 2003/01/23 18:07:43 taqua Exp $
+ * $Id: Band.java,v 1.37 2003/01/27 03:17:33 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -143,7 +143,7 @@ public class Band extends Element implements Serializable, Cloneable
 
   public void addElement (Element element)
   {
-    addElement(0, element);
+    addElement(allElements.size(), element);
   }
 
   /**
@@ -272,6 +272,16 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
+   * Returns the number of elements in this band.
+   *
+   * @return the number of elements of this band.
+   */
+  public int getElementCount ()
+  {
+    return allElements.size();
+  }
+
+  /**
    * Returns an array of the elements in the band.
    *
    * @return the elements.
@@ -281,6 +291,17 @@ public class Band extends Element implements Serializable, Cloneable
     Element[] elements = new Element[allElements.size()];
     elements = (Element[]) allElements.toArray(elements);
     return elements;
+  }
+
+  /**
+   * Returns the element stored add the given index
+   * @param index the element position within this band
+   * @return the element
+   * @throws IndexOutOfBoundsException if the index is invalid. 
+   */
+  public Element getElement (int index)
+  {
+    return (Element) allElements.get(index);
   }
 
   /**
