@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.2 2003/01/23 18:07:46 taqua Exp $
  *
  * Changes
  * -------
@@ -531,7 +531,10 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
           throws SAXException
   {
     getReport().getProperties().setMarked(currentProperty, true);
-    getReport().setProperty(currentProperty, entityParser.decodeEntities( currentText.toString ()));
+    if (currentText.length() != 0)
+    {
+      getReport().setProperty(currentProperty, entityParser.decodeEntities( currentText.toString ()));
+    }
     currentText = null;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.19 2002/12/10 15:47:00 mungady Exp $
+ * $Id: PDFSaveDialog.java,v 1.20 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * --------
@@ -48,8 +48,8 @@ import com.jrefinery.report.targets.pageable.PageableReportProcessor;
 import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
+import com.jrefinery.report.util.FilesystemFilter;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.ui.ExtensionFileFilter;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -297,6 +297,8 @@ public class PDFSaveDialog extends JDialog
 
   /** Localised resources. */
   private ResourceBundle resources;
+
+  private JFileChooser fileChooser;
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
@@ -729,6 +731,12 @@ public class PDFSaveDialog extends JDialog
     contentPane.add(buttonPanel, gbc);
 
     setContentPane(contentPane);
+
+    fileChooser = new JFileChooser();
+    FilesystemFilter filter = new FilesystemFilter(".pdf", "PDF Documents");
+    fileChooser.addChoosableFileFilter(filter);
+    fileChooser.setMultiSelectionEnabled(false);
+
   }
 
   /**
@@ -1112,11 +1120,10 @@ public class PDFSaveDialog extends JDialog
    */
   protected void performSelectFile()
   {
-    JFileChooser fileChooser = new JFileChooser();
-    ExtensionFileFilter filter = new ExtensionFileFilter("PDF Documents", ".pdf");
-    fileChooser.addChoosableFileFilter(filter);
-    fileChooser.setMultiSelectionEnabled(false);
-    fileChooser.setSelectedFile(new File(getFilename()));
+
+    File file = new File(getFilename());
+    fileChooser.setCurrentDirectory(file);
+    fileChooser.setSelectedFile(file);
     int option = fileChooser.showSaveDialog(this);
     if (option == JFileChooser.APPROVE_OPTION)
     {

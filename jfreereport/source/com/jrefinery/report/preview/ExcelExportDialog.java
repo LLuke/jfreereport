@@ -30,7 +30,7 @@
                      based on PDFSaveDialog by Thomas Morgner, David Gilbert (for Simba Management Limited) and contributors
  * Contributor(s):
  *
- * $Id: ExcelExportDialog.java,v 1.1 2003/01/14 21:10:08 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.2 2003/01/18 20:47:35 taqua Exp $
  *
  * Changes
  * --------
@@ -45,6 +45,7 @@ import com.jrefinery.report.targets.table.excel.ExcelProcessor;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.FilesystemFilter;
 import com.jrefinery.ui.ExtensionFileFilter;
 
 import javax.swing.AbstractAction;
@@ -195,6 +196,8 @@ public class ExcelExportDialog extends JDialog
 
   /** Localised resources. */
   private ResourceBundle resources;
+
+  private JFileChooser fileChooser;
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
@@ -402,6 +405,11 @@ public class ExcelExportDialog extends JDialog
     contentPane.add(buttonPanel, gbc);
 
     setContentPane(contentPane);
+
+    fileChooser = new JFileChooser();
+    FilesystemFilter filter = new FilesystemFilter("Excel Documents", ".xls");
+    fileChooser.addChoosableFileFilter(filter);
+    fileChooser.setMultiSelectionEnabled(false);
   }
 
 
@@ -500,11 +508,9 @@ public class ExcelExportDialog extends JDialog
    */
   protected void performSelectFile()
   {
-    JFileChooser fileChooser = new JFileChooser();
-    ExtensionFileFilter filter = new ExtensionFileFilter("Excel Documents", ".xls");
-    fileChooser.addChoosableFileFilter(filter);
-    fileChooser.setMultiSelectionEnabled(false);
-    fileChooser.setSelectedFile(new File(getFilename()));
+    File file = new File(getFilename());
+    fileChooser.setCurrentDirectory(file);
+    fileChooser.setSelectedFile(file);
     int option = fileChooser.showSaveDialog(this);
     if (option == JFileChooser.APPROVE_OPTION)
     {

@@ -203,7 +203,7 @@
 
         <!-- convert end-of-line characters in text files -->
         <fixcrlf srcdir="${basedir}/distribution/source"
-                 eol="crlf" eof="add" />
+                 eol="crlf" />
 
         <!-- make the zip file -->
         <zip zipfile="${basedir}/${jfreereport.name}-${jfreereport.version}.zip">
@@ -265,7 +265,7 @@
 
         <!-- convert end-of-line characters in text files -->
         <fixcrlf srcdir="${basedir}/distribution/source"
-                 eol="lf" eof="add" />
+                 eol="lf" />
 
         <!-- make the tar.gz file -->
         <tar tarfile="${basedir}/${jfreereport.name}-${jfreereport.version}.tar">

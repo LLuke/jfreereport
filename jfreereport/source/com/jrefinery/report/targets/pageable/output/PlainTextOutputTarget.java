@@ -2,7 +2,7 @@
  * Date: Jan 29, 2003
  * Time: 1:49:26 PM
  *
- * $Id: PlainTextOutputTarget.java,v 1.3 2003/01/29 23:05:22 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.4 2003/01/30 00:04:53 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
@@ -15,7 +15,6 @@ import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.report.util.PageFormatFactory;
 
 import java.awt.Paint;
 import java.awt.Shape;
@@ -133,7 +132,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   private float characterHeight;
   private PlainTextState savedState;
   private PlainTextPage pageBuffer;
-  private PlainTextPageFactory factory;
+  private PrinterCommandSet commandSet;
 
   /**
    * Creates a new output target.  Both the logical page size and the physical page size will be
@@ -141,10 +140,10 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param format  the page format.
    */
-  public PlainTextOutputTarget(PageFormat format, PlainTextPageFactory factory)
+  public PlainTextOutputTarget(PageFormat format, PrinterCommandSet commandSet)
   {
     super(format);
-    this.factory = factory;
+    this.commandSet = commandSet;
   }
 
   /**
@@ -153,10 +152,10 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    * @param logical  the page format used by this target for layouting.
    * @param physical  the page format used by this target for printing.
    */
-  public PlainTextOutputTarget(PageFormat logical, PageFormat physical, PlainTextPageFactory factory)
+  public PlainTextOutputTarget(PageFormat logical, PageFormat physical, PrinterCommandSet commandSet)
   {
     super(logical, physical);
-    this.factory = factory;
+    this.commandSet = commandSet;
   }
 
   /**
@@ -164,10 +163,15 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param logicalPage  the logical page.
    */
-  public PlainTextOutputTarget(LogicalPage logicalPage, PlainTextPageFactory factory)
+  public PlainTextOutputTarget(LogicalPage logicalPage, PrinterCommandSet commandSet)
   {
     super(logicalPage);
-    this.factory = factory;
+    this.commandSet = commandSet;
+  }
+
+  public PrinterCommandSet getCommandSet()
+  {
+    return commandSet;
   }
 
   /**
@@ -224,7 +228,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     currentPageHeight = (int) (page.getPageFormat().getImageableHeight() / characterHeight);
     currentPageWidth = (int) (page.getPageFormat().getImageableWidth() / characterWidth);
-    this.pageBuffer = new PlainTextPage(currentPageWidth, currentPageHeight);
+    this.pageBuffer = new PlainTextPage(currentPageWidth, currentPageHeight, getCommandSet());
     savedState = saveState();
   }
 
@@ -238,7 +242,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     try
     {
-      pageBuffer.writePage(factory.getOutputStream());
+      pageBuffer.writePage();
     }
     catch (IOException ioe)
     {
@@ -396,11 +400,6 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   public OutputTarget createDummyWriter()
   {
     return new DummyOutputTarget(this);
-  }
-
-  public PlainTextPageFactory getPageFactory()
-  {
-    return factory;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.36 2003/01/18 20:47:35 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.37 2003/01/22 19:38:29 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -395,6 +395,28 @@ public class JFreeReportResources extends ListResourceBundle
             {"csvexportdialog.exporttype", "Select Export engine"},
             {"csvexportdialog.export.data", "Export the DataRow (Raw Data)"},
             {"csvexportdialog.export.printed_elements", "Printed Elements  (Layouted Data)"},
+
+            {"convertdialog.targetIsEmpty", "The target file is not specified"},
+            {"convertdialog.errorTitle", "Error"},
+            {"convertdialog.targetIsNoFile", "The specified target file is no ordinary file." },
+            {"convertdialog.targetIsNotWritable", "The specified target file is not writable."},
+            {"convertdialog.targetOverwriteConfirmation",
+                "The file ''{0}'' exists. Overwrite it?"},
+            {"convertdialog.targetOverwriteTitle", "Overwrite file?"},
+            {"convertdialog.targetFile", "Target file"},
+            {"convertdialog.sourceIsEmpty", "The source file is not specified"},
+            {"convertdialog.sourceIsNoFile", "The specified source file is no ordinary file."},
+            {"convertdialog.sourceIsNotReadable", "The source file is not readable."},
+            {"convertdialog.sourceFile", "Source file"},
+
+            {"convertdialog.action.selectTarget.name", "Select"},
+            {"convertdialog.action.selectTarget.description", "Select target file."},
+            {"convertdialog.action.selectSource.name", "Select"},
+            {"convertdialog.action.selectSource.description", "Select source file."},
+            {"convertdialog.action.convert.name", "Convert"},
+            {"convertdialog.action.convert.description", "Convert the source files."},
+
+            {"convertdialog.title", "Report-Converter"},
           };
 
 }

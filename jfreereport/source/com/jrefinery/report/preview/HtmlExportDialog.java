@@ -30,7 +30,7 @@
                      based on PDFSaveDialog by Thomas Morgner, David Gilbert (for Simba Management Limited) and contributors
  * Contributor(s):
  *
- * $Id: HtmlExportDialog.java,v 1.2 2003/01/22 19:38:29 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.3 2003/01/27 03:17:43 taqua Exp $
  *
  * Changes
  * --------
@@ -44,8 +44,9 @@ import com.jrefinery.report.targets.table.html.HtmlProcessor;
 import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
+import com.jrefinery.report.util.FilesystemFilter;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.ui.ExtensionFileFilter;
+import com.jrefinery.report.util.StringUtil;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -68,11 +69,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.MessageFormat;
@@ -187,6 +185,8 @@ public class HtmlExportDialog extends JDialog
 
   /** Confirmed flag. */
   private boolean confirmed;
+
+  private JFileChooser fileChooser;
 
   /** Confirm button. */
   private JButton btnConfirm;
@@ -403,6 +403,10 @@ public class HtmlExportDialog extends JDialog
     contentPane.add(buttonPanel, gbc);
 
     setContentPane(contentPane);
+
+    fileChooser = new JFileChooser();
+    fileChooser.addChoosableFileFilter(new FilesystemFilter(new String[]{".html", ".htm"}, "Html Documents", true));
+    fileChooser.setMultiSelectionEnabled(false);
   }
 
 
@@ -501,11 +505,9 @@ public class HtmlExportDialog extends JDialog
    */
   protected void performSelectFile()
   {
-    JFileChooser fileChooser = new JFileChooser();
-    ExtensionFileFilter filter = new ExtensionFileFilter("Html Documents", ".html");
-    fileChooser.addChoosableFileFilter(filter);
-    fileChooser.setMultiSelectionEnabled(false);
-    fileChooser.setSelectedFile(new File(getFilename()));
+    File file = new File(getFilename());
+    fileChooser.setCurrentDirectory(file);
+    fileChooser.setSelectedFile(file);
     int option = fileChooser.showSaveDialog(this);
     if (option == JFileChooser.APPROVE_OPTION)
     {
@@ -513,7 +515,8 @@ public class HtmlExportDialog extends JDialog
       String selFileName = selFile.getAbsolutePath();
 
       // Test if ends on xls
-      if (selFileName.toUpperCase().endsWith(".HTML") == false)
+      if ((StringUtil.endsWithIgnoreCase(selFileName,".html") == false) &&
+          (StringUtil.endsWithIgnoreCase(selFileName,".htm") == false))
       {
         selFileName = selFileName + ".html";
       }

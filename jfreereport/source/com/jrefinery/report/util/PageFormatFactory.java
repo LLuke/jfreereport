@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.12 2002/12/06 20:34:19 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.13 2002/12/12 12:26:57 mungady Exp $
  *
  * Changes
  * -------
@@ -653,7 +653,7 @@ public class PageFormatFactory
    * @param inches the size in inch
    * @return the size in points
    */
-  protected double convertInchToPoints (double inches)
+  public double convertInchToPoints (double inches)
   {
     return inches * 72;
   }
@@ -754,5 +754,25 @@ public class PageFormatFactory
                           + " Y " + pf.getImageableY()
                           + " H: " + pf.getImageableHeight()
                           + " W: " + pf.getImageableWidth());
+  }
+
+  public double getLeftBorder (Paper p)
+  {
+    return p.getImageableX();
+  }
+
+  public double getRightBorder (Paper p)
+  {
+    return p.getWidth() - (p.getImageableX() + p.getImageableWidth());
+  }
+
+  public double getTopBorder (Paper p)
+  {
+    return p.getImageableY();
+  }
+
+  public double getBottomBorder (Paper p)
+  {
+    return p.getHeight() - (p.getImageableY() + p.getImageableHeight());
   }
 }

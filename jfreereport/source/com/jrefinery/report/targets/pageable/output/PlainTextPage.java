@@ -2,23 +2,16 @@
  * Date: Jan 29, 2003
  * Time: 2:30:07 PM
  *
- * $Id: PlainTextPage.java,v 1.2 2003/01/29 23:05:22 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.3 2003/01/30 00:04:53 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.util.Log;
 
-import java.io.OutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class PlainTextPage
 {
-  public static final byte CARRIAGE_RETURN = 0x0D;
-  public static final byte LINE_FEED = 0x0A;
-  public static final byte FORM_FEED = 0x0C;
-  public static final byte SPACE = 0x20;
 
   protected class TextDataChunk
   {
@@ -64,16 +57,18 @@ public class PlainTextPage
   }
 
   private TextDataChunk[][] pageBuffer;
+  private PrinterCommandSet commandSet;
   private int width;
   private int height;
 
-  public PlainTextPage(int w, int h)
+  public PlainTextPage(int w, int h, PrinterCommandSet commandSet)
   {
     if (w <= 0) throw new IllegalArgumentException("W <= 0");
     if (h <= 0) throw new IllegalArgumentException("W <= 0");
     pageBuffer = new TextDataChunk[w][h];
     width = w;
     height = h;
+    this.commandSet = commandSet;
   }
 
   public int getWidth()
@@ -117,73 +112,29 @@ public class PlainTextPage
     return pageBuffer[x][y];
   }
 
-  protected void startLine (OutputStream out)
+  public void writePage ()
     throws IOException
   {
-  }
-
-  protected void endLine (OutputStream out)
-    throws IOException
-  {
-    // CR = (ASCII #13) reset the print position to the start of the line
-    // LF = (ASCII #10) scroll down a new line (? Auto-LF feature ?)
-    out.write(CARRIAGE_RETURN);
-    out.write(LINE_FEED);
-  }
-
-  protected void printEmptyChunk (OutputStream out)
-      throws IOException
-  {
-    out.write (SPACE);
-  }
-
-  protected void startPage (OutputStream out)
-      throws IOException
-  {
-  }
-
-  protected void endPage (OutputStream out)
-      throws IOException
-  {
-    out.write(FORM_FEED);
-  }
-
-  protected void printChunk (OutputStream out, TextDataChunk chunk, int x)
-    throws IOException
-  {
-    if (chunk.getX() == x)
-    {
-      byte[] text = chunk.getText().getBytes();
-
-      byte[] data = new byte[chunk.getWidth()];
-      Arrays.fill(data, SPACE);
-      System.arraycopy(text, 0, data, 0, Math.min (text.length, data.length));
-      out.write (data);
-    }
-  }
-
-  public void writePage (OutputStream out)
-    throws IOException
-  {
-    startPage(out);
+    commandSet.resetPrinter();
+    commandSet.startPage();
     for (int y = 0; y < height; y++)
     {
-      startLine(out);
+      commandSet.startLine();
       for (int x = 0; x < width; x++)
       {
         TextDataChunk chunk = getChunk(x,y);
         if (chunk == null)
         {
-          printEmptyChunk(out);
+          commandSet.printEmptyChunk();
         }
         else
         {
-          printChunk(out, chunk, x);
+          commandSet.printChunk(chunk, x);
         }
       }
-      endLine(out);
+      commandSet.endLine();
     }
-    endPage(out);
-    out.flush();
+    commandSet.endPage();
+    commandSet.flush();
   }
 }

@@ -2,7 +2,7 @@
  * Date: Jan 13, 2003
  * Time: 1:01:18 PM
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.3 2003/01/23 18:07:46 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.4 2003/01/23 18:36:01 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -98,7 +98,7 @@ public abstract class AbstractXMLDefinitionWriter
       safeTags.add(StyleSheetHandler.EXTENDS_TAG);
 
       safeTags.add(TemplatesHandler.TEMPLATE_TAG);
-      safeTags.add(PropertyHandler.PROPERTY_TAG);
+      safeTags.add(PropertyHandler.PROPERTY_TAG, false, true);
     }
     return safeTags;
   }
@@ -174,11 +174,21 @@ public abstract class AbstractXMLDefinitionWriter
       w.write (normalize(value));
       w.write ("\"");
     }
-    if (close) w.write("/");
-    w.write(">");
-    if (getSafeTags().isSafeForOpen(name) || (close && getSafeTags().isSafeForClose(name)))
+    if (close)
     {
-      w.write(getLineSeparator());
+      w.write("/>");
+      if (getSafeTags().isSafeForClose(name))
+      {
+        w.write(getLineSeparator());
+      }
+    }
+    else
+    {
+      w.write(">");
+      if (getSafeTags().isSafeForOpen(name))
+      {
+        w.write(getLineSeparator());
+      }
     }
   }
 
