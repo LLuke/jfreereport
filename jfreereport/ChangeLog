@@ -2,6 +2,8 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+        * Support for watermark-bands was added.
+
 0.8.4-6 (25-Nov-2003):
         * BugFix: In some cases the band layout manager "lost" the
           reference to the local LayoutSupport. This part was ugly

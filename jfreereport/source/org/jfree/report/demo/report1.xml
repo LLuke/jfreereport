@@ -24,6 +24,10 @@
     -->
   </configuration>
 
+  <watermark>
+    <imageref x="10%" y="10%" width="80%" height="80%" src="earth.png" keepAspectRatio="true" scale="true"/>
+  </watermark>
+
   <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
     <rectangle name="PH0" x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
     <date-field name="PH1" x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" fieldname="report.date"  line-height="20"/>

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.10 2003/11/01 19:52:26 taqua Exp $
+ * $Id: Band.java,v 1.11 2003/11/07 18:33:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -347,13 +347,12 @@ public class Band extends Element implements Serializable, Cloneable
       return;
     }
 
-    e.getStyle().removeDefaultParent(getBandDefaults());
-    e.setParent(null);
-
     if (getStyleSheetCollection() != null)
     {
       e.unregisterStyleSheetCollection(getStyleSheetCollection());
     }
+    e.getStyle().removeDefaultParent(getBandDefaults());
+    e.setParent(null);
     allElements.remove(e);
     allElementsCached = null;
     invalidateLayout();
@@ -514,7 +513,6 @@ public class Band extends Element implements Serializable, Cloneable
     {
       elements[i].unregisterStyleSheetCollection(getStyleSheetCollection());
     }
-    //getStyleSheetCollection().remove(getBandDefaults());
     getBandDefaults().unregisterStyleSheetCollection(getStyleSheetCollection());
     super.handleUnregisterStyleSheetCollection();
   }
@@ -529,7 +527,6 @@ public class Band extends Element implements Serializable, Cloneable
     {
       elements[i].registerStyleSheetCollection(getStyleSheetCollection());
     }
-    //getStyleSheetCollection().addStyleSheet(getBandDefaults());
     getBandDefaults().registerStyleSheetCollection(getStyleSheetCollection());
     super.handleRegisterStyleSheetCollection();
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinition.java,v 1.5 2003/12/06 15:24:02 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.6 2003/12/06 16:47:10 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,12 @@ public interface ReportDefinition extends Cloneable
    */
   public ItemBand getItemBand();
 
-  public Band getWatermark();
+  /**
+   * Returns the watermark band.
+   *
+   * @return The watermark band.
+   */
+  public Watermark getWatermark();
 
   /**
    * Returns the report properties.

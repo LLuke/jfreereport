@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.8 2003/11/07 18:33:48 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.9 2003/12/06 17:15:20 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.transaction.TransactionListener;
+import org.jfree.report.transaction.TransactionException;
 import org.jfree.report.event.LayoutEvent;
 import org.jfree.report.event.LayoutListener;
 import org.jfree.report.event.PageEventListener;
@@ -52,6 +54,7 @@ import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.event.ReportListener;
 import org.jfree.report.util.LevelList;
+import org.jfree.report.util.Log;
 
 /**
  * A list of expressions/functions and associated levels.  This class listens for report events,
@@ -60,7 +63,7 @@ import org.jfree.report.util.LevelList;
  * @author Thomas Morgner
  */
 public final class LevelledExpressionList implements ReportListener,
-    Cloneable, LayoutListener, PageEventListener
+    Cloneable, LayoutListener, PageEventListener, TransactionListener
 {
   /** error list stores the errors that occur during the event dispatching. */
   private ArrayList errorList;
@@ -1173,5 +1176,23 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
     }
+  }
+
+  public void transactionCommited() throws TransactionException
+  {
+    // todo: fire event ...
+    Log.debug ("Transaction commited ...");
+  }
+
+  public void transactionRolledBack() throws TransactionException
+  {
+    // todo: fire event ...
+    Log.debug ("Transaction rolled back ...");
+  }
+
+  public void transactionStarted()
+  {
+    // todo: fire event ...
+    Log.debug ("Transaction started ...");
   }
 }

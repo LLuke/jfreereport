@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.14 2003/11/01 19:52:28 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.15 2003/11/07 18:33:55 taqua Exp $
  *
  * Changes
  * -------
@@ -800,7 +800,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
       getDocument().open();
 
-      //writer.getDirectContent().saveState();
+      //writer.getDirectContent().beginTransaction();
     }
     catch (Exception e)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportTask.java,v 1.6 2003/11/01 19:52:27 taqua Exp $
+ * $Id: ExportTask.java,v 1.7 2003/11/07 18:33:50 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -244,7 +244,7 @@ public abstract class ExportTask implements Runnable
     }
     catch (Exception e)
     {
-      Log.debug ("ExportTask.run(): Caught exception while exporting...", e);
+      Log.warn ("ExportTask.run(): Caught exception while exporting...", e);
       setTaskFailed(e);
     }
     dispose();

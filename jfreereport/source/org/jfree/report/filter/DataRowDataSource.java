@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowDataSource.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: DataRowDataSource.java,v 1.3 2003/12/06 16:47:25 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,6 @@ import org.jfree.report.ReportDefinition;
  * expressions and functions for the report.
  * <p>
  * @see org.jfree.report.DataRow
- *
  * @author Thomas Morgner
  */
 public class DataRowDataSource

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionImpl.java,v 1.4 2003/12/06 15:24:02 taqua Exp $
+ * $Id: ReportDefinitionImpl.java,v 1.5 2003/12/06 16:47:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,6 +50,7 @@ import org.jfree.report.ReportHeader;
 import org.jfree.report.Band;
 import org.jfree.report.DataRow;
 import org.jfree.report.Element;
+import org.jfree.report.Watermark;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.ReportConnectable;
 import org.jfree.report.filter.DataTarget;
@@ -87,7 +88,7 @@ public class ReportDefinitionImpl implements ReportDefinition
   /** The item band - used once for each row of data. */
   private ItemBand itemBand;
 
-  private Band watermark;
+  private Watermark watermark;
 
   /** Storage for arbitrary properties that a user can assign to the report. */
   private ReportProperties properties;
@@ -117,7 +118,7 @@ public class ReportDefinitionImpl implements ReportDefinition
     pageFooter = (PageFooter) report.getPageFooter().clone();
     pageHeader = (PageHeader) report.getPageHeader().clone();
     itemBand = (ItemBand) report.getItemBand().clone();
-    watermark = (Band) report.getWatermark().clone();
+    watermark = (Watermark) report.getWatermark().clone();
     reportConfiguration = report.getReportConfiguration();
     styleSheetCollection = (StyleSheetCollection) report.getStyleSheetCollection().clone();
     groups.updateStyleSheetCollection(styleSheetCollection);
@@ -360,7 +361,7 @@ public class ReportDefinitionImpl implements ReportDefinition
     report.properties = (ReportProperties) properties.clone();
     report.reportFooter = (ReportFooter) reportFooter.clone();
     report.reportHeader = (ReportHeader) reportHeader.clone();
-    report.watermark = (Band) watermark.clone();
+    report.watermark = (Watermark) watermark.clone();
     report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
     report.groups.updateStyleSheetCollection(report.styleSheetCollection);
     report.itemBand.updateStyleSheetCollection(report.styleSheetCollection);
@@ -399,7 +400,7 @@ public class ReportDefinitionImpl implements ReportDefinition
     return dataRowConnector;
   }
 
-  public Band getWatermark()
+  public Watermark getWatermark()
   {
     return watermark;
   }

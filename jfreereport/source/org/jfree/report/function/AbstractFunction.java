@@ -49,7 +49,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.3 2003/10/18 19:32:12 taqua Exp $
  *
  * Changes
  * -------
@@ -70,6 +70,7 @@ package org.jfree.report.function;
 
 import java.util.Enumeration;
 import java.util.Properties;
+import java.io.Serializable;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.event.ReportEvent;
@@ -85,7 +86,7 @@ import org.jfree.report.event.ReportEvent;
  *
  * @author Thomas Morgner
  */
-public abstract class AbstractFunction implements Function
+public abstract class AbstractFunction implements Function, Serializable
 {
   /** The function name. */
   private String name;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.9 2003/11/07 18:33:56 taqua Exp $
+ * $Id: TableWriter.java,v 1.10 2003/11/15 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,6 @@ import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelega
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.style.BandStyleSheet;
-import org.jfree.report.util.Log;
 
 /**
  * The TableWriter is the content creation function used to collect the cell data.
@@ -697,5 +696,15 @@ public strictfp class TableWriter extends AbstractFunction
     {
       throw new IllegalStateException("Assert: TableWriter function was not initialized properly");
     }
+  }
+
+  public boolean isWatermarkSupported()
+  {
+    return false;
+  }
+
+  public boolean printWatermark(Band watermark) throws ReportProcessingException
+  {
+    throw new ReportProcessingException("Watermark printing is not supported for table targets.");
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutWorker.java,v 1.1 2003/10/01 20:41:41 taqua Exp $
+ * $Id: SimplePageLayoutWorker.java,v 1.2 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -147,4 +147,7 @@ public interface SimplePageLayoutWorker
    */
   public boolean isPageEmpty();
 
+  public boolean isWatermarkSupported();
+
+  public boolean printWatermark (Band watermark) throws ReportProcessingException;
 }

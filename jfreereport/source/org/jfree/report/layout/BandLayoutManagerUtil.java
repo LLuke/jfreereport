@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.9 2003/11/10 18:00:36 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.10 2003/11/12 22:40:03 taqua Exp $
  *
  * Changes
  * -------
@@ -150,6 +150,13 @@ public final strictfp class BandLayoutManagerUtil
     {
       throw new IllegalArgumentException("Width or height is negative.");
     }
+    if (band.isVisible() == false)
+    {
+      final Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, 0);
+      band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
+      return bounds;
+    }
+
     final BandLayoutManager lm
         = BandLayoutManagerUtil.getLayoutManager(band);
     // in this layouter the width of a band is always the full page width
@@ -164,6 +171,54 @@ public final strictfp class BandLayoutManagerUtil
     // computed. We can't compute both, as this is impossible - but we can make
     // the given computation as reliable as possible.
     final Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, (float) fdim.getHeight());
+    band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
+    lm.doLayout(band, support);
+    return bounds;
+  }
+
+  /**
+   * Performs all required steps to layout the band; the bands bounds are predefined by
+   * the caller and will not be computed. The band will never exceed the specified bounds,
+   * they define a hard limit.
+   * <p>
+   * The bands elements get their BOUNDS property updated to reflect the new layout settings.
+   *
+   * @param band  the band that should be laid out.
+   * @param support  the LayoutSupport implementation used to calculate the bounds of dynamic
+   *                 content.
+   * @param width  the initial maximum width of the container.
+   * @param height  the initial maximum height of the container.
+   *
+   * @return the bounds for the layouted band. The band itself got updated to
+   * contain the new element bounds.
+   */
+  public static Rectangle2D doFixedLayout
+                                    (final Band band, final LayoutSupport support,
+                                     final float width, final float height)
+  {
+    if (band == null)
+    {
+      throw new NullPointerException("Band is null");
+    }
+    if (support == null)
+    {
+      throw new NullPointerException("LayoutSupport is null");
+    }
+    if (width < 0 || height < 0)
+    {
+      throw new IllegalArgumentException("Width or height is negative.");
+    }
+    if (band.isVisible() == false)
+    {
+      final Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, 0);
+      band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
+      return bounds;
+    }
+
+    final BandLayoutManager lm
+        = BandLayoutManagerUtil.getLayoutManager(band);
+
+    final Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, height);
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
     lm.doLayout(band, support);
     return bounds;

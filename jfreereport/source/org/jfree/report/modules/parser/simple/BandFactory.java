@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.7 2003/10/11 20:44:06 taqua Exp $
+ * $Id: BandFactory.java,v 1.8 2003/12/06 15:24:02 taqua Exp $
  *
  * Changes
  * -------
@@ -405,13 +405,13 @@ public class BandFactory extends AbstractReportDefinitionHandler
   }
 
   /**
-   * Handles the start of an ItemBand definition.
+   * Handles the start of an Watermark definition.
    *
    * @param attr  the element attributes.
    *
    * @throws SAXException if there is a parsing problem.
    *
-   * @see org.jfree.report.ItemBand
+   * @see org.jfree.report.Watermark
    */
   public void startWatermark(final Attributes attr)
       throws SAXException
@@ -487,9 +487,7 @@ public class BandFactory extends AbstractReportDefinitionHandler
   }
 
   /**
-   * Handles the end of an ItemBand definition.
-   *
-   * @see org.jfree.report.ItemBand
+   * Handles the end of an Watermark definition.
    *
    * @throws SAXException if a Parser error occurs.
    */

@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.8 2003/11/07 20:37:48 taqua Exp $
+ * $Id: ReportFactory.java,v 1.9 2003/12/06 15:24:02 taqua Exp $
  *
  * Changes
  * -------
@@ -250,6 +250,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
         || elementName.equals(PAGE_HEADER_TAG)
         || elementName.equals(PAGE_FOOTER_TAG)
         || elementName.equals(FUNCTIONS_TAG)
+        || elementName.equals(WATERMARK_TAG)
         || elementName.equals(GROUPS_TAG)
         || elementName.equals(ITEMS_TAG))
     {

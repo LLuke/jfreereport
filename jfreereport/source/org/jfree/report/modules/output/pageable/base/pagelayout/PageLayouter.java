@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.8 2003/11/01 19:52:28 taqua Exp $
+ * $Id: PageLayouter.java,v 1.9 2003/11/10 20:02:56 taqua Exp $
  *
  * Changes
  * -------
@@ -430,7 +430,7 @@ public abstract strictfp class PageLayouter extends AbstractFunction
    * implementation is responsible to save all required information so that the
    * printing can be continued after the pagebreak is done.
    *
-   * @return a valid saveState, never null
+   * @return a valid beginTransaction, never null
    */
   protected abstract LayoutManagerState saveCurrentState();
 
@@ -459,7 +459,7 @@ public abstract strictfp class PageLayouter extends AbstractFunction
 
 
   /**
-   * Clear the saveState. This should be called after the saveState has been
+   * Clear the beginTransaction. This should be called after the beginTransaction has been
    * restored.
    */
   protected void clearSaveState()

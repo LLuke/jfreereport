@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.32 2003/11/15 20:51:14 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.33 2003/12/04 18:04:06 taqua Exp $
  *
  * Changes
  * -------
@@ -544,7 +544,7 @@ public class PreviewProxyBase extends JComponent
      */
     public void actionPerformed(final ActionEvent e)
     {
-      setZoomFactor(zoomSelect.getSelectedIndex());
+      setZoomFactor(getZoomSelect().getSelectedIndex());
     }
   }
 
@@ -1830,6 +1830,7 @@ public class PreviewProxyBase extends JComponent
       progressDialog.setVisible(false);
       progressDialog.dispose();
     }
+    closeToolbar();
     dispose();
   }
 
@@ -2061,13 +2062,13 @@ public class PreviewProxyBase extends JComponent
     progressDialog.pack();
 
     final Worker worker = getRepaginationWorker();
-    Log.debug ("Worker is unavailable (preSync) ... " + worker.isAvailable());
+    //Log.debug ("Worker is unavailable (preSync) ... " + worker.isAvailable());
     synchronized (worker)
     {
       while (worker.isAvailable() == false)
       {
         // wait until the worker is done with his current job
-        Log.debug ("Worker is unavailable ... ");
+        //Log.debug ("Worker is unavailable ... ");
         try
         {
           worker.wait();
@@ -2099,14 +2100,16 @@ public class PreviewProxyBase extends JComponent
             progressDialog.setVisible(false);
             reportPane.removeRepaginationListener(progressDialog);
             setLockInterface(false);
+            /*
             Log.debug ("Pagination done: " +
               ((System.currentTimeMillis() - startTime) / 1000) + " seconds.");
+              */
           }
           catch (ReportInterruptedException re)
           {
             progressDialog.setVisible(false);
             reportPane.removeRepaginationListener(progressDialog);
-            Log.info ("Repagination aborted.");
+            Log.info ("Repagination aborted [ReportInterruptedException]");
           }
           catch (Exception e)
           {
@@ -2118,7 +2121,7 @@ public class PreviewProxyBase extends JComponent
         }
       });
     }
-    Log.debug ("Worker is on the way... ");
+    //Log.debug ("Worker is on the way... ");
   }
 
   /**

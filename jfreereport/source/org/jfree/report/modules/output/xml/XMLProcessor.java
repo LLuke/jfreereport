@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.4 2003/08/25 14:29:32 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.5 2003/12/06 17:15:21 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.report.states.FinishState;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.states.ReportStateProgress;
 import org.jfree.report.states.StartState;
+import org.jfree.report.transaction.TransactionProcessor;
 import org.jfree.report.util.NullOutputStream;
 
 /**
@@ -65,7 +66,8 @@ import org.jfree.report.util.NullOutputStream;
 public class XMLProcessor
 {
   /** the name of the writer function used in the report processing. */
-  private static final String XML_WRITER = "org.jfree.report.targets.xml-writer";
+  private static final String XML_WRITER =
+      "org.jfree.report.targets.xml-writer";
 
   /** the target writer. */
   private Writer writer;
@@ -182,8 +184,9 @@ public class XMLProcessor
         throw new IllegalStateException("No functions defined, invalid implementation.");
       }
 
+      TransactionProcessor processor = new TransactionProcessor();
+
       boolean hasNext;
-      ReportStateProgress progress = null;
       int level = ((Integer) it.next()).intValue();
       // outer loop: process all function levels
       do
@@ -200,27 +203,8 @@ public class XMLProcessor
         // dataRow.
         final boolean failOnError = (level == -1)
             && getReport().getReportConfiguration().isStrictErrorHandling();
-        while (!state.isFinish())
-        {
-          progress = state.createStateProgress(progress);
-          state = state.advance();
-          if (failOnError)
-          {
-            if (state.isErrorOccured() == true)
-            {
-              throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
-            }
-          }
-          if (!state.isFinish())
-          {
-            // if the report processing is stalled, throw an exception; an infinite
-            // loop would be caused.
-            if (!state.isProceeding(progress))
-            {
-              throw new ReportProcessingException("State did not proceed, bailing out!");
-            }
-          }
-        }
+        processor.setFailOnError(failOnError);
+        state = processor.process(state);
 
         // if there is an other level to process, then use the finish state to
         // create a new start state, which will continue the report processing on
@@ -241,13 +225,6 @@ public class XMLProcessor
       }
       while (hasNext == true);
 
-      // root of evilness here ... pagecount should not be handled specially ...
-      // The pagecount should not be added as report property, there are functions to
-      // do this.
-      /*
-      state.setProperty(JFreeReportConstants.REPORT_PAGECOUNT_PROPERTY,
-                        new Integer(state.getCurrentPage() - 1));
-      */
       state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
       // finally prepeare the returned start state.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.13 2003/11/07 18:33:54 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.14 2003/12/06 16:47:25 taqua Exp $
  *
  * Changes
  * -------
@@ -621,7 +621,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
 
     final Rectangle2D bounds = doLayout(b, true);
     bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
-    final boolean retval = doPrint(bounds, b, spool);
+    final boolean retval = doPrint(bounds, b, spool, false);
     return retval;
   }
 
@@ -646,7 +646,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
     final Rectangle2D bounds = doLayout(b, true);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
         bounds.getWidth(), bounds.getHeight());
-    return doPrint(bounds, b, spool);
+    return doPrint(bounds, b, spool, false);
   }
 
   /**
@@ -691,126 +691,127 @@ public strictfp class SimplePageLayouter extends PageLayouter
    * @throws ReportProcessingException if the printing caused an detectable error
    * while printing the band
    */
-  protected boolean doPrint(final Rectangle2D bounds, final Band band, final boolean spool)
+  protected boolean doPrint(final Rectangle2D bounds, final Band band,
+                            final boolean spool, final boolean watermark)
       throws ReportProcessingException
   {
-    try
-    {
-      final float height = (float) bounds.getHeight();
-      // handle the end of the page
-      if (isFinishingPage())
+      try
       {
-        if (spool)
+        final float height = (float) bounds.getHeight();
+        // handle the end of the page
+        if (isFinishingPage())
         {
-          final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
-          if (spooledBand == null)
+          if (spool)
           {
-            spooledBand = newSpool;
+            final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+            if (spooledBand == null)
+            {
+              spooledBand = newSpool;
+            }
+            else
+            {
+              spooledBand.merge(newSpool);
+            }
           }
           else
           {
-            spooledBand.merge(newSpool);
+            final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+            if (newSpool.isEmpty() == false)
+            {
+              if (spooledBand != null)
+              {
+                getLogicalPage().replaySpool(spooledBand);
+                spooledBand = null;
+              }
+  /*
+              PhysicalOperation [] pop = newSpool.getOperations();
+              Log.debug ("--->" + band.getClass());
+              for (int i = 0; i < pop.length; i++)
+              {
+                Log.debug (pop[i]);
+              }
+  */
+              getLogicalPage().replaySpool(newSpool);
+            }
           }
+          cursor.advance(height);
+          return true;
+        }
+        // handle a automatic pagebreak in case there is not enough space here ...
+        else if ((watermark == false) && (isPageEnded() == false) && (isSpaceFor(height) == false))
+        {
+          if ((spooledBand != null) && (spool == false))
+          {
+            getLogicalPage().replaySpool(spooledBand);
+            spooledBand = null;
+          }
+
+          createSaveState(band);
+          endPage(ENDPAGE_FORCED);
+          return false;
+        }
+        else if (isPageEnded())
+        {
+          // page has ended before, that band should be printed on the next page
+          createSaveState(band);
+          return false;
         }
         else
         {
-          final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
-          if (newSpool.isEmpty() == false)
+          if (spool)
           {
-            if (spooledBand != null)
+            final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+            if (spooledBand == null)
             {
-              getLogicalPage().replaySpool(spooledBand);
-              spooledBand = null;
+              spooledBand = newSpool;
             }
-/*
-            PhysicalOperation [] pop = newSpool.getOperations();
-            Log.debug ("--->" + band.getClass());
-            for (int i = 0; i < pop.length; i++)
+            else
             {
-              Log.debug (pop[i]);
+              spooledBand.merge(newSpool);
             }
-*/
-            getLogicalPage().replaySpool(newSpool);
-          }
-        }
-        cursor.advance(height);
-        return true;
-      }
-      // handle a automatic pagebreak in case there is not enough space here ...
-      else if ((isSpaceFor(height) == false) && (isPageEnded() == false))
-      {
-        if ((spooledBand != null) && (spool == false))
-        {
-          getLogicalPage().replaySpool(spooledBand);
-          spooledBand = null;
-        }
 
-        createSaveState(band);
-        endPage(ENDPAGE_FORCED);
-        return false;
-      }
-      else if (isPageEnded())
-      {
-        // page has ended before, that band should be printed on the next page
-        createSaveState(band);
-        return false;
-      }
-      else
-      {
-        if (spool)
-        {
-          final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
-          if (spooledBand == null)
-          {
-            spooledBand = newSpool;
+            cursor.advance(height);
+            return true;
           }
           else
           {
-            spooledBand.merge(newSpool);
-          }
-
-          cursor.advance(height);
-          return true;
-        }
-        else
-        {
-          final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
-          if (newSpool.isEmpty() == false)
-          {
-            if (spooledBand != null)
+            final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+            if (newSpool.isEmpty() == false)
             {
-              getLogicalPage().replaySpool(spooledBand);
-              spooledBand = null;
+              if (spooledBand != null)
+              {
+                getLogicalPage().replaySpool(spooledBand);
+                spooledBand = null;
+              }
+  /*
+              PhysicalOperation [] pop = newSpool.getOperations();
+              Log.debug ("--->" + band.getClass());
+              for (int i = 0; i < pop.length; i++)
+              {
+                Log.debug (pop[i]);
+              }
+  */
+              getLogicalPage().replaySpool(newSpool);
             }
-/*
-            PhysicalOperation [] pop = newSpool.getOperations();
-            Log.debug ("--->" + band.getClass());
-            for (int i = 0; i < pop.length; i++)
-            {
-              Log.debug (pop[i]);
-            }
-*/
-            getLogicalPage().replaySpool(newSpool);
-          }
 
-          cursor.advance(height);
-          if (band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
-          {
-            createSaveState(null);
-            endPage(ENDPAGE_REQUESTED);
+            cursor.advance(height);
+            if (band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
+            {
+              createSaveState(null);
+              endPage(ENDPAGE_REQUESTED);
+            }
+            return true;
           }
-          return true;
         }
       }
-    }
-    catch (ReportProcessingException rpe)
-    {
-      throw rpe;
-    }
-    catch (OutputTargetException ote)
-    {
-      throw new FunctionProcessingException("Failed to print", ote);
-    }
+      catch (ReportProcessingException rpe)
+      {
+        throw rpe;
+      }
+      catch (OutputTargetException ote)
+      {
+        throw new FunctionProcessingException("Failed to print", ote);
+      }
   }
 
   /**
@@ -1115,5 +1116,19 @@ public strictfp class SimplePageLayouter extends PageLayouter
     {
       clearCurrentEvent();
     }
+  }
+
+  public boolean isWatermarkSupported()
+  {
+    return true;
+  }
+
+  public boolean printWatermark(Band watermark) throws ReportProcessingException
+  {
+    final LogicalPage logPage = getLogicalPage();
+    final Rectangle2D bounds  = BandLayoutManagerUtil.doFixedLayout
+        (watermark, logPage.getOutputTarget(), logPage.getWidth(), logPage.getHeight());
+    final boolean retval = doPrint(bounds, watermark, true, true);
+    return retval;
   }
 }

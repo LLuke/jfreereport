@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.10 2003/11/15 20:51:14 taqua Exp $
+ * $Id: ReportPane.java,v 1.11 2003/12/06 17:15:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -946,7 +946,7 @@ public class ReportPane extends JComponent
    */
   public void dispose()
   {
-    Log.debug ("Dispose the report pane ...");
+    // Log.debug ("Dispose the report pane ...");
     // clean up a little bit
     // this is safe, the report is repaginated if needed
     setPageStateList(null);

@@ -49,7 +49,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.3 2003/10/18 19:32:12 taqua Exp $
  *
  * Changes
  * -------
@@ -64,6 +64,7 @@ package org.jfree.report.function;
 
 import java.util.Enumeration;
 import java.util.Properties;
+import java.io.Serializable;
 
 import org.jfree.report.DataRow;
 
@@ -78,7 +79,7 @@ import org.jfree.report.DataRow;
  *
  * @author Thomas Morgner
  */
-public abstract class AbstractExpression implements Expression
+public abstract class AbstractExpression implements Expression, Serializable
 {
   /** The expression name. */
   private String name;

@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.4 2003/08/24 15:13:23 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.5 2003/08/25 14:29:34 taqua Exp $
  *
  * Changes
  * -------
@@ -677,7 +677,7 @@ public final class PageFormatFactory
    */
   public double convertMmToPoints(final double mm)
   {
-    return mm * (72d / 254d);
+    return mm * (72d / 254d) * 10;
   }
 
   /**

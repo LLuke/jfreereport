@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.7 2003/11/15 20:51:15 taqua Exp $
+ * $Id: ReportState.java,v 1.8 2003/12/06 17:15:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -63,6 +63,10 @@ import org.jfree.report.Group;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.transaction.TransactionManager;
+import org.jfree.report.transaction.TransactionControler;
+import org.jfree.report.transaction.TransactionException;
+import org.jfree.report.transaction.TransactionListener;
 import org.jfree.report.event.LayoutEvent;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.LevelledExpressionList;
@@ -83,7 +87,7 @@ import org.jfree.util.ObjectUtils;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public abstract class ReportState implements Cloneable
+public abstract class ReportState implements Cloneable, TransactionListener
 {
   /** The report that the state belongs to. */
   private ReportDefinitionImpl report;
@@ -120,6 +124,8 @@ public abstract class ReportState implements Cloneable
 
   /** The ancestor hash code. */
   private int ancestorHashcode;
+
+  private TransactionControler transactionControler;
 
   /**
    * Constructs a new state for the specified report.  The report (which encapsulates a reference
@@ -179,6 +185,7 @@ public abstract class ReportState implements Cloneable
     numberOfRows = clone.getNumberOfRows();
     dataRowPreview = clone.dataRowPreview;
     this.dataRow = clone.getDataRowBackend();
+    this.transactionControler = clone.transactionControler;
 
     if (reset)
     {
@@ -897,4 +904,30 @@ public abstract class ReportState implements Cloneable
       return false;
     }
   }
+
+  public TransactionControler getTransactionControler()
+  {
+    return transactionControler;
+  }
+
+  public void setTransactionControler(TransactionControler transactionControler)
+  {
+    this.transactionControler = transactionControler;
+  }
+
+  public void transactionCommited() throws TransactionException
+  {
+    getDataRowBackend().getFunctions().transactionCommited();
+  }
+
+  public void transactionRolledBack() throws TransactionException
+  {
+    getDataRowBackend().getFunctions().transactionRolledBack();
+  }
+
+  public void transactionStarted()
+  {
+    getDataRowBackend().getFunctions().transactionStarted();
+  }
+
 }

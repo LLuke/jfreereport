@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.6 2003/11/25 17:26:26 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.7 2003/12/06 15:24:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -227,39 +227,28 @@ public class SimplePageLayoutDelegate implements
     this.pageCarrier.setMaxPages(maxPage);
   }
 
-  private void handlePageHeaderPrinting (final Band b, final ReportEvent event)
-    throws ReportProcessingException
+  private boolean isPageHeaderPrinting (final Band b, final ReportEvent event)
   {
-    if (event.getState().getCurrentPage() == 1)
+    if ((event.getState().getCurrentPage() == 1) &&
+        (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == false))
     {
-      if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
-      {
-        worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED,
-            SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
-      }
+      return false;
     }
-    else if (event.getState().getCurrentPage() == getMaxPage())
+
+    if ((event.getState().getCurrentPage() == getMaxPage()) &&
+        (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == false))
     {
-      if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
-      {
-        worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED,
-            SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
-      }
+      return false;
     }
-    else if (isLastPagebreak())
+
+    if  (isLastPagebreak() &&
+        (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == false))
     {
-      if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
-      {
-        worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED,
-            SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
-      }
+      return false;
     }
-    else
-    {
-      worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED,
-          SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
-    }
+    return true;
   }
+  
   /**
    * Receives notification that a page has started.
    * <P>
@@ -290,15 +279,22 @@ public class SimplePageLayoutDelegate implements
     {
       final ReportDefinition report = event.getReport();
 
-      // a new page has started, so reset the cursor ...
-      worker.resetCursor();
       final Band watermark = report.getWatermark();
-      handlePageHeaderPrinting(watermark, event);
+      if (worker.isWatermarkSupported() && isPageHeaderPrinting(watermark, event))
+      {
+        // a new page has started, so reset the cursor ...
+        worker.resetCursor();
+        worker.printWatermark(watermark);
+      }
 
       // after printing the watermark, we are still at the top of the page.
       worker.resetCursor();
       final Band b = report.getPageHeader();
-      handlePageHeaderPrinting(b, event);
+      if (isPageHeaderPrinting(b, event))
+      {
+        worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED,
+            SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
+      }
 
       /**
        * Repeating group header are only printed while ItemElements are
