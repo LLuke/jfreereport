@@ -197,6 +197,9 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
     return size;
   }
 
+  /**
+   * Serialisation support
+   */
   private void writeObject (java.io.ObjectOutputStream out)
           throws IOException
   {
@@ -212,6 +215,9 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
     }
   }
 
+  /**
+   * Serialisation support
+   */
   private void readObject (java.io.ObjectInputStream in)
           throws IOException, ClassNotFoundException
   {

@@ -164,6 +164,9 @@ public class ReportProperties implements Serializable, Cloneable
     return properties.containsKey (key);
   }
 
+  /**
+   * @returns a copy of this ReportProperties object
+   */
   public Object clone () throws CloneNotSupportedException
   {
     ReportProperties p = (ReportProperties) super.clone ();

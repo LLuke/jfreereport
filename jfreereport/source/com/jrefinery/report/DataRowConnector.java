@@ -27,7 +27,7 @@
  *
  * Changes
  * ------------------------------
- * 27.07.2002 : Inital version
+ * 27-Jul-2002 : Inital version
  */
 package com.jrefinery.report;
 

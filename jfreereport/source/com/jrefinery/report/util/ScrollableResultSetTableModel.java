@@ -209,6 +209,9 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
     return null;
   }
 
+  /**
+   * returns the value of the specified row and the specified column from within the resultset.
+   */
   public Object getValueAt (int row, int column)
   {
     if (resultset != null)
@@ -226,6 +229,9 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
     return null;
   }
 
+  /**
+   * returns the class of the resultset column. Returns Object.class if an error occured.
+   */
   public Class getColumnClass (int column)
   {
     if (dbmd != null)
@@ -242,6 +248,10 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
     return Object.class;
   }
 
+
+  /**
+   * returns the classname of the resultset column. Returns Object.class if an error occured.
+   */
   public String getColumnClassName (int column)
   {
     if (dbmd != null)

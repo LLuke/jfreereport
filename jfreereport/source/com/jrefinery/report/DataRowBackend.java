@@ -27,13 +27,14 @@
  *
  * Changes
  * ------------------------------
- * 27.07.2002 : Inital version
- * ... missing: Deadlockcheck, be aware!!!!
+ * 27-Jul-2002 : Inital version
+ * 01-Sep-2002 : Deadlockcheck added. If a column is accessed twice within a single query, (can happen on
+ *               expression evaluation), a IllegalStateException is thrown
  */
 package com.jrefinery.report;
 
-import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.Expression;
+import com.jrefinery.report.function.Function;
 import com.jrefinery.report.util.Log;
 
 import javax.swing.table.TableModel;
@@ -49,72 +50,72 @@ public class DataRowBackend implements Cloneable
   {
     private DataRowBackend db;
 
-    public DataRowPreview (DataRowBackend db)
+    public DataRowPreview(DataRowBackend db)
     {
       this.db = db;
     }
 
-    public boolean isPreviewMode ()
+    public boolean isPreviewMode()
     {
       return true;
     }
 
-    public int getCurrentRow ()
+    public int getCurrentRow()
     {
-      return db.getCurrentRow () + 1;
+      return db.getCurrentRow() + 1;
     }
 
-    public void setCurrentRow (int currentRow)
+    public void setCurrentRow(int currentRow)
     {
-      throw new IllegalStateException ("This is a preview, not changable");
+      throw new IllegalStateException("This is a preview, not changable");
     }
 
-    public void setFunctions (FunctionCollection functions)
+    public void setFunctions(FunctionCollection functions)
     {
-      throw new IllegalStateException ("This is a preview, not changable");
+      throw new IllegalStateException("This is a preview, not changable");
     }
 
-    public void setTablemodel (TableModel tablemodel)
+    public void setTablemodel(TableModel tablemodel)
     {
-      throw new IllegalStateException ("This is a preview, not changable");
+      throw new IllegalStateException("This is a preview, not changable");
     }
 
     /**
      * looks up the position of the column with the name <code>name</code>.
      * returns the position of the column or -1 if no columns could be retrieved.
      */
-    public int findColumn (String name)
+    public int findColumn(String name)
     {
-      return db.findColumn (name);
+      return db.findColumn(name);
     }
 
-    public int getColumnCount ()
+    public int getColumnCount()
     {
-      return db.getColumnCount ();
+      return db.getColumnCount();
     }
 
-    public String getColumnName (int col)
+    public String getColumnName(int col)
     {
-      return db.getColumnName (col);
+      return db.getColumnName(col);
     }
 
-    public FunctionCollection getFunctions ()
+    public FunctionCollection getFunctions()
     {
-      return db.getFunctions ();
+      return db.getFunctions();
     }
 
-    public TableModel getTablemodel ()
+    public TableModel getTablemodel()
     {
-      return db.getTablemodel ();
+      return db.getTablemodel();
     }
 
     /**
      * Create a preview backend. Such datarows will have no access to functions (all functions
      * will return null).
      */
-    public DataRowBackend previewNextRow ()
+    public DataRowBackend previewNextRow()
     {
-      throw new IllegalStateException ("Is already a preview version!");
+      throw new IllegalStateException("Is already a preview version!");
     }
   }
 
@@ -130,92 +131,108 @@ public class DataRowBackend implements Cloneable
   // set by the report state
   private int currentRow;
 
-  public DataRowBackend ()
+  private boolean[] columnlocks;
+
+  public DataRowBackend()
   {
-    colcache = new Hashtable ();
+    columnlocks = new boolean[0];
+    colcache = new Hashtable();
     currentRow = -1;
   }
 
-  public FunctionCollection getFunctions ()
+  public FunctionCollection getFunctions()
   {
     return functions;
   }
 
-  public TableModel getTablemodel ()
+  public TableModel getTablemodel()
   {
     return tablemodel;
   }
 
-  public int getCurrentRow ()
+  public int getCurrentRow()
   {
     return currentRow;
   }
 
-  public void setCurrentRow (int currentRow)
+  public void setCurrentRow(int currentRow)
   {
     this.currentRow = currentRow;
   }
 
-  public void setFunctions (FunctionCollection functions)
+  public void setFunctions(FunctionCollection functions)
   {
     this.functions = functions;
   }
 
-  public void setTablemodel (TableModel tablemodel)
+  public void setTablemodel(TableModel tablemodel)
   {
     this.tablemodel = tablemodel;
   }
 
-  public Object get (int col)
+  public Object get(int col)
   {
-    if (col > getColumnCount ())
-      throw new IndexOutOfBoundsException ("requested " + col + " , have " + getColumnCount ());
+    if (col > getColumnCount())
+      throw new IndexOutOfBoundsException("requested " + col + " , have " + getColumnCount());
 
-    if (col < getTableEndIndex())
+    if (columnlocks[col])
+      throw new IllegalStateException("Column " + col + " already accessed. Deadlock!");
+
+    Object returnValue = null;
+    try
     {
-      // Handle Pos == BEFORE_FIRST_ROW
-
-      if (getCurrentRow () < 0 || getCurrentRow () >= getTablemodel ().getRowCount ())
+      columnlocks[col] = true;
+      if (col < getTableEndIndex())
       {
-        return null;
+        // Handle Pos == BEFORE_FIRST_ROW
+
+        if (getCurrentRow() < 0 || getCurrentRow() >= getTablemodel().getRowCount())
+        {
+          returnValue = null;
+        }
+        else
+        {
+          returnValue = getTablemodel().getValueAt(getCurrentRow(), col);
+        }
+      }
+      else if (col < getFunctionEndIndex())
+      {
+        col -= getTableEndIndex();
+        if (isPreviewMode() == false)
+        {
+          returnValue = getFunctions().getFunction(col).getValue();
+        }
       }
       else
       {
-        return getTablemodel ().getValueAt (getCurrentRow (), col);
+        col -= getFunctionEndIndex();
+        returnValue = getExpressions().getExpression(col).getValue();
       }
+      columnlocks[col] = false;
     }
-    else if (col < getFunctionEndIndex())
+    finally
     {
-      col -= getTableEndIndex();
-      if (isPreviewMode ())
-      {
-        return null;
-      }
-      return getFunctions ().getFunction (col).getValue ();
+      columnlocks[col] = false;
     }
-    else
-    {
-      col -= getFunctionEndIndex();
-      return getExpressions().getExpression(col).getValue ();
-    }
+    return returnValue;
   }
 
-  public boolean isPreviewMode ()
+  public boolean isPreviewMode()
   {
     return false;
   }
 
-  public Object get (String name)
+  public Object get(String name)
   {
-    int idx = findColumn (name);
+    int idx = findColumn(name);
     if (idx == -1)
     {
       return null;
     }
-    return get (idx);
+    return get(idx);
   }
 
-  public int getColumnCount ()
+  public int getColumnCount()
   {
     return (getFunctionEndIndex() + getExpressions().size());
   }
@@ -224,53 +241,53 @@ public class DataRowBackend implements Cloneable
    * looks up the position of the column with the name <code>name</code>.
    * returns the position of the column or -1 if no columns could be retrieved.
    */
-  public int findColumn (String name)
+  public int findColumn(String name)
   {
-    Integer integ = (Integer) colcache.get (name);
+    Integer integ = (Integer) colcache.get(name);
     if (integ != null)
-      return integ.intValue ();
+      return integ.intValue();
 
-    int size = getColumnCount ();
+    int size = getColumnCount();
     for (int i = 0; i < size; i++)
     {
-      String column = getColumnName (i);
-      if (column.equals (name))
+      String column = getColumnName(i);
+      if (column.equals(name))
       {
-        colcache.put (name, new Integer (i));
+        colcache.put(name, new Integer(i));
         return i;
       }
     }
     return -1;
   }
 
-  public String getColumnName (int col)
+  public String getColumnName(int col)
   {
-    if (col >= getColumnCount ())
-      throw new IndexOutOfBoundsException ("requested " + col + " , have " + getColumnCount ());
+    if (col >= getColumnCount())
+      throw new IndexOutOfBoundsException("requested " + col + " , have " + getColumnCount());
 
 
     if (col < getTableEndIndex())
     {
-      return getTablemodel ().getColumnName (col);
+      return getTablemodel().getColumnName(col);
     }
     else if (col < getFunctionEndIndex())
     {
       col -= getTableEndIndex();
-      Function f =getFunctions ().getFunction (col);
+      Function f = getFunctions().getFunction(col);
       if (f == null)
       {
-        Log.debug ("No such function " + col);
+        Log.debug("No such function " + col);
         return null;
       }
-      return f.getName ();
+      return f.getName();
     }
     else
     {
       col -= getFunctionEndIndex();
-      Expression ex =getExpressions().getExpression(col);
+      Expression ex = getExpressions().getExpression(col);
       if (ex == null)
       {
-        Log.debug ("No such expression " + col);
+        Log.debug("No such expression " + col);
         return null;
       }
 
@@ -279,19 +296,19 @@ public class DataRowBackend implements Cloneable
   }
 
 
-  public boolean isBeforeFirstRow ()
+  public boolean isBeforeFirstRow()
   {
-    return getCurrentRow () < 0;
+    return getCurrentRow() < 0;
   }
 
-  public boolean isLastRow ()
+  public boolean isLastRow()
   {
-    return getCurrentRow () > (getTablemodel ().getRowCount () - 1);
+    return getCurrentRow() > (getTablemodel().getRowCount() - 1);
   }
 
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    DataRowBackend db = (DataRowBackend) super.clone ();
+    DataRowBackend db = (DataRowBackend) super.clone();
     db.preview = null;
     return db;
   }
@@ -300,21 +317,21 @@ public class DataRowBackend implements Cloneable
    * Create a preview backend. Such datarows will have no access to functions (all functions
    * will return null).
    */
-  public DataRowBackend previewNextRow ()
+  public DataRowBackend previewNextRow()
   {
     if (preview == null)
     {
-      preview = new DataRowPreview (this);
+      preview = new DataRowPreview(this);
     }
     return preview;
   }
 
-  private int getTableEndIndex ()
+  private int getTableEndIndex()
   {
     return getTablemodel().getColumnCount();
   }
 
-  private int getFunctionEndIndex ()
+  private int getFunctionEndIndex()
   {
     return getTableEndIndex() + getFunctions().size();
   }
@@ -328,5 +345,13 @@ public class DataRowBackend implements Cloneable
   {
     if (expressions == null) throw new NullPointerException();
     this.expressions = expressions;
+  }
+
+  private void revalidateColumnLock()
+  {
+    if (getColumnCount() != columnlocks.length)
+    {
+      columnlocks = new boolean[getColumnCount()];
+    }
   }
 }
