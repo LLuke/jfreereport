@@ -2,7 +2,7 @@
  * Date: Mar 9, 2003
  * Time: 3:03:51 PM
  *
- * $Id$
+ * $Id: WmfGraphics2D.java,v 1.1 2003/03/09 20:38:20 taqua Exp $
  */
 package org.jfree.pixie.wmf;
 
@@ -124,7 +124,9 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * left, in which case the coordinate supplied is the location of the
    * leftmost character on the baseline.
    * @param s the <code>String</code> to be rendered
-   * @param x,&nbsp;y the coordinates where the <code>String</code>
+   * @param x the x-coordinates where the <code>String</code>
+   * should be rendered
+   * @param y the y-coordinates where the <code>String</code>
    * should be rendered
    * @throws NullPointerException if <code>str</code> is
    *         <code>null</code>

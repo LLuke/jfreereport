@@ -3,7 +3,8 @@ converter for the Pixie-ImageViewer. Pixie was long time dead and is currently
 resurrected as WMF-Reader and ImageProducer for Java 1.2.2 or higher.
 
 Pixie lacks the support for most BitMap-Formats but everything else is working
-fine. Write-Support is beeing implemented somewhere in the near future.
+fine. Write-Support is beeing implemented somewhere in the near future, classes
+for the writesupport are mostly dummies at the moment.
 
 
 WARNING: Pixie moved from package gnu.bhresearch.pixie to the package
