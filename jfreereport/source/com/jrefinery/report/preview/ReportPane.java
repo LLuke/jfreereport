@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPane.java,v 1.15 2002/08/22 21:08:24 taqua Exp $
+ * $Id: ReportPane.java,v 1.16 2002/08/23 19:18:09 taqua Exp $
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
@@ -138,9 +138,20 @@ public class ReportPane extends JComponent implements Printable, Pageable
   private PaginateLock paginateLock = new PaginateLock ();
 
   /**
+   * Standard constructor - builds a report pane to display the specified report. An empty G2OutputTarget
+   * is created and the reports defaultPageFormat is used for printing.
+   *
+   * @param report The report to display within the pane;
+   */
+  public ReportPane (JFreeReport report)
+  {
+    this (report, new G2OutputTarget (G2OutputTarget.createEmptyGraphics (), report.getDefaultPageFormat ()));
+  }
+
+  /**
    * Standard constructor - builds a report pane to display the specified report.
    * @param report The report to display within the pane;
-   * @param pageFormat The current page format (contains information about paper size etc);
+   * @param target The current outputtarget, contains the current PageFormat on which to print.
    */
   public ReportPane (JFreeReport report, G2OutputTarget target)
   {

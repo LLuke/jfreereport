@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.26 2002/08/22 19:19:27 taqua Exp $
+ * $Id: ReportState.java,v 1.27 2002/08/22 21:08:24 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -647,6 +647,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     }
     catch (CloneNotSupportedException cne)
     {
+      Log.debug ("CloneError: ", cne);
       throw new IllegalArgumentException("IllegalReport connected, cloning not supported");
     }
     reportProperties = getReport().getProperties ();

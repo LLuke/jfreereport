@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.24 2002/08/23 19:18:09 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.25 2002/08/26 22:02:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -497,7 +497,7 @@ public class PreviewFrame
    */
   protected ReportPane createReportPane (JFreeReport report)
   {
-    ReportPane reportPane = new ReportPane (report, new G2OutputTarget (G2OutputTarget.createEmptyGraphics (), report.getDefaultPageFormat ()));
+    ReportPane reportPane = new ReportPane (report);
     return reportPane;
   }
 

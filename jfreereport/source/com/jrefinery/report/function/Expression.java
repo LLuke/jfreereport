@@ -11,7 +11,7 @@ import com.jrefinery.report.DataRow;
 
 import java.util.Properties;
 
-public interface Expression
+public interface Expression extends Cloneable
 {
 
   /**
