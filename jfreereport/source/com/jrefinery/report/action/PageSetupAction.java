@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PageSetupAction.java,v 1.10 2002/08/31 16:50:48 taqua Exp $
+ * $Id: PageSetupAction.java,v 1.11 2002/09/13 15:38:06 mungady Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@
 package com.jrefinery.report.action;
 
 import com.jrefinery.report.util.AbstractActionDowngrade;
+
 import java.util.ResourceBundle;
 
 /**

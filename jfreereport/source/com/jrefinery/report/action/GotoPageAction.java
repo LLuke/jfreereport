@@ -25,7 +25,7 @@
  * -------------------
  * (C)opyright 2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: GotoPageAction.java,v 1.8 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes
  * -------------------
@@ -37,6 +37,7 @@
 package com.jrefinery.report.action;
 
 import com.jrefinery.report.util.AbstractActionDowngrade;
+
 import java.util.ResourceBundle;
 
 /**

@@ -25,7 +25,7 @@
  * -----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: ZoomInAction.java,v 1.10 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,7 @@
 package com.jrefinery.report.action;
 
 import com.jrefinery.report.util.AbstractActionDowngrade;
+
 import java.util.ResourceBundle;
 
 /**
