@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageReference.java,v 1.7 2002/05/21 23:06:18 taqua Exp $
+ * $Id: ImageReference.java,v 1.8 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes:
  * --------
@@ -110,6 +110,12 @@ public class ImageReference
         is.close();
       }
     }
+  }
+
+  public ImageReference (Image img)
+  {
+    if (image == null) throw new NullPointerException();
+    this.image = image;
   }
 
   /**

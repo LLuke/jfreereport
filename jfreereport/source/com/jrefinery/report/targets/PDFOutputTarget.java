@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.11 2002/06/10 17:17:15 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.12 2002/06/27 19:16:54 taqua Exp $
  *
  * Changes
  * -------
@@ -707,7 +707,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     {
       Rectangle2D bounds = getCursor ().getDrawBounds ();
 
-      Image image = Image.getInstance (imageRef.getSourceURL ());
+      Image image = getImage(imageRef);
       image.setAbsolutePosition ((float) bounds.getX (),
               (float) (getPageHeight () - bounds.getY () - bounds.getHeight ()));
       image.scaleAbsolute ((float) bounds.getWidth (), (float) bounds.getHeight ());

@@ -38,6 +38,7 @@ import com.jrefinery.report.filter.NumberFormatFilter;
 import com.jrefinery.report.filter.ReportDataSource;
 import com.jrefinery.report.filter.SimpleDateFormatFilter;
 import com.jrefinery.report.filter.StaticDataSource;
+import com.jrefinery.report.filter.ImageRefFilter;
 
 import javax.swing.table.TableModel;
 import java.awt.Font;
@@ -288,11 +289,14 @@ public class ItemFactory
                                                  String field)
           throws IOException
   {
+    ImageRefFilter filter = new ImageRefFilter();
+    filter.setDataSource(new ReportDataSource(field));
+
     ImageElement element = new ImageElement();
     element.setName (name);
     element.setPaint (paint);
     element.setBounds (bounds);
-    element.setDataSource(new ReportDataSource(field));
+    element.setDataSource(filter);
     return element;
   }
 
@@ -312,11 +316,14 @@ public class ItemFactory
                                                  String function)
           throws IOException
   {
+    ImageRefFilter filter = new ImageRefFilter();
+    filter.setDataSource(new ReportDataSource(function));
+
     ImageElement element = new ImageElement();
     element.setName (name);
     element.setPaint (paint);
     element.setBounds (bounds);
-    element.setDataSource(new FunctionDataSource(function));
+    element.setDataSource(filter);
     return element;
   }
 

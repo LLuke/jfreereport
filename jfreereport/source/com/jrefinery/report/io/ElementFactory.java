@@ -49,7 +49,6 @@ import com.jrefinery.report.RectangleShapeElement;
 import com.jrefinery.report.StringElement;
 import com.jrefinery.report.StringFunctionElement;
 import com.jrefinery.report.TextElement;
-import com.jrefinery.report.ImageFunctionElement;
 import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
