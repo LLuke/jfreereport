@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.11 2002/12/12 12:26:56 mungady Exp $
+ * $Id: BandFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  *
  * Changes
  * -------
@@ -199,7 +199,9 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
                                              new FloatDimension(0, height));
     reportHeader.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_AFTER, new Boolean (ownPage));
 
-    fontFactory.createFont(attr, reportHeader.getStyle());
+    FontFactory.FontInformation fi = fontFactory.createFont(attr);
+    FontFactory.applyFontInformation(reportHeader.getStyle(), fi);
+    FontFactory.applyFontInformation(reportHeader.getBandDefaults(), fi);
 
     String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
@@ -241,7 +243,10 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
                                              new FloatDimension(0, height));
     reportFooter.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE,
                                              new Boolean (ownPage));
-    fontFactory.createFont(attr, reportFooter.getStyle());
+    FontFactory.FontInformation fi = fontFactory.createFont(attr);
+    FontFactory.applyFontInformation(reportFooter.getStyle(), fi);
+    FontFactory.applyFontInformation(reportFooter.getBandDefaults(), fi);
+
     String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
@@ -283,7 +288,11 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
                                            new FloatDimension(0, height));
     pageHeader.setDisplayOnFirstPage (firstPage);
     pageHeader.setDisplayOnLastPage (lastPage);
-    fontFactory.createFont(attr, pageHeader.getStyle());
+
+    FontFactory.FontInformation fi = fontFactory.createFont(attr);
+    FontFactory.applyFontInformation(pageHeader.getStyle(), fi);
+    FontFactory.applyFontInformation(pageHeader.getBandDefaults(), fi);
+
     String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
@@ -325,7 +334,11 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
                                            new FloatDimension(0, height));
     pageFooter.setDisplayOnFirstPage (firstPage);
     pageFooter.setDisplayOnLastPage (lastPage);
-    fontFactory.createFont(attr, pageFooter.getStyle());
+
+    FontFactory.FontInformation fi = fontFactory.createFont(attr);
+    FontFactory.applyFontInformation(pageFooter.getStyle(), fi);
+    FontFactory.applyFontInformation(pageFooter.getBandDefaults(), fi);
+
     String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
@@ -360,7 +373,9 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
                                           "Element height not specified");
     ItemBand items = new ItemBand ();
     items.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
-    fontFactory.createFont(attr, items.getStyle());
+    FontFactory.FontInformation fi = fontFactory.createFont(attr);
+    FontFactory.applyFontInformation(items.getStyle(), fi);
+    FontFactory.applyFontInformation(items.getBandDefaults(), fi);
     String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {

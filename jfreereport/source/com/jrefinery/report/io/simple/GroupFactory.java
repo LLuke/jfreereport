@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.11 2002/12/11 00:51:19 mungady Exp $
+ * $Id: GroupFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  *
  * Changes
  * -------
@@ -180,7 +180,11 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     groupHeader.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE,
                                             new Boolean (pageBreak));
     groupHeader.getStyle().setStyleProperty(BandStyleSheet.REPEAT_HEADER, new Boolean (repeat));
-    fontFactory.createFont(atts, groupHeader.getStyle());
+
+    FontFactory.FontInformation fi = fontFactory.createFont(atts);
+    FontFactory.applyFontInformation(groupHeader.getStyle(), fi);
+    FontFactory.applyFontInformation(groupHeader.getBandDefaults(), fi);
+
     String valign = atts.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
@@ -219,7 +223,11 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
                                             new FloatDimension(0, height));
     groupFooter.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE,
                                             new Boolean (pageBreak));
-    fontFactory.createFont(atts, groupFooter.getStyle());
+
+    FontFactory.FontInformation fi = fontFactory.createFont(atts);
+    FontFactory.applyFontInformation(groupFooter.getStyle(), fi);
+    FontFactory.applyFontInformation(groupFooter.getBandDefaults(), fi);
+
     String valign = atts.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {

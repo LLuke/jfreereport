@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFFontSupport.java,v 1.3 2002/12/06 20:34:15 taqua Exp $
+ * $Id: PDFFontSupport.java,v 1.4 2002/12/13 18:39:02 taqua Exp $
  *
  * Changes
  * -------
@@ -115,7 +115,7 @@ public class PDFFontSupport
       throw new NullPointerException();
     }
 
-    Log.debug ("Create Font: " + font + " Encoding: " + encoding + " Embedd: " + embedFonts);
+    //Log.debug ("Create Font: " + font + " Encoding: " + encoding + " Embedd: " + embedFonts);
 
     // use the Java logical font name to map to a predefined iText font.
     String fontKey = null;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.27 2002/12/12 12:26:56 mungady Exp $
+ * $Id: ElementFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  *
  * Changes
  * -------
@@ -648,6 +648,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
 
     te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
+    FontFactory.applyFontInformation(te.getStyle(), textElementFont);
+    
     clearCurrentText();
     getCurrentBand().addElement(te);
   }
