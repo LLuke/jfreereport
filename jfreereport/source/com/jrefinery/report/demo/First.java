@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: First.java,v 1.6 2002/08/28 15:27:27 taqua Exp $
+ * $Id: First.java,v 1.7 2002/09/05 07:58:31 mungady Exp $
  *
  * Changes
  * -------
@@ -235,7 +235,8 @@ public class First extends ApplicationFrame implements ActionListener
     if (this.report != null)
     {
       PreviewFrame frame = new PreviewFrame(this.report);
-      frame.setToolbarFloatable(true);
+      frame.setLargeIconsEnabled(true);
+      frame.setToolbarFloatable(false);
       frame.pack();
       RefineryUtilities.positionFrameRandomly(frame);
       frame.setVisible(true);
