@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.48 2003/02/23 20:39:10 taqua Exp $
+ * $Id: JFreeReport.java,v 1.49 2003/02/26 16:41:44 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -62,24 +62,25 @@
 
 package com.jrefinery.report;
 
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterJob;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Iterator;
+
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.ExpressionCollection;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.util.PageFormatFactory;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.ReportProperties;
-import com.jrefinery.report.util.PageFormatFactory;
-
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import java.awt.print.PageFormat;
-import java.awt.print.PrinterJob;
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * This class co-ordinates the process of generating a report from a <code>TableModel</code>.  
@@ -289,23 +290,25 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
   /**
    * Adds a property to the report. If a property with the given name
-   * exist, the property will be replaced with the new value. If the
-   * value is null, the property will be removed.
+   * already exists, the property will be updated with the new value. If the
+   * supplied value is <code>null</code>, the property will be removed.
    * <P>
-   * Developers are free to add any properties they want to a report.  Use a
-   * ReportPropertyFunction to retrieve the property during report generation.
+   * Developers are free to add any properties they want to a report, and then display those
+   * properties in the report.  For example, you might add a 'user.name' property, so that you
+   * can display the username in the header of a report.
    *
    * @param key  the key.
    * @param value  the value.
    */
   public void setProperty (String key, Object value)
   {
-    properties.put (key, value);
+    this.properties.put (key, value);
   }
 
   /**
-   * Returns the report properties collection for this report. These properties are
-   * inherited to all ReportStates generated for this report.
+   * Returns the report properties collection for this report. 
+   * <p>
+   * These properties are inherited to all ReportStates generated for this report.
    *
    * @return the report properties.
    */

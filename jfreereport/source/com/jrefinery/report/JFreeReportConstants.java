@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------------
  * JFreeReportConstants.java
  * -------------------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, 2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportConstants.java,v 1.12 2002/12/05 16:55:16 mungady Exp $
+ * $Id: JFreeReportConstants.java,v 1.13 2003/02/25 14:06:32 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,8 @@
 package com.jrefinery.report;
 
 /**
- * Some constants for JFreeReport and PreviewPane.
+ * An interface that defines some useful constants used by the {@link JFreeReport} and 
+ * {@link ReportState} classes.
  * <p>
  * A number of report property keys are defined.  These can be used to access report properties
  * using the <code>getProperty(String)</code> method in the <code>JFreeReport</code> class.
@@ -63,13 +64,6 @@ public interface JFreeReportConstants
   /** Key for the 'report page format' property. */
   public static final String REPORT_PAGEFORMAT_PROPERTY = "report.pageformat";
 
-  /**
-   * Key for the 'report page count' property.
-   * @deprecated pagecount should be calculated by functions. The property is
-   * no longer filled by the ReportProcessor.
-   */
-  public static final String REPORT_PAGECOUNT_PROPERTY = "report.pagecount";
-
   /** Key for the 'report prepare run' property. */
   public static final String REPORT_PREPARERUN_PROPERTY = "report.preparerun";
 
@@ -78,5 +72,13 @@ public interface JFreeReportConstants
 
   /** Key for the 'report definition content base' property. */
   public static final String REPORT_DEFINITION_CONTENTBASE = "report.definition.contentbase";
+
+  /**
+   * Key for the 'report page count' property.
+   * 
+   * @deprecated pagecount should be calculated by functions. The property is
+   *             no longer filled by the ReportProcessor.
+   */
+  public static final String REPORT_PAGECOUNT_PROPERTY = "report.pagecount";
 
 }
