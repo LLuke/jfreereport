@@ -136,6 +136,40 @@ public abstract class AbstractExportDialog extends JDialog
     statusBar = new JStatusBar();
   }
 
+
+  /**
+   * Creates a non-modal dialog without a title with the specified <code>Frame</code> as
+   * its owner.  If <code>owner</code> is <code>null</code>, a shared, hidden frame will
+   * be set as the owner of the dialog.
+   *
+   * @param owner the <code>Frame</code> from which the dialog is displayed
+   */
+  public AbstractExportDialog (final Frame owner)
+          throws HeadlessException
+  {
+    super(owner);
+    formValidator = new ExportDialogValidator();
+    setModal(true);
+    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    statusBar = new JStatusBar();
+  }
+
+  /**
+   * Creates a non-modal dialog without a title with the specified <code>Dialog</code> as
+   * its owner.
+   *
+   * @param owner the non-null <code>Dialog</code> from which the dialog is displayed
+   */
+  public AbstractExportDialog (final Dialog owner)
+          throws HeadlessException
+  {
+    super(owner);
+    formValidator = new ExportDialogValidator();
+    setModal(true);
+    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    statusBar = new JStatusBar();
+  }
+
   public JStatusBar getStatusBar ()
   {
     return statusBar;
@@ -159,37 +193,6 @@ public abstract class AbstractExportDialog extends JDialog
   protected void setConfirmAction (final Action confirmAction)
   {
     this.confirmAction = confirmAction;
-  }
-
-  /**
-   * Creates a non-modal dialog without a title with the specified <code>Frame</code> as
-   * its owner.  If <code>owner</code> is <code>null</code>, a shared, hidden frame will
-   * be set as the owner of the dialog.
-   *
-   * @param owner the <code>Frame</code> from which the dialog is displayed
-   */
-  public AbstractExportDialog (final Frame owner)
-          throws HeadlessException
-  {
-    super(owner);
-    formValidator = new ExportDialogValidator();
-    setModal(true);
-    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-  }
-
-  /**
-   * Creates a non-modal dialog without a title with the specified <code>Dialog</code> as
-   * its owner.
-   *
-   * @param owner the non-null <code>Dialog</code> from which the dialog is displayed
-   */
-  public AbstractExportDialog (final Dialog owner)
-          throws HeadlessException
-  {
-    super(owner);
-    formValidator = new ExportDialogValidator();
-    setModal(true);
-    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
   }
 
   protected abstract boolean performValidate ();

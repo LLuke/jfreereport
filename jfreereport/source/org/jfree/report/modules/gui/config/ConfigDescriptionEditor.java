@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEditor.java,v 1.12 2005/01/25 00:03:57 taqua Exp $
+ * $Id: ConfigDescriptionEditor.java,v 1.13 2005/02/23 21:04:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -125,7 +125,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public CloseAction ()
     {
-      putValue(NAME, getResources().getString("action.exit.name"));
+      putValue(Action.NAME, getResources().getString("action.exit.name"));
     }
 
     /**
@@ -149,8 +149,8 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public SaveAction ()
     {
-      putValue(NAME, getResources().getString("action.save.name"));
-      putValue(SMALL_ICON, getResources().getIcon("action.save.small-icon"));
+      putValue(Action.NAME, getResources().getString("action.save.name"));
+      putValue(Action.SMALL_ICON, getResources().getIcon("action.save.small-icon"));
     }
 
     /**
@@ -175,8 +175,8 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public ImportAction ()
     {
-      putValue(NAME, getResources().getString("action.import.name"));
-      putValue(SMALL_ICON, getResources().getIcon("action.import.small-icon"));
+      putValue(Action.NAME, getResources().getString("action.import.name"));
+      putValue(Action.SMALL_ICON, getResources().getIcon("action.import.small-icon"));
 
     }
 
@@ -204,8 +204,8 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public AddEntryAction ()
     {
-      putValue(NAME, getResources().getString("action.add-entry.name"));
-      putValue(SMALL_ICON, getResources().getIcon("action.add-entry.small-icon"));
+      putValue(Action.NAME, getResources().getString("action.add-entry.name"));
+      putValue(Action.SMALL_ICON, getResources().getIcon("action.add-entry.small-icon"));
     }
 
     /**
@@ -234,8 +234,8 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public RemoveEntryAction ()
     {
-      putValue(NAME, getResources().getString("action.remove-entry.name"));
-      putValue(SMALL_ICON, getResources().getIcon("action.remove-entry.small-icon"));
+      putValue(Action.NAME, getResources().getString("action.remove-entry.name"));
+      putValue(Action.SMALL_ICON, getResources().getIcon("action.remove-entry.small-icon"));
     }
 
     /**
@@ -265,8 +265,8 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public LoadAction ()
     {
-      putValue(NAME, getResources().getString("action.load.name"));
-      putValue(SMALL_ICON, getResources().getIcon("action.load.small-icon"));
+      putValue(Action.NAME, getResources().getString("action.load.name"));
+      putValue(Action.SMALL_ICON, getResources().getIcon("action.load.small-icon"));
     }
 
     /**
@@ -290,7 +290,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public UpdateAction ()
     {
-      putValue(NAME, getResources().getString("action.update.name"));
+      putValue(Action.NAME, getResources().getString("action.update.name"));
     }
 
     /**
@@ -314,7 +314,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public CancelAction ()
     {
-      putValue(NAME, getResources().getString("action.cancel.name"));
+      putValue(Action.NAME, getResources().getString("action.cancel.name"));
     }
 
     /**
@@ -348,7 +348,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public SelectTypeAction (final String name, final int type)
     {
-      putValue(NAME, name);
+      putValue(Action.NAME, name);
       this.type = type;
     }
 
@@ -435,7 +435,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public SetBooleanEnumEntryAction ()
     {
-      putValue(NAME, getResources().getString("action.boolean.name"));
+      putValue(Action.NAME, getResources().getString("action.boolean.name"));
     }
 
     /**
@@ -463,7 +463,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public AddEnumEntryAction ()
     {
-      putValue(NAME, getResources().getString("action.add-enum-entry.name"));
+      putValue(Action.NAME, getResources().getString("action.add-enum-entry.name"));
     }
 
     /**
@@ -487,7 +487,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public RemoveEnumEntryAction ()
     {
-      putValue(NAME, getResources().getString("action.remove-enum-entry.name"));
+      putValue(Action.NAME, getResources().getString("action.remove-enum-entry.name"));
     }
 
     /**
@@ -518,7 +518,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public UpdateEnumEntryAction ()
     {
-      putValue(NAME, getResources().getString("action.update-enum-entry.name"));
+      putValue(Action.NAME, getResources().getString("action.update-enum-entry.name"));
     }
 
     /**

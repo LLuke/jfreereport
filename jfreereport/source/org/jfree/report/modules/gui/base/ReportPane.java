@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.19 2005/02/23 19:31:46 taqua Exp $
+ * $Id: ReportPane.java,v 1.20 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -1094,6 +1094,21 @@ public class ReportPane extends JComponent
         Log.error("Unable to propagate PropertyChange.", e);
       }
     }
+  }
+
+  /**
+   * For some reason, this must be public in order to be accessed from
+   * an inner class. It should not be, but the 'IllegalAccessError' said
+   * so.
+   *
+   * @param propertyName
+   * @param oldValue
+   * @param newValue
+   */
+  public void firePropertyChange(final String propertyName,
+                                 final Object oldValue, final Object newValue)
+  {
+    super.firePropertyChange(propertyName, oldValue, newValue);
   }
 
 }

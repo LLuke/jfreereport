@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigEditor.java,v 1.12 2005/01/25 00:03:58 taqua Exp $
+ * $Id: ConfigEditor.java,v 1.13 2005/02/23 21:04:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -110,7 +110,7 @@ public class ConfigEditor extends JFrame
      */
     public CloseAction ()
     {
-      putValue(NAME, getResources().getString("action.exit.name"));
+      putValue(Action.NAME, getResources().getString("action.exit.name"));
     }
 
     /**
@@ -134,8 +134,8 @@ public class ConfigEditor extends JFrame
      */
     public SaveAction ()
     {
-      putValue(NAME, getResources().getString("action.save.name"));
-      putValue(SMALL_ICON, getResources().getIcon("action.save.small-icon"));
+      putValue(Action.NAME, getResources().getString("action.save.name"));
+      putValue(Action.SMALL_ICON, getResources().getIcon("action.save.small-icon"));
     }
 
     /**
@@ -159,8 +159,8 @@ public class ConfigEditor extends JFrame
      */
     public LoadAction ()
     {
-      putValue(NAME, getResources().getString("action.load.name"));
-      putValue(SMALL_ICON, getResources().getIcon("action.load.small-icon"));
+      putValue(Action.NAME, getResources().getString("action.load.name"));
+      putValue(Action.SMALL_ICON, getResources().getIcon("action.load.small-icon"));
     }
 
     /**
@@ -184,8 +184,8 @@ public class ConfigEditor extends JFrame
      */
     public NewAction ()
     {
-      putValue(NAME, getResources().getString("action.new.name"));
-      putValue(SMALL_ICON, getResources().getIcon("action.new.small-icon"));
+      putValue(Action.NAME, getResources().getString("action.new.name"));
+      putValue(Action.SMALL_ICON, getResources().getIcon("action.new.small-icon"));
     }
 
     /**

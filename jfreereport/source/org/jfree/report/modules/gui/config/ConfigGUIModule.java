@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigGUIModule.java,v 1.3 2005/01/25 00:03:59 taqua Exp $
+ * $Id: ConfigGUIModule.java,v 1.4 2005/02/23 21:04:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -71,7 +71,7 @@ public class ConfigGUIModule extends AbstractModule
    * @throws org.jfree.base.modules.ModuleInitializeException
    *          if an error ocurred while initializing the module.
    */
-  public void initialize (SubSystem subSystem)
+  public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
   }
