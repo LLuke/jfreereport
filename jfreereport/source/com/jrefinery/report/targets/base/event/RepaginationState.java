@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * ----------------------
  * RepaginationState.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: RepaginationState.java,v 1.1 2003/03/18 22:35:23 taqua Exp $
  *
  * Changes
  * -------
@@ -36,13 +36,33 @@
  */
 package com.jrefinery.report.targets.base.event;
 
+/**
+ * The repagination state.
+ * 
+ * @author Thomas Morgner.
+ */
 public class RepaginationState
 {
+  /** The current pass. */
   private int pass;
+  
+  /** The page. */
   private int page;
+  
+  /** The current row. */
   private int currentRow;
+  
+  /** The maximum row. */
   private int maxRow;
 
+  /**
+   * Creates a new state.
+   * 
+   * @param pass  the pass.
+   * @param page  the page.
+   * @param currentRow  the current row.
+   * @param maxRow  the maximum row.
+   */
   public RepaginationState(int pass, int page, int currentRow, int maxRow)
   {
     this.pass = pass;
@@ -51,21 +71,41 @@ public class RepaginationState
     this.maxRow = maxRow;
   }
 
+  /**
+   * Returns the pass.
+   * 
+   * @return The pass.
+   */
   public int getPass()
   {
     return pass;
   }
 
+  /**
+   * Returns the page.
+   * 
+   * @return The page.
+   */
   public int getPage()
   {
     return page;
   }
 
+  /**
+   * Returns the current row.
+   * 
+   * @return the current row.
+   */
   public int getCurrentRow()
   {
     return currentRow;
   }
 
+  /**
+   * Returns the max row.
+   *
+   * @return the max row.
+   */
   public int getMaxRow()
   {
     return maxRow;

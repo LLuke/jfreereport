@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.11 2003/03/29 20:17:26 taqua Exp $
+ * $Id: ShapeOperationModule.java,v 1.12 2003/04/05 18:57:18 taqua Exp $
  *
  * Changes
  * -------
@@ -69,12 +69,14 @@ public class ShapeOperationModule extends OperationModule
   /**
    * Creates a list of operations that will render report content within the specified bounds.
    *
+   * @param col  the operations collector.
    * @param e  the element.
    * @param value  the content.
    * @param bounds  the bounds.
    *
    */
-  public void createOperations (PhysicalOperationsCollector col, Element e, Content value, Rectangle2D bounds)
+  public void createOperations (PhysicalOperationsCollector col, Element e, Content value, 
+                                Rectangle2D bounds)
   {
     Stroke stroke = (Stroke) e.getStyle().getStyleProperty(ElementStyleSheet.STROKE);
     Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);

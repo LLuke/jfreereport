@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutSupport.java,v 1.4 2003/02/27 10:35:39 mungady Exp $
+ * $Id: LayoutSupport.java,v 1.5 2003/03/26 10:49:23 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,6 @@
 package com.jrefinery.report.targets.base.layout;
 
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.base.content.ContentFactory;
 
 /**

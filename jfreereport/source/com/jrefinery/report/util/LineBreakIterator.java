@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineBreakIterator.java,v 1.2 2003/03/18 17:14:45 taqua Exp $
+ * $Id: LineBreakIterator.java,v 1.3 2003/04/09 00:12:30 mungady Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,8 @@ package com.jrefinery.report.util;
 
 /**
  * Same as BreakIterator.getLineInstance().
+ * 
+ * @author Thomas Morgner
  */
 public class LineBreakIterator
 {
@@ -53,7 +55,7 @@ public class LineBreakIterator
   /** The last line break. */
   private int lastFound;
 
-  // ignore the next lf that may be encountered ...
+  /** ignore the next lf that may be encountered. */
   private boolean skipLF;
 
   /**
@@ -112,7 +114,9 @@ public class LineBreakIterator
 
       /* Skip a leftover '\n', if necessary */
       if (omitLF && (text[nextChar] == '\n'))
+      {
         nextChar++;
+      }
       skipLF = false;
       omitLF = false;
 
@@ -196,6 +200,8 @@ public class LineBreakIterator
 
   /**
    * Testing code - please ignore.
+   * 
+   * @param args  ignored.
    */
   public static void main (String[] args)
   {

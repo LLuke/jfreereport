@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportProperties.java,v 1.17 2003/03/18 15:45:32 mungady Exp $
+ * $Id: ReportProperties.java,v 1.18 2003/03/18 18:28:46 taqua Exp $
  *
  * Changes
  * -------
@@ -42,10 +42,9 @@
 package com.jrefinery.report.util;
 
 import java.io.Serializable;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeSet;
-import java.util.HashMap;
 
 /**
  * The report properties is a hashtable with string keys. ReportProperties are bound to

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentContainer.java,v 1.5 2003/04/05 18:57:14 taqua Exp $
+ * $Id: ContentContainer.java,v 1.6 2003/04/06 18:11:30 taqua Exp $
  *
  * Changes
  * -------
@@ -99,10 +99,10 @@ public class ContentContainer implements Content
   /**
    * Sets the bounds of the content.
    *
-   * @param x
-   * @param y
-   * @param width
-   * @param height
+   * @param x  the x-coordinate.
+   * @param y  the y-coordinate.
+   * @param width  the width.
+   * @param height  the height.
    */
   protected void setBounds (float x, float y, float width, float height)
   {

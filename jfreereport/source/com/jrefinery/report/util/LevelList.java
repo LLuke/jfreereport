@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelList.java,v 1.8 2003/04/05 18:57:20 taqua Exp $
+ * $Id: LevelList.java,v 1.9 2003/04/06 18:11:31 taqua Exp $
  *
  * Changes
  * -------
@@ -106,11 +106,22 @@ public class LevelList implements Cloneable
     }
   }
 
+  /**
+   * An iterator.
+   */
   private static class ElementLevelListIterator implements Iterator
   {
+    /** The list. */
     private ArrayList list;
+    
+    /** The current index. */
     private int index;
 
+    /**
+     * Creates an iterator for a list.
+     * 
+     * @param list  the list.
+     */
     public ElementLevelListIterator(ArrayList list)
     {
       if (list == null)
@@ -160,12 +171,11 @@ public class LevelList implements Cloneable
      * progress in any way other than by calling this method.
      *
      * @exception UnsupportedOperationException if the <tt>remove</tt>
-     *		  operation is not supported by this Iterator.
+     *            operation is not supported by this Iterator.
 
      * @exception IllegalStateException if the <tt>next</tt> method has not
-     *		  yet been called, or the <tt>remove</tt> method has already
-     *		  been called after the last call to the <tt>next</tt>
-     *		  method.
+     *            yet been called, or the <tt>remove</tt> method has already
+     *            been called after the last call to the <tt>next</tt> method.
      */
     public void remove()
     {
@@ -206,7 +216,12 @@ public class LevelList implements Cloneable
         }
       }
     }
-
+ 
+    /**
+     * Creates an iterator for the elements in the list.
+     * 
+     * @return An iterator.
+     */
     public Iterator createIterator ()
     {
       return new ElementLevelListIterator(datalist);

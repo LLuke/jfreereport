@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.34 2003/03/26 22:55:52 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.35 2003/04/06 18:11:31 taqua Exp $
  *
  * Changes
  * -------
@@ -53,9 +53,9 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 
@@ -452,11 +452,14 @@ public class G2OutputTarget extends AbstractOutputTarget
       AffineTransform transform = g2.getTransform();
       try
       {
-        g2.clip(new Rectangle2D.Float(0, 0,
-                                      (float) (Math.min(bounds.getWidth(), myBounds.getWidth())),
-                                      (float) (Math.min(bounds.getHeight(), myBounds.getHeight()))));
+        g2.clip(
+          new Rectangle2D.Float(0, 0,
+                                (float) (Math.min(bounds.getWidth(), myBounds.getWidth())),
+                                (float) (Math.min(bounds.getHeight(), myBounds.getHeight())))
+        );
         g2.transform(AffineTransform.getScaleInstance(image.getScaleX(), image.getScaleY()));
-        while (g2.drawImage(image.getImage(), (int) -myBounds.getX(), (int) -myBounds.getY(), null) == false)
+        while (g2.drawImage(image.getImage(), 
+                            (int) -myBounds.getX(), (int) -myBounds.getY(), null) == false)
         {
           WaitingImageObserver obs = new WaitingImageObserver(image.getImage());
           obs.waitImageLoaded();
@@ -607,12 +610,12 @@ public class G2OutputTarget extends AbstractOutputTarget
 
     Graphics2D target = (Graphics2D) g2.create();
     target.translate(-clipBounds.getX(), -clipBounds.getY());
-    target.clip(new Rectangle2D.Float( 0, 0,
+    target.clip(new Rectangle2D.Float(0, 0,
                                       (float) clipBounds.getWidth(),
                                       (float) clipBounds.getHeight()));
 
     Dimension2D drawableSize = drawable.getDrawableSize();
-    Rectangle2D drawBounds = new Rectangle2D.Float(0,0,
+    Rectangle2D drawBounds = new Rectangle2D.Float(0, 0,
                                                    (float) drawableSize.getWidth(),
                                                    (float) drawableSize.getHeight());
     drawable.getDrawable().draw(target, drawBounds);

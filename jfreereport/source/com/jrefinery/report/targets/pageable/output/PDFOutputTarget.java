@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.32 2003/03/13 17:43:04 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.33 2003/03/29 20:17:26 taqua Exp $
  *
  * Changes
  * -------
@@ -307,7 +307,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
     this.fontDefinition = font;
     this.baseFont = fontSupport.createBaseFont(font, font.getFontEncoding(getFontEncoding()),
-                                               (isEmbedFonts() || font.isEmbeddedFont())).getBaseFont();
+        (isEmbedFonts() || font.isEmbeddedFont())).getBaseFont();
     if (baseFont == null)
     {
       throw new OutputTargetException("The font definition was not successfull.");
@@ -1172,12 +1172,12 @@ public class PDFOutputTarget extends AbstractOutputTarget
     Graphics2D target = writer.getDirectContent().createGraphics((float) clipBounds.getWidth(),
                                                                  (float) clipBounds.getHeight());
     target.translate(-clipBounds.getX(), -clipBounds.getY());
-    target.clip(new Rectangle2D.Float( 0, 0,
+    target.clip(new Rectangle2D.Float(0, 0,
                                       (float) clipBounds.getWidth(),
                                       (float) clipBounds.getHeight()));
 
     Dimension2D drawableSize = drawable.getDrawableSize();
-    Rectangle2D drawBounds = new Rectangle2D.Float(0,0,
+    Rectangle2D drawBounds = new Rectangle2D.Float(0, 0,
                                                    (float) drawableSize.getWidth(),
                                                    (float) drawableSize.getHeight());
     drawable.getDrawable().draw(target, drawBounds);

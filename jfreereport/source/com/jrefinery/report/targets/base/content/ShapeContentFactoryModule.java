@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContentFactoryModule.java,v 1.7 2003/03/09 17:48:58 taqua Exp $
+ * $Id: ShapeContentFactoryModule.java,v 1.8 2003/03/19 22:13:02 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.StringUtil;
-import com.jrefinery.report.util.Log;
 
 /**
  * The ShapeContentFactoryModule is used to create a content wrapper for java.awt.Shape

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,32 +20,41 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * ---------------------
  * ReadOnlyIterator.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ---------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ReadOnlyIterator.java,v 1.3 2003/04/05 19:22:16 taqua Exp $
  *
  * Changes
  * -------
  * 05.04.2003 : Initial version
+ * 
  */
+
 package com.jrefinery.report.util;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * A unmodifiable iterator wrapper.
+ * 
+ * @author Thomas Morgner
  */
 public class ReadOnlyIterator implements Iterator
 {
+  /** The base iterator. */
   private Iterator base;
 
+  /**
+   * Creates a read-only iterator.
+   * 
+   * @param base  the base iterator.
+   */
   public ReadOnlyIterator(Iterator base)
   {
     this.base = base;
@@ -67,7 +76,6 @@ public class ReadOnlyIterator implements Iterator
    * Returns the next element in the iteration.
    *
    * @return the next element in the iteration.
-   * @exception NoSuchElementException iteration has no more elements.
    */
   public Object next()
   {
@@ -83,12 +91,12 @@ public class ReadOnlyIterator implements Iterator
    * progress in any way other than by calling this method.
    *
    * @exception UnsupportedOperationException if the <tt>remove</tt>
-   *		  operation is not supported by this Iterator.
+   *            operation is not supported by this Iterator.
 
    * @exception IllegalStateException if the <tt>next</tt> method has not
-   *		  yet been called, or the <tt>remove</tt> method has already
-   *		  been called after the last call to the <tt>next</tt>
-   *		  method.
+   *            yet been called, or the <tt>remove</tt> method has already
+   *            been called after the last call to the <tt>next</tt>
+   *            method.
    */
   public void remove()
   {

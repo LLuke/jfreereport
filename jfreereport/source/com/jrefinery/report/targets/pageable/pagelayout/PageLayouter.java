@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.21 2003/02/28 12:02:39 taqua Exp $
+ * $Id: PageLayouter.java,v 1.22 2003/04/05 18:57:19 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,8 @@
 
 package com.jrefinery.report.targets.pageable.pagelayout;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.ReportDefinition;
+import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.states.ReportState;
@@ -317,6 +316,9 @@ public abstract class PageLayouter extends AbstractFunction
     this.currentEvent = currentEvent;
   }
 
+  /**
+   * Clears the current event.
+   */
   protected void clearCurrentEvent ()
   {
     if (currentEvent == null)

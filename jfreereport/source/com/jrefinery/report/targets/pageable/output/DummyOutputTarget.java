@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DummyOutputTarget.java,v 1.8 2003/03/07 16:56:03 taqua Exp $
+ * $Id: DummyOutputTarget.java,v 1.9 2003/03/26 10:49:24 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.awt.Stroke;
 import com.jrefinery.report.DrawableContainer;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.base.content.ContentFactory;
 import com.jrefinery.report.targets.base.layout.SizeCalculator;
 import com.jrefinery.report.targets.base.layout.SizeCalculatorException;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.12 2003/03/19 18:34:21 taqua Exp $
+ * $Id: TextParagraph.java,v 1.13 2003/04/06 18:11:30 taqua Exp $
  *
  * Changes
  * -------
@@ -135,7 +135,7 @@ public class TextParagraph extends ContentContainer
         // create Lines
         String lineText = (String) l.get(i);
         TextLine line = new TextLine(getSizeCalculator(), lineHeight);
-        line.setContent(lineText, x,y,width,height);
+        line.setContent(lineText, x, y, width, height);
 
         usedHeight += line.getHeight();
         if (line.getBounds().getHeight() > 0)
@@ -144,7 +144,7 @@ public class TextParagraph extends ContentContainer
         }
       }
     }
-    setBounds(x,y,width,usedHeight);
+    setBounds(x, y, width, usedHeight);
   }
 
   /**

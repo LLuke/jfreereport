@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * --------------------
  * OperationModule.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * --------------------
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModule.java,v 1.6 2003/02/09 23:09:15 taqua Exp $
+ * $Id: OperationModule.java,v 1.7 2003/04/05 18:57:18 taqua Exp $
  *
  * Changes
  * -------
@@ -37,11 +37,10 @@
  */
 package com.jrefinery.report.targets.pageable.operations;
 
+import java.awt.geom.Rectangle2D;
+
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.base.content.Content;
-
-import java.awt.geom.Rectangle2D;
-import java.util.List;
 
 /**
  * The base class for an operation module. Operation modules can be either
@@ -132,6 +131,7 @@ public abstract class OperationModule
    * @param bounds  the bounds.
    * @param col the operations collector.
    */
-  public abstract void createOperations(PhysicalOperationsCollector col, Element e, Content value, Rectangle2D bounds);
+  public abstract void createOperations(PhysicalOperationsCollector col, Element e, Content value, 
+                                        Rectangle2D bounds);
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   Stefan Prange;
  *
- * $Id: WaitingImageObserver.java,v 1.5 2003/03/18 15:41:01 mungady Exp $
+ * $Id: WaitingImageObserver.java,v 1.6 2003/03/26 22:55:52 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -66,6 +66,7 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
   /** The image. */
   private Image image;
 
+  /** A flag that signals an error. */
   private boolean error;
 
   /**
@@ -165,6 +166,11 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
     return obs;
   }
 
+  /**
+   * Returns true if there is an error condition, and false otherwise.
+   * 
+   * @return A boolean.
+   */
   public boolean isError()
   {
     return error;

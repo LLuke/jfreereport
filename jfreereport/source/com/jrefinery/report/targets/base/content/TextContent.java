@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.11 2003/03/19 16:04:16 taqua Exp $
+ * $Id: TextContent.java,v 1.12 2003/04/06 18:11:30 taqua Exp $
  *
  * Changes
  * -------
@@ -83,7 +83,7 @@ public class TextContent extends ContentContainer
       for (int i = 0; i < paragraphs.size(); i++)
       {
         TextParagraph p = new TextParagraph(getSizeCalculator(), lineHeight);
-        p.setContent((String) paragraphs.get(i),x, y + usedHeight, w, h - usedHeight);
+        p.setContent((String) paragraphs.get(i), x, y + usedHeight, w, h - usedHeight);
         usedHeight += p.getBounds().getHeight();
         addContentPart(p);
       }

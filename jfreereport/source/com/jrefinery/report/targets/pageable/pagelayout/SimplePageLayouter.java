@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.40 2003/04/01 20:24:58 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.41 2003/04/05 18:57:19 taqua Exp $
  *
  * Changes
  * -------
@@ -226,8 +226,9 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     isInItemGroup = false;
     setCurrentEvent(event);
     if (getCurrentEvent() == null)
+    {
       throw new NullPointerException("asdlkasdl");
-
+    }
     try
     {
       printBand(getReport().getReportHeader());
@@ -715,6 +716,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    * of the band.  The width of the band will always span the complete printable width.
    *
    * @param band  the band.
+   * @param fireEvent  a flag to control whether or not a report event is fired.
    *
    * @return the dimensions of the band.
    */
@@ -1046,6 +1048,11 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     return sl;
   }
 
+  /**
+   * Receives notification of a prepare event.
+   * 
+   * @param event  the event.
+   */
   public void prepareEvent(ReportEvent event)
   {
     try

@@ -1,8 +1,38 @@
 /**
- * Date: Mar 7, 2003
- * Time: 3:29:37 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: DrawableOperationModule.java,v 1.5 2003/04/05 18:57:16 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * --------------------------------
+ * PhysicalOperationsCollector.java
+ * --------------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: PhysicalOperationsCollector.java,v 1.1 2003/04/05 19:22:16 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 04.04.2003 : Initial version
  */
 package com.jrefinery.report.targets.pageable.operations;
 
@@ -12,8 +42,16 @@ import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.targets.base.content.DrawableContent;
 
+/**
+ * A DrawableOperation module.
+ * 
+ * @author Thomas Morgner.
+ */
 public class DrawableOperationModule extends OperationModule
 {
+  /**
+   * Default constructor.
+   */
   public DrawableOperationModule()
   {
     super("drawable/*");
@@ -22,11 +60,13 @@ public class DrawableOperationModule extends OperationModule
   /**
    * Creates a list of operations for an element.
    *
+   * @param col  the operations collector.
    * @param e  the element.
    * @param value  the value.
    * @param bounds  the bounds.
    */
-  public void createOperations(PhysicalOperationsCollector col, Element e, Content value, Rectangle2D bounds)
+  public void createOperations(PhysicalOperationsCollector col, Element e, Content value, 
+                               Rectangle2D bounds)
   {
     DrawableContent content = (DrawableContent) value.getContentForBounds(bounds);
     if (content == null)

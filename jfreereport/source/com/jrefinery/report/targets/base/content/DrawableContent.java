@@ -1,20 +1,52 @@
 /**
- * Date: Mar 5, 2003
- * Time: 6:25:58 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: DrawableContent.java,v 1.2 2003/03/07 16:56:01 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * --------------------
+ * DrawableContent.java
+ * --------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: ShapeContent.java,v 1.11 2003/03/20 18:28:34 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 09-Apr-2003 : Added standard header (DG);
+ *
  */
 package com.jrefinery.report.targets.base.content;
 
-import com.jrefinery.report.DrawableContainer;
-import com.jrefinery.report.util.Log;
-
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+
+import com.jrefinery.report.DrawableContainer;
 
 /**
  * A simple wrapper around the DrawableContainer. The ContentImplementation
  * is able to adjust the Clipping Bounds of the DrawableContainer.
+ * 
+ * @author Thomas Morgner
  */
 public class DrawableContent implements Content
 {
@@ -30,9 +62,18 @@ public class DrawableContent implements Content
    */
   private Point2D contentOrigin;
 
+  /**
+   * Creates a new instance.
+   * 
+   * @param drawable  the drawable object.
+   * @param contentOrigin  the origin.
+   */
   public DrawableContent(DrawableContainer drawable, Point2D contentOrigin)
   {
-    if (drawable == null) throw new NullPointerException();
+    if (drawable == null) 
+    {
+      throw new NullPointerException();
+    }
 
     this.drawable = drawable;
     this.contentOrigin = contentOrigin;
@@ -89,13 +130,15 @@ public class DrawableContent implements Content
     Rectangle2D myBounds = getBounds();
 
     if (bounds.intersects(myBounds) == false)
+    {
       return null;
-
+    }
     Rectangle2D newBounds = bounds.createIntersection(myBounds);
-    Rectangle2D clipBounds = new Rectangle2D.Float((float) (newBounds.getX() - contentOrigin.getX()),
-                                                   (float) (newBounds.getY() - contentOrigin.getY()),
-                                                   (float) newBounds.getWidth(),
-                                                   (float) newBounds.getHeight());
+    Rectangle2D clipBounds 
+        = new Rectangle2D.Float((float) (newBounds.getX() - contentOrigin.getX()),
+                                (float) (newBounds.getY() - contentOrigin.getY()),
+                                (float) newBounds.getWidth(),
+                                (float) newBounds.getHeight());
     DrawableContainer newContainer = new DrawableContainer(drawable,
                                                            clipBounds);
 
@@ -128,6 +171,11 @@ public class DrawableContent implements Content
     return null;
   }
 
+  /**
+   * Returns the content.
+   * 
+   * @return The content.
+   */
   public DrawableContainer getContent()
   {
     return drawable;

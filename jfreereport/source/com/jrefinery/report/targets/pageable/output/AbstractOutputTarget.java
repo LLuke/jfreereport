@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------------
  * AbstractOutputTarget.java
  * -------------------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.13 2003/03/18 18:28:44 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.14 2003/03/26 10:49:23 taqua Exp $
  *
  * Changes
  * -------
@@ -53,8 +53,6 @@ import java.awt.print.PageFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
-import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.base.content.ContentFactory;
 import com.jrefinery.report.targets.base.content.DefaultContentFactory;
 import com.jrefinery.report.targets.base.content.DrawableContentFactoryModule;

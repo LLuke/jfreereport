@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultLayoutSupport.java,v 1.4 2003/03/26 10:49:23 taqua Exp $
+ * $Id: DefaultLayoutSupport.java,v 1.5 2003/04/06 18:11:30 taqua Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,11 @@ public class DefaultLayoutSupport implements LayoutSupport
   /** A singleton instance of the DefaultLayoutSupport. */
   private static DefaultLayoutSupport singleton;
 
+  /**
+   * Returns the single instance of this class.
+   * 
+   * @return The single instance of this class.
+   */
   public static DefaultLayoutSupport getDefaultInstance ()
   {
     if (singleton == null)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.37 2003/02/26 13:58:05 mungady Exp $
+ * $Id: ReportConfiguration.java,v 1.38 2003/03/04 20:29:04 taqua Exp $
  *
  * Changes
  * -------
@@ -978,7 +978,8 @@ public class ReportConfiguration
    */
   public boolean isStrictErrorHandling()
   {
-    return getConfigProperty(STRICT_ERRORHANDLING, STRICT_ERRORHANDLING_DEFAULT).equalsIgnoreCase("true");
+    return getConfigProperty(STRICT_ERRORHANDLING, 
+                             STRICT_ERRORHANDLING_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**

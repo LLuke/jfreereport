@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContent.java,v 1.10 2003/03/19 22:13:01 taqua Exp $
+ * $Id: ShapeContent.java,v 1.11 2003/03/20 18:28:34 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,6 @@ package com.jrefinery.report.targets.base.content;
 
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
-
-import com.jrefinery.report.util.Log;
 
 /**
  * A report content item that encapsulates a <code>Shape</code> object.

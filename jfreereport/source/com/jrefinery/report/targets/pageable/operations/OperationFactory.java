@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ---------------------
  * OperationFactory.java
  * ---------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationFactory.java,v 1.10 2003/02/25 18:47:02 taqua Exp $
+ * $Id: OperationFactory.java,v 1.11 2003/04/05 18:57:18 taqua Exp $
  *
  * Changes
  * -------
@@ -38,13 +38,12 @@
  */
 package com.jrefinery.report.targets.pageable.operations;
 
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
-
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The OperationFactory is used to transform content into OutputTarget operations.
@@ -140,7 +139,8 @@ public class OperationFactory
    * @param col the operations collector for the ops.
    * @throws OutputTargetException if this factory is not able to handle that content.
    */
-  public void createOperations (PhysicalOperationsCollector col, Element e, Content value, Rectangle2D bounds)
+  public void createOperations (PhysicalOperationsCollector col, Element e, Content value, 
+                                Rectangle2D bounds)
     throws OutputTargetException
   {
     String contentType = e.getContentType();
