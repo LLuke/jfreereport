@@ -28,13 +28,15 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OutputTarget.java,v 1.1.1.1 2002/04/25 17:02:15 taqua Exp $
+ * $Id: OutputTarget.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes
  * -------
  * 21-Feb-2002 : Version 1 (DG);
  * 18-Apr-2002 : Introduced drawImage and drawMultiLine
  * 10-May-2002 : Documentation
+ * 16-May-2002 : Interface of drawShape changed
+ * 
  */
 
 package com.jrefinery.report;
@@ -171,7 +173,7 @@ public interface OutputTarget
    * @param x The x coordinate.
    * @param y The y coordinate.
    */
-  public void drawShape (Shape shape, float x, float y);
+  public void drawShape (ShapeElement shape, float x, float y);
 
 
   /**
