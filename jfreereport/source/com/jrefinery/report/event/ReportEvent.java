@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportEvent.java,v 1.10 2002/11/07 21:45:27 taqua Exp $
+ * $Id: ReportEvent.java,v 1.11 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -71,11 +71,11 @@ public class ReportEvent extends EventObject
   }
 
   /**
-   * Returns the ReportState, which is the source of the event.
+   * Returns the <code>ReportState</code>, which is the source of the event.
    * <P>
-   * This function will never return null.
+   * This function will never return <code>null</code>.
    *
-   * @return The state.
+   * @return the state.
    */
   public ReportState getState ()
   {
@@ -87,7 +87,7 @@ public class ReportEvent extends EventObject
    * <P>
    * This is a convenience method that extracts the report from the report state.
    *
-   * @return The report.
+   * @return the report.
    */
   public JFreeReport getReport ()
   {
