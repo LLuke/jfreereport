@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellDataFactory.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: TableCellDataFactory.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -63,6 +63,10 @@ public interface TableCellDataFactory
    * will be reused in the later report processing.
    * <p>
    * If the tablemodel does not support the element type, return <code>null</code>.
+   * <p>
+   * Bands should be marked by returning a TableBandArea - do not return a plain
+   * TableCellData instance unless you want the band to override all other content
+   * of the band.
    *
    * @param e  the element that should be converted into TableCellData.
    * @param rect  the element's bounds within the table (specified in points).

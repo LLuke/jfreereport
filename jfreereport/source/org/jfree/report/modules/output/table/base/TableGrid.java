@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGrid.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
+ * $Id: TableGrid.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
+
+import org.jfree.report.util.Log;
 
 /**
  * The TableGrid is used to collect all table cells and to finally create the
@@ -81,6 +83,8 @@ public class TableGrid
   /** The YBounds, all horizontal cell boundaries. */
   private final TreeSet yBounds;
 
+  /** The lower boundary. */
+  private int yBoundsMax;
 
   /**
    * Creates a new TableGrid for the pagination process.
@@ -94,6 +98,7 @@ public class TableGrid
     this.bounds = new TableGridBounds(strict);
     elements = new ArrayList();
     yBounds = new TreeSet();
+    yBoundsMax = 0;
   }
 
   /**
@@ -107,6 +112,7 @@ public class TableGrid
     this.bounds = new TableGridBounds(bounds);
     elements = new ArrayList();
     yBounds = new TreeSet();
+    yBoundsMax = 0;
   }
 
   /**
@@ -124,12 +130,15 @@ public class TableGrid
     final Integer y = new Integer((int) bounds.getY());
     yBounds.add(y);
 
+    final int yWidth = (int) (bounds.getY() + bounds.getHeight());
     if (this.bounds.isStrict())
     {
-      final Integer yW = new Integer((int) (bounds.getY() + bounds.getHeight()));
-      yBounds.add(yW);
+      yBounds.add(new Integer(yWidth));
     }
-
+    if (yBoundsMax < yWidth)
+    {
+      yBoundsMax = yWidth;
+    }
   }
 
   /**
@@ -142,7 +151,7 @@ public class TableGrid
     final TableCellData[] positions =
         (TableCellData[]) elements.toArray(new TableCellData[elements.size()]);
 
-    //Log.debug ("Performing Layout: " + positions.length);
+    Log.debug ("Performing Layout for " + positions.length + " elements");
     final TableGridLayout layout = new TableGridLayout(bounds.getXCuts(), getYCuts(), positions);
     return layout;
   }
@@ -152,7 +161,7 @@ public class TableGrid
    */
   public void clear()
   {
-    bounds.clear();
+    // bounds.clear();
     elements.clear();
     yBounds.clear();
   }
@@ -169,13 +178,26 @@ public class TableGrid
 
   /**
    * Returns the vertical boundaries of the table cells. The array contains
-   * the start positions of the cells.
+   * the start positions of the cells. If this is a strict grid, this array
+   * will also contain the cell end positions. In either case the cell end
+   * of the last cell is returned.
    *
    * @return the vertical start position of the table cells.
    */
   public int[] getYCuts()
   {
-    final int[] yBoundsArray = new int[yBounds.size()];
+    boolean isEndContained = yBounds.contains(new Integer(yBoundsMax));
+    final int[] yBoundsArray;
+    if (isEndContained)
+    {
+      yBoundsArray = new int[yBounds.size()];
+    }
+    else
+    {
+      yBoundsArray = new int[yBounds.size() + 1];
+      yBoundsArray[yBoundsArray.length - 1] = yBoundsMax;
+    }
+
     final Iterator it = yBounds.iterator();
     int count = 0;
     while (it.hasNext())
@@ -185,16 +207,17 @@ public class TableGrid
       count += 1;
     }
 
-    if (!bounds.isStrict())
-    {
-      return yBoundsArray;
-    }
-    // in strict mode, all boundaries are added. The last boundry does
-    // not define a start of a cell, so it is removed.
-
-    final int[] retval = new int[yBoundsArray.length - 1];
-    System.arraycopy(yBoundsArray, 0, retval, 0, retval.length);
-    return retval;
+//    if (!bounds.isStrict())
+//    {
+//
+//      return yBoundsArray;
+//    }
+//    // in strict mode, all boundaries are added. The last boundry does
+//    // not define a start of a cell, so it is removed.
+//
+//    final int[] retval = new int[yBoundsArray.length - 1];
+//    System.arraycopy(yBoundsArray, 0, retval, 0, retval.length);
+    return yBoundsArray;
   }
 
 }

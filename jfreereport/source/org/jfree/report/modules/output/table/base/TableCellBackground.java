@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.3 2003/08/25 14:29:32 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.4 2003/09/13 15:14:41 taqua Exp $
  *
  * Changes
  * -------
@@ -271,9 +271,14 @@ public strictfp class TableCellBackground extends TableCellData
       }
     }
 
-    final TableCellBackground merged = new TableCellBackground(getBounds(), color);
+    final TableCellBackground merged = createMergedInstance(color);
     mergeBorders(background, merged);
     return merged;
+  }
+
+  protected TableCellBackground createMergedInstance (Color color)
+  {
+    return new TableCellBackground(getBounds(), color);
   }
 
   /**

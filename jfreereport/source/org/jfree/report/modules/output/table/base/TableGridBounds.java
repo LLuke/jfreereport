@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridBounds.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
+ * $Id: TableGridBounds.java,v 1.4 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -57,6 +57,8 @@ public final class TableGridBounds
   /** The XBounds, all vertical cell boundaries. */
   private final TreeSet xBounds;
 
+  private int xMaxBounds;
+
   /**
    * Creates a new TableGrid-object. If strict mode is enabled, all cell bounds are
    * used to create the table grid, resulting in a more complex layout.
@@ -67,6 +69,7 @@ public final class TableGridBounds
   {
     xBounds = new TreeSet();
     this.strict = strict;
+    this.xMaxBounds = 0;
   }
 
   /**
@@ -79,6 +82,7 @@ public final class TableGridBounds
   {
     xBounds = new TreeSet(copy.xBounds);
     this.strict = copy.strict;
+    this.xMaxBounds = copy.xMaxBounds;
   }
 
   /**
@@ -99,10 +103,14 @@ public final class TableGridBounds
     final Integer x = new Integer((int) bounds.getX());
     xBounds.add(x);
 
+    final int xWidth = (int) (bounds.getX() + bounds.getWidth());
     if (isStrict())
     {
-      final Integer xW = new Integer((int) (bounds.getX() + bounds.getWidth()));
-      xBounds.add(xW);
+      xBounds.add(new Integer(xWidth));
+    }
+    if (xMaxBounds < xWidth)
+    {
+      xMaxBounds = xWidth;
     }
   }
 
@@ -121,6 +129,7 @@ public final class TableGridBounds
    */
   public void clear()
   {
+    new Exception().printStackTrace();
     xBounds.clear();
   }
 
@@ -136,7 +145,18 @@ public final class TableGridBounds
     {
       return new int[0];
     }
-    final int[] xBoundsArray = new int[xBounds.size()];
+    boolean isEndContained = xBounds.contains(new Integer(xMaxBounds));
+    final int[] xBoundsArray;
+    if (isEndContained)
+    {
+      xBoundsArray = new int[xBounds.size()];
+    }
+    else
+    {
+      xBoundsArray = new int[xBounds.size() + 1];
+      xBoundsArray[xBoundsArray.length - 1] = xMaxBounds;
+    }
+
     final Iterator it = xBounds.iterator();
     int count = 0;
     while (it.hasNext())

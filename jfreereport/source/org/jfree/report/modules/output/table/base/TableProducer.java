@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.10 2003/09/13 15:14:42 taqua Exp $
+ * $Id: TableProducer.java,v 1.11 2003/09/15 18:26:51 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.util.Properties;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.util.Log;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
@@ -128,7 +129,7 @@ public strictfp abstract class TableProducer
     this.properties = new Properties();
     this.dummy = false;
     this.gridBoundsCollection = gridBoundsCollection;
-    this.grid = new TableGrid(gridBoundsCollection.getLayoutForPage(0).isStrict());
+    //this.grid = new TableGrid(gridBoundsCollection.getLayoutForPage(0));
   }
 
   /** A useful constant for specifying the creator constant. */
@@ -175,7 +176,7 @@ public strictfp abstract class TableProducer
   public void beginPage(final String name)
   {
     page += 1;
-
+    Log.debug ("Started Page: " + page);
     // the global layout reuses the layout grid from the first page to
     // unify the layout for all pages. The global layout is disabled by
     // default.
@@ -189,6 +190,7 @@ public strictfp abstract class TableProducer
       else
       {
         gridBounds = gridBoundsCollection.getLayoutForPage(page);
+        grid = new TableGrid(gridBounds);
       }
     }
   }
@@ -402,6 +404,18 @@ public strictfp abstract class TableProducer
    * @return the merged TableCellBackground.
    */
   protected TableCellBackground createTableCellStyle(final List background)
+  {
+    return createStaticTableCellStyle(background);
+  }
+
+  /**
+   * Created basicly for utility/debugging purposes.
+   *
+   * @param background the list of background definitions.
+   * @return the created (merged) TableCellBackground instance.
+   */
+  protected static TableCellBackground createStaticTableCellStyle
+      (final List background)
   {
     if (background == null)
     {

@@ -10,8 +10,8 @@
     processing.
     -->
   <configuration>
-    <property name="org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.Encoding">iso-8859-15</property>
-    <property name="org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.Author">Darkwing Duck</property>
+    <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">iso-8859-15</property>
+    <property name="org.jfree.report.modules.output.pageable.pdf.Author">Darkwing Duck</property>
 
     <!-- These properties make sure that the pdf file is encoded by default. -->
     <!-- We dont allow anything else. For a complete description of the available PDF -->

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridLayout.java,v 1.4 2003/09/13 15:14:42 taqua Exp $
+ * $Id: TableGridLayout.java,v 1.5 2003/09/15 18:26:51 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
+import org.jfree.report.util.Log;
 
 /**
  * The table grid layout is used to layout the collected TableCellData object from
@@ -225,14 +227,17 @@ public class TableGridLayout
     // +1 for outer boundry ...
     final int width = xCuts.length;
     final int height = yCuts.length;
-/*
-    Log.info ("Created GridLayout with " + width + ", " + height);
 
+    Log.info ("Created GridLayout with " + width + ", " + height);
     for (int i = 0; i < xCuts.length; i++)
     {
       Log.info ("X-Cuts: " + xCuts[i]);
     }
-*/
+    for (int i = 0; i < yCuts.length; i++)
+    {
+      Log.info ("Y-Cuts: " + yCuts[i]);
+    }
+
     data = new Object[width][height];
 
     for (int i = 0; i < positions.length; i++)
@@ -251,34 +256,67 @@ public class TableGridLayout
   protected void add(final TableCellData pos)
   {
     final Rectangle2D bounds = pos.getBounds();
-
     final int maxBoundsX = (int) (bounds.getX() + bounds.getWidth());
     final int maxBoundsY = (int) (bounds.getY() + bounds.getHeight());
 
-    final int col = findBoundary(xCuts, (int) bounds.getX());
-    final int row = findBoundary(yCuts, (int) bounds.getY());
-    final int colspan = Math.max(1, findBoundary(xCuts, maxBoundsX, true) - col);
-    final int rowspan = Math.max(1, findBoundary(yCuts, maxBoundsY, true) - row);
-    final TableGridPosition gPos = new TableGridPosition(pos, col, row, colspan, rowspan);
-
-/*
-    Log.info ("AddTablePos: Col=" + gPos.getCol() +
-              "; Row= " + gPos.getRow() +
-              "; ColSpan=" + gPos.getColSpan() +
-              "; RowSpan=" + gPos.getRowSpan() + "; -> " + pos.debugChunk + " Bounds: "+ bounds);
-*/
-/*
-    if (pos instanceof TableBandArea)
+    final TableGridPosition gPos;
+    if (bounds.getWidth() == 0 && bounds.getHeight() == 0)
     {
-      Log.debug ("DebugChunk: " + pos.debugChunk);
-      Log.debug ("gPos.getCol: " + gPos.getCol() + " -> " + getColumnStart(gPos.getCol()));
-      Log.debug ("gPos.getRow: " + gPos.getRow() + " -> " + getRowStart(gPos.getRow()));
-      Log.debug ("gPos.getColSpan: " + gPos.getColSpan() + " -> "
-                 + getColumnEnd(gPos.getColSpan() + gPos.getCol() - 1));
-      Log.debug ("gPos.getRowSpan: " + gPos.getRowSpan() + " -> "
-                 + getRowEnd(gPos.getRowSpan() + gPos.getRow() - 1));
+      return;
     }
-*/
+    if (bounds.getHeight() == 0)
+    {
+      final int col = findBoundary(xCuts, (int) bounds.getX());
+      final int colspan = Math.max(1, findBoundary(xCuts, maxBoundsX, true) - col);
+      int row = findBoundary(yCuts, (int) bounds.getY());
+      if (row > 0)
+      {
+        // if not the first row, then bind it to the previous cell ...
+        row = row - 1;
+      }
+      gPos = new TableGridPosition(pos, col, row, colspan, 0);
+    }
+    else if (bounds.getWidth() == 0)
+    {
+      final int row = findBoundary(yCuts, (int) bounds.getY());
+      final int rowspan = Math.max(1, findBoundary(yCuts, maxBoundsY, true) - row);
+      int col = findBoundary(xCuts, (int) bounds.getX());
+      if (col > 0)
+      {
+        // if not the first column, bind to the previous cell ...
+        col = col - 1;
+      }
+      gPos = new TableGridPosition(pos, col, row, 0, rowspan);
+    }
+    else
+    {
+      final int row = findBoundary(yCuts, (int) bounds.getY());
+      final int col = findBoundary(xCuts, (int) bounds.getX());
+      final int rowspan = Math.max(1, findBoundary(yCuts, maxBoundsY, true) - row);
+      final int colspan = Math.max(1, findBoundary(xCuts, maxBoundsX, true) - col);
+      gPos = new TableGridPosition(pos, col, row, colspan, rowspan);
+    }
+
+
+
+//    Log.info ("AddTablePos: Col=" + gPos.getCol() +
+//              "; Row= " + gPos.getRow() +
+//              "; ColSpan=" + gPos.getColSpan() +
+//              "; RowSpan=" + gPos.getRowSpan() + "; -> Bounds: "+ bounds);
+//    Log.info ("AddTablePos: Col=" + gPos.getCol() +
+//              "; Row= " + gPos.getRow() + "; " + pos.toString());
+//
+//
+//    if (pos instanceof TableBandArea)
+//    {
+//      Log.debug ("gPos.getCol: " + gPos.getCol() + " -> " + getColumnStart(gPos.getCol()));
+//      Log.debug ("gPos.getRow: " + gPos.getRow() + " -> " + getRowStart(gPos.getRow()));
+//      Log.debug ("gPos.getColSpan: " + gPos.getColSpan() + " -> "
+//                 + getColumnEnd(gPos.getColSpan() + gPos.getCol() - 1));
+//      Log.debug ("gPos.getRowSpan: " + gPos.getRowSpan() + " -> "
+//                 + getRowEnd(gPos.getRowSpan() + gPos.getRow() - 1));
+//    }
+
     final int startY = gPos.getRow();
     final int endY = gPos.getRow() + gPos.getRowSpan();
     // calculated the x and y position in the table, now add it to the element.
@@ -308,16 +346,17 @@ public class TableGridLayout
    */
   protected void addToGrid(final int posX, final int posY, final TableGridPosition gPos)
   {
+    // Log.debug ("Add To Grid: " + posX + ", " + posY + " GPos: " + gPos);
     if (gPos == null)
     {
       throw new NullPointerException();
     }
 
-    if (posX >= getWidth() || posX < 0)
+    if (posX > getWidth() || posX < 0)
     {
       throw new IndexOutOfBoundsException("X: " + posX + " > " + getWidth());
     }
-    if (posY >= getHeight() || posY < 0)
+    if (posY > getHeight() || posY < 0)
     {
       throw new IndexOutOfBoundsException("Y: " + posY + " > " + getHeight());
     }
@@ -334,6 +373,11 @@ public class TableGridLayout
       final Element e = (Element) o;
       e.add(gPos);
     }
+  }
+
+  public boolean containsData (final int x, final int y)
+  {
+    return (getData(x, y) != null);
   }
 
   /**
@@ -355,7 +399,7 @@ public class TableGridLayout
    */
   public int getWidth()
   {
-    return xCuts.length;
+    return xCuts.length - 1;
   }
 
   /**
@@ -365,7 +409,7 @@ public class TableGridLayout
    */
   public int getHeight()
   {
-    return yCuts.length;
+    return yCuts.length - 1;
   }
 
   /**
