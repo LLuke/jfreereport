@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.12 2003/06/29 16:59:29 taqua Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------

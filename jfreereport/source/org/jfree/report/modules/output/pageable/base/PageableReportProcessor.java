@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.3 2003/08/18 18:28:00 taqua Exp $
  *
  * Changes
  * -------
@@ -51,8 +51,8 @@ import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
-import org.jfree.report.modules.output.pageable.base.event.RepaginationListener;
-import org.jfree.report.modules.output.pageable.base.event.RepaginationState;
+import org.jfree.report.event.RepaginationListener;
+import org.jfree.report.event.RepaginationState;
 import org.jfree.report.modules.output.pageable.base.pagelayout.PageLayouter;
 import org.jfree.report.modules.output.pageable.base.pagelayout.SimplePageLayouter;
 import org.jfree.report.states.FinishState;
@@ -70,6 +70,8 @@ import org.jfree.report.util.Log;
  */
 public class PageableReportProcessor
 {
+  private static final int MAX_EVENTS_PER_RUN = 400;
+
   /** The level where the page function is executed. */
   private static final int PRINT_FUNCTION_LEVEL = -1;
 
@@ -87,6 +89,7 @@ public class PageableReportProcessor
 
   /** Storage for listener references. */
   private ArrayList listeners;
+  private Object[] listenersCache;
 
   /**
    * Creates a new ReportProcessor.
@@ -119,7 +122,8 @@ public class PageableReportProcessor
   }
 
   /**
-   * Adds a listener.
+   * Adds a repagination listener. This listener will be informed of
+   * pagination events.
    *
    * @param l  the listener.
    */
@@ -133,11 +137,12 @@ public class PageableReportProcessor
     {
       listeners = new ArrayList(5);
     }
+    listenersCache = null;
     listeners.add(l);
   }
 
   /**
-   * Removes a listener.
+   * Removes a repagination listener.
    *
    * @param l  the listener.
    */
@@ -151,8 +156,10 @@ public class PageableReportProcessor
     {
       return;
     }
+    listenersCache = null;
     listeners.remove(l);
   }
+
 
   /**
    * Sends a repagination update to all registered listeners.
@@ -165,9 +172,13 @@ public class PageableReportProcessor
     {
       return;
     }
-    for (int i = 0; i < listeners.size(); i++)
+    if (listenersCache == null)
     {
-      final RepaginationListener l = (RepaginationListener) listeners.get(i);
+      listenersCache = listeners.toArray();
+    }
+    for (int i = 0; i < listenersCache.length; i++)
+    {
+      final RepaginationListener l = (RepaginationListener) listenersCache[i];
       l.repaginationUpdate(state);
     }
   }
@@ -280,10 +291,17 @@ public class PageableReportProcessor
     }
 
     final boolean failOnError = getReport().getReportConfiguration().isStrictErrorHandling();
+    RepaginationState repaginationState = new RepaginationState(this, 0, 0, 0, 0, false);
 
     for (int i = 0; i < list.size(); i++)
     {
       ReportState rs = list.get(i);
+      // fire an event for every generated page. It does not really matter
+      // if that policy is not very informative, it is sufficient ...
+      repaginationState.reuse(PRINT_FUNCTION_LEVEL,
+          rs.getCurrentPage(), rs.getCurrentDataItem(), rs.getNumberOfRows(), false);
+      fireStateUpdate(repaginationState);
+
       processPage(rs, getOutputTarget(), failOnError);
     }
   }
@@ -360,7 +378,7 @@ public class PageableReportProcessor
         }
         else
         {
-          state = processPrepareLevels(state);
+          state = processPrepareLevels(state, level, maxRows);
         }
 
         // if there is an other level to process, then use the finish state to
@@ -418,6 +436,7 @@ public class PageableReportProcessor
   {
     final boolean failOnError = getReport().getReportConfiguration().isStrictErrorHandling();
     ReportStateProgress progress = null;
+    RepaginationState repaginationState = new RepaginationState(this, 0, 0, 0, 0, true);
 
     // inner loop: process the complete report, calculate the function values
     // for the current level. Higher level functions are not available in the
@@ -425,8 +444,11 @@ public class PageableReportProcessor
 
     while (!state.isFinish())
     {
-      fireStateUpdate(new RepaginationState(PRINT_FUNCTION_LEVEL, state.getCurrentPage(),
-          state.getCurrentDataItem(), maxRows));
+      // fire an event for every generated page. It does not really matter
+      // if that policy is not very informative, it is sufficient ...
+      repaginationState.reuse(PRINT_FUNCTION_LEVEL,
+          state.getCurrentPage(), state.getCurrentDataItem(), maxRows, true);
+      fireStateUpdate(repaginationState);
 
       final ReportState oldstate = state;
       progress = state.createStateProgress(progress);
@@ -464,16 +486,43 @@ public class PageableReportProcessor
    * @throws org.jfree.report.ReportProcessingException if processing failed or if there are
    * exceptions during the function execution.
    */
-  private ReportState processPrepareLevels (ReportState state)
+  private ReportState processPrepareLevels (ReportState state, final int level, final int maxRows)
     throws ReportProcessingException
   {
     final boolean failOnError = getReport().getReportConfiguration().isStrictErrorHandling();
     ReportStateProgress progress = null;
 
+    int lastRow = -1;
+    int eventCount = 0;
+    int eventTrigger = maxRows / MAX_EVENTS_PER_RUN;
+    RepaginationState repaginationState = new RepaginationState(this, 0, 0, 0, 0, true);
     // Function processing does not use the PageLayouter, so we don't need
     // the expensive cloning ...
     while (!state.isFinish())
     {
+      if (lastRow != state.getCurrentDisplayItem())
+      {
+        lastRow = state.getCurrentDisplayItem();
+        if (eventCount == 0)
+        {
+          repaginationState.reuse(level,
+              state.getCurrentPage(), state.getCurrentDataItem(), maxRows, true);
+          fireStateUpdate(repaginationState);
+          eventCount += 1;
+        }
+        else
+        {
+          if (eventCount == eventTrigger)
+          {
+            eventCount = 0;
+          }
+          else
+          {
+            eventCount += 1;
+          }
+        }
+      }
+
       progress = state.createStateProgress(progress);
       state = state.advance();
       if (failOnError)
