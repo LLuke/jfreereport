@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.18 2002/12/12 12:26:57 mungady Exp $
+ * $Id: ReportConfiguration.java,v 1.19 2002/12/13 01:26:12 taqua Exp $
  *
  * Changes
  * -------
@@ -46,15 +46,25 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Global and Local configurations for JFreeReport.
+ * Global and local configurations for JFreeReport.
  * <p>
+ * You can access the global configuration using this statement in your code:
+ * <p>
+ * <code>ReportConfiguration config = ReportConfiguration.getGlobalConfig();</code>
+ * <p>
+ * You can access the local configuration for a report using this:
+ * <p>
+ * <code>ReportConfiguration local = myReport.getReportConfiguration();
+ * <p>
+ * You can also specify the local configuration for a report via the XML report template file.
+ *
  * <h3>Global Configuration keys</h3>
  * <p>
  * These keys affect the whole VM and cannot be changed once
  * they are configured unless the VM is restarted.
  * <p>
  * <ul>
- * <li>com.jrefinery.report.LogLevel
+ * <li><code>com.jrefinery.report.LogLevel</code>
  * <p>The minimum loglevel that is logged. Defaults to "Debug",
  * possible values are "Error", "Warn", "Info", "Debug", "None".
  * "None" disables the logging. Log-level "Error" prints error-messages
@@ -62,70 +72,76 @@ import java.util.Properties;
  * messages as well as warnings and errors. "Debug" prints all messages,
  * inclusive all debugging messages.
  * <p>
- * <li>com.jrefinery.report.LogTarget
+ * <li><code>com.jrefinery.report.LogTarget</code>
  * <p>The default log-target. Give a classname of a  valid LogTarget implementation.
  * The given class is loaded and instantiated and added as primary loggin target.
  * This defaults to "com.jrefinery.report.util.SystemOutLogTarget". An alternative
  * LogTarget for Log4J-Printing can be found in the "Extension" package.
  * <p>
- * <li>com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT
+ * <li><code>com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT</code>
  * <p>AutoInit the PDFTarget when the class is loaded? This will search and register
  * all ttf-fonts on the system. The search will access the system-directorys and can
  * therefore collide with the SecurityManager. The property defaults to "true", set
  * to "false" to disable this feature and have a look at the PDFOutputTarget on how
- * to register the fonts manually.<p>
- * <li>com.jrefinery.report.dtd
+ * to register the fonts manually.
+ * <p>
+ * <li><code>com.jrefinery.report.dtd</code>
  * <p>A URL to the JFreeReport-DTD if not specified in the Document itself. This can
  * be used for validating parsers to check the xml-document. This property is not set
  * by default, but the DTD can be found at "http://jfreereport.sourceforge.net/report.dtd".
- * This property expects a string with a valid URL, like the one above.<p>
- * <li>com.jrefinery.report.PrintOperationComment
+ * This property expects a string with a valid URL, like the one above.
+ * <p>
+ * <li><code>com.jrefinery.report.PrintOperationComment</code>
  * <p>
  * Should the logical page add comments to the generated PhysicalOperations? This is
- * for debuggin only and will cause heavy load on your LogTarget if enabled.
+ * for debugging only and will cause heavy load on your LogTarget if enabled.
  * This option defaults to "false".
- * <li>com.jrefinery.report.WarnInvalidColumns
+ *
+ * <li><code>com.jrefinery.report.WarnInvalidColumns</code>
  * <p>Should the datarow print warning on invalid columns? Invalid column requests always
  * return null, if set to "true", an additional logging entry is added for every invalid
- * column. This is usefull when writing report-definitions, so this option defaults to "true".
- * <li>com.jrefinery.report.TableFactoryMode
+ * column. This is useful when writing report-definitions, so this option defaults to "true".
+ *
+ * <li><code>com.jrefinery.report.TableFactoryMode</code>
  * <p>The tablemodel factory mode for the ResultSetTableModelFactory.
  * if set to "simple" the factory will always return a DefaultTableModel. This property is
- * not set by default and it should not be nessesary to change this.
- * <li>com.jrefinery.report.NoDefaultDebug
- * <p>Should the debugging system be disabled by default. This option will surpress all
+ * not set by default and it should not be necessary to change this.
+ *
+ * <li><code>com.jrefinery.report.NoDefaultDebug</code>
+ * <p>
+ * Should the debugging system be disabled by default. This option will suppress all
  * output, no single line of debug information will be printed. If you want to remove
  * System.out-debugging on the server side, try to switch to a Log4J-LogTarget instead.
- * This option can be dangerous, as you won't see any errormessages, so it is set to "false"
+ * This option can be dangerous, as you won't see any error messages, so it is set to "false"
  * by default.
  * <p>
  * </ul>
  * <h3>Local configuration keys</h3>
  * <p>The following keys can be redefined for all report-instances.
  * <ul>
- * <li>com.jrefinery.report.preview.PreferredWidth
+ * <li><code>com.jrefinery.report.preview.PreferredWidth</code>
  * <p>
  * Defines a preferred size for the preview frame. Both width and height must be set,
  * proportional values are allowed (100%, 90% etc). They have the same syntax as the
  * proportional values in the xml definition.
  * <p>
- * None of the values is defined by default
- * <li>com.jrefinery.report.preview.PreferredHeight
+ * None of the values is defined by default.
+ * <li><code>com.jrefinery.report.preview.PreferredHeight</code>
  * <p>
  * Defines a preferred size for the preview frame. Both width and height must be set,
  * proportional values are allowed (100%, 90% etc). They have the same syntax as the
  * proportional values in the xml definition.
  * <p>
- * None of the values is defined by default
- * <li>com.jrefinery.report.preview.MaximumWidth
+ * None of the values is defined by default.
+ * <li><code>com.jrefinery.report.preview.MaximumWidth</code>
  * <p>
  * Defines the maximum width for the preview frame. If the width is defined, a component
  * listener will be used to enforce the defined width.
- * The value is not defined by default
- * <li>com.jrefinery.report.preview.MaximumHeight
+ * The value is not defined by default.
+ * <li><code>com.jrefinery.report.preview.MaximumHeight</code>
  * Defines the maximum height for the preview frame. If the height is defined, a component
  * listener will be used to enforce that value.
- * The value is not defined by default
+ * The value is not defined by default.
  * </ul>
  * <p>
  * <h4>PDFOutputTarget properties</h4>
@@ -245,12 +261,16 @@ import java.util.Properties;
 public class ReportConfiguration
 {
   /** The text aliasing configuration key */
-  public static final String G2TARGET_USEALIASING = "com.jrefinery.report.targets.G2OutputTarget.useAliasing";
+  public static final String G2TARGET_USEALIASING
+                             = "com.jrefinery.report.targets.G2OutputTarget.useAliasing";
+
   /** The text aliasing configuration default value. Is "false" */
   public static final String G2TARGET_USEALIASING_DEFAULT = "false";
 
   /** The G2 fontrenderer bug override configuration key */
-  public static final String G2TARGET_ISBUGGY_FRC = "com.jrefinery.report.targets.G2OutputTarget.isBuggyFRC";
+  public static final String G2TARGET_ISBUGGY_FRC
+                             = "com.jrefinery.report.targets.G2OutputTarget.isBuggyFRC";
+
   /** The G2 fontrenderer bug override. Is "false" */
   public static final String G2TARGET_ISBUGGY_FRC_DEFAULT = "false";
 
@@ -263,7 +283,6 @@ public class ReportConfiguration
                              = "com.jrefinery.report.preview.PreferredHeight";
 
   /** The maximum width key. */
-
   public static final String PREVIEW_MAXIMUM_WIDTH = "com.jrefinery.report.preview.MaximumWidth";
 
   /** The maximum height key. */
@@ -386,7 +405,7 @@ public class ReportConfiguration
   /**
    * Creates a new report configuration.
    *
-   * @param globalConfig  ??.
+   * @param globalConfig  the global configuration.
    */
   public ReportConfiguration (ReportConfiguration globalConfig)
   {
@@ -409,6 +428,9 @@ public class ReportConfiguration
   /**
    * Returns the configuration property with the specified key (or the specified default value
    * if there is no such property).
+   * <p>
+   * If the property is not defined in this configuration, the code will lookup the property in
+   * the parent configuration.
    *
    * @param key  the property key.
    * @param defaultValue  the default value.
@@ -567,7 +589,7 @@ public class ReportConfiguration
   }
 
   /**
-   * Returns the global configuration.
+   * Returns the global configuration for JFreeReport.
    *
    * @return the global configuration.
    */
