@@ -74,11 +74,11 @@ public class StraightToPDF
   public StraightToPDF (final String filename)
           throws ParseException
   {
-//    final URL in = getClass().getResource("/org/jfree/report/demo/OpenSourceDemo.xml");
-    final URL in = getClass().getResource("/org/jfree/report/demo/swing-icons.xml");
+    final URL in = getClass().getResource("/org/jfree/report/demo/OpenSourceDemo.xml");
+//    final URL in = getClass().getResource("/org/jfree/report/demo/swing-icons.xml");
     final JFreeReport report = parseReport(in);
-//    final TableModel data = new OpenSourceProjects();
-    final TableModel data = new SwingIconsDemoTableModel();
+    final TableModel data = new OpenSourceProjects();
+//    final TableModel data = new SwingIconsDemoTableModel();
     report.setData(data);
     final long startTime = System.currentTimeMillis();
     savePDF(report, filename);
@@ -175,7 +175,7 @@ public class StraightToPDF
     try
     {
       //final StraightToPDF demo =
-      new StraightToPDF(System.getProperty("user.home") + "/test99.pdf");
+      new StraightToPDF(System.getProperty("user.home") + "/OpenSource-Demo.pdf");
       System.exit(0);
     }
     catch (Exception e)

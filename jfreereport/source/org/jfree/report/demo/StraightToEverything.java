@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.13 2005/02/23 21:04:39 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.14 2005/03/03 17:07:54 taqua Exp $
  *
  * Changes
  * -------
@@ -321,7 +321,7 @@ public class StraightToEverything
         folder = args[0];
       }
       //final StraightToEverything demo =
-      new StraightToEverything(folder + "/test-everything");
+      new StraightToEverything(folder + "/OpenSource-Demo");
       System.exit(0);
     }
     catch (Exception e)
