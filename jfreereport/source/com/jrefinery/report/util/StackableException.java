@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,17 +20,23 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------
+ * -----------------------
  * StackableException.java
- * ---------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * -----------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: StackableException.java,v 1.1 2002/12/06 19:28:05 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: StackableException.java,v 1.2 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes
  * -------
  * 06-Dec-2002 : Initial version
+ * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
+ *
  */
+
 package com.jrefinery.report.util;
 
 import java.io.PrintStream;
@@ -42,7 +48,10 @@ import java.io.PrintWriter;
  * <p>
  * The parents are printed when this exception is printed. This class exists mainly for
  * debugging reasons, as with them it is easier to detect the root cause of an error.
- * <!-- In a perfect world ther would be no need for such a class :)-->
+ *
+ * <!-- In a perfect world there would be no need for such a class :)-->
+ *
+ * @author Thomas Morgner
  */
 public abstract class StackableException extends Exception
 {
@@ -53,7 +62,8 @@ public abstract class StackableException extends Exception
    * Creates a StackableRuntimeException with no message and no parent.
    */
   public StackableException()
-  {}
+  {
+  }
 
   /**
    * Creates an exception.

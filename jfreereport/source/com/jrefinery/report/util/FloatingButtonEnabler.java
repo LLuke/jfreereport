@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,9 +23,12 @@
  * --------------------------
  * FloatingButtonEnabler.java
  * --------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: FloatingButtonEnabler.java,v 1.8 2002/11/07 21:45:28 taqua Exp $
  *
  */
 package com.jrefinery.report.util;
@@ -38,7 +41,7 @@ import java.awt.event.MouseEvent;
  * Enables a button to have a simple floating effect. The border of the button is only visible,
  * when the mouse pointer is floating over the button.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class FloatingButtonEnabler extends MouseAdapter
 {

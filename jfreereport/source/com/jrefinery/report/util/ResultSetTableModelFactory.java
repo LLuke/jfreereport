@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,9 +23,12 @@
  * -------------------------------
  * ResultSetTableModelFactory.java
  * -------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: ResultSetTableModelFactory.java,v 1.11 2002/11/29 12:07:29 mungady Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: ResultSetTableModelFactory.java,v 1.12 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes
  * -------
@@ -33,6 +36,7 @@
  * 09-Jun-2002 : Documentation and changed the return value to be a CloseableTableModel
  * 02-Oct-2002 : <Robert Fuller> Bugs fixed for DefaultTableModel creation.
  * 12-Nov-2002 : Fixed errors reported by Checkstyle 2.4 (DG)
+ * 10-Dec-2002 : Fixed more issues reported by Checkstyle (DG);
  */
 package com.jrefinery.report.util;
 
@@ -52,7 +56,7 @@ import java.util.Vector;
  * The creation of default table models can be forces if the system property
  * "com.jrefinery.report.TableFactoryMode" is set to "simple".
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ResultSetTableModelFactory
 {
@@ -108,7 +112,7 @@ public class ResultSetTableModelFactory
    */
   private class CloseableDefaultTableModel extends DefaultTableModel implements CloseableTableModel
   {
-    // wait with closing until the close method is called.
+    /** The results set. */
     private ResultSet res;
 
     /**
@@ -116,6 +120,7 @@ public class ResultSetTableModelFactory
      *
      * @param objects  the table data.
      * @param objects1  the column names.
+     * @param res  the result set.
      */
     public CloseableDefaultTableModel(Object[][] objects, Object[] objects1, ResultSet res)
     {

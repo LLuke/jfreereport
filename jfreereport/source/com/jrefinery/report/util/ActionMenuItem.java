@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,14 +23,21 @@
  * -------------------
  * ActionMenuItem.java
  * -------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: ActionMenuItem.java,v 1.6 2002/11/07 21:45:28 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: ActionMenuItem.java,v 1.7 2002/12/02 17:44:47 taqua Exp $
  *
  * ChangeLog
  * ---------
  * 30-Aug-2002 : Initial version
  * 01-Aug-2002 : Documentation
+ * 10-Dec-2002 : Minor Javadoc updates (DG);
+ *
  */
+
 package com.jrefinery.report.util;
 
 import javax.swing.Action;
@@ -45,7 +52,7 @@ import java.beans.PropertyChangeListener;
  * <P>
  * This functionality is already implemented in JDK 1.3 but needed for JDK 1.2.2 compatibility.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ActionMenuItem extends JMenuItem
 {
@@ -254,8 +261,7 @@ public class ActionMenuItem extends JMenuItem
       newAction.addPropertyChangeListener(getPropertyChangeHandler());
 
       setText((String) (newAction.getValue(Action.NAME)));
-      setToolTipText((String) (newAction.getValue
-          (Action.SHORT_DESCRIPTION)));
+      setToolTipText((String) (newAction.getValue(Action.SHORT_DESCRIPTION)));
       setIcon((Icon) newAction.getValue(Action.SMALL_ICON));
       setEnabled(action.isEnabled());
 

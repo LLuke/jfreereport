@@ -28,12 +28,15 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractActionDowngrade.java,v 1.6 2002/12/04 19:58:16 taqua Exp $
+ * $Id: AbstractActionDowngrade.java,v 1.7 2002/12/05 16:48:12 mungady Exp $
  *
  * Changes
  * -------
  * 30-Aug-2002 : Initial version
+ * 10-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.util;
 
 import javax.swing.AbstractAction;
@@ -42,14 +45,15 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 /**
- * Defines the 2 new constants introduced by Sun in version 1.3 of the J2SDK.
+ * A class that allows Action features introduced in JDK 1.3 to be used with JDK 1.2.2, by
+ * defining the two new constants introduced by Sun in JDK 1.3.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public abstract class AbstractActionDowngrade extends AbstractAction implements ActionDowngrade
 {
   // kills a compile error for JDK's >= 1.3
-  // ambiguous reference error ... 
+  // ambiguous reference error ...
   /**
    * The key used for storing a <code>KeyStroke</code> to be used as the
    * accelerator for the action.
@@ -62,22 +66,29 @@ public abstract class AbstractActionDowngrade extends AbstractAction implements 
    */
   public static final String MNEMONIC_KEY = ActionDowngrade.MNEMONIC_KEY;
 
+  /**
+   * Creates a transparent image, which can be used for aligning menu items.
+   *
+   * @param width  the image width.
+   * @param height  the image height.
+   *
+   * @return a transparent image.
+   */
   public static BufferedImage createTransparentImage (int width, int height)
   {
     BufferedImage img = new BufferedImage (width, height, BufferedImage.TYPE_INT_ARGB);
-    int[] data = img.getRGB(0,0, width, height, null, 0, width);
+    int[] data = img.getRGB(0, 0, width, height, null, 0, width);
     Arrays.fill(data, 0x00000000);
-    img.setRGB(0,0,width,height,data,0,width);
+    img.setRGB(0, 0, width, height, data, 0, width);
     return img;
   }
 
   /**
-   * Defines an <code>Action</code> object with a default
-   * description string and default icon.
+   * Creates a new action with a default (transparent) icon.
    */
   public AbstractActionDowngrade()
   {
-    putValue (SMALL_ICON, new ImageIcon (createTransparentImage(16,16)));
-    putValue ("ICON24", new ImageIcon (createTransparentImage(16,16)));
+    putValue (SMALL_ICON, new ImageIcon (createTransparentImage(16, 16)));
+    putValue ("ICON24", new ImageIcon (createTransparentImage(16, 16)));
   }
 }

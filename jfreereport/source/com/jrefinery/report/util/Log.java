@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,14 +23,18 @@
  * --------
  * Log.java
  * --------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: Log.java,v 1.11 2002/12/06 19:28:03 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: Log.java,v 1.12 2002/12/06 20:34:18 taqua Exp $
  *
  * Changes
  * -------
  * 11-May-2002 : Created a simple logging schema.
  * 12-Nov-2002 : Removed redundant import (DG).
+ * 10-Dec-2002 : Updated Javadocs (DG);
  *
  */
 
@@ -42,7 +46,7 @@ import java.util.ArrayList;
  * A simple logging facility. Create a class implementing the LogTarget interface to use
  * this feature.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public final class Log
 {
@@ -51,13 +55,24 @@ public final class Log
    */
   public static class MemoryUsageMessage
   {
+    /** The message. */
     private String message;
 
+    /**
+     * Creates a new message.
+     *
+     * @param message  the message.
+     */
     public MemoryUsageMessage(String message)
     {
       this.message = message;
     }
 
+    /**
+     * Returns a string representation of the message (useful for debugging).
+     *
+     * @return the string.
+     */
     public String toString ()
     {
       return (message
@@ -67,44 +82,87 @@ public final class Log
   }
 
   /**
-   * LogHelper class to print memory usage message if needed.
+   * A simple message class.
    */
   public static class SimpleMessage
   {
+    /** The message. */
     private String message;
+
+    /** The parameters. */
     private Object[] param;
 
+    /**
+     * Creates a new message.
+     *
+     * @param message  the message text.
+     * @param param1  parameter 1.
+     */
     public SimpleMessage(String message, Object param1)
     {
       this.message = message;
       this.param = new Object[] {param1};
     }
 
+    /**
+     * Creates a new message.
+     *
+     * @param message  the message text.
+     * @param param1  parameter 1.
+     * @param param2  parameter 2.
+     */
     public SimpleMessage(String message, Object param1, Object param2)
     {
       this.message = message;
       this.param = new Object[] {param1, param2};
     }
 
+    /**
+     * Creates a new message.
+     *
+     * @param message  the message text.
+     * @param param1  parameter 1.
+     * @param param2  parameter 2.
+     * @param param3  parameter 3.
+     */
     public SimpleMessage(String message, Object param1, Object param2, Object param3)
     {
       this.message = message;
       this.param = new Object[] {param1, param2, param3};
     }
 
+    /**
+     * Creates a new message.
+     *
+     * @param message  the message text.
+     * @param param1  parameter 1.
+     * @param param2  parameter 2.
+     * @param param3  parameter 3.
+     * @param param4  parameter 4.
+     */
     public SimpleMessage(String message, Object param1, Object param2, Object param3, Object param4)
     {
       this.message = message;
       this.param = new Object[] {param1, param2, param3, param4};
     }
 
-
+    /**
+     * Creates a new message.
+     *
+     * @param message  the message text.
+     * @param param  the parameters.
+     */
     public SimpleMessage(String message, Object[] param)
     {
       this.message = message;
       this.param = param;
     }
 
+    /**
+     * Returns a string representation of the message (useful for debugging).
+     *
+     * @return the string.
+     */
     public String toString ()
     {
       StringBuffer b = new StringBuffer();

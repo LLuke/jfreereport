@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,14 +23,21 @@
  * --------------------
  * ExceptionDialog.java
  * --------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: ExceptionDialog.java,v 1.11 2002/11/29 12:07:29 mungady Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: ExceptionDialog.java,v 1.12 2002/12/02 17:44:50 taqua Exp $
  *
  * Changes
  * -------
  * 30-May-2002 : Initial version
  * 09-Jun-2002 : Documentation
+ * 10-Dec-2002 : Minor Javadoc updates (DG);
+ *
  */
+
 package com.jrefinery.report.util;
 
 import javax.swing.AbstractAction;
@@ -55,13 +62,11 @@ import java.io.StringWriter;
  * The exception dialog is used to display an exception and the exceptions stacktrace to
  * the user.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ExceptionDialog extends JDialog
 {
-  /**
-   * OK action.
-   */
+  /** OK action. */
   private class OKAction extends AbstractAction
   {
     /**

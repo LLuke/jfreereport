@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,14 +23,20 @@
  * ---------------
  * KeyedQueue.java
  * ---------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: KeyedQueue.java,v 1.9 2002/11/07 21:45:29 taqua Exp $
  *
  * Changes
  * -------
  * 20-May-2002 : Initial version
+ * 10-Dec-2002 : Minor Javadoc updates (DG);
+ *
  */
+
 package com.jrefinery.report.util;
 
 import java.io.Serializable;
@@ -41,7 +47,7 @@ import java.util.LinkedList;
  * A keyed queue is a hashtable like structure which will store a certain number of
  * elements. If the defined element size is exceeded, the firstly stored element gets removed.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class KeyedQueue implements Serializable, Cloneable
 {

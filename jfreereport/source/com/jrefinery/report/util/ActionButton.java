@@ -28,13 +28,16 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ActionButton.java,v 1.7 2002/11/07 21:45:28 taqua Exp $
+ * $Id: ActionButton.java,v 1.8 2002/12/05 16:48:12 mungady Exp $
  *
  * ChangeLog
  * ---------
  * 30-Aug-2002 : Initial version
  * 01-Sep-2002 : Documentation
+ * 10-Dec-2002 : Minor Javadoc updates (DG);
+ *
  */
+
 package com.jrefinery.report.util;
 
 import javax.swing.Action;
@@ -48,7 +51,7 @@ import java.beans.PropertyChangeListener;
  * The ActionButton is used to connect an Action and its properties to a Button. This functionality
  * is already implemented in JDK 1.3 but needed for JDK 1.2.2 compatibility.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ActionButton extends JButton
 {
@@ -77,11 +80,9 @@ public class ActionButton extends JButton
         {
           setEnabled(getAction().isEnabled());
         }
-        else if (event.getPropertyName().equals
-            (Action.SMALL_ICON))
+        else if (event.getPropertyName().equals(Action.SMALL_ICON))
         {
-          setIcon((Icon) getAction().getValue
-              (Action.SMALL_ICON));
+          setIcon((Icon) getAction().getValue(Action.SMALL_ICON));
         }
         else if (event.getPropertyName().equals(Action.NAME))
         {
@@ -97,8 +98,7 @@ public class ActionButton extends JButton
         Action ac = getAction();
         if (event.getPropertyName().equals (ActionDowngrade.ACCELERATOR_KEY))
         {
-          KeyStroke oldVal = (KeyStroke)
-              event.getOldValue();
+          KeyStroke oldVal = (KeyStroke) event.getOldValue();
           if (oldVal != null)
           {
             unregisterKeyboardAction
@@ -139,7 +139,7 @@ public class ActionButton extends JButton
   /**
    * Creates a Button and set the given text as label.
    *
-   * @param text the label for the new button
+   * @param text  the label for the new button.
    */
   public ActionButton(String text)
   {
@@ -149,8 +149,8 @@ public class ActionButton extends JButton
   /**
    * Creates an ActionButton and sets the given text and icon on the button.
    *
-   * @param text  the label for the new button
-   * @param icon  the icon for the button
+   * @param text  the label for the new button.
+   * @param icon  the icon for the button.
    */
   public ActionButton(String text, Icon icon)
   {
@@ -159,15 +159,14 @@ public class ActionButton extends JButton
 
 
   /**
-   * Creates an ActionButton and sets the given icon on the button
+   * Creates an ActionButton and sets the given icon on the button.
    *
-   * @param icon the icon for the button
+   * @param icon  the icon for the button.
    */
   public ActionButton(Icon icon)
   {
     super(icon);
   }
-
 
   /**
    * Nreates an ActionButton and assigns the given action with the button.
@@ -178,7 +177,6 @@ public class ActionButton extends JButton
   {
     setAction(action);
   }
-
 
   /**
    * Returns the assigned action or null if no action has been assigned.
@@ -256,8 +254,7 @@ public class ActionButton extends JButton
       newAction.addPropertyChangeListener(getPropertyChangeHandler());
 
       setText((String) (newAction.getValue(Action.NAME)));
-      setToolTipText((String) (newAction.getValue
-          (Action.SHORT_DESCRIPTION)));
+      setToolTipText((String) (newAction.getValue(Action.SHORT_DESCRIPTION)));
       setIcon((Icon) newAction.getValue(Action.SMALL_ICON));
       setEnabled(action.isEnabled());
 

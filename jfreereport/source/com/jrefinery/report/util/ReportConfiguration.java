@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.15 2002/12/10 22:27:42 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.16 2002/12/10 23:02:56 taqua Exp $
  *
  * Changes
  * -------
@@ -145,7 +145,8 @@ import java.util.Properties;
  * To encode Strings which contain the 'Euro' symbol, use the encoding "iso-8859-15", for
  * polish Strings, the encoding "iso-8859-2" is suitable. If you want to encode chinese
  * characters, try "GB2312". A complete list of encodings can be found
- * at <a href="http://www.iana.org/assignments/character-sets">http://www.iana.org/assignments/character-sets</a>
+ * at <a href="http://www.iana.org/assignments/character-sets"
+ * >http://www.iana.org/assignments/character-sets</a>
  * For a complete set of supported encodings, you will also need the international version
  * of the JDK (the bigger one :)).
  * <p>
@@ -197,13 +198,15 @@ import java.util.Properties;
  * <p>Should the PDF Security setting allow access for screenreaders by default.
  * ScreenReader may help blind people to read your document, but I may also open a gate for
  * automated replication of your documents contents. As today every OCR program is also able to
- * capture the contents of PDF-Files, it is safe to say "true" here to allow access for screenreaders.
+ * capture the contents of PDF-Files, it is safe to say "true" here to allow access for
+ * screenreaders.
  * But as we are paranoid, this property defaults to "false" if not defined otherwise.
  * <li>com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.AllowAssembly
  * Should the PDF Security setting allow re(assembly) of the document by default
  * This property defaults to "false".
  * <li>com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.AllowDegradedPrinting
- * <p>Should the PDF Security setting allow low quality printing of the document's contents by default
+ * <p>Should the PDF Security setting allow low quality printing of the document's contents by
+ * default
  * If you disabled printing, this property defines whether the reader of your document may print
  * a low-quality (draft) version of your document. If you enabled printing, the users right
  * to print a high-quality version also includes the right to print the low-level version of the
@@ -584,7 +587,8 @@ public class ReportConfiguration
    */
   public boolean isWarnInvalidColumns()
   {
-    return getConfigProperty(WARN_INVALID_COLUMNS , WARN_INVALID_COLUMNS_DEFAULT).equalsIgnoreCase("true");
+    return getConfigProperty(WARN_INVALID_COLUMNS ,
+        WARN_INVALID_COLUMNS_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**
@@ -606,7 +610,8 @@ public class ReportConfiguration
    */
   public boolean isPrintOperationComment()
   {
-    return getConfigProperty(PRINT_OPERATION_COMMENT , PRINT_OPERATION_COMMENT_DEFAULT).equalsIgnoreCase("true");
+    return getConfigProperty(PRINT_OPERATION_COMMENT,
+        PRINT_OPERATION_COMMENT_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**

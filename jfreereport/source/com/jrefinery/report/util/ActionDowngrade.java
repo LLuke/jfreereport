@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ActionDowngrade.java,v 1.3 2002/11/07 21:45:28 taqua Exp $
+ * $Id: ActionDowngrade.java,v 1.4 2002/12/05 16:48:12 mungady Exp $
  *
  * ChangeLog
  * ---------
@@ -40,7 +40,7 @@ import javax.swing.Action;
 /**
  * Defines the 2 new constants introduced by Sun in version 1.3 of the J2SDK.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public interface ActionDowngrade extends Action
 {

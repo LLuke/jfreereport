@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.3 2002/12/04 16:21:33 mungady Exp $
+ * $Id: TableModelInfo.java,v 1.2 2002/12/05 16:48:12 mungady Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,8 @@ public class TableModelInfo
     System.out.println ("Tablemodel contains " + mod.getRowCount() + " rows.");
     for (int i = 0; i < mod.getColumnCount(); i++)
     {
-      System.out.println ("Column: " + i + " Name = " + mod.getColumnName(i) + "; DataType = " + mod.getColumnClass(i));
+      System.out.println ("Column: " + i + " Name = " + mod.getColumnName(i) + "; DataType = "
+                          + mod.getColumnClass(i));
     }
 
     System.out.println ("Checking the data inside");
@@ -73,7 +74,8 @@ public class TableModelInfo
         }
         if (c.equals(Object.class))
         {
-          System.out.println ("ValueAt (" + rows + ", " + i + ") is in a generic column and is of type " + value.getClass());
+          System.out.println ("ValueAt (" + rows + ", " + i + ") is in a generic column and is of "
+                              + "type " + value.getClass());
         }
       }
     }

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,13 +23,21 @@
  * ------------------------
  * CloseableTableModel.java
  * ------------------------
- * $Id$
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: CloseableTableModel.java,v 1.5 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
  * 09-Jun-2002 : Initial version to correct the fact, that resultsets are not closed when
  *               the tablemodel is no longer in use.
+ * 10-Dec-2002 : Minor Javadoc updates (DG);
+ *
  */
+
 package com.jrefinery.report.util;
 
 import javax.swing.table.TableModel;
@@ -38,7 +46,7 @@ import javax.swing.table.TableModel;
  * Extends the TableModel interface to be closeable. SQLResultSets need to be closed for
  * instance.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public interface CloseableTableModel extends TableModel
 {

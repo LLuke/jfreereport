@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,17 @@
  * ---------------
  * StringUtil.java
  * ---------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: StringUtil.java,v 1.3 2002/11/29 12:07:29 mungady Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: StringUtil.java,v 1.4 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes
  * -------
+ * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
+ *
  */
 
 package com.jrefinery.report.util;
@@ -36,31 +41,34 @@ package com.jrefinery.report.util;
 /**
  * String utility functions.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class StringUtil
 {
   /**
-   * Helper functions to query a strings start portion. The comparison is case
-   * insensitive.
+   * Helper functions to query a strings start portion. The comparison is case insensitive.
    *
-   * @see String#startsWith
-   * @return true, if the string starts with the given startposition.
+   * @param base  the base string.
+   * @param start  the starting text.
+   *
+   * @return true, if the string starts with the given starting text.
    */
   public static boolean startsWithIgnoreCase(String base, String start)
   {
     if (base.length() < start.length())
+    {
       return false;
-
+    }
     return base.regionMatches(true, 0, start, 0, start.length());
   }
 
   /**
-   * Helper functions to query a strings end portion. The comparison is case
-   * insensitive.
+   * Helper functions to query a strings end portion. The comparison is case insensitive.
    *
-   * @see String#endsWith
-   * @return true, if the string ends with the given endString.
+   * @param base  the base string.
+   * @param start  the starting text.
+   *
+   * @return true, if the string ends with the given ending text.
    */
   public static boolean endsWithIgnoreCase(String base, String end)
   {
