@@ -1,7 +1,7 @@
 /**
- * =======================================
- * JFreeReport : a free Java report libary
- * =======================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.1 2002/11/29 11:54:48 mungady Exp $
+ * $Id: OpenSourceDemo.java,v 1.2 2002/12/02 17:16:56 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.ui.ApplicationFrame;
 import com.jrefinery.ui.RefineryUtilities;
-
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -65,20 +64,22 @@ import java.net.URL;
  *
  * @author David Gilbert
  */
-public class OpenSourceDemo extends ApplicationFrame implements ActionListener {
+public class OpenSourceDemo extends ApplicationFrame implements ActionListener 
+{
 
     /** The data for the report. */
-    protected TableModel data;
+    private TableModel data;
 
     /** The report (read from OpenSourceDemo.xml template). */
-    protected JFreeReport report;
+    private JFreeReport report;
 
     /**
      * Constructs the demo application.
      *
      * @param title  the frame title.
      */
-    public OpenSourceDemo(String title) {
+    public OpenSourceDemo(String title) 
+    {
         super(title);
         setJMenuBar(createMenuBar());
         setContentPane(createContent());
@@ -89,7 +90,8 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener {
      *
      * @return the menu bar.
      */
-    public JMenuBar createMenuBar() {
+    public JMenuBar createMenuBar() 
+    {
         JMenuBar mb = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
 
@@ -113,7 +115,8 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener {
      *
      * @return a panel containing the basic user interface.
      */
-    public JPanel createContent() {
+    public JPanel createContent() 
+    {
         JPanel content = new JPanel(new BorderLayout());
         content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
         this.data = new OpenSourceProjects();
@@ -128,12 +131,15 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener {
      *
      * @param e  the event.
      */
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) 
+    {
         String command = e.getActionCommand();
-        if (command.equals("PREVIEW")) {
+        if (command.equals("PREVIEW")) 
+        {
             previewReport();
         }
-        else if (command.equals("EXIT")) {
+        else if (command.equals("EXIT")) 
+        {
             dispose();
             System.exit(0);
         }
@@ -142,7 +148,8 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener {
     /**
      * Displays a print preview screen for the sample report.
      */
-    protected void previewReport() {
+    protected void previewReport() 
+    {
 
       try
       {
@@ -152,7 +159,8 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener {
             this.report.setData(this.data);
         }
 
-        if (this.report!=null) {
+        if (this.report != null) 
+        {
             PreviewFrame frame = new PreviewFrame(this.report);
             frame.setToolbarFloatable(true);
             frame.pack ();
@@ -174,14 +182,17 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener {
      *
      * @return a report.
      */
-    private JFreeReport parseReport(URL templateURL) {
+    private JFreeReport parseReport(URL templateURL) 
+    {
 
         JFreeReport result = null;
         ReportGenerator generator = ReportGenerator.getInstance();
-        try {
+        try 
+        {
             result = generator.parseReport(templateURL);
         }
-        catch (Exception e) {
+        catch (Exception e) 
+        {
             System.out.println(e.toString());
 
         }
@@ -194,7 +205,8 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener {
      *
      * @param args  ignored.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         OpenSourceDemo frame = new OpenSourceDemo("Open Source Demo");
         frame.pack();
         RefineryUtilities.centerFrameOnScreen(frame);
