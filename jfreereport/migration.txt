@@ -120,3 +120,28 @@ JFreeReport object replaced by ReportDefinition object:
   instead of the JFreeReport object. It is sufficient to change the object type and
   to recompile the function.
 
+Groups are no longer editiable during the report processing. Any attemp to add a
+  new group to the list will result in an exception.
+
+The group fields are now enforced to have a subgroup relationship. This means, that
+  the child group must contain all fields of the direct parent group. For a particualar
+  child group, the evaluation of "group.getFields().containsAll (parent.getFields())"
+  must return true for all parent groups.
+
+  The order of the groups does not matter.
+
+  Examples:
+    Valid:
+        GROUP 0 = {}  // empty fields are allowed, this means the group is the parent
+                      // of all other groups
+        Group 1 = {FIELD_A}
+        Group 2 = {FIELD_A, FIELD_B}
+
+    Invalid:
+        GROUP 0 = {}
+        Group 1 = {FIELD_A, FIELD_D}
+        Group 2 = {FIELD_A, FIELD_B}
+                      // There is no way to form a subgroup relationship between Group 1
+                      // and Group 2. Group 1 does not contain all fields of Group 2 and
+                      // neither does Group2 contain all fields from Group 1.
+                          

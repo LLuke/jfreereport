@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.5 2003/04/09 15:49:50 mungady Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.6 2003/04/11 14:11:46 taqua Exp $
  *
  * Changes
  * -------
@@ -218,10 +218,6 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
 
       Content content = contentFactory.createContentForElement(e, eli, getLayoutSupport());
       Rectangle2D contentBounds = content.getMinimumContentSize();
-      Log.debug ("Dynamic Content : " + content);
-      Log.debug ("Dynamic element : " + e);
-      Log.debug ("Dynamic max     : " + conBounds);
-      Log.debug ("Dynamic result  : " + contentBounds);
       if (contentBounds == null)
       {
         return new FloatDimension();

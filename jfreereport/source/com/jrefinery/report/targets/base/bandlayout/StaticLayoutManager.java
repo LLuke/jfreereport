@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.29 2003/04/09 15:49:56 mungady Exp $
+ * $Id: StaticLayoutManager.java,v 1.30 2003/04/11 14:11:47 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,6 @@ import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
@@ -90,7 +89,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
 
   /** A cache. */
   private LayoutManagerCache cache;
-  
+
   /** A cache key. */
   private LayoutSearchKey cacheKey;
 
@@ -247,7 +246,6 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
           "Layouting failed, getPreferredSize returned negative values.");
     }
 
-    Log.debug ("PreferredSize: " + retval);
     if (isCachable)
     {
       cache.setPrefSize(cacheKey, e, retval);
@@ -525,7 +523,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       absDim = correctDimension(uncorrectedSize, parentDim, absDim);
       //Log.debug ("CBounds: Element: " + e.getName() + " Bounds: " + size);
 
-      absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim, 
+      absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim,
                             absPos);
 
       // here apply the maximum bounds ...
@@ -590,7 +588,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
 
   /**
    * Clears any cached items used by the layout manager.
-   * 
+   *
    * @param container  the container band.
    */
   public synchronized void invalidateLayout(Band container)

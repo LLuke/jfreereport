@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.19 2003/04/09 15:47:30 mungady Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.20 2003/04/11 14:11:44 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -64,6 +64,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   /** The function value. */
   private boolean trigger;
   private boolean warned;
+  private boolean pagebreak;
 
   /**
    * Default constructor.
@@ -71,6 +72,18 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   public ElementVisibilitySwitchFunction()
   {
     warned = false;
+  }
+
+  /**
+   * Receives notification that a page has started.
+   *
+   * @param event  the event.
+   */
+  public void pageStarted(ReportEvent event)
+  {
+    pagebreak = false;
+    trigger = (getInitialTriggerValue()); // docmark
+    triggerVisibleState(event);
   }
 
   /**
@@ -83,7 +96,8 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    */
   public void itemsStarted(ReportEvent event)
   {
-    trigger = (getInitialTriggerValue() == false);
+    pagebreak = false;
+    trigger = (getInitialTriggerValue()); // docmark
   }
 
   /**
@@ -94,6 +108,23 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    * @param event  the report event.
    */
   public void itemsAdvanced(ReportEvent event)
+  {
+    if (pagebreak)
+    {
+      trigger = (getInitialTriggerValue()); // docmark
+      pagebreak = false;
+    }
+    triggerVisibleState(event);
+  }
+
+  /**
+   * Triggers the visible state of the specified itemband element. If the named element
+   * was visible at the last call, it gets now invisible and vice versa. This creates
+   * the effect, that an element is printed every other line.
+   *
+   * @param event the current report event.
+   */
+  private void triggerVisibleState(ReportEvent event)
   {
     trigger = (!trigger);
 
@@ -126,6 +157,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
     {
       throw new FunctionInitializeException("Element name must be specified");
     }
+    pagebreak = false;
   }
 
   /**

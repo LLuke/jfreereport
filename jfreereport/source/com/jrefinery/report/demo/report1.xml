@@ -4,9 +4,17 @@
 
 <report name="Sample Report 1" orientation="portrait" pageformat="LETTER" topmargin="10" leftmargin="10" bottommargin="10" rightmargin="10">
 
+  <!--
+    The configuration tag can be used to define initial values for the report configuration.
+    The report configuration defines several keys, which are read during the report
+    processing.
+    -->
   <configuration>
     <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Encoding">iso-8859-15</property>
     <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Author">Darkwing Duck</property>
+    <!--
+      Enabling the following lines would limit the size of the PreviewDialog.
+      -->
     <!--
         <property name="com.jrefinery.report.preview.PreferredWidth">640</property>
         <property name="com.jrefinery.report.preview.PreferredHeight">480</property>
@@ -16,8 +24,8 @@
   </configuration>
 
   <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="18">
-    <label x="0" y="0" width="100%" height="48" fsunderline="true" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
-    <label x="0" y="0" width="100%" height="48" vertical-alignment="bottom" alignment="center">Sample Thai chars: &#3648;&#3614;&#3636;&#3656;&#3617;, &#3621;&#3641;&#3585;&#3588;&#3657;&#3634;</label>
+    <label x="0" y="0" width="100%" height="18" fsunderline="true" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
+    <label x="0" y="18" width="100%" height="30" vertical-alignment="bottom" alignment="center">Sample Thai chars: &#3648;&#3614;&#3636;&#3656;&#3617;, &#3621;&#3641;&#3585;&#3588;&#3657;&#3634;</label>
   </reportheader>
 
   <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
@@ -27,7 +35,7 @@
   <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
     <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
     <date-field x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" fieldname="report.date"/>
-    <line x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0"/>
+    <line x1="0" y1="18" x2="0" y2="18" color="#CFCFCF" weight="2.0"/>
   </pageheader>
 
   <pagefooter height="18">
