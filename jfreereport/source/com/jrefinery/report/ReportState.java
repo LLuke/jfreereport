@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.30 2002/09/05 09:34:53 taqua Exp $
+ * $Id: ReportState.java,v 1.31 2002/09/05 17:25:31 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -229,25 +229,30 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
       GroupHeader header = group.getHeader ();
 
-      if (handledPagebreak == false
-              && header.hasPageBreakBeforePrint ()
-              && this.getCurrentDataItem () != BEFORE_FIRST_ROW)
+      if (handledPagebreak == false && header.hasPageBreakBeforePrint () &&
+          ((this.getCurrentGroupIndex() == 1 && this.getCurrentPage() == 1) == false)
+      )
       {
         handledPagebreak = true;
         rpc.setPageDone ();
       }
       else
+      {
       // there is a header, test if there is enough space to print it
         if (rpc.isSpaceFor (header))
         {
           // enough space, fire the events and proceed to PostGroupHeader
           ReportEvent event = new ReportEvent (this);
           this.fireGroupStartedEvent (event);
-          //header.populateElements (this);
           this.getDataRowConnector ().setDataRowBackend (this.getDataRowBackend ());
           rpc.printGroupHeader (header);
           return new PostGroupHeader (this);
         }
+      else
+        {
+          handledPagebreak = true;
+        }
+      }
 
       // Not enough space to print the header. Undo the GroupChange and wait until the
       // pagebreak has been done. After this the engine may return here to attemp another
@@ -921,7 +926,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     {
       return true;
     }
-    if (getCurrentPage () != oldstate.getCurrentPage () && this.getClass() != oldstate.getClass())
+    if (getCurrentPage () != oldstate.getCurrentPage () && this.getClass().equals(oldstate.getClass()))
             ///*|| (oldstate.getClass ().equals (getClass ()))*/)
     {
       return true;

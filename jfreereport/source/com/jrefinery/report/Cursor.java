@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Cursor.java,v 1.10 2002/08/08 15:28:37 taqua Exp $
+ * $Id: Cursor.java,v 1.11 2002/09/05 08:31:51 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -153,5 +153,19 @@ public class Cursor implements Cloneable, Serializable
   public Object clone () throws CloneNotSupportedException
   {
     return super.clone ();
+  }
+
+  public String toString()
+  {
+    StringBuffer b = new StringBuffer();
+    b.append("Cursor={y=");
+    b.append(y);
+    b.append(", pageleft=");
+    b.append(pageLeft);
+    b.append(", pagebottom=");
+    b.append(pageBottom);
+    b.append("}");
+
+    return b.toString();
   }
 }
