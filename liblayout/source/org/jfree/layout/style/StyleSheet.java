@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheet.java,v 1.1 2004/08/21 18:58:20 taqua Exp $
+ * $Id: StyleSheet.java,v 1.2 2004/10/24 23:13:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,11 +38,14 @@
 
 package org.jfree.layout.style;
 
-public interface StyleSheet
+import java.io.Serializable;
+
+public interface StyleSheet extends Cloneable, Serializable
 {
   public String getName();
   public Object getStyleProperty(StyleKey key);
   public Object getStyleProperty(StyleKey key, Object defaultValue);
   public void setStyleProperty(StyleKey key, Object value);
   public StyleKey[] getDefinedKeys();
+  public Object clone() throws CloneNotSupportedException;
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Boot.java,v 1.6 2003/11/23 16:50:45 taqua Exp $
+ * $Id: LayoutSupport.java,v 1.1 2004/08/21 18:58:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,7 +39,6 @@
 package org.jfree.layout.peer;
 
 import org.jfree.layout.style.FontDefinition;
-import org.jfree.layout.peer.view.ViewFactory;
 
 /**
  * The LayoutSupport contains all methods required to estaminate sizes for the
@@ -112,5 +111,5 @@ public interface LayoutSupport
 
   public float getHeight ();
 
-  public ViewFactory getViewFactory();
+ // public ViewFactory getViewFactory();
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicStyleSheet.java,v 1.1 2004/08/21 18:58:20 taqua Exp $
+ * $Id: BasicStyleSheet.java,v 1.2 2004/10/24 23:13:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -79,5 +79,11 @@ public class BasicStyleSheet implements StyleSheet
   public StyleKey[] getDefinedKeys ()
   {
     return (StyleKey[]) backend.keySet().toArray(new StyleKey[backend.size()]);
+  }
+
+  public Object clone ()
+          throws CloneNotSupportedException
+  {
+    return super.clone();
   }
 }
