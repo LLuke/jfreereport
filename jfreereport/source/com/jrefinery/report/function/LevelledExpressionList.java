@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.7 2003/03/26 10:49:22 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.8 2003/04/05 18:57:11 taqua Exp $
  *
  * Changes
  * -------
@@ -68,6 +68,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
   /** The level. */
   private int level;
 
+  private int[] levels;
   /**
    * Creates a new list.
    *
@@ -80,6 +81,22 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
     errorList = new ArrayList();
     initializeExpressions(ec);
     initializeFunctions(fc);
+
+    // copy all levels from the collections to the cache ...
+    // we assume, that the collections do not change anymore!
+    ArrayList al = new ArrayList();
+    Iterator it = expressionList.getLevelsDescending();
+    while (it.hasNext())
+    {
+      Integer level = (Integer) it.next();
+      al.add (level);
+    }
+    levels = new int[al.size()];
+    for (int i = 0; i < levels.length; i++)
+    {
+      Integer level = (Integer) al.get(i);
+      levels[i] = level.intValue();
+    }
   }
 
   /**
@@ -95,15 +112,14 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
 
     firePrepareEvent(event);
 
-    Iterator it = expressionList.getLevelsDescending();
-    while (it.hasNext())
+    for (int i = 0; i < levels.length; i++)
     {
-      Integer level = (Integer) it.next();
-      if (level.intValue() < getLevel())
+      int level = levels[i];
+      if (level < getLevel())
       {
         break;
       }
-      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level);
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
@@ -150,15 +166,14 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
 
     firePrepareEvent(event);
 
-    Iterator it = expressionList.getLevelsDescending();
-    while (it.hasNext())
+    for (int i = 0; i < levels.length; i++)
     {
-      Integer level = (Integer) it.next();
-      if (level.intValue() < getLevel())
+      int level = levels[i];
+      if (level < getLevel())
       {
         break;
       }
-      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level);
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
@@ -199,19 +214,15 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void pageStarted(ReportEvent event)
   {
-    clearError();
-
-    firePrepareEvent(event);
-
-    Iterator it = expressionList.getLevelsDescending();
-    while (it.hasNext())
+    // this is an internal event, don't fire prepare or clear the errors.
+    for (int i = 0; i < levels.length; i++)
     {
-      Integer level = (Integer) it.next();
-      if (level.intValue() < getLevel())
+      int level = levels[i];
+      if (level < getLevel())
       {
         break;
       }
-      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level);
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
@@ -252,19 +263,15 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void pageFinished(ReportEvent event)
   {
-    clearError();
-
-    firePrepareEvent(event);
-
-    Iterator it = expressionList.getLevelsDescending();
-    while (it.hasNext())
+    // this is an internal event, don't fire prepare or clear the errors.
+    for (int i = 0; i < levels.length; i++)
     {
-      Integer level = (Integer) it.next();
-      if (level.intValue() < getLevel())
+      int level = levels[i];
+      if (level < getLevel())
       {
         break;
       }
-      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level);
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
@@ -311,15 +318,14 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
 
     firePrepareEvent(event);
 
-    Iterator it = expressionList.getLevelsDescending();
-    while (it.hasNext())
+    for (int i = 0; i < levels.length; i++)
     {
-      Integer level = (Integer) it.next();
-      if (level.intValue() < getLevel())
+      int level = levels[i];
+      if (level < getLevel())
       {
         break;
       }
-      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level);
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
@@ -365,15 +371,14 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
     clearError();
     firePrepareEvent(event);
 
-    Iterator it = expressionList.getLevelsDescending();
-    while (it.hasNext())
+    for (int i = 0; i < levels.length; i++)
     {
-      Integer level = (Integer) it.next();
-      if (level.intValue() < getLevel())
+      int level = levels[i];
+      if (level < getLevel())
       {
         break;
       }
-      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level);
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
@@ -419,15 +424,14 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
     clearError();
     firePrepareEvent(event);
 
-    Iterator it = expressionList.getLevelsDescending();
-    while (it.hasNext())
+    for (int i = 0; i < levels.length; i++)
     {
-      Integer level = (Integer) it.next();
-      if (level.intValue() < getLevel())
+      int level = levels[i];
+      if (level < getLevel())
       {
         break;
       }
-      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level);
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
@@ -473,15 +477,14 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
     clearError();
     firePrepareEvent(event);
 
-    Iterator it = expressionList.getLevelsDescending();
-    while (it.hasNext())
+    for (int i = 0; i < levels.length; i++)
     {
-      Integer level = (Integer) it.next();
-      if (level.intValue() < getLevel())
+      int level = levels[i];
+      if (level < getLevel())
       {
         break;
       }
-      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level);
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
@@ -527,15 +530,14 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
     clearError();
     firePrepareEvent(event);
 
-    Iterator it = expressionList.getLevelsDescending();
-    while (it.hasNext())
+    for (int i = 0; i < levels.length; i++)
     {
-      Integer level = (Integer) it.next();
-      if (level.intValue() < getLevel())
+      int level = levels[i];
+      if (level < getLevel())
       {
         break;
       }
-      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level);
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
@@ -581,15 +583,14 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
     clearError();
     firePrepareEventLayoutListener(event);
 
-    Iterator it = expressionList.getLevelsDescending();
-    while (it.hasNext())
+    for (int i = 0; i < levels.length; i++)
     {
-      Integer level = (Integer) it.next();
-      if (level.intValue() < getLevel())
+      int level = levels[i];
+      if (level < getLevel())
       {
         break;
       }
-      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level);
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
@@ -617,15 +618,16 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void reportDone(ReportEvent event)
   {
-    Iterator it = expressionList.getLevelsDescending();
-    while (it.hasNext())
+    clearError();
+    firePrepareEvent(event);
+    for (int i = 0; i < levels.length; i++)
     {
-      Integer level = (Integer) it.next();
-      if (level.intValue() < getLevel())
+      int level = levels[i];
+      if (level < getLevel())
       {
         break;
       }
-      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level);
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
@@ -809,8 +811,8 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
   public Object clone() throws CloneNotSupportedException
   {
     LevelledExpressionList ft = (LevelledExpressionList) super.clone();
-    ft.expressionList = (LevelList) expressionList.clone();
-    ft.expressionList.clear();
+    ft.expressionList = new LevelList(); // dont clone, too expensive ...
+    ft.levels = levels;
 
     int size = expressionList.size();
     for (int i = 0; i < size; i++)
@@ -904,6 +906,16 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
   }
 
   /**
+   * Returns true, if this list has detected at least one error in the last operation.
+   *
+   * @return true, if there were errors, false otherwise.
+   */
+  public boolean hasErrors ()
+  {
+    return errorList.size() != 0;
+  }
+
+  /**
    * Adds the error to the current list of errors.
    *
    * @param e the new exception that occured during the event dispatching.
@@ -923,15 +935,14 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
 
   protected void firePrepareEvent (ReportEvent event)
   {
-    Iterator it = expressionList.getLevelsDescending();
-    while (it.hasNext())
+    for (int i = 0; i < levels.length; i++)
     {
-      Integer level = (Integer) it.next();
-      if (level.intValue() < getLevel())
+      int level = levels[i];
+      if (level < getLevel())
       {
         break;
       }
-      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level);
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();
@@ -953,15 +964,14 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
 
   protected void firePrepareEventLayoutListener (ReportEvent event)
   {
-    Iterator it = expressionList.getLevelsDescending();
-    while (it.hasNext())
+    for (int i = 0; i < levels.length; i++)
     {
-      Integer level = (Integer) it.next();
-      if (level.intValue() < getLevel())
+      int level = levels[i];
+      if (level < getLevel())
       {
         break;
       }
-      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level);
       while (itLevel.hasNext())
       {
         Expression e = (Expression) itLevel.next();

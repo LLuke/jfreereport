@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManager.java,v 1.5 2003/03/26 10:49:22 taqua Exp $
+ * $Id: BandLayoutManager.java,v 1.6 2003/03/29 20:17:26 taqua Exp $
  *
  * Changes
  * -------
@@ -105,19 +105,4 @@ public interface BandLayoutManager
    * Clears any cached items used by the layout manager. Invalidates the layout.
    */  
   public void invalidateLayout(Band container);
-
-  /**
-   * Adds the specified component to the layout, the specified constraints are stored
-   * in the elements style sheet.
-   *
-   * @param e the element to be added to the layout manager.
-   */
-  public void addLayoutElement (Element e);
-
-  /**
-   * Removed the specified component from the layout.
-   *
-   * @param e the element to be removed from the layout manager.
-   */
-  public void removeLayoutElement (Element e);
 }

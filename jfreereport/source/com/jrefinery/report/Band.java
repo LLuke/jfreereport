@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.48 2003/03/30 21:22:56 taqua Exp $
+ * $Id: Band.java,v 1.49 2003/04/05 18:57:07 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -391,19 +391,38 @@ public class Band extends Element implements Serializable, Cloneable
   {
     Band b = (Band) super.clone();
     b.bandDefaults = (ElementStyleSheet) bandDefaults.clone();
-    b.allElements = new ArrayList(allElements.size());
-    b.allElements_cached = null;
-    
-    for (int i = 0; i < allElements.size(); i++)
-    {
-      Element e = (Element) allElements.get(i);
-      Element eC = (Element) e.clone();
-      b.allElements.add (eC);
-      eC.setParent(b);
-      eC.getStyle().removeDefaultParent(getBandDefaults());
-      eC.getStyle().addDefaultParent(b.getBandDefaults());
-    }
+    int elementSize = allElements.size();
+    b.allElements = new ArrayList(elementSize);
+    b.allElements_cached = new Element[elementSize];
 
+    ElementStyleSheet myBandDefaults = getBandDefaults();
+    ElementStyleSheet cloneBandDefaults = b.getBandDefaults();
+
+    if (allElements_cached != null)
+    {
+      for (int i = 0; i < allElements_cached.length; i++)
+      {
+        Element eC = (Element) allElements_cached[i].clone();
+        b.allElements.add (eC);
+        b.allElements_cached[i] = eC;
+        eC.setParent(b);
+        eC.getStyle().removeDefaultParent(myBandDefaults);
+        eC.getStyle().addDefaultParent(cloneBandDefaults);
+      }
+    }
+    else
+    {
+      for (int i = 0; i < elementSize; i++)
+      {
+        Element e = (Element) allElements.get(i);
+        Element eC = (Element) e.clone();
+        b.allElements.add (eC);
+        b.allElements_cached[i] = eC;
+        eC.setParent(b);
+        eC.getStyle().removeDefaultParent(myBandDefaults);
+        eC.getStyle().addDefaultParent(cloneBandDefaults);
+      }
+    }
     return b;
   }
 

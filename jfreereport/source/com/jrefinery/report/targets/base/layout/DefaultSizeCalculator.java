@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.6 2003/02/27 10:35:39 mungady Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.7 2003/04/05 18:57:15 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ package com.jrefinery.report.targets.base.layout;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
+import java.util.WeakHashMap;
 
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.util.Log;
@@ -210,8 +211,31 @@ public class DefaultSizeCalculator implements SizeCalculator
     return frcDetector;
   }
 
+  /** A cache for the last sizecalculators. */
+  private static WeakHashMap cache;
+
   /** The font. */
   private FontDefinition font;
+
+  /**
+   * 
+   * @param font
+   * @return
+   */
+  public static DefaultSizeCalculator getDefaultSizeCalculator (FontDefinition font)
+  {
+    if (cache == null)
+    {
+      cache = new WeakHashMap();
+    }
+    DefaultSizeCalculator retval = (DefaultSizeCalculator) cache.get(font);
+    if (retval == null)
+    {
+      retval = new DefaultSizeCalculator(font);
+      cache.put(font, retval);
+    }
+    return retval;
+  }
 
   /**
    * Creates a new size calculator.

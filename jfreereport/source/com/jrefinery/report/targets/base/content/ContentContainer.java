@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentContainer.java,v 1.4 2003/03/18 22:35:21 taqua Exp $
+ * $Id: ContentContainer.java,v 1.5 2003/04/05 18:57:14 taqua Exp $
  *
  * Changes
  * -------
@@ -59,10 +59,9 @@ public class ContentContainer implements Content
    *
    * @param bounds  the content bounds.
    */
-  public ContentContainer (Rectangle2D bounds)
+  protected ContentContainer (Rectangle2D bounds)
   {
-    this.bounds = new Rectangle2D.Float();
-    this.bounds.setRect(bounds);
+    this.bounds = bounds;
     content = new ArrayList(5);
   }
 
@@ -84,7 +83,7 @@ public class ContentContainer implements Content
    */
   public Rectangle2D getBounds()
   {
-    return bounds.getBounds();
+    return bounds.getBounds2D();
   }
 
   /**
@@ -95,6 +94,19 @@ public class ContentContainer implements Content
   protected void setBounds (Rectangle2D bounds)
   {
     this.bounds.setRect(bounds);
+  }
+
+  /**
+   * Sets the bounds of the content.
+   *
+   * @param x
+   * @param y
+   * @param width
+   * @param height
+   */
+  protected void setBounds (float x, float y, float width, float height)
+  {
+    this.bounds.setRect(x, y, width, height);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultLayoutSupport.java,v 1.3 2003/02/26 13:57:59 mungady Exp $
+ * $Id: DefaultLayoutSupport.java,v 1.4 2003/03/26 10:49:23 taqua Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,9 @@
 package com.jrefinery.report.targets.base.layout;
 
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
-import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.base.content.ContentFactory;
 import com.jrefinery.report.targets.base.content.DefaultContentFactory;
+import com.jrefinery.report.targets.base.content.DrawableContentFactoryModule;
 import com.jrefinery.report.targets.base.content.ImageContentFactoryModule;
 import com.jrefinery.report.targets.base.content.ShapeContentFactoryModule;
 import com.jrefinery.report.targets.base.content.TextContentFactoryModule;
@@ -63,6 +62,18 @@ public class DefaultLayoutSupport implements LayoutSupport
   /** The content factory. */
   private DefaultContentFactory contentFactory;
 
+  /** A singleton instance of the DefaultLayoutSupport. */
+  private static DefaultLayoutSupport singleton;
+
+  public static DefaultLayoutSupport getDefaultInstance ()
+  {
+    if (singleton == null)
+    {
+      singleton = new DefaultLayoutSupport();
+    }
+    return singleton;
+  }
+
   /**
    * Default-Constructor.
    */
@@ -72,6 +83,7 @@ public class DefaultLayoutSupport implements LayoutSupport
     contentFactory.addModule(new TextContentFactoryModule());
     contentFactory.addModule(new ImageContentFactoryModule());
     contentFactory.addModule(new ShapeContentFactoryModule());
+    contentFactory.addModule(new DrawableContentFactoryModule());
   }
 
   /**
@@ -86,7 +98,7 @@ public class DefaultLayoutSupport implements LayoutSupport
    */
   public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException
   {
-    return new DefaultSizeCalculator(font);
+    return DefaultSizeCalculator.getDefaultSizeCalculator(font);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
@@ -37,11 +37,13 @@
  */
 package com.jrefinery.report.targets.base.bandlayout;
 
+import java.awt.geom.Dimension2D;
+import java.util.WeakHashMap;
+
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
-
-import java.awt.geom.Dimension2D;
-import java.util.Hashtable;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.util.Log;
 
 /**
  * A cache for a band layout manager. Not very usefull yet, maybe later.
@@ -53,7 +55,7 @@ public class LayoutManagerCache
   /**
    * Caches info for a single element.
    */
-  private class ElementCacheCarrier
+  private static class ElementCacheCarrier
   {
     /** The minimum size. */
     public Dimension2D minSize;
@@ -62,122 +64,142 @@ public class LayoutManagerCache
     public Dimension2D prefSize;
   }
 
-  /** The last band. */
-  private Band lastBand;
-  
+  private static int putCount;
+  private static int getCount;
+
   /** The element cache. */
-  private Hashtable elementCache;
+  private WeakHashMap elementCache;
 
-  /**
-   * Creates a new cache.
-   */
-  public LayoutManagerCache()
+  public LayoutManagerCache ()
   {
-    lastBand = null;
-    elementCache = new Hashtable();
+    elementCache = new WeakHashMap();
   }
 
-  /**
-   * Sets the current band.
-   *
-   * @param b  the band (null permitted).
-   */
-  public void setCurrentBand (Band b)
+  public Dimension2D getMinSize(LayoutCacheKey e)
   {
-    if (b == null)
+    ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
+    if (ec == null)
     {
-      lastBand = null;
-      elementCache.clear();
+      return null;
     }
-    else if (lastBand == null)
-    {
-      lastBand = b;
-    }
-    else if (lastBand.equals(b) == false)
-    {
-      elementCache.clear();
-      lastBand = b;
-    }
+    if (ec.minSize != null) getCount++;
+    return ec.minSize;
   }
 
-  /**
-   * Caches the minimum size for an element.
-   *
-   * @param e  the element.
-   * @param min  the minimum size.
-   */
-  public void putMinSize (Element e, Dimension2D min)
+  public Dimension2D getPrefSize(LayoutCacheKey e)
   {
-    ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get (e);
+    ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
+    if (ec == null)
+    {
+      return null;
+    }
+    if (ec.prefSize != null) getCount++;
+    return ec.prefSize;
+  }
+
+  public void setMinSize(LayoutCacheKey key, Element element, Dimension2D d)
+  {
+    if (element == null)
+    {
+      throw new NullPointerException("Element is null");
+    }
+
+    if (isCachable(element) == false)
+    {
+      return;
+    }
+    putCount++;
+
+    ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(key);
     if (ec == null)
     {
       ec = new ElementCacheCarrier();
-      elementCache.put(e, ec);
+      ec.minSize = d;
+      if (key.isSearchKey())
+      {
+        elementCache.put (new LayoutCacheKey(element, key.getParentDim()), ec);
+      }
+      else
+      {
+        elementCache.put(key, ec);
+      }
     }
-    ec.minSize = min;
-  }
-
-  /**
-   * Fetches the cached minimum size for an element.
-   * <p>
-   * This method returns <code>null</code> if the element record is not found in the cache.
-   *
-   * @param e  the element.
-   *
-   * @return  the minimum size.
-   */
-  public Dimension2D getMinSize (Element e)
-  {
-    ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
-    if (ec != null)
+    else
     {
-      return ec.minSize;
+      if (isCachable(element) == true)
+      {
+        ec.minSize = d;
+      }
     }
-    return null;
   }
 
-  /**
-   * Caches the preferred size for an element.
-   *
-   * @param e  the element.
-   * @param preferred  the minimum size.
-   */
-  public void putPrefSize (Element e, Dimension2D preferred)
+  public void setPrefSize(LayoutCacheKey key, Element element, Dimension2D d)
   {
-    ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get (e);
+    if (element == null)
+    {
+      throw new IllegalArgumentException("LayoutCacheKey: Element is null");
+    }
+
+    if (isCachable(element) == false)
+    {
+      return;
+    }
+    putCount++;
+
+    ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(key);
     if (ec == null)
     {
       ec = new ElementCacheCarrier();
-      elementCache.put(e, ec);
+      ec.prefSize = d;
+      if (key.isSearchKey())
+      {
+        elementCache.put (new LayoutCacheKey(element, key.getParentDim()), ec);
+      }
+      else
+      {
+        elementCache.put(key, ec);
+      }
     }
-    ec.prefSize = preferred;
-  }
-
-  /**
-   * Fetches the cached preferred size for an element.
-   * <p>
-   * This method returns <code>null</code> if the element record is not found in the cache.
-   *
-   * @param e  the element.
-   *
-   * @return  the preferred size.
-   */
-  public Dimension2D getPrefSize (Element e)
-  {
-    ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
-    if (ec != null)
+    else
     {
-      return ec.prefSize;
+      ec.prefSize = d;
     }
-    return null;
   }
 
-  /**
-   * Clears the cache.
-   */
-  public void flushCache()
+  public boolean isCachable(Element e)
   {
-    setCurrentBand(null);
+    // if the element is dynamic, then it is not cachable ...
+    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
+    {
+      return false;
+    }
+    if (e instanceof Band)
+    {
+      // search for dynamic elements within the element's children ...
+      // if there is no dynamic element, then the element is cachable ...
+      Element[] elements = ((Band) e).getElementArray();
+      for (int i = 0; i < elements.length; i++)
+      {
+        if (isCachable(elements[i]) == false)
+        {
+          return false;
+        }
+      }
+      return true;
+    }
+    else
+    {
+      return true;
+    }
   }
 
+  public void flush()
+  {
+    elementCache.clear();
+  }
+
+  public static void printResults()
+  {
+    Log.debug ("CacheResults: " + getCount + ":" + putCount);
+  }
 }

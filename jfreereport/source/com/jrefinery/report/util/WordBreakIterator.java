@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: WordBreakIterator.java,v 1.2 2003/03/18 22:35:27 taqua Exp $
  *
  * Changes
  * -------
@@ -36,11 +36,11 @@
  */
 package com.jrefinery.report.util;
 
-import java.text.BreakIterator;
-
 /**
  * Behaves similiar to BreakIterator.getWordInstance() but handles line break
  * delimeters as simple whitespaces.
+ * <p>
+ * This class is not synchronized.
  */
 public class WordBreakIterator
 {
@@ -54,7 +54,7 @@ public class WordBreakIterator
     setText(text);
   }
 
-  public synchronized int next()
+  public int next()
   {
     if (position == DONE) return DONE;
     if (text == null) return DONE;
@@ -115,39 +115,7 @@ public class WordBreakIterator
   public void setText(String text)
   {
     position = 0;
+    lastFound = 0;
     this.text = text.toCharArray();
   }
-
-  public static void main (String[] args)
-  {
-    String test = "The lazy \n fox \r\n jumps \nover the funny tree\n";
-
-    {
-      WordBreakIterator lbi = new WordBreakIterator(test);
-      int pos = lbi.next();
-      int oldPos = 0;
-      for (int i = 0; (i < pos) && (pos != DONE); i++)
-      {
-        System.out.println ("Text: " + test.substring(oldPos, pos));
-        oldPos = pos;
-        pos = lbi.next();
-      }
-    }
-
-    {
-      BreakIterator bi = BreakIterator.getWordInstance();
-      bi.setText(test);
-
-      int pos = bi.next();
-      int oldPos = 0;
-      for (int i = 0; (i < pos) && (pos != DONE); i++)
-      {
-        System.out.println ("Text: " + test.substring(oldPos, pos));
-        oldPos = pos;
-        pos = bi.next();
-      }
-    }
-
-  }
-
 }

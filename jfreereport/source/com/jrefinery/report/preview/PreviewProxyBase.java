@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.13 2003/02/28 12:02:38 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.14 2003/03/18 22:35:19 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -82,11 +81,10 @@ import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.xml.sax.SAXException;
-
 import com.jrefinery.layout.CenterLayout;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.targets.base.bandlayout.LayoutManagerCache;
 import com.jrefinery.report.action.AboutAction;
 import com.jrefinery.report.action.FirstPageAction;
 import com.jrefinery.report.action.GotoPageAction;
@@ -108,6 +106,7 @@ import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.WindowSizeLimiter;
 import com.jrefinery.report.util.Worker;
+import org.xml.sax.SAXException;
 
 /**
  * A preview proxy.
@@ -577,6 +576,7 @@ public class PreviewProxyBase extends JComponent
      */
     public void actionPerformed(ActionEvent e)
     {
+      LayoutManagerCache.printResults();
     }
   }
 

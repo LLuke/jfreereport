@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.7 2003/02/27 10:35:38 mungady Exp $
+ * $Id: TextLine.java,v 1.8 2003/04/05 18:57:15 taqua Exp $
  *
  * Changes
  * -------
@@ -89,6 +89,15 @@ public class TextLine implements Content
   }
 
   /**
+   * Returns the height of this text line.
+   * @return the height of the line of text.
+   */
+  public float getHeight ()
+  {
+    return (float) bounds.getHeight();
+  }
+
+  /**
    * Returns the content type, in this case 
    * {@link com.jrefinery.report.targets.base.content.ContentType#TEXT}.
    *
@@ -102,36 +111,37 @@ public class TextLine implements Content
   /**
    * Sets the content for the line of text.
    *
-   * @param content  the new string.
-   * @param maxBounds  the maximum bounds for the string.
+   * @param content the string for this line of text.
+   * @param x the x coordinates for the bounds.
+   * @param y the y coordinates for the bounds.
+   * @param width the width of the bounds.
+   * @param height the height of the bounds.
    */
-  public void setContent (String content, Rectangle2D maxBounds)
+  public void setContent (String content, float x, float y, float width, float height)
   {
-    if (maxBounds.getX () < 0)
+    if (x < 0)
     {
       throw new IllegalArgumentException();
     }
-    if (maxBounds.getY () < 0)
+    if (y < 0)
     {
       throw new IllegalArgumentException();
     }
-    if (maxBounds.getWidth () < 0)
+    if (width < 0)
     {
       throw new IllegalArgumentException();
     }
-    if (maxBounds.getHeight () < 0)
+    if (height < 0)
     {
       throw new IllegalArgumentException();
     }
 
     this.content = content;
-    float width = Math.min ((float) maxBounds.getWidth(),
-                             getSizeCalculator().getStringWidth(content, 0, content.length()));
-    float height = Math.min((float) maxBounds.getHeight(),
-                            getSizeCalculator().getLineHeight());
+    width = Math.min (width, getSizeCalculator().getStringWidth(content, 0, content.length()));
+    height = Math.min(height, getSizeCalculator().getLineHeight());
     // apply custom lineheight if greater than the current height ...
     height = Math.max (height, lineHeight);
-    bounds.setRect(maxBounds.getX(), maxBounds.getY(), width, height);
+    bounds.setRect(x, y, width, height);
   }
 
   /**
@@ -177,16 +187,6 @@ public class TextLine implements Content
   }
 
   /**
-   * Sets the bounds of the string.
-   *
-   * @param bounds  the bounds.
-   */
-  private void setBounds(Rectangle2D bounds)
-  {
-    this.bounds.setRect(bounds);
-  }
-
-  /**
    * Returns the content that fits in the specified bounds.
    * <p>
    * This is a single line, so either the content does fit the height, or it doesn't (in that
@@ -198,25 +198,27 @@ public class TextLine implements Content
    */
   public Content getContentForBounds(Rectangle2D bounds)
   {
-    Rectangle2D myBounds = getBounds();
-    Rectangle2D actBounds = myBounds.createIntersection(bounds);
-    if (actBounds.getHeight() < myBounds.getHeight())
+    Rectangle2D actBounds = this.bounds.createIntersection(bounds);
+    if (actBounds.getHeight() < this.bounds.getHeight())
     {
       return null;
     }
-    //double frontX = myBounds.getX();
-    float frontW = (float) (actBounds.getX() - myBounds.getX());
-
+    float frontW = (float) (actBounds.getX() - this.bounds.getX());
     int frontPos = calcStringLength (0, frontW);
     int endPos = calcStringLength(frontPos, (float) actBounds.getWidth());
 
     if (frontPos == endPos)
     {
+      // the line would not contain any text ...
       return null;
     }
 
     TextLine line = new TextLine(getSizeCalculator(), lineHeight);
-    line.setContent(content.substring(frontPos, endPos), actBounds);
+    line.setContent(content.substring(frontPos, endPos),
+                    (float) actBounds.getX(),
+                    (float) actBounds.getY(),
+                    (float) actBounds.getWidth(),
+                    (float) actBounds.getHeight());
     return line;
   }
 

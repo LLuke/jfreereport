@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.11 2003/03/18 17:14:43 taqua Exp $
+ * $Id: TextParagraph.java,v 1.12 2003/03/19 18:34:21 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jrefinery.report.targets.base.layout.SizeCalculator;
-import com.jrefinery.report.util.LineBreakIterator;
 import com.jrefinery.report.util.WordBreakIterator;
 
 /**
@@ -96,62 +95,56 @@ public class TextParagraph extends ContentContainer
    * Sets the content.
    *
    * @param content  the content.
-   * @param maxBounds  the max bounds.
+   * @param x the x coordinates for the bounds.
+   * @param y the y coordinates for the bounds.
+   * @param width the width of the bounds.
+   * @param height the height of the bounds.
    */
-  public void setContent(String content, Rectangle2D maxBounds)
+  public void setContent (String content, float x, float y, float width, float height)
   {
     if (content == null) 
     {
       throw new NullPointerException("MaxBounds must not be null");
     }
-    if (maxBounds == null) 
-    {
-      throw new NullPointerException("MaxBounds must not be null");
-    }
-    if (maxBounds.getX () < 0)
+    if (x < 0)
     {
       throw new IllegalArgumentException();
     }
-    if (maxBounds.getY () < 0) 
+    if (y < 0)
     {
       throw new IllegalArgumentException();
     }
-    if (maxBounds.getWidth () < 0) 
+    if (width < 0)
     {
       throw new IllegalArgumentException();
     }
-    if (maxBounds.getHeight () < 0) 
+    if (height < 0)
     {
       throw new IllegalArgumentException();
     }
 
-
-    float x = (float) maxBounds.getX();
-    float y = (float) maxBounds.getY();
     float usedHeight = 0;
 
-    int maxLines = (int) Math.floor(maxBounds.getHeight() / getSizeCalculator().getLineHeight());
+    int maxLines = (int) Math.floor(height / getSizeCalculator().getLineHeight());
+
     if (maxLines > 0)
     {
-      List l = breakLines(content, (float) maxBounds.getWidth(), maxLines);
+      List l = breakLines(content, width, maxLines);
       for (int i = 0; i < l.size(); i++)
       {
         // create Lines
         String lineText = (String) l.get(i);
         TextLine line = new TextLine(getSizeCalculator(), lineHeight);
-        float height = (float) maxBounds.getHeight();
-        line.setContent(lineText, 
-                        new Rectangle2D.Float(x, y + usedHeight,
-                                              (float) maxBounds.getWidth(), height - usedHeight));
-        usedHeight += line.getBounds().getHeight();
+        line.setContent(lineText, x,y,width,height);
+
+        usedHeight += line.getHeight();
         if (line.getBounds().getHeight() > 0)
         {
           addContentPart(line);
         }
       }
     }
-    setBounds(new Rectangle2D.Float((float) maxBounds.getX(), (float) maxBounds.getY(),
-                                     (float) maxBounds.getWidth(), usedHeight));
+    setBounds(x,y,width,usedHeight);
   }
 
   /**
@@ -190,7 +183,7 @@ public class TextParagraph extends ContentContainer
     // If there is only one line, don't cut the line yet. Perhaps we intruduce the strict
     // mode later, but without any visual editing it would be cruel to any report designer.
     WordBreakIterator breakit = new WordBreakIterator(mytext);
-    ArrayList returnLines = new ArrayList();
+    ArrayList returnLines = new ArrayList(5);
 
     int lineStartPos = 0;
     int lineLength = mytext.length();

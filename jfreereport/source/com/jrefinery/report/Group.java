@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.18 2002/12/06 18:05:41 taqua Exp $
+ * $Id: Group.java,v 1.19 2002/12/11 01:00:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -56,6 +56,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import com.jrefinery.report.util.Log;
+
 /**
  * A report group.  Reports can contain any number of (nested) groups.
  * The order of the fields is important. If the group does not contain
@@ -67,13 +69,16 @@ import java.util.List;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class Group implements Serializable, Cloneable
+public class Group implements Serializable, Cloneable, Comparable
 {
   /** The name of the group. */
   private String name;
 
   /** The fields that define the group (can be empty). */
   private ArrayList fields;
+
+  /** Cached fields. */
+  private String[] fieldsCached;
 
   /** The group header (optional). */
   private GroupHeader header;
@@ -187,6 +192,7 @@ public class Group implements Serializable, Cloneable
       throw new NullPointerException();
     }
     fields.clear();
+    fieldsCached = null;
     Iterator it = c.iterator();
     while (it.hasNext())
     {
@@ -210,6 +216,7 @@ public class Group implements Serializable, Cloneable
       throw new NullPointerException("Group.addField(...): name is null.");
     }
     fields.add(name);
+    fieldsCached = null;
   }
 
   /**
@@ -258,6 +265,7 @@ public class Group implements Serializable, Cloneable
   {
     Group g = (Group) super.clone();
     g.fields = (ArrayList) fields.clone();
+    g.fieldsCached = fieldsCached;
     g.footer = (GroupFooter) footer.clone();
     g.header = (GroupHeader) header.clone();
     return g;
@@ -267,12 +275,12 @@ public class Group implements Serializable, Cloneable
   /**
    * Returns true if this is the last item in the group, and false otherwise.
    *
-   * @param lastDataRow  the last data row.
-   * @param currentDataRow   the current data row.
+   * @param currentDataRow  the current data row.
+   * @param nextDataRow   the next data row.
    *
    * @return A flag indicating whether or not the current item is the last in its group.
    */
-  public boolean isLastItemInGroup(DataRowBackend lastDataRow, DataRowBackend currentDataRow)
+  public boolean isLastItemInGroup(DataRowBackend currentDataRow, DataRowBackend nextDataRow)
   {
     // return true if this is the last row in the model.
     if (currentDataRow.isLastRow())
@@ -282,26 +290,28 @@ public class Group implements Serializable, Cloneable
     else
     {
       // compare item and item+1, if any field differs, then item==last in group
-      boolean last = false;
-      String[] fieldArray = (String[]) fields.toArray(new String[fields.size()]);
-
-      for (int i = 0; i < fieldArray.length; i++)
+      if (fieldsCached == null)
       {
-        String field = fieldArray[i];
-        int column = currentDataRow.findColumn(field);
+        fieldsCached = (String[]) fields.toArray(new String[fields.size()]);
+      }
+
+      for (int i = 0; i < fieldsCached.length; i++)
+      {
+        String field = fieldsCached[i];
+        int column = nextDataRow.findColumn(field);
         if (column == -1)
         {
           continue;
         }
 
-        Object item1 = lastDataRow.get(column);
-        Object item2 = currentDataRow.get(column);
-        if (!(secureEquals(item1, item2)))
+        Object item1 = currentDataRow.get(column);
+        Object item2 = nextDataRow.get(column);
+        if (secureEquals(item1, item2) == false)
         {
           return true;
         }
       }
-      return last;
+      return false;
     }
   }
 
@@ -349,5 +359,59 @@ public class Group implements Serializable, Cloneable
     result = (name != null ? name.hashCode() : 0);
     result = 29 * result + (fields != null ? fields.hashCode() : 0);
     return result;
+  }
+
+  /**
+   * Compares two objects (required to be instances of the Group class).
+   * The group's field lists are compared, order of the fields does not
+   * matter.
+   *
+   * @param o  the to be compared object.
+   *
+   * @return an integer indicating the relative ordering of the two groups.
+   */
+  public int compareTo(Object o)
+  {
+    Group g = (Group) o;
+
+    /** Remove all element, which are in both lists, they are equal */
+    if (fields.size() == g.fields.size())
+    {
+      // both lists contain the same elements.
+      if (fields.containsAll(g.fields))
+      {
+        return 0;
+      }
+    }
+
+    if (fields.containsAll(g.fields))
+    {
+      // c2 contains all elements of c1, so c1 is subgroup of c2
+      return 1;
+    }
+    if (g.fields.containsAll(fields))
+    {
+      // c1 contains all elements of c2, so c2 is subgroup of c1
+      return -1;
+    }
+    // not compareable, invalid groups
+    // return 0;
+    throw new IllegalArgumentException("These groups are not comparable, they don't have any "
+                                       + "subgroup relation");
+  }
+
+  public String toString ()
+  {
+    StringBuffer b = new StringBuffer();
+    b.append("Group={Name='");
+    b.append(getName());
+    b.append("', fields=");
+    b.append(fields);
+    b.append(", header=");
+    b.append(header);
+    b.append(", footer=");
+    b.append(footer);
+    b.append("} ");
+    return b.toString();
   }
 }

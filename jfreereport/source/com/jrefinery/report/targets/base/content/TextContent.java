@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.10 2003/03/18 17:14:41 taqua Exp $
+ * $Id: TextContent.java,v 1.11 2003/03/19 16:04:16 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jrefinery.report.targets.base.layout.SizeCalculator;
-import com.jrefinery.report.targets.pageable.operations.TextOperationModule;
 import com.jrefinery.report.util.LineBreakIterator;
-import com.jrefinery.report.util.Log;
 
 /**
  * A container for text content. The content will be split into paragraphs.
@@ -70,7 +68,7 @@ public class TextContent extends ContentContainer
    */
   public TextContent(String value, float lineHeight, Rectangle2D bounds, SizeCalculator ot)
   {
-    super (bounds);
+    super ((Rectangle2D) bounds.clone());
     this.sizeCalculator = ot;
 
     float x = (float) bounds.getX();
@@ -85,8 +83,7 @@ public class TextContent extends ContentContainer
       for (int i = 0; i < paragraphs.size(); i++)
       {
         TextParagraph p = new TextParagraph(getSizeCalculator(), lineHeight);
-        p.setContent((String) paragraphs.get(i),
-                      new Rectangle2D.Float(x, y + usedHeight, w, h - usedHeight));
+        p.setContent((String) paragraphs.get(i),x, y + usedHeight, w, h - usedHeight);
         usedHeight += p.getBounds().getHeight();
         addContentPart(p);
       }
@@ -116,7 +113,9 @@ public class TextContent extends ContentContainer
 
     // check if empty content ... this case is easy ...
     if (text.length() == 0)
+    {
       return lines;
+    }
 
     LineBreakIterator iterator = new LineBreakIterator(text);
     int oldPos = 0;

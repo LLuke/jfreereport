@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FloatDimension.java,v 1.4 2003/01/22 19:38:29 taqua Exp $
+ * $Id: FloatDimension.java,v 1.5 2003/02/18 19:37:28 taqua Exp $
  *
  * Changes
  * -------
@@ -165,6 +165,27 @@ public class FloatDimension extends Dimension2D implements Cloneable, Serializab
   public String toString()
   {
     return getClass().getName() + ":={width=" + getWidth() + ", height=" + getHeight() + "}";
+  }
+
+  public boolean equals(Object o)
+  {
+    if (this == o) return true;
+    if (!(o instanceof FloatDimension)) return false;
+
+    final FloatDimension floatDimension = (FloatDimension) o;
+
+    if (height != floatDimension.height) return false;
+    if (width != floatDimension.width) return false;
+
+    return true;
+  }
+
+  public int hashCode()
+  {
+    int result;
+    result = Float.floatToIntBits(width);
+    result = 29 * result + Float.floatToIntBits(height);
+    return result;
   }
 }
 

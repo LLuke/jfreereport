@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.33 2003/03/26 10:49:24 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.34 2003/03/26 22:55:52 taqua Exp $
  *
  * Changes
  * -------
@@ -571,8 +571,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    */
   public SizeCalculator createTextSizeCalculator(FontDefinition font)
   {
-    DefaultSizeCalculator cal = new DefaultSizeCalculator(font);
-    return cal;
+    return DefaultSizeCalculator.getDefaultSizeCalculator(font);
   }
 
   /**

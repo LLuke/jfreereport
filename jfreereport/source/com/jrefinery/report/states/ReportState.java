@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.29 2003/03/31 20:49:52 taqua Exp $
+ * $Id: ReportState.java,v 1.30 2003/04/05 18:57:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -837,6 +837,6 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   public boolean isErrorOccured ()
   {
-    return functions.getErrors().isEmpty() == false;
+    return functions.hasErrors();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.16 2003/02/25 15:42:32 taqua Exp $
+ * $Id: TableWriter.java,v 1.17 2003/03/04 20:29:00 taqua Exp $
  *
  * Changes
  * -------
@@ -79,9 +79,6 @@ public class TableWriter extends AbstractFunction
   public static final String BASE_RESOURCE_CLASS =
       "com.jrefinery.report.resources.JFreeReportResources";
 
-  /** the layout support used for the band layout. */
-  private LayoutSupport layoutSupport;
-  
   /** The current event, stored on every call to one of the ReportListener methods. */
   private ReportEvent currentEvent;
   
@@ -177,11 +174,7 @@ public class TableWriter extends AbstractFunction
    */
   private LayoutSupport getLayoutSupport()
   {
-    if (layoutSupport == null)
-    {
-      layoutSupport = new DefaultLayoutSupport();
-    }
-    return layoutSupport;
+    return DefaultLayoutSupport.getDefaultInstance();
   }
 
   /**

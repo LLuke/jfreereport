@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.8 2003/02/25 14:45:36 mungady Exp $
+ * $Id: PreviewDialog.java,v 1.9 2003/03/13 17:41:53 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -263,7 +263,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
     long start = System.currentTimeMillis();
     PreviewDialog dialog = new PreviewDialog(new JFreeReport(), (Frame) null, true);
     long mid = System.currentTimeMillis();
-    dialog.setVisible(true);
+    //dialog.setVisible(true);
     long end = System.currentTimeMillis();
 
     System.out.println ("Construction Time: " + (mid - start));
@@ -273,7 +273,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
     start = System.currentTimeMillis();
     dialog = new PreviewDialog(new JFreeReport(), (Frame) null, true);
     mid = System.currentTimeMillis();
-    dialog.setVisible(true);
+    //dialog.setVisible(true);
     end = System.currentTimeMillis();
 
     System.out.println ("Construction Time: " + (mid - start));

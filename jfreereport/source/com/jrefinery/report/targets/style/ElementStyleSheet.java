@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.21 2003/03/30 21:23:38 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.22 2003/04/05 18:57:19 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.WeakHashMap;
 
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FontDefinition;
@@ -156,7 +157,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
 
   private ElementStyleSheet[] parents_cached;
   private ElementStyleSheet[] default_cached;
-  private HashMap styleCache;
+  private WeakHashMap styleCache;
 
   private StyleChangeSupport styleChangeSupport;
   private boolean allowCaching;
@@ -438,7 +439,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
       {
         if (styleCache == null)
         {
-          styleCache = new HashMap();
+          styleCache = new WeakHashMap();
         }
         styleCache.put(key, value);
       }
@@ -463,7 +464,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
       {
         if (styleCache == null)
         {
-          styleCache = new HashMap();
+          styleCache = new WeakHashMap();
         }
         styleCache.put(key, value);
       }
@@ -508,6 +509,10 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     }
     if (value == null)
     {
+      if (styleCache != null)
+      {
+        styleCache.remove(key);
+      }
       properties.remove (key);
       styleChangeSupport.fireStyleRemoved(key);
     }
@@ -518,6 +523,10 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
         throw new ClassCastException ("Value for key " + key.getName() 
                                       + " is not assignable: " + value.getClass()
                                       + " is not assignable from " + key.getValueType());
+      }
+      if (styleCache != null)
+      {
+        styleCache.put(key, value);
       }
       properties.put (key, value);
       styleChangeSupport.fireStyleChanged(key, value);
@@ -539,7 +548,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     sc.properties = (HashMap) properties.clone();
     if (styleCache != null)
     {
-      sc.styleCache = (HashMap) styleCache.clone();
+      sc.styleCache = new WeakHashMap (styleCache);
     }
     sc.styleChangeSupport = new StyleChangeSupport(sc);
     return sc;

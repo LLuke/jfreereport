@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.19 2003/02/28 12:02:10 taqua Exp $
+ * $Id: GroupList.java,v 1.20 2003/04/05 18:57:09 taqua Exp $
  *
  * Changes:
  * --------
@@ -44,8 +44,6 @@
 package com.jrefinery.report;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -71,113 +69,16 @@ public class GroupList implements Cloneable, Serializable
   private TreeSet backend;
 
   /**
-   * A comparator that orders Group objects.
-   */
-  private static class GroupComparator implements Comparator
-  {
-    /**
-     * Compares two objects (required to be instances of the Group class).
-     * The group's field lists are compared, order of the fields does not
-     * matter.
-     *
-     * @param o1  the first group.
-     * @param o2  the second group.
-     *
-     * @return an integer indicating the relative ordering of the two groups.
-     */
-    public int compare(Object o1, Object o2)
-    {
-      Group g1 = (Group) o1;
-      Group g2 = (Group) o2;
-
-      ArrayList c1 = new ArrayList(g1.getFields());
-      ArrayList c2 = new ArrayList(g2.getFields());
-
-      /** Remove all element, which are in both lists, they are equal */
-
-      if (c1.size() == c2.size())
-      {
-        // both lists contain the same elements.
-        if (c1.containsAll(c2))
-        {
-          return 0;
-        }
-      }
-
-      if (c1.containsAll(c2))
-      {
-        // c2 contains all elements of c1, so c1 is subgroup of c2
-        return 1;
-      }
-      if (c2.containsAll(c1))
-      {
-        // c1 contains all elements of c2, so c2 is subgroup of c1
-        return -1;
-      }
-      // not compareable, invalid groups
-      // return 0;
-      throw new IllegalArgumentException("These groups are not comparable, they don't have any "
-                                         + "subgroup relation");
-
-/*
-      int maxIdx = Math.min (c1.size (), c2.size ());
-      for (int i = 0; i < maxIdx; i++)
-      {
-        String s1 = (String) c1.get (i);
-        String s2 = (String) c2.get (i);
-
-        int compare = s1.compareTo (s2);
-        if (compare != 0)
-        {
-          return compare;
-        }
-      }
-      if (c1.size () == c2.size ())
-      {
-        return 0;
-      }
-      else if (c1.size () < c2.size ())
-      {
-        return -1;
-      }
-      return 1;
-      */
-    }
-
-    /**
-     * Returns true if this comparator is equal to an object.
-     *
-     * @param obj  the object.
-     *
-     * @return a boolean indicating equality or otherwise.
-     */
-    public boolean equals(Object obj)
-    {
-      return (obj instanceof GroupComparator);
-    }
-
-    /**
-     * All comparators of this type are equal.
-     *
-     * @return the hashcode.
-     */
-    public int hashCode()
-    {
-      return getClass().hashCode();
-    }
-  }
-
-  /**
    * Constructs a new empty group list.
    */
   public GroupList()
   {
-    backend = new TreeSet (new GroupComparator());
+    backend = new TreeSet ();
   }
 
   public GroupList(GroupList list)
   {
-    backend = new TreeSet(new GroupComparator());
+    backend = new TreeSet();
     backend.addAll(list.backend);
   }
 
@@ -263,7 +164,7 @@ public class GroupList implements Cloneable, Serializable
     try
     {
       l = (GroupList) super.clone();
-      l.backend = new TreeSet(new GroupComparator());
+      l.backend = new TreeSet();
       l.clear();
       for (int i = 0; i < backend.size(); i++)
       {
@@ -323,5 +224,12 @@ public class GroupList implements Cloneable, Serializable
     return backend.size();
   }
 
-
+  public String toString ()
+  {
+    StringBuffer b = new StringBuffer();
+    b.append("GroupList={backend='");
+    b.append(backend);
+    b.append("'} ");
+    return b.toString();
+  }
 }

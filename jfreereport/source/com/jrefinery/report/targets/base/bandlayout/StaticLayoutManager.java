@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.26 2003/03/30 21:23:38 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.27 2003/04/05 18:57:14 taqua Exp $
  *
  * Changes
  * -------
@@ -87,12 +87,16 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
    */
   public static final StyleKey DYNAMIC_HEIGHT = ElementStyleSheet.DYNAMIC_HEIGHT;
 
+  private LayoutManagerCache cache;
+  private LayoutSearchKey cacheKey;
+
   /**
    * Creates a new layout manager.
    */
   public StaticLayoutManager()
   {
-    //elementCache = new LayoutManagerCache();
+    cache = new LayoutManagerCache();
+    cacheKey = new LayoutSearchKey();
   }
 
   /**
@@ -106,6 +110,17 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
   protected Dimension2D getMinimumSize(Element e, Dimension2D containerBounds)
   {
     Dimension2D retval;
+
+    boolean isCacheable = cache.isCachable(e);
+    if (isCacheable)
+    {
+      cacheKey.setSearchConstraint(e, containerBounds);
+      retval = cache.getMinSize(cacheKey);
+      if (retval != null)
+      {
+        return retval;
+      }
+    }
 
     // the absolute position of the element within its parent is used
     // to calculate the maximum available space for the element.
@@ -148,6 +163,10 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       throw new IllegalStateException("Layouting failed, getMinimumSize returned negative values.");
     }
 
+    if (isCacheable)
+    {
+      cache.setMinSize(cacheKey, e, retval);
+    }
     return retval;
   }
 
@@ -162,6 +181,17 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
   protected Dimension2D getPreferredSize(Element e, Dimension2D containerBounds)
   {
     Dimension2D retval;
+
+    boolean isCachable = cache.isCachable(e);
+    if (isCachable)
+    {
+      cacheKey.setSearchConstraint(e, containerBounds);
+      retval = cache.getMinSize(cacheKey);
+      if (retval != null)
+      {
+        return retval;
+      }
+    }
 
     // the absolute position of the element within its parent is used
     // to calculate the maximum available space for the element.
@@ -213,6 +243,10 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       throw new IllegalStateException("Layouting failed, getPreferredSize returned negative values.");
     }
 
+    if (isCachable)
+    {
+      cache.setPrefSize(cacheKey, e, retval);
+    }
     return retval;
   }
 
@@ -229,7 +263,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @return the preferred size.
    */
-  public Dimension2D preferredLayoutSize(Band b, Dimension2D containerDims)
+  public synchronized Dimension2D preferredLayoutSize(Band b, Dimension2D containerDims)
   {
     ElementLayoutInformation eli = createLayoutInformationForPreferredSize(b, containerDims);
     Dimension2D maxSize = eli.getMaximumSize();
@@ -339,7 +373,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @return the minimum size.
    */
-  public Dimension2D minimumLayoutSize(Band b, Dimension2D containerBounds)
+  public synchronized Dimension2D minimumLayoutSize(Band b, Dimension2D containerBounds)
   {
     ElementLayoutInformation eli = createLayoutInformationForMinimumSize(b, containerBounds);
     Dimension2D maxSize = eli.getMaximumSize();
@@ -456,10 +490,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
    * @param b the band to lay out.
    * @throws IllegalStateException if the bands has no bounds set.
    */
-  public void doLayout(Band b)
+  public synchronized void doLayout(Band b)
   {
-    //elementCache.setCurrentBand(b);
-
     Element[] elements = b.getElementArray();
     Rectangle2D parentBounds = BandLayoutManagerUtil.getBounds(b, null);
     if (parentBounds == null)
@@ -553,26 +585,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
   /**
    * Clears any cached items used by the layout manager.
    */
-  public void invalidateLayout(Band container)
+  public synchronized void invalidateLayout(Band container)
   {
-  }
-
-  /**
-   * Adds the specified component to the layout, the specified constraints are stored
-   * in the elements style sheet.
-   *
-   * @param e the element to be added to the layout manager.
-   */
-  public void addLayoutElement(Element e)
-  {
-  }
-
-  /**
-   * Removed the specified component from the layout.
-   *
-   * @param e the element to be removed from the layout manager.
-   */
-  public void removeLayoutElement(Element e)
-  {
+    cache.flush();
   }
 }

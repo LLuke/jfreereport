@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKey.java,v 1.5 2003/02/26 13:58:00 mungady Exp $
+ * $Id: StyleKey.java,v 1.6 2003/03/18 19:39:16 taqua Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,9 @@ public class StyleKey implements Serializable, Cloneable
   /** The class of the value. */
   private Class valueType;
 
+  /** The cached hashcode for the stylekey. */
+  private int hashCode;
+
   /**
    * Creates a new style key.
    *
@@ -99,6 +102,7 @@ public class StyleKey implements Serializable, Cloneable
       throw new NullPointerException("StyleKey.setName(...): null not permitted.");
     }
     this.name = name;
+    this.hashCode = name.hashCode();
   }
 
   /**
@@ -209,7 +213,7 @@ public class StyleKey implements Serializable, Cloneable
    */
   public int hashCode()
   {
-    return name.hashCode();
+    return hashCode;
   }
 
   /**

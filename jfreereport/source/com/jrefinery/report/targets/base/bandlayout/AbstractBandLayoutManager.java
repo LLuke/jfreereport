@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.2 2003/03/30 17:05:12 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.3 2003/04/05 18:57:14 taqua Exp $
  *
  * Changes
  * -------
@@ -339,18 +339,23 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return <code>true</code> or </code>false</code>.
    */
-  boolean isElementStaticWidth (Element e)
+  protected boolean isElementStaticWidth (Element e)
   {
-    Dimension2D minSize
+    Dimension2D size
         = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
-    if (minSize.getWidth() < 0)
+    if (size.getWidth() < 0)
     {
       return false;
     }
-    minSize = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
-    if (minSize != null)
+    size = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
+    if (size.getWidth() < 0)
     {
-      if (minSize.getWidth() < 0)
+      return false;
+    }
+    size = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
+    if (size != null)
+    {
+      if (size.getWidth() < 0)
       {
         return false;
       }
@@ -367,16 +372,21 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    */
   protected boolean isElementStaticHeight (Element e)
   {
-    Dimension2D minSize
+    Dimension2D size
         = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
-    if (minSize.getHeight() < 0)
+    if (size.getHeight() < 0)
     {
       return false;
     }
-    minSize = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
-    if (minSize != null)
+    size = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
+    if (size.getWidth() < 0)
     {
-      if (minSize.getHeight() < 0)
+      return false;
+    }
+    size = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
+    if (size != null)
+    {
+      if (size.getHeight() < 0)
       {
         return false;
       }
@@ -467,6 +477,5 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
 
     return (float) Math.floor(value / boundary) * boundary;
   }
-
 
 }

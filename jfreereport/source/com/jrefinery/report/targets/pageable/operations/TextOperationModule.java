@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.11 2003/03/26 23:32:23 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.12 2003/04/05 18:57:19 taqua Exp $
  *
  * Changes
  * -------
@@ -148,16 +148,17 @@ public class TextOperationModule extends OperationModule
    *
    * @param c  the content.
    * @param col  the list where to collect the generated content
-   * @param bounds  the bounds.
+   * @param hba  the bounds.
    * @param vba  the vertical bounds alignment.
    */
-  private void addContent (Content c, PhysicalOperationsCollector col, HorizontalBoundsAlignment bounds,
+  private void addContent (Content c, PhysicalOperationsCollector col,
+                           HorizontalBoundsAlignment hba,
                            VerticalBoundsAlignment vba)
   {
     if (c instanceof TextLine)
     {
       String value = ((TextLine) c).getContent();
-      Rectangle2D abounds = vba.applyShift (bounds.align(c.getBounds()));
+      Rectangle2D abounds = vba.applyShift (hba.align(c.getBounds()));
       col.addOperation (new PhysicalOperation.SetBoundsOperation (abounds));
       col.addOperation (new PhysicalOperation.PrintTextOperation(value));
     }
@@ -165,7 +166,7 @@ public class TextOperationModule extends OperationModule
     {
       for (int i = 0; i < c.getContentPartCount(); i++)
       {
-        addContent(c.getContentPart(i), col, bounds, vba);
+        addContent(c.getContentPart(i), col, hba, vba);
       }
     }
   }

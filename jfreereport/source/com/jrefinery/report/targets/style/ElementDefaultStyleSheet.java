@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.8 2003/02/10 19:33:52 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.9 2003/02/25 15:42:27 taqua Exp $
  *
  * Changes
  * -------
@@ -144,5 +144,6 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
       super.setStyleProperty(key, value);
     }
   }
+
 
 }
