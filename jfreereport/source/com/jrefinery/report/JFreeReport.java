@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.39 2002/12/02 18:23:59 taqua Exp $
+ * $Id: JFreeReport.java,v 1.40 2002/12/05 16:55:15 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -337,6 +337,29 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
       throw new NullPointerException ();
     }
     return this.properties.get (key);
+  }
+
+  /**
+   * Returns the value of the property with the specified key.
+   *
+   * @param key  the key.
+   *
+   * @return the property value.
+   */
+  public boolean isPropertyMarked (String key)
+  {
+    return this.properties.isMarked(key);
+  }
+
+  /**
+   * Returns the value of the property with the specified key.
+   *
+   * @param key  the key.
+   * @param mark the new marking flag
+   */
+  public void setPropertyMarked (String key, boolean mark)
+  {
+    this.properties.setMarked(key, mark);
   }
 
   /**

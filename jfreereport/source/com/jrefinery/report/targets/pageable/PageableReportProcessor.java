@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.8 2002/12/08 20:30:32 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.9 2002/12/10 15:52:51 mungady Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@ package com.jrefinery.report.targets.pageable;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.ReportInitialisationException;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
@@ -275,10 +274,6 @@ public class PageableReportProcessor
       // part 3: (done by processing the ReportStateList:) Print the report
       return pageStates;
     }
-//    catch (ReportInitialisationException re)
-//    {
-//      throw new ReportProcessingException("Unable to initialise StartState: " + re.getMessage());
-//    }
     catch (OutputTargetException ote)
     {
       Log.error("Unable to repaginate Report:", ote);

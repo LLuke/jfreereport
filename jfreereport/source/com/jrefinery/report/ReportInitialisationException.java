@@ -38,12 +38,14 @@
 
 package com.jrefinery.report;
 
+import com.jrefinery.report.util.StackableException;
+
 /**
  * An exception that is thrown when a report fails to initialise.
  *
  * @author Thomas Morgner.
  */
-public class ReportInitialisationException extends Exception
+public class ReportInitialisationException extends StackableException
 {
   /**
    * Constructs an <code>Exception</code> with no specified detail message.
@@ -60,5 +62,15 @@ public class ReportInitialisationException extends Exception
   public ReportInitialisationException(String s)
   {
     super(s);
+  }
+
+  /**
+   * Constructs an <code>Exception</code> with the specified detail message.
+   *
+   * @param s  the detail message.
+   */
+  public ReportInitialisationException(String s, Exception e)
+  {
+    super(s, e);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextElement.java,v 1.24 2002/12/02 18:24:33 taqua Exp $
+ * $Id: TextElement.java,v 1.25 2002/12/06 17:18:56 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -49,41 +49,29 @@
  * 02-Jul-2002 : TextElements constructor has to be public, of course.
  * 05-Sep-2002 : Cloning added
  * 06-Dec-2002 : Updated Javadocs (DG);
- *
+ * 10-Dec-2002 : Removed getFont(StyleSheet s) - this is handled by the stylesheet
  */
 
 package com.jrefinery.report;
 
 import com.jrefinery.report.filter.StringFilter;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.targets.style.StyleSheet;
 
 import java.awt.Font;
 
 /**
  * The base class for all elements that display text in a report band.
  * <p>
- * All Values are converted
- * to Strings using the String.valueOf () method. To convert values in a more sophisicated
- * way add filters to this element. Known filters are for instance the NumberFormatFilter or
- * the SimpleDateFormatFilter.
+ * All content is converted to String using the String.valueOf () method.
+ * To convert values in a more sophisicated way, add filters to this element.
+ * Known filters are for instance the <code>NumberFormatFilter</code> or
+ * the <code>SimpleDateFormatFilter</code>.
  * <p>
- * For more information on filters have a look at the filter package com.jrefinery.report.filter.
+ * For more information on filters have a look at the filter package
+ * {@link com.jrefinery.report.filter}
  * <p>
- * The multiline hints apply to both known OutputTargets (G2OutputTarget & PDFOutputTarget):
- * <p>
- * For multiline elements you have to ensure that your elements height is at least twice the
- * height of your font. The number of text-lines in the element is calculated by using the formula:
- * <code>int maxLinesToDisplay = (int) (elementHeight / fontheight);</code>
- * <p>
- * If maxLinesToDisplay is lesser than two lines, a single line print is assumed, the text will
- * be displayed with full length on a single line. This behaviour is backward compatiblity with
- * the old TextElements behaviour.<br>
- * If maxLinesToDisplay is two or more lines, the text is broken
- * into multiple lines, and if the last line is to long to be printed, the text is shortened and
- * a "..." is appended.
- * <p>
- * The font style flags isUnderlined and isStriketrough are not implemented in version 0.7.3
+ * The font style flags isUnderlined and isStriketrough are not yet implemented
+ * in version 0.8.0.
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -157,32 +145,11 @@ public class TextElement extends Element
    * Returns the font defined for this element.
    *
    * @return the font or null if no font has been defined for this element.
+   * @deprecated use the stylesheet to access the font if needed.
    */
   public Font getFont()
   {
     return getStyle().getFontStyleProperty();
-  }
-
-  /**
-   * Returns the font for this element.
-   * <p>
-   * If a font has been explicitly set for the element, then it is used. If nothing at all has 
-   * been specified, the band's default font is used.
-   * <p>
-   * If no band is specified, this function may return null.
-   * If a band is defined, the function will never return null.
-   * If neither the band and the element have defined a font, a NullPointerException is thrown 
-   * instead.
-   *
-   * @param band  the band.
-   *
-   * @return the font.
-   *
-   * @deprecated the StyleSheet is used to resolve cascadings
-   */
-  public Font getFont(StyleSheet band)
-  {
-    return getFont();
   }
 
   /**
@@ -336,7 +303,7 @@ public class TextElement extends Element
     b.append("={ name=");
     b.append(getName());
     b.append(", font=");
-    b.append(getFont());
+    b.append(getStyle().getFontStyleProperty());
     b.append(", text=");
     b.append(getValue());
     b.append(", getFormattedText=");

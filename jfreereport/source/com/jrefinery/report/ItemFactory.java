@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.22 2002/12/06 17:18:11 mungady Exp $
+ * $Id: ItemFactory.java,v 1.23 2002/12/10 16:09:29 mungady Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,7 @@ import com.jrefinery.report.function.ExpressionCollection;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.style.BandStyleSheet;
 
 import javax.swing.table.TableModel;
 import java.awt.Font;
@@ -165,7 +166,7 @@ public class ItemFactory
     setElementBounds(dateElement, bounds);
     if (paint != null)
     {
-      dateElement.setPaint(paint);
+      dateElement.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
     }
     dateElement.setAlignment(alignment);
     if (font != null)
@@ -250,7 +251,7 @@ public class ItemFactory
     setElementBounds(dateElement, bounds);
     if (paint != null)
     {
-      dateElement.setPaint(paint);
+      dateElement.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
     }
     dateElement.setAlignment(alignment);
     if (font != null)
@@ -441,7 +442,7 @@ public class ItemFactory
     }
     if (paint != null)
     {
-      element.setPaint(paint);
+      element.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
     }
     setElementBounds(element, bounds);
     element.setDataSource(sds);
@@ -552,7 +553,7 @@ public class ItemFactory
     }
     if (paint != null)
     {
-      element.setPaint(paint);
+      element.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
     }
     setElementBounds(element, bounds);
     element.setDataSource(imagefilter);
@@ -683,7 +684,7 @@ public class ItemFactory
     }
     if (paint != null)
     {
-      element.setPaint(paint);
+      element.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
     }
     setElementBounds(element, bounds);
     element.setDataSource(filter);
@@ -774,7 +775,7 @@ public class ItemFactory
     setElementBounds(label, bounds);
     if (paint != null)
     {
-      label.setPaint(paint);
+      label.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
     }
     label.setAlignment(alignment);
     if (font != null)
@@ -909,7 +910,7 @@ public class ItemFactory
     }
     if (paint != null)
     {
-      shapeElement.setPaint(paint);
+      shapeElement.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
     }
     if (stroke != null)
     {
@@ -1056,7 +1057,7 @@ public class ItemFactory
     setElementBounds(element, bounds);
     if (paint != null)
     {
-      element.setPaint(paint);
+      element.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
     }
     element.setAlignment(alignment);
     if (font != null)
@@ -1144,7 +1145,7 @@ public class ItemFactory
     setElementBounds(element, bounds);
     if (paint != null)
     {
-      element.setPaint(paint);
+      element.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
     }
     element.setAlignment(alignment);
     if (font != null)
@@ -1285,7 +1286,7 @@ public class ItemFactory
     setElementBounds(element, bounds);
     if (paint != null)
     {
-      element.setPaint(paint);
+      element.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
     }
     element.setAlignment(alignment);
     if (font != null)
@@ -1379,7 +1380,7 @@ public class ItemFactory
     {
       header.getBandDefaults().setStyleProperty(ElementStyleSheet.PAINT, defaultPaint);
     }
-    header.setPageBreakBeforePrint(pageBreak);
+    header.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, new Boolean(pageBreak));
     return header;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ShapeElement.java,v 1.18 2002/12/02 18:24:21 taqua Exp $
+ * $Id: ShapeElement.java,v 1.19 2002/12/06 17:18:50 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -54,7 +54,9 @@ import java.awt.BasicStroke;
 import java.awt.Stroke;
 
 /**
- * Used to draw shapes (typically lines and boxes) on a report band. 
+ * Used to draw shapes (typically lines and boxes) on a report band. The drawing style
+ * of the shapes contained in that element can be controled by using the StyleKeys
+ * FILL_SHAPE and DRAW_SHAPE. 
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -71,7 +73,8 @@ public class ShapeElement extends Element
   public static final StyleKey DRAW_SHAPE = StyleKey.getStyleKey("draw-shape", Boolean.class);
 
   /**
-   * A default style sheet for shape elements.
+   * A default style sheet for shape elements. This defined a default stroke for
+   * all shapes.
    */
   private static class ShapeElementDefaultStyleSheet extends ElementStyleSheet
   {

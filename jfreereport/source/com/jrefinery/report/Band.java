@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.29 2002/12/07 20:53:08 taqua Exp $
+ * $Id: Band.java,v 1.30 2002/12/09 03:56:28 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -74,10 +74,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Hashtable;
 
 /**
- * A report band contains a list of elements to be displayed, and represents one section of a
+ * A report band is a collection which can contain other Report-Elements.
+ * A band contains a list of elements to be displayed, and represents one section of a
  * report (the report header or footer, the page header or footer, the group header or footer,
  * or the items within a group).
  * <P>
@@ -103,7 +103,7 @@ public class Band extends Element implements Serializable, Cloneable
 {
   /**
    * the defined content type for the band. The content type is used when selecting
-   * the corrent display-method of an element.
+   * the correct display-method for an element.
    */
   public static final String CONTENT_TYPE = "X-container";
 
@@ -130,9 +130,9 @@ public class Band extends Element implements Serializable, Cloneable
 
   /**
    * Returns the default StyleSheet for all childs of this band. This StyleSheet
-   * is used to define a set of common properties for all elements. Elements are
-   * free to override these global settings with private properties within the
-   * stylesheet.
+   * is used to define a set of common properties for all elements. The values
+   * of this StyleSheet are used as default values for all Elements contained in
+   * this band.
    *
    * @return the default style sheet for all childs of the band.
    */
