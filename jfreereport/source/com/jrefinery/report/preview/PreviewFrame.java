@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.6 2002/05/17 15:02:25 jaosch Exp $
+ * $Id: PreviewFrame.java,v 1.7 2002/05/21 23:06:19 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -43,6 +43,7 @@
  *               close behaviour unified
  *               reset the mnemonics of the toolBar buttons
  * 17-May-2002 : KeyListener for zooming and navigation
+ * 26-May-2002 : Added a statusline to the report to show errors and the current and total page number.
  */
 
 package com.jrefinery.report.preview;
@@ -50,6 +51,7 @@ package com.jrefinery.report.preview;
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -85,6 +87,8 @@ import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.JLabel;
 
 import com.jrefinery.layout.CenterLayout;
 import com.jrefinery.report.targets.G2OutputTarget;
@@ -260,6 +264,7 @@ public class PreviewFrame
 
   private PageFormat pageFormat;
   private JFreeReport report;
+  private JLabel statusHolder;
 
   /**
    * Constructs a PreviewFrame that displays the specified report, and has the specified width
@@ -271,7 +276,6 @@ public class PreviewFrame
    */
   public PreviewFrame(JFreeReport report)
   {
-    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
     // get a locale-specific resource bundle...
 
     setResources(getDefaultResources());
@@ -301,10 +305,12 @@ public class PreviewFrame
     reportPaneHolder.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
     JScrollPane s1 = new JScrollPane(reportPaneHolder);
-    content.add(s1);
+    JPanel scrollPaneHolder = new JPanel ();
+    scrollPaneHolder.setLayout(new BorderLayout());
+    scrollPaneHolder.add (s1, BorderLayout.CENTER);
+    scrollPaneHolder.add (createStatusBar (), BorderLayout.SOUTH);
+    content.add(scrollPaneHolder);
     setContentPane(content);
-
-    //setPreferredSize (new Dimension(width, height));
   }
 
   protected PageFormat getDefaultPageFormat()
@@ -623,6 +629,22 @@ public class PreviewFrame
     return new DefaultCloseAction();
   }
 
+  public JLabel getStatus ()
+  {
+    return statusHolder;
+  }
+
+  protected JPanel createStatusBar ()
+  {
+    JPanel statusPane = new JPanel ();
+    statusPane.setLayout(new BorderLayout());
+    statusPane.setBorder(BorderFactory.createLineBorder(UIManager.getDefaults().getColor("controlShadow")));
+    statusHolder = new JLabel (" ");
+    statusPane.setMinimumSize(statusHolder.getPreferredSize());
+    statusPane.add (statusHolder, BorderLayout.WEST);
+    return statusPane;
+  }
+
   /**
    * Creates and returns a menu-bar for the frame.
    *
@@ -777,6 +799,7 @@ public class PreviewFrame
     if (property.equals(ReportPane.PAGENUMBER_PROPERTY)
       || property.equals(ReportPane.PAGECOUNT_PROPERTY))
     {
+      getStatus().setText("Page " + reportPane.getPageNumber() + " of " + reportPane.getCurrentPageCount());
       validate();
     }
     else if (property.equals(ReportPane.ERROR_PROPERTY))
@@ -784,11 +807,7 @@ public class PreviewFrame
       if (reportPane.hasError())
       {
         Exception ex = reportPane.getError();
-        JOptionPane.showMessageDialog(
-          this,
-          "Error " + ex.getMessage(),
-          "Report has an error",
-          JOptionPane.ERROR_MESSAGE);
+        getStatus().setText("Report generation prduced an error: " + ex.getMessage());
       }
     }
   }

@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPane.java,v 1.4 2002/05/18 16:23:51 taqua Exp $
+ * $Id: ReportPane.java,v 1.5 2002/05/21 23:06:19 taqua Exp $
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
@@ -77,6 +77,7 @@ public class ReportPane extends JComponent implements Printable
   public static final String PAGENUMBER_PROPERTY = "pagenumber";
   public static final String ZOOMFACTOR_PROPERTY = "zoomfactor";
   public static final String ERROR_PROPERTY = "error";
+  public static final String BORDER_PROPERTY = "borderPainted";
 
   private double PaperBorderPixel = 6;
 
@@ -106,6 +107,9 @@ public class ReportPane extends JComponent implements Printable
 
   /** Storage for end-of-page state information. */
   protected List pageStates;
+
+  /** A flag to indicate whether the border is painted or not */
+  private boolean borderPainted;
 
   protected PropertyChangeSupport propsupp;
 
@@ -161,19 +165,27 @@ public class ReportPane extends JComponent implements Printable
   }
 
   /**
-   * Returns the current page number.
-   *
+   * @returns the current page shown
    */
   public int getPageNumber ()
   {
     return this.pageNumber;
   }
 
+  /**
+   * @returns the page count for the current page settings.
+   */
   public int getCurrentPageCount ()
   {
     return this.pageCount;
   }
 
+  /**
+   * defines the page count for the current page settings. This is set after the report
+   * has been repaginated.
+   *
+   * @param pc the new pagecount.
+   */
   private void setCurrentPageCount (int pc)
   {
     int oldpc = pageCount;
@@ -182,10 +194,32 @@ public class ReportPane extends JComponent implements Printable
   }
 
   /**
+   * checkes whether a black border is painted around the printable page area.
+   *
+   * @returns a flag indicating whether to paint the border.
+   */
+  public boolean isBorderPainted ()
+  {
+    return borderPainted;
+  }
+
+  /**
+   * Defines whether a black border is painted around the printable page area.
+   *
+   * @param b a flag indicating whether to paint the border.
+   */
+  public void setBorderPainted (boolean b)
+  {
+    boolean oldval = isBorderPainted();
+    borderPainted = b;
+    propsupp.firePropertyChange(BORDER_PROPERTY, oldval, b);
+  }
+
+  /**
    * Sets the page number to be displayed.
    * What happens when the page number is out of range?-Nothing!
-   * @param page The new page number;
    *
+   * @param page The new page number;
    */
   public void setPageNumber (int page)
   {
@@ -233,9 +267,7 @@ public class ReportPane extends JComponent implements Printable
    */
   public Dimension getPreferredSize ()
   {
-
     return this.getSize ();
-
   }
 
   /**
@@ -245,9 +277,7 @@ public class ReportPane extends JComponent implements Printable
    */
   public Dimension getMinimumSize ()
   {
-
     return this.getSize ();
-
   }
 
   /**
@@ -328,9 +358,18 @@ public class ReportPane extends JComponent implements Printable
 
       g2.setPaint (Color.white);
       g2.fill (pageArea);
+
+      /**
+       * The border around the printable area is painted when the corresponding property is
+       * set to true.
+       */
       Rectangle2D printingArea = new Rectangle2D.Float (innerX, innerY, innerW, innerH);
-      g2.setPaint (Color.lightGray);
-      g2.draw (printingArea);
+      if (isBorderPainted())
+      {
+        g2.setPaint (Color.lightGray);
+        g2.draw (printingArea);
+      }
+
       ReportState state = (ReportState) this.pageStates.get (pageNumber - 1);
       try
       {
