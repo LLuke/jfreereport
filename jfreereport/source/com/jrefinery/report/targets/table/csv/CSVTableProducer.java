@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 4:47:35 PM
  *
- * $Id$
+ * $Id: CSVTableProducer.java,v 1.1 2003/01/21 17:11:41 taqua Exp $
  */
 package com.jrefinery.report.targets.table.csv;
 
@@ -13,14 +13,15 @@ import com.jrefinery.report.targets.table.TableProducer;
 
 import java.io.PrintWriter;
 
-public class CSVProducer extends TableProducer
+public class CSVTableProducer extends TableProducer
 {
   private PrintWriter writer;
   private CSVQuoter quoter;
   private CSVCellDataFactory cellDataFactory;
   private boolean isOpen;
+  private String separator;
 
-  public CSVProducer(PrintWriter writer)
+  public CSVTableProducer(PrintWriter writer)
   {
     this.writer = writer;
     this.quoter = new CSVQuoter();
@@ -37,10 +38,19 @@ public class CSVProducer extends TableProducer
     isOpen = false;
   }
 
+  public String getSeparator()
+  {
+    return quoter.getSeparator();
+  }
+
+  public void setSeparator(String separator)
+  {
+    this.quoter.setSeparator(separator);
+  }
+
   public void endPage()
   {
     generatePage(layoutGrid());
-    writer.println("</table>");
     clearCells();
   }
 
