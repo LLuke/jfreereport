@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResourceLabelElementFactory.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ResourceLabelElementFactory.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -158,11 +158,8 @@ public class ResourceLabelElementFactory extends TextElementFactory
     template.setNullValue(getNullString());
 
     final TextElement element = new TextElement();
+    applyElementName(element);
     element.setDataSource(template);
-    if (getName() != null)
-    {
-      element.setName(getName());
-    }
     final ElementStyleSheet style = element.getStyle();
     applyStyle(style);
     return element;

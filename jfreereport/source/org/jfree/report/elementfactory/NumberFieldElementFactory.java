@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldElementFactory.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
+ * $Id: NumberFieldElementFactory.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -158,10 +158,7 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
     }
 
     final TextElement element = new TextElement();
-    if (getName() != null)
-    {
-      element.setName(getName());
-    }
+    applyElementName(element);
     element.setDataSource(dataSource);
     applyStyle(element.getStyle());
 

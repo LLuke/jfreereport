@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticImageURLElementFactory.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
+ * $Id: StaticImageURLElementFactory.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,8 +45,6 @@ import java.net.URL;
 import org.jfree.report.Element;
 import org.jfree.report.ImageElement;
 import org.jfree.report.filter.templates.ImageURLElementTemplate;
-import org.jfree.report.layout.StaticLayoutManager;
-import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 
 /**
@@ -90,20 +88,9 @@ public class StaticImageURLElementFactory extends ImageElementFactory
     template.setBaseURL(getBaseURL());
     template.setContent(getContent());
     final ImageElement element = new ImageElement();
+    applyElementName(element);
+    applyStyle(element.getStyle());
     element.setDataSource(template);
-    if (getName() != null)
-    {
-      element.setName(getName());
-    }
-
-    final ElementStyleSheet style = element.getStyle();
-    style.setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, getAbsolutePosition());
-    style.setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT, getDynamicHeight());
-    style.setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, getKeepAspectRatio());
-    style.setStyleProperty(ElementStyleSheet.MAXIMUMSIZE, getMaximumSize());
-    style.setStyleProperty(ElementStyleSheet.MINIMUMSIZE, getMinimumSize());
-    style.setStyleProperty(ElementStyleSheet.PREFERREDSIZE, getPreferredSize());
-    style.setStyleProperty(ElementStyleSheet.SCALE, getScale());
 
     return element;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElementFactory.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ImageElementFactory.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,6 +37,9 @@
  */
 
 package org.jfree.report.elementfactory;
+
+import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.layout.StaticLayoutManager;
 
 /**
  * An ElementFactory that can be used to create ImageElements. This is the base
@@ -103,5 +106,16 @@ public abstract class ImageElementFactory extends ElementFactory
   public void setKeepAspectRatio(final Boolean keepAspectRatio)
   {
     this.keepAspectRatio = keepAspectRatio;
+  }
+
+  protected void applyStyle (ElementStyleSheet style)
+  {
+    style.setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, getAbsolutePosition());
+    style.setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT, getDynamicHeight());
+    style.setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, getKeepAspectRatio());
+    style.setStyleProperty(ElementStyleSheet.MAXIMUMSIZE, getMaximumSize());
+    style.setStyleProperty(ElementStyleSheet.MINIMUMSIZE, getMinimumSize());
+    style.setStyleProperty(ElementStyleSheet.PREFERREDSIZE, getPreferredSize());
+    style.setStyleProperty(ElementStyleSheet.SCALE, getScale());
   }
 }

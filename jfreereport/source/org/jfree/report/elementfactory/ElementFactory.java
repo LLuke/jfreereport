@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.4 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ElementFactory.java,v 1.5 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -203,6 +203,14 @@ public abstract class ElementFactory
   public void setDynamicHeight(final Boolean dynamicHeight)
   {
     this.dynamicHeight = dynamicHeight;
+  }
+
+  protected void applyElementName (Element e)
+  {
+    if (getName() != null)
+    {
+      e.setName(getName());
+    }
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageURLFieldElementFactory.java,v 1.4 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ImageURLFieldElementFactory.java,v 1.5 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -105,20 +105,10 @@ public class ImageURLFieldElementFactory extends ImageElementFactory
     final ImageURLFieldTemplate template = new ImageURLFieldTemplate();
     template.setField(getFieldname());
     final ImageElement element = new ImageElement();
+    applyElementName(element);
+    applyStyle(element.getStyle());
     element.setDataSource(template);
-    if (getName() != null)
-    {
-      element.setName(getName());
-    }
 
-    final ElementStyleSheet style = element.getStyle();
-    style.setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, getAbsolutePosition());
-    style.setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT, getDynamicHeight());
-    style.setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, getKeepAspectRatio());
-    style.setStyleProperty(ElementStyleSheet.MAXIMUMSIZE, getMaximumSize());
-    style.setStyleProperty(ElementStyleSheet.MINIMUMSIZE, getMinimumSize());
-    style.setStyleProperty(ElementStyleSheet.PREFERREDSIZE, getPreferredSize());
-    style.setStyleProperty(ElementStyleSheet.SCALE, getScale());
 
     return element;
   }

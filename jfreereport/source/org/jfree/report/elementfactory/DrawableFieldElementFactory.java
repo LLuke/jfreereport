@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableFieldElementFactory.java,v 1.4 2003/08/24 15:13:22 taqua Exp $
+ * $Id: DrawableFieldElementFactory.java,v 1.5 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -103,10 +103,7 @@ public class DrawableFieldElementFactory extends ElementFactory
     }
 
     final DrawableElement element = new DrawableElement();
-    if (getName() != null)
-    {
-      element.setName(getName());
-    }
+    applyElementName(element);
 
     final DataRowDataSource drds = new DataRowDataSource(getFieldname());
     final DrawableFilter filter = new DrawableFilter();

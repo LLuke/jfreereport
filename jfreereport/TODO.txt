@@ -40,3 +40,33 @@ general:
 > 0.9.0:
   * create a RPC-Capable report preview so that reports are processed
     on the server and only the minimum of data is sent to the client ...
+
+
+---
+
+PageEvent restructuring:
+
+a0:         preCommit/PageBreak done                    <-------
+a1:         createSavepoint                                    |
+a2:         createContent                                      |
+            fireEvent to levelledExpressionList                |
+a3:         checkPagebreakBeforeState          --- rollback ---+  (fires PageEndedEvent)
+b0          doLayout                                           | 
+b1:         (checkBandFitsOnPage)              --- rollback ---+  (fires PageEndedEvent)
+c0:         commitData (kill savePoint)
+c1:         print commited data  
+c2:         perform pagebreak after
+
+
+Rollback will only be issued, if the page is not empty (current Pagebreak-Before-behaviour)
+StatefullPrinting possible
+Function needs to manage commit/rollback
+
+
+C/R storage system implementation:
+  - a vault to store the function's state on a per-function level. Rollback/Commit
+  delegated to vault implementation. 
+  
+? - expressions can safely access and modify the report as the rollback/commit will 
+  reset any invalid change.
+

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeElementFactory.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ShapeElementFactory.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,6 +40,10 @@ package org.jfree.report.elementfactory;
 
 import java.awt.Color;
 import java.awt.Stroke;
+
+import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.layout.StaticLayoutManager;
+import org.jfree.report.ShapeElement;
 
 /**
  * A base implementation of a factory to define ShapeElements.
@@ -193,5 +197,20 @@ public abstract class ShapeElementFactory extends ElementFactory
   public void setShouldDraw(final Boolean shouldDraw)
   {
     this.shouldDraw = shouldDraw;
+  }
+
+  protected void applyStyle (ElementStyleSheet style)
+  {
+    style.setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, getAbsolutePosition());
+    style.setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT, getDynamicHeight());
+    style.setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, getKeepAspectRatio());
+    style.setStyleProperty(ElementStyleSheet.MAXIMUMSIZE, getMaximumSize());
+    style.setStyleProperty(ElementStyleSheet.MINIMUMSIZE, getMinimumSize());
+    style.setStyleProperty(ElementStyleSheet.PAINT, getColor());
+    style.setStyleProperty(ElementStyleSheet.PREFERREDSIZE, getPreferredSize());
+    style.setStyleProperty(ElementStyleSheet.SCALE, getScale());
+    style.setStyleProperty(ElementStyleSheet.STROKE, getStroke());
+    style.setStyleProperty(ShapeElement.DRAW_SHAPE, getShouldDraw());
+    style.setStyleProperty(ShapeElement.FILL_SHAPE, getShouldFill());
   }
 }

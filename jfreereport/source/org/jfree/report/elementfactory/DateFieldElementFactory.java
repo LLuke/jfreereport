@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFieldElementFactory.java,v 1.4 2003/08/24 15:13:22 taqua Exp $
+ * $Id: DateFieldElementFactory.java,v 1.5 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -167,6 +167,7 @@ public class DateFieldElementFactory extends TextFieldElementFactory
 
     final TextElement element = new TextElement();
     element.setDataSource(dataSource);
+    applyElementName(element);
     applyStyle(element.getStyle());
 
     return element;
