@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.1 2002/10/15 20:37:28 taqua Exp $
+ * $Id: ReportState.java,v 1.2 2002/10/21 14:41:59 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -57,6 +57,7 @@ package com.jrefinery.report.states;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportProperties;
+import com.jrefinery.report.util.ReportPropertiesList;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessor;
@@ -149,6 +150,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     dr.setTablemodel (getReport ().getData ());
     dr.setFunctions (getFunctions ());
     dr.setCurrentRow (getCurrentDisplayItem ());
+    dr.setReportProperties(new ReportPropertiesList(reportProperties));
     setDataRowBackend (dr);
 
     resetState();

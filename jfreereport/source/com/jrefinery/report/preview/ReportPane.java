@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.24 2002/09/16 16:59:17 mungady Exp $
+ * $Id: ReportPane.java,v 1.25 2002/10/15 20:37:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -506,6 +506,10 @@ public class ReportPane extends JComponent implements Printable, Pageable
             Log.error ("Repaginate failed: ", rpe);
             setError (rpe);
           }
+        }
+        else
+        {
+          Log.error ("PageNumber is " + pageNumber);
         }
 
         /** Paint Page Shadow */

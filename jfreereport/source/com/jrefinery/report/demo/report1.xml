@@ -13,19 +13,19 @@
 <report name="Sample Report 1" orientation="landscape" pageformat="LETTER" topmargin="0" leftmargin="25" bottommargin="0" rightmargin="0">
 
     <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="18">
-        <label name="Label 1" x="0" y="0" width="100%" height="24" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
+        <label x="0" y="0" width="100%" height="24" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
         <label x="754" y="0" width="100%" height="10" alignment="center">Ha! on the bottom printed!</label>
     </reportheader>
 
     <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
         <!-- insert a number field here showing the total population -->
-        <label name="Label 2" x="0" y="0" width="100%" height="24" alignment="center">*** END OF REPORT ***</label>
+        <label x="0" y="0" width="100%" height="24" alignment="center">*** END OF REPORT ***</label>
     </reportfooter>
 
     <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
         <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
-        <date-function name="date1" x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" function="report_date"/>
-        <line name="line1" x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0"/>
+        <date-field x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" fieldname="report.date"/>
+        <line x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0"/>
     </pageheader>
 
     <pagefooter height="18">
@@ -36,13 +36,13 @@
     <groups>
         <group name="Continent Group">
             <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak="false">
-                <label name="Label 5" x="0" y="1" width="100" height="9" alignment="left">CONTINENT:</label>
-                <string-field name="Continent Element" x="100" y="1" width="250" height="9" alignment="left" fieldname="Continent"/>
-                <line name="line1" x1="0" y1="12" x2="0" y2="12" weight="0.5"/>
+                <label x="0" y="1" width="100" height="9" alignment="left">CONTINENT:</label>
+                <string-field x="100" y="1" width="250" height="9" alignment="left" fieldname="Continent"/>
+                <line x1="0" y1="12" x2="0" y2="12" weight="0.5"/>
             </groupheader>
             <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
-                <label name="Label 6" x="0" y="0" width="450" height="12" alignment="left" baseline="10">Population:</label>
-                <number-function x="220" y="0" width="116" height="12" alignment="right" baseline="10" format="#,##0" function="sum"/>
+                <label x="0" y="0" width="450" height="12" alignment="left">Population:</label>
+                <number-field x="220" y="0" width="116" height="12" alignment="right" format="#,##0" fieldname="sum"/>
             </groupfooter>
             <fields>
                  <field>Continent</field>
@@ -51,17 +51,19 @@
     </groups>
 
     <items height="10" fontname="Serif" fontstyle="plain" fontsize="8">
+        <!-- the rectangle is named as it is referenced later in the function section -->
         <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
-        <line name="top" x1="0" y1="0" x2="0" y2="0" color="#FF0FFF" weight="0.1"/>
-        <line name="bottom" x1="0" y1="10" x2="0" y2="10" color="#0FDFDF" weight="0.1"/>
-        <string-field name="Country Element" x="0" y="0" width="176" height="8" alignment="left" fieldname="Country" />
-        <string-field name="Code Element" x="180" y="0" width="76" height="8" alignment="left" fieldname="ISO Code"/>
-        <number-field name="Population Element" x="260" y="0" width="76" height="8" alignment="right" format="#,##0" fieldname="Population"/>
-        <string-function name="Counter" x="360" y="0" width="76" height="8" alignment="right" format="#,##0.00 '%'" function="expression"/>
-        <number-function name="Population Percent" x="440" y="0" width="76" height="8" alignment="right" format="#,##0.00 '%'" function="percent"/>
+        <line x1="0" y1="0" x2="0" y2="0" color="#FF0FFF" weight="0.1"/>
+        <line x1="0" y1="10" x2="0" y2="10" color="#0FDFDF" weight="0.1"/>
+        <string-field x="0" y="0" width="176" height="8" alignment="left" fieldname="Country" />
+        <string-field x="180" y="0" width="76" height="8" alignment="left" fieldname="ISO Code"/>
+        <number-field x="260" y="0" width="76" height="8" alignment="right" format="#,##0" fieldname="Population"/>
+        <string-field x="360" y="0" width="76" height="8" alignment="right" fieldname="expression"/>
+        <number-field x="440" y="0" width="76" height="8" alignment="right" format="#,##0.00 '%'" fieldname="percent"/>
     </items>
 
     <functions>
+      <property-ref name="report.date"/>
       <expression name="expression" class="com.jrefinery.report.function.BSHExpression">
         <properties>
           <property name="expression">
@@ -69,11 +71,6 @@
           </property>
         </properties>
       </expression>
-      <function name="report_date" class="com.jrefinery.report.function.ReportPropertyFunction">
-        <properties>
-          <property name="reportProperty">report.date</property>
-        </properties>
-      </function>
       <function name="percent" class="com.jrefinery.report.function.ItemPercentageFunction">
         <properties>
           <property name="field">Population</property>

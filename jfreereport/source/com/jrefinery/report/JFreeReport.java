@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.30 2002/10/16 18:33:40 taqua Exp $
+ * $Id: JFreeReport.java,v 1.31 2002/10/21 14:41:56 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -704,10 +704,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     StartState startState = (StartState) state;
 
     PageFormat p = output.getPageFormat();
-    Log.debug ("REPAGINAE PageFormat: Top = " + p.getImageableY() + " , Left = " + p.getImageableX() + " , Bottom = " + (p.getImageableY() + p.getImageableHeight())+ " , Right = " + (p.getImageableX() + p.getImageableWidth()));
-    Paper pa = p.getPaper();
-    Log.debug ("REPAGINAE Paper: Top = " + pa.getImageableY() + " , Left = " + pa.getImageableX() + " , Bottom = " + (pa.getImageableY() + pa.getImageableHeight())+ " , Right = " + (pa.getImageableX() + pa.getImageableWidth()));
-    Log.debug ("More PAPER : Height: " + pa.getHeight() + " ImgHeight: " + pa.getImageableHeight());
     // PrepareRuns, part 1: resolve the function depencies by running the report
     // until all function levels are completed.
     JFreeReport report = state.getReport();
@@ -748,6 +744,8 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
         throw new ReportProcessingException ("State did not proceed, bailing out!");
       }
     }
+
+    // root of evilness here ... pagecount should not be handled specially ...
     state.setProperty (REPORT_PAGECOUNT_PROPERTY, new Integer (state.getCurrentPage () - 1));
     state.setProperty (REPORT_PAGEFORMAT_PROPERTY, output.getPageFormat ());
     state.setProperty (REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);

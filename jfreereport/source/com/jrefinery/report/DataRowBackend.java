@@ -38,6 +38,7 @@ import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.LeveledExpressionList;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportPropertiesList;
 
 import javax.swing.table.TableModel;
 import java.util.Hashtable;
@@ -212,8 +213,11 @@ public class DataRowBackend implements Cloneable
   /** The table model (set by the report state). */
   private TableModel tablemodel;
 
+  /** all previously marked report-properties for this report */
+  private ReportPropertiesList reportProperties;
+
   /** The current row (set by the report state). */
-  private int currentRow;
+  private int currentRow = -1;
 
   /** Column locks. */
   private boolean[] columnlocks;
@@ -225,7 +229,6 @@ public class DataRowBackend implements Cloneable
   {
     columnlocks = new boolean[0];
     colcache = new Hashtable();
-    currentRow = -1;
   }
 
   /**
@@ -279,6 +282,7 @@ public class DataRowBackend implements Cloneable
    */
   public void setFunctions(LeveledExpressionList functions)
   {
+    if (functions == null) throw new NullPointerException();
     this.functions = functions;
     revalidateColumnLock();
   }
@@ -340,13 +344,19 @@ public class DataRowBackend implements Cloneable
           returnValue = getTablemodel().getValueAt(getCurrentRow(), col);
         }
       }
-      else
+      else if (col < getFunctionEndIndex())
       {
         col -= getTableEndIndex();
+
         if (isPreviewMode() == false)
         {
           returnValue = getFunctions().getValue(col);
         }
+      }
+      else if (col < getPropertiesEndIndex())
+      {
+        col -= getFunctionEndIndex();
+        return getReportProperties().get(col);
       }
     }
     catch (Exception e)
@@ -400,7 +410,7 @@ public class DataRowBackend implements Cloneable
    */
   public int getColumnCount()
   {
-    return getFunctionEndIndex();
+    return getPropertiesEndIndex();
   }
 
   /**
@@ -455,7 +465,7 @@ public class DataRowBackend implements Cloneable
     {
       return getTablemodel().getColumnName(col);
     }
-    else
+    else if (col < getFunctionEndIndex())
     {
       col -= getTableEndIndex();
       Expression f = getFunctions().getExpression(col);
@@ -465,6 +475,11 @@ public class DataRowBackend implements Cloneable
         return null;
       }
       return f.getName();
+    }
+    else
+    {
+      col -= getFunctionEndIndex();
+      return getReportProperties().getColumnName(col);
     }
   }
 
@@ -546,6 +561,15 @@ public class DataRowBackend implements Cloneable
     return getTableEndIndex() + getFunctions().size();
   }
 
+  private int getPropertiesEndIndex ()
+  {
+    if (getReportProperties() == null)
+    {
+      return getFunctionEndIndex();
+    }
+    return getFunctionEndIndex() + getReportProperties().getColumnCount();
+  }
+
   /**
    * Ensures that the columnLock does match the number of columns in this row.
    */
@@ -555,5 +579,17 @@ public class DataRowBackend implements Cloneable
     {
       columnlocks = new boolean[getColumnCount()];
     }
+  }
+
+  public ReportPropertiesList getReportProperties()
+  {
+    return reportProperties;
+  }
+
+  public void setReportProperties(ReportPropertiesList properties)
+  {
+    if (properties == null) throw new NullPointerException();
+    this.reportProperties = properties;
+    revalidateColumnLock();
   }
 }

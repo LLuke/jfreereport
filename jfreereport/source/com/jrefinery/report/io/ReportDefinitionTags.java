@@ -235,4 +235,8 @@ public interface ReportDefinitionTags
   public static final String ORIENTATION_REVERSE_LANDSCAPE_VAL = "reverselandscape";
 
   public static final String DEPENCY_LEVEL_ATT = "deplevel";
+
+  public static final String PROPERTY_REFERENCE_TAG = "property-ref";
+  public static final String PROPERTY_ENCODING_ATT = "encoding";
+  public static final String PROPERTY_ENCODING_TEXT = "text";
 }

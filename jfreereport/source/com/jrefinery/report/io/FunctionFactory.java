@@ -65,6 +65,7 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
 
   /** The current property. */
   private String currentProperty;
+  private String currentEncoding;
 
   /** The SAX handler for reading the report template file. */
   private ReportDefinitionContentHandler handler;
@@ -121,6 +122,10 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     else if (elementName.equals(EXPRESSION_TAG))
     {
       startExpression (atts);
+    }
+    else if (elementName.equals(PROPERTY_REFERENCE_TAG))
+    {
+      startPropertyRef (atts);
     }
     else
     {
@@ -224,7 +229,10 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   protected void startProperty (Attributes atts)
           throws SAXException
   {
-    currentProperty = atts.getValue ("name");
+    currentProperty = atts.getValue (NAME_ATT);
+    currentEncoding = atts.getValue (PROPERTY_ENCODING_ATT);
+    if (currentEncoding == null)
+      currentEncoding = PROPERTY_ENCODING_TEXT;
     currentText = new StringBuffer ();
   }
 
@@ -294,6 +302,24 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
       throw new SAXException ("Expression " + name + " class=" + className
                             + " is not valid: Instantiation: " + e.getMessage ());
     }
+  }
+
+
+  /**
+   * Starts processing an expression element.
+   *
+   * @param attr  the element attributes.
+   *
+   * @throws SAXException if there is an error parsing the XML.
+   */
+  protected void startPropertyRef (Attributes attr)
+      throws SAXException
+  {
+    currentProperty = handler.generateName (attr.getValue ("name"));
+    currentEncoding = attr.getValue (PROPERTY_ENCODING_ATT);
+    if (currentEncoding == null)
+      currentEncoding = PROPERTY_ENCODING_TEXT;
+    currentText = new StringBuffer ();
   }
 
   /**
@@ -395,9 +421,13 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     {
       endExpression();
     }
+    else if (elementName.equals (PROPERTY_REFERENCE_TAG))
+    {
+      endPropertyRef();
+    }
     else
     {
-      throw new SAXException ("Expected function tag");
+      throw new SAXException ("Expected closing function tag.");
     }
   }
 
@@ -492,6 +522,20 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     }
 
     currentProps.setProperty (currentProperty, currentText.toString ());
+    currentText = null;
+  }
+
+
+  /**
+   * Ends the definition of a single property entry.
+   *
+   * @throws SAXException if there is a problem parsing the element.
+   */
+  protected void endPropertyRef ()
+          throws SAXException
+  {
+    getReport().getProperties().setMarked(currentProperty, true);
+    getReport().setProperty(currentProperty, currentText.toString ());
     currentText = null;
   }
 

@@ -13,7 +13,7 @@
   2002-09-16: Removed BASELINE attribute from font definition, fixed Orientation-attribute declaration,
               Bands can have a default font declaration
   2002-10-16: All textelements have now a "dynamic" attribute which defaults to false
-  
+
  -->
 
 <!ENTITY % boolean
@@ -500,7 +500,7 @@
   library in order to be loaded and executed correctly.
 
   -->
-<!ELEMENT functions  (function | data-ref)*>
+<!ELEMENT functions  (function | data-ref | property-ref)*>
 
 <!--
 
@@ -523,6 +523,20 @@
 <!ATTLIST data-ref
   name    CDATA   #REQUIRED
 	class   CDATA   #IMPLIED
+>
+
+<!--
+
+  A reference to a report property. This property is predefined here and can be accessed
+  as any datasource. The value defaults to null if no more data is given. The encoding parameter
+  defaults to "text", "serialized-base64" is implemented later to allow serialized objects
+  as value for the property.
+
+-->
+<!ELEMENT property-ref  #PCDATA>
+<!ATTLIST property-ref
+  name       CDATA   #REQUIRED
+	encoding   CDATA   #IMPLIED
 >
 
 <!--
@@ -574,6 +588,7 @@
 <!ELEMENT property    (#PCDATA)>
 <!ATTLIST property
   name       CDATA    #REQUIRED
+  encoding   CDATA    #IMPLIED
 >
 
 

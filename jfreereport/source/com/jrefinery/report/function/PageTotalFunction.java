@@ -58,10 +58,6 @@ public class PageTotalFunction extends PageFunction
     {
       this.setPage(getPage() + 1);
     }
-    else
-    {
-      Log.debug("No PrepareRun: PageStarted");
-    }
   }
 
   /**
@@ -85,10 +81,6 @@ public class PageTotalFunction extends PageFunction
         this.page = new PageStorage(getStartPage());
       }
     }
-    else
-    {
-      Log.debug("No PrepareRun: GroupStarted");
-    }
   }
 
   /**
@@ -103,10 +95,6 @@ public class PageTotalFunction extends PageFunction
     if (event.getState().isPrepareRun())
     {
       this.page = new PageStorage(getStartPage() - 1);
-    }
-    else
-    {
-      Log.debug("No PrepareRun: ReportStarted");
     }
   }
 
@@ -168,4 +156,15 @@ public class PageTotalFunction extends PageFunction
     return Integer.parseInt(getProperty("start", "1"));
   }
 
+  /**
+   * Receives notification that the report has finished.
+   * <P>
+   * Maps the reportFinished-method to the legacy function endReport ().
+   *
+   * @param event Information about the event.
+   */
+  public void reportFinished(ReportEvent event)
+  {
+    event.getState().setProperty(JFreeReport.REPORT_PAGECOUNT_PROPERTY, getValue());
+  }
 }

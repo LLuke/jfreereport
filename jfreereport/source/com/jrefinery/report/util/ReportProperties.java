@@ -34,6 +34,7 @@ package com.jrefinery.report.util;
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.TreeSet;
 
 /**
  * The report properties is a hashtable with string keys. ReportProperties are bound to
@@ -78,6 +79,27 @@ public class ReportProperties implements Serializable, Cloneable
 {
   /** Storage for the properties. */
   private Hashtable properties;
+  private TreeSet markedProperties;
+
+  /**
+   * Copy constructor.
+   *
+   * @param props  an existing ReportProperties instance.
+   */
+  public ReportProperties(ReportProperties props)
+  {
+    properties = new Hashtable(props.properties);
+    markedProperties = new TreeSet();
+  }
+
+  /**
+   * Default constructor.
+   */
+  public ReportProperties()
+  {
+    properties = new Hashtable();
+    markedProperties = new TreeSet();
+  }
 
   /**
    * Adds a property to this properties collection. If a property with the given name
@@ -87,15 +109,15 @@ public class ReportProperties implements Serializable, Cloneable
    * @param key The key as string.
    * @param value The value.
    */
-  public void put (String key, Object value)
+  public void put(String key, Object value)
   {
     if (value == null)
     {
-      this.properties.remove (key);
+      this.properties.remove(key);
     }
     else
     {
-      this.properties.put (key, value);
+      this.properties.put(key, value);
     }
   }
 
@@ -106,9 +128,9 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @return the stored value or null, if the key does not exist in this collection.
    */
-  public Object get (String key)
+  public Object get(String key)
   {
-    return properties.get (key);
+    return properties.get(key);
   }
 
   /**
@@ -121,9 +143,9 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @return the stored value or the default value, if the key does not exist in this collection.
    */
-  public Object get (String key, Object def)
+  public Object get(String key, Object def)
   {
-    Object o = properties.get (key);
+    Object o = properties.get(key);
     if (o == null)
     {
       return def;
@@ -136,35 +158,17 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @return an enumeration of the property keys.
    */
-  public Enumeration keys ()
+  public Enumeration keys()
   {
-    return properties.keys ();
-  }
-
-  /**
-   * Copy constructor.
-   *
-   * @param props  an existing ReportProperties instance.
-   */
-  public ReportProperties (ReportProperties props)
-  {
-    properties = new Hashtable (props.properties);
-  }
-
-  /**
-   * Default constructor.
-   */
-  public ReportProperties ()
-  {
-    properties = new Hashtable ();
+    return properties.keys();
   }
 
   /**
    * Removes all properties stored in this collection.
    */
-  public void clear ()
+  public void clear()
   {
-    properties.clear ();
+    properties.clear();
   }
 
   /**
@@ -174,9 +178,9 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @return true, if the given key is known.
    */
-  public boolean containsKey (String key)
+  public boolean containsKey(String key)
   {
-    return properties.containsKey (key);
+    return properties.containsKey(key);
   }
 
   /**
@@ -186,10 +190,28 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    ReportProperties p = (ReportProperties) super.clone ();
-    p.properties = (Hashtable) properties.clone ();
+    ReportProperties p = (ReportProperties) super.clone();
+    p.properties = (Hashtable) properties.clone();
+    p.markedProperties = (TreeSet) markedProperties.clone();
     return p;
+  }
+
+  public void setMarked(String property, boolean marked)
+  {
+    if (marked)
+    {
+      markedProperties.add (property);
+    }
+    else
+    {
+      markedProperties.remove(property);
+    }
+  }
+
+  public boolean isMarked(String property)
+  {
+    return markedProperties.contains(property);
   }
 }
