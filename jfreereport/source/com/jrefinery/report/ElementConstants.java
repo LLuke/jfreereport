@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -23,18 +23,19 @@
  * ------------
  * Element.java
  * ------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: ElementConstants.java,v 1.1.1.1 2002/04/25 17:02:26 taqua Exp $
+ * $Id: ElementConstants.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes
  * -------
  * 05-Mar-2002 : Version 1 (DG);
  * 10-May-2002 : Removed DEFAULT_FONT.. constants. The font can be determined on construction
- *               time.
+ *               time (TM);
+ * 16-May-2002 : Updated source header (DG);
  */
 
 package com.jrefinery.report;
