@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.10 2002/06/23 16:42:24 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.11 2002/07/17 20:43:43 taqua Exp $
  *
  * Changes
  * -------
@@ -218,7 +218,7 @@ public class ItemSumFunction extends AbstractFunction
     int row = event.getState().getCurrentDataItem();
 
     // Handle the case when the tablemodel contains no rows
-    if (data.getRowCount() == 0) return;
+    if (data.getRowCount() >= row) return;
 
     Object fieldValue = null;
     for (int c = 0; c < data.getColumnCount (); c++)

@@ -20,7 +20,7 @@
    "plain | bold | italic | bold-italic"
 >
 
-<!ENTITY % alignment
+<!ENTITY % alignmentEnum
    "left | center | right"
 >
 
@@ -64,15 +64,15 @@
  >
 
 <!ENTITY % fontdef
-" fontname       CDATA          #IMPLIED
-  fontstyle      (%fontstyle;)  #IMPLIED
-  fontsize       CDATA          #IMPLIED
-  fsbold         (%boolean;)    #IMPLIED
-  fsitalic       (%boolean;)    #IMPLIED
-  fsunderline    (%boolean;)    #IMPLIED
-  fsstrikethr    (%boolean;)    #IMPLIED
-  alignment      CDATA          #IMPLIED
-  baseline       CDATA          #IMPLIED"
+" fontname       CDATA              #IMPLIED
+  fontstyle      (%fontstyle;)      #IMPLIED
+  fontsize       CDATA              #IMPLIED
+  fsbold         (%boolean;)        #IMPLIED
+  fsitalic       (%boolean;)        #IMPLIED
+  fsunderline    (%boolean;)        #IMPLIED
+  fsstrikethr    (%boolean;)        #IMPLIED
+  alignment      (%alignmentEnum;)  #IMPLIED
+  baseline       CDATA              #IMPLIED"
  >
 
 <!--
@@ -189,9 +189,7 @@
 
 <!--
 
-  The reportheader can contain any band-element.
-  The height of the report header is ignored, if the header is
-  printed on an own page.
+  The pageheader can contain any band-element.
 
   As with every element container you may define default font settings
   for sub elements without an own font definition.

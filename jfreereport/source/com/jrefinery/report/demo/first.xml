@@ -232,7 +232,7 @@
                   class="com.jrefinery.report.function.ItemCountFunction">
             <properties>
                 <property name="field">Name</property>
-                <property name="group">Category</property>
+                <property name="group">Category Group</property>
             </properties>
         </function>
 
@@ -240,7 +240,7 @@
                   class="com.jrefinery.report.function.ItemSumFunction">
             <properties>
                 <property name="field">Size</property>
-                <property name="group">Category</property>
+                <property name="group">Category Group</property>
             </properties>
         </function>
 

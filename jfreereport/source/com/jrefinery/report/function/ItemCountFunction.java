@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.4 2002/05/28 19:36:41 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.5 2002/06/05 23:21:47 mungady Exp $
  *
  * Changes
  * -------
@@ -131,6 +131,10 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
     if (getGroup ().equals (group.getName ()))
     {
       this.count = 0;
+    }
+    else
+    {
+      System.out.println ("No Match: " + getGroup() + " + " + group.getName());
     }
   }
 
