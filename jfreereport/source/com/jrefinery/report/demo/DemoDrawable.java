@@ -2,7 +2,7 @@
  * Date: Mar 9, 2003
  * Time: 6:19:34 PM
  *
- * $Id$
+ * $Id: DemoDrawable.java,v 1.1 2003/03/09 17:19:28 taqua Exp $
  */
 package com.jrefinery.report.demo;
 
@@ -22,7 +22,7 @@ public class DemoDrawable implements Drawable
   {
     graphics.setColor(Color.black);
     graphics.drawString(bounds.toString(), 10, 10);
-    graphics.draw(new Rectangle2D.Double(0,0,453,30));
+    graphics.draw(new Rectangle2D.Double(0,0,452,29));
     graphics.draw(bounds);
   }
 }

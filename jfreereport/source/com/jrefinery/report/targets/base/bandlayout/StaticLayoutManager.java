@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.22 2003/03/26 10:49:23 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.23 2003/03/29 20:17:26 taqua Exp $
  *
  * Changes
  * -------
@@ -66,13 +66,21 @@ import com.jrefinery.report.targets.style.StyleKey;
  * <p>
  * Invisible elements within the layouted band are not evaluated. This layout manager
  * will ignore invisible child bands and -elements.
+ * <p>
+ * Note to everybody who tries to understand this class: This class is full of old
+ * compatibility code, this class is not designed to be smart, or suitable for complex
+ * layouts. The only purpose of this class is to maintain backward compatiblity with
+ * older releases of JFreeReport.
+ * <p>
+ * The use of relative elements (the one's with 100% should be considered carefully,
+ * as these elements are not fully predictable).
  *
  * @author Thomas Morgner
  */
 public class StaticLayoutManager extends AbstractBandLayoutManager
 {
   /** A key for the absolute position of an element. */
-  public static final StyleKey ABSOLUTE_POS  = StyleKey.getStyleKey("absolute_pos", Point2D.class);
+  public static final StyleKey ABSOLUTE_POS = StyleKey.getStyleKey("absolute_pos", Point2D.class);
 
   /**
    * A key for the dynamic height flag for an element.
@@ -189,13 +197,12 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     Dimension2D maxSize = correctDimension(
         (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), 
                                                     containerBounds);
-
     maxSize.setSize(Math.min (containerBounds.getWidth() - absPos.getX(), maxSize.getWidth()),
                     Math.min (containerBounds.getHeight() - absPos.getY(), maxSize.getHeight()));
 
+
     retval.setSize(Math.min (retval.getWidth(), maxSize.getWidth()),
                    Math.min (retval.getHeight(), maxSize.getHeight()));
-    //Log.debug ("-- calculate PreferredSize: " + retval);
     return retval;
   }
 
@@ -314,7 +321,9 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
   }
 
   /**
-   * Calculates the minimum layout size for a band.
+   * Calculates the minimum layout size for a band. The width for the child elements
+   * are not calculated, as we assume that the width's are defined fixed within the
+   * parent.
    *
    * @param b  the band.
    * @param containerBounds the bounds of the bands parents.
@@ -328,7 +337,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     Dimension2D minSize = eli.getMinimumSize();
 
     float height = (float) eli.getMinimumSize().getHeight();
-    float width = (float) eli.getMinimumSize().getWidth();
+//    float width = (float) eli.getMinimumSize().getWidth();
+    float width = (float) maxSize.getWidth();
 
     // Check the position of the elements inside and calculate the minimum width
     // needed to display all elements
@@ -372,6 +382,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     // is higher than the given max height.
     height = (float) Math.min(height, maxSize.getHeight());
     width = (float) Math.min(width, maxSize.getWidth());
+
     Log.debug ("Dimension after static correction [MIN]: " + width + " -> " + height);
     FloatDimension base = new FloatDimension(width, height);
 
@@ -448,6 +459,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     Dimension2D parentDim = new FloatDimension((float) parentBounds.getWidth(),
                                                (float) parentBounds.getHeight());
 
+    Log.debug ("My LayoutSize: " + parentDim);
+
     LayoutSupport layoutSupport = getLayoutSupport();
     for (int i = 0; i < elements.length; i++)
     {
@@ -458,7 +471,9 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
         continue;
       }
       Dimension2D uncorrectedSize = getPreferredSize(e, parentDim);
+      Log.debug ("UBounds: Element: " + e.getName() + " Bounds: " + uncorrectedSize);
       Dimension2D size = correctDimension(uncorrectedSize, parentDim);
+      Log.debug ("CBounds: Element: " + e.getName() + " Bounds: " + size);
 
       Point2D absPos
           = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim);

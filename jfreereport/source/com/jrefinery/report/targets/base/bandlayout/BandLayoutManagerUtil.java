@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.13 2003/03/26 10:49:23 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.14 2003/03/29 20:17:26 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ package com.jrefinery.report.targets.base.bandlayout;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Point2D;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
@@ -141,9 +140,7 @@ public class BandLayoutManagerUtil
 
     // the height is redefined by the band's requirements to support
     // the dynamic elements.
-    Log.debug ("Band Defined some bounds: " + fdim);
-    height = (float) fdim.getHeight();
-    //Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, height);
+    Log.debug ("Band Defined its bounds: " + fdim);
     Rectangle2D bounds = new Rectangle2D.Float(0, 0, (float) fdim.getWidth(), (float) fdim.getHeight());
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
     lm.doLayout(band);
