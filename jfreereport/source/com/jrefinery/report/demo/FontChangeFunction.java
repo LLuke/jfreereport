@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontChangeFunction.java,v 1.10 2003/02/25 14:07:18 taqua Exp $
+ * $Id: FontChangeFunction.java,v 1.11 2003/02/25 15:41:56 taqua Exp $
  *
  * Changes
  * -------
@@ -104,7 +104,8 @@ public class FontChangeFunction extends AbstractFunction
     if (e != null && (e instanceof TextElement))
     {
       TextElement tx = (TextElement) e;
-      tx.getStyle().setFontDefinitionProperty (new FontDefinition(new Font (fontname, Font.PLAIN, 10)));
+      tx.getStyle().setFontDefinitionProperty (
+          new FontDefinition(new Font (fontname, Font.PLAIN, 10)));
     }
   }
 

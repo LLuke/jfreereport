@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.35 2003/02/25 14:07:32 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.36 2003/02/25 15:42:49 taqua Exp $
  *
  * Changes
  * -------
@@ -113,7 +113,8 @@ import java.util.Properties;
  *
  * <li><code>com.jrefinery.report.TableFactoryMode</code>
  * <p>
- * The table model factory mode for the {@link com.jrefinery.report.tablemodel.ResultSetTableModelFactory}.
+ * The table model factory mode for the 
+ * {@link com.jrefinery.report.tablemodel.ResultSetTableModelFactory}.
  * If set to "simple" the factory will always return a <code>DefaultTableModel</code>.
  * This property is not set by default and it should not be necessary to change this.
  *
@@ -365,22 +366,26 @@ public class ReportConfiguration
   public static final String REPORT_RESOURCE_BUNDLE = "com.jrefinery.report.ResourceBundle";
 
   /** Enable stricter table layouting for all TableProcessors. */
-  public static final String STRICT_TABLE_LAYOUT = "com.jrefinery.report.targets.table.StrictLayout";
+  public static final String STRICT_TABLE_LAYOUT 
+      = "com.jrefinery.report.targets.table.StrictLayout";
 
   /** Disable strict layout by default. */
   public static final String STRICT_TABLE_LAYOUT_DEFAULT = "false";
 
   /** The property that defines whether to enable PDF export in the PreviewFrame. */
   public static final String ENABLE_EXPORT_PDF = "com.jrefinery.report.preview.plugin.pdf";
+  
   /** The property that defines whether to enable CSV export in the PreviewFrame. */
   public static final String ENABLE_EXPORT_CSV = "com.jrefinery.report.preview.plugin.csv";
+  
   /** The property that defines whether to enable Html export in the PreviewFrame. */
   public static final String ENABLE_EXPORT_HTML = "com.jrefinery.report.preview.plugin.html";
+  
   /** The property that defines whether to enable Excel export in the PreviewFrame. */
   public static final String ENABLE_EXPORT_EXCEL = "com.jrefinery.report.preview.plugin.excel";
+  
   /** The property that defines whether to enable PlainText export in the PreviewFrame. */
   public static final String ENABLE_EXPORT_PLAIN = "com.jrefinery.report.preview.plugin.plain";
-
 
   /** Storage for the configuration properties. */
   private Properties configuration;
@@ -510,7 +515,8 @@ public class ReportConfiguration
    * Notes:
    * <ul>
    * <li>the setting is not case sensitive.</li>
-   * <li>changing the log level after the {@link Log} class has been loaded will have no effect.</li>
+   * <li>changing the log level after the {@link Log} class has been loaded will have no 
+   *     effect.</li>
    * <li>to turn of logging altogether, use the {@link #setDisableLogging} method.</li>
    * </ul>
    *
@@ -637,7 +643,7 @@ public class ReportConfiguration
    * Set the parent configuration. The parent configuration is queried, if the
    * requested configuration values was not found in this report configuration.
    *
-   * @param config the parent configuration.
+   * @param config  the parent configuration.
    */
   protected void setParentConfig (ReportConfiguration config)
   {
@@ -822,14 +828,16 @@ public class ReportConfiguration
    */
   public boolean isStrictTableLayout()
   {
-    return getConfigProperty(STRICT_TABLE_LAYOUT, STRICT_TABLE_LAYOUT_DEFAULT).equalsIgnoreCase("true");
+    return getConfigProperty(STRICT_TABLE_LAYOUT, 
+                             STRICT_TABLE_LAYOUT_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**
    * Defines whether strict layouting rules should be used for the TableLayouter.
    *
-   * @see ReportConfiguration#isStrictTableLayout
    * @param strict set to true, to use strict layouting rules, false otherwise.
+   * 
+   * @see ReportConfiguration#isStrictTableLayout
    */
   public void setStrictTableLayout (boolean strict)
   {

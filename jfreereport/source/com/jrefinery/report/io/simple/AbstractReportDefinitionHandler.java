@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------------------------
  * AbstractReportDefinitionHandler.java
  * ------------------------------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, 2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractReportDefinitionHandler.java,v 1.2 2003/02/02 23:43:50 taqua Exp $
+ * $Id: AbstractReportDefinitionHandler.java,v 1.3 2003/02/25 14:07:29 taqua Exp $
  *
  * Changes
  * -------
@@ -59,20 +59,28 @@ public abstract class AbstractReportDefinitionHandler implements ReportDefinitio
 
   /** the parser used to coordinate the ReportDefinitionHandlers. */
   private Parser parser;
+  
   /** the current finishtag. */
   private String finishTag;
 
   /**
    * Default constructor.
    *
-   * @param parser the used parser to coordinate the parsing process.
-   * @param finishTag the finish tag, that should trigger the deactivation of this parser.
+   * @param parser  the used parser to coordinate the parsing process.
+   * @param finishTag  the finish tag, that should trigger the deactivation of this parser.
+   * 
    * @throws NullPointerException if the finishTag or the parser are null.
    */
   public AbstractReportDefinitionHandler (Parser parser, String finishTag)
   {
-    if (parser == null) throw new NullPointerException();
-    if (finishTag == null) throw new NullPointerException();
+    if (parser == null) 
+    {
+      throw new NullPointerException();
+    }
+    if (finishTag == null) 
+    {
+      throw new NullPointerException();
+    }
     this.parser = parser;
     this.finishTag = finishTag;
   }
@@ -97,7 +105,8 @@ public abstract class AbstractReportDefinitionHandler implements ReportDefinitio
    */
   public JFreeReport getReport ()
   {
-    return (JFreeReport) getParser().getConfigurationValue(InitialReportHandler.REPORT_DEFINITION_TAG);
+    return (JFreeReport) getParser().getConfigurationValue(
+        InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 
   /**
@@ -127,12 +136,27 @@ public abstract class AbstractReportDefinitionHandler implements ReportDefinitio
     return ng;
   }
 
+  /**
+   * Returns the parser.
+   * 
+   * @return The parser.
+   */
   public Parser getParser()
   {
     return parser;
   }
 
+  /**
+   * Processes characters (in this case, does nothing).
+   * 
+   * @param ch  the character array.
+   * @param start  the index of the first valid character.
+   * @param length  the number of valid characters.
+   * 
+   * @throws SAXException if there is a parsing problem.
+   */
   public void characters(char ch[], int start, int length) throws SAXException
   {
   }
+
 }

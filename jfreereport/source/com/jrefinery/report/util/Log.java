@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.18 2003/02/07 22:44:38 taqua Exp $
+ * $Id: Log.java,v 1.19 2003/02/11 20:20:49 taqua Exp $
  *
  * Changes
  * -------
@@ -255,8 +255,9 @@ public final class Log
   public static synchronized void addTarget (LogTarget target)
   {
     if (target == null)
+    {
       throw new NullPointerException();
-
+    }
     LogTarget[] data = new LogTarget[logTargets.length + 1];
     System.arraycopy(logTargets, 0, data, 0, logTargets.length);
     data[logTargets.length] = target;
@@ -268,11 +269,12 @@ public final class Log
    *
    * @param target  the target to remove.
    */
-  public synchronized static void removeTarget (LogTarget target)
+  public static synchronized void removeTarget (LogTarget target)
   {
     if (target == null)
+    {
       throw new NullPointerException();
-
+    }
     List l = Arrays.asList(logTargets);
     l.remove(target);
 
@@ -297,11 +299,12 @@ public final class Log
    *
    * @param target the new and only logtarget.
    */
-  public synchronized static void replaceTargets (LogTarget target)
+  public static synchronized void replaceTargets (LogTarget target)
   {
     if (target == null)
+    {
       throw new NullPointerException();
-
+    }
     logTargets = new LogTarget[]{ target };
   }
 

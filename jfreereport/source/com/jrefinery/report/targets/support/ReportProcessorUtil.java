@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ------------------------
  * ReportProcessorUtil.java
- * -------------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * ------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProcessorUtil.java,v 1.2 2003/02/12 21:16:48 taqua Exp $
+ * $Id: ReportProcessorUtil.java,v 1.3 2003/02/25 15:42:28 taqua Exp $
  *
  * Changes
  * -------
@@ -37,37 +37,39 @@
  */
 package com.jrefinery.report.targets.support;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.targets.table.html.HtmlProcessor;
-import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
-import com.jrefinery.report.targets.table.html.DirectoryHtmlFilesystem;
-import com.jrefinery.report.targets.table.html.ZIPHtmlFilesystem;
-import com.jrefinery.report.targets.table.rtf.RTFProcessor;
-import com.jrefinery.report.targets.table.csv.CSVTableProcessor;
-import com.jrefinery.report.targets.table.excel.ExcelProcessor;
-import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
-import com.jrefinery.report.targets.pageable.output.PrinterCommandSet;
-import com.jrefinery.report.targets.pageable.output.PlainTextOutputTarget;
-import com.jrefinery.report.targets.pageable.PageableReportProcessor;
-import com.jrefinery.report.targets.pageable.OutputTargetException;
-import com.jrefinery.report.function.FunctionInitializeException;
-
+import java.awt.print.PageFormat;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.File;
 import java.io.Writer;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.awt.print.PageFormat;
+
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.pageable.PageableReportProcessor;
+import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
+import com.jrefinery.report.targets.pageable.output.PlainTextOutputTarget;
+import com.jrefinery.report.targets.pageable.output.PrinterCommandSet;
+import com.jrefinery.report.targets.table.csv.CSVTableProcessor;
+import com.jrefinery.report.targets.table.excel.ExcelProcessor;
+import com.jrefinery.report.targets.table.html.DirectoryHtmlFilesystem;
+import com.jrefinery.report.targets.table.html.HtmlProcessor;
+import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
+import com.jrefinery.report.targets.table.html.ZIPHtmlFilesystem;
+import com.jrefinery.report.targets.table.rtf.RTFProcessor;
+import com.jrefinery.report.util.Log;
 
 /**
  * Library functions to save a report into the different output targets.
  * The functions here are provided to cover the common use cases, they are
  * not intended to be configurable in any way.
+ * 
+ * @author Thomas Morgner
  */
 public class ReportProcessorUtil
 {
@@ -76,6 +78,7 @@ public class ReportProcessorUtil
    *
    * @param report  the report.
    * @param filename target file name.
+   * 
    * @throws ReportProcessingException if the report processing failed.
    * @throws FunctionInitializeException if the initialisation of the report processor failed.
    * @throws IOException if there was an IOerror while processing the report.
@@ -127,7 +130,9 @@ public class ReportProcessorUtil
       try
       {
         if (out != null)
+        {
           out.close();
+        }
       }
       catch (Exception e)
       {
@@ -142,9 +147,11 @@ public class ReportProcessorUtil
    *
    * @param report  the report.
    * @param filename target file name.
+   * 
    * @throws ReportProcessingException if the report processing failed.
    * @throws FunctionInitializeException if the initialisation of the report processor failed.
    * @throws IOException if there was an IOerror while processing the report.
+   * @throws OutputTargetException if there is a problem with the output target.
    */
   public static void createPlainText (JFreeReport report, String filename)
    throws IOException, ReportProcessingException, FunctionInitializeException, OutputTargetException
@@ -165,6 +172,7 @@ public class ReportProcessorUtil
    *
    * @param report  the report.
    * @param filename target file name.
+   * 
    * @throws ReportProcessingException if the report processing failed.
    * @throws FunctionInitializeException if the initialisation of the report processor failed.
    * @throws IOException if there was an IOerror while processing the report.
@@ -185,6 +193,7 @@ public class ReportProcessorUtil
    *
    * @param report  the report.
    * @param filename target file name.
+   * 
    * @throws ReportProcessingException if the report processing failed.
    * @throws FunctionInitializeException if the initialisation of the report processor failed.
    * @throws IOException if there was an IOerror while processing the report.
@@ -205,6 +214,7 @@ public class ReportProcessorUtil
    *
    * @param report  the report.
    * @param filename target file name.
+   * 
    * @throws ReportProcessingException if the report processing failed.
    * @throws FunctionInitializeException if the initialisation of the report processor failed.
    * @throws IOException if there was an IOerror while processing the report.
@@ -226,6 +236,7 @@ public class ReportProcessorUtil
    *
    * @param report  the report.
    * @param filename target file name.
+   * 
    * @throws ReportProcessingException if the report processing failed.
    * @throws FunctionInitializeException if the initialisation of the report processor failed.
    * @throws IOException if there was an IOerror while processing the report.
@@ -243,6 +254,7 @@ public class ReportProcessorUtil
    *
    * @param report  the report.
    * @param filename target file name.
+   * 
    * @throws ReportProcessingException if the report processing failed.
    * @throws FunctionInitializeException if the initialisation of the report processor failed.
    * @throws IOException if there was an IOerror while processing the report.

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,21 +20,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ---------------------
  * SubSetTableModel.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ---------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SubSetTableModel.java,v 1.6 2003/02/16 23:23:26 taqua Exp $
+ * $Id: SubSetTableModel.java,v 1.7 2003/02/25 18:46:50 taqua Exp $
  *
  * Changes
  * -------
  * 26-Jan-2003 : Initial version
  * 16-Feb-2003 : Documentation
  */
+
 package com.jrefinery.report.tablemodel;
 
 import javax.swing.event.TableModelEvent;
@@ -45,6 +46,8 @@ import java.util.ArrayList;
 /**
  * A TableModel that proxies an other tablemodel and cuts rows from the
  * start and/or the end of the other tablemodel.
+ * 
+ * @author Thomas Morgner
  */
 public class SubSetTableModel implements TableModel
 {
@@ -83,7 +86,7 @@ public class SubSetTableModel implements TableModel
       int lastRow = e.getLastRow();
       if (lastRow > 0)
       {
-        lastRow -=start;
+        lastRow -= start;
         lastRow -= (model.getRowCount() - end);
       }
       int type = e.getType() ;
@@ -122,10 +125,13 @@ public class SubSetTableModel implements TableModel
 
   /** the row that should be the first row. */
   private int start;
+  
   /** the row that should be the last row. */
   private int end;
+  
   /** the model. */
   private TableModel model;
+  
   /** the event translator. */
   private TableEventTranslator eventHandler;
 
@@ -137,18 +143,31 @@ public class SubSetTableModel implements TableModel
    * row. Any row after <code>end</code> is ignored. End must be greater or
    * equal the given start row.
    *
-   * @param start the number of rows that should be removed.
-   * @param end the last row.
-   * @param model the wrapped model
+   * @param start  the number of rows that should be removed.
+   * @param end  the last row.
+   * @param model  the wrapped model
+   * 
    * @throws NullPointerException if the given model is null
    * @throws IllegalArgumentException if start or end are invalid.
    */
   public SubSetTableModel (int start, int end, TableModel model)
   {
-    if (start < 0) throw new IllegalArgumentException("Start < 0");
-    if (end <= start) throw new IllegalArgumentException("end < start");
-    if (model == null) throw new NullPointerException();
-    if (end >= model.getRowCount()) throw new IllegalArgumentException("End >= Model.RowCount");
+    if (start < 0) 
+    {
+      throw new IllegalArgumentException("Start < 0");
+    }
+    if (end <= start) 
+    {
+      throw new IllegalArgumentException("end < start");
+    }
+    if (model == null) 
+    {
+      throw new NullPointerException();
+    }
+    if (end >= model.getRowCount()) 
+    {
+      throw new IllegalArgumentException("End >= Model.RowCount");
+    }
 
     this.start = start;
     this.end = end;
@@ -214,6 +233,7 @@ public class SubSetTableModel implements TableModel
    * default renderer and editor for the column.
    *
    * @param columnIndex  the index of the column
+   * 
    * @return the base ancestor class of the object values in the model.
    */
   public Class getColumnClass(int columnIndex)
@@ -227,9 +247,11 @@ public class SubSetTableModel implements TableModel
    * is editable.  Otherwise, <code>setValueAt</code> on the cell will not
    * change the value of that cell.
    *
-   * @param	rowIndex	the row whose value to be queried
-   * @param	columnIndex	the column whose value to be queried
-   * @return	true if the cell is editable
+   * @param	rowIndex  the row whose value to be queried
+   * @param	columnIndex  the column whose value to be queried
+   * 
+   * @return  true if the cell is editable
+   * 
    * @see #setValueAt
    */
   public boolean isCellEditable(int rowIndex, int columnIndex)
@@ -241,9 +263,10 @@ public class SubSetTableModel implements TableModel
    * Returns the value for the cell at <code>columnIndex</code> and
    * <code>rowIndex</code>.
    *
-   * @param	rowIndex	the row whose value is to be queried
-   * @param	columnIndex 	the column whose value is to be queried
-   * @return	the value Object at the specified cell
+   * @param	rowIndex  the row whose value is to be queried
+   * @param	columnIndex  the column whose value is to be queried
+   * 
+   * @return  the value Object at the specified cell
    */
   public Object getValueAt(int rowIndex, int columnIndex)
   {
@@ -254,9 +277,10 @@ public class SubSetTableModel implements TableModel
    * Sets the value in the cell at <code>columnIndex</code> and
    * <code>rowIndex</code> to <code>aValue</code>.
    *
-   * @param	aValue		 the new value
-   * @param	rowIndex	 the row whose value is to be changed
-   * @param	columnIndex 	 the column whose value is to be changed
+   * @param	aValue  the new value
+   * @param	rowIndex  the row whose value is to be changed
+   * @param	columnIndex  the column whose value is to be changed
+   * 
    * @see #getValueAt
    * @see #isCellEditable
    */
@@ -269,7 +293,7 @@ public class SubSetTableModel implements TableModel
    * Adds a listener to the list that is notified each time a change
    * to the data model occurs.
    *
-   * @param	l		the TableModelListener
+   * @param	l  the TableModelListener
    */
   public void addTableModelListener(TableModelListener l)
   {
@@ -280,7 +304,7 @@ public class SubSetTableModel implements TableModel
    * Removes a listener from the list that is notified each time a
    * change to the data model occurs.
    *
-   * @param	l		the TableModelListener
+   * @param	l  the TableModelListener
    */
   public void removeTableModelListener(TableModelListener l)
   {

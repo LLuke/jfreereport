@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * ----------------
  * FontFactory.java
  * ----------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
- * $Id: FontFactory.java,v 1.4 2003/02/05 13:25:29 taqua Exp $
+ * $Id: FontFactory.java,v 1.5 2003/02/25 20:15:01 taqua Exp $
  *
  * Changes
  * -------
@@ -55,20 +55,28 @@ public class FontFactory implements ReportDefinitionTags
   {
     /** the font name. */
     private String fontname;
+    
     /** the font size. */
     private Integer fontSize;
+    
     /** the bold flag for the font. */
     private Boolean isBold;
+    
     /** the italic flag for the font. */
     private Boolean isItalic;
+    
     /** the strikeThrough flag for the font. */
     private Boolean isStrikeThrough;
+    
     /** the underlined flag for the font. */
     private Boolean isUnderlined;
+    
     /** the embedded flag for the font. */
     private Boolean isEmbedded;
+    
     /** the font encoding for the font. */
     private String fontencoding;
+    
     /** the line height for the font. */
     private Float lineHeight;
 
@@ -276,23 +284,41 @@ public class FontFactory implements ReportDefinitionTags
   public static void applyFontInformation (ElementStyleSheet es, FontInformation fi)
   {
     if (fi.getFontname() != null)
+    {
       es.setStyleProperty(ElementStyleSheet.FONT, fi.getFontname());
+    }
     if (fi.getFontSize() != null)
+    {
       es.setStyleProperty(ElementStyleSheet.FONTSIZE, fi.getFontSize());
+    }
     if (fi.getItalic() != null)
+    {
       es.setStyleProperty(ElementStyleSheet.ITALIC, fi.getItalic());
+    }
     if (fi.getBold() != null)
+    {
       es.setStyleProperty(ElementStyleSheet.BOLD, fi.getBold());
+    }
     if (fi.getUnderlined() != null)
+    {
       es.setStyleProperty(ElementStyleSheet.UNDERLINED, fi.getUnderlined());
+    }
     if (fi.getStrikeThrough() != null)
+    {
       es.setStyleProperty(ElementStyleSheet.STRIKETHROUGH, fi.getStrikeThrough());
+    }
     if (fi.getEmbedded() != null)
+    {
       es.setStyleProperty(ElementStyleSheet.EMBEDDED_FONT, fi.getEmbedded());
+    }
     if (fi.getFontencoding() != null)
+    {
       es.setStyleProperty(ElementStyleSheet.FONTENCODING, fi.getFontencoding());
+    }
     if (fi.getLineHeight() != null)
+    {
       es.setStyleProperty(ElementStyleSheet.LINEHEIGHT, fi.getLineHeight());
+    }
   }
 
   /**
@@ -332,8 +358,9 @@ public class FontFactory implements ReportDefinitionTags
   private FontInformation readSimpleFontStyle (Attributes attr, FontInformation target)
   {
     if (target == null)
+    {
       target = new FontInformation();
-
+    }
     String fontStyle = attr.getValue (FONT_STYLE_ATT);
 
     if (fontStyle != null)
@@ -372,12 +399,14 @@ public class FontFactory implements ReportDefinitionTags
 
     if (attr.getValue(FS_STRIKETHR) != null)
     {
-      target.setStrikeThrough(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_STRIKETHR), false)));
+      target.setStrikeThrough(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_STRIKETHR), 
+                                                                   false)));
     }
 
     if (attr.getValue(FS_UNDERLINE) != null)
     {
-      target.setUnderlined(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_UNDERLINE), false)));
+      target.setUnderlined(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_UNDERLINE), 
+                                                                false)));
     }
 
     if (attr.getValue(FS_EMBEDDED) != null)
@@ -457,6 +486,5 @@ public class FontFactory implements ReportDefinitionTags
     }
     return fi;
   }
-
 
 }

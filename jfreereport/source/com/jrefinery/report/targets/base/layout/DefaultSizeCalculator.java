@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.3 2003/02/17 16:13:51 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.4 2003/02/25 18:46:59 taqua Exp $
  *
  * Changes
  * -------
@@ -38,14 +38,13 @@
  */
 package com.jrefinery.report.targets.base.layout;
 
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.report.targets.base.layout.SizeCalculator;
-import com.jrefinery.report.targets.FontDefinition;
-
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
+
+import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
 
 /**
  * An AWT-Based default implementation of an SizeCalculator. This implementation
@@ -53,6 +52,8 @@ import java.awt.geom.Rectangle2D;
  * to return reasonable sizes for the given text.
  *
  * @see com.jrefinery.report.targets.base.layout.DefaultSizeCalculator
+ * 
+ * @author Thomas Morgner
  */
 public class DefaultSizeCalculator implements SizeCalculator
 {
@@ -103,30 +104,35 @@ public class DefaultSizeCalculator implements SizeCalculator
       Log.debug ("The buggy-value is defined in the configuration     : " + buggyOverride);
       if (isAliased())
       {
-        Log.debug ("The G2OutputTarget uses Antialiasing. \n" +
-                   "The FontRendererBugs should not be visible in TextAntiAliasing-Mode.\n" +
-                   "If there are problems with the string-placement, please report your \n" +
-                   "Operating System version and your JDK Version to www.object-refinery.com/jfreereport.\n");
+        Log.debug ("The G2OutputTarget uses Antialiasing. \n" 
+                   + "The FontRendererBugs should not be visible in TextAntiAliasing-Mode.\n"
+                   + "If there are problems with the string-placement, please report your \n"
+                   + "Operating System version and your JDK Version to "
+                   + "www.object-refinery.com/jfreereport.\n");
       }
       else
       {
         if (isBuggyVersion)
         {
-          Log.debug ("The G2OutputTarget does not use Antialiasing. \n" +
-                     "If your FontRenderer is buggy (text is not displayed correctly by default). \n" +
-                     "The system was able to detect this and will try to correct the bug. \n" +
-                     "If your strings are not displayed correctly, report your OperationSystem version and your \n" +
-                     "JDK Version to www.object-refinery.com/jfreereport\n");
+          Log.debug ("The G2OutputTarget does not use Antialiasing. \n" 
+                     + "If your FontRenderer is buggy (text is not displayed correctly by "
+                     + "default).\n" 
+                     + "The system was able to detect this and will try to correct the bug. \n" 
+                     + "If your strings are not displayed correctly, report your Operating System "
+                     + "version and your \n" 
+                     + "JDK Version to www.object-refinery.com/jfreereport\n");
         }
         else
         {
-          Log.debug ("The G2OutputTarget does not use Antialiasing. \n" +
-                     "If your FontRenderer seems to be ok. \n" +
-                     "If your strings are not displayed correctly, try to enable the configuration key \n" +
-                     "\"com.jrefinery.report.targets.G2OutputTarget.isBuggyFRC=true\"\n" +
-                     "in the file 'jfreereport.properties' or set this property as System-property. \n" +
-                     "If the bug remains alive, please report your Operating System version and your \n" +
-                     "JDK Version to www.object-refinery.com/jfreereport.\n");
+          Log.debug ("The G2OutputTarget does not use Antialiasing. \n" 
+                     + "If your FontRenderer seems to be ok. \n" 
+                     + "If your strings are not displayed correctly, try to enable the "
+                     + "configuration key \n" 
+                     + "\"com.jrefinery.report.targets.G2OutputTarget.isBuggyFRC=true\"\n" 
+                     + "in the file 'jfreereport.properties' or set this property as "
+                     + "System-property. \n" 
+                     + "If the bug remains alive, please report your Operating System version "
+                     + "and your \n JDK Version to www.object-refinery.com/jfreereport.\n");
         }
       }
 
@@ -239,8 +245,9 @@ public class DefaultSizeCalculator implements SizeCalculator
     }
 
     if (lineStartPos == endPos)
+    {
       return 0;
-
+    }
     FontRenderContext frc = getFrcDetector().createFontRenderContext();
     Rectangle2D textBounds2 = font.getFont().getStringBounds(text, lineStartPos, endPos, frc);
     float x2 = (float) textBounds2.getWidth();

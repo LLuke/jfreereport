@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,16 +20,16 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
+ * ---------------------
  * ExcelFontFactory.java
- * --------------------
- * (C)opyright 2002, by Hawesko GmbH & Co KG
+ * ---------------------
+ * (C)opyright 2003, by Hawesko GmbH & Co KG
  *
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG)
  * based on ideas and code from JRXlsExporter.java of JasperReports
  * Contributor(s):   -;
  *
- * $Id: ExcelFontFactory.java,v 1.4 2003/02/20 00:39:20 taqua Exp $
+ * $Id: ExcelFontFactory.java,v 1.5 2003/02/25 15:42:36 taqua Exp $
  *
  * Changes
  * -------
@@ -46,28 +46,27 @@ import java.util.ArrayList;
 
 /**
  * This class keeps track of all fonts that we have used so far in our Excel file.
+ * 
  * @author Heiko Evermann
- *
  */
 public class ExcelFontFactory
 {
-
-	/** The list of fonts that we have used so far. */
-	private ArrayList fontList = null;
+  /** The list of fonts that we have used so far */
+  private ArrayList fontList = null;
 
   /** The workbook that is used to create the font. */
   private HSSFWorkbook workbook;
 
-	/**
-	 * Constructor for ExcelFontFactory.
-   *
-   * @param workbook the workbook used to define new styles and fonts.
-	 */
-	public ExcelFontFactory(HSSFWorkbook workbook)
+  /**
+   * Constructor for ExcelFontFactory.
+   * 
+   * @param workbook  the workbook.
+   */
+  public ExcelFontFactory(HSSFWorkbook workbook)
   {
-		fontList = new ArrayList();
+    fontList = new ArrayList();
     this.workbook = workbook;
-	}
+  }
 
   /**
    * Creates a HSSFFont. The created font is cached and reused later,
@@ -77,7 +76,7 @@ public class ExcelFontFactory
    * @param forecolor the font color
    * @return the created or a cached HSSFFont
    */
-	public HSSFFont getExcelFont(FontDefinition font, Color forecolor)
+  public HSSFFont getExcelFont(FontDefinition font, Color forecolor)
   {
     HSSFFontWrapper wrapper = new HSSFFontWrapper(font, forecolor);
     if (fontList.contains(wrapper))
@@ -89,10 +88,10 @@ public class ExcelFontFactory
       }
     }
 
-		// ok, we need a new one ...
-		HSSFFont excelFont = wrapper.getFont(workbook);
-		fontList.add(excelFont);
-		return excelFont;
-	}
+    // ok, we need a new one ...
+    HSSFFont excelFont = wrapper.getFont(workbook);
+    fontList.add(excelFont);
+    return excelFont;
+  }
  
 }

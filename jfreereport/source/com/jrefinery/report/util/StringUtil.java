@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,17 +23,17 @@
  * ---------------
  * StringUtil.java
  * ---------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringUtil.java,v 1.7 2003/01/25 20:34:12 taqua Exp $
+ * $Id: StringUtil.java,v 1.8 2003/02/05 17:56:03 taqua Exp $
  *
  * Changes
  * -------
  * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
- * 25-Jan-2003 : Added URL-Encoding and CSS-Encoding methods to support HTML-Output 
+ * 25-Jan-2003 : Added URL-Encoding and CSS-Encoding methods to support HTML-Output
  */
 
 package com.jrefinery.report.util;
@@ -80,13 +80,11 @@ public class StringUtil
   }
 
   /**
-   * Provides a method to encode any string into a URL-safe
-   * form.
-   * Non-ASCII characters are first encoded as sequences of
-   * two or three bytes, using the UTF-8 algorithm, before being
-   * encoded as %HH escapes.
+   * Provides a method to encode any string into a URL-safe form.
+   * Non-ASCII characters are first encoded as sequences of two or three bytes, using the
+   * UTF-8 algorithm, before being encoded as %HH escapes.
    */
-  private final static String[] hexURLEncoding = {
+  private static final String[] HEX_URL_ENCODING = {
     "%00", "%01", "%02", "%03", "%04", "%05", "%06", "%07",
     "%08", "%09", "%0a", "%0b", "%0c", "%0d", "%0e", "%0f",
     "%10", "%11", "%12", "%13", "%14", "%15", "%16", "%17",
@@ -154,22 +152,22 @@ public class StringUtil
     {
       int ch = s.charAt(i);
       if ('A' <= ch && ch <= 'Z')
-      {		// 'A'..'Z'
+      { // 'A'..'Z'
         sbuf.append((char) ch);
       }
       else if ('a' <= ch && ch <= 'z')
-      {	// 'a'..'z'
+      { // 'a'..'z'
         sbuf.append((char) ch);
       }
       else if ('0' <= ch && ch <= '9')
-      {	// '0'..'9'
+      { // '0'..'9'
         sbuf.append((char) ch);
       }
       else if (ch == ' ')
-      {			// space
+      {  // space
         sbuf.append('+');
       }
-      else if (ch == '-' || ch == '_'		// unreserved
+      else if (ch == '-' || ch == '_'  // unreserved
           || ch == '.' || ch == '!'
           || ch == '~' || ch == '*'
           || ch == '\'' || ch == '('
@@ -178,19 +176,19 @@ public class StringUtil
         sbuf.append((char) ch);
       }
       else if (ch <= 0x007f)
-      {		// other ASCII
-        sbuf.append(hexURLEncoding[ch]);
+      {  // other ASCII
+        sbuf.append(HEX_URL_ENCODING[ch]);
       }
       else if (ch <= 0x07FF)
-      {		// non-ASCII <= 0x7FF
-        sbuf.append(hexURLEncoding[0xc0 | (ch >> 6)]);
-        sbuf.append(hexURLEncoding[0x80 | (ch & 0x3F)]);
+      {  // non-ASCII <= 0x7FF
+        sbuf.append(HEX_URL_ENCODING[0xc0 | (ch >> 6)]);
+        sbuf.append(HEX_URL_ENCODING[0x80 | (ch & 0x3F)]);
       }
       else
-      {					// 0x7FF < ch <= 0xFFFF
-        sbuf.append(hexURLEncoding[0xe0 | (ch >> 12)]);
-        sbuf.append(hexURLEncoding[0x80 | ((ch >> 6) & 0x3F)]);
-        sbuf.append(hexURLEncoding[0x80 | (ch & 0x3F)]);
+      {  // 0x7FF < ch <= 0xFFFF
+        sbuf.append(HEX_URL_ENCODING[0xe0 | (ch >> 12)]);
+        sbuf.append(HEX_URL_ENCODING[0x80 | ((ch >> 6) & 0x3F)]);
+        sbuf.append(HEX_URL_ENCODING[0x80 | (ch & 0x3F)]);
       }
     }
     return sbuf.toString();
@@ -204,7 +202,7 @@ public class StringUtil
    * two or three bytes, using the UTF-8 algorithm, before being
    * encoded as %HH escapes.
    */
-  private final static String[] hexCSSEncoding = {
+  private static final String[] HEX_CSS_ENCODING = {
     "\\00 ", "\\01 ", "\\02 ", "\\03 ", "\\04 ", "\\05 ", "\\06 ", "\\07 ",
     "\\08 ", "\\09 ", "\\0a ", "\\0b ", "\\0c ", "\\0d ", "\\0e ", "\\0f ",
     "\\10 ", "\\11 ", "\\12 ", "\\13 ", "\\14 ", "\\15 ", "\\16 ", "\\17 ",
@@ -272,15 +270,15 @@ public class StringUtil
     {
       int ch = s.charAt(i);
       if ('A' <= ch && ch <= 'Z')
-      {		// 'A'..'Z'
+      {  // 'A'..'Z'
         sbuf.append((char) ch);
       }
       else if ('a' <= ch && ch <= 'z')
-      {	// 'a'..'z'
+      {  // 'a'..'z'
         sbuf.append((char) ch);
       }
       else if ('0' <= ch && ch <= '9')
-      {	// '0'..'9'
+      {  // '0'..'9'
         sbuf.append((char) ch);
       }
       else if (ch == '-')
@@ -288,19 +286,19 @@ public class StringUtil
         sbuf.append((char) ch);
       }
       else if (ch <= 0x007f)
-      {		// other ASCII
-        sbuf.append(hexCSSEncoding[ch]);
+      {  // other ASCII
+        sbuf.append(HEX_CSS_ENCODING[ch]);
       }
       else if (ch <= 0x07FF)
-      {		// non-ASCII <= 0x7FF
-        sbuf.append(hexCSSEncoding[0xc0 | (ch >> 6)]);
-        sbuf.append(hexCSSEncoding[0x80 | (ch & 0x3F)]);
+      {  // non-ASCII <= 0x7FF
+        sbuf.append(HEX_CSS_ENCODING[0xc0 | (ch >> 6)]);
+        sbuf.append(HEX_CSS_ENCODING[0x80 | (ch & 0x3F)]);
       }
       else
-      {					// 0x7FF < ch <= 0xFFFF
-        sbuf.append(hexCSSEncoding[0xe0 | (ch >> 12)]);
-        sbuf.append(hexCSSEncoding[0x80 | ((ch >> 6) & 0x3F)]);
-        sbuf.append(hexCSSEncoding[0x80 | (ch & 0x3F)]);
+      {  // 0x7FF < ch <= 0xFFFF
+        sbuf.append(HEX_CSS_ENCODING[0xe0 | (ch >> 12)]);
+        sbuf.append(HEX_CSS_ENCODING[0x80 | ((ch >> 6) & 0x3F)]);
+        sbuf.append(HEX_CSS_ENCODING[0x80 | (ch & 0x3F)]);
       }
     }
     return sbuf.toString();

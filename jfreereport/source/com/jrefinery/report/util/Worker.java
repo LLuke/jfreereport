@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.3 2003/02/23 20:39:29 taqua Exp $
+ * $Id: Worker.java,v 1.4 2003/02/25 15:42:52 taqua Exp $
  *
  *
  * Changes
@@ -42,13 +42,17 @@ package com.jrefinery.report.util;
  * A simple worker implementation.
  * The worker executes a assigned workload and then sleeps until
  * an other workload is set or the worker is killed.
+ * 
+ * @author Thomas Morgner
  */
 public class Worker extends Thread
 {
   /** the workers task. */
   private Runnable workload = null;
+
   /** a flag whether the worker should exit after the procssing. */
   private boolean finish = false;
+
   /** the time in milliseconds beween 2 checks for exit or work requests. */
   private int sleeptime;
 
@@ -142,6 +146,7 @@ public class Worker extends Thread
       }
       catch (InterruptedException ie)
       {
+        // ignored
       }
     }
   }

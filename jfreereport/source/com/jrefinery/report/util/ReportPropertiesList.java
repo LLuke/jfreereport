@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportPropertiesList.java,v 1.6 2003/01/16 15:35:35 taqua Exp $
+ * $Id: ReportPropertiesList.java,v 1.7 2003/02/05 17:56:03 taqua Exp $
  *
  * Changes
  * -------
@@ -121,6 +121,11 @@ public class ReportPropertiesList
     return (base.get(getColumnName(column)));
   }
 
+  /**
+   * Returns a string describing the object.
+   * 
+   * @return The string.
+   */
   public String toString ()
   {
     StringBuffer b = new StringBuffer();

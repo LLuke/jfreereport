@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * ExcelProcessor.java
  * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.5 2003/02/20 00:39:20 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.6 2003/02/25 15:42:36 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,8 @@ import java.io.OutputStream;
 /**
  * The ExcelProcessor coordinates the output process for generating
  * excel files.
+ * 
+ * @author Heiko Evermann
  */
 public class ExcelProcessor extends TableProcessor
 {

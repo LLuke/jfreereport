@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.4 2003/02/10 19:33:52 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.5 2003/02/25 15:42:30 taqua Exp $
  *
  * Changes
  * -------
@@ -85,9 +85,10 @@ public class BaseFontSupport
    *
    * @return the base font record.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there was a problem setting the font for the target.
+   * @throws OutputTargetException if there was a problem setting the font for the target.
    */
-  public BaseFontRecord createBaseFont(FontDefinition font, String encoding, boolean embedded) throws OutputTargetException
+  public BaseFontRecord createBaseFont(FontDefinition font, String encoding, boolean embedded) 
+      throws OutputTargetException
   {
     if (font == null)
     {
@@ -227,8 +228,8 @@ public class BaseFontSupport
    *
    * @return the PDF font record.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws com.lowagie.text.DocumentException if the BaseFont could not be created.
+   * @throws IOException if there is an I/O problem.
+   * @throws DocumentException if the BaseFont could not be created.
    */
   private BaseFontRecord createFontFromTTF (FontDefinition font, String filename,
                                            String encoding, String stringEncoding,

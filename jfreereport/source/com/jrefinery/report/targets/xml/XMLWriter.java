@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,21 +20,25 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * --------------
  * XMLWriter.java
- * -------------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * --------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLWriter.java,v 1.5 2003/02/07 20:26:26 taqua Exp $
+ * $Id: XMLWriter.java,v 1.6 2003/02/12 23:05:58 taqua Exp $
  *
  * Changes
  * -------
  * 07-Jan-2003 : Initial version
  */
 package com.jrefinery.report.targets.xml;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.List;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
@@ -43,10 +47,6 @@ import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.util.CharacterEntityParser;
 import com.jrefinery.report.util.Log;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.List;
 
 /**
  * The XMLWriter is the content creation function used to create the XML content.
@@ -57,13 +57,17 @@ import java.util.List;
  * the XML-code generated is very simple and easy to understand. If you seek
  * complexer XML-Outputs, have a look at the HTML-Writer, this implementation is able
  * to write XHTML output.
+ * 
+ * @author Thomas Morgner
  */
 public class XMLWriter extends AbstractFunction
 {
   /** the writer used to write the generated document. */
   private Writer w;
+  
   /** the dependency level. */
   private int depLevel;
+
   /** the XMLEntity parser used to encode the xml characters. */
   private CharacterEntityParser entityParser;
 
@@ -280,10 +284,10 @@ public class XMLWriter extends AbstractFunction
   }
 
   /**
-   * The dependency level defines the level of execution for this function. Higher dependency functions
-   * are executed before lower dependency functions. For ordinary functions and expressions,
-   * the range for dependencies is defined to start from 0 (lowest dependency possible)
-   * to 2^31 (upper limit of int).
+   * The dependency level defines the level of execution for this function. Higher dependency 
+   * functions are executed before lower dependency functions. For ordinary functions and 
+   * expressions, the range for dependencies is defined to start from 0 (lowest dependency 
+   * possible) to 2^31 (upper limit of int).
    * <p>
    * PageLayouter functions override the default behaviour an place them self at depency level -1,
    * an so before any userdefined function.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.4 2003/02/02 23:43:50 taqua Exp $
+ * $Id: GroupFactory.java,v 1.5 2003/02/25 14:07:30 taqua Exp $
  *
  * Changes
  * -------
@@ -67,6 +67,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
   /** A font handler. */
   private FontFactory fontFactory;
 
+  /** A character entity parser. */
   private CharacterEntityParser entityParser;
 
   /**
@@ -89,7 +90,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    * @param qName  the element name.
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the XML.
+   * @throws SAXException if there is a problem parsing the XML.
    */
   public void startElement (String qName,
                             Attributes atts) throws SAXException
@@ -120,7 +121,8 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     }
     else
     {
-      throw new SAXException ("Expected one of: group, groupfooter, groutheader, fields, field. -> " + qName);
+      throw new SAXException ("Expected one of: group, groupfooter, groutheader, fields, field. -> " 
+                              + qName);
     }
   }
 
@@ -129,7 +131,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the report template.
+   * @throws SAXException if there is a problem parsing the report template.
    */
   protected void startFields (Attributes atts)
           throws SAXException
@@ -141,7 +143,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the report template.
+   * @throws SAXException if there is a problem parsing the report template.
    */
   protected void startField (Attributes atts)
           throws SAXException
@@ -154,7 +156,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the report template.
+   * @throws SAXException if there is a problem parsing the report template.
    */
   protected void startGroup (Attributes atts)
           throws SAXException
@@ -169,7 +171,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the report template.
+   * @throws SAXException if there is a problem parsing the report template.
    */
   protected void startGroupHeader (Attributes atts)
           throws SAXException
@@ -214,7 +216,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the report template.
+   * @throws SAXException if there is a problem parsing the report template.
    */
   protected void startGroupFooter (Attributes atts) throws SAXException
   {
@@ -272,7 +274,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @param qName  the element name.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the XML.
+   * @throws SAXException if there is a problem parsing the XML.
    */
   public void endElement (String qName)
           throws SAXException
@@ -318,7 +320,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
   /**
    * Ends the groups element.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the report template.
+   * @throws SAXException if there is a problem parsing the report template.
    */
   protected void endGroups ()
           throws SAXException
@@ -329,7 +331,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
   /**
    * Ends the group element.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the report template.
+   * @throws SAXException if there is a problem parsing the report template.
    */
   protected void endGroup ()
           throws SAXException
@@ -341,7 +343,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
   /**
    * Ends the field element.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the report template.
+   * @throws SAXException if there is a problem parsing the report template.
    */
   protected void endField ()
           throws SAXException
@@ -353,7 +355,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
   /**
    * Ends the fields element.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the report template.
+   * @throws SAXException if there is a problem parsing the report template.
    */
   protected void endFields ()
           throws SAXException
@@ -363,7 +365,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
   /**
    * Ends the group footer element.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the report template.
+   * @throws SAXException if there is a problem parsing the report template.
    */
   protected void endGroupFooter ()
           throws SAXException
@@ -373,7 +375,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
   /**
    * Ends the group header element.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the report template.
+   * @throws SAXException if there is a problem parsing the report template.
    */
   protected void endGroupHeader ()
           throws SAXException
@@ -385,7 +387,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @param currentGroup the current group.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the report template.
+   * @throws SAXException if there is a problem parsing the report template.
    */
   public void setCurrentGroup (Group currentGroup)
           throws SAXException

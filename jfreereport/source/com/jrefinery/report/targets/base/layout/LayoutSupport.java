@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutSupport.java,v 1.1 2003/02/07 22:40:40 taqua Exp $
+ * $Id: LayoutSupport.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
  *
  * Changes
  * -------
@@ -37,11 +37,9 @@
  */
 package com.jrefinery.report.targets.base.layout;
 
-import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
-import com.jrefinery.report.targets.base.layout.SizeCalculatorException;
-import com.jrefinery.report.targets.base.layout.SizeCalculator;
-import com.jrefinery.report.targets.base.content.ContentFactory;
 import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
+import com.jrefinery.report.targets.base.content.ContentFactory;
 
 /**
  * The LayoutSupport contains all methods required to estaminate sizes for the
@@ -49,6 +47,8 @@ import com.jrefinery.report.targets.FontDefinition;
  *
  * @see com.jrefinery.report.targets.base.content.Content
  * @see com.jrefinery.report.targets.pageable.operations.OperationModule
+ * 
+ * @author Thomas Morgner
  */
 public interface LayoutSupport
 {
@@ -61,10 +61,10 @@ public interface LayoutSupport
    *
    * @return the size calculator.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem with the output target.
+   * @throws SizecalculatorException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(FontDefinition font) throws SizeCalculatorException;
-
+  public SizeCalculator createTextSizeCalculator(FontDefinition font) 
+      throws SizeCalculatorException;
 
   /**
    * Returns the default layout manager.

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * -----------------
  * XMLProcessor.java
- * -------------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * -----------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.7 2003/02/12 21:17:20 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.8 2003/02/25 15:42:44 taqua Exp $
  *
  * Changes
  * -------
@@ -58,13 +58,17 @@ import java.util.Iterator;
  * The XMLProcessor is not intended to produce complex output, it is an educational
  * example. If you want valid xml data enriched with layouting information, then
  * have a look at the HTML-OutputTarget, this target is also able to write XHTMl code.
+ * 
+ * @author Thomas Morgner
  */
 public class XMLProcessor
 {
   /** the name of the writer function used in the report processing. */
   private static final String XML_WRITER = "com.jrefinery.report.targets.xml-writer";
+
   /** the target writer. */
   private Writer writer;
+
   /** the source report. */
   private JFreeReport report;
 
@@ -79,7 +83,10 @@ public class XMLProcessor
   public XMLProcessor (JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
-    if (report == null) throw new NullPointerException();
+    if (report == null) 
+    {
+      throw new NullPointerException();
+    }
     try
     {
       this.report = (JFreeReport) report.clone();
@@ -130,7 +137,9 @@ public class XMLProcessor
    * Processes the entire report and records the state at the end of the report preparation.
    *
    * @return the final ReportState
+   * 
    * @throws ReportProcessingException if there was a problem processing the report.
+   * @throws CloneNotSupportedException if there is a cloning problem.
    */
   private ReportState repaginate() throws ReportProcessingException, CloneNotSupportedException
   {
@@ -138,7 +147,6 @@ public class XMLProcessor
     ReportState state = startState;
     ReportState retval = null;
     JFreeReport report = state.getReport();
-
 
     // the report processing can be splitted into 2 separate processes.
     // The first is the ReportPreparation; all function values are resolved and
@@ -252,7 +260,10 @@ public class XMLProcessor
    */
   public void processReport () throws ReportProcessingException
   {
-    if (writer == null) throw new IllegalStateException("No writer defined");
+    if (writer == null) 
+    {
+      throw new IllegalStateException("No writer defined");
+    }
     try
     {
       ReportState state = repaginate();

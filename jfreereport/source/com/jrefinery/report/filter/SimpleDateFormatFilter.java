@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * ---------------------------
  * SimpleDateFormatFilter.java
  * ---------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2003, by Simba Management Limited.
  *
- * $Id: SimpleDateFormatFilter.java,v 1.9 2003/01/21 17:11:37 taqua Exp $
+ * $Id: SimpleDateFormatFilter.java,v 1.10 2003/02/25 14:07:21 taqua Exp $
  *
  * Changes
  * -------
@@ -116,8 +116,9 @@ public class SimpleDateFormatFilter extends DateFormatFilter
   public void setFormatString (String format)
   {
     if (format == null)
+    {
       throw new NullPointerException();
-    
+    }
     getSimpleDateFormat ().applyPattern (format);
   }
 

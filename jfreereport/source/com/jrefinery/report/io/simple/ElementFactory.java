@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.13 2003/02/25 14:07:30 taqua Exp $
+ * $Id: ElementFactory.java,v 1.14 2003/02/25 20:15:00 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,15 @@
  */
 package com.jrefinery.report.io.simple;
 
+import java.awt.Color;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.net.URL;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+
 import com.jrefinery.report.Band;
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.ImageElement;
@@ -53,14 +62,6 @@ import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.util.CharacterEntityParser;
 import com.jrefinery.report.util.ReportConfiguration;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-
-import java.awt.Color;
-import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
-import java.io.IOException;
-import java.net.URL;
 
 /**
  * The ElementFactory is responsible for creating ReportElements and is called by the
@@ -128,6 +129,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * @param parser the used parser to coordinate the parsing process.
    * @param finishTag the finish tag, that should trigger the deactivation of this parser.
    * @param band the band that should be defined.
+   * 
    * @throws NullPointerException if the finishTag or the parser are null.
    */
   public ElementFactory(Parser parser, String finishTag, Band band)
@@ -150,7 +152,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * @param qName  the element name.
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if an unknown tag is encountered.
+   * @throws SAXException if an unknown tag is encountered.
    *
    * @see com.jrefinery.report.ItemFactory
    */
@@ -283,7 +285,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param qName  the element name.
    *
-   * @throws org.xml.sax.SAXException if an unknown tag is encountered.
+   * @throws SAXException if an unknown tag is encountered.
    */
   public void endElement(String qName)
       throws SAXException
@@ -380,7 +382,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startImageRef(Attributes atts) throws SAXException
   {
@@ -418,7 +420,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startImageField(Attributes atts) throws SAXException
   {
@@ -450,7 +452,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startImageURLField(Attributes atts) throws SAXException
   {
@@ -480,7 +482,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startImageFunction(Attributes atts) throws SAXException
   {
@@ -511,7 +513,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startImageURLFunction(Attributes atts) throws SAXException
   {
@@ -539,7 +541,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startLine(Attributes atts) throws SAXException
   {
@@ -564,7 +566,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startRectangle(Attributes atts) throws SAXException
   {
@@ -587,7 +589,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startLabel(Attributes atts) throws SAXException
   {
@@ -602,7 +604,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startMultilineField(Attributes atts) throws SAXException
   {
@@ -616,7 +618,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startStringField(Attributes atts) throws SAXException
   {
@@ -628,7 +630,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startNumberField(Attributes atts) throws SAXException
   {
@@ -641,7 +643,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startDateField(Attributes atts) throws SAXException
   {
@@ -654,7 +656,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startNumberFunction(Attributes atts) throws SAXException
   {
@@ -667,7 +669,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startDateFunction(Attributes atts) throws SAXException
   {
@@ -680,7 +682,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startStringFunction(Attributes atts) throws SAXException
   {
@@ -691,7 +693,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * Ends a label tag, sets the static text for the label which was build during the
    * parsing. The label is added to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endLabel() throws SAXException
   {
@@ -715,7 +717,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Ends the line element and adds it to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endLine() throws SAXException
   {
@@ -724,7 +726,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Ends the rectangle shape element and adds it to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endRectangle() throws SAXException
   {
@@ -733,7 +735,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Ends the image element and adds it to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endImageField() throws SAXException
   {
@@ -742,7 +744,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Ends the image element and adds it to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endImageFunction() throws SAXException
   {
@@ -751,7 +753,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Ends the image element and adds it to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endImageURLField() throws SAXException
   {
@@ -760,7 +762,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Ends the image element and adds it to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endImageURLFunction() throws SAXException
   {
@@ -769,7 +771,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Ends the image element and adds it to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endImageRef() throws SAXException
   {
@@ -780,7 +782,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param attrs  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startResourceLabel (Attributes attrs)
       throws SAXException
@@ -807,7 +809,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param attrs  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startResourceField (Attributes attrs)
     throws SAXException
@@ -871,7 +873,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Ends the multiline text element and adds it to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endMultilineField() throws SAXException
   {
@@ -892,7 +894,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Ends the String field and adds it to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endStringField() throws SAXException
   {
@@ -913,7 +915,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Ends the number field and adds it to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endNumberField() throws SAXException
   {
@@ -935,7 +937,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Ends the date field and adds it to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endDateField() throws SAXException
   {
@@ -957,7 +959,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Ends the number function and adds it to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endNumberFunction() throws SAXException
   {
@@ -979,7 +981,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Ends the string function and adds it to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endStringFunction() throws SAXException
   {
@@ -1000,7 +1002,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Ends the date function and adds it to the current band.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void endDateFunction() throws SAXException
   {
@@ -1025,7 +1027,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void getTextElementAttributes(Attributes atts) throws SAXException
   {
@@ -1108,7 +1110,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void getDataElementAttributes(Attributes atts) throws SAXException
   {
@@ -1126,7 +1128,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   * @throws SAXException if there is a SAX problem.
    */
   protected void getFunctionElementAttributes(Attributes atts) throws SAXException
   {

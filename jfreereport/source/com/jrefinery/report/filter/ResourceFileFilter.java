@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * -----------------------
  * ResourceFileFilter.java
  * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2003, by Thomas Morgner.
  *
- * $Id: ResourceFileFilter.java,v 1.2 2003/02/23 20:39:28 taqua Exp $
+ * $Id: ResourceFileFilter.java,v 1.3 2003/02/25 14:07:20 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -34,20 +34,23 @@
  */
 package com.jrefinery.report.filter;
 
-import com.jrefinery.report.util.Log;
-
 import java.util.ResourceBundle;
+
+import com.jrefinery.report.util.Log;
 
 /**
  * Lookup a key from a datasource using a ResourceBundle.
  * <p>
  * Filters a given datasource and uses the datasource value as key
  * for a ResourceBundle.
+ * 
+ * @author Thomas Morgner
  */
 public class ResourceFileFilter implements DataFilter
 {
   /** the used resource bundle. */
   private ResourceBundle resources;
+  
   /** the filtered data source. */
   private DataSource dataSource;
 
@@ -59,8 +62,7 @@ public class ResourceFileFilter implements DataFilter
   }
 
   /**
-   * Gets the assigned resource bundle, or null, if no resource bundle
-   * is defined.
+   * Gets the assigned resource bundle, or null, if no resource bundle is defined.
    *
    * @return the defined ResourceBundle or null.
    */
@@ -93,14 +95,18 @@ public class ResourceFileFilter implements DataFilter
   public Object getValue()
   {
     if (dataSource == null)
+    {
       return null;
-
+    }
     if (resources == null)
+    {
       return null;
-
+    }
     Object value = dataSource.getValue();
     if (value == null)
+    {
       return null;
+    }
     String svalue = String.valueOf(value);
 
     try

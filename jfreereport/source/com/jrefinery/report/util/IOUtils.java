@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,21 +20,24 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------
+ * ------------
  * IOUtils.java
- * ---------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ------------
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IOUtils.java,v 1.8 2003/02/23 20:39:29 taqua Exp $
+ * $Id: IOUtils.java,v 1.9 2003/02/25 15:42:47 taqua Exp $
  *
  * Changes
  * -------
  * 26-Jan-2003 : Initial version
  * 23-Feb-2003 : Documentation
+ * 25-Feb-2003 : Fixed Checkstyle issues (DG);
+ * 
  */
+
 package com.jrefinery.report.util;
 
 import java.io.File;
@@ -51,6 +54,8 @@ import java.util.StringTokenizer;
 
 /**
  * The IOUtils provide some IO related helper methods.
+ * 
+ * @author Thomas Morgner.
  */
 public class IOUtils
 {
@@ -86,12 +91,30 @@ public class IOUtils
    */
   private boolean isFileStyleProtocol (URL url)
   {
-    if (url.getProtocol().equals("http")) return true;
-    if (url.getProtocol().equals("https")) return true;
-    if (url.getProtocol().equals("ftp")) return true;
-    if (url.getProtocol().equals("file")) return true;
-    if (url.getProtocol().equals("jar")) return true;
-    if (url.getProtocol().equals("http")) return true;
+    if (url.getProtocol().equals("http")) 
+    {
+      return true;
+    }
+    if (url.getProtocol().equals("https")) 
+    {
+      return true;
+    }
+    if (url.getProtocol().equals("ftp")) 
+    {
+      return true;
+    }
+    if (url.getProtocol().equals("file")) 
+    {
+      return true;
+    }
+    if (url.getProtocol().equals("jar")) 
+    {
+      return true;
+    }
+    if (url.getProtocol().equals("http")) 
+    {
+      return true;
+    }
     return false;
   }
 
@@ -109,14 +132,15 @@ public class IOUtils
     {
       String s = (String) strTok.nextElement();
       if (s.length() != 0)
+      {
         list.add(s);
+      }
     }
     return list;
   }
 
   /**
-   * Transforms the name list back into a single string, separated with
-   * "/".
+   * Transforms the name list back into a single string, separated with "/".
    *
    * @param name the name list.
    * @return the constructed name.
@@ -171,12 +195,17 @@ public class IOUtils
   private boolean isSameService (URL url, URL baseUrl)
   {
     if (url.getProtocol().equals(baseUrl.getProtocol()) == false)
+    {
       return false;
+    }
     if (url.getHost().equals(baseUrl.getHost()) == false)
+    {
       return false;
+    }
     if (url.getPort() != baseUrl.getPort())
+    {
       return false;
-
+    }
     return true;
   }
 
@@ -294,9 +323,10 @@ public class IOUtils
    * Copies the contents of the Reader into the Writer, until the end of the stream
    * has been reached.
    *
-   * @param in the reader from which to read.
-   * @param out the writer where the data is written to.
-   * @param buffersize the size of the used buffer in characters.
+   * @param in  the reader from which to read.
+   * @param out  the writer where the data is written to.
+   * @param buffersize  the buffer size.
+   * 
    * @throws IOException if a IOError occurs.
    */
   public void copyWriter (Reader in, Writer out, int buffersize)
@@ -326,8 +356,9 @@ public class IOUtils
     String file = url.getFile();
     int last = file.lastIndexOf("/");
     if (last < 0)
+    {
       return file;
-
+    }
     return file.substring(last);
   }
 
@@ -341,7 +372,10 @@ public class IOUtils
   {
     int idx = file.lastIndexOf(".");
     // handles unix hidden files and files without an extension.
-    if (idx < 1) return file;
+    if (idx < 1) 
+    {
+      return file;
+    }
     return file.substring(0, idx);
   }
 
@@ -363,8 +397,9 @@ public class IOUtils
     while (parentFile != null)
     {
       if (base.equals(parentFile))
+      {
         return true;
-
+      }
       parentFile = parentFile.getParentFile();
     }
     return false;

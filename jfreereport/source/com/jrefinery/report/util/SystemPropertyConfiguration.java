@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------------
+ * --------------------------------
  * SystemPropertyConfiguration.java
- * -------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * --------------------------------
+ * (C)opyright 2000-2003, by Simba Management Limited.
  *
  * Original Author:  Thomas Morger
  * Contributor(s):   Stefan Prange;
  *
- * $Id: SystemPropertyConfiguration.java,v 1.1 2003/01/14 23:50:10 taqua Exp $
+ * $Id: SystemPropertyConfiguration.java,v 1.2 2003/02/05 17:56:03 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -39,6 +39,8 @@ package com.jrefinery.report.util;
 
 /**
  * A property configuration based on system properties.
+ * 
+ * @author Thomas Morgner
  */
 public class SystemPropertyConfiguration extends ReportConfiguration
 {
@@ -81,7 +83,10 @@ public class SystemPropertyConfiguration extends ReportConfiguration
     try
     {
       String value = System.getProperty(key);
-      if (value != null) return value;
+      if (value != null) 
+      {
+        return value;
+      }
     }
     catch (SecurityException se)
     {

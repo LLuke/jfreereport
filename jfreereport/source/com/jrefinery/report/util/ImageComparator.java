@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,21 +20,24 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------
+ * --------------------
  * ImageComparator.java
- * ---------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * --------------------
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageComparator.java,v 1.3 2003/02/05 17:56:02 taqua Exp $
+ * $Id: ImageComparator.java,v 1.4 2003/02/05 21:48:27 taqua Exp $
  *
  * Changes
  * -------
  * 26-Jan-2003 : Initial version
  * 05-Feb-2003 : Documentation
+ * 25-Feb-2003 : Fixed Checkstyle issues (DG);
+ * 
  */
+
 package com.jrefinery.report.util;
 
 import java.security.MessageDigest;
@@ -45,6 +48,8 @@ import java.util.Arrays;
  * The ImageComparator tries to compare a byte[] for equality by creating
  * 2 hashes for the bytearray and comparing thoose hashes. If no digest
  * algorithms are available, then the complete byte[] is used for comparison.
+ * 
+ * @author Thomas Morgner
  */
 public class ImageComparator
 {
@@ -60,10 +65,12 @@ public class ImageComparator
    */
   private static class CompleteImageCompareData extends ImageCompareData
   {
+    /** The image content. */
     private byte[] image;
 
     /**
      * Create a new CompleteImageCompareData instance.
+     * 
      * @param image the image data used for comparison.
      */
     public CompleteImageCompareData(byte[] image)
@@ -79,12 +86,21 @@ public class ImageComparator
      */
     public boolean equals(Object o)
     {
-      if (this == o) return true;
-      if (!(o instanceof CompleteImageCompareData)) return false;
+      if (this == o) 
+      {
+        return true;
+      }
+      if (!(o instanceof CompleteImageCompareData)) 
+      {
+        return false;
+      }
 
       final CompleteImageCompareData data = (CompleteImageCompareData) o;
 
-      if (!Arrays.equals(image, data.image)) return false;
+      if (!Arrays.equals(image, data.image)) 
+      {
+        return false;
+      }
 
       return true;
     }
@@ -105,7 +121,10 @@ public class ImageComparator
    */
   private static class DigestImageCompareData extends ImageCompareData
   {
+    /** An MD5 digest. */
     private byte[] digestMD5Data;
+    
+    /** An SHA digest. */
     private byte[] digestSHAData;
 
     /**
@@ -117,8 +136,9 @@ public class ImageComparator
     public DigestImageCompareData(byte[] digestMD5Data, byte[] digestSHAData)
     {
       if (digestMD5Data == null ||  digestSHAData == null)
+      {
         throw new NullPointerException();
-
+      }
       this.digestMD5Data = digestMD5Data;
       this.digestSHAData = digestSHAData;
     }
@@ -131,13 +151,25 @@ public class ImageComparator
      */
     public boolean equals(Object o)
     {
-      if (this == o) return true;
-      if (!(o instanceof DigestImageCompareData)) return false;
+      if (this == o) 
+      {
+        return true;
+      }
+      if (!(o instanceof DigestImageCompareData)) 
+      {
+        return false;
+      }
 
       final DigestImageCompareData data = (DigestImageCompareData) o;
 
-      if (!Arrays.equals(digestMD5Data, data.digestMD5Data)) return false;
-      if (!Arrays.equals(digestSHAData, data.digestSHAData)) return false;
+      if (!Arrays.equals(digestMD5Data, data.digestMD5Data)) 
+      {
+        return false;
+      }
+      if (!Arrays.equals(digestSHAData, data.digestSHAData)) 
+      {
+        return false;
+      }
 
       return true;
     }
@@ -152,7 +184,10 @@ public class ImageComparator
     }
   }
 
+  /** An MD5 message digest. */
   private MessageDigest digestMD5;
+  
+  /** An SHA message digest. */
   private MessageDigest digestSHA;
 
   /**

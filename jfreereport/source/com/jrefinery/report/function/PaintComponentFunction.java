@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -21,30 +21,24 @@
  * Boston, MA 02111-1307, USA.
  *
  * ---------------------------
- * ReportPropertyFunction.java
+ * PaintComponentFunction.java
  * ---------------------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   Thomas Morgner;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.5 2003/02/25 09:55:51 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.6 2003/02/25 14:07:27 taqua Exp $
  *
  * Changes
  * -------
  * 12-Feb-2003 : Initial version
  * 25-Feb-2003 : BugFixes: Images got lost on pagebreaks ...
+ * 26-Feb-2003 : Fixed Checkstyle issues (DG);
  *
- * $Id: PaintComponentFunction.java,v 1.5 2003/02/25 09:55:51 taqua Exp $
+ * 
  */
 package com.jrefinery.report.function;
-
-import com.jrefinery.report.Band;
-import com.jrefinery.report.Element;
-import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.event.LayoutEvent;
-import com.jrefinery.report.event.LayoutListener;
-import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -54,16 +48,27 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import com.jrefinery.report.Band;
+import com.jrefinery.report.Element;
+import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.event.LayoutEvent;
+import com.jrefinery.report.event.LayoutListener;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
+
 /**
  * Paints a AWT or Swing Component, fitting the component into the element bounds.
  * The component must be contained in the dataRow.
+ * 
+ * @author Thomas Morgner
  */
 public class PaintComponentFunction extends AbstractFunction implements LayoutListener
 {
   /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
+  
   /** Literal text for the 'field' property. */
   public static final String ELEMENT_PROPERTY = "element";
+  
   /** Literal text for the 'scale' property. */
   public static final String SCALE_PROPERTY = "scale";
 
@@ -197,8 +202,8 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     Dimension dim = new Dimension((int) (bounds.getWidth()), (int) (bounds.getHeight()));
     comp.setSize(dim);
     comp.validate();
-    BufferedImage bi = new BufferedImage((int)(scale * dim.width),
-                                         (int)(scale * dim.height),
+    BufferedImage bi = new BufferedImage((int) (scale * dim.width),
+                                         (int) (scale * dim.height),
                                          BufferedImage.TYPE_INT_ARGB);
     Graphics2D graph = bi.createGraphics();
     graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
@@ -221,8 +226,8 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
       return null;
     }
     ImageReference ref = new ImageReference(image);
-    ref.setScaleX(1f/getScale());
-    ref.setScaleY(1f/getScale());
+    ref.setScaleX(1f / getScale());
+    ref.setScaleY(1f / getScale());
     return ref;
   }
 
@@ -238,7 +243,6 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     setProperty(SCALE_PROPERTY, String.valueOf(scale));
   }
 
-
   /**
    * Gets the scale factor for the created image. Using a higher scale factor
    * will produce better results. A scale factor of 2 will double the resolution.
@@ -252,7 +256,10 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     try
     {
       float f = Float.parseFloat(scale);
-      if (f == 0) return 1;
+      if (f == 0) 
+      {
+        return 1;
+      }
       return f;
     }
     catch (Exception e)

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * -------------------------
  * NumericExcelCellData.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -------------------------
+ * (C)opyright 2003, by Heiko Evermann and Contributors.
  *
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: NumericExcelCellData.java,v 1.5 2003/02/20 00:39:20 taqua Exp $
+ * $Id: NumericExcelCellData.java,v 1.6 2003/02/25 15:42:38 taqua Exp $
  *
  * Changes
  * -------
@@ -36,9 +36,9 @@
  */
 package com.jrefinery.report.targets.table.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-
 import java.awt.geom.Rectangle2D;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
 
 /**
  * A excel cell that stores a number. 
@@ -47,6 +47,7 @@ public class NumericExcelCellData extends ExcelCellData
 {
   /** the number stored in this cell. */
   private Number number;
+  
   /** the number format string. */
   private String format;
 
@@ -89,8 +90,12 @@ public class NumericExcelCellData extends ExcelCellData
   public boolean isEmpty()
   {
     if (number == null)
+    {
       return true;
+    }
     else
+    {
       return false;
+    }
   }
 }

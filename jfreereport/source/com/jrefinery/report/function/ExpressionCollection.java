@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * -------------------------
  * ExpressionCollection.java
  * -------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2003, by Simba Management Limited.
  *
- * $Id: ExpressionCollection.java,v 1.4 2002/12/12 12:26:55 mungady Exp $
+ * $Id: ExpressionCollection.java,v 1.5 2003/02/25 14:07:25 taqua Exp $
  *
  * Changes
  * -------

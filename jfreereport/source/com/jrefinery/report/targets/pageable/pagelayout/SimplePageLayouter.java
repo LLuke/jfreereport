@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------------
  * SimplePageLayouter.java
  * -----------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.34 2003/02/25 09:55:53 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.35 2003/02/25 15:42:26 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,8 @@
 
 package com.jrefinery.report.targets.pageable.pagelayout;
 
+import java.awt.geom.Rectangle2D;
+
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReportConstants;
@@ -59,8 +61,6 @@ import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
 import com.jrefinery.report.targets.style.BandStyleSheet;
-
-import java.awt.geom.Rectangle2D;
 
 /**
  * A simple page layouter.  This class replicates the 'old' behaviour of JFreeReport,
@@ -214,8 +214,9 @@ public class SimplePageLayouter extends PageLayouter
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
+    {
       throw new IllegalStateException();
-
+    }
     isInItemGroup = false;
     setCurrentEvent(event);
     try
@@ -245,8 +246,9 @@ public class SimplePageLayouter extends PageLayouter
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
+    {
       throw new IllegalStateException();
-
+    }
     try
     {
       setCurrentEvent(event);
@@ -270,8 +272,9 @@ public class SimplePageLayouter extends PageLayouter
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
+    {
       throw new IllegalStateException();
-
+    }
     try
     {
       setCurrentEvent(event);
@@ -301,8 +304,9 @@ public class SimplePageLayouter extends PageLayouter
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
+    {
       throw new IllegalStateException();
-
+    }
     try
     {
       setCurrentEvent(event);
@@ -339,8 +343,9 @@ public class SimplePageLayouter extends PageLayouter
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
+    {
       throw new IllegalStateException();
-
+    }
     setCurrentEvent(event);
     try
     {
@@ -480,8 +485,9 @@ public class SimplePageLayouter extends PageLayouter
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
+    {
       throw new IllegalStateException();
-
+    }
     try
     {
       setCurrentEvent(event);
@@ -531,8 +537,9 @@ public class SimplePageLayouter extends PageLayouter
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
+    {
       throw new IllegalStateException();
-
+    }
     try
     {
       setCurrentEvent(event);
@@ -565,8 +572,9 @@ public class SimplePageLayouter extends PageLayouter
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
+    {      
       throw new IllegalStateException();
-
+    }
     try
     {
       setCurrentEvent(event);
@@ -587,7 +595,6 @@ public class SimplePageLayouter extends PageLayouter
       throw new FunctionProcessingException("GroupFinished failed", e);
     }
   }
-
 
   /**
    * Receives notification that a row of data is being processed.
@@ -923,8 +930,9 @@ public class SimplePageLayouter extends PageLayouter
   public void restartPage () throws ReportProcessingException
   {
     if (isPageRestartDone())
+    {
       return;
-
+    }
     startPage();
 
     if (state == null)

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,27 +20,28 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------
+ * -------------------------------
  * DefaultReportConfiguration.java
- * -------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -------------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DefaultReportConfiguration.java,v 1.2 2003/02/05 21:48:27 taqua Exp $
  *
  * Changes
  * -------
  * 14-Jan-2003 : Initial version
  *
- * $Id: DefaultReportConfiguration.java,v 1.1 2003/01/14 23:50:10 taqua Exp $
  */
 package com.jrefinery.report.util;
 
 /**
  * Create the implemented default report configuration. This configuration should
  * be set as root and defines the implementation defaults.
+ * 
+ * @author Thomas Morgner
  */
 public class DefaultReportConfiguration extends ReportConfiguration
 {

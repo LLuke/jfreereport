@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * ------------------
  * SampleReport1.java
- * ----------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * ------------------
+ * (C)opyright 2000-2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.16 2003/02/22 18:52:00 taqua Exp $
+ * $Id: SampleReport1.java,v 1.17 2003/02/25 14:10:22 taqua Exp $
  *
  * Changes:
  * --------
@@ -39,6 +39,12 @@
  */
 
 package com.jrefinery.report.demo;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.Group;
@@ -57,13 +63,6 @@ import com.jrefinery.report.function.ExpressionCollection;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.function.ItemSumFunction;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
-import com.jrefinery.report.util.Log;
-
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
 
 /**
  * This creates a report similar to the one defined by report1.xml.

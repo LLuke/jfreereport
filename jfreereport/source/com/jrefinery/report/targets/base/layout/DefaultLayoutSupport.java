@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultLayoutSupport.java,v 1.1 2003/02/07 22:40:39 taqua Exp $
+ * $Id: DefaultLayoutSupport.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
  *
  * Changes
  * -------
@@ -38,17 +38,15 @@
  */
 package com.jrefinery.report.targets.base.layout;
 
+import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
-import com.jrefinery.report.targets.base.layout.SizeCalculator;
-import com.jrefinery.report.targets.base.layout.DefaultSizeCalculator;
 import com.jrefinery.report.targets.base.content.ContentFactory;
 import com.jrefinery.report.targets.base.content.DefaultContentFactory;
-import com.jrefinery.report.targets.base.content.TextContentFactoryModule;
-import com.jrefinery.report.targets.base.content.ShapeContentFactoryModule;
 import com.jrefinery.report.targets.base.content.ImageContentFactoryModule;
+import com.jrefinery.report.targets.base.content.ShapeContentFactoryModule;
+import com.jrefinery.report.targets.base.content.TextContentFactoryModule;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
-import com.jrefinery.report.targets.FontDefinition;
 
 /**
  * The DefaultLayoutSupport uses the AWT to estaminate the content sizes.
@@ -57,9 +55,12 @@ import com.jrefinery.report.targets.FontDefinition;
  *
  * @see com.jrefinery.report.targets.base.content.Content
  * @see com.jrefinery.report.targets.pageable.operations.OperationModule
+ * 
+ * @author Thomas Morgner
  */
 public class DefaultLayoutSupport implements LayoutSupport
 {
+  /** The content factory. */
   private DefaultContentFactory contentFactory;
 
   /**
@@ -81,7 +82,7 @@ public class DefaultLayoutSupport implements LayoutSupport
    *
    * @return the size calculator.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem with the output target.
+   * @throws OutputTargetException if there is a problem with the output target.
    */
   public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException
   {

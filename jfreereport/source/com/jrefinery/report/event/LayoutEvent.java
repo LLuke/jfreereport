@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,28 +20,30 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
- * LayoutListener.java
- * -------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ----------------
+ * LayoutEvent.java
+ * ----------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LayoutEvent.java,v 1.1 2003/02/25 09:55:50 taqua Exp $
  *
- * Changes (from 10-May-2002)
- * --------------------------
+ * Changes
+ * -------
  * 25-Feb-2003 : Initial version
  */
 package com.jrefinery.report.event;
 
-import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.Band;
+import com.jrefinery.report.states.ReportState;
 
 /**
  * The LayoutEvent describes the current report state and the current band, which
  * had been laid out for printing.
+ * 
+ * @author Thomas Morgner
  */
 public class LayoutEvent extends ReportEvent
 {
@@ -59,8 +61,9 @@ public class LayoutEvent extends ReportEvent
     super(state);
 
     if (band == null)
+    {
       throw new NullPointerException();
-
+    }
     this.layoutedBand = band;
   }
 

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ---------------
  * LevelList.java
  * ---------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2000-2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelList.java,v 1.5 2002/12/05 16:48:12 mungady Exp $
+ * $Id: LevelList.java,v 1.6 2003/02/25 15:42:49 taqua Exp $
  *
  * Changes
  * -------
@@ -76,10 +76,9 @@ public class LevelList implements Cloneable
      * @param o1 the first object to be compared.
      * @param o2 the second object to be compared.
      * @return a negative integer, zero, or a positive integer as the
-     * 	       first argument is less than, equal to, or greater than the
-     *	       second.
+     *         first argument is less than, equal to, or greater than the second.
      * @throws ClassCastException if the arguments' types prevent them from
-     * 	       being compared by this Comparator.
+     *         being compared by this Comparator.
      */
     public int compare(Object o1, Object o2)
     {

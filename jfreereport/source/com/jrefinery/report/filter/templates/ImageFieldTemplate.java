@@ -42,7 +42,6 @@ import com.jrefinery.report.DataRow;
 import com.jrefinery.report.filter.DataRowConnectable;
 import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.filter.ImageRefFilter;
-import com.jrefinery.report.util.Log;
 
 /**
  * An image field template.

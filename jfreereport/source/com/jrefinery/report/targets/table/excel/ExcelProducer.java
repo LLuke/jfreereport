@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,16 +20,16 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
+ * ------------------
  * ExcelProducer.java
- * --------------------
- * (C)opyright 2002, by Hawesko GmbH & Co KG
+ * ------------------
+ * (C)opyright 2003, by Hawesko GmbH & Co KG
  *
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG)
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.10 2003/02/20 00:39:20 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.11 2003/02/25 15:42:37 taqua Exp $
  *
  * Changes
  * -------
@@ -60,8 +60,6 @@ import java.io.OutputStream;
  * (see <code>http://jakarta.apache.org/poi/index.html</code>.
  * <p>
  * At the moment only texts are exported.
- * <p>
- * <p>
  *
  * @author Heiko Evermann
  */
@@ -139,7 +137,7 @@ public class ExcelProducer extends TableProducer
    */
   public void beginPage (String name)
   {
-    if(name == null)
+    if (name == null)
     {
       sheet = workbook.createSheet();
     }
@@ -181,8 +179,9 @@ public class ExcelProducer extends TableProducer
   {
     // now we have all cell data that we need. Let's generate the file
     if (isPageOpen())
+    {
       throw new IllegalStateException();
-
+    }
     try
     {
       workbook.write(out);
@@ -215,7 +214,7 @@ public class ExcelProducer extends TableProducer
 
       for (int x = 0; x < layout.getWidth(); x++)
       {
-        TableGridLayout.Element gridPosition = layout.getData(x,y);
+        TableGridLayout.Element gridPosition = layout.getData(x, y);
         if (gridPosition == null)
         {
           continue;
@@ -237,7 +236,7 @@ public class ExcelProducer extends TableProducer
           continue;
         }
 
-        if (root.isOrigin(x,y))
+        if (root.isOrigin(x, y))
         {
           exportCell(row, root, bg, (short) x, y);
         }
@@ -263,13 +262,14 @@ public class ExcelProducer extends TableProducer
     {
       sheet.addMergedRegion(new Region(y, x,
                                        (y + content.getRowSpan() - 1),
-                                       (short)(x + content.getColSpan() - 1)));
+                                       (short) (x + content.getColSpan() - 1)));
     }
 
     ExcelCellData contentCell = (ExcelCellData) content.getElement();
 
     HSSFCell cell = row.createCell(x);
-    HSSFCellStyle style = cellDataFactory.getStyleFactory().createCellStyle(contentCell.getExcelCellStyle(), bg);
+    HSSFCellStyle style = cellDataFactory.getStyleFactory()
+        .createCellStyle(contentCell.getExcelCellStyle(), bg);
     cell.setCellStyle(style);
 
     if (contentCell.isEmpty() == false)

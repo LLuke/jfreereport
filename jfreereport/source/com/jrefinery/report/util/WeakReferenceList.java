@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------------
  * WeakReferenceList.java
  * ----------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WeakReferenceList.java,v 1.15 2003/02/10 19:33:52 taqua Exp $
+ * $Id: WeakReferenceList.java,v 1.16 2003/02/25 15:42:51 taqua Exp $
  *
  * Changes
  * -------
@@ -139,7 +139,10 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
     else
     {
       Reference ref = childs[getChildPos (index)];
-      if (ref == null) throw new IllegalStateException("State: " + index);
+      if (ref == null) 
+      {
+        throw new IllegalStateException("State: " + index);
+      }
       Object ob = ref.get ();
       if (ob == null)
       {

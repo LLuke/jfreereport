@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.6 2003/02/22 18:14:08 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.7 2003/02/25 14:07:30 taqua Exp $
  *
  * Changes
  * -------
@@ -77,6 +77,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   /** The current encoding. */
   private String currentEncoding;
 
+  /** A character entity parser. */
   private CharacterEntityParser entityParser;
 
   /**
@@ -100,7 +101,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    * @param qName  the element name.
    * @param atts  the attributes.
    *
-   * @throws org.xml.sax.SAXException if an unknown tag is encountered.
+   * @throws SAXException if an unknown tag is encountered.
    */
   public void startElement (String qName,
                             Attributes atts) throws SAXException
@@ -209,7 +210,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is an error parsing the XML.
+   * @throws SAXException if there is an error parsing the XML.
    */
   protected void startProperties (Attributes atts)
           throws SAXException
@@ -222,7 +223,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is an error parsing the XML.
+   * @throws SAXException if there is an error parsing the XML.
    */
   protected void startProperty (Attributes atts)
           throws SAXException
@@ -242,7 +243,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is an error parsing the XML.
+   * @throws SAXException if there is an error parsing the XML.
    */
   protected void startFunctions (Attributes atts)
           throws SAXException
@@ -254,7 +255,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @param attr  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is an error parsing the XML.
+   * @throws SAXException if there is an error parsing the XML.
    */
   protected void startExpression (Attributes attr)
       throws SAXException
@@ -298,7 +299,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @param attr  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is an error parsing the XML.
+   * @throws SAXException if there is an error parsing the XML.
    */
   protected void startPropertyRef (Attributes attr)
       throws SAXException
@@ -318,7 +319,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @param attr  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is an error parsing the XML.
+   * @throws SAXException if there is an error parsing the XML.
    */
   protected void startFunction (Attributes attr)
           throws SAXException
@@ -377,7 +378,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @param qName  the element name.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the element.
+   * @throws SAXException if there is a problem parsing the element.
    */
   public void endElement (String qName) throws SAXException
   {
@@ -424,7 +425,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    * Ends the function. The current function is added to the report and initialized during
    * this process.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the element.
+   * @throws SAXException if there is a problem parsing the element.
    */
   protected void endFunction ()
           throws SAXException
@@ -443,7 +444,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    * Ends the expression. The current expression is added to the report and initialized during
    * this process.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the element.
+   * @throws SAXException if there is a problem parsing the element.
    */
   protected void endExpression ()
     throws SAXException
@@ -462,7 +463,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   /**
    * Ends the parsing of functions.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the element.
+   * @throws SAXException if there is a problem parsing the element.
    */
   protected void endFunctions ()
           throws SAXException
@@ -474,7 +475,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    * Ends the properties parsing for the current function. The properties are added to the
    * current function.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the element.
+   * @throws SAXException if there is a problem parsing the element.
    */
   protected void endProperties ()
           throws SAXException
@@ -490,7 +491,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   /**
    * Ends the definition of a single property entry.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the element.
+   * @throws SAXException if there is a problem parsing the element.
    */
   protected void endProperty ()
           throws SAXException
@@ -501,7 +502,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
       throw new SAXException ("EndProperty without properties tag?");
     }
 
-    currentProps.setProperty (currentProperty, entityParser.decodeEntities(currentText.toString ()));
+    currentProps.setProperty(currentProperty, entityParser.decodeEntities(currentText.toString()));
     currentText = null;
   }
 
@@ -509,7 +510,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   /**
    * Ends the definition of a single property entry.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the element.
+   * @throws SAXException if there is a problem parsing the element.
    */
   protected void endPropertyRef ()
           throws SAXException
@@ -517,7 +518,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     getReport().getProperties().setMarked(currentProperty, true);
     if (currentText.length() != 0)
     {
-      getReport().setProperty(currentProperty, entityParser.decodeEntities( currentText.toString ()));
+      getReport().setProperty(currentProperty, entityParser.decodeEntities(currentText.toString()));
     }
     currentText = null;
   }

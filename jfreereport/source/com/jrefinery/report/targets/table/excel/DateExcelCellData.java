@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,16 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ----------------------
  * DateExcelCellData.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Heiko Evermann
- * Contributor(s):   Thomas Morgner;David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateExcelCellData.java,v 1.5 2003/02/20 00:39:19 taqua Exp $
+ * $Id: DateExcelCellData.java,v 1.6 2003/02/25 15:42:35 taqua Exp $
  *
  * Changes
  * -------
@@ -36,28 +37,31 @@
  */
 package com.jrefinery.report.targets.table.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-
 import java.awt.geom.Rectangle2D;
 import java.util.Date;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+
 /**
  * A Date excel cell.
+ * 
+ * @author Heiko Evermann
  */
 public class DateExcelCellData extends ExcelCellData
 {
   /** the date stored in this cell. */
   private Date date;
-  /** the date format. */
+  
+  /** the date format */
   private String format;
 
   /**
-   * Creates a new DateExcelCellData.
+   * Creates a new instance.
    *
-   * @param elementBounds the bounds of the cell.
-   * @param style the cell style.
-   * @param value the date value.
-   * @param format the date format string.
+   * @param elementBounds  the bounds of the cell.
+   * @param style  the cell style.
+   * @param value  the date value.
+   * @param format  the date format string.
    */
   public DateExcelCellData(Rectangle2D elementBounds,
                            ExcelDataCellStyle style,
@@ -87,8 +91,12 @@ public class DateExcelCellData extends ExcelCellData
   public boolean isEmpty()
   {
     if (date == null)
+    {
       return true;
+    }
     else
+    {
       return false;
+    }
   }
 }

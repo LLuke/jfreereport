@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.4 2003/02/10 21:23:36 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.5 2003/02/25 15:42:29 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,8 @@ import java.util.StringTokenizer;
 /**
  * The BaseFontFactory is used to find and register all TrueTypeFonts for embedding them
  * in the PDF-File.
+ * 
+ * @author Thomas Morgner
  */
 public class BaseFontFactory extends DefaultFontMapper
 {
@@ -189,8 +191,8 @@ public class BaseFontFactory extends DefaultFontMapper
    * @param font  the font name.
    * @param encoding  the encoding.
    *
-   * @throws com.lowagie.text.DocumentException if the base font could not be created
-   * @throws java.io.IOException if the base font file could not be read.
+   * @throws DocumentException if the base font could not be created
+   * @throws IOException if the base font file could not be read.
    */
   private void addFont(String font, String encoding)
       throws DocumentException, IOException

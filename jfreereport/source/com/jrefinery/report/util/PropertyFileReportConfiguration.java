@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------------
- * ReportConfiguration.java
- * ------------------------
- * (C)opyright 2002-2003, by Thomas Morgner and Contributors.
+ * ------------------------------------
+ * PropertyFileReportConfiguration.java
+ * ------------------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyFileReportConfiguration.java,v 1.4 2003/02/22 18:52:31 taqua Exp $
+ * $Id: PropertyFileReportConfiguration.java,v 1.5 2003/02/25 14:07:32 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@ import java.io.InputStream;
 
 /**
  * A report configuration that reads its values from the jfreereport.properties file.
+ * 
+ * @author Thomas Morgner
  */
 public class PropertyFileReportConfiguration extends ReportConfiguration
 {

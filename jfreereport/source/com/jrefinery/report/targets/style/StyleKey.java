@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------
  * StyleKey.java
  * -------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKey.java,v 1.3 2002/12/06 17:37:37 mungady Exp $
+ * $Id: StyleKey.java,v 1.4 2003/02/05 15:38:29 taqua Exp $
  *
  * Changes
  * -------
@@ -176,13 +176,25 @@ public class StyleKey implements Serializable, Cloneable
    */
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof StyleKey)) return false;
+    if (this == o) 
+    {
+      return true;
+    }
+    if (!(o instanceof StyleKey)) 
+    {
+      return false;
+    }
 
     final StyleKey key = (StyleKey) o;
 
-    if (!name.equals(key.name)) return false;
-    if (!valueType.equals(key.valueType)) return false;
+    if (!name.equals(key.name)) 
+    {
+      return false;
+    }
+    if (!valueType.equals(key.valueType)) 
+    {
+      return false;
+    }
 
     return true;
   }
@@ -208,12 +220,17 @@ public class StyleKey implements Serializable, Cloneable
    * stylekey instances or creates a new stylekey.
    *
    * @return the resolved element
-   * @throws java.io.ObjectStreamException if the element could not be resolved.
+   * 
+   * @throws ObjectStreamException if the element could not be resolved.
    */
   protected Object readResolve() throws ObjectStreamException
   {
     StyleKey key = getStyleKey(name);
-    if (key != null) return key;
+    if (key != null) 
+    {
+      return key;
+    }
     return getStyleKey(name, valueType);
   }
+  
 }

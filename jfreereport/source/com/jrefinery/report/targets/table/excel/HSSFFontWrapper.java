@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: HSSFFontWrapper.java,v 1.7 2003/02/20 00:39:20 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.8 2003/02/25 15:42:37 taqua Exp $
  *
  * Changes
  * -------
@@ -43,8 +43,9 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import java.awt.Color;
 
 /**
- * The HSSFFontWrapper is used to store excel style font
- * informations.
+ * The HSSFFontWrapper is used to store excel style font informations.
+ * 
+ * @author Heiko Evermann 
  */
 public class HSSFFontWrapper
 {
@@ -53,18 +54,25 @@ public class HSSFFontWrapper
 
   /** the font name. */
   private String fontName;
+  
   /** the excel color index. */
   private short colorIndex;
+  
   /** the font size. */
   private int fontHeight;
+  
   /** the font's bold flag. */
   private boolean bold;
+  
   /** the font's italic flag. */
   private boolean italic;
+  
   /** the font's underline flag. */
   private boolean underline;
+  
   /** the font's strikethrough flag. */
   private boolean strikethrough;
+  
   /** the excel font. */
   private HSSFFont font;
 
@@ -164,18 +172,45 @@ public class HSSFFontWrapper
    */
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof HSSFFontWrapper)) return false;
+    if (this == o) 
+    {
+      return true;
+    }
+    if (!(o instanceof HSSFFontWrapper)) 
+    {
+      return false;
+    }
 
     final HSSFFontWrapper wrapper = (HSSFFontWrapper) o;
 
-    if (bold != wrapper.bold) return false;
-    if (underline != wrapper.strikethrough) return false;
-    if (strikethrough != wrapper.strikethrough) return false;
-    if (colorIndex != wrapper.colorIndex) return false;
-    if (fontHeight != wrapper.fontHeight) return false;
-    if (italic != wrapper.italic) return false;
-    if (!fontName.equals(wrapper.fontName)) return false;
+    if (bold != wrapper.bold) 
+    {
+      return false;
+    }
+    if (underline != wrapper.strikethrough) 
+    {
+      return false;
+    }
+    if (strikethrough != wrapper.strikethrough) 
+    {
+      return false;
+    }
+    if (colorIndex != wrapper.colorIndex) 
+    {
+      return false;
+    }
+    if (fontHeight != wrapper.fontHeight) 
+    {
+      return false;
+    }
+    if (italic != wrapper.italic) 
+    {
+      return false;
+    }
+    if (!fontName.equals(wrapper.fontName)) 
+    {
+      return false;
+    }
 
     return true;
   }

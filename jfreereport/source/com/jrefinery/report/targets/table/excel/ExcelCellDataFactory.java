@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,21 +20,26 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * -------------------------
  * ExcelCellDataFactory.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellDataFactory.java,v 1.6 2003/02/19 22:14:12 taqua Exp $
+ * $Id: ExcelCellDataFactory.java,v 1.7 2003/02/25 15:42:36 taqua Exp $
  *
  * Changes
  * -------
  * 15-Jan-2003 : Initial version
  */
 package com.jrefinery.report.targets.table.excel;
+
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
+import java.text.ParseException;
+import java.util.Date;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
@@ -45,16 +50,13 @@ import com.jrefinery.report.targets.table.AbstractTableCellDataFactory;
 import com.jrefinery.report.targets.table.TableCellData;
 import com.jrefinery.report.util.Log;
 
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
-import java.text.ParseException;
-import java.util.Date;
-
 /**
  * The cell data factory is responsible for converting elements into
  * excel cell data. The element style is converted using an external
  * style factory. This factory reuses previously defined styles if
  * possible, to increase the file creating efficiency.
+ * 
+ * @author Heiko Evermann
  */
 public class ExcelCellDataFactory extends AbstractTableCellDataFactory
 {
@@ -68,7 +70,10 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
    */
   public ExcelCellDataFactory(ExcelCellStyleFactory styleFactory)
   {
-    if (styleFactory == null) throw new NullPointerException();
+    if (styleFactory == null) 
+    {
+      throw new NullPointerException();
+    }
     this.styleFactory = styleFactory;
   }
 
@@ -122,7 +127,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
     }
     */
     // fallback, no template or unknown template
-    return handleFormats (element ,bounds);
+    return handleFormats (element, bounds);
   }
 
   /**
@@ -136,6 +141,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
    *
    * @param e the element that should be converted into data or backgrounds.
    * @param bounds the layouted bounds of the element.
+   * 
    * @return the generated data or null, if the data is not handled by this
    * implementation.
    */

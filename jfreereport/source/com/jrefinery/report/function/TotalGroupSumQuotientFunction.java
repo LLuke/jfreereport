@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,16 +20,16 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------------------
+ * ---------------------------------
  * TotalGroupSumQuotienFunction.java
- * ---------------------------
- * (C)opyright 2002, by Heiko Evermann and Contributors.
+ * ---------------------------------
+ * (C)opyright 2002, 2003, by Heiko Evermann and Contributors.
  *
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited)
  *                   for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientFunction.java,v 1.3 2003/02/02 23:43:49 taqua Exp $
+ * $Id: TotalGroupSumQuotientFunction.java,v 1.4 2003/02/25 14:07:28 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
- * A report function that calculates the quotient of two summed fields (columns) from the TableModel.
+ * A report function that calculates the quotient of two summed fields (columns) from the 
+ * TableModel.
  * This function produces a global total. The total sum of the group is known when the group
  * processing starts and the report is not performing a prepare-run. The sum is calculated in
  * the prepare run and recalled in the printing run.
@@ -66,9 +67,9 @@ import java.util.ArrayList;
  * that can be parsed to java.lang.Number instances using a java.text.DecimalFormat.
  * <p>
  * The function undestands tree parameters.
- * The <code>dividend</code> parameter is required and denotes the name of an ItemBand-field 
- * which gets summed up as dividend. The <code>divisor</code> parameter is required and denotes 
- * the name of an ItemBand-field which gets summed up as divisor. 
+ * The <code>dividend</code> parameter is required and denotes the name of an ItemBand-field
+ * which gets summed up as dividend. The <code>divisor</code> parameter is required and denotes
+ * the name of an ItemBand-field which gets summed up as divisor.
  * <p>
  * The parameter <code>group</code> denotes the name of a group. When this group is started,
  * the counter gets reseted to null.
@@ -134,10 +135,14 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
 
   /** The group sums for dividend and divisor. */
   private GroupSum groupDividend;
+
+  /** The group divisor. */
   private GroupSum groupDivisor;
 
   /** A list of results. */
   private ArrayList dividendResults;
+
+  /** A list of divisor results. */
   private ArrayList divisorResults;
 
   /** The current index. */
@@ -150,8 +155,8 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
    */
   public TotalGroupSumQuotientFunction ()
   {
-  	groupDividend = new GroupSum();
-  	groupDivisor  = new GroupSum();
+    groupDividend = new GroupSum();
+    groupDivisor  = new GroupSum();
     datasource = new StaticDataSource();
     parser = new DecimalFormatParser();
     parser.setNullValue(ZERO);
@@ -207,10 +212,10 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
         else
         {
           groupDividend = new GroupSum();
-          dividendResults.add( groupDividend );
-          
+          dividendResults.add(groupDividend);
+
           groupDivisor = new GroupSum();
-          divisorResults.add( groupDivisor );
+          divisorResults.add(groupDivisor);
         }
       }
     }
@@ -229,38 +234,38 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
       return;
     }
 
-	// sum up dividend column
+    // sum up dividend column
     Object fieldValue = event.getDataRow().get(getDividend());
     // do not add when field is null
     if (fieldValue != null)
     {
-	    try
-	    {
-	      datasource.setValue(fieldValue);
-	      Number n = (Number) parser.getValue();
-	      groupDividend.add(n);
-	    }
-	    catch (Exception e)
-	    {
-	      Log.error("ItemSumFunction.advanceItems(): problem adding dividend.");
-	    }
-    }	
-	// sum up divisor column
+        try
+        {
+          datasource.setValue(fieldValue);
+          Number n = (Number) parser.getValue();
+          groupDividend.add(n);
+        }
+        catch (Exception e)
+        {
+          Log.error("ItemSumFunction.advanceItems(): problem adding dividend.");
+        }
+    }
+    // sum up divisor column
     fieldValue = event.getDataRow().get(getDivisor());
     // do not add when field is null
     if (fieldValue != null)
     {
-	    try
-	    {
-	      datasource.setValue(fieldValue);
-	      Number n = (Number) parser.getValue();
-	      groupDivisor.add(n);
-	    }
-	    catch (Exception e)
-	    {
-	      Log.error("ItemSumFunction.advanceItems(): problem adding divisor.");
-	    }
-    }	
+        try
+        {
+          datasource.setValue(fieldValue);
+          Number n = (Number) parser.getValue();
+          groupDivisor.add(n);
+        }
+        catch (Exception e)
+        {
+          Log.error("ItemSumFunction.advanceItems(): problem adding divisor.");
+        }
+    }
   }
 
   /**
@@ -294,12 +299,13 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
    */
   public Object getValue()
   {
-  	BigDecimal dividend = groupDividend.getResult();
-  	BigDecimal divisor  = groupDivisor.getResult();
-  	if ( divisor.intValue()== 0 ) {
-  		return "n/a";	
-  	}
-  	return new Double(dividend.doubleValue() / divisor.doubleValue());
+    BigDecimal dividend = groupDividend.getResult();
+    BigDecimal divisor  = groupDivisor.getResult();
+    if (divisor.intValue() == 0) 
+    {
+        return "n/a";
+    }
+    return new Double(dividend.doubleValue() / divisor.doubleValue());
   }
 
   /**

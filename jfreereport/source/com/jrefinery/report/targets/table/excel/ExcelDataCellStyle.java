@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,44 +20,54 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
+ * -----------------------
  * ExcelDataCellStyle.java
- * --------------------
- * (C)opyright 2002, by Hawesko GmbH & Co KG
+ * -----------------------
+ * (C)opyright 2003, by Hawesko GmbH & Co KG and Contributors.
  *
- * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG)
- * Contributor(s):   -;
- * based on ideas and code from JRXlsExporter.java of JasperReports
+ * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG), based on ideas and code from 
+ *                   JRXlsExporter.java of JasperReports
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * 
  *
- * $Id: ExcelDataCellStyle.java,v 1.3 2003/02/19 22:14:14 taqua Exp $
+ * $Id: ExcelDataCellStyle.java,v 1.4 2003/02/25 15:42:36 taqua Exp $
  *
  * Changes
  * -------
- * 25-Jan-2002 : initial version
+ * 25-Jan-2003 : initial version
+ * 25-Feb-2003 : Fixed Checkstyle issues (DG);
+ * 
  */
+
 package com.jrefinery.report.targets.table.excel;
+
+import java.awt.Color;
 
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FontDefinition;
-
-import java.awt.Color;
 
 /**
  * The ExcelDataCellStyle is used to collect style information for
  * an excel cell. This information is later transformed into a excel
  * HSSFCellStyle using the ExcelCellStyleFactory.
+ * 
+ * @author Heiko Evermann.
  */
 public class ExcelDataCellStyle
 {
   /** A flag indicating whether to enable excels word wrapping. */
   private boolean wrapText;
-  /** the horizontal text alignment. */
+
+  /** the horizontal text alignment */
   private ElementAlignment horizontalAlignment;
-  /** the vertical text alignment. */
+
+  /** the vertical text alignment */
   private ElementAlignment verticalAlignment;
+
   /** the font definition for the cell. */
   private FontDefinition fontDefinition;
-  /** the text color. */
+
+  /** the text color */
   private Color textColor;
 
   /**
@@ -176,16 +186,40 @@ public class ExcelDataCellStyle
    */
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof ExcelDataCellStyle)) return false;
+    if (this == o)
+    {
+      return true;
+    }
+    if (!(o instanceof ExcelDataCellStyle)) 
+    {
+      return false;
+    }
 
     final ExcelDataCellStyle style = (ExcelDataCellStyle) o;
 
-    if (wrapText != style.wrapText) return false;
-    if (fontDefinition != null ? !fontDefinition.equals(style.fontDefinition) : style.fontDefinition != null) return false;
-    if (horizontalAlignment != null ? !horizontalAlignment.equals(style.horizontalAlignment) : style.horizontalAlignment != null) return false;
-    if (textColor != null ? !textColor.equals(style.textColor) : style.textColor != null) return false;
-    if (verticalAlignment != null ? !verticalAlignment.equals(style.verticalAlignment) : style.verticalAlignment != null) return false;
+    if (wrapText != style.wrapText) 
+    {
+      return false;
+    }
+    if (fontDefinition != null ? !fontDefinition.equals(style.fontDefinition) 
+                               : style.fontDefinition != null) 
+    {
+      return false;
+    }
+    if (horizontalAlignment != null ? !horizontalAlignment.equals(style.horizontalAlignment) 
+                                    : style.horizontalAlignment != null) 
+    {
+      return false;
+    }
+    if (textColor != null ? !textColor.equals(style.textColor) : style.textColor != null) 
+    {
+      return false;
+    }
+    if (verticalAlignment != null ? !verticalAlignment.equals(style.verticalAlignment) 
+                                  : style.verticalAlignment != null) 
+    {
+      return false;
+    }
 
     return true;
   }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ---------------------
  * ExcelToolLibrary.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ---------------------
+ * (C)opyright 2003, by Heiko Evermann and Contributors.
  *
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelToolLibrary.java,v 1.4 2003/02/20 00:39:20 taqua Exp $
+ * $Id: ExcelToolLibrary.java,v 1.5 2003/02/25 15:42:37 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,8 @@ import java.util.Hashtable;
 
 /**
  * POI Excel utility methods.
+ * 
+ * @author Heiko Evermann
  */
 public class ExcelToolLibrary
 {
@@ -107,10 +109,7 @@ public class ExcelToolLibrary
 
         long delta = deltaBR + deltaGB + deltaRG;
 
-        long excelColor = (delta << 24) +
-            (rgb[0] << 16) +
-            (rgb[1] << 8) +
-            rgb[2];
+        long excelColor = (delta << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
 
         long diff = Math.abs(colorValue - excelColor);
 

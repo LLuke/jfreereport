@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,16 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * -------------------------
  * DefaultExcelCellData.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Heiko Evermann
- * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner; 
+ *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultExcelCellData.java,v 1.4 2003/02/19 22:14:11 taqua Exp $
+ * $Id: DefaultExcelCellData.java,v 1.5 2003/02/25 15:42:35 taqua Exp $
  *
  * Changes
  * -------
@@ -36,14 +37,16 @@
  */
 package com.jrefinery.report.targets.table.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-
 import java.awt.geom.Rectangle2D;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
 
 /**
  * The DefaultExcelCellData stores generic text data. The text data in the excel sheet
  * is not formated in any way. This implementation is used for POI 1.5.1, later versions
  * should use specific formats for the excel cells.
+ * 
+ * @author Heiko Evermann
  */
 public class DefaultExcelCellData extends ExcelCellData
 {
@@ -55,9 +58,9 @@ public class DefaultExcelCellData extends ExcelCellData
    * on the given bounds. The given ExcelDataCellStyle is assigned with this
    * data cell.
    *
-   * @param elementBounds the element bounds within the grid.
-   * @param style the assigned cell style.
-   * @param value the value stored in the cell data object.
+   * @param elementBounds  the element bounds within the grid.
+   * @param style  the assigned cell style.
+   * @param value  the value stored in the cell data object.
    */
   public DefaultExcelCellData(Rectangle2D elementBounds, ExcelDataCellStyle style, String value)
   {
@@ -67,7 +70,8 @@ public class DefaultExcelCellData extends ExcelCellData
 
   /**
    * Applies the cell data to the given Excel cell.
-   * @param cell the generated excel cell, which should be filled with the data.
+   * 
+   * @param cell  the generated excel cell, which should be filled with the data.
    */
   public void applyContent(HSSFCell cell)
   {

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,16 +20,16 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
+ * --------------------------
  * ExcelCellStyleFactory.java
- * --------------------
- * (C)opyright 2002, by Hawesko GmbH & Co KG
+ * --------------------------
+ * (C)opyright 2003, by Hawesko GmbH & Co KG and Contributors.
  *
- * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG)
- * Contributor(s):   -;
- * based on ideas and code from JRXlsExporter.java of JasperReports
+ * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG), based on ideas and code from 
+ *                   JRXlsExporter.java of JasperReports;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellStyleFactory.java,v 1.6 2003/02/19 22:14:13 taqua Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.7 2003/02/25 15:42:36 taqua Exp $
  *
  * Changes
  * -------
@@ -37,18 +37,19 @@
  */
 package com.jrefinery.report.targets.table.excel;
 
-import com.jrefinery.report.Element;
-import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.targets.table.TableCellBackground;
+import java.awt.Color;
+import java.util.Hashtable;
+
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 
-import java.awt.Color;
-import java.util.Hashtable;
+import com.jrefinery.report.Element;
+import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.table.TableCellBackground;
 
 /**
  * The CellStyle factory is used to convert JFreeReport style information
@@ -69,7 +70,8 @@ public class ExcelCellStyleFactory
   {
     /** The foreground style. */
     private ExcelDataCellStyle style;
-    /** the background style. */
+    
+    /** the background style */
     private TableCellBackground background;
 
     /**
@@ -114,13 +116,25 @@ public class ExcelCellStyleFactory
      */
     public boolean equals(Object o)
     {
-      if (this == o) return true;
-      if (!(o instanceof StyleCarrier)) return false;
+      if (this == o) 
+      {
+        return true;
+      }
+      if (!(o instanceof StyleCarrier)) 
+      {
+        return false;
+      }
 
       final StyleCarrier carrier = (StyleCarrier) o;
 
-      if (background != null ? !background.equals(carrier.background) : carrier.background != null) return false;
-      if (style != null ? !style.equals(carrier.style) : carrier.style != null) return false;
+      if (background != null ? !background.equals(carrier.background) : carrier.background != null)
+      {
+        return false;
+      }
+      if (style != null ? !style.equals(carrier.style) : carrier.style != null) 
+      {
+        return false;
+      }
 
       return true;
     }
@@ -139,36 +153,40 @@ public class ExcelCellStyleFactory
     }
   }
 
-
   /** White backgroud. Other backgrounds are not supported so far. */
   private static final short WHITE_INDEX = (new HSSFColor.WHITE()).getIndex();
 
   /** POI 2_0: the data format is used to create format strings. */
   private HSSFDataFormat dataFormat;
 
-	/** The list of fonts that we have used so far. */
+  /** The list of fonts that we have used so far */
   private HSSFCellStyle emptyCellStyle;
 
   /** The workbook, which creates all cells and styles. */
   private HSSFWorkbook workbook;
-  /** The cache for all generated styles. */
+
+  /** The cache for all generated styles */
   private Hashtable styleCache;
+
   /** the font factory is used to create excel fonts. */
   private ExcelFontFactory fontFactory;
 
-	/**
-	 * Constructor for ExcelCellStyleFactory.
+  /**
+   * Constructor for ExcelCellStyleFactory.
    *
    * @param workbook the workbook for which the styles should be created.
    * @throws NullPointerException if the workbook is null.
-	 */
-	public ExcelCellStyleFactory(HSSFWorkbook workbook)
+   */
+  public ExcelCellStyleFactory(HSSFWorkbook workbook)
   {
-    if (workbook == null) throw new NullPointerException();
+    if (workbook == null) 
+    {
+      throw new NullPointerException();
+    }
     this.workbook = workbook;
     this.styleCache = new Hashtable();
     this.fontFactory = new ExcelFontFactory(workbook);
-	}
+  }
 
   /**
    * Converts the given element alignment into one of the HSSFCellStyle-constants.
@@ -179,12 +197,30 @@ public class ExcelCellStyleFactory
    */
   protected short convertAlignment (ElementAlignment e)
   {
-    if (e == ElementAlignment.LEFT) return HSSFCellStyle.ALIGN_LEFT;
-    if (e == ElementAlignment.RIGHT) return HSSFCellStyle.ALIGN_RIGHT;
-    if (e == ElementAlignment.CENTER) return HSSFCellStyle.ALIGN_CENTER;
-    if (e == ElementAlignment.TOP) return HSSFCellStyle.VERTICAL_TOP;
-    if (e == ElementAlignment.BOTTOM) return HSSFCellStyle.VERTICAL_BOTTOM;
-    if (e == ElementAlignment.MIDDLE) return HSSFCellStyle.VERTICAL_CENTER;
+    if (e == ElementAlignment.LEFT) 
+    {
+      return HSSFCellStyle.ALIGN_LEFT;
+    }
+    if (e == ElementAlignment.RIGHT) 
+    {
+      return HSSFCellStyle.ALIGN_RIGHT;
+    }
+    if (e == ElementAlignment.CENTER) 
+    {
+      return HSSFCellStyle.ALIGN_CENTER;
+    }
+    if (e == ElementAlignment.TOP) 
+    {
+      return HSSFCellStyle.VERTICAL_TOP;
+    }
+    if (e == ElementAlignment.BOTTOM) 
+    {
+      return HSSFCellStyle.VERTICAL_BOTTOM;
+    }
+    if (e == ElementAlignment.MIDDLE) 
+    {
+      return HSSFCellStyle.VERTICAL_CENTER;
+    }
 
     throw new IllegalArgumentException("Invalid alignment");
   }
@@ -306,7 +342,8 @@ public class ExcelCellStyleFactory
     {
       hssfCellStyle.setAlignment(convertAlignment(style.getHorizontalAlignment()));
       hssfCellStyle.setVerticalAlignment(convertAlignment(style.getVerticalAlignment()));
-      hssfCellStyle.setFont(fontFactory.getExcelFont(style.getFontDefinition(), style.getTextColor()));
+      hssfCellStyle.setFont(fontFactory.getExcelFont(style.getFontDefinition(), 
+                                                     style.getTextColor()));
     }
 
     if (bg != null)

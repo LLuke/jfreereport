@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.5 2003/02/18 19:37:26 taqua Exp $
+ * $Id: ReportFactory.java,v 1.6 2003/02/25 14:07:31 taqua Exp $
  *
  * Changes
  * -------
@@ -70,6 +70,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
   /** The encoding. */
   private String currentEncoding;
 
+  /** A character entity parser. */
   private CharacterEntityParser entityParser;
 
   /**
@@ -81,7 +82,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    */
   public ReportFactory(Parser parser, String finishTag)
   {
-    super(parser,finishTag);
+    super(parser, finishTag);
     entityParser = CharacterEntityParser.createXMLEntityParser();
   }
 
@@ -91,7 +92,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    * @param tagName  the element name.
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a parsing exception.
+   * @throws SAXException if there is a parsing exception.
    */
   public void startElement(String tagName,
                            Attributes atts) throws SAXException
@@ -143,7 +144,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is an error parsing the XML.
+   * @throws SAXException if there is an error parsing the XML.
    */
   protected void startProperty (Attributes atts)
           throws SAXException
@@ -188,7 +189,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @param qName  the element name.
    *
-   * @throws org.xml.sax.SAXException if there is a parsing problem.
+   * @throws SAXException if there is a parsing problem.
    */
   public void endElement(String qName) throws SAXException
   {
@@ -232,13 +233,13 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
   /**
    * Ends the definition of a single property entry.
    *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the element.
+   * @throws SAXException if there is a problem parsing the element.
    */
   protected void endProperty ()
           throws SAXException
   {
-    getReport().getReportConfiguration().setConfigProperty(currentProperty,
-                                                           entityParser.decodeEntities(currentText.toString ()));
+    getReport().getReportConfiguration()
+        .setConfigProperty(currentProperty, entityParser.decodeEntities(currentText.toString ()));
     currentText = null;
     currentProperty = null;
   }
@@ -248,7 +249,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is any problem parsing the XML.
+   * @throws SAXException if there is any problem parsing the XML.
    */
   public void startReport(Attributes atts)
       throws SAXException
@@ -311,7 +312,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @return the page format.
    *
-   * @throws org.xml.sax.SAXException if there is an error parsing the report.
+   * @throws SAXException if there is an error parsing the report.
    */
   private PageFormat createPageFormat(PageFormat format, Attributes atts) throws SAXException
   {
@@ -323,7 +324,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
     {
       orientationVal = PageFormat.PORTRAIT;
     }
-    else if(orientation.equals(ORIENTATION_LANDSCAPE_VAL))
+    else if (orientation.equals(ORIENTATION_LANDSCAPE_VAL))
     {
       orientationVal = PageFormat.LANDSCAPE;
     }
@@ -375,7 +376,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a parsing problem.
+   * @throws SAXException if there is a parsing problem.
    */
   public void startGroups(Attributes atts)
       throws SAXException
@@ -389,7 +390,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @param atts  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a parsing problem.
+   * @throws SAXException if there is a parsing problem.
    */
   public void startFunctions(Attributes atts)
       throws SAXException
@@ -400,7 +401,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
   /**
    * Finishes the report generation.
    *
-   * @throws org.xml.sax.SAXException if there is a parsing problem.
+   * @throws SAXException if there is a parsing problem.
    */
   public void endReport()
       throws SAXException

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: First.java,v 1.17 2003/02/04 17:56:07 taqua Exp $
+ * $Id: FirstDemoTableModel.java,v 1.5 2003/02/25 17:20:38 mungady Exp $
  *
  * Changes
  * -------
@@ -80,10 +80,12 @@ public class FirstDemoTableModel extends IconTableModel
       url = this.getClass().getResource("/jlfgr-1_0.jar");
       if (url == null)
       {
-        Log.warn ("Unable to find jlfgr-1_0.jar\n" +
-                  "Unable to load the icons.\n" +
-                  "Please make sure you have the Java Look and Feel Graphics Repository in your classpath.\n" +
-                  "You may download this jar-file from http://developer.java.sun.com/developer/techDocs/hi/repository.");
+        Log.warn ("Unable to find jlfgr-1_0.jar\n" 
+                  + "Unable to load the icons.\n" 
+                  + "Please make sure you have the Java Look and Feel Graphics Repository in "
+                  + "your classpath.\n" 
+                  + "You may download this jar-file from "
+                  + "http://developer.java.sun.com/developer/techDocs/hi/repository.");
         return;
       }
     }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------
  * PageLayouter.java
  * -----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.18 2003/02/25 15:42:25 taqua Exp $
+ * $Id: PageLayouter.java,v 1.19 2003/02/25 18:47:09 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,11 @@ package com.jrefinery.report.targets.pageable.pagelayout;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.targets.pageable.LogicalPage;
+import com.jrefinery.report.util.Log;
 
 /**
  * The baseclass for all PageLayouter. A page layouter is the layoutmanager of
@@ -174,7 +174,8 @@ public abstract class PageLayouter extends AbstractFunction
    * and the second step starts to print the page header and opens the logical page.
    * The second step is not executed, if no more content is printed.
    *
-   * @param pageRestartDone set to true, if the restart process for this page is completed, false otherwise.
+   * @param pageRestartDone set to true, if the restart process for this page is completed, 
+   *                        false otherwise.
    */
   public void setPageRestartDone(boolean pageRestartDone)
   {
@@ -383,8 +384,9 @@ public abstract class PageLayouter extends AbstractFunction
   protected void startPage ()
   {
     if (isPageRestartDone() == true)
+    {
       throw new IllegalStateException("Page already started");
-
+    }
     ReportState state = getCurrentEvent().getState();
     if (state == null)
     {
@@ -471,10 +473,10 @@ public abstract class PageLayouter extends AbstractFunction
   }
 
   /**
-   * The dependency level defines the level of execution for this function. Higher dependency functions
-   * are executed before lower dependency functions. For ordinary functions and expressions,
-   * the range for dependencies is defined to start from 0 (lowest dependency possible)
-   * to 2^31 (upper limit of int).
+   * The dependency level defines the level of execution for this function. Higher dependency 
+   * functions are executed before lower dependency functions. For ordinary functions and 
+   * expressions, the range for dependencies is defined to start from 0 (lowest dependency 
+   * possible) to 2^31 (upper limit of int).
    * <p>
    * PageLayouter functions override the default behaviour an place them self at depency level -1,
    * an so before any userdefined function.
@@ -515,14 +517,14 @@ public abstract class PageLayouter extends AbstractFunction
   /**
    * Restores the state.
    *
-   * @param anchestor  the ancestor state.
+   * @param ancestor  the ancestor state.
    *
    * @throws ReportProcessingException if the printing failed or a pagebreak is
    * requested while the page is restored.
    * @throws IllegalStateException if there is no SavedState but this is not the
    * first page.
    */
-  public void restoreSaveState(ReportState anchestor)
+  public void restoreSaveState(ReportState ancestor)
       throws ReportProcessingException
   {
     Object state = getLayoutManagerState();
@@ -534,9 +536,10 @@ public abstract class PageLayouter extends AbstractFunction
     
     if (state == null)
     {
-      if (anchestor.getCurrentPage() != 1)
+      if (ancestor.getCurrentPage() != 1)
       {
-        throw new IllegalStateException("State is null, but this is not the first page." + anchestor.getCurrentPage());
+        throw new IllegalStateException("State is null, but this is not the first page." 
+                                        + ancestor.getCurrentPage());
       }
     }
     // open the logical page ...

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.15 2003/02/23 20:39:29 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.16 2003/02/25 15:42:27 taqua Exp $
  *
  * Changes
  * -------
@@ -115,7 +115,8 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
                                                                     Boolean.class);
 
   /** A key for an element's 'strikethrough' flag. */
-  public static final StyleKey STRIKETHROUGH = StyleKey.getStyleKey("font-strikethrough", Boolean.class);
+  public static final StyleKey STRIKETHROUGH = StyleKey.getStyleKey("font-strikethrough", 
+                                                                    Boolean.class);
 
   /** A key for an element's 'embedd' flag. */
   public static final StyleKey EMBEDDED_FONT = StyleKey.getStyleKey("font-embedded", Boolean.class);
@@ -225,10 +226,14 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     {
       ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
       if (es == parent)
+      {
         return true;
+      }
 
       if (es.isSubStyleSheet(parent) == true)
+      {
         return true;
+      }
     }
     return false;
   }
@@ -334,8 +339,8 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     {
       if (key.getValueType().isAssignableFrom(value.getClass()) == false)
       {
-        throw new ClassCastException ("Value for key " + key.getName() +
-                                      " is not assignable: " + value.getClass()
+        throw new ClassCastException ("Value for key " + key.getName() 
+                                      + " is not assignable: " + value.getClass()
                                       + " is not assignable from " + key.getValueType());
       }
       properties.put (key, value);
@@ -453,10 +458,11 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     boolean italic = getBooleanStyleProperty(ITALIC);
     boolean underlined = getBooleanStyleProperty(UNDERLINED);
     boolean strike = getBooleanStyleProperty(STRIKETHROUGH);
-    boolean embedd = getBooleanStyleProperty(EMBEDDED_FONT);
+    boolean embed = getBooleanStyleProperty(EMBEDDED_FONT);
     String encoding = (String) getStyleProperty(FONTENCODING);
 
-    FontDefinition retval = new FontDefinition(name, size, bold, italic, underlined, strike, encoding, embedd);
+    FontDefinition retval = new FontDefinition(name, size, bold, italic, underlined, strike, 
+                                               encoding, embed);
     return retval;
   }
 

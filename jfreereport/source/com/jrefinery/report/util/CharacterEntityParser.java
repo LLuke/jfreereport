@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------------
+ * --------------------------
  * CharacterEntityParser.java
- * ------------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * --------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.5 2003/02/06 17:38:19 taqua Exp $
+ * $Id: CharacterEntityParser.java,v 1.6 2003/02/25 15:42:45 taqua Exp $
  *
  * Changes
  * -------
@@ -42,15 +42,18 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 /**
- * The character entity parser replaces all known occurences of an entity
+ * The character entity parser replaces all known occurrences of an entity
  * in the format &amp;entityname;.
+ * 
+ * @author Thomas Morgner
  */
 public class CharacterEntityParser
 {
   /** the entities, keyed by entity name. */
   private Properties entities;
+  
   /** the reverse lookup entities, keyed by character. */
-  private Properties reverese;
+  private Properties reverse;
 
   /**
    * Creates a new CharacterEntityParser and initializes the parser with
@@ -61,13 +64,13 @@ public class CharacterEntityParser
   protected CharacterEntityParser(Properties characterEntities)
   {
     entities = characterEntities;
-    reverese = new Properties();
+    reverse = new Properties();
     Enumeration enum = entities.keys();
     while (enum.hasMoreElements())
     {
       String key = (String) enum.nextElement();
       String value = entities.getProperty(key);
-      reverese.setProperty(value, key);
+      reverse.setProperty(value, key);
     }
   }
 
@@ -114,9 +117,9 @@ public class CharacterEntityParser
    *
    * @return the reverse-lookup properties for this parsers.
    */
-  private Properties getReverese()
+  private Properties getReverse()
   {
-    return reverese;
+    return reverse;
   }
 
   /**
@@ -133,7 +136,9 @@ public class CharacterEntityParser
       return key;
     }
     else
+    {
       return val;
+    }
   }
 
   /**
@@ -144,13 +149,15 @@ public class CharacterEntityParser
    */
   private String lookupEntity(String character)
   {
-    String val = getReverese().getProperty(character);
+    String val = getReverse().getProperty(character);
     if (val == null)
     {
       return character;
     }
     else
+    {
       return "&" + val + ";";
+    }
   }
 
   /**
@@ -186,7 +193,8 @@ public class CharacterEntityParser
     String replaceString = null;
     StringBuffer bufValue = new StringBuffer(value);
 
-    while (((subStart = value.indexOf("&", parserIndex)) != -1) && (subEnd = value.indexOf(";", parserIndex)) != -1)
+    while (((subStart = value.indexOf("&", parserIndex)) != -1) 
+           && (subEnd = value.indexOf(";", parserIndex)) != -1)
     {
       parserIndex = subStart;
       StringBuffer buf = new StringBuffer();

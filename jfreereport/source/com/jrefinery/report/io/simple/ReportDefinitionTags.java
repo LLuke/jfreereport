@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportDefinitionTags.java,v 1.4 2003/02/05 13:25:29 taqua Exp $
+ * $Id: ReportDefinitionTags.java,v 1.5 2003/02/25 14:07:31 taqua Exp $
  *
  * Changes
  * -------
@@ -185,7 +185,7 @@ public interface ReportDefinitionTags
   public static final String FS_STRIKETHR = "fsstrikethr";
 
   /** Literal text for an XML attribute value. */
-  public static final String FS_EMBEDDED= "font-embedded";
+  public static final String FS_EMBEDDED = "font-embedded";
 
   /** Literal text for an XML attribute value. */
   public static final String FS_ENCODING = "font-encoding";

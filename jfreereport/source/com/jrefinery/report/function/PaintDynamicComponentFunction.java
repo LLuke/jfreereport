@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------------------
+ * ----------------------------------
  * PaintDynamicComponentFunction.java
- * ---------------------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * ----------------------------------
+ * (C)opyright 2002, 2003, by Simba Management Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   Thomas Morgner;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.3 2003/02/25 14:07:27 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.4 2003/02/25 14:10:46 taqua Exp $
  *
  * Changes
  * -------
@@ -37,9 +37,6 @@
  */
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.event.ReportEvent;
-
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -47,14 +44,20 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
+import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.event.ReportEvent;
+
 /**
  * Paints a AWT or Swing Component. The component must be contained in the
  * dataRow.
+ * 
+ * @author Thomas Morgner
  */
 public class PaintDynamicComponentFunction extends AbstractFunction
 {
   /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
+  
   /** Literal text for the 'scale' property. */
   public static final String SCALE_PROPERTY = "scale";
 
@@ -184,8 +187,8 @@ public class PaintDynamicComponentFunction extends AbstractFunction
     Component comp = (Component) o;
     Dimension dim = comp.getSize();
     comp.validate(); // validating is never wrong :)
-    BufferedImage bi = new BufferedImage((int)(scale * dim.width),
-                                         (int)(scale * dim.height),
+    BufferedImage bi = new BufferedImage((int) (scale * dim.width),
+                                         (int) (scale * dim.height),
                                          BufferedImage.TYPE_INT_ARGB);
     Graphics2D graph = bi.createGraphics();
     graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
@@ -209,8 +212,8 @@ public class PaintDynamicComponentFunction extends AbstractFunction
     }
 
     ImageReference ref = new ImageReference(image);
-    ref.setScaleX(1f/getScale());
-    ref.setScaleY(1f/getScale());
+    ref.setScaleX(1f / getScale());
+    ref.setScaleY(1f / getScale());
     return ref;
   }
 
@@ -240,7 +243,10 @@ public class PaintDynamicComponentFunction extends AbstractFunction
     try
     {
       float f = Float.parseFloat(scale);
-      if (f == 0) return 1;
+      if (f == 0)
+      {
+        return 1;
+      }
       return f;
     }
     catch (Exception e)

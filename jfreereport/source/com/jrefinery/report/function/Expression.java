@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,7 +24,7 @@
  * Expression.java
  * ---------------
  *
- * $Id: Expression.java,v 1.14 2003/01/14 21:06:16 taqua Exp $
+ * $Id: Expression.java,v 1.15 2003/02/25 14:07:24 taqua Exp $
  *
  * ChangeLog
  * ------------
@@ -36,9 +36,9 @@
 
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.DataRow;
-
 import java.util.Properties;
+
+import com.jrefinery.report.DataRow;
 
 /**
  * An expression is a lightweight function that does not maintain a state. Expressions are used
@@ -143,10 +143,10 @@ public interface Expression extends Cloneable
   public Object clone() throws CloneNotSupportedException;
 
   /**
-   * The dependency level defines the level of execution for this function. Higher dependency functions
-   * are executed before lower dependency functions. For ordinary functions and expressions,
-   * the range for dependencies is defined to start from 0 (lowest dependency possible)
-   * to 2^31 (upper limit of int).
+   * The dependency level defines the level of execution for this function. Higher dependency 
+   * functions are executed before lower dependency functions. For ordinary functions and 
+   * expressions, the range for dependencies is defined to start from 0 (lowest dependency 
+   * possible) to 2^31 (upper limit of int).
    * <p>
    * Levels below 0 are reserved for system-functionality (printing and layouting).
    *
