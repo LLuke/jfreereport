@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Enumeration;
-import java.util.Properties;
 
 import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
@@ -54,6 +53,7 @@ import org.jfree.report.modules.parser.ext.ReportConfigHandler;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.xml.writer.AttributeList;
 
 /**
  * A report configuration writer.
@@ -143,44 +143,44 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
    *
    * @return The properties.
    */
-  private Properties buildPageFormatProperties()
+  private AttributeList buildPageFormatProperties()
   {
-    final Properties retval = new Properties();
+    final AttributeList retval = new AttributeList();
     final PageFormat fmt = getReport().getDefaultPageFormat();
     final int[] borders = getBorders(fmt.getPaper());
 
     if (fmt.getOrientation() == PageFormat.LANDSCAPE)
     {
-      retval.setProperty(ReportConfigHandler.ORIENTATION_ATT,
+      retval.setAttribute(ReportConfigHandler.ORIENTATION_ATT,
           ReportConfigHandler.ORIENTATION_LANDSCAPE_VAL);
-      retval.setProperty(ReportConfigHandler.TOPMARGIN_ATT, String.valueOf(borders[RIGHT_BORDER]));
-      retval.setProperty(ReportConfigHandler.LEFTMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
-      retval.setProperty(ReportConfigHandler.BOTTOMMARGIN_ATT,
+      retval.setAttribute(ReportConfigHandler.TOPMARGIN_ATT, String.valueOf(borders[RIGHT_BORDER]));
+      retval.setAttribute(ReportConfigHandler.LEFTMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
+      retval.setAttribute(ReportConfigHandler.BOTTOMMARGIN_ATT,
           String.valueOf(borders[LEFT_BORDER]));
-      retval.setProperty(ReportConfigHandler.RIGHTMARGIN_ATT,
+      retval.setAttribute(ReportConfigHandler.RIGHTMARGIN_ATT,
           String.valueOf(borders[BOTTOM_BORDER]));
     }
     else if (fmt.getOrientation() == PageFormat.PORTRAIT)
     {
-      retval.setProperty(ReportConfigHandler.ORIENTATION_ATT,
+      retval.setAttribute(ReportConfigHandler.ORIENTATION_ATT,
           ReportConfigHandler.ORIENTATION_PORTRAIT_VAL);
-      retval.setProperty(ReportConfigHandler.TOPMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
-      retval.setProperty(ReportConfigHandler.LEFTMARGIN_ATT, String.valueOf(borders[LEFT_BORDER]));
-      retval.setProperty(ReportConfigHandler.BOTTOMMARGIN_ATT,
+      retval.setAttribute(ReportConfigHandler.TOPMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
+      retval.setAttribute(ReportConfigHandler.LEFTMARGIN_ATT, String.valueOf(borders[LEFT_BORDER]));
+      retval.setAttribute(ReportConfigHandler.BOTTOMMARGIN_ATT,
           String.valueOf(borders[BOTTOM_BORDER]));
-      retval.setProperty(ReportConfigHandler.RIGHTMARGIN_ATT,
+      retval.setAttribute(ReportConfigHandler.RIGHTMARGIN_ATT,
           String.valueOf(borders[RIGHT_BORDER]));
     }
     else
     {
-      retval.setProperty(ReportConfigHandler.ORIENTATION_ATT,
+      retval.setAttribute(ReportConfigHandler.ORIENTATION_ATT,
           ReportConfigHandler.ORIENTATION_REVERSE_LANDSCAPE_VAL);
-      retval.setProperty(ReportConfigHandler.TOPMARGIN_ATT, String.valueOf(borders[LEFT_BORDER]));
-      retval.setProperty(ReportConfigHandler.LEFTMARGIN_ATT,
+      retval.setAttribute(ReportConfigHandler.TOPMARGIN_ATT, String.valueOf(borders[LEFT_BORDER]));
+      retval.setAttribute(ReportConfigHandler.LEFTMARGIN_ATT,
           String.valueOf(borders[BOTTOM_BORDER]));
-      retval.setProperty(ReportConfigHandler.BOTTOMMARGIN_ATT,
+      retval.setAttribute(ReportConfigHandler.BOTTOMMARGIN_ATT,
           String.valueOf(borders[RIGHT_BORDER]));
-      retval.setProperty(ReportConfigHandler.RIGHTMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
+      retval.setAttribute(ReportConfigHandler.RIGHTMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
     }
 
     final int w = (int) fmt.getPaper().getWidth();
@@ -189,12 +189,12 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
     final String pageDefinition = lookupPageDefinition(w, h);
     if (pageDefinition != null)
     {
-      retval.setProperty(ReportConfigHandler.PAGEFORMAT_ATT, pageDefinition);
+      retval.setAttribute(ReportConfigHandler.PAGEFORMAT_ATT, pageDefinition);
     }
     else
     {
-      retval.setProperty(ReportConfigHandler.WIDTH_ATT, String.valueOf(w));
-      retval.setProperty(ReportConfigHandler.HEIGHT_ATT, String.valueOf(h));
+      retval.setAttribute(ReportConfigHandler.WIDTH_ATT, String.valueOf(w));
+      retval.setAttribute(ReportConfigHandler.HEIGHT_ATT, String.valueOf(h));
     }
     return retval;
   }

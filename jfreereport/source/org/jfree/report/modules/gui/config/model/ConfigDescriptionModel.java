@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionModel.java,v 1.5 2003/09/14 19:24:07 taqua Exp $
+ * $Id: ConfigDescriptionModel.java,v 1.6 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,7 +47,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Properties;
 import javax.swing.AbstractListModel;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -56,6 +55,7 @@ import org.jfree.report.modules.gui.config.xml.DOMWriter;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
+import org.jfree.xml.writer.AttributeList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -429,10 +429,10 @@ public class ConfigDescriptionModel extends AbstractListModel
     for (int i = 0; i < getSize(); i++)
     {
       ConfigDescriptionEntry entry = get(i);
-      Properties p = new Properties();
-      p.setProperty("name", entry.getKeyName());
-      p.setProperty("global", String.valueOf(entry.isGlobal()));
-      p.setProperty("hidden", String.valueOf(entry.isHidden()));
+      AttributeList p = new AttributeList();
+      p.setAttribute("name", entry.getKeyName());
+      p.setAttribute("global", String.valueOf(entry.isGlobal()));
+      p.setAttribute("hidden", String.valueOf(entry.isHidden()));
       dwriter.writeTag(writer, "key", p, false);
       if (entry.getDescription() != null)
       {
@@ -456,7 +456,7 @@ public class ConfigDescriptionModel extends AbstractListModel
       }
       else if (entry instanceof TextConfigDescriptionEntry)
       {
-        dwriter.writeTag(writer, "text", new Properties(), DOMWriter.CLOSE);
+        dwriter.writeTag(writer, "text", new AttributeList(), DOMWriter.CLOSE);
       }
       else if (entry instanceof EnumConfigDescriptionEntry)
       {

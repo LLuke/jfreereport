@@ -30,7 +30,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
  *
- * $Id: ExcelDataCellStyle.java,v 1.3 2003/08/31 19:27:58 taqua Exp $
+ * $Id: ExcelDataCellStyle.java,v 1.4 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------
@@ -231,7 +231,7 @@ public final class ExcelDataCellStyle
     {
       return false;
     }
-    if (ObjectUtils.equalOrBothNull(dataStyle, style.dataStyle) == false)
+    if (ObjectUtils.equal(dataStyle, style.dataStyle) == false)
     {
       return false;
     }

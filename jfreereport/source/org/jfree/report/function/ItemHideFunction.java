@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.3 2003/08/31 19:27:56 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.4 2003/10/18 19:32:12 taqua Exp $
  *
  * Changes
  * -------
@@ -159,7 +159,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
     }
     else
     {
-      visible = (ObjectUtils.equalOrBothNull(lastObject, fieldValue) == false);
+      visible = (ObjectUtils.equal(lastObject, fieldValue) == false);
     }
     lastObject = fieldValue;
     final Element e = event.getReport().getItemBand().getElement(getElement());

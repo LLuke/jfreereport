@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2002, 2003, by Thomas Morgner.
  *
- * $Id: ScrollableResultSetTableModel.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: ScrollableResultSetTableModel.java,v 1.2 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -72,6 +72,8 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    */
   private int rowCount;
 
+  private boolean labelMapMode;
+
   /**
    * Constructs the model.
    *
@@ -79,8 +81,10 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public ScrollableResultSetTableModel(final ResultSet resultset) throws SQLException
+  public ScrollableResultSetTableModel(final ResultSet resultset, boolean labelMapMode)
+      throws SQLException
   {
+    this.labelMapMode = labelMapMode;;
     if (resultset != null)
     {
       updateResultSet(resultset);
@@ -91,11 +95,17 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
     }
   }
 
+  public boolean isLabelMapMode()
+  {
+    return labelMapMode;
+  }
+
   /**
    * Default constructor.
    */
-  protected ScrollableResultSetTableModel()
+  protected ScrollableResultSetTableModel(boolean labelMapMode)
   {
+    this.labelMapMode = labelMapMode;
   }
 
   /**
@@ -217,7 +227,8 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   }
 
   /**
-   * Returns the columnLabel for the given column.
+   * Returns the columnLabel or column name for the given column.
+   * Whether the label or the name is returned depends on the label map mode. 
    *
    * @param column  the column index.
    *
@@ -231,7 +242,14 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
     {
       try
       {
-        return dbmd.getColumnLabel(column + 1);
+        if (isLabelMapMode())
+        {
+          return dbmd.getColumnLabel(column + 1);
+        }
+        else
+        {
+          return dbmd.getColumnName(column + 1);
+        }
       }
       catch (SQLException e)
       {

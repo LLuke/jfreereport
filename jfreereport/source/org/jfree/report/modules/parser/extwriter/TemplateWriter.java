@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateWriter.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
+ * $Id: TemplateWriter.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,13 +41,13 @@ package org.jfree.report.modules.parser.extwriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
-import java.util.Properties;
 
 import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.ElementHandler;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.util.ObjectUtils;
+import org.jfree.xml.writer.AttributeList;
 
 /**
  * The template writer writes a single template definition to the xml-definition
@@ -103,16 +103,16 @@ public class TemplateWriter extends ObjectWriter
    */
   public void write(final Writer writer) throws IOException, ReportWriterException
   {
-    final Properties p = new Properties();
-    p.setProperty("references", parent.getName());
+    final AttributeList p = new AttributeList();
     if (template.getName() != null)
     {
       // dont copy the parent name for anonymous templates ...
       if (template.getName().equals(parent.getName()) == false)
       {
-        p.setProperty("name", template.getName());
+        p.setAttribute("name", template.getName());
       }
     }
+    p.setAttribute("references", parent.getName());
 
     boolean tagWritten = false;
 
@@ -160,7 +160,7 @@ public class TemplateWriter extends ObjectWriter
       return false;
     }
     final Object parentObject = parent.getParameter(parameterName);
-    if (ObjectUtils.equalOrBothNull(parameterObject, parentObject))
+    if (ObjectUtils.equal(parameterObject, parentObject))
     {
       //Log.debug ("Should not write: Parameter objects are equal.");
       return false;

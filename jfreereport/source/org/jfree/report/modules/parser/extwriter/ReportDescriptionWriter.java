@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
@@ -68,6 +67,7 @@ import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleKey;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
+import org.jfree.xml.writer.AttributeList;
 
 /**
  * A report description writer.  The
@@ -259,12 +259,12 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     newPath.addName(element);
     writeComment(writer, newPath, CommentHandler.OPEN_TAG_COMMENT);
 
-    final Properties p = new Properties();
+    final AttributeList p = new AttributeList();
     if (element.getName().startsWith(Element.ANONYMOUS_ELEMENT_PREFIX) == false)
     {
-      p.setProperty("name", element.getName());
+      p.setAttribute("name", element.getName());
     }
-    p.setProperty("type", element.getContentType());
+    p.setAttribute("type", element.getContentType());
     writeTag(writer, BandHandler.ELEMENT_TAG, p, OPEN);
 
     final ElementStyleSheet styleSheet = element.getStyle();

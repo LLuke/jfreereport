@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
+ * $Id: StyleWriter.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import org.jfree.report.ShapeElement;
 import org.jfree.report.modules.parser.base.CommentHandler;
@@ -56,6 +55,7 @@ import org.jfree.util.ObjectUtils;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
+import org.jfree.xml.writer.AttributeList;
 
 /**
  * A style writer. This class will write a single stylesheet into the
@@ -203,7 +203,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     {
       odKey = cc.getSuperClassObjectDescription(key.getValueType(), odKey);
     }
-    return ObjectUtils.equalOrBothNull(odKey, odObject);
+    return ObjectUtils.equal(odKey, odObject);
   }
 
   /**
@@ -236,11 +236,11 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
           + key.getName(), e);
     }
 
-    final Properties p = new Properties();
-    p.setProperty("name", key.getName());
+    final AttributeList p = new AttributeList();
+    p.setAttribute("name", key.getName());
     if (isUseKeyObjectDescription(key, o) == false)
     {
-      p.setProperty("class", o.getClass().getName());
+      p.setAttribute("class", o.getClass().getName());
     }
 
     final CommentHintPath styleKeyPath = commentPath.getInstance();

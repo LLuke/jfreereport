@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.4 2003/08/24 15:08:20 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.5 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,8 @@ import org.jfree.report.util.ReportConfiguration;
  * <code>DefaultTableModel</code>.
  * <p>
  * The creation of a <code>DefaultTableModel</code> can be forced if the system property
- * <code>"org.jfree.report.TableFactoryMode"</code> is set to <code>"simple"</code>.
+ * <code>"org.jfree.report.modules.misc.tablemodel.TableFactoryMode"</code>
+ * is set to <code>"simple"</code>.
  *
  * @author Thomas Morgner
  */
@@ -78,6 +79,15 @@ public final class ResultSetTableModelFactory
   {
   }
 
+  public CloseableTableModel createTableModel(final ResultSet rs)
+      throws SQLException
+  {
+    return createTableModel
+        (rs, ReportConfiguration.getGlobalConfig().getConfigProperty
+        ("org.jfree.report.modules.misc.tablemodel.ColumnNameMapping",
+            "false").equals("true"));
+  }
+
   /**
    * Creates a table model by using the given <code>ResultSet</code> as the backend.
    * If the <code>ResultSet</code> is scrollable (the type is not <code>TYPE_FORWARD_ONLY</code>),
@@ -92,12 +102,13 @@ public final class ResultSetTableModelFactory
    * <code>DefaultTableModel</code> and the <code>ResultSet</code> gets closed.
    *
    * @param rs  the result set.
-   *
+   * @param labelMapping defines, whether to use column names or column labels
+   * to compute the column index.
    * @return a closeable table model.
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public CloseableTableModel createTableModel(final ResultSet rs)
+  public CloseableTableModel createTableModel(final ResultSet rs, boolean labelMapping)
       throws SQLException
   {
     // Allow for override, some jdbc drivers are buggy :(
@@ -106,7 +117,7 @@ public final class ResultSetTableModelFactory
 
     if (prop.equalsIgnoreCase("simple"))
     {
-      return generateDefaultTableModel(rs);
+      return generateDefaultTableModel(rs, labelMapping);
     }
 
     int resultSetType = ResultSet.TYPE_FORWARD_ONLY;
@@ -116,15 +127,16 @@ public final class ResultSetTableModelFactory
     }
     catch (SQLException sqle)
     {
-      Log.info("ResultSet type could not be determined, assuming default table model.");
+      Log.info
+          ("ResultSet type could not be determined, assuming default table model.");
     }
     if (resultSetType == ResultSet.TYPE_FORWARD_ONLY)
     {
-      return generateDefaultTableModel(rs);
+      return generateDefaultTableModel(rs, labelMapping);
     }
     else
     {
-      return new ScrollableResultSetTableModel(rs);
+      return new ScrollableResultSetTableModel(rs, labelMapping);
     }
   }
 
@@ -186,13 +198,44 @@ public final class ResultSetTableModelFactory
   public CloseableTableModel generateDefaultTableModel(final ResultSet rs)
       throws SQLException
   {
+    return generateDefaultTableModel(rs, ReportConfiguration.getGlobalConfig().getConfigProperty
+        ("org.jfree.report.modules.misc.tablemodel.ColumnNameMapping",
+            "false").equals("true"));
+  }
+
+  /**
+   * Generates a <code>TableModel</code> that gets its contents filled from a
+   * <code>ResultSet</code>. The column names of the <code>ResultSet</code> will form the column
+   * names of the table model.
+   * <p>
+   * Hint: To customize the names of the columns, use the SQL column aliasing (done with
+   * <code>SELECT nativecolumnname AS "JavaColumnName" FROM ....</code>
+   *
+   * @param rs  the result set.
+   * @param labelMapping defines, whether to use column names or column labels
+   * to compute the column index.
+   * @return a closeable table model.
+   *
+   * @throws SQLException if there is a problem with the result set.
+   */
+  public CloseableTableModel generateDefaultTableModel(final ResultSet rs, boolean labelMapping)
+      throws SQLException
+  {
     final ResultSetMetaData rsmd = rs.getMetaData();
     final int colcount = rsmd.getColumnCount();
     final ArrayList header = new ArrayList(colcount);
     for (int i = 0; i < colcount; i++)
     {
-      final String name = rsmd.getColumnName(i + 1);
-      header.add(name);
+      if (labelMapping)
+      {
+        final String name = rsmd.getColumnLabel(i + 1);
+        header.add(name);
+      }
+      else
+      {
+        final String name = rsmd.getColumnName(i + 1);
+        header.add(name);
+      }
     }
     final ArrayList rows = new ArrayList();
     while (rs.next())

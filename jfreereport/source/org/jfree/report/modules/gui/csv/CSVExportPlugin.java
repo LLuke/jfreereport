@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportPlugin.java,v 1.8 2003/10/28 21:07:59 taqua Exp $
+ * $Id: CSVExportPlugin.java,v 1.9 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,6 +45,7 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.PreviewProxy;
@@ -124,6 +125,16 @@ public class CSVExportPlugin extends AbstractExportPlugin
     task.addExportTaskListener(new DefaultExportTaskListener());
     delegateTask(task);
     return handleExportResult(task);
+  }
+
+  protected CSVExportDialog getExportDialog()
+  {
+    return exportDialog;
+  }
+
+  protected ResourceBundle getResources()
+  {
+    return resources;
   }
 
   /**
@@ -208,4 +219,31 @@ public class CSVExportPlugin extends AbstractExportPlugin
     }
     exportDialog.pack();
   }
+
+  /**
+   * Returns true if the action should be added to the toolbar, and false otherwise.
+   *
+   * @return true, if the plugin should be added to the toolbar, false otherwise.
+   */
+  public boolean isAddToToolbar()
+  {
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        ("org.jfree.report.modules.gui.csv.AddToToolbar", "false").equals("true");
+  }
+
+  /**
+   * Returns true if the action is separated, and false otherwise. A separated
+   * action starts a new action group and will be spearated from previous actions
+   * on the menu and toolbar.
+   *
+   * @return true, if the action should be separated from previous actions,
+   * false otherwise.
+   */
+  public boolean isSeparated()
+  {
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        ("org.jfree.report.modules.gui.csv.Separate", "false").equals("true");
+  }
+
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.7 2003/10/28 21:07:59 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.8 2003/11/01 19:52:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,6 +43,7 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.print.resources.PrintExportResources;
@@ -176,13 +177,30 @@ public class PrintingPlugin extends AbstractExportPlugin
     return (Integer) (resources.getObject("action.print.mnemonic"));
   }
 
+
   /**
    * Returns true if the action should be added to the toolbar, and false otherwise.
    *
-   * @return A boolean.
+   * @return true, if the plugin should be added to the toolbar, false otherwise.
    */
   public boolean isAddToToolbar()
   {
-    return true;
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        ("org.jfree.report.modules.gui.print.AddToToolbar", "false").equals("true");
   }
+
+  /**
+   * Returns true if the action is separated, and false otherwise. A separated
+   * action starts a new action group and will be spearated from previous actions
+   * on the menu and toolbar.
+   *
+   * @return true, if the action should be separated from previous actions,
+   * false otherwise.
+   */
+  public boolean isSeparated()
+  {
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        ("org.jfree.report.modules.gui.print.Separate", "false").equals("true");
+  }
+ 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
@@ -53,6 +52,7 @@ import org.jfree.util.ObjectUtils;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
+import org.jfree.xml.writer.AttributeList;
 
 /**
  * A writer.
@@ -264,11 +264,11 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
       throw new ReportWriterException("Unable to fill parameter object:" + parameterName);
     }
 
-    final Properties p = new Properties();
-    p.setProperty("name", parameterName);
+    final AttributeList p = new AttributeList();
+    p.setAttribute("name", parameterName);
     if (isUseParameterObjectDescription(parameterDefinition, parameterValue) == false)
     {
-      p.setProperty("class", parameterValue.getClass().getName());
+      p.setAttribute("class", parameterValue.getClass().getName());
     }
 
     final CommentHintPath path = commentHintPath.getInstance();
@@ -321,7 +321,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     {
       odParameter = cc.getSuperClassObjectDescription(parameter, odParameter);
     }
-    return ObjectUtils.equalOrBothNull(odParameter, odObject);
+    return ObjectUtils.equal(odParameter, odObject);
   }
 
 

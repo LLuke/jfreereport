@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.2 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.3 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,6 +48,7 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.print.resources.PrintExportResources;
 import org.jfree.report.util.PageFormatFactory;
+import org.jfree.report.util.ReportConfiguration;
 
 /**
  * An export control plugin that handles the setup of page format objects for
@@ -165,16 +166,35 @@ public class PageSetupPlugin extends AbstractExportPlugin
     return (Integer) resources.getObject("action.page-setup.mnemonic");
   }
 
+  protected ResourceBundle getResources()
+  {
+    return resources;
+  }
+
+
+  /**
+   * Returns true if the action should be added to the toolbar, and false otherwise.
+   *
+   * @return true, if the plugin should be added to the toolbar, false otherwise.
+   */
+  public boolean isAddToToolbar()
+  {
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        ("org.jfree.report.modules.gui.print.pagesetup.AddToToolbar", "false").equals("true");
+  }
+
   /**
    * Returns true if the action is separated, and false otherwise. A separated
    * action starts a new action group and will be spearated from previous actions
    * on the menu and toolbar.
    *
-   * @return always true.
+   * @return true, if the action should be separated from previous actions,
+   * false otherwise.
    */
   public boolean isSeparated()
   {
-    return true;
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        ("org.jfree.report.modules.gui.print.pagesetup.Separate", "false").equals("true");
   }
 
 }

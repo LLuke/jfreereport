@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.24 2003/10/22 14:44:51 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.25 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -87,9 +87,9 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionButton;
-import org.jfree.report.modules.gui.base.components.ActionConcentrator;
 import org.jfree.report.modules.gui.base.components.ActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionMenuItem;
+import org.jfree.report.modules.gui.base.components.DowngradeActionMap;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.FloatingButtonEnabler;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
@@ -101,12 +101,22 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.xml.ParserUtil;
 
 /**
- * A preview proxy.
+ * A preview proxy. This class is the backend for all preview components.
  *
  * @author Thomas Morgner.
  */
 public class PreviewProxyBase extends JComponent
 {
+  public static final String GOTO_ACTION_KEY = "GotoAction";
+  public static final String ABOUT_ACTION_KEY = "AboutAction";
+  public static final String CLOSE_ACTION_KEY = "CloseAction";
+  public static final String FIRSTPAGE_ACTION_KEY = "FirstPageAction";
+  public static final String LASTPAGE_ACTION_KEY = "LastPageAction";
+  public static final String NEXT_PAGE_ACTION_KEY = "NextPageAction";
+  public static final String PREV_PAGE_ACTION_KEY = "PreviousPageAction";
+  public static final String ZOOM_IN_ACTION_KEY = "ZoomInAction";
+  public static final String ZOOM_OUT_ACTION_KEY = "ZoomOutAction";
+
   /** The default width of the report pane. */
   public static final int DEFAULT_REPORT_PANE_WIDTH = 640;
 
@@ -137,135 +147,33 @@ public class PreviewProxyBase extends JComponent
   public static final String TOOLBAR_FLOATABLE_PROPERTY
       = "org.jfree.report.modules.gui.base.ToolbarFloatable";
 
-  /**
-   * A wrapper action.
-   */
-  private class WrapperAction implements Action
+  public static final String TOOLBAR_FLOATABLE_PROPERTYNAME
+      = "toolbarFloatable";
+
+  private class ToolbarPropertyChangeListener implements PropertyChangeListener
   {
-    /** The parent action. */
-    private Action parent;
-
     /**
-     * Creates a new action.
-     *
-     * @param parent  the parent action (null not permitted).
+     * This method gets called when a bound property is changed.
+     * @param evt A PropertyChangeEvent object describing the event source
+     *   	and the property that has changed.
      */
-    public WrapperAction(final Action parent)
+    public void propertyChange(PropertyChangeEvent evt)
     {
-      setParent(parent);
-    }
-
-    /**
-     * Returns the parent action.
-     *
-     * @return the parent action.
-     */
-    public Action getParent()
-    {
-      return parent;
-    }
-
-    /**
-     * Sets the parent action.
-     *
-     * @param parent  the parent action (null not permitted).
-     */
-    public void setParent(final Action parent)
-    {
-      if (parent == null)
+      if (evt.getSource() == toolbar)
       {
-        throw new NullPointerException();
+        if ("floatable".equals(evt.getPropertyName()))
+        {
+          reinitialize();
+        }
       }
-      this.parent = parent;
-      registerAction(parent);
-    }
-
-    /**
-     * Gets one of this object's properties using the associated key.
-     *
-     * @param key  the key.
-     *
-     * @return the property value.
-     *
-     * @see #putValue
-     */
-    public Object getValue(final String key)
-    {
-      return parent.getValue(key);
-    }
-
-    /**
-     * Invoked when an action occurs.
-     *
-     * @param e  the event.
-     */
-    public void actionPerformed(final ActionEvent e)
-    {
-      parent.actionPerformed(e);
-    }
-
-    /**
-     * Sets one of this object's properties
-     * using the associated key. If the value has
-     * changed, a <code>PropertyChangeEvent</code> is sent
-     * to listeners.
-     *
-     * @param key    a <code>String</code> containing the key.
-     * @param value  an <code>Object</code> value.
-     */
-    public void putValue(final String key, final Object value)
-    {
-      parent.putValue(key, value);
-    }
-
-    /**
-     * Sets the enabled state of the <code>Action</code>.  When enabled,
-     * any component associated with this object is active and
-     * able to fire this object's <code>actionPerformed</code> method.
-     * If the value has changed, a <code>PropertyChangeEvent</code> is sent
-     * to listeners.
-     *
-     * @param  b true to enable this <code>Action</code>, false to disable it.
-     */
-    public void setEnabled(final boolean b)
-    {
-      parent.setEnabled(b);
-    }
-
-    /**
-     * Returns the enabled state of the <code>Action</code>. When enabled,
-     * any component associated with this object is active and
-     * able to fire this object's <code>actionPerformed</code> method.
-     *
-     * @return true if this <code>Action</code> is enabled.
-     */
-    public boolean isEnabled()
-    {
-      return parent.isEnabled();
-    }
-
-    /**
-     * Adds a <code>PropertyChange</code> listener. Containers and attached
-     * components use these methods to register interest in this
-     * <code>Action</code> object. When its enabled state or other property
-     * changes, the registered listeners are informed of the change.
-     *
-     * @param listener  a <code>PropertyChangeListener</code> object.
-     */
-    public void addPropertyChangeListener(final PropertyChangeListener listener)
-    {
-      parent.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * Removes a <code>PropertyChange</code> listener.
-     *
-     * @param listener  a <code>PropertyChangeListener</code> object
-     * @see #addPropertyChangeListener
-     */
-    public void removePropertyChangeListener(final PropertyChangeListener listener)
-    {
-      parent.removePropertyChangeListener(listener);
+      else if (evt.getSource() == PreviewProxyBase.this)
+      {
+        if (TOOLBAR_FLOATABLE_PROPERTYNAME.equals(evt.getPropertyName()) ||
+            LARGE_ICONS_ENABLED_PROPERTY.equals(evt.getPropertyName()))
+        {
+          reinitialize();
+        }
+      }
     }
   }
 
@@ -622,58 +530,20 @@ public class PreviewProxyBase extends JComponent
     }
   }
 
-  /**
-   * Returns the worker.
-   *
-   * @return The worker.
-   */
-  protected Worker getWorker()
-  {
-    if (paginationWorker == null)
-    {
-      paginationWorker = new Worker();
-      paginationWorker.setPriority(Thread.MIN_PRIORITY);
-      paginationWorker.setName("Repagination-Worker");
-    }
-    return paginationWorker;
-  }
-
   /** The base class for localised resources. */
   public static final String BASE_RESOURCE_CLASS =
       JFreeReportResources.class.getName();
 
   /** The worker thread which is used to perform the repagination. */
-  private Worker paginationWorker;
+  private Worker repaginationWorker;
 
   /** The worker thread which is used to perform the repagination. */
   private WorkerPool exportWorkerPool;
 
-  /** The 'about' action. */
-  private WrapperAction aboutAction;
-
-  /** The 'close' action. */
-  private WrapperAction closeAction;
-
-  /** The 'first page' action. */
-  private WrapperAction firstPageAction;
-
-  /** The 'last page' action. */
-  private WrapperAction lastPageAction;
-
-  /** The 'next page' action. */
-  private WrapperAction nextPageAction;
-
-  /** The 'previous page' action. */
-  private WrapperAction previousPageAction;
-
-  /** The 'zoom in' action. */
-  private WrapperAction zoomInAction;
-
-  /** The 'zoom out' action. */
-  private WrapperAction zoomOutAction;
-
-  /** The 'goto' action. */
-  private WrapperAction gotoAction;
+  private DowngradeActionMap baseActionMap;
+  private DowngradeActionMap navigationActionMap;
+  private DowngradeActionMap zoomActionMap;
+  private DowngradeActionMap exportActionMap;
 
   /** The available zoom factors. */
   protected static final float[]
@@ -702,12 +572,8 @@ public class PreviewProxyBase extends JComponent
 
   /** Toolbar. */
   private JToolBar toolbar;
-
-  /** The maximum size. */
-  private Dimension maximumSize;
-
-  /** The preferred size. */
-  private Dimension preferredSize;
+  /** Whether the toolbar will be floatable. */
+  private boolean toolbarFloatable;
 
   /** A preview proxy. */
   private PreviewProxy proxy;
@@ -723,10 +589,10 @@ public class PreviewProxyBase extends JComponent
   /** A flag to define whether the interface should be the locked state. */
   private boolean lockInterface;
   /** The action concentrator used to lock or unlock the interface. */
-  private ActionConcentrator zoomActionConcentrator;
+  //private ActionConcentrator zoomActionConcentrator;
   /** A flag that defines, whether the preview component is closed. */
   private boolean closed;
-
+  public static final String LARGE_ICONS_PROPERTY = "largeIconsEnabled";
 
   /**
    * Creates a preview proxy.
@@ -735,6 +601,17 @@ public class PreviewProxyBase extends JComponent
    */
   public PreviewProxyBase(final PreviewProxy proxy)
   {
+    this.baseActionMap = new DowngradeActionMap();
+
+    this.exportActionMap = new DowngradeActionMap();
+    this.exportActionMap.setParent(baseActionMap);
+
+    this.navigationActionMap = new DowngradeActionMap();
+    this.navigationActionMap.setParent(baseActionMap);
+
+    this.zoomActionMap = new DowngradeActionMap();
+    this.zoomActionMap.setParent(baseActionMap);
+
     this.proxy = proxy;
     this.progressDialog = new ReportProgressDialog();
     this.progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
@@ -800,7 +677,13 @@ public class PreviewProxyBase extends JComponent
    */
   protected Worker getRepaginationWorker ()
   {
-    return paginationWorker;
+    if (repaginationWorker == null)
+    {
+      repaginationWorker = new Worker();
+      repaginationWorker.setPriority(Thread.MIN_PRIORITY);
+      repaginationWorker.setName("Repagination-Worker");
+    }
+    return repaginationWorker;
   }
 
   /**
@@ -812,15 +695,19 @@ public class PreviewProxyBase extends JComponent
    */
   public void init(final JFreeReport report) throws ReportProcessingException
   {
-    this.zoomActionConcentrator = new ActionConcentrator();
+    //this.zoomActionConcentrator = new ActionConcentrator();
     this.exportWorkerPool = new WorkerPool
       (10, "preview-dialog-export-worker [" + report.getName() + "]");
 
-    final boolean largeIconsProperty =
-        report.getReportConfiguration().getConfigProperty
-        (LARGE_ICONS_ENABLED_PROPERTY, "true").equals("true");
-    setLargeIconsEnabled(largeIconsProperty);
-    buildExportPlugins(report);
+    setLargeIconsEnabled
+        (report.getReportConfiguration().getConfigProperty
+        (LARGE_ICONS_ENABLED_PROPERTY, "true").equals("true"));
+
+    setToolbarFloatable
+        (report.getReportConfiguration().getConfigProperty
+         (TOOLBAR_FLOATABLE_PROPERTY, "true").equals("true"));
+
+    proxy.setTitle(report.getName() + " - " + getResources().getString("preview-frame.title"));
 
     // handle a JDK bug: windows are not garbage collected if dispose is not called manually.
     // DisposedState is undone when show() or pack() is called, so this does no harm.
@@ -838,29 +725,21 @@ public class PreviewProxyBase extends JComponent
       }
     });
 
-    // get a locale-specific resource bundle...
-    final ResourceBundle resources = getResources();
-
-    proxy.setTitle(resources.getString("preview-frame.title"));
-    this.zoomIndex = DEFAULT_ZOOM_INDEX;
-
-    createDefaultActions(proxy.createDefaultCloseAction());
-
-    // set up the menu
-    proxy.setJMenuBar(createMenuBar());
-
     // set up the content with a toolbar and a report pane
     setLayout(new BorderLayout());
     setDoubleBuffered(false);
 
-    final boolean toolbarFloatableProperty =
-        report.getReportConfiguration().getConfigProperty
-        (TOOLBAR_FLOATABLE_PROPERTY, "true").equals("true");
-    toolbar = createToolBar(toolbarFloatableProperty);
+    this.zoomIndex = DEFAULT_ZOOM_INDEX;
+
+    toolbar = createToolBar ();
+    toolbar.setFloatable(isToolbarFloatable());
+    toolbar.addPropertyChangeListener(new ToolbarPropertyChangeListener());
     add(toolbar, BorderLayout.NORTH);
 
+    buildExportPlugins(report);
+
     reportPane = createReportPane(report);
-    reportPane.addPropertyChangeListener(createReportPanePropertyChangeListener());
+    reportPane.addPropertyChangeListener(new ReportPanePropertyChangeListener());
     reportPane.setVisible(false);
 
     final JPanel reportPaneHolder = new JPanel(new CenterLayout());
@@ -882,8 +761,35 @@ public class PreviewProxyBase extends JComponent
 
     applyDefinedDimension(report);
 
+    reinitialize();
+
     performPagination(report.getDefaultPageFormat());
     Log.info("Dialog started pagination ...");
+  }
+
+  /**
+   * Call this method, whenever actions have changed. The menu and toolbar
+   * will be rebuild.
+   */
+  protected void reinitialize ()
+  {
+    initializeToolBar();
+    createDefaultActions(proxy.createDefaultCloseAction());
+
+    // set up the menu
+    proxy.setJMenuBar(createMenuBar());
+  }
+
+  /**
+   * Creates an empty toolbar. The toolbar will be inizialized later by
+   * calling inizializeToolbar().
+   *
+   * @return the created toolbar.
+   */
+  protected JToolBar createToolBar ()
+  {
+    JToolBar toolbar = new JToolBar();
+    return toolbar;
   }
 
   /**
@@ -964,71 +870,6 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
-   * Returns the maximum size of this container.
-   *
-   * @see #getPreferredSize
-   * @return the maximum size of the dialog
-   */
-  public Dimension getMaximumSize()
-  {
-    if (maximumSize == null)
-    {
-      return super.getMaximumSize();
-    }
-    return maximumSize;
-  }
-
-  /**
-   * defines the maximum size of this container.
-   *
-   * @see #setPreferredSize
-   * @param maximumSize the maximum size of the dialog
-   */
-  public void setMaximumSize(final Dimension maximumSize)
-  {
-    this.maximumSize = maximumSize;
-  }
-
-  /**
-   * Returns the preferred size of this container.
-   * @return    an instance of <code>Dimension</code> that represents
-   *                the preferred size of this container.
-   * @see       #getMinimumSize
-   * @see       #getLayout
-   * @see       java.awt.LayoutManager#preferredLayoutSize(java.awt.Container)
-   * @see       java.awt.Component#getPreferredSize
-   */
-  public Dimension getPreferredSize()
-  {
-    if (preferredSize == null)
-    {
-      return super.getPreferredSize();
-    }
-    return preferredSize;
-  }
-
-  /**
-   * defines the preferred size of this container.
-   *
-   * @see #setPreferredSize
-   * @param preferredSize defines the preferred size for the PreviewComponent.
-   */
-  public void setPreferredSize(final Dimension preferredSize)
-  {
-    this.preferredSize = preferredSize;
-  }
-
-  /**
-   * Creates a report pane listener.
-   *
-   * @return the listener.
-   */
-  protected ReportPanePropertyChangeListener createReportPanePropertyChangeListener()
-  {
-    return new ReportPanePropertyChangeListener();
-  }
-
-  /**
    * Creates the ReportPane for the report.
    *
    * @param report the report for this pane.
@@ -1049,7 +890,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @return this frames ResourceBundle.
    */
-  public ResourceBundle getResources()
+  protected ResourceBundle getResources()
   {
     if (resources == null)
     {
@@ -1229,17 +1070,20 @@ public class PreviewProxyBase extends JComponent
    */
   private void createDefaultActions(final Action defaultCloseAction)
   {
-    gotoAction = new WrapperAction(createDefaultGotoAction());
-    aboutAction = new WrapperAction(createDefaultAboutAction());
-    closeAction = new WrapperAction(defaultCloseAction);
-    firstPageAction = new WrapperAction(createDefaultFirstPageAction());
-    lastPageAction = new WrapperAction(createDefaultLastPageAction());
-    nextPageAction = new WrapperAction(createDefaultNextPageAction());
-    previousPageAction = new WrapperAction(createDefaultPreviousPageAction());
-    zoomInAction = new WrapperAction(createDefaultZoomInAction());
-    zoomOutAction = new WrapperAction(createDefaultZoomOutAction());
-    zoomActionConcentrator.addAction(zoomInAction);
-    zoomActionConcentrator.addAction(zoomOutAction);
+    navigationActionMap.put(GOTO_ACTION_KEY, createDefaultGotoAction());
+    baseActionMap.put(ABOUT_ACTION_KEY, createDefaultAboutAction());
+    baseActionMap.put(CLOSE_ACTION_KEY, defaultCloseAction);
+    navigationActionMap.put(FIRSTPAGE_ACTION_KEY, createDefaultFirstPageAction());
+    navigationActionMap.put(LASTPAGE_ACTION_KEY, createDefaultLastPageAction());
+    navigationActionMap.put(NEXT_PAGE_ACTION_KEY, createDefaultNextPageAction());
+    navigationActionMap.put(PREV_PAGE_ACTION_KEY, createDefaultPreviousPageAction());
+    Action zoomInAction = createDefaultZoomInAction();
+    Action zoomOutAction = createDefaultZoomOutAction();
+    zoomActionMap.put(ZOOM_IN_ACTION_KEY, zoomInAction);
+    zoomActionMap.put(ZOOM_OUT_ACTION_KEY, zoomOutAction);
+    // todo asdasd
+//    zoomActionConcentrator.addAction(zoomInAction);
+//    zoomActionConcentrator.addAction(zoomOutAction);
   }
 
   /**
@@ -1469,11 +1313,11 @@ public class PreviewProxyBase extends JComponent
     zoomMenu.add(createMenuItem(getZoomOutAction()));
     zoomMenu.add(new JSeparator());
 
-    ActionConcentrator ac = getZoomActionConcentrator();
+    DowngradeActionMap zoomActionMap = getZoomActionMap();
     for (int i = 0; i < ZOOM_FACTORS.length; i++)
     {
       final Action action = new ZoomSetAction(i);
-      ac.addAction(action);
+      zoomActionMap.put(action.getValue(Action.NAME), action);
       zoomMenu.add(createMenuItem(action));
     }
     return zoomMenu;
@@ -1539,17 +1383,20 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
+   * Returns the toolbar used in this component.
+   * @return the toolbar of this component
+   */
+  protected final JToolBar getToolbar()
+  {
+    return toolbar;
+  }
+
+  /**
    * Creates and returns a toolbar containing controls for print, page forward and backward, zoom
    * in and out, and an about box.
-   *
-   * @param floatable defines, whether the toolbar will be initially floatable.
-   * @return A completely initialized JToolBar.
    */
-  protected JToolBar createToolBar(final boolean floatable)
+  protected void initializeToolBar()
   {
-    final JToolBar toolbar = new JToolBar();
-    toolbar.setFloatable(floatable);
-
     final Iterator it = exportPlugIns.iterator();
     final boolean addedItem = it.hasNext();
     while (it.hasNext())
@@ -1571,19 +1418,17 @@ public class PreviewProxyBase extends JComponent
       toolbar.addSeparator();
     }
 
-    toolbar.add(createButton(firstPageAction));
-    toolbar.add(createButton(previousPageAction));
-    toolbar.add(createButton(nextPageAction));
-    toolbar.add(createButton(lastPageAction));
+    toolbar.add(createButton(getFirstPageAction()));
+    toolbar.add(createButton(getPreviousPageAction()));
+    toolbar.add(createButton(getNextPageAction()));
+    toolbar.add(createButton(getLastPageAction()));
     toolbar.addSeparator();
-    toolbar.add(createButton(zoomInAction));
-    toolbar.add(createButton(zoomOutAction));
+    toolbar.add(createButton(getZoomInAction()));
+    toolbar.add(createButton(getZoomOutAction()));
     toolbar.addSeparator();
     toolbar.add(createZoomPane());
     toolbar.addSeparator();
-    toolbar.add(createButton(aboutAction));
-
-    return toolbar;
+    toolbar.add(createButton(getAboutAction()));
   }
 
   /**
@@ -1593,7 +1438,7 @@ public class PreviewProxyBase extends JComponent
    */
   public boolean isToolbarFloatable()
   {
-    return toolbar.isFloatable();
+    return toolbarFloatable;
   }
 
   /**
@@ -1603,7 +1448,9 @@ public class PreviewProxyBase extends JComponent
    */
   public void setToolbarFloatable(final boolean b)
   {
-    toolbar.setFloatable(b);
+    boolean oldValue = this.toolbarFloatable;
+    this.toolbarFloatable = b;
+    firePropertyChange("toolbarFloatable", oldValue, b);
   }
 
   /**
@@ -1672,7 +1519,11 @@ public class PreviewProxyBase extends JComponent
     }
 
     zoomSelect.setEnabled(true);
-    zoomActionConcentrator.setEnabled(true);
+    Object[] keys = zoomActionMap.keys();
+    for (int i = 0; i < keys.length; i++)
+    {
+      zoomActionMap.get(keys[i]).setEnabled(true);
+    }
     getZoomOutAction().setEnabled(zoomSelect.getSelectedIndex() != 0);
     getZoomInAction().setEnabled(zoomSelect.getSelectedIndex() != (ZOOM_FACTORS.length - 1));
   }
@@ -1697,7 +1548,11 @@ public class PreviewProxyBase extends JComponent
     getNextPageAction().setEnabled(false);
     getPreviousPageAction().setEnabled(false);
     getFirstPageAction().setEnabled(false);
-    zoomActionConcentrator.setEnabled(false);
+    Object[] keys = zoomActionMap.keys();
+    for (int i = 0; i < keys.length; i++)
+    {
+      zoomActionMap.get(keys[i]).setEnabled(false);
+    }
     zoomSelect.setEnabled(false);
 
     final Iterator it = pluginActions.values().iterator();
@@ -1708,15 +1563,24 @@ public class PreviewProxyBase extends JComponent
     }
   }
 
-  /**
-   * Returns the action concentrator used to collect all zoom-related
-   * actions.
-   *
-   * @return the zoom action concentrator.
-   */
-  protected ActionConcentrator getZoomActionConcentrator()
+  public DowngradeActionMap getExportActionMap()
   {
-    return zoomActionConcentrator;
+    return exportActionMap;
+  }
+
+  public DowngradeActionMap getBaseActionMap()
+  {
+    return baseActionMap;
+  }
+
+  public DowngradeActionMap getNavigationActionMap()
+  {
+    return navigationActionMap;
+  }
+
+  public DowngradeActionMap getZoomActionMap()
+  {
+    return zoomActionMap;
   }
 
   /**
@@ -1745,7 +1609,9 @@ public class PreviewProxyBase extends JComponent
    */
   public void setLargeIconsEnabled(final boolean b)
   {
+    boolean oldValue = largeIconsEnabled;
     largeIconsEnabled = b;
+    firePropertyChange(LARGE_ICONS_PROPERTY, oldValue, b);
   }
 
   /**
@@ -1757,7 +1623,7 @@ public class PreviewProxyBase extends JComponent
     {
       // make sure that the pagination worker does no longer waste our time.
       // this won't kill the export worker ...
-      paginationWorker.interrupt();
+      repaginationWorker.interrupt();
     }
     catch (SecurityException se)
     {
@@ -1806,7 +1672,7 @@ public class PreviewProxyBase extends JComponent
   {
     closed = true;
     exportWorkerPool.finishAll();
-    paginationWorker.finish();
+    repaginationWorker.finish();
     if (progressDialog.isVisible())
     {
       progressDialog.setVisible(false);
@@ -1831,7 +1697,7 @@ public class PreviewProxyBase extends JComponent
     }
     super.finalize();
     exportWorkerPool.finishAll();
-    paginationWorker.finish();
+    repaginationWorker.finish();
   }
 
   /**
@@ -1841,7 +1707,7 @@ public class PreviewProxyBase extends JComponent
    */
   public Action getAboutAction()
   {
-    return aboutAction.getParent();
+    return baseActionMap.get(ABOUT_ACTION_KEY);
   }
 
   /**
@@ -1851,7 +1717,7 @@ public class PreviewProxyBase extends JComponent
    */
   public void setAboutAction(final Action aboutAction)
   {
-    this.aboutAction.setParent(aboutAction);
+    baseActionMap.put(ABOUT_ACTION_KEY, aboutAction);
   }
 
   /**
@@ -1861,7 +1727,7 @@ public class PreviewProxyBase extends JComponent
    */
   public Action getCloseAction()
   {
-    return closeAction.getParent();
+    return baseActionMap.get(CLOSE_ACTION_KEY);
   }
 
   /**
@@ -1871,7 +1737,7 @@ public class PreviewProxyBase extends JComponent
    */
   public void setCloseAction(final Action closeAction)
   {
-    this.closeAction.setParent(closeAction);
+    baseActionMap.put(CLOSE_ACTION_KEY, closeAction);
   }
 
   /**
@@ -1881,7 +1747,7 @@ public class PreviewProxyBase extends JComponent
    */
   public Action getFirstPageAction()
   {
-    return firstPageAction.getParent();
+    return navigationActionMap.get(FIRSTPAGE_ACTION_KEY);
   }
 
   /**
@@ -1891,7 +1757,7 @@ public class PreviewProxyBase extends JComponent
    */
   public void setFirstPageAction(final Action firstPageAction)
   {
-    this.firstPageAction.setParent(firstPageAction);
+    navigationActionMap.put(FIRSTPAGE_ACTION_KEY, firstPageAction);
   }
 
   /**
@@ -1901,7 +1767,7 @@ public class PreviewProxyBase extends JComponent
    */
   public Action getLastPageAction()
   {
-    return lastPageAction.getParent();
+    return navigationActionMap.get(LASTPAGE_ACTION_KEY);
   }
 
   /**
@@ -1911,7 +1777,7 @@ public class PreviewProxyBase extends JComponent
    */
   public void setLastPageAction(final Action lastPageAction)
   {
-    this.lastPageAction.setParent(lastPageAction);
+    navigationActionMap.put (LASTPAGE_ACTION_KEY, lastPageAction);
   }
 
   /**
@@ -1921,7 +1787,7 @@ public class PreviewProxyBase extends JComponent
    */
   public Action getNextPageAction()
   {
-    return nextPageAction.getParent();
+    return navigationActionMap.get (NEXT_PAGE_ACTION_KEY);
   }
 
   /**
@@ -1931,7 +1797,7 @@ public class PreviewProxyBase extends JComponent
    */
   public void setNextPageAction(final Action nextPageAction)
   {
-    this.nextPageAction.setParent(nextPageAction);
+    navigationActionMap.put(NEXT_PAGE_ACTION_KEY, nextPageAction);
   }
 
   /**
@@ -1941,7 +1807,7 @@ public class PreviewProxyBase extends JComponent
    */
   public Action getPreviousPageAction()
   {
-    return previousPageAction.getParent();
+    return navigationActionMap.get (PREV_PAGE_ACTION_KEY);
   }
 
   /**
@@ -1951,7 +1817,7 @@ public class PreviewProxyBase extends JComponent
    */
   public void setPreviousPageAction(final Action previousPageAction)
   {
-    this.previousPageAction.setParent(previousPageAction);
+    navigationActionMap.put (PREV_PAGE_ACTION_KEY, previousPageAction);
   }
 
   /**
@@ -1961,7 +1827,7 @@ public class PreviewProxyBase extends JComponent
    */
   public Action getZoomInAction()
   {
-    return zoomInAction.getParent();
+    return zoomActionMap.get (ZOOM_IN_ACTION_KEY);
   }
 
   /**
@@ -1971,7 +1837,7 @@ public class PreviewProxyBase extends JComponent
    */
   public void setZoomInAction(final Action zoomInAction)
   {
-    this.zoomInAction.setParent(zoomInAction);
+    zoomActionMap.put (ZOOM_IN_ACTION_KEY, zoomInAction);
   }
 
   /**
@@ -1981,7 +1847,7 @@ public class PreviewProxyBase extends JComponent
    */
   public Action getZoomOutAction()
   {
-    return zoomOutAction.getParent();
+    return zoomActionMap.get (ZOOM_OUT_ACTION_KEY);
   }
 
   /**
@@ -1991,7 +1857,7 @@ public class PreviewProxyBase extends JComponent
    */
   public void setZoomOutAction(final Action zoomOutAction)
   {
-    this.zoomOutAction.setParent(zoomOutAction);
+    zoomActionMap.put (ZOOM_OUT_ACTION_KEY, zoomOutAction);
   }
 
   /**
@@ -2001,7 +1867,7 @@ public class PreviewProxyBase extends JComponent
    */
   public Action getGotoAction()
   {
-    return gotoAction.getParent();
+    return navigationActionMap.get (GOTO_ACTION_KEY);
   }
 
   /**
@@ -2011,7 +1877,7 @@ public class PreviewProxyBase extends JComponent
    */
   public void setGotoAction(final Action gotoAction)
   {
-    this.gotoAction.setParent(gotoAction);
+    navigationActionMap.put (GOTO_ACTION_KEY, gotoAction);
   }
 
   /**
@@ -2046,7 +1912,7 @@ public class PreviewProxyBase extends JComponent
     progressDialog.setMessage(getResources().getString("statusline.repaginate"));
     progressDialog.pack();
 
-    final Worker worker = getWorker();
+    final Worker worker = getRepaginationWorker();
     synchronized (worker)
     {
       while (worker.isAvailable() == false)
@@ -2061,7 +1927,7 @@ public class PreviewProxyBase extends JComponent
           // ignored
         }
       }
-      getWorker().setWorkload(new Runnable()
+      getRepaginationWorker().setWorkload(new Runnable()
       {
         public void run()
         {
@@ -2074,8 +1940,10 @@ public class PreviewProxyBase extends JComponent
             progressDialog.setVisible(true);
             reportPane.setHandleInterruptedState(true);
             reportPane.setVisible(false);
+
             reportPane.setPageFormat(format);
             reportPane.repaginate();
+
             reportPane.setVisible(true);
             reportPane.setHandleInterruptedState(false);
             progressDialog.setVisible(false);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportPlugin.java,v 1.8 2003/10/28 21:07:59 taqua Exp $
+ * $Id: HtmlExportPlugin.java,v 1.9 2003/11/01 19:52:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,6 +45,7 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.PreviewProxy;
@@ -223,5 +224,41 @@ public class HtmlExportPlugin extends AbstractExportPlugin
   public Integer getMnemonicKey()
   {
     return (Integer) resources.getObject("action.export-to-html.mnemonic");
+  }
+
+
+  /**
+   * Returns true if the action should be added to the toolbar, and false otherwise.
+   *
+   * @return true, if the plugin should be added to the toolbar, false otherwise.
+   */
+  public boolean isAddToToolbar()
+  {
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        ("org.jfree.report.modules.gui.html.AddToToolbar", "false").equals("true");
+  }
+
+  /**
+   * Returns true if the action is separated, and false otherwise. A separated
+   * action starts a new action group and will be spearated from previous actions
+   * on the menu and toolbar.
+   *
+   * @return true, if the action should be separated from previous actions,
+   * false otherwise.
+   */
+  public boolean isSeparated()
+  {
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        ("org.jfree.report.modules.gui.html.Separate", "false").equals("true");
+  }
+
+  protected HtmlExportDialog getExportDialog()
+  {
+    return exportDialog;
+  }
+
+  protected ResourceBundle getResources()
+  {
+    return resources;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,7 @@ import org.jfree.report.modules.parser.ext.FunctionsHandler;
 import org.jfree.report.util.ReportProperties;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
+import org.jfree.xml.writer.AttributeList;
 
 /**
  * An XML definition writer that outputs the functions.
@@ -160,16 +161,16 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
       final Properties expressionProperties = expression.getProperties();
       if (expressionProperties.isEmpty())
       {
-        final Properties properties = new Properties();
-        properties.setProperty("name", expression.getName());
-        properties.setProperty("class", expression.getClass().getName());
+        final AttributeList properties = new AttributeList();
+        properties.setAttribute("name", expression.getName());
+        properties.setAttribute("class", expression.getClass().getName());
         writeTag(writer, tagName, properties, CLOSE);
       }
       else
       {
-        final Properties properties = new Properties();
-        properties.setProperty("name", expression.getName());
-        properties.setProperty("class", expression.getClass().getName());
+        final AttributeList properties = new AttributeList();
+        properties.setAttribute("name", expression.getName());
+        properties.setAttribute("class", expression.getClass().getName());
         writeTag(writer, tagName, properties, OPEN);
 
         final Enumeration enum = expressionProperties.keys();
@@ -247,9 +248,9 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
           }
           else
           {
-            final Properties properties = new Properties();
-            properties.setProperty("name", name);
-            properties.setProperty("class", od.getObjectClass().getName());
+            final AttributeList properties = new AttributeList();
+            properties.setAttribute("name", name);
+            properties.setAttribute("class", od.getObjectClass().getName());
 
             writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
             writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, properties, OPEN);
