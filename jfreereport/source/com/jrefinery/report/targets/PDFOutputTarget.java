@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.27 2002/09/16 16:59:17 mungady Exp $
+ * $Id: PDFOutputTarget.java,v 1.28 2002/10/15 20:37:31 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,9 @@
  * 08-Jun-2002 : Documentation.
  * 10-Jun-2002 : Fixed a bug in FontFactory which caused the class to crash in Linux
  * 17-Jul-2002 : Fixed a nullpointer when an ImageReference did not contain a graphics
+ * 13-Sep-2002 : Removed caching of fonts for FontFactory as it causes OutOfMemoryErrors when a huge
+ *               font collection is used
+ * 04-Nov-2002 : BugFix: PDFFonts need caching on setFont() or OutOfMemoryErrors occur
  */
 
 package com.jrefinery.report.targets;
@@ -50,21 +53,27 @@ import com.jrefinery.report.Element;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ShapeElement;
+import com.jrefinery.report.demo.SampleData1;
+import com.jrefinery.report.io.ReportGenerator;
+import com.jrefinery.report.preview.PDFSaveDialog;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.NullOutputStream;
+import com.jrefinery.report.util.StringUtil;
 import com.keypoint.PngEncoder;
 import com.lowagie.text.BadElementException;
+import com.lowagie.text.DocWriter;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.DocWriter;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.DefaultFontMapper;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPatternPainter;
 import com.lowagie.text.pdf.PdfWriter;
 
+import javax.swing.table.TableModel;
+import javax.swing.JOptionPane;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -78,11 +87,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
+import java.text.MessageFormat;
 
 /**
  * An output target for the report engine that generates a PDF file using the iText class library
@@ -140,7 +151,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /** A useful constant for specifying the PDF creator. */
   private static final String CREATOR = JFreeReport.getInfo().getName() + " version "
-                                      + JFreeReport.getInfo().getVersion();
+      + JFreeReport.getInfo().getVersion();
 
   /** The output stream. */
   private OutputStream out;
@@ -178,14 +189,15 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * A bytearray containing an empty password. iText replaces the owner password with random
    * values, but Adobe allows to have encryption without an owner password set.
+   * Copied from iText
    */
   private static final byte PDF_PASSWORD_PAD[] = {
-      (byte) 0x28, (byte) 0xBF, (byte) 0x4E, (byte) 0x5E, (byte) 0x4E, (byte) 0x75,
-      (byte) 0x8A, (byte) 0x41, (byte) 0x64, (byte) 0x00, (byte) 0x4E, (byte) 0x56,
-      (byte) 0xFF, (byte) 0xFA, (byte) 0x01, (byte) 0x08, (byte) 0x2E, (byte) 0x2E,
-      (byte) 0x00, (byte) 0xB6, (byte) 0xD0, (byte) 0x68, (byte) 0x3E, (byte) 0x80,
-      (byte) 0x2F, (byte) 0x0C, (byte) 0xA9, (byte) 0xFE, (byte) 0x64, (byte) 0x53,
-      (byte) 0x69, (byte) 0x7A};
+    (byte) 0x28, (byte) 0xBF, (byte) 0x4E, (byte) 0x5E, (byte) 0x4E, (byte) 0x75,
+    (byte) 0x8A, (byte) 0x41, (byte) 0x64, (byte) 0x00, (byte) 0x4E, (byte) 0x56,
+    (byte) 0xFF, (byte) 0xFA, (byte) 0x01, (byte) 0x08, (byte) 0x2E, (byte) 0x2E,
+    (byte) 0x00, (byte) 0xB6, (byte) 0xD0, (byte) 0x68, (byte) 0x3E, (byte) 0x80,
+    (byte) 0x2F, (byte) 0x0C, (byte) 0xA9, (byte) 0xFE, (byte) 0x64, (byte) 0x53,
+    (byte) 0x69, (byte) 0x7A};
 
   /**
    * The PDFBandCursor is used to translate between the band specific coordinate space
@@ -314,7 +326,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       String fs = System.getProperty("file.separator");
 
       Log.debug("Running on operating system: " + osname);
-      if (!startsWithIgnoreCase(osname, "windows"))
+      if (!StringUtil.startsWithIgnoreCase(osname, "windows"))
       {
         Log.debug("Assuming unix like file structures");
         // Assume X11 is installed in the default location.
@@ -417,14 +429,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
         throws DocumentException, IOException
     {
       if (fontsByName.containsValue(font))
-        throw new IllegalArgumentException();
+        return; // already in there
 
       BaseFont bfont = BaseFont.createFont(font, encoding, true, false, null, null);
       String[][] fi = bfont.getFullFontName();
       for (int i = 0; i < fi.length; i++)
       {
         String[] ffi = fi[i];
-        if (fontsByName.containsKey(ffi[3])==false)
+        if (fontsByName.containsKey(ffi[3]) == false)
         {
           fontsByName.put(ffi[3], font);
           Log.debug("Registered truetype font " + ffi[3] + "; File=" + font);
@@ -480,22 +492,12 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   static
   {
-    String prop = System.getProperty ("com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT",
-                                      "false");
-    if (prop.equalsIgnoreCase ("true"))
+    String prop = System.getProperty("com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT",
+        "false");
+    if (prop.equalsIgnoreCase("true"))
     {
-      getFontFactory ().registerDefaultFontPath ();
+      getFontFactory().registerDefaultFontPath();
     }
-  }
-
-  /**
-   * Creates a PDFBandCursor to support coordinate space transformation.
-   *
-   * @return a cursor.
-   */
-  public BandCursor createCursor()
-  {
-    return new PDFBandCursor();
   }
 
   /**
@@ -510,7 +512,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     super(pageFormat);
     this.out = out;
-    setEmbedFonts (embedFonts);
+    setEmbedFonts(embedFonts);
     this.baseFonts = new TreeMap();
     setFontEncoding(getDefaultFontEncoding());
   }
@@ -520,10 +522,20 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the default font encoding.
    */
-  public static final String getDefaultFontEncoding ()
+  public static final String getDefaultFontEncoding()
   {
     return System.getProperty("com.jrefinery.report.targets.PDFOutputTarget.ENCODING",
-                              BaseFont.WINANSI);
+        BaseFont.WINANSI);
+  }
+
+  /**
+   * Creates a PDFBandCursor to support coordinate space transformation.
+   *
+   * @return a cursor.
+   */
+  public BandCursor createCursor()
+  {
+    return new PDFBandCursor();
   }
 
   /**
@@ -533,7 +545,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public float getPageX()
   {
-    return this.document.getPageSize().left();
+    return getDocument().getPageSize().left();
   }
 
   /**
@@ -547,7 +559,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public float getPageY()
   {
-    return this.document.getPageSize().bottom();
+    return this.getDocument().getPageSize().bottom();
   }
 
   /**
@@ -557,7 +569,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public float getPageWidth()
   {
-    return this.document.getPageSize().width();
+    return this.getDocument().getPageSize().width();
   }
 
   /**
@@ -567,7 +579,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public float getPageHeight()
   {
-    return this.document.getPageSize().height();
+    return this.getDocument().getPageSize().height();
   }
 
   /**
@@ -577,7 +589,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public float getUsableX()
   {
-    return this.document.getPageSize().left() + this.document.leftMargin();
+    return this.getDocument().getPageSize().left() + this.getDocument().leftMargin();
   }
 
   /**
@@ -588,7 +600,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public float getUsableY()
   {
-    return this.document.getPageSize().bottom() + this.document.topMargin();
+    return this.getDocument().getPageSize().bottom() + this.getDocument().topMargin();
   }
 
   /**
@@ -598,9 +610,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public float getUsableWidth()
   {
-    return this.document.getPageSize().width()
-        - this.document.leftMargin()
-        - this.document.rightMargin();
+    return this.getDocument().getPageSize().width()
+        - this.getDocument().leftMargin()
+        - this.getDocument().rightMargin();
   }
 
   /**
@@ -610,9 +622,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public float getUsableHeight()
   {
-    return this.document.getPageSize().height()
-        - this.document.topMargin()
-        - this.document.bottomMargin();
+    return this.getDocument().getPageSize().height()
+        - this.getDocument().topMargin()
+        - this.getDocument().bottomMargin();
   }
 
   /**
@@ -633,30 +645,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
   public int getFontSize()
   {
     return fontSize;
-  }
-
-  /**
-   * Helper functions to query a strings start portion.
-   *
-   * @see String#startsWith
-   */
-  private static boolean startsWithIgnoreCase(String base, String start)
-  {
-    return base.regionMatches(true, 0, start, 0, start.length());
-  }
-
-  /**
-   * Helper functions to query a strings end portion.
-   *
-   * @see String#endsWith
-   */
-  private boolean endsWithIgnoreCase(String base, String end)
-  {
-    if (base.length() < end.length())
-    {
-      return false;
-    }
-    return base.regionMatches(true, base.length() - end.length(), end, 0, end.length());
   }
 
   /**
@@ -689,22 +677,22 @@ public class PDFOutputTarget extends AbstractOutputTarget
     String logicalName = font.getName();
     String encoding = getFontEncoding();
 
-    if (startsWithIgnoreCase(logicalName, "dialoginput")
-        || startsWithIgnoreCase(logicalName, "monospaced"))
+    if (StringUtil.startsWithIgnoreCase(logicalName, "dialoginput")
+        || StringUtil.startsWithIgnoreCase(logicalName, "monospaced"))
     {
       boolean bold = false;
       boolean italic = false;
 
-      if (endsWithIgnoreCase(logicalName, "bolditalic") || (font.isBold() && font.isItalic()))
+      if (StringUtil.endsWithIgnoreCase(logicalName, "bolditalic") || (font.isBold() && font.isItalic()))
       {
         bold = true;
         italic = true;
       }
-      else if (endsWithIgnoreCase(logicalName, "bold") || (font.isBold()))
+      else if (StringUtil.endsWithIgnoreCase(logicalName, "bold") || (font.isBold()))
       {
         bold = true;
       }
-      else if (endsWithIgnoreCase(logicalName, "italic") || (font.isItalic()))
+      else if (StringUtil.endsWithIgnoreCase(logicalName, "italic") || (font.isItalic()))
       {
         italic = true;
       }
@@ -726,21 +714,21 @@ public class PDFOutputTarget extends AbstractOutputTarget
         fontKey = BaseFont.COURIER;
       }
     }
-    else if (startsWithIgnoreCase(logicalName, "Serif"))
+    else if (StringUtil.startsWithIgnoreCase(logicalName, "Serif"))
     {
       boolean bold = false;
       boolean italic = false;
 
-      if (endsWithIgnoreCase(logicalName, "bolditalic") || (font.isBold() && font.isItalic()))
+      if (StringUtil.endsWithIgnoreCase(logicalName, "bolditalic") || (font.isBold() && font.isItalic()))
       {
         bold = true;
         italic = true;
       }
-      else if (endsWithIgnoreCase(logicalName, "bold") || (font.isBold()))
+      else if (StringUtil.endsWithIgnoreCase(logicalName, "bold") || (font.isBold()))
       {
         bold = true;
       }
-      else if (endsWithIgnoreCase(logicalName, "italic") || (font.isItalic()))
+      else if (StringUtil.endsWithIgnoreCase(logicalName, "italic") || (font.isItalic()))
       {
         italic = true;
       }
@@ -762,22 +750,22 @@ public class PDFOutputTarget extends AbstractOutputTarget
         fontKey = BaseFont.TIMES_ROMAN;
       }
     }
-    else if (startsWithIgnoreCase(logicalName, "SansSerif")
-        || startsWithIgnoreCase(logicalName, "Dialog"))
+    else if (StringUtil.startsWithIgnoreCase(logicalName, "SansSerif")
+        || StringUtil.startsWithIgnoreCase(logicalName, "Dialog"))
     { // default, this catches Dialog and SansSerif
       boolean bold = false;
       boolean italic = false;
 
-      if (endsWithIgnoreCase(logicalName, "bolditalic") || (font.isBold() && font.isItalic()))
+      if (StringUtil.endsWithIgnoreCase(logicalName, "bolditalic") || (font.isBold() && font.isItalic()))
       {
         bold = true;
         italic = true;
       }
-      else if (endsWithIgnoreCase(logicalName, "bold") || (font.isBold()))
+      else if (StringUtil.endsWithIgnoreCase(logicalName, "bold") || (font.isBold()))
       {
         bold = true;
       }
-      else if (endsWithIgnoreCase(logicalName, "italic") || (font.isItalic()))
+      else if (StringUtil.endsWithIgnoreCase(logicalName, "italic") || (font.isItalic()))
       {
         italic = true;
       }
@@ -849,21 +837,21 @@ public class PDFOutputTarget extends AbstractOutputTarget
         }
         // TrueType fonts need extra handling if the font is a symbolic font.
         if ((filename != null)
-            && (endsWithIgnoreCase(filename, ".ttf") || endsWithIgnoreCase(filename, ".ttc")))
+            && (StringUtil.endsWithIgnoreCase(filename, ".ttf") || StringUtil.endsWithIgnoreCase(filename, ".ttc")))
         {
           try
           {
-            f = BaseFont.createFont(fontKey, encoding, isEmbedFonts(), false, null, null);
+            f = BaseFont.createFont(fontKey, encoding, isEmbedFonts(), true, null, null);
           }
           catch (DocumentException de)
           {
             // Fallback to iso8859-1 encoding (!this is not IDENTITY-H)
-            f = BaseFont.createFont(fontKey, stringEncoding, isEmbedFonts(), false, null, null);
+            f = BaseFont.createFont(fontKey, stringEncoding, isEmbedFonts(), true, null, null);
           }
         }
         else
         {
-          f = BaseFont.createFont(fontKey, stringEncoding, isEmbedFonts(), false, null, null);
+          f = BaseFont.createFont(fontKey, stringEncoding, isEmbedFonts(), true, null, null);
         }
       }
       catch (Exception e)
@@ -875,7 +863,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
         // fallback .. use BaseFont.HELVETICA as default
         try
         {
-          f = BaseFont.createFont(BaseFont.HELVETICA, stringEncoding, isEmbedFonts(), false, null, null);
+          f = BaseFont.createFont(BaseFont.HELVETICA, stringEncoding, isEmbedFonts(), true, null, null);
         }
         catch (Exception e)
         {
@@ -916,7 +904,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
           (float) (getPageHeight() - bounds.getY() - bounds.getHeight()));
       image.scaleAbsolute((float) bounds.getWidth(), (float) bounds.getHeight());
 
-      if (document.add(image) == false)
+      if (getDocument().add(image) == false)
       {
         throw new OutputTargetException("Unable to add the element");
       }
@@ -978,6 +966,11 @@ public class PDFOutputTarget extends AbstractOutputTarget
     throw new DocumentException("Neither an URL nor an Image was given to paint the graphics");
   }
 
+  private float getCorrectedY(float y)
+  {
+    return getPageHeight() - y;
+  }
+
   /**
    * Draws a shape at the specified location. The shape is drawn using a PathIterator. All
    * Shapes are supported. Set a stroke and a paint before drawing. The shape is not filled.
@@ -986,41 +979,53 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public void drawShape(Shape shape)
   {
-    Rectangle2D bounds = getCursor().getDrawBounds();
-    float ycorr = (float) (getPageHeight() - bounds.getY());
+    Rectangle2D bounds = getCursor().getBandBounds();
+
+    float ycorr = (float) bounds.getY();
     float xcorr = (float) bounds.getX();
 
     PathIterator pit = shape.getPathIterator(null);
     PdfContentByte cb = this.writer.getDirectContent();
+
+    cb.newPath();
+    cb.moveTo (xcorr, getCorrectedY(ycorr));
 
     float[] params = new float[6];
     // How to apply this? This should be needed in fillShape
     while (pit.isDone() == false)
     {
       int cmd = pit.currentSegment(params);
+      params[1] = getCorrectedY(params[1] + ycorr);
+      params[3] = getCorrectedY(params[3] + ycorr);
+      params[5] = getCorrectedY(params[5] + ycorr);
+
+      params[0] = params[0] + xcorr;
+      params[2] = params[2] + xcorr;
+      params[4] = params[4] + xcorr;
+
       switch (cmd)
       {
         case PathIterator.SEG_MOVETO:
           {
-            cb.moveTo(params[0] + xcorr, ycorr - params[1]);
+            cb.moveTo(params[0], params[1]);
             break;
           }
         case PathIterator.SEG_LINETO:
           {
-            cb.lineTo(params[0] + xcorr, ycorr - params[1]);
+            cb.lineTo(params[0], params[1]);
             break;
           }
         case PathIterator.SEG_CUBICTO:
           {
-            cb.curveTo(params[0] + xcorr, ycorr - params[1],
-                params[2] + xcorr, ycorr - params[3],
-                params[4] + xcorr, ycorr - params[5]);
+            cb.curveTo(params[0], params[1],
+                params[2], params[3],
+                params[4], params[5]);
             break;
           }
         case PathIterator.SEG_QUADTO:
           {
-            cb.curveTo(params[0] + xcorr, ycorr - params[1],
-                params[2] + xcorr, ycorr - params[3]);
+            cb.curveTo(params[0], params[1],
+                params[2], params[3]);
             break;
           }
         case PathIterator.SEG_CLOSE:
@@ -1042,12 +1047,17 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public void fillShape(Shape shape)
   {
-    Rectangle2D bounds = getCursor().getDrawBounds();
-    float ycorr = (float) (getPageHeight() - bounds.getY());
+    Rectangle2D bounds = getCursor().getBandBounds();
+
+    float ycorr = (float) bounds.getY();
     float xcorr = (float) bounds.getX();
 
     PathIterator pit = shape.getPathIterator(null);
     PdfContentByte cb = this.writer.getDirectContent();
+
+    cb.newPath();
+    cb.moveTo (xcorr, getCorrectedY(ycorr));
+
     int windingRule = pit.getWindingRule();
 
     float[] params = new float[6];
@@ -1055,6 +1065,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
     while (pit.isDone() == false)
     {
       int cmd = pit.currentSegment(params);
+      params[1] = getCorrectedY(params[1] + ycorr);
+      params[3] = getCorrectedY(params[3] + ycorr);
+      params[5] = getCorrectedY(params[5] + ycorr);
+
+      params[0] = params[0] + xcorr;
+      params[2] = params[2] + xcorr;
+      params[4] = params[4] + xcorr;
+
       switch (cmd)
       {
         case PathIterator.SEG_MOVETO:
@@ -1106,7 +1124,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   {
     try
     {
-      this.document.newPage();
+      this.getDocument().newPage();
     }
     catch (Exception e)
     {
@@ -1144,23 +1162,23 @@ public class PDFOutputTarget extends AbstractOutputTarget
         pageSize.rotate();
       }
 
-      this.document = new Document(pageSize, marginLeft, marginRight, marginTop, marginBottom);
+      this.setDocument(new Document(pageSize, marginLeft, marginRight, marginTop, marginBottom));
 
       String title = (String) getProperty(TITLE);
       String author = (String) getProperty(AUTHOR);
 
       if (title != null)
       {
-        document.addTitle(title);
+        getDocument().addTitle(title);
       }
       if (author != null)
       {
-        document.addAuthor(author);
+        getDocument().addAuthor(author);
       }
-      document.addCreator(CREATOR);
-      document.addCreationDate();
+      getDocument().addCreator(CREATOR);
+      getDocument().addCreationDate();
 
-      writer = PdfWriter.getInstance(document, out);
+      writer = PdfWriter.getInstance(getDocument(), out);
 
       Boolean encrypt = (Boolean) getProperty(SECURITY_ENCRYPTION);
       if (encrypt != null)
@@ -1180,10 +1198,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
           ownerpasswordbytes = PDF_PASSWORD_PAD;
         }
         writer.setEncryption(userpasswordbytes, ownerpasswordbytes, getPermissions(),
-                             encrypt.booleanValue());
+            encrypt.booleanValue());
       }
 
-      this.document.open();
+      this.getDocument().open();
 
       try
       {
@@ -1266,7 +1284,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public void close()
   {
-    this.document.close();
+    this.getDocument().close();
   }
 
   /**
@@ -1516,7 +1534,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public OutputTarget createDummyWriter()
   {
-    PDFOutputTarget dummy = new PDFOutputTarget (new NullOutputStream(), getPageFormat(), isEmbedFonts());
+    PDFOutputTarget dummy = new PDFOutputTarget(new NullOutputStream(), getPageFormat(), isEmbedFonts());
     Enumeration enum = getPropertyNames();
     while (enum.hasMoreElements())
     {
@@ -1524,5 +1542,36 @@ public class PDFOutputTarget extends AbstractOutputTarget
       dummy.setProperty(key, getProperty(key));
     }
     return dummy;
+  }
+
+  protected Document getDocument()
+  {
+    return document;
+  }
+
+  protected void setDocument(Document document)
+  {
+    this.document = document;
+  }
+
+  public static void main (String [] args)
+  {
+    ReportGenerator gen = ReportGenerator.getInstance();
+    JFreeReport report1 = null;
+      try
+      {
+        report1 = gen.parseReport(gen.getClass().getResource("/com/jrefinery/report/demo/report5.xml"));
+      }
+      catch (Exception ioe)
+      {
+        ioe.printStackTrace();
+        return;
+      }
+
+    report1.setData(new SampleData1());
+    PDFSaveDialog d = new PDFSaveDialog();
+    d.setFilename("C:/weird.pdf");
+    d.writePDF(report1, report1.getDefaultPageFormat());
+    System.exit(0);
   }
 }
