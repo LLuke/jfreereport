@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigResources.java,v 1.4 2003/09/09 15:52:52 taqua Exp $
+ * $Id: ConfigResources.java,v 1.5 2003/09/14 19:24:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -80,9 +80,13 @@ public class ConfigResources extends JFreeReportResources
         {"action.import.small-icon",
           getIcon("org/jfree/report/modules/gui/config/resources/Import24.gif")},
 
+        {"action.new.name", "Load"},
+        {"action.new.small-icon",
+          getIcon("org/jfree/report/modules/gui/config/resources/Open24.gif")},
+
         {"action.load.name", "Load"},
         {"action.load.small-icon",
-          getIcon("org/jfree/report/modules/gui/config/resources/Open24.gif")},
+          getIcon("org/jfree/report/modules/gui/config/resources/New24.gif")},
 
         {"action.save.name", "Save"},
         {"action.save.small-icon",
