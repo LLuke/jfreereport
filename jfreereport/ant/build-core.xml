@@ -19,11 +19,12 @@
     </fail>
 
     <available file="${libdir}/${pixie-jar-file}" property="pixie-jar-file-present"/>
+<!--
     <fail unless="pixie-jar-file-present">
       The file ${pixie-jar-file} was not found in the lib directory.
       This file is required for all builds.
     </fail>
-
+-->
   </target>
 
   <target name="copy-resources">
@@ -55,9 +56,11 @@
       <exclude name="org/jfree/report/modules/misc/**"/>
       <exclude name="org/jfree/report/modules/output/**"/>
       <exclude name="org/jfree/report/modules/parser/**"/>
+      <exclude name="org/jfree/report/resourceloader/WmfImageFactoryModule.java" unless="pixie-jar-file-present"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <!-- If pixie is not present, no one will be hurt if we reference it anyway. -->
+        <pathelement location="${libdir}/${pixie-jar-file}"/>
       </classpath>
     </javac>
 

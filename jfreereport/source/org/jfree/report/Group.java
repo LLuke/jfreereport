@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.9 2005/02/04 19:22:51 taqua Exp $
+ * $Id: Group.java,v 1.10 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -331,6 +331,13 @@ public class Group implements Serializable, Cloneable, Comparable
          " new field.");
   }
 
+  /**
+   * Checks, whether the group is equal. A group is considered equal to another group,
+   * if it defines the same fields as the other group.
+   *
+   * @param o the object to be checked
+   * @return true, if the object is a group instance with the same fields, false otherwise.
+   */
   public boolean equals (final Object o)
   {
     if (this == o)
@@ -352,9 +359,21 @@ public class Group implements Serializable, Cloneable, Comparable
     return true;
   }
 
+  /**
+   * Computes a hashcode for this group.
+   *
+   * @return the hashcode.
+   */
   public int hashCode ()
   {
-    return fields.hashCode();
+    final String[] fields = getFieldsArray();
+
+    int hashCode = 0;
+    for (int i = 0; i < fields.length; i++)
+    {
+      hashCode = 29*hashCode + fields[i].hashCode();
+    }
+    return hashCode;
   }
 
   /**
@@ -369,15 +388,15 @@ public class Group implements Serializable, Cloneable, Comparable
     b.append(getName());
     b.append("', fields=");
     b.append(fields);
-/*    b.append(", header=");
-    b.append(header);
-    b.append(", footer=");
-    b.append(footer);*/
     b.append("} ");
     return b.toString();
   }
 
-
+  /**
+   * Assigns the report definition to the group and all bands in that group.
+   *
+   * @param reportDefinition the report definition (maybe null).
+   */
   public void setReportDefinition (final ReportDefinition reportDefinition)
   {
     this.reportDefinition = reportDefinition;
@@ -385,6 +404,11 @@ public class Group implements Serializable, Cloneable, Comparable
     this.footer.setReportDefinition(reportDefinition);
   }
 
+  /**
+   * Returns the assigned report definition of the group.
+   *
+   * @return the report definition (maybe null).
+   */
   public ReportDefinition getReportDefinition()
   {
     return reportDefinition;

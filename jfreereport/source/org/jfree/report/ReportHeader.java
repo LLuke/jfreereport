@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportHeader.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: ReportHeader.java,v 1.5 2005/01/30 23:37:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -66,6 +66,12 @@ public class ReportHeader extends Band implements RootLevelBand
   {
   }
 
+  /**
+   * Assigns the report definition. Don't play with that function,
+   * unless you know what you are doing. You might get burned.
+   *
+   * @param reportDefinition the report definition.
+   */
   public void setReportDefinition (final ReportDefinition reportDefinition)
   {
     super.setReportDefinition(reportDefinition);

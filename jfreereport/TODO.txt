@@ -30,6 +30,7 @@ Label printing (as seen in the card-demo)
     - automaticly adjust encoding if nessesary
   * export to OpenOffice
   * PDF: Fast Web View, PDF 1.2
+  * BSF instead of BeanShell
 
 general:
   * Start a poll what functions are needed ...
@@ -138,8 +139,8 @@ What changed:
 To be implemented before the release is ready:
 * Redesign the dialogs to follow the common usability guides                     (3 days)
 * Verify the PlainText-Output target       (2 days)
-* TestCases report: GroupCountTest is invalid (<1 day)
 * Update the ANT script to reflect the new modules.
+* The report writer is not producing legal results. 
 
 What will be impossible:
 * The 'keep-together' feature is not implementable with the old engine.

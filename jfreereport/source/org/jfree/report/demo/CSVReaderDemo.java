@@ -27,9 +27,12 @@
  *
  * Original Author:  Mimil;
  *
- * $Id: CSVReaderDemo.java,v 1.3 2005/01/31 17:16:19 taqua Exp $
+ * $Id: CSVReaderDemo.java,v 1.1 2005/02/19 18:37:07 taqua Exp $
  *
  * $Log: CSVReaderDemo.java,v $
+ * Revision 1.1  2005/02/19 18:37:07  taqua
+ * CSVTableModel classes moved into modules/misc/tablemodel
+ *
  * Revision 1.3  2005/01/31 17:16:19  taqua
  * Module and JUnit updates for 0.8.5
  *
@@ -57,6 +60,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.Action;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.ElementAlignment;
@@ -207,7 +211,7 @@ public class CSVReaderDemo extends AbstractDemoFrame
       ess.setFontDefinitionProperty(new FontDefinition("SansSerif", 10));
 
       final LabelElementFactory lbl = new LabelElementFactory();
-      lbl.setColor(Color.RED);
+      lbl.setColor(Color.red);
 
       for (int i = 0; i < this.data.getColumnCount(); i++)
       {
@@ -254,7 +258,7 @@ public class CSVReaderDemo extends AbstractDemoFrame
 
     public CSVReaderStringAutoApiAction ()
     {
-      putValue(NAME, "String Preview (column names auto)");
+      putValue(Action.NAME, "String Preview (column names auto)");
     }
 
     public void actionPerformed (final ActionEvent e)
@@ -276,7 +280,7 @@ public class CSVReaderDemo extends AbstractDemoFrame
 
     public CSVReaderStringDefApiAction ()
     {
-      putValue(NAME, "String Preview (column names on first line)");
+      putValue(Action.NAME, "String Preview (column names on first line)");
     }
 
     public void actionPerformed (final ActionEvent e)
@@ -298,7 +302,7 @@ public class CSVReaderDemo extends AbstractDemoFrame
 
     public CSVReaderStringApiAction ()
     {
-      putValue(NAME, "String Preview");
+      putValue(Action.NAME, "String Preview");
     }
 
     public void actionPerformed (final ActionEvent e)
@@ -319,7 +323,7 @@ public class CSVReaderDemo extends AbstractDemoFrame
 
     public CSVReaderFileApiAction ()
     {
-      putValue(NAME, "File Preview");
+      putValue(Action.NAME, "File Preview");
     }
 
     public void actionPerformed (final ActionEvent e)

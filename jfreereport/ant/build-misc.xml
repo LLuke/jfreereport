@@ -61,7 +61,6 @@
         <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${libdir}/${beanshell-jar-file}"/>
         <pathelement location="${core-jar-file}"/>
-
       </classpath>
     </javac>
 
@@ -85,6 +84,51 @@
 
     <copy file="source/org/jfree/report/modules/misc/beanshell/BSHExpressionHeader.txt"
       tofile="build/org/jfree/report/modules/misc/beanshell/BSHExpressionHeader.txt"/>
+  </target>
+
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Survey modules                                                -->
+  <!--                                                                -->
+  <!--  Depends on: Core task                                         -->
+  <!-- ************************************************************** -->
+
+  <target name="compile-module-misc-survey">
+    <description>
+      Compiles the survey module classes of JFreeReport.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build" target="${build.target}"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/misc/survey/*"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-misc-survey" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-misc-survey-file}"
+         basedir="build">
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-misc-survey">
+    <copy file="source/org/jfree/report/modules/misc/survey/module.properties"
+      tofile="build/org/jfree/report/modules/misc/survey/module.properties"/>
   </target>
 
   <!-- ************************************************************** -->
@@ -258,13 +302,15 @@
     depends="copy-resources-misc-configstore-base,
     copy-resources-misc-configstore-filesystem,
     copy-resources-misc-tablemodel,
-    copy-resources-misc-beanshell" />
+    copy-resources-misc-beanshell,
+    copy-resources-misc-survey" />
 
   <target name="compile"
     depends="compile-module-misc-beanshell,
     compile-module-misc-tablemodel,
     compile-module-misc-configstore,
-    compile-module-misc-configstore-filesystem"/>
+    compile-module-misc-configstore-filesystem,
+    compile-module-misc-survey"/>
 
   <target name="all" depends="init, compile"/>
 

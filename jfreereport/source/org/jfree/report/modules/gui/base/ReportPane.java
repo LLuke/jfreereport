@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.17 2004/05/07 14:29:21 mungady Exp $
+ * $Id: ReportPane.java,v 1.18 2005/01/25 00:01:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -192,7 +192,7 @@ public class ReportPane extends JComponent
      */
     public void run ()
     {
-      firePropertyChange(this.property, this.oldValue, this.newValue);
+      ReportPane.this.firePropertyChange(this.property, this.oldValue, this.newValue);
     }
   }
 

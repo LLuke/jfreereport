@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.11 2005/01/25 00:06:32 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.12 2005/01/25 21:40:17 taqua Exp $
  *
  * Changes
  * --------
@@ -164,7 +164,7 @@ public class PlainTextExportDialog extends JDialog
     public ActionSelectFile()
     {
       super (PlainTextExportDialog.this);
-      putValue(NAME, getResources().getString("plain-text-exportdialog.selectFile"));
+      putValue(Action.NAME, getResources().getString("plain-text-exportdialog.selectFile"));
     }
 
     /**
@@ -385,7 +385,7 @@ public class PlainTextExportDialog extends JDialog
 
     epsonPrinters = loadEpsonPrinters();
     cbEpsonPrinterType = new JComboBox(epsonPrinters);
-    cbEpsonPrinterType.setAction(new SelectEpsonModelAction());
+    cbEpsonPrinterType.addActionListener(new SelectEpsonModelAction());
 
     final Integer[] lpiModel = {
       LPI_6,

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.9 2005/01/25 00:13:44 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.10 2005/02/22 20:19:02 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.jfree.xml.factory.objects.ColorObjectDescription;
+import org.jfree.util.PaintUtilities;
 
 /**
  * The HtmlStyleCollection is used to create HtmlCellStyles and to convert these
@@ -57,13 +57,6 @@ import org.jfree.xml.factory.objects.ColorObjectDescription;
  */
 public class HtmlStyleCollection
 {
-  /**
-   * the ObjectDescription for color objects is used to translate colors into names or
-   * RGB-values.
-   */
-  private static final ColorObjectDescription colorObjectDescription =
-          new ColorObjectDescription();
-
   /** contains all generated style sheets. */
   private final HashMap table;
   private final HashMap reverseTable;
@@ -236,8 +229,7 @@ public class HtmlStyleCollection
   {
     try
     {
-      colorObjectDescription.setParameterFromObject(color);
-      return (String) colorObjectDescription.getParameter("value");
+      return PaintUtilities.colorToString(color);
     }
     catch (Exception ofe)
     {

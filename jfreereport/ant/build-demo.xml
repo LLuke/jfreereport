@@ -101,8 +101,10 @@
       <include name="org/jfree/report/demo/**"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${jcommon-xml-jar-file}" />
         <pathelement location="${libdir}/${pixie-jar-file}"/>
         <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-output-meta-file}"/>
         <pathelement location="${module-output-table-base-file}"/>
         <pathelement location="${module-output-table-html-file}"/>
         <pathelement location="${module-output-table-xls-file}"/>
@@ -126,6 +128,7 @@
         <pathelement location="${module-misc-configstore-base-file}"/>
         <pathelement location="${module-misc-configstore-filesystem-file}"/>
         <pathelement location="${module-misc-logging-base-file}"/>
+        <pathelement location="${module-misc-survey-file}"/>
       </classpath>
     </javac>
 
@@ -136,7 +139,7 @@
       basedir="build">
       <manifest>
         <attribute name="Main-Class" value="org.jfree.report.demo.JFreeReportDemo"/>
-        <attribute name="Class-Path" value="${core-jar-file} ${module-parser-ext-file} ${module-parser-simple-file} ${module-gui-base-file} ${module-gui-csv-file} ${module-gui-html-file} ${module-gui-pdf-file} ${module-gui-plaintext-file} ${module-gui-print-file} ${module-gui-xls-file} ${module-misc-beanshell-file} ${module-misc-configstore-base-file} ${module-misc-configstore-filesystem-file} ${module-misc-logging-base-file} ${module-output-xml-file} ${module-output-table-rtf-file} ${jfreereport-all-jar-file}"/>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-parser-ext-file} ${module-parser-simple-file} ${module-gui-base-file} ${module-gui-csv-file} ${module-gui-html-file} ${module-gui-pdf-file} ${module-gui-plaintext-file} ${module-gui-print-file} ${module-gui-xls-file} ${module-misc-beanshell-file} ${module-misc-configstore-base-file} ${module-misc-configstore-filesystem-file} ${module-misc-logging-base-file} ${module-output-xml-file} ${module-gui-rtf-file} ${jfreereport-all-jar-file}"/>
       </manifest>
     </jar>
 

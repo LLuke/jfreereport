@@ -73,7 +73,7 @@
       <include name="org/jfree/report/modules/misc/referencedoc/*"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${libdir}/${pixie-jar-file}"/>
+        <pathelement location="${libdir}/${jcommon-xml-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-output-table-html-file}"/>
         <pathelement location="${module-output-pageable-pdf-file}"/>

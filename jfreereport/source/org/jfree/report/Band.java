@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.13 2005/01/30 23:37:17 taqua Exp $
+ * $Id: Band.java,v 1.14 2005/02/19 13:29:51 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -79,26 +79,24 @@ import org.jfree.report.style.BandStyleKeys;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 
 /**
- * A report band is a collection which can contain other Report-Elements.
- * A band contains a list of elements to be displayed, and represents one section of a
- * report (the report header or footer, the page header or footer, the group header or footer,
- * or the items within a group).
- * <P>
- * The elements in a report band can contain fixed values, field values from the dataset, or
- * function values. The elements are not required to have unique names.
- * <p>
+ * A report band is a collection which can contain other Report-Elements. A band contains
+ * a list of elements to be displayed, and represents one section of a report (the report
+ * header or footer, the page header or footer, the group header or footer, or the items
+ * within a group). <P> The elements in a report band can contain fixed values, field
+ * values from the dataset, or function values. The elements are not required to have
+ * unique names.
+ * <p/>
  * This implementation is not synchronized, to take care that you externally synchronize
  * it when using multiple threads.
- * <p>
- * A band's contents should not be modified after the report processing starts,
- * so don't add Elements to the band's contained in or aquired from an report-state.
- * <p>
+ * <p/>
+ * A band's contents should not be modified after the report processing starts, so don't
+ * add Elements to the band's contained in or aquired from an report-state.
+ * <p/>
  * Bands contain a master stylesheet for all element contained in that band. This
  * StyleSheet is registered in the child when the element is added to the band.
- * <p>
- * Bands now extend the Element-class, so it is possible to stack bands into another
- * band. Trying to add a parent of an band as child to the band, will result in an
- * exception.
+ * <p/>
+ * Bands now extend the Element-class, so it is possible to stack bands into another band.
+ * Trying to add a parent of an band as child to the band, will result in an exception.
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -106,26 +104,32 @@ import org.jfree.report.style.ElementDefaultStyleSheet;
 public class Band extends Element implements Serializable, Cloneable
 {
   /**
-   * the defined content type for the band. The content type is used when selecting
-   * the correct display-method for an element.
+   * the defined content type for the band. The content type is used when selecting the
+   * correct display-method for an element.
    */
   public static final String CONTENT_TYPE = "X-container";
 
-  /** All the elements for this band, stored by name. */
+  /**
+   * All the elements for this band, stored by name.
+   */
   private ArrayList allElements;
 
-  /** Cached elements. */
+  /**
+   * Cached elements.
+   */
   private transient Element[] allElementsCached;
 
-  /** The prefix for anonymous bands, bands without an userdefined name. */
+  /**
+   * The prefix for anonymous bands, bands without an userdefined name.
+   */
   public static final String ANONYMOUS_BAND_PREFIX = "anonymousBand@";
 
   /**
    * Constructs a new band (initially empty).
    */
-  public Band()
+  public Band ()
   {
-    setName(ANONYMOUS_BAND_PREFIX + super.hashCode());
+    setName(ANONYMOUS_BAND_PREFIX + System.identityHashCode(this));
     final BandLayoutManager layout = new StaticLayoutManager();
     getStyle().setStyleProperty(BandLayoutManager.LAYOUTMANAGER, layout);
 
@@ -138,15 +142,15 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Constructs a new band with the given pagebreak attributes. Pagebreak
-   * attributes have no effect on subbands.
-   * 
-   * @param pagebreakAfter defines, whether a pagebreak should be done
-   * after that band was printed.
-   * @param pagebreakBefore defines, whether a pagebreak should be done
-   * before that band gets printed.
+   * Constructs a new band with the given pagebreak attributes. Pagebreak attributes have
+   * no effect on subbands.
+   *
+   * @param pagebreakAfter  defines, whether a pagebreak should be done after that band
+   *                        was printed.
+   * @param pagebreakBefore defines, whether a pagebreak should be done before that band
+   *                        gets printed.
    */
-  public Band(final boolean pagebreakBefore, final boolean pagebreakAfter)
+  public Band (final boolean pagebreakBefore, final boolean pagebreakAfter)
   {
     this();
     setPagebreakBeforePrint(pagebreakBefore);
@@ -158,7 +162,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @return The layout manager.
    */
-  public BandLayoutManager getLayout()
+  public BandLayoutManager getLayout ()
   {
     return (BandLayoutManager) getStyle().getStyleProperty(BandLayoutManager.LAYOUTMANAGER);
   }
@@ -166,9 +170,9 @@ public class Band extends Element implements Serializable, Cloneable
   /**
    * Sets the band layout manager.
    *
-   * @param layoutManager  the layout manager.
+   * @param layoutManager the layout manager.
    */
-  public void setLayout(final BandLayoutManager layoutManager)
+  public void setLayout (final BandLayoutManager layoutManager)
   {
     getStyle().setStyleProperty(BandLayoutManager.LAYOUTMANAGER, layoutManager);
   }
@@ -176,27 +180,29 @@ public class Band extends Element implements Serializable, Cloneable
   /**
    * Adds a report element to the band.
    *
-   * @param element  the element (<code>null</code> not permitted).
-   *
-   * @throws NullPointerException if the element is <code>null</code> or contains <code>null</code>
-   *                              values.
+   * @param element the element that should be added
+   * @throws NullPointerException     if the given element is null
+   * @throws IllegalArgumentException if the position is invalid, either negative or
+   *                                  greater than the number of elements in this band or
+   *                                  if the given element is a parent of this element.
    */
-  public void addElement(final Element element)
+  public void addElement (final Element element)
   {
     addElement(allElements.size(), element);
   }
 
   /**
-   * Adds a report element to the band. The element will be inserted on the specified position.
+   * Adds a report element to the band. The element will be inserted on the specified
+   * position.
    *
-   * @param position  the position where to insert the element
+   * @param position the position where to insert the element
    * @param element  the element that should be added
-   *
-   * @throws NullPointerException if the given element is null
+   * @throws NullPointerException     if the given element is null
    * @throws IllegalArgumentException if the position is invalid, either negative or
-   * greater than the number of elements in this band.
+   *                                  greater than the number of elements in this band or
+   *                                  if the given element is a parent of this element.
    */
-  public void addElement(final int position, final Element element)
+  public void addElement (final int position, final Element element)
   {
     if (position < 0)
     {
@@ -251,12 +257,12 @@ public class Band extends Element implements Serializable, Cloneable
   /**
    * Adds a collection of elements to the band.
    *
-   * @param elements  the element collection.
-   *
-   * @throws NullPointerException if the collection given is <code>null</code> or
-   * the collection contains <code>null</code> elements.
+   * @param elements the element collection.
+   * @throws NullPointerException     if one of the given elements is null
+   * @throws IllegalArgumentException if one of the given element is a parent of this
+   *                                  element.
    */
-  public void addElements(final Collection elements)
+  public void addElements (final Collection elements)
   {
     if (elements == null)
     {
@@ -274,14 +280,13 @@ public class Band extends Element implements Serializable, Cloneable
   /**
    * Returns the first element in the list that is registered by the given name.
    *
-   * @param name  the element name.
-   *
-   * @return the first element with the specified name, or <code>null</code> if there is no
-   *         such element.
+   * @param name the element name.
+   * @return the first element with the specified name, or <code>null</code> if there is
+   *         no such element.
    *
    * @throws NullPointerException if the given name is null.
    */
-  public Element getElement(final String name)
+  public Element getElement (final String name)
   {
     if (name == null)
     {
@@ -305,13 +310,14 @@ public class Band extends Element implements Serializable, Cloneable
 
   /**
    * Removes an element from the band.
-   * <p>
+   * <p/>
    * You should not use this method on a band acquired from a <code>ReportState</code> or
    * <code>Function</code>.
    *
-   * @param e  the element to be removed.
+   * @param e the element to be removed.
+   * @throws NullPointerException if the given element is null.
    */
-  public void removeElement(final Element e)
+  public void removeElement (final Element e)
   {
     if (e == null)
     {
@@ -334,7 +340,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @return an immutable list of all registered elements for this band.
    */
-  public List getElements()
+  public List getElements ()
   {
     return Collections.unmodifiableList(allElements);
   }
@@ -344,7 +350,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @return the number of elements of this band.
    */
-  public int getElementCount()
+  public int getElementCount ()
   {
     return allElements.size();
   }
@@ -354,7 +360,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @return the elements.
    */
-  public Element[] getElementArray()
+  public Element[] getElementArray ()
   {
     if (allElementsCached == null)
     {
@@ -370,9 +376,10 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @param index the element position within this band
    * @return the element
+   *
    * @throws IndexOutOfBoundsException if the index is invalid.
    */
-  public Element getElement(final int index)
+  public Element getElement (final int index)
   {
     if (allElementsCached == null)
     {
@@ -389,7 +396,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @return a string representation of this band.
    */
-  public String toString()
+  public String toString ()
   {
     final StringBuffer b = new StringBuffer();
     b.append(this.getClass().getName());
@@ -402,14 +409,16 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Clones this band and all elements contained in this band.
+   * Clones this band and all elements contained in this band. After the cloning the band
+   * is no longer connected to a report definition.
    *
    * @return the clone of this band.
    *
-   * @throws CloneNotSupportedException if this band or an element contained in this band does not
-   *                                    support cloning.
+   * @throws CloneNotSupportedException if this band or an element contained in this band
+   *                                    does not support cloning.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final Band b = (Band) super.clone();
 
@@ -442,22 +451,22 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Returns the content type of the element. For bands, the content type is by
-   * default &quot;X-container&quot;.
+   * Returns the content type of the element. For bands, the content type is by default
+   * &quot;X-container&quot;.
    *
    * @return the content type
    */
-  public String getContentType()
+  public String getContentType ()
   {
     return CONTENT_TYPE;
   }
 
   /**
-   * Invalidates the layout. This method is called whenever a new element has been
-   * added. You should also call this method if you modified one of the elements of
-   * the band (eg. redefined the max, min or preferred size).
+   * Invalidates the layout. This method is called whenever a new element has been added.
+   * You should also call this method if you modified one of the elements of the band (eg.
+   * redefined the max, min or preferred size).
    */
-  public void invalidateLayout()
+  public void invalidateLayout ()
   {
     getLayout().invalidateLayout(this);
     if (getParent() != null)
@@ -467,61 +476,65 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Returns, whether the page layout manager should perform a pagebreak
-   * before this page is printed. This will have no effect on empty pages
-   * or if the band is no root-level band.
+   * Returns, whether the page layout manager should perform a pagebreak before this page
+   * is printed. This will have no effect on empty pages or if the band is no root-level
+   * band.
    *
-   * @return true, if to force a pagebreak before this band is printed, false
-   * otherwise
+   * @return true, if to force a pagebreak before this band is printed, false otherwise
    */
-  public boolean isPagebreakBeforePrint()
+  public boolean isPagebreakBeforePrint ()
   {
     return getStyle().getBooleanStyleProperty
-        (BandStyleKeys.PAGEBREAK_BEFORE);
+            (BandStyleKeys.PAGEBREAK_BEFORE);
   }
 
   /**
-   * Defines, whether the page layout manager should perform a pagebreak
-   * before this page is printed. This will have no effect on empty pages
-   * or if the band is no root-level band.
+   * Defines, whether the page layout manager should perform a pagebreak before this page
+   * is printed. This will have no effect on empty pages or if the band is no root-level
+   * band.
    *
-   * @param pagebreakBeforePrint set to true, if to force a pagebreak before
-   * this band is printed, false otherwise
+   * @param pagebreakBeforePrint set to true, if to force a pagebreak before this band is
+   *                             printed, false otherwise
    */
-  public void setPagebreakBeforePrint(final boolean pagebreakBeforePrint)
+  public void setPagebreakBeforePrint (final boolean pagebreakBeforePrint)
   {
     getStyle().setBooleanStyleProperty
-        (BandStyleKeys.PAGEBREAK_BEFORE, pagebreakBeforePrint);
+            (BandStyleKeys.PAGEBREAK_BEFORE, pagebreakBeforePrint);
   }
 
   /**
-   * Returns, whether the page layout manager should perform a pagebreak
-   * before this page is printed. This will have no effect on empty pages
-   * or if the band is no root-level band.
+   * Returns, whether the page layout manager should perform a pagebreak before this page
+   * is printed. This will have no effect on empty pages or if the band is no root-level
+   * band.
    *
-   * @return true, if to force a pagebreak before this band is printed, false
-   * otherwise
+   * @return true, if to force a pagebreak before this band is printed, false otherwise
    */
-  public boolean isPagebreakAfterPrint()
+  public boolean isPagebreakAfterPrint ()
   {
     return getStyle().getBooleanStyleProperty
-        (BandStyleKeys.PAGEBREAK_AFTER);
+            (BandStyleKeys.PAGEBREAK_AFTER);
   }
 
   /**
-   * Defines, whether the page layout manager should perform a pagebreak
-   * before this page is printed. This will have no effect on empty pages
-   * or if the band is no root-level band.
+   * Defines, whether the page layout manager should perform a pagebreak before this page
+   * is printed. This will have no effect on empty pages or if the band is no root-level
+   * band.
    *
-   * @param pagebreakAfterPrint set to true, if to force a pagebreak before
-   * this band is printed, false otherwise
+   * @param pagebreakAfterPrint set to true, if to force a pagebreak before this band is
+   *                            printed, false otherwise
    */
-  public void setPagebreakAfterPrint(final boolean pagebreakAfterPrint)
+  public void setPagebreakAfterPrint (final boolean pagebreakAfterPrint)
   {
     getStyle().setBooleanStyleProperty
-        (BandStyleKeys.PAGEBREAK_AFTER, pagebreakAfterPrint);
+            (BandStyleKeys.PAGEBREAK_AFTER, pagebreakAfterPrint);
   }
 
+  /**
+   * Assigns the report definition to this band.
+   *
+   * @param reportDefinition the report definition or null, if the band is not part of a
+   *                         valid report definition.
+   */
   protected void setReportDefinition (final ReportDefinition reportDefinition)
   {
     super.setReportDefinition(reportDefinition);

@@ -88,18 +88,15 @@
   </target>
 
   <target name="copy-resources-gui-base">
-    <copy file="source/org/jfree/report/modules/gui/base/module.properties"
-      tofile="build/org/jfree/report/modules/gui/base/module.properties"/>
-
-    <copy file="source/org/jfree/report/modules/gui/base/components/jfreereport-encodings.properties"
-      tofile="build/org/jfree/report/modules/gui/base/components/jfreereport-encodings.properties"/>
-
-    <copy file="source/org/jfree/report/modules/gui/base/configuration.properties"
-      tofile="build/org/jfree/report/modules/gui/base/configuration.properties"/>
-
     <copy todir="build/org/jfree/report/modules/gui/base">
       <fileset dir="source/org/jfree/report/modules/gui/base">
         <include name="**/*.gif"/>
+      </fileset>
+    </copy>
+
+    <copy todir="build/org/jfree/report/modules/gui/base">
+      <fileset dir="source/org/jfree/report/modules/gui/base">
+        <include name="**/*.properties"/>
       </fileset>
     </copy>
   </target>
@@ -171,7 +168,8 @@
       <include name="org/jfree/report/modules/gui/converter/**"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${libdir}/${jcommon-xml-jar-file}" />
+        <pathelement location="${libdir}/${japx-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-gui-base-file}"/>
         <pathelement location="${module-parser-base-file}"/>
@@ -205,6 +203,12 @@
 
     <copy file="source/org/jfree/report/modules/gui/converter/module.properties"
       tofile="build/org/jfree/report/modules/gui/converter/module.properties"/>
+
+    <copy todir="build/org/jfree/report/modules/gui/converter/resources">
+      <fileset dir="source/org/jfree/report/modules/gui/converter/resources">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
   </target>
 
   <!-- ************************************************************** -->
@@ -221,6 +225,8 @@
       Compiles the Report Configuration GUI. 
     </description>
 
+    <ant antfile="${antfile.dir}/build-parser.xml" target="init-module-parser-base"/>
+
     <!-- create a temp build directory -->
     <mkdir dir="build"/>
 
@@ -232,7 +238,7 @@
       <include name="org/jfree/report/modules/gui/config/**"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${libdir}/${jcommon-xml-jar-file}" />
         <pathelement location="${libdir}/${japx-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-gui-base-file}"/>
@@ -246,7 +252,6 @@
          basedir="build">
       <manifest>
         <attribute name="Main-Class" value="org.jfree.report.modules.gui.config.ConfigEditor"/>
-<!--        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${manifest-lib-prefix}${jaxp-jar-file}"/> -->
         <attribute name="Class-Path" value="${core-jar-file} ${module-parser-ext-file} ${module-parser-simple-file} ${module-gui-base-file} ${module-gui-csv-file} ${module-gui-html-file} ${module-gui-pdf-file} ${module-gui-plaintext-file} ${module-gui-print-file} ${module-gui-xls-file} ${module-misc-beanshell-file} ${module-misc-configstore-base-file} ${module-misc-configstore-filesystem-file} ${module-misc-logging-base-file} ${module-output-xml-file} ${module-output-table-rtf-file} ${jfreereport-all-jar-file}"/>
       </manifest>
     </jar>
@@ -268,6 +273,12 @@
     <copy todir="build/org/jfree/report/modules/gui/config">
       <fileset dir="source/org/jfree/report/modules/gui/config">
         <include name="**/*.gif"/>
+      </fileset>
+    </copy>
+
+    <copy todir="build/org/jfree/report/modules/gui/config/resources">
+      <fileset dir="source/org/jfree/report/modules/gui/config/resources">
+        <include name="**/*.properties"/>
       </fileset>
     </copy>
   </target>
@@ -356,6 +367,12 @@
 
     <copy file="source/org/jfree/report/modules/gui/csv/configuration.properties"
       tofile="build/org/jfree/report/modules/gui/csv/configuration.properties"/>
+
+    <copy todir="build/org/jfree/report/modules/gui/csv/resources">
+      <fileset dir="source/org/jfree/report/modules/gui/csv/resources">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
   </target>
 
   <!-- ************************************************************** -->
@@ -421,6 +438,12 @@
 
     <copy file="source/org/jfree/report/modules/gui/html/configuration.properties"
       tofile="build/org/jfree/report/modules/gui/html/configuration.properties"/>
+
+    <copy todir="build/org/jfree/report/modules/gui/html/resources">
+      <fileset dir="source/org/jfree/report/modules/gui/html/resources">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
   </target>
 
 
@@ -487,6 +510,12 @@
 
     <copy file="source/org/jfree/report/modules/gui/xls/configuration.properties"
       tofile="build/org/jfree/report/modules/gui/xls/configuration.properties"/>
+
+    <copy todir="build/org/jfree/report/modules/gui/xls/resources">
+      <fileset dir="source/org/jfree/report/modules/gui/xls/resources">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
   </target>
 
 
@@ -553,6 +582,12 @@
 
     <copy file="source/org/jfree/report/modules/gui/pdf/configuration.properties"
       tofile="build/org/jfree/report/modules/gui/pdf/configuration.properties"/>
+
+    <copy todir="build/org/jfree/report/modules/gui/pdf/resources">
+      <fileset dir="source/org/jfree/report/modules/gui/pdf/resources">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
   </target>
 
 
@@ -619,6 +654,12 @@
 
     <copy file="source/org/jfree/report/modules/gui/plaintext/configuration.properties"
       tofile="build/org/jfree/report/modules/gui/plaintext/configuration.properties"/>
+
+    <copy todir="build/org/jfree/report/modules/gui/plaintext/resources">
+      <fileset dir="source/org/jfree/report/modules/gui/plaintext/resources">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
   </target>
 
   <!-- ************************************************************** -->
@@ -671,6 +712,12 @@
 
     <copy file="source/org/jfree/report/modules/gui/print/configuration.properties"
       tofile="build/org/jfree/report/modules/gui/print/configuration.properties"/>
+
+    <copy todir="build/org/jfree/report/modules/gui/print/resources">
+      <fileset dir="source/org/jfree/report/modules/gui/print/resources">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
   </target>
 
   <target name="copy-resources"
@@ -685,13 +732,13 @@
     copy-resources-gui-base"/>
 
   <target name="all" depends="init,
-  compile-module-gui-base,
-  compile-module-gui-config,
-  compile-module-gui-csv,
-  compile-module-gui-html,
-  compile-module-gui-xls,
-  compile-module-gui-plaintext,
-  compile-module-gui-pdf,
-  compile-module-gui-print,
-  compile-module-gui-converter"/>
+    compile-module-gui-base,
+    compile-module-gui-config,
+    compile-module-gui-csv,
+    compile-module-gui-html,
+    compile-module-gui-xls,
+    compile-module-gui-plaintext,
+    compile-module-gui-pdf,
+    compile-module-gui-print,
+    compile-module-gui-converter"/>
 </project>

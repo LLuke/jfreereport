@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceCollector.java,v 1.5.4.1 2004/05/11 13:25:49 taqua Exp $
+ * $Id: DataSourceCollector.java,v 1.7 2005/01/25 00:19:41 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jfree.util.Configuration;
-import org.jfree.xml.factory.objects.ClassComparator;
+import org.jfree.util.ClassComparator;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ItemBand.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: ItemBand.java,v 1.4 2005/01/30 23:37:17 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -55,6 +55,12 @@ public class ItemBand extends Band implements RootLevelBand
   {
   }
 
+  /**
+   * Assigns the report definition. Don't play with that function,
+   * unless you know what you are doing. You might get burned.
+   *
+   * @param reportDefinition the report definition.
+   */
   public void setReportDefinition (final ReportDefinition reportDefinition)
   {
     super.setReportDefinition(reportDefinition);

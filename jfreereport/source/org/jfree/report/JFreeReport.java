@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.18 2005/02/04 19:22:51 taqua Exp $
+ * $Id: JFreeReport.java,v 1.19 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -560,13 +560,7 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
     {
       throw new NullPointerException("GroupList must not be null");
     }
-
-    this.groups.clear();
-    final Iterator it = groupList.iterator();
-    while (it.hasNext())
-    {
-      addGroup((Group) it.next());
-    }
+    this.groups = groupList;
   }
 
   /**

@@ -29,12 +29,23 @@
   <!-- ************************************************************** -->
 
   <target name="init-module-parser-base" depends="init" >
-    <available file="${libdir}/${jaxp-jar-file}" property="jaxp-jar-file-present"/>
-    <fail unless="jaxp-jar-file-present">
-      The file ${jaxp-jar-file} was not found in the lib directory.
-      This file is required for all xml related builds.
+    <available file="${libdir}/${jcommon-xml-jar-file}" property="jcommon-xml-jar-file-present" />
+    <fail unless="jcommon-xml-jar-file-present">
+      The file ${jcommon-xml-jar-file} was not found in the lib directory.
     </fail>
 
+    <available classname="org.xml.sax.InputSource" property="jaxp-api-present">
+      <classpath>
+        <pathelement location="${libdir}/${jaxp-jar-file}" />
+      </classpath>
+    </available>
+    <fail unless="jaxp-api-present">
+      The file ${jaxp-jar-file} was not found in the lib directory or
+      this build is not executed on a system that would provide an own JAXP
+      implementation (like JDK 1.4 or higher).
+
+      No XML API available; aborting.
+    </fail>
   </target>
 
   <target name="compile-module-parser-base"
@@ -52,11 +63,11 @@
     <javac srcdir="source"
       destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/modules/parser/base/*"/>
+      <include name="org/jfree/report/modules/parser/base/**"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${jcommon-xml-jar-file}" />
         <pathelement location="${libdir}/${jaxp-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${core-jar-file}"/>
       </classpath>
     </javac>
@@ -104,7 +115,7 @@
       <include name="org/jfree/report/modules/parser/ext/**"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${libdir}/${jcommon-xml-jar-file}" />
         <pathelement location="${libdir}/${jaxp-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-parser-base-file}"/>
@@ -129,8 +140,8 @@
     <copy file="source/org/jfree/report/modules/parser/ext/module.properties"
       tofile="build/org/jfree/report/modules/parser/ext/module.properties"/>
 
-    <copy file="source/org/jfree/report/modules/parser/ext/resources/extreport.dtd"
-      tofile="build/org/jfree/report/modules/parser/ext/resources/extreport.dtd"/>
+    <copy file="source/org/jfree/report/modules/parser/ext/resources/extreport-085.dtd"
+      tofile="build/org/jfree/report/modules/parser/ext/resources/extreport-085.dtd"/>
   </target>
 
   <!-- ************************************************************** -->
@@ -153,10 +164,10 @@
     <javac srcdir="source"
       destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/modules/parser/extwriter/*"/>
+      <include name="org/jfree/report/modules/parser/extwriter/**"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${libdir}/${jcommon-xml-jar-file}" />
         <pathelement location="${libdir}/${jaxp-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-parser-base-file}"/>
@@ -203,10 +214,10 @@
     <javac srcdir="source"
       destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/modules/parser/simple/*"/>
+      <include name="org/jfree/report/modules/parser/simple/**"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${libdir}/${jcommon-xml-jar-file}" />
         <pathelement location="${libdir}/${jaxp-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-parser-base-file}"/>
@@ -231,8 +242,8 @@
     <copy file="source/org/jfree/report/modules/parser/simple/module.properties"
       tofile="build/org/jfree/report/modules/parser/simple/module.properties"/>
 
-    <copy file="source/org/jfree/report/modules/parser/simple/resources/report.dtd"
-      tofile="build/org/jfree/report/modules/parser/simple/resources/report.dtd"/>
+    <copy file="source/org/jfree/report/modules/parser/simple/resources/report-085.dtd"
+      tofile="build/org/jfree/report/modules/parser/simple/resources/report-085.dtd"/>
   </target>
 
   <!--

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);Stefan Prange
  *
- * $Id: DefaultImageReference.java,v 1.3 2005/01/25 21:39:54 taqua Exp $
+ * $Id: DefaultImageReference.java,v 1.4 2005/02/04 19:22:51 taqua Exp $
  *
  * Changes:
  * --------
@@ -77,7 +77,10 @@ public class DefaultImageReference
   /** The height of the (unscaled) image. */
   private int height;
 
+  /** The scale factor. */
   private float scaleX = 1.0f;
+
+  /** The scale factor. */
   private float scaleY = 1.0f;
 
   /**
@@ -260,6 +263,12 @@ public class DefaultImageReference
     return height;
   }
 
+  /**
+   * Checks, whether this image reference is loadable. A default image reference
+   * is loadable, if a valid URL has been set.
+   *
+   * @return true, if it is loadable, false otherwise.
+   */
   public boolean isLoadable ()
   {
     return getSourceURL() != null;
@@ -276,6 +285,12 @@ public class DefaultImageReference
     return url;
   }
 
+  /**
+   * Returns the name of this image reference. If an URL has been set, this
+   * will return the URL of the image, else null is returned.
+   *
+   * @return the name.
+   */
   public String getName ()
   {
     if (url != null)
@@ -296,16 +311,35 @@ public class DefaultImageReference
     return url != null;
   }
 
+  /**
+   * Returns a predefined scaling factor. That scaling will be applied before
+   * any layout specific scaling is done.
+   *
+   * @return the scale factor.
+   */
   public float getScaleX ()
   {
     return scaleX;
   }
 
+  /**
+   * Returns a predefined scaling factor. That scaling will be applied before
+   * any layout specific scaling is done.
+   *
+   * @return the scale factor.
+   */
   public float getScaleY ()
   {
     return scaleY;
   }
 
+  /**
+   * Defines a predefined scaling factor. That scaling will be applied before
+   * any layout specific scaling is done.
+   *
+   * @param sx the scale factor.
+   * @param sy the scale factor.
+   */
   public void setScale (final float sx, final float sy)
   {
     this.scaleX = sx;

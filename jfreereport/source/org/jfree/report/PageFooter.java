@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PageFooter.java,v 1.6 2003/11/07 18:33:47 taqua Exp $
+ * $Id: PageFooter.java,v 1.7 2005/01/30 23:37:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -115,6 +115,12 @@ public class PageFooter extends Band implements RootLevelBand
     getStyle().setBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_LASTPAGE, b);
   }
 
+  /**
+   * Assigns the report definition. Don't play with that function,
+   * unless you know what you are doing. You might get burned.
+   *
+   * @param reportDefinition the report definition.
+   */
   public void setReportDefinition (final ReportDefinition reportDefinition)
   {
     super.setReportDefinition(reportDefinition);

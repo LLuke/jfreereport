@@ -13,7 +13,7 @@
 
   <target name="compile" depends="init">
     <description>
-      Compiles the CSV table output module. check-files
+      Compiles all classes and creates the jfreereport.jar file.
     </description>
 
     <!-- create a temp build directory -->
@@ -26,6 +26,7 @@
       <exclude name="org/jfree/report/demo/**"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${jcommon-xml-jar-file}"/>
         <pathelement location="${libdir}/${pixie-jar-file}"/>
         <pathelement location="${libdir}/${beanshell-jar-file}"/>
         <pathelement location="${libdir}/${jaxp-jar-file}"/>

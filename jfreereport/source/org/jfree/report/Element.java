@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.16 2005/02/19 13:29:52 taqua Exp $
+ * $Id: Element.java,v 1.17 2005/02/19 15:41:17 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -77,27 +77,70 @@ import org.jfree.report.util.InstanceID;
  * All elements have a non-null name and have a style sheet defined. The style sheet is
  * used to store and access all self properties that can be used to layout the
  * self or affect the elements appeareance in a ReportProcessor.
+ * <p>
+ * Warning: Redefining the DataSource-Chain can cause great trouble. If you want to
+ * change elements of the datasources, then disconnect the datasource from the element
+ * and reconnect it later.
+ * <pre>
+ * Element e = // created elsewhere
+ * DataSource ds = e.getDataSource();
+ * // now disconnect the old datasource ..
+ * e.setDataSource(new StaticDataSource(null));
+ * ..
+ * // make your changes ...
+ * ..
+ * // reconnect the old datasource
+ * e.setDataSource(ds);
+ * </pre>
  *
  * @author David Gilbert
  * @author Thomas Morgner
  */
 public abstract class Element implements DataTarget, Serializable, Cloneable
 {
+  /**
+   * A helper class to preserve a recoverable reference to the elements stylesheet.
+   */
   private static class InternalElementStyleSheetCarrier
           implements StyleSheetCarrier
   {
+    /** An inherited stylesheet of the element. */
     private transient ElementStyleSheet styleSheet;
+    /** The private stylesheet of the element. */
     private InternalElementStyleSheet self;
+    /** The stylesheet id of the inherited stylesheet. */
     private InstanceID styleSheetID;
 
+    /**
+     * Creates a new stylesheet carrier for the given internal stylesheet and the
+     * given inherited stylesheet.
+     *
+     * @param parent the internal stylesheet
+     * @param styleSheet the stylesheet
+     */
     public InternalElementStyleSheetCarrier (final InternalElementStyleSheet parent,
                                              final ElementStyleSheet styleSheet)
     {
+      if (parent == null)
+      {
+        throw new NullPointerException("Internal stylesheet must not be null.");
+      }
+      if (styleSheet == null)
+      {
+        throw new NullPointerException("Inherited stylesheet must not be null.");
+      }
       this.self = parent;
       this.styleSheet = styleSheet;
       this.styleSheetID = styleSheet.getId();
     }
 
+    /**
+     * Clones this reference. During cloning the stylesheet is removed. The
+     * stylesheets ID is preserved to allow to recover the stylesheet later.
+     *
+     * @return the clone.
+     * @throws CloneNotSupportedException
+     */
     public Object clone ()
             throws CloneNotSupportedException
     {
@@ -108,6 +151,12 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       return ic;
     }
 
+    /**
+     * Returns the referenced stylesheet (and recovers the stylesheet if necessary).
+     *
+     * @return the stylesheet
+     * @throws IllegalStateException if the stylesheet could not be recovered.
+     */
     public ElementStyleSheet getStyleSheet ()
     {
       if (styleSheet != null)
@@ -136,22 +185,45 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       return styleSheet;
     }
 
+    /**
+     * Invalidates the stylesheet reference. Recovery is started on the next call
+     * to <code>getStylesheet()</code>
+     */
     public void invalidate ()
     {
       this.styleSheet = null;
     }
 
+    /**
+     * Checks, whether the given stylesheet is the same as the referenced stylesheet in
+     * this object.
+     *
+     * @param style the stylesheet
+     * @return true, if both stylesheets share the same instance ID, false otherwise.
+     */
     public boolean isSame (final ElementStyleSheet style)
     {
       return style.getId().equals(styleSheetID);
     }
   }
 
+  /**
+   * An private implementation of a stylesheet. Using that stylesheet outside
+   * the element class will not work, cloning an element's private stylesheet
+   * without cloning the element will produce <code>IllegalStateException</code>s
+   * later.
+   */
   private static class InternalElementStyleSheet extends ElementStyleSheet
   {
+    /** The element that contains this stylesheet. */
     private Element element;
+    /** The parent of the element. */
     private Band parent;
 
+    /**
+     * Creates a new internal stylesheet for the given element.
+     * @param element the element
+     */
     public InternalElementStyleSheet (final Element element)
     {
       super(element.getName());
@@ -161,6 +233,10 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       setAllowCaching(true);
     }
 
+    /**
+     * Returns the element for this stylesheet.
+     * @return the element.
+     */
     public Element getElement ()
     {
       return element;
@@ -189,6 +265,9 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       return es;
     }
 
+    /**
+     * A callback method used by the element to inform that the element's parent changed.
+     */
     public void parentChanged ()
     {
       if (parent != null)
@@ -202,15 +281,16 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       }
     }
 
+    /**
+     * Creates a stylesheet carrier to reference inherited stylesheets in a secure way.
+     *
+     * @param styleSheet the stylesheet for which the carrier should be created.
+     * @return the stylesheet carrier.
+     */
     protected StyleSheetCarrier createCarrier (final ElementStyleSheet styleSheet)
     {
       return new InternalElementStyleSheetCarrier(this, styleSheet);
     }
-  }
-
-  protected ElementDefaultStyleSheet createGlobalDefaultStyle ()
-  {
-    return ElementDefaultStyleSheet.getDefaultStyle();
   }
 
   /** The internal constant to mark anonymous self names. */
@@ -234,6 +314,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   /** the tree lock to identify the self. */
   private final InstanceID treeLock;
 
+  /** The assigned report definition for this element. */
   private ReportDefinition reportDefinition;
 
   /**
@@ -332,7 +413,9 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     {
       throw new NullPointerException("Element.setDataSource(...) : null data source.");
     }
+    disconnectDataSource(this.datasource);
     this.datasource = ds;
+    connectDataSource(this.datasource);
   }
 
   /**
@@ -563,6 +646,12 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
         preferredSize);
   }
 
+  /**
+   * Assigns the given report definition to the element. If the reportdefinition
+   * is null, the element is not part of a report definition at all.
+   *
+   * @param reportDefinition the report definition (maybe null).
+   */
   protected void setReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != null)
@@ -576,11 +665,21 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     }
   }
 
+  /**
+   * Returns the currently assigned report definition.
+   *
+   * @return the report definition or null, if no report has been assigned.
+   */
   public ReportDefinition getReportDefinition ()
   {
     return reportDefinition;
   }
 
+  /**
+   * Connects the datasource of the element to the report definition.
+   *
+   * @param ds the datasource.
+   */
   protected final void connectDataSource (final DataSource ds)
   {
     if (ds instanceof ReportConnectable)
@@ -595,6 +694,11 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     }
   }
 
+  /**
+   * Disconnects the datasource of the element from the report definition.
+   *
+   * @param ds the datasource.
+   */
   protected final void disconnectDataSource (final DataSource ds)
   {
     if (ds instanceof ReportConnectable)
@@ -609,13 +713,34 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     }
   }
 
+  /**
+   * Redefines the link target for this element.
+   *
+   * @param target the target
+   */
   public void setHRefTarget (final String target)
   {
     getStyle().setStyleProperty(ElementStyleSheet.HREF_TARGET, target);
   }
 
+  /**
+   * Returns the currently set link target for this element.
+   *
+   * @return the link target.
+   */
   public String getHRefTarget ()
   {
     return (String) getStyle().getStyleProperty(ElementStyleSheet.HREF_TARGET);
   }
+
+  /**
+   * Creates the global stylesheet for this element type.
+   *
+   * @return the global stylesheet.
+   */
+  protected ElementDefaultStyleSheet createGlobalDefaultStyle ()
+  {
+    return ElementDefaultStyleSheet.getDefaultStyle();
+  }
+
 }

@@ -231,7 +231,7 @@ public class IBMCompatiblePrinterDriver implements PrinterDriver
     this.out = out;
     this.charsPerInch = charsPerInch;
     this.linesPerInch = linesPerInch;
-    this.endOfPage = new byte[] { PrinterDriver.FORM_FEED };
+    this.endOfPage = new byte[] { (byte) PrinterDriver.FORM_FEED };
     this.printerSpecification = new GenericIBMPrinterSpecification();
     this.fontMapper = new DefaultFontMapper();
     this.fontMapper.setDefaultFont(PrinterDriver.SELECT_FONT_FROM_MENU);

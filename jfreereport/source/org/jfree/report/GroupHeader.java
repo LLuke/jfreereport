@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: GroupHeader.java,v 1.5 2005/01/24 23:57:45 taqua Exp $
+ * $Id: GroupHeader.java,v 1.6 2005/01/30 23:37:17 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -80,6 +80,12 @@ public class GroupHeader extends Band implements RootLevelBand
     getStyle().setBooleanStyleProperty(BandStyleKeys.REPEAT_HEADER, repeat);
   }
 
+  /**
+   * Assigns the report definition. Don't play with that function,
+   * unless you know what you are doing. You might get burned.
+   *
+   * @param reportDefinition the report definition.
+   */
   public void setReportDefinition (final ReportDefinition reportDefinition)
   {
     super.setReportDefinition(reportDefinition);

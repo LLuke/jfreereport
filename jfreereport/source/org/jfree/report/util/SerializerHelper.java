@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SerializerHelper.java,v 1.3.4.3 2004/12/13 19:27:15 taqua Exp $
+ * $Id: SerializerHelper.java,v 1.5 2005/01/25 00:23:11 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,7 +56,7 @@ import org.jfree.report.util.serializers.Line2DSerializer;
 import org.jfree.report.util.serializers.PageFormatSerializer;
 import org.jfree.report.util.serializers.Point2DSerializer;
 import org.jfree.report.util.serializers.Rectangle2DSerializer;
-import org.jfree.xml.factory.objects.ClassComparator;
+import org.jfree.util.ClassComparator;
 
 /**
  * The SerializeHelper is used to make implementing custom serialization

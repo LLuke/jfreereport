@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ShapeElement.java,v 1.5 2005/01/24 23:57:48 taqua Exp $
+ * $Id: ShapeElement.java,v 1.6 2005/01/30 23:37:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -87,7 +87,7 @@ public class ShapeElement extends Element
       super("GlobalShapeElementDefault");
       // unlock the write protection
       setLocked(false);
-      setStyleProperty(ElementStyleSheet.STROKE, DEFAULT_STROKE);
+      setStyleProperty(ElementStyleSheet.STROKE, ShapeElement.DEFAULT_STROKE);
       setBooleanStyleProperty(FILL_SHAPE, false);
       setBooleanStyleProperty(DRAW_SHAPE, false);
       // and lock the stylesheet again...

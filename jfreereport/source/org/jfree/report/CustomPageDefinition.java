@@ -1,3 +1,39 @@
+/**
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
+ *
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Lead:  Thomas Morgner;
+ *
+ * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ---------
+ * CustomPageDefinition.java
+ * ---------
+ * (C)opyright 2000-2003, by Object Refinery Limited and Contributors.
+ *
+ * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: AnchorElement.java,v 1.14 2005/02/19 13:29:51 taqua Exp $
+ *
+ * Changes
+ * -------------------------
+ * 2005-02-01 : Initial version
+ */
 package org.jfree.report;
 
 import java.awt.geom.Rectangle2D;
@@ -11,21 +47,46 @@ import java.util.Iterator;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.SerializerHelper;
 
+/**
+ * A page definition, that consists of one or many pages. The pages
+ * are allowed to overlapp or to leave areas of the page uncovered.
+ *
+ * @author Thomas Morgner
+ * @see PageDefinition
+ */
 public class CustomPageDefinition implements PageDefinition
 {
+  /** The page bounds, the imageable area on the global virtual page. */
   private transient ArrayList pageBoundsList;
+  /** The page format list. */
   private transient ArrayList pageFormatList;
+  /** The total width of the page. */
   private float width;
+  /** The total height of the page. */
   private float height;
 
+  /**
+   * Creates a new (initialy empty and therefore invalid) page definition.
+   */
   public CustomPageDefinition ()
   {
     pageBoundsList = new ArrayList();
     pageFormatList = new ArrayList();
   }
 
+  /**
+   * Adds a new page format to the page definition.
+   *
+   * @param format the page format
+   * @param x the x-position to where the imageable-x of the pageformat is mapped.
+   * @param y the y-position to where the imageable-y of the pageformat is mapped.
+   */
   public void addPageFormat (final PageFormat format, final float x, final float y)
   {
+    if (format == null)
+    {
+      throw new NullPointerException("The given pageformat must not be null.");
+    }
     width = Math.max(width, (float)(format.getImageableWidth() + x));
     height = Math.max(height, (float)(format.getImageableHeight() + y));
     final Rectangle2D bounds = new Rectangle2D.Double
@@ -36,6 +97,10 @@ public class CustomPageDefinition implements PageDefinition
     pageFormatList.add(format.clone());
   }
 
+  /**
+   * Returns the number of pages in the list.
+   * @return the number of pages in the list.
+   */
   public int getPageCount ()
   {
     return pageBoundsList.size();
@@ -88,16 +153,30 @@ public class CustomPageDefinition implements PageDefinition
     return rects;
   }
 
+  /**
+   * Returns the total width of the page definition.
+   * @return the total width of the page definition.
+   */
   public float getWidth ()
   {
     return width;
   }
 
+  /**
+   * Returns the total height of the page definition.
+   * @return the total height of the page definition.
+   */
   public float getHeight ()
   {
     return height;
   }
 
+  /**
+   * Clones the given page definition object.
+   *
+   * @return a clone of this page definition.
+   * @throws CloneNotSupportedException if an error occured.
+   */
   public Object clone ()
           throws CloneNotSupportedException
   {
@@ -109,7 +188,7 @@ public class CustomPageDefinition implements PageDefinition
 
 
   /**
-   * deserizalize the report and restore the pageformat.
+   * Deserizalize the report and restore the pageformat.
    *
    * @param out the objectoutput stream
    * @throws java.io.IOException if errors occur
@@ -134,7 +213,7 @@ public class CustomPageDefinition implements PageDefinition
   }
 
   /**
-   * resolve the pageformat, as PageFormat is not serializable.
+   * Resolve the pageformat, as PageFormat is not serializable.
    *
    * @param in  the input stream.
    *
@@ -166,6 +245,12 @@ public class CustomPageDefinition implements PageDefinition
     }
   }
 
+  /**
+   * Checks, whether the given object is equal to this one.
+   *
+   * @param o the other object.
+   * @return true, if the other object is equal, false otherwise.
+   */
   public boolean equals (final Object o)
   {
     if (this == o)
@@ -210,6 +295,10 @@ public class CustomPageDefinition implements PageDefinition
     return true;
   }
 
+  /**
+   * Computes the hashcode of this page definition.
+   * @return the hashcode.
+   */
   public int hashCode ()
   {
     int result;

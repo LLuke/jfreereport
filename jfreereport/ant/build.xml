@@ -169,6 +169,21 @@ module-file=$${module-${module}-file}</echo>
   </target>
 
 
+  <target name="maven-bundle" depends="build-all" >
+    <!-- make a temporary distribution directory -->
+    <mkdir dir="distribution"/>
+    <!-- copy across Licences -->
+    <copy file="licence-LGPL.txt" tofile="distribution/LICENSE.txt"/>
+    <copy file="maven-jfreereport-project.xml" tofile="distribution/project.xml"/>
+    <copy file="${jfreereport-all-jar-file}" tofile="distribution/${jfreereport-all-jar-file}"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${jfreereport-bundle-jar-file}" basedir="distribution"/>
+
+    <!-- delete the temporary distribution directory -->
+    <delete dir="distribution"/>
+  </target>
+
   <!-- core tasks                              -->
   <!-- These tasks are needed for all modules  -->
   <!-- ......................................  -->

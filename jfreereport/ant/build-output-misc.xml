@@ -242,6 +242,55 @@
 
   </target>
 
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Output support module: common page layouter classes           -->
+  <!--                                                                -->
+  <!--  Depends on: Core task                                         -->
+  <!-- ************************************************************** -->
+
+  <target name="compile-module-output-meta"
+    depends="init">
+    <description>
+      Compiles the meta support.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build" target="${build.target}"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/output/meta/*"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-output-meta" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-output-meta-file}"
+         basedir="build">
+      <manifest>
+          <attribute name="Class-Path" value="${core-jar-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-output-meta">
+    <copy file="source/org/jfree/report/modules/output/meta/module.properties"
+      tofile="build/org/jfree/report/modules/output/meta/module.properties"/>
+
+  </target>
+
   <!--
     This target is called from build-all
     -->
@@ -249,13 +298,15 @@
     depends="copy-resources-output-support-itext,
     copy-resources-output-support-pagelayout,
     copy-resources-output-csv,
-    copy-resources-output-xml" />
+    copy-resources-output-xml,
+    copy-resources-output-meta" />
 
   <target name="compile"
     depends="compile-module-output-csv,
     compile-module-output-support-pagelayout,
     compile-module-output-xml,
-    compile-module-output-support-itext"/>
+    compile-module-output-support-itext,
+    compile-module-output-meta"/>
 
   <target name="all" depends="init, compile"/>
 

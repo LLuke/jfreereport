@@ -29,13 +29,13 @@ public interface PrinterDriver
    * the Carriage Return control character,
    * the printer carriage returns to the start of the line.
    */
-  public static final byte CARRIAGE_RETURN = 0x0D;
+  public static final char CARRIAGE_RETURN = 0x0D;
   /** scrolls the paper up a single line. */
-  public static final byte LINE_FEED = 0x0A;
+  public static final char LINE_FEED = 0x0A;
   /** the form feed character, ejects the current page and starts the next page. */
-  public static final byte FORM_FEED = 0x0C;
+  public static final char FORM_FEED = 0x0C;
   /** the space character. */
-  public static final byte SPACE = 0x20;
+  public static final char SPACE = 0x20;
 
   public static final float CPI_10 = 10;
   public static final float CPI_12 = 12;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.12 2005/01/25 00:22:35 taqua Exp $
+ * $Id: ReportState.java,v 1.13 2005/01/28 19:26:59 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -88,7 +88,7 @@ public abstract class ReportState implements Cloneable
   private ReportDefinitionImpl report;
 
   /** The number of rows in the tablemodel. */
-  private final int numberOfRows;
+  private int numberOfRows;
 
   /** The current item (row in the TableModel). */
   private int currentItem;
@@ -100,7 +100,7 @@ public abstract class ReportState implements Cloneable
   private int currentGroupIndex;
 
   /** The report properties. */
-  private final ReportProperties reportProperties;
+  private ReportProperties reportProperties;
 
   /** The data row. */
   private DataRowBackend dataRow;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Watermark.java,v 1.2 2003/12/21 23:47:09 taqua Exp $
+ * $Id: Watermark.java,v 1.3 2005/01/30 23:37:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -115,6 +115,12 @@ public class Watermark extends Band implements RootLevelBand
     getStyle().setBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_LASTPAGE, b);
   }
 
+  /**
+   * Assigns the report definition. Don't play with that function,
+   * unless you know what you are doing. You might get burned.
+   *
+   * @param reportDefinition the report definition.
+   */
   public void setReportDefinition (final ReportDefinition reportDefinition)
   {
     super.setReportDefinition(reportDefinition);

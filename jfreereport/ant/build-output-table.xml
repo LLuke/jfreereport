@@ -31,6 +31,15 @@
   <!--  Depends on: Core task, pagelayout                             -->
   <!-- ************************************************************** -->
 
+  <target name="check-module-output-meta" depends="init">
+    <available file="${module-output-meta-file}" property="module-output-meta-file-present"/>
+  </target>
+
+  <target name="rebuild-module-output-meta" unless="module-output-support-pagelayout-file-present" depends="check-module-output-meta">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-output-misc.xml" target="compile-module-output-meta"/>
+  </target>
+
   <target name="check-module-output-support-pagelayout" depends="init">
     <available file="${module-output-support-pagelayout-file}" property="module-output-support-pagelayout-file-present"/>
   </target>
@@ -55,8 +64,8 @@
       <include name="org/jfree/report/modules/output/table/base/*"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${module-output-support-pagelayout-file}"/>
+        <pathelement location="${module-output-meta-file}"/>
         <pathelement location="${core-jar-file}"/>
       </classpath>
     </javac>
@@ -114,10 +123,10 @@
       <include name="org/jfree/report/modules/output/table/csv/*"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-output-table-base-file}"/>
         <pathelement location="${module-output-csv-file}"/>
+        <pathelement location="${module-output-meta-file}"/>
       </classpath>
     </javac>
 
@@ -162,12 +171,12 @@
     <javac srcdir="source"
       destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/modules/output/table/html/*"/>
+      <include name="org/jfree/report/modules/output/table/html/**"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-output-table-base-file}"/>
+        <pathelement location="${module-output-meta-file}"/>
       </classpath>
     </javac>
 
@@ -230,14 +239,14 @@
     <javac srcdir="source"
       destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/modules/output/table/rtf/*"/>
+      <include name="org/jfree/report/modules/output/table/rtf/**"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${libdir}/${itext-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-output-table-base-file}"/>
         <pathelement location="${module-output-support-itext-file}"/>
+        <pathelement location="${module-output-meta-file}"/>
       </classpath>
     </javac>
 
@@ -288,13 +297,13 @@
     <javac srcdir="source"
       destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/modules/output/table/xls/*"/>
+      <include name="org/jfree/report/modules/output/table/xls/**"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${libdir}/${jakarta-poi-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-output-table-base-file}"/>
+        <pathelement location="${module-output-meta-file}"/>
       </classpath>
     </javac>
 
