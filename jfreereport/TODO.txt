@@ -2,13 +2,13 @@ Label printing (as seen in the card-demo)
 
 0.8.5:
   * Implement function sets (see #note-1030630)
-  * pluggable input support (WMF, SVG etc)
-  * Multi-Page definition, 1 pageformat for all pages
+! * pluggable input support (WMF, SVG etc)
++ * Multi-Page definition, 1 pageformat for all pages
     multiple pages (x and y),
     a defined max width and max height (may be less than the given log page size)
     a global page header/footer for the complete log page
     several private page header/footers for every physical page
-  * Implement JFreeChart adapter and Barcode stuff
++ * Implement JFreeChart adapter and Barcode stuff
   * Formated Text support for printing (RTF, HTML)
   * Allow access to the last datarow to make reporting results available outside.
   * Simple parser writer and comment handler ...
@@ -39,31 +39,36 @@ general:
     on the server and only the minimum of data is sent to the client ...
 
 
----
+-----------------------------------------------------------------------------
+What changed:
 
-PageEvent restructuring:
+* Propagate output-complete events
+* pageable output targets:
+  - report state list is now internal and no longer available outside
+  - plaintext target complete rewrite (thanks Michael Tennes)
+  - DummyTargets are no longer used (MetaBands are used instead)
+* table tagets: Complete rewrite
+  - html target: inline-html generation (jsp:include support)
+  - RTF target fixed and now considered stable (except the image support)
+  - Excel-Target: Alternate formats for Date and NumberFields
+* ResourceBundles are property files now
+* Boot process integrates into the jcommon boot system
+* Function use bean-interface for configuration; so the explicit use of
+  setProperties (..) has been removed
+* PageDefinition object instead of the pageformat
+  - ReportStates allow access to the current page definition object
+  - the page definition is now the only source for the page format;
+    all constructors accepting page formats have been removed
+* ReportConnectable filter instead of DataRowConnectable to allow
+  access to the report definition during the data preprocessing
+  (this allows the report to bind a certain resource bundle for the
+  localization (to be implemented))
+* Functions and expressions are now unified, JFreeReport objects only
+  know about expressions.
+* Root-Level Bands can now have a fixed start position on the page.
+* TextElements bind the encoding; so multiple encodings can be used
+  within a single PDF document
+* The ImageReference class has been replaced by an interface
 
-a0:         preCommit/PageBreak done                    <-------
-a1:         createSavepoint                                    |
-a2:         createContent                                      |
-            fireEvent to levelledExpressionList                |
-a3:         checkPagebreakBeforeState          --- rollback ---+  (fires PageEndedEvent)
-b0          doLayout                                           | 
-b1:         (checkBandFitsOnPage)              --- rollback ---+  (fires PageEndedEvent)
-c0:         commitData (kill savePoint)
-c1:         print commited data  
-c2:         perform pagebreak after
-
-
-Rollback will only be issued, if the page is not empty (current Pagebreak-Before-behaviour)
-StatefullPrinting possible
-Function needs to manage commit/rollback
-
-
-C/R storage system implementation:
-  - a vault to store the function's state on a per-function level. Rollback/Commit
-  delegated to vault implementation. 
-  
-? - expressions can safely access and modify the report as the rollback/commit will 
-  reset any invalid change.
-
+To be implemented: 
+  Simple parser: Support for the new features
