@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<project
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://maven.apache.org/xsd/maven-project-3.0.0.xsd">
+  <pomVersion>3</pomVersion>
+  <id>jfreereport-ext</id>
+  <name>JFreeReport Extensions</name>
+  <groupId>jfree</groupId>
+  <currentVersion>0.8.5</currentVersion>
+  <organization>
+    <name>JFree.org</name>
+    <url>http://www.jfree.org/</url>
+  </organization>
+  <inceptionYear>2001</inceptionYear>
+
+  <description>
+    The classes in this subproject extend JFreeReport with additional
+    functionality. The Maven distribution only contains the jfreereport-0.8.5-all.jar;
+    for a modular build grab the complete distribution from SourceForge.
+  </description>
+
+  <shortDescription>A java reporting library.</shortDescription>
+
+  <url>http://www.jfree.org/jfreereport/</url>
+  <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=51669</issueTrackingUrl>
+
+  <repository>
+    <connection>
+      scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport:jfreereport-ext
+    </connection>
+    <url>
+      http://cvs.sourceforge.net/viewcvs.py/jfreereport/jfreereport-ext
+    </url>
+  </repository>
+
+  <mailingLists>
+    <mailingList>
+      <name>JFreeReport Developer List</name>
+      <subscribe>
+        jfreereport-developers-request@lists.sourceforge.net?subject=subscribe
+      </subscribe>
+      <unsubscribe>
+        jfreereport-developers-request@lists.sourceforge.net?subject=unsubscribe
+      </unsubscribe>
+      <archive>
+        http://sourceforge.net/mailarchive/forum.php?forum=jfreereport-developers
+      </archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+    <!--
+    For an up to date list of developers and contributors have a look at
+    the project info implementations.
+    -->
+  </developers>
+
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public Licence</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <dependencies>
+    <dependency>
+      <groupId>jfree</groupId>
+      <artifactId>jfreereport</artifactId>
+      <version>0.8.5</version>
+      <url>http://www.jfree.org/jfreereport/</url>
+    </dependency>
+
+    <dependency>
+      <groupId>jfree</groupId>
+      <artifactId>jfreechart</artifactId>
+      <version>1.0.0-pre2</version>
+      <url>http://www.jfree.org/jfreechart/</url>
+    </dependency>
+
+    <dependency>
+      <groupId>jfree</groupId>
+      <artifactId>jfreechart</artifactId>
+      <version>1.0.0-pre2</version>
+      <url>http://www.jfree.org/jfreechart/</url>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.7</version>
+      <url>http://www.junit.org/</url>
+    </dependency>
+
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.8</version>
+      <url>http://jakarta.apache.org/log4j/</url>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <!-- We don't use Maven as build system. -->
+  </build>
+</project>
+
