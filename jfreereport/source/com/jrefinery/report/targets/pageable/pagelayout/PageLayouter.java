@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.4 2002/12/05 16:49:44 mungady Exp $
+ * $Id: PageLayouter.java,v 1.5 2002/12/06 20:34:16 taqua Exp $
  *
  * Changes
  * -------
@@ -41,21 +41,40 @@ package com.jrefinery.report.targets.pageable.pagelayout;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.targets.pageable.LogicalPage;
-import com.jrefinery.report.targets.pageable.physicals.LayoutPrepareFunction;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.states.ReportState;
-import com.jrefinery.report.util.Log;
 
 /**
- * An abstract base class that is used to lay out a report.
- * 
+ * The baseclass for all PageLayouter. A page layouter is the layoutmanager of
+ * an logical page. This layoutmanager is responsible for handling and detecting
+ * page breaks, for placing the various Root-Bands (bands that are contained
+ * directly in an report) on the page and for the global appeareance of an page
+ * (columns, band placement policy etc.)
+ * <p>
+ * A PageLayouter for an Report is defined by the ReportProperty
+ * <code>pageable.layoutManager</code> by setting the classname of the page layouter.
+ * The specified class must contain an DefaultConstructor and must be an instance of
+ * PageLayouter.
+ * <p>
+ * All PageLayouter may define a set of LayoutConstraints for use in the Root-Bands.
+ * These constraints can be used to configure the layouting process. It is up to
+ * the layoutmanager implementation, which constraints are recognized and how these
+ * constraints are used.
+ * <p>
+ * All layoutmanagers should document their known constraints.
+ *
  * @author Thomas Morgner
  */
 public abstract class PageLayouter extends AbstractFunction
 {
   /**
-   * Represents the state of the page layouter. 
+   * Represents the state of the page layouter. Subclasses must override this
+   * class to create an internal state which can be saved and restored when
+   * an PageBreak occures.
+   * <p>
+   * The state is required to be cloneable and must support deep-cloning so that
+   * the state can be restored multiple times whenever the page printing continues.
    */
   protected static abstract class LayoutManagerState implements Cloneable
   {
@@ -68,7 +87,9 @@ public abstract class PageLayouter extends AbstractFunction
   }
 
   /**
-   * A clone carrier.
+   * A clone carrier. DefaultCloning does clone reference to an object, and
+   * not the the object-content, so the content in that carrier is shared
+   * among all cloned instances.
    */
   private class CloneCarrier
   {
@@ -79,29 +100,47 @@ public abstract class PageLayouter extends AbstractFunction
     private LogicalPage logicalPage;
   }
 
-  /** The current state. */
+  /**
+   * The current layoutmanager state. This is used to reconstruct the state of
+   * the last print operation whenever an pagebreak occured. The contents depend
+   * on the specific implementation of the PageLayouter.
+   */
   private LayoutManagerState layoutManagerState;
   
   /** The latest report event. */
   private ReportEvent currentEvent;
   
-  /** The 'page-ended' flag. */
-  private boolean pageEnded;
-  
   /** A clone carrier. */
   private CloneCarrier cloneCarrier;
   
-  /** The dep level. */
+  /**
+   * The depency level. Should be set to -1 or lower to ensure that this function
+   * has the highest priority in the function collection.
+   */
   private int depLevel;
 
-  /** The 'finishing page' flag. */
+  /**
+   * The 'finishing page' flag. Indicates that the current page is shut down.
+   * The page footer should be printed and the state stored. Trying to end the
+   * page again while the finishing process is not complete will result in an
+   * IllegalState.
+   * <p>
+   * If the page should be finished while the page is restarted, will throw an
+   * ReportProcessing exception, as this would result in an infinite loop.
+   */
   private boolean finishingPage;
   
-  /** The 'restarting page' flag. */
+  /**
+   * The 'restarting page' flag. Is set to true, while the page is started.
+   * The last saved state is restored and the page header gets prepared.
+   * Trying the start the page again while the restarting process is not complete
+   * or while the page is currently being finished, will result in an IllegalState.
+   */
   private boolean restartingPage;
 
   /**
-   * Creates a new page layouter.
+   * Creates a new page layouter. The function depency level is set to -1 (highest
+   * priority).
    */
   public PageLayouter()
   {
@@ -113,6 +152,7 @@ public abstract class PageLayouter extends AbstractFunction
    * Sets the logical page for the layouter.
    *
    * @param logicalPage  the logical page (null not permitted).
+   * @throws NullPointerException it the logical page is null
    */
   public void setLogicalPage(LogicalPage logicalPage)
   {
@@ -135,8 +175,16 @@ public abstract class PageLayouter extends AbstractFunction
 
   /**
    * Returns the 'finishing page' flag.
+   * <p>
+   * When set to true, indicates that the current page is shut down.
+   * The page footer should be printed and the state stored. Trying to end the
+   * page again while the finishing process is not complete will result in an
+   * IllegalState.
+   * <p>
+   * If the page should be finished while the page is restarted, will throw an
+   * ReportProcessing exception, as this would result in an infinite loop.
    *
-   * @return true or false.
+   * @return true if the current page is currently shut down, false otherwise.
    */
   public boolean isFinishingPage()
   {
@@ -146,6 +194,7 @@ public abstract class PageLayouter extends AbstractFunction
   /**
    * Sets the 'finishing page' flag.
    *
+   * @see com.jrefinery.report.targets.pageable.pagelayout.PageLayouter#isFinishingPage
    * @param finishingPage  the new flag value.
    */
   public void setFinishingPage(boolean finishingPage)
@@ -155,8 +204,13 @@ public abstract class PageLayouter extends AbstractFunction
 
   /**
    * Returns the 'restarting page' flag.
+   * <p>
+   * Is set to true, while the page is started.
+   * The last saved state is restored and the page header gets prepared.
+   * Trying the start the page again while the restarting process is not complete
+   * or while the page is currently being finished, will result in an IllegalState.
    *
-   * @return true or false.
+   * @return true if the current page is currently restarting, false otherwise
    */
   public boolean isRestartingPage()
   {
@@ -166,6 +220,7 @@ public abstract class PageLayouter extends AbstractFunction
   /**
    * Sets the 'restarting page' flag.
    *
+   * @see com.jrefinery.report.targets.pageable.pagelayout.PageLayouter#isRestartingPage
    * @param restartingPage  sets the restarting page flag.
    */
   public void setRestartingPage(boolean restartingPage)
@@ -174,7 +229,8 @@ public abstract class PageLayouter extends AbstractFunction
   }
 
   /**
-   * Returns the report.
+   * Returns the report that should be printed. This is the report contained
+   * in the last ReportEvent received, or null, if no event occured here.
    *
    * @return the report.
    */
@@ -187,8 +243,9 @@ public abstract class PageLayouter extends AbstractFunction
    * Sets the report.
    *
    * @param report  the report (null not permitted).
+   * @throws NullPointerException if the given report is null.
    */
-  protected void setReport(JFreeReport report)
+  private void setReport(JFreeReport report)
   {
     if (report == null) 
     {
@@ -219,52 +276,91 @@ public abstract class PageLayouter extends AbstractFunction
     {
       setReport(currentEvent.getReport());
     }
-    else
-    {
-      setReport(null);
-    }
   }
 
   /**
-   * Ends a page.
+   * Ends a page. During the process, an PageFinished event is generated and
+   * the state advances to the next page. The Layoutmanager-State is saved and
+   * the logical page is closed.
+   * <p>
+   * While this method is executed, the FinishingPage flag is set to true.
+   * <p>
+   * You are not able to print on the logical page after the page is finished.
+   *
+   * @throws IllegalStateException if the page end is requested a second time
+   * @throws ReportProcessingException if the page end is requested while the page
+   * is restarted.
    */
   protected void endPage () throws ReportProcessingException
   {
-    if (isRestartingPage()) 
+    // this can be dangerous if a band spans multiple pages.
+    // rethink that.
+    if (isRestartingPage())
     {
       throw new ReportProcessingException ("Report does not proceed");
     }
+    // cannot finish
+    if (isFinishingPage())
+    {
+      throw new IllegalStateException("Page is currently finishing");
+    }
     setFinishingPage(true);
+
     ReportState cEventState = getCurrentEvent().getState();
     cEventState.firePageFinishedEvent();
-    pageEnded = true;
     cEventState.nextPage();
     setFinishingPage(false);
+
+    // save the state after the PageFinished event is fired to
+    // gather as many information as possible
     // log // no cloning save the orignal state
     layoutManagerState = saveCurrentState();
 
     getLogicalPage().close();
   }
 
+  /**
+   * Restarts the current page. The logical page is opened again and the
+   * PageStartedEvent is fired. While this method is executed, the RestartingPage
+   * flag is set to true.
+   *
+   * @param state
+   */
   protected void startPage (ReportState state)
   {
     if (state == null) throw new NullPointerException();
 
     getLogicalPage().open();
     setRestartingPage(true);
-    pageEnded = false;
     state.firePageStartedEvent();
-
     setRestartingPage(false);
   }
 
+  /**
+   * Checks whether this page has ended. If this method returns true, no
+   * printing to the logical page is allowed.
+   *
+   * @return true, if the logical page is closed and no printing is allowed
+   */
   public boolean isPageEnded()
   {
-    return pageEnded;
+    return getLogicalPage().isOpen() == false;
   }
 
+  /**
+   * Save the current state into the LayoutManagerState object. The concrete
+   * implementation is responsible to save all required information so that the
+   * printing can be continued after the pagebreak is done.
+   *
+   * @return a valid saveState, never null
+   */
   protected abstract LayoutManagerState saveCurrentState ();
 
+  /**
+   * Return the last stored LayoutManager state or null if there is no state
+   * stored.
+   * @return the last LayoutManagerState.
+   */
   public LayoutManagerState getLayoutManagerState()
   {
     return layoutManagerState;
@@ -282,11 +378,22 @@ public abstract class PageLayouter extends AbstractFunction
       throws ReportProcessingException;
 
 
+  /**
+   * Clear the saveState. This should be called after the saveState has been
+   * restored.
+   */
   protected void clearSaveState ()
   {
     layoutManagerState = null;
   }
 
+  /**
+   * Return a self-reference. This backdoor is used to extract the current
+   * PageLayoutManager instance from the DataRow. Please don't use it in your functions,
+   * it is required for the PageableReportProcessor.
+   *
+   * @return this PageLayouter.
+   */
   public Object getValue ()
   {
     return this;
@@ -296,27 +403,22 @@ public abstract class PageLayouter extends AbstractFunction
    * The depency level defines the level of execution for this function. Higher depency functions are
    * executed before lower depency functions. The range for depencies is defined to start from 0 (lowest
    * depency possible) to 2^31 (upper limit of int).
+   * <p>
+   * PageLayouter functions override the default behaviour an place them self at depency level -1,
+   * an so before any userdefined function.
    */
   public int getDepencyLevel()
   {
     return depLevel;
   }
 
+  /**
+   * Overrides the depency level. Should be lower than any other function depency.
+   * @param deplevel the new depency level.
+   */
   public void setDepencyLevel(int deplevel)
   {
     this.depLevel = deplevel;
-  }
-
-  /**
-   * Returns the 'layout prepare' function.
-   * <p>
-   * This method returns <code>null</code>.
-   *
-   * @return null.
-   */
-  public LayoutPrepareFunction getPrepareLayoutFunction ()
-  {
-    return null;
   }
 
   /**
@@ -333,11 +435,4 @@ public abstract class PageLayouter extends AbstractFunction
   {
     return super.clone();
   }
-
-  /**
-   * A detector whether the last pagebreak was a manual pagebreak or an automatic one.
-   *
-   * @return true or false.
-   */
-  public abstract boolean isManualPageBreak ();
 }
