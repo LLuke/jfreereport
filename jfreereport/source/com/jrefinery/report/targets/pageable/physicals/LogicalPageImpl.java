@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: LogicalPageImpl.java,v 1.1 2002/12/02 17:57:07 taqua Exp $
  *
  * Changes
  * -------
@@ -258,7 +258,6 @@ public class LogicalPageImpl implements LogicalPage
       physicalPage[i].flush();
     }
     closed = true;
-    Log.debug ("CLOSE LOGICAL PAGE: ");
   }
 
   public boolean isOpen()
@@ -269,7 +268,6 @@ public class LogicalPageImpl implements LogicalPage
   public void open ()
   {
     closed = false;
-    Log.debug ("OPEN LOGICAL PAGE: ");
   }
 
   public boolean isEmpty ()

@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: TextOperationModul.java,v 1.1 2002/12/02 17:56:58 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public class TextOperationModul extends OperationModul
     if (e == null) throw new NullPointerException("element is null");
     if (value == null) throw new NullPointerException("Value is null");
     Content c = value.getContentForBounds(bounds);
-
+    print(c);
     // Font
     Font font = e.getStyle().getFontStyleProperty();
 
@@ -79,53 +79,54 @@ public class TextOperationModul extends OperationModul
     }
 
     ElementAlignment va = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
+    VerticalBoundsAlignment vba = null;
     if (va.equals(ElementAlignment.TOP))
     {
-      cbounds = new TopAlignment(bounds).align(cbounds);
+      vba = new TopAlignment(bounds);
     }
     else if (va.equals(ElementAlignment.MIDDLE))
     {
-      cbounds = new MiddleAlignment(bounds).align(cbounds);
+      vba = new MiddleAlignment(bounds);
     }
     else 
     {
-      cbounds = new BottomAlignment(bounds).align(cbounds);
+      vba = new BottomAlignment(bounds);
     }
+    // calculate the horizontal shift ... is applied later
+    vba.calculateShift(cbounds);
 
-    // cbounds uses a minimum width, and so also the horizontal space is lost,
-    // restoring it here ...
-    bounds = new Rectangle2D.Double(bounds.getX(), cbounds.getY(), bounds.getWidth(), cbounds.getHeight());
 
     ElementAlignment ha = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
     if (ha.equals(ElementAlignment.CENTER))
     {
-      addContent(c, list, new CenterAlignment(bounds));
+      addContent(c, list, new CenterAlignment(bounds), vba);
     }
     else if (ha.equals(ElementAlignment.RIGHT))
     {
-      addContent(c, list, new RightAlignment(bounds));
+      addContent(c, list, new RightAlignment(bounds), vba);
     }
     else
     {
-      addContent(c, list, new LeftAlignment(bounds));
+      addContent(c, list, new LeftAlignment(bounds), vba);
     }
 
     return list;
   }
 
-  private void addContent (Content c, List list, HorizontalBoundsAlignment bounds)
+  private void addContent (Content c, List list, HorizontalBoundsAlignment bounds, VerticalBoundsAlignment vba)
   {
     if (c instanceof TextLine)
     {
       String value = ((TextLine) c).getContent();
-      list.add (new PhysicalOperation.SetBoundsOperation (bounds.align(c.getBounds())));
+      Log.debug ("Adding Content: " + value + " -> " + bounds.align(c.getBounds()));
+      list.add (new PhysicalOperation.SetBoundsOperation (vba.applyShift (bounds.align(c.getBounds()))));
       list.add (new PhysicalOperation.PrintTextOperation(value));
     }
     else
     {
       for (int i = 0; i < c.getContentPartCount(); i++)
       {
-        addContent(c.getContentPart(i), list, bounds);
+        addContent(c.getContentPart(i), list, bounds, vba);
       }
     }
   }
@@ -138,4 +139,27 @@ public class TextOperationModul extends OperationModul
     TextContent tc = new TextContent(text, bounds, ot.createTextSizeCalculator(f));
     return tc;
   }
+
+
+  public static void print (Content c)
+  {
+    Log.debug ("c = " + c + ", " + c.getBounds());
+    if (c == null)
+    {
+      Log.debug ("IsNull");
+      return;
+    }
+    if (c instanceof TextLine)
+    {
+      Log.debug ("Line: " + ((TextLine) c).getContent());
+    }
+    else
+    {
+      for (int i = 0; i < c.getContentPartCount(); i++)
+      {
+        print (c.getContentPart(i));
+      }
+    }
+  }
+
 }

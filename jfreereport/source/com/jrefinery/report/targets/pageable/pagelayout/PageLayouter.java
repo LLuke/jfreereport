@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: PageLayouter.java,v 1.1 2002/12/02 17:57:05 taqua Exp $
  *
  * Changes
  * -------
@@ -146,7 +146,7 @@ public abstract class PageLayouter extends AbstractFunction
     cEventState.nextPage();
     setFinishingPage(false);
     // log // no cloning save the orignal state
-    Log.debug ("LayoutManagerState: " + layoutManagerState);
+    // Log.debug ("LayoutManagerState: " + layoutManagerState);
     layoutManagerState = saveCurrentState();
 
     getLogicalPage().close();
