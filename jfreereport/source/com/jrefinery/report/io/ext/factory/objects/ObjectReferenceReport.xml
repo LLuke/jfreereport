@@ -26,7 +26,7 @@
 
       <!-- The report header style -->
       <style>
-        <compound-key name="min-size" class="com.jrefinery.report.targets.FloatDimension">
+        <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
           <basic-object name="height" class="java.lang.Double">18.0</basic-object>
           <basic-object name="width" class="java.lang.Double">0.0</basic-object>
         </compound-key>
@@ -44,7 +44,7 @@
       <!-- The background element, draws the grey background box -->
       <element name="background" type="shape/generic">
         <style>
-          <compound-key name="min-size" class="com.jrefinery.report.targets.FloatDimension">
+          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">-100.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -72,7 +72,7 @@
       <!-- A text element, contains the report header -->
       <element type="text/plain">
         <style>
-          <compound-key name="min-size" class="com.jrefinery.report.targets.FloatDimension">
+          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">-100.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -89,7 +89,7 @@
       <!-- A line -->
       <element type="shape/generic">
         <style>
-          <compound-key name="min-size" class="com.jrefinery.report.targets.FloatDimension">
+          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">0.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -122,7 +122,7 @@
         </fields>
         <group-header>
           <style>
-            <compound-key name="min-size" class="com.jrefinery.report.targets.FloatDimension">
+            <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
               <basic-object name="height" class="java.lang.Double">18.0</basic-object>
               <basic-object name="width" class="java.lang.Double">0.0</basic-object>
             </compound-key>
@@ -138,7 +138,7 @@
           <!-- group header -->
           <element type="text/plain">
             <style>
-              <compound-key name="min-size" class="com.jrefinery.report.targets.FloatDimension">
+              <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
                 <basic-object name="height" class="java.lang.Double">-100.0</basic-object>
                 <basic-object name="width" class="java.lang.Double">150.0</basic-object>
               </compound-key>
@@ -154,7 +154,7 @@
 
           <element type="text/plain">
             <style>
-              <compound-key name="min-size" class="com.jrefinery.report.targets.FloatDimension">
+              <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
                 <basic-object name="height" class="java.lang.Double">-100.0</basic-object>
                 <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
               </compound-key>
@@ -172,7 +172,7 @@
 
           <element type="shape/generic">
             <style>
-              <compound-key name="min-size" class="com.jrefinery.report.targets.FloatDimension">
+              <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
                 <basic-object name="height" class="java.lang.Double">0.0</basic-object>
                 <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
               </compound-key>
@@ -207,7 +207,7 @@
         </fields>
         <group-header>
           <style>
-            <compound-key name="min-size" class="com.jrefinery.report.targets.FloatDimension">
+            <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
               <basic-object name="height" class="java.lang.Double">12.0</basic-object>
               <basic-object name="width" class="java.lang.Double">0.0</basic-object>
             </compound-key>
@@ -223,7 +223,7 @@
           <!-- The background element, draws the grey background box -->
           <element name="background" type="shape/generic">
             <style>
-              <compound-key name="min-size" class="com.jrefinery.report.targets.FloatDimension">
+              <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
                 <basic-object name="height" class="java.lang.Double">-100.0</basic-object>
                 <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
               </compound-key>
@@ -251,7 +251,7 @@
           <!-- group header -->
           <element type="text/plain">
             <style>
-              <compound-key name="min-size" class="com.jrefinery.report.targets.FloatDimension">
+              <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
                 <basic-object name="height" class="java.lang.Double">12.0</basic-object>
                 <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
               </compound-key>
@@ -271,7 +271,7 @@
 
     <itemband>
       <style>
-        <compound-key name="min-size" class="com.jrefinery.report.targets.FloatDimension">
+        <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
           <basic-object name="height" class="java.lang.Double">12.0</basic-object>
           <basic-object name="width" class="java.lang.Double">0.0</basic-object>
         </compound-key>
@@ -286,7 +286,7 @@
 
       <element type="text/plain" name="object-class">
         <style>
-          <compound-key name="min-size" class="com.jrefinery.report.targets.FloatDimension">
+          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">12.0</basic-object>
             <basic-object name="width" class="java.lang.Double">200.0</basic-object>
           </compound-key>
@@ -303,7 +303,7 @@
 
       <element type="text/plain">
         <style>
-          <compound-key name="min-size" class="com.jrefinery.report.targets.FloatDimension">
+          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">12.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>

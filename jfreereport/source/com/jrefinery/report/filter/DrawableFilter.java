@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFieldTemplate.java,v 1.5 2003/03/07 16:55:55 taqua Exp $
+ * $Id: DrawableFilter.java,v 1.3 2003/04/09 00:12:30 mungady Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@ package com.jrefinery.report.filter;
 import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.DrawableContainer;
-import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.ui.FloatDimension;
 import com.jrefinery.ui.Drawable;
 
 /**

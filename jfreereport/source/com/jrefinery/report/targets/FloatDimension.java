@@ -20,45 +20,35 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ----------------
  * FloatDimension.java
- * -------------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * ----------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner;
+ * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FloatDimension.java,v 1.6 2003/04/06 18:11:30 taqua Exp $
+ * $Id$
  *
  * Changes
  * -------
- * 05-Dec-2002 : Updated Javadocs (DG);
+ * 23.04.2003 : Initial version
  */
 package com.jrefinery.report.targets;
 
-import java.awt.geom.Dimension2D;
-import java.io.Serializable;
-
 /**
- * A dimension object specified using <code>float</code> values.
+ * 
  *
- * @author Thomas Morgner
+ * @deprecated this class moved into the JCommon library and is now located
+ * in the package com.jrefinery.ui.
  */
-public class FloatDimension extends Dimension2D implements Cloneable, Serializable
+public class FloatDimension extends com.jrefinery.ui.FloatDimension
 {
-  /** The width. */
-  private float width;
-  
-  /** The height. */
-  private float height;
-
-  /** 
-   * Creates a new dimension object with width and height set to zero. 
+  /**
+   * Creates a new dimension object with width and height set to zero.
    */
   public FloatDimension()
   {
-    width = 0.0f;
-    height = 0.0f;
   }
 
   /**
@@ -68,8 +58,7 @@ public class FloatDimension extends Dimension2D implements Cloneable, Serializab
    */
   public FloatDimension(FloatDimension fd)
   {
-    this.width = fd.width;
-    this.height = fd.height;
+    super(fd);
   }
 
   /**
@@ -80,136 +69,6 @@ public class FloatDimension extends Dimension2D implements Cloneable, Serializab
    */
   public FloatDimension(float width, float height)
   {
-    this.width = width;
-    this.height = height;
-  }
-
-  /**
-   * Returns the width.
-   *
-   * @return the width.
-   */
-  public double getWidth()
-  {
-    return width;
-  }
-
-  /**
-   * Returns the height.
-   *
-   * @return the height.
-   */
-  public double getHeight()
-  {
-    return height;
-  }
-
-  /**
-   * Sets the width.
-   *
-   * @param width  the width.
-   */
-  public void setWidth(double width)
-  {
-    this.width = (float) width;
-  }
-
-  /**
-   * Sets the height.
-   *
-   * @param height  the height.
-   */
-  public void setHeight(double height)
-  {
-    this.height = (float) height;
-  }
-
-  /**
-   * Sets the size of this <code>Dimension</code> object to the specified width and height.
-   * This method is included for completeness, to parallel the
-   * {@link java.awt.Component#getSize getSize} method of
-   * {@link java.awt.Component}.
-   * @param width  the new width for the <code>Dimension</code>
-   * object
-   * @param height  the new height for the <code>Dimension</code>
-   * object
-   */
-  public void setSize(double width, double height)
-  {
-    setHeight((float) height);
-    setWidth((float) width);
-  }
-
-  /**
-   * Creates and returns a copy of this object.  
-   *
-   * @return     a clone of this instance.
-   * @exception  OutOfMemoryError            if there is not enough memory.
-   * @see        java.lang.Cloneable
-   */
-  public Object clone()
-  {
-    return super.clone();
-  }
-
-  /**
-   * Returns a string representation of the object. In general, the
-   * <code>toString</code> method returns a string that
-   * "textually represents" this object. The result should
-   * be a concise but informative representation that is easy for a
-   * person to read.
-   * <p>
-   *
-   * @return  a string representation of the object.
-   */
-  public String toString()
-  {
-    return getClass().getName() + ":={width=" + getWidth() + ", height=" + getHeight() + "}";
-  }
-
-  /**
-   * Tests this object for equality with another object.
-   * 
-   * @param o  the other object.
-   * 
-   * @return <code>true</code> or <code>false</code>.
-   */
-  public boolean equals(Object o)
-  {
-    if (this == o) 
-    {
-      return true;
-    }
-    if (!(o instanceof FloatDimension)) 
-    {
-      return false;
-    }
-
-    final FloatDimension floatDimension = (FloatDimension) o;
-
-    if (height != floatDimension.height) 
-    {
-      return false;
-    }
-    if (width != floatDimension.width) 
-    {
-      return false;
-    }
-
-    return true;
-  }
-
-  /**
-   * Returns a hash code.
-   * 
-   * @return A hash code.
-   */
-  public int hashCode()
-  {
-    int result;
-    result = Float.floatToIntBits(width);
-    result = 29 * result + Float.floatToIntBits(height);
-    return result;
+    super(width, height);
   }
 }
-

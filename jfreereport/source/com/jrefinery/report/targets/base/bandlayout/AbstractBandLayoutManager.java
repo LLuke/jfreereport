@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.7 2003/04/11 17:32:03 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.8 2003/04/23 16:26:47 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.ui.FloatDimension;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.targets.base.content.ContentFactory;
@@ -52,7 +52,7 @@ import com.jrefinery.report.util.Log;
 
 /**
  * An abstract band layout manager.
- * 
+ *
  * @author Thomas Morgner.
  */
 public abstract class AbstractBandLayoutManager implements BandLayoutManager
@@ -198,8 +198,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return the new elements dimension.
    */
-  protected Dimension2D getElementContentBounds (Dimension2D bounds, 
-                                                 Element e, 
+  protected Dimension2D getElementContentBounds (Dimension2D bounds,
+                                                 Element e,
                                                  Dimension2D conBounds)
   {
     // check if we can handle the content before doing anything...
@@ -268,13 +268,13 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
 
   /**
    * Creates layout information for the minimum size.
-   * 
+   *
    * @param e  the element.
    * @param containerBounds  the bounds of the container.
-   * 
+   *
    * @return layout information.
    */
-  protected ElementLayoutInformation 
+  protected ElementLayoutInformation
       createLayoutInformationForMinimumSize (Element e, Dimension2D containerBounds)
   {
     // the preferred size of an band can be a relative value. Then this value is
@@ -296,13 +296,13 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
 
   /**
    * Creates layout information for the preferred size.
-   * 
+   *
    * @param e  the element.
    * @param containerDims  the dimensions of the container.
-   * 
+   *
    * @return layout information.
    */
-  protected ElementLayoutInformation 
+  protected ElementLayoutInformation
       createLayoutInformationForPreferredSize (Element e, Dimension2D containerDims)
   {
     float height = 0;

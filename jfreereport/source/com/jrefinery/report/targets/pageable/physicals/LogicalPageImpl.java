@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.32 2003/04/01 20:25:38 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.33 2003/04/05 18:57:19 taqua Exp $
  *
  * Changes
  * -------
@@ -363,7 +363,7 @@ public class LogicalPageImpl implements LogicalPage
     if (addOperationComments)
     {
       spool.addOperation(new PhysicalOperation.AddComment (
-          new Log.SimpleMessage("Begin Band: ", band.getClass(), " -> ", band.getName())));
+          new com.jrefinery.util.Log.SimpleMessage("Begin Band: ", band.getClass(), " -> ", band.getName())));
     }
 
     // process all elements
@@ -428,7 +428,7 @@ public class LogicalPageImpl implements LogicalPage
     ContentFactory factory = outputTarget.getContentFactory();
     if (factory.canHandleContent(e.getContentType()) == false)
     {
-      Log.debug (new Log.SimpleMessage("The OutputTarget does not support the content type: ", 
+      Log.debug (new com.jrefinery.util.Log.SimpleMessage("The OutputTarget does not support the content type: ",
                                        e.getContentType()));
       return;
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardLayoutBLayoutManager.java,v 1.3 2003/04/06 18:11:30 taqua Exp $
+ * $Id: CardLayoutBLayoutManager.java,v 1.4 2003/04/09 15:49:52 mungady Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@ import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.ui.FloatDimension;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 

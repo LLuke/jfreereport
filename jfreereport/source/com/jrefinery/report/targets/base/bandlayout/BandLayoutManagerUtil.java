@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.17 2003/04/05 18:57:14 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.18 2003/04/09 15:49:51 mungady Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.ui.FloatDimension;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.7 2003/02/26 16:42:19 mungady Exp $
+ * $Id: GroupFactory.java,v 1.8 2003/04/23 13:43:05 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import com.jrefinery.report.Group;
 import com.jrefinery.report.GroupFooter;
 import com.jrefinery.report.GroupHeader;
 import com.jrefinery.report.io.ReportParserUtil;
-import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.ui.FloatDimension;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.CharacterEntityParser;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.50 2003/04/06 18:10:53 taqua Exp $
+ * $Id: Band.java,v 1.51 2003/04/09 00:10:32 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -65,7 +65,7 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.ui.FloatDimension;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.BandDefaultStyleSheet;

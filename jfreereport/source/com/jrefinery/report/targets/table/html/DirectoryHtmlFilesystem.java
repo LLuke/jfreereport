@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.11 2003/03/18 18:28:45 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.12 2003/03/29 20:17:27 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.util.IOUtils;
+import com.jrefinery.io.IOUtils;
 import com.jrefinery.report.util.ImageComparator;
 import com.jrefinery.report.util.StringUtil;
 import com.jrefinery.report.util.WaitingImageObserver;

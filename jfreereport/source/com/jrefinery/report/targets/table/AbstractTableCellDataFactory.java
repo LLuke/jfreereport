@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTableCellDataFactory.java,v 1.7 2003/02/24 15:02:20 mungady Exp $
+ * $Id: AbstractTableCellDataFactory.java,v 1.8 2003/03/08 17:20:53 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ShapeElement;
-import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.ui.FloatDimension;
 import com.jrefinery.report.targets.ShapeTransform;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 

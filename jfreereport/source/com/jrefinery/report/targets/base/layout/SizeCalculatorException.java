@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SizeCalculatorException.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
+ * $Id: SizeCalculatorException.java,v 1.3 2003/02/27 10:35:39 mungady Exp $
  *
  * Changes
  * -------
@@ -37,7 +37,7 @@
  */
 package com.jrefinery.report.targets.base.layout;
 
-import com.jrefinery.report.util.StackableException;
+import com.jrefinery.util.StackableException;
 
 /**
  * The SizeCalculatorException is thrown if a SizeCalculator was not able to compute

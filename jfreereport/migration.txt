@@ -50,7 +50,7 @@ Code Changes
 - Element bounds have now a different meaning. Bounds are defined
   by setting the StyleKey ABS_DIMENSION and ABS_POSITION.
   ABS_DIMENSION is of type Dimension2D. To specify a float dimension
-  you could use com.jrefinery.report.targets.FloatDimension
+  you could use com.jrefinery.ui.FloatDimension
   ABS_POSITION is of type Point2D.
 
 - StyleKey BOUNDS is used internaly during the layouting, this key should never

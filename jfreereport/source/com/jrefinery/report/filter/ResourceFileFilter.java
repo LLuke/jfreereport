@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2003, by Thomas Morgner.
  *
- * $Id: ResourceFileFilter.java,v 1.4 2003/02/26 13:57:56 mungady Exp $
+ * $Id: ResourceFileFilter.java,v 1.5 2003/02/28 12:02:38 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -116,7 +116,7 @@ public class ResourceFileFilter implements DataFilter
     catch (Exception e)
     {
       // on errors return null.
-      Log.info (new Log.SimpleMessage("Failed to retrive the value for key", svalue), e);
+      Log.info (new com.jrefinery.util.Log.SimpleMessage("Failed to retrive the value for key", svalue), e);
     }
     return null;
   }

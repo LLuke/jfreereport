@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.11 2002/12/18 10:13:16 mungady Exp $
+ * $Id: SystemOutLogTarget.java,v 1.12 2003/02/05 17:56:03 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@ package com.jrefinery.report.util;
 
 import java.io.Serializable;
 
+import com.jrefinery.util.LogTarget;
+
 /**
  * A log target that sends all log messages to the <code>System.out</code> stream.
  *
@@ -51,7 +53,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
   /**
    * The default constructor.
    * <p>
-   * All {@link LogTarget} implementations need a default constructor.
+   * All {@link com.jrefinery.util.LogTarget} implementations need a default constructor.
    */
   public SystemOutLogTarget()
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementLayoutInformation.java,v 1.9 2003/04/05 18:57:14 taqua Exp $
+ * $Id: ElementLayoutInformation.java,v 1.10 2003/04/09 16:12:45 mungady Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.ui.FloatDimension;
 
 /**
  * A small carrier class to encapsulate the common layout parameters. This information is a 

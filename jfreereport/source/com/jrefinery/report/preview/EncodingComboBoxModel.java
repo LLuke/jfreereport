@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.14 2003/04/09 16:16:07 mungady Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.15 2003/04/11 14:11:44 taqua Exp $
  *
  * Changes
  * --------
@@ -618,7 +618,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
       InputStream in = ecb.getClass().getResourceAsStream(encFile);
       if (in == null)
       {
-        Log.warn (new Log.SimpleMessage
+        Log.warn (new com.jrefinery.util.Log.SimpleMessage
             ("The specified encodings definition file was not found: ", encFile));
       }
       else
@@ -644,7 +644,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
         }
         catch (IOException e)
         {
-          Log.warn (new Log.SimpleMessage
+          Log.warn (new com.jrefinery.util.Log.SimpleMessage
               ("There was an error while reading the encodings definition file: ", encFile), e);
         }
       }

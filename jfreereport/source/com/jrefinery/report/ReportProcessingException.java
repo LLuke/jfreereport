@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProcessingException.java,v 1.7 2002/12/06 17:18:42 mungady Exp $
+ * $Id: ReportProcessingException.java,v 1.8 2002/12/06 19:27:28 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.util.StackableException;
+import com.jrefinery.util.StackableException;
 
 /**
  * An exception that can be thrown during report processing, if an error occurs.

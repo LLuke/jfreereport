@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentCreationException.java,v 1.1 2003/02/07 22:40:39 taqua Exp $
+ * $Id: ContentCreationException.java,v 1.2 2003/02/27 10:35:38 mungady Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,7 @@
  */
 package com.jrefinery.report.targets.base.content;
 
-import com.jrefinery.report.util.StackableException;
+import com.jrefinery.util.StackableException;
 
 /**
  * A ContentCreationException is thrown whenever a content could not be created.

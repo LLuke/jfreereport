@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.23 2003/03/18 18:28:45 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.24 2003/04/23 13:43:06 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ import com.jrefinery.report.targets.table.TableGridLayout;
 import com.jrefinery.report.targets.table.TableGridPosition;
 import com.jrefinery.report.targets.table.TableProducer;
 import com.jrefinery.report.util.CharacterEntityParser;
-import com.jrefinery.report.util.IOUtils;
+import com.jrefinery.io.IOUtils;
 import com.jrefinery.report.util.HtmlWriter;
 
 /**

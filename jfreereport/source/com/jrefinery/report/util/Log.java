@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.19 2003/02/11 20:20:49 taqua Exp $
+ * $Id: Log.java,v 1.20 2003/02/26 13:58:04 mungady Exp $
  *
  * Changes
  * -------
@@ -42,16 +42,15 @@
 
 package com.jrefinery.report.util;
 
-import java.util.Arrays;
-import java.util.List;
+import com.jrefinery.util.LogTarget;
 
 /**
- * A simple logging facility. Create a class implementing the {@link LogTarget} interface to use
+ * A simple logging facility. Create a class implementing the {@link com.jrefinery.util.LogTarget} interface to use
  * this feature.
  *
  * @author Thomas Morgner
  */
-public final class Log
+public final class Log extends com.jrefinery.util.Log
 {
   /**
    * A helper class to print memory usage message if needed.
@@ -84,120 +83,17 @@ public final class Log
     }
   }
 
-  /**
-   * A simple message class.
-   */
-  public static class SimpleMessage
-  {
-    /** The message. */
-    private String message;
-
-    /** The parameters. */
-    private Object[] param;
-
-    /**
-     * Creates a new message.
-     *
-     * @param message  the message text.
-     * @param param1  parameter 1.
-     */
-    public SimpleMessage(String message, Object param1)
-    {
-      this.message = message;
-      this.param = new Object[] {param1};
-    }
-
-    /**
-     * Creates a new message.
-     *
-     * @param message  the message text.
-     * @param param1  parameter 1.
-     * @param param2  parameter 2.
-     */
-    public SimpleMessage(String message, Object param1, Object param2)
-    {
-      this.message = message;
-      this.param = new Object[] {param1, param2};
-    }
-
-    /**
-     * Creates a new message.
-     *
-     * @param message  the message text.
-     * @param param1  parameter 1.
-     * @param param2  parameter 2.
-     * @param param3  parameter 3.
-     */
-    public SimpleMessage(String message, Object param1, Object param2, Object param3)
-    {
-      this.message = message;
-      this.param = new Object[] {param1, param2, param3};
-    }
-
-    /**
-     * Creates a new message.
-     *
-     * @param message  the message text.
-     * @param param1  parameter 1.
-     * @param param2  parameter 2.
-     * @param param3  parameter 3.
-     * @param param4  parameter 4.
-     */
-    public SimpleMessage(String message, Object param1, Object param2, Object param3, Object param4)
-    {
-      this.message = message;
-      this.param = new Object[] {param1, param2, param3, param4};
-    }
-
-    /**
-     * Creates a new message.
-     *
-     * @param message  the message text.
-     * @param param  the parameters.
-     */
-    public SimpleMessage(String message, Object[] param)
-    {
-      this.message = message;
-      this.param = param;
-    }
-
-    /**
-     * Returns a string representation of the message (useful for debugging).
-     *
-     * @return the string.
-     */
-    public String toString ()
-    {
-      StringBuffer b = new StringBuffer();
-      b.append(message);
-      if (param != null)
-      {
-        for (int i = 0; i < param.length; i++)
-        {
-          b.append(param[i]);
-        }
-      }
-      return b.toString();
-    }
-  }
-
   /** The log level for error messages. */
-  public static final int ERROR = 0;
+  public static final int ERROR = LogTarget.ERROR;
 
   /** The log level for warning messages. */
-  public static final int WARN = 1;
+  public static final int WARN = LogTarget.WARN;
 
   /** The log level for information messages. */
-  public static final int INFO = 2;
+  public static final int INFO = LogTarget.INFO;
 
   /** The log level for debug messages. */
-  public static final int DEBUG = 3;
-
-  /** The logging threshold. */
-  private static int debuglevel = 100;
-
-  /** Storage for the log targets. */
-  private static LogTarget[] logTargets  = new LogTarget[0];;
+  public static final int DEBUG = LogTarget.DEBUG;
 
   /**
    * Private to prevent creating instances.
@@ -208,15 +104,19 @@ public final class Log
 
   static
   {
+    Log l = new Log();
+    Log.defineLog(l);
+
     if (ReportConfiguration.getGlobalConfig().isDisableLogging() == false)
     {
       String className = ReportConfiguration.getGlobalConfig().getLogTarget();
+
       try
       {
         Class c = ReportConfiguration.getGlobalConfig().getClass().
             getClassLoader().loadClass(className);
         LogTarget lt = (LogTarget) c.newInstance();
-        addTarget(lt);
+        l.addTarget(lt);
       }
       catch (Exception e)
       {
@@ -227,230 +127,24 @@ public final class Log
     String logLevel = ReportConfiguration.getGlobalConfig().getLogLevel();
     if (logLevel.equalsIgnoreCase("error"))
     {
-      debuglevel = ERROR;
+      l.setDebuglevel(ERROR);
     }
     else
     if (logLevel.equalsIgnoreCase("warn"))
     {
-      debuglevel = WARN;
+      l.setDebuglevel(WARN);
     }
     else
     if (logLevel.equalsIgnoreCase("info"))
     {
-      debuglevel = INFO;
+      l.setDebuglevel(INFO);
     }
     else
     if (logLevel.equalsIgnoreCase("debug"))
     {
-      debuglevel = DEBUG;
+      l.setDebuglevel(DEBUG);
     }
   }
 
-  /**
-   * Adds a log target to this facility. Log targets get informed, via the LogTarget interface,
-   * whenever a message is logged with this class.
-   *
-   * @param target  the target.
-   */
-  public static synchronized void addTarget (LogTarget target)
-  {
-    if (target == null)
-    {
-      throw new NullPointerException();
-    }
-    LogTarget[] data = new LogTarget[logTargets.length + 1];
-    System.arraycopy(logTargets, 0, data, 0, logTargets.length);
-    data[logTargets.length] = target;
-    logTargets = data;
-  }
 
-  /**
-   * Removes a log target from this facility.
-   *
-   * @param target  the target to remove.
-   */
-  public static synchronized void removeTarget (LogTarget target)
-  {
-    if (target == null)
-    {
-      throw new NullPointerException();
-    }
-    List l = Arrays.asList(logTargets);
-    l.remove(target);
-
-    LogTarget[] targets = new LogTarget[l.size()];
-    logTargets = (LogTarget[]) l.toArray(targets);
-  }
-
-  /**
-   * Returns the registered logtargets.
-   *
-   * @return the logtargets.
-   */
-  public LogTarget[] getTargets ()
-  {
-    LogTarget[] targets = new LogTarget[logTargets.length];
-    System.arraycopy(targets, 0, logTargets, 0, logTargets.length);
-    return targets;
-  }
-
-  /**
-   * Replaces all log targets by the given target.
-   *
-   * @param target the new and only logtarget.
-   */
-  public static synchronized void replaceTargets (LogTarget target)
-  {
-    if (target == null)
-    {
-      throw new NullPointerException();
-    }
-    logTargets = new LogTarget[]{ target };
-  }
-
-  /**
-   * Logs a message to the main log stream.  All attached log targets will also
-   * receive this message. If the given log-level is higher than the given debug-level
-   * in the main config file, no logging will be done.
-   *
-   * @param level  log level of the message.
-   * @param message  text to be logged.
-   */
-  public static void log (int level, Object message)
-  {
-    if (level > 3)
-    {
-      level = 3;
-    }
-    if (level <= debuglevel)
-    {
-      for (int i = 0; i < logTargets.length; i++)
-      {
-        LogTarget t = logTargets[i];
-        t.log (level, message);
-      }
-    }
-  }
-
-  /**
-   * Logs a message to the main log stream. All attached logTargets will also
-   * receive this message. If the given log-level is higher than the given debug-level
-   * in the main config file, no logging will be done.
-   *
-   * The exception's stacktrace will be appended to the log-stream
-   *
-   * @param level  log level of the message.
-   * @param message  text to be logged.
-   * @param e  the exception, which should be logged.
-   */
-  public static void log (int level, Object message, Exception e)
-  {
-    if (level > 3)
-    {
-      level = 3;
-    }
-    if (level <= debuglevel)
-    {
-      for (int i = 0; i < logTargets.length; i++)
-      {
-        LogTarget t = logTargets[i];
-        t.log (level, message, e);
-      }
-    }
-  }
-
-  /**
-   * A convenience method for logging a 'debug' message.
-   *
-   * @param message  the message.
-   */
-  public static void debug (Object message)
-  {
-    log (LogTarget.DEBUG, message);
-  }
-
-  /**
-   * A convenience method for logging a 'debug' message.
-   *
-   * @param message  the message.
-   * @param e  the exception.
-   */
-  public static void debug (Object message, Exception e)
-  {
-    log (LogTarget.DEBUG, message, e);
-  }
-
-  /**
-   * A convenience method for logging an 'info' message.
-   *
-   * @param message  the message.
-   */
-  public static void info (Object message)
-  {
-    log (LogTarget.INFO, message);
-  }
-
-  /**
-   * A convenience method for logging an 'info' message.
-   *
-   * @param message  the message.
-   * @param e  the exception.
-   */
-  public static void info (Object message, Exception e)
-  {
-    log (LogTarget.INFO, message, e);
-  }
-
-  /**
-   * A convenience method for logging a 'warning' message.
-   *
-   * @param message  the message.
-   */
-  public static void warn (Object message)
-  {
-    log (LogTarget.WARN, message);
-  }
-
-  /**
-   * A convenience method for logging a 'warning' message.
-   *
-   * @param message  the message.
-   * @param e  the exception.
-   */
-  public static void warn (Object message, Exception e)
-  {
-    log (LogTarget.WARN, message, e);
-  }
-
-  /**
-   * A convenience method for logging an 'error' message.
-   *
-   * @param message  the message.
-   */
-  public static void error (Object message)
-  {
-    log (LogTarget.ERROR, message);
-  }
-
-  /**
-   * A convenience method for logging an 'error' message.
-   *
-   * @param message  the message.
-   * @param e  the exception.
-   */
-  public static void error (Object message, Exception e)
-  {
-    log (LogTarget.ERROR, message, e);
-  }
-
-  /**
-   * Returns the debug level.  If the log level is not less than this, then the message will be
-   * ignored.
-   *
-   * @return the debug level.
-   */
-  public static int getDebugLevel ()
-  {
-    return debuglevel;
-  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.39 2003/04/09 15:55:10 mungady Exp $
+ * $Id: ReportConfiguration.java,v 1.40 2003/04/11 14:11:48 taqua Exp $
  *
  * Changes
  * -------
@@ -78,11 +78,11 @@ import java.util.Properties;
  * </li>
  * <li><code>com.jrefinery.report.LogTarget</code>
  * <p>
- * The default log target. This should be set to the classname of a  valid {@link LogTarget}
+ * The default log target. This should be set to the classname of a  valid {@link com.jrefinery.util.LogTarget}
  * implementation -- the given class is loaded and instantiated and added as the primary logging
  * target. This defaults to <code>"com.jrefinery.report.util.SystemOutLogTarget"</code>.
  * <p>
- * An alternative {@link LogTarget} for Log4J output can be found in the "Extension" package.
+ * An alternative {@link com.jrefinery.util.LogTarget} for Log4J output can be found in the "Extension" package.
  * <p>
  *
  * <li><code>com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT</code>

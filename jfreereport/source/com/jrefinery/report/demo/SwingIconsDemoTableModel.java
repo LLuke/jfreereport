@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SwingIconsDemoTableModel.java,v 1.2 2003/02/28 12:02:38 taqua Exp $
+ * $Id: SwingIconsDemoTableModel.java,v 1.3 2003/03/04 20:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import java.util.zip.ZipInputStream;
 
 import javax.swing.ImageIcon;
 
-import com.jrefinery.report.util.IOUtils;
+import com.jrefinery.io.IOUtils;
 import com.jrefinery.report.util.Log;
 
 /**

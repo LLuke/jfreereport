@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.5 2003/02/27 10:35:38 mungady Exp $
+ * $Id: TextContentFactoryModule.java,v 1.6 2003/04/05 18:57:15 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Element;
-import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.ui.FloatDimension;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
