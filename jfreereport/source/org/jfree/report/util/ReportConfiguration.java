@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.11 2003/09/15 18:26:51 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.12 2003/11/07 18:33:57 taqua Exp $
  *
  * Changes
  * -------
@@ -116,6 +116,10 @@ public class ReportConfiguration implements Configuration, Serializable
   /** The 'disable logging' property key. */
   public static final String DISABLE_LOGGING
       = "org.jfree.report.NoDefaultDebug";
+
+  /** The 'no-printer-available' property key. */
+  public static final String NO_PRINTER_AVAILABLE
+      = "org.jfree.report.NoPrinterAvailable";
 
   /** The default 'disable logging' property value. */
   public static final String DISABLE_LOGGING_DEFAULT = "false";

@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
- * $Id: FontFactory.java,v 1.4 2003/08/31 19:27:58 taqua Exp $
+ * $Id: FontFactory.java,v 1.5 2003/09/15 18:26:51 taqua Exp $
  *
  * Changes
  * -------
@@ -390,7 +390,7 @@ public final class FontFactory implements ReportDefinitionTags
 
     if (attr.getValue(FS_ENCODING) != null)
     {
-      target.setFontencoding(attr.getValue(FS_UNDERLINE));
+      target.setFontencoding(attr.getValue(FS_ENCODING));
     }
 
     if (attr.getValue(LINEHEIGHT) != null)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesWriter.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
+ * $Id: TemplatesWriter.java,v 1.6 2003/08/27 20:19:54 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jfree.report.ReportBuilderHints;
-import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
 import org.jfree.report.modules.parser.ext.ExtReportHandler;

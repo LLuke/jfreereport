@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionHandler.java,v 1.6 2003/08/24 15:08:20 taqua Exp $
+ * $Id: ExpressionHandler.java,v 1.7 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,7 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.function.Expression;
-import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.xml.sax.Attributes;

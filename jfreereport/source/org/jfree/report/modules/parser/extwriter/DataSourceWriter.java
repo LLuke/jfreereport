@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.jfree.report.filter.DataSource;
-import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.DataSourceHandler;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;

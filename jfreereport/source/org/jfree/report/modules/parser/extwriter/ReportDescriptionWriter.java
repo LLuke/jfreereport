@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.5 2003/11/07 15:31:40 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.EmptyDataSource;
 import org.jfree.report.filter.templates.Template;
 import org.jfree.report.layout.BandLayoutManager;
-import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.BandHandler;
 import org.jfree.report.modules.parser.ext.DataSourceHandler;

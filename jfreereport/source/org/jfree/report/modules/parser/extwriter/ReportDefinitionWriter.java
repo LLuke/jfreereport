@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionWriter.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
+ * $Id: ReportDefinitionWriter.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
 

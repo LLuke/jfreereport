@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.6 2003/08/24 15:13:21 taqua Exp $
+ * $Id: JFreeReport.java,v 1.7 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -624,7 +624,15 @@ public class JFreeReport implements Cloneable, Serializable
   {
     if (format == null)
     {
-      format = PrinterJob.getPrinterJob().defaultPage();
+      if (ReportConfiguration.getGlobalConfig().getConfigProperty
+          (ReportConfiguration.NO_PRINTER_AVAILABLE, "false").equals("true"))
+      {
+        format = new PageFormat();
+      }
+      else
+      {
+        format = PrinterJob.getPrinterJob().defaultPage();
+      }
     }
     defaultPageFormat = format;
   }

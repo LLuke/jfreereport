@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.6 2003/11/07 15:31:40 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import java.util.Properties;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.ExpressionCollection;
 import org.jfree.report.function.Function;
-import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.ExpressionHandler;
 import org.jfree.report.modules.parser.ext.ExtParserModuleInit;

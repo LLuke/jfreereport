@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.7 2003/08/24 15:08:20 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.8 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.Log;

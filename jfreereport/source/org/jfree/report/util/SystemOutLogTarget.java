@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.6 2003/09/15 18:26:51 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.7 2003/11/07 18:33:57 taqua Exp $
  *
  * Changes
  * -------
@@ -45,8 +45,10 @@ import java.io.Serializable;
 import org.jfree.util.LogTarget;
 
 /**
+ * 
  * A log target that sends all log messages to the <code>System.out</code> stream.
  *
+ * // todo is now implemented by PrintStreamLogTarget of jcommon
  * @author Thomas Morgner
  */
 public class SystemOutLogTarget implements LogTarget, Serializable

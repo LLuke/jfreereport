@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
+ * $Id: StyleWriter.java,v 1.6 2003/11/07 15:31:40 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jfree.report.ShapeElement;
-import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.StyleSheetHandler;
 import org.jfree.report.style.BandDefaultStyleSheet;

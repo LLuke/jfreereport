@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupHandler.java,v 1.8 2003/08/24 15:08:20 taqua Exp $
+ * $Id: GroupHandler.java,v 1.9 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ import org.jfree.report.Band;
 import org.jfree.report.Group;
 import org.jfree.report.GroupFooter;
 import org.jfree.report.GroupHeader;
-import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.CharacterEntityParser;

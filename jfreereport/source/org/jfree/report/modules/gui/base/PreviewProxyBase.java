@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.31 2003/11/15 18:22:28 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.32 2003/11/15 20:51:14 taqua Exp $
  *
  * Changes
  * -------
@@ -798,7 +798,7 @@ public class PreviewProxyBase extends JComponent
     {
       // ha!, we detected that the toolbar is floating ...
       // Log.debug (currentToolbar.getParent());
-      Window w = SwingUtilities.getWindowAncestor(toolbar);
+      Window w = SwingUtilities.windowForComponent(toolbar);
       if (w != null)
       {
         w.setVisible(false);

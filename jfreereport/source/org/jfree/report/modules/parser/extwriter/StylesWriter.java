@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
+ * $Id: StylesWriter.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.Group;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
 import org.jfree.report.modules.parser.ext.ExtReportHandler;

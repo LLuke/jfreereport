@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigWriter.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
+ * $Id: ParserConfigWriter.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
 import org.jfree.report.modules.parser.ext.ExtReportHandler;
