@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ---------------------
  * ReportProperties.java
  * ---------------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportProperties.java,v 1.15 2003/02/05 17:56:03 taqua Exp $
+ * $Id: ReportProperties.java,v 1.16 2003/02/25 15:42:51 taqua Exp $
  *
  * Changes
  * -------
@@ -100,8 +100,8 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public ReportProperties(ReportProperties props)
   {
-    properties = new Hashtable(props.properties);
-    markedProperties = new TreeSet();
+    this.properties = new Hashtable(props.properties);
+    this.markedProperties = new TreeSet();
   }
 
   /**
@@ -109,8 +109,8 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public ReportProperties()
   {
-    properties = new Hashtable();
-    markedProperties = new TreeSet();
+    this.properties = new Hashtable();
+    this.markedProperties = new TreeSet();
   }
 
   /**
@@ -138,11 +138,11 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @param key  the property key.
    *
-   * @return the stored value or null, if the key does not exist in this collection.
+   * @return The stored value, or <code>null</code> if the key does not exist in this collection.
    */
   public Object get(String key)
   {
-    return properties.get(key);
+    return this.properties.get(key);
   }
 
   /**
@@ -150,17 +150,17 @@ public class ReportProperties implements Serializable, Cloneable
    * the default value if the key was not stored in this properties collection.
    *
    * @param key  the property key.
-   * @param def the defaultvalue to be returned when the key is not stored in this properties
-   * collection.
+   * @param defaultValue  the default value to be returned when the key is not stored in this 
+   *                      properties collection.
    *
-   * @return the stored value or the default value, if the key does not exist in this collection.
+   * @return The stored value, or the default value if the key does not exist in this collection.
    */
-  public Object get(String key, Object def)
+  public Object get(String key, Object defaultValue)
   {
-    Object o = properties.get(key);
+    Object o = this.properties.get(key);
     if (o == null)
     {
-      return def;
+      return defaultValue;
     }
     return o;
   }
@@ -173,8 +173,8 @@ public class ReportProperties implements Serializable, Cloneable
   public Iterator keys()
   {
     TreeSet list = new TreeSet();
-    list.addAll(properties.keySet());
-    list.addAll(markedProperties);
+    list.addAll(this.properties.keySet());
+    list.addAll(this.markedProperties);
     return list.iterator();
   }
 
@@ -183,7 +183,7 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public void clear()
   {
-    properties.clear();
+    this.properties.clear();
   }
 
   /**
@@ -195,7 +195,7 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public boolean containsKey(String key)
   {
-    return properties.containsKey(key);
+    return this.properties.containsKey(key);
   }
 
   /**
@@ -208,8 +208,8 @@ public class ReportProperties implements Serializable, Cloneable
   public Object clone() throws CloneNotSupportedException
   {
     ReportProperties p = (ReportProperties) super.clone();
-    p.properties = (Hashtable) properties.clone();
-    p.markedProperties = (TreeSet) markedProperties.clone();
+    p.properties = (Hashtable) this.properties.clone();
+    p.markedProperties = (TreeSet) this.markedProperties.clone();
     return p;
   }
 
@@ -223,11 +223,11 @@ public class ReportProperties implements Serializable, Cloneable
   {
     if (marked)
     {
-      markedProperties.add (property);
+      this.markedProperties.add (property);
     }
     else
     {
-      markedProperties.remove(property);
+      this.markedProperties.remove(property);
     }
   }
 
@@ -240,7 +240,7 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public boolean isMarked(String property)
   {
-    return markedProperties.contains(property);
+    return this.markedProperties.contains(property);
   }
 
 }
