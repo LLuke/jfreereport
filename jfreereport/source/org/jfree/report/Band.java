@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.6 2003/08/25 14:29:28 taqua Exp $
+ * $Id: Band.java,v 1.7 2003/09/22 11:41:49 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -243,14 +243,16 @@ public class Band extends Element implements Serializable, Cloneable
     // add the element, update the childs Parent and the childs stylesheet.
     allElements.add(position, element);
     allElementsCached = null;
+
+    // then add the parents, or the band's parent will be unregistered ..
+    element.getStyle().addDefaultParent(getBandDefaults());
+    element.setParent(this);
+
     // first register the element with the collection ...
     if (getStyleSheetCollection() != null)
     {
       element.registerStyleSheetCollection(getStyleSheetCollection());
     }
-    // then add the parents, or the band's parent will be unregistered ..
-    element.getStyle().addDefaultParent(getBandDefaults());
-    element.setParent(this);
     invalidateLayout();
   }
 

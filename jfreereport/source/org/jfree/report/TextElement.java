@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextElement.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: TextElement.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -56,6 +56,8 @@
 package org.jfree.report;
 
 import org.jfree.report.filter.StringFilter;
+import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.style.FontDefinition;
 
 /**
  * The base class for all elements that display text in a report band.
@@ -166,5 +168,109 @@ public class TextElement extends Element
   public String getContentType()
   {
     return CONTENT_TYPE;
+  }
+
+  public String getFontName()
+  {
+    return (String) getStyle().getStyleProperty(ElementStyleSheet.FONT);
+  }
+
+  public void setFontName(String fontName)
+  {
+    getStyle().setStyleProperty(ElementStyleSheet.FONT, fontName);
+  }
+
+  public int getFontSize()
+  {
+    Integer i = (Integer) getStyle().getStyleProperty
+        (ElementStyleSheet.FONTSIZE);
+    // fontsize is never null.
+    return i.intValue();
+  }
+
+  public void setFontSize(int fontSize)
+  {
+    getStyle().setStyleProperty
+        (ElementStyleSheet.FONTSIZE, new Integer(fontSize));
+  }
+
+  public boolean isBold()
+  {
+    return getStyle().getBooleanStyleProperty(ElementStyleSheet.BOLD);
+  }
+
+  public void setBold(boolean bold)
+  {
+    getStyle().setBooleanStyleProperty(ElementStyleSheet.BOLD, bold);
+  }
+
+  public boolean isItalic()
+  {
+    return getStyle().getBooleanStyleProperty(ElementStyleSheet.ITALIC);
+  }
+
+  public void setItalic(boolean italic)
+  {
+    getStyle().setBooleanStyleProperty(ElementStyleSheet.ITALIC, italic);
+  }
+
+  public boolean isUnderline()
+  {
+    return getStyle().getBooleanStyleProperty(ElementStyleSheet.UNDERLINED);
+  }
+
+  public void setUnderline(boolean underline)
+  {
+    getStyle().setBooleanStyleProperty(ElementStyleSheet.UNDERLINED, underline);
+  }
+
+  public boolean isStrikethrough()
+  {
+    return getStyle().getBooleanStyleProperty(ElementStyleSheet.STRIKETHROUGH);
+  }
+
+  public void setStrikethrough(boolean strikethrough)
+  {
+    getStyle().setBooleanStyleProperty(ElementStyleSheet.STRIKETHROUGH, strikethrough);
+  }
+
+  public FontDefinition getFont()
+  {
+    return getStyle().getFontDefinitionProperty();
+  }
+
+  public void setFont(FontDefinition font)
+  {
+    getStyle().setFontDefinitionProperty(font);
+
+  }
+
+  public int getLineHeight()
+  {
+    Integer i = (Integer) getStyle().getStyleProperty
+        (ElementStyleSheet.LINEHEIGHT);
+    if (i == null)
+    {
+      return 0;
+    }
+    return i.intValue();
+  }
+
+  public void setLineHeight(int lineHeight)
+  {
+    getStyle().setStyleProperty
+        (ElementStyleSheet.LINEHEIGHT, new Integer(lineHeight));
+  }
+
+  public String getReservedLiteral()
+  {
+    return (String) getStyle().getStyleProperty
+        (ElementStyleSheet.RESERVED_LITERAL);
+  }
+
+  public void setReservedLiteral(String reservedLiteral)
+  {
+    getStyle().setStyleProperty
+        (ElementStyleSheet.RESERVED_LITERAL, reservedLiteral);
   }
 }

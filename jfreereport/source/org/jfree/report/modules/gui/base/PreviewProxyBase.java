@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.17 2003/09/12 17:47:02 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.18 2003/09/12 18:46:18 taqua Exp $
  *
  * Changes
  * -------
@@ -1675,7 +1675,11 @@ public class PreviewProxyBase extends JComponent
 
     // Silly Swing keeps at least one reference in the RepaintManager to support DoubleBuffering
     // I dont want this here, as PreviewFrames are evil and resource expensive ...
-    RepaintManager.setCurrentManager(null);
+
+    // I hope this helps as well ...
+    RepaintManager.currentManager(this).removeInvalidComponent(this);
+    RepaintManager.currentManager(this).markCompletelyClean(this);
+    //RepaintManager.setCurrentManager(null);
   }
 
   /**

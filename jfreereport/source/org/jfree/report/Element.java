@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.8 2003/09/12 18:46:02 taqua Exp $
+ * $Id: Element.java,v 1.9 2003/09/15 18:26:35 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -440,5 +440,32 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       return getParent().getTreeLock();
     }
     return treeLock;
+  }
+
+  public boolean isDynamicContent()
+  {
+    return getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT);
+  }
+
+  public void setDynamicContent(boolean dynamicContent)
+  {
+    getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.DYNAMIC_HEIGHT, dynamicContent);
+    if (dynamicContent == true)
+    {
+      setLayoutCacheable(false);
+    }
+  }
+
+  public boolean isLayoutCacheable()
+  {
+    return getStyle().getBooleanStyleProperty
+        (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE);
+  }
+
+  public void setLayoutCacheable(boolean layoutCacheable)
+  {
+    getStyle().setBooleanStyleProperty
+        (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, layoutCacheable);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetCollection.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: StyleSheetCollection.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,6 +46,7 @@ import java.util.Set;
 
 import org.jfree.report.util.HashNMap;
 import org.jfree.report.util.InstanceID;
+import org.jfree.report.util.Log;
 
 /**
  * The StyleSheet collection is assigned to all Elements, all StyleSheets and
@@ -500,6 +501,16 @@ public class StyleSheetCollection implements Cloneable, Serializable
         {
           final ElementStyleSheet esp = (ElementStyleSheet) defaultParents.get(i);
           final StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
+          if (sep == null)
+          {
+            throw new NullPointerException("StyleSheet '" + esp.getName() + "' is not known.");
+          }
+          /*
+          if (esp.getName().equals("band-default"))
+          {
+            Log.debug ("Update: " + esp.getName() + " -> " + sep.getReferenceCount());
+          }
+          */
           sep.setReferenceCount(sep.getReferenceCount() + 1);
         }
       }
@@ -548,6 +559,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
       }
       else
       {
+        // Log.debug ("Successfully removed: " + es.getName());
         es.unregisterStyleSheetCollection(this);
       }
 
@@ -587,5 +599,22 @@ public class StyleSheetCollection implements Cloneable, Serializable
   {
     final Set keySet = styleSheets.keySet();
     return Collections.unmodifiableSet(keySet).iterator();
+  }
+
+  public void debug()
+  {
+    Log.debug ("DEBUG----------------------------------------------");
+    Iterator it = keys();
+    while (it.hasNext())
+    {
+      String name = (String) it.next();
+      Iterator ses = styleSheets.getAll (name);
+      while (ses.hasNext())
+      {
+        StyleCollectionEntry se = (StyleCollectionEntry) ses.next();
+        Log.debug ("ES: " + name + " RefC: " + se.getReferenceCount());
+      }
+    }
+
   }
 }
