@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.26 2003/02/25 14:07:28 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.27 2003/02/26 16:42:16 mungady Exp $
  *
  * Changes
  * -------
@@ -351,9 +351,9 @@ public class ReportGenerator
   }
 
   /**
-   * Returns a new ReportGenerator reference.
-   *
-   * @return the report generator.
+   * Returns a single shared instance of the <code>ReportGenerator</code>.
+   * 
+   * @return The shared report generator.
    */
   public static ReportGenerator getInstance ()
   {

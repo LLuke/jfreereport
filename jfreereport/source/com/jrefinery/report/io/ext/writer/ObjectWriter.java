@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
+ * $Id: ObjectWriter.java,v 1.6 2003/02/22 18:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -71,8 +71,8 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    * Creates a new writer.
    * 
    * @param reportWriter  the report writer.
-   * @param baseObject  the base object.
-   * @param objectDescription  the object description.
+   * @param baseObject  the base object (<code>null</code> not permitted).
+   * @param objectDescription  the object description (<code>null</code> not permitted).
    */
   public ObjectWriter(ReportWriter reportWriter, Object baseObject, 
                       ObjectDescription objectDescription)
