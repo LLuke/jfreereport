@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.4 2002/05/26 22:00:21 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.5 2002/05/27 21:42:46 taqua Exp $
  *
  * Changes
  * -------

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OutputTarget.java,v 1.3 2002/05/16 17:05:24 jaosch Exp $
+ * $Id: OutputTarget.java,v 1.1 2002/05/21 23:06:19 taqua Exp $
  *
  * Changes
  * -------
