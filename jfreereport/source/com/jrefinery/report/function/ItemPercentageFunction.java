@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemPercentageFunction.java,v 1.12 2002/12/02 17:29:16 taqua Exp $
+ * $Id: ItemPercentageFunction.java,v 1.13 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -287,5 +287,23 @@ public class ItemPercentageFunction extends AbstractFunction
     ItemPercentageFunction clone = (ItemPercentageFunction) super.clone();
     clone.totalSumFunction = (TotalGroupSumFunction) totalSumFunction.clone();
     return clone;
+  }
+
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    ItemPercentageFunction function = (ItemPercentageFunction) super.getInstance();
+    function.totalSumFunction = (TotalGroupSumFunction) totalSumFunction.getInstance();
+    function.datasource = new StaticDataSource();
+    function.parser = new DecimalFormatParser();
+    function.parser.setNullValue(ZERO);
+    function.parser.setDataSource(function.datasource);
+    function.currentValue = ZERO;
+    return function;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemAvgFunction.java,v 1.5 2002/09/17 09:49:10 mungady Exp $
+ * $Id: ItemAvgFunction.java,v 1.6 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -259,4 +259,21 @@ public class ItemAvgFunction extends AbstractFunction
     }
   }
 
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    ItemAvgFunction function = (ItemAvgFunction) super.getInstance();
+    function.sum = ZERO;
+    function.itemCount = ZERO;
+    function.datasource = new StaticDataSource();
+    function.parser = new DecimalFormatParser();
+    function.parser.setNullValue(ZERO);
+    function.parser.setDataSource(function.datasource);
+    return function;
+  }
 }

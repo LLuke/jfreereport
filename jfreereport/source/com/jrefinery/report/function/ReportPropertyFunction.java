@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.14 2002/12/02 17:29:21 taqua Exp $
+ * $Id: ReportPropertyFunction.java,v 1.15 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ import com.jrefinery.report.states.ReportState;
  * <P>
  * You can add arbitrary properties to a report using the setProperty method.
  * <P>
- * ReportProperties are now retrieved from the report state.
+ * @deprecated ReportProperties are now retrieved from the report state.
  *
  * @author David Gilbert
  */
@@ -241,5 +241,4 @@ public class ReportPropertyFunction extends AbstractFunction
     }
     setField(fieldProp);
   }
-
 }

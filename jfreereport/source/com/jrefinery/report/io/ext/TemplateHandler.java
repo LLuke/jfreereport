@@ -2,12 +2,12 @@
  * Date: Jan 11, 2003
  * Time: 4:14:03 PM
  *
- * $Id$
+ * $Id: TemplateHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
-import com.jrefinery.report.io.ext.factory.templates.Template;
+import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
 import com.jrefinery.report.io.ext.BasicObjectHandler;
 import com.jrefinery.report.io.ext.CompoundObjectHandler;
 import com.jrefinery.report.io.Parser;
@@ -25,9 +25,9 @@ public class TemplateHandler implements ReportDefinitionHandler
 
   private Parser parser;
   private String finishTag;
-  private Template template;
+  private TemplateDescription template;
 
-  public TemplateHandler(Parser parser, String finishTag, Template template)
+  public TemplateHandler(Parser parser, String finishTag, TemplateDescription template)
   {
     this.parser = parser;
     this.finishTag = finishTag;
@@ -134,7 +134,7 @@ public class TemplateHandler implements ReportDefinitionHandler
     return parser;
   }
 
-  public Template getTemplate()
+  public TemplateDescription getTemplate()
   {
     return template;
   }

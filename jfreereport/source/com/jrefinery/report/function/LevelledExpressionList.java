@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.7 2002/12/09 03:56:34 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.1 2002/12/12 20:18:40 taqua Exp $
  *
  * Changes
  * -------
@@ -520,6 +520,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable
       Expression f = expressionCollection.getExpression(i);
       if (f != null)
       {
+        f = f.getInstance();
         expressionList.add(f);
         expressionList.setLevel(f, f.getDependencyLevel());
       }
@@ -540,6 +541,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable
       Function f = (Function) functionCollection.getExpression(i);
       if (f != null)
       {
+        f = (Function) f.getInstance();
         expressionList.add(f);
         expressionList.setLevel(f, f.getDependencyLevel());
       }

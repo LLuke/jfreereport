@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.16 2002/12/12 20:18:39 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.17 2002/12/20 09:17:54 mungady Exp $
  *
  * Changes
  * -------
@@ -297,4 +297,22 @@ public abstract class AbstractExpression implements Expression
     return function;
   }
 
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function. Only
+   * the datarow may be shared.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    try
+    {
+      return (Expression) clone();
+    }
+    catch (CloneNotSupportedException cne)
+    {
+      return null;
+    }
+  }
 }

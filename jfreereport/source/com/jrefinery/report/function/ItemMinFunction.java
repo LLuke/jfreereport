@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemMinFunction.java,v 1.3 2002/09/13 15:38:08 mungady Exp $
+ * $Id: ItemMinFunction.java,v 1.4 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -82,6 +82,9 @@ public class ItemMinFunction extends AbstractFunction
   /** Zero. */
   private static final BigDecimal ZERO = new BigDecimal(0.0);
 
+  /** Max. */
+  private static final BigDecimal MAX = new BigDecimal(Double.MAX_VALUE);
+
   /** The minimum value. */
   private BigDecimal min;
 
@@ -97,7 +100,7 @@ public class ItemMinFunction extends AbstractFunction
    */
   public ItemMinFunction()
   {
-    min = ZERO;
+    min = MAX;
     datasource = new StaticDataSource();
     parser = new DecimalFormatParser();
     parser.setNullValue(ZERO);
@@ -255,5 +258,24 @@ public class ItemMinFunction extends AbstractFunction
     setField(fieldProp);
     setGroup(getProperty(GROUP_PROPERTY));
   }
+
+
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    ItemMinFunction function = (ItemMinFunction) super.getInstance();
+    function.min = MAX;
+    function.datasource = new StaticDataSource();
+    function.parser = new DecimalFormatParser();
+    function.parser.setNullValue(ZERO);
+    function.parser.setDataSource(function.datasource);
+    return function;
+  }
+
 
 }

@@ -24,7 +24,7 @@
  * Expression.java
  * ---------------
  *
- * $Id: Expression.java,v 1.12 2002/12/12 12:26:55 mungady Exp $
+ * $Id: Expression.java,v 1.13 2002/12/12 20:18:40 taqua Exp $
  *
  * ChangeLog
  * ------------
@@ -160,4 +160,13 @@ public interface Expression extends Cloneable
    * @param level  the level.
    */
   public void setDependencyLevel(int level);
+
+  /**
+   * Return a new instance of this expression. The copy is initialized
+   * and uses the same parameters as the original, but does not share any
+   * objects.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance ();
 }

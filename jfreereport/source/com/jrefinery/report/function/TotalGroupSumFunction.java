@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumFunction.java,v 1.14 2002/12/02 17:29:23 taqua Exp $
+ * $Id: TotalGroupSumFunction.java,v 1.15 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -236,21 +236,6 @@ public class TotalGroupSumFunction extends AbstractFunction
   }
 
   /**
-   * Returns a clone of the function.
-   * <P>
-   * Be aware, this does not create a deep copy. If you have complex
-   * strucures contained in objects, you have to overwrite this function.
-   *
-   * @return A clone of the function.
-   *
-   * @throws CloneNotSupportedException this should never happen.
-   */
-  public Object clone() throws CloneNotSupportedException
-  {
-    return super.clone();
-  }
-
-  /**
    * Returns the name of the group to be totalled.
    *
    * @return the group name.
@@ -331,4 +316,21 @@ public class TotalGroupSumFunction extends AbstractFunction
     }
   }
 
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    TotalGroupSumFunction function = (TotalGroupSumFunction) super.getInstance();
+    function.groupResult = new GroupSum();
+    function.datasource = new StaticDataSource();
+    function.parser = new DecimalFormatParser();
+    function.parser.setNullValue(ZERO);
+    function.parser.setDataSource(function.datasource);
+    function.results = new ArrayList();
+    return function;
+  }
 }

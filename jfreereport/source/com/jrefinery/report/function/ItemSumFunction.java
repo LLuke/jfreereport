@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.21 2002/12/02 17:29:17 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.22 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -259,6 +259,23 @@ public class ItemSumFunction extends AbstractFunction
     }
     setField(fieldProp);
     setGroup(getProperty(GROUP_PROPERTY));
+  }
+
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    ItemSumFunction function = (ItemSumFunction) super.getInstance();
+    function.sum = ZERO;
+    function.datasource = new StaticDataSource();
+    function.parser = new DecimalFormatParser();
+    function.parser.setNullValue(ZERO);
+    function.parser.setDataSource(function.datasource);
+    return function;
   }
 
 }

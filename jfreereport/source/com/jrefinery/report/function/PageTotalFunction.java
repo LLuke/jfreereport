@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.10 2002/12/12 12:26:56 mungady Exp $
+ * $Id: PageTotalFunction.java,v 1.11 2003/01/08 19:33:23 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -42,6 +42,8 @@ package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.filter.StaticDataSource;
+import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.util.Log;
 
@@ -131,6 +133,22 @@ public class PageTotalFunction extends PageFunction
   }
 
   /**
+   * Clones the function.
+   * <P>
+   * Be aware, this does not create a deep copy. If you have complex
+   * strucures contained in objects, you have to override this function.
+   *
+   * @return a clone of this function.
+   *
+   * @throws CloneNotSupportedException this should never happen.
+   */
+  public Object clone() throws CloneNotSupportedException
+  {
+    PageTotalFunction ptf = (PageTotalFunction) super.clone();
+    return ptf;
+  }
+
+  /**
    * Receives notification from the report engine that a new page is starting.  Grabs the page
    * number from the report state and stores it.
    * <p>
@@ -140,7 +158,6 @@ public class PageTotalFunction extends PageFunction
    */
   public void pageStarted(ReportEvent event)
   {
-    Log.debug ("PageStarted Fired:" + event);
     if (event.getState().isPrepareRun() && event.getState().getLevel() < 0)
     {
       if (isGroupStarted)
@@ -218,6 +235,11 @@ public class PageTotalFunction extends PageFunction
    */
   public void reportStarted(ReportEvent event)
   {
+    if (pageStorage == null)
+    {
+      pageStorage = new PageStorage(getStartPage() - 1);
+    }
+
     if (event.getState().isPrepareRun() && event.getState().getLevel() < 0)
     {
       this.groupPages.clear();
@@ -281,7 +303,6 @@ public class PageTotalFunction extends PageFunction
     {
       throw new FunctionInitializeException(e.getMessage());
     }
-    pageStorage = new PageStorage(getStartPage() - 1);
   }
 
   /**
@@ -313,4 +334,19 @@ public class PageTotalFunction extends PageFunction
   {
     return Integer.parseInt(getProperty("start", "1"));
   }
+
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    PageTotalFunction function = (PageTotalFunction) super.getInstance();
+    function.groupPages = new Hashtable();
+    function.pageStorage = null;
+    return function;
+  }
+
 }

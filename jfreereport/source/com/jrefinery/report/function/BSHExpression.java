@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.10 2002/12/11 01:10:41 mungady Exp $
+ * $Id: BSHExpression.java,v 1.11 2002/12/18 10:13:16 mungady Exp $
  *
  * ChangeLog
  * ---------
@@ -225,6 +225,19 @@ public class BSHExpression extends AbstractExpression
     {
       throw new CloneNotSupportedException();
     }
+    return expression;
+  }
+
+  /**
+   * Return a new instance of this expression. The copy is initialized
+   * and uses the same parameters as the original, but does not share any
+   * objects.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    BSHExpression expression = (BSHExpression) super.getInstance();
     return expression;
   }
 }

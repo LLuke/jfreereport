@@ -2,20 +2,19 @@
  * Date: Jan 11, 2003
  * Time: 5:03:13 PM
  *
- * $Id: ElementHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: ElementHandler.java,v 1.2 2003/01/13 19:00:42 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.io.ext.DataSourceHandler;
 import com.jrefinery.report.filter.DataSource;
-import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
-import com.jrefinery.report.io.ext.factory.templates.Template;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ReportDefinitionHandler;
+import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
+import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 import java.util.Hashtable;
 
@@ -59,12 +58,12 @@ public class ElementHandler implements ReportDefinitionHandler
       if (references == null)
         throw new SAXException("A parent template must be specified");
 
-      Template template = templateCollector.getTemplate(references);
+      TemplateDescription template = templateCollector.getTemplate(references);
       if (template == null)
         throw new SAXException("The template '" + references + "' is not defined");
 
       // Clone the defined template ... we don't change the original ..
-      template = (Template) template.getInstance();
+      template = (TemplateDescription) template.getInstance();
       templateFactory = new TemplateHandler(getParser(),TEMPLATE_TAG, template);
       getParser().pushFactory(templateFactory);
     }
@@ -98,8 +97,8 @@ public class ElementHandler implements ReportDefinitionHandler
   {
     if (tagName.equals(TEMPLATE_TAG))
     {
-      Template t = templateFactory.getTemplate();
-      element.setDataSource(t.createDataSource());
+      TemplateDescription t = templateFactory.getTemplate();
+      element.setDataSource(t.createTemplate());
       templateFactory = null;
     }
     else if (tagName.equals(DATASOURCE_TAG))

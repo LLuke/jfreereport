@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited)
  *                   for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotienFunction.java,v 1.15 2002/12/12 12:26:56 mungady Exp $
+ * $Id: TotalGroupSumQuotientFunction.java,v 1.1 2002/12/19 17:40:37 taqua Exp $
  *
  * Changes
  * -------
@@ -379,6 +379,27 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
     {
       throw new FunctionInitializeException("Divisor is required");
     }
+  }
+
+
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    TotalGroupSumQuotientFunction function = (TotalGroupSumQuotientFunction) super.getInstance();
+    function.groupDividend = new GroupSum();
+    function.groupDivisor = new GroupSum();
+    function.datasource = new StaticDataSource();
+    function.parser = new DecimalFormatParser();
+    function.parser.setNullValue(ZERO);
+    function.parser.setDataSource(function.datasource);
+    function.dividendResults = new ArrayList();
+    function.divisorResults = new ArrayList();
+    return function;
   }
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.4 2002/12/02 17:29:14 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.5 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -235,4 +235,16 @@ public class ItemHideFunction extends AbstractFunction
     }
   }
 
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    ItemHideFunction ih = (ItemHideFunction) super.getInstance();
+    ih.lastObject = null;
+    return ih;
+  }
 }

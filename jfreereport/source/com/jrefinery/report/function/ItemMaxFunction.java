@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemMaxFunction.java,v 1.4 2002/12/02 17:29:15 taqua Exp $
+ * $Id: ItemMaxFunction.java,v 1.5 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -249,6 +249,23 @@ public class ItemMaxFunction extends AbstractFunction
     }
     setField(fieldProp);
     setGroup(getProperty(GROUP_PROPERTY));
+  }
+
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    ItemMaxFunction function = (ItemMaxFunction) super.getInstance();
+    function.max = ZERO;
+    function.datasource = new StaticDataSource();
+    function.parser = new DecimalFormatParser();
+    function.parser.setNullValue(ZERO);
+    function.parser.setDataSource(function.datasource);
+    return function;
   }
 
 }

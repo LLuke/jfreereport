@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.24 2002/12/12 20:18:40 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.25 2003/01/03 16:12:00 mungady Exp $
  *
  * Changes
  * -------
@@ -380,4 +380,21 @@ public abstract class AbstractFunction implements Function
     return function;
   }
 
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    try
+    {
+      return (Expression) clone();
+    }
+    catch (CloneNotSupportedException cne)
+    {
+      return null;
+    }
+  }
 }

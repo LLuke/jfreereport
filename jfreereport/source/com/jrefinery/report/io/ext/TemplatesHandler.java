@@ -2,12 +2,12 @@
  * Date: Jan 9, 2003
  * Time: 9:08:15 PM
  *
- * $Id: TemplatesHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: TemplatesHandler.java,v 1.2 2003/01/13 19:00:46 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
-import com.jrefinery.report.io.ext.factory.templates.Template;
+import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ext.ParserConfigHandler;
 import com.jrefinery.report.io.ReportDefinitionHandler;
@@ -49,11 +49,11 @@ public class TemplatesHandler implements ReportDefinitionHandler
     if (templateName == null)
       throw new SAXException("The 'name' attribute is required for template definitions");
     String references = attrs.getValue("references");
-    Template template = templateCollector.getTemplate(references);
+    TemplateDescription template = templateCollector.getTemplate(references);
     if (template == null) throw new SAXException("The template '" + references + "' is not defined");
 
     // Clone the defined template ... we don't change the original ..
-    template = (Template) template.getInstance();
+    template = (TemplateDescription) template.getInstance();
     template.setName(templateName);
     templateFactory = new TemplateHandler(getParser(),TEMPLATE_TAG, template);
     getParser().pushFactory(templateFactory);
