@@ -33,6 +33,9 @@ import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Set;
 import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Iterator;
 
 /**
  * The HashNMap can be used to store multiple values by a single key value. The values stored
@@ -49,14 +52,14 @@ public class HashNMap
 	
 	public void put (Object key, Object val)
 	{
-		Vector v = new Vector ();
+		List v = new ArrayList ();
 		v.add (val);
 		table.put (key, v);
 	}
 	
 	public void add (Object key, Object val)
 	{
-		Vector v = (Vector) table.get (key);
+		List v = (List) table.get (key);
 		if (v == null)
 		{
 			put (key, val);
@@ -69,22 +72,22 @@ public class HashNMap
 	
 	public Object get (Object key)
 	{
-		Vector v = (Vector) table.get (key);
+		List v = (List) table.get (key);
 		if (v == null)
 		{
 			return null;
 		}
-		return v.elementAt (0);
+		return v.get(0);
 	}
 	
-	public Enumeration getAll (Object key)
+	public Iterator getAll (Object key)
 	{
-		Vector v = (Vector) table.get (key);
+		List v = (List) table.get (key);
 		if (v == null)
 		{
 			return null;
 		}
-		return v.elements ();
+		return v.iterator ();
 	}
 	
 	public Enumeration keys ()
@@ -99,7 +102,7 @@ public class HashNMap
 	
 	public void remove (Object key, Object value)
 	{
-		Vector v = (Vector) table.get (key);
+		List v = (List) table.get (key);
 		if (v == null)
 		{
 			return;
@@ -133,7 +136,7 @@ public class HashNMap
 		boolean found = false;
 		while (e.hasMoreElements () && !found)
 		{
-			Vector v = (Vector) e.nextElement ();
+			List v = (List) e.nextElement ();
 			found = v.contains (value);
 		}
 		return found;
