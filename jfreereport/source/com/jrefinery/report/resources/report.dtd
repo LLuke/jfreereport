@@ -20,6 +20,7 @@
   2003-01-25: ResourceLabel and ResourceField added
               additional font style attributes added
               all elements except the shape elements now able to be dynamic
+  2003-05-20: Added support for generic shape-field and drawable-field (since version 0.8.2)
  -->
 
 <!ENTITY % boolean
@@ -551,18 +552,18 @@
 <!--
 
   A data reference is used to validate the table model against
-	the declared format of the datasource. It simply checks that
-	all fields declared are present and are assignable from the
-	given type.
+  the declared format of the datasource. It simply checks that
+  all fields declared are present and are assignable from the
+  given type.
 
-	The attribute class is used to validate the data models objects.
-	This function uses TableModel.getColumnClass() to query the
-	table models data types. If the tablemodel returns java.lang.Object
-	no check is done, java.lang.Object is considered as an indicator
-	that the table model does not know about it's internal data
-	structure.
+  The attribute class is used to validate the data models objects.
+  This function uses TableModel.getColumnClass() to query the
+  table models data types. If the tablemodel returns java.lang.Object
+  no check is done, java.lang.Object is considered as an indicator
+  that the table model does not know about it's internal data
+  structure.
 
-	The data-reference was never implemented and will not be implemented
+  The data-reference was never implemented and will not be implemented
   in future releases.
 
 -->
@@ -630,8 +631,18 @@
  deplevel   CDATA    #IMPLIED
 >
 
+<!--
+
+  Defines a set of properties for a function.
+
+  -->
 <!ELEMENT properties  (property*)>
 
+<!--
+
+  A single property, a name - value pair.
+
+  -->
 <!ELEMENT property    (#PCDATA)>
 <!ATTLIST property
   name       CDATA    #REQUIRED

@@ -4,7 +4,7 @@
   ChangeLog:
     11-Feb-2003 : Initial version
     05-Mar-2003 : Documentation
-    
+    20-May-2003 : Bug-Fix
 -->
 
 <!--
@@ -238,10 +238,10 @@
 
 <!--
 
-  This is not yet used, and reserved for later output definitions.
+  This is not yet used, and reserved for later definitions.
 
  -->
-<!ELEMENT output-config (EMPTY)>
+<!ELEMENT data-definition EMPTY>
 
 <!--
 
@@ -477,7 +477,7 @@
 
  -->
 <!ELEMENT report-description
-  (report-header?, report-footer?, page-header?, page-footer?, itemband?, groups?)>
+  (report-header?, report-footer?, page-header?, page-footer?, groups?, itemband?)>
 
 <!--
 
@@ -487,27 +487,27 @@
   "pagebreak_after_print" attribute.
 
   -->
-<!ELEMENT report-header   (style, default-style, (band | element)*)>
+<!ELEMENT report-header   (style?, default-style?, (band | element)*)>
 <!ATTLIST report-header
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT report-footer   (style, default-style, (band | element)*)>
+<!ELEMENT report-footer   (style?, default-style?, (band | element)*)>
 <!ATTLIST report-footer
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT page-header   (style, default-style, (band | element)*)>
+<!ELEMENT page-header   (style?, default-style?, (band | element)*)>
 <!ATTLIST page-header
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT page-footer   (style, default-style, (band | element)*)>
+<!ELEMENT page-footer   (style?, default-style?, (band | element)*)>
 <!ATTLIST page-footer
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT itemband   (style, default-style, (band | element)*)>
+<!ELEMENT itemband   (style?, default-style?, (band | element)*)>
 <!ATTLIST itemband
   name           CDATA           #IMPLIED
 >
@@ -564,17 +564,17 @@
   has the repeat flag set.
 
   -->
-<!ELEMENT group-header   (style, default-style, (template | datasource), (band | element)*)>
+<!ELEMENT group-header   (style?, default-style?, (band | element)*)>
 <!ATTLIST group-header
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT group-footer   (style, default-style, (template | datasource), (band | element)*)>
+<!ELEMENT group-footer   (style?, default-style?, (band | element)*)>
 <!ATTLIST group-footer
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT band  (style, default-style, (template | datasource)*, (band | element)*)>
+<!ELEMENT band  (style?, default-style?, (band | element)*)>
 <!ATTLIST band
   name           CDATA           #IMPLIED
 >
@@ -590,7 +590,7 @@
   as possible.
 
   -->
-<!ELEMENT element  (style, (template | datasource))>
+<!ELEMENT element  (style?, (template | datasource))>
 <!ATTLIST element
   name           CDATA           #IMPLIED
   type           CDATA           #REQUIRED
@@ -619,7 +619,7 @@
   library in order to be loaded and executed correctly.
 
   -->
-<!ELEMENT functions  (function | expression | data-ref | property-ref)*>
+<!ELEMENT functions  (function | expression | property-ref)*>
 
 <!--
 
@@ -642,7 +642,7 @@
 <!ELEMENT property-ref  (#PCDATA)>
 <!ATTLIST property-ref
   name       CDATA   #REQUIRED
-	encoding   CDATA   #IMPLIED
+  encoding   CDATA   #IMPLIED
   class      CDATA   #IMPLIED
 >
 
