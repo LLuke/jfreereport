@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo2.java,v 1.4 2003/08/24 15:13:21 taqua Exp $
+ * $Id: OpenSourceDemo2.java,v 1.5 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,7 @@ import org.jfree.report.ItemBand;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.PageFooter;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.Boot;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.elementfactory.NumberFieldElementFactory;
 import org.jfree.report.elementfactory.TextFieldElementFactory;
@@ -270,6 +271,9 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
    */
   public static void main(final String[] args)
   {
+    // initialize JFreeReport
+    Boot.start();
+
     final OpenSourceDemo2 frame = new OpenSourceDemo2("Open Source Demo 2");
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);

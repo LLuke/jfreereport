@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: LGPLTextDemo.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
+ * $Id: LGPLTextDemo.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.Boot;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.modules.gui.base.PreviewDialog;
 import org.jfree.report.modules.gui.base.components.ActionMenuItem;
@@ -189,6 +190,9 @@ public class LGPLTextDemo extends AbstractDemoFrame
    */
   public static void main(final String[] args)
   {
+    // initialize JFreeReport
+    Boot.start();
+
     final LGPLTextDemo frame = new LGPLTextDemo("LGPL text Demo");
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);

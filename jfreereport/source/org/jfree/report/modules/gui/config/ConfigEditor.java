@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigEditor.java,v 1.4 2003/09/12 21:06:00 taqua Exp $
+ * $Id: ConfigEditor.java,v 1.5 2003/09/14 19:24:07 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 28-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.config;
@@ -51,7 +51,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -74,24 +77,26 @@ import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.jfree.report.Boot;
 import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.gui.config.editor.ConfigEditorPanel;
+import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ConfigTreeModel;
 import org.jfree.report.modules.gui.config.model.ConfigTreeModelException;
 import org.jfree.report.modules.gui.config.model.ConfigTreeModuleNode;
 import org.jfree.report.modules.gui.config.resources.ConfigResources;
+import org.jfree.report.util.LineBreakIterator;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
-import org.jfree.report.Boot;
 
 /**
  * The ConfigEditor can be used to edit the global jfreereport.properties files.
  * These files provide global settings for all reports and contain the system
  * level configuration of JFreeReport.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ConfigEditor extends JFrame
@@ -111,7 +116,7 @@ public class ConfigEditor extends JFrame
 
     /**
      * Invoked when an action occurs. The action invokes System.exit(0).
-     * 
+     *
      * @param e the action event.
      */
     public void actionPerformed(ActionEvent e)
@@ -169,8 +174,32 @@ public class ConfigEditor extends JFrame
   }
 
   /**
-   * This class handles the tree selection events and activates the 
-   * detail editors. 
+   * An action to handle new requests, which reset the report configuration.
+   */
+  private class NewAction extends AbstractActionDowngrade
+  {
+    /**
+     * DefaultConstructor.
+     */
+    public NewAction()
+    {
+      putValue(NAME, resources.getString("action.new.name"));
+      putValue(SMALL_ICON, resources.getObject("action.new.small-icon"));
+    }
+
+    /**
+     * Reset the configuration
+     * @param e the action event.
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+      reset();
+    }
+  }
+
+  /**
+   * This class handles the tree selection events and activates the
+   * detail editors.
    */
   private class ModuleTreeSelectionHandler implements TreeSelectionListener
   {
@@ -198,7 +227,11 @@ public class ConfigEditor extends JFrame
       }
     }
   }
-  
+
+  private static final int ESCAPE_KEY = 0;
+  private static final int ESCAPE_VALUE = 1;
+  private static final int ESCAPE_COMMENT = 2;
+
   /** The name of the resource bundle implementation used in this dialog. */
   private static final String RESOURCE_BUNDLE =
       ConfigResources.class.getName();
@@ -220,14 +253,16 @@ public class ConfigEditor extends JFrame
 
   /**
    * Constructs a new ConfigEditor.
-   * 
-   * @throws ConfigTreeModelException if the tree model could not be built. 
+   *
+   * @throws ConfigTreeModelException if the tree model could not be built.
    */
   public ConfigEditor() throws ConfigTreeModelException
   {
     this.resources = ResourceBundle.getBundle(RESOURCE_BUNDLE);
-    currentReportConfiguration = new ReportConfiguration(ReportConfiguration.getGlobalConfig());
+    currentReportConfiguration = new ReportConfiguration
+        (ReportConfiguration.getGlobalConfig());
 
+    setTitle(resources.getString("config-editor.title"));
 
     detailEditorPane = new ConfigEditorPanel();
 
@@ -243,8 +278,8 @@ public class ConfigEditor extends JFrame
 
     JPanel cPaneStatus = new JPanel();
     cPaneStatus.setLayout(new BorderLayout());
-    cPaneStatus.add (contentPane, BorderLayout.CENTER);
-    cPaneStatus.add (createStatusBar(), BorderLayout.SOUTH);
+    cPaneStatus.add(contentPane, BorderLayout.CENTER);
+    cPaneStatus.add(createStatusBar(), BorderLayout.SOUTH);
 
     setContentPane(cPaneStatus);
 
@@ -264,11 +299,11 @@ public class ConfigEditor extends JFrame
 
   /**
    * Creates the JTree for the report configuration.
-   *  
+   *
    * @return the tree component.
    * @throws ConfigTreeModelException if the model could not be built.
    */
-  private JComponent createEntryTree () throws ConfigTreeModelException
+  private JComponent createEntryTree() throws ConfigTreeModelException
   {
     InputStream in = getClass().getResourceAsStream("config-description.xml");
     if (in == null)
@@ -276,7 +311,7 @@ public class ConfigEditor extends JFrame
       throw new IllegalStateException("Missing resource 'config-description.xml'");
     }
     treeModel = new ConfigTreeModel(in);
-    treeModel.init(ReportConfiguration.getGlobalConfig());
+    treeModel.init(currentReportConfiguration);
 
     TreeSelectionModel selectionModel = new DefaultTreeSelectionModel();
     selectionModel.setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -296,24 +331,26 @@ public class ConfigEditor extends JFrame
 
   /**
    * Creates the button pane to hold all control buttons.
-   * 
+   *
    * @return the created panel with all control buttons.
    */
-  private JPanel createButtonPane ()
+  private JPanel createButtonPane()
   {
     Action closeAction = new CloseAction();
     Action saveAction = new SaveAction();
     Action loadAction = new LoadAction();
+    Action newAction = new NewAction();
 
     JPanel panel = new JPanel();
     panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-    panel.setBorder(new EmptyBorder (5,5,5,5));
+    panel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
     JPanel buttonHolder = new JPanel();
-    buttonHolder.setLayout(new GridLayout(1,3));
-    buttonHolder.add (new ActionButton(loadAction));
-    buttonHolder.add (new ActionButton(saveAction));
-    buttonHolder.add (new ActionButton (closeAction));
+    buttonHolder.setLayout(new GridLayout(1, 4));
+    buttonHolder.add(new ActionButton(newAction));
+    buttonHolder.add(new ActionButton(loadAction));
+    buttonHolder.add(new ActionButton(saveAction));
+    buttonHolder.add(new ActionButton(closeAction));
 
     panel.add(buttonHolder);
     return panel;
@@ -340,10 +377,10 @@ public class ConfigEditor extends JFrame
   /**
    * Defines the text to be displayed on the status bar. Setting text will
    * replace any other previously defined text.
-   * 
+   *
    * @param text the new statul bar text.
    */
-  private void setStatusText (String text)
+  private void setStatusText(String text)
   {
     statusHolder.setText(text);
   }
@@ -373,7 +410,7 @@ public class ConfigEditor extends JFrame
       final File selFile = fileChooser.getSelectedFile();
       String selFileName = selFile.getAbsolutePath();
 
-      // Test if ends on xls
+      // Test if ends on .properties
       if (StringUtil.endsWithIgnoreCase(selFileName, ".properties") == false)
       {
         selFileName = selFileName + ".properties";
@@ -381,24 +418,18 @@ public class ConfigEditor extends JFrame
       Properties prop = new Properties();
       try
       {
-        InputStream in = new BufferedInputStream (new FileInputStream (selFileName));
+        InputStream in = new BufferedInputStream(new FileInputStream(selFileName));
         prop.load(in);
         in.close();
       }
       catch (IOException ioe)
       {
-        Log.debug ("Failed to load the properties.", ioe);
+        Log.debug("Failed to load the properties.", ioe);
         setStatusText("Failed to load the properties." + ioe.getMessage());
         return;
       }
 
-      // clear all previously set configuration settings ...
-      Enumeration defaults = currentReportConfiguration.getConfigProperties();
-      while (defaults.hasMoreElements())
-      {
-        String key = (String) defaults.nextElement();
-        currentReportConfiguration.setConfigProperty(key, null);
-      }
+      reset();
 
       Enumeration enum = prop.keys();
       while (enum.hasMoreElements())
@@ -414,9 +445,23 @@ public class ConfigEditor extends JFrame
       }
       catch (ConfigTreeModelException e)
       {
-        Log.debug ("Failed to update the model.", e);
+        Log.debug("Failed to update the model.", e);
         setStatusText("Failed to update the model.");
       }
+    }
+  }
+
+  /**
+   * Resets all values.
+   */
+  private void reset()
+  {
+    // clear all previously set configuration settings ...
+    Enumeration defaults = currentReportConfiguration.getConfigProperties();
+    while (defaults.hasMoreElements())
+    {
+      String key = (String) defaults.nextElement();
+      currentReportConfiguration.setConfigProperty(key, null);
     }
   }
 
@@ -447,29 +492,173 @@ public class ConfigEditor extends JFrame
       {
         selFileName = selFileName + ".properties";
       }
+      write(selFileName);
+    }
+  }
 
-      Properties prop = new Properties();
-      // clear all previously set configuration settings ...
-      Enumeration defaults = currentReportConfiguration.getConfigProperties();
-      while (defaults.hasMoreElements())
-      {
-        String key = (String) defaults.nextElement();
-        prop.setProperty(key, currentReportConfiguration.getConfigProperty(key));
-      }
+  private void write(String filename)
+  {
+    Properties prop = new Properties();
+    ArrayList names = new ArrayList();
+    // clear all previously set configuration settings ...
+    Enumeration defaults = currentReportConfiguration.getConfigProperties();
+    while (defaults.hasMoreElements())
+    {
+      String key = (String) defaults.nextElement();
+      names.add(key);
+      prop.setProperty(key, currentReportConfiguration.getConfigProperty(key));
+    }
 
-      try
-      {
-        OutputStream out = new BufferedOutputStream (new FileOutputStream (selFileName));
-        prop.store(out, "");
-        out.close();
-        setStatusText("Saving the properties complete.");
-      }
-      catch (IOException ioe)
-      {
-        Log.debug ("Failed to save the properties.", ioe);
-        setStatusText("Failed to savethe properties." + ioe.getMessage());
-      }
+    Collections.sort(names);
 
+    try
+    {
+      PrintWriter out =
+          new PrintWriter(new OutputStreamWriter
+              (new BufferedOutputStream(new FileOutputStream(filename))));
+
+      for (int i = 0; i < names.size(); i++)
+      {
+        String key = (String) names.get(i);
+        String value = prop.getProperty(key);
+
+        ConfigDescriptionEntry entry = treeModel.getEntryForKey(key);
+        if (entry != null)
+        {
+          String description = entry.getDescription();
+          writeDescription(description, out);
+        }
+        saveConvert(key, ESCAPE_KEY, out);
+        out.print("=");
+        saveConvert(value, ESCAPE_VALUE, out);
+        out.println();
+      }
+      out.close();
+      setStatusText("Saving the properties complete.");
+    }
+    catch (IOException ioe)
+    {
+      Log.debug("Failed to save the properties.", ioe);
+      setStatusText("Failed to savethe properties." + ioe.getMessage());
+    }
+
+  }
+
+  private void writeDescription(String text, PrintWriter writer)
+  {
+    // check if empty content ... this case is easy ...
+    if (text.length() == 0)
+    {
+      return;
+    }
+
+    writer.println("# ");
+    final LineBreakIterator iterator = new LineBreakIterator(text);
+    while (iterator.hasNext())
+    {
+      writer.print("# ");
+      saveConvert((String) iterator.next(), ESCAPE_COMMENT, writer);
+      writer.println();
+    }
+  }
+
+  private void saveConvert(String text, int escapeMode, PrintWriter writer)
+  {
+    char[] string = text.toCharArray();
+    char[] hexChars = { '0', '1', '2', '3', '4', '5', '6', '7',
+                        '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+
+    for (int x = 0; x < string.length; x++)
+    {
+      char aChar = string[x];
+      switch (aChar)
+      {
+        case ' ':
+          {
+            if ((escapeMode != ESCAPE_COMMENT) &&
+                (x == 0 || escapeMode == ESCAPE_KEY))
+            {
+              writer.print('\\');
+            }
+            writer.print(' ');
+            break;
+          }
+        case '\\':
+          {
+            writer.print('\\');
+            writer.print('\\');
+            break;
+          }
+        case '\t':
+          {
+            if (escapeMode == ESCAPE_COMMENT)
+            {
+              writer.print(aChar);
+            }
+            else
+            {
+              writer.print('\\');
+              writer.print('t');
+            }
+            break;
+          }
+        case '\n':
+          {
+            writer.print('\\');
+            writer.print('n');
+            break;
+          }
+        case '\r':
+          {
+            writer.print('\\');
+            writer.print('r');
+            break;
+          }
+        case '\f':
+          {
+            if (escapeMode == ESCAPE_COMMENT)
+            {
+              writer.print(aChar);
+            }
+            else
+            {
+              writer.print('\\');
+              writer.print('f');
+            }
+            break;
+          }
+        case '#':
+        case '"':
+        case '!':
+        case '=':
+        case ':':
+          {
+            if (escapeMode == ESCAPE_COMMENT)
+            {
+              writer.print(aChar);
+            }
+            else
+            {
+              writer.print('\\');
+              writer.print(aChar);
+            }
+            break;
+          }
+        default:
+          if ((aChar < 0x0020) || (aChar > 0x007e))
+          {
+            writer.print('\\');
+            writer.print('u');
+            writer.print(hexChars[(aChar >> 12) & 0xF]);
+            writer.print(hexChars[(aChar >> 8) & 0xF]);
+            writer.print(hexChars[(aChar >> 4) & 0xF]);
+            writer.print(hexChars[aChar & 0xF]);
+          }
+          else
+          {
+            writer.print(aChar);
+          }
+      }
     }
   }
 
@@ -479,9 +668,9 @@ public class ConfigEditor extends JFrame
    */
   private void attempClose()
   {
-    System.exit (0);
+    System.exit(0);
   }
-  
+
   /**
    * main Method to start the editor.
    * @param args not used.
@@ -497,7 +686,7 @@ public class ConfigEditor extends JFrame
     }
     catch (Exception e)
     {
-      Log.debug ("Failed to init", e);
+      Log.debug("Failed to init", e);
       JOptionPane.showMessageDialog(null, "Failed to initialize.");
     }
   }

@@ -468,8 +468,10 @@ Warning: Specifying passwords in the property file can introduce a security risk
 
 This setting defaults to &quot;1.4&quot;.</description>
         <enum>
-            <text>true</text>
-            <text>false</text>
+            <text>1.2</text>
+            <text>1.3</text>
+            <text>1.4</text>
+            <text>1.5</text>
         </enum>
     </key>
     <key name="org.jfree.report.modules.output.pageable.plaintext.CharsPerInch" global="false" hidden="false">

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigTreeModel.java,v 1.2 2003/08/31 19:27:57 taqua Exp $
+ * $Id: ConfigTreeModel.java,v 1.3 2003/09/11 22:17:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -254,5 +254,16 @@ public class ConfigTreeModel implements TreeModel
   public void removeTreeModelListener(TreeModelListener l)
   {
     listeners.remove(l);
+  }
+
+  /**
+   * Returns the entry for the given key or null, if the key has no
+   * metadata.
+   * @param key the name of the key
+   * @return the entry or null if not found.
+   */
+  public ConfigDescriptionEntry getEntryForKey (String key)
+  {
+    return nodeFactory.getEntryForKey(key);
   }
 }

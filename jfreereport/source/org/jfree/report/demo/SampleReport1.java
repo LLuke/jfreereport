@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: SampleReport1.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes:
  * --------
@@ -57,6 +57,7 @@ import org.jfree.report.PageFooter;
 import org.jfree.report.PageHeader;
 import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
+import org.jfree.report.Boot;
 import org.jfree.report.elementfactory.DateFieldElementFactory;
 import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.elementfactory.NumberFieldElementFactory;
@@ -434,6 +435,9 @@ public class SampleReport1
    */
   public static void main(final String[] args) throws Exception
   {
+    // initialize JFreeReport
+    Boot.start();
+
     final JFreeReport report = new SampleReport1().createReport();
     report.setData(new SampleData1());
 

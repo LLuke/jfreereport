@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigResources.java,v 1.5 2003/09/14 19:24:07 taqua Exp $
+ * $Id: ConfigResources.java,v 1.6 2003/09/15 14:41:36 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 27.08.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.config.resources;
@@ -42,7 +42,7 @@ import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 
 /**
  * Provides localizable resources for the Configuration editor.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ConfigResources extends JFreeReportResources
@@ -80,13 +80,13 @@ public class ConfigResources extends JFreeReportResources
         {"action.import.small-icon",
           getIcon("org/jfree/report/modules/gui/config/resources/Import24.gif")},
 
-        {"action.new.name", "Load"},
+        {"action.new.name", "New"},
         {"action.new.small-icon",
-          getIcon("org/jfree/report/modules/gui/config/resources/Open24.gif")},
+          getIcon("org/jfree/report/modules/gui/config/resources/New24.gif")},
 
         {"action.load.name", "Load"},
         {"action.load.small-icon",
-          getIcon("org/jfree/report/modules/gui/config/resources/New24.gif")},
+          getIcon("org/jfree/report/modules/gui/config/resources/Open24.gif")},
 
         {"action.save.name", "Save"},
         {"action.save.small-icon",
@@ -103,14 +103,16 @@ public class ConfigResources extends JFreeReportResources
 
         {"default-editor.error-icon",
           getIcon("org/jfree/report/modules/gui/config/resources/Stop16.gif")},
-          
+
+        {"config-editor.title", "Configuration Editor"},
+
         {"config-description-editor.import-complete", "Import complete"},
         {"config-description-editor.unnamed-entry", "<unnamed entry>"},
         {"config-description-editor.title", "Configuration Definition Editor"},
         {"config-description-editor.xml-files", "XML files"},
         {"config-description-editor.welcome", "Welcome..."},
         {"config-description-editor.baseclass", "Baseclass:"},
-        {"config-description-editor.text-editor-message", 
+        {"config-description-editor.text-editor-message",
             "The text editor does not require any setup."},
         {"config-description-editor.keyname", "Key-Name:"},
         {"config-description-editor.description", "Description:"},

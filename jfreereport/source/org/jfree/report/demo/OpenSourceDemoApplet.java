@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OpenSourceDemoApplet.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: OpenSourceDemoApplet.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,6 +39,7 @@
 package org.jfree.report.demo;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.Boot;
 import org.jfree.report.modules.gui.base.PreviewApplet;
 
 /**
@@ -61,6 +62,8 @@ public class OpenSourceDemoApplet extends PreviewApplet
    */
   public OpenSourceDemoApplet()
   {
+    // initialize JFreeReport
+    Boot.start();
   }
 
   /**

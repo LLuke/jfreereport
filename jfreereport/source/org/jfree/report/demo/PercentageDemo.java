@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: PercentageDemo.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,7 @@ import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.Boot;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.gui.base.components.ActionButton;
@@ -229,6 +230,9 @@ public class PercentageDemo extends AbstractDemoFrame
    */
   public static void main(final String[] args)
   {
+    // initialize JFreeReport
+    Boot.start();
+
     final PercentageDemo frame = new PercentageDemo("Percentage Demo");
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);

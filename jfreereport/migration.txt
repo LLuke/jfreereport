@@ -49,6 +49,13 @@ The JFreeReport package should be initialized by calling Boot.start().
   will be done automaticly if JFreeReport is used, but the order and
   correctness of the bootprocess can not be guaranteed in that case.
 
+The Swing default dialogs (like the JFileChooser) can be translated into
+  the current default language by setting the configuration key
+  "org.jfree.report.modules.gui.base.SwingDialogTranslation" to true.
+
+  This feature is disabled by default to minimize the number of unexpected
+  changes to the java defaults.
+
 Other changes
 -------------
 All deprecated methods and classes were finally removed.
@@ -117,7 +124,13 @@ The simple parser now support sub-bands. Band default values will only be
 
 The preview components should be closed using the "close()" method, to
   properly shutdown the worker threads.
-  
+
+The toolbar of the preview components can now be configured by using the
+  report properties. The key "org.jfree.report.modules.gui.base.ToolbarFloatable"
+  defines, whether the toolbar will be floatable, while the key
+  "org.jfree.report.modules.gui.base.LargeIcons" defines, whether the
+  toolbar will contain larger versions of the icons.
+    
 ---------------------------------------------------------------------------
 Changes from 0.8.3c to 0.8.3d
 

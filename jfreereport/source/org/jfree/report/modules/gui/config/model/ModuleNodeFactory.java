@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleNodeFactory.java,v 1.4 2003/09/11 22:17:09 taqua Exp $
+ * $Id: ModuleNodeFactory.java,v 1.5 2003/09/14 19:24:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -370,5 +370,16 @@ public class ModuleNodeFactory
   public ArrayList getLocalNodes()
   {
     return localNodes;
+  }
+
+  /**
+   * Returns the entry for the given key or null, if the key has no
+   * metadata.
+   * @param key the name of the key
+   * @return the entry or null if not found.
+   */
+  public ConfigDescriptionEntry getEntryForKey (String key)
+  {
+    return (ConfigDescriptionEntry) configEntryLookup.get (key);
   }
 }

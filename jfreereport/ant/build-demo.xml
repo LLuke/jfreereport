@@ -153,6 +153,8 @@
         <include name="**/*.jpg"/>
       </fileset>
     </copy>
+    <copy file="source/org/jfree/report/demo/demo.properties"
+      tofile="build/jfreereport.properties"/>
 
   </target>
 

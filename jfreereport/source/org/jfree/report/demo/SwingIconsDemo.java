@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: SwingIconsDemo.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -56,12 +56,14 @@ import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.Boot;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.demo.helper.ImageCellRenderer;
 import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.gui.base.components.ActionMenuItem;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.Log;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.xml.ElementDefinitionException;
 
@@ -208,7 +210,13 @@ public class SwingIconsDemo extends AbstractDemoFrame
    */
   public static void main(final String[] args)
   {
+    // initialize JFreeReport
+    Boot.start();
+
     ReportConfiguration.getGlobalConfig().setLogLevel("Error");
+    // update the log system to use the new settings ...
+    Log.getJFreeReportLog().init();
+
     final SwingIconsDemo frame = new SwingIconsDemo("Swing Icons Report");
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);

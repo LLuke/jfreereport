@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: HelloWorld.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import javax.swing.table.TableModel;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.Boot;
 import org.jfree.report.elementfactory.TextFieldElementFactory;
 import org.jfree.report.modules.gui.base.PreviewDialog;
 import org.jfree.report.util.Log;
@@ -163,6 +164,9 @@ public class HelloWorld
    */
   public static void main(final String[] args)
   {
+    // initialize JFreeReport
+    Boot.start();
+
     //final HelloWorld app =
     new HelloWorld();
   }
