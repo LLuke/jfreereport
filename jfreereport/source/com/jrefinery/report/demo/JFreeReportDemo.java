@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.28 2002/08/28 10:37:14 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.29 2002/08/29 19:15:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -41,6 +41,7 @@
  * 05-Jun-2002 : Documentation
  * 10-Jun-2002 : Updated code to work with latest version of the JCommon class library;
  * 27-Aug-2002 : Added more demos
+ * 29-Aug-2002 : Downport to JDK 1.2.2
  */
 
 package com.jrefinery.report.demo;

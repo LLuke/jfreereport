@@ -28,12 +28,13 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.7 2002/06/05 21:45:11 taqua Exp $
+ * $Id: AboutAction.java,v 1.8 2002/08/29 19:15:34 taqua Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
  * 05-Jun-2002 : Documentation
+ * 29-Aug-2002 : Downport to JDK 1.2.2
  */
 
 package com.jrefinery.report.demo;

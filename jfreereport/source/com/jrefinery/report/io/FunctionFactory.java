@@ -26,6 +26,9 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 10-May-2002 : Initial version
+ * 23-May-2002 : Rewrite and better structured, divided into several start* & end* methods
+ * 08-Jun-2002 : Documentation
+ * 19-Aug-2002 : Added support for expressions
  */
 package com.jrefinery.report.io;
 

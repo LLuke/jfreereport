@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PrintAction.java,v 1.8 2002/08/08 15:28:42 taqua Exp $
+ * $Id: PrintAction.java,v 1.9 2002/08/29 19:15:34 taqua Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,7 @@
  * 16-May-2002 : Load images from jar (JS)
  * 05-Jun-2002 : Documentation, removed unused imports.
  * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
+ * 29-Aug-2002 : Downport to JDK 1.2.2
  */
 
 package com.jrefinery.report.action;

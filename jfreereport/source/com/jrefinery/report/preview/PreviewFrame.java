@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.26 2002/08/28 14:09:36 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.27 2002/08/29 19:15:35 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -66,15 +66,12 @@ import com.jrefinery.report.action.PrintAction;
 import com.jrefinery.report.action.SaveAsAction;
 import com.jrefinery.report.action.ZoomInAction;
 import com.jrefinery.report.action.ZoomOutAction;
-import com.jrefinery.report.targets.G2OutputTarget;
-import com.jrefinery.report.targets.PDFOutputTarget;
+import com.jrefinery.report.util.ActionButton;
+import com.jrefinery.report.util.ActionDowngrade;
+import com.jrefinery.report.util.ActionMenuItem;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.ActionDowngrade;
-import com.jrefinery.report.util.ActionButton;
-import com.jrefinery.report.util.ActionMenuItem;
-import com.jrefinery.ui.ExtensionFileFilter;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -83,7 +80,6 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -109,10 +105,6 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
@@ -126,14 +118,14 @@ import java.util.ResourceBundle;
  * createXXXAction-methods to include your customized actions.
  */
 public class PreviewFrame
-        extends JFrame
-        implements ActionListener, PropertyChangeListener, JFreeReportConstants
+    extends JFrame
+    implements ActionListener, PropertyChangeListener, JFreeReportConstants
 {
   private class DefaultSaveAsAction extends SaveAsAction implements Runnable
   {
-    public DefaultSaveAsAction ()
+    public DefaultSaveAsAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
     /**
@@ -141,25 +133,25 @@ public class PreviewFrame
      *
      * @param e The action event.
      */
-    public void actionPerformed (ActionEvent e)
+    public void actionPerformed(ActionEvent e)
     {
-      SwingUtilities.invokeLater (this);
+      SwingUtilities.invokeLater(this);
     }
 
     /**
      * save the report to a PDF file
      */
-    public void run ()
+    public void run()
     {
-      attemptSaveAs ();
+      attemptSaveAs();
     }
   }
 
   private class DefaultFirstPageAction extends FirstPageAction
   {
-    public DefaultFirstPageAction ()
+    public DefaultFirstPageAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
     /**
@@ -167,50 +159,50 @@ public class PreviewFrame
      *
      * @see ActionListener#actionPerformed(ActionEvent)
      */
-    public void actionPerformed (ActionEvent arg0)
+    public void actionPerformed(ActionEvent arg0)
     {
-      firstPage ();
+      firstPage();
     }
   }
 
   private class DefaultNextPageAction extends NextPageAction
   {
 
-    public DefaultNextPageAction ()
+    public DefaultNextPageAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
     /**
      * show the next page of the report
      */
-    public void actionPerformed (ActionEvent e)
+    public void actionPerformed(ActionEvent e)
     {
-      increasePageNumber ();
+      increasePageNumber();
     }
   }
 
   private class DefaultPreviousPageAction extends PreviousPageAction
   {
-    public DefaultPreviousPageAction ()
+    public DefaultPreviousPageAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
     /**
      * show the previous page of the report.
      */
-    public void actionPerformed (ActionEvent e)
+    public void actionPerformed(ActionEvent e)
     {
-      decreasePageNumber ();
+      decreasePageNumber();
     }
   }
 
   private class DefaultLastPageAction extends LastPageAction
   {
-    public DefaultLastPageAction ()
+    public DefaultLastPageAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
     /**
@@ -218,9 +210,9 @@ public class PreviewFrame
      *
      * @see ActionListener#actionPerformed(ActionEvent)
      */
-    public void actionPerformed (ActionEvent arg0)
+    public void actionPerformed(ActionEvent arg0)
     {
-      lastPage ();
+      lastPage();
     }
 
     public Object getValue(String key)
@@ -255,7 +247,7 @@ public class PreviewFrame
 
     public synchronized void setEnabled(boolean newValue)
     {
-      Log.debug ("SetEnabled: " + newValue);
+      Log.debug("SetEnabled: " + newValue);
       super.setEnabled(newValue);
     }
 
@@ -266,22 +258,22 @@ public class PreviewFrame
 
     protected void firePropertyChange(String propertyName, Object oldValue, Object newValue)
     {
-      Log.debug ("FirePropertyChange: " + propertyName);
-      Log.debug ("FirePropertyChange: " + oldValue);
-      Log.debug ("FirePropertyChange: " + newValue);
+      Log.debug("FirePropertyChange: " + propertyName);
+      Log.debug("FirePropertyChange: " + oldValue);
+      Log.debug("FirePropertyChange: " + newValue);
       super.firePropertyChange(propertyName, oldValue, newValue);
     }
 
     public synchronized void addPropertyChangeListener(PropertyChangeListener listener)
     {
-      Log.debug ("AddPropertyChangeListener: " + listener);
+      Log.debug("AddPropertyChangeListener: " + listener);
       if (listener == null) throw new NullPointerException();
       super.addPropertyChangeListener(listener);
     }
 
     public synchronized void removePropertyChangeListener(PropertyChangeListener listener)
     {
-      Log.debug ("RemovePropertyChangeListener: " + listener);
+      Log.debug("RemovePropertyChangeListener: " + listener);
       super.removePropertyChangeListener(listener);
     }
 
@@ -294,41 +286,41 @@ public class PreviewFrame
   private class DefaultZoomInAction extends ZoomInAction
   {
 
-    public DefaultZoomInAction ()
+    public DefaultZoomInAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
     /**
      * increase zoom.
      */
-    public void actionPerformed (ActionEvent e)
+    public void actionPerformed(ActionEvent e)
     {
-      increaseZoom ();
+      increaseZoom();
     }
   }
 
   private class DefaultZoomOutAction extends ZoomOutAction
   {
-    public DefaultZoomOutAction ()
+    public DefaultZoomOutAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
     /**
      * decrease zoom.
      */
-    public void actionPerformed (ActionEvent e)
+    public void actionPerformed(ActionEvent e)
     {
-      decreaseZoom ();
+      decreaseZoom();
     }
   }
 
   private class DefaultPrintAction extends PrintAction implements Runnable
   {
-    public DefaultPrintAction ()
+    public DefaultPrintAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
     /**
@@ -336,22 +328,22 @@ public class PreviewFrame
      *
      * @param e The action event.
      */
-    public void actionPerformed (ActionEvent e)
+    public void actionPerformed(ActionEvent e)
     {
-      SwingUtilities.invokeLater (this);
+      SwingUtilities.invokeLater(this);
     }
 
-    public void run ()
+    public void run()
     {
-      attemptPrint ();
+      attemptPrint();
     }
   }
 
   private class DefaultPageSetupAction extends PageSetupAction implements Runnable
   {
-    public DefaultPageSetupAction ()
+    public DefaultPageSetupAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
     /**
@@ -359,22 +351,22 @@ public class PreviewFrame
      *
      * @param e The action event.
      */
-    public void actionPerformed (ActionEvent e)
+    public void actionPerformed(ActionEvent e)
     {
-      SwingUtilities.invokeLater (this);
+      SwingUtilities.invokeLater(this);
     }
 
-    public void run ()
+    public void run()
     {
-      attemptPageSetup ();
+      attemptPageSetup();
     }
   }
 
   private class DefaultCloseAction extends CloseAction
   {
-    public DefaultCloseAction ()
+    public DefaultCloseAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
     /**
@@ -383,24 +375,24 @@ public class PreviewFrame
      *
      * @param e The action event.
      */
-    public void actionPerformed (ActionEvent e)
+    public void actionPerformed(ActionEvent e)
     {
-      if (getDefaultCloseOperation () == DISPOSE_ON_CLOSE)
+      if (getDefaultCloseOperation() == DISPOSE_ON_CLOSE)
       {
-        dispose ();
+        dispose();
       }
       else
       {
-        setVisible (false);
+        setVisible(false);
       }
     }
   }
 
   private class DefaultAboutAction extends AboutAction
   {
-    public DefaultAboutAction ()
+    public DefaultAboutAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
     /**
@@ -408,16 +400,16 @@ public class PreviewFrame
      *
      * @param e The action event.
      */
-    public void actionPerformed (ActionEvent e)
+    public void actionPerformed(ActionEvent e)
     {
     }
   }
 
   private class DefaultGotoAction extends GotoPageAction
   {
-    public DefaultGotoAction ()
+    public DefaultGotoAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
     /**
@@ -425,20 +417,20 @@ public class PreviewFrame
      *
      * @param e The action event.
      */
-    public void actionPerformed (ActionEvent e)
+    public void actionPerformed(ActionEvent e)
     {
-      String result = JOptionPane.showInputDialog (PreviewFrame.this,
-              getResources ().getString ("dialog.gotopage.title"),
-              getResources ().getString ("dialog.gotopage.message"),
-              JOptionPane.OK_CANCEL_OPTION);
+      String result = JOptionPane.showInputDialog(PreviewFrame.this,
+          getResources().getString("dialog.gotopage.title"),
+          getResources().getString("dialog.gotopage.message"),
+          JOptionPane.OK_CANCEL_OPTION);
       if (result == null)
         return;
       try
       {
-        int page = Integer.parseInt (result);
-        if (page > 0 && page < reportPane.getNumberOfPages ())
+        int page = Integer.parseInt(result);
+        if (page > 0 && page < reportPane.getNumberOfPages())
         {
-          reportPane.setPageNumber (page);
+          reportPane.setPageNumber(page);
         }
       }
       catch (Exception ex)
@@ -448,7 +440,7 @@ public class PreviewFrame
   }
 
   public static final String BASE_RESOURCE_CLASS =
-          "com.jrefinery.report.resources.JFreeReportResources";
+      "com.jrefinery.report.resources.JFreeReportResources";
 
   private Action aboutAction;
   private Action saveAsAction;
@@ -495,50 +487,50 @@ public class PreviewFrame
    *
    * @param report The report to be displayed.
    */
-  public PreviewFrame (JFreeReport report)
+  public PreviewFrame(JFreeReport report)
   {
     // get a locale-specific resource bundle...
-    setLargeIconsEnabled (true);
+    setLargeIconsEnabled(true);
 
-    ResourceBundle resources = getResources ();
+    ResourceBundle resources = getResources();
 
-    this.setTitle (resources.getString ("preview-frame.title"));
+    this.setTitle(resources.getString("preview-frame.title"));
     this.zoomIndex = DEFAULT_ZOOM_INDEX;
 
-    createDefaultActions ();
-    registerDefaultActions ();
+    createDefaultActions();
+    registerDefaultActions();
 
     // set up the menu
-    setJMenuBar (createMenuBar (resources));
+    setJMenuBar(createMenuBar(resources));
 
     // set up the content with a toolbar and a report pane
-    JPanel content = new JPanel (new BorderLayout ());
-    content.setDoubleBuffered (false);
-    toolbar = createToolBar ();
-    content.add (toolbar, BorderLayout.NORTH);
+    JPanel content = new JPanel(new BorderLayout());
+    content.setDoubleBuffered(false);
+    toolbar = createToolBar();
+    content.add(toolbar, BorderLayout.NORTH);
 
-    reportPane = createReportPane (report);
-    reportPane.addPropertyChangeListener (this);
+    reportPane = createReportPane(report);
+    reportPane.addPropertyChangeListener(this);
 /*    reportPane.addPropertyChangeListener (ReportPane.NUMBER_OF_PAGES_PROPERTY, this);
     reportPane.addPropertyChangeListener (ReportPane.PAGENUMBER_PROPERTY, this);
     reportPane.addPropertyChangeListener (ReportPane.ERROR_PROPERTY, this);*/
 
-    JPanel reportPaneHolder = new JPanel (new CenterLayout ());
-    reportPaneHolder.add (reportPane);
-    reportPaneHolder.setDoubleBuffered (false);
-    reportPaneHolder.setBorder (BorderFactory.createEmptyBorder (10, 10, 10, 10));
+    JPanel reportPaneHolder = new JPanel(new CenterLayout());
+    reportPaneHolder.add(reportPane);
+    reportPaneHolder.setDoubleBuffered(false);
+    reportPaneHolder.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-    JScrollPane s1 = new JScrollPane (reportPaneHolder);
-    s1.setBorder (null);
-    s1.getVerticalScrollBar ().setUnitIncrement (20);
+    JScrollPane s1 = new JScrollPane(reportPaneHolder);
+    s1.setBorder(null);
+    s1.getVerticalScrollBar().setUnitIncrement(20);
 
-    JPanel scrollPaneHolder = new JPanel ();
-    scrollPaneHolder.setLayout (new BorderLayout ());
-    scrollPaneHolder.add (s1, BorderLayout.CENTER);
+    JPanel scrollPaneHolder = new JPanel();
+    scrollPaneHolder.setLayout(new BorderLayout());
+    scrollPaneHolder.add(s1, BorderLayout.CENTER);
 
-    scrollPaneHolder.add (createStatusBar (), BorderLayout.SOUTH);
-    content.add (scrollPaneHolder);
-    setContentPane (content);
+    scrollPaneHolder.add(createStatusBar(), BorderLayout.SOUTH);
+    content.add(scrollPaneHolder);
+    setContentPane(content);
 
     pdfSaveDialog = new PDFSaveDialog();
     pdfSaveDialog.pack();
@@ -552,11 +544,11 @@ public class PreviewFrame
   /**
    * Disposes the frame and clears all resources.
    */
-  public void dispose ()
+  public void dispose()
   {
-    reportPane.removePropertyChangeListener (this);
-    super.dispose ();
-    this.removeAll ();
+    reportPane.removePropertyChangeListener(this);
+    super.dispose();
+    this.removeAll();
     this.reportPane = null;
     this.resources = null;
   }
@@ -566,9 +558,9 @@ public class PreviewFrame
    *
    * @param report the report for this pane
    */
-  protected ReportPane createReportPane (JFreeReport report)
+  protected ReportPane createReportPane(JFreeReport report)
   {
-    ReportPane reportPane = new ReportPane (report);
+    ReportPane reportPane = new ReportPane(report);
     return reportPane;
   }
 
@@ -578,11 +570,11 @@ public class PreviewFrame
    *
    * @returns this frames ResourceBundle.
    */
-  public ResourceBundle getResources ()
+  public ResourceBundle getResources()
   {
     if (resources == null)
     {
-      resources = ResourceBundle.getBundle (BASE_RESOURCE_CLASS);
+      resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
     }
     return resources;
   }
@@ -591,7 +583,7 @@ public class PreviewFrame
    * Returns the current zoom factor.
    * @return The current zoom factor.
    */
-  public double getZoomFactor ()
+  public double getZoomFactor()
   {
     return zoomFactors[zoomIndex];
   }
@@ -600,21 +592,21 @@ public class PreviewFrame
    * Handles user actions within the frame (menu selections and mouse clicks).
    * @param event The action event.
    */
-  public void actionPerformed (ActionEvent event)
+  public void actionPerformed(ActionEvent event)
   {
 
-    String command = event.getActionCommand ();
+    String command = event.getActionCommand();
 
-    if (command.equals ("ZoomSelect"))
+    if (command.equals("ZoomSelect"))
     {
-      setZoomFactor (zoomSelect.getSelectedIndex ());
+      setZoomFactor(zoomSelect.getSelectedIndex());
     }
   }
 
   /**
    * Presents a "Save As" dialog to the user, enabling him/her to save the report in PDF format.
    */
-  public void attemptSaveAs ()
+  public void attemptSaveAs()
   {
     getPdfSaveDialog().savePDF(reportPane.getReport(), reportPane.getPageFormat());
   }
@@ -622,32 +614,32 @@ public class PreviewFrame
   /**
    * Displays a printer page setup dialog, then updates the report pane with the new page size.
    */
-  public void attemptPageSetup ()
+  public void attemptPageSetup()
   {
-    PrinterJob pj = PrinterJob.getPrinterJob ();
-    PageFormat pf = pj.pageDialog (reportPane.getOutputTarget ().getPageFormat ());
+    PrinterJob pj = PrinterJob.getPrinterJob();
+    PageFormat pf = pj.pageDialog(reportPane.getOutputTarget().getPageFormat());
 
-    reportPane.setPageFormat (pf);
-    validate ();
-    pack ();
+    reportPane.setPageFormat(pf);
+    validate();
+    pack();
   }
 
   /**
    * Prints the report.
    */
-  public void attemptPrint ()
+  public void attemptPrint()
   {
-    PrinterJob pj = PrinterJob.getPrinterJob ();
-    pj.setPageable (reportPane);
-    if (pj.printDialog ())
+    PrinterJob pj = PrinterJob.getPrinterJob();
+    pj.setPageable(reportPane);
+    if (pj.printDialog())
     {
       try
       {
-        pj.print ();
+        pj.print();
       }
       catch (PrinterException e)
       {
-        showExceptionDialog ("error.printfailed", e);
+        showExceptionDialog("error.printfailed", e);
       }
     }
   }
@@ -657,24 +649,24 @@ public class PreviewFrame
    * used to construct the localisation key by appending ".title" and ".message" to the
    * base name.
    */
-  private void showExceptionDialog (String localisationBase, Exception e)
+  private void showExceptionDialog(String localisationBase, Exception e)
   {
-    ExceptionDialog.showExceptionDialog (
-            getResources ().getString (localisationBase + ".title"),
-            MessageFormat.format (
-                    getResources ().getString (localisationBase + ".message"),
-                    new Object[]{e.getLocalizedMessage ()}
-            ),
-            e);
+    ExceptionDialog.showExceptionDialog(
+        getResources().getString(localisationBase + ".title"),
+        MessageFormat.format(
+            getResources().getString(localisationBase + ".message"),
+            new Object[]{e.getLocalizedMessage()}
+        ),
+        e);
   }
 
   /**
    * Method lastPage moves to the last page
    */
-  public void lastPage ()
+  public void lastPage()
   {
-    reportPane.setPageNumber (reportPane.getNumberOfPages ());
-    validate ();
+    reportPane.setPageNumber(reportPane.getNumberOfPages());
+    validate();
   }
 
   /**
@@ -682,40 +674,40 @@ public class PreviewFrame
    *
    * CHANGED FUNCTION
    */
-  public void increasePageNumber ()
+  public void increasePageNumber()
   {
-    int pn = reportPane.getPageNumber ();
-    int mp = reportPane.getNumberOfPages ();
+    int pn = reportPane.getPageNumber();
+    int mp = reportPane.getNumberOfPages();
 
     if (pn < mp)
     {
-      reportPane.setPageNumber (pn + 1);
-      validate ();
+      reportPane.setPageNumber(pn + 1);
+      validate();
     }
   }
 
   /**
    * Method firstPage changes to the first page if not already on the first page
    */
-  public void firstPage ()
+  public void firstPage()
   {
-    if (reportPane.getPageNumber () != 1)
+    if (reportPane.getPageNumber() != 1)
     {
-      reportPane.setPageNumber (1);
-      validate ();
+      reportPane.setPageNumber(1);
+      validate();
     }
   }
 
   /**
    * Decreases the page number.
    */
-  public void decreasePageNumber ()
+  public void decreasePageNumber()
   {
-    int pn = reportPane.getPageNumber ();
+    int pn = reportPane.getPageNumber();
     if (pn > 1)
     {
-      reportPane.setPageNumber (pn - 1);
-      validate ();
+      reportPane.setPageNumber(pn - 1);
+      validate();
     }
   }
 
@@ -723,197 +715,197 @@ public class PreviewFrame
    * Increases the zoom factor for the report pane (unless it is already at maximum zoom).
    *
    */
-  public void increaseZoom ()
+  public void increaseZoom()
   {
     if (zoomIndex < zoomFactors.length - 1)
     {
       zoomIndex++;
     }
 
-    zoomSelect.setSelectedIndex (zoomIndex);
+    zoomSelect.setSelectedIndex(zoomIndex);
 
-    reportPane.setZoomFactor (getZoomFactor ());
-    validate ();
+    reportPane.setZoomFactor(getZoomFactor());
+    validate();
   }
 
   /** Decreases the zoom factor for the report pane (unless it is already at the minimum zoom). */
-  public void decreaseZoom ()
+  public void decreaseZoom()
   {
     if (zoomIndex > 0)
     {
       zoomIndex--;
     }
 
-    zoomSelect.setSelectedIndex (zoomIndex);
+    zoomSelect.setSelectedIndex(zoomIndex);
 
-    reportPane.setZoomFactor (getZoomFactor ());
-    validate ();
+    reportPane.setZoomFactor(getZoomFactor());
+    validate();
   }
 
   /**
    * sets the zoomfactor of the report pane.
    */
-  public void setZoomFactor (int index)
+  public void setZoomFactor(int index)
   {
     zoomIndex = index;
-    reportPane.setZoomFactor (getZoomFactor ());
-    zoomSelect.setSelectedIndex (zoomIndex);
-    validate ();
+    reportPane.setZoomFactor(getZoomFactor());
+    zoomSelect.setSelectedIndex(zoomIndex);
+    validate();
   }
 
   /**
    * checks whether this action has a keystroke assigned. If it has one, the keystroke
    * is assigned to the frame
    */
-  protected void registerAction (Action action)
+  protected void registerAction(Action action)
   {
-    JComponent cp = getRootPane ();
-    KeyStroke key = (KeyStroke) action.getValue (ActionDowngrade.ACCELERATOR_KEY);
+    JComponent cp = getRootPane();
+    KeyStroke key = (KeyStroke) action.getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (key != null)
     {
-      cp.registerKeyboardAction (action, key, JComponent.WHEN_IN_FOCUSED_WINDOW);
+      cp.registerKeyboardAction(action, key, JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
   }
 
   /**
    * registeres the keystrokes of all known actions to this frame
    */
-  protected void registerDefaultActions ()
+  protected void registerDefaultActions()
   {
-    registerAction (gotoAction);
-    registerAction (saveAsAction);
-    registerAction (pageSetupAction);
-    registerAction (printAction);
-    registerAction (aboutAction);
-    registerAction (closeAction);
-    registerAction (firstPageAction);
-    registerAction (lastPageAction);
-    registerAction (nextPageAction);
-    registerAction (previousPageAction);
-    registerAction (zoomInAction);
-    registerAction (zoomOutAction);
+    registerAction(gotoAction);
+    registerAction(saveAsAction);
+    registerAction(pageSetupAction);
+    registerAction(printAction);
+    registerAction(aboutAction);
+    registerAction(closeAction);
+    registerAction(firstPageAction);
+    registerAction(lastPageAction);
+    registerAction(nextPageAction);
+    registerAction(previousPageAction);
+    registerAction(zoomInAction);
+    registerAction(zoomOutAction);
   }
 
   /**
    * creates all actions by calling the createXXXAction functions and assigning them to
    * the local variables.
    */
-  protected void createDefaultActions ()
+  protected void createDefaultActions()
   {
-    gotoAction = createDefaultGotoAction ();
-    saveAsAction = createDefaultSaveAsAction ();
-    pageSetupAction = createDefaultPageSetupAction ();
-    printAction = createDefaultPrintAction ();
-    aboutAction = createDefaultAboutAction ();
-    closeAction = createDefaultCloseAction ();
-    firstPageAction = createDefaultFirstPageAction ();
-    lastPageAction = createDefaultLastPageAction ();
-    nextPageAction = createDefaultNextPageAction ();
-    previousPageAction = createDefaultPreviousPageAction ();
-    zoomInAction = createDefaultZoomInAction ();
-    zoomOutAction = createDefaultZoomOutAction ();
+    gotoAction = createDefaultGotoAction();
+    saveAsAction = createDefaultSaveAsAction();
+    pageSetupAction = createDefaultPageSetupAction();
+    printAction = createDefaultPrintAction();
+    aboutAction = createDefaultAboutAction();
+    closeAction = createDefaultCloseAction();
+    firstPageAction = createDefaultFirstPageAction();
+    lastPageAction = createDefaultLastPageAction();
+    nextPageAction = createDefaultNextPageAction();
+    previousPageAction = createDefaultPreviousPageAction();
+    zoomInAction = createDefaultZoomInAction();
+    zoomOutAction = createDefaultZoomOutAction();
   }
 
   /**
    * creates the NextPageAction used in this previewframe.
    */
-  protected Action createDefaultNextPageAction ()
+  protected Action createDefaultNextPageAction()
   {
-    return new DefaultNextPageAction ();
+    return new DefaultNextPageAction();
   }
 
   /**
    * creates the PreviousPageAction used in this previewframe.
    */
-  protected Action createDefaultPreviousPageAction ()
+  protected Action createDefaultPreviousPageAction()
   {
-    return new DefaultPreviousPageAction ();
+    return new DefaultPreviousPageAction();
   }
 
   /**
    * creates the ZoomInAction used in this previewframe.
    */
-  protected Action createDefaultZoomInAction ()
+  protected Action createDefaultZoomInAction()
   {
-    return new DefaultZoomInAction ();
+    return new DefaultZoomInAction();
   }
 
   /**
    * creates the ZoomOutAction used in this previewframe.
    */
-  protected Action createDefaultZoomOutAction ()
+  protected Action createDefaultZoomOutAction()
   {
-    return new DefaultZoomOutAction ();
+    return new DefaultZoomOutAction();
   }
 
   /**
    * creates the AboutAction used in this previewframe.
    */
-  protected Action createDefaultAboutAction ()
+  protected Action createDefaultAboutAction()
   {
-    return new DefaultAboutAction ();
+    return new DefaultAboutAction();
   }
 
   /**
    * creates the GotoPageAction used in this previewframe.
    */
-  protected Action createDefaultGotoAction ()
+  protected Action createDefaultGotoAction()
   {
-    return new DefaultGotoAction ();
+    return new DefaultGotoAction();
   }
 
   /**
    * creates the SaveAsAction used in this previewframe.
    */
-  protected Action createDefaultSaveAsAction ()
+  protected Action createDefaultSaveAsAction()
   {
-    return new DefaultSaveAsAction ();
+    return new DefaultSaveAsAction();
   }
 
   /**
    * creates the PageSetupAction used in this previewframe.
    */
-  protected Action createDefaultPageSetupAction ()
+  protected Action createDefaultPageSetupAction()
   {
-    return new DefaultPageSetupAction ();
+    return new DefaultPageSetupAction();
   }
 
   /**
    * creates the PrintAction used in this previewframe.
    */
-  protected Action createDefaultPrintAction ()
+  protected Action createDefaultPrintAction()
   {
-    return new DefaultPrintAction ();
+    return new DefaultPrintAction();
   }
 
   /**
    * creates the CloseAction used in this previewframe.
    */
-  protected Action createDefaultCloseAction ()
+  protected Action createDefaultCloseAction()
   {
-    return new DefaultCloseAction ();
+    return new DefaultCloseAction();
   }
 
   /**
    * creates the FirstPageAction used in this previewframe.
    */
-  protected Action createDefaultFirstPageAction ()
+  protected Action createDefaultFirstPageAction()
   {
-    return new DefaultFirstPageAction ();
+    return new DefaultFirstPageAction();
   }
 
   /**
    * creates the LastPageAction used in this previewframe.
    */
-  protected Action createDefaultLastPageAction ()
+  protected Action createDefaultLastPageAction()
   {
-    return new DefaultLastPageAction ();
+    return new DefaultLastPageAction();
   }
 
   /**
    * returns the status label used to display the text
    */
-  protected JLabel getStatus ()
+  protected JLabel getStatus()
   {
     return statusHolder;
   }
@@ -921,15 +913,15 @@ public class PreviewFrame
   /**
    * Creates the statusbar for this frame. Use setStatus() to display text on the status bar.
    */
-  protected JPanel createStatusBar ()
+  protected JPanel createStatusBar()
   {
-    JPanel statusPane = new JPanel ();
-    statusPane.setLayout (new BorderLayout ());
-    statusPane.setBorder (
-            BorderFactory.createLineBorder (UIManager.getDefaults ().getColor ("controlShadow")));
-    statusHolder = new JLabel (" ");
-    statusPane.setMinimumSize (statusHolder.getPreferredSize ());
-    statusPane.add (statusHolder, BorderLayout.WEST);
+    JPanel statusPane = new JPanel();
+    statusPane.setLayout(new BorderLayout());
+    statusPane.setBorder(
+        BorderFactory.createLineBorder(UIManager.getDefaults().getColor("controlShadow")));
+    statusHolder = new JLabel(" ");
+    statusPane.setMinimumSize(statusHolder.getPreferredSize());
+    statusPane.add(statusHolder, BorderLayout.WEST);
 
     return statusPane;
   }
@@ -940,69 +932,69 @@ public class PreviewFrame
    * @param resources A resource bundle containing localised resources for the menu.
    * @return A ready-made JMenuBar.
    */
-  protected JMenuBar createMenuBar (ResourceBundle resources)
+  protected JMenuBar createMenuBar(ResourceBundle resources)
   {
 
     // create the menus
 
-    JMenuBar menuBar = new JMenuBar ();
+    JMenuBar menuBar = new JMenuBar();
     // first the file menu
 
-    String menuName = resources.getString ("menu.file.name");
-    JMenu fileMenu = new JMenu (menuName);
-    Character mnemonic = (Character) resources.getObject ("menu.file.mnemonic");
-    fileMenu.setMnemonic (mnemonic.charValue ());
+    String menuName = resources.getString("menu.file.name");
+    JMenu fileMenu = new JMenu(menuName);
+    Character mnemonic = (Character) resources.getObject("menu.file.mnemonic");
+    fileMenu.setMnemonic(mnemonic.charValue());
 
-    JMenuItem gotoItem = new ActionMenuItem (gotoAction);
-    KeyStroke accelerator = (KeyStroke) gotoAction.getValue (ActionDowngrade.ACCELERATOR_KEY);
+    JMenuItem gotoItem = new ActionMenuItem(gotoAction);
+    KeyStroke accelerator = (KeyStroke) gotoAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
-      gotoItem.setAccelerator (accelerator);
-    fileMenu.add (gotoItem);
+      gotoItem.setAccelerator(accelerator);
+    fileMenu.add(gotoItem);
 
-    fileMenu.addSeparator ();
+    fileMenu.addSeparator();
 
-    JMenuItem saveAsItem = new ActionMenuItem  (saveAsAction);
-    accelerator = (KeyStroke) saveAsAction.getValue (ActionDowngrade.ACCELERATOR_KEY);
+    JMenuItem saveAsItem = new ActionMenuItem(saveAsAction);
+    accelerator = (KeyStroke) saveAsAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
-      saveAsItem.setAccelerator (accelerator);
-    fileMenu.add (saveAsItem);
+      saveAsItem.setAccelerator(accelerator);
+    fileMenu.add(saveAsItem);
 
-    fileMenu.addSeparator ();
+    fileMenu.addSeparator();
 
-    JMenuItem setupItem = new ActionMenuItem  (pageSetupAction);
-    accelerator = (KeyStroke) pageSetupAction.getValue (ActionDowngrade.ACCELERATOR_KEY);
+    JMenuItem setupItem = new ActionMenuItem(pageSetupAction);
+    accelerator = (KeyStroke) pageSetupAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
-      setupItem.setAccelerator (accelerator);
-    fileMenu.add (setupItem);
+      setupItem.setAccelerator(accelerator);
+    fileMenu.add(setupItem);
 
-    JMenuItem printItem = new ActionMenuItem  (printAction);
-    accelerator = (KeyStroke) printAction.getValue (ActionDowngrade.ACCELERATOR_KEY);
+    JMenuItem printItem = new ActionMenuItem(printAction);
+    accelerator = (KeyStroke) printAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
-      printItem.setAccelerator (accelerator);
-    fileMenu.add (printItem);
+      printItem.setAccelerator(accelerator);
+    fileMenu.add(printItem);
 
-    fileMenu.add (new JSeparator ());
+    fileMenu.add(new JSeparator());
 
-    JMenuItem closeItem = new ActionMenuItem  (closeAction);
-    accelerator = (KeyStroke) closeAction.getValue (ActionDowngrade.ACCELERATOR_KEY);
+    JMenuItem closeItem = new ActionMenuItem(closeAction);
+    accelerator = (KeyStroke) closeAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
-      closeItem.setAccelerator (accelerator);
-    fileMenu.add (closeItem);
+      closeItem.setAccelerator(accelerator);
+    fileMenu.add(closeItem);
 
     // then the help menu
 
-    menuName = resources.getString ("menu.help.name");
-    JMenu helpMenu = new JMenu (menuName);
-    mnemonic = (Character) resources.getObject ("menu.help.mnemonic");
-    helpMenu.setMnemonic (mnemonic.charValue ());
+    menuName = resources.getString("menu.help.name");
+    JMenu helpMenu = new JMenu(menuName);
+    mnemonic = (Character) resources.getObject("menu.help.mnemonic");
+    helpMenu.setMnemonic(mnemonic.charValue());
 
-    JMenuItem aboutItem = new ActionMenuItem  (aboutAction);
-    helpMenu.add (aboutItem);
+    JMenuItem aboutItem = new ActionMenuItem(aboutAction);
+    helpMenu.add(aboutItem);
 
     // finally, glue together the menu and return it
 
-    menuBar.add (fileMenu);
-    menuBar.add (helpMenu);
+    menuBar.add(fileMenu);
+    menuBar.add(helpMenu);
 
     return menuBar;
   }
@@ -1010,20 +1002,20 @@ public class PreviewFrame
   /**
    * Creates a button using the given actions properties for the buttons initialisation.
    */
-  protected JButton createButton (Action action)
+  protected JButton createButton(Action action)
   {
-    JButton button = new ActionButton (action);
-    if (isLargeIconsEnabled ())
+    JButton button = new ActionButton(action);
+    if (isLargeIconsEnabled())
     {
-      Icon icon = (Icon) action.getValue ("ICON24");
+      Icon icon = (Icon) action.getValue("ICON24");
       if (icon != null)
       {
-        button.setIcon (icon);
+        button.setIcon(icon);
       }
     }
-    button.setMargin (new Insets (0, 0, 0, 0));
-    button.setText (null);
-    FloatingButtonEnabler.getInstance ().addButton (button);
+    button.setMargin(new Insets(0, 0, 0, 0));
+    button.setText(null);
+    FloatingButtonEnabler.getInstance().addButton(button);
     return button;
   }
 
@@ -1033,26 +1025,26 @@ public class PreviewFrame
    *
    * @return A completly initialized JToolBar.
    */
-  protected JToolBar createToolBar ()
+  protected JToolBar createToolBar()
   {
-    ResourceBundle resources = getResources ();
+    ResourceBundle resources = getResources();
 
-    JToolBar toolbar = new JToolBar ();
-    toolbar.setBorder (BorderFactory.createEmptyBorder (4, 0, 4, 0));
+    JToolBar toolbar = new JToolBar();
+    toolbar.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
 
-    toolbar.add (createButton (saveAsAction));
-    toolbar.add (createButton (printAction));
-    toolbar.add (createButton (firstPageAction));
-    toolbar.add (createButton (previousPageAction));
-    toolbar.add (createButton (nextPageAction));
-    toolbar.add (createButton (lastPageAction));
-    toolbar.addSeparator ();
-    toolbar.add (createButton (zoomInAction));
-    toolbar.add (createButton (zoomOutAction));
-    toolbar.addSeparator ();
-    toolbar.add (createZoomPane ());
-    toolbar.addSeparator ();
-    toolbar.add (createButton (aboutAction));
+    toolbar.add(createButton(saveAsAction));
+    toolbar.add(createButton(printAction));
+    toolbar.add(createButton(firstPageAction));
+    toolbar.add(createButton(previousPageAction));
+    toolbar.add(createButton(nextPageAction));
+    toolbar.add(createButton(lastPageAction));
+    toolbar.addSeparator();
+    toolbar.add(createButton(zoomInAction));
+    toolbar.add(createButton(zoomOutAction));
+    toolbar.addSeparator();
+    toolbar.add(createZoomPane());
+    toolbar.addSeparator();
+    toolbar.add(createButton(aboutAction));
 
     return toolbar;
   }
@@ -1060,38 +1052,38 @@ public class PreviewFrame
   /**
    * @returns true when the toolbar is floatable
    */
-  public boolean isToolbarFloatable ()
+  public boolean isToolbarFloatable()
   {
-    return toolbar.isFloatable ();
+    return toolbar.isFloatable();
   }
 
   /**
    * Defines whether the toolbar is floatable
    */
-  public void setToolbarFloatable (boolean b)
+  public void setToolbarFloatable(boolean b)
   {
-    toolbar.setFloatable (b);
+    toolbar.setFloatable(b);
   }
 
   /**
    * Creates a panel containing a combobox with available zoom-values.
    */
-  private JComponent createZoomPane ()
+  private JComponent createZoomPane()
   {
-    DefaultComboBoxModel model = new DefaultComboBoxModel ();
+    DefaultComboBoxModel model = new DefaultComboBoxModel();
     for (int i = 0; i < zoomFactors.length; i++)
     {
-      model.addElement (String.valueOf ((int) (zoomFactors[i] * 100)) + " %");
+      model.addElement(String.valueOf((int) (zoomFactors[i] * 100)) + " %");
     }
-    zoomSelect = new JComboBox (model);
-    zoomSelect.setActionCommand ("ZoomSelect");
-    zoomSelect.setSelectedIndex (DEFAULT_ZOOM_INDEX);
-    zoomSelect.addActionListener (this);
-    zoomSelect.setAlignmentX (zoomSelect.RIGHT_ALIGNMENT);
+    zoomSelect = new JComboBox(model);
+    zoomSelect.setActionCommand("ZoomSelect");
+    zoomSelect.setSelectedIndex(DEFAULT_ZOOM_INDEX);
+    zoomSelect.addActionListener(this);
+    zoomSelect.setAlignmentX(zoomSelect.RIGHT_ALIGNMENT);
 
-    JPanel zoomPane = new JPanel ();
-    zoomPane.setLayout (new FlowLayout (FlowLayout.LEFT));
-    zoomPane.add (zoomSelect);
+    JPanel zoomPane = new JPanel();
+    zoomPane.setLayout(new FlowLayout(FlowLayout.LEFT));
+    zoomPane.add(zoomSelect);
 
     return zoomPane;
   }
@@ -1099,93 +1091,93 @@ public class PreviewFrame
   /**
    * Listen to the assigned reportPane
    */
-  public void propertyChange (PropertyChangeEvent event)
+  public void propertyChange(PropertyChangeEvent event)
   {
-    Object source = event.getSource ();
-    String property = event.getPropertyName ();
+    Object source = event.getSource();
+    String property = event.getPropertyName();
 
-    if (property.equals (ReportPane.PAGENUMBER_PROPERTY)
-            || property.equals (ReportPane.NUMBER_OF_PAGES_PROPERTY))
+    if (property.equals(ReportPane.PAGENUMBER_PROPERTY)
+        || property.equals(ReportPane.NUMBER_OF_PAGES_PROPERTY))
     {
 
       Object[] params = new Object[]{
-        new Integer (reportPane.getPageNumber ()),
-        new Integer (reportPane.getNumberOfPages ())
+        new Integer(reportPane.getPageNumber()),
+        new Integer(reportPane.getNumberOfPages())
       };
-      getStatus ().setText (
-              MessageFormat.format (
-                      getResources ().getString ("statusline.pages"),
-                      params
-              )
+      getStatus().setText(
+          MessageFormat.format(
+              getResources().getString("statusline.pages"),
+              params
+          )
       );
-      validate ();
+      validate();
     }
-    else if (property.equals (ReportPane.ERROR_PROPERTY))
+    else if (property.equals(ReportPane.ERROR_PROPERTY))
     {
-      if (reportPane.hasError ())
+      if (reportPane.hasError())
       {
-        Exception ex = reportPane.getError ();
+        Exception ex = reportPane.getError();
 
         ex.printStackTrace();
-        getStatus ().setText (
-                MessageFormat.format (
-                        getResources ().getString ("statusline.error"),
-                        new Object[]{ex.getMessage ()}
-                )
+        getStatus().setText(
+            MessageFormat.format(
+                getResources().getString("statusline.error"),
+                new Object[]{ex.getMessage()}
+            )
         );
       }
-      validate ();
+      validate();
     }
   }
 
   /**
    * Updates the states of all buttons to reflect the state of the assigned ReportPane.
    */
-  public void validate ()
+  public void validate()
   {
-    int pn = reportPane.getPageNumber ();
-    int mp = reportPane.getNumberOfPages ();
+    int pn = reportPane.getPageNumber();
+    int mp = reportPane.getNumberOfPages();
 
-    lastPageAction.setEnabled (pn < mp);
-    nextPageAction.setEnabled (pn < mp);
-    previousPageAction.setEnabled (pn != 1);
-    firstPageAction.setEnabled (pn != 1);
+    lastPageAction.setEnabled(pn < mp);
+    nextPageAction.setEnabled(pn < mp);
+    previousPageAction.setEnabled(pn != 1);
+    firstPageAction.setEnabled(pn != 1);
 
-    zoomOutAction.setEnabled (zoomSelect.getSelectedIndex () != 0);
-    zoomInAction.setEnabled (zoomSelect.getSelectedIndex () != (zoomFactors.length - 1));
+    zoomOutAction.setEnabled(zoomSelect.getSelectedIndex() != 0);
+    zoomInAction.setEnabled(zoomSelect.getSelectedIndex() != (zoomFactors.length - 1));
 
-    super.validate ();
+    super.validate();
   }
 
   /**
    * @see JFrame#processWindowEvent(WindowEvent)
    */
-  protected void processWindowEvent (WindowEvent windowEvent)
+  protected void processWindowEvent(WindowEvent windowEvent)
   {
-    if (windowEvent.getID () == WindowEvent.WINDOW_CLOSING)
+    if (windowEvent.getID() == WindowEvent.WINDOW_CLOSING)
     {
-      closeAction.actionPerformed (
-              new ActionEvent (this, ActionEvent.ACTION_PERFORMED, closeAction.NAME));
+      closeAction.actionPerformed(
+          new ActionEvent(this, ActionEvent.ACTION_PERFORMED, closeAction.NAME));
     }
-    super.processWindowEvent (windowEvent);
+    super.processWindowEvent(windowEvent);
   }
 
-  public boolean isLargeIconsEnabled ()
+  public boolean isLargeIconsEnabled()
   {
     return largeIconsEnabled;
   }
 
-  public void setLargeIconsEnabled (boolean b)
+  public void setLargeIconsEnabled(boolean b)
   {
     largeIconsEnabled = b;
   }
 
-  public static void main (String[] args)
+  public static void main(String[] args)
   {
     JFreeReport report = new JFreeReport();
     report.setData(new DefaultTableModel());
     PreviewFrame f = new PreviewFrame(report);
-      f.validate();
+    f.validate();
     //f.pack();
     //f.setVisible(true);
   }

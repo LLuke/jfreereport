@@ -26,10 +26,14 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 24-Apr-2002 : Initial version
+ * 31-Aug-2002 : Documentation; changed PrintStackTrace for better tracing
  */
 package com.jrefinery.report.io;
 
 import org.xml.sax.SAXException;
+
+import java.io.PrintWriter;
+import java.io.PrintStream;
 
 /**
  * A reportdefinition exception is thrown when the parsing of the report definition
@@ -39,27 +43,82 @@ public class ReportDefinitionException extends SAXException
 {
   private Exception parent;
 
+  /**
+   * Creates a new ReportDefinitionException without an parent exception and with the given
+   * message as explaination
+   *
+   * @param message a detail message explaining the reasons for this exception
+   */
   public ReportDefinitionException (String message)
   {
     super (message);
   }
 
+  /**
+   * Creates a new ReportDefinitionException with an parent exception and with the parents
+   * message as explaination
+   *
+   * @param e the parentException that caused this exception
+   */
   public ReportDefinitionException (Exception e)
   {
     this (e, e.getMessage ());
   }
 
+  /**
+   * Creates a new ReportDefinitionException with an parent exception and with the given
+   * message as explaination
+   *
+   * @param e the parentException that caused this exception
+   * @param message a detail message explaining the reasons for this exception
+   */
   public ReportDefinitionException (Exception e, String message)
   {
     this (message);
-    e.printStackTrace ();
     parent = e;
   }
 
+  /**
+   * returns the
+   */
   public Exception getParentException ()
   {
     return parent;
   }
 
+  /**
+   * print the stack trace.  If an inner exception exists, use
+   * its stack trace.
+   */
+  public void printStackTrace (PrintStream s)
+  {
+    super.printStackTrace (s);
+    if (parent != null)
+    {
+      s.print("ParentException:");
+      parent.printStackTrace (s);
+    }
+    else
+    {
+      s.println("ParentException: <null>");
+    }
+  }
 
+  /**
+   * print the stack trace.  If an inner exception exists, use
+   * its stack trace.
+   */
+  public void printStackTrace (PrintWriter s)
+  {
+    super.printStackTrace (s);
+    if (parent != null)
+    {
+      s.print("ParentException:");
+      parent.printStackTrace (s);
+    }
+    else
+    {
+      s.println("ParentException: <null>");
+    }
+  }
 }

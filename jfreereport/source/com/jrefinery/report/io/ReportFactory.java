@@ -167,6 +167,9 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     setReport(report);
   }
 
+  /**
+   * Parses an String into an double value. If the parsing failed, the given default value is returned.
+   */
   private double parseDouble(String value, double defaultVal)
   {
     if (value == null) return defaultVal;
@@ -180,6 +183,12 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     }
   }
 
+  /**
+   * Creates the pageFormat by using the given Attributes. If an PageFormat name is given, the
+   * named PageFormat is used and the parameters width and height are ignored. If no name is defined,
+   * height and width attributes are used to create the pageformat. The attributes define the dimension
+   * of the PageFormat in points, where the printing resolution is defined at 72 pixels per inch.
+   */
   private PageFormat createPageFormat(PageFormat format, Attributes atts) throws SAXException
   {
     String pageformatName = atts.getValue(PAGEFORMAT_ATT);

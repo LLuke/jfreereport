@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *
 
- * $Id$
+ * $Id: TextFormatExpression.java,v 1.2 2002/08/31 14:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -74,18 +74,29 @@ public class TextFormatExpression extends AbstractExpression
   private ArrayList fieldList;
 
   /**
-   * defaultconstructor
+   * defaultconstructor, creates a new unnamed TextFormatExpression
    */
   public TextFormatExpression()
   {
     fieldList = new ArrayList();
   }
 
+  /**
+   * evaluates the expression by collecting all values defined in the fieldlist from the
+   * datarow. The collected values are then parsed and formated by the MessageFormat-object.
+   *
+   * @returns a string containing the pattern inclusive the formatted values from the datarow
+   */
   public Object getValue()
   {
     return MessageFormat.format(getPattern(), collectValues());
   }
 
+  /**
+   * collects the values of all fields defined in the fieldList.
+   *
+   * @return an Objectarray containing all defined values from the datarow
+   */
   private Object[] collectValues()
   {
     Object[] retval = new Object[fieldList.size()];
@@ -97,6 +108,11 @@ public class TextFormatExpression extends AbstractExpression
     return retval;
   }
 
+  /**
+   * Initializes the expression and creates the fieldlist.
+   *
+   * @throws FunctionInitializeException if the expression has no name set
+   */
   public void initialize() throws FunctionInitializeException
   {
     super.initialize();
@@ -108,16 +124,28 @@ public class TextFormatExpression extends AbstractExpression
     }
   }
 
+  /**
+   * returns the pattern defined for this expression.
+   */
   public String getPattern()
   {
     return getProperty(PATTERN_PROPERTY);
   }
 
+  /**
+   * defines the pattern for this expression. The pattern syntax is defined by the java.text.MessageFormat
+   * object and the given pattern string has to be valid according to the rules defined there.
+   *
+   * @param pattern the pattern string
+   */
   public void setPattern(String pattern)
   {
     setProperty(PATTERN_PROPERTY, pattern);
   }
 
+  /**
+   * @returns a copy of this expression.
+   */
   public Object clone() throws CloneNotSupportedException
   {
     TextFormatExpression tex = (TextFormatExpression) super.clone();

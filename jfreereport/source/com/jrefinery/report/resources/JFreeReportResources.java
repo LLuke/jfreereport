@@ -188,8 +188,17 @@ public class JFreeReportResources extends ListResourceBundle
             {"pdfsavedialog.security128bit", "Encrypt with 128 bit keys"},
             {"pdfsavedialog.userpassword", "User Password"},
             {"pdfsavedialog.userpasswordconfirm", "Confirm"},
+            {"pdfsavedialog.userpasswordNoMatch", "The user-passwords do not match."},
             {"pdfsavedialog.ownerpassword", "Owner Password"},
             {"pdfsavedialog.ownerpasswordconfirm", "Confirm"},
+            {"pdfsavedialog.ownerpasswordNoMatch", "The owner-passwords do not match."},
+
+            {"pdfsavedialog.errorTitle", "The owner-passwords do not match."},
+            {"pdfsavedialog.targetIsNoFile", "The owner-passwords do not match."},
+            {"pdfsavedialog.targetIsNotWritable", "The owner-passwords do not match."},
+            {"pdfsavedialog.targetOverwriteConfirmation", "The owner-passwords do not match."},
+            {"pdfsavedialog.targetOverwriteTitle", "The owner-passwords do not match."},
+
 
             {"pdfsavedialog.allowCopy", "Allow Copy"},
             {"pdfsavedialog.allowPrinting", "Allow Printing"},

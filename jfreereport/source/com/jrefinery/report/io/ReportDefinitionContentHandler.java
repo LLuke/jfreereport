@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportDefinitionContentHandler.java,v 1.4 2002/05/28 19:36:42 taqua Exp $
+ * $Id: ReportDefinitionContentHandler.java,v 1.5 2002/06/08 16:28:58 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
  *               a default group is generated if no groups are defined.
  *               The parsing of numeric values has been secured against number-format exceptions
  * 10-May-2002 : Uses different factories to create some sort of parsing state.
- *
+ * 08-Jun-2002 : Documentation
  */
 
 package com.jrefinery.report.io;
@@ -69,7 +69,7 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   private Stack currentHandler;
 
   private FontFactory fontFactory;
-  private ReportFactory factory;
+  private ReportFactory reportFactory;
 
   /**
    * The report under construction. This element is null until the complete report has been
@@ -77,52 +77,79 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
    */
   private JFreeReport report;
 
+  /**
+   * Default constructor.
+   */
+  public ReportDefinitionContentHandler ()
+  {
+    currentHandler = new Stack ();
+    currentHandler.push (getReportFactory());
+  }
+
+  /**
+   * returns a single instance of FontFactory which is used to create Fonts for bands and elements, where
+   * the element fonts depend on the bands font.
+   */
   public FontFactory getFontFactory ()
   {
+    if (fontFactory == null)
+    {
+      fontFactory = new FontFactory();
+    }
     return fontFactory;
   }
 
+  /**
+   * returns the ReportFactory for this contentHandler. It is guaranteed that there is only one report factory
+   * per contentHandler.
+   */
   protected ReportFactory getReportFactory ()
   {
-    return factory;
+    if (reportFactory == null)
+    {
+      reportFactory = new ReportFactory(this);
+    }
+    return reportFactory;
   }
 
+  /**
+   * defines the next expected handler for SAX-Events.
+   */
   public void setExpectedHandler (DefaultHandler handler)
   {
     currentHandler.push (handler);
   }
 
+  /**
+   * restores the previous active SAX-Handler when the current handler has finished its task.
+   */
   public void finishedHandler ()
   {
     Object o = currentHandler.pop ();
   }
 
+  /**
+   * returns the currently active SAXHandler which will process the next SAXEvent.
+   */
   public DefaultHandler getExpectedHandler ()
   {
     return (DefaultHandler) currentHandler.peek ();
   }
 
   /**
-   * Default constructor.
-   */
-  public ReportDefinitionContentHandler ()
-  {
-    factory = createReportFactory ();
-    fontFactory = createFontFactory ();
-
-    currentHandler = new Stack ();
-    currentHandler.push (factory);
-  }
-
-  /**
-   * Returns the report for this content handler.  Be careful when you get this reference - the
-   * report may be half-built.
+   * Returns the report for this content handler. This method will return null, until the report is
+   * completly build and parsing has finished.
+   *
+   * @returns the completly build report or null, if the parsing is still in progress
    */
   public JFreeReport getReport ()
   {
     return this.report;
   }
 
+  /**
+   * Finishes the ReportDefinition by setting the given report as parsing result.
+   */
   public void setReport (JFreeReport report)
   {
     this.report = report;
@@ -130,8 +157,7 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   }
 
   /**
-   * An element start tag has been reached.  We can read the attributes for the element, but
-   * have to wait for the sub-elements and text...so store the attributes for later use.
+   * An element start tag has been reached.  The SAXEvent is forwarded to the currently active handler.
    */
   public void startElement (String namespaceURI,
                             String localName,
@@ -143,6 +169,9 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
     handler.startElement (namespaceURI, localName, qName, atts);
   }
 
+  /**
+   * Forward the characters method to the currently active handler
+   */
   public void characters (char[] chars, int i, int i1) throws SAXException
   {
     DefaultHandler handler = getExpectedHandler ();
@@ -169,14 +198,6 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   }
 
   /**
-   * Creates a new FontFactory.
-   */
-  public FontFactory createFontFactory ()
-  {
-    return new FontFactory ();
-  }
-
-  /**
    * Creates a new FunctionFactory.
    */
   public FunctionFactory createFunctionFactory ()
@@ -190,14 +211,6 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   public GroupFactory createGroupFactory ()
   {
     return new GroupFactory (getReportFactory ());
-  }
-
-  /**
-   * Creates a new ReportFactory.
-   */
-  public ReportFactory createReportFactory ()
-  {
-    return new ReportFactory (this);
   }
 
   /**

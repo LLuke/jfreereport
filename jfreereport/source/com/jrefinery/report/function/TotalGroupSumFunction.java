@@ -46,32 +46,55 @@ import com.jrefinery.report.util.Log;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+/**
+ * A report function that calculates the sum of one field (column) from the TableModel.
+ * This function produces a global total. The total sum of the group is known when the group
+ * processing starts and the report is not performing a prepare-run. The sum is calulated in
+ * the prepare run and recalled in the printing run.
+ * <p>
+ * The function can be used in two ways:
+ * <ul>
+ * <li>to calculate a sum for the entire report;</li>
+ * <li>to calculate a sum within a particular group;</li>
+ * </ul>
+ * This function expects its input values to be either java.lang.Number instances or Strings
+ * that can be parsed to java.lang.Number instances using a java.text.DecimalFormat.
+ * <p>
+ * The function undestands two parameters, the <code>field</code> parameter is required and
+ * denotes the name of an ItemBand-field which gets summed up.
+ * <p>
+ * The parameter <code>group</code> denotes the name of a group. When this group is started,
+ * the counter gets reseted to null.
+ */
 public class TotalGroupSumFunction extends AbstractFunction
 {
   public static final String GROUP_PROPERTY = "group";
   public static final String FIELD_PROPERTY = "field";
 
+  /**
+   * Helperclass to make summing easier.
+   */
   private static class GroupSum
   {
     private BigDecimal result;
 
-    public GroupSum ()
+    public GroupSum()
     {
-      result = new BigDecimal (0);
+      result = new BigDecimal(0);
     }
 
-    public void add (Number n)
+    public void add(Number n)
     {
-      result = result.add (new BigDecimal (n.toString ()));
+      result = result.add(new BigDecimal(n.toString()));
     }
 
-    public BigDecimal getResult ()
+    public BigDecimal getResult()
     {
       return result;
     }
   }
 
-  private static final BigDecimal ZERO = new BigDecimal (0.0);
+  private static final BigDecimal ZERO = new BigDecimal(0.0);
 
   /** The parser for performing data conversion */
   private NumberFormatParser parser;
@@ -88,14 +111,14 @@ public class TotalGroupSumFunction extends AbstractFunction
    * <P>
    * Initially the function has no name...be sure to assign one before using the function.
    */
-  public TotalGroupSumFunction ()
+  public TotalGroupSumFunction()
   {
-    groupResult = new GroupSum ();
-    datasource = new StaticDataSource ();
-    parser = new DecimalFormatParser ();
-    parser.setNullValue (ZERO);
-    parser.setDataSource (datasource);
-    results = new ArrayList ();
+    groupResult = new GroupSum();
+    datasource = new StaticDataSource();
+    parser = new DecimalFormatParser();
+    parser.setNullValue(ZERO);
+    parser.setDataSource(datasource);
+    results = new ArrayList();
   }
 
   /**
@@ -105,17 +128,17 @@ public class TotalGroupSumFunction extends AbstractFunction
    *
    * @param event Information about the event.
    */
-  public void reportStarted (ReportEvent event)
+  public void reportStarted(ReportEvent event)
   {
-    if (event.getState ().isPrepareRun () == false)
+    if (event.getState().isPrepareRun() == false)
     {
       currentIndex = -1;
       return;
     }
 
     currentIndex = -1;
-    results.clear ();
-    groupResult = new GroupSum ();
+    results.clear();
+    groupResult = new GroupSum();
   }
 
   /**
@@ -125,26 +148,26 @@ public class TotalGroupSumFunction extends AbstractFunction
    *
    * @param event Information about the event.
    */
-  public void groupStarted (ReportEvent event)
+  public void groupStarted(ReportEvent event)
   {
 
-    if (getGroup () != null)
+    if (getGroup() != null)
     {
-      JFreeReport report = event.getReport ();
-      ReportState state = event.getState ();
-      Group group = report.getGroup (state.getCurrentGroupIndex ());
-      if (getGroup ().equals (group.getName ()))
+      JFreeReport report = event.getReport();
+      ReportState state = event.getState();
+      Group group = report.getGroup(state.getCurrentGroupIndex());
+      if (getGroup().equals(group.getName()))
       {
-        if (event.getState ().isPrepareRun () == false)
+        if (event.getState().isPrepareRun() == false)
         {
           // Activate the current group, which was filled in the prepare run.
           currentIndex += 1;
-          groupResult = (GroupSum) results.get (currentIndex);
+          groupResult = (GroupSum) results.get(currentIndex);
         }
         else
         {
-          groupResult = new GroupSum ();
-          results.add (groupResult);
+          groupResult = new GroupSum();
+          results.add(groupResult);
         }
       }
     }
@@ -158,14 +181,14 @@ public class TotalGroupSumFunction extends AbstractFunction
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced (ReportEvent event)
+  public void itemsAdvanced(ReportEvent event)
   {
-    if (event.getState ().isPrepareRun () == false)
+    if (event.getState().isPrepareRun() == false)
     {
       return;
     }
 
-    Object fieldValue = event.getDataRow ().get (getField ());
+    Object fieldValue = event.getDataRow().get(getField());
     if (fieldValue == null)
     {
       // No add, field is null
@@ -173,13 +196,13 @@ public class TotalGroupSumFunction extends AbstractFunction
     }
     try
     {
-      datasource.setValue (fieldValue);
-      Number n = (Number) parser.getValue ();
-      groupResult.add (n);
+      datasource.setValue(fieldValue);
+      Number n = (Number) parser.getValue();
+      groupResult.add(n);
     }
     catch (Exception e)
     {
-      Log.error ("ItemSumFunction.advanceItems(): problem adding number.");
+      Log.error("ItemSumFunction.advanceItems(): problem adding number.");
     }
   }
 
@@ -191,26 +214,26 @@ public class TotalGroupSumFunction extends AbstractFunction
    *
    * @return A clone of the function.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    return super.clone ();
+    return super.clone();
   }
 
   /**
    * Returns the name of the group to be counted.
    */
-  public String getGroup ()
+  public String getGroup()
   {
-    return (String) getProperty (GROUP_PROPERTY);
+    return (String) getProperty(GROUP_PROPERTY);
   }
 
   /**
    * defines the name of the group to be counted.
    * If the name is null, all groups are counted.
    */
-  public void setGroup (String group)
+  public void setGroup(String group)
   {
-    setProperty (GROUP_PROPERTY, group);
+    setProperty(GROUP_PROPERTY, group);
   }
 
   /**
@@ -221,9 +244,9 @@ public class TotalGroupSumFunction extends AbstractFunction
    *
    * @return The value of the function.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    return groupResult.getResult ();
+    return groupResult.getResult();
   }
 
   /**
@@ -233,9 +256,9 @@ public class TotalGroupSumFunction extends AbstractFunction
    *
    * @return The field name.
    */
-  public String getField ()
+  public String getField()
   {
-    return getProperty (FIELD_PROPERTY);
+    return getProperty(FIELD_PROPERTY);
   }
 
   /**
@@ -245,11 +268,11 @@ public class TotalGroupSumFunction extends AbstractFunction
    *
    * @param The field name (null not permitted).
    */
-  public void setField (String field)
+  public void setField(String field)
   {
     if (field == null)
-      throw new NullPointerException ();
-    setProperty (FIELD_PROPERTY, field);
+      throw new NullPointerException();
+    setProperty(FIELD_PROPERTY, field);
   }
 
   /**
@@ -262,9 +285,9 @@ public class TotalGroupSumFunction extends AbstractFunction
    * @throws FunctionInitializeException if the function name is not set or the call to
    * isInitialized returns false.
    */
-  public void initialize () throws FunctionInitializeException
+  public void initialize() throws FunctionInitializeException
   {
-    super.initialize ();
-    if (getProperty (FIELD_PROPERTY) == null) throw new FunctionInitializeException ("Field is required");
+    super.initialize();
+    if (getProperty(FIELD_PROPERTY) == null) throw new FunctionInitializeException("Field is required");
   }
 }

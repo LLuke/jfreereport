@@ -129,6 +129,9 @@ public class ReportGenerator
    * Parses an XML file which is loaded using the given URL. All
    * needed relative file- and resourcespecification are loaded
    * using the URL <code>contentBase</code> as base.
+   * <p>
+   * After the report is generated, the ReportDefinition-source and the contentbase are
+   * stored as string in the reportproperties.
    */
   public JFreeReport parseReport (URL file, URL contentBase)
           throws ReportDefinitionException, IOException

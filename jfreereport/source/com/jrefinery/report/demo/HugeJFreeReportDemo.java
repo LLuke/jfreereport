@@ -34,6 +34,7 @@
  * 31-May-2002 : Derived from JFreeReportDemo
  * 04-Jun-2002 : Some documentation
  * 10-Jun-2002 : Updated code to work with latest version of the JCommon class library;
+ * 29-Aug-2002 : Downport to JDK 1.2.2
  */
 
 package com.jrefinery.report.demo;

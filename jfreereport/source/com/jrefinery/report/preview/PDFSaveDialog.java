@@ -1,19 +1,43 @@
-/*
- * Created by IntelliJ IDEA.
- * User: user
- * Date: 26.08.2002
- * Time: 18:58:13
- * To change template for new class use
- * Code Style | Class Templates options (Tools | IDE Options).
+/**
+ * =============================================================
+ * JFreeReport : an open source reporting class library for Java
+ * =============================================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -----------------
+ * PDFSaveDialog.java
+ * -----------------
+ *
+ * Changes
+ * --------
+ * 26-Aug-2002 : Initial version
+ * 29-Aug-2002 : Downport to JDK 1.2.2
+ * 31-Aug-2002 : Documentation
  */
 package com.jrefinery.report.preview;
 
-import com.jrefinery.ui.ExtensionFileFilter;
-import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.targets.PDFOutputTarget;
+import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.ActionButton;
+import com.jrefinery.ui.ExtensionFileFilter;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -22,32 +46,39 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.print.PrinterJob;
-import java.awt.print.PageFormat;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ResourceBundle;
+import java.awt.print.PageFormat;
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.OutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.BufferedOutputStream;
+import java.io.OutputStream;
 import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
+/**
+ * The PDFSaveDialog is used to perform the printing of an Report into a PDF-File. It is primarily used to
+ * edit the properties of the PDFOutputTarget before the target is used to print the report.
+ */
 public class PDFSaveDialog extends JDialog
 {
+  /**
+   * Internal action class to enable/disable the Security-Settings panel. Without encryption a pdf file
+   * cannot have any security settings enabled.
+   */
   private class ActionSecuritySelection extends AbstractAction
   {
     public ActionSecuritySelection()
@@ -72,6 +103,9 @@ public class PDFSaveDialog extends JDialog
     }
   }
 
+  /**
+   * Internal action class to confirm the dialog and to validate the input.
+   */
   private class ActionConfirm extends AbstractAction
   {
     public ActionConfirm()
@@ -89,6 +123,9 @@ public class PDFSaveDialog extends JDialog
     }
   }
 
+  /**
+   * Internal action class to cancel the report processing.
+   */
   private class ActionCancel extends AbstractAction
   {
     public ActionCancel()
@@ -103,6 +140,9 @@ public class PDFSaveDialog extends JDialog
     }
   }
 
+  /**
+   * Internal action class to select a target file.
+   */
   private class ActionSelectFile extends AbstractAction
   {
     public ActionSelectFile()
@@ -153,6 +193,9 @@ public class PDFSaveDialog extends JDialog
   public static final String BASE_RESOURCE_CLASS =
       "com.jrefinery.report.resources.JFreeReportResources";
 
+  /**
+   * DefaultConstructor. The created dialog is modal.
+   */
   public PDFSaveDialog()
   {
     setModal(true);
@@ -178,7 +221,7 @@ public class PDFSaveDialog extends JDialog
    *
    * @returns this frames ResourceBundle.
    */
-  public ResourceBundle getResources()
+  private ResourceBundle getResources()
   {
     if (resources == null)
     {
@@ -187,7 +230,10 @@ public class PDFSaveDialog extends JDialog
     return resources;
   }
 
-  public Action getActionSecuritySelection()
+  /**
+   * returns a single instance of the security selection action.
+   */
+  private Action getActionSecuritySelection()
   {
     if (actionSecuritySelection == null)
     {
@@ -196,7 +242,10 @@ public class PDFSaveDialog extends JDialog
     return actionSecuritySelection;
   }
 
-  public Action getActionSelectFile()
+  /**
+   * returns a single instance of the file selection action.
+   */
+  private Action getActionSelectFile()
   {
     if (actionSelectFile == null)
     {
@@ -205,7 +254,10 @@ public class PDFSaveDialog extends JDialog
     return actionSelectFile;
   }
 
-  public Action getActionConfirm()
+  /**
+   * returns a single instance of the dialog confirm action.
+   */
+  private Action getActionConfirm()
   {
     if (actionConfirm == null)
     {
@@ -214,7 +266,10 @@ public class PDFSaveDialog extends JDialog
     return actionConfirm;
   }
 
-  public Action getActionCancel()
+  /**
+   * returns a single instance of the dialog cancel action.
+   */
+  private Action getActionCancel()
   {
     if (actionCancel == null)
     {
@@ -223,6 +278,9 @@ public class PDFSaveDialog extends JDialog
     return actionCancel;
   }
 
+  /**
+   * initializes the Swing-Components of this dialog.
+   */
   private void initialize()
   {
     JPanel contentPane = new JPanel();
@@ -633,14 +691,14 @@ public class PDFSaveDialog extends JDialog
     this.txAuthor.setText(author);
   }
 
-  public Boolean getEncryptionValue ()
+  public Boolean getEncryptionValue()
   {
     if (rbSecurity40Bit.isSelected()) return PDFOutputTarget.SECURITY_ENCRYPTION_40BIT;
     if (rbSecurity128Bit.isSelected()) return PDFOutputTarget.SECURITY_ENCRYPTION_128BIT;
     return null;
   }
 
-  public void setEncryptionValue (Boolean b)
+  public void setEncryptionValue(Boolean b)
   {
     if (b == null) rbSecurityNone.setSelected(true);
     if (b.booleanValue())
@@ -649,16 +707,22 @@ public class PDFSaveDialog extends JDialog
       rbSecurity40Bit.setSelected(false);
   }
 
+  /**
+   * @returns true, if the dialog has been confirmed and the pdf should be saved, false otherwise.
+   */
   public boolean isConfirmed()
   {
     return confirmed;
   }
 
-  public void setConfirmed(boolean confirmed)
+  protected void setConfirmed(boolean confirmed)
   {
     this.confirmed = confirmed;
   }
 
+  /**
+   * clears all selections, input fields and set the selected encryption level to none.
+   */
   public void clear()
   {
     txAuthor.setText(System.getProperty("user.name"));
@@ -678,25 +742,27 @@ public class PDFSaveDialog extends JDialog
     cxAllowPrinting.setSelected(false);
     cxAllowScreenReaders.setSelected(false);
 
-    rbSecurity128Bit.setSelected(true);
+    rbSecurityNone.setSelected(true);
   }
 
-  private void performSelectFile ()
+  /**
+   * selects a file to use as target for the report processing.
+   */
+  protected void performSelectFile()
   {
-    JFileChooser fileChooser = new JFileChooser ();
-    ExtensionFileFilter filter = new ExtensionFileFilter ("PDF Documents", ".pdf");
-    fileChooser.addChoosableFileFilter (filter);
+    JFileChooser fileChooser = new JFileChooser();
+    ExtensionFileFilter filter = new ExtensionFileFilter("PDF Documents", ".pdf");
+    fileChooser.addChoosableFileFilter(filter);
     fileChooser.setMultiSelectionEnabled(false);
-    fileChooser.setSelectedFile(new File (getFilename()));
-    int option = fileChooser.showSaveDialog (this);
+    fileChooser.setSelectedFile(new File(getFilename()));
+    int option = fileChooser.showSaveDialog(this);
     if (option == JFileChooser.APPROVE_OPTION)
     {
-      File selFile = fileChooser.getSelectedFile ();
-      String selFileName = selFile.getAbsolutePath ();
+      File selFile = fileChooser.getSelectedFile();
+      String selFileName = selFile.getAbsolutePath();
 
       // Test if ends of pdf
-
-      if (selFileName.toUpperCase ().endsWith (".PDF") == false)
+      if (selFileName.toUpperCase().endsWith(".PDF") == false)
       {
         selFileName = selFileName + ".pdf";
       }
@@ -704,62 +770,94 @@ public class PDFSaveDialog extends JDialog
     }
   }
 
-  public boolean performValidate ()
+  /**
+   * Validates the contents of the dialogs input fields.
+   *
+   * @returns true, if the input is valid, false otherwise
+   */
+  public boolean performValidate()
   {
     if (getEncryptionValue() != null)
     {
-      if (txUserPassword.getText().equals (txConfUserPassword.getText()) == false)
+      if (txUserPassword.getText().equals(txConfUserPassword.getText()) == false)
       {
-        JOptionPane.showMessageDialog(this, "UserPassword does not match");
+        JOptionPane.showMessageDialog(this, getResources().getString("pdfsavedialog.userpasswordNoMatch"));
         return false;
       }
-      if (txOwnerPassword.getText().equals (txConfOwnerPassword.getText()) == false)
+      if (txOwnerPassword.getText().equals(txConfOwnerPassword.getText()) == false)
       {
-        JOptionPane.showMessageDialog(this, "ownerPassword does not match");
+        JOptionPane.showMessageDialog(this, getResources().getString("pdfsavedialog.ownerpasswordNoMatch"));
         return false;
       }
+    }
+
+    File f = new File (getFilename());
+    if (f.exists())
+    {
+      if (f.isFile() == false)
+      {
+        JOptionPane.showMessageDialog(this,
+            getResources().getString("pdfsavedialog.targetIsNoFile"),
+            getResources().getString("pdfsavedialog.errorTitle"), JOptionPane.ERROR_MESSAGE);
+        return false;
+      }
+      if (f.canWrite() == false)
+      {
+        JOptionPane.showMessageDialog(this,
+            getResources().getString("pdfsavedialog.targetIsNotWritable"),
+            getResources().getString("pdfsavedialog.errorTitle"), JOptionPane.ERROR_MESSAGE);
+        return false;
+      }
+      if (JOptionPane.showConfirmDialog(this,
+          getResources().getString("pdfsavedialog.targetOverwriteConfirmation"),
+          getResources().getString("pdfsavedialog.targetOverwriteTitle"), JOptionPane.QUESTION_MESSAGE);
     }
     return true;
   }
 
-  public void savePDF (JFreeReport report, PageFormat pf)
+  /**
+   * Shows this dialog and (if the dialog is confirmed) saves the complete report into a PDF-File.
+   *
+   * @param report the report beeing processed.
+   * @param pf the pageformat used to write the report
+   */
+  public void savePDF(JFreeReport report, PageFormat pf)
   {
     setVisible(true);
     if (isConfirmed() == false)
     {
-      Log.debug ("is not confirmed");
       return;
     }
     try
     {
-      OutputStream out = new BufferedOutputStream (new FileOutputStream (new File (getFilename())));
-      PDFOutputTarget target = new PDFOutputTarget (out, pf, true);
+      OutputStream out = new BufferedOutputStream(new FileOutputStream(new File(getFilename())));
+      PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
       target.setProperty(PDFOutputTarget.AUTHOR, getAuthor());
       target.setProperty(PDFOutputTarget.TITLE, getPDFTitle());
       target.setProperty(PDFOutputTarget.SECURITY_ENCRYPTION, getEncryptionValue());
       target.setProperty(PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword());
       target.setProperty(PDFOutputTarget.SECURITY_USERPASSWORD, getUserPassword());
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY, new Boolean (isAllowAssembly()));
+      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY, new Boolean(isAllowAssembly()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_COPY, new Boolean(isAllowCopy()));
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_DEGRADED_PRINTING, new Boolean (isAllowDegradedPrinting()));
+      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_DEGRADED_PRINTING, new Boolean(isAllowDegradedPrinting()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_FILLIN, new Boolean(isAllowFillIn()));
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_MODIFY_ANNOTATIONS, new Boolean (isAllowModifyAnnotations()));
+      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_MODIFY_ANNOTATIONS, new Boolean(isAllowModifyAnnotations()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_MODIFY_CONTENTS, new Boolean(isAllowModifyContents()));
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_PRINTING, new Boolean (isAllowPrinting()));
+      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_PRINTING, new Boolean(isAllowPrinting()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_SCREENREADERS, new Boolean(isAllowScreenreaders()));
 
       target.setFontEncoding("Identity-H");
-      target.open ();
-      report.processReport (target);
-      target.close ();
+      target.open();
+      report.processReport(target);
+      target.close();
     }
     catch (IOException ioe)
     {
-      showExceptionDialog ("error.savefailed", ioe);
+      showExceptionDialog("error.savefailed", ioe);
     }
     catch (Exception re)
     {
-      showExceptionDialog ("error.processingfailed", re);
+      showExceptionDialog("error.processingfailed", re);
     }
   }
 
@@ -768,21 +866,14 @@ public class PDFSaveDialog extends JDialog
    * used to construct the localisation key by appending ".title" and ".message" to the
    * base name.
    */
-  private void showExceptionDialog (String localisationBase, Exception e)
+  private void showExceptionDialog(String localisationBase, Exception e)
   {
-    ExceptionDialog.showExceptionDialog (
-            getResources ().getString (localisationBase + ".title"),
-            MessageFormat.format (
-                    getResources ().getString (localisationBase + ".message"),
-                    new Object[]{e.getLocalizedMessage ()}
-            ),
-            e);
-  }
-
-  public static void main(String[] args)
-  {
-    PDFSaveDialog dialog = new PDFSaveDialog();
-    dialog.pack();
-    dialog.setVisible(true);
+    ExceptionDialog.showExceptionDialog(
+        getResources().getString(localisationBase + ".title"),
+        MessageFormat.format(
+            getResources().getString(localisationBase + ".message"),
+            new Object[]{e.getLocalizedMessage()}
+        ),
+        e);
   }
 }

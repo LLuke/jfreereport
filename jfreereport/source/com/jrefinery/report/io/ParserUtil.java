@@ -50,18 +50,18 @@ public class ParserUtil
    * contain a parsable value, the message given in <code>message</code> is used to
    * throw a SAXException.
    */
-  public static int parseInt (String text, String message) throws SAXException
+  public static int parseInt(String text, String message) throws SAXException
   {
     if (text == null)
-      throw new SAXException (message);
+      throw new SAXException(message);
 
     try
     {
-      return Integer.parseInt (text);
+      return Integer.parseInt(text);
     }
     catch (NumberFormatException nfe)
     {
-      throw new SAXException ("NumberFormatError: " + message);
+      throw new SAXException("NumberFormatError: " + message);
     }
   }
 
@@ -70,17 +70,17 @@ public class ParserUtil
    * contain a parsable value, the message given in <code>message</code> is used to
    * throw a SAXException.
    */
-  public static float parseFloat (String text, String message) throws SAXException
+  public static float parseFloat(String text, String message) throws SAXException
   {
     if (text == null)
-      throw new SAXException (message);
+      throw new SAXException(message);
     try
     {
-      return Float.parseFloat (text);
+      return Float.parseFloat(text);
     }
     catch (NumberFormatException nfe)
     {
-      throw new SAXException ("NumberFormatError: " + message);
+      throw new SAXException("NumberFormatError: " + message);
     }
   }
 
@@ -88,17 +88,17 @@ public class ParserUtil
    * Parses a boolean. If the string <code>text</code> contains the value of "true", the
    * true value is returned, else false is returned.
    */
-  public static boolean parseBoolean (String text, boolean defaultVal)
+  public static boolean parseBoolean(String text, boolean defaultVal)
   {
     if (text == null)
       return defaultVal;
-    return text.equalsIgnoreCase ("true");
+    return text.equalsIgnoreCase("true");
   }
 
   /**
    * Parses a string. If the <code>text</code> is null, defaultval is returned.
    */
-  public static String parseString (String text, String defaultVal)
+  public static String parseString(String text, String defaultVal)
   {
     if (text == null)
       return defaultVal;
@@ -110,21 +110,21 @@ public class ParserUtil
    * If the string could not be parsed into a float, a basic stroke with the width of
    * 1 is returned.
    */
-  public static Stroke parseStroke (String weight)
+  public static Stroke parseStroke(String weight)
   {
     try
     {
       if (weight != null)
       {
-        Float w = new Float (weight);
-        return new BasicStroke (w.floatValue ());
+        Float w = new Float(weight);
+        return new BasicStroke(w.floatValue());
       }
     }
     catch (NumberFormatException nfe)
     {
-      Log.debug ("Invalid weight for line element", nfe);
+      Log.debug("Invalid weight for line element", nfe);
     }
-    return new BasicStroke (1);
+    return new BasicStroke(1);
   }
 
   /**
@@ -134,7 +134,7 @@ public class ParserUtil
    * <p>
    * As fallback the color black is returned if no color can be parsed.
    */
-  public static Paint parseColor (String color)
+  public static Paint parseColor(String color)
   {
     if (color == null)
       return Color.black;
@@ -142,7 +142,7 @@ public class ParserUtil
     try
     {
       // get color by hex or octal value
-      return Color.decode (color);
+      return Color.decode(color);
     }
     catch (NumberFormatException nfe)
     {
@@ -151,13 +151,13 @@ public class ParserUtil
       {
         // try to get a color by name using reflection
         // black is used for an instance and not for the color itselfs
-        Field f = Color.class.getField (color);
+        Field f = Color.class.getField(color);
 
-        return (Color) f.get (null);
+        return (Color) f.get(null);
       }
       catch (Exception ce)
       {
-        Log.debug ("No such Color : " + color);
+        Log.debug("No such Color : " + color);
         // if we can't get any color return black
         return Color.black;
       }
@@ -169,33 +169,33 @@ public class ParserUtil
    * parses a position of an element. If a relative postion is given, the returnvalue
    * is a negative number between 0 and -100.
    */
-  public static float parseRelativeFloat (String value, String exceptionMessage) throws SAXException
+  public static float parseRelativeFloat(String value, String exceptionMessage) throws SAXException
   {
-    if (value == null) throw new SAXException (exceptionMessage);
-    String tvalue = value.trim ();
-    if (tvalue.endsWith ("%"))
+    if (value == null) throw new SAXException(exceptionMessage);
+    String tvalue = value.trim();
+    if (tvalue.endsWith("%"))
     {
-      String number = tvalue.substring (0, tvalue.indexOf ("%"));
-      float f = parseFloat (number, exceptionMessage) * -1.0f;
-      Log.debug ("  Parsed Relative value: " + f);
+      String number = tvalue.substring(0, tvalue.indexOf("%"));
+      float f = parseFloat(number, exceptionMessage) * -1.0f;
+      Log.debug("  Parsed Relative value: " + f);
       return f;
     }
     else
-      return parseFloat (tvalue, exceptionMessage);
+      return parseFloat(tvalue, exceptionMessage);
   }
 
   /**
    * Parses an element position. The position is stored in the attributes "x", "y", "width" and
    * "height". The attributes are allowed to have relative notion.
    */
-  public static Rectangle2D getElementPosition (Attributes atts) throws SAXException
+  public static Rectangle2D getElementPosition(Attributes atts) throws SAXException
   {
-    float x = ParserUtil.parseRelativeFloat (atts.getValue ("x"), "Element x not specified");
-    float y = ParserUtil.parseRelativeFloat (atts.getValue ("y"), "Element y not specified");
-    float w = ParserUtil.parseRelativeFloat (atts.getValue ("width"), "Element width not specified");
-    float h = ParserUtil.parseRelativeFloat (atts.getValue ("height"), "Element height not specified");
-    if (w == 0) Log.warn ("Element width is 0. Use xxx% to specify a relative width.");
-    Rectangle2D.Float retval = new Rectangle2D.Float (x, y, w, h);
+    float x = ParserUtil.parseRelativeFloat(atts.getValue("x"), "Element x not specified");
+    float y = ParserUtil.parseRelativeFloat(atts.getValue("y"), "Element y not specified");
+    float w = ParserUtil.parseRelativeFloat(atts.getValue("width"), "Element width not specified");
+    float h = ParserUtil.parseRelativeFloat(atts.getValue("height"), "Element height not specified");
+    if (w == 0) Log.warn("Element width is 0. Use xxx% to specify a relative width.");
+    Rectangle2D.Float retval = new Rectangle2D.Float(x, y, w, h);
     return retval;
   }
 }

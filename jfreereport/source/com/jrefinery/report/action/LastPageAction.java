@@ -28,6 +28,7 @@
  * 29-May-2002 : Initial version
  * 05-Jun-2002 : Documentation update.
  * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
+ * 29-Aug-2002 : Downport to JDK 1.2.2
  */
 
 package com.jrefinery.report.action;

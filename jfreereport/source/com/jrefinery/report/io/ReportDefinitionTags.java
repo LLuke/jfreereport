@@ -27,6 +27,7 @@
  *
  * 10-May-2002: Extracted from ReportDefinitionContentHandler
  * 10-Jul-2002: Added Image-field and image-function tags
+ * 31-Aug-2002: Added many tags in the meanwhile ...
  */
 package com.jrefinery.report.io;
 
@@ -92,6 +93,7 @@ public interface ReportDefinitionTags
   public static final String PROPERTY_TAG = "property";
   public static final String PROPERTIES_TAG = "properties";
 
+  public static final String FORMAT_ATT = "format";
   public static final String NAME_ATT = "name";
   public static final String ALIGNMENT_ATT = "alignment";
   public static final String COLOR_ATT = "color";
