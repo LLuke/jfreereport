@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionHandler.java,v 1.3 2003/02/24 10:32:41 mungady Exp $
+ * $Id: ReportDefinitionHandler.java,v 1.4 2003/02/24 17:33:28 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,10 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * A report definition handler.
+ * A report definition handler. The report definition handler is used to
+ * represent a certain parser state. The current state is set in the parser
+ * using the pushFactory() method. The parser forwards any incoming SAXEvent
+ * to the current handler, until the handler is removed with popFactory().
  *
  * @author Thomas Morgner
  */

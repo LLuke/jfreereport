@@ -187,9 +187,10 @@
         </copy>
 
         <!-- convert end-of-line characters in text files -->
+        <!-- end of file does not need to be marked, and causes trouble if it is -->
         <fixcrlf srcdir="${projectdir}/distribution/source"
-                 eol="crlf" eof="add"
-                 excludes="**/*.jpg **/*.gif **/*.png" />
+                 eol="crlf" eof="remove"
+                 excludes="**/*.jpg **/*.gif **/*.png **/*.wmf" />
 
         <!-- make the zip file -->
         <zip zipfile="${projectdir}/${jfreereport.name}-${jfreereport.version}.zip">
@@ -252,7 +253,7 @@
         <!-- convert end-of-line characters in text files -->
         <fixcrlf srcdir="${projectdir}/distribution/source"
                  eol="lf" eof="remove"
-                 excludes="**/*.jpg **/*.gif **/*.png" />
+                 excludes="**/*.jpg **/*.gif **/*.png **/*.wmf" />
 
         <!-- make the tar.gz file -->
         <tar tarfile="${projectdir}/${jfreereport.name}-${jfreereport.version}.tar">
