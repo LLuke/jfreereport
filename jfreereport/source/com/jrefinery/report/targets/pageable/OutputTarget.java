@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.4 2002/12/11 01:10:41 mungady Exp $
+ * $Id: OutputTarget.java,v 1.5 2003/01/24 16:39:06 taqua Exp $
  *
  * Changes
  * -------
@@ -48,8 +48,9 @@ package com.jrefinery.report.targets.pageable;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
-import com.jrefinery.report.targets.pageable.bandlayout.BandLayoutManager;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.LayoutSupport;
 import com.jrefinery.report.util.ReportConfiguration;
 
 import java.awt.Font;
@@ -65,7 +66,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @author David Gilbert
  */
-public interface OutputTarget
+public interface OutputTarget extends LayoutSupport
 {
   /** Literal text for the 'title' property name. */
   public static final String TITLE = "Title";
@@ -267,28 +268,9 @@ public interface OutputTarget
   public void configure (ReportConfiguration config);
 
   /**
-   * Returns the default layout manager.
-   *
-   * @return the default layout manager.
-   */
-  public BandLayoutManager getDefaultLayoutManager ();
-
-  /**
    * Returns the logical page.
    *
    * @return the logical page.
    */
   public LogicalPage getLogicalPage();
-
-  /**
-   * Creates a size calculator for the current state of the output target.  The calculator
-   * is used to calculate the string width and line height and later maybe more...
-   *
-   * @param font  the font.
-   *
-   * @return the size calculator.
-   *
-   * @throws OutputTargetException if there is a problem with the output target.
-   */
-  public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException;
 }

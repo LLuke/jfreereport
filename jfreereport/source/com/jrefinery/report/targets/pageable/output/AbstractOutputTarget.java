@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.2 2002/12/11 01:10:41 mungady Exp $
+ * $Id: AbstractOutputTarget.java,v 1.3 2002/12/18 10:13:16 mungady Exp $
  *
  * Changes
  * -------
@@ -49,8 +49,8 @@
 package com.jrefinery.report.targets.pageable.output;
 
 import com.jrefinery.report.targets.pageable.physicals.LogicalPageImpl;
-import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
-import com.jrefinery.report.targets.pageable.bandlayout.BandLayoutManager;
+import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 
@@ -60,7 +60,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
- * The abstract OutputTarget implements common code for all OutputTargets. It contains
+ * The abstract OutputTarget implements base code for all OutputTargets. It contains
  * functions to manage the cursor, the pageformat and the line breaking of strings.
  *
  * @author David Gilbert
@@ -228,7 +228,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
   public BandLayoutManager getDefaultLayoutManager()
   {
     BandLayoutManager lm = new StaticLayoutManager();
-    lm.setOutputTarget(this);
+    lm.setLayoutSupport(this);
     return lm;
   }
 }

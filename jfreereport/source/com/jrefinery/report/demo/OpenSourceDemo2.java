@@ -46,7 +46,7 @@ import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.TextElement;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
-import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
+import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.PageFormatFactory;
@@ -190,7 +190,7 @@ public class OpenSourceDemo2 extends ApplicationFrame implements ActionListener
     /**
      * Creates a report definition in code.
      * <p>
-     * It is more common to read the definition from an XML report template file, but sometimes you
+     * It is more base to read the definition from an XML report template file, but sometimes you
      * might need to create a report dynamically.
      *
      * @return a report.

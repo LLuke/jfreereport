@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandDefaultStyleSheet.java,v 1.5 2003/01/03 16:18:08 mungady Exp $
+ * $Id: BandDefaultStyleSheet.java,v 1.6 2003/01/21 17:11:40 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,7 @@
 package com.jrefinery.report.targets.style;
 
 import com.jrefinery.report.targets.FloatDimension;
-import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
+import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Point2D;

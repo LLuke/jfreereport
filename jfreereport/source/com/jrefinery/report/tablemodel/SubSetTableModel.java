@@ -2,7 +2,7 @@
  * Date: Jan 26, 2003
  * Time: 3:55:42 PM
  *
- * $Id$
+ * $Id: SubSetTableModel.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
  */
 package com.jrefinery.report.tablemodel;
 
@@ -134,7 +134,7 @@ public class SubSetTableModel implements TableModel
    * default renderer and editor for the column.
    *
    * @param columnIndex  the index of the column
-   * @return the common ancestor class of the object values in the model.
+   * @return the base ancestor class of the object values in the model.
    */
   public Class getColumnClass(int columnIndex)
   {

@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 2:32:12 PM
  *
- * $Id: TableWriter.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
+ * $Id: TableWriter.java,v 1.2 2003/01/25 20:34:11 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -15,8 +15,8 @@ import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.pageable.OutputTarget;
-import com.jrefinery.report.targets.pageable.bandlayout.BandLayoutManager;
-import com.jrefinery.report.targets.pageable.bandlayout.BandLayoutManagerUtil;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;

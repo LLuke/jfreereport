@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.15 2003/01/16 15:35:35 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.16 2003/01/27 18:24:51 taqua Exp $
  *
  * Changes
  * -------
@@ -49,8 +49,8 @@ import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.PostReportFooterState;
-import com.jrefinery.report.targets.pageable.bandlayout.BandLayoutManager;
-import com.jrefinery.report.targets.pageable.bandlayout.BandLayoutManagerUtil;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
 import com.jrefinery.report.targets.pageable.LogicalPage;

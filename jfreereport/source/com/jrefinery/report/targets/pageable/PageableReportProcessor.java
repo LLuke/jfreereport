@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.12 2002/12/18 20:31:47 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.13 2003/01/08 19:33:23 taqua Exp $
  *
  * Changes
  * -------
@@ -156,7 +156,7 @@ public class PageableReportProcessor
    * Processes the report in two passes, the first pass calculates page boundaries and function 
    * values, the second pass sends each page to the output target.
    * <p>
-   * It is possible for the report processing to fail.  A common cause is that the report is
+   * It is possible for the report processing to fail.  A base cause is that the report is
    * designed for a certain page size, but ends up being sent to an output target with a much 
    * smaller page size.  If the headers and footers don't leave enough room on the page for at 
    * least one row of data to be printed, then no progress is made.  An exception will be thrown

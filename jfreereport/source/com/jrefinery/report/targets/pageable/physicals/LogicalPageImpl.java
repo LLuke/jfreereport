@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.15 2003/01/16 15:35:35 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.16 2003/01/21 17:11:40 taqua Exp $
  *
  * Changes
  * -------
@@ -40,23 +40,20 @@ package com.jrefinery.report.targets.pageable.physicals;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
+import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
-import com.jrefinery.report.targets.pageable.ElementLayoutInformation;
-import com.jrefinery.report.targets.pageable.contents.Content;
-import com.jrefinery.report.targets.pageable.operations.OperationFactory;
-import com.jrefinery.report.targets.pageable.operations.OperationModule;
-import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
+import com.jrefinery.report.targets.base.content.Content;
+import com.jrefinery.report.targets.base.operations.OperationFactory;
+import com.jrefinery.report.targets.base.operations.OperationModule;
+import com.jrefinery.report.targets.base.operations.PhysicalOperation;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Dimension2D;
 import java.awt.print.PageFormat;
 import java.util.List;
 
@@ -252,7 +249,7 @@ public class LogicalPageImpl implements LogicalPage
    */
   public void replaySpool (Spool operations)
   {
-    PhysicalOperation[] ops = operations.getOperations();
+    com.jrefinery.report.targets.base.operations.PhysicalOperation[] ops = operations.getOperations();
     for (int i = 0; i < ops.length; i++)
     {
       getPhysicalPage(0, 0).addOperation(ops[i]);
@@ -310,7 +307,7 @@ public class LogicalPageImpl implements LogicalPage
 
     if (addOperationComments)
     {
-      spool.addOperation(new PhysicalOperation.AddComment (
+      spool.addOperation(new com.jrefinery.report.targets.base.operations.PhysicalOperation.AddComment (
           new Log.SimpleMessage("Begin Band: ", band.getClass(), " -> ", band.getName())));
     }
 
@@ -373,7 +370,7 @@ public class LogicalPageImpl implements LogicalPage
     {
       return;
     }
-    OperationModule mod = OperationFactory.getInstance().getModul(e.getContentType());
+    com.jrefinery.report.targets.base.operations.OperationModule mod = com.jrefinery.report.targets.base.operations.OperationFactory.getInstance().getModul(e.getContentType());
     if (mod == null)
     {
       throw new OutputTargetException("No handler for content: " + e.getContentType());
@@ -387,9 +384,9 @@ public class LogicalPageImpl implements LogicalPage
     Rectangle2D drawBounds = translateSubRect(bounds, elementBounds);
     if (addOperationComments)
     {
-      operations.addOperation(new PhysicalOperation.AddComment ("Begin Element: " + e.getClass()
+      operations.addOperation(new com.jrefinery.report.targets.base.operations.PhysicalOperation.AddComment ("Begin Element: " + e.getClass()
                               + " -> " + e.getName()));
-      operations.addOperation(new PhysicalOperation.AddComment (" ...  Element: " + drawBounds));
+      operations.addOperation(new com.jrefinery.report.targets.base.operations.PhysicalOperation.AddComment (" ...  Element: " + drawBounds));
     }
 
 
@@ -398,8 +395,8 @@ public class LogicalPageImpl implements LogicalPage
     Content content = mod.createContentForElement(e, eli, getOutputTarget());
     // split the elements contents, then write ..
     List opsList = mod.createOperations(e, content, drawBounds);
-    PhysicalOperation[] ops = new PhysicalOperation[opsList.size()];
-    ops = (PhysicalOperation[]) opsList.toArray(ops);
+    com.jrefinery.report.targets.base.operations.PhysicalOperation[] ops = new com.jrefinery.report.targets.base.operations.PhysicalOperation[opsList.size()];
+    ops = (com.jrefinery.report.targets.base.operations.PhysicalOperation[]) opsList.toArray(ops);
     for (int i = 0; i < ops.length; i++)
     {
       operations.addOperation(ops[i]);

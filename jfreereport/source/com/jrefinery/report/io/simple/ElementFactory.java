@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.6 2003/01/25 02:47:09 taqua Exp $
+ * $Id: ElementFactory.java,v 1.7 2003/01/27 23:38:59 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.TextElement;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ParserUtil;
-import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
+import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.CharacterEntityParser;
@@ -138,7 +138,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * StartTag-occurences of element definitions get handled by this factory. If an unknown
    * element is encountered, a SAXException is thrown.
    * <p>
-   * The elements parsed in this factory denote common usecases. Element creation is
+   * The elements parsed in this factory denote base usecases. Element creation is
    * delegated to the ItemFactory
    *
    * @param qName  the element name.
@@ -1027,7 +1027,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   }
 
   /**
-   * Reads the attributes that are common for all band-elements, as
+   * Reads the attributes that are base for all band-elements, as
    * name, x, y, width, height, font, fontstyle, fontsize and alignment.
    *
    * @param atts  the attributes.

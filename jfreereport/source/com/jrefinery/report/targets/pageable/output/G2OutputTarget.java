@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.10 2003/01/14 23:48:12 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.11 2003/01/24 16:39:07 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,8 @@ import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.OutputTarget;
-import com.jrefinery.report.targets.pageable.SizeCalculator;
+import com.jrefinery.report.targets.SizeCalculator;
+import com.jrefinery.report.targets.DefaultSizeCalculator;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
@@ -81,103 +82,6 @@ import java.util.Enumeration;
  */
 public class G2OutputTarget extends AbstractOutputTarget
 {
-  private static class BuggyFontRendererDetector
-  {
-    private boolean isBuggyVersion;
-    private boolean isAliased;
-
-    public BuggyFontRendererDetector ()
-    {
-      isAliased = ReportConfiguration.getGlobalConfig().isG2TargetUseAliasing();
-      
-      // Another funny thing for the docs: On JDK 1.4 the font renderer changed.
-      // in previous versions, the font renderer was sensitive to fractional metrics,
-      // so that fonts were always rendered without FractionalMetrics enabled.
-      // Since 1.4, fonts are always rendered with FractionalMetrics disabled.
-
-      // On a 1.4 version, the aliasing has no influence on non-fractional metrics
-      // aliasing has no influence on any version if fractional metrics are enabled.
-      FontRenderContext frc_alias = new FontRenderContext(null, true, false);
-      FontRenderContext frc_noAlias = new FontRenderContext(null, false, false);
-      Font font = new Font ("Serif", Font.PLAIN, 10);
-      String myText = "A simple text with some characters to calculate the length.";
-
-      double wAlias =  font.getStringBounds(myText, 0, myText.length(), frc_alias).getWidth();
-      double wNoAlias =  font.getStringBounds(myText, 0, myText.length(), frc_noAlias).getWidth();
-      isBuggyVersion = (wAlias != wNoAlias);
-      boolean buggyOverride = ReportConfiguration.getGlobalConfig().isG2BuggyFRC();
-      Log.debug ("This is a buggy version of the font-renderer context: " + isBuggyVersion);
-      Log.debug ("The buggy-value is defined in the configuration     : " + buggyOverride);
-      if (isAliased())
-      {
-        Log.debug ("The G2OutputTarget uses Antialiasing. \n" +
-                   "The FontRendererBugs should not be visible in TextAntiAliasing-Mode." +
-                   "If there are problems with the string-placement, please report your " +
-                   "Operating System version and your JDK Version to www.object-refinery.com/jfreereport.");
-      }
-      else
-      {
-        if (isBuggyVersion)
-        {
-          Log.debug ("The G2OutputTarget does not use Antialiasing. \n" +
-                     "If your FontRenderer is buggy (text is not displayed correctly by default). \n" +
-                     "The system was able to detect this and will try to correct the bug. \n" +
-                     "If your strings are not displayed correctly, report your OperationSystem version and your " +
-                     "JDK Version to www.object-refinery.com/jfreereport");
-        }
-        else
-        {
-          Log.debug ("The G2OutputTarget does not use Antialiasing. \n" +
-                     "If your FontRenderer seems to be ok. \n" +
-                     "If your strings are not displayed correctly, try to enable the configuration key " +
-                     "\"com.jrefinery.report.targets.G2OutputTarget.isBuggyFRC=true\"" +
-                     "in the file 'jfreereport.properties' or set this property as System-property. " +
-                     "If the bug remains alive, please report your Operating System version and your " +
-                     "JDK Version to www.object-refinery.com/jfreereport.");
-        }
-      }
-
-      if (buggyOverride == true)
-      {
-        isBuggyVersion = true;
-      }
-    }
-
-    public FontRenderContext createFontRenderContext ()
-    {
-      if (isAliased())
-      {
-        return new FontRenderContext(null, isAliased(), true);
-      }
-      // buggy is only important on non-aliased environments ...
-      // dont use fractional metrics on buggy versions
-
-      // use int_metrics wenn buggy ...
-      return new FontRenderContext(null, isAliased(), isBuggyVersion() == false);
-    }
-
-    public boolean isAliased ()
-    {
-      return isAliased;
-    }
-
-    public boolean isBuggyVersion ()
-    {
-      return isBuggyVersion;
-    }
-  }
-
-  private static BuggyFontRendererDetector frcDetector;
-
-  public static BuggyFontRendererDetector getFrcDetector ()
-  {
-    if (frcDetector == null)
-    {
-      frcDetector = new BuggyFontRendererDetector();
-    }
-    return frcDetector;
-  }
-
   /** The graphics device. */
   private Graphics2D g2;
 
@@ -218,7 +122,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   {
     g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
                         RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-    if (getFrcDetector().isAliased())
+    if (DefaultSizeCalculator.getFrcDetector().isAliased())
     {
       g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -654,79 +558,6 @@ public class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * A size calculator used internally by the <code>G2OutputTarget</code> class.
-   */
-  private static class G2SizeCalculator implements SizeCalculator
-  {
-    /**
-     * The font.
-     */
-    private FontDefinition font;
-
-    /**
-     * Creates a new size calculator.
-     *
-     * @param font  the font.
-     */
-    public G2SizeCalculator(FontDefinition font)
-    {
-      this.font = font;
-    }
-
-    /**
-     * Returns the height of the current font. The font height specifies the distance between
-     * 2 base lines.
-     *
-     * @return the font height.
-     */
-    public float getLineHeight()
-    {
-      return font.getFont().getSize2D();
-    }
-
-    /**
-     * Calculates the width of the specified String in the current Graphics context.
-     *
-     * @param text the text to be weighted.
-     * @param lineStartPos the start position of the substring to be weighted.
-     * @param endPos the position of the last characterto be included in the weightening process.
-     *
-     * @return the width of the given string in 1/72" dpi.
-     */
-    public float getStringWidth(String text, int lineStartPos, int endPos)
-    {
-      if (lineStartPos < 0)
-      {
-        throw new IllegalArgumentException();
-      }
-      if (lineStartPos > endPos)
-      {
-        throw new IllegalArgumentException("LineStart on: " + lineStartPos + " End on " + endPos);
-      }
-
-      if (lineStartPos == endPos)
-        return 0;
-
-      FontRenderContext frc = getFrcDetector().createFontRenderContext();
-      Rectangle2D textBounds2 = font.getFont().getStringBounds(text, lineStartPos, endPos, frc);
-      float x2 = (float) textBounds2.getWidth();
-//      Log.debug ("Text: " + text.substring(lineStartPos, endPos) + " : Bounds: " + x2 + " : " + frc.usesFractionalMetrics());
-//      if (text.substring(lineStartPos, endPos).equals ("invoic")) new Exception().printStackTrace();
-      return x2;
-    }
-
-    /**
-     * Converts this object to a string.
-     *
-     * @return a string.
-     */
-    public String toString ()
-    {
-      return "OT: " + font;
-    }
-  }
-
-  /**
    * Creates a size calculator for the current state of the output target. The calculator
    * is used to calculate the string width and line height and later maybe more.
    *
@@ -736,7 +567,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    */
   public SizeCalculator createTextSizeCalculator(FontDefinition font)
   {
-    G2SizeCalculator cal = new G2SizeCalculator(font);
+    DefaultSizeCalculator cal = new DefaultSizeCalculator(font);
     return cal;
   }
 

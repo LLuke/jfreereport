@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.38 2003/01/27 23:47:23 taqua Exp $
+ * $Id: Band.java,v 1.39 2003/01/28 22:04:40 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -132,7 +132,7 @@ public class Band extends Element implements Serializable, Cloneable
 
   /**
    * Returns the default style sheet for all children of this band. This style sheet
-   * is used to define a set of common (or default) properties for all elements.
+   * is used to define a set of base (or default) properties for all elements.
    *
    * @return the default style sheet.
    */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.13 2002/12/11 01:03:13 mungady Exp $
+ * $Id: SampleReport1.java,v 1.14 2003/01/16 15:35:35 taqua Exp $
  *
  * Changes:
  * --------
@@ -56,7 +56,7 @@ import com.jrefinery.report.function.ElementVisibilitySwitchFunction;
 import com.jrefinery.report.function.ExpressionCollection;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.function.ItemSumFunction;
-import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
+import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.util.Log;
 
 import java.awt.BasicStroke;

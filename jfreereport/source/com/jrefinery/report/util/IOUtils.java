@@ -2,7 +2,7 @@
  * Date: Jan 26, 2003
  * Time: 6:19:12 PM
  *
- * $Id: IOUtils.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
+ * $Id: IOUtils.java,v 1.2 2003/01/27 18:24:55 taqua Exp $
  */
 package com.jrefinery.report.util;
 
@@ -123,7 +123,7 @@ public class IOUtils
 
       if (commonIndex == urlName.size())
       {
-        // correct the common index if there is some weird mapping detected,
+        // correct the base index if there is some weird mapping detected,
         // fi. the file url is fully included in the base url:
         //
         // base: /file/test/funnybase

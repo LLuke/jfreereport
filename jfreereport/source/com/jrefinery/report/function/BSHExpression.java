@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.11 2002/12/18 10:13:16 mungady Exp $
+ * $Id: BSHExpression.java,v 1.12 2003/01/14 21:06:11 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -58,7 +58,7 @@ import java.io.Reader;
  * the function <code>getValue()</code> to begin and to end your expression, but you are free to
  * add your own functions to the script.
  * <p>
- * By default, common Java core and extension packages are imported for you. They are:
+ * By default, base Java core and extension packages are imported for you. They are:
  * <ul>
  * <li><code>java.lang<code>
  * <li><code>java.io</code>

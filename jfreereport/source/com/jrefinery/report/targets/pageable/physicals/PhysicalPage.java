@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.7 2002/12/16 17:31:06 mungady Exp $
+ * $Id: PhysicalPage.java,v 1.8 2003/01/27 18:24:51 taqua Exp $
  *
  * Changes
  * -------
@@ -37,7 +37,7 @@ package com.jrefinery.report.targets.pageable.physicals;
 
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
-import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
+import com.jrefinery.report.targets.base.operations.PhysicalOperation;
 import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
@@ -87,7 +87,7 @@ public class PhysicalPage
    *
    * @param op  the operation.
    */
-  public void addOperation(PhysicalOperation op)
+  public void addOperation(com.jrefinery.report.targets.base.operations.PhysicalOperation op)
   {
     bandOperations.add(op);
   }
@@ -102,8 +102,8 @@ public class PhysicalPage
   public void write(OutputTarget ot) throws OutputTargetException
   {
     ot.beginPage(this);
-    PhysicalOperation[] ops = new PhysicalOperation[bandOperations.size()];
-    ops = (PhysicalOperation[]) bandOperations.toArray(ops);
+    com.jrefinery.report.targets.base.operations.PhysicalOperation[] ops = new com.jrefinery.report.targets.base.operations.PhysicalOperation[bandOperations.size()];
+    ops = (com.jrefinery.report.targets.base.operations.PhysicalOperation[]) bandOperations.toArray(ops);
 
     for (int i = 0; i < ops.length; i++)
     {

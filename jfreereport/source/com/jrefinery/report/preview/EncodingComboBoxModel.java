@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 7:54:06 PM
  *
- * $Id$
+ * $Id: EncodingComboBoxModel.java,v 1.1 2003/01/22 19:45:28 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -238,14 +238,14 @@ public class EncodingComboBoxModel implements ComboBoxModel
   public static EncodingComboBoxModel createDefaultModel ()
   {
     EncodingComboBoxModel ecb = new EncodingComboBoxModel();
-    // basic encoding set, common encodings
+    // basic encoding set, base encodings
     ecb.addEncoding("ASCII", "American Standard Code for Information Interchange");
     ecb.addEncoding("Cp1252", "Windows Latin-1");
     ecb.addEncoding("ISO-8859-1", "Latin alphabet No. 1");
     ecb.addEncoding("ISO-8859-15", "Latin alphabet No. 9, 'Euro' enabled");
     ecb.addEncoding("UTF-8", "8 Bit UCS Transformation Format");
     ecb.addEncoding("UTF-16", "16 Bit UCS Transformation Format");
-    // missing: UTF-16BE, UTF-16LE are no common need in EndUser environments
+    // missing: UTF-16BE, UTF-16LE are no base need in EndUser environments
 
     //extended encoding set, contained in lib/charsets.jar
     ecb.addEncoding("Cp1250", "Windows Eastern Europe");
