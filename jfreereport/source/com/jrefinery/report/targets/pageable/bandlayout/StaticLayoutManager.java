@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.6 2002/12/12 20:24:03 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.7 2002/12/13 01:26:11 taqua Exp $
  *
  * Changes
  * -------
@@ -428,14 +428,14 @@ public class StaticLayoutManager implements BandLayoutManager
 
   /**
    * Layout a single band with all elements contained within the band.
-   * The band has its BOUNDS already set and all elements are layed out
-   * within these bounds. The band's properties will not be changed during
-   * the layouting.
+   * <p>
+   * The band has its <code>BOUNDS</code> already set and all elements are laid out
+   * within these bounds. The band's properties will not be changed during the layouting.
+   * <p>
+   * This layout manager requires that all direct child elements have the <code>ABSOLUTE_POS</code>
+   * and <code>ABSOLUTE_DIM</code> properties set.
    *
-   * This layout manager requires that all direct child element have the
-   * ABSOLUTE_POS and ABSOLUTE_DIM property set.
-   *
-   * @param b the band which should be layouted
+   * @param b the band to lay out.
    */
   public void doLayout(Band b)
   {
@@ -476,11 +476,11 @@ public class StaticLayoutManager implements BandLayoutManager
   }
 
   /**
-   * Returns true if the element has a static width, and false otherwise.
+   * Returns <code>true</code> if the element has a static width, and <code>false</code> otherwise.
    *
    * @param e  the element.
    *
-   * @return true or false.
+   * @return <code>true</code> or </code>false</code>.
    */
   private boolean isElementStaticWidth (Element e)
   {
