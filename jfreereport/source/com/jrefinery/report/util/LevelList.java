@@ -25,7 +25,7 @@
  * ---------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: LevelList.java,v 1.2 2002/11/07 21:45:29 taqua Exp $
+ * $Id: LevelList.java,v 1.3 2002/11/29 12:07:29 mungady Exp $
  *
  * Changes
  * -------
@@ -35,10 +35,11 @@
 
 package com.jrefinery.report.util;
 
-import java.util.TreeSet;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.TreeSet;
 
 /**
  * @author TM
@@ -126,12 +127,15 @@ public class LevelList implements Cloneable
      * Returns the next element in the interation.
      *
      * @return the next element in the iteration.
-     * @exception NoSuchElementException iteration has no more elements.
+     * @exception java.util.NoSuchElementException iteration has no more elements.
      */
     public Object next()
     {
       Object cnext = next;
+      if (cnext == null) throw new NoSuchElementException ();
+
       searchNext();
+
       return cnext;
     }
 
@@ -265,7 +269,7 @@ public class LevelList implements Cloneable
    * Adds an element at a given level.
    *
    * @param o  the element.
-   * @param levell the level.
+   * @param level the level.
    */
   public synchronized void add (Object o, int level)
   {

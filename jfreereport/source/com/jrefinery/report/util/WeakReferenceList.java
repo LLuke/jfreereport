@@ -24,7 +24,7 @@
  * WeakReferenceList.java
  * ----------------------
  *
- * $Id$
+ * $Id: WeakReferenceList.java,v 1.8 2002/11/07 21:45:29 taqua Exp $
  *
  * Changes
  * -------
@@ -131,7 +131,6 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
       {
         ob = restoreChild (index);
         childs[getChildPos (index)] = createReference (ob);
-        ;
       }
       return ob;
     }

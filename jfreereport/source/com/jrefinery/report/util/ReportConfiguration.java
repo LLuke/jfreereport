@@ -24,7 +24,7 @@
  * ReportConfiguration.java
  * ------------------------
  *
- * $Id: ReportConfiguration.java,v 1.5 2002/11/27 12:20:34 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.6 2002/11/29 12:07:29 mungady Exp $
  *
  * Changes
  * -------
@@ -36,9 +36,9 @@ package com.jrefinery.report.util;
 
 import com.lowagie.text.pdf.BaseFont;
 
-import java.util.Properties;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * Global and Local configurations for JFreeReport. More documentation needed

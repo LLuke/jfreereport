@@ -24,7 +24,7 @@
  * ActionMenuItem.java
  * -------------------
  *
- * $Id$
+ * $Id: ActionMenuItem.java,v 1.6 2002/11/07 21:45:28 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -33,12 +33,12 @@
  */
 package com.jrefinery.report.util;
 
-import javax.swing.JMenuItem;
 import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * The ActionMenuItem is used to connect an Action and its properties to an MenuItem.

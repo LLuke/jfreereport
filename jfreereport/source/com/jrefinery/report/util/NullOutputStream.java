@@ -25,7 +25,7 @@
  * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: NullOutputStream.java,v 1.2 2002/11/07 21:45:29 taqua Exp $
+ * $Id: NullOutputStream.java,v 1.3 2002/11/29 12:07:29 mungady Exp $
  *
  * Changes
  * -------
@@ -35,8 +35,8 @@
 
 package com.jrefinery.report.util;
 
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * A null output stream.
