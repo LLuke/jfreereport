@@ -1,0 +1,19 @@
+<!-- An ANT build file for JFreeReport -->
+
+<!-- Based on a script written by David Gilbert -->
+
+<!-- To run this script, you need to make sure the libraries used by -->
+<!-- JFreeReport are copied to the ../lib directory (or edit the -->
+<!-- init-general task to point to the appropriate jar files). -->
+
+<!-- This script will create temporary directories ../build and -->
+<!-- ../distribution, as working areas.  A ../javadoc directory will -->
+<!-- be created for the Javadoc HTML pages. -->
+
+<!-- If you have comments about this script, please post a message -->
+<!-- in the JFreeReport forum. -->
+
+<project name="jfreereport-ext" default="all" basedir=".">
+<!-- fill me -->
+</project>
+
