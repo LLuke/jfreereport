@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageRenderFunction.java,v 1.6 2005/01/24 23:59:05 taqua Exp $
+ * $Id: ImageRenderFunction.java,v 1.7 2005/01/28 19:26:48 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -93,7 +93,7 @@ public class ImageRenderFunction extends AbstractFunction
     g2.setFont(new Font("Serif", Font.PLAIN, 10));
     g2.drawString("You are viewing a graphics of JFreeReport on index "
         + event.getState().getCurrentDisplayItem(), 10, 10);
-
+    g2.dispose();
     functionValue = new DefaultImageReference(image);
   }
 

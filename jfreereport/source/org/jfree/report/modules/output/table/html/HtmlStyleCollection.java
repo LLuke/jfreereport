@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.6.2.1.2.3 2004/12/13 19:27:08 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.9 2005/01/25 00:13:44 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.jfree.util.Log;
 import org.jfree.xml.factory.objects.ColorObjectDescription;
 
 /**
@@ -121,10 +120,10 @@ public class HtmlStyleCollection
       table.put(style, name);
       reverseTable.put(name, style);
     }
-    else
-    {
-      Log.debug ("Already contained, will not add");
-    }
+//    else
+//    {
+//      Log.debug ("Already contained, will not add");
+//    }
     return name;
   }
 

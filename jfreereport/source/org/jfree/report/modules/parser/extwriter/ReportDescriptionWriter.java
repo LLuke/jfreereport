@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.11 2005/02/04 19:08:53 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.12 2005/02/19 13:30:04 taqua Exp $
  *
  * Changes
  * -------
@@ -103,18 +103,18 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     writeTag(writer, REPORT_DESCRIPTION_TAG);
 
     writeBand(writer, REPORT_HEADER_TAG,
-        getReport().getReportHeader(), null, REPORT_DESCRIPTION_HINT_PATH);
+        getReport().getReportHeader(), REPORT_DESCRIPTION_HINT_PATH);
     writeBand(writer, REPORT_FOOTER_TAG,
-        getReport().getReportFooter(), null, REPORT_DESCRIPTION_HINT_PATH);
+        getReport().getReportFooter(), REPORT_DESCRIPTION_HINT_PATH);
     writeBand(writer, PAGE_HEADER_TAG,
-        getReport().getPageHeader(), null, REPORT_DESCRIPTION_HINT_PATH);
+        getReport().getPageHeader(), REPORT_DESCRIPTION_HINT_PATH);
     writeBand(writer, PAGE_FOOTER_TAG,
-        getReport().getPageFooter(), null, REPORT_DESCRIPTION_HINT_PATH);
+        getReport().getPageFooter(), REPORT_DESCRIPTION_HINT_PATH);
     writeBand(writer, WATERMARK_TAG,
-        getReport().getWatermark(), null, REPORT_DESCRIPTION_HINT_PATH);
+        getReport().getWatermark(), REPORT_DESCRIPTION_HINT_PATH);
     writeGroups(writer);
     writeBand(writer, ITEMBAND_TAG,
-        getReport().getItemBand(), null, REPORT_DESCRIPTION_HINT_PATH);
+        getReport().getItemBand(), REPORT_DESCRIPTION_HINT_PATH);
 
     writeComment(writer, REPORT_DESCRIPTION_HINT_PATH, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, REPORT_DESCRIPTION_TAG);
@@ -126,15 +126,13 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * @param writer  a character stream writer.
    * @param tagName  the tag name (for the band).
    * @param band  the band.
-   * @param parent  the parent band.
    * @param path the comment path used to read stored comments from the ext-parser.
    *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
   private void writeBand(final Writer writer, final String tagName,
-                         final Band band, final Band parent,
-                         final CommentHintPath path)
+                         final Band band, final CommentHintPath path)
       throws IOException, ReportWriterException
   {
     if (isBandEmpty(band))
@@ -165,7 +163,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
       final StyleWriter styleWriter =
           new StyleWriter(getReportWriter(), band.getStyle(),
-              parent.getStyle(), getIndentLevel(), stylePath);
+              getIndentLevel(), stylePath);
       styleWriter.write(writer);
       writeComment(writer, stylePath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, STYLE_TAG);
@@ -179,7 +177,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       if (list[i] instanceof Band)
       {
         final Band b = (Band) list[i];
-        writeBand(writer, BAND_TAG, b, band, newPath);
+        writeBand(writer, BAND_TAG, b, newPath);
       }
       else
       {
@@ -249,7 +247,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
       final StyleWriter styleWriter =
           new StyleWriter(getReportWriter(), element.getStyle(),
-              parent.getStyle(), getIndentLevel(), stylePath);
+              getIndentLevel(), stylePath);
       styleWriter.write(writer);
       writeComment(writer, stylePath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, STYLE_TAG);
@@ -295,7 +293,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
     if (templateDescription == null)
     {
-      throw new ReportWriterException("Unknown template type: " + templateDescription);
+      throw new ReportWriterException("Unknown template type: " + template);
     }
 
     // create the parent description before the template description is filled.
@@ -436,8 +434,8 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
         writeCloseTag(writer, FIELDS_TAG);
       }
 
-      writeBand(writer, GROUP_HEADER_TAG, g.getHeader(), null, groupPath);
-      writeBand(writer, GROUP_FOOTER_TAG, g.getFooter(), null, groupPath);
+      writeBand(writer, GROUP_HEADER_TAG, g.getHeader(), groupPath);
+      writeBand(writer, GROUP_FOOTER_TAG, g.getFooter(), groupPath);
 
       writeComment(writer, groupPath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, GROUP_TAG);

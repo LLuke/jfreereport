@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaBandProducer.java,v 1.5 2005/01/30 23:37:23 taqua Exp $
+ * $Id: HtmlMetaBandProducer.java,v 1.6 2005/02/19 13:30:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -113,6 +113,10 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
     final int imageWidth = (int) StrictGeomUtility.toExternalValue(rect.getWidth());
     final int imageHeight = (int) StrictGeomUtility.toExternalValue(rect.getHeight());
 
+    if (imageWidth == 0 && imageHeight == 0)
+    {
+      return null;
+    }
     final Image image = ImageUtils.createTransparentImage (imageWidth, imageHeight);
     final Graphics2D g2 = (Graphics2D) image.getGraphics();
     // the clipping bounds are a sub-area of the whole drawable

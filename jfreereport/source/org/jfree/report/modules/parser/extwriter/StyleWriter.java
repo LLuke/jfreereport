@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.11 2005/01/30 23:37:24 taqua Exp $
+ * $Id: StyleWriter.java,v 1.12 2005/02/04 19:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -67,8 +67,8 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
   /** The element style sheet. */
   private ElementStyleSheet elementStyleSheet;
 
-  /** The default style sheet. */
-  private ElementStyleSheet defaultStyleSheet;
+//  /** The default style sheet. */
+//  private ElementStyleSheet defaultStyleSheet;
 
   /**
    * The comment hint path is used to read xml comments from the
@@ -81,14 +81,12 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    *
    * @param reportWriter  the report writer.
    * @param elementStyleSheet  the element style sheet (never null).
-   * @param defaultStyleSheet  the band default style sheet (can be null).
    * @param indentLevel the current indention level.
    * @param commentPath the path on where to search for ext-parser comments
    * in the report builder hints.
    */
   public StyleWriter(final ReportWriter reportWriter,
                      final ElementStyleSheet elementStyleSheet,
-                     final ElementStyleSheet defaultStyleSheet,
                      final int indentLevel,
                      final CommentHintPath commentPath)
   {
@@ -98,7 +96,6 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
       throw new NullPointerException();
     }
     this.elementStyleSheet = elementStyleSheet;
-    this.defaultStyleSheet = defaultStyleSheet;
     this.commentPath = commentPath.getInstance();
   }
 
@@ -330,10 +327,6 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
       return true;
     }
     if (es == ShapeElement.getDefaultStyle())
-    {
-      return true;
-    }
-    if (es == defaultStyleSheet)
     {
       return true;
     }

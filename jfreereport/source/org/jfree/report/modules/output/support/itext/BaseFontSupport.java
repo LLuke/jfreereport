@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BaseFontSupport.java,v 1.14 2005/02/19 15:41:23 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.15 2005/02/19 16:05:50 taqua Exp $
  *
  * Changes
  * -------
@@ -224,6 +224,8 @@ public class BaseFontSupport implements FontMapper
     }
     catch (Exception e)
     {
+//      final String filename = BaseFontFactory.getFontFactory().getFontfileForName(fontKey);
+//      Log.debug ("BaseFont.createFont failed. " + filename); 
       Log.warn(new Log.SimpleMessage
         ("BaseFont.createFont failed. Key = ", fontKey, ": ",e.getMessage()));
     }

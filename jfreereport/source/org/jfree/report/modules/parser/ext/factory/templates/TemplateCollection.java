@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollection.java,v 1.9.4.1 2004/05/11 13:25:49 taqua Exp $
+ * $Id: TemplateCollection.java,v 1.11 2005/01/25 00:20:09 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -201,5 +201,10 @@ public class TemplateCollection implements Serializable
   public int hashCode()
   {
     return templates.hashCode();
+  }
+
+  public String[] getNames ()
+  {
+    return (String[]) templates.keySet().toArray(new String[templates.size()]);
   }
 }

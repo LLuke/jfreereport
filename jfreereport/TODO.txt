@@ -138,8 +138,7 @@ What changed:
 To be implemented before the release is ready:
 * Redesign the dialogs to follow the common usability guides                     (3 days)
 * Verify the PlainText-Output target       (2 days)
-* Bug: Drawables and PDF refuse to work together. 
-* TestCases report: happy crashing!
+* TestCases report: GroupCountTest is invalid (<1 day)
 * Update the ANT script to reflect the new modules.
 
 What will be impossible:

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFMetaBandProducer.java,v 1.3 2005/01/25 00:15:16 taqua Exp $
+ * $Id: RTFMetaBandProducer.java,v 1.4 2005/02/19 13:30:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,27 +38,30 @@
 
 package org.jfree.report.modules.output.table.rtf;
 
-import java.awt.geom.Rectangle2D;
-
 import com.lowagie.text.pdf.BaseFont;
 import org.jfree.report.Element;
 import org.jfree.report.ImageContainer;
-import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.content.ContentCreationException;
+import org.jfree.report.content.ImageContent;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.support.itext.BaseFontCreateException;
 import org.jfree.report.modules.output.support.itext.BaseFontSupport;
+import org.jfree.report.modules.output.support.itext.ITextImageCache;
 import org.jfree.report.modules.output.table.base.RawContent;
 import org.jfree.report.modules.output.table.base.TableMetaBandProducer;
+import org.jfree.report.modules.output.table.rtf.metaelements.RTFImageMetaElement;
 import org.jfree.report.modules.output.table.rtf.metaelements.RTFTextMetaElement;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.ReportConfiguration;
 
 public class RTFMetaBandProducer extends TableMetaBandProducer
 {
   private BaseFontSupport baseFontSupport;
   private String encoding;
+  private ITextImageCache imageCache;
 
   public RTFMetaBandProducer (final String encoding)
   {
@@ -69,6 +72,7 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
     }
     this.encoding = encoding;
     this.baseFontSupport = new BaseFontSupport();
+    this.imageCache = new ITextImageCache();
   }
 
   /**
@@ -94,11 +98,15 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
       return null;
     }
 
-//    final Rectangle2D rect = (Rectangle2D)
-//            e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-//    return new RTFImageMetaElement (new RawContent (rect, o),
-//            createStyleForImageElement(e, x, y));
-    return null;
+    if ("true".equals(ReportConfiguration.getGlobalConfig().getConfigProperty
+            ("org.jfree.report.modules.output.table.rtf.EnableImages")) == false)
+    {
+      return null;
+    }
+    final StrictBounds rect = (StrictBounds)
+            e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+    return new RTFImageMetaElement (new ImageContent ((ImageContainer) o, rect),
+            createStyleForImageElement(e, x, y), imageCache);
   }
 
   protected MetaElement createTextCell (final Element e,

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.23 2005/02/19 13:29:59 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.24 2005/02/19 15:41:23 taqua Exp $
  *
  * Changes
  * -------
@@ -56,13 +56,12 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.geom.PathIterator;
+import java.awt.TexturePaint;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 import com.lowagie.text.Anchor;
 import com.lowagie.text.BadElementException;
@@ -77,10 +76,8 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.LocalImageContainer;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.ShapeElement;
-import org.jfree.report.URLImageContainer;
 import org.jfree.report.content.AnchorContent;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.DrawableContent;
@@ -93,29 +90,29 @@ import org.jfree.report.modules.output.support.itext.BaseFontCreateException;
 import org.jfree.report.modules.output.support.itext.BaseFontFactory;
 import org.jfree.report.modules.output.support.itext.BaseFontRecord;
 import org.jfree.report.modules.output.support.itext.BaseFontSupport;
+import org.jfree.report.modules.output.support.itext.ITextImageCache;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.KeyedQueue;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
-import org.jfree.report.util.WaitingImageObserver;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
 
 /**
- * An output target for the report engine that generates a PDF file using the iText class library
- * (see <code>http://www.lowagie.com/iText</code>, note that the URL is case-sensitive!).
- * <p>
+ * An output target for the report engine that generates a PDF file using the iText class
+ * library (see <code>http://www.lowagie.com/iText</code>, note that the URL is
+ * case-sensitive!).
+ * <p/>
  * If the system property "org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.AUTOINIT"
- * is set to "true",
- * the PDF-FontFactory is automatically initialized when this class is loaded. Be aware that
- * embedding many fonts will result in larger files.
- * <p>
+ * is set to "true", the PDF-FontFactory is automatically initialized when this class is
+ * loaded. Be aware that embedding many fonts will result in larger files.
+ * <p/>
  * When using Unicode characters, you will have to adjust the encoding of this target to
  * "Identity-H", to enable horizontal unicode printing. This will result in larger files.
- * <p>
- * The Encoding property is now a string with one of the values of "none" "40bit" or "128bit".
+ * <p/>
+ * The Encoding property is now a string with one of the values of "none" "40bit" or
+ * "128bit".
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -127,19 +124,23 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    */
   private static final strictfp class PDFSizeCalculator implements SizeCalculator
   {
-    /** The base font. */
+    /**
+     * The base font.
+     */
     private final BaseFont baseFont;
 
-    /** The font size. */
+    /**
+     * The font size.
+     */
     private final float fontSize;
 
     /**
      * Creates a new size calculator.
      *
-     * @param font  the font.
-     * @param fontSize  the font size.
+     * @param font     the font.
+     * @param fontSize the font size.
      */
-    private PDFSizeCalculator(final BaseFont font, final float fontSize)
+    private PDFSizeCalculator (final BaseFont font, final float fontSize)
     {
       if (font == null)
       {
@@ -156,143 +157,214 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     /**
      * Calculates the width of the specified String in the current Graphics context.
      *
-     * @param text the text to be weighted.
+     * @param text         the text to be weighted.
      * @param lineStartPos the start position of the substring to be weighted.
-     * @param endPos the position of the last characterto be included in the weightening process.
-     *
+     * @param endPos       the position of the last characterto be included in the
+     *                     weightening process.
      * @return the width of the given string in 1/72" dpi.
      */
-    public float getStringWidth(final String text, final int lineStartPos, final int endPos)
+    public float getStringWidth (final String text, final int lineStartPos,
+                                 final int endPos)
     {
       return baseFont.getWidthPoint(text.substring(lineStartPos, endPos), fontSize);
     }
 
     /**
-     * Returns the height of the current font. The font height specifies the distance between
-     * 2 base lines.
+     * Returns the height of the current font. The font height specifies the distance
+     * between 2 base lines.
      *
-     * @return  the font height.
+     * @return the font height.
      */
-    public float getLineHeight()
+    public float getLineHeight ()
     {
       return fontSize;
     }
   }
 
-  /** The configuration prefix. */
+  /**
+   * The configuration prefix.
+   */
   public static final String CONFIGURATION_PREFIX
-      = "org.jfree.report.modules.output.pageable.pdf.";
-
-  /** Literal text for the 'EmbedFonts' property name. */
-  public static final String EMBED_FONTS = "EmbedFonts";
-
-  /** Literal text for the 'AllowPrinting' property name. */
-  public static final String SECURITY_ALLOW_PRINTING = "AllowPrinting";
-
-  /** Literal text for the 'AllowModifyContents' property name. */
-  public static final String SECURITY_ALLOW_MODIFY_CONTENTS = "AllowModifyContents";
-
-  /** Literal text for the 'AllowCopy' property name. */
-  public static final String SECURITY_ALLOW_COPY = "AllowCopy";
-
-  /** Literal text for the 'AllowModifyAnnotations' property name. */
-  public static final String SECURITY_ALLOW_MODIFY_ANNOTATIONS = "AllowModifyAnnotations";
-
-  /** Literal text for the 'AllowFillIn' property name. */
-  public static final String SECURITY_ALLOW_FILLIN = "AllowFillIn";
-
-  /** Literal text for the 'AllowScreenReaders' property name. */
-  public static final String SECURITY_ALLOW_SCREENREADERS = "AllowScreenReaders";
-
-  /** Literal text for the 'AllowAssembly' property name. */
-  public static final String SECURITY_ALLOW_ASSEMBLY = "AllowAssembly";
-
-  /** Literal text for the 'AllowDegradedPrinting' property name. */
-  public static final String SECURITY_ALLOW_DEGRADED_PRINTING = "AllowDegradedPrinting";
-
-  /** Literal text for the 'Encryption' property name. */
-  public static final String SECURITY_ENCRYPTION = "Encryption";
-
-  /** A constant for the encryption type (40 bit). */
-  public static final String SECURITY_ENCRYPTION_NONE = "none";
-
-  /** A constant for the encryption type (40 bit). */
-  public static final String SECURITY_ENCRYPTION_40BIT = "40bit";
-
-  /** A constant for the encryption type (128 bit). */
-  public static final String SECURITY_ENCRYPTION_128BIT = "128bit";
-
-  /** Literal text for the 'userpassword' property name. */
-  public static final String SECURITY_USERPASSWORD = "UserPassword";
-
-  /** Literal text for the 'ownerpassword' property name. */
-  public static final String SECURITY_OWNERPASSWORD = "OwnerPassword";
-
-  /** A useful constant for specifying the PDF creator. */
-  private static final String CREATOR = JFreeReport.getInfo().getName() + " version "
-      + JFreeReport.getInfo().getVersion();
-
-  /** The encoding key. */
-  public static final String ENCODING = "Encoding";
-
-  /** The 'PDF embed fonts' property key. */
-  public static final String PDFTARGET_EMBED_FONTS
-      = CONFIGURATION_PREFIX + EMBED_FONTS;
-
-  /** The default 'PDF embed fonts' property value. */
-  public static final String PDFTARGET_EMBED_FONTS_DEFAULT = "true";
-
-  /** The 'PDF encoding' property key. */
-  public static final String PDFTARGET_ENCODING
-      = CONFIGURATION_PREFIX + ENCODING;
-
-  /** The default 'PDF encoding' property value. */
-  public static final String PDFTARGET_ENCODING_DEFAULT = "Cp1252";
-
-  /** The pdf specification version that should be created. */
-  public static final String PDF_VERSION = "Version";
-
-  /** The global key name for the pdf specification version that should be created. */
-  public static final String PDFTARGET_PDF_VERSION =
-      CONFIGURATION_PREFIX + PDF_VERSION;
-  /** The default version number for the PDF specification version. */
-  public static final String PDF_VERSION_DEFAULT = "1.4";
-
-  /** The output stream. */
-  private final OutputStream out;
-
-  /** The document. */
-  private Document pdfDocument;
-
-  /** The document writer. */
-  private PdfWriter writer;
-
-  /** The current base font. */
-  private BaseFont baseFont;
-
-  /** The AWT font. */
-  private FontDefinition fontDefinition;
-
-  /** The stroke used for shapes. */
-  private Stroke awtStroke;
-
-  /** The current Paint as used in the AWT. */
-  private Paint awtPaint;
-
-  /** The PDF font support. */
-  private final BaseFontSupport fontSupport;
-
-  /** The current page format. */
-  private PageFormat currentPageFormat;
-
-  /** The internal operation bounds. */
-  private StrictBounds internalPDFOperationBounds;
-
-  private KeyedQueue cachedImages;
+          = "org.jfree.report.modules.output.pageable.pdf.";
 
   /**
-   * A bytearray containing an empty password. iText replaces the owner password with random
-   * values, but Adobe allows to have encryption without an owner password set.
+   * Literal text for the 'EmbedFonts' property name.
+   */
+  public static final String EMBED_FONTS = "EmbedFonts";
+
+  /**
+   * Literal text for the 'AllowPrinting' property name.
+   */
+  public static final String SECURITY_ALLOW_PRINTING = "AllowPrinting";
+
+  /**
+   * Literal text for the 'AllowModifyContents' property name.
+   */
+  public static final String SECURITY_ALLOW_MODIFY_CONTENTS = "AllowModifyContents";
+
+  /**
+   * Literal text for the 'AllowCopy' property name.
+   */
+  public static final String SECURITY_ALLOW_COPY = "AllowCopy";
+
+  /**
+   * Literal text for the 'AllowModifyAnnotations' property name.
+   */
+  public static final String SECURITY_ALLOW_MODIFY_ANNOTATIONS = "AllowModifyAnnotations";
+
+  /**
+   * Literal text for the 'AllowFillIn' property name.
+   */
+  public static final String SECURITY_ALLOW_FILLIN = "AllowFillIn";
+
+  /**
+   * Literal text for the 'AllowScreenReaders' property name.
+   */
+  public static final String SECURITY_ALLOW_SCREENREADERS = "AllowScreenReaders";
+
+  /**
+   * Literal text for the 'AllowAssembly' property name.
+   */
+  public static final String SECURITY_ALLOW_ASSEMBLY = "AllowAssembly";
+
+  /**
+   * Literal text for the 'AllowDegradedPrinting' property name.
+   */
+  public static final String SECURITY_ALLOW_DEGRADED_PRINTING = "AllowDegradedPrinting";
+
+  /**
+   * Literal text for the 'Encryption' property name.
+   */
+  public static final String SECURITY_ENCRYPTION = "Encryption";
+
+  /**
+   * A constant for the encryption type (40 bit).
+   */
+  public static final String SECURITY_ENCRYPTION_NONE = "none";
+
+  /**
+   * A constant for the encryption type (40 bit).
+   */
+  public static final String SECURITY_ENCRYPTION_40BIT = "40bit";
+
+  /**
+   * A constant for the encryption type (128 bit).
+   */
+  public static final String SECURITY_ENCRYPTION_128BIT = "128bit";
+
+  /**
+   * Literal text for the 'userpassword' property name.
+   */
+  public static final String SECURITY_USERPASSWORD = "UserPassword";
+
+  /**
+   * Literal text for the 'ownerpassword' property name.
+   */
+  public static final String SECURITY_OWNERPASSWORD = "OwnerPassword";
+
+  /**
+   * A useful constant for specifying the PDF creator.
+   */
+  private static final String CREATOR = JFreeReport.getInfo().getName() + " version "
+          + JFreeReport.getInfo().getVersion();
+
+  /**
+   * The encoding key.
+   */
+  public static final String ENCODING = "Encoding";
+
+  /**
+   * The 'PDF embed fonts' property key.
+   */
+  public static final String PDFTARGET_EMBED_FONTS
+          = CONFIGURATION_PREFIX + EMBED_FONTS;
+
+  /**
+   * The default 'PDF embed fonts' property value.
+   */
+  public static final String PDFTARGET_EMBED_FONTS_DEFAULT = "true";
+
+  /**
+   * The 'PDF encoding' property key.
+   */
+  public static final String PDFTARGET_ENCODING
+          = CONFIGURATION_PREFIX + ENCODING;
+
+  /**
+   * The default 'PDF encoding' property value.
+   */
+  public static final String PDFTARGET_ENCODING_DEFAULT = "Cp1252";
+
+  /**
+   * The pdf specification version that should be created.
+   */
+  public static final String PDF_VERSION = "Version";
+
+  /**
+   * The global key name for the pdf specification version that should be created.
+   */
+  public static final String PDFTARGET_PDF_VERSION =
+          CONFIGURATION_PREFIX + PDF_VERSION;
+  /**
+   * The default version number for the PDF specification version.
+   */
+  public static final String PDF_VERSION_DEFAULT = "1.4";
+
+  /**
+   * The output stream.
+   */
+  private final OutputStream out;
+
+  /**
+   * The document.
+   */
+  private Document pdfDocument;
+
+  /**
+   * The document writer.
+   */
+  private PdfWriter writer;
+
+  /**
+   * The current base font.
+   */
+  private BaseFont baseFont;
+
+  /**
+   * The AWT font.
+   */
+  private FontDefinition fontDefinition;
+
+  /**
+   * The stroke used for shapes.
+   */
+  private Stroke awtStroke;
+
+  /**
+   * The current Paint as used in the AWT.
+   */
+  private Paint awtPaint;
+
+  /**
+   * The PDF font support.
+   */
+  private final BaseFontSupport fontSupport;
+
+  /**
+   * The current page format.
+   */
+  private PageFormat currentPageFormat;
+
+  /**
+   * The internal operation bounds.
+   */
+  private StrictBounds internalPDFOperationBounds;
+
+  private ITextImageCache cachedImages;
+
+  /**
+   * A bytearray containing an empty password. iText replaces the owner password with
+   * random values, but Adobe allows to have encryption without an owner password set.
    * Copied from iText
    */
   private static final byte PDF_PASSWORD_PAD[] = {
@@ -303,17 +375,19 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     (byte) 0x2F, (byte) 0x0C, (byte) 0xA9, (byte) 0xFE, (byte) 0x64, (byte) 0x53,
     (byte) 0x69, (byte) 0x7A};
 
+  private Graphics2D pdfGraphics;
+
   /**
    * Creates a new PDFOutputTarget.
    *
-   * @param out  the output stream.
+   * @param out the output stream.
    */
-  public PDFOutputTarget(final OutputStream out)
+  public PDFOutputTarget (final OutputStream out)
   {
     this.out = out;
     this.fontSupport = new BaseFontSupport();
     this.internalPDFOperationBounds = new StrictBounds();
-    this.cachedImages = new KeyedQueue(20);
+    this.cachedImages = new ITextImageCache();
   }
 
   /**
@@ -321,7 +395,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the page height.
    */
-  private float getPageHeight()
+  private float getPageHeight ()
   {
     return this.getDocument().getPageSize().height();
   }
@@ -331,7 +405,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the current font.
    */
-  protected FontDefinition getFont()
+  protected FontDefinition getFont ()
   {
     return fontDefinition;
   }
@@ -341,20 +415,21 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the iText BaseFont.
    */
-  protected BaseFont getBaseFont()
+  protected BaseFont getBaseFont ()
   {
     return baseFont;
   }
 
   /**
-   * Sets the current font. The font is mapped to pdf specific fonts if possible.
-   * If no basefont could be created, an OutputTargetException is thrown.
+   * Sets the current font. The font is mapped to pdf specific fonts if possible. If no
+   * basefont could be created, an OutputTargetException is thrown.
    *
-   * @param font  the new font (null not permitted).
-   *
-   * @throws OutputTargetException if there was a problem setting the font for the target.
+   * @param font the new font (null not permitted).
+   * @throws OutputTargetException if there was a problem setting the font for the
+   *                               target.
    */
-  protected void setFont(final FontDefinition font) throws OutputTargetException
+  protected void setFont (final FontDefinition font)
+          throws OutputTargetException
   {
     if (font == null)
     {
@@ -371,7 +446,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     try
     {
       this.baseFont = fontSupport.createBaseFont(font, font.getFontEncoding(getFontEncoding()),
-          (isEmbedFonts() || font.isEmbeddedFont())).getBaseFont();
+              (isEmbedFonts() || font.isEmbeddedFont())).getBaseFont();
       if (baseFont == null)
       {
         throw new OutputTargetException("The font definition was not successfull.");
@@ -384,17 +459,19 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Draws an image from this {@link ImageContainer}. The image is directly
-   * embedded into the pdf file to provide the best scaling support.
+   * Draws an image from this {@link ImageContainer}. The image is directly embedded into
+   * the pdf file to provide the best scaling support.
    *
-   * @param content  the image reference.
-   *
-   * @throws OutputTargetException if there was a problem drawing the image to the target.
+   * @param content the image reference.
+   * @throws OutputTargetException if there was a problem drawing the image to the
+   *                               target.
    */
-  protected void drawImage(final ImageContent content) throws OutputTargetException
+  protected void drawImage (final ImageContent content)
+          throws OutputTargetException
   {
     try
     {
+
       final StrictBounds bounds = getInternalPDFOperationBounds();
       final StrictBounds imageBounds = content.getBounds();
 
@@ -403,7 +480,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
               StrictGeomUtility.toExternalValue(bounds.getY()) + bounds.getHeight());
 
       final ImageContainer imageContent = content.getContent();
-      final Image image = getImage(imageContent);
+      final Image image = cachedImages.getImage(imageContent);
       image.setAbsolutePosition(imageX, imageY);
 
       final StrictBounds imageArea = content.getImageArea();
@@ -416,6 +493,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       image.scalePercent(scaleX * imageContent.getScaleX(), scaleY * imageContent.getScaleY());
 
       final PdfContentByte cb = this.writer.getDirectContent();
+      cb.saveState();
 
       final float clipX = (float) StrictGeomUtility.toExternalValue
               (imageBounds.getX() + imageArea.getX() + bounds.getX());
@@ -423,13 +501,12 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
               StrictGeomUtility.toExternalValue
               (imageBounds.getY() + imageArea.getY() + bounds.getHeight()));
       cb.rectangle(clipX, clipY,
-          (float) StrictGeomUtility.toExternalValue(imageBounds.getWidth()),
-          (float) StrictGeomUtility.toExternalValue(imageBounds.getHeight()));
+              (float) StrictGeomUtility.toExternalValue(imageBounds.getWidth()),
+              (float) StrictGeomUtility.toExternalValue(imageBounds.getHeight()));
       cb.clip();
       cb.newPath();
       cb.addImage(image);
       cb.restoreState();
-      cb.saveState();
 
     }
     catch (BadElementException be)
@@ -451,243 +528,43 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Helperfunction to extract an image from an imagereference. If the image is contained as
-   * java.awt.Image object only, the image is recoded into an PNG-Image.
-   *
-   * @param imageRef  the image reference.
-   *
-   * @return an image.
-   *
-   * @throws DocumentException if no PDFImageElement could be created using the given
-   *                           ImageReference.
-   * @throws IOException if the image could not be read.
-   */
-  private Image getImage(final ImageContainer imageRef) throws DocumentException, IOException
-  {
-    if (imageRef instanceof URLImageContainer)
-    {
-      final URLImageContainer urlImageContainer = (URLImageContainer) imageRef;
-      if (urlImageContainer.isLoadable())
-      {
-        try
-        {
-          final URL sourceURL = urlImageContainer.getSourceURL();
-          if (sourceURL != null)
-          {
-            Image image = (Image) cachedImages.get(sourceURL);
-            if (image == null)
-            {
-              image = Image.getInstance(sourceURL);
-              cachedImages.put(sourceURL, image);
-            }
-            return image;
-          }
-        }
-        catch (BadElementException be)
-        {
-          Log.info("Caught illegal Image, will recode to PNG instead", be);
-        }
-        catch (IOException ioe)
-        {
-          Log.info("Unable to read the raw-data, will try to recode image-data.", ioe);
-        }
-      }
-    }
-    if (imageRef instanceof LocalImageContainer)
-    {
-      final LocalImageContainer localImageContainer =
-              (LocalImageContainer) imageRef;
-
-      if (localImageContainer.getImage() != null)
-      {
-        // since version 0.99 iText supports Alpha-PNGs
-        final WaitingImageObserver obs = new WaitingImageObserver(localImageContainer.getImage());
-        obs.waitImageLoaded();
-
-        // check, if the content was cached ...
-        final Object identity = localImageContainer.getIdentity();
-        if (identity != null)
-        {
-          Image image = (Image) cachedImages.get(identity);
-          if (image == null)
-          {
-            image = Image.getInstance(localImageContainer.getImage(), null, false);
-            cachedImages.put(identity, image);
-          }
-          return image;
-        }
-        // iText is able to handle image conversion by itself ...
-        return Image.getInstance(localImageContainer.getImage(), null, false);
-      }
-    }
-
-    throw new DocumentException("Neither an URL nor an Image was given to paint the graphics");
-  }
-
-  /**
-   * Returns the corrected Y value.
-   *
-   * @param y  the y value.
-   *
-   * @return the corrected value.
-   */
-  private float getCorrectedY(final float y)
-  {
-    return getPageHeight() - y;
-  }
-
-  /**
    * Draws a shape at the specified location. The shape is drawn using a PathIterator. All
-   * Shapes are supported. Set a stroke and a paint before drawing. The shape is not filled.
+   * Shapes are supported. Set a stroke and a paint before drawing. The shape is not
+   * filled.
    *
-   * @param shape  the shape to draw.
+   * @param shape the shape to draw.
    */
-  protected void drawShape(final Shape shape)
+  protected void drawShape (final Shape shape)
   {
     final StrictBounds internalBounds = getInternalPDFOperationBounds();
 
     final float ycorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getY());
     final float xcorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getX());
 
-    final PathIterator pit = shape.getPathIterator(null);
-    final PdfContentByte cb = this.writer.getDirectContent();
-
-    cb.newPath();
-    cb.moveTo(xcorr, getCorrectedY(ycorr));
-
-    final float[] params = new float[6];
-    // How to apply this? This should be needed in fillShape
-    while (pit.isDone() == false)
-    {
-      final int cmd = pit.currentSegment(params);
-      params[1] = getCorrectedY(params[1] + ycorr);
-      params[3] = getCorrectedY(params[3] + ycorr);
-      params[5] = getCorrectedY(params[5] + ycorr);
-
-      params[0] = params[0] + xcorr;
-      params[2] = params[2] + xcorr;
-      params[4] = params[4] + xcorr;
-
-      switch (cmd)
-      {
-        case PathIterator.SEG_MOVETO:
-          {
-            cb.moveTo(params[0], params[1]);
-            break;
-          }
-        case PathIterator.SEG_LINETO:
-          {
-            cb.lineTo(params[0], params[1]);
-            break;
-          }
-        case PathIterator.SEG_CUBICTO:
-          {
-            cb.curveTo(params[0], params[1],
-                params[2], params[3],
-                params[4], params[5]);
-            break;
-          }
-        case PathIterator.SEG_QUADTO:
-          {
-            cb.curveTo(params[0], params[1],
-                params[2], params[3]);
-            break;
-          }
-        case PathIterator.SEG_CLOSE:
-          {
-            cb.closePath();
-            break;
-          }
-        default:
-          {
-            Log.warn("Unexpected path iterator type: " + cmd);
-          }
-      }
-      pit.next();
-    }
-    cb.stroke();
+    final Graphics2D g2 = (Graphics2D) pdfGraphics.create();
+    g2.translate(xcorr, ycorr);
+    g2.draw(shape);
+    g2.dispose();
   }
 
   /**
    * Draws a shape at the specified location. The shape is drawn using a PathIterator. All
-   * Shapes are supported. Set a stroke and a paint before drawing. The shape is filled using
-   * the current paint and no outline is drawn.
+   * Shapes are supported. Set a stroke and a paint before drawing. The shape is filled
+   * using the current paint and no outline is drawn.
    *
-   * @param shape  the shape to fill.
+   * @param shape the shape to fill.
    */
-  protected void fillShape(final Shape shape)
+  protected void fillShape (final Shape shape)
   {
     final StrictBounds internalBounds = getInternalPDFOperationBounds();
 
     final float ycorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getY());
     final float xcorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getX());
 
-    final PathIterator pit = shape.getPathIterator(null);
-    final PdfContentByte cb = this.writer.getDirectContent();
-
-    cb.newPath();
-    cb.moveTo(xcorr, getCorrectedY(ycorr));
-
-    final int windingRule = pit.getWindingRule();
-
-    final float[] params = new float[6];
-    // How to apply this? This should be needed in fillShape
-    while (pit.isDone() == false)
-    {
-      final int cmd = pit.currentSegment(params);
-      params[1] = getCorrectedY(params[1] + ycorr);
-      params[3] = getCorrectedY(params[3] + ycorr);
-      params[5] = getCorrectedY(params[5] + ycorr);
-
-      params[0] = params[0] + xcorr;
-      params[2] = params[2] + xcorr;
-      params[4] = params[4] + xcorr;
-
-      switch (cmd)
-      {
-        case PathIterator.SEG_MOVETO:
-          {
-            cb.moveTo(params[0], params[1]);
-            break;
-          }
-        case PathIterator.SEG_LINETO:
-          {
-            cb.lineTo(params[0], params[1]);
-            break;
-          }
-        case PathIterator.SEG_CUBICTO:
-          {
-            cb.curveTo(params[0], params[1],
-                params[2], params[3],
-                params[4], params[5]);
-            break;
-          }
-        case PathIterator.SEG_QUADTO:
-          {
-            cb.curveTo(params[0], params[1],
-                params[2], params[3]);
-            break;
-          }
-        case PathIterator.SEG_CLOSE:
-          {
-            cb.closePath();
-            break;
-          }
-        default:
-          {
-            Log.warn("Unexpected path iterator type: " + cmd);
-          }
-      }
-      pit.next();
-    }
-    if (windingRule == PathIterator.WIND_EVEN_ODD)
-    {
-      cb.eoFill();
-    }
-    else
-    {
-      cb.fill();
-    }
+    final Graphics2D g2 = (Graphics2D) pdfGraphics.create();
+    g2.translate(xcorr, ycorr);
+    g2.fill(shape);
+    g2.dispose();
   }
 
   /**
@@ -695,11 +572,14 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there was a problem with the target.
    */
-  public void endPage() throws OutputTargetException
+  public void endPage ()
+          throws OutputTargetException
   {
     try
     {
-      this.writer.getDirectContent().restoreState();
+      this.pdfGraphics.dispose();
+      this.pdfGraphics = null;
+//      this.writer.getDirectContent().restoreState();
       this.getDocument().newPage();
     }
     catch (Exception e)
@@ -709,14 +589,13 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Extracts the to be generated PDF version as iText parameter from the
-   * given property value. The value has the form "1.x" where x is the extracted
-   * version.
-   * 
+   * Extracts the to be generated PDF version as iText parameter from the given property
+   * value. The value has the form "1.x" where x is the extracted version.
+   *
    * @param version the version string.
    * @return the itext character defining the version.
    */
-  private char getVersion(final String version)
+  private char getVersion (final String version)
   {
     if (version == null)
     {
@@ -741,7 +620,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem with the target.
    */
-  public void open() throws OutputTargetException
+  public void open ()
+          throws OutputTargetException
   {
     try
     {
@@ -759,7 +639,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       if (encrypt != null)
       {
         if (encrypt.equals(SECURITY_ENCRYPTION_128BIT) == true
-            || encrypt.equals(SECURITY_ENCRYPTION_40BIT) == true)
+                || encrypt.equals(SECURITY_ENCRYPTION_40BIT) == true)
         {
           final String userpassword = getProperty(SECURITY_USERPASSWORD);
           final String ownerpassword = getProperty(SECURITY_OWNERPASSWORD);
@@ -771,7 +651,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
             ownerpasswordbytes = PDF_PASSWORD_PAD;
           }
           writer.setEncryption(userpasswordbytes, ownerpasswordbytes, getPermissions(),
-              encrypt.equals(SECURITY_ENCRYPTION_128BIT));
+                  encrypt.equals(SECURITY_ENCRYPTION_128BIT));
         }
       }
 
@@ -804,12 +684,12 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
 
   /**
-   * Signals that a page is being started. Stores the state of the target to
-   * make it possible to restore the complete outputtarget.
+   * Signals that a page is being started. Stores the state of the target to make it
+   * possible to restore the complete outputtarget.
    *
-   * @param format  the physical page.
+   * @param format the physical page.
    */
-  public void beginPage(final PageDefinition format, final int i)
+  public void beginPage (final PageDefinition format, final int i)
   {
     if (isOpen() == false)
     {
@@ -822,18 +702,20 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
     final float marginLeft = (float) pageFormat.getImageableX();
     final float marginRight =
-        (float) (pageFormat.getWidth()
-        - pageFormat.getImageableWidth()
-        - pageFormat.getImageableX());
+            (float) (pageFormat.getWidth()
+            - pageFormat.getImageableWidth()
+            - pageFormat.getImageableX());
     final float marginTop = (float) pageFormat.getImageableY();
     final float marginBottom =
-        (float) (pageFormat.getHeight()
-        - pageFormat.getImageableHeight()
-        - pageFormat.getImageableY());
+            (float) (pageFormat.getHeight()
+            - pageFormat.getImageableHeight()
+            - pageFormat.getImageableY());
     final Rectangle pageSize = new Rectangle(urx, ury);
 
     getDocument().setPageSize(pageSize);
     getDocument().setMargins(marginLeft, marginRight, marginTop, marginBottom);
+
+    this.pdfGraphics = writer.getDirectContent().createGraphics(urx, ury, fontSupport);
 
     try
     {
@@ -848,20 +730,19 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       throw new IllegalStateException("Exception while defining defaults.");
     }
 
-    this.writer.getDirectContent().saveState();
     this.currentPageFormat = format.getPageFormat(i);
   }
 
   /**
-   * Reads a boolean property. If the property is not set, the given
-   * default value is returned. This method returns true, if the property
-   * is set to the value "true", false otherwise.
+   * Reads a boolean property. If the property is not set, the given default value is
+   * returned. This method returns true, if the property is set to the value "true", false
+   * otherwise.
    *
-   * @param key the key that should be queried.
+   * @param key   the key that should be queried.
    * @param value the defaultvalue.
    * @return the true, if the property has the value "true", false otherwise.
    */
-  private boolean getBooleanProperty(final String key, final boolean value)
+  private boolean getBooleanProperty (final String key, final boolean value)
   {
     final String val = getProperty(key);
     if (val == null)
@@ -875,24 +756,24 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Extracts the permissions for this PDF. The permissions are returned as flags in the integer
-   * value. All permissions are defined as properties which have to be set before the target is
-   * opened.
+   * Extracts the permissions for this PDF. The permissions are returned as flags in the
+   * integer value. All permissions are defined as properties which have to be set before
+   * the target is opened.
    *
    * @return the permissions.
    */
-  private int getPermissions()
+  private int getPermissions ()
   {
     final boolean allowPrinting = getBooleanProperty(SECURITY_ALLOW_PRINTING, false);
     final boolean allowModifyContents = getBooleanProperty(SECURITY_ALLOW_MODIFY_CONTENTS, false);
     final boolean allowModifyAnnotations =
-        getBooleanProperty(SECURITY_ALLOW_MODIFY_ANNOTATIONS, false);
+            getBooleanProperty(SECURITY_ALLOW_MODIFY_ANNOTATIONS, false);
     final boolean allowCopy = getBooleanProperty(SECURITY_ALLOW_COPY, false);
     final boolean allowFillIn = getBooleanProperty(SECURITY_ALLOW_FILLIN, false);
     final boolean allowScreenReaders = getBooleanProperty(SECURITY_ALLOW_SCREENREADERS, false);
     final boolean allowAssembly = getBooleanProperty(SECURITY_ALLOW_ASSEMBLY, false);
     final boolean allowDegradedPrinting =
-        getBooleanProperty(SECURITY_ALLOW_DEGRADED_PRINTING, false);
+            getBooleanProperty(SECURITY_ALLOW_DEGRADED_PRINTING, false);
 
     int permissions = 0;
     if (allowPrinting)
@@ -933,7 +814,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Closes the document.
    */
-  public void close()
+  public void close ()
   {
     this.getDocument().close();
     this.fontSupport.close();
@@ -942,12 +823,12 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Draws the band onto the specified graphics device. The Text is printed on the
-   * bottom of the elements bounds.
+   * Draws the band onto the specified graphics device. The Text is printed on the bottom
+   * of the elements bounds.
    *
    * @param text The text to be printed.
    */
-  protected void printText(final String text)
+  protected void printText (final String text)
   {
     final StrictBounds bounds = getInternalPDFOperationBounds();
     final int fontSize = getFont().getFontSize();
@@ -956,21 +837,36 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     cb.beginText();
     cb.setFontAndSize(this.baseFont, fontSize);
 
-    final float y2 = (float) (StrictGeomUtility.toExternalValue(bounds.getY()) +
-        baseFont.getFontDescriptor(BaseFont.ASCENT, fontSize));
-    cb.showTextAligned( PdfContentByte.ALIGN_LEFT,
-        text, (float) StrictGeomUtility.toExternalValue(bounds.getX()),
-        this.getPageHeight() - y2, 0);
+    final float ascent = baseFont.getFontDescriptor(BaseFont.ASCENT, fontSize);
+    final float y2 = (float) (StrictGeomUtility.toExternalValue(bounds.getY()) + ascent);
+    final float x1 = (float) StrictGeomUtility.toExternalValue(bounds.getX());
+    final float x2 = (float) StrictGeomUtility.toExternalValue(bounds.getX() + bounds.getWidth());
+
+    cb.showTextAligned(PdfContentByte.ALIGN_LEFT,
+            text, x1, this.getPageHeight() - y2, 0);
     cb.endText();
+
+    if (getFont().isUnderline())
+    {
+      final float underlinePosition = (((float) fontSize) - ascent) * 0.8f;
+      cb.moveTo(x1, getPageHeight() - y2 - underlinePosition);
+      cb.lineTo(x2, getPageHeight() - y2 - underlinePosition);
+    }
+    if (getFont().isStrikeThrough())
+    {
+      final float strikethroughPosition = (float) fontSize * 0.5f;
+      cb.moveTo(x1, getPageHeight() - y2 + strikethroughPosition);
+      cb.lineTo(x2, getPageHeight() - y2 + strikethroughPosition);
+    }
   }
 
   /**
    * Defines the stroke used to draw shapes. If the stroke is of an invalid type, an
    * OutputTargetException is thrown. Currently only BasicStroke is supported.
    *
-   * @param stroke  the stroke.
+   * @param stroke the stroke.
    */
-  protected void setStroke(final Stroke stroke)
+  protected void setStroke (final Stroke stroke)
   {
     if (stroke == null)
     {
@@ -979,7 +875,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     if (stroke instanceof BasicStroke == false)
     {
       //throw new OutputTargetException("Unable to handle this stroke type");
-      Log.warn ("Unable to handle stroke type: " + stroke.getClass() + " will be ignored.");
+      Log.warn("Unable to handle stroke type: " + stroke.getClass() + " will be ignored.");
       return;
     }
 
@@ -990,9 +886,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     }
 
     this.awtStroke = stroke;
-    final BasicStroke bstroke = (BasicStroke) stroke;
-    final PdfContentByte cb = this.writer.getDirectContent();
-    cb.setLineWidth(bstroke.getLineWidth());
+    pdfGraphics.setStroke(awtStroke);
   }
 
   /**
@@ -1000,18 +894,19 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the current stroke.
    */
-  protected Stroke getStroke()
+  protected Stroke getStroke ()
   {
     return awtStroke;
   }
 
   /**
-   * Sets the paint. If the paint could not be converted into a pdf object, an OutputTargetException
-   * is thrown. This implementation currently supports java.awt.Color as the only valid paint.
+   * Sets the paint. If the paint could not be converted into a pdf object, an
+   * OutputTargetException is thrown. This implementation currently supports
+   * java.awt.Color as the only valid paint.
    *
-   * @param paint  the paint.
+   * @param paint the paint.
    */
-  protected void setPaint(final Paint paint)
+  protected void setPaint (final Paint paint)
   {
     if (paint == null)
     {
@@ -1020,7 +915,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
     if (paint instanceof Color == false)
     {
-      Log.warn ("Unable to handle paint type: " + paint.getClass() + " will be ignored.");
+      Log.warn("Unable to handle paint type: " + paint.getClass() + " will be ignored.");
       return;
     }
 
@@ -1031,10 +926,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     }
 
     this.awtPaint = paint;
-    final PdfContentByte cb = this.writer.getDirectContent();
-
-    cb.setColorStroke((Color) paint);
-    cb.setColorFill((Color) paint);
+    pdfGraphics.setPaint(awtPaint);
   }
 
   /**
@@ -1042,14 +934,14 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the paint.
    */
-  protected Paint getPaint()
+  protected Paint getPaint ()
   {
     return awtPaint;
   }
 
-  protected boolean isPaintSupported(final Paint p)
+  protected boolean isPaintSupported (final Paint p)
   {
-    return (p instanceof Color || p instanceof GradientPaint);
+    return (p instanceof Color || p instanceof GradientPaint || p instanceof TexturePaint);
   }
 
   /**
@@ -1057,26 +949,21 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the font encoding.
    */
-  private String getFontEncoding()
+  private String getFontEncoding ()
   {
     return getProperty(ENCODING, BaseFontFactory.getDefaultFontEncoding());
   }
 
   /**
    * Defines the text encoding used in this output target.
+   * <p/>
+   * <ul> <li>The Unicode encoding with horizontal writing is "Identity-H" <li>The Unicode
+   * encoding with vertical writing is "Identity-V" <li>"Cp1250" <li>"Cp1252" is also
+   * known as WinAnsi <li>"Cp1257" <li>"MacRoman" </ul>
    *
-   * <ul>
-   * <li>The Unicode encoding with horizontal writing is "Identity-H"
-   * <li>The Unicode encoding with vertical writing is "Identity-V"
-   * <li>"Cp1250"
-   * <li>"Cp1252" is also known as WinAnsi
-   * <li>"Cp1257"
-   * <li>"MacRoman"
-   * </ul>
-   *
-   * @param encoding  the font encoding.
+   * @param encoding the font encoding.
    */
-  public void setFontEncoding(final String encoding)
+  public void setFontEncoding (final String encoding)
   {
     if (encoding == null)
     {
@@ -1090,7 +977,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the 'embed fonts' flag.
    */
-  public boolean isEmbedFonts()
+  public boolean isEmbedFonts ()
   {
     return getProperty(EMBED_FONTS, "false").equals("true");
   }
@@ -1098,9 +985,9 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Sets the 'embed fonts' flag.
    *
-   * @param embedFonts  the new flag value.
+   * @param embedFonts the new flag value.
    */
-  public void setEmbedFonts(final boolean embedFonts)
+  public void setEmbedFonts (final boolean embedFonts)
   {
     setProperty(EMBED_FONTS, String.valueOf(embedFonts));
   }
@@ -1110,7 +997,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the document.
    */
-  private Document getDocument()
+  private Document getDocument ()
   {
     return pdfDocument;
   }
@@ -1118,9 +1005,9 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Sets the document.
    *
-   * @param document  the document (null not permitted).
+   * @param document the document (null not permitted).
    */
-  private void setDocument(final Document document)
+  private void setDocument (final Document document)
   {
     if (document == null)
     {
@@ -1132,9 +1019,9 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Configures the output target.
    *
-   * @param config  the configuration.
+   * @param config the configuration.
    */
-  public void configure(final ReportConfiguration config)
+  public void configure (final ReportConfiguration config)
   {
     updateProperty(SECURITY_OWNERPASSWORD, config);
     updateProperty(SECURITY_USERPASSWORD, config);
@@ -1160,10 +1047,10 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Updates a property.
    *
-   * @param key  the key.
-   * @param config  the config.
+   * @param key    the key.
+   * @param config the config.
    */
-  private void updateProperty(final String key, final ReportConfiguration config)
+  private void updateProperty (final String key, final ReportConfiguration config)
   {
     final String configValue = config.getConfigProperty(CONFIGURATION_PREFIX + key);
     final String propertyValue = getProperty(key, configValue);
@@ -1176,10 +1063,10 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Updates a boolean property.
    *
-   * @param key  the key.
-   * @param config  the config.
+   * @param key    the key.
+   * @param config the config.
    */
-  private void updateBooleanProperty(final String key, final ReportConfiguration config)
+  private void updateBooleanProperty (final String key, final ReportConfiguration config)
   {
     final String configValue = config.getConfigProperty(CONFIGURATION_PREFIX + key);
     final String propertyValue = getProperty(key, configValue);
@@ -1204,7 +1091,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return true or false.
    */
-  public boolean isOpen()
+  public boolean isOpen ()
   {
     if (getDocument() == null)
     {
@@ -1215,22 +1102,22 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Creates a 'size calculator' for the current state of the output target. The calculator
-   * is used to calculate the string width and line height and later maybe more.
+   * Creates a 'size calculator' for the current state of the output target. The
+   * calculator is used to calculate the string width and line height and later maybe
+   * more.
    *
-   * @param font  the font.
-   *
+   * @param font the font.
    * @return the size calculator.
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(final FontDefinition font)
-      throws OutputTargetException
+  public SizeCalculator createTextSizeCalculator (final FontDefinition font)
+          throws OutputTargetException
   {
     try
     {
       final BaseFontRecord record = fontSupport.createBaseFont(font,
-          font.getFontEncoding(getFontEncoding()), isEmbedFonts() || font.isEmbeddedFont());
+              font.getFontEncoding(getFontEncoding()), isEmbedFonts() || font.isEmbeddedFont());
       return new PDFSizeCalculator(record.getBaseFont(), font.getFontSize());
     }
     catch (BaseFontCreateException bfce)
@@ -1242,9 +1129,9 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Sets the operation bounds.
    *
-   * @param bounds  the bounds.
+   * @param bounds the bounds.
    */
-  protected void setInternalOperationBounds(final StrictBounds bounds)
+  protected void setInternalOperationBounds (final StrictBounds bounds)
   {
     super.setInternalOperationBounds(bounds);
     final StrictBounds pageBounds = getInternalPageBounds();
@@ -1253,7 +1140,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     final long y = -pageBounds.getY() + bounds.getY() +
             StrictGeomUtility.toInternalValue(currentPageFormat.getImageableY());
 
-    internalPDFOperationBounds.setRect (x, y, bounds.getWidth(), bounds.getHeight());
+    internalPDFOperationBounds.setRect(x, y, bounds.getWidth(), bounds.getHeight());
   }
 
   /**
@@ -1261,7 +1148,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the internal operation bounds.
    */
-  private StrictBounds getInternalPDFOperationBounds()
+  private StrictBounds getInternalPDFOperationBounds ()
   {
     return internalPDFOperationBounds;
   }
@@ -1271,7 +1158,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param content the drawable to draw.
    */
-  protected void drawDrawable(final DrawableContent content)
+  protected void drawDrawable (final DrawableContent content)
   {
     // only the drawable clippingbounds region will be drawn.
     // the clipping is set to the clipping bounds of the drawable
@@ -1282,17 +1169,19 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     final StrictBounds bounds = getInternalPDFOperationBounds();
     final float x = (float) StrictGeomUtility.toExternalValue(bounds.getX());
     final float y = (float) StrictGeomUtility.toExternalValue(bounds.getY());
-    final float width = (float) StrictGeomUtility.toExternalValue
-            (bounds.getWidth() + bounds.getX());
-    final float height = (float) StrictGeomUtility.toExternalValue
-            (bounds.getHeight() + bounds.getY());
+
     // the graphics object has a width and a height, but no
     // x,y position; so we have to assume (x = 0; y = 0) and
     // make sure that the graphics is large enough to draw everything
-    final Graphics2D g2 = writer.getDirectContent().createGraphics
-            (width, height, fontSupport);
-    g2.translate(-x, -y);
+    final Graphics2D g2 = (Graphics2D) pdfGraphics.create();
+    // make sure, that the operation bounds are met ..
+    g2.translate(x, y);
 
+        // only the drawable clippingbounds region will be drawn.
+    // the clipping is set to the clipping bounds of the drawable
+
+    // the clipping bounds are relative to the drawable dimension,
+    // they are not influenced by the drawables position on the page
     final Drawable drawable = content.getContent();
     final StrictBounds imageArea = content.getImageArea();
 
@@ -1318,32 +1207,33 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the PDF encoding property value.
    */
-  public static String getDefaultPDFEncoding()
+  public static String getDefaultPDFEncoding ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        (PDFTARGET_ENCODING, PDFTARGET_ENCODING_DEFAULT);
+            (PDFTARGET_ENCODING, PDFTARGET_ENCODING_DEFAULT);
   }
 
   /**
    * Sets the PDF encoding property value.
    *
-   * @param pdfTargetEncoding  the new encoding.
+   * @param pdfTargetEncoding the new encoding.
    */
-  public static void setDefaultPDFEncoding(final String pdfTargetEncoding)
+  public static void setDefaultPDFEncoding (final String pdfTargetEncoding)
   {
     ReportConfiguration.getGlobalConfig().setConfigProperty
-        (PDFTARGET_ENCODING, pdfTargetEncoding);
+            (PDFTARGET_ENCODING, pdfTargetEncoding);
   }
 
   /**
-   * Returns true, if the Graphics2D should use aliasing to render text. Defaults to false.
+   * Returns true, if the Graphics2D should use aliasing to render text. Defaults to
+   * false.
    *
    * @return true, if aliasing is enabled.
    */
-  public static boolean isDefaultEmbedFonts()
+  public static boolean isDefaultEmbedFonts ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        (PDFTARGET_EMBED_FONTS, PDFTARGET_EMBED_FONTS_DEFAULT).equalsIgnoreCase("true");
+            (PDFTARGET_EMBED_FONTS, PDFTARGET_EMBED_FONTS_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**
@@ -1351,10 +1241,10 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param embed set to true, if the PDFOutputTarget should use embedded fonts.
    */
-  public static void setDefaultEmbedFonts(final boolean embed)
+  public static void setDefaultEmbedFonts (final boolean embed)
   {
     ReportConfiguration.getGlobalConfig().setConfigProperty
-        (PDFTARGET_EMBED_FONTS, String.valueOf(embed));
+            (PDFTARGET_EMBED_FONTS, String.valueOf(embed));
   }
 
   protected void printAnchorContent (final MetaElement element,
@@ -1388,7 +1278,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
             StrictGeomUtility.toExternalValue(elementBounds.getY());
     final PdfContentByte cb = this.writer.getDirectContent();
 
-    Log.debug ("Added HREF " + href + " Bounds: " + elementBounds);
+    Log.debug("Added HREF " + href + " Bounds: " + elementBounds);
     cb.setAction(action, leftX, lowerY, rightX, upperY);
   }
 

@@ -60,6 +60,10 @@ public class BandReadHandler extends ElementReadHandler
               getRootHandler().getHelperObject
               (ReportDefinitionReadHandler.ELEMENT_FACTORY_KEY);
       final Element element = fc.getElementForType(type);
+      if (element == null)
+      {
+        throw new ParseException("There is no factory for elements of type '" + type + "'");
+      }
 
       final XmlReadHandler readHandler = new ElementReadHandler(element);
       elementHandlers.add(readHandler);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableCellBackground.java,v 1.16 2005/01/30 23:37:23 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.17 2005/02/19 13:30:01 taqua Exp $
  *
  * Changes
  * -------
@@ -285,7 +285,7 @@ public strictfp class TableCellBackground
     merged.color = color;
     if (cellBounds.contains(backgroundBounds.getX(), backgroundBounds.getY()))
     {
-      merged.anchors.add(background.anchors);
+      merged.anchors.addAll(background.anchors);
     }
     final long bgx1 = bounds.getX();
     final long bgx2 = bounds.getX() + bounds.getWidth();

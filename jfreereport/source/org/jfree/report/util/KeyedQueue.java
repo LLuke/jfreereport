@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: KeyedQueue.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: KeyedQueue.java,v 1.3 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -86,9 +86,9 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public void setLimit(final int limit)
   {
-    if (limit < 1)
+    if (limit < 0)
     {
-      throw new IllegalArgumentException("Limit must be at least 1.");
+      throw new IllegalArgumentException("Limit must be at least 0.");
     }
     this.limit = limit;
   }
@@ -128,7 +128,7 @@ public class KeyedQueue implements Serializable, Cloneable
     }
     list.add(ob);
 
-    if (list.size() > getLimit())
+    if (getLimit() != 0 && list.size() > getLimit())
     {
       removeLast();
     }

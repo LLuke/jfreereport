@@ -1,15 +1,15 @@
 package org.jfree.report;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.awt.print.PageFormat;
 import java.awt.geom.Rectangle2D;
-import java.io.ObjectOutputStream;
+import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 
+import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.SerializerHelper;
-import org.jfree.report.util.geom.StrictBounds;
 
 public class CustomPageDefinition implements PageDefinition
 {
@@ -124,13 +124,13 @@ public class CustomPageDefinition implements PageDefinition
     {
       instance.writeObject(pageBoundsIterator.next(), out);
     }
-    out.writeObject(null);
+    instance.writeObject(null, out);
     final Iterator pageFormatIterator = pageFormatList.iterator();
     while (pageFormatIterator.hasNext())
     {
       instance.writeObject(pageFormatIterator.next(), out);
     }
-    out.writeObject(null);
+    instance.writeObject(null, out);
   }
 
   /**
@@ -147,6 +147,8 @@ public class CustomPageDefinition implements PageDefinition
     in.defaultReadObject();
     final SerializerHelper instance = SerializerHelper.getInstance();
     pageBoundsList = new ArrayList();
+    pageFormatList = new ArrayList();
+
     Object o = instance.readObject(in);
     while (o != null)
     {
@@ -164,4 +166,57 @@ public class CustomPageDefinition implements PageDefinition
     }
   }
 
+  public boolean equals (final Object o)
+  {
+    if (this == o)
+    {
+      return true;
+    }
+    if (!(o instanceof CustomPageDefinition))
+    {
+      return false;
+    }
+
+    final CustomPageDefinition customPageDefinition = (CustomPageDefinition) o;
+
+    if (height != customPageDefinition.height)
+    {
+      return false;
+    }
+    if (width != customPageDefinition.width)
+    {
+      return false;
+    }
+    if (!pageBoundsList.equals(customPageDefinition.pageBoundsList))
+    {
+      return false;
+    }
+
+    if (pageFormatList.size() != customPageDefinition.pageFormatList.size())
+    {
+      return false;
+    }
+
+    for (int i = 0; i < pageFormatList.size(); i++)
+    {
+      final PageFormat pf = (PageFormat) pageFormatList.get(i);
+      final PageFormat cpf = (PageFormat) customPageDefinition.pageFormatList.get(i);
+      if (PageFormatFactory.isEqual(pf, cpf) == false)
+      {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  public int hashCode ()
+  {
+    int result;
+    result = pageBoundsList.hashCode();
+    result = 29 * result + pageFormatList.hashCode();
+    result = 29 * result + width != +0.0f ? Float.floatToIntBits(width) : 0;
+    result = 29 * result + height != +0.0f ? Float.floatToIntBits(height) : 0;
+    return result;
+  }
 }

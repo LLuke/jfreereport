@@ -16,6 +16,10 @@ public class ElementReadHandler extends AbstractPropertyXmlReadHandler
 
   public ElementReadHandler (final Element element)
   {
+    if (element == null)
+    {
+      throw new NullPointerException("Element given must not be null.");
+    }
     this.element = element;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.15 2005/02/19 15:41:22 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.16 2005/02/19 20:10:27 taqua Exp $
  *
  * Changes
  * -------
@@ -631,8 +631,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
     final StrictBounds imageArea = content.getImageArea();
     final StrictBounds bounds = getInternalOperationBounds();
 
-    final Shape s = g2.getClip();
-    final AffineTransform transform = g2.getTransform();
+    final Graphics2D g2 = (Graphics2D) this.g2.create();
 
     final double imageWidth = StrictGeomUtility.toExternalValue(bounds.getWidth());
     final double imageHeight = StrictGeomUtility.toExternalValue(bounds.getHeight());
@@ -647,8 +646,6 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
     final double drawableWidth = StrictGeomUtility.toExternalValue(drawableBounds.getWidth());
     final double drawableHeight = StrictGeomUtility.toExternalValue(drawableBounds.getHeight());
     drawable.draw(g2, new Rectangle2D.Double(0, 0, drawableWidth, drawableHeight));
-
-    g2.setTransform(transform);
-    g2.setClip(s);
+    g2.dispose();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.16 2005/01/30 23:37:23 taqua Exp $
+ * $Id: TableWriter.java,v 1.17 2005/02/19 13:30:01 taqua Exp $
  *
  * Changes
  * -------
@@ -446,6 +446,12 @@ public strictfp class TableWriter
   {
 
     final MetaBand metaBand = metaBandProducer.createBand(band, false);
+    if (metaBand == null)
+    {
+      // still move the cursor ..
+      getCursor().advance(bounds.getHeight());
+      return;
+    }
     tableCreator.processBand(metaBand);
     getCursor().advance(bounds.getHeight());
     // fine grained flushing ... change that?

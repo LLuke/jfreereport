@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageDefinition.java,v 1.6 2005/01/24 23:57:48 taqua Exp $
+ * $Id: SimplePageDefinition.java,v 1.7 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,8 +43,10 @@ import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 
 import org.jfree.report.util.SerializerHelper;
+import org.jfree.report.util.PageFormatFactory;
 
 public class SimplePageDefinition implements PageDefinition
 {
@@ -185,5 +187,47 @@ public class SimplePageDefinition implements PageDefinition
     final SimplePageDefinition pdef = (SimplePageDefinition) super.clone();
     pdef.format = (PageFormat) format.clone();
     return pdef;
+  }
+
+  public boolean equals (final Object o)
+  {
+    if (this == o)
+    {
+      return true;
+    }
+    if (!(o instanceof SimplePageDefinition))
+    {
+      return false;
+    }
+
+    final SimplePageDefinition simplePageDefinition = (SimplePageDefinition) o;
+
+    if (pageCountHorizontal != simplePageDefinition.pageCountHorizontal)
+    {
+      return false;
+    }
+    if (pageCountVertical != simplePageDefinition.pageCountVertical)
+    {
+      return false;
+    }
+    if (!PageFormatFactory.isEqual(format, simplePageDefinition.format))
+    {
+      return false;
+    }
+    if (!Arrays.equals(pagePositions, simplePageDefinition.pagePositions))
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  public int hashCode ()
+  {
+    int result;
+    result = format.hashCode();
+    result = 29 * result + pageCountHorizontal;
+    result = 29 * result + pageCountVertical;
+    return result;
   }
 }

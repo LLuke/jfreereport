@@ -7,12 +7,11 @@ import java.util.ArrayList;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
-import org.jfree.report.util.geom.StrictDimension;
 import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.ReportParserUtil;
-import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.simple.FontFactory;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
@@ -392,6 +391,7 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
       final Element e = (Element) readHandler.getObject();
       band.addElement(e);
     }
+    super.doneParsing();
   }
 
   /**

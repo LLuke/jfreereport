@@ -6,9 +6,13 @@ import java.io.UnsupportedEncodingException;
 
 public class EncodingUtilities
 {
+  /** The encoding name. */
   private String encoding;
+  /** The header sequence of the encoding (-2, -1 for UTF-16). */
   private byte[] header;
+  /** A single encoded space character. */
   private byte[] space;
+  /** The header plus the single space. */
   private byte[] encodingHeader;
 
   public EncodingUtilities (final String codepage)
@@ -18,11 +22,11 @@ public class EncodingUtilities
 
     encodingHeader = " ".getBytes(codepage);
     final byte[] spacesWithHeader = "  ".getBytes(codepage);
-    final int length = spacesWithHeader.length - encodingHeader.length;
-    space = new byte[length];
-    header = new byte[length - encodingHeader.length];
+    final int spaceCharLength = spacesWithHeader.length - encodingHeader.length;
+    space = new byte[spaceCharLength];
+    header = new byte[encodingHeader.length - spaceCharLength];
 
-    System.arraycopy(spacesWithHeader, encodingHeader.length, space, 0, length);
+    System.arraycopy(spacesWithHeader, encodingHeader.length, space, 0, spaceCharLength);
     System.arraycopy(encodingHeader, 0, header, 0, header.length);
   }
 

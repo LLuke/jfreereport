@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.6.4.1 2004/12/13 19:27:09 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.9 2005/01/25 00:13:46 taqua Exp $
  *
  * Changes
  * -------
@@ -37,7 +37,6 @@
 package org.jfree.report.modules.output.table.html;
 
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -63,6 +62,7 @@ import org.jfree.report.modules.output.table.html.ref.ExternalStyleSheetReferenc
 import org.jfree.report.modules.output.table.html.ref.HtmlImageReference;
 import org.jfree.report.modules.output.table.html.ref.HtmlReference;
 import org.jfree.report.modules.output.table.html.util.CounterReference;
+import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.report.util.ImageComparator;
 import org.jfree.report.util.NoCloseOutputStream;
 import org.jfree.report.util.StringUtil;
@@ -266,7 +266,6 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
       throws IOException
   {
 
-    final Image image;
     // The image has an assigned URL ...
     if (reference instanceof URLImageContainer)
     {
@@ -274,80 +273,87 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
 
       // first we check for cached instances ...
       final URL url = urlImage.getSourceURL();
-      final String name = (String) usedImages.get(url);
-      if (name != null)
+      if (url != null)
       {
-        return new HtmlImageReference(name);
-      }
-
-      // sadly this one seems to be new, not yet cached ...
-      // so we have to create something new ...
-
-      // it is one of the supported image formats ...
-      // we we can embedd it directly ...
-      if (isSupportedImageFormat(urlImage.getSourceURL()))
-      {
-        // check, whether we should copy the contents into the local
-        // data directory ...
-        if (isCopyExternalImages() && urlImage.isLoadable())
+        final String name = (String) usedImages.get(url);
+        if (name != null)
         {
-          final IOUtils iou = IOUtils.getInstance();
-          final String entryName =
-                  dataDirectory + createName(iou.getFileName(url));
-          final ZipEntry ze = new ZipEntry(entryName);
-          zipOut.putNextEntry(ze);
+          return new HtmlImageReference(name);
+        }
 
-          final InputStream urlIn = new BufferedInputStream(urlImage.getSourceURL().openStream());
-          IOUtils.getInstance().copyStreams(urlIn, zipOut);
-          urlIn.close();
+        // sadly this one seems to be new, not yet cached ...
+        // so we have to create something new ...
+
+        // it is one of the supported image formats ...
+        // we we can embedd it directly ...
+        if (isSupportedImageFormat(urlImage.getSourceURL()))
+        {
+          // check, whether we should copy the contents into the local
+          // data directory ...
+          if (isCopyExternalImages() && urlImage.isLoadable())
+          {
+            final IOUtils iou = IOUtils.getInstance();
+            final String entryName =
+                    dataDirectory + createName(iou.getFileName(url));
+            final ZipEntry ze = new ZipEntry(entryName);
+            zipOut.putNextEntry(ze);
+
+            final InputStream urlIn = new BufferedInputStream(urlImage.getSourceURL().openStream());
+            IOUtils.getInstance().copyStreams(urlIn, zipOut);
+            urlIn.close();
+            usedImages.put(url, entryName);
+            return new HtmlImageReference(entryName);
+          }
+          else
+          {
+            final String baseName = urlImage.getSourceURL().toExternalForm();
+            usedImages.put(url, baseName);
+            return new HtmlImageReference(baseName);
+          }
+          // done: Remote image with supported format
+        }
+
+        // The image is not directly embeddable, so we have to convert it
+        // into a supported format (PNG in this case)
+
+        // if the image is not loadable, we can't do anything ...
+        // print the default empty content instead ...
+        if (urlImage.isLoadable() == false)
+        {
+          return new EmptyContentReference();
+        }
+
+        // Check, whether the imagereference contains an AWT image.
+        Image image = null;
+
+        // The image is not directly embeddable, so we have to convert it
+        // into a supported format (PNG in this case)
+        if (reference instanceof LocalImageContainer)
+        {
+          // if so, then we can use that image instance for the recoding
+          final LocalImageContainer li = (LocalImageContainer) reference;
+          image = li.getImage();
+        }
+        if (image == null)
+        {
+          image = ImageFactory.getInstance().createImage(url);
+        }
+        if (image != null)
+        {
+          // now encode the image. We don't need to create digest data
+          // for the image contents, as the image is perfectly identifyable
+          // by its URL
+          final String entryName = encodeImage(image, false);
           usedImages.put(url, entryName);
           return new HtmlImageReference(entryName);
         }
-        else
-        {
-          final String baseName = urlImage.getSourceURL().toExternalForm();
-          usedImages.put(url, baseName);
-          return new HtmlImageReference(baseName);
-        }
-        // done: Remote image with supported format
       }
-
-      // The image is not directly embeddable, so we have to convert it
-      // into a supported format (PNG in this case)
-
-      // if the image is not loadable, we can't do anything ...
-      // print the default empty content instead ...
-      if (urlImage.isLoadable() == false)
-      {
-        return new EmptyContentReference();
-      }
-
-      // Check, whether the imagereference contains an AWT image.
-
-      // The image is not directly embeddable, so we have to convert it
-      // into a supported format (PNG in this case)
-      if (reference instanceof LocalImageContainer)
-      {
-        // if so, then we can use that image instance for the recoding
-        final LocalImageContainer li = (LocalImageContainer) reference;
-        image = li.getImage();
-      }
-      else
-      {
-        image = Toolkit.getDefaultToolkit().createImage(url);
-      }
-
-      // now encode the image. We don't need to create digest data
-      // for the image contents, as the image is perfectly identifyable
-      // by its URL
-      final String entryName = encodeImage(image, false);
-      usedImages.put(url, entryName);
-      return new HtmlImageReference(entryName);
     }
+
     // check, whether the image is a locally created image
     // such an image has no assigned URL, so we have to find an
     // artificial name
-    else if (reference instanceof LocalImageContainer)
+    if (reference instanceof LocalImageContainer)
     {
       // that image has no useable URL, but contains local image
       // data, so we can start to encode it. We will create a
@@ -359,26 +365,28 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
       // LocalImageContainer instances are free to supply more
       // suitable comparator information
       final LocalImageContainer li = (LocalImageContainer) reference;
-      image = li.getImage();
-      if (li.isIdentifiable())
+      final Image image = li.getImage();
+      if (image != null)
       {
-        final Object identity = li.getIdentity();
-        String name = (String) usedImages.get(identity);
-        if (name == null)
+        if (li.isIdentifiable())
         {
-          name = encodeImage(image, false);
-          usedImages.put (identity, name);
+          final Object identity = li.getIdentity();
+          String name = (String) usedImages.get(identity);
+          if (name == null)
+          {
+            name = encodeImage(image, false);
+            usedImages.put (identity, name);
+          }
+          return new HtmlImageReference(name);
         }
-        return new HtmlImageReference(name);
+        return new HtmlImageReference(encodeImage(image, true));
       }
-      return new HtmlImageReference(encodeImage(image, true));
     }
-    else
-    {
-      // it is neither a local nor a URL image container, we don't handle
-      // that..
-      return new EmptyContentReference();
-    }  }
+
+    // it is neither a local nor a URL image container, we don't handle
+    // that..
+    return new EmptyContentReference();
+  }
 
   /**
    * Encodes the given image as PNG, stores the image in the generated

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StreamHtmlFilesystem.java,v 1.4.4.2 2004/12/13 19:27:09 taqua Exp $
+ * $Id: StreamHtmlFilesystem.java,v 1.7 2005/01/25 00:13:46 taqua Exp $
  *
  * Changes
  * -------
@@ -127,27 +127,38 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
   public HtmlReference createImageReference (final ImageContainer reference)
       throws IOException
   {
-    if (reference instanceof URLImageContainer)
+    if (reference instanceof URLImageContainer == false)
     {
-      final URLImageContainer urlImageContainer = (URLImageContainer) reference;
-      final URL src = urlImageContainer.getSourceURL();
-      if (src.getProtocol().equals("http") ||
-              src.getProtocol().equals("https") ||
-              src.getProtocol().equals("ftp") ||
-         (isAllowFileSources() && src.getProtocol().equals("file")))
+      return new EmptyContentReference();
+    }
+    final URLImageContainer urlImageContainer = (URLImageContainer) reference;
+    if (urlImageContainer.isLoadable() == false)
+    {
+      return new EmptyContentReference();
+    }
+    final URL src = urlImageContainer.getSourceURL();
+    if (src != null && isValidSource(src))
+    {
+      if (baseURL != null)
       {
-        if (baseURL != null)
-        {
-          return new HtmlImageReference
-              (IOUtils.getInstance().createRelativeURL(src, baseURL));
-        }
-        else
-        {
-          return new HtmlImageReference(src.toExternalForm());
-        }
+        return new HtmlImageReference
+            (IOUtils.getInstance().createRelativeURL(src, baseURL));
+      }
+      else
+      {
+        return new HtmlImageReference(src.toExternalForm());
       }
     }
     return new EmptyContentReference();
+  }
+
+  private boolean isValidSource (final URL src)
+  {
+    final String protocol = src.getProtocol();
+    return (protocol.equals("http") ||
+                  protocol.equals("https") ||
+                  protocol.equals("ftp") ||
+             (isAllowFileSources() && protocol.equals("file")));
   }
 
   /**

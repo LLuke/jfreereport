@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.10 2005/01/25 00:13:19 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.11 2005/02/19 15:41:23 taqua Exp $
  *
  * Changes
  * -------
@@ -37,7 +37,6 @@
 package org.jfree.report.modules.output.table.html;
 
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -58,6 +57,7 @@ import org.jfree.report.modules.output.table.html.ref.ExternalStyleSheetReferenc
 import org.jfree.report.modules.output.table.html.ref.HtmlImageReference;
 import org.jfree.report.modules.output.table.html.ref.HtmlReference;
 import org.jfree.report.modules.output.table.html.util.CounterReference;
+import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.report.util.ImageComparator;
 import org.jfree.report.util.StringUtil;
 import org.jfree.report.util.WaitingImageObserver;
@@ -263,83 +263,88 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
   public HtmlReference createImageReference (final ImageContainer reference)
           throws IOException
   {
-    final Image image;
-
     // The image has an assigned URL ...
     if (reference instanceof URLImageContainer)
     {
       final URLImageContainer urlImage = (URLImageContainer) reference;
-      
+
       final URL url = urlImage.getSourceURL();
-      final String name = (String) usedImages.get(url);
-      if (name != null)
+      if (url != null)
       {
-        return new HtmlImageReference(name);
-      }
-
-      // and is one of the supported image formats ...
-      // we we can embedd it directly ...
-      if (isSupportedImageFormat(urlImage.getSourceURL()))
-      {
-        // check, whether we should copy the contents into the local
-        // data directory ...
-        if (isCopyExternalImages() && urlImage.isLoadable())
+        final String name = (String) usedImages.get(url);
+        if (name != null)
         {
-          final File dataFile = new File
-                  (dataDirectory, createName(IOUtils.getInstance().getFileName(url)));
-          final InputStream urlIn = new BufferedInputStream
-                  (urlImage.getSourceURL().openStream());
-          final OutputStream fout = new BufferedOutputStream
-                  (new FileOutputStream(dataFile));
-          IOUtils.getInstance().copyStreams(urlIn, fout);
-          urlIn.close();
-          fout.close();
-
-          final String filename = IOUtils.getInstance().createRelativeURL
-                  (dataFile.toURL(), rootFile.toURL());
-          usedImages.put(url, filename);
-          return new HtmlImageReference(filename);
+          return new HtmlImageReference(name);
         }
-        else
+        // and is one of the supported image formats ...
+        // we we can embedd it directly ...
+        if (isSupportedImageFormat(urlImage.getSourceURL()))
         {
-          final String baseName = IOUtils.getInstance().createRelativeURL
-                  (urlImage.getSourceURL(), rootFile.toURL());
-          usedImages.put(url, baseName);
-          return new HtmlImageReference(baseName);
+          // check, whether we should copy the contents into the local
+          // data directory ...
+          if (isCopyExternalImages() && urlImage.isLoadable())
+          {
+            final File dataFile = new File
+                    (dataDirectory, createName(IOUtils.getInstance().getFileName(url)));
+            final InputStream urlIn = new BufferedInputStream
+                    (urlImage.getSourceURL().openStream());
+            final OutputStream fout = new BufferedOutputStream
+                    (new FileOutputStream(dataFile));
+            IOUtils.getInstance().copyStreams(urlIn, fout);
+            urlIn.close();
+            fout.close();
+
+            final String filename = IOUtils.getInstance().createRelativeURL
+                    (dataFile.toURL(), rootFile.toURL());
+            usedImages.put(url, filename);
+            return new HtmlImageReference(filename);
+          }
+          else
+          {
+            final String baseName = IOUtils.getInstance().createRelativeURL
+                    (url, rootFile.toURL());
+            usedImages.put(url, baseName);
+            return new HtmlImageReference(baseName);
+          }
+          // done: Remote image with supported format
         }
-        // done: Remote image with supported format
-      }
 
-      // The image is not directly embeddable, so we have to convert it
-      // into a supported format (PNG in this case)
+        // The image is not directly embeddable, so we have to convert it
+        // into a supported format (PNG in this case)
 
-      // if the image is not loadable, we can't do anything ...
-      // print the default empty content instead ...
-      if (urlImage.isLoadable() == false)
-      {
-        return new EmptyContentReference();
-      }
+        // if the image is not loadable, we can't do anything ...
+        // print the default empty content instead ...
+        if (urlImage.isLoadable() == false)
+        {
+          return new EmptyContentReference();
+        }
 
-      // Check, whether the imagereference contains an AWT image.
-      if (reference instanceof LocalImageContainer)
-      {
-        // if so, then we can use that image instance for the recoding
-        final LocalImageContainer li = (LocalImageContainer) reference;
-        image = li.getImage();
+        Image image = null;
+        // Check, whether the imagereference contains an AWT image.
+        if (reference instanceof LocalImageContainer)
+        {
+          // if so, then we can use that image instance for the recoding
+          final LocalImageContainer li = (LocalImageContainer) reference;
+          image = li.getImage();
+        }
+        if (image == null)
+        {
+          image = ImageFactory.getInstance().createImage(url);
+        }
+        if (image != null)
+        {
+          // now encode the image. We don't need to create digest data
+          // for the image contents, as the image is perfectly identifyable
+          // by its URL
+          final String entryName = encodeImage(image, false);
+          usedImages.put(url, entryName);
+          return new HtmlImageReference(entryName);
+        }
       }
-      else
-      {
-        image = Toolkit.getDefaultToolkit().createImage(url);
-      }
-      // now encode the image. We don't need to create digest data
-      // for the image contents, as the image is perfectly identifyable
-      // by its URL
-      final String entryName = encodeImage(image, false);
-      usedImages.put(url, entryName);
-      return new HtmlImageReference(entryName);
     }
+
     // check, whether the image is a local image
-    else if (reference instanceof LocalImageContainer)
+    if (reference instanceof LocalImageContainer)
     {
       // that image has no useable URL, but contains local image
       // data, so we can start to encode it. We will create a
@@ -351,7 +356,12 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
       // LocalImageContainer instances are free to supply more
       // suitable comparator information
       final LocalImageContainer li = (LocalImageContainer) reference;
-      image = li.getImage();
+      final Image image = li.getImage();
+      if (image == null)
+      {
+        return new EmptyContentReference();
+      }
+
       if (li.isIdentifiable())
       {
         final Object identity = li.getIdentity();

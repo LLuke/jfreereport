@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultDataSourceFactory.java,v 1.6 2005/01/25 00:19:42 taqua Exp $
+ * $Id: DefaultDataSourceFactory.java,v 1.7 2005/01/25 21:40:34 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -43,6 +43,7 @@ import org.jfree.report.filter.DateFormatFilter;
 import org.jfree.report.filter.DateFormatParser;
 import org.jfree.report.filter.DecimalFormatFilter;
 import org.jfree.report.filter.DecimalFormatParser;
+import org.jfree.report.filter.DrawableLoadFilter;
 import org.jfree.report.filter.EmptyDataSource;
 import org.jfree.report.filter.FormatFilter;
 import org.jfree.report.filter.FormatParser;
@@ -57,23 +58,9 @@ import org.jfree.report.filter.SimpleDateFormatParser;
 import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.filter.StringFilter;
 import org.jfree.report.filter.URLFilter;
-import org.jfree.report.filter.DrawableLoadFilter;
-import org.jfree.report.modules.parser.ext.factory.templates.DateFieldTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.HorizontalLineTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.ImageFieldTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.ImageURLElementTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.ImageURLFieldTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.LabelTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.NumberFieldTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.RectangleTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.ResourceFieldTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.ResourceLabelTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.ShapeFieldTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.StringFieldTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.VerticalLineTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.DrawableFieldTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.DrawableURLElementTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.DrawableURLFieldTemplateDescription;
+import org.jfree.report.filter.AnchorFilter;
+import org.jfree.report.filter.MessageFormatFilter;
+import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
 import org.jfree.xml.factory.objects.BeanObjectDescription;
 
 /**
@@ -88,6 +75,7 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
    */
   public DefaultDataSourceFactory()
   {
+    registerDataSources("AnchorFilter", new BeanObjectDescription(AnchorFilter.class));
     registerDataSources("DataRowDataSource", new BeanObjectDescription(DataRowDataSource.class));
     registerDataSources("DateFormatFilter", new BeanObjectDescription(DateFormatFilter.class));
     registerDataSources("DateFormatParser", new BeanObjectDescription(DateFormatParser.class));
@@ -102,6 +90,7 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
     registerDataSources("FormatParser", new BeanObjectDescription(FormatParser.class));
     registerDataSources("ImageLoadFilter", new BeanObjectDescription(ImageLoadFilter.class));
     registerDataSources("ImageRefFilter", new BeanObjectDescription(ImageRefFilter.class));
+    registerDataSources("MessageFormatFilter", new BeanObjectDescription(MessageFormatFilter.class));
     registerDataSources("NumberFormatFilter", new BeanObjectDescription(NumberFormatFilter.class));
     registerDataSources("NumberFormatParser", new BeanObjectDescription(NumberFormatParser.class));
     registerDataSources("ResourceFileFilter", new BeanObjectDescription(ResourceFileFilter.class));
@@ -114,40 +103,14 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
     registerDataSources("StringFilter", new BeanObjectDescription(StringFilter.class));
     registerDataSources("URLFilter", new URLFilterObjectDescription(URLFilter.class));
 
-    // templates are also datasources ...
-    registerDataSources("DateFieldTemplate",
-        new DateFieldTemplateDescription("date-field"));
-    registerDataSources("ImageFieldTemplate",
-        new ImageFieldTemplateDescription("image-field"));
-    registerDataSources("ImageURLFieldTemplate",
-        new ImageURLFieldTemplateDescription("image-url-field"));
-    registerDataSources("ImageURLElementTemplate",
-        new ImageURLElementTemplateDescription("image-url-element"));
-    registerDataSources("LabelTemplate",
-        new LabelTemplateDescription("label"));
-    registerDataSources("NumberFieldTemplate",
-        new NumberFieldTemplateDescription("number-field"));
-    registerDataSources("StringFieldTemplate",
-        new StringFieldTemplateDescription("string-field"));
-    registerDataSources("ResourceFieldTemplate",
-        new ResourceFieldTemplateDescription("resource-field"));
-    registerDataSources("ResourceLabelTemplate",
-        new ResourceLabelTemplateDescription("resource-label"));
-    registerDataSources("ShapeFieldTemplate",
-        new ShapeFieldTemplateDescription("shape-field"));
-    registerDataSources("RectangleTemplate",
-        new RectangleTemplateDescription("rectangle"));
-    registerDataSources("HorizontalLineTemplate",
-        new HorizontalLineTemplateDescription("horizontal-line"));
-    registerDataSources("VerticalLineTemplate",
-        new VerticalLineTemplateDescription("vertical-line"));
-    registerDataSources("DrawableFieldTemplate",
-        new DrawableFieldTemplateDescription("drawable-field"));
-    registerDataSources("DrawableURLElementTemplate",
-        new DrawableURLElementTemplateDescription("drawable-url-field"));
-    registerDataSources("DrawableURLFieldTemplate",
-        new DrawableURLFieldTemplateDescription("drawable-url-element"));
+    final DefaultTemplateCollection templateCollection = new DefaultTemplateCollection();
 
+    final String[] templateNames = templateCollection.getNames();
+    for (int i = 0; i < templateNames.length; i++)
+    {
+      final String name = templateNames[i];
+      registerDataSources(name, templateCollection.getTemplate(name));
+    }
   }
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.8 2005/01/30 23:37:24 taqua Exp $
+ * $Id: StylesWriter.java,v 1.9 2005/02/04 19:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -107,7 +107,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
       writeTag(writer, STYLE_TAG, "name", style.getName(), OPEN);
 
       final StyleWriter stW = new StyleWriter
-          (getReportWriter(), style, null, getIndentLevel(), stylePath);
+          (getReportWriter(), style, getIndentLevel(), stylePath);
       stW.write(writer);
 
       writeComment(writer, stylePath, CommentHandler.CLOSE_TAG_COMMENT);

@@ -137,6 +137,7 @@ public class BasicObjectReadHandler extends AbstractPropertyXmlReadHandler
   public Object getObject ()
           throws XmlReaderException
   {
+    objectDescription.configure(getRootHandler());
     return objectDescription.createObject();
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.3 2005/01/25 00:12:35 taqua Exp $
+ * $Id: SheetLayout.java,v 1.4 2005/02/19 13:30:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -379,9 +379,16 @@ public class SheetLayout
 
   protected int mapColumn (final int xCutIndex)
   {
-    final Long[] xcuts = getXCuts();
-    final BoundsCut boundsCut = (BoundsCut) xBounds.get(xcuts[xCutIndex]);
-    return boundsCut.getPosition();
+    try
+    {
+      final Long[] xcuts = getXCuts();
+      final BoundsCut boundsCut = (BoundsCut) xBounds.get(xcuts[xCutIndex]);
+      return boundsCut.getPosition();
+    }
+    catch (NullPointerException npe)
+    {
+      throw new NullPointerException();
+    }
   }
 
   protected int mapRow (final int yCutIndex)
@@ -549,6 +556,7 @@ public class SheetLayout
       if (cut.isAuxilary())
       {
         itX.remove();
+        xKeysArray = null;
       }
     }
 
@@ -560,6 +568,7 @@ public class SheetLayout
       if (cut.isAuxilary())
       {
         itY.remove();
+        yKeysArray = null;
       }
     }
   }
