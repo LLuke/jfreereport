@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Thomas Morgner, Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * --------------------
  * JFreeReportInfo.java
  * --------------------
- * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Object Refinery Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
+ * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.15 2003/04/05 18:57:09 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.16 2003/04/24 18:08:44 taqua Exp $
  *
  * Changes:
  * --------
@@ -94,10 +94,10 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
               new Library (JCommon.INFO),
               new Library ("JUnit", "3.7.1", "IBM Public Licence", "http://www.junit.org/"),
               // 0.95 is also suitable ...
-              new Library ("iText", "0.96", "LGPL", "http://www.lowagie.com/iText/index.html"),
+              new Library ("iText", "0.99", "LGPL", "http://www.lowagie.com/iText/index.html"),
               new Library ("GNU JAXP", "1.0beta1", "GPL with library exception",
                       "http://www.gnu.org/software/classpathx/jaxp/"),
-              new Library ("Pixie", "0.7.0", "LGPL",
+              new Library ("Pixie", "0.8.0", "LGPL",
                       "http://sourceforge.net/projects/jfreereport/"),
               new Library ("BeanShell", "1.2B6", "LGPL", "http://www.beanshell.org/"),
               new Library ("Apache POI", "1.5.1", "Apache Public Licence",
