@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: TextElementFactory.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -50,143 +50,297 @@ import org.jfree.report.style.ElementStyleSheet;
  */
 public abstract class TextElementFactory extends ElementFactory
 {
+  /** The name of the font used to print the text. */
   private String fontName;
+  /** A flag defining whether to use the bold font style. */
   private Boolean bold;
+  /** A flag defining whether to use the italic font style. */
   private Boolean italic;
+  /** A flag defining whether to use the underline font style. */
   private Boolean underline;
+  /** A flag defining whether to use the strikethough font style. */
   private Boolean strikethrough;
+  /** A flag defining whether to use the embed the font where possible. */
   private Boolean embedFont;
+  /** Defines the font size of the used font. */
   private Integer fontSize;
+  /** Defines the lineheight. The lineheight must be >= the font size, or it is ignored. */
   private Integer lineHeight;
+  /** Defines the text color. */
   private Color color;
+  /** Defines the font encoding used when writing the text. */
   private String encoding;
+  /** Defines the vertical alignment of the content. */
   private ElementAlignment verticalAlignment;
+  /** Defines the horizontal alignment of the content. */
   private ElementAlignment horizontalAlignment;
 
+  /**
+   * Default Constructor.
+   */
   public TextElementFactory()
   {
   }
 
+  /**
+   * Returns the font embedding flag for the new text elements. Font embedding
+   * is only used in some output targets. 
+   * 
+   * @return the font embedding flag.
+   */
   public Boolean getEmbedFont()
   {
     return embedFont;
   }
 
+  /**
+   * Defines that the font should be embedded if possible.
+   * 
+   * @param embedFont embedds the font if possible.
+   */
   public void setEmbedFont(Boolean embedFont)
   {
     this.embedFont = embedFont;
   }
 
+  /**
+   * Returns the name of the font that should be used to print the text.
+   * 
+   * @return the font name.
+   */
   public String getFontName()
   {
     return fontName;
   }
 
+  /**
+   * Defines the name of the font that should be used to print the text.
+   * 
+   * @param fontName the name of the font.
+   */
   public void setFontName(String fontName)
   {
     this.fontName = fontName;
   }
 
+  /**
+   * Returns the state of the bold flag for the font. This method may return
+   * null to indicate that that value should be inherited from the parents. 
+   * 
+   * @return the bold-flag.
+   */
   public Boolean getBold()
   {
     return bold;
   }
 
+  /**
+   * Defines the state of the bold flag for the font. This value may be set to
+   * null to indicate that that value should be inherited from the parents. 
+   * 
+   * @param bold the bold-flag.
+   */
   public void setBold(Boolean bold)
   {
     this.bold = bold;
   }
 
+  /**
+   * Returns the state of the italic flag for the font. This method may return
+   * null to indicate that that value should be inherited from the parents. 
+   * 
+   * @return the italic-flag.
+   */
   public Boolean getItalic()
   {
     return italic;
   }
 
+  /**
+   * Defines the state of the italic flag for the font. This value may be set to
+   * null to indicate that that value should be inherited from the parents. 
+   * 
+   * @param italic the italic-flag.
+   */
   public void setItalic(Boolean italic)
   {
     this.italic = italic;
   }
 
+  /**
+   * Returns the state of the underline flag for the font. This method may return
+   * null to indicate that that value should be inherited from the parents. 
+   * 
+   * @return the underline-flag.
+   */
   public Boolean getUnderline()
   {
     return underline;
   }
 
+  /**
+   * Defines the state of the underline flag for the font. This value may be set to
+   * null to indicate that that value should be inherited from the parents. 
+   * 
+   * @param underline the underline-flag.
+   */
   public void setUnderline(Boolean underline)
   {
     this.underline = underline;
   }
 
+  /**
+   * Returns the state of the strike through flag for the font. This method may return
+   * null to indicate that that value should be inherited from the parents. 
+   * 
+   * @return the strike-through-flag.
+   */
   public Boolean getStrikethrough()
   {
     return strikethrough;
   }
 
+  /**
+   * Defines the state of the strike through flag for the font. This value may be set to
+   * null to indicate that that value should be inherited from the parents. 
+   * 
+   * @param strikethrough the strikethrough-flag.
+   */
   public void setStrikethrough(Boolean strikethrough)
   {
     this.strikethrough = strikethrough;
   }
 
+  /**
+   * Returns the font size in points.
+   * 
+   * @return the font size.
+   */
   public Integer getFontSize()
   {
     return fontSize;
   }
 
+  /**
+   * Returns the font size in points.
+   * 
+   * @param fontSize the font size.
+   */
   public void setFontSize(Integer fontSize)
   {
     this.fontSize = fontSize;
   }
 
+  /**
+   * Returns the lineheight defined for the text element. The lineheight must be greater
+   * than the font size, or this value will be ignored.
+   * 
+   * @return the line height.
+   */
   public Integer getLineHeight()
   {
     return lineHeight;
   }
 
+  /**
+   * Defines the lineheight defined for the text element. The lineheight must be greater
+   * than the font size, or this value will be ignored.
+   * 
+   * @param lineHeight the line height.
+   */
   public void setLineHeight(Integer lineHeight)
   {
     this.lineHeight = lineHeight;
   }
 
+  /**
+   * Returns the text color for the new element.
+   * 
+   * @return the text color.
+   */
   public Color getColor()
   {
     return color;
   }
 
+  /**
+   * Defines the text color for the new element.
+   * 
+   * @param color the text color.
+   */
   public void setColor(Color color)
   {
     this.color = color;
   }
 
+  /**
+   * Returns the font encoding used to write the text. This parameter is only
+   * used by some output targets and will be ignored otherwise.
+   * 
+   * @return the font encoding.
+   */
   public String getEncoding()
   {
     return encoding;
   }
 
+  /**
+   * Defines the font encoding used to write the text. This parameter is only
+   * used by some output targets and will be ignored otherwise.
+   * 
+   * @param encoding the font encoding.
+   */
   public void setEncoding(String encoding)
   {
     this.encoding = encoding;
   }
 
+  /**
+   * Returns the vertical alignment for the content of this text element.
+   * 
+   * @return the vertical alignment.
+   */
   public ElementAlignment getVerticalAlignment()
   {
     return verticalAlignment;
   }
 
+  /**
+   * Defines the vertical alignment for the content of this text element.
+   * 
+   * @param verticalAlignment the vertical alignment.
+   */
   public void setVerticalAlignment(ElementAlignment verticalAlignment)
   {
     this.verticalAlignment = verticalAlignment;
   }
 
+  /**
+   * Returns the horizontal alignment for the content of this text element.
+   * 
+   * @return the horizontal alignment.
+   */
   public ElementAlignment getHorizontalAlignment()
   {
     return horizontalAlignment;
   }
 
+  /**
+   * Defines the horizontal alignment for the content of this text element.
+   * 
+   * @param horizontalAlignment the vertical alignment.
+   */
   public void setHorizontalAlignment(ElementAlignment horizontalAlignment)
   {
     this.horizontalAlignment = horizontalAlignment;
   }
 
+  /**
+   * Applies the defined element style to the given stylesheet. This is a 
+   * helper function to reduce the code size of the implementors.
+   * 
+   * @param style the stlyesheet.
+   */
   protected void applyStyle (ElementStyleSheet style)
   {
     style.setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, getAbsolutePosition());

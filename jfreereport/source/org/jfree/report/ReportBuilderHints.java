@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportBuilderHints.java,v 1.4 2003/07/23 13:56:31 taqua Exp $
+ * $Id: ReportBuilderHints.java,v 1.5 2003/08/18 18:27:57 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 14.07.2003 : Initial version
+ * 14-Jul-2003 : Initial version
  *  
  */
 
@@ -46,14 +46,49 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.jfree.report.util.NullOutputStream;
+import org.jfree.report.util.ReportConfiguration;
 
+/**
+ * The report builder hints can be used to store extra information for an
+ * JFreeReport instance. This information can be used to support automated
+ * processes on the JFreeReport definition.
+ * <p>
+ * The XML parsers use this collection to store comments and other metadata
+ * for their reports.
+ * <p>
+ * The report builder hints are not copied when a report is cloned and are
+ * not available during the report processing.
+ * 
+ * @author Thomas Morgner
+ */
 public class ReportBuilderHints implements Serializable
 {
+  /** 
+   * Defines whether the report builder should be paranoid when accepting 
+   * objects for storage. 
+   */
+  private static final boolean PARANOID_CHECKS = 
+    ReportConfiguration.getGlobalConfig().getConfigProperty
+      ("org.jfree.report.ReportBuilderHint.ParanoidChecks", "false").equals("true");
+  
+  /**
+   * The parser hint key is a compound key to combine a string key name
+   * with an arbitary target object. 
+   */
   public static class ParserHintKey implements Serializable
   {
+    /** The object for which to store an hint. */
     private Object primaryKey;
+    /** The name of the hint. */
     private String hintKey;
 
+    /**
+     * Creates a new parser hint key for the given primary key and the given
+     * key name.
+     * 
+     * @param primaryKey the target object for that a hint should be stored. 
+     * @param hintKey the name of the hint.
+     */
     public ParserHintKey(Serializable primaryKey, String hintKey)
     {
       if (primaryKey == null)
@@ -68,16 +103,35 @@ public class ReportBuilderHints implements Serializable
       this.hintKey = hintKey;
     }
 
+    /**
+     * Returns the primary key object for that hint key.
+     * 
+     * @return the key object.
+     */
     public Object getPrimaryKey()
     {
       return primaryKey;
     }
-
+    
+    /**
+     * Returns the hint name.
+     * 
+     * @return the name of the hint.
+     */
     public String getHintKey()
     {
       return hintKey;
     }
 
+    /**
+     * Compares whether this key points to the same object and refers to the
+     * same key name.
+     *   
+     * @see java.lang.Object#equals(java.lang.Object)
+     * 
+     * @param o the object to compare
+     * @return true, if the given object is equal to this object.
+     */
     public boolean equals(Object o)
     {
       if (this == o)
@@ -103,6 +157,13 @@ public class ReportBuilderHints implements Serializable
       return true;
     }
 
+    /**
+     * Computes an hashcode for this key.
+     *  
+     * @see java.lang.Object#hashCode()
+     * 
+     * @return the hashcode.
+     */
     public int hashCode()
     {
       int result;
@@ -111,6 +172,13 @@ public class ReportBuilderHints implements Serializable
       return result;
     }
 
+    /**
+     * Prints this key as string. This is a debug function, dont depend on it.
+     *  
+     * @see java.lang.Object#toString()
+     * 
+     * @return the string representation of this object.
+     */
     public String toString()
     {
       StringBuffer b = new StringBuffer();
@@ -123,13 +191,24 @@ public class ReportBuilderHints implements Serializable
     }
   }
 
+  /** The hashmap which stores the hints. */
   private HashMap map;
 
+  /**
+   * Creates a new ReportBuilderHints instance.
+   */
   public ReportBuilderHints()
   {
     this.map = new HashMap();
   }
 
+  /**
+   * Stores a new hint, replacing all previously stored hints for that key.
+   * 
+   * @param target the target object, to which the hint is assigned.
+   * @param hint the name of the hint.
+   * @param hintValue the value of the hint.
+   */
   public void putHint (Serializable target, String hint, Serializable hintValue)
   {
     ParserHintKey pHint = new ParserHintKey(target, hint);
@@ -143,11 +222,28 @@ public class ReportBuilderHints implements Serializable
     }
   }
 
+  /**
+   * Queries the object to get a stored hint from this collcetion.
+   * 
+   * @param target the target object, to which the hint is assigned.
+   * @param hint the name of the hint.
+   * @return the stored hint or null, if no such hint is stored for that object.
+   */
   public Object getHint (Serializable target, String hint)
   {
     return map.get(new ParserHintKey(target, hint));
   }
 
+  /**
+   * Queries the object to get a stored hint from this collcetion and checks
+   * that the target object has the correct type. This will return null, if the
+   * hintobject is not assignable from the given object type. 
+   * 
+   * @param target the target object, to which the hint is assigned.
+   * @param hint the name of the hint.
+   * @param objectType the expected type of the stored hint. 
+   * @return the stored hint or null, if no such hint is stored for that object.
+   */
   public Object getHint (Serializable target, String hint, Class objectType)
   {
     Object o = map.get(new ParserHintKey(target, hint));
@@ -162,6 +258,12 @@ public class ReportBuilderHints implements Serializable
     return null;
   }
 
+  /**
+   * Serializes an given object to test whether this object is a valid serializable 
+   * implementation.
+   * 
+   * @param o the object that should be tested.
+   */
   private void serialize (Object o)
   {
     try
@@ -209,8 +311,11 @@ public class ReportBuilderHints implements Serializable
       throw new NullPointerException("Hintvalue is null.");
     }
 
-    serialize(target);
-    serialize(hintValue);
+    if (PARANOID_CHECKS)
+    {
+      serialize(target);
+      serialize(hintValue);
+    }
 
     Object o = getHint(target, hint);
     List hintList = null;

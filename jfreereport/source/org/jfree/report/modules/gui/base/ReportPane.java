@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
+ * $Id: ReportPane.java,v 1.3 2003/07/23 16:02:19 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -195,9 +195,11 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * Returns ??.
+   * Returns whether the processor should check the threads interrupted state.
+   * If this is set to true and the thread was interrupted, then the report processing
+   * is aborted.
    *
-   * @return A boolean.
+   * @return true, if the processor should check the current thread state, false otherwise.
    */
   public boolean isHandleInterruptedState()
   {
@@ -205,9 +207,12 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * Sets the...
+   * Defines, whether the processor should check the threads interrupted state.
+   * If this is set to true and the thread was interrupted, then the report processing
+   * is aborted.
    *
-   * @param handleInterruptedState  the new flag value.
+   * @param handleInterruptedState true, if the processor should check the current thread state,
+   *                               false otherwise.
    */
   public void setHandleInterruptedState(final boolean handleInterruptedState)
   {
@@ -531,49 +536,14 @@ public class ReportPane extends JComponent implements Printable, Pageable
         g2.setPaint(Color.white);
         g2.fill(pageArea);
 
+        /** Generate the page ... */
+        performGeneratePage(g2);
+
         /**
          * The border around the printable area is painted when the corresponding property is
          * set to true.
          */
         final Rectangle2D printingArea = new Rectangle2D.Float(innerX, innerY, innerW, innerH);
-        final G2OutputTarget target = new G2OutputTarget(g2, getPageFormat());
-        target.open();
-        getProcessor().setOutputTarget(target);
-
-        try
-        {
-          if (!isPaginated())
-          {
-            repaginate();
-          }
-        }
-        catch (ReportProcessingException rpe)
-        {
-          Log.error("Repaginate failed: ", rpe);
-          setError(rpe);
-        }
-
-        final int pageNumber = getPageNumber();
-        if (pageNumber > 0)
-        {
-          final ReportState state = getPageStateList().get(pageNumber - 1);
-          try
-          {
-            getProcessor().processPage(state, target);
-          }
-          catch (ReportProcessingException rpe)
-          {
-            Log.error("Repaginate failed: ", rpe);
-            setError(rpe);
-          }
-        }
-        else
-        {
-          Log.error("PageNumber is invalid after repaginating: " + pageNumber);
-        }
-
-        getProcessor().setOutputTarget(null);
-        target.close();
 
         /** Paint Page Shadow */
         final Rectangle2D southborder =
@@ -640,6 +610,54 @@ public class ReportPane extends JComponent implements Printable, Pageable
       setError(e);
       super.paintComponent(g);
     }
+  }
+  
+  /**
+   * Generates the page and draws that page on the given Graphics2D object.
+   * @param g2 the target graphics.
+   * @throws OutputTargetException if an error occured.
+   */
+  private void performGeneratePage (Graphics2D g2) 
+    throws OutputTargetException
+  {
+    final G2OutputTarget target = new G2OutputTarget(g2, getPageFormat());
+    target.open();
+    getProcessor().setOutputTarget(target);
+
+    try
+    {
+      if (!isPaginated())
+      {
+        repaginate();
+      }
+    }
+    catch (ReportProcessingException rpe)
+    {
+      Log.error("Repaginate failed: ", rpe);
+      setError(rpe);
+    }
+
+    final int pageNumber = getPageNumber();
+    if (pageNumber > 0)
+    {
+      final ReportState state = getPageStateList().get(pageNumber - 1);
+      try
+      {
+        getProcessor().processPage(state, target);
+      }
+      catch (ReportProcessingException rpe)
+      {
+        Log.error("Repaginate failed: ", rpe);
+        setError(rpe);
+      }
+    }
+    else
+    {
+      Log.error("PageNumber is invalid after repaginating: " + pageNumber);
+    }
+
+    getProcessor().setOutputTarget(null);
+    target.close();
   }
 
   /**
@@ -830,7 +848,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
     return processor;
   }
 
-  /** Free some of the used memory. */
+  /** 
+   * Free some of the used memory. 
+   */
   public void dispose()
   {
     // clean up a little bit

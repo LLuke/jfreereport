@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.5 2003/07/25 01:06:00 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.6 2003/08/18 18:27:59 taqua Exp $
  *
  * Changes
  * --------
@@ -594,39 +594,15 @@ public class PDFSaveDialog extends JDialog
   }
 
   /**
-   * Creates a panel for the security settings.
+   * Initializes the class member components of the security panel.
    *
-   * @return The panel.
    */
-  private JPanel createSecurityPanel()
+  private void createSecurityPanelComponents ()
   {
-    final JPanel securityPanel = new JPanel();
-    securityPanel.setLayout(new GridBagLayout());
-    securityPanel.setBorder(
-        BorderFactory.createTitledBorder(getResources().getString("pdfsavedialog.security")));
-
-    rbSecurityNone = new JRadioButton(getResources().getString("pdfsavedialog.securityNone"));
-    rbSecurity40Bit = new JRadioButton(getResources().getString("pdfsavedialog.security40bit"));
-    rbSecurity128Bit = new JRadioButton(getResources().getString("pdfsavedialog.security128bit"));
-
-    rbSecurityNone.addActionListener(getActionSecuritySelection());
-    rbSecurity40Bit.addActionListener(getActionSecuritySelection());
-    rbSecurity128Bit.addActionListener(getActionSecuritySelection());
-
     txUserPassword = new JPasswordField();
     txConfUserPassword = new JPasswordField();
     txOwnerPassword = new JPasswordField();
     txConfOwnerPassword = new JPasswordField();
-
-    final JLabel lblUserPass = new JLabel(getResources().getString("pdfsavedialog.userpassword"));
-    final JLabel lblUserPassConfirm =
-        new JLabel(getResources().getString("pdfsavedialog.userpasswordconfirm"));
-    final JLabel lblOwnerPass =
-        new JLabel(getResources().getString("pdfsavedialog.ownerpassword"));
-    final JLabel lblOwnerPassConfirm =
-        new JLabel(getResources().getString("pdfsavedialog.ownerpasswordconfirm"));
-    final JLabel lbAllowPrinting =
-        new JLabel(getResources().getString("pdfsavedialog.allowPrinting"));
 
     cxAllowCopy = new JCheckBox(getResources().getString("pdfsavedialog.allowCopy"));
     cbAllowPrinting = new JComboBox(getPrintingComboBoxModel());
@@ -640,18 +616,31 @@ public class PDFSaveDialog extends JDialog
         new JCheckBox(getResources().getString("pdfsavedialog.allowModifyAnnotations"));
     cxAllowFillIn = new JCheckBox(getResources().getString("pdfsavedialog.allowFillIn"));
 
-    final JPanel pnlSecurityConfig = new JPanel();
-    pnlSecurityConfig.setLayout(new GridLayout());
-    pnlSecurityConfig.add(rbSecurityNone);
-    pnlSecurityConfig.add(rbSecurity40Bit);
-    pnlSecurityConfig.add(rbSecurity128Bit);
+  }
 
-    final ButtonGroup btGrpSecurity = new ButtonGroup();
-    btGrpSecurity.add(rbSecurity128Bit);
-    btGrpSecurity.add(rbSecurity40Bit);
-    btGrpSecurity.add(rbSecurityNone);
+  /**
+   * Creates a panel for the security settings.
+   *
+   * @return The panel.
+   */
+  private JPanel createSecurityPanel()
+  {
+    final JPanel securityPanel = new JPanel();
+    securityPanel.setLayout(new GridBagLayout());
+    securityPanel.setBorder(
+        BorderFactory.createTitledBorder(getResources().getString("pdfsavedialog.security")));
 
-    rbSecurity128Bit.setSelected(true);
+    createSecurityPanelComponents();
+
+    final JLabel lblUserPass = new JLabel(getResources().getString("pdfsavedialog.userpassword"));
+    final JLabel lblUserPassConfirm =
+        new JLabel(getResources().getString("pdfsavedialog.userpasswordconfirm"));
+    final JLabel lblOwnerPass =
+        new JLabel(getResources().getString("pdfsavedialog.ownerpassword"));
+    final JLabel lblOwnerPassConfirm =
+        new JLabel(getResources().getString("pdfsavedialog.ownerpasswordconfirm"));
+    final JLabel lbAllowPrinting =
+        new JLabel(getResources().getString("pdfsavedialog.allowPrinting"));
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -660,7 +649,7 @@ public class PDFSaveDialog extends JDialog
     gbc.gridwidth = 4;
     gbc.gridy = 0;
     gbc.insets = new Insets(5, 5, 5, 5);
-    securityPanel.add(pnlSecurityConfig, gbc);
+    securityPanel.add(createSecurityConfigPanel(), gbc);
 
     gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.WEST;
@@ -783,6 +772,38 @@ public class PDFSaveDialog extends JDialog
     securityPanel.add(cbAllowPrinting, gbc);
 
     return securityPanel;
+  }
+  
+  /**
+   * Creates the security config panel. This panel is used to select the level of the
+   * PDF security.
+   * 
+   * @return the created security config panel.
+   */
+  private JPanel createSecurityConfigPanel ()
+  {
+    rbSecurityNone = new JRadioButton(getResources().getString("pdfsavedialog.securityNone"));
+    rbSecurity40Bit = new JRadioButton(getResources().getString("pdfsavedialog.security40bit"));
+    rbSecurity128Bit = new JRadioButton(getResources().getString("pdfsavedialog.security128bit"));
+
+    rbSecurityNone.addActionListener(getActionSecuritySelection());
+    rbSecurity40Bit.addActionListener(getActionSecuritySelection());
+    rbSecurity128Bit.addActionListener(getActionSecuritySelection());
+
+    rbSecurity128Bit.setSelected(true);
+
+    final JPanel pnlSecurityConfig = new JPanel();
+    pnlSecurityConfig.setLayout(new GridLayout());
+    pnlSecurityConfig.add(rbSecurityNone);
+    pnlSecurityConfig.add(rbSecurity40Bit);
+    pnlSecurityConfig.add(rbSecurity128Bit);
+
+    final ButtonGroup btGrpSecurity = new ButtonGroup();
+    btGrpSecurity.add(rbSecurity128Bit);
+    btGrpSecurity.add(rbSecurity40Bit);
+    btGrpSecurity.add(rbSecurityNone);
+
+    return pnlSecurityConfig;
   }
 
   /**

@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: HorizontalLineTemplate.java,v 1.1 2003/07/12 16:32:05 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 12.07.2003 : Initial version
+ * 12-Jul-2003 : Initial version
  *  
  */
 
@@ -40,12 +40,27 @@ package org.jfree.report.filter.templates;
 
 import java.awt.geom.Line2D;
 
+/**
+ * Defines a horizontal line template. The line always has the width of 100 points.
+ * This implementation is used to cover the common use of the line shape element.
+ * Use the scaling feature of the shape element to adjust the size of the line. 
+ * 
+ * @author Thomas Morgner
+ */
 public class HorizontalLineTemplate extends AbstractTemplate
 {
+  /**
+   * Default Constructor.
+   */
   public HorizontalLineTemplate()
   {
   }
 
+  /**
+   * Returns the template value, an horizontal line.
+   * 
+   * @return a horizontal line with a width of 100. 
+   */
   public Object getValue()
   {
     return new Line2D.Float(0,0, 100, 0);
