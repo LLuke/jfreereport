@@ -1,0 +1,195 @@
+/**
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
+ *
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ------------------------------
+ * WorkerPool.java
+ * ------------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------------------------
+ * 18.10.2003 : Initial version
+ *
+ */
+
+package org.jfree.report.util;
+
+public class WorkerPool
+{
+  private Worker[] workers;
+  private boolean workersAvailable;
+  private String namePrefix;
+
+  public WorkerPool()
+  {
+    this (10);
+  }
+
+  public WorkerPool(int size)
+  {
+    this (size, "WorkerPool-worker");
+  }
+
+  public WorkerPool(int size, String namePrefix)
+  {
+    if (size <= 0)
+    {
+      throw new IllegalArgumentException("Size must be > 0");
+    }
+    workers = new Worker[size];
+    workersAvailable = true;
+    this.namePrefix = namePrefix;
+  }
+
+
+
+  public synchronized boolean isWorkerAvailable ()
+  {
+    return workersAvailable;
+  }
+
+  protected void updateWorkersAvailable ()
+  {
+    for (int i = 0; i < workers.length; i++)
+    {
+      if (workers[i] == null)
+      {
+        workersAvailable = true;
+        return;
+      }
+      if (workers[i].isAvailable() == true)
+      {
+        workersAvailable = true;
+        return;
+      }
+    }
+    workersAvailable = false;
+  }
+
+  protected synchronized void waitForWorkerAvailable ()
+  {
+    while (isWorkerAvailable() == false)
+    {
+      try
+      {
+        // remove lock
+        this.wait(5000);
+      }
+      catch (InterruptedException ie)
+      {
+        // ignored
+      }
+    }
+  }
+
+  public synchronized WorkerHandle getWorkerForWorkload (Runnable r)
+  {
+    waitForWorkerAvailable();
+
+    int emptySlot = -1;
+    for (int i = 0; i < workers.length; i++)
+    {
+      if (workers[i] == null)
+      {
+        // in the first run, try to avoid to create new threads...
+        // reuse the already available threads
+        if (emptySlot == -1)
+        {
+          emptySlot = i;
+        }
+        continue;
+      }
+      if (workers[i].isAvailable() == true)
+      {
+        workers[i].setWorkload(r);
+        updateWorkersAvailable();
+        return new WorkerHandle(workers[i]);
+      }
+    }
+    if (emptySlot != -1)
+    {
+      workers[emptySlot] = new Worker();
+      workers[emptySlot].setName(namePrefix + "-" + emptySlot);
+      workers[emptySlot].setWorkerPool(this);
+      workers[emptySlot].setWorkload(r);
+      updateWorkersAvailable();
+      return new WorkerHandle(workers[emptySlot]);
+    }
+    throw new IllegalStateException
+        ("At this point, a worker should already have been assigned.");
+  }
+
+  public void workerFinished (Worker worker)
+  {
+    if (worker.isFinish() == false)
+    {
+      throw new IllegalArgumentException("This worker is not in the finish state.");
+    }
+    for (int i = 0; i < workers.length; i++)
+    {
+      if (workers[i] == worker)
+      {
+        synchronized (this)
+        {
+          workers[i] = null;
+          workersAvailable = true;
+          this.notifyAll();
+        }
+        return;
+      }
+    }
+    return;
+  }
+
+  public synchronized void workerAvailable (Worker worker)
+  {
+    for (int i = 0; i < workers.length; i++)
+    {
+      if (workers[i] == worker)
+      {
+        synchronized (this)
+        {
+          workersAvailable = true;
+          this.notifyAll();
+        }
+        return;
+      }
+    }
+    return;
+  }
+
+  public void finishAll ()
+  {
+    for (int i = 0; i < workers.length; i++)
+    {
+      if (workers[i] != null)
+      {
+        workers[i].finish();
+      }
+    }
+  }
+}
