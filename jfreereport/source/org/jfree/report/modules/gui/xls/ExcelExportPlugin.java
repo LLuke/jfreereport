@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.8 2003/09/08 18:11:49 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.9 2003/09/09 21:31:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,6 +46,8 @@ import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
+import org.jfree.report.modules.gui.base.ExportTask;
+import org.jfree.report.modules.gui.base.ExportTaskListener;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.xls.resources.XLSExportResources;
@@ -58,6 +60,38 @@ import org.jfree.ui.RefineryUtilities;
  */
 public class ExcelExportPlugin extends AbstractExportPlugin
 {
+  private class ExcelExportTaskListener implements ExportTaskListener
+  {
+    private ReportProgressDialog progressDialog;
+
+    public ExcelExportTaskListener (ReportProgressDialog progressDialog)
+    {
+      this.progressDialog = progressDialog;
+    }
+
+    public void taskAborted(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskDone(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskFailed(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskWaiting(ExportTask task)
+    {
+    }
+  }
+
   /** The excel export dialog which handles the export. */
   private ExcelExportDialog exportDialog;
 
@@ -68,21 +102,23 @@ public class ExcelExportPlugin extends AbstractExportPlugin
   public static final String BASE_RESOURCE_CLASS =
       XLSExportResources.class.getName();
 
-  /** The progress dialog that is used to monitor the export progress. */
-  private final ReportProgressDialog progressDialog;
-
   /**
    * DefaultConstructor.
    */
   public ExcelExportPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
-    progressDialog = new ReportProgressDialog();
+  }
+
+  protected ReportProgressDialog createProgressDialog()
+  {
+    ReportProgressDialog progressDialog = new ReportProgressDialog();
     progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
     progressDialog.setTitle(resources.getString("excel-export.progressdialog.title"));
     progressDialog.setMessage(resources.getString("excel-export.progressdialog.message"));
     progressDialog.pack();
     RefineryUtilities.positionFrameRandomly(progressDialog);
+    return progressDialog;
   }
 
   /**
@@ -125,16 +161,11 @@ public class ExcelExportPlugin extends AbstractExportPlugin
       return handleExportResult(true);
     }
 
-    final ExcelExportTask task = 
+    final ReportProgressDialog progressDialog = createProgressDialog();
+    final ExcelExportTask task =
       new ExcelExportTask(exportDialog.getFilename(), progressDialog, report);
+    task.addExportTaskListener(new ExcelExportTaskListener (progressDialog));
     delegateTask(task);
-    synchronized (task)
-    {
-      if (task.isTaskDone() == false)
-      {
-        progressDialog.setVisible(true);
-      }
-    }
     return handleExportResult(task);
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.6 2003/09/06 18:09:17 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.7 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -146,7 +146,7 @@ public class PlainTextExportTask extends ExportTask
   /**
    * Exports the report into a plain text file.
    */
-  public void run()
+  protected void performExport()
   {
     OutputStream out = null;
     File file = new File (fileName);
@@ -161,6 +161,8 @@ public class PlainTextExportTask extends ExportTask
 
       final PageableReportProcessor proc = new PageableReportProcessor(report);
       proc.setHandleInterruptedState(false);
+      progressDialog.setModal(false);
+      progressDialog.setVisible(true);
       proc.addRepaginationListener(progressDialog);
       proc.setOutputTarget(target);
 
@@ -168,11 +170,11 @@ public class PlainTextExportTask extends ExportTask
       proc.processReport();
       target.close();
       proc.removeRepaginationListener(progressDialog);
-      setReturnValue(RETURN_SUCCESS);
+      setTaskDone();
     }
     catch (ReportInterruptedException re)
     {
-      setReturnValue(RETURN_ABORT);
+      setTaskAborted();
       try
       {
         out.close();
@@ -193,9 +195,8 @@ public class PlainTextExportTask extends ExportTask
     }
     catch (Exception re)
     {
-      setReturnValue(RETURN_FAILED);
-      setException(re);
       Log.error ("PlainText export failed", re);
+      setTaskFailed(re);
     }
     finally
     {
@@ -208,17 +209,21 @@ public class PlainTextExportTask extends ExportTask
       }
       catch (Exception e)
       {
-        setReturnValue(RETURN_FAILED);
         Log.error ("Unable to close the output stream.", e);
+        setTaskFailed(e);
         // if there is already another error, this exception is
         // just a minor obstactle. Something big crashed before ...
-        if (getException() == null)
-        {
-          setException(e);
-        }
       }
     }
-    setTaskDone(true);
     progressDialog.setVisible(false);
+  }
+
+  /**
+   * Remove all listeners and prepare the finalization.
+   */
+  protected void dispose()
+  {
+    super.dispose();
+    progressDialog.dispose();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlZipExportTask.java,v 1.4 2003/09/06 18:09:17 taqua Exp $
+ * $Id: HtmlZipExportTask.java,v 1.5 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -105,7 +105,7 @@ public class HtmlZipExportTask extends ExportTask
   /**
    * Exports the report into a Html Directory Structure.
    */
-  public void run()
+  protected void performExport()
   {
     OutputStream out = null;
     File file = new File(fileName);
@@ -113,16 +113,19 @@ public class HtmlZipExportTask extends ExportTask
     {
       out = new BufferedOutputStream(new FileOutputStream(file));
       final HtmlProcessor target = new HtmlProcessor(report);
+      progressDialog.setModal(false);
+      progressDialog.setVisible(true);
       target.addRepaginationListener(progressDialog);
       target.setFilesystem(new ZIPHtmlFilesystem(out, dataDirectory));
       target.processReport();
       out.close();
+      out = null;
       target.removeRepaginationListener(progressDialog);
-      setReturnValue(RETURN_SUCCESS);
+      setTaskDone();
     }
     catch (ReportInterruptedException re)
     {
-      setReturnValue(RETURN_ABORT);
+      setTaskAborted();
       try
       {
         out.close();
@@ -143,9 +146,8 @@ public class HtmlZipExportTask extends ExportTask
     }
     catch (Exception re)
     {
-      setReturnValue(RETURN_FAILED);
-      setException(re);
       Log.error ("Exporting failed .", re);
+      setTaskFailed(re);
     }
     finally
     {
@@ -158,11 +160,19 @@ public class HtmlZipExportTask extends ExportTask
       }
       catch (Exception e)
       {
-        setReturnValue(RETURN_FAILED);
         Log.error ("Unable to close the output stream.", e);
+        setTaskFailed(e);
       }
     }
-    setTaskDone(true);
     progressDialog.setVisible(false);
+  }
+
+  /**
+   * Remove all listeners and prepare the finalization.
+   */
+  protected void dispose()
+  {
+    super.dispose();
+    progressDialog.dispose();
   }
 }

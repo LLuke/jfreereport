@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintExportTask.java,v 1.5 2003/09/09 21:31:48 taqua Exp $
+ * $Id: PrintExportTask.java,v 1.6 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -82,14 +82,13 @@ public class PrintExportTask extends ExportTask
     this.progressDialog = progressDialog;
     this.pageable = pageable;
     this.jobname = jobname;
-    setTaskDone(false);
   }
 
   /**
    * Displays the print dialog and executes the printing in a spearate thread. 
    * This is a workaround for an java bug.
    */
-  public void run()
+  protected void performExport()
   {
     final PrinterJob pj = PrinterJob.getPrinterJob();
     if (jobname != null)
@@ -100,24 +99,36 @@ public class PrintExportTask extends ExportTask
 
     if (pj.printDialog())
     {
+      // progress dialog must not be modal, or everything here will be blocked!
+      progressDialog.setModal(false);
+      progressDialog.setVisible(true);
       try
       {
         pj.print();
-        setReturnValue(RETURN_SUCCESS);
+        setTaskDone();
       }
       catch (Exception e)
       {
-        setReturnValue(RETURN_FAILED);
-        setException(e);
         Log.error ("Printing export failed", e);
+        setTaskFailed(e);
       }
     }
     else
     {
-      setReturnValue(RETURN_ABORT);
+      setTaskAborted();
     }
-    setTaskDone(true);
     progressDialog.setVisible(false);
   }
+
+
+  /**
+   * Remove all listeners and prepare the finalization.
+   */
+  protected void dispose()
+  {
+    super.dispose();
+    progressDialog.dispose();
+  }
+  
 }
 

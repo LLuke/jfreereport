@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportPlugin.java,v 1.5 2003/09/08 18:11:49 taqua Exp $
+ * $Id: PlainTextExportPlugin.java,v 1.6 2003/09/09 21:31:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,6 +48,8 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
+import org.jfree.report.modules.gui.base.ExportTaskListener;
+import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.plaintext.resources.PlainTextExportResources;
 import org.jfree.ui.RefineryUtilities;
 
@@ -58,6 +60,38 @@ import org.jfree.ui.RefineryUtilities;
  */
 public class PlainTextExportPlugin extends AbstractExportPlugin
 {
+  private class PlainTextExportTaskListener implements ExportTaskListener
+  {
+    private ReportProgressDialog progressDialog;
+
+    public PlainTextExportTaskListener (ReportProgressDialog progressDialog)
+    {
+      this.progressDialog = progressDialog;
+    }
+
+    public void taskAborted(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskDone(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskFailed(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskWaiting(ExportTask task)
+    {
+    }
+  }
+
   /** The plain text export dialog. */
   private PlainTextExportDialog exportDialog;
 
@@ -67,8 +101,6 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
       PlainTextExportResources.class.getName();
-  /** The progress dialog that is used to monitor the export progress. */
-  private final ReportProgressDialog progressDialog;
 
   /**
    * DefaultConstructor.
@@ -76,12 +108,18 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
   public PlainTextExportPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
-    progressDialog = new ReportProgressDialog();
+  }
+
+  /** The progress dialog that is used to monitor the export progress. */
+  protected ReportProgressDialog createProgressDialog()
+  {
+    ReportProgressDialog progressDialog = new ReportProgressDialog();
     progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
     progressDialog.setTitle(resources.getString("plaintext-export.progressdialog.title"));
     progressDialog.setMessage(resources.getString("plaintext-export.progressdialog.message"));
     progressDialog.pack();
     RefineryUtilities.positionFrameRandomly(progressDialog);
+    return progressDialog;
   }
 
   /**
@@ -124,17 +162,12 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
       return handleExportResult(true);
     }
 
+    final ReportProgressDialog progressDialog = createProgressDialog();
     final PlainTextExportTask task = new PlainTextExportTask
         (exportDialog.getFilename(), progressDialog,
             exportDialog.getSelectedPrinter(), report);
+    task.addExportTaskListener(new PlainTextExportTaskListener (progressDialog));
     delegateTask(task);
-    synchronized (task)
-    {
-      if (task.isTaskDone() == false)
-      {
-        progressDialog.setVisible(true);
-      }
-    }
     return handleExportResult(task);
   }
 

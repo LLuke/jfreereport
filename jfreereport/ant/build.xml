@@ -39,15 +39,6 @@ module-file=$${module-${module}-file}</echo>
     <ant antfile="${antfile.dir}/${buildfile}" target="compile-module-${module}"/>
   </target>
 
-  <!-- Usage :
-  <target name="check-build">
-    <antcall target="rebuild-module-file" inheritAll="false">
-      <property name="buildfile" value="build-parser.xml"/>
-      <property name="module" value="parser-base"/>
-    </antcall>
-  </target>
-  -->
-
   <!-- Generate the JFreeReport JavaDoc HTML pages -->
   <target name="javadoc" depends="init">
     <delete dir="javadoc"/>

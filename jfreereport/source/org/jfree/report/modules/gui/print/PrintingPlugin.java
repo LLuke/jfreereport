@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.4 2003/09/06 18:09:17 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.5 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,6 +45,8 @@ import javax.swing.KeyStroke;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
+import org.jfree.report.modules.gui.base.ExportTaskListener;
+import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.print.resources.PrintExportResources;
 import org.jfree.ui.RefineryUtilities;
 
@@ -55,14 +57,43 @@ import org.jfree.ui.RefineryUtilities;
  */
 public class PrintingPlugin extends AbstractExportPlugin
 {
+  protected class PrintTaskListener implements ExportTaskListener
+  {
+    ReportProgressDialog progressDialog;
+
+    public PrintTaskListener(ReportProgressDialog progressDialog)
+    {
+      this.progressDialog = progressDialog;
+    }
+
+    public void taskAborted(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskDone(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskFailed(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskWaiting(ExportTask task)
+    {
+    }
+  }
   /** Localised resources. */
   private final ResourceBundle resources;
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
       PrintExportResources.class.getName();
-  /** The progress dialog that is used to monitor the printing progress. */
-  private final ReportProgressDialog progressDialog;
 
   /**
    * DefaultConstructor.
@@ -70,12 +101,22 @@ public class PrintingPlugin extends AbstractExportPlugin
   public PrintingPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
-    progressDialog = new ReportProgressDialog();
+  }
+
+  protected ResourceBundle getResources ()
+  {
+    return resources;
+  }
+  
+  protected ReportProgressDialog createProgressDialog ()
+  {
+    ReportProgressDialog progressDialog = new ReportProgressDialog();
     progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
     progressDialog.setTitle(resources.getString("printing-export.progressdialog.title"));
     progressDialog.setMessage(resources.getString("printing-export.progressdialog.message"));
     progressDialog.pack();
     RefineryUtilities.positionFrameRandomly(progressDialog);
+    return progressDialog;
   }
 
   /**
@@ -88,20 +129,14 @@ public class PrintingPlugin extends AbstractExportPlugin
   public boolean performExport(final JFreeReport report)
   {
     // need to connect to the report pane to receive state updates ...
+    ReportProgressDialog progressDialog = createProgressDialog();
     getBase().addRepaginationListener(progressDialog);
     PrintExportTask task = new PrintExportTask
         (getBase().getPageable(), progressDialog, 
          report.getReportConfiguration().getConfigProperty
             ("org.jfree.report.modules.gui.print.JobName"));
+    task.addExportTaskListener(new PrintTaskListener(progressDialog));
     delegateTask(task);
-    synchronized (task)
-    {
-      if (task.isTaskDone() == false)
-      {
-        progressDialog.setVisible(true);
-      }
-    }
-    getBase().removeRepaginationListener(progressDialog);
     return handleExportResult(task);
   }
 

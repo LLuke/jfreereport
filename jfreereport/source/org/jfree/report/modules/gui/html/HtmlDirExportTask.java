@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlDirExportTask.java,v 1.4 2003/09/06 18:09:17 taqua Exp $
+ * $Id: HtmlDirExportTask.java,v 1.5 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -102,7 +102,7 @@ public class HtmlDirExportTask extends ExportTask
   /**
    * Exports the report into a Html Directory Structure.
    */
-  public void run()
+  protected void performExport()
   {
     try
     {
@@ -121,25 +121,34 @@ public class HtmlDirExportTask extends ExportTask
       }
       final DirectoryHtmlFilesystem fs = new DirectoryHtmlFilesystem(targetFile, targetDataFile);
       final HtmlProcessor target = new HtmlProcessor(report);
+      progressDialog.setModal(false);
+      progressDialog.setVisible(true);
       target.addRepaginationListener(progressDialog);
       target.setFilesystem(fs);
       target.processReport();
       target.removeRepaginationListener(progressDialog);
-      setReturnValue(RETURN_SUCCESS);
+      setTaskDone();
     }
     catch (ReportInterruptedException re)
     {
-      setReturnValue(RETURN_ABORT);
+      setTaskAborted();
       Log.warn(new Log.SimpleMessage
           ("Unable to delete incomplete export: File ", fileName, " DataDir: ", dataDirectory));
     }
     catch (Exception re)
     {
-      setReturnValue(RETURN_FAILED);
-      setException(re);
       Log.error ("Exporting failed .", re);
+      setTaskFailed(re);
     }
-    setTaskDone(true);
     progressDialog.setVisible(false);
+  }
+
+  /**
+   * Remove all listeners and prepare the finalization.
+   */
+  protected void dispose()
+  {
+    super.dispose();
+    progressDialog.dispose();
   }
 }

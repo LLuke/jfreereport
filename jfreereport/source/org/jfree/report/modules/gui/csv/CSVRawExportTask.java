@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVRawExportTask.java,v 1.5 2003/09/08 18:39:33 taqua Exp $
+ * $Id: CSVRawExportTask.java,v 1.6 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,16 +41,15 @@ package org.jfree.report.modules.gui.csv;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.io.IOException;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportInterruptedException;
-import org.jfree.report.util.Log;
 import org.jfree.report.modules.gui.base.ExportTask;
-import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.csv.CSVProcessor;
+import org.jfree.report.util.Log;
 
 /**
  * An export task implementation that writes an report into a CSV file,
@@ -60,8 +59,6 @@ import org.jfree.report.modules.output.csv.CSVProcessor;
  */
 public class CSVRawExportTask extends ExportTask
 {
-  /** The progress dialog that monitors the export process. */
-  private final ReportProgressDialog progressDialog;
   /** The name of the output file. */
   private final String fileName;
   /** The encoding to be used for the file. */
@@ -74,21 +71,15 @@ public class CSVRawExportTask extends ExportTask
    * 
    * @param fileName the filename of the target file
    * @param encoding the encoding for the generated output 
-   * @param dialog the progress monitor
    * @param report the report that should be exported.
    */
   public CSVRawExportTask
       (final String fileName, final String encoding,
-       final ReportProgressDialog dialog,
        final JFreeReport report)
   {
     if (fileName == null)
     {
       throw new NullPointerException("File name is null.");
-    }
-    if (dialog == null)
-    {
-      throw new NullPointerException("Progress dialog is null.");
     }
     if (report == null)
     {
@@ -99,7 +90,6 @@ public class CSVRawExportTask extends ExportTask
       throw new NullPointerException("Encoding is null.");
     }
     this.fileName = fileName;
-    this.progressDialog = dialog;
     this.report = report;
     this.encoding = encoding;
   }
@@ -107,7 +97,7 @@ public class CSVRawExportTask extends ExportTask
   /**
    * Exports the report into a CSV file.
    */
-  public void run()
+  protected void performExport()
   {
     Writer out = null;
     File file = new File (fileName);
@@ -122,11 +112,12 @@ public class CSVRawExportTask extends ExportTask
       target.setWriter(out);
       target.processReport();
       out.close();
-      setReturnValue(RETURN_SUCCESS);
+      out = null;
+      setTaskDone();
     }
     catch (ReportInterruptedException re)
     {
-      setReturnValue(RETURN_ABORT);
+      setTaskAborted();
       try
       {
         out.close();
@@ -147,9 +138,8 @@ public class CSVRawExportTask extends ExportTask
     }
     catch (Exception re)
     {
-      setException(re);
-      setReturnValue(RETURN_FAILED);
       Log.error ("Exporting failed .", re);
+      setTaskFailed(re);
     }
     finally
     {
@@ -162,11 +152,9 @@ public class CSVRawExportTask extends ExportTask
       }
       catch (Exception e)
       {
-        setReturnValue(RETURN_FAILED);
+        setTaskFailed(e);
         Log.error ("Unable to close the output stream.", e);
       }
     }
-    setTaskDone(true);
-    progressDialog.setVisible(false);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableExportTask.java,v 1.5 2003/09/08 18:39:33 taqua Exp $
+ * $Id: CSVTableExportTask.java,v 1.6 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -107,7 +107,7 @@ public class CSVTableExportTask extends ExportTask
   /**
    * Exports the report into a CSV file.
    */
-  public void run()
+  protected void performExport()
   {
     Writer out = null;
     File file = new File (fileName);
@@ -116,16 +116,19 @@ public class CSVTableExportTask extends ExportTask
       out = new BufferedWriter
           (new OutputStreamWriter(new FileOutputStream(file), encoding));
       final CSVTableProcessor target = new CSVTableProcessor(report);
+      progressDialog.setModal(false);
+      progressDialog.setVisible(true);
       target.addRepaginationListener(progressDialog);
       target.setWriter(out);
       target.processReport();
       out.close();
+      out = null;
       target.removeRepaginationListener(progressDialog);
-      setReturnValue(RETURN_SUCCESS);
+      setTaskDone();
     }
     catch (ReportInterruptedException re)
     {
-      setReturnValue(RETURN_ABORT);
+      setTaskAborted();
       try
       {
         out.close();
@@ -146,9 +149,8 @@ public class CSVTableExportTask extends ExportTask
     }
     catch (Exception re)
     {
-      setReturnValue(RETURN_FAILED);
-      setException(re);
       Log.error ("Exporting failed .", re);
+      setTaskFailed(re);
     }
     finally
     {
@@ -161,17 +163,20 @@ public class CSVTableExportTask extends ExportTask
       }
       catch (Exception e)
       {
-        setReturnValue(RETURN_FAILED);
         Log.error ("Unable to close the output stream.", e);
         // if there is already another error, this exception is
         // just a minor obstactle. Something big crashed before ...
-        if (getException() == null)
-        {
-          setException(e);
-        }
       }
     }
-    setTaskDone(true);
     progressDialog.setVisible(false);
+  }
+
+  /**
+   * Remove all listeners and prepare the finalization.
+   */
+  protected void dispose()
+  {
+    super.dispose();
+    progressDialog.dispose();
   }
 }

@@ -201,7 +201,7 @@
   <!--  Depends on: Core task                                         -->
   <!-- ************************************************************** -->
 
-  <target name="compile-module-output-support-itext"
+  <target name="compile-module-output-support-pagelayout"
     depends="init">
     <description>
       Compiles the iText base font support.

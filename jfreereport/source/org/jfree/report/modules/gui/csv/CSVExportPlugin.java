@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportPlugin.java,v 1.5 2003/09/06 18:09:16 taqua Exp $
+ * $Id: CSVExportPlugin.java,v 1.6 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,6 +49,7 @@ import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
+import org.jfree.report.modules.gui.base.ExportTaskListener;
 import org.jfree.report.modules.gui.csv.resources.CSVExportResources;
 import org.jfree.ui.RefineryUtilities;
 
@@ -59,6 +60,37 @@ import org.jfree.ui.RefineryUtilities;
  */
 public class CSVExportPlugin extends AbstractExportPlugin
 {
+  private class CSVExportTaskListener implements ExportTaskListener
+  {
+    private ReportProgressDialog progressDialog;
+    public CSVExportTaskListener(ReportProgressDialog progressDialog)
+    {
+      this.progressDialog = progressDialog;
+    }
+
+    public void taskAborted(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskDone(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskFailed(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskWaiting(ExportTask task)
+    {
+    }
+  }
+
   /** The CSV export dialog. */
   private CSVExportDialog exportDialog;
 
@@ -70,7 +102,6 @@ public class CSVExportPlugin extends AbstractExportPlugin
       CSVExportResources.class.getName();
 
   /** The progress dialog that will monitor the export process. */ 
-  private final ReportProgressDialog progressDialog;
 
   /**
    * DefaultConstructor.
@@ -78,14 +109,18 @@ public class CSVExportPlugin extends AbstractExportPlugin
   public CSVExportPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
-    progressDialog = new ReportProgressDialog();
+  }
+
+  protected ReportProgressDialog createProgressDialog ()
+  {
+    final ReportProgressDialog progressDialog = new ReportProgressDialog();
     progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
     progressDialog.setTitle(resources.getString("cvs-export.progressdialog.title"));
     progressDialog.setMessage(resources.getString("cvs-export.progressdialog.message"));
     progressDialog.pack();
     RefineryUtilities.positionFrameRandomly(progressDialog);
+    return progressDialog;
   }
-
   /**
    * Shows this dialog and (if the dialog is confirmed) saves the complete report into an
    * comma separated values file.
@@ -103,25 +138,20 @@ public class CSVExportPlugin extends AbstractExportPlugin
       return handleExportResult(true);
     }
 
+    ReportProgressDialog progressDialog = createProgressDialog();
     ExportTask task;
     if (exportDialog.isExportRawData())
     {
       task = new CSVRawExportTask
-          (exportDialog.getFilename(), exportDialog.getEncoding(), progressDialog, report);
+          (exportDialog.getFilename(), exportDialog.getEncoding(), report);
     }
     else
     {
       task = new CSVTableExportTask
-          (exportDialog.getFilename(), exportDialog.getEncoding(), progressDialog, report);
+          (exportDialog.getFilename(), exportDialog.getEncoding(), createProgressDialog(), report);
     }
+    task.addExportTaskListener(new CSVExportTaskListener(progressDialog));
     delegateTask(task);
-    synchronized (task)
-    {
-      if (task.isTaskDone() == false)
-      {
-        progressDialog.setVisible(true);
-      }
-    }
     return handleExportResult(task);
   }
 

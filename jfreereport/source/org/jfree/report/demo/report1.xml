@@ -10,7 +10,7 @@
     processing.
     -->
   <configuration>
-    <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">iso-8859-15</property>
+    <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">Identity-H</property>
     <property name="org.jfree.report.modules.output.pageable.pdf.Author">Darkwing Duck</property>
     <!--
       Enabling the following lines would limit the size of the PreviewDialog.

@@ -17,7 +17,10 @@ A list of changes in recent versions:
           and all direct and indirect causes (aka bad code) was fixed.
 
         * BugFix: SimpleParser's subbands did not work as expected.
-        
+
+        * BugFix: The export did not show the correct result in the dialogs status
+          bar. The synchronisation/locking schema was invalid for all exports. 
+
         * The element color function does now work with all bands of an report.
         
         * The TotalItemSumFunction can be used to precompute group results.

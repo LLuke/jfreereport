@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportPlugin.java,v 1.5 2003/09/06 18:09:17 taqua Exp $
+ * $Id: HtmlExportPlugin.java,v 1.6 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,6 +49,7 @@ import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
+import org.jfree.report.modules.gui.base.ExportTaskListener;
 import org.jfree.report.modules.gui.html.resources.HtmlExportResources;
 import org.jfree.ui.RefineryUtilities;
 
@@ -59,6 +60,38 @@ import org.jfree.ui.RefineryUtilities;
  */
 public class HtmlExportPlugin extends AbstractExportPlugin
 {
+  private class HtmlExportTaskListener implements ExportTaskListener
+  {
+    private ReportProgressDialog progressDialog;
+
+    public HtmlExportTaskListener(ReportProgressDialog progressDialog)
+    {
+      this.progressDialog = progressDialog;
+    }
+
+    public void taskAborted(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskDone(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskFailed(ExportTask task)
+    {
+      getBase().removeRepaginationListener(progressDialog);
+      handleExportResult(task);
+    }
+
+    public void taskWaiting(ExportTask task)
+    {
+    }
+  }
+
   /** The html export dialog which handles the export. */
   private HtmlExportDialog exportDialog;
 
@@ -68,8 +101,6 @@ public class HtmlExportPlugin extends AbstractExportPlugin
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
       HtmlExportResources.class.getName();
-  /** The progress dialog that monitors the export process. */
-  private final ReportProgressDialog progressDialog;
 
   /**
    * DefaultConstructor.
@@ -77,12 +108,18 @@ public class HtmlExportPlugin extends AbstractExportPlugin
   public HtmlExportPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
-    progressDialog = new ReportProgressDialog();
+  }
+
+  /** The progress dialog that monitors the export process. */
+  protected ReportProgressDialog createProgressDialog ()
+  {
+    ReportProgressDialog progressDialog = new ReportProgressDialog();
     progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
     progressDialog.setTitle(resources.getString("html-export.progressdialog.title"));
     progressDialog.setMessage(resources.getString("html-export.progressdialog.message"));
     progressDialog.pack();
     RefineryUtilities.positionFrameRandomly(progressDialog);
+    return progressDialog;
   }
 
   /**
@@ -125,6 +162,7 @@ public class HtmlExportPlugin extends AbstractExportPlugin
       return handleExportResult(true);
     }
 
+    ReportProgressDialog progressDialog = createProgressDialog();
     ExportTask task;
     switch (exportDialog.getSelectedExportMethod())
     {
@@ -151,14 +189,8 @@ public class HtmlExportPlugin extends AbstractExportPlugin
       default:
         throw new IllegalArgumentException("Unexpected export method found.");
     }
+    task.addExportTaskListener(new HtmlExportTaskListener(progressDialog));
     delegateTask(task);
-    synchronized (task)
-    {
-      if (task.isTaskDone() == false)
-      {
-        progressDialog.setVisible(true);
-      }
-    }
     return handleExportResult(task);
   }
 

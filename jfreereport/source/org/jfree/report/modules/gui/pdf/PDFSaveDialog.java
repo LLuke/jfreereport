@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.10 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.11 2003/09/09 21:31:48 taqua Exp $
  *
  * Changes
  * --------
@@ -1164,7 +1164,7 @@ public class PDFSaveDialog extends JDialog
         updateSecurityPanelEnabled();
         return;
       }
-      else
+      else if (b.equals(PDFOutputTarget.SECURITY_ENCRYPTION_NONE) == false)
       {
         Log.warn("Invalid encryption value entered. " + b);
       }

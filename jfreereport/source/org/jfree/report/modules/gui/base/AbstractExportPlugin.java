@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.5 2003/09/06 18:09:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -187,7 +187,12 @@ public abstract class AbstractExportPlugin implements ExportPlugin
    */
   protected boolean handleExportResult(final ExportTask task)
   {
-    if (task.getReturnValue() == ExportTask.RETURN_SUCCESS)
+    if (task.isTaskDone() == false)
+    {
+      updateStatusText("Exporting ...");
+      return true;
+    }
+    else if (task.getReturnValue() == ExportTask.RETURN_SUCCESS)
     {
       updateStatusText("Export was successfull.");
       return true;
@@ -236,6 +241,8 @@ public abstract class AbstractExportPlugin implements ExportPlugin
     {
       synchronized (worker)
       {
+        // more than one request should be already made impossible by the
+        // application, but we want to be sure ...
         while (worker.isAvailable() == false)
         {
           try

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportTask.java,v 1.3 2003/08/31 21:05:54 taqua Exp $
+ * $Id: ExportTask.java,v 1.4 2003/09/09 21:31:36 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,15 +38,24 @@
 
 package org.jfree.report.modules.gui.base;
 
+import java.util.ArrayList;
+
+import org.jfree.report.util.Log;
+
 /**
  * The export task provides a basic facility to execute an export task
  * in an asynchronous worker thread.
+ * <p>
+ * These task objects are one-time objects and should (and hopefully cannot)
+ * not be reused.
  *  
  * @author Thomas Morgner
  */
 public abstract class ExportTask implements Runnable
 {
-  /** A public constant that indicates a successfull export. */ 
+  /** A public constant that indicates that the export is not yet complete. */
+  public static final int RETURN_PENDING = -1;
+  /** A public constant that indicates a successfull export. */
   public static final int RETURN_SUCCESS = 0;
   /** A public constant that indicates a failed export. */ 
   public static final int RETURN_FAILED = 1;
@@ -60,11 +69,15 @@ public abstract class ExportTask implements Runnable
   /** stores a possible exception that caused the task to fail. */
   private Exception exception;
 
+  private ArrayList listeners;
+
   /**
    * DefaultConstructor.
    */
   public ExportTask()
   {
+    returnValue = RETURN_PENDING;
+    listeners = new ArrayList();
   }
 
   /**
@@ -79,17 +92,6 @@ public abstract class ExportTask implements Runnable
   }
 
   /**
-   * Defines the return value for this task. This should only be called
-   * from ExportTask instances.
-   *  
-   * @param returnValue the new return value.
-   */
-  protected void setReturnValue(final int returnValue)
-  {
-    this.returnValue = returnValue;
-  }
-
-  /**
    * Returns the exception that caused the task to fail, or null
    * if not set or known.
    * 
@@ -98,17 +100,6 @@ public abstract class ExportTask implements Runnable
   public Exception getException()
   {
     return exception;
-  }
-
-  /**
-   * Defines the exception that caused the task to fail, or set to null
-   * if not applicable or known.
-   * 
-   * @param exception the exception or null, if there is no exception.
-   */
-  protected void setException(final Exception exception)
-  {
-    this.exception = exception;
   }
 
   /**
@@ -122,12 +113,114 @@ public abstract class ExportTask implements Runnable
   }
 
   /**
-   * Defines, whether the task is completed.
-   * 
-   * @param taskDone true, if the task is done, false otherwise.
+   * Call this method to signal, that the task is completed and the
+   * result is computed and all state information is stored.
+   * <p>
+   * This will set the return value to Sucess and fires the taskDoneEvent.
    */
-  protected synchronized void setTaskDone(final boolean taskDone)
+  protected synchronized void setTaskDone()
   {
-    this.taskDone = taskDone;
+    this.taskDone = true;
+    this.returnValue = RETURN_SUCCESS;
+    fireExportDone();
   }
+
+  /**
+   * Call this method to signal, that the task was aborted by the user or
+   * the system.
+   * <p>
+   * This will set the return value to Abort and fires the taskAborted Event.
+   */
+  protected synchronized void setTaskAborted()
+  {
+    this.taskDone = true;
+    this.returnValue = RETURN_ABORT;
+    fireExportAborted();
+  }
+
+  /**
+   * Call this method to signal, that an error occured while trying to complete
+   * the task.
+   * <p>
+   * This will set the return value to Sucess and fires the taskFailed Event.
+   *
+   * @param ex the optional exception that caused the trouble.
+   */
+  protected synchronized void setTaskFailed(Exception ex)
+  {
+    this.taskDone = true;
+    this.returnValue = RETURN_FAILED;
+    this.exception = ex;
+    fireExportFailed();
+  }
+
+  public void addExportTaskListener (ExportTaskListener listener)
+  {
+    if (listener == null)
+    {
+      throw new NullPointerException();
+    }
+    listeners.add (listener);
+  }
+
+  public void removeExportTaskListener (ExportTaskListener listener)
+  {
+    if (listener == null)
+    {
+      throw new NullPointerException();
+    }
+    listeners.remove (listener);
+  }
+
+  protected void fireExportDone ()
+  {
+    for (int i = 0; i < listeners.size(); i++)
+    {
+      ExportTaskListener tl = (ExportTaskListener) listeners.get(i);
+      tl.taskDone(this);
+    }
+  }
+
+  protected void fireExportFailed ()
+  {
+    for (int i = 0; i < listeners.size(); i++)
+    {
+      ExportTaskListener tl = (ExportTaskListener) listeners.get(i);
+      tl.taskFailed(this);
+    }
+  }
+
+  protected void fireExportAborted ()
+  {
+    for (int i = 0; i < listeners.size(); i++)
+    {
+      ExportTaskListener tl = (ExportTaskListener) listeners.get(i);
+      tl.taskAborted(this);
+    }
+  }
+
+  /**
+   * Remove all listeners and prepare the finalization.
+   */
+  protected void dispose ()
+  {
+    listeners.clear();
+    exception = null;
+  }
+
+  public final void run ()
+  {
+    try
+    {
+      performExport();
+    }
+    catch (Exception e)
+    {
+      Log.debug ("ExportTask.run(): Caught exception while exporting...", e);
+      setTaskFailed(e);
+    }
+    dispose();
+  }
+
+  protected abstract void performExport ();
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportTask.java,v 1.4 2003/09/06 18:09:17 taqua Exp $
+ * $Id: ExcelExportTask.java,v 1.5 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -97,7 +97,7 @@ public class ExcelExportTask extends ExportTask
   /**
    * Exports the report into an Excel file.
    */
-  public void run()
+  protected void performExport()
   {
     OutputStream out = null;
     File file = new File(fileName);
@@ -105,16 +105,18 @@ public class ExcelExportTask extends ExportTask
     {
       out = new BufferedOutputStream(new FileOutputStream(file));
       final ExcelProcessor target = new ExcelProcessor(report);
+      progressDialog.setModal(false);
+      progressDialog.setVisible(true);
       target.addRepaginationListener(progressDialog);
       target.setOutputStream(out);
       target.processReport();
       out.close();
       target.removeRepaginationListener(progressDialog);
-      setReturnValue(RETURN_SUCCESS);
+      setTaskDone();
     }
     catch (ReportInterruptedException re)
     {
-      setReturnValue(RETURN_ABORT);
+      setTaskAborted();
       try
       {
         out.close();
@@ -135,9 +137,8 @@ public class ExcelExportTask extends ExportTask
     }
     catch (Exception re)
     {
-      setReturnValue(RETURN_FAILED);
-      setException(re);
       Log.error ("Excel export failed", re);
+      setTaskFailed(re);
     }
     finally
     {
@@ -150,17 +151,21 @@ public class ExcelExportTask extends ExportTask
       }
       catch (Exception e)
       {
-        setReturnValue(RETURN_FAILED);
         Log.error ("Unable to close the output stream.", e);
+        setTaskFailed(e);
         // if there is already another error, this exception is
         // just a minor obstactle. Something big crashed before ...
-        if (getException() == null)
-        {
-          setException(e);
-        }
       }
     }
-    setTaskDone(true);
     progressDialog.setVisible(false);
+  }
+
+  /**
+   * Remove all listeners and prepare the finalization.
+   */
+  protected void dispose()
+  {
+    super.dispose();
+    progressDialog.dispose();
   }
 }
