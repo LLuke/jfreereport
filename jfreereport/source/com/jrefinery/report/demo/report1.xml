@@ -18,7 +18,7 @@
       <property name="com.jrefinery.report.preview.MaximumHeight">600</property>
 -->      
     </configuration>
-    <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="18">
+    <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="18" fsunderline="true">
         <label x="0" y="0" width="100%" height="48" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
         <label x="0" y="0" width="100%" height="48" vertical-alignment="bottom" alignment="center">This text is valign="bottom"</label>
     </reportheader>

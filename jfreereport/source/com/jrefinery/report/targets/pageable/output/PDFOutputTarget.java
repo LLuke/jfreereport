@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.10 2002/12/13 18:39:05 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.11 2003/01/14 23:48:12 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,7 @@ import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.SizeCalculator;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
+import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.NullOutputStream;
 import com.jrefinery.report.util.ReportConfiguration;
@@ -178,10 +179,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   private BaseFont baseFont;
 
   /** The AWT font. */
-  private Font awtFont;
-
-  /** The current font size. */
-  private int fontSize;
+  private FontDefinition fontDefinition;
 
   /** The stroke used for shapes */
   private Stroke awtStroke;
@@ -211,7 +209,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   private static class PDFState
   {
     /** The font. */
-    private Font myfont;
+    private FontDefinition myfont;
 
     /** The stroke. */
     private Stroke mystroke;
@@ -532,9 +530,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the current font.
    */
-  public Font getFont()
+  public FontDefinition getFont()
   {
-    return awtFont;
+    return fontDefinition;
   }
 
   /**
@@ -548,16 +546,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Returns the current font size.
-   *
-   * @return the current font size.
-   */
-  public int getFontSize()
-  {
-    return fontSize;
-  }
-
-  /**
    * Sets the current font. The font is mapped to pdf specific fonts if possible.
    * If no basefont could be created, an OutputTargetException is thrown.
    *
@@ -565,7 +553,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there was a problem setting the font for the target.
    */
-  public void setFont(Font font) throws OutputTargetException
+  public void setFont(FontDefinition font) throws OutputTargetException
   {
     if (font == null)
     {
@@ -573,21 +561,18 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
 
     // do nothing if this font is already set
-    if (baseFont != null && awtFont != null && awtFont.equals(font))
+    if (baseFont != null && fontDefinition != null && fontDefinition.equals(font))
     {
       Log.debug ("The Fonts are equal, request ignored.");
       return; // no need to do anything ...
     }
-    this.awtFont = font;
-    this.fontSize = font.getSize();
-
-    // override with current settings ... todo define on a per font base
-    fontSupport.setEmbedFonts(isEmbedFonts());
-
-    this.baseFont = fontSupport.createBaseFont(font, getFontEncoding()).getBaseFont();
+    this.fontDefinition = font;
+    this.baseFont = fontSupport.createBaseFont(font,
+                                               font.getFontEncoding(getFontEncoding()),
+                                               (isEmbedFonts() || font.isEmbeddedFont())).getBaseFont();
     if (baseFont == null)
     {
-      throw new NullPointerException();
+      throw new OutputTargetException("The font definition was not successfull.");
     }
   }
 
@@ -945,7 +930,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       {
         setPaint(ElementDefaultStyleSheet.DEFAULT_PAINT);
         setStroke(ShapeElement.DEFAULT_STROKE);
-        setFont(ElementDefaultStyleSheet.DEFAULT_FONT);
+        setFont(ElementDefaultStyleSheet.DEFAULT_FONT_DEFINITION);
       }
       catch (OutputTargetException oe)
       {
@@ -1056,13 +1041,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
   public void drawString(String text)
   {
     Rectangle2D bounds = getInternalOperationBounds();
+    int fontSize = getFont().getFontSize();
 
     PdfContentByte cb = this.writer.getDirectContent();
     cb.beginText();
-    cb.setFontAndSize(this.baseFont, getFontSize());
+    cb.setFontAndSize(this.baseFont, fontSize);
 
-
-    float y2 = (float) (bounds.getY() + baseFont.getFontDescriptor(BaseFont.ASCENT, getFontSize()));
+    float y2 = (float) (bounds.getY() + baseFont.getFontDescriptor(BaseFont.ASCENT, fontSize));
       cb.showTextAligned(
           PdfContentByte.ALIGN_LEFT,
           text,
@@ -1413,10 +1398,12 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(Font font) throws OutputTargetException
+  public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException
   {
-    PDFFontRecord record = fontSupport.createBaseFont(font, getFontEncoding());
-    return new PDFSizeCalculator(record.getBaseFont(), font.getSize2D());
+    PDFFontRecord record = fontSupport.createBaseFont(font,
+                                                      font.getFontEncoding(getFontEncoding()),
+                                                      false);
+    return new PDFSizeCalculator(record.getBaseFont(), font.getFont().getSize2D());
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:  $
+ * $Id: PDFFontRecord.java,v 1.2 2002/12/05 16:50:51 mungady Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package com.jrefinery.report.targets.pageable.output;
 
 import com.lowagie.text.pdf.BaseFont;
+import com.jrefinery.report.targets.FontDefinition;
 
 import java.awt.Font;
 
@@ -50,7 +51,7 @@ import java.awt.Font;
 public class PDFFontRecord
 {
   /** The AWT font. */
-  private Font awtFont;
+  private FontDefinition awtFont;
   
   /** The iText base font. */
   private BaseFont baseFont;
@@ -146,7 +147,7 @@ public class PDFFontRecord
    *
    * @return the AWT font.
    */
-  public Font getAwtFont()
+  public FontDefinition getFontDefinition()
   {
     return awtFont;
   }
@@ -156,7 +157,7 @@ public class PDFFontRecord
    *
    * @param awtFont  the AWT font.
    */
-  public void setAwtFont(Font awtFont)
+  public void setFontDefinition(FontDefinition awtFont)
   {
     this.awtFont = awtFont;
   }
@@ -192,6 +193,6 @@ public class PDFFontRecord
     {
       return -1;
     }
-    return getAwtFont().getSize2D();
+    return getFontDefinition().getFont().getSize2D();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.5 2002/12/16 17:31:05 mungady Exp $
+ * $Id: PhysicalOperation.java,v 1.6 2003/01/22 19:38:30 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
+import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.util.Log;
 
 import java.awt.Color;
@@ -70,14 +71,14 @@ public abstract class PhysicalOperation
   public static class SetFontOperation extends PhysicalOperation
   {
     /** The font. */
-    private Font font;
+    private FontDefinition font;
 
     /**
      * Creates a new 'set font' operation.
      *
      * @param font  the font (null not permitted).
      */
-    public SetFontOperation(Font font)
+    public SetFontOperation(FontDefinition font)
     {
       if (font == null)
       {

@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontFactory.java,v 1.9 2002/12/11 00:51:19 mungady Exp $
+ * $Id: FontFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,10 @@ public class FontFactory implements ReportDefinitionTags
     private Integer fontSize;
     private Boolean isBold;
     private Boolean isItalic;
+    private Boolean isStrikeThrough;
+    private Boolean isUnderlined;
+    private Boolean isEmbedded;
+    private String fontencoding;
 
     public FontInformation()
     {
@@ -97,6 +101,46 @@ public class FontFactory implements ReportDefinitionTags
     {
       isItalic = italic;
     }
+
+    public Boolean getStrikeThrough()
+    {
+      return isStrikeThrough;
+    }
+
+    public void setStrikeThrough(Boolean strikeThrough)
+    {
+      isStrikeThrough = strikeThrough;
+    }
+
+    public Boolean getUnderlined()
+    {
+      return isUnderlined;
+    }
+
+    public void setUnderlined(Boolean underlined)
+    {
+      isUnderlined = underlined;
+    }
+
+    public Boolean getEmbedded()
+    {
+      return isEmbedded;
+    }
+
+    public void setEmbedded(Boolean embedded)
+    {
+      isEmbedded = embedded;
+    }
+
+    public String getFontencoding()
+    {
+      return fontencoding;
+    }
+
+    public void setFontencoding(String fontencoding)
+    {
+      this.fontencoding = fontencoding;
+    }
   }
 
   /**
@@ -116,6 +160,14 @@ public class FontFactory implements ReportDefinitionTags
       es.setStyleProperty(ElementStyleSheet.ITALIC, fi.getItalic());
     if (fi.getBold() != null)
       es.setStyleProperty(ElementStyleSheet.BOLD, fi.getBold());
+    if (fi.getUnderlined() != null)
+      es.setStyleProperty(ElementStyleSheet.UNDERLINED, fi.getUnderlined());
+    if (fi.getStrikeThrough() != null)
+      es.setStyleProperty(ElementStyleSheet.STRIKETHROUGH, fi.getStrikeThrough());
+    if (fi.getEmbedded() != null)
+      es.setStyleProperty(ElementStyleSheet.EMBEDDED_FONT, fi.getEmbedded());
+    if (fi.getFontencoding() != null)
+      es.setStyleProperty(ElementStyleSheet.FONTENCODING, fi.getFontencoding());
   }
 
   /**
@@ -152,8 +204,11 @@ public class FontFactory implements ReportDefinitionTags
    *
    * @param attr  the element attributes.
    */
-  private void readSimpleFontStyle (Attributes attr, FontInformation target)
+  private FontInformation readSimpleFontStyle (Attributes attr, FontInformation target)
   {
+    if (target == null)
+      target = new FontInformation();
+
     String fontStyle = attr.getValue (FONT_STYLE_ATT);
 
     if (fontStyle != null)
@@ -184,6 +239,27 @@ public class FontFactory implements ReportDefinitionTags
     {
       target.setItalic(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_ITALIC), false)));
     }
+
+    if (attr.getValue(FS_STRIKETHR) != null)
+    {
+      target.setStrikeThrough(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_STRIKETHR), false)));
+    }
+
+    if (attr.getValue(FS_UNDERLINE) != null)
+    {
+      target.setUnderlined(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_UNDERLINE), false)));
+    }
+
+    if (attr.getValue(FS_EMBEDDED) != null)
+    {
+      target.setEmbedded(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_EMBEDDED), false)));
+    }
+
+    if (attr.getValue(FS_ENCODING) != null)
+    {
+      target.setFontencoding(attr.getValue (FS_UNDERLINE));
+    }
+    return target;
   }
 
   /**
@@ -205,16 +281,7 @@ public class FontFactory implements ReportDefinitionTags
 
     FontInformation fi = new FontInformation();
     // get the font style...
-    readSimpleFontStyle (attr, fi);
-
-    if (fi.getBold() != null)
-    {
-      target.setStyleProperty(ElementStyleSheet.BOLD, fi.getBold());
-    }
-    if (fi.getItalic() != null)
-    {
-      target.setStyleProperty(ElementStyleSheet.ITALIC, fi.getItalic());
-    }
+    applyFontInformation(target, readSimpleFontStyle (attr, fi));
 
     // get the font size...
     Integer elementFontSize = readInt (attr, FONT_SIZE_ATT);

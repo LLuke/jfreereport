@@ -114,6 +114,8 @@
       <basic-key name="font">Serif</basic-key>
       <basic-key name="font-italic">false</basic-key>
       <basic-key name="font-size">16</basic-key>
+      <basic-key name="font-underline">true</basic-key>
+      <basic-key name="font-strikethrough">true</basic-key>
     </default-style>
     <element name="@anonymous3" type="text/plain">
       <style>

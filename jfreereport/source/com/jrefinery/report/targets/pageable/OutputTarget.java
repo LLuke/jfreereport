@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.3 2002/12/08 23:29:48 taqua Exp $
+ * $Id: OutputTarget.java,v 1.4 2002/12/11 01:10:41 mungady Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ package com.jrefinery.report.targets.pageable;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.targets.pageable.bandlayout.BandLayoutManager;
+import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.util.ReportConfiguration;
 
 import java.awt.Font;
@@ -160,7 +161,7 @@ public interface OutputTarget
    *
    * @return the current font.
    */
-  public Font getFont ();
+  public FontDefinition getFont ();
 
   /**
    * Sets the font.
@@ -169,7 +170,7 @@ public interface OutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the font.
    */
-  public void setFont (Font font) throws OutputTargetException;
+  public void setFont (FontDefinition font) throws OutputTargetException;
 
   /**
    * Returns the current stroke.
@@ -289,5 +290,5 @@ public interface OutputTarget
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(Font font) throws OutputTargetException;
+  public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException;
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.4 2003/01/21 17:11:39 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.5 2003/01/22 19:38:31 taqua Exp $
  *
  * Changes
  * -------
@@ -40,22 +40,21 @@ package com.jrefinery.report.targets.pageable.operations;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.pageable.ElementLayoutInformation;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
-import com.jrefinery.report.targets.pageable.ElementLayoutInformation;
 import com.jrefinery.report.targets.pageable.contents.Content;
 import com.jrefinery.report.targets.pageable.contents.TextContent;
 import com.jrefinery.report.targets.pageable.contents.TextLine;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.report.util.Log;
 
-import java.awt.Font;
-import java.awt.Paint;
 import java.awt.Color;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,7 +98,7 @@ public class TextOperationModule extends OperationModule
     }
     Content c = value.getContentForBounds(bounds);
     // Font
-    Font font = e.getStyle().getFontStyleProperty();
+    FontDefinition font = e.getStyle().getFontDefinitionProperty();
 
     // Paint
     Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
@@ -204,7 +203,7 @@ public class TextOperationModule extends OperationModule
     Dimension2D dim = new FloatDimension(wDim.getWidth(), hDim.getHeight());
 
     String text = (String) e.getValue();
-    Font f = e.getStyle().getFontStyleProperty();
+    FontDefinition f = e.getStyle().getFontDefinitionProperty();
     Rectangle2D tBounds = new Rectangle2D.Double(point.getX(),
                                                   point.getY(),
                                                   dim.getWidth(),

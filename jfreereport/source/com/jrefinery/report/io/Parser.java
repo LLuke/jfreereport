@@ -2,12 +2,12 @@
  * Date: Jan 9, 2003
  * Time: 8:27:33 PM
  *
- * $Id$
+ * $Id: Parser.java,v 1.1 2003/01/12 21:35:08 taqua Exp $
  */
 package com.jrefinery.report.io;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -28,6 +28,8 @@ public class Parser extends DefaultHandler
     activeFactories = new Stack();
     parserConfiguration = new Hashtable();
   }
+
+
 
   public void pushFactory (ReportDefinitionHandler factory)
   {

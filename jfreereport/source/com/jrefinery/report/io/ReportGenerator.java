@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.20 2003/01/07 15:10:32 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.21 2003/01/12 21:33:52 taqua Exp $
  *
  * Changes
  * -------
@@ -79,6 +79,8 @@ public class ReportGenerator
   /** The DTD. */
   private String dtd;
 
+  private boolean validateDTD;
+
   /**
    * Creates a new report generator. The generator uses the singleton pattern by default,
    * so use generator.getInstance() to get the generator.
@@ -87,6 +89,16 @@ public class ReportGenerator
   {
     defaulthandler = new Parser();
     initFromSystem ();
+  }
+
+  public boolean isValidateDTD()
+  {
+    return validateDTD;
+  }
+
+  public void setValidateDTD(boolean validateDTD)
+  {
+    this.validateDTD = validateDTD;
   }
 
   /**
@@ -144,6 +156,7 @@ public class ReportGenerator
     {
       dtd = reportDtd;
     }
+    setValidateDTD(ReportConfiguration.getGlobalConfig().isValidateXML());
   }
 
   /**
@@ -323,6 +336,8 @@ public class ReportGenerator
     try
     {
       SAXParser parser = getParser ();
+      parser.getXMLReader().setFeature("http://xml.org/sax/features/validation", isValidateDTD());
+      
       Parser handler = createDefaultHandler (contentBase);
       try
       {

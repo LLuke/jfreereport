@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.11 2003/01/13 19:01:13 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.12 2003/01/22 19:38:31 taqua Exp $
  *
  * Changes
  * -------
@@ -42,19 +42,19 @@
 package com.jrefinery.report.targets.style;
 
 import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.targets.FontDefinition;
 
-import java.awt.Font;
-import java.awt.Paint;
-import java.awt.Stroke;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Stroke;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Enumeration;
 
 /**
  * An element style-sheet contains zero, one or many attributes that affect the appearance of
@@ -112,7 +112,13 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
                                                                     Boolean.class);
 
   /** A key for an element's 'strikethrough' flag. */
-  public static final StyleKey STRIKETHROUGH = StyleKey.getStyleKey("font-strike", Boolean.class);
+  public static final StyleKey STRIKETHROUGH = StyleKey.getStyleKey("font-strikethrough", Boolean.class);
+
+  /** A key for an element's 'embedd' flag. */
+  public static final StyleKey EMBEDDED_FONT = StyleKey.getStyleKey("font-embedded", Boolean.class);
+
+  /** A key for an element's 'embedd' flag. */
+  public static final StyleKey FONTENCODING = StyleKey.getStyleKey("font-encoding", String.class);
 
   /** A key for the horizontal alignment of an element. */
   public static final StyleKey ALIGNMENT     = StyleKey.getStyleKey("alignment",
@@ -383,6 +389,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   /**
    * Returns the font for this style-sheet.
    *
+   * @deprecated use getFontDefinition()
    * @return the font.
    */
   public Font getFontStyleProperty ()
@@ -407,6 +414,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   /**
    * Sets the font for this style-sheet.
    *
+   * @deprecated use setFontDefinition()
    * @param font  the font (<code>null</code> not permitted).
    */
   public void setFontStyleProperty (Font font)
@@ -419,6 +427,47 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     setStyleProperty(BOLD, new Boolean(font.isBold()));
     setStyleProperty(ITALIC, new Boolean(font.isItalic()));
     setStyleProperty(FONTSIZE, new Integer(font.getSize()));
+  }
+
+  /**
+   * Returns the font for this style-sheet.
+   *
+   * @return the font.
+   */
+  public FontDefinition getFontDefinitionProperty ()
+  {
+    String name = (String) getStyleProperty(FONT);
+    int size = getIntStyleProperty(FONTSIZE, -1);
+    boolean bold = getBooleanStyleProperty(BOLD);
+    boolean italic = getBooleanStyleProperty(ITALIC);
+    boolean underlined = getBooleanStyleProperty(UNDERLINED);
+    boolean strike = getBooleanStyleProperty(STRIKETHROUGH);
+    boolean embedd = getBooleanStyleProperty(EMBEDDED_FONT);
+    String encoding = (String) getStyleProperty(FONTENCODING);
+
+    FontDefinition retval = new FontDefinition(name, size, bold, italic, underlined, strike, encoding, embedd);
+    return retval;
+  }
+
+  /**
+   * Sets the font for this style-sheet.
+   *
+   * @param font  the font (<code>null</code> not permitted).
+   */
+  public void setFontDefinitionProperty (FontDefinition font)
+  {
+    if (font == null)
+    {
+      throw new NullPointerException("ElementStyleSheet.setFontStyleProperty: font is null.");
+    }
+    setStyleProperty(FONT, font.getFontName());
+    setStyleProperty(FONTSIZE, new Integer(font.getFontSize()));
+    setStyleProperty(BOLD, new Boolean(font.isBold()));
+    setStyleProperty(ITALIC, new Boolean(font.isItalic()));
+    setStyleProperty(UNDERLINED, new Boolean(font.isUnderline()));
+    setStyleProperty(STRIKETHROUGH, new Boolean(font.isStrikeThrough()));
+    setStyleProperty(FONTENCODING, font.getFontEncoding(null));
+    setStyleProperty(EMBEDDED_FONT, new Boolean(font.isEmbeddedFont()));
   }
 
   public Enumeration getDefinedPropertyNames ()

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFFontSupport.java,v 1.4 2002/12/13 18:39:02 taqua Exp $
+ * $Id: PDFFontSupport.java,v 1.5 2003/01/17 14:48:12 taqua Exp $
  *
  * Changes
  * -------
@@ -37,16 +37,16 @@
  */
 package com.jrefinery.report.targets.pageable.output;
 
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.DocumentException;
-import com.jrefinery.report.util.StringUtil;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.StringUtil;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.pdf.BaseFont;
 
-import java.awt.Font;
 import java.io.IOException;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * PDF font support.
@@ -57,9 +57,6 @@ public class PDFFontSupport
 {
   /** Storage for BaseFont objects created. */
   private Map baseFonts;
-  
-  /** Embed fonts? */
-  private boolean embedFonts;
 
   /**
    * Creates a new support instance.
@@ -78,26 +75,6 @@ public class PDFFontSupport
   }
 
   /**
-   * Returns the flag that controls whether or not the fonts are embedded in the PDF output.
-   *
-   * @return true or false.
-   */
-  public boolean isEmbedFonts()
-  {
-    return embedFonts;
-  }
-
-  /**
-   * Sets the flag that controls whether or not the fonts are embedded in the PDF output.
-   *
-   * @param embedFonts  embed?
-   */
-  public void setEmbedFonts(boolean embedFonts)
-  {
-    this.embedFonts = embedFonts;
-  }
-
-  /**
    * Creates a PDFFontRecord for an AWT font.  If no basefont could be created, an 
    * OutputTargetException is thrown.
    *
@@ -108,7 +85,7 @@ public class PDFFontSupport
    *
    * @throws OutputTargetException if there was a problem setting the font for the target.
    */
-  public PDFFontRecord createBaseFont(Font font, String encoding) throws OutputTargetException
+  public PDFFontRecord createBaseFont(FontDefinition font, String encoding, boolean embedded) throws OutputTargetException
   {
     if (font == null)
     {
@@ -119,7 +96,7 @@ public class PDFFontSupport
 
     // use the Java logical font name to map to a predefined iText font.
     String fontKey = null;
-    String logicalName = font.getName();
+    String logicalName = font.getFontName();
     boolean bold = false;
     boolean italic = false;
 
@@ -182,7 +159,7 @@ public class PDFFontSupport
       String filename = PDFOutputTarget.getFontFactory().getFontfileForName(fontKey);
       if (filename != null)
       {
-        fontRecord = createFontFromTTF(font, filename, encoding, stringEncoding);
+        fontRecord = createFontFromTTF(font, filename, encoding, stringEncoding, embedded);
         if (fontRecord != null)
         {
           return fontRecord;
@@ -192,15 +169,15 @@ public class PDFFontSupport
       {
         // filename is null, so no ttf file registered for the fontname, maybe this is
         // one of the internal fonts ...
-        BaseFont f = BaseFont.createFont(fontKey, stringEncoding, isEmbedFonts(), 
+        BaseFont f = BaseFont.createFont(fontKey, stringEncoding, embedded,
                                          false, null, null);
 
         if (f != null)
         {
           fontRecord = new PDFFontRecord();
-          fontRecord.setAwtFont(font);
+          fontRecord.setFontDefinition(font);
           fontRecord.setBaseFont(f);
-          fontRecord.setEmbedded(isEmbedFonts());
+          fontRecord.setEmbedded(embedded);
           fontRecord.setEncoding(stringEncoding);
           fontRecord.setLogicalName(fontKey);
           putToCache(fontRecord);
@@ -215,14 +192,14 @@ public class PDFFontSupport
     // fallback .. use BaseFont.HELVETICA as default
     try
     {
-      BaseFont f = BaseFont.createFont(BaseFont.HELVETICA, stringEncoding, isEmbedFonts(), 
+      BaseFont f = BaseFont.createFont(BaseFont.HELVETICA, stringEncoding, embedded,
                                        false, null, null);
       if (f != null)
       {
         fontRecord = new PDFFontRecord();
-        fontRecord.setAwtFont(font);
+        fontRecord.setFontDefinition(font);
         fontRecord.setBaseFont(f);
-        fontRecord.setEmbedded(isEmbedFonts());
+        fontRecord.setEmbedded(embedded);
         fontRecord.setEncoding(stringEncoding);
         fontRecord.setLogicalName(fontKey);
         putToCache(fontRecord);
@@ -250,8 +227,9 @@ public class PDFFontSupport
    * @throws IOException if there is an I/O problem.
    * @throws DocumentException ??.
    */
-  private PDFFontRecord createFontFromTTF (Font font, String filename, 
-                                           String encoding, String stringEncoding)
+  private PDFFontRecord createFontFromTTF (FontDefinition font, String filename,
+                                           String encoding, String stringEncoding,
+                                           boolean embedded)
     throws IOException, DocumentException
   {
 
@@ -292,19 +270,19 @@ public class PDFFontSupport
 
     // no, we have to create a new instance
     PDFFontRecord record = new PDFFontRecord();
-    record.setAwtFont(font);
-    record.setEmbedded(isEmbedFonts());
+    record.setFontDefinition(font);
+    record.setEmbedded(embedded);
     record.setLogicalName(fontKey);
     try
     {
-      BaseFont f = BaseFont.createFont(fontKey, encoding, isEmbedFonts(), false, null, null);
+      BaseFont f = BaseFont.createFont(fontKey, encoding, embedded, false, null, null);
       record.setBaseFont(f);
       record.setEncoding(encoding);
     }
     catch (DocumentException de)
     {
       // Fallback to iso8859-1 encoding (!this is not IDENTITY-H)
-      BaseFont f = BaseFont.createFont(fontKey, stringEncoding, isEmbedFonts(), false, null, null);
+      BaseFont f = BaseFont.createFont(fontKey, stringEncoding, embedded, false, null, null);
       record.setBaseFont(f);
       record.setEncoding(stringEncoding);
     }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.9 2002/12/18 10:13:16 mungady Exp $
+ * $Id: G2OutputTarget.java,v 1.10 2003/01/14 23:48:12 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.SizeCalculator;
+import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 
@@ -66,6 +67,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.util.Enumeration;
@@ -193,6 +195,8 @@ public class G2OutputTarget extends AbstractOutputTarget
 
   /** The open flag. */
   private boolean isOpen;
+
+  private FontDefinition fontDefinition;
 
   /**
    * Creates an empty graphics by using a 1x1 pixel buffered image.
@@ -432,9 +436,10 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param font The font.
    */
-  public void setFont(Font font)
+  public void setFont(FontDefinition font)
   {
-    g2.setFont(font);
+    this.fontDefinition = font;
+    g2.setFont(font.getFont());
   }
 
   /**
@@ -442,9 +447,9 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @return the font.
    */
-  public Font getFont()
+  public FontDefinition getFont()
   {
-    return g2.getFont();
+    return fontDefinition;
   }
 
   /**
@@ -565,7 +570,7 @@ public class G2OutputTarget extends AbstractOutputTarget
     // perfect enough for printing ...
     FontMetrics fm = g2.getFontMetrics();
     float baseline = (float) fm.getAscent();
-    double cFact = getFont().getSize2D() / fm.getHeight();
+    double cFact = getFont().getFont().getSize2D() / fm.getHeight();
 
     /*
     Rectangle2D ob = getOperationBounds();
@@ -574,7 +579,22 @@ public class G2OutputTarget extends AbstractOutputTarget
     g2.fill(new Rectangle2D.Double(0,0,ob.getWidth(), ob.getHeight()));
     g2.setColor(Color.black);
     */
-    g2.drawString(text, 0.0f, (float) (baseline * cFact));
+
+    float correctedBaseline = (float) (baseline * cFact);
+    g2.drawString(text, 0.0f, correctedBaseline);
+
+    if (getFont().isUnderline())
+    {
+      float l = (getFont().getFont().getSize2D() + correctedBaseline) / 2.0f;
+      Line2D line = new Line2D.Double(0, l, getOperationBounds().getWidth(), l);
+      g2.draw(line);
+    }
+    if (getFont().isStrikeThrough())
+    {
+      float l = getFont().getFont().getSize2D();
+      Line2D line = new Line2D.Double(0, l/2, getOperationBounds().getWidth(), l/2);
+      g2.draw(line);
+    }
   }
 
   /**
@@ -641,14 +661,14 @@ public class G2OutputTarget extends AbstractOutputTarget
     /**
      * The font.
      */
-    private Font font;
+    private FontDefinition font;
 
     /**
      * Creates a new size calculator.
      *
      * @param font  the font.
      */
-    public G2SizeCalculator(Font font)
+    public G2SizeCalculator(FontDefinition font)
     {
       this.font = font;
     }
@@ -661,7 +681,7 @@ public class G2OutputTarget extends AbstractOutputTarget
      */
     public float getLineHeight()
     {
-      return font.getSize2D();
+      return font.getFont().getSize2D();
     }
 
     /**
@@ -688,7 +708,7 @@ public class G2OutputTarget extends AbstractOutputTarget
         return 0;
 
       FontRenderContext frc = getFrcDetector().createFontRenderContext();
-      Rectangle2D textBounds2 = font.getStringBounds(text, lineStartPos, endPos, frc);
+      Rectangle2D textBounds2 = font.getFont().getStringBounds(text, lineStartPos, endPos, frc);
       float x2 = (float) textBounds2.getWidth();
 //      Log.debug ("Text: " + text.substring(lineStartPos, endPos) + " : Bounds: " + x2 + " : " + frc.usesFractionalMetrics());
 //      if (text.substring(lineStartPos, endPos).equals ("invoic")) new Exception().printStackTrace();
@@ -714,7 +734,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @return the size calculator.
    */
-  public SizeCalculator createTextSizeCalculator(Font font)
+  public SizeCalculator createTextSizeCalculator(FontDefinition font)
   {
     G2SizeCalculator cal = new G2SizeCalculator(font);
     return cal;

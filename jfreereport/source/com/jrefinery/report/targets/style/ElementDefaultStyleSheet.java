@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.4 2003/01/03 16:18:19 mungady Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.5 2003/01/22 19:38:31 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package com.jrefinery.report.targets.style;
 
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.report.targets.FontDefinition;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -56,8 +57,14 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
   /** The default paint. */
   public static final Color DEFAULT_PAINT = Color.black;
   
-  /** The default font. */
+  /**
+   * The default font.
+   * @deprecated use the key DEFAULT_FONT_DEFINITION
+   */
   public static final Font DEFAULT_FONT = new Font ("Serif", Font.PLAIN, 10);
+
+  /** The default font. */
+  public static final FontDefinition DEFAULT_FONT_DEFINITION = new FontDefinition("Serif", 10);
 
   /** A shared default style-sheet. */
   private static ElementDefaultStyleSheet defaultStyle;
@@ -72,7 +79,7 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
     setStyleProperty(MAXIMUMSIZE, new FloatDimension(Short.MAX_VALUE, Short.MAX_VALUE));
     setStyleProperty(BOUNDS, new Rectangle2D.Float());
     setStyleProperty(PAINT, DEFAULT_PAINT);
-    setFontStyleProperty(DEFAULT_FONT);
+    setFontDefinitionProperty(DEFAULT_FONT_DEFINITION);
     setStyleProperty(VALIGNMENT, ElementAlignment.BOTTOM);
     setStyleProperty(ALIGNMENT, ElementAlignment.LEFT);
     setStyleProperty(VISIBLE, Boolean.TRUE);

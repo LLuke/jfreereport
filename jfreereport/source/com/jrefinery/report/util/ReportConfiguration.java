@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.25 2003/01/13 19:01:15 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.26 2003/01/14 23:48:12 taqua Exp $
  *
  * Changes
  * -------
@@ -354,6 +354,12 @@ public class ReportConfiguration
 
   /** The 'ResultSet factory mode'. */
   public static final String RESULTSET_FACTORY_MODE = "com.jrefinery.report.TableFactoryMode";
+
+  /** Enable DTD validation of the parsed XML? */
+  public static final String PARSER_VALIDATE = "com.jrefinery.report.io.validate";
+
+  /** disable DTD validation by default */
+  public static final String PARSER_VALIDATE_DEFAULT = "false";
 
   /** Storage for the configuration properties. */
   private Properties configuration;
@@ -759,6 +765,16 @@ public class ReportConfiguration
   public Enumeration getConfigProperties ()
   {
     return configuration.keys();
+  }
+
+  public void setValidateXML (boolean validate)
+  {
+    setConfigProperty(PARSER_VALIDATE, String.valueOf(validate));
+  }
+
+  public boolean isValidateXML ()
+  {
+    return getConfigProperty(PARSER_VALIDATE, PARSER_VALIDATE_DEFAULT).equalsIgnoreCase("true");
   }
 
   public static void main (String [] args)
