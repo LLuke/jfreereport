@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Boot.java,v 1.6 2003/11/23 16:50:45 taqua Exp $
+ * $Id: DocumentNode.java,v 1.1 2004/08/21 18:58:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,4 +44,6 @@ public interface DocumentNode
   public DocumentNode getParent();
   public String getName();
   public StyleSheet getStyle();
+  public void setConsistentState (final Boolean state);
+  public Boolean getConsistentState ();
 }

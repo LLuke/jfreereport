@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Boot.java,v 1.6 2003/11/23 16:50:45 taqua Exp $
+ * $Id: StyleSheet.java,v 1.1 2004/08/21 18:58:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,5 +43,6 @@ public interface StyleSheet
   public String getName();
   public Object getStyleProperty(StyleKey key);
   public Object getStyleProperty(StyleKey key, Object defaultValue);
-  public void setStyleProperty(final StyleKey key, final Object value);
+  public void setStyleProperty(StyleKey key, Object value);
+  public StyleKey[] getDefinedKeys();
 }
