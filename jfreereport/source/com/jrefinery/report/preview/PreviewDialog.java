@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,16 +23,18 @@
  * -----------------
  * PreviewDialog.java
  * -----------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.1 2002/12/04 20:05:37 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.2 2002/12/06 19:27:56 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
- * 04-Dec-2002: Forked from PreviewFrame
+ * 04-Dec-2002 : Forked from PreviewFrame (TM);
+ * 10-Dec-2002 : Updated Javadocs (DG);
+ *
  */
 
 package com.jrefinery.report.preview;
@@ -86,6 +88,7 @@ import javax.swing.JDialog;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Insets;
+import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.Frame;
 import java.awt.Dialog;
@@ -110,39 +113,70 @@ import java.util.ResourceBundle;
  * <P>
  * You can also save the report in PDF format (thanks to the iText library).
  * <p>
- * When including this PreviewDialog in own programs, you should override the provided
- * createXXXAction-methods to include your customized actions.
+ * When including this PreviewDialog in yuor own programs, you should override the provided
+ * createXXXAction methods to include your customized actions.
  *
- * @author DG
+ * @author David Gilbert
+ * @author Thomas Morgner
  */
-public class PreviewDialog
-    extends JDialog
-    implements JFreeReportConstants
+public class PreviewDialog extends JDialog implements JFreeReportConstants
 {
+  /** The default width of the report pane. */
+  public static final int DEFAULT_REPORT_PANE_WIDTH = 640;
+  
+  /** The default height of the report pane. */
+  public static final int DEFAULT_REPORT_PANE_HEIGHT = 480;
+
+  /** 
+   * A wrapper action.
+   */
   private class WrapperAction implements Action
   {
+    /** The parent action. */
     private Action parent;
 
+    /**
+     * Creates a new action.
+     *
+     * @param parent  the parent action (null not permitted).
+     */
     public WrapperAction(Action parent)
     {
       setParent(parent);
     }
 
+    /**
+     * Returns the parent action.
+     *
+     * @return the parent action.
+     */
     public Action getParent()
     {
       return parent;
     }
 
+    /**
+     * Sets the parent action.
+     *
+     * @param parent  the parent action (null not permitted).
+     */
     public void setParent(Action parent)
     {
-      if (parent == null) throw new NullPointerException();
+      if (parent == null) 
+      {
+        throw new NullPointerException();
+      }
       this.parent = parent;
       registerAction(parent);
     }
 
     /**
-     * Gets one of this object's properties
-     * using the associated key.
+     * Gets one of this object's properties using the associated key.
+     *
+     * @param key  the key.
+     *
+     * @return the property value.
+     *
      * @see #putValue
      */
     public Object getValue(String key)
@@ -152,6 +186,8 @@ public class PreviewDialog
 
     /**
      * Invoked when an action occurs.
+     *
+     * @param e  the event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -164,8 +200,8 @@ public class PreviewDialog
      * changed, a <code>PropertyChangeEvent</code> is sent
      * to listeners.
      *
-     * @param key    a <code>String</code> containing the key
-     * @param value  an <code>Object</code> value
+     * @param key    a <code>String</code> containing the key.
+     * @param value  an <code>Object</code> value.
      */
     public void putValue(String key, Object value)
     {
@@ -179,7 +215,7 @@ public class PreviewDialog
      * If the value has changed, a <code>PropertyChangeEvent</code> is sent
      * to listeners.
      *
-     * @param  b true to enable this <code>Action</code>, false to disable it
+     * @param  b true to enable this <code>Action</code>, false to disable it.
      */
     public void setEnabled(boolean b)
     {
@@ -191,7 +227,7 @@ public class PreviewDialog
      * any component associated with this object is active and
      * able to fire this object's <code>actionPerformed</code> method.
      *
-     * @return true if this <code>Action</code> is enabled
+     * @return true if this <code>Action</code> is enabled.
      */
     public boolean isEnabled()
     {
@@ -204,7 +240,7 @@ public class PreviewDialog
      * <code>Action</code> object. When its enabled state or other property
      * changes, the registered listeners are informed of the change.
      *
-     * @param listener  a <code>PropertyChangeListener</code> object
+     * @param listener  a <code>PropertyChangeListener</code> object.
      */
     public void addPropertyChangeListener(PropertyChangeListener listener)
     {
@@ -223,8 +259,14 @@ public class PreviewDialog
     }
   }
 
+  /**
+   * A property change listener.
+   */
   private class ReportPanePropertyChangeListener implements PropertyChangeListener
   {
+    /**
+     * Creates a new listener.
+     */
     public ReportPanePropertyChangeListener()
     {
     }
@@ -489,6 +531,7 @@ public class PreviewDialog
       }
       catch (PrinterException pe)
       {
+        // to do : report this to the user.
       }
     }
   }
@@ -625,14 +668,22 @@ public class PreviewDialog
     }
   }
 
+  /**
+   * A zoom select action.
+   */
   private class ZoomSelectAction extends AbstractAction
   {
+    /**
+     * Creates a new action.
+     */
     public ZoomSelectAction()
     {
     }
 
     /**
      * Invoked when an action occurs.
+     *
+     * @param e  the event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -640,10 +691,19 @@ public class PreviewDialog
     }
   }
 
+  /**
+   * A zoom set action.
+   */
   protected class ZoomSetAction extends AbstractActionDowngrade
   {
+    /** The zoom factor index. */
     private int zoomFactor;
 
+    /**
+     * Creates a new action.
+     *
+     * @param factorIndex  the zoom factor index.
+     */
     public ZoomSetAction(int factorIndex)
     {
       zoomFactor = factorIndex;
@@ -652,6 +712,8 @@ public class PreviewDialog
 
     /**
      * Invoked when an action occurs.
+     *
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -729,54 +791,97 @@ public class PreviewDialog
   /** A dialog for specifying PDF file properties. */
   private PDFSaveDialog pdfSaveDialog;
 
+  /**
+   * Creates a preview dialog.
+   *
+   * @param report  the report to preview.
+   *
+   * @throws ReportProcessingException if there is a problem processing the report.
+   */
   public PreviewDialog(JFreeReport report) throws ReportProcessingException
   {
     super();
     init(report);
   }
 
+  /**
+   * Creates a preview dialog.
+   *
+   * @param owner  the dialog owner.
+   * @param report  the report to preview.
+   *
+   * @throws ReportProcessingException if there is a problem processing the report.
+   */
   public PreviewDialog(Dialog owner, JFreeReport report) throws ReportProcessingException
   {
     this (owner, report, false);
   }
 
   /**
-   * Constructs a PreviewFrame that displays the specified report, and has the specified width
-   * and height (to begin with).
+   * Creates a dialog to display a report.
+   * <p>
+   * See also the <code>PreviewFrame</code> class.
    *
-   * @param report The report to be displayed.
+   * @param owner  the owner.
+   * @param report  the report.
+   * @param modal  modal or non-modal?
+   *
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public PreviewDialog(Dialog owner, JFreeReport report, boolean modal) throws ReportProcessingException
+  public PreviewDialog(Dialog owner, JFreeReport report, boolean modal) 
+      throws ReportProcessingException
   {
     super(owner, modal);
     init(report);
   }
 
+  /**
+   * Creates a dialog to display a report.
+   * <p>
+   * See also the <code>PreviewFrame</code> class.
+   *
+   * @param owner  the owner.
+   * @param report  the report.
+   *
+   * @throws ReportProcessingException if there is a problem processing the report.
+   */
   public PreviewDialog(Frame owner, JFreeReport report) throws ReportProcessingException
   {
     this (owner, report, false);
   }
 
   /**
-   * Constructs a PreviewFrame that displays the specified report, and has the specified width
-   * and height (to begin with).
+   * Creates a dialog to display a report.
+   * <p>
+   * See also the <code>PreviewFrame</code> class.
    *
-   * @param report The report to be displayed.
+   * @param owner  the owner.
+   * @param report  the report.
+   * @param modal  modal or non-modal?
+   *
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public PreviewDialog(Frame owner, JFreeReport report, boolean modal) throws ReportProcessingException
+  public PreviewDialog(Frame owner, JFreeReport report, boolean modal) 
+      throws ReportProcessingException
   {
     super(owner, modal);
     init(report);
   }
 
+  /**
+   * Initialises the preview dialog.
+   *
+   * @param report  the report.
+   *
+   * @throws ReportProcessingException if there is a problem processing the report.
+   */
   private void init (JFreeReport report) throws ReportProcessingException
   {
-    // get a locale-specific resource bundle...
     setLargeIconsEnabled(true);
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-    // Handle a JDK-Bug: Windows are not GCd if dispose is not called manually.
-    // DisposedState is undone when show() or pack() is called, so this does no harm
+    // handle a JDK bug: windows are not garbage collected if dispose is not called manually.
+    // DisposedState is undone when show() or pack() is called, so this does no harm.
     addComponentListener(new ComponentAdapter()
     {
       public void componentHidden(ComponentEvent e)
@@ -785,6 +890,7 @@ public class PreviewDialog
       }
     });
 
+    // get a locale-specific resource bundle...
     ResourceBundle resources = getResources();
 
     this.setTitle(resources.getString("preview-frame.title"));
@@ -809,10 +915,11 @@ public class PreviewDialog
     reportPaneHolder.add(reportPane);
     reportPaneHolder.setDoubleBuffered(false);
     reportPaneHolder.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    reportPaneHolder.setPreferredSize(new Dimension(DEFAULT_REPORT_PANE_WIDTH, 
+                                                    DEFAULT_REPORT_PANE_HEIGHT));
 
     JScrollPane s1 = new JScrollPane(reportPaneHolder);
     s1.setDoubleBuffered(false);
-    //s1.setBorder(null);
     s1.getVerticalScrollBar().setUnitIncrement(20);
 
     JPanel scrollPaneHolder = new JPanel();
@@ -838,6 +945,11 @@ public class PreviewDialog
     return pdfSaveDialog;
   }
 
+  /**
+   * Creates a report pane listener.
+   *
+   * @return the listener.
+   */
   protected ReportPanePropertyChangeListener createReportPanePropertyChangeListener()
   {
     return new ReportPanePropertyChangeListener();
@@ -849,6 +961,8 @@ public class PreviewDialog
    * @param report the report for this pane.
    *
    * @return the report pane.
+   *
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   protected ReportPane createReportPane(JFreeReport report) throws ReportProcessingException
   {
@@ -904,6 +1018,8 @@ public class PreviewDialog
 
   /**
    * Prints the report.
+   *
+   * @throws PrinterException if there is a problem printing the report.
    */
   protected void attemptPrint() throws PrinterException
   {
@@ -915,11 +1031,21 @@ public class PreviewDialog
     }
   }
 
+  /**
+   * Returns the report pane, which implements the Pageable interface.
+   *
+   * @return the report pane.
+   */
   protected Pageable getPageable ()
   {
     return reportPane;
   }
 
+  /**
+   * Returns the report pane, which implements the Printable interface.
+   *
+   * @return the report pane.
+   */
   protected Printable getPrintable ()
   {
     return reportPane;
@@ -1069,7 +1195,8 @@ public class PreviewDialog
        */
       public void windowClosing(WindowEvent e)
       {
-        getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "CloseFrame"));
+        getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, 
+                                                         "CloseFrame"));
       }
     }
     );
@@ -1149,6 +1276,11 @@ public class PreviewDialog
     return new DefaultAboutAction();
   }
 
+  /**
+   * Creates a zoom select action.
+   *
+   * @return the action.
+   */
   protected Action createZoomSelectAction()
   {
     return new ZoomSelectAction();
@@ -1343,6 +1475,13 @@ public class PreviewDialog
     return button;
   }
 
+  /**
+   * Creates a menu item based on the supplied action.
+   *
+   * @param action  the action.
+   *
+   * @return the menu item.
+   */
   protected JMenuItem createMenuItem (Action action)
   {
     JMenuItem menuItem = new ActionMenuItem(action);
@@ -1476,121 +1615,241 @@ public class PreviewDialog
     RepaintManager.setCurrentManager(null);
   }
 
+  /**
+   * Returns the 'About' action.
+   *
+   * @return the 'About' action.
+   */
   public Action getAboutAction()
   {
     return aboutAction.getParent();
   }
 
+  /**
+   * Sets the 'About' action.
+   *
+   * @param aboutAction  the 'About' action.
+   */
   public void setAboutAction(Action aboutAction)
   {
     this.aboutAction.setParent(aboutAction);
   }
 
+  /**
+   * Returns the 'Save As' action.
+   *
+   * @return the 'Save As' action.
+   */
   public Action getSaveAsAction()
   {
     return saveAsAction.getParent();
   }
 
+  /**
+   * Sets the 'Save As' action.
+   *
+   * @param saveAsAction  the 'Save As' action.
+   */
   public void setSaveAsAction(Action saveAsAction)
   {
     this.saveAsAction.setParent(saveAsAction);
   }
 
+  /**
+   * Returns the 'Page Setup' action.
+   *
+   * @return the 'Page Setup' action.
+   */
   public Action getPageSetupAction()
   {
     return pageSetupAction.getParent();
   }
 
+  /**
+   * Sets the 'Page Setup' action.
+   *
+   * @param pageSetupAction  the 'Page Setup' action.
+   */
   public void setPageSetupAction(Action pageSetupAction)
   {
     this.pageSetupAction.setParent(pageSetupAction);
   }
 
+  /**
+   * Returns the 'Print' action.
+   *
+   * @return the 'Print' action.
+   */
   public Action getPrintAction()
   {
     return printAction.getParent();
   }
 
+  /**
+   * Sets the 'Print' action.
+   *
+   * @param printAction  the 'Print' action.
+   */
   public void setPrintAction(Action printAction)
   {
     this.printAction.setParent(printAction);
   }
 
+  /**
+   * Returns the 'Close' action.
+   *
+   * @return the 'Close' action.
+   */
   public Action getCloseAction()
   {
     return closeAction.getParent();
   }
 
+  /**
+   * Sets the 'Close' action.
+   *
+   * @param closeAction  the 'Close' action.
+   */
   public void setCloseAction(Action closeAction)
   {
     this.closeAction.setParent(closeAction);
   }
 
+  /**
+   * Returns the 'First Page' action.
+   *
+   * @return the 'First Page' action.
+   */
   public Action getFirstPageAction()
   {
     return firstPageAction.getParent();
   }
 
+  /**
+   * Sets the 'First Page' action.
+   *
+   * @param firstPageAction  the 'First Page' action.
+   */
   public void setFirstPageAction(Action firstPageAction)
   {
     this.firstPageAction.setParent(firstPageAction);
   }
 
+  /**
+   * Returns the 'Last Page' action.
+   *
+   * @return the 'Last Page' action.
+   */
   public Action getLastPageAction()
   {
     return lastPageAction.getParent();
   }
 
+  /**
+   * Sets the 'Last Page' action.
+   *
+   * @param lastPageAction  the 'Last Page' action.
+   */
   public void setLastPageAction(Action lastPageAction)
   {
     this.lastPageAction.setParent(lastPageAction);
   }
 
+  /**
+   * Returns the 'Next Page' action.
+   *
+   * @return the 'Next Page' action.
+   */
   public Action getNextPageAction()
   {
     return nextPageAction.getParent();
   }
 
+  /**
+   * Sets the 'Next Page' action.
+   *
+   * @param nextPageAction  the 'Next Page' action.
+   */
   public void setNextPageAction(Action nextPageAction)
   {
     this.nextPageAction.setParent(nextPageAction);
   }
 
+  /**
+   * Returns the 'Previous Page' action.
+   *
+   * @return the 'Previous Page' action.
+   */
   public Action getPreviousPageAction()
   {
     return previousPageAction.getParent();
   }
 
+  /**
+   * Sets the 'Previous Page' action.
+   *
+   * @param previousPageAction  the 'Previous Page' action.
+   */
   public void setPreviousPageAction(Action previousPageAction)
   {
     this.previousPageAction.setParent(previousPageAction);
   }
 
+  /**
+   * Returns the 'Zoom In' action.
+   *
+   * @return the 'Zoom In' action.
+   */
   public Action getZoomInAction()
   {
     return zoomInAction.getParent();
   }
 
+  /**
+   * Sets the 'Zoom In' action.
+   *
+   * @param zoomInAction  the 'Zoom In' action.
+   */
   public void setZoomInAction(Action zoomInAction)
   {
     this.zoomInAction.setParent(zoomInAction);
   }
 
+  /**
+   * Returns the 'Zoom Out' action.
+   *
+   * @return the 'Zoom Out' action.
+   */
   public Action getZoomOutAction()
   {
     return zoomOutAction.getParent();
   }
 
+  /**
+   * Sets the 'Zoom Out' action.
+   *
+   * @param zoomOutAction  the 'Zoom Out' action.
+   */
   public void setZoomOutAction(Action zoomOutAction)
   {
     this.zoomOutAction.setParent(zoomOutAction);
   }
 
+  /**
+   * Returns the 'Goto' action.
+   *
+   * @return the 'Goto' action.
+   */
   public Action getGotoAction()
   {
     return gotoAction.getParent();
   }
 
+  /**
+   * Sets the 'Goto' action.
+   *
+   * @param gotoAction  the 'Goto' action.
+   */
   public void setGotoAction(Action gotoAction)
   {
     this.gotoAction.setParent(gotoAction);

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.32 2002/12/06 19:27:59 taqua Exp $
+ * $Id: ReportPane.java,v 1.33 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -76,7 +76,8 @@ import java.awt.print.Printable;
  * <p>
  * The panel uses several properties to inform its listeners of state changes.
  *
- * @author DG
+ * @author David Gilbert
+ * @author Thomas Morgner
  */
 public class ReportPane extends JComponent implements Printable, Pageable
 {
@@ -128,10 +129,12 @@ public class ReportPane extends JComponent implements Printable, Pageable
   /** PageFormat */
   private PageFormat pageFormat;
 
+  /** The report. */
   private JFreeReport report;
 
-
-  /** A simple class performing the locking for huge paginating runs */
+  /** 
+   * A simple class performing the locking for huge paginating runs.
+   */
   private static class PaginateLock
   {
     /** The 'paginate' state. */
@@ -161,11 +164,15 @@ public class ReportPane extends JComponent implements Printable, Pageable
   /** The local paginate lock instance */
   private PaginateLock paginateLock = new PaginateLock ();
 
+  /** The report processor. */
   private PageableReportProcessor processor;
+  
   /**
-   * Standard constructor - builds a report pane to display the specified report.
+   * Creates a report pane to display the specified report.
    *
-   * @param report The report to display within the pane.
+   * @param report  the report to display within the pane.
+   *
+   * @throws ReportProcessingException if there was a problem processing the report.
    */
   public ReportPane (JFreeReport report) throws ReportProcessingException
   {
@@ -177,7 +184,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
     }
     catch (FunctionInitializeException fe)
     {
-      throw new ReportProcessingException("unable to create the PageableReportProcessor",fe);
+      throw new ReportProcessingException("unable to create the PageableReportProcessor", fe);
     }
     setPageFormat(report.getDefaultPageFormat());
     setBorderPainted (false);
@@ -401,7 +408,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
   /**
    * Paints the component, which means drawing the current page of the report.
    *
-   * @param g The graphics device.
+   * @param g  the graphics device.
    *
    */
   public void paintComponent (Graphics g)
@@ -612,8 +619,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
    * @param pageIndex  the page index.
    *
    * @return PAGE_EXISTS if the page is rendered successfully
-   *         or NO_SUCH_PAGE if <code>pageIndex</code> specifies a
-   *	       non-existent page.
+   *         or NO_SUCH_PAGE if <code>pageIndex</code> specifies a non-existent page.
    */
   public int print (Graphics g, PageFormat pf, int pageIndex)
   {
@@ -756,12 +762,17 @@ public class ReportPane extends JComponent implements Printable, Pageable
     return error;
   }
 
+  /**
+   * Returns the report processor.
+   *
+   * @return the report processor.
+   */
   public PageableReportProcessor getProcessor()
   {
     return processor;
   }
 
-  /** free some of the used memory */
+  /** Free some of the used memory. */
   public void dispose ()
   {
     // clean up a little bit

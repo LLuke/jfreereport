@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.42 2002/12/04 19:49:13 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.43 2002/12/06 19:27:57 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -50,6 +50,7 @@
  * 06-Sep-2002 : Added Dispose on Component-hide, so that this Frame can be garbageCollected.
  *               Without this Construct, the PreviewFrame would never be GarbageCollected and
  *               would cause OutOfMemoryExceptions when the program runs a longer time.
+ * 10-Dec-2002 : Updated Javadocs (DG);
  */
 
 package com.jrefinery.report.preview;
@@ -103,6 +104,7 @@ import javax.swing.UIManager;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Insets;
+import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
@@ -125,39 +127,70 @@ import java.util.ResourceBundle;
  * <P>
  * You can also save the report in PDF format (thanks to the iText library).
  * <p>
- * When including this PreviewFrame in own programs, you should override the provided
- * createXXXAction-methods to include your customized actions.
+ * When including this PreviewFrame in your own programs, you should override the provided
+ * createXXXAction methods to include your customized actions.
  *
- * @author DG
+ * @author David Gilbert
+ * @author Thomas Morgner
  */
-public class PreviewFrame
-    extends JFrame
-    implements JFreeReportConstants
+public class PreviewFrame extends JFrame implements JFreeReportConstants
 {
+  /** The default width of the report viewport. */
+  public static final int DEFAULT_VIEWPORT_WIDTH = 640;
+
+  /** The default height of the report viewport. */
+  public static final int DEFAULT_VIEWPORT_HEIGHT = 480;
+
+  /**
+   * A wrapper action.
+   */
   private class WrapperAction implements Action
   {
+    /** The parent action. */
     private Action parent;
 
+    /**
+     * Creates a new action.
+     *
+     * @param parent  the parent action (null not permitted).
+     */
     public WrapperAction(Action parent)
     {
       setParent(parent);
     }
 
+    /**
+     * Returns the parent action.
+     *
+     * @return the parent action.
+     */
     public Action getParent()
     {
       return parent;
     }
 
+    /**
+     * Sets the parent action.
+     *
+     * @param parent  the parent action (null not permitted).
+     */
     public void setParent(Action parent)
     {
-      if (parent == null) throw new NullPointerException();
+      if (parent == null)
+      {
+        throw new NullPointerException();
+      }
       this.parent = parent;
       registerAction(parent);
     }
 
     /**
-     * Gets one of this object's properties
-     * using the associated key.
+     * Gets one of this object's properties using the associated key.
+     *
+     * @param key  the key.
+     *
+     * @return the property value.
+     *
      * @see #putValue
      */
     public Object getValue(String key)
@@ -167,6 +200,8 @@ public class PreviewFrame
 
     /**
      * Invoked when an action occurs.
+     *
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -174,13 +209,11 @@ public class PreviewFrame
     }
 
     /**
-     * Sets one of this object's properties
-     * using the associated key. If the value has
-     * changed, a <code>PropertyChangeEvent</code> is sent
-     * to listeners.
+     * Sets one of this object's properties using the associated key. If the value has
+     * changed, a <code>PropertyChangeEvent</code> is sent to listeners.
      *
-     * @param key    a <code>String</code> containing the key
-     * @param value  an <code>Object</code> value
+     * @param key    a <code>String</code> containing the key.
+     * @param value  an <code>Object</code> value.
      */
     public void putValue(String key, Object value)
     {
@@ -194,7 +227,7 @@ public class PreviewFrame
      * If the value has changed, a <code>PropertyChangeEvent</code> is sent
      * to listeners.
      *
-     * @param  b true to enable this <code>Action</code>, false to disable it
+     * @param  b true to enable this <code>Action</code>, false to disable it.
      */
     public void setEnabled(boolean b)
     {
@@ -206,7 +239,7 @@ public class PreviewFrame
      * any component associated with this object is active and
      * able to fire this object's <code>actionPerformed</code> method.
      *
-     * @return true if this <code>Action</code> is enabled
+     * @return true if this <code>Action</code> is enabled.
      */
     public boolean isEnabled()
     {
@@ -219,7 +252,7 @@ public class PreviewFrame
      * <code>Action</code> object. When its enabled state or other property
      * changes, the registered listeners are informed of the change.
      *
-     * @param listener  a <code>PropertyChangeListener</code> object
+     * @param listener  a <code>PropertyChangeListener</code> object.
      */
     public void addPropertyChangeListener(PropertyChangeListener listener)
     {
@@ -238,8 +271,14 @@ public class PreviewFrame
     }
   }
 
+  /**
+   * A property change listener for the report pane.
+   */
   private class ReportPanePropertyChangeListener implements PropertyChangeListener
   {
+    /**
+     * Creates a new listener.
+     */
     public ReportPanePropertyChangeListener()
     {
     }
@@ -309,7 +348,7 @@ public class PreviewFrame
     /**
      * Closes the preview frame.
      *
-     * @param e The action event.
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -341,7 +380,7 @@ public class PreviewFrame
     /**
      * Jump to the first page of the report
      *
-     * @param e The action event.
+     * @param e  the action event.
      *
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
@@ -366,8 +405,9 @@ public class PreviewFrame
     }
 
     /**
-     * show the next page of the report
-     * @param e The action event.
+     * Show the next page of the report.
+     *
+     * @param e the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -389,8 +429,9 @@ public class PreviewFrame
     }
 
     /**
-     * show the previous page of the report.
-     * @param e The action event.
+     * Show the previous page of the report.
+     *
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -414,7 +455,8 @@ public class PreviewFrame
     /**
      * jump to the last page of the report.
      *
-     * @param e The action event.
+     * @param e  the action event.
+     *
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent e)
@@ -438,8 +480,9 @@ public class PreviewFrame
     }
 
     /**
-     * increase zoom.
-     * @param e The action event.
+     * Increase zoom.
+     *
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -461,8 +504,9 @@ public class PreviewFrame
     }
 
     /**
-     * decrease zoom.
-     * @param e The action event.
+     * Decrease zoom.
+     *
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -486,7 +530,7 @@ public class PreviewFrame
     /**
      * Prints the report
      *
-     * @param e The action event.
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -504,6 +548,7 @@ public class PreviewFrame
       }
       catch (PrinterException pe)
       {
+        // to-do : report the exception to the user
       }
     }
   }
@@ -522,9 +567,9 @@ public class PreviewFrame
     }
 
     /**
-     * perform page setup
+     * Perform page setup.
      *
-     * @param e The action event.
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -557,7 +602,7 @@ public class PreviewFrame
      * Closes the preview frame if the default close operation is set to dispose
      * so this frame is reusable.
      *
-     * @param e The action event.
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -588,7 +633,7 @@ public class PreviewFrame
     /**
      * Does nothing (should show an 'about' dialog).
      *
-     * @param e The action event.
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -611,7 +656,7 @@ public class PreviewFrame
     /**
      * Jump to a page.
      *
-     * @param e The action event.
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -640,14 +685,22 @@ public class PreviewFrame
     }
   }
 
+  /**
+   * Selects the zoom factor.
+   */
   private class ZoomSelectAction extends AbstractAction
   {
+    /**
+     * Creates a new action.
+     */
     public ZoomSelectAction()
     {
     }
 
     /**
      * Invoked when an action occurs.
+     *
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -655,10 +708,19 @@ public class PreviewFrame
     }
   }
 
+  /**
+   * Sets the zoom.
+   */
   protected class ZoomSetAction extends AbstractActionDowngrade
   {
+    /** The zoom factor. */
     private int zoomFactor;
 
+    /**
+     * Creates a new action.
+     *
+     * @param factorIndex  the zoom factor index.
+     */
     public ZoomSetAction(int factorIndex)
     {
       zoomFactor = factorIndex;
@@ -667,6 +729,8 @@ public class PreviewFrame
 
     /**
      * Invoked when an action occurs.
+     *
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -745,19 +809,19 @@ public class PreviewFrame
   private PDFSaveDialog pdfSaveDialog;
 
   /**
-   * Constructs a PreviewFrame that displays the specified report, and has the specified width
-   * and height (to begin with).
+   * Constructs a PreviewFrame that displays the specified report.
    *
-   * @param report The report to be displayed.
+   * @param report  the report to be displayed.
+   *
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   public PreviewFrame(JFreeReport report) throws ReportProcessingException
   {
-    // get a locale-specific resource bundle...
     setLargeIconsEnabled(true);
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-    // Handle a JDK-Bug: Windows are not GCd if dispose is not called manually.
-    // DisposedState is undone when show() or pack() is called, so this does no harm
+    // handle a JDK bug: windows are not garbage collected if dispose is not called manually.
+    // DisposedState is undone when show() or pack() is called, so this does no harm.
     addComponentListener(new ComponentAdapter()
     {
       public void componentHidden(ComponentEvent e)
@@ -766,6 +830,7 @@ public class PreviewFrame
       }
     });
 
+    // get a locale-specific resource bundle...
     ResourceBundle resources = getResources();
 
     this.setTitle(resources.getString("preview-frame.title"));
@@ -792,8 +857,9 @@ public class PreviewFrame
     reportPaneHolder.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
     JScrollPane s1 = new JScrollPane(reportPaneHolder);
+    s1.getViewport().setPreferredSize(new Dimension(DEFAULT_VIEWPORT_WIDTH,
+                                                    DEFAULT_VIEWPORT_HEIGHT));
     s1.setDoubleBuffered(false);
-    //s1.setBorder(null);
     s1.getVerticalScrollBar().setUnitIncrement(20);
 
     JPanel scrollPaneHolder = new JPanel();
@@ -819,6 +885,11 @@ public class PreviewFrame
     return pdfSaveDialog;
   }
 
+  /**
+   * Creates a property change listener for the report pane.
+   *
+   * @return the property change listener.
+   */
   protected ReportPanePropertyChangeListener createReportPanePropertyChangeListener()
   {
     return new ReportPanePropertyChangeListener();
@@ -827,9 +898,11 @@ public class PreviewFrame
   /**
    * Creates the ReportPane for the report.
    *
-   * @param report the report for this pane.
+   * @param report  the report for this pane.
    *
    * @return the report pane.
+   *
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   protected ReportPane createReportPane(JFreeReport report) throws ReportProcessingException
   {
@@ -885,6 +958,8 @@ public class PreviewFrame
 
   /**
    * Prints the report.
+   *
+   * @throws PrinterException if there is a problem printing.
    */
   protected void attemptPrint() throws PrinterException
   {
@@ -896,11 +971,21 @@ public class PreviewFrame
     }
   }
 
+  /**
+   * Returns the report pane, which implements the Pageable interface.
+   *
+   * @return the report pane.
+   */
   protected Pageable getPageable ()
   {
     return reportPane;
   }
 
+  /**
+   * Returns the report pane, which implements the Printable interface.
+   *
+   * @return the report pane.
+   */
   protected Printable getPrintable ()
   {
     return reportPane;
@@ -1038,7 +1123,7 @@ public class PreviewFrame
   }
 
   /**
-   * registeres the keystrokes of all known actions to this frame
+   * Registers the keystrokes of all known actions to this frame.
    */
   protected void registerDefaultActions()
   {
@@ -1050,7 +1135,8 @@ public class PreviewFrame
        */
       public void windowClosing(WindowEvent e)
       {
-        getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "CloseFrame"));
+        getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
+                                                         "CloseFrame"));
       }
     }
     );
@@ -1118,18 +1204,23 @@ public class PreviewFrame
   }
 
   /**
-   * Creates the AboutAction used in this previewframe.
+   * Creates an 'About' action for use in the preview frame.
    * <P>
-   * If you subclass PreviewFrame, and override this method, you can display your own 'about'
+   * If you subclass PreviewFrame, and override this method, you can display your own 'About'
    * dialog.
    *
-   * @return the 'about' action.
+   * @return the action.
    */
   protected Action createDefaultAboutAction()
   {
     return new DefaultAboutAction();
   }
 
+  /**
+   * Creates a 'Zoom Select' action for use in the preview frame.
+   *
+   * @return the action.
+   */
   protected Action createZoomSelectAction()
   {
     return new ZoomSelectAction();
@@ -1324,6 +1415,13 @@ public class PreviewFrame
     return button;
   }
 
+  /**
+   * Creates a menu item based on the supplied action.
+   *
+   * @param action  the action.
+   *
+   * @return the menu item.
+   */
   protected JMenuItem createMenuItem (Action action)
   {
     JMenuItem menuItem = new ActionMenuItem(action);
@@ -1453,125 +1551,245 @@ public class PreviewFrame
     super.dispose();
 
     // Silly Swing keeps at least one reference in the RepaintManager to support DoubleBuffering
-    // I dont want this here, as PreviewFrames are evil and resource expensive ...
+    // I don't want this here, as PreviewFrames are evil and resource expensive ...
     RepaintManager.setCurrentManager(null);
   }
 
+  /**
+   * Returns the 'About' action.
+   *
+   * @return the 'About' action.
+   */
   public Action getAboutAction()
   {
     return aboutAction.getParent();
   }
 
+  /**
+   * Sets the 'About' action.
+   *
+   * @param aboutAction  the 'About' action.
+   */
   public void setAboutAction(Action aboutAction)
   {
     this.aboutAction.setParent(aboutAction);
   }
 
+  /**
+   * Returns the 'Save As' action.
+   *
+   * @return the 'Save As' action.
+   */
   public Action getSaveAsAction()
   {
     return saveAsAction.getParent();
   }
 
+  /**
+   * Sets the 'Save As' action.
+   *
+   * @param saveAsAction  the 'Save As' action.
+   */
   public void setSaveAsAction(Action saveAsAction)
   {
     this.saveAsAction.setParent(saveAsAction);
   }
 
+  /**
+   * Returns the 'Page Setup' action.
+   *
+   * @return the 'Page Setup' action.
+   */
   public Action getPageSetupAction()
   {
     return pageSetupAction.getParent();
   }
 
+  /**
+   * Sets the 'Page Setup' action.
+   *
+   * @param pageSetupAction  the 'Page Setup' action.
+   */
   public void setPageSetupAction(Action pageSetupAction)
   {
     this.pageSetupAction.setParent(pageSetupAction);
   }
 
+  /**
+   * Returns the 'Print' action.
+   *
+   * @return the 'Print' action.
+   */
   public Action getPrintAction()
   {
     return printAction.getParent();
   }
 
+  /**
+   * Sets the 'Print' action.
+   *
+   * @param printAction  the 'Print' action.
+   */
   public void setPrintAction(Action printAction)
   {
     this.printAction.setParent(printAction);
   }
 
+  /**
+   * Returns the 'Close' action.
+   *
+   * @return the 'Close' action.
+   */
   public Action getCloseAction()
   {
     return closeAction.getParent();
   }
 
+  /**
+   * Sets the 'Close' action.
+   *
+   * @param closeAction  the 'Close' action.
+   */
   public void setCloseAction(Action closeAction)
   {
     this.closeAction.setParent(closeAction);
   }
 
+  /**
+   * Returns the 'First Page' action.
+   *
+   * @return the 'First Page' action.
+   */
   public Action getFirstPageAction()
   {
     return firstPageAction.getParent();
   }
 
+  /**
+   * Sets the 'First Page' action.
+   *
+   * @param firstPageAction  the 'First Page' action.
+   */
   public void setFirstPageAction(Action firstPageAction)
   {
     this.firstPageAction.setParent(firstPageAction);
   }
 
+  /**
+   * Returns the 'Last Page' action.
+   *
+   * @return the 'Last Page' action.
+   */
   public Action getLastPageAction()
   {
     return lastPageAction.getParent();
   }
 
+  /**
+   * Sets the 'Last Page' action.
+   *
+   * @param lastPageAction  the 'Last Page' action.
+   */
   public void setLastPageAction(Action lastPageAction)
   {
     this.lastPageAction.setParent(lastPageAction);
   }
 
+  /**
+   * Returns the 'Next Page' action.
+   *
+   * @return the 'Next Page' action.
+   */
   public Action getNextPageAction()
   {
     return nextPageAction.getParent();
   }
 
+  /**
+   * Sets the 'Next Page' action.
+   *
+   * @param nextPageAction  the 'Next Page' action.
+   */
   public void setNextPageAction(Action nextPageAction)
   {
     this.nextPageAction.setParent(nextPageAction);
   }
 
+  /**
+   * Returns the 'Previous Page' action.
+   *
+   * @return the 'Previous Page' action.
+   */
   public Action getPreviousPageAction()
   {
     return previousPageAction.getParent();
   }
 
+  /**
+   * Sets the 'Previous Page' action.
+   *
+   * @param previousPageAction  the 'Previous Page' action.
+   */
   public void setPreviousPageAction(Action previousPageAction)
   {
     this.previousPageAction.setParent(previousPageAction);
   }
 
+  /**
+   * Returns the 'Zoom In' action.
+   *
+   * @return the 'Zoom In' action.
+   */
   public Action getZoomInAction()
   {
     return zoomInAction.getParent();
   }
 
+  /**
+   * Sets the 'Zoom In' action.
+   *
+   * @param zoomInAction  the 'Zoom In' action.
+   */
   public void setZoomInAction(Action zoomInAction)
   {
     this.zoomInAction.setParent(zoomInAction);
   }
 
+  /**
+   * Returns the 'Zoom Out' action.
+   *
+   * @return the 'Zoom Out' action.
+   */
   public Action getZoomOutAction()
   {
     return zoomOutAction.getParent();
   }
 
+  /**
+   * Sets the 'Zoom Out' action.
+   *
+   * @param zoomOutAction  the 'Zoom Out' action.
+   */
   public void setZoomOutAction(Action zoomOutAction)
   {
     this.zoomOutAction.setParent(zoomOutAction);
   }
 
+  /**
+   * Returns the 'Goto' action.
+   *
+   * @return the 'Goto' action.
+   */
   public Action getGotoAction()
   {
     return gotoAction.getParent();
   }
 
+  /**
+   * Sets the 'Goto' action.
+   *
+   * @param gotoAction  the 'Goto' action.
+   */
   public void setGotoAction(Action gotoAction)
   {
     this.gotoAction.setParent(gotoAction);

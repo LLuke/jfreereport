@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,8 +23,12 @@
  * ------------------
  * PDFSaveDialog.java
  * ------------------
+ * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
- * $Id: PDFSaveDialog.java,v 1.17 2002/12/08 23:29:48 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: PDFSaveDialog.java,v 1.18 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes
  * --------
@@ -33,7 +37,10 @@
  * 31-Aug-2002 : Documentation
  * 01-Sep-2002 : Printing security was inaccurate; bug (exception in JOptionPane) when file exists
  *               More documentation
+ * 10-Dec-2002 : Minor Javadoc changes (DG);
+ *
  */
+
 package com.jrefinery.report.preview;
 
 import com.jrefinery.report.JFreeReport;
@@ -707,8 +714,10 @@ public class PDFSaveDialog extends JDialog
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
-    buttonPanel.registerKeyboardAction(getActionConfirm(), KeyStroke.getKeyStroke('\n'), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    securityPanel.registerKeyboardAction(getActionConfirm(), KeyStroke.getKeyStroke('\n'), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    buttonPanel.registerKeyboardAction(getActionConfirm(), KeyStroke.getKeyStroke('\n'), 
+                                       JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    securityPanel.registerKeyboardAction(getActionConfirm(), KeyStroke.getKeyStroke('\n'), 
+                                         JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
@@ -922,12 +931,15 @@ public class PDFSaveDialog extends JDialog
   }
 
   /**
-   * Defines whether the user is allowed to print the file. If this right is granted, the
+   * Defines whether the user is allowed to print the file.  If this right is granted, the
    * user is also able to print a degraded version of the file, regardless of the
-   * allowDegradedPrinting property. If you disabled printing but enabled degraded printing,
-   * then the user is able to print a low-quality version of the document.
+   * <code>allowDegradedPrinting</code< property. If you disabled printing but enabled degraded 
+   * printing, then the user is able to print a low-quality version of the document.
    *
-   * @param allowPrinting set to true, if this files can be printed, false otherwise
+   * @param allowPrinting  set to <code>true</code>, if this file can be printed, 
+   *                       <code>false</code> otherwise.
+   * @param degraded  set to <code>true</code>, to allow degraded printing, and <code>false</code>
+   *                  otherwise.
    */
   public void setPrintLevel(boolean allowPrinting, boolean degraded)
   {
@@ -1128,19 +1140,19 @@ public class PDFSaveDialog extends JDialog
    */
   public boolean performValidate()
   {
-    if (getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_128BIT) ||
-        getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_40BIT))
+    if (getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_128BIT) 
+        || getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_40BIT))
     {
       if (txUserPassword.getText().equals(txConfUserPassword.getText()) == false)
       {
-        JOptionPane.showMessageDialog(this,
-                                      getResources().getString("pdfsavedialog.userpasswordNoMatch"));
+        JOptionPane.showMessageDialog(this, getResources().getString(
+            "pdfsavedialog.userpasswordNoMatch"));
         return false;
       }
       if (txOwnerPassword.getText().equals(txConfOwnerPassword.getText()) == false)
       {
-        JOptionPane.showMessageDialog(this,
-                                      getResources().getString("pdfsavedialog.ownerpasswordNoMatch"));
+        JOptionPane.showMessageDialog(this, getResources().getString(
+            "pdfsavedialog.ownerpasswordNoMatch"));
         return false;
       }
     }
@@ -1150,7 +1162,8 @@ public class PDFSaveDialog extends JDialog
     {
       JOptionPane.showMessageDialog(this,
                                     getResources().getString("pdfsavedialog.targetIsEmpty"),
-                                    getResources().getString("pdfsavedialog.errorTitle"), JOptionPane.ERROR_MESSAGE);
+                                    getResources().getString("pdfsavedialog.errorTitle"), 
+                                    JOptionPane.ERROR_MESSAGE);
       return false;
     }
     File f = new File(filename);
@@ -1160,37 +1173,43 @@ public class PDFSaveDialog extends JDialog
       {
         JOptionPane.showMessageDialog(this,
                                       getResources().getString("pdfsavedialog.targetIsNoFile"),
-                                      getResources().getString("pdfsavedialog.errorTitle"), JOptionPane.ERROR_MESSAGE);
+                                      getResources().getString("pdfsavedialog.errorTitle"), 
+                                      JOptionPane.ERROR_MESSAGE);
         return false;
       }
       if (f.canWrite() == false)
       {
         JOptionPane.showMessageDialog(this,
                                       getResources().getString("pdfsavedialog.targetIsNotWritable"),
-                                      getResources().getString("pdfsavedialog.errorTitle"), JOptionPane.ERROR_MESSAGE);
+                                      getResources().getString("pdfsavedialog.errorTitle"), 
+                                      JOptionPane.ERROR_MESSAGE);
         return false;
       }
+      String key1 = "pdfsavedialog.targetOverwriteConfirmation";
+      String key2 = "pdfsavedialog.targetOverwriteTitle";
       if (JOptionPane.showConfirmDialog(this,
-                                        MessageFormat.format(
-                                            getResources().getString("pdfsavedialog.targetOverwriteConfirmation"),
+                                        MessageFormat.format(getResources().getString(key1),
                                             new Object[]{getFilename()}
                                         ),
-                                        getResources().getString("pdfsavedialog.targetOverwriteTitle"),
-                                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.NO_OPTION)
+                                        getResources().getString(key2),
+                                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) 
+                                        == JOptionPane.NO_OPTION)
       {
         return false;
       }
     }
 
-    if (getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_128BIT) ||
-        getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_40BIT))
+    if (getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_128BIT) 
+        || getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_40BIT))
     {
       if (txOwnerPassword.getText().trim().length() == 0)
       {
         if (JOptionPane.showConfirmDialog(this,
-                                          getResources().getString("pdfsavedialog.ownerpasswordEmpty"),
+                                          getResources().getString(
+                                              "pdfsavedialog.ownerpasswordEmpty"),
                                           getResources().getString("pdfsavedialog.warningTitle"),
-                                          JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.NO_OPTION)
+                                          JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) 
+                                          == JOptionPane.NO_OPTION)
         {
           return false;
         }
@@ -1204,6 +1223,8 @@ public class PDFSaveDialog extends JDialog
    *
    * @param report  the report being processed.
    * @param pf  the pageformat used to write the report
+   *
+   * @return true or false.
    */
   public boolean savePDF(JFreeReport report, PageFormat pf)
   {
@@ -1216,6 +1237,14 @@ public class PDFSaveDialog extends JDialog
     return writePDF(report, pf);
   }
 
+  /**
+   * Saves a report to PDF format.
+   *
+   * @param report  the report.
+   * @param pf  the page format.
+   *
+   * @return true or false.
+   */
   public boolean writePDF(JFreeReport report, PageFormat pf)
   {
     OutputStream out = null;
@@ -1290,28 +1319,53 @@ public class PDFSaveDialog extends JDialog
         e);
   }
 
+  /**
+   * Initialises the PDF save dialog from the settings in the report configuration.
+   *
+   * @param config  the report configuration.
+   */
   public void initFromConfiguration(ReportConfiguration config)
   {
-    setAllowAssembly(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY, config, isAllowAssembly()));
+    setAllowAssembly(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY, config, 
+                                  isAllowAssembly()));
     setAllowCopy(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_COPY, config, isAllowCopy()));
     setAllowFillIn(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_FILLIN, config, isAllowFillIn()));
-    setAllowModifyAnnotations(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_MODIFY_ANNOTATIONS, config, isAllowModifyAnnotations()));
-    setAllowModifyContents(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_MODIFY_CONTENTS, config, isAllowModifyContents()));
-    setAllowScreenreaders(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_SCREENREADERS, config, isAllowScreenreaders()));
+    setAllowModifyAnnotations(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_MODIFY_ANNOTATIONS, 
+                                           config, isAllowModifyAnnotations()));
+    setAllowModifyContents(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_MODIFY_CONTENTS, config, 
+                                        isAllowModifyContents()));
+    setAllowScreenreaders(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_SCREENREADERS, config, 
+                                       isAllowScreenreaders()));
 
-    boolean printing = parseBoolean(PDFOutputTarget.SECURITY_ALLOW_PRINTING, config, isAllowPrinting());
-    boolean degraded = parseBoolean(PDFOutputTarget.SECURITY_ALLOW_DEGRADED_PRINTING, config, isAllowDegradedPrinting());
+    boolean printing = parseBoolean(PDFOutputTarget.SECURITY_ALLOW_PRINTING, config, 
+                                    isAllowPrinting());
+    boolean degraded = parseBoolean(PDFOutputTarget.SECURITY_ALLOW_DEGRADED_PRINTING, config, 
+                                    isAllowDegradedPrinting());
     setPrintLevel(printing, degraded);
 
-    setEncryptionValue(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_ENCRYPTION, getEncryptionValue()));
-    setAuthor(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.AUTHOR, getAuthor()));
-    setUserPassword(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_USERPASSWORD, getUserPassword()));
-    setOwnerPassword(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword()));
+    setEncryptionValue(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX 
+                                    + PDFOutputTarget.SECURITY_ENCRYPTION, getEncryptionValue()));
+    setAuthor(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX 
+                                    + PDFOutputTarget.AUTHOR, getAuthor()));
+    setUserPassword(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX 
+                                    + PDFOutputTarget.SECURITY_USERPASSWORD, getUserPassword()));
+    setOwnerPassword(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX 
+                                    + PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword()));
   }
 
+  /**
+   * Parses a boolean property from a report configuration.
+   *
+   * @param key  the property key.
+   * @param config  the report configuration.
+   * @param orgVal  the default value.
+   *
+   * @return true or false.
+   */
   private boolean parseBoolean(String key, ReportConfiguration config, boolean orgVal)
   {
-    String val = config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + key, String.valueOf(orgVal));
+    String val = config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + key, 
+                                          String.valueOf(orgVal));
     return (val.equalsIgnoreCase("true"));
   }
 }
