@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StyleKeyReferenceTableModel.java,v 1.3 2003/03/07 16:55:59 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,12 +38,12 @@
 
 package com.jrefinery.report.io.ext.factory.stylekey;
 
-import com.jrefinery.report.targets.style.StyleKey;
-
-import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import javax.swing.table.AbstractTableModel;
+
+import com.jrefinery.report.targets.style.StyleKey;
 
 /**
  * A table model for the style key reference generator.

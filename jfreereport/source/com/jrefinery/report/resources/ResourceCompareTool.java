@@ -24,7 +24,7 @@
  * ResourceCompareTool.java
  * ------------------------
  *
- * $Id: ResourceCompareTool.java,v 1.5 2003/02/25 20:15:46 taqua Exp $
+ * $Id: ResourceCompareTool.java,v 1.6 2003/02/26 16:42:22 mungady Exp $
  *
  * Changes
  * -------
@@ -33,10 +33,10 @@
  */
 package com.jrefinery.report.resources;
 
-import java.util.Hashtable;
-import java.util.Enumeration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 /**
  * The ResourceCompareTool provides simple reporting capabilities to compare a

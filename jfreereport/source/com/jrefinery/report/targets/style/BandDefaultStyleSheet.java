@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandDefaultStyleSheet.java,v 1.12 2003/04/23 17:13:42 taqua Exp $
+ * $Id: BandDefaultStyleSheet.java,v 1.13 2003/04/24 18:08:57 taqua Exp $
  *
  * Changes
  * -------
@@ -38,11 +38,11 @@
 
 package com.jrefinery.report.targets.style;
 
-import org.jfree.ui.FloatDimension;
-import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
-
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+
+import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
+import org.jfree.ui.FloatDimension;
 
 /**
  * A default band style sheet. This StyleSheet defines the default attribute

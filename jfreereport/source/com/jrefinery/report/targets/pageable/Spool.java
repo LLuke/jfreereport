@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Spool.java,v 1.9 2003/02/09 18:43:05 taqua Exp $
+ * $Id: Spool.java,v 1.10 2003/04/05 18:57:16 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,10 @@
 
 package com.jrefinery.report.targets.pageable;
 
+import java.util.ArrayList;
+
 import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
 import com.jrefinery.report.targets.pageable.operations.PhysicalOperationsCollector;
-
-import java.util.ArrayList;
 
 /** 
  * A spool is a sequence of operations (instances of PhysicalOperation) that can be

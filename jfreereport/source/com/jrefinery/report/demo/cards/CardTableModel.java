@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardTableModel.java,v 1.1 2003/04/02 21:24:00 taqua Exp $
+ * $Id: CardTableModel.java,v 1.2 2003/04/09 15:30:27 mungady Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,6 @@ package com.jrefinery.report.demo.cards;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 import javax.swing.table.AbstractTableModel;
 
 /**

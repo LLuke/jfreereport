@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.4 2003/04/23 13:39:19 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.5 2003/04/24 18:08:47 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@ import java.awt.Color;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.event.ReportEvent;
-import org.jfree.xml.factory.objects.ColorObjectDescription;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import org.jfree.xml.factory.objects.ColorObjectDescription;
 
 /**
  * A function that alternates between true and false for each item within a group. The functions
@@ -239,7 +239,7 @@ public class ElementColorFunction extends AbstractFunction
     }
 
     Object o = event.getDataRow().get(getField());
-    boolean value = false;
+    boolean value;
     if (o == null)
     {
       value = false;

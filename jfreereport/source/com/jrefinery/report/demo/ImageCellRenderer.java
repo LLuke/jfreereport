@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ImageCellRenderer.java,v 1.5 2002/09/17 09:49:09 mungady Exp $
+ * $Id: ImageCellRenderer.java,v 1.6 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -38,13 +38,13 @@
 
 package com.jrefinery.report.demo;
 
+import java.awt.Component;
+import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
-import java.awt.Component;
-import java.awt.Image;
 
 /**
  * A table cell renderer that draws an image in a table cell.

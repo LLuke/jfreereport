@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPage.java,v 1.5 2003/02/09 18:43:05 taqua Exp $
+ * $Id: LogicalPage.java,v 1.6 2003/02/18 19:37:30 taqua Exp $
  *
  * Changes
  * -------
@@ -37,10 +37,10 @@
  */
 package com.jrefinery.report.targets.pageable;
 
-import com.jrefinery.report.Band;
-
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
+
+import com.jrefinery.report.Band;
 
 /**
  * An interface that defines a logical page. A logical page is responsible for

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: LGPLTextDemo.java,v 1.5 2003/02/26 16:42:07 mungady Exp $
+ * $Id: LGPLTextDemo.java,v 1.6 2003/04/24 18:08:45 taqua Exp $
  *
  * Changes
  * -------
@@ -38,12 +38,10 @@
 
 package com.jrefinery.report.demo;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.io.ReportGenerator;
-import com.jrefinery.report.preview.PreviewFrame;
-import com.jrefinery.report.util.Log;
-
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -52,11 +50,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URL;
 
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.io.ReportGenerator;
+import com.jrefinery.report.preview.PreviewFrame;
+import com.jrefinery.report.util.Log;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 

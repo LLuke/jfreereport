@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: $
+ * $Id: PreviewProxy.java,v 1.2 2003/02/25 14:45:43 mungady Exp $
  *
  * Changes
  * --------
@@ -37,9 +37,9 @@
  */
 package com.jrefinery.report.preview;
 
+import java.awt.event.ComponentListener;
 import javax.swing.Action;
 import javax.swing.JMenuBar;
-import java.awt.event.ComponentListener;
 
 /**
  * A proxy for the report preview component.

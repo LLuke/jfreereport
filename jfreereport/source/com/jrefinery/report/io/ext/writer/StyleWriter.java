@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.10 2003/04/24 18:08:53 taqua Exp $
+ * $Id: StyleWriter.java,v 1.11 2003/04/28 22:21:44 taqua Exp $
  *
  * Changes
  * -------
@@ -45,15 +45,15 @@ import java.util.List;
 import java.util.Properties;
 
 import com.jrefinery.report.ShapeElement;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.io.ext.StyleSheetHandler;
-import org.jfree.xml.factory.objects.ClassFactoryCollector;
-import org.jfree.xml.factory.objects.ObjectDescription;
-import org.jfree.xml.factory.objects.ObjectFactoryException;
 import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleKey;
+import com.jrefinery.report.util.Log;
+import org.jfree.xml.factory.objects.ClassFactoryCollector;
+import org.jfree.xml.factory.objects.ObjectDescription;
+import org.jfree.xml.factory.objects.ObjectFactoryException;
 
 /**
  * A style writer.

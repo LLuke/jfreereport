@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFTextCellData.java,v 1.4 2003/02/25 11:57:58 taqua Exp $
+ * $Id: RTFTextCellData.java,v 1.5 2003/02/26 16:42:31 mungady Exp $
  *
  * Changes
  * -------
@@ -36,12 +36,12 @@
  */
 package com.jrefinery.report.targets.table.rtf;
 
+import java.awt.geom.Rectangle2D;
+
 import com.lowagie.text.Cell;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Paragraph;
-
-import java.awt.geom.Rectangle2D;
 
 /**
  * A wrapper for text content within the generated RTF Table.

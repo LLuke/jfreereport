@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.62 2003/04/12 13:36:11 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.63 2003/04/24 18:08:45 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -58,7 +58,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -85,8 +84,8 @@ import com.jrefinery.report.util.ActionMenuItem;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.Log;
-import org.jfree.ui.about.AboutFrame;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.ui.about.AboutFrame;
 
 /**
  * The main frame in the report demonstration application. This demo has huge reports

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.18 2003/02/26 13:57:37 mungady Exp $
+ * $Id: SampleReport1.java,v 1.19 2003/02/26 16:42:08 mungady Exp $
  *
  * Changes:
  * --------
@@ -47,6 +47,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Element;
+import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.GroupFooter;
 import com.jrefinery.report.GroupHeader;
@@ -62,7 +63,7 @@ import com.jrefinery.report.function.ElementVisibilitySwitchFunction;
 import com.jrefinery.report.function.ExpressionCollection;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.function.ItemSumFunction;
-import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 /**
  * This creates a report similar to the one defined by report1.xml.
@@ -103,7 +104,8 @@ public class SampleReport1
             "date1",
             new Rectangle2D.Float(0, 0, -100, 14),
             null,
-            Element.RIGHT, Element.MIDDLE,
+            ElementAlignment.RIGHT.getOldAlignment(), 
+            ElementAlignment.MIDDLE.getOldAlignment(),
             null,
             "<null>",
             "d-MMM-yyyy",
@@ -156,12 +158,13 @@ public class SampleReport1
         "Label 2",
         new Rectangle2D.Float(10, 0, WIDTH, 0),
         null,
-        Element.LEFT, Element.TOP,
+        ElementAlignment.LEFT.getOldAlignment(),
+        ElementAlignment.TOP.getOldAlignment(),
         null,
         " 111111111 2222222222 333333333 4444444444444 5555 66666666 777 88888888888888 99999999 "
         + "10101011 "
     );
-    field3.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    field3.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                        new Boolean(true));
     pageFooter.addElement(field3);
     return pageFooter;
@@ -181,7 +184,8 @@ public class SampleReport1
             "Label 2",
             new Rectangle2D.Float(0, 0, -100, 24),
             null,
-            Element.CENTER, Element.MIDDLE,
+            ElementAlignment.CENTER.getOldAlignment(),
+            ElementAlignment.MIDDLE.getOldAlignment(),
             null,
             "*** END OF REPORT ***"
         )
@@ -203,7 +207,8 @@ public class SampleReport1
             "Label 1",
             new Rectangle2D.Float(0, 0, -100, 24),
             null,
-            Element.CENTER, Element.MIDDLE,
+            ElementAlignment.CENTER.getOldAlignment(),
+            ElementAlignment.MIDDLE.getOldAlignment(),
             null,
             "LIST OF CONTINENTS BY COUNTRY"
         )
@@ -264,7 +269,8 @@ public class SampleReport1
             "Code Element",
             new Rectangle2D.Float(0, 0, 176, 8),
             null,
-            Element.LEFT, Element.MIDDLE,
+            ElementAlignment.LEFT.getOldAlignment(),
+            ElementAlignment.MIDDLE.getOldAlignment(),
             null,
             "<null>",
             "Country"
@@ -275,7 +281,8 @@ public class SampleReport1
             "Code Element",
             new Rectangle2D.Float(180, 0, 76, 8),
             null,
-            Element.LEFT, Element.MIDDLE,
+            ElementAlignment.LEFT.getOldAlignment(),
+            ElementAlignment.MIDDLE.getOldAlignment(),
             null,
             "<null>",
             "ISO Code"
@@ -286,7 +293,8 @@ public class SampleReport1
             "Population Element",
             new Rectangle2D.Float(260, 0, 76, 8),
             null,
-            Element.LEFT, Element.MIDDLE,
+            ElementAlignment.LEFT.getOldAlignment(),
+            ElementAlignment.MIDDLE.getOldAlignment(),
             null,
             "<null>",
             "#,##0",
@@ -396,7 +404,8 @@ public class SampleReport1
             "Label 5",
             new Rectangle2D.Float(0, 1, 76, 9),
             null,
-            Element.LEFT, Element.MIDDLE,
+            ElementAlignment.LEFT.getOldAlignment(),
+            ElementAlignment.MIDDLE.getOldAlignment(),
             null,
             "CONTINENT:"
         )
@@ -406,7 +415,8 @@ public class SampleReport1
             "Continent Element",
             new Rectangle2D.Float(96, 1, 76, 9),
             null,
-            Element.LEFT, Element.MIDDLE,
+            ElementAlignment.LEFT.getOldAlignment(),
+            ElementAlignment.MIDDLE.getOldAlignment(),
             null,
             "<null>",
             "Continent"
@@ -429,7 +439,8 @@ public class SampleReport1
             "Label 6",
             new Rectangle2D.Float(0, 0, -100, 12),
             null,
-            Element.LEFT, Element.MIDDLE,
+            ElementAlignment.LEFT.getOldAlignment(),
+            ElementAlignment.MIDDLE.getOldAlignment(),
             null,
             "Population:"
         )
@@ -439,7 +450,8 @@ public class SampleReport1
             "anonymous",
             new Rectangle2D.Float(260, 0, 76, 12),
             null,
-            Element.LEFT, Element.MIDDLE,
+            ElementAlignment.LEFT.getOldAlignment(),
+            ElementAlignment.MIDDLE.getOldAlignment(),
             null,
             "<null>",
             "#,##0",

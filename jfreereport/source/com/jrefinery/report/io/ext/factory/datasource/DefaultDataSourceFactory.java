@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultDataSourceFactory.java,v 1.8 2003/04/23 13:43:04 taqua Exp $
+ * $Id: DefaultDataSourceFactory.java,v 1.9 2003/04/24 18:08:50 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -43,6 +43,7 @@ import com.jrefinery.report.filter.DateFormatFilter;
 import com.jrefinery.report.filter.DateFormatParser;
 import com.jrefinery.report.filter.DecimalFormatFilter;
 import com.jrefinery.report.filter.DecimalFormatParser;
+import com.jrefinery.report.filter.DrawableFilter;
 import com.jrefinery.report.filter.EmptyDataSource;
 import com.jrefinery.report.filter.FormatFilter;
 import com.jrefinery.report.filter.FormatParser;
@@ -51,14 +52,12 @@ import com.jrefinery.report.filter.ImageRefFilter;
 import com.jrefinery.report.filter.NumberFormatFilter;
 import com.jrefinery.report.filter.NumberFormatParser;
 import com.jrefinery.report.filter.ResourceFileFilter;
+import com.jrefinery.report.filter.ShapeFilter;
 import com.jrefinery.report.filter.SimpleDateFormatFilter;
 import com.jrefinery.report.filter.SimpleDateFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.filter.StringFilter;
 import com.jrefinery.report.filter.URLFilter;
-import com.jrefinery.report.filter.DrawableFilter;
-import com.jrefinery.report.filter.ShapeFilter;
-import org.jfree.xml.factory.objects.BeanObjectDescription;
 import com.jrefinery.report.io.ext.factory.templates.DateFieldTemplateDescription;
 import com.jrefinery.report.io.ext.factory.templates.ImageFieldTemplateDescription;
 import com.jrefinery.report.io.ext.factory.templates.ImageURLElementTemplateDescription;
@@ -67,8 +66,9 @@ import com.jrefinery.report.io.ext.factory.templates.LabelTemplateDescription;
 import com.jrefinery.report.io.ext.factory.templates.NumberFieldTemplateDescription;
 import com.jrefinery.report.io.ext.factory.templates.ResourceFieldTemplateDescription;
 import com.jrefinery.report.io.ext.factory.templates.ResourceLabelTemplateDescription;
-import com.jrefinery.report.io.ext.factory.templates.StringFieldTemplateDescription;
 import com.jrefinery.report.io.ext.factory.templates.ShapeFieldTemplateDescription;
+import com.jrefinery.report.io.ext.factory.templates.StringFieldTemplateDescription;
+import org.jfree.xml.factory.objects.BeanObjectDescription;
 
 /**
  * A default implementation of the {@link DataSourceFactory} interface.

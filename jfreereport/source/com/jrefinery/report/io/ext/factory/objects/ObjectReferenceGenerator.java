@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceGenerator.java,v 1.4 2003/04/23 13:43:04 taqua Exp $
+ * $Id: ObjectReferenceGenerator.java,v 1.5 2003/04/24 18:08:51 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,14 +38,14 @@
 
 package com.jrefinery.report.io.ext.factory.objects;
 
+import java.net.URL;
+
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.io.ext.factory.datasource.DefaultDataSourceFactory;
 import com.jrefinery.report.io.ext.factory.templates.TemplateClassFactory;
 import com.jrefinery.report.targets.support.ReportProcessorUtil;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
-
-import java.net.URL;
 
 /**
  * An application that creates a report documenting the object references.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyFactoryCollector.java,v 1.8 2003/04/23 13:43:04 taqua Exp $
+ * $Id: StyleKeyFactoryCollector.java,v 1.9 2003/04/24 18:08:52 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,11 +38,11 @@
 
 package com.jrefinery.report.io.ext.factory.stylekey;
 
-import com.jrefinery.report.targets.style.StyleKey;
-import org.jfree.xml.Parser;
-
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.jrefinery.report.targets.style.StyleKey;
+import org.jfree.xml.Parser;
 
 /**
  * A style key factory.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HugeJFreeReportDemo.java,v 1.26 2003/04/09 16:21:34 mungady Exp $
+ * $Id: HugeJFreeReportDemo.java,v 1.27 2003/04/24 18:08:45 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -42,7 +42,6 @@ package com.jrefinery.report.demo;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.UIManager;
 
 import org.jfree.ui.RefineryUtilities;

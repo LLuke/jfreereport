@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources.java,v 1.11 2002/09/13 15:38:07 mungady Exp $
+ * $Id: DemoResources.java,v 1.12 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,10 @@
 
 package com.jrefinery.report.demo.resources;
 
-import com.jrefinery.report.resources.JFreeReportResources;
-
-import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
+import javax.swing.KeyStroke;
+
+import com.jrefinery.report.resources.JFreeReportResources;
 
 /**
  * User interface items for the JFreeReport demonstration application.  These have been put into

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyHandler.java,v 1.8 2003/04/23 13:39:21 taqua Exp $
+ * $Id: PropertyHandler.java,v 1.9 2003/04/24 18:08:49 taqua Exp $
  *
  * Changes
  * -------
@@ -38,13 +38,13 @@
 
 package com.jrefinery.report.io.ext;
 
+import java.util.Properties;
+
 import com.jrefinery.report.util.CharacterEntityParser;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
-import java.util.Properties;
 
 /**
  * A property handler. Handles the defintion of properties. The defined properties

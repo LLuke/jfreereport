@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited); 
  *
- * $Id: HtmlExportDialog.java,v 1.16 2003/04/23 17:13:39 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.17 2003/04/24 18:08:55 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -80,15 +79,15 @@ import javax.swing.KeyStroke;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.targets.table.html.DirectoryHtmlFilesystem;
 import com.jrefinery.report.targets.table.html.HtmlProcessor;
+import com.jrefinery.report.targets.table.html.HtmlProducer;
 import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
 import com.jrefinery.report.targets.table.html.ZIPHtmlFilesystem;
-import com.jrefinery.report.targets.table.html.HtmlProducer;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FilesystemFilter;
-import org.jfree.io.IOUtils;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.StringUtil;
+import org.jfree.io.IOUtils;
 
 /**
  * A dialog that is used to perform the printing of a report into an HTML file.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.9 2003/04/23 13:43:05 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.10 2003/04/24 18:08:54 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,8 @@
 
 package com.jrefinery.report.io.simple;
 
+import java.util.Properties;
+
 import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
@@ -51,8 +53,6 @@ import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
-import java.util.Properties;
 
 /**
  * The functionFactory creates functions and adds these functions to the FunctionCollection

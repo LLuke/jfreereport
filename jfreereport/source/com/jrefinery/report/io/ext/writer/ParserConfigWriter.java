@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigWriter.java,v 1.4 2003/02/21 11:31:13 mungady Exp $
+ * $Id: ParserConfigWriter.java,v 1.5 2003/02/22 18:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -37,14 +37,14 @@
  */
 package com.jrefinery.report.io.ext.writer;
 
-import com.jrefinery.report.io.ext.ExtReportHandler;
-import com.jrefinery.report.io.ext.ParserConfigHandler;
-import com.jrefinery.report.util.Log;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
+
+import com.jrefinery.report.io.ext.ExtReportHandler;
+import com.jrefinery.report.io.ext.ParserConfigHandler;
+import com.jrefinery.report.util.Log;
 
 /**
  * A parser configuration writer.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.8 2003/04/11 14:11:44 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.9 2003/04/24 18:08:54 taqua Exp $
  *
  * Changes
  * --------
@@ -37,15 +37,23 @@
  */
 package com.jrefinery.report.preview;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.targets.csv.CSVProcessor;
-import com.jrefinery.report.targets.table.csv.CSVTableProcessor;
-import com.jrefinery.report.util.ActionButton;
-import com.jrefinery.report.util.ExceptionDialog;
-import com.jrefinery.report.util.LengthLimitingDocument;
-import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.report.util.StringUtil;
-
+import java.awt.Dialog;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -64,24 +72,15 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.border.TitledBorder;
-import java.awt.Dialog;
-import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.KeyEvent;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.targets.csv.CSVProcessor;
+import com.jrefinery.report.targets.table.csv.CSVTableProcessor;
+import com.jrefinery.report.util.ActionButton;
+import com.jrefinery.report.util.ExceptionDialog;
+import com.jrefinery.report.util.LengthLimitingDocument;
+import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.StringUtil;
 import org.jfree.ui.ExtensionFileFilter;
 
 /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ImageURLFieldTemplate.java,v 1.4 2003/03/07 16:55:54 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -38,13 +38,13 @@
 
 package com.jrefinery.report.filter.templates;
 
+import java.net.URL;
+
 import com.jrefinery.report.DataRow;
 import com.jrefinery.report.filter.DataRowConnectable;
 import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.filter.ImageLoadFilter;
 import com.jrefinery.report.filter.URLFilter;
-
-import java.net.URL;
 
 /**
  * An image URL field template, which reads the image from an URL supplied from

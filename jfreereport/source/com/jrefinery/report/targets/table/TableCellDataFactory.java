@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellDataFactory.java,v 1.4 2003/02/11 20:20:18 taqua Exp $
+ * $Id: TableCellDataFactory.java,v 1.5 2003/02/24 15:02:20 mungady Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
  */
 package com.jrefinery.report.targets.table;
 
-import com.jrefinery.report.Element;
-
 import java.awt.geom.Rectangle2D;
+
+import com.jrefinery.report.Element;
 
 /**
  * Creates TableCellData object from the given Elements and the element's bounds.

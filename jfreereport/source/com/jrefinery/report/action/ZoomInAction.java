@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ZoomInAction.java,v 1.14 2003/02/10 19:33:20 taqua Exp $
+ * $Id: ZoomInAction.java,v 1.15 2003/02/26 16:42:04 mungady Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,10 @@
  */
 package com.jrefinery.report.action;
 
+import java.util.ResourceBundle;
+
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionDowngrade;
-
-import java.util.ResourceBundle;
 
 /**
  * The zoomIn action is used to increase the ZoomFactor of the report. Zooming

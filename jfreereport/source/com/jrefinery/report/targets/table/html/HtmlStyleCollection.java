@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.12 2003/04/23 13:43:06 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.13 2003/04/24 18:08:58 taqua Exp $
  *
  * Changes
  * -------
@@ -42,9 +42,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import com.jrefinery.report.ElementAlignment;
-import org.jfree.xml.factory.objects.ColorObjectDescription;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.table.TableCellBackground;
+import org.jfree.xml.factory.objects.ColorObjectDescription;
 
 /**
  * The HtmlStyleCollection is used to create HtmlCellStyles and to convert these

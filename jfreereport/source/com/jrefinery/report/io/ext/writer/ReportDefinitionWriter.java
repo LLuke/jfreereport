@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionWriter.java,v 1.7 2003/02/21 11:31:13 mungady Exp $
+ * $Id: ReportDefinitionWriter.java,v 1.8 2003/03/19 22:12:59 taqua Exp $
  *
  * Changes
  * -------
@@ -37,10 +37,10 @@
  */
 package com.jrefinery.report.io.ext.writer;
 
-import com.jrefinery.report.io.ParserEntityResolver;
-
 import java.io.IOException;
 import java.io.Writer;
+
+import com.jrefinery.report.io.ParserEntityResolver;
 
 /**
  * A report definition writer.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.8 2003/04/23 13:43:04 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.9 2003/04/24 18:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -38,21 +38,21 @@
 
 package com.jrefinery.report.io.ext.writer;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Properties;
+
 import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.ExpressionCollection;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.io.ext.ExpressionHandler;
 import com.jrefinery.report.io.ext.ExtReportHandler;
 import com.jrefinery.report.io.ext.FunctionsHandler;
+import com.jrefinery.report.util.ReportProperties;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
-import com.jrefinery.report.util.ReportProperties;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Properties;
 
 /**
  * An XML definition writer that outputs the functions.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.4 2003/02/25 18:46:55 taqua Exp $
+ * $Id: ImageContent.java,v 1.5 2003/02/27 10:35:38 mungady Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
  */
 package com.jrefinery.report.targets.base.content;
 
-import com.jrefinery.report.ImageReference;
-
 import java.awt.geom.Rectangle2D;
+
+import com.jrefinery.report.ImageReference;
 
 /**
  * Image content.

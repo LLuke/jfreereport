@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.33 2003/03/29 20:17:26 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.34 2003/04/09 15:53:23 mungady Exp $
  *
  * Changes
  * -------
@@ -50,13 +50,13 @@ package com.jrefinery.report.targets.pageable.output;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.Graphics2D;
+import java.awt.geom.Dimension2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Dimension2D;
 import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.io.OutputStream;

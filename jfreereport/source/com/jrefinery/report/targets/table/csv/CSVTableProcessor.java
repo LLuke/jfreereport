@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.7 2003/02/24 15:06:32 mungady Exp $
+ * $Id: CSVTableProcessor.java,v 1.8 2003/02/25 11:57:58 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,9 @@
 
 package com.jrefinery.report.targets.table.csv;
 
+import java.io.PrintWriter;
+import java.io.Writer;
+
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.function.FunctionInitializeException;
@@ -46,9 +49,6 @@ import com.jrefinery.report.targets.csv.CSVProcessor;
 import com.jrefinery.report.targets.table.TableProcessor;
 import com.jrefinery.report.targets.table.TableProducer;
 import com.jrefinery.report.util.NullOutputStream;
-
-import java.io.PrintWriter;
-import java.io.Writer;
 
 /**
  * The <code>CSVTableProcessor</code> coordinates the output for the layouted CSV output.

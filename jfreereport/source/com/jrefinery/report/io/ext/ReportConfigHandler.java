@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.9 2003/04/23 13:39:21 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.10 2003/04/24 18:08:49 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,11 @@
  */
 
 package com.jrefinery.report.io.ext;
+
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.util.Enumeration;
+import java.util.Properties;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.InitialReportHandler;
@@ -48,11 +53,6 @@ import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.util.Enumeration;
-import java.util.Properties;
 
 /**
  * A report configuration handler. Handles the report configuration and the

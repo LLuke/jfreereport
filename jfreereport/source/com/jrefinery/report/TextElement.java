@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextElement.java,v 1.30 2003/02/23 20:39:11 taqua Exp $
+ * $Id: TextElement.java,v 1.31 2003/02/26 16:41:47 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -55,11 +55,11 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.filter.StringFilter;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.targets.FontDefinition;
-
 import java.awt.Font;
+
+import com.jrefinery.report.filter.StringFilter;
+import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 /**
  * The base class for all elements that display text in a report band.

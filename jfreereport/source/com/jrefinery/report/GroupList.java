@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.21 2003/04/06 18:10:54 taqua Exp $
+ * $Id: GroupList.java,v 1.22 2003/04/09 00:10:33 mungady Exp $
  *
  * Changes:
  * --------
@@ -167,23 +167,22 @@ public class GroupList implements Cloneable, Serializable
    */
   public Object clone()
   {
-    GroupList l = null;
     try
     {
-      l = (GroupList) super.clone();
+      GroupList l = (GroupList) super.clone();
       l.backend = new TreeSet();
       l.clear();
       for (int i = 0; i < backend.size(); i++)
       {
         l.backend.add(get(i).clone());
       }
+      return l;
     }
     catch (CloneNotSupportedException cne)
     {
       Log.error ("GroupsList was not cloned.");
       throw new IllegalStateException("GroupList was not cloneable.");
     }
-    return l;
   }
 
   /**

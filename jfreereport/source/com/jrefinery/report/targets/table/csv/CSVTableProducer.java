@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProducer.java,v 1.6 2003/02/24 15:06:33 mungady Exp $
+ * $Id: CSVTableProducer.java,v 1.7 2003/04/11 14:11:47 taqua Exp $
  *
  * Changes
  * -------
@@ -39,13 +39,13 @@
 
 package com.jrefinery.report.targets.table.csv;
 
+import java.io.PrintWriter;
+
 import com.jrefinery.report.targets.csv.CSVQuoter;
 import com.jrefinery.report.targets.table.TableCellDataFactory;
 import com.jrefinery.report.targets.table.TableGridLayout;
 import com.jrefinery.report.targets.table.TableGridPosition;
 import com.jrefinery.report.targets.table.TableProducer;
-
-import java.io.PrintWriter;
 
 /**
  * The TableProducer is responsible for creating the produced Table. After

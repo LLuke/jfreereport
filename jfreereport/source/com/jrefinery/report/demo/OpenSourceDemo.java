@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.13 2003/04/12 13:36:12 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.14 2003/04/24 18:08:45 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JMenu;
@@ -62,7 +61,6 @@ import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.WaitingImageObserver;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;

@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.20 2003/04/23 17:13:45 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.21 2003/04/24 18:08:58 taqua Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,13 @@
  */
 package com.jrefinery.report.util;
 
-import org.jfree.ui.FloatDimension;
-
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.lang.reflect.Field;
+
+import org.jfree.ui.FloatDimension;
 
 /**
  * The PageFormatFactory is used to create PageFormats on a higher level. The Factory contains

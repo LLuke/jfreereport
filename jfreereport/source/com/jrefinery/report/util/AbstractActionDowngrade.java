@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractActionDowngrade.java,v 1.9 2003/04/05 18:57:20 taqua Exp $
+ * $Id: AbstractActionDowngrade.java,v 1.10 2003/04/09 15:55:03 mungady Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@ package com.jrefinery.report.util;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
-
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.11 2003/04/23 17:13:42 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.12 2003/04/24 18:08:57 taqua Exp $
  *
  * Changes
  * -------
@@ -38,13 +38,13 @@
 
 package com.jrefinery.report.targets.style;
 
-import com.jrefinery.report.ElementAlignment;
-import org.jfree.ui.FloatDimension;
-import com.jrefinery.report.targets.FontDefinition;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
+
+import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.targets.FontDefinition;
+import org.jfree.ui.FloatDimension;
 
 /**
  * The default element style sheet. This style sheet defines default attribute

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.11 2002/12/12 12:26:55 mungady Exp $
+ * $Id: CloseAction.java,v 1.12 2003/02/02 23:43:49 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,10 @@
 
 package com.jrefinery.report.demo;
 
+import java.util.ResourceBundle;
+
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionDowngrade;
-
-import java.util.ResourceBundle;
 
 /**
  * An action for closing the demo programms frame.

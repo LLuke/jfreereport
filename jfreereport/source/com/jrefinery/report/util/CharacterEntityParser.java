@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.7 2003/02/26 13:58:04 mungady Exp $
+ * $Id: CharacterEntityParser.java,v 1.8 2003/04/23 13:43:06 taqua Exp $
  *
  * Changes
  * -------
@@ -38,13 +38,10 @@
  */
 package com.jrefinery.report.util;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Enumeration;
 import java.util.Properties;
-import java.io.Writer;
-import java.io.StringWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.OutputStreamWriter;
 
 /**
  * The character entity parser replaces all known occurrences of an entity

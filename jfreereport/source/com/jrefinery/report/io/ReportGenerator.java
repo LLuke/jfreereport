@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.29 2003/04/23 13:39:19 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.30 2003/04/24 18:08:47 taqua Exp $
  *
  * Changes
  * -------
@@ -45,8 +45,8 @@ import java.net.URL;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.util.ReportConfiguration;
-import org.jfree.xml.ParserFrontend;
 import org.jfree.xml.ElementDefinitionException;
+import org.jfree.xml.ParserFrontend;
 import org.xml.sax.InputSource;
 
 /**

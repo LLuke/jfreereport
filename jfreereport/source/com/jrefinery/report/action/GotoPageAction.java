@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GotoPageAction.java,v 1.12 2003/02/10 19:33:19 taqua Exp $
+ * $Id: GotoPageAction.java,v 1.13 2003/02/26 16:42:03 mungady Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,10 @@
 
 package com.jrefinery.report.action;
 
+import java.util.ResourceBundle;
+
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionDowngrade;
-
-import java.util.ResourceBundle;
 
 /**
  * The GotoPageAction is used to direclty jump to a page. A simple dialog opens to

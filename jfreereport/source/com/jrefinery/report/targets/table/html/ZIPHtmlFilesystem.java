@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.15 2003/04/23 17:13:43 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.16 2003/04/24 18:08:58 taqua Exp $
  *
  * Changes
  * -------
@@ -52,12 +52,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import com.jrefinery.report.ImageReference;
-import org.jfree.io.IOUtils;
 import com.jrefinery.report.util.ImageComparator;
 import com.jrefinery.report.util.NoCloseOutputStream;
 import com.jrefinery.report.util.StringUtil;
 import com.jrefinery.report.util.WaitingImageObserver;
 import com.keypoint.PngEncoder;
+import org.jfree.io.IOUtils;
 
 /**
  * Similiar to the DirectoryHtmlFilesystem, the generated Html-File and the supplementary

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.36 2003/04/23 17:13:33 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.37 2003/04/24 18:08:43 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,6 @@
 package com.jrefinery.report;
 
 import java.util.HashMap;
-
 import javax.swing.table.TableModel;
 
 import com.jrefinery.report.function.Expression;

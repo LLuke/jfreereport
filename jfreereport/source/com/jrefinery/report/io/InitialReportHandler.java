@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
 
- * $Id: InitialReportHandler.java,v 1.5 2003/04/23 13:39:19 taqua Exp $
+ * $Id: InitialReportHandler.java,v 1.6 2003/04/24 18:08:47 taqua Exp $
  *
  * Changes
  * -------
@@ -38,13 +38,12 @@
  */
 package com.jrefinery.report.io;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-
 import com.jrefinery.report.io.ext.ExtReportHandler;
 import com.jrefinery.report.io.simple.ReportFactory;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 /**
  * The InitialReportHandler is used to decide, which parser profile to use

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToXML.java,v 1.6 2003/03/18 17:14:20 taqua Exp $
+ * $Id: StraightToXML.java,v 1.7 2003/04/08 13:58:32 mungady Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
 import java.net.URL;
-
 import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;

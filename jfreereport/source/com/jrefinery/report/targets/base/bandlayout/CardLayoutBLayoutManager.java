@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardLayoutBLayoutManager.java,v 1.5 2003/04/23 17:13:40 taqua Exp $
+ * $Id: CardLayoutBLayoutManager.java,v 1.6 2003/04/24 18:08:56 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,9 @@ import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
-import org.jfree.ui.FloatDimension;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
+import org.jfree.ui.FloatDimension;
 
 /**
  * A CardLayout object is a layout manager for a container. It treats each

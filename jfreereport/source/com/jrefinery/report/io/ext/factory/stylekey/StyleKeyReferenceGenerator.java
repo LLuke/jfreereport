@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StyleKeyReferenceGenerator.java,v 1.3 2003/03/07 16:55:58 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,11 +38,11 @@
 
 package com.jrefinery.report.io.ext.factory.stylekey;
 
+import java.net.URL;
+
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.targets.support.ReportProcessorUtil;
-
-import java.net.URL;
 
 /**
  * An application that generates a report that provides style key reference information.

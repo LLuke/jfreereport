@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyFileReportConfiguration.java,v 1.7 2003/03/04 20:29:04 taqua Exp $
+ * $Id: PropertyFileReportConfiguration.java,v 1.8 2003/04/11 14:11:48 taqua Exp $
  *
  * Changes
  * -------
@@ -36,9 +36,9 @@
  */
 package com.jrefinery.report.util;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.BufferedInputStream;
 
 /**
  * A report configuration that reads its values from the jfreereport.properties file.

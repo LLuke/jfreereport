@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.26 2003/03/30 21:22:57 taqua Exp $
+ * $Id: Element.java,v 1.27 2003/04/05 18:57:09 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -59,15 +59,15 @@
 
 package com.jrefinery.report;
 
+import java.awt.Color;
+import java.awt.Paint;
+import java.io.Serializable;
+
 import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.DataTarget;
 import com.jrefinery.report.filter.EmptyDataSource;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-
-import java.awt.Color;
-import java.awt.Paint;
-import java.io.Serializable;
 
 /**
  * Base class for all report elements (display items that can appear within a report band).

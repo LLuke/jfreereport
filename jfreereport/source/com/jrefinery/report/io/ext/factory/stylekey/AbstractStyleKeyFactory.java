@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractStyleKeyFactory.java,v 1.9 2003/04/23 13:43:04 taqua Exp $
+ * $Id: AbstractStyleKeyFactory.java,v 1.10 2003/04/24 18:08:51 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -41,10 +41,10 @@ package com.jrefinery.report.io.ext.factory.stylekey;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.jfree.xml.factory.objects.ClassFactory;
-import org.jfree.xml.factory.objects.ObjectDescription;
 import com.jrefinery.report.targets.style.StyleKey;
 import org.jfree.xml.Parser;
+import org.jfree.xml.factory.objects.ClassFactory;
+import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**
  * An abstract class for implementing the {@link StyleKeyFactory} interface.

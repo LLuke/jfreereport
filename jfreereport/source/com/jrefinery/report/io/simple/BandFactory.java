@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.9 2003/04/23 17:13:38 taqua Exp $
+ * $Id: BandFactory.java,v 1.10 2003/04/24 18:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -41,20 +41,19 @@
 
 package com.jrefinery.report.io.simple;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-
 import com.jrefinery.report.ItemBand;
 import com.jrefinery.report.PageFooter;
 import com.jrefinery.report.PageHeader;
 import com.jrefinery.report.ReportFooter;
 import com.jrefinery.report.ReportHeader;
 import com.jrefinery.report.io.ReportParserUtil;
-import org.jfree.ui.FloatDimension;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import org.jfree.ui.FloatDimension;
 import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 /**
  * This class handles the SAX events generated for report bands.

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.3 2003/04/09 16:21:35 mungady Exp $
+ * $Id: PercentageDemo.java,v 1.4 2003/04/24 18:08:46 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JMenu;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.43 2003/04/23 17:13:33 taqua Exp $
+ * $Id: ItemFactory.java,v 1.44 2003/04/24 18:08:43 taqua Exp $
  *
  * Changes
  * -------
@@ -53,10 +53,10 @@ import java.awt.Font;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.AffineTransform;
 import java.awt.print.PageFormat;
 import java.net.URL;
 import java.text.DateFormat;
@@ -81,11 +81,11 @@ import com.jrefinery.report.filter.templates.ResourceFieldTemplate;
 import com.jrefinery.report.filter.templates.ResourceLabelTemplate;
 import com.jrefinery.report.filter.templates.StringFieldTemplate;
 import com.jrefinery.report.function.ExpressionCollection;
-import org.jfree.ui.FloatDimension;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import org.jfree.ui.FloatDimension;
 
 /**
  * A factory used to create elements and bands using a single line command.

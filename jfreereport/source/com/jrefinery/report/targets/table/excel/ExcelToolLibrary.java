@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner; 
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelToolLibrary.java,v 1.6 2003/02/26 13:58:03 mungady Exp $
+ * $Id: ExcelToolLibrary.java,v 1.7 2003/04/08 14:35:19 mungady Exp $
  *
  * Changes
  * -------
@@ -44,9 +44,8 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import org.apache.poi.hssf.util.HSSFColor;
-
 import com.jrefinery.report.util.Log;
+import org.apache.poi.hssf.util.HSSFColor;
 
 /**
  * POI Excel utility methods.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataDefinitionHandler.java,v 1.5 2003/04/23 13:39:20 taqua Exp $
+ * $Id: DataDefinitionHandler.java,v 1.6 2003/04/24 18:08:49 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
 
 package com.jrefinery.report.io.ext;
 
-import org.xml.sax.Attributes;
-import org.jfree.xml.Parser;
 import org.jfree.xml.ElementDefinitionHandler;
+import org.jfree.xml.Parser;
+import org.xml.sax.Attributes;
 
 /**
  * Not fully implemented. Will serve as description of the used tables for the

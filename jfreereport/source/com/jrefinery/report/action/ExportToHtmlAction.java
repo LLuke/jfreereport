@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):
 *
- * $Id: ExportToHtmlAction.java,v 1.1 2003/01/18 20:47:34 taqua Exp $
+ * $Id: ExportToHtmlAction.java,v 1.2 2003/02/23 20:39:28 taqua Exp $
  *
  * Changes
  * -------
@@ -36,10 +36,10 @@
  */
 package com.jrefinery.report.action;
 
+import java.util.ResourceBundle;
+
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionDowngrade;
-
-import java.util.ResourceBundle;
 
 /**
  * Export to Html action for a print preview frame.

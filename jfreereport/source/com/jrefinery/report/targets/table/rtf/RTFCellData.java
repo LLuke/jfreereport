@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellData.java,v 1.3 2003/02/25 11:57:58 taqua Exp $
+ * $Id: RTFCellData.java,v 1.4 2003/02/26 16:42:28 mungady Exp $
  *
  * Changes
  * -------
@@ -36,11 +36,11 @@
  */
 package com.jrefinery.report.targets.table.rtf;
 
+import java.awt.geom.Rectangle2D;
+
 import com.jrefinery.report.targets.table.TableCellData;
 import com.lowagie.text.Cell;
 import com.lowagie.text.DocumentException;
-
-import java.awt.geom.Rectangle2D;
 
 /**
  * The RTF extension of the {@link TableCellData} base class. The cell data implementation contains

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.12 2003/04/06 20:43:00 taqua Exp $
+ * $Id: TableProcessor.java,v 1.13 2003/04/09 16:09:52 mungady Exp $
  *
  * Changes
  * -------
@@ -50,8 +50,8 @@ import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
-import com.jrefinery.report.states.StartState;
 import com.jrefinery.report.states.ReportStateProgress;
+import com.jrefinery.report.states.StartState;
 
 /**
  * The TableProcessor is the abstract base class for all table based output targets.

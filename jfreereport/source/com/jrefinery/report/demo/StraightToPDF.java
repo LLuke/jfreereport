@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.6 2003/02/26 16:42:13 mungady Exp $
+ * $Id: StraightToPDF.java,v 1.7 2003/03/18 17:14:19 taqua Exp $
  *
  * Changes
  * -------
@@ -38,20 +38,20 @@
 
 package com.jrefinery.report.demo;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.io.ReportGenerator;
-import com.jrefinery.report.targets.pageable.PageableReportProcessor;
-import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
-import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.report.util.Log;
-
-import javax.swing.table.TableModel;
 import java.awt.print.PageFormat;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import javax.swing.table.TableModel;
+
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.io.ReportGenerator;
+import com.jrefinery.report.targets.pageable.PageableReportProcessor;
+import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
 
 /**
  * A demonstration that shows how to generate a report and save it to PDF without displaying

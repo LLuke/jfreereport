@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.6 2003/02/27 10:35:36 mungady Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.7 2003/02/28 12:02:39 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
-
 import javax.swing.table.DefaultTableModel;
 
 import com.jrefinery.report.util.CloseableTableModel;

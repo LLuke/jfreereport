@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ElementFactoryCollector.java,v 1.5 2003/03/07 16:55:56 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,10 +38,10 @@
 
 package com.jrefinery.report.io.ext.factory.elements;
 
-import com.jrefinery.report.Element;
-
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.jrefinery.report.Element;
 
 /**
  * An element factory that encapsulates multiple element factories.

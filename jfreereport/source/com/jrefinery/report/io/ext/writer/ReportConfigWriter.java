@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
+ * $Id: ReportConfigWriter.java,v 1.6 2003/02/22 18:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -36,12 +36,6 @@
  *
  */
 package com.jrefinery.report.io.ext.writer;
-
-import com.jrefinery.report.io.ext.ExtReportHandler;
-import com.jrefinery.report.io.ext.ReportConfigHandler;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.PageFormatFactory;
-import com.jrefinery.report.util.ReportConfiguration;
 
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
@@ -51,6 +45,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Enumeration;
 import java.util.Properties;
+
+import com.jrefinery.report.io.ext.ExtReportHandler;
+import com.jrefinery.report.io.ext.ReportConfigHandler;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.PageFormatFactory;
+import com.jrefinery.report.util.ReportConfiguration;
 
 /**
  * A report configuration writer.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.25 2003/04/23 17:13:43 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.26 2003/04/24 18:08:58 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.zip.Deflater;
@@ -58,8 +55,8 @@ import com.jrefinery.report.targets.table.TableGridLayout;
 import com.jrefinery.report.targets.table.TableGridPosition;
 import com.jrefinery.report.targets.table.TableProducer;
 import com.jrefinery.report.util.CharacterEntityParser;
-import org.jfree.io.IOUtils;
 import com.jrefinery.report.util.HtmlWriter;
+import org.jfree.io.IOUtils;
 
 /**
  * The TableProducer is responsible for creating the produced Table. After

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AboutAction.java,v 1.12 2002/12/12 12:26:55 mungady Exp $
+ * $Id: AboutAction.java,v 1.13 2003/02/02 23:43:48 taqua Exp $
  *
  * Changes
  * -------
@@ -43,10 +43,10 @@
 
 package com.jrefinery.report.action;
 
+import java.util.ResourceBundle;
+
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionDowngrade;
-
-import java.util.ResourceBundle;
 
 /**
  * The About action is used to show some information about the current programm, to which

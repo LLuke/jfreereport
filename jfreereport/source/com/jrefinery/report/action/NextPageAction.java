@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: NextPageAction.java,v 1.13 2002/12/04 16:19:55 mungady Exp $
+ * $Id: NextPageAction.java,v 1.14 2003/02/02 23:43:48 taqua Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,10 @@
 
 package com.jrefinery.report.action;
 
+import java.util.ResourceBundle;
+
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionDowngrade;
-
-import java.util.ResourceBundle;
 
 /**
  * Creates a new NextPageAction used by the PreviewPane to directly jump to the next

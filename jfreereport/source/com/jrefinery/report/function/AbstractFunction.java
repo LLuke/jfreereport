@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.28 2003/02/25 14:07:23 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.29 2003/04/05 18:57:10 taqua Exp $
  *
  * Changes
  * -------
@@ -47,11 +47,11 @@
 
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.DataRow;
-import com.jrefinery.report.event.ReportEvent;
-
 import java.util.Enumeration;
 import java.util.Properties;
+
+import com.jrefinery.report.DataRow;
+import com.jrefinery.report.event.ReportEvent;
 
 /**
  * Base class for implementing new report functions.  Provides empty implementations of all the

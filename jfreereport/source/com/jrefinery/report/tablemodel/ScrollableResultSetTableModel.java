@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2002, 2003, by Thomas Morgner.
  *
- * $Id: ScrollableResultSetTableModel.java,v 1.3 2003/02/27 10:35:37 mungady Exp $
+ * $Id: ScrollableResultSetTableModel.java,v 1.4 2003/02/28 12:02:39 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,6 @@ package com.jrefinery.report.tablemodel;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-
 import javax.swing.table.AbstractTableModel;
 
 import com.jrefinery.report.util.CloseableTableModel;

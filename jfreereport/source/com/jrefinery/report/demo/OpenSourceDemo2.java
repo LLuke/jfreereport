@@ -44,7 +44,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
-
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -54,7 +53,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
-import com.jrefinery.report.Element;
+import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.ItemBand;
 import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.JFreeReport;
@@ -64,7 +63,6 @@ import com.jrefinery.report.TextElement;
 import com.jrefinery.report.function.PageFunction;
 import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
@@ -241,8 +239,8 @@ public class OpenSourceDemo2 extends ApplicationFrame implements ActionListener
         "Name_Field",
         new Rectangle2D.Double(0.0, 7.0, 140.0, 10.0),
         Color.black,
-        Element.LEFT,
-        Element.TOP,
+        ElementAlignment.LEFT.getOldAlignment(),
+        ElementAlignment.TOP.getOldAlignment(),
         null, // font
         "No name", // null string
         "Name"
@@ -255,8 +253,8 @@ public class OpenSourceDemo2 extends ApplicationFrame implements ActionListener
         "URL_Field",
         new Rectangle2D.Double(0.0, 9.0, -100.0, 10.0),
         Color.black,
-        Element.RIGHT,
-        Element.TOP,
+        ElementAlignment.RIGHT.getOldAlignment(),
+        ElementAlignment.TOP.getOldAlignment(),
         null, // font
         "No URL", // null string
         "URL"
@@ -268,13 +266,13 @@ public class OpenSourceDemo2 extends ApplicationFrame implements ActionListener
         "Description_Field",
         new Rectangle2D.Double(0.0, 20.0, -100.0, 0.0),
         Color.black,
-        Element.LEFT,
-        Element.TOP,
+        ElementAlignment.LEFT.getOldAlignment(),
+        ElementAlignment.TOP.getOldAlignment(),
         null, // font
         "No description available", // null string
         "Description"
     );
-    field3.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    field3.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                        new Boolean(true));
     band.addElement(field3);
 
@@ -294,7 +292,7 @@ public class OpenSourceDemo2 extends ApplicationFrame implements ActionListener
     TextElement pageNumberField = ItemFactory.createNumberElement("PageNumber_Field",
         new Rectangle2D.Double(0.0, 0.0, -100.0, -100.0),
         Color.black,
-        Element.RIGHT,
+        ElementAlignment.RIGHT.getOldAlignment(),
         null, // font
         "-", // null string
         "Page 0",

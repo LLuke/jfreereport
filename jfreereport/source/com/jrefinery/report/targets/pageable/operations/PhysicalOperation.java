@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.14 2003/04/23 17:13:41 taqua Exp $
+ * $Id: PhysicalOperation.java,v 1.15 2003/04/24 18:08:57 taqua Exp $
  *
  * Changes
  * -------
@@ -38,17 +38,17 @@
 
 package com.jrefinery.report.targets.pageable.operations;
 
-import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.DrawableContainer;
-import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.pageable.OutputTarget;
-import com.jrefinery.report.targets.pageable.OutputTargetException;
-import com.jrefinery.report.util.Log;
-
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.geom.Rectangle2D;  // for Javadoc link
+import java.awt.geom.Rectangle2D;
+
+import com.jrefinery.report.DrawableContainer;
+import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.pageable.OutputTarget;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.util.Log;  // for Javadoc link
 
 /**
  * The base class for an operation that can be applied to an 

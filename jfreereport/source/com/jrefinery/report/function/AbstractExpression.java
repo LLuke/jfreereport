@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.19 2003/02/17 16:07:17 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.20 2003/02/25 14:07:22 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,10 @@
 
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.DataRow;
-
 import java.util.Enumeration;
 import java.util.Properties;
+
+import com.jrefinery.report.DataRow;
 
 /**
  * An abstract base class for implementing new report expressions. 

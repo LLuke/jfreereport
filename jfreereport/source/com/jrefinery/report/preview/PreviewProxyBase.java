@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.17 2003/04/23 13:43:05 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.18 2003/04/24 18:08:55 taqua Exp $
  *
  * Changes
  * -------
@@ -83,8 +83,6 @@ import javax.swing.UIManager;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.targets.base.bandlayout.LayoutManagerCache;
-import com.jrefinery.report.targets.table.excel.ExcelCellStyleFactory;
 import com.jrefinery.report.action.AboutAction;
 import com.jrefinery.report.action.FirstPageAction;
 import com.jrefinery.report.action.GotoPageAction;
@@ -95,6 +93,8 @@ import com.jrefinery.report.action.PreviousPageAction;
 import com.jrefinery.report.action.PrintAction;
 import com.jrefinery.report.action.ZoomInAction;
 import com.jrefinery.report.action.ZoomOutAction;
+import com.jrefinery.report.targets.base.bandlayout.LayoutManagerCache;
+import com.jrefinery.report.targets.table.excel.ExcelCellStyleFactory;
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ActionDowngrade;
@@ -105,9 +105,9 @@ import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.WindowSizeLimiter;
 import com.jrefinery.report.util.Worker;
+import org.jfree.layout.CenterLayout;
 import org.jfree.xml.ParserUtil;
 import org.xml.sax.SAXException;
-import org.jfree.layout.CenterLayout;
 
 /**
  * A preview proxy.

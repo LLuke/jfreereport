@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EpsonPrinterCommandSet.java,v 1.8 2003/03/07 16:56:03 taqua Exp $
+ * $Id: EpsonPrinterCommandSet.java,v 1.9 2003/03/18 19:39:09 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
-import com.jrefinery.report.util.StringUtil;
 import com.jrefinery.report.util.EncodingSupport;
+import com.jrefinery.report.util.StringUtil;
 
 /**
  * Implements the printer command set for Epson ESC/P compatible printers.

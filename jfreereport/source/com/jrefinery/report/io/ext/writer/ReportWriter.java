@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.8 2003/04/23 13:43:04 taqua Exp $
+ * $Id: ReportWriter.java,v 1.9 2003/04/24 18:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -37,20 +37,20 @@
  */
 package com.jrefinery.report.io.ext.writer;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceFactory;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactory;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
-import org.jfree.xml.factory.objects.ClassFactory;
-import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactoryCollector;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollection;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
-
-import java.io.IOException;
-import java.io.Writer;
+import org.jfree.xml.factory.objects.ClassFactory;
+import org.jfree.xml.factory.objects.ClassFactoryCollector;
 
 /**
  * A report writer.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.4 2003/02/25 14:10:24 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.5 2003/02/26 16:42:11 mungady Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,6 @@ import java.io.FileWriter;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.net.URL;
-
 import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;

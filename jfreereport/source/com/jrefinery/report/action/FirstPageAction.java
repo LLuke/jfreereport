@@ -42,10 +42,10 @@
  */
 package com.jrefinery.report.action;
 
+import java.util.ResourceBundle;
+
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionDowngrade;
-
-import java.util.ResourceBundle;
 
 /**
  * Creates a new FirstPageAction used by the PreviewPane to directly jump to the first

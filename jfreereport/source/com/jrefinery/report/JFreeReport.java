@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.49 2003/02/26 16:41:44 mungady Exp $
+ * $Id: JFreeReport.java,v 1.50 2003/03/18 15:50:24 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -70,7 +70,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
-
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: $
+ * $Id: ExportAction.java,v 1.3 2003/02/25 14:45:30 mungady Exp $
  *
  * Changes
  * --------
@@ -38,7 +38,6 @@
 package com.jrefinery.report.preview;
 
 import java.awt.event.ActionEvent;
-
 import javax.swing.AbstractAction;
 
 import com.jrefinery.report.JFreeReport;

@@ -29,7 +29,7 @@
  *                   JRXlsExporter.java of JasperReports;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellStyleFactory.java,v 1.10 2003/04/07 18:08:11 taqua Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.11 2003/04/09 16:07:10 mungady Exp $
  *
  * Changes
  * -------
@@ -40,17 +40,16 @@ package com.jrefinery.report.targets.table.excel;
 import java.awt.Color;
 import java.util.HashMap;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.table.TableCellBackground;
 import com.jrefinery.report.util.Log;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 
 /**
  * The CellStyle factory is used to convert JFreeReport style information

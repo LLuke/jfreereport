@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageRenderFunction.java,v 1.6 2002/11/07 21:45:27 taqua Exp $
+ * $Id: ImageRenderFunction.java,v 1.7 2002/12/12 12:26:55 mungady Exp $
  *
  * ChangeLog
  * ---------
@@ -35,17 +35,17 @@
  */
 package com.jrefinery.report.demo;
 
-import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.function.AbstractFunction;
-
-import javax.swing.JButton;
-import javax.swing.JRadioButton;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import javax.swing.JButton;
+import javax.swing.JRadioButton;
+
+import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.function.AbstractFunction;
 
 /**
  * The ImageRenderFunction creates a simple Image using a BufferedImage within a function to show

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ResourceFieldTemplate.java,v 1.5 2003/03/07 16:55:54 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -38,14 +38,14 @@
 
 package com.jrefinery.report.filter.templates;
 
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 import com.jrefinery.report.DataRow;
 import com.jrefinery.report.filter.DataRowConnectable;
 import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.filter.ResourceFileFilter;
 import com.jrefinery.report.filter.StringFilter;
-
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 /**
  * A resource field template, which reads a String value from a ResourceBundle.

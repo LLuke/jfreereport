@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann;
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellData.java,v 1.5 2003/02/25 15:42:36 taqua Exp $
+ * $Id: ExcelCellData.java,v 1.6 2003/02/26 13:58:02 mungady Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,8 @@ package com.jrefinery.report.targets.table.excel;
 
 import java.awt.geom.Rectangle2D;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-
 import com.jrefinery.report.targets.table.TableCellData;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 
 /**
  * Abstract base class for all Excel data cells.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageRefFilter.java,v 1.10 2002/12/12 12:26:55 mungady Exp $
+ * $Id: ImageRefFilter.java,v 1.11 2003/04/08 14:03:15 mungady Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@
 
 package com.jrefinery.report.filter;
 
-import com.jrefinery.report.ImageReference;
-
 import java.awt.Image;
+
+import com.jrefinery.report.ImageReference;
 
 /**
  * A filter that converts an Image to an ImageReference. The DataSource is expected to contain an

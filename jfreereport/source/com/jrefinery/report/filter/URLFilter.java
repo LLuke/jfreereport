@@ -25,7 +25,7 @@
  * --------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: URLFilter.java,v 1.9 2002/12/12 12:26:55 mungady Exp $
+ * $Id: URLFilter.java,v 1.10 2003/02/25 14:07:22 taqua Exp $
  *
  * Changes
  * -------
@@ -33,11 +33,11 @@
  */
 package com.jrefinery.report.filter;
 
-import com.jrefinery.report.util.Log;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import com.jrefinery.report.util.Log;
 
 /**
  * The URLFilter forms URLs from Strings ,Files and URLs. If an URL is relative, the

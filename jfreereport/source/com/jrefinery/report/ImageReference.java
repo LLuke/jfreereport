@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.27 2003/02/25 14:06:31 taqua Exp $
+ * $Id: ImageReference.java,v 1.28 2003/04/08 13:53:12 mungady Exp $
  *
  * Changes:
  * --------
@@ -43,7 +43,6 @@
 
 package com.jrefinery.report;
 
-import gnu.bhresearch.pixie.wmf.WmfFile;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
@@ -53,6 +52,7 @@ import java.io.Serializable;
 import java.net.URL;
 
 import com.jrefinery.report.util.WaitingImageObserver;
+import gnu.bhresearch.pixie.wmf.WmfFile;
 
 /**
  * An image reference encapsulates the source of an image together with a

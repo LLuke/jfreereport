@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.6 2003/04/08 14:09:28 mungady Exp $
+ * $Id: ReportConverterGUI.java,v 1.7 2003/04/28 22:21:44 taqua Exp $
  *
  * Changes
  * -------
@@ -37,20 +37,6 @@
  */
 package com.jrefinery.report.io.ext.writer;
 
-import com.jrefinery.report.util.ActionButton;
-import com.jrefinery.report.util.FilesystemFilter;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.StringUtil;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -60,6 +46,20 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import com.jrefinery.report.util.ActionButton;
+import com.jrefinery.report.util.FilesystemFilter;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.StringUtil;
 
 /**
  * A utility application for converting XML report files from the old format to the 

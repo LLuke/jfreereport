@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: HSSFFontWrapper.java,v 1.8 2003/02/25 15:42:37 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.9 2003/02/26 13:58:03 mungady Exp $
  *
  * Changes
  * -------
@@ -36,11 +36,11 @@
  */
 package com.jrefinery.report.targets.table.excel;
 
+import java.awt.Color;
+
 import com.jrefinery.report.targets.FontDefinition;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-
-import java.awt.Color;
 
 /**
  * The HSSFFontWrapper is used to store excel style font informations.

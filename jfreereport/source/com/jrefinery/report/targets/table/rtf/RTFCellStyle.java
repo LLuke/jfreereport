@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellStyle.java,v 1.4 2003/02/26 16:42:29 mungady Exp $
+ * $Id: RTFCellStyle.java,v 1.5 2003/03/26 22:55:52 taqua Exp $
  *
  * Changes
  * -------
@@ -36,14 +36,14 @@
  */
 package com.jrefinery.report.targets.table.rtf;
 
+import java.awt.Color;
+
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FontDefinition;
 import com.lowagie.text.Cell;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
-
-import java.awt.Color;
 
 /**
  * The RTFCellStyle is used to define the style for the generated RTF-TableCell.

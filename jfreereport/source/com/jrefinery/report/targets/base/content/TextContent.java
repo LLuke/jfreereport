@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.12 2003/04/06 18:11:30 taqua Exp $
+ * $Id: TextContent.java,v 1.13 2003/04/09 15:50:26 mungady Exp $
  *
  * Changes
  * -------
@@ -118,13 +118,9 @@ public class TextContent extends ContentContainer
     }
 
     LineBreakIterator iterator = new LineBreakIterator(text);
-    int oldPos = 0;
-    int pos = iterator.nextWithEnd();
-    while (pos != LineBreakIterator.DONE)
+    while (iterator.hasNext())
     {
-      lines.add(text.substring(oldPos, pos));
-      oldPos = pos;
-      pos = iterator.nextWithEnd();
+      lines.add(iterator.next());
     }
     return lines;
   }

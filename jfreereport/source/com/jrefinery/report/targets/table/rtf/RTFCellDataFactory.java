@@ -28,13 +28,17 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellDataFactory.java,v 1.4 2003/02/25 11:57:58 taqua Exp $
+ * $Id: RTFCellDataFactory.java,v 1.5 2003/02/26 16:42:29 mungady Exp $
  *
  * Changes
  * -------
  * 01-Feb-2003 : Initial version
  */
 package com.jrefinery.report.targets.table.rtf;
+
+import java.awt.Color;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
@@ -44,10 +48,6 @@ import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.table.AbstractTableCellDataFactory;
 import com.jrefinery.report.targets.table.TableCellData;
-
-import java.awt.Color;
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
 
 /**
  * Creates a {@link TableCellData} object from the given {@link Element}

@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.11 2003/02/25 18:47:02 taqua Exp $
+ * $Id: ReportStateList.java,v 1.12 2003/04/06 20:43:00 taqua Exp $
  *
  * Changes
  * -------
@@ -41,12 +41,12 @@
  */
 package com.jrefinery.report.targets.pageable;
 
+import java.util.ArrayList;
+
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.ReportStateProgress;
 import com.jrefinery.report.util.WeakReferenceList;
-
-import java.util.ArrayList;
 
 /**
  * The ReportState list stores a report states for the beginning of every page.

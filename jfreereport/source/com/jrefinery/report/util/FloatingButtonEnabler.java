@@ -28,14 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FloatingButtonEnabler.java,v 1.8 2002/11/07 21:45:28 taqua Exp $
+ * $Id: FloatingButtonEnabler.java,v 1.9 2002/12/11 00:41:42 mungady Exp $
  *
  */
 package com.jrefinery.report.util;
 
-import javax.swing.AbstractButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.AbstractButton;
 
 /**
  * Enables a button to have a simple floating effect. The border of the button is only visible,

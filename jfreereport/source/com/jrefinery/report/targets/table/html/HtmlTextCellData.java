@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlTextCellData.java,v 1.5 2003/02/26 16:42:28 mungady Exp $
+ * $Id: HtmlTextCellData.java,v 1.6 2003/04/23 13:43:06 taqua Exp $
  *
  * Changes
  * -------
@@ -37,12 +37,11 @@
 package com.jrefinery.report.targets.table.html;
 
 import java.awt.geom.Rectangle2D;
-import java.io.PrintWriter;
 import java.io.IOException;
 
+import com.jrefinery.report.util.HtmlWriter;
 import com.jrefinery.report.util.LineBreakIterator;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.HtmlWriter;
 
 /**
  * A wrapper for text content within the generated HtmlTable.
@@ -119,14 +118,10 @@ public class HtmlTextCellData extends HtmlCellData
     }
 
     LineBreakIterator iterator = new LineBreakIterator(text);
-    int oldPos = 0;
-    int pos = iterator.nextWithEnd();
     boolean flagStart = true;
-    while (pos != LineBreakIterator.DONE)
+    while (iterator.hasNext())
     {
-      String readLine = text.substring(oldPos, pos);
-      oldPos = pos;
-      pos = iterator.nextWithEnd();
+      String readLine = (String) iterator.next();
 
       if (flagStart == true)
       {

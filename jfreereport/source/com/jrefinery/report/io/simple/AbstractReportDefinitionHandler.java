@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractReportDefinitionHandler.java,v 1.5 2003/04/23 13:43:05 taqua Exp $
+ * $Id: AbstractReportDefinitionHandler.java,v 1.6 2003/04/24 18:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -39,13 +39,13 @@
 
 package com.jrefinery.report.io.simple;
 
+import java.net.URL;
+
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.InitialReportHandler;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
 import org.xml.sax.SAXException;
-
-import java.net.URL;
 
 /**
  * Extends the SAX-DefaultHandler with ContentBase capabilities.

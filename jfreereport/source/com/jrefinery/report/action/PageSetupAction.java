@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PageSetupAction.java,v 1.14 2002/12/12 12:26:55 mungady Exp $
+ * $Id: PageSetupAction.java,v 1.15 2003/02/02 23:43:48 taqua Exp $
  *
  * Changes
  * -------
@@ -44,10 +44,10 @@
 
 package com.jrefinery.report.action;
 
+import java.util.ResourceBundle;
+
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionDowngrade;
-
-import java.util.ResourceBundle;
 
 /**
  * Page setup action for a print preview frame.

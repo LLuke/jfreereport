@@ -26,16 +26,16 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  *
- * $Id: SampleData4.java,v 1.7 2002/11/07 21:45:27 taqua Exp $
+ * $Id: SampleData4.java,v 1.8 2002/12/12 12:26:55 mungady Exp $
  *
  */
 package com.jrefinery.report.demo;
 
-import javax.swing.table.AbstractTableModel;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.util.Arrays;
 import java.util.Comparator;
+import javax.swing.table.AbstractTableModel;
 
 /**
  * A sample data source for the JFreeReport Demo Application.

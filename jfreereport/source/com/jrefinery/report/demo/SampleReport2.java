@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport2.java,v 1.10 2003/04/23 17:13:34 taqua Exp $
+ * $Id: SampleReport2.java,v 1.11 2003/04/24 18:08:46 taqua Exp $
  *
  * Changes:
  * --------
@@ -41,7 +41,6 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
 import javax.swing.JPanel;
 
 import com.jrefinery.report.Band;
@@ -54,10 +53,10 @@ import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.function.PaintComponentFunction;
 import com.jrefinery.report.preview.PDFSaveDialog;
-import org.jfree.ui.FloatDimension;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
+import org.jfree.ui.FloatDimension;
 
 /**
  * A sample to show the band in band capabilities of JFreeReport ...

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.10 2003/04/06 18:11:29 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.11 2003/04/09 16:16:07 mungady Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -45,7 +45,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ResourceBundle;
-
 import javax.swing.Action;
 import javax.swing.JDialog;
 

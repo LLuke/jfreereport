@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.5 2003/02/25 17:20:39 mungady Exp $
+ * $Id: HelloWorld.java,v 1.6 2003/02/27 15:02:34 mungady Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ package com.jrefinery.report.demo;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
-
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: HtmlWriter.java,v 1.1 2003/04/23 16:26:50 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@ package com.jrefinery.report.util;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-import java.io.OutputStreamWriter;
 
 public class HtmlWriter extends PrintStream
 {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.7 2003/02/21 11:31:13 mungady Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.8 2003/02/22 18:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,11 @@
  */
 
 package com.jrefinery.report.io.ext.writer;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Enumeration;
+import java.util.Properties;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ext.BandHandler;
@@ -54,11 +59,6 @@ import com.jrefinery.report.io.ext.ReportDescriptionHandler;
 import com.jrefinery.report.io.ext.StyleSheetHandler;
 import com.jrefinery.report.io.ext.StylesHandler;
 import com.jrefinery.report.io.ext.TemplatesHandler;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Enumeration;
-import java.util.Properties;
 
 /**
  * A base class for writer classes for the JFreeReport XML report files.

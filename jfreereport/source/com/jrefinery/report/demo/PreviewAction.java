@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewAction.java,v 1.11 2002/12/10 15:58:56 mungady Exp $
+ * $Id: PreviewAction.java,v 1.12 2003/02/02 23:43:49 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,10 @@
 
 package com.jrefinery.report.demo;
 
+import java.util.ResourceBundle;
+
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionDowngrade;
-
-import java.util.ResourceBundle;
 
 /**
  * The preview action invokes the parsing and processing of the currently selected sample

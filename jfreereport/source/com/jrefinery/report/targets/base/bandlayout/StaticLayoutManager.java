@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.32 2003/04/23 17:13:40 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.33 2003/04/24 18:08:56 taqua Exp $
  *
  * Changes
  * -------
@@ -46,11 +46,11 @@ import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
-import org.jfree.ui.FloatDimension;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleKey;
+import org.jfree.ui.FloatDimension;
 
 /**
  * An implementation of the BandLayoutManager interface.

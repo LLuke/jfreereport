@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.17 2003/03/04 20:29:00 taqua Exp $
+ * $Id: TableWriter.java,v 1.18 2003/04/06 18:11:31 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,10 @@
  */
 package com.jrefinery.report.targets.table;
 
+import java.awt.geom.Rectangle2D;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
+
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.event.ReportEvent;
@@ -48,10 +52,6 @@ import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.base.layout.DefaultLayoutSupport;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.BandStyleSheet;
-
-import java.awt.geom.Rectangle2D;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 
 /**
  * The TableWriter is the content creation function used to collect the cell data.

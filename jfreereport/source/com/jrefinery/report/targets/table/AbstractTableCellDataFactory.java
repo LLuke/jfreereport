@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTableCellDataFactory.java,v 1.9 2003/04/23 17:13:43 taqua Exp $
+ * $Id: AbstractTableCellDataFactory.java,v 1.10 2003/04/24 18:08:58 taqua Exp $
  *
  * Changes
  * -------
@@ -49,9 +49,9 @@ import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ShapeElement;
-import org.jfree.ui.FloatDimension;
 import com.jrefinery.report.targets.ShapeTransform;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import org.jfree.ui.FloatDimension;
 
 /**
  * A base implementation of the {@link TableCellDataFactory} interface, which is able to handle

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TemplatesWriter.java,v 1.3 2003/02/21 11:31:13 mungady Exp $
  *
  * Changes
  * -------
@@ -37,10 +37,10 @@
  */
 package com.jrefinery.report.io.ext.writer;
 
-import com.jrefinery.report.io.ext.ExtReportHandler;
-
 import java.io.IOException;
 import java.io.Writer;
+
+import com.jrefinery.report.io.ext.ExtReportHandler;
 
 /**
  * A templates writer.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemAvgFunction.java,v 1.7 2003/01/14 21:06:21 taqua Exp $
+ * $Id: ItemAvgFunction.java,v 1.8 2003/02/25 14:07:26 taqua Exp $
  *
  * Changes
  * -------
@@ -38,14 +38,14 @@
 
 package com.jrefinery.report.function;
 
+import java.math.BigDecimal;
+
 import com.jrefinery.report.Group;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.filter.NumberFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.util.Log;
-
-import java.math.BigDecimal;
 
 /**
  * A report function that calculates the average of one field (column) from the TableModel.

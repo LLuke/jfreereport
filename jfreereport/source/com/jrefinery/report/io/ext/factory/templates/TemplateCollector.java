@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TemplateCollector.java,v 1.6 2003/03/07 16:56:00 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,10 +38,10 @@
 
 package com.jrefinery.report.io.ext.factory.templates;
 
-import com.jrefinery.report.filter.templates.Template;
-
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.jrefinery.report.filter.templates.Template;
 
 /**
  * A template collection.

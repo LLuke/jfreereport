@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.29 2003/03/13 17:41:53 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.30 2003/04/11 14:11:45 taqua Exp $
  *
  * Changes
  * --------
@@ -60,7 +60,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;

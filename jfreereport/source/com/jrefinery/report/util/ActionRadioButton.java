@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ActionButton.java,v 1.10 2003/02/02 22:46:44 taqua Exp $
+ * $Id: ActionRadioButton.java,v 1.1 2003/02/28 12:02:39 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -40,12 +40,12 @@
 
 package com.jrefinery.report.util;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JRadioButton;
 import javax.swing.KeyStroke;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * The ActionRadioButton is used to connect an Action and its properties to a JRadioButton.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.16 2003/04/23 17:13:39 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.17 2003/04/24 18:08:54 taqua Exp $
  *
  * Changes
  * --------
@@ -37,21 +37,21 @@
  */
 package com.jrefinery.report.preview;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Properties;
 import java.util.Enumeration;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.BufferedInputStream;
+import java.util.Properties;
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import com.jrefinery.report.util.EncodingSupport;
-import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
 
 /**
  * A model for the 'encoding' combo box.

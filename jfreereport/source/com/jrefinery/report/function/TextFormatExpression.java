@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *
 
- * $Id: TextFormatExpression.java,v 1.6 2002/12/12 12:26:56 mungady Exp $
+ * $Id: TextFormatExpression.java,v 1.7 2003/02/25 14:07:28 taqua Exp $
  *
  * Changes
  * -------
@@ -38,11 +38,11 @@
  */
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.util.PropertiesIterator;
-
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.jrefinery.report.util.PropertiesIterator;
 
 /**
  * A TextFormatExpression uses a java.text.MessageFormat to concat and format one or more values

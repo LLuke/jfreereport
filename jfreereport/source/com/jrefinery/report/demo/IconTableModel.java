@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: IconTableModel.java,v 1.6 2002/12/12 12:26:55 mungady Exp $
+ * $Id: IconTableModel.java,v 1.7 2003/02/25 14:10:20 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
 
 package com.jrefinery.report.demo;
 
-import javax.swing.table.AbstractTableModel;
 import java.awt.Image;
 import java.util.List;
+import javax.swing.table.AbstractTableModel;
 
 /**
  * A simple <code>TableModel</code> implementation used for demonstration purposes.

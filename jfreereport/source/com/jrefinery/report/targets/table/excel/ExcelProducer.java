@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.12 2003/02/26 13:58:03 mungady Exp $
+ * $Id: ExcelProducer.java,v 1.13 2003/04/08 14:35:18 mungady Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,9 @@
  */
 
 package com.jrefinery.report.targets.table.excel;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 import com.jrefinery.report.targets.table.TableCellBackground;
 import com.jrefinery.report.targets.table.TableCellDataFactory;
@@ -50,9 +53,6 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.Region;
-
-import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * An output target for the report engine that generates an Excel file using the hffs class library

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FilesystemFilter.java,v 1.3 2003/02/25 15:42:46 taqua Exp $
+ * $Id: FilesystemFilter.java,v 1.4 2003/02/26 13:58:04 mungady Exp $
  *
  * Changes
  * -------
@@ -36,10 +36,10 @@
  */
 package com.jrefinery.report.util;
 
-import javax.swing.filechooser.FileFilter;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import javax.swing.filechooser.FileFilter;
 
 /**
  * A generic filesystem filter which implements FilenameFilter and the

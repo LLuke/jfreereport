@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  * 
- * $Id: ExcelExportDialog.java,v 1.9 2003/02/25 20:15:35 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.10 2003/03/13 17:41:52 taqua Exp $
  *
  * Changes
  * --------
@@ -40,28 +40,6 @@
 
 package com.jrefinery.report.preview;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.targets.table.excel.ExcelProcessor;
-import com.jrefinery.report.util.ActionButton;
-import com.jrefinery.report.util.ExceptionDialog;
-import com.jrefinery.report.util.FilesystemFilter;
-import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.report.util.StringUtil;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -77,6 +55,28 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.targets.table.excel.ExcelProcessor;
+import com.jrefinery.report.util.ActionButton;
+import com.jrefinery.report.util.ExceptionDialog;
+import com.jrefinery.report.util.FilesystemFilter;
+import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.StringUtil;
 
 /**
  * A dialog that is used to perform the printing of a report into an Excel file.

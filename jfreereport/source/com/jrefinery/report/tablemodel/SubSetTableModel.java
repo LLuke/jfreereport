@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SubSetTableModel.java,v 1.9 2003/02/26 16:42:22 mungady Exp $
+ * $Id: SubSetTableModel.java,v 1.10 2003/04/08 14:30:40 mungady Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,10 @@
 
 package com.jrefinery.report.tablemodel;
 
+import java.util.ArrayList;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-import java.util.ArrayList;
 
 /**
  * A TableModel that proxies an other tablemodel and cuts rows from the

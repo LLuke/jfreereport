@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_de.java,v 1.9 2002/09/17 09:49:10 mungady Exp $
+ * $Id: DemoResources_de.java,v 1.10 2003/01/12 21:33:52 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,10 @@
  */
 package com.jrefinery.report.demo.resources;
 
-import com.jrefinery.report.resources.JFreeReportResources;
-
-import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
+import javax.swing.KeyStroke;
+
+import com.jrefinery.report.resources.JFreeReportResources;
 
 /**
  * User interface items for the JFreeReport demonstration application.  These have been put into

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExceptionDialog.java,v 1.12 2002/12/02 17:44:50 taqua Exp $
+ * $Id: ExceptionDialog.java,v 1.13 2002/12/11 00:41:42 mungady Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,14 @@
 
 package com.jrefinery.report.util;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -49,14 +57,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 /**
  * The exception dialog is used to display an exception and the exceptions stacktrace to

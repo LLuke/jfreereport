@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.7 2003/04/23 17:13:41 taqua Exp $
+ * $Id: TextContentFactoryModule.java,v 1.8 2003/04/24 18:08:57 taqua Exp $
  *
  * Changes
  * -------
@@ -41,12 +41,12 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Element;
-import org.jfree.ui.FloatDimension;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.base.layout.SizeCalculatorException;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import org.jfree.ui.FloatDimension;
 
 /**
  * The TextContentFactoryModule creates plain text content from the given element.

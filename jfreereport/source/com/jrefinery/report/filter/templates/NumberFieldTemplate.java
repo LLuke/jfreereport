@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: NumberFieldTemplate.java,v 1.6 2003/03/07 16:55:54 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -38,13 +38,13 @@
 
 package com.jrefinery.report.filter.templates;
 
+import java.text.DecimalFormat;
+
 import com.jrefinery.report.DataRow;
 import com.jrefinery.report.filter.DataRowConnectable;
 import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.filter.DecimalFormatFilter;
 import com.jrefinery.report.filter.StringFilter;
-
-import java.text.DecimalFormat;
 
 /**
  * A number field template.

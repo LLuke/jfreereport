@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.33 2003/04/08 14:23:09 mungady Exp $
+ * $Id: ReportState.java,v 1.34 2003/04/09 16:16:06 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -63,8 +63,8 @@ import com.jrefinery.report.DataRowBackend;
 import com.jrefinery.report.DataRowConnector;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.ReportDefinition;
+import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.event.LayoutEvent;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.LevelledExpressionList;

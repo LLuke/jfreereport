@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: ReferenceDocGenerator.java,v 1.2 2003/02/24 10:37:54 mungady Exp $
  *
  * Changes
  * -------
@@ -38,8 +38,8 @@
 
 package com.jrefinery.report.io.ext;
 
-import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyReferenceGenerator;
 import com.jrefinery.report.io.ext.factory.objects.ObjectReferenceGenerator;
+import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyReferenceGenerator;
 
 /**
  * An application that generates reports that document properties of the JFreeReport extended

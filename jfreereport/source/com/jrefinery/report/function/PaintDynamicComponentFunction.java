@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.6 2003/02/28 04:17:18 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.7 2003/02/28 12:02:38 taqua Exp $
  *
  * Changes
  * -------
@@ -37,17 +37,17 @@
  */
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.event.ReportEvent;
-
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.BorderLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+
+import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.event.ReportEvent;
 
 /**
  * Paints a AWT or Swing Component. The component must be contained in the

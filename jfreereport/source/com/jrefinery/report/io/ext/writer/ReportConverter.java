@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.9 2003/04/23 13:43:04 taqua Exp $
+ * $Id: ReportConverter.java,v 1.10 2003/04/24 18:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -38,22 +38,22 @@
 
 package com.jrefinery.report.io.ext.writer;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.io.ReportGenerator;
-import com.jrefinery.report.io.ext.factory.datasource.DefaultDataSourceFactory;
-import com.jrefinery.report.io.ext.factory.elements.DefaultElementFactory;
-import com.jrefinery.report.io.ext.factory.objects.DefaultClassFactory;
-import org.jfree.xml.factory.objects.URLClassFactory;
-import com.jrefinery.report.io.ext.factory.stylekey.DefaultStyleKeyFactory;
-import com.jrefinery.report.io.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
-import com.jrefinery.report.io.ext.factory.templates.DefaultTemplateCollection;
-import com.jrefinery.report.util.Log;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
+
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.io.ReportGenerator;
+import com.jrefinery.report.io.ext.factory.datasource.DefaultDataSourceFactory;
+import com.jrefinery.report.io.ext.factory.elements.DefaultElementFactory;
+import com.jrefinery.report.io.ext.factory.objects.DefaultClassFactory;
+import com.jrefinery.report.io.ext.factory.stylekey.DefaultStyleKeyFactory;
+import com.jrefinery.report.io.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
+import com.jrefinery.report.io.ext.factory.templates.DefaultTemplateCollection;
+import com.jrefinery.report.util.Log;
+import org.jfree.xml.factory.objects.URLClassFactory;
 
 /**
  * A utility class for converting XML report definitions from the old format to the 

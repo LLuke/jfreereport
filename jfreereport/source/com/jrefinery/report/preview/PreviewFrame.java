@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewFrame.java,v 1.48 2003/01/14 21:10:40 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.49 2003/02/25 14:45:37 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -59,7 +59,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ResourceBundle;
-
 import javax.swing.Action;
 import javax.swing.JFrame;
 

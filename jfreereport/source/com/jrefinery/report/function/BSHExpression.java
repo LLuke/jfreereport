@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.13 2003/01/29 03:13:00 taqua Exp $
+ * $Id: BSHExpression.java,v 1.14 2003/02/25 14:07:24 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -40,13 +40,13 @@
 
 package com.jrefinery.report.function;
 
-import bsh.Interpreter;
-import com.jrefinery.report.util.Log;
-
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+
+import bsh.Interpreter;
+import com.jrefinery.report.util.Log;
 
 /**
  * An expression that uses the BeanShell scripting framework to perform a scripted calculation.

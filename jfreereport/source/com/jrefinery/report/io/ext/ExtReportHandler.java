@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.8 2003/04/23 13:39:20 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.9 2003/04/24 18:08:49 taqua Exp $
  *
  * Changes
  * -------
@@ -38,21 +38,21 @@
 
 package com.jrefinery.report.io.ext;
 
+import java.net.URL;
+import java.util.HashMap;
+
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.InitialReportHandler;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
-import org.jfree.xml.factory.objects.ClassFactoryCollector;
-import org.jfree.xml.factory.objects.URLClassFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactoryCollector;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
+import org.jfree.xml.factory.objects.ClassFactoryCollector;
+import org.jfree.xml.factory.objects.URLClassFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
-import java.net.URL;
-import java.util.HashMap;
 
 /**
  * A handler for the extended report definition format. This is the root handler for

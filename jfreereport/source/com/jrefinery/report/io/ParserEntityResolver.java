@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserEntityResolver.java,v 1.6 2003/02/26 16:42:16 mungady Exp $
+ * $Id: ParserEntityResolver.java,v 1.7 2003/04/23 13:39:19 taqua Exp $
  *
  * Changes
  * -------
@@ -42,11 +42,10 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Hashtable;
 
+import com.jrefinery.report.util.Log;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import com.jrefinery.report.util.Log;
 
 /**
  * Resolves the JFreeReport DTD specification and routes the parser to a local copy.

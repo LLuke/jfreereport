@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVCellData.java,v 1.4 2003/02/24 15:06:31 mungady Exp $
+ * $Id: CSVCellData.java,v 1.5 2003/02/25 15:42:34 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
  */
 package com.jrefinery.report.targets.table.csv;
 
-import com.jrefinery.report.targets.table.TableCellData;
-
 import java.awt.geom.Rectangle2D;
+
+import com.jrefinery.report.targets.table.TableCellData;
 
 /**
  * The CSV extension of the {@link TableCellData} base class. The cell data implementation contains

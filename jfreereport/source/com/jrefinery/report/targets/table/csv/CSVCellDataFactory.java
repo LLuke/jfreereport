@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVCellDataFactory.java,v 1.5 2003/02/17 22:01:40 taqua Exp $
+ * $Id: CSVCellDataFactory.java,v 1.6 2003/02/24 15:06:31 mungady Exp $
  *
  * Changes
  * -------
@@ -39,11 +39,11 @@
 
 package com.jrefinery.report.targets.table.csv;
 
+import java.awt.geom.Rectangle2D;
+
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.table.TableCellData;
 import com.jrefinery.report.targets.table.TableCellDataFactory;
-
-import java.awt.geom.Rectangle2D;
 
 /**
  * Creates a {@link TableCellData} object from the given {@link Element} and the element's bounds.

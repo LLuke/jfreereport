@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StylesComparator.java,v 1.2 2003/02/21 11:31:13 mungady Exp $
  *
  * Changes
  * -------
@@ -37,9 +37,9 @@
  */
 package com.jrefinery.report.io.ext.writer;
 
-import com.jrefinery.report.targets.style.ElementStyleSheet;
-
 import java.util.Comparator;
+
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 /**
  * A styles comparator.

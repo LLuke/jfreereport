@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewFrame.java,v 1.48 2003/01/14 21:10:40 taqua Exp $
+ * $Id: PreviewInternalFrame.java,v 1.2 2003/02/25 14:45:41 mungady Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ package com.jrefinery.report.preview;
 
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
-
 import javax.swing.Action;
 import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameAdapter;

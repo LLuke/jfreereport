@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ElementAlignment.java,v 1.8 2003/03/07 16:55:23 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,10 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.util.ObjectStreamResolveException;
-
 import java.io.ObjectStreamException;
 import java.io.Serializable;
+
+import com.jrefinery.report.util.ObjectStreamResolveException;
 
 /**
  * Represents the alignment of an element.

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.1 2003/02/27 14:59:02 mungady Exp $
+ * $Id: SwingIconsDemo.java,v 1.2 2003/04/24 18:08:46 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
-
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;

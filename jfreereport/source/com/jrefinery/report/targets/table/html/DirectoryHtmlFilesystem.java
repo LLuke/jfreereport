@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.13 2003/04/23 17:13:43 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.14 2003/04/24 18:08:58 taqua Exp $
  *
  * Changes
  * -------
@@ -47,11 +47,11 @@ import java.net.URL;
 import java.util.HashMap;
 
 import com.jrefinery.report.ImageReference;
-import org.jfree.io.IOUtils;
 import com.jrefinery.report.util.ImageComparator;
 import com.jrefinery.report.util.StringUtil;
 import com.jrefinery.report.util.WaitingImageObserver;
 import com.keypoint.PngEncoder;
+import org.jfree.io.IOUtils;
 
 /**
  * Writes the generated Html-File and the supplementary data files (images and

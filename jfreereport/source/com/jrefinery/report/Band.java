@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.52 2003/04/23 17:13:33 taqua Exp $
+ * $Id: Band.java,v 1.53 2003/04/24 18:08:43 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -65,13 +65,6 @@
 
 package com.jrefinery.report;
 
-import org.jfree.ui.FloatDimension;
-import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
-import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
-import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
-import com.jrefinery.report.targets.style.BandStyleSheet;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
-
 import java.awt.geom.Dimension2D;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -79,6 +72,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
+import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
+import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
+import com.jrefinery.report.targets.style.BandStyleSheet;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
+import org.jfree.ui.FloatDimension;
 
 /**
  * A report band is a collection which can contain other Report-Elements.

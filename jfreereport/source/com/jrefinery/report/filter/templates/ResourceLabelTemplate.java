@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ResourceLabelTemplate.java,v 1.4 2003/03/07 16:55:55 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -38,12 +38,12 @@
 
 package com.jrefinery.report.filter.templates;
 
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 import com.jrefinery.report.filter.ResourceFileFilter;
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.filter.StringFilter;
-
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 /**
  * A resource label template.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DefaultElementFactory.java,v 1.4 2003/03/07 16:55:56 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,10 +38,10 @@
 
 package com.jrefinery.report.io.ext.factory.elements;
 
+import com.jrefinery.report.DrawableElement;
 import com.jrefinery.report.ImageElement;
 import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.TextElement;
-import com.jrefinery.report.DrawableElement;
 
 /**
  * A default implementation of the {@link ElementFactory} interface.
