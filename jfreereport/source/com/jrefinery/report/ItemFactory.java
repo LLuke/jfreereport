@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.33 2003/02/18 19:37:00 taqua Exp $
+ * $Id: ItemFactory.java,v 1.34 2003/02/23 20:39:10 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@
  * 15-Jan-2003 : Use templates for all element datasources.
  * 25-Jan-2003 : Added ResourceBundleElement and -Field
  * 04-Feb-2003 : Added javaDoc for ResourceBundleElement and -Field
+ * 24-Feb-2003 : Fixed vertical alignment translation bug in createLabelElement(...) method (DG);
  */
 
 package com.jrefinery.report;
@@ -101,21 +102,20 @@ public class ItemFactory
   }
 
   /**
-   * Creates a new TextElement containing a date filter structure.
+   * Creates a new {@link TextElement} containing a date filter structure.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
-   * @param font the font for this element
-   * @param nullString the text used when the value of this element is null
-   * @param format the SimpleDateFormat-formatstring used to format the date
-   * @param field the fieldname to retrieve values from
+   * @param name  the name of the new element
+   * @param bounds  the bounds of the new element
+   * @param paint  the text color of this text element
+   * @param alignment  the horizontal text alignment.
+   * @param font  the font for this element
+   * @param nullString  the text used when the value of this element is <code>null</code>
+   * @param format  the SimpleDateFormat-formatstring used to format the date
+   * @param field  the fieldname to retrieve values from
    *
    * @return a report element for displaying a java.util.Date value.
    *
-   * @throws NullPointerException if bounds, format or field are null
+   * @throws NullPointerException if bounds, format or field are <code>null</code>
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static TextElement createDateElement(String name,
@@ -139,22 +139,21 @@ public class ItemFactory
   }
 
   /**
-   * Creates a new TextElement containing a date filter structure.
+   * Creates a new {@link TextElement} containing a date filter structure.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
-   * @param valign the vertical text alignment
-   * @param font the font for this element
-   * @param nullString the text used when the value of this element is null
-   * @param format the SimpleDateFormat-formatstring used to format the date
-   * @param field the fieldname to retrieve values from
+   * @param name  the name of the new element
+   * @param bounds  the bounds of the new element
+   * @param paint  the text color of this text element
+   * @param alignment  the horizontal text alignment
+   * @param valign  the vertical text alignment
+   * @param font  the font for this element
+   * @param nullString  the text used when the value of this element is <code>null</code>
+   * @param format  the SimpleDateFormat-formatstring used to format the date
+   * @param field  the fieldname to retrieve values from
    *
    * @return a report element for displaying a java.util.Date value.
    *
-   * @throws NullPointerException if bounds, format or field are null
+   * @throws NullPointerException if bounds, format or field are <code>null</code>
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static TextElement createDateElement(String name,
@@ -190,29 +189,32 @@ public class ItemFactory
     {
       dateElement.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
-    dateElement.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.translateHorizontalAlignment(alignment));
-    dateElement.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.translateHorizontalAlignment(valign));
+    dateElement.getStyle().setStyleProperty(
+        ElementStyleSheet.ALIGNMENT, 
+        ElementAlignment.translateHorizontalAlignment(alignment));
+    dateElement.getStyle().setStyleProperty(
+        ElementStyleSheet.VALIGNMENT, 
+        ElementAlignment.translateVerticalAlignment(valign));
     dateElement.setDataSource(dft);
 
     return dateElement;
   }
 
   /**
-   * Creates a new TextElement containing a date filter structure.
+   * Creates a new {@link TextElement} containing a date filter structure.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
-   * @param font the font for this element
-   * @param nullString the text used when the value of this element is null
-   * @param format the SimpleDateFormat used to format the date
-   * @param field the fieldname to retrieve values from
+   * @param name  the name of the new element
+   * @param bounds  the bounds of the new element
+   * @param paint  the text color of this text element
+   * @param alignment  the horizontal text alignment
+   * @param font  the font for this element
+   * @param nullString  the text used when the value of this element is <code>null</code>
+   * @param format  the SimpleDateFormat used to format the date
+   * @param field  the fieldname to retrieve values from
    *
    * @return a report element for displaying a java.util.Date value.
    *
-   * @throws NullPointerException if bounds, name, format or field are null
+   * @throws NullPointerException if bounds, name, format or field are <code>null</code>
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static TextElement createDateElement(String name,
@@ -224,8 +226,9 @@ public class ItemFactory
                                               DateFormat format,
                                               String field)
   {
-    return createDateElement(name, bounds, paint, alignment, ElementAlignment.TOP.getOldAlignment(), font, nullString, format,
-                             field);
+    return createDateElement(name, bounds, paint, alignment, 
+                             ElementAlignment.TOP.getOldAlignment(), 
+                             font, nullString, format, field);
   }
   /**
    * Creates a new TextElement containing a date filter structure.
@@ -233,8 +236,7 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param alignment the horizontal text alignment.
    * @param valign the vertical text alignment
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
@@ -290,8 +292,12 @@ public class ItemFactory
     {
       dateElement.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
-    dateElement.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.translateHorizontalAlignment(alignment));
-    dateElement.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.translateHorizontalAlignment(valign));
+    dateElement.getStyle().setStyleProperty(
+        ElementStyleSheet.ALIGNMENT, 
+        ElementAlignment.translateHorizontalAlignment(alignment));
+    dateElement.getStyle().setStyleProperty(
+        ElementStyleSheet.VALIGNMENT, 
+        ElementAlignment.translateVerticalAlignment(valign));
     dateElement.setDataSource(ds);
     return dateElement;
   }
@@ -302,8 +308,7 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param alignment  the horizontal text alignment.
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
    * @param format the SimpleDateFormat-formatstring used to format the date
@@ -334,8 +339,7 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param alignment  the horizontal text alignment.
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
    * @param format the SimpleDateFormat-formatstring used to format the date
@@ -366,8 +370,7 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param alignment  the horizontal text alignment.
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
    * @param function the function to retrieve values from
@@ -745,8 +748,7 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param alignment  the horizontal text alignment.
    * @param font the font for this element
    * @param labeltext the text to display
    *
@@ -762,25 +764,26 @@ public class ItemFactory
                                                Font font,
                                                String labeltext)
   {
-    return createLabelElement(name, bounds, paint, alignment, ElementAlignment.TOP.getOldAlignment(), font, labeltext);
+    return createLabelElement(name, bounds, paint, alignment, 
+                              ElementAlignment.TOP.getOldAlignment(), 
+                              font, labeltext);
   }
 
   /**
-   * Creates a new TextElement containing a label.
+   * Creates a new {@link TextElement} containing a label.
    *
    * @param name  the name of the new element.
    * @param bounds  the bounds of the new element.
    * @param paint  the text color of this text element.
-   * @param alignment  the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT).
+   * @param alignment  the horizontal alignment.
    * @param valign  the vertical alignment.
    * @param font  the font for this element.
    * @param labeltext  the text to display.
    *
    * @return a report element for displaying a label (static text).
    *
-   * @throws NullPointerException if bounds, name, format or field are null
-   * @throws IllegalArgumentException if the given alignment is invalid
+   * @throws NullPointerException if bounds, name, format or field are <code>null</code>.
+   * @throws IllegalArgumentException if the given alignment is invalid.
    */
   public static TextElement createLabelElement(String name,
                                                Rectangle2D bounds,
@@ -807,8 +810,12 @@ public class ItemFactory
     {
       label.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
-    label.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.translateHorizontalAlignment(alignment));
-    label.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.translateHorizontalAlignment(valign));
+    label.getStyle().setStyleProperty(
+        ElementStyleSheet.ALIGNMENT, 
+        ElementAlignment.translateHorizontalAlignment(alignment));
+    label.getStyle().setStyleProperty(
+        ElementStyleSheet.VALIGNMENT, 
+        ElementAlignment.translateVerticalAlignment(valign));
     label.setDataSource(template);
     return label;
   }
@@ -835,7 +842,7 @@ public class ItemFactory
     {
       // scale the line, is horizontal
       shape.setLine(0, shape.getY1(), 100, shape.getY2());
-      Rectangle2D bounds = new Rectangle2D.Float (0, (float)shape.getY1(), -100, 0);
+      Rectangle2D bounds = new Rectangle2D.Float (0, (float) shape.getY1(), -100, 0);
       return createShapeElement(name, bounds, paint, stroke, shape, true, false, true);
     }
     else
@@ -988,8 +995,7 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param alignment  the horizontal text alignment.
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
    * @param field the field in the datamodel to retrieve values from
@@ -1018,8 +1024,7 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param alignment  the horizontal text alignment.
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
    * @param field the field in the datamodel to retrieve values from
@@ -1039,7 +1044,9 @@ public class ItemFactory
                                                 NumberFormat format,
                                                 String field)
   {
-    return createNumberElement(name, bounds, paint, alignment, ElementAlignment.TOP.getOldAlignment(), font, nullString,
+    return createNumberElement(name, bounds, paint, alignment, 
+                               ElementAlignment.TOP.getOldAlignment(), 
+                               font, nullString,
                                format, field);
   }
   /**
@@ -1048,8 +1055,7 @@ public class ItemFactory
    * @param name  the name of the new element.
    * @param bounds  the bounds of the new element.
    * @param paint  the text color of this text element.
-   * @param alignment  the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT).
+   * @param alignment  the horizontal text alignment.
    * @param valign  the vertical alignment.
    * @param font  the font for this element.
    * @param nullString  the text used when the value of this element is null.
@@ -1105,8 +1111,14 @@ public class ItemFactory
     {
       element.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
-    element.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.translateHorizontalAlignment(alignment));
-    element.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.translateHorizontalAlignment(valign));
+    element.getStyle().setStyleProperty(
+        ElementStyleSheet.ALIGNMENT, 
+        ElementAlignment.translateHorizontalAlignment(alignment)
+    );
+    element.getStyle().setStyleProperty(
+        ElementStyleSheet.VALIGNMENT, 
+        ElementAlignment.translateVerticalAlignment(valign)
+    );
     element.setDataSource(ds);
     return element;
   }
@@ -1117,8 +1129,7 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param alignment  the horizontal text alignment.
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
    * @param field the fieldname in the datamodel to retrieve values from
@@ -1138,7 +1149,9 @@ public class ItemFactory
                                                 String format,
                                                 String field)
   {
-    return createNumberElement(name, bounds, paint, alignment, ElementAlignment.TOP.getOldAlignment(), font, nullString,
+    return createNumberElement(name, bounds, paint, alignment, 
+                               ElementAlignment.TOP.getOldAlignment(), 
+                               font, nullString,
                                format, field);
   }
 
@@ -1148,8 +1161,7 @@ public class ItemFactory
    * @param name  the name of the new element.
    * @param bounds  the bounds of the new element.
    * @param paint  the text color of this text element.
-   * @param alignment  the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT).
+   * @param alignment  the horizontal text alignment.
    * @param valign  the vertical alignment.
    * @param font  the font for this element.
    * @param nullString t he text used when the value of this element is null.
@@ -1193,8 +1205,14 @@ public class ItemFactory
     {
       element.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
-    element.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.translateHorizontalAlignment(alignment));
-    element.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.translateHorizontalAlignment(valign));
+    element.getStyle().setStyleProperty(
+        ElementStyleSheet.ALIGNMENT, 
+        ElementAlignment.translateHorizontalAlignment(alignment)
+    );
+    element.getStyle().setStyleProperty(
+        ElementStyleSheet.VALIGNMENT, 
+        ElementAlignment.translateVerticalAlignment(valign)
+    );
     element.setDataSource(template);
     return element;
   }
@@ -1205,8 +1223,7 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param alignment  the horizontal text alignment.
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
    * @param function the function to retrieve values from
@@ -1237,8 +1254,7 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param alignment  the horizontal text alignment.
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
    * @param function the function to retrieve values from
@@ -1269,8 +1285,7 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param alignment  the horizontal text alignment.
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
    * @param field the field in the datamodel to retrieve values from
@@ -1304,8 +1319,7 @@ public class ItemFactory
    * @param name  the name of the new element
    * @param bounds  the bounds of the new element
    * @param paint  the text color of this text element
-   * @param alignment  the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT).
+   * @param alignment  the horizontal text alignment.
    * @param valign  the vertical alignment.
    * @param font  the font for this element
    * @param nullString  the text used when the value of this element is null
@@ -1343,8 +1357,14 @@ public class ItemFactory
     {
       element.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
-    element.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.translateHorizontalAlignment(alignment));
-    element.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.translateHorizontalAlignment(valign));
+    element.getStyle().setStyleProperty(
+        ElementStyleSheet.ALIGNMENT, 
+        ElementAlignment.translateHorizontalAlignment(alignment)
+    );
+    element.getStyle().setStyleProperty(
+        ElementStyleSheet.VALIGNMENT, 
+        ElementAlignment.translateVerticalAlignment(valign)
+    );
     element.setDataSource(template);
     return element;
   }
@@ -1355,8 +1375,7 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param alignment  the horizontal text alignment.
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
    * @param function the name of the function to retrieve values from
@@ -1748,8 +1767,14 @@ public class ItemFactory
     {
       element.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
-    element.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.translateHorizontalAlignment(alignment));
-    element.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.translateHorizontalAlignment(valignment));
+    element.getStyle().setStyleProperty(
+        ElementStyleSheet.ALIGNMENT, 
+        ElementAlignment.translateHorizontalAlignment(alignment)
+    );
+    element.getStyle().setStyleProperty(
+        ElementStyleSheet.VALIGNMENT, 
+        ElementAlignment.translateVerticalAlignment(valignment)
+    );
     element.setDataSource(template);
     return element;
 
@@ -1799,8 +1824,14 @@ public class ItemFactory
     {
       label.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
-    label.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.translateHorizontalAlignment(alignment));
-    label.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.translateHorizontalAlignment(valign));
+    label.getStyle().setStyleProperty(
+        ElementStyleSheet.ALIGNMENT, 
+        ElementAlignment.translateHorizontalAlignment(alignment)
+    );
+    label.getStyle().setStyleProperty(
+        ElementStyleSheet.VALIGNMENT, 
+        ElementAlignment.translateVerticalAlignment(valign)
+    );
     label.setDataSource(template);
     return label;
   }
