@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.33 2002/11/06 22:15:30 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.1 2002/12/02 17:57:01 taqua Exp $
  *
  * Changes
  * -------
@@ -53,8 +53,6 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.targets.pageable.physicals.LogicalPageImpl;
-import com.jrefinery.report.targets.pageable.output.PDFFontRecord;
-import com.jrefinery.report.targets.pageable.output.PDFFontSupport;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
@@ -95,20 +93,23 @@ import java.util.StringTokenizer;
 
 /**
  * An output target for the report engine that generates a PDF file using the iText class library
- * (see http://www.lowagie.com/iText, note that the URL is case-sensitive!).
+ * (see <code>http://www.lowagie.com/iText</code>, note that the URL is case-sensitive!).
  * <p>
- * If the system property "com.jrefinery.report.targets.pageable.output.PDFOutputTarget.AUTOINIT" is set to "true",
+ * If the system property "com.jrefinery.report.targets.pageable.output.PDFOutputTarget.AUTOINIT" 
+ * is set to "true",
  * the PDF-FontFactory is automatically initialized when this class is loaded. Be aware that
  * embedding many fonts will result in larger files.
  * <p>
  * When using Unicode characters, you will have to adjust the encoding of this target to
  * "Identity-H", to enable horizontal unicode printing. This will result in larger files.
  *
- * @author DG
+ * @author David Gilbert
  */
 public class PDFOutputTarget extends AbstractOutputTarget
 {
-  public static final String CONFIGURATION_PREFIX = "com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.";
+  /** The configuration prefix. */
+  public static final String CONFIGURATION_PREFIX 
+      = "com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.";
 
   /** Literal text for the 'AllowPrinting' property name. */
   public static final String SECURITY_ALLOW_PRINTING = "AllowPrinting";
@@ -153,6 +154,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   private static final String CREATOR = JFreeReport.getInfo().getName() + " version "
       + JFreeReport.getInfo().getVersion();
 
+  /** The encoding key. */
   public static final String ENCODING = "encoding";
 
   /** The output stream. */
@@ -182,7 +184,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /** The current Paint as used in the AWT */
   private Paint awtPaint;
 
+  /** The PDF font support. */
   private PDFFontSupport fontSupport;
+
   /**
    * A bytearray containing an empty password. iText replaces the owner password with random
    * values, but Adobe allows to have encryption without an owner password set.
@@ -237,7 +241,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
      *
      * @param target  the target for the state information
      *
-     * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem with the output target.
+     * @throws OutputTargetException if there is a problem with the output target.
      */
     public void restore(PDFOutputTarget target) throws OutputTargetException
     {
@@ -380,15 +384,16 @@ public class PDFOutputTarget extends AbstractOutputTarget
      * @param font  the font name.
      * @param encoding  the encoding.
      *
-     * @throws com.lowagie.text.DocumentException ??
-     * @throws java.io.IOException ??
+     * @throws DocumentException ??
+     * @throws IOException ??
      */
     private void addFont(String font, String encoding)
         throws DocumentException, IOException
     {
       if (fontsByName.containsValue(font))
+      {
         return; // already in there
-
+      }
       BaseFont bfont = BaseFont.createFont(font, encoding, true, false, null, null);
       String[][] fi = bfont.getFullFontName();
       for (int i = 0; i < fi.length; i++)
@@ -444,8 +449,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /**
    * Initialialize the font factory when this class is loaded and the system property
-   * of  <code>"com.jrefinery.report.targets.pageable.output.PDFOutputTarget.AUTOINIT"</code> is set to
-   * <code>true</code>
+   * of  <code>"com.jrefinery.report.targets.pageable.output.PDFOutputTarget.AUTOINIT"</code> is 
+   * set to <code>true</code>.
    */
   static
   {
@@ -468,6 +473,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
     this(out, pageFormat, pageFormat, embedFonts);
   }
 
+  /**
+   * Creates a new PDFOutputTarget.
+   *
+   * @param out  the output stream.
+   * @param logPage  the logical page.
+   * @param embedFonts  embed the fonts?
+   */
   public PDFOutputTarget(OutputStream out, LogicalPage logPage, boolean embedFonts)
   {
     super(logPage);
@@ -477,7 +489,16 @@ public class PDFOutputTarget extends AbstractOutputTarget
     setFontEncoding(getDefaultFontEncoding());
   }
 
-  public PDFOutputTarget(OutputStream out, PageFormat logPageFormat, PageFormat physPageFormat, boolean embedFonts)
+  /**
+   * Creates a new PDFOutputTarget.
+   *
+   * @param out  the output stream.
+   * @param logPageFormat  the logical page format.
+   * @param physPageFormat  the physical page format.
+   * @param embedFonts  embed the fonts?
+   */
+  public PDFOutputTarget(OutputStream out, PageFormat logPageFormat, PageFormat physPageFormat, 
+                         boolean embedFonts)
   {
     this(out, new LogicalPageImpl(logPageFormat, physPageFormat), embedFonts);
   }
@@ -512,6 +533,11 @@ public class PDFOutputTarget extends AbstractOutputTarget
     return awtFont;
   }
 
+  /**
+   * Returns the iText BaseFont.
+   *
+   * @return the iText BaseFont.
+   */
   public BaseFont getBaseFont ()
   {
     return baseFont;
@@ -527,14 +553,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
     return fontSize;
   }
 
-
   /**
    * Sets the current font. The font is mapped to pdf specific fonts if possible.
    * If no basefont could be created, an OutputTargetException is thrown.
    *
    * @param font  the new font (null not permitted).
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there was a problem setting the font for the target.
+   * @throws OutputTargetException if there was a problem setting the font for the target.
    */
   public void setFont(Font font) throws OutputTargetException
   {
@@ -553,7 +578,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
     this.fontSize = font.getSize();
 
     this.baseFont = fontSupport.createBaseFont(font, getFontEncoding()).getBaseFont();
-    if (baseFont == null) throw new NullPointerException();
+    if (baseFont == null) 
+    {
+      throw new NullPointerException();
+    }
   }
 
   /**
@@ -562,7 +590,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param imageRef  the image reference.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there was a problem drawing the image to the target.
+   * @throws OutputTargetException if there was a problem drawing the image to the target.
    */
   public void drawImage(ImageReference imageRef) throws OutputTargetException
   {
@@ -571,13 +599,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
       Rectangle2D bounds = getInternalOperationBounds();
       Rectangle2D imageBounds = imageRef.getBoundsScaled();
 
-      float x = (float)(bounds.getX());
-      float y = (float)(bounds.getY());
+      float x = (float) (bounds.getX());
+      float y = (float) (bounds.getY());
 
       Image image = getImage(imageRef);
       image.setAbsolutePosition(x, (float) (getPageHeight() - y - bounds.getHeight()));
-      image.scaleAbsolute((float)imageBounds.getWidth(),
-                          (float)imageBounds.getHeight());
+      image.scaleAbsolute((float) imageBounds.getWidth(),
+                          (float) imageBounds.getHeight());
 
       PdfContentByte cb = this.writer.getDirectContent();
 
@@ -618,8 +646,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return an image.
    *
-   * @throws com.lowagie.text.DocumentException ??
-   * @throws java.io.IOException ??
+   * @throws DocumentException ??
+   * @throws IOException ??
    */
   private Image getImage(ImageReference imageRef) throws DocumentException, IOException
   {
@@ -628,7 +656,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     try
     {
-      Rectangle2D drawArea = new Rectangle2D.Double (0,0, bounds.getWidth(), bounds.getHeight());
+      Rectangle2D drawArea = new Rectangle2D.Double (0, 0, bounds.getWidth(), bounds.getHeight());
       if ((imageRef.getSourceURL() != null) && (drawArea.contains(imageBounds)))
       {
         return Image.getInstance(imageRef.getSourceURL());
@@ -653,6 +681,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
     throw new DocumentException("Neither an URL nor an Image was given to paint the graphics");
   }
 
+  /**
+   * Returns the corrected Y value.
+   *
+   * @param y  the y value.
+   *
+   * @return the corrected value.
+   */
   private float getCorrectedY(float y)
   {
     return getPageHeight() - y;
@@ -805,7 +840,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * This method is called when the page is ended.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there was a problem with the target.
+   * @throws OutputTargetException if there was a problem with the target.
    */
   public void endPage() throws OutputTargetException
   {
@@ -824,7 +859,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Opens the document.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem with the target.
+   * @throws OutputTargetException if there is a problem with the target.
    */
   public void open() throws OutputTargetException
   {
@@ -917,11 +952,16 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * Signals that a page is being started. Stores the state of the target to
    * make it possible to restore the complete outputtarget.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is some problem with the target.
+   * @param format  the physical page.
+   *
+   * @throws OutputTargetException if there is some problem with the target.
    */
   public void beginPage(PhysicalPage format) throws OutputTargetException
   {
-    if (isOpen() == false) throw new IllegalStateException("Target " + hashCode() + " is not open");
+    if (isOpen() == false) 
+    {
+      throw new IllegalStateException("Target " + hashCode() + " is not open");
+    }
     this.writer.getDirectContent().saveState();
     this.currentPageFormat = (PageFormat) format.getPageFormat().clone();
   }
@@ -1027,7 +1067,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param stroke  the stroke.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem with the target.
+   * @throws OutputTargetException if there is a problem with the target.
    */
   public void setStroke(Stroke stroke) throws OutputTargetException
   {
@@ -1068,7 +1108,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param paint  the paint.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if the paint is invalid.
+   * @throws OutputTargetException if the paint is invalid.
    */
   public void setPaint(Paint paint) throws OutputTargetException
   {
@@ -1108,7 +1148,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Restores the state of this target.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if the given state object is not valid.
+   * @throws OutputTargetException if the given state object is not valid.
    */
   public void restoreState() throws OutputTargetException
   {
@@ -1121,7 +1161,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the state container.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem with the output target.
+   * @throws OutputTargetException if there is a problem with the output target.
    */
   public Object saveState() throws OutputTargetException
   {
@@ -1161,11 +1201,21 @@ public class PDFOutputTarget extends AbstractOutputTarget
     setProperty(ENCODING, encoding);
   }
 
+  /**
+   * Returns the 'embed fonts' flag.
+   *
+   * @return the 'embed fonts' flag.
+   */
   protected boolean isEmbedFonts()
   {
     return embedFonts;
   }
 
+  /**
+   * Sets the 'embed fonts' flag.
+   *
+   * @param embedFonts  the new flag value.
+   */
   protected void setEmbedFonts(boolean embedFonts)
   {
     this.embedFonts = embedFonts;
@@ -1175,10 +1225,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * When the dummyMode is active, everything is done as if the report should be printed,
    * so that any font calculations can be done.But DONT! Write the report , if streaming,
    * write to the NullStream, but NEVER EVER do any real output.
+   *
+   * @return a dummy output target.
    */
   public OutputTarget createDummyWriter()
   {
-    PDFOutputTarget dummy = new PDFOutputTarget(new NullOutputStream(), getLogicalPage().newInstance(), isEmbedFonts());
+    PDFOutputTarget dummy = new PDFOutputTarget(new NullOutputStream(), 
+                                                getLogicalPage().newInstance(), isEmbedFonts());
     Enumeration enum = getPropertyNames();
     while (enum.hasMoreElements())
     {
@@ -1188,17 +1241,35 @@ public class PDFOutputTarget extends AbstractOutputTarget
     return dummy;
   }
 
+  /**
+   * Returns the document.
+   *
+   * @return the document.
+   */
   protected Document getDocument()
   {
     return pdfDocument;
   }
 
+  /**
+   * Sets the document.
+   *
+   * @param document  the document (null not permitted).
+   */
   protected void setDocument(Document document)
   {
-    if (document == null) throw new NullPointerException();
-    this.pdfDocument= document;
+    if (document == null) 
+    {
+      throw new NullPointerException();
+    }
+    this.pdfDocument = document;
   }
 
+  /**
+   * Configures the output target.
+   * 
+   * @param config  the configuration.
+   */
   public void configure(ReportConfiguration config)
   {
     updateProperty(AUTHOR, config);
@@ -1217,11 +1288,23 @@ public class PDFOutputTarget extends AbstractOutputTarget
     // encryption needs more info: <undefined> <none> <40> <128>.
   }
 
+  /**
+   * Updates a property.
+   * 
+   * @param key  the key.
+   * @param config  the config.
+   */
   private void updateProperty(String key, ReportConfiguration config)
   {
     setProperty(key, getProperty(key, config.getConfigProperty(CONFIGURATION_PREFIX + key)));
   }
 
+  /**
+   * Updates a boolean property.
+   *  
+   * @param key  the key.
+   * @param config  the config.
+   */
   private void updateBooleanProperty(String key, ReportConfiguration config)
   {
     String value = config.getConfigProperty(key, "");
@@ -1233,6 +1316,11 @@ public class PDFOutputTarget extends AbstractOutputTarget
     setProperty(key, getProperty(key, bValue));
   }
 
+  /**
+   * Returns true if the output target is open, and false otherwise.
+   *
+   * @return true or false.
+   */
   public boolean isOpen()
   {
     if (getDocument() == null)
@@ -1243,11 +1331,23 @@ public class PDFOutputTarget extends AbstractOutputTarget
     return getDocument().isOpen();
   }
 
+  /**
+   * A PDF size calculator.
+   */
   private static class PDFSizeCalculator implements SizeCalculator
   {
+    /** The base font. */
     private BaseFont baseFont;
+    
+    /** The font size. */
     private float fontSize;
 
+    /** 
+     * Creates a new size calculator.
+     *
+     * @param font  the font.
+     * @param fontSize  the font size.
+     */
     public PDFSizeCalculator(BaseFont font, float fontSize)
     {
       this.baseFont = font;
@@ -1280,11 +1380,22 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
   }
 
+  /** The current page format. */
   private PageFormat currentPageFormat;
+  
+  /** The internal operation bounds. */
   private Rectangle2D internalOperationBounds;
 
-  // creates a size calculator for the current state of the outputtarget. that calculator
-  // is used to calc. the string width and line height and later maybe more ...
+  /** 
+   * Creates a size calculator for the current state of the outputtarget. that calculator
+   * is used to calc. the string width and line height and later maybe more.
+   *
+   * @param font  the font.
+   *
+   * @return the size calculator.
+   *
+   * @throws OutputTargetException ??.
+   */
   public SizeCalculator createTextSizeCalculator(Font font) throws OutputTargetException
   {
     PDFFontRecord record = fontSupport.createBaseFont(font, getFontEncoding());
@@ -1297,12 +1408,17 @@ public class PDFOutputTarget extends AbstractOutputTarget
   public void setOperationBounds(Rectangle2D bounds)
   {
     super.setOperationBounds(bounds);
-    internalOperationBounds = new Rectangle2D.Double (bounds.getX() + currentPageFormat.getImageableX(),
-                                                      bounds.getY() + currentPageFormat.getImageableY(),
-                                                      bounds.getWidth(),
-                                                      bounds.getHeight());
+    internalOperationBounds 
+        = new Rectangle2D.Double (bounds.getX() + currentPageFormat.getImageableX(),
+                                  bounds.getY() + currentPageFormat.getImageableY(),
+                                  bounds.getWidth(), bounds.getHeight());
   }
 
+  /**
+   * Returns the internal operation bounds.
+   *
+   * @return the internal operation bounds.
+   */
   public Rectangle2D getInternalOperationBounds()
   {
     return internalOperationBounds;

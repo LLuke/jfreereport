@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library 
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,16 +23,22 @@
  * ---------------------
  * ReportProperties.java
  * ---------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * $Id: ReportProperties.java,v 1.11 2002/11/07 21:45:29 taqua Exp $
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: ReportProperties.java,v 1.12 2002/11/29 12:07:29 mungady Exp $
  *
  * Changes
  * -------
  * 26-May-2002 : Created ReportProperties as a small scale hashtable with protected string keys.
  *               This implementation guarantees that all keys are strings.
  * 09-Jun-2002 : Documentation
+ * 05-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.util;
 
 import java.io.Serializable;
@@ -60,24 +66,24 @@ import java.util.TreeSet;
  * <p>
  * JFreeReport has defined properties to publish the current state of the report:
  * <ul>
- * <li>JFreeReport.NAME_PROPERTY = "report.name"<p>
+ * <li><code>JFreeReport.NAME_PROPERTY = "report.name"</code><p>
  * The name of the report as defined in JFreeReport.setName(). Changing this property in the
  * ReportState will not affect the ReportDefinition object.
- * <li>REPORT_DATE_PROPERTY = "report.date"<p>
+ * <li><code>REPORT_DATE_PROPERTY = "report.date"</code><p>
  * A java.lang.Date object containing the timestamp when this reportchain was created. This
  * denotes the moment of the pagination, and changes when the report is repaginated.
- * <li>REPORT_PAGEFORMAT_PROPERTY = "report.pageformat"<p>
+ * <li><code>REPORT_PAGEFORMAT_PROPERTY = "report.pageformat"</code><p>
  * Contains the current PageFormat used for printing.
- * <li>REPORT_PAGECOUNT_PROPERTY = "report.pagecount"<p>
+ * <li><code>REPORT_PAGECOUNT_PROPERTY = "report.pagecount"</code><p>
  * The number of pages for this report. <b>This property is not available in the prepare run.</b>
- * <li>REPORT_PREPARERUN_PROPERTY = "report.preparerun"<p>
+ * <li><code>REPORT_PREPARERUN_PROPERTY = "report.preparerun"</code><p>
  * The prepare run is invoked on repagination. This run collects the restart states for every
  * page of the report. When printing or displaying selected pages of the report, these saved
  * states are used as restarting points for the report generation. The prepare-run is invoked only
  * once per PageFormat. Subsequent report printings are restarted on clones of the stored page
  * states.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ReportProperties implements Serializable, Cloneable
 {

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,13 +23,17 @@
  * ---------------
  * LevelList.java
  * ---------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
- * $Id: LevelList.java,v 1.3 2002/11/29 12:07:29 mungady Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: LevelList.java,v 1.4 2002/12/02 17:44:50 taqua Exp $
  *
  * Changes
  * -------
  * 12-Nov-2002 : Added Javadocs (DG).
+ * 05-Dec-2002 : Updated Javadocs (DG);
  *
  */
 
@@ -42,7 +46,10 @@ import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 /**
- * @author TM
+ * A list that associates a level (instance of <code>Integer</code>) with each element in the
+ * list.
+ *
+ * @author Thomas Morgner
  */
 public class LevelList implements Cloneable
 {
@@ -71,24 +78,50 @@ public class LevelList implements Cloneable
      */
     public int compare(Object o1, Object o2)
     {
-      if ((o1 instanceof Comparable) == false) throw new ClassCastException("Need comparable Elements");
-      if ((o2 instanceof Comparable) == false) throw new ClassCastException("Need comparable Elements");
+      if ((o1 instanceof Comparable) == false) 
+      {
+        throw new ClassCastException("Need comparable Elements");
+      }
+      if ((o2 instanceof Comparable) == false) 
+      {
+        throw new ClassCastException("Need comparable Elements");
+      }
       Comparable c1 = (Comparable) o1;
       Comparable c2 = (Comparable) o2;
       return -1  * c1.compareTo(c2);
     }
   }
 
+  /**
+   * An iterator.
+   */
   private static class ElementLevelIterator implements Iterator
   {
+    /** The level list. */
     private LevelList list;
+    
+    /** The level. */
     private int level;
+    
+    /** The next object. */
     private Object next;
+    
+    /** The current index. */
     private int currentIndex;
 
+    /**
+     * Creates an iterator that provides access to all the elements in a list at the specified
+     * level.
+     *
+     * @param list  the list (null not permitted).
+     * @param level  the level.
+     */
     public ElementLevelIterator(LevelList list, int level)
     {
-      if (list == null) throw new NullPointerException();
+      if (list == null) 
+      {
+        throw new NullPointerException();
+      }
 
       this.list = list;
       this.level = level;
@@ -96,6 +129,10 @@ public class LevelList implements Cloneable
       searchNext();
     }
 
+    /**
+     * Advances to the next element at the level required.  If no more elements are available
+     * at the current level, the method exits with <code>this.next == null</code>.
+     */
     private void searchNext ()
     {
       next = null;
@@ -112,7 +149,7 @@ public class LevelList implements Cloneable
     }
 
     /**
-     * Returns <tt>true</tt> if the iteration has more elements. (In other
+     * Returns <tt>true</tt> if the iteration has more elements (in other
      * words, returns <tt>true</tt> if <tt>next</tt> would return an element
      * rather than throwing an exception.)
      *
@@ -124,15 +161,19 @@ public class LevelList implements Cloneable
     }
 
     /**
-     * Returns the next element in the interation.
+     * Returns the next element in the iteration.
      *
      * @return the next element in the iteration.
+     *
      * @exception java.util.NoSuchElementException iteration has no more elements.
      */
     public Object next()
     {
       Object cnext = next;
-      if (cnext == null) throw new NoSuchElementException ();
+      if (cnext == null) 
+      {  
+        throw new NoSuchElementException ();
+      }
 
       searchNext();
 
@@ -140,20 +181,19 @@ public class LevelList implements Cloneable
     }
 
     /**
-     *
      * Removes from the underlying collection the last element returned by the
      * iterator (optional operation).  This method can be called only once per
      * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
      * the underlying collection is modified while the iteration is in
      * progress in any way other than by calling this method.
      *
-     * @exception UnsupportedOperationException if the <tt>remove</tt>
-     *		  operation is not supported by this Iterator.
+     * @throws UnsupportedOperationException if the <tt>remove</tt>
+     *         operation is not supported by this Iterator.
 
-     * @exception IllegalStateException if the <tt>next</tt> method has not
-     *		  yet been called, or the <tt>remove</tt> method has already
-     *		  been called after the last call to the <tt>next</tt>
-     *		  method.
+     * @throws IllegalStateException if the <tt>next</tt> method has not
+     *         yet been called, or the <tt>remove</tt> method has already
+     *         been called after the last call to the <tt>next</tt>
+     *         method.
      */
     public void remove()
     {
@@ -168,7 +208,7 @@ public class LevelList implements Cloneable
   private ArrayList levels;
 
   /**
-   * Default constructor.
+   * Creates a new list (initially empty).
    */
   public LevelList ()
   {
@@ -238,6 +278,8 @@ public class LevelList implements Cloneable
    * Returns an iterator for all the elements at a given level.
    *
    * @param level  the level.
+   *
+   * @return the iterator.
    */
   public Iterator getElementsForLevel (int level)
   {
@@ -248,6 +290,8 @@ public class LevelList implements Cloneable
    * Returns the element with the given index.
    *
    * @param index  the index.
+   *
+   * @return the element.
    */
   public synchronized Object get(int index)
   {
@@ -297,7 +341,7 @@ public class LevelList implements Cloneable
    */
   public int getLevel (int index)
   {
-    return ((Integer)levels.get (index)).intValue();
+    return ((Integer) levels.get (index)).intValue();
   }
 
   /**

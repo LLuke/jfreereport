@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library 
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------
+ * ---------------------------
  * SimplePageLayoutCursor.java
- * -----------
+ * ---------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.13 2002/09/13 15:38:03 mungady Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.1 2002/12/02 17:57:06 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -39,6 +39,7 @@
  * 04-Jun-2002 : Documentation updated.
  * 04-Jul-2002 : Serializable and Cloneable
  * 05-Sep-2002 : Documentation
+ * 05-Dec-2002 : Updates to Javadocs (DG);
  */
 
 package com.jrefinery.report.targets.pageable.pagelayout;
@@ -46,36 +47,36 @@ package com.jrefinery.report.targets.pageable.pagelayout;
 import java.io.Serializable;
 
 /**
- * A utility class for keeping track of the current position on a report page. The cursor
- * is used by the ReportProcessor to determine the current position on the paper.
- * The cursor is only able to advance forward. There is no way of reseting the cursor once
- * it has moved.
- *
- * @author DG
+ * A utility class for keeping track of the current output position on a logical page.  Only the
+ * vertical location is tracked, it begins at zero (the top of the page) and increases as the
+ * cursor moves down the page.
+ * 
+ * @author David Gilbert
  */
 public class SimplePageLayoutCursor implements Cloneable, Serializable
 {
-
   /** The y-coordinate. */
   private float y;
 
   /** The bottom of the page. */
   private float pageBottom;
 
+  /** The reserved space at the bottom of the page. */
   private float reserved;
 
   /**
    * Constructs a new cursor.
    *
+   * @param height  the logical page height.
    */
   public SimplePageLayoutCursor (float height)
   {
     y = (float) 0;
-    pageBottom = (height);
+    pageBottom = height;
   }
 
   /**
-   * Reserves the given space on the bottom of the page. This space is considered printed
+   * Reserves the given space at the bottom of the page. This space is considered printed
    * and does not get filled by the various bands and elements. This functionality is
    * used to reserve space for the page footer.
    *
@@ -94,6 +95,11 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
     reserved = reserve;
   }
 
+  /**
+   * Returns the amount of space reserved at the bottom of the page (usually for the page footer).
+   *
+   * @return the reserved space (in Java2D units).
+   */
   public float getReservedSpace ()
   {
     return reserved;
@@ -156,15 +162,22 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
     return pageBottom;
   }
 
+  /**
+   * Returns the y-coordinate for the start of the reserved space at the bottom of the page.
+   *
+   * @return the start of the space reserved for the page footer.
+   */
   public float getPageBottomReserved ()
   {
     return (pageBottom - reserved);
   }
 
   /**
+   * Clones the cursor.
+   *
    * @return a clone of this cursor.
    *
-   * @throws java.lang.CloneNotSupportedException  n.a.
+   * @throws CloneNotSupportedException  n.a.
    */
   public Object clone () throws CloneNotSupportedException
   {

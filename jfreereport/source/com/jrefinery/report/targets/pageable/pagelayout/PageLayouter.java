@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.2 2002/12/02 20:43:17 taqua Exp $
+ * $Id: PageLayouter.java,v 1.3 2002/12/04 16:20:57 mungady Exp $
  *
  * Changes
  * -------
@@ -54,83 +54,164 @@ import com.jrefinery.report.util.Log;
  */
 public abstract class PageLayouter extends AbstractFunction
 {
+  /**
+   * Represents the state of the page layouter. 
+   */
   protected static abstract class LayoutManagerState implements Cloneable
   {
+    /**
+     * Creates a new state.
+     */
     public LayoutManagerState ()
     {
     }
   }
 
+  /**
+   * A clone carrier.
+   */
   private class CloneCarrier
   {
     // dont clone these
     public JFreeReport report;
+    
+    /** The logical page. */
     private LogicalPage logicalPage;
   }
 
+  /** The current state. */
   private LayoutManagerState layoutManagerState;
-  // handles the layout
+  
+  /** The latest report event. */
   private ReportEvent currentEvent;
+  
+  /** The 'page-ended' flag. */
   private boolean pageEnded;
+  
+  /** A clone carrier. */
   private CloneCarrier cloneCarrier;
+  
+  /** The dep level. */
   private int depLevel;
 
+  /** The 'finishing page' flag. */
   private boolean finishingPage;
+  
+  /** The 'restarting page' flag. */
   private boolean restartingPage;
 
+  /**
+   * Creates a new page layouter.
+   */
   public PageLayouter()
   {
     setDepencyLevel(-1);
     cloneCarrier = new CloneCarrier();
   }
 
+  /**
+   * Sets the logical page for the layouter.
+   *
+   * @param logicalPage  the logical page (null not permitted).
+   */
   public void setLogicalPage(LogicalPage logicalPage)
   {
-    if (logicalPage == null) throw new NullPointerException();
+    if (logicalPage == null) 
+    {
+      throw new NullPointerException("PageLayouter.setLogicalPage: logicalPage is null.");
+    }
     this.cloneCarrier.logicalPage = logicalPage;
   }
 
+  /**
+   * Returns the logical page.
+   *
+   * @return the logical page.
+   */
   public LogicalPage getLogicalPage ()
   {
     return cloneCarrier.logicalPage;
   }
 
+  /**
+   * Returns the 'finishing page' flag.
+   *
+   * @return true or false.
+   */
   public boolean isFinishingPage()
   {
     return finishingPage;
   }
 
+  /**
+   * Sets the 'finishing page' flag.
+   *
+   * @param finishingPage  the new flag value.
+   */
   public void setFinishingPage(boolean finishingPage)
   {
     this.finishingPage = finishingPage;
   }
 
+  /**
+   * Returns the 'restarting page' flag.
+   *
+   * @return true or false.
+   */
   public boolean isRestartingPage()
   {
     return restartingPage;
   }
 
+  /**
+   * Sets the 'restarting page' flag.
+   *
+   * @param restartingPage  sets the restarting page flag.
+   */
   public void setRestartingPage(boolean restartingPage)
   {
     this.restartingPage = restartingPage;
   }
 
+  /**
+   * Returns the report.
+   *
+   * @return the report.
+   */
   public JFreeReport getReport()
   {
     return cloneCarrier.report;
   }
 
+  /**
+   * Sets the report.
+   *
+   * @param report  the report (null not permitted).
+   */
   protected void setReport(JFreeReport report)
   {
-    if (report == null) throw new NullPointerException();
+    if (report == null) 
+    {
+      throw new NullPointerException("PageLayouter.setReport: report is null.");
+    }
     this.cloneCarrier.report = report;
   }
 
+  /**
+   * Returns the current report event.
+   * 
+   * @return the event.
+   */
   protected ReportEvent getCurrentEvent()
   {
     return currentEvent;
   }
 
+  /**
+   * Sets the current event (also updates the report reference).
+   *
+   * @param currentEvent event.
+   */
   protected void setCurrentEvent(ReportEvent currentEvent)
   {
     this.currentEvent = currentEvent;
@@ -144,9 +225,15 @@ public abstract class PageLayouter extends AbstractFunction
     }
   }
 
+  /**
+   * Ends a page.
+   */
   protected void endPage () throws ReportProcessingException
   {
-    if (isRestartingPage()) throw new ReportProcessingException ("Report does not proceed");
+    if (isRestartingPage()) 
+    {
+      throw new ReportProcessingException ("Report does not proceed");
+    }
     setFinishingPage(true);
     ReportState cEventState = getCurrentEvent().getState();
     cEventState.firePageFinishedEvent();
@@ -237,7 +324,7 @@ public abstract class PageLayouter extends AbstractFunction
    * Returns a clone of the PageLayouter.
    * <P>
    * Be aware, this does not create a deep copy. If you have complex
-   * strucures contained in objects, you have to overwrite this function.
+   * structures contained in objects, you have to overwrite this function.
    *
    * @return a clone of the function.
    *

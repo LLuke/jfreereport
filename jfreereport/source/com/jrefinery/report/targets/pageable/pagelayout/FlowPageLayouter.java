@@ -1,12 +1,42 @@
 /**
- * Date: Dec 1, 2002
- * Time: 5:20:48 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id$
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ---------------------
+ * FlowPageLayouter.java
+ * ---------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id:  $
+ *
+ * Changes
+ * -------
+ * 05-Dec-2002 : Added Javadocs (DG);
+ *
  */
 package com.jrefinery.report.targets.pageable.pagelayout;
 
-import com.jrefinery.report.targets.pageable.pagelayout.PageLayouter;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.event.ReportEvent;
@@ -15,17 +45,35 @@ import com.jrefinery.report.function.FunctionInitializeException;
 import java.util.Stack;
 import java.util.ArrayList;
 
+/**
+ * A page layouter.
+ *
+ * @author Thomas Morgner.
+ */
 public class FlowPageLayouter extends PageLayouter
 {
+  /** Tasks. */
   private Stack tasks;
+  
+  /** ??. */
   private ArrayList taskWorker;
 
+  /**
+   * Creates a new page layouter.
+   */
   public FlowPageLayouter()
   {
     tasks = new Stack();
     taskWorker = new ArrayList ();
   }
 
+  /**
+   * Gets a task for an event.
+   *
+   * @param event  the event.
+   *
+   * @return the layout task.
+   */
   public LayoutTask getTaskForEvent (ReportEvent event)
   {
     LayoutTask task = new LayoutTask();
@@ -34,11 +82,21 @@ public class FlowPageLayouter extends PageLayouter
     return task;
   }
 
+  /**
+   * Ends a task.
+   *
+   * @param task  the task.
+   */
   public void endTask (LayoutTask task)
   {
     tasks.pop();
   }
 
+  /**
+   * Performs layout.
+   *
+   * @param event  the event.
+   */
   public void performLayout (ReportEvent event)
   {
     LayoutTask task = getTaskForEvent(event);
@@ -64,6 +122,11 @@ public class FlowPageLayouter extends PageLayouter
     }
   }
 
+  /**
+   * Saves the current state.
+   *
+   * @return <code>null</code>.
+   */
   protected PageLayouter.LayoutManagerState saveCurrentState()
   {
     return null;
@@ -75,7 +138,9 @@ public class FlowPageLayouter extends PageLayouter
    * the previous page or the original last report state - or the processing
    * will print stupid things.
    *
-   * @param state
+   * @param state  the state.
+   *
+   * @throws ReportProcessingException never.
    */
   public void restoreSaveState(ReportState state)
       throws ReportProcessingException
@@ -85,7 +150,7 @@ public class FlowPageLayouter extends PageLayouter
   /**
    * A detector whether the last pagebreak was a manual pagebreak or an automatic one
    *
-   * @return
+   * @return true or false.
    */
   public boolean isManualPageBreak()
   {
@@ -99,13 +164,12 @@ public class FlowPageLayouter extends PageLayouter
    * The default implementation checks that the function name is not null, and calls the
    * isInitialized() method (now deprecated).
    *
-   * @throws com.jrefinery.report.function.FunctionInitializeException if the function name is not set or the call to
+   * @throws FunctionInitializeException if the function name is not set or the call to
    * isInitialized returns false.
    */
   public void initialize() throws FunctionInitializeException
   {
     super.initialize();
   }
-
 
 }

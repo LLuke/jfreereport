@@ -28,11 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.1 2002/12/02 17:57:06 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.2 2002/12/04 16:20:57 mungady Exp $
  *
  * Changes
  * -------
+ * 05-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.targets.pageable.pagelayout;
 
 import com.jrefinery.report.Band;
@@ -47,8 +50,6 @@ import com.jrefinery.report.targets.pageable.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
 import com.jrefinery.report.targets.pageable.LogicalPage;
-import com.jrefinery.report.targets.pageable.pagelayout.PageLayouter;
-import com.jrefinery.report.targets.pageable.pagelayout.SimplePageLayoutCursor;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
@@ -75,14 +76,23 @@ public class SimplePageLayouter extends PageLayouter
   /** A flag that indicates if ??. */
   private boolean isLastPageBreak;
 
+  /**
+   * Represent the current state of the page layouter.
+   */
   protected static class SimpleLayoutManagerState extends PageLayouter.LayoutManagerState
   {
+    /** The band. */
     private Band band;
+    
+    /** Manual page break? */
     private boolean isManualPagebreak;
 
     /**
-     * Band can be null if there is no band to be printed on the next page
-     * @param band
+     * Creates a new state.  The band can be <code>null</code> if there is no band to be printed 
+     * on the next page.
+     *
+     * @param band  the band.
+     * @param manualBreak  a manual break?
      */
     public SimpleLayoutManagerState(Band band, boolean manualBreak)
     {
@@ -90,24 +100,44 @@ public class SimplePageLayouter extends PageLayouter
       this.isManualPagebreak = manualBreak;
     }
 
+    /**
+     * Returns the band.
+     *
+     * @return the band.
+     */
     public Band getBand()
     {
       return band;
     }
 
+    /**
+     * Returns the 'manual page break' flag.
+     *
+     * @return the 'manual page break' flag.
+     */
     public boolean isManualPagebreak()
     {
       return isManualPagebreak;
     }
 
+    /**
+     * Sets the manual page break flag.
+     * 
+     * @param manualPagebreak  the manual page break flag.
+     */
     public void setManualPagebreak(boolean manualPagebreak)
     {
       isManualPagebreak = manualPagebreak;
     }
   }
 
+  /** The cursor used by the layouter. */
   private SimplePageLayoutCursor cursor;
+  
+  /** The current state. */
   private SimpleLayoutManagerState state;
+  
+  /** The spool. */
   private Spool spooledBand;
 
   /**
@@ -222,7 +252,8 @@ public class SimplePageLayouter extends PageLayouter
           }
         }
       }
-      // to do: do not print on last page ... how to get the information when the last page is reached?
+      // to do: do not print on last page ... how to get the information when the last page is 
+      // reached?
     }
     catch (FunctionProcessingException fe)
     {
@@ -236,10 +267,8 @@ public class SimplePageLayouter extends PageLayouter
 
   /**
    * Receives notification that a page has ended.
-   * <P>
-   * Maps the pageFinished-method to the legacy function endPage (int).
    *
-   * @param event Information about the event.
+   * @param event  the report event.
    */
   public void pageFinished(ReportEvent event)
   {
@@ -299,6 +328,13 @@ public class SimplePageLayouter extends PageLayouter
     }
   }
 
+  /**
+   * Prints a band.
+   *
+   * @param b  the band.
+   *
+   * @throws ReportProcessingException ??.
+   */
   private void printBand (Band b) throws ReportProcessingException
   {
     if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
@@ -396,7 +432,14 @@ public class SimplePageLayouter extends PageLayouter
     }
   }
 
-
+  /**
+   * Prints a band.
+   *
+   * @param b  the band.
+   * @param spool  a flag that controls whether or not to spool.
+   *
+   * @throws ReportProcessingException ??.
+   */
   protected void print(Band b, boolean spool)
       throws ReportProcessingException
   {
@@ -410,6 +453,13 @@ public class SimplePageLayouter extends PageLayouter
     doPrint(bounds, b, spool);
   }
 
+  /**
+   * Prints a band at the bottom of the page.
+   *
+   * @param b  the band.
+   *
+   * @throws ReportProcessingException ??.
+   */
   protected void printBottom (Band b)
     throws ReportProcessingException
   {
@@ -418,13 +468,22 @@ public class SimplePageLayouter extends PageLayouter
     // do not influence the reporting state
 
     Rectangle2D bounds = doLayout(b);
-    bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(), bounds.getWidth(), bounds.getHeight());
+    bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(), 
+                   bounds.getWidth(), bounds.getHeight());
     doPrint(bounds, b, false);
   }
 
+  /**
+   * Perform the layout of a band.
+   *
+   * @param band  the band.
+   *
+   * @return the dimensions of the band.
+   */
   protected Rectangle2D doLayout(Band band)
   {
-    BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(band, getLogicalPage().getOutputTarget());
+    BandLayoutManager lm 
+        = BandLayoutManagerUtil.getLayoutManager(band, getLogicalPage().getOutputTarget());
     Dimension2D fdim = lm.preferredLayoutSize(band);
 
     // in this layouter the width of a band is always the full page width
@@ -437,6 +496,15 @@ public class SimplePageLayouter extends PageLayouter
     return bounds;
   }
 
+  /**
+   * Prints a band.
+   *
+   * @param bounds  the bounds.
+   * @param band  the band.
+   * @param spool  a flag that controls ??.
+   *
+   * @throws ReportProcessingException ??.
+   */
   protected void doPrint(Rectangle2D bounds, Band band, boolean spool)
     throws ReportProcessingException
   {
@@ -469,9 +537,13 @@ public class SimplePageLayouter extends PageLayouter
         {
           Spool newSpool = getLogicalPage().spoolBand(bounds, band);
           if (spooledBand == null)
+          {
             spooledBand = newSpool;
+          }
           else
+          {
             spooledBand.merge (newSpool);
+          }
 
           cursor.advance(height);
         }
@@ -499,7 +571,12 @@ public class SimplePageLayouter extends PageLayouter
   }
 
   /**
-   * Perform doLayout for the pageFooter to guess the height.
+   * Determines whether or not there is space remaining on the page for a band of the specified
+   * height.  Perform layouting for the pageFooter to guess the height.
+   *
+   * @param height  the height (in Java2D user space units).
+   *
+   * @return true or false.
    */
   public boolean isSpaceFor(float height)
   {
@@ -509,29 +586,66 @@ public class SimplePageLayouter extends PageLayouter
     return getCursor().isSpaceFor(height);
   }
 
+  /**
+   * Returns the cursor.
+   *
+   * @return the cursor.
+   */
   protected SimplePageLayoutCursor getCursor()
   {
-    if (cursor == null) throw new IllegalStateException("No cursor, no OutputTarget: " + hashCode());
+    if (cursor == null) 
+    {
+      throw new IllegalStateException("No cursor, no OutputTarget: " + hashCode());
+    }
     return cursor;
   }
 
+  /**
+   * Sets the cursor.
+   *
+   * @param cursor  the cursor (null not permitted).
+   */
   protected void setCursor(SimplePageLayoutCursor cursor)
   {
-    if (cursor == null) throw new NullPointerException();
+    if (cursor == null) 
+    {
+      throw new NullPointerException("SimplePageLayouter.setCursor(...): cursor is null.");
+    }
     this.cursor = cursor;
   }
 
+  /** 
+   * Records state information.
+   *
+   * @param b  the band.
+   * @param manualBreak  has a manual break been requested.
+   */
   protected void createSaveState(Band b, boolean manualBreak)
   {
     state = new SimpleLayoutManagerState(b, manualBreak);
   }
 
+  /**
+   * Returns the current state.
+   *
+   * @return the current state.
+   */
   protected PageLayouter.LayoutManagerState saveCurrentState()
   {
-    if (state == null) throw new NullPointerException();
+    if (state == null) 
+    {
+      throw new NullPointerException();
+    }
     return state;
   }
 
+  /**
+   * Restores the state.
+   *
+   * @param anchestor  the ancestor state.
+   *
+   * @throws ReportProcessingException ??.
+   */
   public void restoreSaveState(ReportState anchestor)
       throws ReportProcessingException
   {
@@ -541,8 +655,12 @@ public class SimplePageLayouter extends PageLayouter
     if (state == null)
     {
 //      Log.debug ("SimpleLayouManagerState is null, first page?");
-//      Log.debug ("LogicalPage: " + getLogicalPage().isEmpty() + " && " + getLogicalPage().isClosed());
-      if (anchestor.getCurrentPage() != 1) throw new IllegalStateException();
+//      Log.debug ("LogicalPage: " + getLogicalPage().isEmpty() + " && " 
+        // + getLogicalPage().isClosed());
+      if (anchestor.getCurrentPage() != 1)
+      {
+        throw new IllegalStateException();
+      }
       return; // no state yet, maybe the first state?
     }
     startPage(anchestor);
@@ -554,18 +672,35 @@ public class SimplePageLayouter extends PageLayouter
     clearSaveState();
   }
 
+  /**
+   * Clears the layout state.
+   */
   protected void clearSaveState()
   {
     super.clearSaveState();
     state = null;
   }
 
+  /**
+   * Sets the logical page.
+   *
+   * @param logicalPage  the logical page.
+   */
   public void setLogicalPage(LogicalPage logicalPage)
   {
     super.setLogicalPage(logicalPage);
     setCursor(new SimplePageLayoutCursor((float) getLogicalPage().getHeight()));
   }
 
+  /**
+   * Ends the page.
+   *
+   * @param force ??.
+   *
+   * @return true or false.
+   *
+   * @throws ReportProcessingException ??.
+   */
   protected boolean endPage(boolean force) throws ReportProcessingException
   {
     if (getLogicalPage().isEmpty() == false || force)
@@ -587,17 +722,27 @@ public class SimplePageLayouter extends PageLayouter
   /**
    * A detector whether the last pagebreak was a manual pagebreak or an automatic one
    *
-   * @return
+   * @return true or false.
    */
   public boolean isManualPageBreak()
   {
     return false;
   }
 
+  /**
+   * Clones the layouter.
+   *
+   * @return the clone.
+   *
+   * @throws CloneNotSupportedException if there is a problem cloning.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     SimplePageLayouter sl = (SimplePageLayouter) super.clone();
-    if (spooledBand != null) sl.spooledBand = (Spool) spooledBand.clone();
+    if (spooledBand != null) 
+    {
+      sl.spooledBand = (Spool) spooledBand.clone();
+    }
     return sl;
   }
 }

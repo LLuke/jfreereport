@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,16 +20,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * ------------------------
  * ShapeOperationModul.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ------------------------
+ * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: ShapeOperationModul.java,v 1.1 2002/12/02 17:56:58 taqua Exp $
  *
  * Changes
  * -------
+ * 05-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.targets.pageable.operations;
 
 import com.jrefinery.report.Element;
@@ -47,13 +53,30 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A collection of operations that relate to shapes.
+ *
+ * @author Thomas Morgner
+ */
 public class ShapeOperationModul extends OperationModul
 {
+  /**
+   * Default constructor.
+   */
   public ShapeOperationModul()
   {
     super("shape/*");
   }
 
+  /**
+   * Creates a list of operations.
+   *
+   * @param e  the element.
+   * @param value  the content.
+   * @param bounds  the bounds.
+   *
+   * @return a list of operations.
+   */
   public List createOperations (Element e, Content value, Rectangle2D bounds)
   {
     // Stroke
@@ -67,7 +90,10 @@ public class ShapeOperationModul extends OperationModul
     boolean shouldDraw = e.getStyle().getBooleanStyleProperty(ShapeElement.DRAW_SHAPE);
     boolean shouldFill = e.getStyle().getBooleanStyleProperty(ShapeElement.FILL_SHAPE);
 
-    if (shouldFill == false && shouldDraw == false) return null;
+    if (shouldFill == false && shouldDraw == false) 
+    {
+      return null;
+    }
 
     Shape s = sc.getNormalizedShape();
     ArrayList array = new ArrayList ();
@@ -75,14 +101,27 @@ public class ShapeOperationModul extends OperationModul
     array.add (new PhysicalOperation.SetStrokeOperation (stroke));
     array.add (new PhysicalOperation.SetPaintOperation(paint));
     if (shouldDraw == true)
+    {
       array.add (new PhysicalOperation.PrintShapeOperation(s));
+    }
 
-    if (shouldFill == true)
+    if (shouldFill == true) 
+    {
       array.add (new PhysicalOperation.PrintFilledShapeOperation(s));
+    }
 
     return array;
   }
 
+  /**
+   * ??.
+   *
+   * @param e  the element.
+   * @param bounds  the bounds.
+   * @param ot  the output target.
+   *
+   * @return the content.
+   */
   public Content createContentForElement(Element e, Rectangle2D bounds, OutputTarget ot)
   {
     AffineTransform af = AffineTransform.getTranslateInstance(bounds.getX(), bounds.getY());

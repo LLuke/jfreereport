@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,8 +23,12 @@
  * -----------------
  * ActionButton.java
  * -----------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: ActionButton.java,v 1.7 2002/11/07 21:45:28 taqua Exp $
  *
  * ChangeLog
  * ---------

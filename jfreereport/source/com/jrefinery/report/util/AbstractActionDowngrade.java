@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,8 +23,12 @@
  * ----------------------------
  * AbstractActionDowngrade.java
  * ----------------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: AbstractActionDowngrade.java,v 1.5 2002/12/03 20:32:55 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: AbstractActionDowngrade.java,v 1.6 2002/12/04 19:58:16 taqua Exp $
  *
  * Changes
  * -------

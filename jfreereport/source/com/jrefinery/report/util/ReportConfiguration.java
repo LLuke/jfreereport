@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,8 +23,12 @@
  * ------------------------
  * ReportConfiguration.java
  * ------------------------
+ * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
- * $Id: ReportConfiguration.java,v 1.6 2002/11/29 12:07:29 mungady Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: ReportConfiguration.java,v 1.7 2002/12/02 17:44:51 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +47,7 @@ import java.util.Properties;
 /**
  * Global and Local configurations for JFreeReport. More documentation needed
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ReportConfiguration
 {
@@ -53,7 +57,7 @@ public class ReportConfiguration
   /** The default 'disable logging' property value. */
   public static final String DISABLE_LOGGING_DEFAULT = "false";
 
-  /** The 'og level' property key. */
+  /** The 'log level' property key. */
   public static final String LOGLEVEL = "com.jrefinery.report.LogLevel";
 
   /** The default 'log level' property value. */
@@ -94,9 +98,7 @@ public class ReportConfiguration
   /** The global configuration. */
   private static ReportConfiguration globalConfig;
 
-  /**
-   * A report configuration that reads its values from the jfreereport.properties file.
-   */
+  /** A report configuration that reads its values from the jfreereport.properties file. */
   private static class PropertyFileReportConfiguration extends ReportConfiguration
   {
     /**
