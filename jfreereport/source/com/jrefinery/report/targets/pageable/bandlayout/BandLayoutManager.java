@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,12 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * ----------------------
  * BandLayoutManager.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ----------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: BandLayoutManager.java,v 1.1 2002/12/02 17:56:53 taqua Exp $
  *
  * Changes
  * -------
@@ -39,22 +42,61 @@ import com.jrefinery.report.targets.pageable.OutputTarget;
 import java.awt.geom.Dimension2D;
 
 /**
- * See awt-layoutmanager for the idea :)
+ * An interface that defines the methods to be supported by a band layout manager.  
+ * <p>
+ * See the AWT LayoutManager for the idea :)
+ *
+ * @see StaticLayoutManager
+ *
+ * @author Thomas Morgner
  */
 public interface BandLayoutManager
 {
-  public static final StyleKey LAYOUTMANAGER = StyleKey.getStyleKey("layoutmanager", BandLayoutManager.class);
+  /** ?? */
+  public static final StyleKey LAYOUTMANAGER = StyleKey.getStyleKey("layoutmanager", 
+                                                                    BandLayoutManager.class);
 
+  /**
+   * Calculates the preferred layout size for a band.
+   *
+   * @param b  the band.
+   *
+   * @return the preferred size.
+   */
   public Dimension2D preferredLayoutSize(Band b);
 
+  /**
+   * Calculates the minimum layout size for a band.
+   *
+   * @param b  the band.
+   *
+   * @return the minimum size. 
+   */
   public Dimension2D minimumLayoutSize(Band b);
 
+  /**
+   * Performs the layout of a band.
+   *
+   * @param b  the band.
+   */
   public void doLayout(Band b);
 
+  /**
+   * Sets the output target for the layout manager.
+   *
+   * @param target  the target.
+   */
   public void setOutputTarget (OutputTarget target);
 
+  /**
+   * Returns the output target for the layout manager.
+   *
+   * @return the target.
+   */
   public OutputTarget getOutputTarget ();
 
-  // forget everyting that might been cached 
+  /**
+   * Clears any cached items used by the layout manager.
+   */  
   public void flushLayout();
 }
