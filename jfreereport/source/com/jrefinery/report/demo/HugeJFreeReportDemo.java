@@ -40,7 +40,6 @@ package com.jrefinery.report.demo;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
-import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.Log;
@@ -48,6 +47,16 @@ import com.jrefinery.report.util.SystemOutLogTarget;
 import com.jrefinery.ui.JRefineryUtilities;
 import com.jrefinery.ui.L1R2ButtonPanel;
 import com.jrefinery.ui.about.AboutFrame;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.net.URL;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -63,16 +72,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.net.URL;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 
 /**
  * The main frame in the report demonstration application. This demo has huge reports
@@ -143,23 +144,27 @@ public class HugeJFreeReportDemo extends JFrame
   /** A tabbed pane for displaying the sample data sets. */
   private JTabbedPane tabbedPane;
 
-  /** A table model containing sample data. */
-  private SampleData1 data1;
-
-  /** A table model containing sample data. */
-  private SampleData2 data2;
-
-  /** A table model containing sample data. */
-  private SampleData3 data3;
-
-  /** A table model containing sample data. */
-  private SampleData4 data4;
-
-  /** A table model containing sample data. */
-  private SampleData5 data5;
-
-  /** A table model containing sample data. */
-  private SampleData6 data6;
+  private previewConf[] previewData =
+    {
+      new previewConf(
+        "/com/jrefinery/report/demo/report1.xml",
+        new SampleData1()),
+      new previewConf(
+        "/com/jrefinery/report/demo/report2.xml",
+        new SampleData2()),
+      new previewConf(
+        "/com/jrefinery/report/demo/report3.xml",
+        new SampleData3()),
+      new previewConf(
+        "/com/jrefinery/report/demo/report4.xml",
+        new SampleData4()),
+      new previewConf(
+        "/com/jrefinery/report/demo/report2.xml",
+        new SampleData5()),
+      new previewConf(
+        "/com/jrefinery/report/demo/report2.xml",
+        new SampleData6()),
+      };
 
   private ResourceBundle m_resources;
 
@@ -180,13 +185,6 @@ public class HugeJFreeReportDemo extends JFrame
     String pattern = resources.getString ("main-frame.title.pattern");
     setTitle (MessageFormat.format (pattern, arguments));
 
-    // create a couple of sample data sets
-    data1 = new SampleData1 ();
-    data2 = new SampleData2 ();
-    data3 = new SampleData3 ();
-    data4 = new SampleData4 ();
-    data5 = new SampleData5 ();
-    data6 = new SampleData6 ();
 
     createActions ();
 
@@ -197,14 +195,26 @@ public class HugeJFreeReportDemo extends JFrame
     JToolBar toolbar = createToolBar (resources);
     content.add (toolbar, BorderLayout.NORTH);
 
-    tabbedPane = new JTabbedPane ();
-    tabbedPane.setBorder (BorderFactory.createEmptyBorder (4, 4, 4, 4));
-    tabbedPane.addTab ("Example 1", JRefineryUtilities.createTablePanel (data1));
-    tabbedPane.addTab ("Example 2", JRefineryUtilities.createTablePanel (data2));
-    tabbedPane.addTab ("Example 3", JRefineryUtilities.createTablePanel (data3));
-    tabbedPane.addTab ("Example 4", JRefineryUtilities.createTablePanel (data4));
-    tabbedPane.addTab ("Example 5 (HUGE)", JRefineryUtilities.createTablePanel (data5));
-    tabbedPane.addTab ("Example 6 (HUGE)", JRefineryUtilities.createTablePanel (data6));
+    tabbedPane = new JTabbedPane();
+    tabbedPane.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+    tabbedPane.addTab(
+      "Example 1",
+      JRefineryUtilities.createTablePanel(previewData[0].m_data));
+    tabbedPane.addTab(
+      "Example 2",
+      JRefineryUtilities.createTablePanel(previewData[1].m_data));
+    tabbedPane.addTab(
+      "Example 3",
+      JRefineryUtilities.createTablePanel(previewData[2].m_data));
+    tabbedPane.addTab(
+      "Example 4",
+      JRefineryUtilities.createTablePanel(previewData[3].m_data));
+    tabbedPane.addTab(
+      "Example 5 (HUGE)",
+      JRefineryUtilities.createTablePanel(previewData[4].m_data));
+    tabbedPane.addTab(
+      "Example 6 (HUGE)",
+      JRefineryUtilities.createTablePanel(previewData[5].m_data));
 
     content.add (tabbedPane);
 
@@ -238,30 +248,7 @@ public class HugeJFreeReportDemo extends JFrame
   {
     int index = tabbedPane.getSelectedIndex ();
 
-    if (index == 0)
-    {
-      preview ("/com/jrefinery/report/demo/report1.xml", data1);
-    }
-    else if (index == 1)
-    {
-      preview ("/com/jrefinery/report/demo/report2.xml", data2);
-    }
-    else if (index == 2)
-    {
-      preview ("/com/jrefinery/report/demo/report3.xml", data3);
-    }
-    else if (index == 3)
-    {
-      preview ("/com/jrefinery/report/demo/report4.xml", data4);
-    }
-    else if (index == 4)
-    {
-      preview ("/com/jrefinery/report/demo/report2.xml", data5);
-    }
-    else
-    {
-      preview ("/com/jrefinery/report/demo/report2.xml", data6);
-    }
+    preview(previewData[index].m_reportFile, previewData[index].m_data);
   }
 
   /**
@@ -474,5 +461,17 @@ public class HugeJFreeReportDemo extends JFrame
     frame.pack ();
     JRefineryUtilities.centerFrameOnScreen (frame);
     frame.setVisible (true);
+  }
+
+  private class previewConf
+  {
+    String m_reportFile;
+    AbstractTableModel m_data;
+
+    public previewConf(String reportFile, AbstractTableModel data)
+    {
+      m_reportFile = reportFile;
+      m_data = data;
+    }
   }
 }
