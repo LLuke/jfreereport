@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.35 2003/02/24 14:57:15 mungady Exp $
+ * $Id: ItemFactory.java,v 1.36 2003/03/07 18:58:00 taqua Exp $
  *
  * Changes
  * -------
@@ -840,8 +840,8 @@ public class ItemFactory
   {
     if (shape.getX1() == shape.getX2() && shape.getY1 () == shape.getY2())
     {
-      // scale the line, is horizontal
-      shape.setLine(0, shape.getY1(), 100, shape.getY2());
+      // scale the line, is horizontal,the line is on pos 0,0 within the element
+      shape.setLine(0, 0, 100, 0);
       Rectangle2D bounds = new Rectangle2D.Float (0, (float) shape.getY1(), -100, 0);
       return createShapeElement(name, bounds, paint, stroke, shape, true, false, true);
     }
@@ -873,7 +873,21 @@ public class ItemFactory
                                                 boolean shouldDraw,
                                                 boolean shouldFill)
   {
-    return createShapeElement(name, shape.getBounds2D(), paint, stroke, shape,
+    // we have two choices here: let the element be big enough to take up
+    // the complete shape and let the element start at 0,0, and the shape
+    // therefore starts at x,y
+    //
+    // or
+    //
+    // translate the shape to start at 0,0 and let the element start at
+    // the shapes origin (x,y).
+
+    // we choose the simple way: the bounds of the element start at 0,0
+    Rectangle2D shapeBounds = shape.getBounds2D();
+    Rectangle2D bounds = new Rectangle2D.Float(0,0,
+                                               (float) (shapeBounds.getX() + shapeBounds.getWidth()),
+                                               (float) (shapeBounds.getY() + shapeBounds.getHeight()));
+    return createShapeElement(name, bounds, paint, stroke, shape,
                               shouldDraw, shouldFill, true);
   }
 
@@ -1032,6 +1046,8 @@ public class ItemFactory
   {
     if (shape.getX() < 0 || shape.getY() < 0 || shape.getWidth() < 0 || shape.getHeight() < 0)
     {
+      // this is a relative rectangle element, so the shape defines the bounds
+      // and expects to draw a scaled rectangle within these bounds
       return createShapeElement(name, shape, paint, stroke, new Rectangle2D.Float(0, 0, 100, 100),
                                 shouldDraw, shouldFill, true);
     }

@@ -68,3 +68,36 @@ Code Changes
       proc.processReport();
 
    // don't forget to close the outputtarget ..
+
+----------------------------------------------------------------------------------
+Changes from 0.8.0 to 0.8.1
+
+  The PDFFontFactory is now relocated to an own package. All classes can now
+  be found in com.jrefinery.report.targets.support.PDFFontFactory.
+
+  The band layout management has moved to com.jrefinery.report.targets.base.**.
+
+  The "first" demo has been renamed to "swing-icons-demo" to better fit is purpose
+  in the documentation, as it is no longer the simplest demo available.
+
+----------------------------------------------------------------------------------
+Changes from 0.8.1 to 0.8.2
+
+Shapes:
+  The shape content handling was buggy. Shape bounds are specified relative
+  to the element bounds.
+
+  In previous versions, both the shape bounds and the element bounds were defined equal.
+  So a line starting on y=10 within the band had the shape element bounds with y=10
+  and contained a line2D shape with y1=10 and y2=10. The shape was later transformed
+  to y=0 before painting. This way all shapes were translated to x=0,y=0, regardless
+  of their real bounds. That invalid behaviour is fixed now, but all shape definitions
+  have changed.
+
+  This bug only affects the ext-definition styles, as the simple parser profile
+  adjusts the shapes within the predefined shape elements automaticly. To fix your
+  extended-definition, either adjust your shape definition to start at position 0,0
+  or adjust your element to start at 0,0 and extend its dimension to
+  (old_x + old_width, old_y + old_height).
+
+

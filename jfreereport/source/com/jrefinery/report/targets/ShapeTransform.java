@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.3 2003/02/07 20:26:26 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.4 2003/02/27 10:35:37 mungady Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,8 @@ public class ShapeTransform
   public static Shape transformShape (Shape s, boolean scale, boolean keepAR, Point2D point, 
                                       Dimension2D dim)
   {
-    AffineTransform af = AffineTransform.getTranslateInstance(-point.getX(), -point.getY());
+    //AffineTransform af = AffineTransform.getTranslateInstance(-point.getX(), -point.getY());
+    AffineTransform af = AffineTransform.getTranslateInstance(0, 0);
 
     /**
      * Always scale to the maximum bounds ...

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContent.java,v 1.5 2003/02/25 18:46:56 taqua Exp $
+ * $Id: ShapeContent.java,v 1.6 2003/02/27 10:35:38 mungady Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@ package com.jrefinery.report.targets.base.content;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+
+import com.jrefinery.report.util.Log;
 
 /**
  * A report content item that encapsulates a <code>Shape</code> object.
@@ -82,6 +84,8 @@ public class ShapeContent implements Content
       throw new NullPointerException();
     }
 
+    Log.debug ("Created Content for   : " + s);
+    Log.debug ("   widh content bounds: " + bounds);
     this.shape = s;
     this.bounds = bounds;
   }
@@ -151,6 +155,7 @@ public class ShapeContent implements Content
 
   /**
    * Returns a shape that starts a 0.0, 0.0.
+   * Why?
    *
    * @return a shape.
    */
@@ -171,6 +176,8 @@ public class ShapeContent implements Content
   public Content getContentForBounds(Rectangle2D bounds)
   {
     Rectangle2D newBounds = bounds.createIntersection(getBounds());
+    Log.debug ("Shape::getContentForBounds : " + newBounds);
+    Log.debug ("Shape::shape : " + getShape());
     return new ShapeContent(getShape(), newBounds);
   }
 

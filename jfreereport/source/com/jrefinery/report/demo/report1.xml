@@ -14,14 +14,17 @@
         <property name="com.jrefinery.report.preview.MaximumHeight">600</property>
     -->
   </configuration>
+
   <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="18">
     <label x="0" y="0" width="100%" height="48" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
     <label x="0" y="0" width="100%" height="48" vertical-alignment="bottom" alignment="center">This text is valign="bottom"</label>
   </reportheader>
+
   <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
     <label x="0" y="0" width="100%" height="24" alignment="center">*** END OF REPORT ***</label>
-    <shape-field x="0" y="0" width="100%" height="50" fieldname="shapecreator"/>
+    <shape-field x="25" y="25" width="100%" height="50" fieldname="shapecreator"/>
   </reportfooter>
+  <!--
   <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
     <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
     <date-field x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" fieldname="report.date"/>
@@ -47,9 +50,10 @@
       </fields>
     </group>
   </groups>
-
   <items height="10" fontname="Serif" fontstyle="plain" fontsize="8" vertical-alignment="middle">
+  -->
     <!-- the rectangle is named as it is referenced later in the function section -->
+<!--
     <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
     <line x1="0" y1="0" x2="0" y2="0" color="#FF0FFF" weight="0.1"/>
     <line x1="0" y1="10" x2="0" y2="10" color="#0FDFDF" weight="0.1"/>
@@ -59,6 +63,7 @@
     <string-field x="330" y="0" width="76" height="10" alignment="right" fieldname="expression"/>
     <number-field x="390" y="0" width="76" height="10" alignment="right" format="#,##0.00 '%'" fieldname="percent"/>
   </items>
+-->
   <functions>
     <property-ref name="report.date"/>
     <expression name="drawable" class="com.jrefinery.report.function.BSHExpression">
@@ -80,7 +85,7 @@
 
           Object getValue()
           {
-          return new RoundRectangle2D.Float(100,0,40,20, 5,5);
+          return new RoundRectangle2D.Float(100,16,40,20, 5,5);
           }
         </property>
       </properties>

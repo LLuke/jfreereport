@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.7 2003/02/07 22:40:42 taqua Exp $
+ * $Id: ShapeOperationModule.java,v 1.8 2003/02/09 23:09:15 taqua Exp $
  *
  * Changes
  * -------
@@ -91,7 +91,7 @@ public class ShapeOperationModule extends OperationModule
     }
 
     ShapeContent sc = (ShapeContent) value.getContentForBounds(bounds);
-    Shape s = sc.getNormalizedShape();
+    Shape s = sc.getShape();
     ArrayList array = new ArrayList ();
     array.add (new PhysicalOperation.SetBoundsOperation (bounds));
     array.add (new PhysicalOperation.SetStrokeOperation (stroke));
