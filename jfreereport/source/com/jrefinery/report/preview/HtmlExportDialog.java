@@ -30,7 +30,7 @@
                      based on PDFSaveDialog by Thomas Morgner, David Gilbert (for Simba Management Limited) and contributors
  * Contributor(s):
  *
- * $Id: HtmlExportDialog.java,v 1.6 2003/02/02 23:43:51 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.7 2003/02/03 18:52:45 taqua Exp $
  *
  * Changes
  * --------
@@ -1070,7 +1070,7 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
       File dataDir = new File (getZipDataFilename());
       File baseDir = new File ("");
 
-      if (dataDir.isAbsolute() || IOUtils.getInstance().isSubDirectory(baseDir, dataDir))
+      if (IOUtils.getInstance().isSubDirectory(baseDir, dataDir) == false)
       {
         JOptionPane.showMessageDialog(this,
                                       getResources().getString("htmlexportdialog.targetPathIsAbsolute"),
