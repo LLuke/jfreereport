@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProducer.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
+ * $Id: RTFProducer.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,7 @@
 package org.jfree.report.modules.output.table.rtf;
 
 import java.awt.Color;
+import java.awt.geom.Rectangle2D;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -175,9 +176,11 @@ public class RTFProducer extends TableProducer
    * @param cell the cell that should be defined.
    * @param background the background definition for the cell.
    */
-  private void setCellBackgroundStyle(final Cell cell, final List background)
+  private void setCellBackgroundStyle(final Cell cell,
+                                      final List background,
+                                      final Rectangle2D cellbounds)
   {
-    final TableCellBackground bg = createTableCellStyle(background);
+    final TableCellBackground bg = createTableCellStyle(background, cellbounds);
     if (bg == null)
     {
       return;
@@ -219,6 +222,7 @@ public class RTFProducer extends TableProducer
   {
     final Table table = new Table(layout.getWidth(), layout.getHeight());
     table.setAutoFillEmptyCells(false);
+    Rectangle2D cellBounds = new Rectangle2D.Float();
 
     for (int y = 0; y < layout.getHeight(); y++)
     {
@@ -244,7 +248,9 @@ public class RTFProducer extends TableProducer
           cell.setBorderWidth(0);
           // iText cell width is a string, why?
 
-          setCellBackgroundStyle(cell, gridElement.getBackground());
+          cellBounds = createCellBounds(layout, x, y, cellBounds);
+
+          setCellBackgroundStyle(cell, gridElement.getBackground(), cellBounds);
           table.addCell(cell, y, x);
           printed = true;
           continue;
@@ -259,7 +265,9 @@ public class RTFProducer extends TableProducer
         final RTFCellData cellData = (RTFCellData) gridPosition.getElement();
         final Cell cell = cellData.getCell();
         cell.setBorderWidth(0);
-        setCellBackgroundStyle(cell, gridElement.getBackground());
+        cellBounds.setRect(layout.getColumnStart(x), layout.getColumnEnd(x),
+            layout.getRowStart(y), layout.getRowEnd(y));
+        setCellBackgroundStyle(cell, gridElement.getBackground(), cellBounds);
 
         if (gridPosition.getRowSpan() > 1)
         {

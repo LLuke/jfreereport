@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.11 2003/09/15 18:26:51 taqua Exp $
+ * $Id: TableProducer.java,v 1.12 2003/10/10 17:16:26 taqua Exp $
  *
  * Changes
  * -------
@@ -401,11 +401,15 @@ public strictfp abstract class TableProducer
    * backgrounds.
    *
    * @param background the collected backgrounds for a single table cell.
+   * @param cellBounds the bounds for the current backgound cell. The defined backgrounds
+   * may be defined for a larger area, but we want to merge all background for <b>this</b>
+   * particular area.
    * @return the merged TableCellBackground.
    */
-  protected TableCellBackground createTableCellStyle(final List background)
+  protected TableCellBackground createTableCellStyle
+      (final List background, final Rectangle2D cellBounds)
   {
-    return createStaticTableCellStyle(background);
+    return createStaticTableCellStyle(background, cellBounds);
   }
 
   /**
@@ -415,7 +419,7 @@ public strictfp abstract class TableProducer
    * @return the created (merged) TableCellBackground instance.
    */
   protected static TableCellBackground createStaticTableCellStyle
-      (final List background)
+      (final List background, final Rectangle2D cellBounds)
   {
     if (background == null)
     {
@@ -434,7 +438,7 @@ public strictfp abstract class TableProducer
       }
       else
       {
-        bg = bg.merge(listBg);
+        bg = bg.merge(listBg, cellBounds);
       }
     }
 
@@ -446,6 +450,20 @@ public strictfp abstract class TableProducer
     return (bg);
   }
 
+  protected Rectangle2D createCellBounds (TableGridLayout layout, int x, int y, Rectangle2D rect)
+  {
+    if (rect == null)
+    {
+      rect = new Rectangle2D.Float();
+    }
+    float x0 = layout.getColumnStart(x);
+    float y0 = layout.getRowStart(y);
+    float x1 = layout.getColumnEnd(x);
+    float y1 = layout.getRowEnd(y);
+    rect.setRect(x0, y0, x1 - x0, y1 - y0);
+    return rect;
+  }
+  
   /**
    * Gets the dummy mode state, in dummy mode no output is done.
    *

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.6 2003/10/10 18:46:48 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.7 2003/10/11 13:54:01 taqua Exp $
  *
  * Changes
  * -------
@@ -258,7 +258,8 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
    * @param background the other background cell
    * @return a union of the background informations.
    */
-  public TableCellBackground merge(final TableCellBackground background)
+  public TableCellBackground merge(final TableCellBackground background,
+                                   final Rectangle2D cellBounds)
   {
     Color color = getColor();
     if (color == null)
@@ -273,67 +274,81 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
       }
     }
 
-    Log.debug ("Merge: This -> " + this);
-    Log.debug ("         Bg -> " + background);
-
-    Rectangle2D mergedBounds = getBounds().createUnion(background.getBounds());
-    if (isBottomBorderDefinition(mergedBounds, this))
+    Log.debug ("This: " + this);
+    Log.debug ("  BG: " + background);
+    Log.debug ("    CellBounds: " + cellBounds);
+    if (isBottomBorderDefinition(cellBounds, this))
     {
-      final TableCellBackground merged = background.createMergedInstance(getBounds());
+      final TableCellBackground merged = background.createMergedInstance(cellBounds);
       merged.color = color;
       merged.mergeBottomBorder(this);
-      Log.debug ("Merge Result: /This->Bottom/ " + merged);
+      Log.debug ("Bottom:This: " + merged);
       return merged;
     }
-    if (isBottomBorderDefinition(mergedBounds, background))
+    if (isBottomBorderDefinition(cellBounds, background))
     {
-      final TableCellBackground merged = createMergedInstance(getBounds());
+      final TableCellBackground merged = createMergedInstance(cellBounds);
       merged.color = color;
       merged.mergeBottomBorder(background);
-      Log.debug ("Merge Result: /Background->Bottom/ " + merged);
+      Log.debug ("Bottom:Bg: " + merged);
       return merged;
     }
-    if (isRightBorderDefinition(mergedBounds, this))
+    if (isRightBorderDefinition(cellBounds, this))
     {
-      final TableCellBackground merged = background.createMergedInstance(getBounds());
+      final TableCellBackground merged = background.createMergedInstance(cellBounds);
       merged.color = color;
       merged.mergeRightBorder(this);
-      Log.debug ("Merge Result: /This->Right/ " + merged);
+      Log.debug ("Right:This: " + merged);
       return merged;
     }
-    if (isRightBorderDefinition(mergedBounds, background))
+    if (isRightBorderDefinition(cellBounds, background))
     {
-      final TableCellBackground merged = createMergedInstance(getBounds());
+      final TableCellBackground merged = createMergedInstance(cellBounds);
       merged.color = color;
       merged.mergeRightBorder(background);
-      Log.debug ("Merge Result: /Background->Right/ " + merged);
+      Log.debug ("Right:Bg: " + merged);
       return merged;
     }
 
     // the merged area is dominated by the background ...
-    if (mergedBounds.equals(getBounds()))
+    if (cellBounds.equals(getBounds()))
     {
-      final TableCellBackground merged = createMergedInstance(mergedBounds);
+      final TableCellBackground merged = createMergedInstance(cellBounds);
       merged.color = color;
       merged.mergeAllBorders(background);
-      Log.debug ("Merge Result: /Equal/bg/ " + merged);
+      Log.debug ("Bounds:Equal:This: " + merged);
       return merged;
     }
 
     // the merged area is dominated by the background ...
-    if (mergedBounds.equals(background.getBounds()))
+    if (cellBounds.equals(background.getBounds()))
     {
-      final TableCellBackground merged = background.createMergedInstance(mergedBounds);
+      final TableCellBackground merged = background.createMergedInstance(cellBounds);
       merged.color = color;
       merged.mergeAllBorders(this);
-      Log.debug ("Merge Result: /Equal/this/ " + merged);
+      Log.debug ("Bottom:Equal:Bg: " + merged);
       return merged;
     }
 
+    // we don't copy the borders, just the plain background color
+    // as the borders won't fit ...
+    // our background should define the cells background ...
+    if (getBounds().contains(cellBounds))
+    {
+      final TableCellBackground merged = createMergedInstance(cellBounds);
+      merged.color = color;
+      Log.debug ("None:This: " + merged);
+      return merged;
+    }
+    else
+    {
+      final TableCellBackground merged = background.createMergedInstance(cellBounds);
+      merged.color = color;
+      Log.debug ("None:Bg: " + merged);
+      return merged;
+    }
     // create an unmerged instance in any other case, as the bounds are not releated
     // in a useable way.
-    Log.debug ("Not Merged!");
-    return createMergedInstance(getBounds());
   }
 
   /**
@@ -399,7 +414,6 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
    */
   private void mergeAllBorders(final TableCellBackground background)
   {
-    Log.debug ("Merge: All " + background);
 
     if (getColorTop() == null || getBorderSizeTop() == 0)
     {
@@ -420,24 +434,6 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
     {
       setBorderBottom(background.getColorBottom(), background.getBorderSizeBottom());
     }
-  }
-
-  /**
-   * Compares whether the outer rectangle contains the inner rectangle area,
-   * ignoring that the inner area may be empty (this way, a line can be contained
-   * in that outer rectangle).
-   * @param outer the outer bounds
-   * @param inner the inner bounds
-   * @return true, if the inner rectangle is contained in the outer bounds, false
-   * otherwise.
-   */
-  private boolean containsRect (Rectangle2D outer, Rectangle2D inner)
-  {
-    double x0 = outer.getX();
-	  double y0 = outer.getY();
-	  return (inner.getX() >= x0 && inner.getY() >= y0 &&
-		(inner.getX() + inner.getWidth()) <= x0 + outer.getWidth() &&
-		(inner.getY() + inner.getHeight()) <= y0 + outer.getHeight());
   }
 
   protected TableCellBackground createMergedInstance (Rectangle2D bounds)

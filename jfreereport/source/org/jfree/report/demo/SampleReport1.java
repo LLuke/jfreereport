@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: SampleReport1.java,v 1.5 2003/09/15 15:31:58 taqua Exp $
  *
  * Changes:
  * --------
@@ -409,13 +409,13 @@ public class SampleReport1
   {
     final JFreeReport report = new JFreeReport();
     report.setName("Sample Report 1");
-    report.setReportFooter(createReportFooter());
+    //report.setReportFooter(createReportFooter());
     report.setReportHeader(createReportHeader());
-    report.setPageFooter(createPageFooter());
+    //report.setPageFooter(createPageFooter());
     report.setPageHeader(createPageHeader());
-    report.setGroups(createGroups());
-    report.setItemBand(createItemBand());
-    report.setFunctions(createFunctions());
+    //report.setGroups(createGroups());
+    //report.setItemBand(createItemBand());
+    //report.setFunctions(createFunctions());
     report.setPropertyMarked("report.date", true);
     return report;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.9 2003/09/08 18:11:49 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.10 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
@@ -420,9 +421,10 @@ public class HtmlProducer extends TableProducer
    * @param background the (unmerged) background styles.
    * @return the background style sheet definition.
    */
-  protected String createHtmlBackgroundStyle(final List background)
+  protected String createHtmlBackgroundStyle(final List background,
+                                             final Rectangle2D cellbounds)
   {
-    final TableCellBackground bg = createTableCellStyle(background);
+    final TableCellBackground bg = createTableCellStyle(background, cellbounds);
     if (bg == null)
     {
       return null;
@@ -439,6 +441,7 @@ public class HtmlProducer extends TableProducer
   {
     pout.println();
     StringBuffer styleBuilder = new StringBuffer();
+    Rectangle2D cellBounds = new Rectangle2D.Float();
 
     for (int y = 0; y < layout.getHeight(); y++)
     {
@@ -453,9 +456,9 @@ public class HtmlProducer extends TableProducer
 //      String trStyleClass = styleCollection.getTableStyleClass(trStyle);
 //      if (trStyleClass == null || isCreateBodyFragment())
 //      {
-        pout.print("<tr style=\"");
-        pout.print(trStyle);
-        pout.println("\">");
+      pout.print("<tr style=\"");
+      pout.print(trStyle);
+      pout.println("\">");
 //      }
 //      else
 //      {
@@ -481,9 +484,9 @@ public class HtmlProducer extends TableProducer
 //          String tdStyleClass = styleCollection.getTableStyleClass(tdStyle);
 //          if (tdStyleClass == null || isCreateBodyFragment())
 //          {
-            pout.print("    <td style=\"");
-            pout.print(tdStyle);
-            pout.println("\">");
+          pout.print("    <td style=\"");
+          pout.print(tdStyle);
+          pout.println("\">");
 //          }
 //          else
 //          {
@@ -517,18 +520,22 @@ public class HtmlProducer extends TableProducer
         styleBuilder.append(width);
         styleBuilder.append("pt");
 
-        final String style = createHtmlBackgroundStyle(gridElement.getBackground());
+        cellBounds = createCellBounds(layout, x, y, cellBounds);
+        final String style = createHtmlBackgroundStyle(gridElement.getBackground(), cellBounds);
         if (style != null)
         {
-          styleBuilder.append("; ");
-          styleBuilder.append(style);
+          if (style.trim().length() != 0)
+          {
+            styleBuilder.append("; ");
+            styleBuilder.append(style);
+          }
         }
         String tdStyle = styleBuilder.toString();
 //        String tdStyleClass = styleCollection.getTableStyleClass(tdStyle);
 //        if (tdStyleClass == null || isCreateBodyFragment())
 //        {
-          pout.print("    <td style=\"");
-          pout.print(tdStyle);
+        pout.print("    <td style=\"");
+        pout.print(tdStyle);
 //        }
 //        else
 //        {
@@ -703,7 +710,7 @@ public class HtmlProducer extends TableProducer
 
   /**
    * Checks, whether this target should generate XHTML instead of HTML4 code.
-   * 
+   *
    * @return true, if XHTML code should be generated, false otherwise.
    */
   protected boolean isGenerateXHTML()

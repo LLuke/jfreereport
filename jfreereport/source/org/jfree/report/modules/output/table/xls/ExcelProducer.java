@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.9 2003/08/25 14:29:32 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.10 2003/08/26 16:03:10 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.output.table.xls;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.awt.geom.Rectangle2D;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -257,6 +258,7 @@ public class ExcelProducer extends TableProducer
             getProperty("Paper"), getProperty("PaperOrientation"));
 
     final int startY = layoutRowCount;
+    Rectangle2D cellBounds = new Rectangle2D.Float();
 
     for (int y = 0; y < layout.getHeight(); y++)
     {
@@ -276,7 +278,8 @@ public class ExcelProducer extends TableProducer
         // background stuff ...
 
         final TableGridPosition root = gridPosition.getRoot();
-        final TableCellBackground bg = createTableCellStyle(gridPosition.getBackground());
+        cellBounds = createCellBounds(layout, x, y, cellBounds);
+        final TableCellBackground bg = createTableCellStyle(gridPosition.getBackground(), cellBounds);
         if (root == null)
         {
           // just apply the background, if any ...
