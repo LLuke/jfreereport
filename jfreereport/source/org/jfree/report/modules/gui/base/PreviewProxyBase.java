@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.37 2005/01/25 00:01:17 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.38 2005/02/23 19:31:43 taqua Exp $
  *
  * Changes
  * -------
@@ -95,6 +95,7 @@ import org.jfree.report.util.Worker;
 import org.jfree.report.util.WorkerPool;
 import org.jfree.ui.FloatingButtonEnabler;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.ui.about.AboutFrame;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionDowngrade;
@@ -518,6 +519,8 @@ public class PreviewProxyBase extends JComponent
    */
   private class DefaultAboutAction extends AboutAction
   {
+    private AboutFrame aboutFrame;
+
     /**
      * Creates an 'about' action.
      */
@@ -533,6 +536,17 @@ public class PreviewProxyBase extends JComponent
      */
     public void actionPerformed (final ActionEvent e)
     {
+      if (aboutFrame == null)
+      {
+        aboutFrame = new AboutFrame
+                (getResources().getString("action.about.name"),
+                JFreeReport.getInfo());
+
+        aboutFrame.pack();
+        RefineryUtilities.centerFrameOnScreen(aboutFrame);
+      }
+      aboutFrame.setVisible(true);
+      aboutFrame.requestFocus();
     }
   }
 

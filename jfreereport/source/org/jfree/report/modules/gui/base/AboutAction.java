@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AboutAction.java,v 1.5 2005/01/25 00:01:05 taqua Exp $
+ * $Id: AboutAction.java,v 1.6 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,8 @@
  */
 
 package org.jfree.report.modules.gui.base;
+
+import javax.swing.Action;
 
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionDowngrade;
@@ -66,11 +68,11 @@ public abstract class AboutAction extends AbstractActionDowngrade
    */
   protected AboutAction (final ResourceBundleSupport resources)
   {
-    putValue(NAME, resources.getString("action.about.name"));
-    putValue(SHORT_DESCRIPTION, resources.getString("action.about.description"));
+    putValue(Action.NAME, resources.getString("action.about.name"));
+    putValue(Action.SHORT_DESCRIPTION, resources.getString("action.about.description"));
     putValue(ActionDowngrade.MNEMONIC_KEY,
             resources.getMnemonic("action.about.mnemonic"));
-    putValue(SMALL_ICON, resources.getIcon("action.about.small-icon", false));
+    putValue(Action.SMALL_ICON, resources.getIcon("action.about.small-icon", false));
     putValue("ICON24", resources.getIcon("action.about.icon", true));
   }
 }

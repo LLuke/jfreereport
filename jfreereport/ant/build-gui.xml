@@ -535,6 +535,82 @@
   </target>
 
 
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  RTF Export GUI module                                         -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="check-module-output-table-rtf" depends="init">
+    <available file="${module-output-table-rtf-file}" property="module-output-table-rtf-file-present"/>
+  </target>
+
+  <target name="rebuild-module-output-table-rtf" unless="module-output-table-rtf-file-present" depends="check-module-output-table-rtf">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-output-table.xml" target="compile-module-output-table-rtf"/>
+  </target>
+
+  <target name="compile-module-gui-rtf"
+    depends="compile-module-gui-base,
+    rebuild-module-output-table-base,
+    rebuild-module-output-table-rtf,
+    rebuild-module-misc-configstore-base">
+
+    <description>
+      Compiles the RTF Export GUI.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}" target="${build.target}">
+      <include name="org/jfree/report/modules/gui/rtf/**"/>
+      <classpath>
+        <pathelement location="${libdir}/${itext-jar-file}" />
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-gui-base-file}"/>
+        <pathelement location="${module-output-table-base-file}"/>
+        <pathelement location="${module-output-table-rtf-file}"/>
+        <pathelement location="${module-misc-configstore-base-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-gui-rtf" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-gui-rtf-file}"
+         basedir="build">
+      <manifest>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-table-rtf-file} ${module-misc-configstore-base-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-gui-rtf">
+    <copy file="source/org/jfree/report/modules/gui/rtf/module.properties"
+      tofile="build/org/jfree/report/modules/gui/rtf/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/gui/rtf/configuration.properties"
+      tofile="build/org/jfree/report/modules/gui/rtf/configuration.properties"/>
+
+    <copy todir="build/org/jfree/report/modules/gui/rtf/resources">
+      <fileset dir="source/org/jfree/report/modules/gui/rtf/resources">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
+  </target>
+
+
   <!-- ************************************************************** -->
   <!--                                                                -->
   <!--  PDF Export GUI module                                         -->
@@ -746,6 +822,7 @@
     copy-resources-gui-csv,
     copy-resources-gui-html,
     copy-resources-gui-xls,
+    copy-resources-gui-rtf,
     copy-resources-gui-plaintext,
     copy-resources-gui-pdf,
     copy-resources-gui-print,
@@ -757,6 +834,7 @@
     compile-module-gui-csv,
     compile-module-gui-html,
     compile-module-gui-xls,
+    compile-module-gui-rtf,
     compile-module-gui-plaintext,
     compile-module-gui-pdf,
     compile-module-gui-print,

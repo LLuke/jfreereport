@@ -3,6 +3,8 @@
 ---------------
 A list of changes in recent versions:
 0.8.5: (4-Mar-2005)
+        * The modules are now named after their java package names and
+          correspond now with the jar file name.
 
         * The naming schema for the jar files changed to fit the common
           naming schema used in Maven and other OpenSource projects.
