@@ -4,22 +4,62 @@
  -->
 <report name="First Report" width="468" height="648">
 
-    <reportheader height="24" fontname="Serif" fontstyle="bold" fontsize="20">
-        <label name="label1" x="0" y="0" width="100%" height="24" alignment="center" baseline="20">Java Icons</label>
+    <!-- REPORT HEADER -->
+    <reportheader height="112" fontname="SansSerif" fontstyle="plain" fontsize="10">
+        <label name="label1" fontname="SansSerif" fontstyle="bold" fontsize="18"
+               x="0" y="0" width="100%" height="18" alignment="center">Java Look and Feel Graphics Repository</label>
+        <label name="label2" x="0" y="32" width="100%" height="10" alignment="left">This report lists the icons contained in the Java Look and Feel Graphics Repository.</label>
+        <label name="label3" x="0" y="44" width="100%" height="10" alignment="left">For more information about the repository, refer to:</label>
+        <label name="label4" x="20" y="68" width="100%" height="10" alignment="left" fontname="Monospaced" fontsize="9">http://developer.java.sun.com/developer/techDocs/hi/repository/</label>
+        <label name="label5" x="0" y="92" width="100%" height="10" alignment="left">The design of this report is described in the JFreeReport PDF documentation.</label>
     </reportheader>
 
-    <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
-        <label name="label2" x="0" y="12" width="100%" height="24" alignment="center">*** END OF REPORT ***</label>
+    <!-- REPORT FOOTER -->
+    <reportfooter height="30" fontname="SansSerif" fontstyle="bold" fontsize="12">
+        <rectangle name="background1" x="0" y="0" width="100%" height="100%" color="#CCFFCC" weight="0"/>
+        <line name="line1" x1="0" y1="0" x2="0" y2="0" weight="0.5"/>
+        <line name="line2" x1="0" y1="30" x2="0" y2="30" weight="0.5"/>
+        <label name="label2" x="0" y="10" width="100%" height="24" alignment="left">REPORT TOTAL:</label>
+        <number-function name="count1" function="OverallCount" format="0" x="240" y="10" width="64" height="9" alignment="center"></number-function>
+        <number-function name="total1" function="OverallSum" format="#,##0" x="0" y="10" width="100%" height="9" alignment="right"></number-function>
     </reportfooter>
 
+    <!-- PAGE HEADER -->
+    <pageheader height="18" onfirstpage="false" onlastpage="true" fontname="SansSerif" fontstyle="bold" fontsize="9">
+        <label name="label67" x="0" y="0" width="76" height="9" alignment="left">Java Look and Feel Graphics Repository</label>
+        <date-function name="date1" function="Date" format="d-MMM-yyyy" x="0" y="0" width="100%" height="9" alignment="right"></date-function>
+        <line name="line67" x1="0" y1="12" x2="0" y2="12" weight="0.5"/>
+    </pageheader>
+
+    <!-- PAGE FOOTER -->
+    <!-- Displays the page number, centered at the bottom of the page. -->
+    <pagefooter height="14" onfirstpage="true" onlastpage="true" fontname="SansSerif" fontstyle="plain" fontsize="9">
+        <number-function name="nf1" function="PageNumber" format="Page 0" x="0" y="3" width="100%" height="9" alignment="center"></number-function>
+    </pagefooter>
+
+    <!-- GROUPS -->
+    <!-- Data items are grouped by category. -->
     <groups>
         <group name="Category">
-            <groupheader height="24" fontname="SansSerif" fontstyle="bold" fontsize="12" pagebreak="false">
-                <label name="label3" x="0" y="10" width="76" height="9" alignment="left">Category:</label>
-                <string-field name="sf1" x="96" y="10" width="76" height="9" alignment="left" fieldname="Category"/>
-                <line name="line1" x1="0" y1="23" x2="0" y2="23" weight="0.5"/>
+            <groupheader height="30" fontname="SansSerif" fontstyle="bold" fontsize="12" pagebreak="false">
+                <rectangle name="background1" x="0" y="0" width="100%" height="100%" color="#CCCCFF" weight="0"/>
+                <line name="line1" x1="0" y1="0" x2="0" y2="0" weight="0.5"/>
+                <line name="line2" x1="0" y1="30" x2="0" y2="30" weight="0.5"/>
+                <label name="label3" x="0" y="3" width="76" height="12" alignment="left">Category:</label>
+                <string-field name="sf1" x="96" y="3" width="76" height="12" alignment="left" fieldname="Category"/>
+
+                <label name="label20" fontname="SansSerif" fontstyle="italic" fontsize="8"
+                       x="0" y="20" width="76" height="9" alignment="left">Name:</label>
+                <label name="label21" fontname="SansSerif" fontstyle="italic" fontsize="8"
+                       x="260" y="20" width="76" height="9" alignment="left">Icon:</label>
+                <label name="label22" fontname="SansSerif" fontstyle="italic" fontsize="8"
+                       x="0" y="20" width="100%" height="9" alignment="right">Size:</label>
+
             </groupheader>
-            <groupfooter height="0" fontname="Monospaced" fontstyle="bold" fontsize="9">
+            <groupfooter height="30" fontname="SansSerif" fontstyle="bold" fontsize="11">
+                <label name="label2" x="0" y="5" width="100" height="9" alignment="left">Group Total:</label>
+                <number-function name="count1" function="GroupCount" format="0" x="240" y="5" width="64" height="9" alignment="center"></number-function>
+                <number-function name="total1" function="GroupSum" format="#,##0" x="0" y="5" width="100%" height="9" alignment="right"></number-function>
             </groupfooter>
             <fields>
                  <field>Category</field>
@@ -27,20 +67,48 @@
         </group>
     </groups>
 
-    <items height="14" fontname="SansSerif" fontstyle="plain" fontsize="10">
+    <items height="26" fontname="SansSerif" fontstyle="plain" fontsize="10">
         <!-- <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/> -->
-        <line name="top" x1="0" y1="0" x2="0" y2="0" color="#DFDFDF" weight="0.1"/>
-        <line name="bottom" x1="0" y1="10" x2="0" y2="13" color="#DFDFDF" weight="0.1"/>
-        <string-field name="sf3" x="0" y="2" width="76" height="10" alignment="left" fieldname="Name"/>
-        <number-field name="sf4" x="260" y="2" width="76" height="10" alignment="right" format="#,##0" fieldname="Size"/>
-        <image-field name="field99" x="170" y="1" width="12" height="12" fieldname="Icon" />
+        <line name="bottom" x1="0" y1="25" x2="0" y2="25" color="#DFDFDF" weight="0.1"/>
+        <string-field name="sf3" x="0" y="8" width="76" height="10" alignment="left" fieldname="Name"/>
+        <image-field name="field99" x="260" y="1" width="24" height="24" fieldname="Icon" />
+        <number-field name="sf4" x="0" y="8" width="100%" height="10" alignment="right" format="#,##0" fieldname="Size"/>
     </items>
 
     <functions>
-      <function name="report_date" class="com.jrefinery.report.function.ReportPropertyFunction">
+      <function name="Date" class="com.jrefinery.report.function.ReportPropertyFunction">
         <properties>
           <property name="reportProperty">report.date</property>
         </properties>
       </function>
+      <function name="PageNumber" class="com.jrefinery.report.function.PageFunction"/>
+
+      <function name="GroupCount" class="com.jrefinery.report.function.ItemCountFunction">
+           <properties>
+               <property name="field">Name</property>
+               <property name="group">Category</property>
+           </properties>
+      </function>
+
+      <function name="GroupSum" class="com.jrefinery.report.function.ItemSumFunction">
+        <properties>
+          <property name="field">Size</property>
+          <property name="group">Category</property>
+        </properties>
+      </function>
+
+      <function name="OverallCount" class="com.jrefinery.report.function.ItemCountFunction">
+           <properties>
+               <property name="field">Name</property>
+           </properties>
+      </function>
+
+      <function name="OverallSum" class="com.jrefinery.report.function.ItemSumFunction">
+        <properties>
+          <property name="field">Size</property>
+        </properties>
+      </function>
+
     </functions>
+
 </report>

@@ -1,3 +1,41 @@
+/**
+ * =============================================================
+ * JFreeReport : an open source reporting class library for Java
+ * =============================================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------------
+ * ImageCellRenderer.java
+ * ----------------------
+ * (C)opyright 2002, by Simba Management Limited.
+ *
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   -;
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 15-Jul-2002 : Version 1 (DG);
+ *
+ */
+
 package com.jrefinery.report.demo;
 
 import java.awt.Component;
@@ -9,14 +47,16 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
- * A table cell renderer that centers information in each cell.
+ * A table cell renderer that draws an image in a table cell.
+ * <P>
+ * This class will be moved to the JCommon class library.
  */
 public class ImageCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
 
     protected ImageIcon icon = new ImageIcon();
 
     /**
-     * Default constructor - builds a renderer that right justifies the contents of a table cell.
+     * Constructs a new renderer.
      */
     public ImageCellRenderer() {
         super();
@@ -27,16 +67,17 @@ public class ImageCellRenderer extends DefaultTableCellRenderer implements Table
 
     /**
      * Returns itself as the renderer. Supports the TableCellRenderer interface.
-     * @param table The table;
-     * @param value The data to be rendered;
-     * @param isSelected A boolean that indicates whether or not the cell is selected;
-     * @param hasFocus A boolean that indicates whether or not the cell has the focus;
-     * @param row The (zero-based) row index;
-     * @param column The (zero-based) column index;
-     * @return The component that can render the contents of the cell;
+     *
+     * @param table The table.
+     * @param value The data to be rendered.
+     * @param isSelected A boolean that indicates whether or not the cell is selected.
+     * @param hasFocus A boolean that indicates whether or not the cell has the focus.
+     * @param row The (zero-based) row index.
+     * @param column The (zero-based) column index.
+     * @return The component that can render the contents of the cell.
      */
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                                                 boolean hasFocus, int row, int column) {
+                                                   boolean hasFocus, int row, int column) {
 
         setFont(null);
         icon.setImage((Image)value);

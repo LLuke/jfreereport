@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: First.java,v 1.1 2002/07/15 16:49:56 mungady Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
+import java.net.URL;
 import java.io.InputStream;
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -79,16 +80,28 @@ import javax.swing.table.TableModel;
  */
 public class First extends ApplicationFrame implements ActionListener {
 
+    /** The data for the report. */
     protected TableModel data;
 
+    /** The report (read from first.xml template). */
     protected JFreeReport report;
 
+    /**
+     * Constructs the demo application.
+     *
+     * @param title The frame title.
+     */
     public First(String title) {
         super(title);
         setJMenuBar(createMenuBar());
         setContentPane(createContent());
     }
 
+    /**
+     * Creates a menu bar.
+     *
+     * @return The menu bar.
+     */
     public JMenuBar createMenuBar() {
         JMenuBar mb = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
@@ -108,9 +121,14 @@ public class First extends ApplicationFrame implements ActionListener {
         return mb;
     }
 
+    /**
+     * Creates the content for the application frame.
+     *
+     * @return A panel containing the basic user interface.
+     */
     public JPanel createContent() {
         JPanel content = new JPanel(new BorderLayout());
-        //content.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
         this.data = readData();
         JTable table = new JTable(data);
         table.setDefaultRenderer(java.awt.Image.class, new ImageCellRenderer());
@@ -122,6 +140,8 @@ public class First extends ApplicationFrame implements ActionListener {
 
     /**
      * Creates a data set using Java icons.
+     *
+     * @return The report data.
      */
     private TableModel readData() {
 
@@ -129,7 +149,6 @@ public class First extends ApplicationFrame implements ActionListener {
 
         // find the file on the classpath...
         File f = FileUtilities.findFileOnClassPath("jlfgr-1_0.jar");
-        // File f = new File("/home/dgilbert/jars/jlfgr_1
         try {
             ZipFile iconJar = new ZipFile(f);
             Enumeration e = iconJar.entries();
@@ -142,8 +161,6 @@ public class First extends ApplicationFrame implements ActionListener {
                     Image image = getImage(iconJar, ze);
                     Long bytes = new Long(ze.getSize());
                     result.addIconEntry(name, category, image, bytes);
-                    System.out.println("File: "+ze+":"+category+":"+name+"("+bytes.toString()+")");
-
                 }
             }
         }
@@ -155,23 +172,36 @@ public class First extends ApplicationFrame implements ActionListener {
 
     }
 
+    /**
+     * Handles action events.
+     *
+     * @param e The event.
+     */
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.toString());
         String command = e.getActionCommand();
         if (command.equals("PREVIEW")) {
             previewReport();
         }
+        else if (command.equals("EXIT")) {
+            dispose();
+            System.exit(0);
+        }
     }
 
+    /**
+     * Displays a print preview screen for the sample report.
+     */
     protected void previewReport() {
 
         if (this.report==null) {
-            this.report = parseReport("/home/dgilbert/jrefinery/working/jfreereport/source/com/jrefinery/report/demo/first.xml");
+            URL in  = getClass().getResource("/com/jrefinery/report/demo/first.xml");
+            this.report = parseReport(in);
             this.report.setData(this.data);
         }
 
         if (this.report!=null) {
             PreviewFrame frame = new PreviewFrame(this.report);
+            frame.setToolbarFloatable(true);
             frame.pack ();
             RefineryUtilities.positionFrameRandomly(frame);
             frame.setVisible(true);
@@ -180,12 +210,19 @@ public class First extends ApplicationFrame implements ActionListener {
 
     }
 
-    private JFreeReport parseReport(String xmlTemplateFileName) {
+    /**
+     * Reads the report from the first.xml report template.
+     *
+     * @param templateURL The template location.
+     *
+     * @return A report.
+     */
+    private JFreeReport parseReport(URL templateURL) {
 
         JFreeReport result = null;
         ReportGenerator generator = ReportGenerator.getInstance();
         try {
-            result = generator.parseReport(xmlTemplateFileName);
+            result = generator.parseReport(templateURL);
         }
         catch (Exception e) {
             System.out.println(e.toString());
@@ -195,6 +232,14 @@ public class First extends ApplicationFrame implements ActionListener {
 
     }
 
+    /**
+     * Reads an icon from the zip file.
+     *
+     * @param file The zip file.
+     * @param entry The zip entry.
+     *
+     * @return The image.
+     */
     private Image getImage(ZipFile file, ZipEntry entry) {
 
         Image result = null;
@@ -202,10 +247,8 @@ public class First extends ApplicationFrame implements ActionListener {
             InputStream in = new BufferedInputStream(file.getInputStream(entry));
             byte[] bytes = new byte[(int)entry.getSize()];
             int count = in.read(bytes);
-            System.out.println("Bytes = "+count);
             ImageIcon temp = new ImageIcon(bytes);
             result = temp.getImage();
-            //result = Toolkit.getDefaultToolkit().createImage(bytes);
         }
         catch (IOException e) {
             System.out.println(e.toString());
@@ -232,8 +275,11 @@ public class First extends ApplicationFrame implements ActionListener {
         return fullName.substring(start, end);
     }
 
+    /**
+     * Entry point for running the demo application...
+     */
     public static void main(String[] args) {
-        First frame = new First("Icons");
+        First frame = new First("First Report");
         frame.pack();
         frame.setVisible(true);
     }
