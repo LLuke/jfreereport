@@ -29,7 +29,7 @@
 >
 
 <!ENTITY % orientations
-  "portrait | landscape"
+  "portrait | landscape | reverse_landscape"
 >
 
 <!--
