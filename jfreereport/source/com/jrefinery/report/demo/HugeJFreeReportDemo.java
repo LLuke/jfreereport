@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: HugeJFreeReportDemo.java,v 1.23 2003/02/25 14:10:18 taqua Exp $
+ * $Id: HugeJFreeReportDemo.java,v 1.24 2003/03/08 17:20:45 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -71,8 +71,8 @@ public class HugeJFreeReportDemo extends JFreeReportDemo
     list.add(new DemoDefinition(createExampleName(2), new SampleData2(), new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
     list.add(new DemoDefinition(createExampleName(3), new SampleData3(), new URLDemoHandler("/com/jrefinery/report/demo/report3.xml")));
     list.add(new DemoDefinition(createExampleName(4), new SampleData4(), new URLDemoHandler("/com/jrefinery/report/demo/report4.xml")));
-    list.add(new DemoDefinition(createExampleName(2) + " (HUGE)", new SampleData5(), new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
-    list.add(new DemoDefinition(createExampleName(2) + " (HUGE)", new SampleData6(), new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
+    list.add(new DemoDefinition(createExampleName(5) + " (HUGE)", new SampleData5(), new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
+    list.add(new DemoDefinition(createExampleName(6) + " (HUGE)", new SampleData6(), new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
     return list;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.6 2003/03/08 17:20:50 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.7 2003/03/19 22:13:00 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,6 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
-
-import com.jrefinery.report.util.Log;
 
 /**
  * Utility class, which resizes a Shape.
@@ -66,8 +64,6 @@ public class ShapeTransform
    */
   public static Shape transformShape (Shape s, boolean scale, boolean keepAR, Dimension2D dim)
   {
-    Log.debug ("Shape: " + s + " Bounds: " + s.getBounds2D());
-
     /**
      * Always scale to the maximum bounds ...
      */

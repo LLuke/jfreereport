@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.38 2003/03/08 17:20:15 taqua Exp $
+ * $Id: ItemFactory.java,v 1.39 2003/03/19 22:11:59 taqua Exp $
  *
  * Changes
  * -------
@@ -847,7 +847,12 @@ public class ItemFactory
     }
     else
     {
-      return createShapeElement(name, paint, stroke, shape, true, false);
+      Rectangle2D bounds = shape.getBounds2D();
+      shape.setLine(-bounds.getX() - shape.getX1(),
+                    -bounds.getY() - shape.getY1(),
+                    -bounds.getX() - shape.getX2(),
+                    -bounds.getY() - shape.getY2());
+      return createShapeElement(name, bounds, paint, stroke, shape, true, false, true);
     }
   }
 
@@ -865,6 +870,9 @@ public class ItemFactory
    *
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   * @deprecated this methods has to extract the bounds from the shape and correct
+   * the shape by using an AffineTransform. Use one of the createShape methods, that
+   * allow you to supply separate bounds and shapes.
    */
   public static ShapeElement createShapeElement(String name,
                                                 Paint paint,

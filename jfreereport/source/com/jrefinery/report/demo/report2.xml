@@ -89,8 +89,8 @@
     <string-field x="0" y="0" width="110" height="8" alignment="left" fieldname="Name"/>
     <number-field x="110" y="0" width="40" height="8" alignment="right" format="0" fieldname="Count1"/>
     <string-field x="210" y="0" width="60" height="8" alignment="left" fieldname="Letter"/>
-    <string-field x="280" y="0" width="76" height="8" alignment="left" fieldname="Color"/>
-    <number-field x="300" y="0" width="76" height="8" alignment="right" format="#,##0" fieldname="Integer"/>
+    <string-field x="270" y="0" width="40" height="8" alignment="left" fieldname="Color"/>
+    <number-field x="310" y="0" width="66" height="8" alignment="right" format="#,##0" fieldname="Integer"/>
     <number-field x="376" y="0" width="76" height="8" alignment="right" format="#,##0.00" fieldname="Double"/>
   </items>
   <!-- FUNCTIONS -->

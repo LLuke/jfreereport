@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContent.java,v 1.9 2003/03/09 17:48:58 taqua Exp $
+ * $Id: ShapeContent.java,v 1.10 2003/03/19 22:13:01 taqua Exp $
  *
  * Changes
  * -------
@@ -85,7 +85,6 @@ public class ShapeContent implements Content
 
     this.shape = s;
     this.bounds = (Rectangle2D) bounds.clone();
-    Log.debug ("ShapeContent: " + s.getBounds2D() + " Bounds: " + bounds);
   }
 
   /**

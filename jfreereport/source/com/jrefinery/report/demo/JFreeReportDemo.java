@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.58 2003/03/08 17:20:47 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.59 2003/03/08 20:28:37 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -360,6 +360,7 @@ public class JFreeReportDemo extends JFrame
       }
     }));
     list.add (new DemoDefinition("Shape and Drawable", new DefaultTableModel(), new URLDemoHandler("/com/jrefinery/report/demo/shape-and-drawable.xml")));
+    list.add (new DemoDefinition("Example 2 - table with cell borders", data2, new URLDemoHandler("/com/jrefinery/report/demo/report2d.xml")));
     return list;
   }
 
