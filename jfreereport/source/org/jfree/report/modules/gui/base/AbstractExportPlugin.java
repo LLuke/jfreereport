@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.3 2003/08/24 15:08:18 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -176,6 +176,40 @@ public abstract class AbstractExportPlugin implements ExportPlugin
       updateStatusText("Export failed: " + getFailureDescription());
     }
     return result;
+  }
+
+  /**
+   * Provides a default implementation to handle export errors.
+   * This implementation updates the status line of the preview component.
+   *
+   * @param task the result of the export operation.
+   * @return the value of result unmodified.
+   */
+  protected boolean handleExportResult(final ExportTask task)
+  {
+    if (task.getReturnValue() == ExportTask.RETURN_SUCCESS)
+    {
+      updateStatusText("Export was successfull.");
+      return true;
+    }
+    else if (task.getReturnValue() == ExportTask.RETURN_ABORT)
+    {
+      updateStatusText("Export was aborted.");
+      return false;
+    }
+    else
+    {
+      if (task.getException() != null)
+      {
+        updateStatusText("Export failed: " +
+            task.getException().getLocalizedMessage());
+      }
+      else
+      {
+        updateStatusText("Export failed: " + getFailureDescription());
+      }
+      return false;
+    }
   }
 
   /**

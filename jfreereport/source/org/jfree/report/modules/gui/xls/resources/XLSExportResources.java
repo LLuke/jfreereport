@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XLSExportResources.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
+ * $Id: XLSExportResources.java,v 1.6 2003/08/27 20:19:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -82,7 +82,7 @@ public class XLSExportResources extends JFreeReportResources
 
         {"error.processingfailed.title", "Report processing failed"},
         {"error.processingfailed.message", "Error on processing this report: {0}"},
-        {"error.savefailed.message", "Error on saving the PDF file: {0}"},
+        {"error.savefailed.message", "Error on saving the Excel file: {0}"},
         {"error.savefailed.title", "Error on save"},
 
         {"excelexportdialog.dialogtitle", "Export Report into an Excel-File ..."},

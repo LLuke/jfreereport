@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewApplet.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
+ * $Id: PreviewApplet.java,v 1.3 2003/08/31 19:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -82,7 +82,6 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
      */
     public void actionPerformed(final ActionEvent e)
     {
-      base.close();
       setVisible(false);
     }
   }
@@ -122,7 +121,7 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
   public void destroy()
   {
     super.destroy();
-    base.dispose();
+    base.close();
   }
 
   /**
@@ -183,6 +182,8 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
    */
   public void dispose()
   {
+    // this does nothing, as the Applet interface does not define
+    // such an method.
   }
 
   /**
@@ -229,5 +230,10 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
   public PreviewProxyBase getBase()
   {
     return base;
+  }
+
+  public void close()
+  {
+    base.close();
   }
 }

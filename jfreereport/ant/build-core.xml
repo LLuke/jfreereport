@@ -29,6 +29,10 @@
   <target name="copy-resources">
     <copy file="source/org/jfree/report/jfreereport.properties"
       tofile="build/org/jfree/report/jfreereport.properties"/>
+    <copy file="source/org/jfree/report/coremodule.properties"
+      tofile="build/org/jfree/report/coremodule.properties"/>
+    <copy file="source/org/jfree/report/logmodule.properties"
+      tofile="build/org/jfree/report/logmodule.properties"/>
   </target>
 
   <target name="compile" depends="init">

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportPlugin.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: HtmlExportPlugin.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -159,11 +159,7 @@ public class HtmlExportPlugin extends AbstractExportPlugin
         progressDialog.setVisible(true);
       }
     }
-    if (task.getReturnValue() != ExportTask.RETURN_SUCCESS)
-    {
-      return handleExportResult(false);
-    }
-    return handleExportResult(true);
+    return handleExportResult(task);
   }
 
   /**

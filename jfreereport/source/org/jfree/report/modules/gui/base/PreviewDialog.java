@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.5 2003/08/31 19:27:57 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -86,7 +86,6 @@ public class PreviewDialog extends JDialog implements PreviewProxy
      */
     public void actionPerformed(final ActionEvent e)
     {
-      base.close();
       if (getDefaultCloseOperation() == DISPOSE_ON_CLOSE)
       {
         dispose();
@@ -211,6 +210,11 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   {
     base.dispose();
     super.dispose();
+  }
+
+  public void close()
+  {
+    base.close();
   }
 
   /**

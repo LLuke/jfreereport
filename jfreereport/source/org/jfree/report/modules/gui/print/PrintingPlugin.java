@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.2 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.3 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,7 +38,6 @@
 
 package org.jfree.report.modules.gui.print;
 
-import java.awt.print.PrinterJob;
 import java.util.ResourceBundle;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
@@ -88,29 +87,19 @@ public class PrintingPlugin extends AbstractExportPlugin
    */
   public boolean performExport(final JFreeReport report)
   {
-    final PrinterJob pj = PrinterJob.getPrinterJob();
-    pj.setPageable(getBase().getPageable());
-
-    if (pj.printDialog())
+    // need to connect to the report pane to receive state updates ...
+    getBase().addRepaginationListener(progressDialog);
+    PrintExportTask task = new PrintExportTask(getBase().getPageable(), progressDialog);
+    delegateTask(task);
+    synchronized (task)
     {
-      // need to connect to the report pane to receive state updates ...
-      getBase().addRepaginationListener(progressDialog);
-      final PrintExportTask task = new PrintExportTask(pj, progressDialog);
-      delegateTask(task);
-      synchronized (task)
+      if (task.isTaskDone() == false)
       {
-        if (task.isTaskDone() == false)
-        {
-          progressDialog.setVisible(true);
-        }
-      }
-      getBase().removeRepaginationListener(progressDialog);
-      if (task.getReturnValue() != PrintExportTask.RETURN_SUCCESS)
-      {
-        handleExportResult(false);
+        progressDialog.setVisible(true);
       }
     }
-    return true;
+    getBase().removeRepaginationListener(progressDialog);
+    return handleExportResult(task);
   }
 
   /**

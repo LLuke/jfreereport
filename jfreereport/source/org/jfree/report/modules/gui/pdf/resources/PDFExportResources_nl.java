@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: PDFExportResources_nl.java,v 1.4 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PDFExportResources_nl.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -77,8 +77,8 @@ public class PDFExportResources_nl extends JFreeReportResources
         {"file.save.pdfdescription", "PDF Documenten"},
 
         {"error.processingfailed.title", "Fout tijdens report generatie"},
-        {"error.processingfailed.message", "Report generatie mislukt: {0}"},
-        {"error.savefailed.message", "Opslaan als PDF mislukt: {0}"},
+        {"error.processingfailed.title", "Fout tijdens rapport generatie"},
+        {"error.processingfailed.message", "Rapport generatie mislukt: {0}"},
         {"error.savefailed.title", "Fout tijdens opslaan"},
 
         {"pdfsavedialog.warningTitle", "Waarschuwing"},

@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_nl.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: HtmlExportResources_nl.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -75,8 +75,8 @@ public class HtmlExportResources_nl extends JFreeReportResources
         {"action.export-to-html.mnemonic", new Integer(KeyEvent.VK_H)},
 
         {"error.processingfailed.title", "Fout tijdens report generatie"},
-        {"error.processingfailed.message", "Report generatie mislukt: {0}"},
-        {"error.savefailed.message", "Opslaan als PDF mislukt: {0}"},
+        {"error.processingfailed.title", "Fout tijdens rapport generatie"},
+        {"error.processingfailed.message", "Rapport generatie mislukt: {0}"},
         {"error.savefailed.title", "Fout tijdens opslaan"},
         {"error.validationfailed.message", "Validatie van gebruikersinvoer mislukt."},
         {"error.validationfailed.title", "Fout tijdens validatie"},

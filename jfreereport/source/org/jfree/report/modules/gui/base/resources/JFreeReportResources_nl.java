@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_nl.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
+ * $Id: JFreeReportResources_nl.java,v 1.8 2003/08/28 17:45:43 taqua Exp $
  */
 package org.jfree.report.modules.gui.base.resources;
 
@@ -108,8 +108,15 @@ public class JFreeReportResources_nl extends JFreeReportResources
         {"menu.zoom.mnemonic", new Character('Z')},
 
         {"statusline.pages", "Pagina {0} van {1}"},
-        {"statusline.error", "Er is een fout ontstaan in de report generatie: {0}"},
+        {"statusline.error", "Er is een fout ontstaan in de rapport generatie: {0}"},
         {"statusline.repaginate", "Paginanummering berekenen..."},
+
+        // progress dialog defaults ...
+        {"progress-dialog.prepare-layout", "Layout voorbereiden voor uitvoer."},
+        {"progress-dialog.perform-output", "Bezig met uitvoeren van de gewenste rapport uitvoer ..."},
+        {"progress-dialog.page-label", "Pagina: {0}"},
+        {"progress-dialog.rows-label", "Rij: {0} / {1}"},
+        {"progress-dialog.pass-label", "Gereed: {0} - Functiewaarden berekenen ..."},
 
         {"FileChooser.acceptAllFileFilterText", "Alle Bestanden (*.*)"},
         {"FileChooser.cancelButtonMnemonic", new Integer(KeyEvent.VK_C)},

@@ -176,26 +176,9 @@
   <!--                                                                -->
   <!-- ************************************************************** -->
 
-  <target name="check-module-parser-simple" depends="init">
-    <available file="${module-parser-simple-file}" property="module-parser-simple-file-present"/>
-  </target>
-
-  <target name="rebuild-module-parser-simple" unless="module-parser-simple-file-present" depends="check-module-parser-simple">
-    <dirname property="antfile.dir" file="${ant.file}"/>
-    <ant antfile="${antfile.dir}/build-parser.xml" target="compile-module-parser-simple"/>
-  </target>
-
-  <target name="check-module-parser-extwriter" depends="init">
-    <available file="${module-parser-extwriter-file}" property="module-parser-extwriter-file-present"/>
-  </target>
-
-  <target name="rebuild-module-parser-extwriter" unless="module-parser-extwriter-file-present" depends="check-module-parser-extwriter">
-    <dirname property="antfile.dir" file="${ant.file}"/>
-    <ant antfile="${antfile.dir}/build-parser.xml" target="compile-module-parser-extwriter"/>
-  </target>
 
   <target name="compile-module-gui-converter"
-    depends="compile-module-gui-base, rebuild-module-parser-simple, rebuild-module-parser-extwriter">
+    depends="compile-module-gui-base">
 
     <description>
       Compiles the Report Configuration GUI. 

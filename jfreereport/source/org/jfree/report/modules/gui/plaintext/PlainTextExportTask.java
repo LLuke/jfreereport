@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.4 2003/08/31 19:27:58 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.5 2003/08/31 21:06:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -164,6 +164,7 @@ public class PlainTextExportTask extends ExportTask
     {
       setReturnValue(RETURN_FAILED);
       setException(re);
+      Log.error ("PlainText export failed", re);
     }
     finally
     {
@@ -177,6 +178,7 @@ public class PlainTextExportTask extends ExportTask
       catch (Exception e)
       {
         setReturnValue(RETURN_FAILED);
+        Log.error ("Unable to close the output stream.", e);
         // if there is already another error, this exception is
         // just a minor obstactle. Something big crashed before ...
         if (getException() == null)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlDirExportTask.java,v 1.2 2003/08/25 14:29:29 taqua Exp $
+ * $Id: HtmlDirExportTask.java,v 1.3 2003/08/31 21:06:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -103,6 +103,7 @@ public class HtmlDirExportTask extends ExportTask
     {
       setReturnValue(RETURN_FAILED);
       setException(re);
+      Log.error ("Exporting failed .", re);
     }
     setTaskDone(true);
     progressDialog.setVisible(false);

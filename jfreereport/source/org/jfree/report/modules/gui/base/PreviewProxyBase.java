@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.12 2003/08/31 19:27:57 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.13 2003/09/02 15:05:32 taqua Exp $
  *
  * Changes
  * -------
@@ -1650,10 +1650,6 @@ public class PreviewProxyBase extends JComponent
    */
   public void dispose()
   {
-    if (!closed)
-    {
-      close();
-    }
     // cleanup the report pane, removes some cached resources ...
     reportPane.dispose();
 
@@ -1662,6 +1658,14 @@ public class PreviewProxyBase extends JComponent
     RepaintManager.setCurrentManager(null);
   }
 
+  /**
+   * Checks, wether the preview frame was finally closed. Closing the
+   * frame does not just mean to make it invisible, it also kills all
+   * worker threads. Once the preview is closed, it is not possible to
+   * reactivate it again.
+   *
+   * @return true, if the preview is closed, false otherwise
+   */
   public boolean isClosed()
   {
     return closed;
@@ -1669,19 +1673,15 @@ public class PreviewProxyBase extends JComponent
 
   public void close()
   {
-    Log.error ("Close called...");
     closed = true;
     exportWorker.finish();
-    Log.error ("Export Worker Finished...");
     paginationWorker.finish();
-    Log.error ("Pagination worker finished...");
     if (progressDialog.isVisible())
     {
       progressDialog.setVisible(false);
       progressDialog.dispose();
     }
     dispose();
-    Log.error ("Disposed...");
   }
 
   /**
@@ -1694,6 +1694,10 @@ public class PreviewProxyBase extends JComponent
    */
   public void finalize() throws Throwable
   {
+    if (isClosed() == false)
+    {
+      close();
+    }
     super.finalize();
     exportWorker.finish();
     paginationWorker.finish();

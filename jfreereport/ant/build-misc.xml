@@ -251,60 +251,11 @@
     compile-module-misc-configstore-filesystem">
   </target>
 
-  <!-- ************************************************************** -->
-  <!--                                                                -->
-  <!--  logging base modules                                          -->
-  <!--                                                                -->
-  <!--  Depends on: Core task                                         -->
-  <!-- ************************************************************** -->
-
-  <target name="compile-module-misc-logging-base" depends="init">
-    <description>
-      Compiles the logging-base module classes of JFreeReport.
-      This contains a hook to initialize the logging with all other modules.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
-    <!-- compile the source -->
-    <!-- We exclude all module implementations by default -->
-    <javac srcdir="source"
-      destdir="build" target="${build.target}"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/modules/misc/logging/base/*"/>
-      <classpath>
-        <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
-        <pathelement location="${core-jar-file}"/>
-      </classpath>
-    </javac>
-
-    <antcall target="copy-resources-logging-base" inheritAll="true"/>
-
-    <!-- make the jar -->
-    <jar jarfile="${module-misc-logging-base-file}"
-         basedir="build">
-      <manifest>
-          <attribute name="Class-Path" value="${core-jar-file}"/>
-      </manifest>
-    </jar>
-
-    <!-- delete the temp directory -->
-    <delete dir="build" />
-  </target>
-
-  <target name="copy-resources-logging-base">
-    <copy file="source/org/jfree/report/modules/misc/logging/base/module.properties"
-      tofile="build/org/jfree/report/modules/misc/logging/base/module.properties"/>
-  </target>
-
   <!--
     This target is called from build-all
     -->
   <target name="copy-resources"
-    depends="copy-resources-logging-base,
-    copy-resources-misc-configstore-base,
+    depends="copy-resources-misc-configstore-base,
     copy-resources-misc-configstore-filesystem,
     copy-resources-misc-tablemodel,
     copy-resources-misc-beanshell" />
@@ -312,8 +263,8 @@
   <target name="compile"
     depends="compile-module-misc-beanshell,
     compile-module-misc-tablemodel,
-    compile-module-misc-logging-base,
-    compile-module-misc-configstore"/>
+    compile-module-misc-configstore,
+    compile-module-misc-configstore-filesystem"/>
 
   <target name="all" depends="init, compile"/>
 

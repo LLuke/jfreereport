@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: CSVExportResources_nl.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: CSVExportResources_nl.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -107,8 +107,8 @@ public class CSVExportResources_nl extends JFreeReportResources
          "Afgedrukte elementen (Layout data)"},
 
         {"error.processingfailed.title", "Fout tijdens report generatie"},
-        {"error.processingfailed.message", "Report generatie mislukt: {0}"},
-        {"error.savefailed.message", "Opslaan als PDF mislukt: {0}"},
+        {"error.processingfailed.title", "Fout tijdens rapport generatie"},
+        {"error.processingfailed.message", "Rapport generatie mislukt: {0}"},
         {"error.savefailed.title", "Fout tijdens opslaan"},
       };
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintExportTask.java,v 1.2 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PrintExportTask.java,v 1.3 2003/08/31 21:06:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,21 +38,22 @@
 
 package org.jfree.report.modules.gui.print;
 
+import java.awt.print.Pageable;
 import java.awt.print.PrinterJob;
 
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.ReportInterruptedException;
+import org.jfree.report.util.Log;
 
 public class PrintExportTask extends ExportTask
 {
-  private final PrinterJob printerJob;
-  private final ReportProgressDialog progressDialog;
+  private Pageable pageable;
+  private ReportProgressDialog progressDialog;
 
-  public PrintExportTask(final PrinterJob printJob, final ReportProgressDialog progressDialog)
+  public PrintExportTask(Pageable pageable, ReportProgressDialog progressDialog)
   {
-    this.printerJob = printJob;
     this.progressDialog = progressDialog;
+    this.pageable = pageable;
     setTaskDone(false);
   }
 
@@ -61,15 +62,26 @@ public class PrintExportTask extends ExportTask
    */
   public void run()
   {
-    try
+    final PrinterJob pj = PrinterJob.getPrinterJob();
+    pj.setPageable(pageable);
+
+    if (pj.printDialog())
     {
-      printerJob.print();
-      setReturnValue(RETURN_SUCCESS);
+      try
+      {
+        pj.print();
+        setReturnValue(RETURN_SUCCESS);
+      }
+      catch (Exception e)
+      {
+        setReturnValue(RETURN_FAILED);
+        setException(e);
+        Log.error ("Printing export failed", e);
+      }
     }
-    catch (Exception e)
+    else
     {
-      setReturnValue(RETURN_FAILED);
-      setException(e);
+      setReturnValue(RETURN_ABORT);
     }
     setTaskDone(true);
     progressDialog.setVisible(false);

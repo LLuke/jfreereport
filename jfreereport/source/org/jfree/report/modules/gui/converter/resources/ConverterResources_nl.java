@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources_nl.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
+ * $Id: ConverterResources_nl.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -80,7 +80,7 @@ public class ConverterResources_nl extends JFreeReportResources
         {"convertdialog.targetOverwriteConfirmation",
          "Het bestand ''{0}'' bestaat reeds. Overschrijven?"},
         {"convertdialog.targetOverwriteTitle", "Bestand overschrijven?"},
-        {"convertdialog.title", "Report-Converter"},
+        {"convertdialog.title", "Rapport-Converteerder"}
 
 
       };

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableExportTask.java,v 1.2 2003/08/25 14:29:29 taqua Exp $
+ * $Id: CSVTableExportTask.java,v 1.3 2003/08/31 21:06:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -114,6 +114,7 @@ public class CSVTableExportTask extends ExportTask
     {
       setReturnValue(RETURN_FAILED);
       setException(re);
+      Log.error ("Exporting failed .", re);
     }
     finally
     {
@@ -127,6 +128,7 @@ public class CSVTableExportTask extends ExportTask
       catch (Exception e)
       {
         setReturnValue(RETURN_FAILED);
+        Log.error ("Unable to close the output stream.", e);
         // if there is already another error, this exception is
         // just a minor obstactle. Something big crashed before ...
         if (getException() == null)

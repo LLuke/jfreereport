@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.6 2003/08/27 20:19:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -135,11 +135,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
         progressDialog.setVisible(true);
       }
     }
-    if (task.getReturnValue() != ExportTask.RETURN_SUCCESS)
-    {
-      return handleExportResult(false);
-    }
-    return handleExportResult(true);
+    return handleExportResult(task);
   }
 
   /**
