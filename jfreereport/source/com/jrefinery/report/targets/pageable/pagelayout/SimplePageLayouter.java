@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.42 2003/04/09 15:53:28 mungady Exp $
+ * $Id: SimplePageLayouter.java,v 1.43 2003/05/07 20:27:26 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,6 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.DataRowConnector;
 import com.jrefinery.report.event.PrepareEventListener;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.Expression;
@@ -121,7 +120,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
 
     /**
      * Returns a string describing the object.
-     * 
+     *
      * @return The string.
      */
     public String toString ()
@@ -380,22 +379,12 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
        */
       if (isInItemGroup)
       {
-        int gidx = event.getState().getCurrentGroupIndex();
-        while (gidx >= 0)
+        for (int gidx = event.getState().getCurrentGroupIndex(); gidx >= 0; gidx--)
         {
-          Group g = null;
-          if (gidx >= 0)
-          {
-            g = getReport().getGroup(gidx);
-          }
+          Group g = getReport().getGroup(gidx);
           if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
           {
             print(g.getHeader(), true);
-            break;
-          }
-          else
-          {
-            gidx--;
           }
         }
       }
@@ -493,7 +482,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
       setCurrentEvent(event);
 
       Object prepareRun =
-          event.getState().getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, 
+          event.getState().getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY,
                                        Boolean.FALSE);
       if (prepareRun.equals(Boolean.TRUE))
       {
@@ -568,7 +557,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
-    {      
+    {
       throw new IllegalStateException();
     }
     try
@@ -955,7 +944,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     // if there was a pagebreak_after_print, there is no band to print for now
     if (state.getBand() != null)
     {
-      // update the dataRow to the current dataRow instance... 
+      // update the dataRow to the current dataRow instance...
       getCurrentEvent().getState().updateDataRow(state.getBand());
       print(state.getBand(), false);
     }
@@ -1053,7 +1042,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
 
   /**
    * Receives notification of a prepare event.
-   * 
+   *
    * @param event  the event.
    */
   public void prepareEvent(ReportEvent event)
