@@ -23,18 +23,21 @@
  * -------------------
  * ExcelProcessor.java
  * -------------------
- * (C)opyright 2003, by Thomas Morgner and Contributors.
+ * (C)opyright 2003, by Heiko Evermann and Contributors.
  *
  * Original Author:  Heiko Evermann
- * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner; 
+ *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.6 2003/02/25 15:42:36 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.7 2003/02/26 13:58:03 mungady Exp $
  *
  * Changes
  * -------
  * 14-Jan-2003 : Initial version
  */
 package com.jrefinery.report.targets.table.excel;
+
+import java.io.OutputStream;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
@@ -43,11 +46,10 @@ import com.jrefinery.report.targets.table.TableProcessor;
 import com.jrefinery.report.targets.table.TableProducer;
 import com.jrefinery.report.util.NullOutputStream;
 
-import java.io.OutputStream;
-
 /**
- * The ExcelProcessor coordinates the output process for generating
- * excel files.
+ * A report processor that coordinates the output process for generating Excel files.
+ * <P>
+ * The Jakarta POI library is used to write files in Excel format.
  * 
  * @author Heiko Evermann
  */
@@ -57,7 +59,7 @@ public class ExcelProcessor extends TableProcessor
   private OutputStream outputStream;
 
   /**
-   * Creates a new ExcelProcessor for the given Report.
+   * Creates a new ExcelProcessor for the given report.
    *
    * @param report the report that should be processed.
    * @throws ReportProcessingException if the report initialization failed

@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.11 2003/02/25 15:42:37 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.12 2003/02/26 13:58:03 mungady Exp $
  *
  * Changes
  * -------
@@ -83,14 +83,16 @@ public class ExcelProducer extends TableProducer
 
   /** the excel workbook represents the excel document. */
   private HSSFWorkbook workbook;
+  
   /** the current excel sheet. */
   private HSSFSheet sheet;
 
   /**
-   * Creates a new ExcelOutputTarget.
+   * Creates a new Excel producer.
    *
    * @param out  the output stream.
    * @param strict true, if a stricter layout should be used, false otherwise.
+   * 
    * @see com.jrefinery.report.targets.table.TableGrid#isStrict
    */
   public ExcelProducer(OutputStream out, boolean strict)

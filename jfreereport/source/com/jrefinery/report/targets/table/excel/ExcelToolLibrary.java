@@ -26,23 +26,27 @@
  * (C)opyright 2003, by Heiko Evermann and Contributors.
  *
  * Original Author:  Heiko Evermann
- * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner; 
+ *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelToolLibrary.java,v 1.5 2003/02/25 15:42:37 taqua Exp $
+ * $Id: ExcelToolLibrary.java,v 1.6 2003/02/26 13:58:03 mungady Exp $
  *
  * Changes
  * -------
  * 25-Jan-2003 : Initial version
+ * 
  */
-package com.jrefinery.report.targets.table.excel;
 
-import com.jrefinery.report.util.Log;
-import org.apache.poi.hssf.util.HSSFColor;
+package com.jrefinery.report.targets.table.excel;
 
 import java.awt.Color;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
+
+import org.apache.poi.hssf.util.HSSFColor;
+
+import com.jrefinery.report.util.Log;
 
 /**
  * POI Excel utility methods.
@@ -58,8 +62,8 @@ public class ExcelToolLibrary
    * Find a suitable color for the cell.
    *
    * The algorithm searches all available triplets, weighted by tripletvalue and
-   * trippletdifference to the other triplets. The color wins, which has the
-   * smallest tripplet difference and where all tripplets are nearest to the
+   * tripletdifference to the other triplets. The color wins, which has the
+   * smallest triplet difference and where all triplets are nearest to the
    * requested color. Damn, why couldn't these guys from microsoft implement
    * a real color system.
    *
