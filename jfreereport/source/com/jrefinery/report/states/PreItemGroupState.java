@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreItemGroupState.java,v 1.6 2003/02/25 18:46:47 taqua Exp $
+ * $Id: PreItemGroupState.java,v 1.7 2003/04/05 18:57:12 taqua Exp $
  *
  * Changes
  * -------
@@ -66,6 +66,8 @@ public final class PreItemGroupState extends ReportState
    */
   public ReportState advance ()
   {
+    firePrepareEvent();
+
     // inform everybody, that now items will be processed
     fireItemsStartedEvent ();
 

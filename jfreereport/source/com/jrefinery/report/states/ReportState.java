@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.34 2003/04/09 16:16:06 mungady Exp $
+ * $Id: ReportState.java,v 1.35 2003/05/02 12:40:27 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -691,6 +691,15 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
+   * Fires a 'prepare' event.
+   */
+  public void firePrepareEvent ()
+  {
+    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
+    this.functions.firePrepareEvent(new ReportEvent(this));
+  }
+
+  /**
    * Fires a 'report-finished' event.
    */
   public void fireReportFinishedEvent ()
@@ -856,5 +865,19 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   public boolean isErrorOccured ()
   {
     return functions.hasErrors();
+  }
+
+  /**
+   * Updates the DataRow registered with the band elements to the current
+   * DataRow. This is unclean, but needed to keep saved bands in sync.
+   *
+   * @param band the band that should be updated.
+   */
+  public void updateDataRow (Band band)
+  {
+    // docmark: at the moment, the DataRow connector is not checked, so we can
+    // give any instance. This may change later..
+    DataRowConnector.disconnectDataSources(band, dataRowConnector);
+    DataRowConnector.connectDataSources(band, dataRowConnector);
   }
 }

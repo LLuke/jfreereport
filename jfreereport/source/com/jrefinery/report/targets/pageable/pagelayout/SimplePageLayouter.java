@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.41 2003/04/05 18:57:19 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.42 2003/04/09 15:53:28 mungady Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.DataRowConnector;
 import com.jrefinery.report.event.PrepareEventListener;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.Expression;
@@ -954,6 +955,8 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     // if there was a pagebreak_after_print, there is no band to print for now
     if (state.getBand() != null)
     {
+      // update the dataRow to the current dataRow instance... 
+      getCurrentEvent().getState().updateDataRow(state.getBand());
       print(state.getBand(), false);
     }
     clearSaveState();

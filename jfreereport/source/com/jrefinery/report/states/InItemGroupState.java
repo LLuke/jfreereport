@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: InItemGroupState.java,v 1.6 2002/12/12 12:26:56 mungady Exp $
+ * $Id: InItemGroupState.java,v 1.7 2003/02/04 17:56:20 taqua Exp $
  *
  * Changes
  * -------
@@ -77,6 +77,9 @@ public final class InItemGroupState extends ReportState
     // If there is enough space to print the itemband, advance the items, populate
     // the band and print it. If there was not enough space, the engine will return
     // here after the pagebreak.
+
+    firePrepareEvent();
+
     advanceItem ();
 
     fireItemsAdvancedEvent ();

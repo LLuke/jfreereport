@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.12 2003/04/08 14:23:11 mungady Exp $
+ * $Id: StartState.java,v 1.13 2003/04/09 16:16:07 mungady Exp $
  *
  * Changes
  * -------
@@ -108,6 +108,8 @@ public final class StartState extends ReportState
 
     // a PropertyHandler should set the properties.
     setProperty (JFreeReport.REPORT_DATE_PROPERTY, new Date ());
+
+    firePrepareEvent();
 
     // initialise the report before any band (and especially before the pageheader) is printed.
     fireReportStartedEvent ();

@@ -99,7 +99,7 @@
     <string-field x="160" y="0" width="60" height="8" alignment="left" fieldname="Letter"/>
     <string-field x="224" y="0" width="76" height="8" alignment="left" fieldname="Color"/>
     <number-field x="300" y="0" width="76" height="8" alignment="right" format="#,##0" fieldname="Integer"/>
-    <number-field x="376" y="0" width="76" height="8" alignment="right" format="#,##0.00" fieldname="Double"/>
+    <number-field x="376" y="0" width="76" height="8" alignment="right" format="#,##0.00" fieldname="DoubleEx"/>
   </items>
   <!-- FUNCTIONS -->
   <functions>
@@ -153,6 +153,22 @@
         <property name="pattern">Page {0} of {1}</property>
         <property name="0">PageNumber</property>
         <property name="1">PageTotal</property>
+      </properties>
+    </expression>
+
+    <expression name="DoubleEx" class="com.jrefinery.report.function.BSHExpression">
+      <properties>
+        <property name="expression">
+Object getValue()
+{
+  // dataRow is null before the function is initialized
+  if (dataRow == null)
+  {
+    return "DataRow null";
+  }
+  return dataRow.get ("Double");
+}
+        </property>
       </properties>
     </expression>
 

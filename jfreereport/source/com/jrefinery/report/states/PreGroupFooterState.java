@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupFooterState.java,v 1.6 2002/12/06 19:28:00 taqua Exp $
+ * $Id: PreGroupFooterState.java,v 1.7 2003/02/04 17:56:21 taqua Exp $
  *
  * Changes
  * -------
@@ -66,6 +66,8 @@ public final class PreGroupFooterState extends ReportState
   {
     // There is a header and enough space to print it. The finishGroup event is
     // fired and PostGroupFooterState activated after all work is done.
+    firePrepareEvent();
+
     fireGroupFinishedEvent ();
     return new PostGroupFooterState (this);
   }

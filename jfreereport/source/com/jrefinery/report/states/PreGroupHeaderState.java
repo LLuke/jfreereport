@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupHeaderState.java,v 1.12 2003/02/04 17:56:21 taqua Exp $
+ * $Id: PreGroupHeaderState.java,v 1.13 2003/02/25 18:46:47 taqua Exp $
  *
  * Changes
  * -------
@@ -62,6 +62,8 @@ public final class PreGroupHeaderState extends ReportState
    */
   public ReportState advance ()
   {
+    firePrepareEvent();
+
     enterGroup ();
     // enough space, fire the events and proceed to PostGroupHeaderState
     fireGroupStartedEvent ();

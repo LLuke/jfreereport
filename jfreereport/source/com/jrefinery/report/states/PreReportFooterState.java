@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreReportFooterState.java,v 1.9 2003/02/16 19:02:38 taqua Exp $
+ * $Id: PreReportFooterState.java,v 1.10 2003/02/17 16:07:18 taqua Exp $
  *
  * Changes
  * -------
@@ -64,6 +64,8 @@ public final class PreReportFooterState extends ReportState
    */
   public ReportState advance ()
   {
+    firePrepareEvent();
+
     fireReportFinishedEvent ();
     return new PostReportFooterState (this);
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostItemGroupState.java,v 1.4 2002/12/05 12:18:46 mungady Exp $
+ * $Id: PostItemGroupState.java,v 1.5 2003/02/04 17:56:21 taqua Exp $
  *
  * Changes
  * -------
@@ -67,6 +67,8 @@ public final class PostItemGroupState extends ReportState
    */
   public ReportState advance ()
   {
+    firePrepareEvent();
+
     fireItemsFinishedEvent ();
     return new PreGroupFooterState (this);
   }
