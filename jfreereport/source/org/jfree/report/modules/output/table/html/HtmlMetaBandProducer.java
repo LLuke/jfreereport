@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaBandProducer.java,v 1.8 2005/02/23 21:05:34 taqua Exp $
+ * $Id: HtmlMetaBandProducer.java,v 1.9 2005/03/03 17:07:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,6 +41,7 @@ package org.jfree.report.modules.output.table.html;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 
 import org.jfree.report.DefaultImageReference;
 import org.jfree.report.Element;
@@ -101,6 +102,11 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
 
     final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+    if (rect.getWidth() == 0 || rect.getHeight() == 0)
+    {
+      // remove emtpy images.
+      return null;
+    }
     final ImageContent ic = new ImageContent((ImageContainer) o, (StrictBounds) rect.clone());
     final HtmlMetaElement me = new HtmlImageMetaElement(ic, createStyleForImageElement(e, x, y), useXHTML);
     me.setName(e.getName());
@@ -134,7 +140,16 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
 
     drawable.draw(g2, new Rectangle2D.Double(0, 0, imageWidth, imageHeight));
     g2.dispose();
-    final DefaultImageReference imgref = new DefaultImageReference(image);
+    final DefaultImageReference imgref;
+    try
+    {
+      imgref = new DefaultImageReference(image);
+    }
+    catch (IOException e1)
+    {
+      Log.warn ("Unable to fully load a given image. (It should not happen here.)");
+      return null;
+    }
     final ImageContent ic = new ImageContent(imgref, (StrictBounds) rect.clone());
     return new HtmlImageMetaElement(ic, createStyleForDrawableElement(e, x, y), useXHTML);
   }

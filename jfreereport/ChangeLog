@@ -2,6 +2,13 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+        * [BUG] The image content class did not refuse bounds with a
+          width or height of zero. Such content would never be displayable
+          and should therefore be removed as early as possible.
+
+        * [BUG] PageHeader/Footer did not parse the onfirst/lastpage attribute.
+          ReportHeader/Footer did not parse the (deprecated) ownpage attribute. 
+
 0.8.5-1: (10-Mar-2005)
         * [BUG] The PDF did not setup the first page correctly.
 

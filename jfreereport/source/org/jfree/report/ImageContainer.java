@@ -28,20 +28,47 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageContainer.java,v 1.4 2005/02/19 15:41:17 taqua Exp $
+ * $Id: ImageContainer.java,v 1.5 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes
  * -------------------------
- * 09.03.2004 : Initial version
+ * 09-Feb-2004 : Initial version
  *
  */
-
 package org.jfree.report;
 
+/**
+ * A image container stores all layout information to process images in a report.
+ * <p/>
+ * The ImageContainer is the common base interface for the URLImageContainer (which
+ * references remote images) and the LocalImageContainer (which references local AWT-Image
+ * instances).
+ * <p/>
+ * All the layouting engine needs to know about images, are the image dimensions and the
+ * possible scale factor for the contained image. Only the content creators need the
+ * knowledge on how to access the contained image and and which other container types
+ * might exist.
+ *
+ * @author Thomas Morgner
+ */
 public interface ImageContainer extends Cloneable
 {
+  /**
+   * Returns the unscaled width of the contained image. The width must be known during the
+   * layouting process, returning -1 to indicate an unknown size (as the AWT does) is not
+   * valid.
+   *
+   * @return the width of the image.
+   */
   public int getImageWidth ();
 
+  /**
+   * Returns the unscaled height of the contained image. The height must be known during
+   * the layouting process, returning -1 to indicate an unknown size (as the AWT does) is
+   * not valid.
+   *
+   * @return the height of the image.
+   */
   public int getImageHeight ();
 
   /**
@@ -49,7 +76,7 @@ public interface ImageContainer extends Cloneable
    * it's original resolution to the java resolution of 72dpi.
    * <p/>
    * This is not the scale that is computed by the layouter; that one is derived from the
-   * ImageContent.
+   * ImageContent itself. 
    *
    * @return the horizontal scale.
    */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);Stefan Prange
  *
- * $Id: DefaultImageReference.java,v 1.8 2005/03/04 12:08:16 taqua Exp $
+ * $Id: DefaultImageReference.java,v 1.9 2005/03/09 21:13:00 taqua Exp $
  *
  * Changes:
  * --------
@@ -62,6 +62,9 @@ import org.jfree.util.ObjectUtilities;
  * <p/>
  * This implementation provides a reasonable default implementation to encapsualte local
  * images into reports.
+ * <p>
+ * The given image might specify a fixed scale factor for the given image. The scaling
+ * will be applied before any layout computations will be performed.
  *
  * @author Thomas Morgner
  */
@@ -103,7 +106,7 @@ public class DefaultImageReference
    * Creates a new ImageReference with an origin of 0,0 and the desired width. The image
    * data is read from the given URL.
    *
-   * @param url the source url. The url must be readable while generating reports.
+   * @param url the source url. The url must be readable during the report generation.
    * @throws IOException if the url could not be read.
    * @throws NullPointerException if the given URL is null.
    */
@@ -118,6 +121,10 @@ public class DefaultImageReference
     this.image = ImageFactory.getInstance().createImage(url);
     final WaitingImageObserver wob = new WaitingImageObserver(image);
     wob.waitImageLoaded();
+    if (wob.isError())
+    {
+      throw new IOException("Failed to load the image. ImageObserver signaled an error.");
+    }
     this.width = image.getWidth(null);
     this.height = image.getHeight(null);
   }
@@ -131,6 +138,7 @@ public class DefaultImageReference
    * @throws NullPointerException if the image is null.
    */
   public DefaultImageReference (final Image img)
+          throws IOException
   {
     if (img == null)
     {
@@ -139,6 +147,10 @@ public class DefaultImageReference
     this.image = img;
     final WaitingImageObserver obs = new WaitingImageObserver(image);
     obs.waitImageLoaded();
+    if (obs.isError())
+    {
+      throw new IOException("Failed to load the image. ImageObserver signaled an error.");
+    }
     this.width = image.getWidth(null);
     this.height = image.getHeight(null);
   }
@@ -277,7 +289,7 @@ public class DefaultImageReference
   }
 
   /**
-   * compute a hashcode for this imageReference.
+   * Compute a hashcode for this imageReference.
    *
    * @return the hashcode
    */

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.21 2005/02/23 21:04:29 taqua Exp $
+ * $Id: JFreeReport.java,v 1.22 2005/03/03 14:42:33 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -76,36 +76,60 @@ import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ReportProperties;
 
 /**
- * This class co-ordinates the process of generating a report from a
- * <code>TableModel</code>. The report is made up of 'bands', which are used repeatedly as
- * necessary to generate small sections of the report.
+ * A JFreeReport instance is used as report template to define the visual layout of a
+ * report and to collect all data sources for the reporting. Possible data sources are the
+ * {@link TableModel}, {@link Expression}s or {@link ReportProperties}. The report is made
+ * up of 'bands', which are used repeatedly as necessary to generate small sections of the
+ * report.
  * <p/>
- * Accessing the bands and the elements:
+ * <h2>Accessing the bands and the elements:</h2>
  * <p/>
- * The different bands can be accessed using the main report definition (this class): <ul>
- * <li>the report header and footer can be reached by using <code>getReportHeader()</code>
- * and <code>getReportFooter()</code> <li>the page header and page footer can be reached
- * by using <code>getPageHeader()</code> and <code>getPageFooter()</code> <li>the item
- * band is reachable with <code>getItemBand()</code> </ul>
+ * The different bands can be accessed using the main report definition (this class):
  * <p/>
- * Groups can be queried using <code>getGroup(int groupLevel)</code>.  The group header
- * and footer are accessible through the group object, so use <code>getGroup(int
+ * <ul> <li>the report header and footer can be reached by using
+ * <code>getReportHeader()</code> and <code>getReportFooter()</code>
+ * <p/>
+ * <li>the page header and page footer can be reached by using
+ * <code>getPageHeader()</code> and <code>getPageFooter()</code>
+ * <p/>
+ * <li>the item band is reachable with <code>getItemBand()</code>
+ * <p/>
+ * <li>the watermark band is reachable with <code>getWaterMark()</code> </ul>
+ * <p/>
+ * Groups can be queried using <code>getGroup(int groupLevel)</code>. The group header and
+ * footer are accessible through the group object, so use <code>getGroup(int
  * groupLevel).getGroupHeader()<code> and <code>getGroup(int groupLevel).getGroupFooter()<code>.
- * <p/>
- * Elements on a band can be reached by using <code>Band.getElement (String
- * elementName)</code> or by retrieving all elements using <code>Band.getElements()</code>
- * and performing a search on the returned list.
  * <p/>
  * All report elements share the same stylesheet collection. Report elements cannot be
  * shared between two different report instances.
+ * <p/>
+ * For dynamic computation of content you can add {@link Expression}s and {@link
+ * org.jfree.report.function.Function}s to the report.
+ * <p/>
+ * Static content can also be added by using the {@link ReportProperties}. Properties,
+ * which have been marked using {@link JFreeReport#setPropertyMarked(String, boolean)} can
+ * be accessed during the report processing as if they were static columns from the
+ * tablemodel.
+ * <p/>
+ * Creating a new instance of JFreeReport seems to lock down the JDK on some Windows
+ * Systems, where no printer driver is installed. To prevent that behaviour on these
+ * systems, you can set the {@link ReportConfiguration} key "org.jfree.report.NoPrinterAvailable"
+ * to "false" and JFreeReport will use a hardcoded default page format instead.
  *
  * @author David Gilbert
  * @author Thomas Morgner
  */
 public class JFreeReport implements Cloneable, Serializable, ReportDefinition
 {
+  /**
+   * An empty datarow implementation. This implementation denies all knowledge about any
+   * column and always returns null if queried.
+   */
   private static class EmptyDataRow implements DataRow, Serializable
   {
+    /**
+     * A default constructor.
+     */
     public EmptyDataRow ()
     {
     }
@@ -209,12 +233,21 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
    */
   public static final String REPORT_DEFINITION_CONTENTBASE = "report.definition.contentbase";
 
+  /**
+   * A reference to the currently used layout support implementation. This can be used to
+   * compute text sizes from within functions.
+   */
   public static final String REPORT_LAYOUT_SUPPORT = "report.layout-support";
-  
+
   /**
    * Information about the JFreeReport class library.
    */
   private static JFreeReportInfo info;
+
+  /**
+   * The data row implementation for reports, which are not currently beeing processed.
+   */
+  private static EmptyDataRow emptyDataRow;
 
   /**
    * The table model containing the data for the report.
@@ -291,6 +324,9 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
    */
   private transient ReportBuilderHints reportBuilderHints;
 
+  /**
+   * The resource bundle factory is used when generating localized reports.
+   */
   private ResourceBundleFactory resourceBundleFactory;
 
   /**
@@ -339,9 +375,11 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
   }
 
   /**
-   * Sets the name of the report. <P> The report name is stored as a property (key:
-   * <code>NAME_PROPERTY = "report.name"</code>) of the report.  If you supply
-   * <code>null</code> as the name, the property is removed.
+   * Sets the name of the report.
+   * <p/>
+   * The report name is stored as a property (key {@link JFreeReport#NAME_PROPERTY})
+   * inside the report properties.  If you supply <code>null</code> as the name, the
+   * property is removed.
    *
    * @param name the name of the report.
    */
@@ -351,12 +389,15 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
   }
 
   /**
-   * Adds a property to the report. If a property with the given name already exists, the
-   * property will be updated with the new value. If the supplied value is
-   * <code>null</code>, the property will be removed. <P> Developers are free to add any
-   * properties they want to a report, and then display those properties in the report.
-   * For example, you might add a 'user.name' property, so that you can display the
-   * username in the header of a report.
+   * Adds a property to the report.
+   * <p/>
+   * If a property with the given name already exists, the property will be updated with
+   * the new value. If the supplied value is <code>null</code>, the property will be
+   * removed.
+   * <p/>
+   * Developers are free to add any properties they want to a report, and then display
+   * those properties in the report. For example, you might add a 'user.name' property, so
+   * that you can display the username in the header of a report.
    *
    * @param key   the key.
    * @param value the value.
@@ -594,7 +635,9 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
     {
       throw new NullPointerException("GroupList must not be null");
     }
+    this.groups.setReportDefinition(null);
     this.groups = groupList;
+    this.groups.setReportDefinition(this);
   }
 
   /**
@@ -659,7 +702,7 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
   }
 
   /**
-   * Adds a function to the report's collection of functions.
+   * Adds a function to the report's collection of expressions.
    *
    * @param function the function.
    */
@@ -669,7 +712,7 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
   }
 
   /**
-   * Returns the default page format.
+   * Returns the logical page definition for this report.
    *
    * @return the page definition.
    */
@@ -679,9 +722,12 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
   }
 
   /**
-   * Defines the default page format for this report. The default is a hint to define at
-   * least one suitable format. If no format is defined the system's default page format
-   * is used.
+   * Defines the logical page definition for this report. If no format is defined the
+   * system's default page format is used.
+   * <p/>
+   * If there is no printer available and the JDK blocks during the printer discovery, you
+   * can set the {@link ReportConfiguration} key "org.jfree.report.NoPrinterAvailable" to
+   * "false" and JFreeReport will use a hardcoded default page format instead.
    *
    * @param format the default format (<code>null</code> permitted).
    */
@@ -703,9 +749,11 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
   }
 
   /**
-   * Sets the data for the report. <P> Reports are generated from a {@link TableModel} (as
-   * used by Swing's {@link javax.swing.JTable}). If you don't want to give data to the
-   * report, use an empty {@link TableModel} instead of <code>null</code>.
+   * Sets the data for the report.
+   * <p/>
+   * Reports are generated from a {@link TableModel} (as used by Swing's {@link
+   * javax.swing.JTable}). If you don't want to give data to the report, use an empty
+   * {@link TableModel} instead of <code>null</code>.
    *
    * @param data the data for the report (<code>null</code> not permitted).
    */
@@ -768,7 +816,7 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
    *
    * @return the information.
    */
-  public static final JFreeReportInfo getInfo ()
+  public synchronized static final JFreeReportInfo getInfo ()
   {
     if (JFreeReport.info == null)
     {
@@ -828,9 +876,12 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
   }
 
   /**
-   * Returns the report builder hints collection assigned with this report. Be aware that
-   * these hints are not cloned and that during the cloning all references to this
-   * ReportBuilderHints instance get replaced by an newly created instance.
+   * Returns the report builder hint collection, that is assigned with this report. Be
+   * aware that these hints are not cloned and that during the cloning all references to
+   * this ReportBuilderHints instance get replaced by an newly created instance.
+   * <p/>
+   * The report builder hints are used by the report writer to preserve the original
+   * layout of the XML files.
    *
    * @return the report builder hints.
    */
@@ -839,16 +890,35 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
     return reportBuilderHints;
   }
 
+  /**
+   * Redefines the report builder hints. If null is given, the old hints get removed
+   * without a replacement.
+   *
+   * @param reportBuilderHints the new report builder hints.
+   */
   public void setReportBuilderHints (final ReportBuilderHints reportBuilderHints)
   {
     this.reportBuilderHints = reportBuilderHints;
   }
 
+  /**
+   * Returns the resource bundle factory for this report definition. The {@link
+   * ResourceBundleFactory} is used in internationalized reports to create the
+   * resourcebundles holding the localized resources.
+   *
+   * @return the assigned resource bundle factory.
+   */
   public ResourceBundleFactory getResourceBundleFactory ()
   {
     return resourceBundleFactory;
   }
 
+  /**
+   * Redefines the resource bundle factory for the report.
+   *
+   * @param resourceBundleFactory the new resource bundle factory, never null.
+   * @throws NullPointerException if the given ResourceBundleFactory is null.
+   */
   public void setResourceBundleFactory (
           final ResourceBundleFactory resourceBundleFactory)
   {
@@ -859,13 +929,37 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
     this.resourceBundleFactory = resourceBundleFactory;
   }
 
+  /**
+   * Queries the current resource bundle factory for the resource bundle specified by the
+   * given key.
+   *
+   * @param key the base name of the resource bundle.
+   * @return the resource bundle
+   *
+   * @throws java.util.MissingResourceException
+   *          if no resource bundle for the specified base name can be found
+   */
   public ResourceBundle getResourceBundle (final String key)
   {
     return resourceBundleFactory.getResourceBundle(key);
   }
 
+  /**
+   * Returns the current datarow assigned to this report definition. JFreeReport objects
+   * do not hold a working DataRow, as the final contents of the data cannot be known,
+   * until the reporting has started.
+   *
+   * @return the default implementation for non-processed reports.
+   */
   public DataRow getDataRow ()
   {
-    return new EmptyDataRow();
+    synchronized (JFreeReport.class)
+    {
+      if (emptyDataRow == null)
+      {
+        emptyDataRow = new EmptyDataRow();
+      }
+      return emptyDataRow;
+    }
   }
 }

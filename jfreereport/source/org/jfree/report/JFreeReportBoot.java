@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportBoot.java,v 1.1 2005/01/25 01:13:18 taqua Exp $
+ * $Id: JFreeReportBoot.java,v 1.2 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -54,21 +54,39 @@ import org.jfree.util.Configuration;
  * automated start may no longer guarantee the module initialization order.
  * <p/>
  * Additional modules can be specified by defining the system property
- * "org.jfree.report.boot.Modules". The property expects a comma-separated list of Module
- * implementations.
+ * <code>"org.jfree.report.boot.Modules"</code>. The property expects a comma-separated
+ * list of {@link org.jfree.base.modules.Module} implementations.
+ * <p/>
+ * Booting should be done by aquirering a new boot instance using {@link
+ * JFreeReportBoot#getInstance()} and then starting the boot process with {@link
+ * JFreeReportBoot#start()}.
  *
  * @author Thomas Morgner
  */
 public class JFreeReportBoot extends AbstractBoot
 {
+  /**
+   * The singleton instance of the Boot class.
+   */
   private static JFreeReportBoot instance;
+  /**
+   * The project info contains all meta data about the project.
+   */
   private BootableProjectInfo projectInfo;
 
+  /**
+   * Creates a new instance.
+   */
   private JFreeReportBoot ()
   {
     projectInfo = new JFreeReportInfo();
   }
 
+  /**
+   * Returns the singleton instance of the boot utility class.
+   *
+   * @return the boot instance.
+   */
   public static synchronized JFreeReportBoot getInstance ()
   {
     if (instance == null)
@@ -99,7 +117,7 @@ public class JFreeReportBoot extends AbstractBoot
   }
 
   /**
-   * Performs the boot.
+   * Performs the actual boot process.
    */
   protected void performBoot ()
   {
@@ -127,6 +145,10 @@ public class JFreeReportBoot extends AbstractBoot
     mgr.initializeModules();
   }
 
+  /**
+   * Boots modules, which have been spcified in the "org.jfree.report.boot.Modules"
+   * configuration parameter.
+   */
   private void bootAdditionalModules ()
   {
     try
@@ -159,9 +181,9 @@ public class JFreeReportBoot extends AbstractBoot
   /**
    * This method returns true on non-strict floating point systems.
    * <p/>
-   * Since Java1.2 VMs may implement the floating point arithmetics in a more performant
-   * way, which does not put the old strict constraints on the floating point types
-   * <code>float</code> and <code>double</code>
+   * Since Java 1.2 Virtual Maschines may implement the floating point arithmetics in a
+   * more performant way, which does not put the old strict constraints on the floating
+   * point types <code>float</code> and <code>double</code>.
    * <p/>
    * As iText and this library requires strict (in the sense of Java1.1) floating point
    * operations, we have to test for that feature here.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: GroupList.java,v 1.8 2005/02/19 13:29:52 taqua Exp $
+ * $Id: GroupList.java,v 1.9 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes:
  * --------
@@ -54,7 +54,7 @@ import org.jfree.report.util.ReadOnlyIterator;
 
 /**
  * The group list is used to store groups in a ordered way. The less specific groups are
- * guaranteed to be listed before any more specific subgroup.
+ * guaranteed to be listed before the more specific subgroups.
  * <p/>
  * Groups are ordered by comparing the declared fieldnames for the groups. A subgroup of
  * an group must contain all fields from its parent plus at least one new field.
@@ -65,38 +65,51 @@ import org.jfree.report.util.ReadOnlyIterator;
  * as expected. By default, this default instance does not define any fields (and
  * therefore contains the complete report) and has no Bands defined (rendering it
  * invisible). You cannot remove that group. Every attempt to remove the last group will
- * recreate a new default group.
+ * recreates a new default group.
  *
  * @author Thomas Morgner
  */
 public class GroupList implements Cloneable, Serializable
 {
   /**
-   * Cache (this is a set, we need list functionality, but creating Iterators is
-   * expensive).
+   * Cache.
    */
   private transient Group[] cache;
+
   /**
    * The backend to store the groups.
    */
   private ArrayList backend;
 
+  /**
+   * The report definition to which this group list is assigned to.
+   */
   private ReportDefinition reportDefinition;
+  private static final String DEFAULT_GROUP_NAME = "default";
 
   /**
-   * Constructs a new empty group list.
+   * Constructs a new group list, with only a default group inside.
    */
   public GroupList ()
   {
     backend = new ArrayList();
+    createDefaultGroup();
+  }
+
+  /**
+   * Creates a default group. The default group has no fields defined and
+   * spans all fields of the report.
+   */
+  private void createDefaultGroup ()
+  {
     final Group defaultGroup = new Group();
-    defaultGroup.setName("default");
+    defaultGroup.setName(DEFAULT_GROUP_NAME);
     add(defaultGroup);
   }
 
   /**
    * Creates a new group list and copies the contents of the given grouplist. If the given
-   * group list was assigned with an stylesheet collection, then the new group list will
+   * group list was assigned with a report definition, then the new group list will
    * share that registration.
    *
    * @param list groups to add to the list.
@@ -108,7 +121,7 @@ public class GroupList implements Cloneable, Serializable
   }
 
   /**
-   * Returns the group at a position in the list.
+   * Returns the group at a given position in the list.
    *
    * @param i the position index (zero-based).
    * @return the report group.
@@ -152,9 +165,7 @@ public class GroupList implements Cloneable, Serializable
 
     if (backend.size() == 0)
     {
-      final Group defaultGroup = new Group();
-      defaultGroup.setName("default");
-      add(defaultGroup);
+      createDefaultGroup();
     }
     return true;
   }
@@ -165,9 +176,7 @@ public class GroupList implements Cloneable, Serializable
   public void clear ()
   {
     backend.clear();
-    final Group defaultGroup = new Group();
-    defaultGroup.setName("default");
-    add(defaultGroup);
+    createDefaultGroup();
     cache = null;
   }
 
@@ -193,6 +202,7 @@ public class GroupList implements Cloneable, Serializable
       g.setReportDefinition(null);
     }
 
+    // this is a linear search to find the correct insertation point ..
     for (int i = 0; i < backend.size(); i++)
     {
       final Group compareGroup = (Group) backend.get(i);
@@ -317,6 +327,11 @@ public class GroupList implements Cloneable, Serializable
     return null;
   }
 
+  /**
+   * Assigns the report definition to all groups in the list.
+   *
+   * @param reportDefinition the report definition (maybe null).
+   */
   public void setReportDefinition (final ReportDefinition reportDefinition)
   {
     this.reportDefinition = reportDefinition;
@@ -327,6 +342,11 @@ public class GroupList implements Cloneable, Serializable
     }
   }
 
+  /**
+   * Returns the assigned report definition of the group.
+   *
+   * @return the report definition (maybe null).
+   */
   public ReportDefinition getReportDefinition ()
   {
     return reportDefinition;

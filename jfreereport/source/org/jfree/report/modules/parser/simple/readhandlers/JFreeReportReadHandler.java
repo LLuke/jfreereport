@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: JFreeReportReadHandler.java,v 1.5 2005/03/03 23:00:23 taqua Exp $
  *
  * Changes
  * -------
@@ -320,19 +320,19 @@ public class JFreeReportReadHandler extends AbstractPropertyXmlReadHandler
     }
     else if (tagName.equals("reportheader"))
     {
-      return new RootLevelBandReadHandler(report.getReportHeader());
+      return new ReportHeaderReadHandler(report.getReportHeader());
     }
     else if (tagName.equals("reportfooter"))
     {
-      return new RootLevelBandReadHandler(report.getReportFooter());
+      return new ReportFooterReadHandler(report.getReportFooter());
     }
     else if (tagName.equals("pageheader"))
     {
-      return new RootLevelBandReadHandler(report.getPageHeader());
+      return new PageBandReadHandler(report.getPageHeader());
     }
     else if (tagName.equals("pagefooter"))
     {
-      return new RootLevelBandReadHandler(report.getPageFooter());
+      return new PageBandReadHandler(report.getPageFooter());
     }
     else if (tagName.equals("watermark"))
     {

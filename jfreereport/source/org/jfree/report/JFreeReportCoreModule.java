@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: JFreeReportCoreModule.java,v 1.6 2005/01/25 21:39:54 taqua Exp $
+ * $Id: JFreeReportCoreModule.java,v 1.7 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -55,6 +55,9 @@ import org.jfree.report.util.Log;
  * The CoreModule is used to represent the base classes of JFreeReport in a
  * PackageManager-compatible way. Modules may request a certain core-version to be present
  * by referencing to this module.
+ * <p>
+ * This module is used to initialize the image and drawable factories. If the
+ * Pixie library is available, support for WMF-files is added to the factories.
  *
  * @author Thomas Morgner
  */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRow.java,v 1.4 2005/02/23 21:04:29 taqua Exp $
+ * $Id: DataRow.java,v 1.5 2005/03/09 21:13:00 taqua Exp $
  *
  * Changes
  * -------
@@ -68,13 +68,14 @@ package org.jfree.report;
 public interface DataRow
 {
   /**
-   * Returns the value of the function, expression or column in the tablemodel using the
-   * column number. For functions and expressions, the <code>getValue()</code> method is
-   * called and for columns from the tablemodel the tablemodel method
+   * Returns the value of the expression or column in the tablemodel using the given
+   * column number as index. For functions and expressions, the <code>getValue()</code>
+   * method is called and for columns from the tablemodel the tablemodel method
    * <code>getValueAt(row, column)</code> gets called.
    *
    * @param col the item index.
    * @return the value.
+   * @throws IllegalStateException if the datarow detected a deadlock.
    */
   public Object get (int col);
 

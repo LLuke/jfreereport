@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.22 2005/03/03 21:50:37 taqua Exp $
+ * $Id: Element.java,v 1.23 2005/03/09 21:13:00 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -853,7 +853,12 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Creates the global stylesheet for this element type.
+   * Creates the global stylesheet for this element type. The global stylesheet
+   * is an immutable stylesheet that provides reasonable default values for some
+   * of the style keys.
+   * <p>
+   * The global default stylesheet is always the last stylesheet that will be queried
+   * for values. 
    *
    * @return the global stylesheet.
    */

@@ -35,7 +35,7 @@
     <label name="RF0" x="0" y="0" width="100%" height="24" vertical-alignment="middle" alignment="center">*** &gt; END OF REPORT &lt; ***</label>
   </reportfooter>
 
-  <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="14" onfirstpage="true">
+  <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="14" onfirstpage="false">
     <rectangle name="PH0" x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
     <line name="PH2" x1="0" y1="18" x2="100%" y2="18" color="#CFCFCF" weight="2.0"/>
     <date-field name="PH1" x="0" y="0" width="100%" height="18"

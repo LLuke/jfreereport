@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageRenderFunction.java,v 1.8 2005/02/22 20:18:00 taqua Exp $
+ * $Id: ImageRenderFunction.java,v 1.9 2005/02/23 21:04:43 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -41,6 +41,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 
@@ -48,6 +49,7 @@ import org.jfree.report.DefaultImageReference;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
+import org.jfree.util.Log;
 
 /**
  * The ImageRenderFunction creates a simple Image using a BufferedImage within a function
@@ -97,7 +99,15 @@ public class ImageRenderFunction extends AbstractFunction
     g2.drawString("You are viewing a graphics of JFreeReport on index "
             + event.getState().getCurrentDisplayItem(), 10, 10);
     g2.dispose();
-    functionValue = new DefaultImageReference(image);
+    try
+    {
+      functionValue = new DefaultImageReference(image);
+    }
+    catch (IOException e)
+    {
+      Log.warn ("Unable to fully load a given image. (It should not happen here.)");
+      functionValue = null;
+    }
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportProperties.java,v 1.5 2004/05/07 08:14:23 mungady Exp $
+ * $Id: ReportProperties.java,v 1.6 2005/02/23 21:06:06 taqua Exp $
  *
  * Changes
  * -------
@@ -64,22 +64,8 @@ import java.util.TreeSet;
  * functions have access to the properties by using the ReportState.getProperty() and
  * ReportState.setProperty() functions.
  * <p/>
- * JFreeReport has defined properties to publish the current state of the report: <ul>
- * <li><code>JFreeReport.NAME_PROPERTY = "report.name"</code><p> The name of the report as
- * defined in JFreeReport.setName(). Changing this property in the ReportState will not
- * affect the ReportDefinition object. <li><code>REPORT_DATE_PROPERTY =
- * "report.date"</code><p> A java.lang.Date object containing the timestamp when this
- * reportchain was created. This denotes the moment of the pagination, and changes when
- * the report is repaginated. <li><code>REPORT_PAGEFORMAT_PROPERTY =
- * "report.pageformat"</code><p> Contains the current PageFormat used for printing.
- * <li><code>REPORT_PAGECOUNT_PROPERTY = "report.pagecount"</code><p> The number of pages
- * for this report. <b>This property is not available in the prepare run.</b>
- * <li><code>REPORT_PREPARERUN_PROPERTY = "report.preparerun"</code><p> The prepare run is
- * invoked on repagination. This run collects the restart states for every page of the
- * report. When printing or displaying selected pages of the report, these saved states
- * are used as restarting points for the report generation. The prepare-run is invoked
- * only once per PageFormat. Subsequent report printings are restarted on clones of the
- * stored page states.
+ * For a list of defined default properties, have a look at the
+ * {@link org.jfree.report.JFreeReport} class.
  *
  * @author Thomas Morgner
  */
@@ -126,6 +112,11 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public void put (final String key, final Object value)
   {
+    if (key == null)
+    {
+      throw new NullPointerException
+              ("ReportProperties.put (..): Parameter 'key' must not be null");
+    }
     if (value == null)
     {
       this.properties.remove(key);
@@ -145,6 +136,11 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public Object get (final String key)
   {
+    if (key == null)
+    {
+      throw new NullPointerException
+              ("ReportProperties.get (..): Parameter 'key' must not be null");
+    }
     return this.properties.get(key);
   }
 
@@ -160,6 +156,11 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public Object get (final String key, final Object defaultValue)
   {
+    if (key == null)
+    {
+      throw new NullPointerException
+              ("ReportProperties.get (..): Parameter 'key' must not be null");
+    }
     final Object o = this.properties.get(key);
     if (o == null)
     {
@@ -197,6 +198,11 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public boolean containsKey (final String key)
   {
+    if (key == null)
+    {
+      throw new NullPointerException
+              ("ReportProperties.containsKey (..): Parameter key must not be null");
+    }
     return this.properties.containsKey(key);
   }
 
@@ -224,6 +230,11 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public void setMarked (final String property, final boolean marked)
   {
+    if (property == null)
+    {
+      throw new NullPointerException
+              ("ReportProperties.setMarked (..): Parameter property must not be null");
+    }
     if (marked)
     {
       this.markedProperties.add(property);
@@ -242,6 +253,11 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public boolean isMarked (final String property)
   {
+    if (property == null)
+    {
+      throw new NullPointerException
+              ("ReportProperties.isMarked (..): Parameter property must not be null");
+    }
     return this.markedProperties.contains(property);
   }
 

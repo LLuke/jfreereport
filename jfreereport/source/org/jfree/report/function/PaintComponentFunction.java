@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.13 2005/02/19 13:29:55 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.14 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -62,6 +62,7 @@ import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.util.Log;
 
 /**
  * Paints a AWT or Swing Component, fitting the component into the element bounds. The
@@ -257,9 +258,17 @@ public class PaintComponentFunction extends AbstractFunction
     {
       return null;
     }
-    final DefaultImageReference ref = new DefaultImageReference(image);
-    ref.setScale(1f / getScale(), 1f / getScale());
-    return ref;
+    try
+    {
+      final DefaultImageReference ref = new DefaultImageReference(image);
+      ref.setScale(1f / getScale(), 1f / getScale());
+      return ref;
+    }
+    catch (IOException e)
+    {
+      Log.warn ("Unable to fully load a given image. (It should not happen here.)");
+      return null;
+    }
   }
 
   /**

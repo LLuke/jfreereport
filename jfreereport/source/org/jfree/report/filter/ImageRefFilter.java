@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageRefFilter.java,v 1.5 2004/05/07 08:24:42 mungady Exp $
+ * $Id: ImageRefFilter.java,v 1.6 2005/02/23 21:04:45 taqua Exp $
  *
  * Changes
  * -------
@@ -42,9 +42,11 @@ package org.jfree.report.filter;
 
 import java.awt.Image;
 import java.io.Serializable;
+import java.io.IOException;
 
 import org.jfree.report.DefaultImageReference;
 import org.jfree.report.ImageContainer;
+import org.jfree.report.util.Log;
 
 /**
  * A filter that converts an Image to an ImageReference. The DataSource is expected to
@@ -110,7 +112,15 @@ public class ImageRefFilter implements DataFilter, Serializable
       return null;
     }
 
-    return new DefaultImageReference((Image) o);
+    try
+    {
+      return new DefaultImageReference((Image) o);
+    }
+    catch (IOException e)
+    {
+      Log.warn ("Unable to fully load a given image.");
+      return null;
+    }
   }
 
   /**

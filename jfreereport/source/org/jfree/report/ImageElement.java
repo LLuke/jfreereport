@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageElement.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: ImageElement.java,v 1.4 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes:
  * --------
@@ -47,8 +47,9 @@ package org.jfree.report;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
- * Used to draw images (Gif, JPEG, PNG or wmf) on a report band. PNG Support needs JDK 1.3
- * or higher. This class encapsulates an ImageReference into an element.
+ * Used to draw images. References to the Images must be given as ImageContainer. If you
+ * use the <code>ImageElementFactory</code> implementations, the necessary wrapping is
+ * done for you, if needed.
  * <p/>
  *
  * @author Thomas Morgner

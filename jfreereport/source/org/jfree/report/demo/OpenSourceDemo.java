@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.9 2005/02/23 21:04:37 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.10 2005/03/03 22:59:58 taqua Exp $
  *
  * Changes
  * -------
@@ -144,10 +144,7 @@ public class OpenSourceDemo extends AbstractDemoFrame
 
   }
 
-  /**
-   * Displays a print preview screen for the sample report.
-   */
-  protected void attemptPreview ()
+  protected JFreeReport parseReport ()
   {
     final URL in = getClass().getResource("/org/jfree/report/demo/OpenSourceDemo.xml");
 
@@ -157,12 +154,11 @@ public class OpenSourceDemo extends AbstractDemoFrame
               MessageFormat.format(getResources().getString("report.definitionnotfound"),
                       new Object[]{in}),
               getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+      return null;
     }
-
-    final JFreeReport report;
     try
     {
-      report = parseReport(in);
+      final JFreeReport report = parseReport(in);
       report.setData(this.data);
 
       //ReportConfiguration config = report.getReportConfiguration();
@@ -177,14 +173,25 @@ public class OpenSourceDemo extends AbstractDemoFrame
       obs.waitImageLoaded();
       report.setProperty("logo", image);
       report.setPropertyMarked("logo", true);
-
+      return report;
     }
     catch (Exception ex)
     {
       showExceptionDialog("report.definitionfailure", ex);
+      return null;
+    }
+  }
+
+  /**
+   * Displays a print preview screen for the sample report.
+   */
+  protected void attemptPreview ()
+  {
+    final JFreeReport report = parseReport();
+    if (report == null)
+    {
       return;
     }
-
     try
     {
       final PreviewFrame frame = new PreviewFrame(report);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFMetaBandProducer.java,v 1.5 2005/02/22 20:19:25 taqua Exp $
+ * $Id: RTFMetaBandProducer.java,v 1.6 2005/02/23 21:05:36 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -105,6 +105,11 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
     }
     final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+    if (rect.getWidth() == 0 || rect.getHeight() == 0)
+    {
+      // remove emtpy images.
+      return null;
+    }
     return new RTFImageMetaElement(new ImageContent((ImageContainer) o, rect),
             createStyleForImageElement(e, x, y), imageCache);
   }

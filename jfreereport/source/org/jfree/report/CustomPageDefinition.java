@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: CustomPageDefinition.java,v 1.5 2005/02/23 21:04:29 taqua Exp $
+ * $Id: CustomPageDefinition.java,v 1.6 2005/03/09 21:13:00 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -106,9 +106,9 @@ public class CustomPageDefinition implements PageDefinition
   }
 
   /**
-   * Returns the number of pages in the list.
+   * Returns the number of physical pages in the logical page definition.
    *
-   * @return the number of pages in the list.
+   * @return the number of physical pages.
    */
   public int getPageCount ()
   {

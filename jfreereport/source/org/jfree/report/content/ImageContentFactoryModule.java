@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.10 2005/02/23 21:04:37 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.11 2005/03/04 16:00:38 taqua Exp $
  *
  * Changes
  * -------
@@ -131,9 +131,13 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
     final StrictBounds contentBounds = new StrictBounds
             (point.getX(), point.getY(), (long) (scaleX * w), (long) (scaleY * h));
 
-    final StrictBounds imageArea = new StrictBounds(0, 0, w, h);
+    if (contentBounds.getWidth() == 0 || contentBounds.getHeight() == 0)
+    {
+      // remove empty images.
+      return  EmptyContent.getDefaultEmptyContent();
+    }
 
-    final ImageContent ic = new ImageContent(ir, contentBounds, imageArea);
+    final ImageContent ic = new ImageContent(ir, contentBounds);
     return ic;
   }
 }

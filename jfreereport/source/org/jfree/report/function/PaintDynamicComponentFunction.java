@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.10 2005/02/04 19:22:54 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.11 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,7 @@ import org.jfree.report.DefaultImageReference;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.util.ImageUtils;
+import org.jfree.util.Log;
 
 /**
  * Paints a AWT or Swing Component. The component must be contained in the dataRow.
@@ -265,9 +266,17 @@ public class PaintDynamicComponentFunction extends AbstractFunction
       image = createComponentImage();
     }
 
-    final DefaultImageReference ref = new DefaultImageReference(image);
-    ref.setScale(1f / getScale(), 1f / getScale());
-    return ref;
+    try
+    {
+      final DefaultImageReference ref = new DefaultImageReference(image);
+      ref.setScale(1f / getScale(), 1f / getScale());
+      return ref;
+    }
+    catch (IOException e)
+    {
+      Log.warn ("Unable to fully load a given image. (It should not happen here.)");
+      return null;
+    }
   }
 
   /**

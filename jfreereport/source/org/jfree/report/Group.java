@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.11 2005/02/23 19:31:35 taqua Exp $
+ * $Id: Group.java,v 1.12 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -59,14 +59,20 @@ import java.util.TreeSet;
 
 /**
  * A report group.  Reports can contain any number of (nested) groups. The order of the
- * fields is important. If the group does not contain any fields, the group spans the
- * whole report from the first to the last row.
+ * fields is not important. If the group does not contain any fields, the group spans the
+ * whole report from the first to the last row (such a group is called the default group).
  * <p/>
  * The group's field list should not be modified after the group was added to the group
  * list, or the results are undefined.
  * <p/>
  * Groups of the same GroupList must have a subgroup relation. The designated child group
- * must contain all fields of the direct parent plus at least one new field.
+ * must contain all fields of the direct parent plus at least one new field. There is no
+ * requirement, that the referenced field actually exists, if it doesn't, null is assumed
+ * as field value.
+ * <p/>
+ * It is recommended that the name of the group is unique within the report. The name will
+ * not be used internally to identify the group, but most functions depend on a
+ * recognizable group name to identify the group to be processed.
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -104,6 +110,9 @@ public class Group implements Serializable, Cloneable, Comparable
    */
   public static final String ANONYMOUS_GROUP_PREFIX = "anonymousGroup@";
 
+  /**
+   * The report definition, to which this group is assigned.
+   */
   private ReportDefinition reportDefinition;
 
   /**
@@ -111,15 +120,14 @@ public class Group implements Serializable, Cloneable, Comparable
    */
   public Group ()
   {
-    this.name = ANONYMOUS_GROUP_PREFIX + super.hashCode();
+    this.name = ANONYMOUS_GROUP_PREFIX + System.identityHashCode(this);
     this.fields = new TreeSet();
     this.footer = new GroupFooter();
     this.header = new GroupHeader();
   }
 
   /**
-   * Defines the name for this group. The name must not be empty and must be unique within
-   * the GroupList.
+   * Defines the name for this group. The name must not be null.
    *
    * @param name the group name (null not permitted).
    */
@@ -134,7 +142,7 @@ public class Group implements Serializable, Cloneable, Comparable
   }
 
   /**
-   * Returns the name of the group.
+   * Returns the name of the group. This will never be null.
    *
    * @return the group name.
    */
@@ -255,7 +263,7 @@ public class Group implements Serializable, Cloneable, Comparable
   }
 
   /**
-   * Returns the group fields as array.
+   * Returns the group fields as array. The array must not be modified.
    *
    * @return the fields as string array.
    */
