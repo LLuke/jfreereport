@@ -28,14 +28,14 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.1 2002/05/14 21:35:02 taqua Exp $
+ * $Id: AboutAction.java,v 1.2 2002/05/16 13:35:28 jaosch Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
  * 10-May-2002 : Removed actionhandling from class. Specific handling is implemented based on
  *               target environment. (TM)
- * 16-May-2002 : Load images from jar (JS)
+ * 16-May-2002 : Load images from jar and simplified (JS)
  */
 
 package com.jrefinery.report.action;
@@ -64,28 +64,11 @@ public abstract class AboutAction extends AbstractAction
 
   public AboutAction(ResourceBundle resources)
   {
-
-    String name = resources.getString("action.about.name");
-
-    this.putValue(Action.NAME, name);
-
-    String description = resources.getString("action.about.description");
-
-    this.putValue(Action.SHORT_DESCRIPTION, description);
-
-    Integer mnemonic = (Integer) resources.getObject("action.about.mnemonic");
-
-    this.putValue(Action.MNEMONIC_KEY, mnemonic);
-
-    ImageIcon icon16 = (ImageIcon) resources.getObject("action.about.small-icon");
-
-    this.putValue(Action.SMALL_ICON, icon16);
-
-    ImageIcon icon24 = (ImageIcon) resources.getObject("action.about.icon");
-
-    this.putValue("ICON24", icon24);
-
-    this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.ABOUT_COMMAND);
-
+    putValue(Action.NAME, resources.getString("action.about.name"));
+    putValue(Action.SHORT_DESCRIPTION, resources.getString("action.about.description"));
+    putValue(Action.MNEMONIC_KEY, resources.getObject("action.about.mnemonic"));
+    putValue(Action.SMALL_ICON, resources.getObject("action.about.small-icon"));
+    putValue("ICON24", resources.getObject("action.about.icon"));
+    putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.ABOUT_COMMAND);
   }
 }
