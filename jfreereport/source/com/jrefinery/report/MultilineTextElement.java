@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MultilineTextElement.java,v 1.1.1.1 2002/04/25 17:02:20 taqua Exp $
+ * $Id: MultilineTextElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes
  * -------
@@ -62,12 +62,9 @@ public class MultilineTextElement extends StringElement
    */
   public void draw (OutputTarget target, Band band, float bandX, float bandY)
   {
-    Paint paint = getPaint ();
-    // set the paint...
-
-    if (paint != null)
+    if (m_paint != null)
     {
-      target.setPaint (paint);
+      target.setPaint(m_paint);
     }
     else
     {
