@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,22 +20,30 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * --------------
  * CSVWriter.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * --------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVWriter.java,v 1.5 2003/02/09 18:43:05 taqua Exp $
+ * $Id: CSVWriter.java,v 1.6 2003/02/12 23:05:30 taqua Exp $
  *
  * Changes
  * -------
  * 07-Jan-2003 : Initial Version
  * 09-Feb-2003 : Documentation
+ * 24-Feb-2003 : Fixed Checkstyle issues (DG);
+ * 
  */
+
 package com.jrefinery.report.targets.csv;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.jrefinery.report.DataRow;
 import com.jrefinery.report.Group;
@@ -43,15 +51,12 @@ import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.function.FunctionProcessingException;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 /**
  * The CSV Writer is the content creation function used to create the CSV content.
  * This implementation does no layouting, the DataRow's raw data is written to the
  * supplied writer.
+ * 
+ * @author Thomas Morgner.
  */
 public class CSVWriter extends AbstractFunction
 {
@@ -60,15 +65,19 @@ public class CSVWriter extends AbstractFunction
    */
   private static class CSVRow
   {
+    /** The data. */
     private ArrayList data;
+    
+    /** A quoter utility object. */
     private CSVQuoter quoter;
+    
+    /** The line separator. */
     private String lineSeparator;
 
     /**
-     * Creates a new CSVQuoter. The Quoter uses the system's default
-     * line separator.
+     * Creates a new CSVQuoter. The Quoter uses the system's default line separator.
      *
-     * @param quoter
+     * @param quoter  a utility class for quoting CSV strings.
      */
     public CSVRow(CSVQuoter quoter)
     {
@@ -100,8 +109,9 @@ public class CSVWriter extends AbstractFunction
     /**
      * Writes the contents of the collected row, separated by colon.
      *
-     * @param w the writer
-     * @throws IOException if an I/O error occured.
+     * @param w  the writer.
+     * 
+     * @throws IOException if an I/O error occurred.
      */
     public void write (Writer w) throws IOException
     {
@@ -110,7 +120,9 @@ public class CSVWriter extends AbstractFunction
       {
         w.write(quoter.doQuoting(String.valueOf (it.next())));
         if (it.hasNext())
+        {
           w.write(",");
+        }
       }
       w.write(lineSeparator);
     }
@@ -118,10 +130,13 @@ public class CSVWriter extends AbstractFunction
 
   /** the writer used to output the generated data */
   private Writer w;
+  
   /** the functions dependency level, -1 by default */
   private int depLevel;
+  
   /** the CSVQuoter used to encode the column values */
   private CSVQuoter quoter;
+  
   /** a flag indicating whether to writer data row names as column header */
   private boolean writeDataRowNames;
 
@@ -176,18 +191,23 @@ public class CSVWriter extends AbstractFunction
   }
 
   /**
-   * Defines the sepator, which is used to separate columns in a row.
+   * Defines the separator, which is used to separate columns in a row.
    *
    * @param separator the separator string, never null.
+   * 
    * @throws NullPointerException if the separator is null.
    * @throws IllegalArgumentException if the separator is an empty string.
    */
   public void setSeparator(String separator)
   {
     if (separator == null)
+    {
       throw new NullPointerException();
+    }
     if (separator.length() == 0)
+    {
       throw new IllegalArgumentException("Separator must not be an empty string");
+    }
     this.quoter.setSeparator(separator);
   }
 
@@ -207,7 +227,7 @@ public class CSVWriter extends AbstractFunction
    * @param dr the dataRow which should be written
    * @param row the CSVRow used to collect the RowData.
    */
-  private void writeDataRow (DataRow dr,CSVRow row)
+  private void writeDataRow (DataRow dr, CSVRow row)
   {
     for (int i = 0; i < dr.getColumnCount(); i++)
     {
@@ -229,7 +249,7 @@ public class CSVWriter extends AbstractFunction
    * @param dr the dataRow which should be written
    * @param row the CSVRow used to collect the RowData.
    */
-  private void writeDataRowNames (DataRow dr,CSVRow row)
+  private void writeDataRowNames (DataRow dr, CSVRow row)
   {
     for (int i = 0; i < dr.getColumnCount(); i++)
     {
@@ -241,7 +261,6 @@ public class CSVWriter extends AbstractFunction
    * Writes the ReportHeader and (if defined) the dataRow names.
    *
    * @param event  the event.
-   * @throws FunctionProcessingException if the writing failed.
    */
   public void reportStarted(ReportEvent event)
   {
@@ -272,7 +291,6 @@ public class CSVWriter extends AbstractFunction
    * Writes the ReportFooter.
    *
    * @param event  the event.
-   * @throws FunctionProcessingException if the writing failed.
    */
   public void reportFinished(ReportEvent event)
   {
@@ -294,7 +312,6 @@ public class CSVWriter extends AbstractFunction
    * Writes the GroupHeader of the current group.
    *
    * @param event  the event.
-   * @throws FunctionProcessingException if the writing failed.
    */
   public void groupStarted(ReportEvent event)
   {
@@ -306,7 +323,7 @@ public class CSVWriter extends AbstractFunction
       row.append(currentIndex);
 
       Group g = event.getReport().getGroup(currentIndex);
-      String bandInfo = "groupheader name=\"" + g.getName()+ "\"";
+      String bandInfo = "groupheader name=\"" + g.getName() + "\"";
       row.append(bandInfo);
       writeDataRow(event.getDataRow(), row);
       row.write(getWriter());
@@ -321,7 +338,6 @@ public class CSVWriter extends AbstractFunction
    * Writes the GroupFooter of the active group.
    *
    * @param event  the event.
-   * @throws FunctionProcessingException if the writing failed.
    */
   public void groupFinished(ReportEvent event)
   {
@@ -333,7 +349,7 @@ public class CSVWriter extends AbstractFunction
       row.append(currentIndex);
 
       Group g = event.getReport().getGroup(currentIndex);
-      String bandInfo = "groupfooter name=\"" + g.getName()+ "\"";
+      String bandInfo = "groupfooter name=\"" + g.getName() + "\"";
       row.append(bandInfo);
       writeDataRow(event.getDataRow(), row);
       row.write(getWriter());
@@ -348,7 +364,6 @@ public class CSVWriter extends AbstractFunction
    * Writes the current ItemBand.
    *
    * @param event  the event.
-   * @throws FunctionProcessingException if the writing failed.
    */
   public void itemsAdvanced(ReportEvent event)
   {
@@ -378,10 +393,10 @@ public class CSVWriter extends AbstractFunction
   }
 
   /**
-   * The dependency level defines the level of execution for this function. Higher dependency functions
-   * are executed before lower dependency functions. For ordinary functions and expressions,
-   * the range for dependencies is defined to start from 0 (lowest dependency possible)
-   * to 2^31 (upper limit of int).
+   * The dependency level defines the level of execution for this function. Higher dependency 
+   * functions are executed before lower dependency functions. For ordinary functions and 
+   * expressions, the range for dependencies is defined to start from 0 (lowest dependency 
+   * possible) to 2^31 (upper limit of int).
    * <p>
    * PageLayouter functions override the default behaviour an place them self at depency level -1,
    * an so before any userdefined function.

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,7 +23,7 @@
  * ---------------------
  * ElementAlignment.java
  * ---------------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2000-2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
@@ -35,6 +35,7 @@
  * 05-Dec-2002 : Updated Javadocs (DG);
  * 05-Feb-2002 : Implemented the serializable interface.
  * 23-Feb-2003 : Added compatibility methods for the old int element alignment.
+ * 24-Feb-2003 : Fixed Checkstyle issues (DG);
  */
 
 package com.jrefinery.report;
@@ -80,7 +81,7 @@ public class ElementAlignment implements Serializable
    * alignment objects, you can only use the predefined constants. 
    *
    * @param name  the alignment name.
-   * @param oldAlignment  the alignment code.
+   * @param oldAlignment  the old alignment code.
    */
   private ElementAlignment(String name, int oldAlignment)
   {
@@ -99,7 +100,8 @@ public class ElementAlignment implements Serializable
   }
 
   /** 
-   * Returns the alignment code.
+   * Returns the alignment code, used by the old XML parsing code, that corresponds to this
+   * alignment object.
    *
    * @return the alignment code.
    */
@@ -108,19 +110,44 @@ public class ElementAlignment implements Serializable
     return oldAlignment;
   }
 
+  /**
+   * Returns <code>true</code> if this object is equal to the specified object, and 
+   * <code>false</code> otherwise.
+   * 
+   * @param o  the other object.
+   * 
+   * @return A boolean.
+   */
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof ElementAlignment)) return false;
+    if (this == o) 
+    {
+      return true;
+    }
+    if (!(o instanceof ElementAlignment)) 
+    {
+      return false;
+    }
 
     final ElementAlignment alignment = (ElementAlignment) o;
 
-    if (oldAlignment != alignment.oldAlignment) return false;
-    if (!myName.equals(alignment.myName)) return false;
+    if (oldAlignment != alignment.oldAlignment) 
+    {
+      return false;
+    }
+    if (!myName.equals(alignment.myName)) 
+    {
+      return false;
+    }
 
     return true;
   }
 
+  /**
+   * Returns a hash code for the alignment object.
+   * 
+   * @return The code.
+   */
   public int hashCode()
   {
     int result;
@@ -130,39 +157,53 @@ public class ElementAlignment implements Serializable
   }
 
   /**
-   * Replaces the automaticly generated instance with one of the enumeration
-   * instances.
+   * Replaces the automatically generated instance with one of the enumeration instances.
+   * 
    * @return the resolved element
+   * 
    * @throws ObjectStreamException if the element could not be resolved.
    */
   protected Object readResolve() throws ObjectStreamException
   {
     if (this.equals(ElementAlignment.LEFT))
+    {
       return ElementAlignment.LEFT;
+    }
     if (this.equals(ElementAlignment.RIGHT))
+    {
       return ElementAlignment.RIGHT;
-    if (this.equals(ElementAlignment.CENTER))
+    }
+    if (this.equals(ElementAlignment.CENTER)) 
+    {
       return ElementAlignment.CENTER;
+    }
     if (this.equals(ElementAlignment.TOP))
+    {
       return ElementAlignment.TOP;
+    }
     if (this.equals(ElementAlignment.BOTTOM))
+    {
       return ElementAlignment.BOTTOM;
+    }
     if (this.equals(ElementAlignment.MIDDLE))
+    {
       return ElementAlignment.MIDDLE;
+    }
+
     // unknown element alignment...
     throw new ObjectStreamResolveException();
   }
 
   /**
-   * Translates the old int contant into the new ElementAlignment objects.
-   * <p>
-   * This is one of <code>Element.LEFT</code>, <code>Element.CENTER</code> or
-   * <code>Element.RIGHT</code>.
+   * Translates the old alignment (<code>int</code>) constants into the new 
+   * {@link ElementAlignment} objects.
    *
-   * @param alignment  the alignment for this element.
-   * @return the translated alignment.
-   * @throws IllegalArgumentException if the given int value does not match one
-   * of the predefined constant values.
+   * @param alignment  the alignment code.
+   * 
+   * @return The corresponding alignment object.
+   * 
+   * @throws IllegalArgumentException if the supplied code does not match one
+   *                                  of the predefined constant values.
    */
   public static ElementAlignment translateHorizontalAlignment(int alignment)
   {
@@ -185,15 +226,15 @@ public class ElementAlignment implements Serializable
   }
 
   /**
-   * Translates the old int contant into the new ElementAlignment objects.
-   * <p>
-   * This is one of the constants defined in the <code>Element</code> class: <code>TOP</code>,
-   * <code>MIDDLE</code> or <code>RIGHT</code>.
+   * Translates the old alignment (<code>int</code>) constants into the new 
+   * {@link ElementAlignment} objects.
    *
-   * @param alignment the alignment.
-   * @return the translated alignment.
-   * @throws IllegalArgumentException if the given int value does not match one
-   * of the predefined constant values.
+   * @param alignment  the alignment code.
+   * 
+   * @return The corresponding alignment object.
+   * 
+   * @throws IllegalArgumentException if the supplied code does not match one
+   *                                  of the predefined constant values.
    */
   public static ElementAlignment translateVerticalAlignment(int alignment)
   {

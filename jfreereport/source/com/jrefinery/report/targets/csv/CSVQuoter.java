@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,33 +20,38 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * --------------
  * CSVQuoter.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * --------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVQuoter.java,v 1.5 2003/02/08 20:43:45 taqua Exp $
+ * $Id: CSVQuoter.java,v 1.3 2003/02/09 18:43:05 taqua Exp $
  *
  * Changes
  * -------
  * 18-Jan-2003 : Initial Version
  * 09-Feb-2003 : Documentation
+ * 24-Feb-2003 : Fixed Checkstyle issues (DG);
+ * 
  */
+
 package com.jrefinery.report.targets.csv;
 
 /**
- * The CSVQuoter is a helper class to encode a string for the CSV-fileformat.
+ * The <code>CSVQuoter</code> is a helper class to encode a string for the CSV file format.
+ * 
+ * @author Thomas Morgner.
  */
 public class CSVQuoter
 {
-  /** the separator used in the CSV file */
+  /** The separator used in the CSV file */
   private String separator;
 
   /**
-   * Creates a new CSVQuoter, which uses a colon as default separator.
+   * Creates a new CSVQuoter, which uses a comma as the default separator.
    */
   public CSVQuoter()
   {
@@ -54,10 +59,11 @@ public class CSVQuoter
   }
 
   /**
-   * Creates a new CSVQuoter, which uses the defined separator.
+   * Creates a new <code>CSVQuoter</code>, which uses the defined separator.
    *
-   * @param separator the separator.
-   * @throws NullPointerException if the given separator is null
+   * @param separator  the separator.
+   * 
+   * @throws NullPointerException if the given separator is <code>null</code>.
    */
   public CSVQuoter(String separator)
   {
@@ -68,8 +74,10 @@ public class CSVQuoter
    * Encodes the string, so that the string can safely be used in CSV files.
    * If the string does not need quoting, the original string is returned unchanged.
    *
-   * @param original the unquoted string
-   * @return the quoted string
+   * @param original  the unquoted string.
+   * 
+   * @return The quoted string
+   * 
    * @see CSVQuoter#applyQuote
    */
   public String doQuoting(String original)
@@ -82,16 +90,19 @@ public class CSVQuoter
       retval.append("\"");
       return retval.toString();
     }
-    else
+    else 
+    {
       return original;
+    }
   }
 
   /**
    * Decodes the string, so that all escape sequences get removed.
    * If the string was not quoted, then the string is returned unchanged.
    *
-   * @param nativeString the quoted string
-   * @return the unquoted string.
+   * @param nativeString  the quoted string.
+   * 
+   * @return The unquoted string.
    */
   public String undoQuoting(String nativeString)
   {
@@ -117,8 +128,10 @@ public class CSVQuoter
       }
       return b.toString();
     }
-    else
+    else 
+    {
       return nativeString;
+    }
   }
 
   /**
@@ -132,14 +145,17 @@ public class CSVQuoter
   private boolean isQuotingNeeded(String str)
   {
     if (str.indexOf(separator) != -1)
+    {
       return true;
-
+    }
     if (str.indexOf('\n') != -1)
+    {
       return true;
-
+    }
     if (str.indexOf('\"', 1) != -1)
+    {
       return true;
-
+    }
     return false;
   }
 
@@ -164,14 +180,16 @@ public class CSVQuoter
         b.append("\"\"");
       }
       else
+      {
         b.append(c);
+      }
     }
   }
 
   /**
    * Gets the separator used in this quoter and the CSV file.
    *
-   * @return the separator, never null
+   * @return the separator (never <code>null</code>).
    */
   public String getSeparator()
   {
@@ -183,11 +201,14 @@ public class CSVQuoter
    * different separators for quoting and writing, the resulting file will
    * be invalid.
    *
-   * @param separator
+   * @param separator  the separator (<code>null</code> not permitted).
    */
   public void setSeparator(String separator)
   {
-    if (separator == null) throw new NullPointerException();
+    if (separator == null) 
+    {
+      throw new NullPointerException();
+    }
     this.separator = separator;
   }
 }

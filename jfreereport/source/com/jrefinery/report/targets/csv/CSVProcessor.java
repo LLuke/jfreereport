@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * -----------------
  * CSVProcessor.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -----------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.5 2003/02/08 20:43:45 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.6 2003/02/09 18:43:05 taqua Exp $
  *
  * Changes
  * -------
@@ -36,9 +36,16 @@
  * 22-Jan-2003 : The separator is now configurable
  * 04-Feb-2003 : Consistency checks
  * 09-Feb-2003 : Documentation
+ * 24-Feb-2003 : Fixed Checkstyle issues (DG);
+ * 
  */
 
 package com.jrefinery.report.targets.csv;
+
+import java.awt.print.PageFormat;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.Iterator;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
@@ -47,43 +54,42 @@ import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.NullOutputStream;
 
-import java.awt.print.PageFormat;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.Iterator;
-
 /**
- * The CSVProcessor coordinates the writing process for the Raw-CSV output.
- * A CSVWriter is added to the private copy of the report to handle the
- * output process.
+ * The <code>CSVProcessor</code> coordinates the writing process for the raw CSV output.
+ * <p>
+ * A {@link CSVWriter} is added to the private copy of the report to handle the output process.
  *
- * @see CSVWriter
+ * @author Thomas Morgner
  */
 public class CSVProcessor
 {
-  /** The ReportConfiguration key that defines the separator string. */
+  /** A key for accessing the separator string in the {@link ReportConfiguration}. */
   public static final String CSV_SEPARATOR = "com.jrefinery.report.targets.csv.separator";
-  /** The ReportConfiguration key that defines whether to print data row names. */
-  public static final String CSV_DATAROWNAME = "com.jrefinery.report.targets.csv.write-datarow-names";
+  
+  /** A key for accessing the 'print data row names' flag in the {@link ReportConfiguration}. */
+  public static final String CSV_DATAROWNAME 
+      = "com.jrefinery.report.targets.csv.write-datarow-names";
+
   /** The default name for the csv writer function used by this processor. */
   private static final String CSV_WRITER = "com.jrefinery.report.targets.csv.csv-writer";
 
-  /** The writer that shoud be used by the CSVWriter function */
+  /** The character stream writer to be used by the {@link CSVWriter} function. */
   private Writer writer;
-  /** The report which should be processed. */
+  
+  /** The report to be processed. */
   private JFreeReport report;
 
   /**
-   * Creates a new CSVProcessor. The processor will use a colon to separate
+   * Creates a new <code>CSVProcessor</code>. The processor will use a comma (",") to separate
    * the column values, unless defined otherwise in the report configuration.
    * The processor creates a private copy of the clone, so that no change to
    * the original report will influence the report processing. DataRow names
    * are not written.
    *
-   * @param report the to be processed report.
+   * @param report  the report to be processed.
+   * 
    * @throws ReportProcessingException if the report initialisation failed.
    * @throws FunctionInitializeException if the writer initialisation failed.
    */
@@ -96,13 +102,14 @@ public class CSVProcessor
   /**
    *
    * Creates a new CSVProcessor. The processor will use the specified separator,
-   * the report configuration is not queried for an separator.
+   * the report configuration is not queried for a separator.
    * The processor creates a private copy of the clone, so that no change to
    * the original report will influence the report processing. DataRowNames
    * are not written.
    *
-   * @param report the to be processed report.
-   * @param separator the separator string to mark column boundries.
+   * @param report the report to be processed.
+   * @param separator the separator string to mark column boundaries.
+   * 
    * @throws ReportProcessingException if the report initialisation failed.
    * @throws FunctionInitializeException if the writer initialisation failed.
    */
@@ -113,22 +120,26 @@ public class CSVProcessor
   }
 
   /**
-   *
    * Creates a new CSVProcessor. The processor will use the specified separator,
-   * the report configuration is not queried for an separator.
+   * the report configuration is not queried for a separator.
    * The processor creates a private copy of the clone, so that no change to
    * the original report will influence the report processing. The first row
    * will contain the datarow names.
    *
-   * @param report the to be processed report.
-   * @param separator the separator string to mark column boundries.
+   * @param report  the report to be processed.
+   * @param separator the separator string to mark column boundaries.
+   * @param writeDataRowNames  controls whether or not the data row names are output.
+   * 
    * @throws ReportProcessingException if the report initialisation failed.
    * @throws FunctionInitializeException if the writer initialization failed.
    */
   public CSVProcessor(JFreeReport report, String separator, boolean writeDataRowNames)
       throws ReportProcessingException, FunctionInitializeException
   {
-    if (report == null) throw new NullPointerException();
+    if (report == null) 
+    {
+      throw new NullPointerException();
+    }
     try
     {
       this.report = (JFreeReport) report.clone();
@@ -185,7 +196,8 @@ public class CSVProcessor
    *
    * @return a list of report states (one for the beginning of each page in the report).
    *
-   * @throws com.jrefinery.report.ReportProcessingException if there was a problem processing the report.
+   * @throws ReportProcessingException if there was a problem processing the report.
+   * @throws CloneNotSupportedException if there is a problem cloning.
    */
   private ReportState repaginate() throws ReportProcessingException, CloneNotSupportedException
   {
@@ -306,7 +318,10 @@ public class CSVProcessor
    */
   public void processReport() throws ReportProcessingException
   {
-    if (writer == null) throw new IllegalStateException("No writer defined");
+    if (writer == null) 
+    {
+      throw new IllegalStateException("No writer defined");
+    }
     try
     {
       ReportState state = repaginate();
