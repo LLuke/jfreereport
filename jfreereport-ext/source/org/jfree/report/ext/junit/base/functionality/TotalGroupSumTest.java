@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumTest.java,v 1.2 2003/07/23 16:06:25 taqua Exp $
+ * $Id: TotalGroupSumTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,14 +43,102 @@ import java.net.URL;
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.demo.SampleData1;
+import org.jfree.report.event.ReportEvent;
+import org.jfree.report.function.AbstractFunction;
+import org.jfree.report.function.TotalGroupSumFunction;
+import org.jfree.report.function.FunctionUtilities;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 
 public class TotalGroupSumTest extends TestCase
 {
+  private static final int[] SUMS = {
+     69698070,
+   1340100000,
+     18751000,
+    343344776,
+    304357300,
+    165715400
+  };
+
+  private static class TotalGroupCountVerifyFunction
+      extends AbstractFunction
+  {
+    private int index;
+    /**
+     * Creates an unnamed function. Make sure the name of the function is set using
+     * {@link #setName} before the function is added to the report's function collection.
+     */
+    public TotalGroupCountVerifyFunction()
+    {
+      setName("verification");
+    }
+
+    /**
+     * Receives notification that report generation initializes the current run.
+     * <P>
+     * The event carries a ReportState.Started state.  Use this to initialize the report.
+     *
+     * @param event The event.
+     */
+    public void reportInitialized(ReportEvent event)
+    {
+      Log.debug ("Index reset");
+      index = 0;
+    }
+
+    /**
+     * Receives notification that a group has finished.
+     *
+     * @param event  the event.
+     */
+    public void groupFinished(ReportEvent event)
+    {
+      if (event.getLevel() >= 0)
+      {
+        return;
+      }
+      assertSum(event);
+      index += 1;
+    }
+
+    /**
+     * Receives notification that a group has started.
+     *
+     * @param event  the event.
+     */
+    public void groupStarted(ReportEvent event)
+    {
+      if (event.getLevel() >= 0)
+      {
+        return;
+      }
+      assertSum(event);
+    }
+
+    private void assertSum(ReportEvent event)
+    {
+      // the number of continents in the report1
+      if (FunctionUtilities.getCurrentGroup(event).getName().equals("Continent Group"))
+      {
+        Number n = (Number) event.getDataRow().get("continent-total-gc");
+        Log.debug ("Event:" + event.getState().getCurrentDisplayItem() + " index " + index);
+        assertEquals("continent-total-gc", SUMS[index], n.intValue());
+      }
+//      // the number of continents in the report1 + default group start
+//      Number n2 = (Number) event.getDataRow().get("total-gc");
+//      assertEquals("total-gc", 7, n2.intValue());
+    }
+
+    public Object getValue()
+    {
+      return null;
+    }
+  }
+
   private static final FunctionalityTestLib.ReportTest REPORT2 =
-    new FunctionalityTestLib.ReportTest ("/org/jfree/report/demo/report1.xml",
-        new SampleData1());
+      new FunctionalityTestLib.ReportTest("/org/jfree/report/demo/report1.xml",
+          new SampleData1());
 
   public TotalGroupSumTest()
   {
@@ -61,7 +149,7 @@ public class TotalGroupSumTest extends TestCase
     super(s);
   }
 
-  public void testGroupSumTest ()
+  public void testGroupSumTest()
   {
     final URL url = this.getClass().getResource(REPORT2.getReportDefinition());
     assertNotNull(url);
@@ -70,6 +158,20 @@ public class TotalGroupSumTest extends TestCase
     {
       report = ReportGenerator.getInstance().parseReport(url);
       report.setData(REPORT2.getReportTableModel());
+      report.addFunction(new TotalGroupCountVerifyFunction());
+
+      TotalGroupSumFunction f = new TotalGroupSumFunction();
+      f.setName("continent-total-gc");
+      f.setGroup("Continent Group");
+      f.setField("Population");
+      f.setDependencyLevel(1);
+      report.addFunction(f);
+
+      TotalGroupSumFunction f2 = new TotalGroupSumFunction();
+      f2.setName("total-gc");
+      f2.setField("Population");
+      f2.setDependencyLevel(1);
+      report.addFunction(f2);
     }
     catch (Exception e)
     {

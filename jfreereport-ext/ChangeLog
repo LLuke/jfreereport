@@ -1,3 +1,11 @@
+
+0.8.4-5: (1-Nov-2003):
+	* The JDK1.4-Printing is more configurable now. The appearance in the menus of the
+	  preview components can be redefined.
+
+  * A new demo shows the use of the DrawableElement to display JFreeCharts.
+	  Better support for charts will be implemented after version 0.8.5
+
 0.8.4-4: (1-Nov-2003):
 	* Removed obsolete test classes
 
@@ -23,5 +31,6 @@
 
 23-Jun-2002: 
   * JUnit Test added to the extension project
+	
   * Log4J-LogTarget added
 

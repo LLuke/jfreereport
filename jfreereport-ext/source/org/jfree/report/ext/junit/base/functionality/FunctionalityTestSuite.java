@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestSuite.java,v 1.3 2003/10/11 21:34:10 taqua Exp $
+ * $Id: FunctionalityTestSuite.java,v 1.4 2003/11/01 19:57:03 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -58,6 +58,8 @@ public class FunctionalityTestSuite extends TestSuite
     addTestSuite(EventOrderTest.class);
     addTestSuite(GroupPageBreakTest.class);
     addTestSuite(TotalGroupSumTest.class);
+    addTestSuite(TotalGroupCountTest.class);
+    addTestSuite(TotalItemCountTest.class);
   }
 
   public static Test suite()

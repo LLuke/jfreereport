@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupCountTest.java,v 1.1 2003/10/19 11:30:50 taqua Exp $
+ * $Id: TotalGroupCountTest.java,v 1.2 2003/11/01 19:57:03 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 26.06.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.ext.junit.base.functionality;
@@ -51,13 +51,9 @@ import org.jfree.report.util.Log;
 
 public class TotalGroupCountTest extends TestCase
 {
-  private static final int [] GROUPCOUNTS = new int[] {
-    2, 3, 1, 14, 2, 1
-  };
-
-  private static class TotalGroupCountVerifyFunction extends AbstractFunction {
-
-    private int currentGroupIndex;
+  private static class TotalGroupCountVerifyFunction
+      extends AbstractFunction
+  {
     /**
      * Creates an unnamed function. Make sure the name of the function is set using
      * {@link #setName} before the function is added to the report's function collection.
@@ -78,7 +74,32 @@ public class TotalGroupCountTest extends TestCase
       {
         return;
       }
-      // verify
+      assertEvent(event);
+    }
+
+    /**
+     * Receives notification that a group has started.
+     *
+     * @param event  the event.
+     */
+    public void groupStarted(ReportEvent event)
+    {
+      if (event.getLevel() >= 0)
+      {
+        return;
+      }
+      assertEvent(event);
+    }
+
+    private void assertEvent(ReportEvent event)
+    {
+      // the number of continents in the report1
+      Number n = (Number) event.getDataRow().get("continent-total-gc");
+      assertEquals("continent-total-gc", 6, n.intValue());
+
+      // the number of continents in the report1 + default group start
+      Number n2 = (Number) event.getDataRow().get("total-gc");
+      assertEquals("total-gc", 7, n2.intValue());
     }
 
     public Object getValue()
@@ -88,8 +109,8 @@ public class TotalGroupCountTest extends TestCase
   }
 
   private static final FunctionalityTestLib.ReportTest REPORT2 =
-    new FunctionalityTestLib.ReportTest ("/org/jfree/report/demo/report1.xml",
-        new SampleData1());
+      new FunctionalityTestLib.ReportTest("/org/jfree/report/demo/report1.xml",
+          new SampleData1());
 
   public TotalGroupCountTest()
   {
@@ -100,7 +121,7 @@ public class TotalGroupCountTest extends TestCase
     super(s);
   }
 
-  public void testGroupSumTest ()
+  public void testGroupCount()
   {
     final URL url = this.getClass().getResource(REPORT2.getReportDefinition());
     assertNotNull(url);
@@ -111,12 +132,15 @@ public class TotalGroupCountTest extends TestCase
       report.setData(REPORT2.getReportTableModel());
       report.addFunction(new TotalGroupCountVerifyFunction());
 
-      TotalGroupCountFunction f = new TotalGroupCountFunction ();
+      TotalGroupCountFunction f = new TotalGroupCountFunction();
       f.setName("continent-total-gc");
       f.setGroup("Continent Group");
+      f.setDependencyLevel(1);
+      report.addFunction(f);
 
-      TotalGroupCountFunction f2 = new TotalGroupCountFunction ();
+      TotalGroupCountFunction f2 = new TotalGroupCountFunction();
       f2.setName("total-gc");
+      f2.setDependencyLevel(1);
       report.addFunction(f2);
     }
     catch (Exception e)
