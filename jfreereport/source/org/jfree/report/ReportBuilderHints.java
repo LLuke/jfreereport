@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportBuilderHints.java,v 1.8 2003/08/25 14:29:28 taqua Exp $
+ * $Id: ReportBuilderHints.java,v 1.9 2003/08/27 20:19:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -82,6 +82,7 @@ public class ReportBuilderHints implements Serializable
     /** The name of the hint. */
     private String hintKey;
 
+    private int hashCode;
     /**
      * Creates a new parser hint key for the given primary key and the given
      * key name.
@@ -166,10 +167,14 @@ public class ReportBuilderHints implements Serializable
      */
     public int hashCode()
     {
-      int result;
-      result = primaryKey.hashCode();
-      result = 29 * result + hintKey.hashCode();
-      return result;
+      if (hashCode != 0)
+      {
+        int result;
+        result = primaryKey.hashCode();
+        result = 29 * result + hintKey.hashCode();
+        hashCode = result;
+      }
+      return hashCode;
     }
 
     /**

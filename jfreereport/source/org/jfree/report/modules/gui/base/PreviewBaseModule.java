@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewBaseModule.java,v 1.6 2003/08/24 15:08:18 taqua Exp $
+ * $Id: PreviewBaseModule.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,7 +38,11 @@
 
 package org.jfree.report.modules.gui.base;
 
+import java.util.ResourceBundle;
+import java.util.Enumeration;
+import java.util.MissingResourceException;
 import javax.swing.UIManager;
+import javax.swing.UIDefaults;
 
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
@@ -80,8 +84,26 @@ public class PreviewBaseModule extends AbstractModule
   {
     if (isTranslateSwingDialogs())
     {
-      UIManager.getDefaults().addResourceBundle
+      ResourceBundle bundle = ResourceBundle.getBundle
           (JFreeReportResources.class.getName());
+
+      UIDefaults defaults = UIManager.getDefaults();
+      Enumeration enum = bundle.getKeys();
+      // JDK1.2 does not know anything about SwingTranslations,
+      // we have to put all keys manually in there.
+      while (enum.hasMoreElements())
+      {
+        String keyName = (String) enum.nextElement();
+        try
+        {
+          defaults.put(keyName, bundle.getObject(keyName));
+        }
+        catch (MissingResourceException me)
+        {
+          // ignored, should not happen ..
+        }
+      }
+
     }
   }
 
@@ -95,5 +117,11 @@ public class PreviewBaseModule extends AbstractModule
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
         (SWING_TRANSLATE_KEY, "false").equals("true");
+  }
+
+  public static void main (String[] args) throws Exception
+  {
+
+    System.out.println(new PreviewBaseModule());
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.8 2003/08/27 20:19:53 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.9 2003/08/28 17:45:43 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -36,14 +36,13 @@ package org.jfree.report.modules.gui.base.resources;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.ListResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
+import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.Log;
 
 /**
@@ -114,23 +113,6 @@ public class JFreeReportResources extends ListResourceBundle
   }
 
   /**
-   * Creates a transparent image.  These can be used for aligning menu items.
-   *
-   * @param width  the width.
-   * @param height  the height.
-   *
-   * @return the image.
-   */
-  protected static BufferedImage createTransparentImage(final int width, final int height)
-  {
-    final BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-    final int[] data = img.getRGB(0, 0, width, height, null, 0, width);
-    Arrays.fill(data, 0xff000000);
-    img.setRGB(0, 0, width, height, data, 0, width);
-    return img;
-  }
-
-  /**
    * Attempts to load an image from classpath. If this fails, an empty
    * image icon is returned.
    *
@@ -145,13 +127,13 @@ public class JFreeReportResources extends ListResourceBundle
     if (in == null)
     {
       Log.warn("Unable to find file in the class path: " + filename);
-      return new ImageIcon(createTransparentImage(1, 1));
+      return new ImageIcon(ImageUtils.createTransparentImage(1, 1));
     }
     final Image img = Toolkit.getDefaultToolkit().createImage(in);
     if (img == null)
     {
       Log.warn("Unable to instantiate the image: " + filename);
-      return new ImageIcon(createTransparentImage(1, 1));
+      return new ImageIcon(ImageUtils.createTransparentImage(1, 1));
     }
     return new ImageIcon(img);
   }

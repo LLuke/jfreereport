@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractModule.java,v 1.6 2003/08/24 15:08:18 taqua Exp $
+ * $Id: AbstractModule.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,6 +43,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
+import org.jfree.report.util.Log;
 
 /**
  * The abstract module provides a default implementation of the module interface.
@@ -281,19 +283,50 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
    * @param firstLine the first line (which was read elsewhere).
    * @return the complete value, never null
    */
-  private String readValue(final ReaderHelper reader, String firstLine)
+  private String readValue(final ReaderHelper reader, String firstLine) throws IOException
   {
-    final StringBuffer b = new StringBuffer();
-    while (firstLine != null && parseKey(firstLine) == null)
+    final StringBuffer b = new StringBuffer(firstLine.trim());
+    boolean newLine = true;
+    while (isNextLineValueLine(reader))
     {
-      if (b.length() != 0)
-      {
-        b.append("\n");
-      }
-      b.append(parseValue(firstLine.trim()));
       firstLine = reader.next();
+      String trimedLine = firstLine.trim();
+      if (trimedLine.length() == 0 && (newLine == false))
+      {
+        b.append ("\n");
+        newLine = true;
+      }
+      else
+      {
+        if (newLine == false)
+        {
+          b.append(" ");
+        }
+        b.append(parseValue(trimedLine));
+        newLine = false;
+      }
     }
     return b.toString();
+  }
+
+  private boolean isNextLineValueLine (ReaderHelper reader) throws IOException
+  {
+    if (reader.hasNext() == false)
+    {
+      return false;
+    }
+    String firstLine = reader.next();
+    if (firstLine == null)
+    {
+      return false;
+    }
+    if (parseKey(firstLine) != null)
+    {
+      reader.pushBack(firstLine);
+      return false;
+    }
+    reader.pushBack(firstLine);
+    return true;
   }
 
   /**

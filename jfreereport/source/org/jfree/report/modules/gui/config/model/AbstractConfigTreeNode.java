@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractConfigTreeNode.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -70,6 +70,11 @@ public abstract class AbstractConfigTreeNode implements ConfigTreeNode
     }
   }
 
+  protected void reset ()
+  {
+    childs.clear();
+  }
+  
   /**
    * Returns the child <code>TreeNode</code> at index
    * <code>childIndex</code>.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.4 2003/08/24 15:13:23 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -228,6 +228,8 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   private transient List parentsListCached;
   /** An unmodifiable list, chaching the return value from getDefaultParents(). */
   private transient List defaultParentsListCached;
+
+  private transient FontDefinition fontDefinition;
 
   /**
    * The stylesheet collection helper implementation that manages the
@@ -770,6 +772,42 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     return i.intValue();
   }
 
+  private boolean isFontDefinitionProperty (StyleKey key)
+  {
+    if (key.equals(FONT))
+    {
+      return true;
+    }
+    if (key.equals(FONTSIZE))
+    {
+      return true;
+    }
+    if (key.equals(BOLD))
+    {
+      return true;
+    }
+    if (key.equals(ITALIC))
+    {
+      return true;
+    }
+    if (key.equals(UNDERLINED))
+    {
+      return true;
+    }
+    if (key.equals(STRIKETHROUGH))
+    {
+      return true;
+    }
+    if (key.equals(EMBEDDED_FONT))
+    {
+      return true;
+    }
+    if (key.equals(FONTENCODING))
+    {
+      return true;
+    }
+    return false;
+  }
   /**
    * Returns the font for this style-sheet.
    *
@@ -777,18 +815,29 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    */
   public FontDefinition getFontDefinitionProperty()
   {
-    final String name = (String) getStyleProperty(FONT);
-    final int size = getIntStyleProperty(FONTSIZE, -1);
-    final boolean bold = getBooleanStyleProperty(BOLD);
-    final boolean italic = getBooleanStyleProperty(ITALIC);
-    final boolean underlined = getBooleanStyleProperty(UNDERLINED);
-    final boolean strike = getBooleanStyleProperty(STRIKETHROUGH);
-    final boolean embed = getBooleanStyleProperty(EMBEDDED_FONT);
-    final String encoding = (String) getStyleProperty(FONTENCODING);
+    if (fontDefinition == null)
+    {
+      final String name = (String) getStyleProperty(FONT);
+      final int size = getIntStyleProperty(FONTSIZE, -1);
+      final boolean bold = getBooleanStyleProperty(BOLD);
+      final boolean italic = getBooleanStyleProperty(ITALIC);
+      final boolean underlined = getBooleanStyleProperty(UNDERLINED);
+      final boolean strike = getBooleanStyleProperty(STRIKETHROUGH);
+      final boolean embed = getBooleanStyleProperty(EMBEDDED_FONT);
+      final String encoding = (String) getStyleProperty(FONTENCODING);
 
-    final FontDefinition retval = new FontDefinition(name, size, bold, italic, underlined, strike,
-        encoding, embed);
-    return retval;
+      final FontDefinition retval = new FontDefinition(name, size, bold, italic, underlined, strike,
+          encoding, embed);
+      if (isAllowCaching())
+      {
+        fontDefinition = retval;
+      }
+      else
+      {
+        return retval;
+      }
+    }
+    return fontDefinition;
   }
 
   /**
@@ -843,7 +892,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   }
 
   /**
-   * Sends a change event notification to all registered {@link StyleChangeListener} objects.
+   * Forwards a change event notification to all registered {@link StyleChangeListener} objects.
    *
    * @param source  the source of the change.
    * @param key  the style key.
@@ -854,12 +903,16 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     if (styleCache != null)
     {
       styleCache.remove(key);
+      if (isFontDefinitionProperty(key))
+      {
+        fontDefinition = null;
+      }
     }
     styleChangeSupport.fireStyleChanged(key, value);
   }
 
   /**
-   * Sends a change event notification to all registered {@link StyleChangeListener} objects.
+   * Forwards a change event notification to all registered {@link StyleChangeListener} objects.
    *
    * @param source  the source of the change.
    * @param key  the style key.
@@ -869,6 +922,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     if (styleCache != null)
     {
       styleCache.remove(key);
+      if (isFontDefinitionProperty(key))
+      {
+        fontDefinition = null;
+      }
     }
     styleChangeSupport.fireStyleRemoved(key);
   }

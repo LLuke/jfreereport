@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConfigTreeModel.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,13 +38,14 @@
 
 package org.jfree.report.modules.gui.config.model;
 
+import java.io.InputStream;
+import java.util.ArrayList;
 import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeModelEvent;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import org.jfree.report.modules.Module;
-import org.jfree.report.modules.PackageManager;
 import org.jfree.report.util.ReportConfiguration;
 
 public class ConfigTreeModel implements TreeModel
@@ -52,23 +53,55 @@ public class ConfigTreeModel implements TreeModel
   private ConfigTreeRootNode root;
   private ConfigTreeSectionNode globalSection;
   private ConfigTreeSectionNode localSection;
+  private ModuleNodeFactory nodeFactory;
+  private ArrayList listeners;
 
-  public ConfigTreeModel(ReportConfiguration config)
+  public ConfigTreeModel(InputStream specs) throws ConfigTreeModelException
   {
     this.root = new ConfigTreeRootNode("<root>");
     this.globalSection = new ConfigTreeSectionNode("Global configuration");
     this.localSection = new ConfigTreeSectionNode("Local configuration");
+    this.listeners = new ArrayList();
 
     root.add(globalSection);
     root.add(localSection);
 
-    PackageManager pm = PackageManager.getInstance();
-    Module[] mods = pm.getActiveModules();
-
-    for (int i = 0; i < mods.length; i++)
+    try
     {
-      globalSection.add (new ConfigTreeModuleNode(mods[i], config));
-      localSection.add (new ConfigTreeModuleNode(mods[i], config));
+      nodeFactory = new ModuleNodeFactory(specs);
+    }
+    catch (Exception ioe)
+    {
+      throw new ConfigTreeModelException ("Failed to initialize the model.", ioe);
+    }
+  }
+
+  public void init (ReportConfiguration config)
+    throws ConfigTreeModelException
+  {
+    globalSection.reset();
+    localSection.reset();
+    nodeFactory.init(config);
+    ArrayList list = nodeFactory.getGlobalNodes();
+    for (int i = 0; i < list.size(); i++)
+    {
+      globalSection.add ((ConfigTreeNode) list.get(i));
+    }
+    list = nodeFactory.getLocalNodes();
+    for (int i = 0; i < list.size(); i++)
+    {
+      localSection.add ((ConfigTreeNode) list.get(i));
+    }
+
+    fireTreeModelChanged();
+  }
+
+  private void fireTreeModelChanged ()
+  {
+    for (int i = 0; i < listeners.size(); i++)
+    {
+      TreeModelListener l = (TreeModelListener) listeners.get(i);
+      l.treeStructureChanged(new TreeModelEvent(this, new TreePath(root)));
     }
   }
 
@@ -172,6 +205,11 @@ public class ConfigTreeModel implements TreeModel
    */
   public void addTreeModelListener(TreeModelListener l)
   {
+    if (l == null)
+    {
+      throw new NullPointerException();
+    }
+    listeners.add (l);
   }
 
   /**
@@ -183,5 +221,6 @@ public class ConfigTreeModel implements TreeModel
    */
   public void removeTreeModelListener(TreeModelListener l)
   {
+    listeners.remove(l);
   }
 }

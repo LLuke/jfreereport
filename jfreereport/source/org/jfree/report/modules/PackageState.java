@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageState.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
+ * $Id: PackageState.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -102,9 +102,23 @@ public class PackageState implements Comparable
   {
     if (state == STATE_NEW)
     {
-      module.configure();
-      state = STATE_CONFIGURED;
-      return true;
+      try
+      {
+        module.configure();
+        state = STATE_CONFIGURED;
+        return true;
+      }
+      catch (NoClassDefFoundError noClassDef)
+      {
+        Log.warn (new Log.SimpleMessage("Unable to load module classes for ",
+            module.getName(),":", noClassDef.getMessage()));
+        state = STATE_ERROR;
+      }
+      catch (Exception e)
+      {
+        Log.warn ("Unable to configure the module " + module.getName(), e);
+        state = STATE_ERROR;
+      }
     }
     return false;
   }
@@ -148,9 +162,20 @@ public class PackageState implements Comparable
         state = STATE_INITIALIZED;
         return true;
       }
+      catch (NoClassDefFoundError noClassDef)
+      {
+        Log.warn (new Log.SimpleMessage("Unable to load module classes for ",
+            module.getName(),":", noClassDef.getMessage()));
+        state = STATE_ERROR;
+      }
       catch (ModuleInitializeException me)
       {
         Log.warn("Unable to initialize the module " + module.getName(), me);
+        state = STATE_ERROR;
+      }
+      catch (Exception e)
+      {
+        Log.warn("Unable to initialize the module " + module.getName(), e);
         state = STATE_ERROR;
       }
     }

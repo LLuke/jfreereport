@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionModel.java,v 1.2 2003/08/28 17:45:43 taqua Exp $
+ * $Id: ConfigDescriptionModel.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -133,6 +133,12 @@ public class ConfigDescriptionModel extends AbstractListModel
   public void sort ()
   {
     Collections.sort(content, new ConfigEntryComparator());
+  }
+
+  public ConfigDescriptionEntry[] toArray()
+  {
+    return (ConfigDescriptionEntry[]) content.toArray
+        (new ConfigDescriptionEntry[content.size()]);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -75,6 +75,10 @@ public class SystemOutLogTarget implements LogTarget, Serializable
     }
     System.out.print(LEVELS[level]);
     System.out.println(message);
+    if (level < 3)
+    {
+      System.out.flush();
+    }
   }
 
   /**
@@ -97,5 +101,9 @@ public class SystemOutLogTarget implements LogTarget, Serializable
     System.out.print(LEVELS[level]);
     System.out.println(message);
     e.printStackTrace(System.out);
+    if (level < 3)
+    {
+      System.out.flush();
+    }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.4 2003/08/24 15:03:52 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.5 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -48,8 +48,8 @@ import java.util.Iterator;
 import org.jfree.report.EmptyReportException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
-import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
 import org.jfree.report.function.FunctionInitializeException;
@@ -501,6 +501,7 @@ public class PageableReportProcessor
     // the expensive cloning ...
     while (!state.isFinish())
     {
+      checkInterrupted();
       if (lastRow != state.getCurrentDisplayItem())
       {
         lastRow = state.getCurrentDisplayItem();
@@ -578,6 +579,20 @@ public class PageableReportProcessor
   }
 
   /**
+   * Checks, whether the current thread is interrupted.
+   *
+   * @throws ReportInterruptedException if the thread is interrupted to
+   * abort the report processing.
+   */
+  private void checkInterrupted () throws ReportInterruptedException
+  {
+    if (isHandleInterruptedState() && Thread.interrupted())
+    {
+      throw new ReportInterruptedException("Current thread is interrupted. Returning.");
+    }
+  }
+
+  /**
    * Draws a single page of the report to the specified graphics device, and returns state
    * information.  The caller should check the returned state to ensure that some progress has
    * been made, because on some small paper sizes the report may get stuck (particularly if the
@@ -600,34 +615,31 @@ public class PageableReportProcessor
                                  final boolean failOnError)
       throws ReportProcessingException
   {
+    if (out == null)
+    {
+      throw new NullPointerException("OutputTarget != null");
+    }
+    if (out.isOpen() == false)
+    {
+      throw new IllegalStateException("OutputTarget is not open!");
+    }
+    if (currPage == null)
+    {
+      throw new NullPointerException("State != null");
+    }
+    // if a finish state is set to be processed, crash to make sure that FinishStates
+    // are caught outside, we won't handle them here
+    if (currPage.isFinish())
+    {
+      throw new IllegalArgumentException("No finish state for processpage allowed: ");
+    }
+
     ReportState state = null;
     PageLayouter lm = null;
     try
     {
-      if (isHandleInterruptedState() && Thread.interrupted())
-      {
-        throw new ReportInterruptedException("Current thread is interrupted. Returning.");
-      }
+      checkInterrupted();
 
-      if (out == null)
-      {
-        throw new NullPointerException("OutputTarget != null");
-      }
-      if (out.isOpen() == false)
-      {
-        throw new IllegalStateException("OutputTarget is not open!");
-      }
-      if (currPage == null)
-      {
-        throw new NullPointerException("State != null");
-      }
-
-      // if a finish state is set to be processed, crash to make sure that FinishStates
-      // are caught outside, we won't handle them here
-      if (currPage.isFinish())
-      {
-        throw new IllegalArgumentException("No finish state for processpage allowed: ");
-      }
       try
       {
         state = (ReportState) currPage.clone();
@@ -689,6 +701,7 @@ public class PageableReportProcessor
             // assertation check, the pagelayouter must not change during the processing.
             throw new IllegalStateException("Lost the layout manager");
           }
+          checkInterrupted();
         }
       }
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConverterParser.java,v 1.1 2003/08/26 17:35:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,6 +39,7 @@
 package org.jfree.report.modules.gui.converter.parser;
 
 import java.util.Stack;
+import java.io.IOException;
 
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
@@ -131,7 +132,18 @@ public class ConverterParser extends Parser
                                    String systemId)
       throws SAXException
   {
-    return base.resolveEntity(publicId, systemId);
+    try
+    {
+      return base.resolveEntity(publicId, systemId);
+    }
+    catch (Exception oe)
+    {
+      // this one drives me crazy, in JDK 1.4 the IOException
+      // is not defined, but in the official SAX sources it is
+      // defined. Now depending on which version you compile it
+      // gives an differen error. I HATE THIS!
+      throw new SAXException(oe);
+    }
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.5 2003/08/26 17:35:51 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import java.util.Iterator;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.states.FinishState;
 import org.jfree.report.states.ReportState;
@@ -89,6 +90,9 @@ public class CSVProcessor
 
   /** The report to be processed. */
   private JFreeReport report;
+
+  /** Defines, whether this processor should check the thread for an interrupt request. */
+  private boolean handleInterruptedState;
 
   /**
    * Creates a new <code>CSVProcessor</code>. The processor will use a comma (",") to separate
@@ -273,6 +277,7 @@ public class CSVProcessor
 
       while (!state.isFinish())
       {
+        checkInterrupted();
         progress = state.createStateProgress(progress);
         state = state.advance();
         if (failOnError)
@@ -357,6 +362,7 @@ public class CSVProcessor
       ReportStateProgress progress = null;
       while (!state.isFinish())
       {
+        checkInterrupted();
         progress = state.createStateProgress(progress);
         state = state.advance();
         if (failOnError && state.isErrorOccured() == true)
@@ -375,6 +381,45 @@ public class CSVProcessor
     catch (CloneNotSupportedException cne)
     {
       throw new ReportProcessingException("StateCopy was not supported");
+    }
+  }
+
+  /**
+   * Returns whether the processor should check the threads interrupted state.
+   * If this is set to true and the thread was interrupted, then the report processing
+   * is aborted.
+   *
+   * @return true, if the processor should check the current thread state, false otherwise.
+   */
+  public boolean isHandleInterruptedState()
+  {
+    return handleInterruptedState;
+  }
+
+  /**
+   * Defines, whether the processor should check the threads interrupted state.
+   * If this is set to true and the thread was interrupted, then the report processing
+   * is aborted.
+   *
+   * @param handleInterruptedState true, if the processor should check the current thread state,
+   *                               false otherwise.
+   */
+  public void setHandleInterruptedState(final boolean handleInterruptedState)
+  {
+    this.handleInterruptedState = handleInterruptedState;
+  }
+
+  /**
+   * Checks, whether the current thread is interrupted.
+   *
+   * @throws org.jfree.report.ReportInterruptedException if the thread is interrupted to
+   * abort the report processing.
+   */
+  protected void checkInterrupted () throws ReportInterruptedException
+  {
+    if (isHandleInterruptedState() && Thread.interrupted())
+    {
+      throw new ReportInterruptedException("Current thread is interrupted. Returning.");
     }
   }
 }

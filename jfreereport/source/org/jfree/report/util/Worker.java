@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
+ * $Id: Worker.java,v 1.4 2003/08/25 14:29:34 taqua Exp $
  *
  *
  * Changes
@@ -102,10 +102,17 @@ public class Worker extends Thread
    * Kills the worker after he completed his work. Awakens the worker if he's
    * sleeping, so that the worker dies without delay.
    */
-  public synchronized void finish()
+  public void finish()
   {
     finish = true;
-    this.notifyAll();
+    // we are evil ..
+    try
+    {
+      this.interrupt();
+    }
+    catch (SecurityException se)
+    {
+    }
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: DemoResources.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: DemoResources_sv.java,v 1.1 2003/08/30 15:02:53 taqua Exp $
  *
  * Changes
  * -------
@@ -75,16 +75,10 @@ public class DemoResources_sv extends JFreeReportResources
     {"action.print-preview.description", "Förhandsgranska rapporten"},
     {"action.print-preview.mnemonic", new Integer(KeyEvent.VK_P)},
     {"action.print-preview.accelerator", createMenuKeystroke(KeyEvent.VK_P)},
-    {"action.print-preview.small-icon",
-     getIcon("org/jfree/report/modules/gui/base/resources/PrintPreview16.gif")},
-    {"action.print-preview.icon",
-     getIcon("org/jfree/report/modules/gui/base/resources/PrintPreview24.gif")},
 
     {"action.about.name", "Om..."},
     {"action.about.description", "Information om applikationen"},
     {"action.about.mnemonic", new Integer(KeyEvent.VK_A)},
-    {"action.about.small-icon", getIcon("org/jfree/report/modules/gui/base/resources/About16.gif")},
-    {"action.about.icon", getIcon("org/jfree/report/modules/gui/base/resources/About24.gif")},
 
     {"menu.file.name", "Fil"},
     {"menu.file.mnemonic", new Character('F')},

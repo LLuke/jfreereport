@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: PDFExportResources_sv.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PDFExportResources_sv.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -73,13 +73,14 @@ public class PDFExportResources_sv extends JFreeReportResources
         {"action.save-as.name", "Spara som PDF..."},
         {"action.save-as.description", "Spara till PDF format"},
         {"action.save-as.mnemonic", new Integer(KeyEvent.VK_A)},
-
-        {"file.save.pdfdescription", "PDF dokument"},
+        {"action.save-as.accelerator", createMenuKeystroke(KeyEvent.VK_S)},
 
         {"error.processingfailed.title", "Report generation misslyckades"},
         {"error.processingfailed.message", "Fel när rapporten skapades: {0}"},
         {"error.savefailed.message", "Fel inträffade under PDF sparning: {0}"},
         {"error.savefailed.title", "Fel under sparningen"},
+
+        {"file.save.pdfdescription", "PDF dokument"},
 
         {"pdfsavedialog.dialogtitle", "Sparning av rapporten till en PDF-fil ..."},
         {"pdfsavedialog.filename", "Filnamn"},
@@ -127,8 +128,12 @@ public class PDFExportResources_sv extends JFreeReportResources
         {"pdfsavedialog.cancel", "Avbryt"},
         {"pdfsavedialog.confirm", "Konfirmera"},
 
+        {"pdf-export.progressdialog.title", "Export till en PDF fil på gång ..."},
+        {"pdf-export.progressdialog.message", "Rapporten exporterades till en PDF dokument ..."},
+
       };
 
+      
   /**
    * Debugging method, prints all defined contents.
    *
@@ -138,4 +143,5 @@ public class PDFExportResources_sv extends JFreeReportResources
   {
     ResourceCompareTool.main(new String[]{PDFExportResources.class.getName(), "sv"});
   }
+  
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: CSVExportResources_sv.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: CSVExportResources_sv.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -73,11 +73,7 @@ public class CSVExportResources_sv extends JFreeReportResources
         {"action.export-to-csv.name", "Exportera till CSV..."},
         {"action.export-to-csv.description", "Spara till CSV format"},
         {"action.export-to-csv.mnemonic", new Integer(KeyEvent.VK_C)},
-
-        {"error.processingfailed.title", "Report generation misslyckades"},
-        {"error.processingfailed.message", "Fel när rapporten skapades: {0}"},
-        {"error.savefailed.message", "Fel inträffade under PDF sparning: {0}"},
-        {"error.savefailed.title", "Fel under sparningen"},
+        {"action.export-to-csv.accelerator", createMenuKeystroke(KeyEvent.VK_C)},
 
         {"csvexportdialog.dialogtitle", "Exportera rapporten till en CSV fil ..."},
         {"csvexportdialog.filename", "Filnamn"},
@@ -107,8 +103,16 @@ public class CSVExportResources_sv extends JFreeReportResources
         {"csvexportdialog.export.printed_elements", "Utskriven element  (Formaterad data)"},
         {"csvexportdialog.strict-layout", "Använda stränga tabell format reglar för exporten."},
 
-      };
+        {"error.processingfailed.title", "Report generation misslyckades"},
+        {"error.processingfailed.message", "Fel när rapporten skapades: {0}"},
+        {"error.savefailed.message", "Fel inträffade under PDF sparning: {0}"},
+        {"error.savefailed.title", "Fel under sparningen"},
 
+        {"csvexportdialog.csv-file-description", "Kommatecken-avskilda-värden-filer."},
+
+        {"cvs-export.progressdialog.title", "Export till en CSV på gång ..."},
+        {"cvs-export.progressdialog.message", "Rapporten exporterades till en CSV fil ..."},
+      };
 
   /**
    * Debugging method, prints all defined contents.

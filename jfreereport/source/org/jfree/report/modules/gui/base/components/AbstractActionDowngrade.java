@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractActionDowngrade.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
+ * $Id: AbstractActionDowngrade.java,v 1.3 2003/08/27 20:19:52 taqua Exp $
  *
  * Changes
  * -------
@@ -39,11 +39,7 @@
 
 package org.jfree.report.modules.gui.base.components;
 
-import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
-import javax.swing.Icon;
 
 /**
  * A class that allows Action features introduced in JDK 1.3 to be used with JDK 1.2.2, by
@@ -66,23 +62,6 @@ public abstract class AbstractActionDowngrade extends AbstractAction implements 
    * for the action.
    */
   public static final String MNEMONIC_KEY = ActionDowngrade.MNEMONIC_KEY;
-
-  /**
-   * Creates a transparent image, which can be used for aligning menu items.
-   *
-   * @param width  the image width.
-   * @param height  the image height.
-   *
-   * @return a transparent image.
-   */
-  public static Icon createTransparentImage(final int width, final int height)
-  {
-    final BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-    final int[] data = img.getRGB(0, 0, width, height, null, 0, width);
-    Arrays.fill(data, 0x00000000);
-    img.setRGB(0, 0, width, height, data, 0, width);
-    return new ImageIcon(img);
-  }
 
   /**
    * Creates a new action with a default (transparent) icon.

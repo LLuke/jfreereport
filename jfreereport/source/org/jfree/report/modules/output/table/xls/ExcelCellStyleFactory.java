@@ -29,7 +29,7 @@
  *                   JRXlsExporter.java of JasperReports;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellStyleFactory.java,v 1.3 2003/07/23 16:02:21 taqua Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.4 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -92,12 +92,8 @@ public class ExcelCellStyleFactory
     final FontDefinition awtFont = element.getStyle().getFontDefinitionProperty();
     final Color color = (Color) element.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
 
-    final ExcelDataCellStyle style = new ExcelDataCellStyle();
-    style.setHorizontalAlignment(horizontalAlignment);
-    style.setVerticalAlignment(verticalAlignment);
-    style.setFontDefinition(awtFont);
-    style.setTextColor(color);
-    style.setDataStyle(format);
+    final ExcelDataCellStyle style = new ExcelDataCellStyle
+        (awtFont, color, horizontalAlignment, verticalAlignment, format, false);
     return style;
   }
 

@@ -30,7 +30,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
  *
- * $Id: ExcelDataCellStyle.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: ExcelDataCellStyle.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.awt.Color;
 
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.util.ObjectUtils;
 
 /**
  * The ExcelDataCellStyle is used to collect style information for
@@ -53,7 +54,7 @@ import org.jfree.report.style.FontDefinition;
  *
  * @author Heiko Evermann.
  */
-public class ExcelDataCellStyle
+public final class ExcelDataCellStyle
 {
   /** A flag indicating whether to enable excels word wrapping. */
   private boolean wrapText;
@@ -73,11 +74,52 @@ public class ExcelDataCellStyle
   /** the data style. */
   private String dataStyle;
 
-  /**
-   * DefaultConstructor.
-   */
-  public ExcelDataCellStyle()
+  private int hashCode;
+
+  public ExcelDataCellStyle(final FontDefinition fontDefinition, final Color textColor,
+                            final ElementAlignment horizontal, final ElementAlignment vertical)
   {
+    this (fontDefinition, textColor, horizontal, vertical, null, false);
+  }
+
+
+  /**
+   * Creates a new ExcelDataCellStyle definition.
+   *
+   * @param fontDefinition
+   * @param textColor
+   * @param horizontal
+   * @param vertical
+   * @param dataStyle
+   * @param wrapText
+   */
+  public ExcelDataCellStyle(final FontDefinition fontDefinition, final Color textColor,
+                            final ElementAlignment horizontal, final ElementAlignment vertical,
+                            final String dataStyle, final boolean wrapText)
+  {
+    if (fontDefinition == null)
+    {
+      throw new NullPointerException("FontDefinition is null.");
+    }
+    if (textColor == null)
+    {
+      throw new NullPointerException("TextColor is null.");
+    }
+    if (horizontal == null)
+    {
+      throw new NullPointerException("HorizontalAlignment is null.");
+    }
+    if (vertical == null)
+    {
+      throw new NullPointerException("VerticalAlignment is null.");
+    }
+    this.wrapText = wrapText;
+    this.dataStyle = dataStyle;
+    this.fontDefinition = fontDefinition;
+    this.textColor = textColor;
+    this.horizontalAlignment = horizontal;
+    this.verticalAlignment = vertical;
+
   }
 
   /**
@@ -91,16 +133,6 @@ public class ExcelDataCellStyle
   }
 
   /**
-   * Defines the word wrap setting for the cell.
-   *
-   * @param wrapText set to true, if wordwrapping is enabled, false otherwise.
-   */
-  public void setWrapText(final boolean wrapText)
-  {
-    this.wrapText = wrapText;
-  }
-
-  /**
    * Gets the horizontal alignment for the cell.
    *
    * @return the horizontal alignment for the cell content.
@@ -108,16 +140,6 @@ public class ExcelDataCellStyle
   public ElementAlignment getHorizontalAlignment()
   {
     return horizontalAlignment;
-  }
-
-  /**
-   * Sets the horizontal alignment for the cell.
-   *
-   * @param horizontalAlignment the horizontal alignment for the cell content.
-   */
-  public void setHorizontalAlignment(final ElementAlignment horizontalAlignment)
-  {
-    this.horizontalAlignment = horizontalAlignment;
   }
 
   /**
@@ -131,16 +153,6 @@ public class ExcelDataCellStyle
   }
 
   /**
-   * Defines the vertical alignment for the cell.
-   *
-   * @param verticalAlignment the vertical alignment for the cell content.
-   */
-  public void setVerticalAlignment(final ElementAlignment verticalAlignment)
-  {
-    this.verticalAlignment = verticalAlignment;
-  }
-
-  /**
    * Gets the font style for the text in the cell.
    *
    * @return the font definition for the text in the cell.
@@ -148,16 +160,6 @@ public class ExcelDataCellStyle
   public FontDefinition getFontDefinition()
   {
     return fontDefinition;
-  }
-
-  /**
-   * Defines the font style for the text in the cell.
-   *
-   * @param fontDefinition the font definition for the text in the cell.
-   */
-  public void setFontDefinition(final FontDefinition fontDefinition)
-  {
-    this.fontDefinition = fontDefinition;
   }
 
   /**
@@ -171,16 +173,6 @@ public class ExcelDataCellStyle
   }
 
   /**
-   * Defines the text color for the cell.
-   *
-   * @param textColor the text color.
-   */
-  public void setTextColor(final Color textColor)
-  {
-    this.textColor = textColor;
-  }
-
-  /**
    * Returns the defined cell data style.
    *
    * @return the cell data style.
@@ -188,16 +180,6 @@ public class ExcelDataCellStyle
   public String getDataStyle()
   {
     return dataStyle;
-  }
-
-  /**
-   * Defines the cell data style.
-   *
-   * @param dataStyle the cell data style.
-   */
-  public void setDataStyle(final String dataStyle)
-  {
-    this.dataStyle = dataStyle;
   }
 
   /**
@@ -224,27 +206,23 @@ public class ExcelDataCellStyle
     {
       return false;
     }
-    if (fontDefinition != null ? !fontDefinition.equals(style.fontDefinition)
-        : style.fontDefinition != null)
+    if (!fontDefinition.equals(style.fontDefinition))
     {
       return false;
     }
-    if (horizontalAlignment != null ? !horizontalAlignment.equals(style.horizontalAlignment)
-        : style.horizontalAlignment != null)
+    if (!horizontalAlignment.equals(style.horizontalAlignment))
     {
       return false;
     }
-    if (textColor != null ? !textColor.equals(style.textColor) : style.textColor != null)
+    if (!textColor.equals(style.textColor))
     {
       return false;
     }
-    if (verticalAlignment != null ? !verticalAlignment.equals(style.verticalAlignment)
-        : style.verticalAlignment != null)
+    if (!verticalAlignment.equals(style.verticalAlignment))
     {
       return false;
     }
-    if (dataStyle != null ? !dataStyle.equals(style.dataStyle)
-        : style.dataStyle != null)
+    if (ObjectUtils.equalOrBothNull(dataStyle, style.dataStyle) == false)
     {
       return false;
     }
@@ -261,13 +239,17 @@ public class ExcelDataCellStyle
    */
   public int hashCode()
   {
-    int result;
-    result = (wrapText ? 1 : 0);
-    result = 29 * result + (horizontalAlignment != null ? horizontalAlignment.hashCode() : 0);
-    result = 29 * result + (verticalAlignment != null ? verticalAlignment.hashCode() : 0);
-    result = 29 * result + (fontDefinition != null ? fontDefinition.hashCode() : 0);
-    result = 29 * result + (textColor != null ? textColor.hashCode() : 0);
-    result = 29 * result + (dataStyle != null ? dataStyle.hashCode() : 0);
-    return result;
+    if (hashCode == 0)
+    {
+      int result;
+      result = (wrapText ? 1 : 0);
+      result = 29 * result + horizontalAlignment.hashCode();
+      result = 29 * result + verticalAlignment.hashCode();
+      result = 29 * result + fontDefinition.hashCode();
+      result = 29 * result + textColor.hashCode();
+      result = 29 * result + (dataStyle != null ? dataStyle.hashCode() : 0);
+      hashCode = result;
+    }
+    return hashCode;
   }
 }

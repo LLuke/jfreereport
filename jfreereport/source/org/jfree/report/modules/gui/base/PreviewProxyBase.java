@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.10 2003/08/26 17:35:50 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.11 2003/08/27 20:19:52 taqua Exp $
  *
  * Changes
  * -------
@@ -82,6 +82,7 @@ import javax.swing.UIManager;
 import org.jfree.layout.CenterLayout;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionButton;
@@ -93,6 +94,7 @@ import org.jfree.report.modules.gui.base.components.FloatingButtonEnabler;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.Worker;
+import org.jfree.report.util.ImageUtils;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.xml.ParserUtil;
 
@@ -601,8 +603,8 @@ public class PreviewProxyBase extends JComponent
     {
       zoomFactor = factorIndex;
       this.putValue(Action.NAME, String.valueOf((int) (ZOOM_FACTORS[factorIndex] * 100)) + " %");
-      this.putValue(SMALL_ICON, createTransparentImage(16, 16));
-      this.putValue("ICON24", createTransparentImage(24, 24));
+      this.putValue(SMALL_ICON, ImageUtils.createTransparentIcon(16, 16));
+      this.putValue("ICON24", ImageUtils.createTransparentIcon(24, 24));
     }
 
     /**
@@ -704,7 +706,7 @@ public class PreviewProxyBase extends JComponent
   private Dimension preferredSize;
 
   /** A preview proxy. */
-  private final PreviewProxy proxy;
+  private PreviewProxy proxy;
 
   /** A list of all export plugins known to this preview proxy base. */
   private ArrayList exportPlugIns;
@@ -712,10 +714,12 @@ public class PreviewProxyBase extends JComponent
   /** A collection of actions, keyed by the export plugin. */
   private HashMap pluginActions;
 
-  private final ReportProgressDialog progressDialog;
+  private ReportProgressDialog progressDialog;
 
   private boolean lockInterface;
   private ActionConcentrator zoomActionConcentrator;
+  private boolean closed;
+
 
   /**
    * Creates a preview proxy.
@@ -725,8 +729,8 @@ public class PreviewProxyBase extends JComponent
   public PreviewProxyBase(final PreviewProxy proxy)
   {
     this.proxy = proxy;
-    progressDialog = new ReportProgressDialog();
-    progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
+    this.progressDialog = new ReportProgressDialog();
+    this.progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
   }
 
   /**
@@ -766,20 +770,12 @@ public class PreviewProxyBase extends JComponent
     {
       public void componentHidden(final ComponentEvent e)
       {
-        try
-        {
-          getWorker().interrupt();
-        }
-        catch (SecurityException se)
-        {
-          // not allowed to access the thread ...
-        }
-
         final Component c = e.getComponent();
         if (c instanceof Window)
         {
           final Window w = (Window) c;
           w.dispose();
+          dispose();
         }
       }
     });
@@ -1654,6 +1650,10 @@ public class PreviewProxyBase extends JComponent
    */
   public void dispose()
   {
+    if (!closed)
+    {
+      close();
+    }
     // cleanup the report pane, removes some cached resources ...
     reportPane.dispose();
 
@@ -1662,11 +1662,26 @@ public class PreviewProxyBase extends JComponent
     RepaintManager.setCurrentManager(null);
   }
 
+  public boolean isClosed()
+  {
+    return closed;
+  }
+
   public void close()
   {
-    dispose();
+    Log.error ("Close called...");
+    closed = true;
     exportWorker.finish();
+    Log.error ("Export Worker Finished...");
     paginationWorker.finish();
+    Log.error ("Pagination worker finished...");
+    if (progressDialog.isVisible())
+    {
+      progressDialog.setVisible(false);
+      progressDialog.dispose();
+    }
+    dispose();
+    Log.error ("Disposed...");
   }
 
   /**
@@ -1920,6 +1935,10 @@ public class PreviewProxyBase extends JComponent
             progressDialog.setVisible(false);
             reportPane.removeRepaginationListener(progressDialog);
             setLockInterface(false);
+          }
+          catch (ReportInterruptedException re)
+          {
+            Log.info ("Repagination aborted.");
           }
           catch (Exception e)
           {

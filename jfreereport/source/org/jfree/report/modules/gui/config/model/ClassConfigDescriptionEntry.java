@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ClassConfigDescriptionEntry.java,v 1.1 2003/08/27 20:19:53 taqua Exp $
+ * $Id: ClassConfigDescriptionEntry.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,7 +43,6 @@ import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 public class ClassConfigDescriptionEntry extends ConfigDescriptionEntry
 {
   private Class baseClass;
-  private Class value;
 
   public ClassConfigDescriptionEntry(String keyName)
   {
@@ -52,21 +51,19 @@ public class ClassConfigDescriptionEntry extends ConfigDescriptionEntry
 
   public Class getBaseClass()
   {
+    if (baseClass == null)
+    {
+      throw new NullPointerException();
+    }
     return baseClass;
   }
 
   public void setBaseClass(Class baseClass)
   {
+    if (baseClass == null)
+    {
+      throw new NullPointerException();
+    }
     this.baseClass = baseClass;
-  }
-
-  public Class getValue()
-  {
-    return value;
-  }
-
-  public void setValue(Class value)
-  {
-    this.value = value;
   }
 }

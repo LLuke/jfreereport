@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellStyle.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
+ * $Id: HtmlCellStyle.java,v 1.4 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import org.jfree.report.style.FontDefinition;
  *
  * @author Thomas Morgner
  */
-public class HtmlCellStyle
+public final class HtmlCellStyle
 {
   /** the font definition used for the text. */
   private FontDefinition font;
@@ -60,6 +60,8 @@ public class HtmlCellStyle
 
   /** the horizontal content alignment. */
   private ElementAlignment horizontalAlignment;
+
+  private int hashCode;
 
   /**
    * Creates a new HTML-StyleDefinition.
@@ -76,19 +78,19 @@ public class HtmlCellStyle
   {
     if (font == null)
     {
-      throw new NullPointerException("Font");
+      throw new NullPointerException("FontDefinition is null");
     }
     if (fontColor == null)
     {
-      throw new NullPointerException("FontColor");
+      throw new NullPointerException("Color is null");
     }
     if (verticalAlignment == null)
     {
-      throw new NullPointerException("VAlign");
+      throw new NullPointerException("VerticalAlignment is null");
     }
     if (horizontalAlignment == null)
     {
-      throw new NullPointerException("HAlign");
+      throw new NullPointerException("HorizontalAlignment is null");
     }
 
     this.font = font;
@@ -157,19 +159,19 @@ public class HtmlCellStyle
 
     final HtmlCellStyle style = (HtmlCellStyle) o;
 
-    if (!font.equals(style.font))
-    {
-      return false;
-    }
-    if (!fontColor.equals(style.fontColor))
-    {
-      return false;
-    }
     if (!horizontalAlignment.equals(style.horizontalAlignment))
     {
       return false;
     }
     if (!verticalAlignment.equals(style.verticalAlignment))
+    {
+      return false;
+    }
+    if (!font.equals(style.font))
+    {
+      return false;
+    }
+    if (!fontColor.equals(style.fontColor))
     {
       return false;
     }
@@ -184,11 +186,15 @@ public class HtmlCellStyle
    */
   public int hashCode()
   {
-    int result;
-    result = font.hashCode();
-    result = 29 * result + fontColor.hashCode();
-    result = 29 * result + verticalAlignment.hashCode();
-    result = 29 * result + horizontalAlignment.hashCode();
-    return result;
+    if (hashCode == 0)
+    {
+      int result;
+      result = font.hashCode();
+      result = 29 * result + fontColor.hashCode();
+      result = 29 * result + verticalAlignment.hashCode();
+      result = 29 * result + horizontalAlignment.hashCode();
+      hashCode = result;
+    }
+    return hashCode;
   }
 }

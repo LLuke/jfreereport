@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_sv.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: HtmlExportResources_sv.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -73,13 +73,7 @@ public class HtmlExportResources_sv extends JFreeReportResources
         {"action.export-to-html.name", "Exportera till html..."},
         {"action.export-to-html.description", "Spara till HTML format"},
         {"action.export-to-html.mnemonic", new Integer(KeyEvent.VK_H)},
-
-        {"error.processingfailed.title", "Report generation misslyckades"},
-        {"error.processingfailed.message", "Fel när rapporten skapades: {0}"},
-        {"error.savefailed.message", "Fel inträffade under PDF sparning: {0}"},
-        {"error.savefailed.title", "Fel under sparningen"},
-        {"error.validationfailed.message", "Fel under valideringen av angiven information."},
-        {"error.validationfailed.title", "Fel under valideringen"},
+        {"action.export-to-html.accelerator", createMenuKeystroke(KeyEvent.VK_H)},
 
         {"htmlexportdialog.dialogtitle", "Exportera rapporten till en Html-Fil ..."},
 
@@ -110,7 +104,8 @@ public class HtmlExportResources_sv extends JFreeReportResources
         {"htmlexportdialog.cancel", "Avbryt"},
         {"htmlexportdialog.confirm", "Konfirmera"},
         {"htmlexportdialog.targetPathIsAbsolute",
-         "Mål path är en absolut katalog.\nAnge katalogen i en ZIP fil."},
+         "Mål path är en absolut katalog.\n" + 
+         "Ange katalogen i en ZIP fil."},
         {"htmlexportdialog.targetDataDirIsNoDirectory",
          "Angiven katalog är ogiltig."},
         {"htmlexportdialog.targetCreateDataDirConfirmation",
@@ -118,9 +113,26 @@ public class HtmlExportResources_sv extends JFreeReportResources
       + "Ska alla underkatalog skapas?"},
         {"htmlexportdialog.targetCreateDataDirTitle", "Skapa katalogen?"},
 
+        {"htmlexportdialog.html-documents", "HTML dokument"},
+        {"htmlexportdialog.zip-archives", "ZIP arkiv"},
+
+        {"htmlexportdialog.stream-export", "Fil stream export"},
+        {"htmlexportdialog.directory-export", "Katalog export"},
+        {"htmlexportdialog.zip-export", "ZIP fil export"},
+
+        {"error.processingfailed.title", "Report generation misslyckades"},
+        {"error.processingfailed.message", "Fel när rapporten skapades: {0}"},
+        {"error.savefailed.message", "Fel inträffade under PDF sparning: {0}"},
+        {"error.savefailed.title", "Fel under sparningen"},
+        {"error.validationfailed.message", "Fel under valideringen av angiven information."},
+        {"error.validationfailed.title", "Fel under valideringen"},
+
+        {"html-export.progressdialog.title", "Export till HTML format på gång..."},
+        {"html-export.progressdialog.message", "Rapporten exporterades till en HTML fil ..."},
 
       };
 
+      
   /**
    * Debugging method, prints all defined contents.
    *
@@ -130,4 +142,5 @@ public class HtmlExportResources_sv extends JFreeReportResources
   {
     ResourceCompareTool.main(new String[]{HtmlExportResources.class.getName(), "sv"});
   }
+  
 }

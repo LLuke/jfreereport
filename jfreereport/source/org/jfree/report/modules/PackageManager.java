@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.10 2003/08/25 14:29:29 taqua Exp $
+ * $Id: PackageManager.java,v 1.11 2003/08/28 19:36:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -435,5 +435,16 @@ public final class PackageManager
       mods[i] = state.getModule();
     }
     return mods;
+  }
+
+  public static void main (String [] args)
+  {
+    PackageManager.getInstance().init();
+    Module[] mods = PackageManager.getInstance().getActiveModules();
+    for (int i = 0; i < mods.length; i++)
+    {
+      System.out.println (mods[i]);
+    }
+    System.out.println ("A total of " + mods.length + " modules is available.");
   }
 }

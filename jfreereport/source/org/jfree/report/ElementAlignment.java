@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementAlignment.java,v 1.5 2003/08/25 14:29:28 taqua Exp $
+ * $Id: ElementAlignment.java,v 1.6 2003/08/26 17:35:43 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,8 @@ public final class ElementAlignment implements Serializable
 
   /** The alignment name. */
   private final String myName; // for debug only
-
+  /** A cached hashcode. */
+  private int hashCode;
   /**
    * Creates a new alignment object.  Since this constructor is private, you cannot create new
    * alignment objects, you can only use the predefined constants.
@@ -82,6 +83,7 @@ public final class ElementAlignment implements Serializable
   private ElementAlignment(final String name)
   {
     myName = name;
+    hashCode = myName.hashCode();
   }
 
   /**
@@ -108,19 +110,7 @@ public final class ElementAlignment implements Serializable
     {
       return true;
     }
-    if (!(o instanceof ElementAlignment))
-    {
-      return false;
-    }
-
-    final ElementAlignment alignment = (ElementAlignment) o;
-
-    if (!myName.equals(alignment.myName))
-    {
-      return false;
-    }
-
-    return true;
+    return false;
   }
 
   /**
@@ -130,9 +120,7 @@ public final class ElementAlignment implements Serializable
    */
   public int hashCode()
   {
-    int result;
-    result = myName.hashCode();
-    return result;
+    return hashCode;
   }
 
   /**
@@ -144,27 +132,27 @@ public final class ElementAlignment implements Serializable
    */
   protected Object readResolve() throws ObjectStreamException
   {
-    if (this.equals(ElementAlignment.LEFT))
+    if (this.myName.equals(ElementAlignment.LEFT.myName))
     {
       return ElementAlignment.LEFT;
     }
-    if (this.equals(ElementAlignment.RIGHT))
+    if (this.myName.equals(ElementAlignment.RIGHT.myName))
     {
       return ElementAlignment.RIGHT;
     }
-    if (this.equals(ElementAlignment.CENTER))
+    if (this.myName.equals(ElementAlignment.CENTER.myName))
     {
       return ElementAlignment.CENTER;
     }
-    if (this.equals(ElementAlignment.TOP))
+    if (this.myName.equals(ElementAlignment.TOP.myName))
     {
       return ElementAlignment.TOP;
     }
-    if (this.equals(ElementAlignment.BOTTOM))
+    if (this.myName.equals(ElementAlignment.BOTTOM.myName))
     {
       return ElementAlignment.BOTTOM;
     }
-    if (this.equals(ElementAlignment.MIDDLE))
+    if (this.myName.equals(ElementAlignment.MIDDLE.myName))
     {
       return ElementAlignment.MIDDLE;
     }

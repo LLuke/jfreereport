@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morger
  * Contributor(s):   Stefan Prange;
  *
- * $Id: SystemPropertyConfiguration.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: SystemPropertyConfiguration.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -36,6 +36,8 @@
  * 05-Feb-2003 : This implementation now handles SecurityExceptions.
  */
 package org.jfree.report.util;
+
+import java.util.Enumeration;
 
 /**
  * A property configuration based on system properties.
@@ -93,5 +95,37 @@ public class SystemPropertyConfiguration extends ReportConfiguration
       // ignore security exceptions, continue as if the property was not set..
     }
     return super.getConfigProperty(key, defaultValue);
+  }
+
+  public boolean isLocallyDefined(String key)
+  {
+    try
+    {
+      return System.getProperties().containsKey(key);
+    }
+    catch (SecurityException se)
+    {
+      return false;
+    }
+  }
+
+  /**
+   * Returns all defined configuration properties for the report. The enumeration
+   * contains all keys of the changed properties, properties set from files or
+   * the system properties are not included.
+   *
+   * @return all defined configuration properties for the report.
+   */
+  public Enumeration getConfigProperties()
+  {
+    try
+    {
+      return System.getProperties().keys();
+    }
+    catch (SecurityException se)
+    {
+      // should return an empty enumeration ...
+      return super.getConfigProperties();
+    }
   }
 }

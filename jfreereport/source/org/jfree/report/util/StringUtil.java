@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringUtil.java,v 1.4 2003/08/24 15:13:23 taqua Exp $
+ * $Id: StringUtil.java,v 1.5 2003/08/25 14:29:34 taqua Exp $
  *
  * Changes
  * -------
@@ -85,4 +85,30 @@ public final class StringUtil
     }
     return base.regionMatches(true, base.length() - end.length(), end, 0, end.length());
   }
+
+  /**
+   * Parses the given string and returns the parsed integer value or
+   * the given default if the parsing failed.
+   *
+   * @param value the to be parsed string
+   * @param defaultValue the default value
+   * @return the parsed string.
+   */
+  public static int parseInt (String value, int defaultValue)
+  {
+    if (value == null)
+    {
+      return defaultValue;
+    }
+    try
+    {
+      return Integer.parseInt(value);
+    }
+    catch (Exception e)
+    {
+      return defaultValue;
+    }
+  }
+
+
 }

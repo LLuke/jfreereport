@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecord.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: BaseFontRecord.java,v 1.2 2003/08/24 15:06:42 taqua Exp $
  *
  * Changes
  * -------
@@ -44,11 +44,11 @@ import com.lowagie.text.pdf.BaseFont;
 import org.jfree.report.style.FontDefinition;
 
 /**
- * A PDF font record.
+ * A PDF font record. Once created the base font record is immutable.
  *
  * @author Thomas Morgner
  */
-public class BaseFontRecord
+public final class BaseFontRecord
 {
   /** The AWT font. */
   private FontDefinition awtFont;
@@ -62,14 +62,28 @@ public class BaseFontRecord
   /** A flag indicating whether this font record describes an embedded PDF font. */
   private boolean embedded;
 
-  /** The encoding. */
-  private String encoding;
-
   /**
    * Creates a new font record.
    */
-  public BaseFontRecord()
+  public BaseFontRecord(final FontDefinition font, final String logicalName,
+                        boolean embedded, final BaseFont baseFont)
   {
+    if (font == null)
+    {
+      throw new NullPointerException("AWT-FontDefinition is null.");
+    }
+    if (baseFont == null)
+    {
+      throw new NullPointerException("iText-FontDefinition is null.");
+    }
+    if (logicalName == null)
+    {
+      throw new NullPointerException("Logical font name is null.");
+    }
+    this.awtFont = font;
+    this.baseFont = baseFont;
+    this.logicalName = logicalName;
+    this.embedded = embedded;
   }
 
   /**
@@ -89,17 +103,7 @@ public class BaseFontRecord
    */
   public String getEncoding()
   {
-    return encoding;
-  }
-
-  /**
-   * Sets the encoding.
-   *
-   * @param encoding  the encoding.
-   */
-  public void setEncoding(final String encoding)
-  {
-    this.encoding = encoding;
+    return baseFont.getEncoding();
   }
 
   /**
@@ -113,16 +117,6 @@ public class BaseFontRecord
   }
 
   /**
-   * Sets the flag that controls whether or not this font will be embedded in the PDF output.
-   *
-   * @param embedded  the flag.
-   */
-  public void setEmbedded(final boolean embedded)
-  {
-    this.embedded = embedded;
-  }
-
-  /**
    * Returns the logical name of the font.
    *
    * @return the logical name.
@@ -130,16 +124,6 @@ public class BaseFontRecord
   public String getLogicalName()
   {
     return logicalName;
-  }
-
-  /**
-   * Sets the logical name of the font.
-   *
-   * @param logicalName  the logical name.
-   */
-  public void setLogicalName(final String logicalName)
-  {
-    this.logicalName = logicalName;
   }
 
   /**
@@ -153,16 +137,6 @@ public class BaseFontRecord
   }
 
   /**
-   * Sets the AWT font.
-   *
-   * @param awtFont  the AWT font.
-   */
-  public void setFontDefinition(final FontDefinition awtFont)
-  {
-    this.awtFont = awtFont;
-  }
-
-  /**
    * Returns the iText BaseFont.
    *
    * @return the itext BaseFont.
@@ -173,26 +147,12 @@ public class BaseFontRecord
   }
 
   /**
-   * Sets the iText BaseFont.
-   *
-   * @param baseFont  the iText BaseFont.
-   */
-  public void setBaseFont(final BaseFont baseFont)
-  {
-    this.baseFont = baseFont;
-  }
-
-  /**
    * Returns the font height.
    *
    * @return the font height.
    */
   public float getFontHeight()
   {
-    if (awtFont == null)
-    {
-      return -1;
-    }
     return getFontDefinition().getFont().getSize2D();
   }
 }

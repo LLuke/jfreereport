@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: ImageReference.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes:
  * --------
@@ -98,8 +98,12 @@ public class ImageReference implements Serializable, Cloneable
    */
   public ImageReference(final URL url) throws IOException
   {
+    if (url == null)
+    {
+      throw new NullPointerException("URL must not be null.");
+    }
+    this.url = url;
     InputStream is = null;
-    setSourceURL(url);
 
     try
     {
@@ -293,20 +297,6 @@ public class ImageReference implements Serializable, Cloneable
   public URL getSourceURL()
   {
     return url;
-  }
-
-  /**
-   * Sets the source URL for the image.
-   *
-   * @param surl The URL.
-   */
-  protected void setSourceURL(final URL surl)
-  {
-    if (surl == null)
-    {
-      throw new NullPointerException();
-    }
-    this.url = surl;
   }
 
   /**

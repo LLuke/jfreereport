@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.6 2003/08/26 17:35:51 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.7 2003/08/28 17:45:44 taqua Exp $
  *
  * Changes
  * -------
@@ -650,5 +650,10 @@ public class ReportConfiguration implements Configuration, Serializable
     {
       collectPropertyKeys(prefix, config.parentConfiguration, collector);
     }
+  }
+
+  public boolean isLocallyDefined (String key)
+  {
+    return configuration.containsKey(key);
   }
 }

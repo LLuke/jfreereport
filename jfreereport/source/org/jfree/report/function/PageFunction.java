@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: PageFunction.java,v 1.3 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ package org.jfree.report.function;
 import java.io.Serializable;
 
 import org.jfree.report.Group;
+import org.jfree.report.util.StringUtil;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.states.ReportState;
@@ -220,7 +221,7 @@ public class PageFunction extends AbstractFunction
    */
   public int getStartPage()
   {
-    return Integer.parseInt(getProperty("start", "1"));
+    return StringUtil.parseInt(getProperty("start"), 1);
   }
 
   /**

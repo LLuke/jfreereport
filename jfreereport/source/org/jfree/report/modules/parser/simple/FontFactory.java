@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
- * $Id: FontFactory.java,v 1.2 2003/08/24 15:08:21 taqua Exp $
+ * $Id: FontFactory.java,v 1.3 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -424,7 +424,7 @@ public final class FontFactory implements ReportDefinitionTags
     applyFontInformation(target, readSimpleFontStyle(attr, fi));
 
     // get the font size...
-    final Integer elementFontSize = parseInt(attr.getValue(FONT_SIZE_ATT));
+    final Integer elementFontSize = parseInteger(attr.getValue(FONT_SIZE_ATT));
     if (elementFontSize != null)
     {
       target.setStyleProperty(ElementStyleSheet.FONTSIZE, elementFontSize);
@@ -438,7 +438,7 @@ public final class FontFactory implements ReportDefinitionTags
    *
    * @return the int value.
    */
-  private static Integer parseInt(final String val)
+  private static Integer parseInteger(final String val)
   {
     if (val == null)
     {
@@ -478,7 +478,7 @@ public final class FontFactory implements ReportDefinitionTags
     readSimpleFontStyle(attr, fi);
 
     // get the font size...
-    final Integer elementFontSize = parseInt(attr.getValue(FONT_SIZE_ATT));
+    final Integer elementFontSize = parseInteger(attr.getValue(FONT_SIZE_ATT));
     if (elementFontSize != null)
     {
       fi.setFontSize(elementFontSize);

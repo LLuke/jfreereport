@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: CloseAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
+ * $Id: CloseAction.java,v 1.3 2003/08/27 20:19:52 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import java.util.ResourceBundle;
 
 import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionDowngrade;
+import org.jfree.report.util.ImageUtils;
 
 /**
  * An action for closing the print preview frame.
@@ -69,7 +70,7 @@ public abstract class CloseAction extends AbstractActionDowngrade
         resources.getObject("action.close.mnemonic"));
     this.putValue(ActionDowngrade.ACCELERATOR_KEY,
         resources.getObject("action.close.accelerator"));
-    this.putValue(SMALL_ICON, createTransparentImage(16, 16));
-    this.putValue("ICON24", createTransparentImage(24, 24));
+    this.putValue(SMALL_ICON, ImageUtils.createTransparentIcon(16, 16));
+    this.putValue("ICON24", ImageUtils.createTransparentIcon(24, 24));
   }
 }

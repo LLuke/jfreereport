@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConfigTreeSectionNode.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,5 +43,10 @@ public class ConfigTreeSectionNode extends AbstractConfigTreeNode
   public ConfigTreeSectionNode(String name)
   {
     super(name);
+  }
+
+  public void reset()
+  {
+    super.reset();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.7 2003/08/25 14:29:32 taqua Exp $
+ * $Id: TableProcessor.java,v 1.8 2003/08/27 20:19:54 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.util.Properties;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
 import org.jfree.report.function.FunctionInitializeException;
@@ -92,6 +93,8 @@ public abstract class TableProcessor
 
   /** The tablewriter function. */
   private TableWriter tableWriter;
+
+  private boolean handleInterruptedState;
 
   /** Storage for listener references. */
   private ArrayList listeners;
@@ -255,6 +258,7 @@ public abstract class TableProcessor
           = (level == -1) && getReport().getReportConfiguration().isStrictErrorHandling();
       while (!state.isFinish())
       {
+        checkInterrupted();
 
         if (lastRow != state.getCurrentDisplayItem())
         {
@@ -361,6 +365,8 @@ public abstract class TableProcessor
       ReportStateProgress progress = null;
       while (!state.isFinish())
       {
+        checkInterrupted();
+        
         if (lastRow != state.getCurrentDisplayItem())
         {
           lastRow = state.getCurrentDisplayItem();
@@ -598,6 +604,46 @@ public abstract class TableProcessor
       final RepaginationListener l = (RepaginationListener) listenersCache[i];
       l.repaginationUpdate(state);
     }
+  }
+
+  /**
+   * Checks, whether the current thread is interrupted.
+   *
+   * @throws org.jfree.report.ReportInterruptedException if the thread is interrupted to
+   * abort the report processing.
+   */
+  protected void checkInterrupted () throws ReportInterruptedException
+  {
+    if (isHandleInterruptedState() && Thread.interrupted())
+    {
+      throw new ReportInterruptedException("Current thread is interrupted. Returning.");
+    }
+  }
+
+
+  /**
+   * Returns whether the processor should check the threads interrupted state.
+   * If this is set to true and the thread was interrupted, then the report processing
+   * is aborted.
+   *
+   * @return true, if the processor should check the current thread state, false otherwise.
+   */
+  public boolean isHandleInterruptedState()
+  {
+    return handleInterruptedState;
+  }
+
+  /**
+   * Defines, whether the processor should check the threads interrupted state.
+   * If this is set to true and the thread was interrupted, then the report processing
+   * is aborted.
+   *
+   * @param handleInterruptedState true, if the processor should check the current thread state,
+   *                               false otherwise.
+   */
+  public void setHandleInterruptedState(final boolean handleInterruptedState)
+  {
+    this.handleInterruptedState = handleInterruptedState;
   }
 
 }

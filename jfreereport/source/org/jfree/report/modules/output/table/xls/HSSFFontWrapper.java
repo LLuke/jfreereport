@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: HSSFFontWrapper.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.3 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import org.jfree.report.style.FontDefinition;
  *
  * @author Heiko Evermann
  */
-public class HSSFFontWrapper
+public final class HSSFFontWrapper
 {
   /** scale between Excel and awt. With this value it looks fine. */
   public static final int FONT_FACTOR = 20;
@@ -76,6 +76,9 @@ public class HSSFFontWrapper
   /** the excel font. */
   private HSSFFont font;
 
+  /** the cached hashcode. */
+  private int hashCode;
+
   /**
    * Creates a new HSSFFontWrapper for the given font and color.
    *
@@ -84,6 +87,15 @@ public class HSSFFontWrapper
    */
   public HSSFFontWrapper(final FontDefinition font, final Color color)
   {
+    if (font == null)
+    {
+      throw new NullPointerException("FontDefinition is null");
+    }
+    if (color == null)
+    {
+      throw new NullPointerException("Color is null");
+    }
+
     final String fName = font.getFontName();
     if (font.isSansSerif())
     {
@@ -118,6 +130,10 @@ public class HSSFFontWrapper
    */
   public HSSFFontWrapper(final HSSFFont font)
   {
+    if (font == null)
+    {
+      throw new NullPointerException("Font is null");
+    }
     fontName = font.getFontName();
     colorIndex = font.getColor();
     fontHeight = font.getFontHeightInPoints();
@@ -224,12 +240,16 @@ public class HSSFFontWrapper
    */
   public int hashCode()
   {
-    int result;
-    result = fontName.hashCode();
-    result = 29 * result + (int) colorIndex;
-    result = 29 * result + fontHeight;
-    result = 29 * result + (bold ? 1 : 0);
-    result = 29 * result + (italic ? 1 : 0);
-    return result;
+    if (hashCode == 0)
+    {
+      int result;
+      result = fontName.hashCode();
+      result = 29 * result + (int) colorIndex;
+      result = 29 * result + fontHeight;
+      result = 29 * result + (bold ? 1 : 0);
+      result = 29 * result + (italic ? 1 : 0);
+      hashCode = result;
+    }
+    return hashCode;
   }
 }

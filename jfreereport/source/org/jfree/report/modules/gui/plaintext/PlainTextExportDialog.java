@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.5 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * --------
@@ -871,7 +871,7 @@ public class PlainTextExportDialog extends JDialog
             PlainTextOutputTarget.TEXT_OUTPUT_ENCODING_DEFAULT));
     try
     {
-      setLinesPerInch(parseInt(config.getConfigProperty
+      setLinesPerInch(StringUtil.parseInt(config.getConfigProperty
           (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.LINES_PER_INCH, "6"),
           getLinesPerInch()));
     }
@@ -881,25 +881,13 @@ public class PlainTextExportDialog extends JDialog
     }
     try
     {
-      setCharsPerInch(parseInt(config.getConfigProperty
+      setCharsPerInch(StringUtil.parseInt(config.getConfigProperty
           (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.CHARS_PER_INCH, "10"),
           getCharsPerInch()));
     }
     catch (IllegalArgumentException e)
     {
       // ignore
-    }
-  }
-
-  private int parseInt(final String configProperty, final int defaultValue)
-  {
-    try
-    {
-      return Integer.parseInt(configProperty);
-    }
-    catch (Exception e)
-    {
-      return defaultValue;
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: PrintExportResources_sv.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PrintExportResources_sv.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,6 +52,7 @@ public class PrintExportResources_sv extends JFreeReportResources
 {
   /**
    * DefaultConstructor.
+   *
    */
   public PrintExportResources_sv()
   {
@@ -77,9 +78,13 @@ public class PrintExportResources_sv extends JFreeReportResources
         {"action.print.name", "Skriva ut..."},
         {"action.print.description", "Skriva ut rapporten"},
         {"action.print.mnemonic", new Integer(KeyEvent.VK_P)},
+        {"action.print.accelerator", createMenuKeystroke(KeyEvent.VK_P)},
 
         {"error.printfailed.message", "Fel när rapporten skapades: {0}"},
         {"error.printfailed.title", "Fel under utskrivningen"},
+
+        {"printing-export.progressdialog.title", "Utskrift av rapporten på gång ..."},
+        {"printing-export.progressdialog.message", "Rapporten ska skrivas ut ..."},
 
       };
 

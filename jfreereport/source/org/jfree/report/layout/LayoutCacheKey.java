@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutCacheKey.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: LayoutCacheKey.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -171,32 +171,6 @@ public class LayoutCacheKey
 
     final LayoutCacheKey layoutCacheKey = (LayoutCacheKey) o;
 
-    if (hashCode() != o.hashCode())
-    {
-      return false;
-    }
-
-//    Log.debug ("--------------------");
-//    if (absPos != null && layoutCacheKey.absPos != null)
-//    {
-//      Log.debug ("AbsPos: " + absPos + "  " + layoutCacheKey.absPos);
-//    }
-//    if (maxSize != null && layoutCacheKey.maxSize != null)
-//    {
-//      Log.debug ("maxSize: " + maxSize + "  " + layoutCacheKey.maxSize);
-//    }
-//    if (minSize != null && layoutCacheKey.minSize != null)
-//    {
-//      Log.debug ("minSize: " + minSize + "  " + layoutCacheKey.minSize);
-//    }
-//    if (parentDim != null && layoutCacheKey.parentDim != null)
-//    {
-//      Log.debug ("parentDim: " + parentDim + "  " + layoutCacheKey.parentDim);
-//    }
-//    if (prefSize != null && layoutCacheKey.prefSize != null)
-//    {
-//      Log.debug ("prefSize: " + prefSize + "  " + layoutCacheKey.prefSize);
-//    }
     if (absPos != null ? !absPos.equals(layoutCacheKey.absPos) : layoutCacheKey.absPos != null)
     {
       return false;

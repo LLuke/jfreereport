@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FontDefinition.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
+ * $Id: FontDefinition.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -92,6 +92,8 @@ public class FontDefinition implements Serializable, Cloneable
 
   /** whether to embedd the font in the target documents, if supported. */
   private boolean embeddedFont;
+
+  private transient int hashCode;
 
   // color is defined elsewhere
 
@@ -375,12 +377,12 @@ public class FontDefinition implements Serializable, Cloneable
     {
       return false;
     }
-    if (fontEncoding != null ? !fontEncoding.equals(definition.fontEncoding)
-        : definition.fontEncoding != null)
+    if (!fontName.equals(definition.fontName))
     {
       return false;
     }
-    if (!fontName.equals(definition.fontName))
+    if (fontEncoding != null ? !fontEncoding.equals(definition.fontEncoding)
+        : definition.fontEncoding != null)
     {
       return false;
     }
@@ -398,16 +400,20 @@ public class FontDefinition implements Serializable, Cloneable
    */
   public int hashCode()
   {
-    int result;
-    result = (fontEncoding != null ? fontEncoding.hashCode() : 0);
-    result = 29 * result + fontName.hashCode();
-    result = 29 * result + fontSize;
-    result = 29 * result + (isBold ? 1 : 0);
-    result = 29 * result + (isItalic ? 1 : 0);
-    result = 29 * result + (isUnderline ? 1 : 0);
-    result = 29 * result + (isStrikeThrough ? 1 : 0);
-    result = 29 * result + (embeddedFont ? 1 : 0);
-    return result;
+    if (hashCode == 0)
+    {
+      int result;
+      result = (fontEncoding != null ? fontEncoding.hashCode() : 0);
+      result = 29 * result + fontName.hashCode();
+      result = 29 * result + fontSize;
+      result = 29 * result + (isBold ? 1 : 0);
+      result = 29 * result + (isItalic ? 1 : 0);
+      result = 29 * result + (isUnderline ? 1 : 0);
+      result = 29 * result + (isStrikeThrough ? 1 : 0);
+      result = 29 * result + (embeddedFont ? 1 : 0);
+      hashCode = result;
+    }
+    return hashCode;
   }
 
   /**

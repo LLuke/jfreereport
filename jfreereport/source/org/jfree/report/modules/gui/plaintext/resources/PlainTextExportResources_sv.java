@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: PlainTextExportResources_sv.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PlainTextExportResources_sv.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -73,6 +73,7 @@ public class PlainTextExportResources_sv extends JFreeReportResources
         {"action.export-to-plaintext.name", "Spara som text file..."},
         {"action.export-to-plaintext.description", "Spara till vanlig text fil"},
         {"action.export-to-plaintext.mnemonic", new Integer(KeyEvent.VK_T)},
+        {"action.export-to-plaintext.accelerator", createMenuKeystroke(KeyEvent.VK_T)},
 
         {"error.processingfailed.title", "Report generation misslyckades"},
         {"error.processingfailed.message", "Fel när rapporten skapades: {0}"},
@@ -105,6 +106,9 @@ public class PlainTextExportResources_sv extends JFreeReportResources
         {"plain-text-exportdialog.lines-per-inch", "lpi (Rader i en tum)"},
         {"plain-text-exportdialog.font-settings", "Teckensnitt inställningar"},
 
+        {"plaintext-export.progressdialog.title", "Export till en text fil på gång ..."},
+        {"plaintext-export.progressdialog.message", 
+          "Rapporten exporterades till en text fil ..."},
 
       };
 

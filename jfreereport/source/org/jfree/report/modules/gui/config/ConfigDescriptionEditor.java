@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEditor.java,v 1.2 2003/08/28 17:45:43 taqua Exp $
+ * $Id: ConfigDescriptionEditor.java,v 1.3 2003/08/28 19:36:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,15 +42,16 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Dimension;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
@@ -75,28 +76,25 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.EtchedBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.ActionRadioButton;
-import org.jfree.report.modules.gui.config.resources.ConfigResources;
+import org.jfree.report.modules.gui.config.model.ClassConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionModel;
 import org.jfree.report.modules.gui.config.model.EnumConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.TextConfigDescriptionEntry;
-import org.jfree.report.modules.gui.config.model.ClassConfigDescriptionEntry;
+import org.jfree.report.modules.gui.config.resources.ConfigResources;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.StringUtil;
 import org.jfree.ui.ExtensionFileFilter;
 
 public class ConfigDescriptionEditor extends JFrame
 {
-  private CardLayout detailManager;
-  private JPanel detailManagerPanel;
   public static final String CLASS_DETAIL_EDITOR_NAME = "Class";
   public static final String ENUM_DETAIL_EDITOR_NAME = "Enum";
   public static final String TEXT_DETAIL_EDITOR_NAME = "Text";
@@ -423,9 +421,8 @@ public class ConfigDescriptionEditor extends JFrame
   private DefaultListModel enumEntryListModel;
 
   private ResourceBundle resources;
-//  private JPanel enumerationEditor;
-//  private JPanel classEditor;
-//  private JPanel textEditor;
+  private CardLayout detailManager;
+  private JPanel detailManagerPanel;
 
   private JPanel detailEditorPane;
   private JList entryList;
@@ -471,6 +468,18 @@ public class ConfigDescriptionEditor extends JFrame
     fileChooser.setMultiSelectionEnabled(false);
 
     setStatusText("Welcome");
+
+    addWindowListener(new WindowAdapter()
+    {
+      /**
+       * Invoked when a window is in the process of being closed.
+       * The close operation can be overridden at this point.
+       */
+      public void windowClosing(WindowEvent e)
+      {
+        closeAction.actionPerformed(new ActionEvent (e.getSource(), 0, "close"));
+      }
+    });
   }
 
   private JPanel createEntryList ()
@@ -510,10 +519,10 @@ public class ConfigDescriptionEditor extends JFrame
 
     JPanel buttonHolder = new JPanel();
     buttonHolder.setLayout(new GridLayout(1,4));
-    buttonHolder.add (new JButton(importAction));
-    buttonHolder.add (new JButton(loadAction));
-    buttonHolder.add (new JButton(saveAction));
-    buttonHolder.add (new JButton (closeAction));
+    buttonHolder.add (new ActionButton(importAction));
+    buttonHolder.add (new ActionButton(loadAction));
+    buttonHolder.add (new ActionButton(saveAction));
+    buttonHolder.add (new ActionButton (closeAction));
 
     panel.add(buttonHolder);
     return panel;
@@ -526,8 +535,8 @@ public class ConfigDescriptionEditor extends JFrame
 
     JPanel buttonHolder = new JPanel();
     buttonHolder.setLayout(new GridLayout(1,4));
-    buttonHolder.add (new JButton(cancelAction));
-    buttonHolder.add (new JButton(updateAction));
+    buttonHolder.add (new ActionButton(cancelAction));
+    buttonHolder.add (new ActionButton(updateAction));
 
     JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -602,22 +611,6 @@ public class ConfigDescriptionEditor extends JFrame
     return panel;
   }
 
-  private int parseInt (String value, int defaultValue)
-  {
-    if (value == null)
-    {
-      return defaultValue;
-    }
-    try
-    {
-      return Integer.parseInt(value);
-    }
-    catch (Exception e)
-    {
-      return defaultValue;
-    }
-  }
-
   private JPanel createDetailEditorPanel ()
   {
     JLabel keyNameLabel = new JLabel("KeyName:");
@@ -628,7 +621,7 @@ public class ConfigDescriptionEditor extends JFrame
     globalField = new JCheckBox();
     String font = ReportConfiguration.getGlobalConfig().getConfigProperty
         ("org.jfree.report.modules.gui.config.EditorFont", "Monospaced");
-    int fontSize = parseInt
+    int fontSize = StringUtil.parseInt
         (ReportConfiguration.getGlobalConfig().getConfigProperty
           ("org.jfree.report.modules.gui.config.EditorFontSize"), 12);
     descriptionField = new JTextArea();
@@ -943,7 +936,8 @@ public class ConfigDescriptionEditor extends JFrame
           catch (Exception e)
           {
             // invalid
-            Log.debug ("Class is invalid.");
+            Log.debug ("Class is invalid; defaulting to Object.class");
+            ce.setBaseClass(Object.class);
           }
           entry = ce;
           break;

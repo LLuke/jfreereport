@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecordKey.java,v 1.2 2003/08/24 15:06:42 taqua Exp $
+ * $Id: BaseFontRecordKey.java,v 1.3 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,11 @@
 package org.jfree.report.modules.output.support.itext;
 
 /**
- * A PDF font record key.
+ * A PDF font record key. This class is immutable.
  *
  * @author Thomas Morgner
  */
-public class BaseFontRecordKey
+public final class BaseFontRecordKey
 {
   /** The logical name. */
   private final String logicalName;
@@ -53,6 +53,7 @@ public class BaseFontRecordKey
   /** The encoding. */
   private final String encoding;
 
+  private int hashCode;
   /**
    * Creates a new key.
    *
@@ -61,6 +62,14 @@ public class BaseFontRecordKey
    */
   public BaseFontRecordKey(final String logicalName, final String encoding)
   {
+    if (logicalName == null)
+    {
+      throw new NullPointerException("Logical font name is null.");
+    }
+    if (encoding == null)
+    {
+      throw new NullPointerException("Encoding is null.");
+    }
     this.logicalName = logicalName;
     this.encoding = encoding;
   }
@@ -85,27 +94,13 @@ public class BaseFontRecordKey
 
     final BaseFontRecordKey key = (BaseFontRecordKey) o;
 
-    if (encoding != null)
+    if (!logicalName.equals(key.logicalName))
     {
-      if (!encoding.equals(key.encoding))
-      {
-        return false;
-      }
-      if (key.encoding == null)
-      {
-        return false;
-      }
+      return false;
     }
-    if (logicalName != null)
+    if (!encoding.equals(key.encoding))
     {
-      if (!logicalName.equals(key.logicalName))
-      {
-        return false;
-      }
-      if (key.logicalName == null)
-      {
-        return false;
-      }
+      return false;
     }
     return true;
   }
@@ -117,9 +112,13 @@ public class BaseFontRecordKey
    */
   public int hashCode()
   {
-    int result;
-    result = (logicalName != null ? logicalName.hashCode() : 0);
-    result = 29 * result + (encoding != null ? encoding.hashCode() : 0);
-    return result;
+    if (hashCode == 0)
+    {
+      int result;
+      result = logicalName.hashCode();
+      result = 29 * result + encoding.hashCode();
+      hashCode = result;
+    }
+    return hashCode;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.2 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.3 2003/08/27 20:19:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,6 +44,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.util.StringUtil;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
@@ -70,22 +71,10 @@ public class PlainTextExportTask extends ExportTask
     this.report = report;
     this.exportType = exportType;
 
-    charPerInch = parseInt(report.getReportConfiguration().getConfigProperty
-        (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.CHARS_PER_INCH, "10"));
-    linesPerInch = parseInt(report.getReportConfiguration().getConfigProperty
-        (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.LINES_PER_INCH, "6"));
-  }
-
-  private int parseInt(final String configProperty)
-  {
-    try
-    {
-      return Integer.parseInt(configProperty);
-    }
-    catch (Exception e)
-    {
-      throw new IllegalStateException("Report configuration contained an invalid setting.");
-    }
+    charPerInch = StringUtil.parseInt(report.getReportConfiguration().getConfigProperty
+        (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.CHARS_PER_INCH),10);
+    linesPerInch = StringUtil.parseInt(report.getReportConfiguration().getConfigProperty
+        (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.LINES_PER_INCH) ,6);
   }
 
   /**

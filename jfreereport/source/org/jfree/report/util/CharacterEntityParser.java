@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
+ * $Id: CharacterEntityParser.java,v 1.4 2003/08/25 14:29:34 taqua Exp $
  *
  * Changes
  * -------
@@ -87,7 +87,7 @@ public class CharacterEntityParser
     entities.setProperty("quot", "\"");
     entities.setProperty("lt", "<");
     entities.setProperty("gt", ">");
-    entities.setProperty("apos", "\u0039");
+    entities.setProperty("apos", "\u0027");
     return new CharacterEntityParser(entities);
   }
 
@@ -199,7 +199,7 @@ public class CharacterEntityParser
       if (buf.charAt(0) == '#')
       {
         buf.deleteCharAt(0);
-        subValue = Integer.parseInt(buf.toString());
+        subValue = StringUtil.parseInt(buf.toString(), 0);
         if ((subValue >= 1) && (subValue <= 65536))
         {
           final char[] chr = new char[1];

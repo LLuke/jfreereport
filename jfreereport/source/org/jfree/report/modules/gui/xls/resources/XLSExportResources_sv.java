@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: XLSExportResources_sv.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: XLSExportResources_sv.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -73,6 +73,7 @@ public class XLSExportResources_sv extends JFreeReportResources
         {"action.export-to-excel.name", "Exportera till Excel..."},
         {"action.export-to-excel.description", "Spara till MS-Excel format"},
         {"action.export-to-excel.mnemonic", new Integer(KeyEvent.VK_E)},
+        {"action.export-to-excel.accelerator", createMenuKeystroke(KeyEvent.VK_E)},
 
         {"error.processingfailed.title", "Report generation misslyckades"},
         {"error.processingfailed.message", "Fel när rapporten skapades: {0}"},
@@ -97,6 +98,10 @@ public class XLSExportResources_sv extends JFreeReportResources
         {"excelexportdialog.cancel", "Avbryt"},
         {"excelexportdialog.confirm", "Konfirmera"},
         {"excelexportdialog.strict-layout", "Använda stränga tabell format reglar för exporten."},
+
+        {"excel-export.progressdialog.title", "Export på gång till en Excel fil ..."},
+        {"excel-export.progressdialog.message", 
+          "Rapporten exporterades till en Excel ark ..."},
 
       };
 

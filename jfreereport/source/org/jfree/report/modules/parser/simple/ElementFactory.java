@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.6 2003/08/24 15:08:21 taqua Exp $
+ * $Id: ElementFactory.java,v 1.7 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -834,9 +834,9 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     factory.setEmbedFont(parseBoolean(atts.getValue(FS_EMBEDDED)));
     factory.setEncoding(atts.getValue(FS_ENCODING));
     factory.setFontName(atts.getValue(FONT_NAME_ATT));
-    factory.setFontSize(parseInt(atts.getValue(FONT_SIZE_ATT)));
+    factory.setFontSize(parseInteger(atts.getValue(FONT_SIZE_ATT)));
     factory.setItalic(parseBoolean(atts.getValue(FS_ITALIC)));
-    factory.setLineHeight(parseInt(atts.getValue(LINEHEIGHT)));
+    factory.setLineHeight(parseInteger(atts.getValue(LINEHEIGHT)));
     factory.setStrikethrough(parseBoolean(atts.getValue(FS_STRIKETHR)));
     factory.setUnderline(parseBoolean(atts.getValue(FS_UNDERLINE)));
     parseSimpleFontStyle(atts.getValue(FONT_STYLE_ATT), factory);
@@ -873,7 +873,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @return the int value.
    */
-  private Integer parseInt(final String val)
+  private Integer parseInteger(final String val)
   {
     if (val == null)
     {

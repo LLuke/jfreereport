@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.7 2003/08/27 20:19:54 taqua Exp $
  *
  * Changes
  * -------
@@ -179,12 +179,7 @@ public class BaseFontSupport
 
         if (f != null)
         {
-          fontRecord = new BaseFontRecord();
-          fontRecord.setFontDefinition(font);
-          fontRecord.setBaseFont(f);
-          fontRecord.setEmbedded(embedded);
-          fontRecord.setEncoding(stringEncoding);
-          fontRecord.setLogicalName(fontKey);
+          fontRecord = new BaseFontRecord(font, fontKey, embedded, f);
           putToCache(fontRecord);
           return fontRecord;
         }
@@ -202,12 +197,7 @@ public class BaseFontSupport
           false, null, null);
       if (f != null)
       {
-        fontRecord = new BaseFontRecord();
-        fontRecord.setFontDefinition(font);
-        fontRecord.setBaseFont(f);
-        fontRecord.setEmbedded(embedded);
-        fontRecord.setEncoding(stringEncoding);
-        fontRecord.setLogicalName(fontKey);
+        fontRecord = new BaseFontRecord(font, fontKey, embedded, f);
         putToCache(fontRecord);
         return fontRecord;
       }
@@ -271,24 +261,19 @@ public class BaseFontSupport
       return fontRec;
     }
 
-    // no, we have to create a new instance
-    final BaseFontRecord record = new BaseFontRecord();
-    record.setFontDefinition(font);
-    record.setEmbedded(embedded);
-    record.setLogicalName(fontKey);
+    BaseFont f;
     try
     {
-      final BaseFont f = BaseFont.createFont(fontKey, encoding, embedded, false, null, null);
-      record.setBaseFont(f);
-      record.setEncoding(encoding);
+      f = BaseFont.createFont(fontKey, encoding, embedded, false, null, null);
     }
     catch (DocumentException de)
     {
       // Fallback to iso8859-1 encoding (!this is not IDENTITY-H)
-      final BaseFont f = BaseFont.createFont(fontKey, stringEncoding, embedded, false, null, null);
-      record.setBaseFont(f);
-      record.setEncoding(stringEncoding);
+      f = BaseFont.createFont(fontKey, stringEncoding, embedded, false, null, null);
     }
+    // no, we have to create a new instance
+    final BaseFontRecord record = new BaseFontRecord(font, fontKey, embedded, f);
+
     if (record.getBaseFont() != null)
     {
       putToCache(record);
@@ -309,8 +294,8 @@ public class BaseFontSupport
   /**
    * Retrieves a record from the cache.
    *
-   * @param fontKey  the font key.
-   * @param encoding  the encoding.
+   * @param fontKey  the font key; never null.
+   * @param encoding  the encoding; never null.
    *
    * @return the PDF font record.
    */

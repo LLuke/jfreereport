@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ import java.io.Serializable;
 
 import org.jfree.report.Element;
 import org.jfree.report.event.ReportEvent;
+import org.jfree.util.ObjectUtils;
 
 /**
  * The ItemHideFunction hides equal values in a group. Only the first changed value is printed.
@@ -158,7 +159,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
     }
     else
     {
-      visible = (secureEquals(lastObject, fieldValue) == false);
+      visible = (ObjectUtils.equalOrBothNull(lastObject, fieldValue) == false);
     }
     lastObject = fieldValue;
     final Element e = event.getReport().getItemBand().getElement(getElement());
@@ -166,33 +167,6 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
     {
       e.setVisible(visible);
     }
-  }
-
-  /**
-   * Compares two objects where either or both objects could be null.
-   * <P>
-   * If both objects are null, this function returns <code>true</code>.
-   *
-   * @param o1  the first object.
-   * @param o2  the second object.
-   *
-   * @return true, if the two objects are equal.
-   */
-  private boolean secureEquals(final Object o1, final Object o2)
-  {
-    if (o1 == null && o2 == null)
-    {
-      return true;
-    }
-    if (o1 == null)
-    {
-      return false;
-    }
-    if (o2 == null)
-    {
-      return false;
-    }
-    return o1.equals(o2);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKey.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
+ * $Id: StyleKey.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -71,8 +71,8 @@ public final class StyleKey implements Serializable, Cloneable
   /**
    * Creates a new style key.
    *
-   * @param name  the name.
-   * @param valueType  the class of the value for this key.
+   * @param name  the name (never null).
+   * @param valueType  the class of the value for this key (never null).
    */
   private StyleKey(final String name, final Class valueType)
   {
@@ -130,7 +130,9 @@ public final class StyleKey implements Serializable, Cloneable
   }
 
   /**
-   * Returns the key with the specified name.
+   * Returns the key with the specified name. The given type is not
+   * checked against a possibly alredy defined definition, it is
+   * assumed that the type is only given for a new key definition.
    *
    * @param name  the name.
    * @param valueType  the class.

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewFrame.java,v 1.3 2003/08/24 15:08:18 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -100,6 +100,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
      */
     public void actionPerformed(final ActionEvent e)
     {
+      base.close();
       if (getDefaultCloseOperation() == DISPOSE_ON_CLOSE)
       {
         dispose();

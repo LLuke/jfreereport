@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConfigTreeModuleNode.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,18 +38,83 @@
 
 package org.jfree.report.modules.gui.config.model;
 
+import java.util.ArrayList;
+
 import org.jfree.report.modules.Module;
 import org.jfree.report.util.ReportConfiguration;
 
 public class ConfigTreeModuleNode extends AbstractConfigTreeNode
 {
+  private String configurationPrefix;
   private Module module;
   private ReportConfiguration configuration;
+  private ArrayList assignedKeys;
 
   public ConfigTreeModuleNode(Module module, ReportConfiguration config)
   {
     super(module.getName());
+    this.assignedKeys = new ArrayList();
     this.configuration = config;
     this.module = module;
+    configurationPrefix = ModuleNodeFactory.getPackage(this.module.getClass());
+  }
+
+  public Module getModule()
+  {
+    return module;
+  }
+
+  public ReportConfiguration getConfiguration()
+  {
+    return configuration;
+  }
+
+  public String getConfigurationPrefix()
+  {
+    return configurationPrefix;
+  }
+
+  public String toString ()
+  {
+    return getConfigurationPrefix();
+  }
+
+  /**
+   * Returns true if the receiver is a leaf.
+   */
+  public boolean isLeaf()
+  {
+    return true;
+  }
+
+  /**
+   * Returns true if the receiver allows children.
+   */
+  public boolean getAllowsChildren()
+  {
+    return false;
+  }
+
+  public void addAssignedKey (ConfigDescriptionEntry key)
+  {
+    if (key == null)
+    {
+      throw new NullPointerException();
+    }
+    if (assignedKeys.contains(key) == false)
+    {
+      assignedKeys.add(key);
+    }
+  }
+
+  public void removeAssignedKey (ConfigDescriptionEntry key)
+  {
+    assignedKeys.remove(key);
+  }
+
+  public ConfigDescriptionEntry[] getAssignedKeys ()
+  {
+    return (ConfigDescriptionEntry[]) assignedKeys.toArray
+        (new ConfigDescriptionEntry[assignedKeys.size()]);
   }
 }
