@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.9 2003/03/13 17:41:56 taqua Exp $
+ * $Id: TextContent.java,v 1.10 2003/03/18 17:14:41 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jrefinery.report.targets.base.layout.SizeCalculator;
+import com.jrefinery.report.targets.pageable.operations.TextOperationModule;
 import com.jrefinery.report.util.LineBreakIterator;
 import com.jrefinery.report.util.Log;
 

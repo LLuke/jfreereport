@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementLayoutInformation.java,v 1.6 2003/02/25 14:57:00 mungady Exp $
+ * $Id: ElementLayoutInformation.java,v 1.7 2003/02/26 16:42:23 mungady Exp $
  *
  * Changes
  * -------
@@ -133,7 +133,8 @@ public class ElementLayoutInformation
       throw new NullPointerException();
     }
     this.absolutePosition = (Point2D) absolutePosition.clone();
-    this.minimumSize = (Dimension2D) minimumSize.clone();
+    // the minsize cannot be greater than the max size ...
+    this.minimumSize = unionMin(maximumSize, minimumSize);
     this.maximumSize = (Dimension2D) maximumSize.clone();
     if (preferredSize != null)
     {
@@ -223,4 +224,19 @@ public class ElementLayoutInformation
                               (float) Math.max(pref.getHeight(), min.getHeight()));
   }
 
+  public String toString ()
+  {
+    StringBuffer b= new StringBuffer();
+    b.append("ElementLayoutInformation: \n");
+    b.append("    AbsolutePos: ");
+    b.append(absolutePosition);
+    b.append("\n    MinSize: ");
+    b.append(minimumSize);
+    b.append("\n    PrefSize: ");
+    b.append(preferredSize);
+    b.append("\n    MaxSize: ");
+    b.append(maximumSize);
+    b.append("\n");
+    return b.toString();
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.19 2003/02/27 10:35:37 mungady Exp $
+ * $Id: StaticLayoutManager.java,v 1.20 2003/03/18 22:35:20 taqua Exp $
  *
  * Changes
  * -------
@@ -274,6 +274,7 @@ public class StaticLayoutManager implements BandLayoutManager
     {
       ElementLayoutInformation eli 
           = new ElementLayoutInformation(absPos, minSize, maxSize, prefSize);
+
       Content content = contentFactory.createContentForElement(e, eli, getLayoutSupport());
       Rectangle2D contentBounds = content.getMinimumContentSize();
       if (contentBounds == null)
