@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.11 2003/04/05 18:57:20 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.12 2003/04/06 20:43:00 taqua Exp $
  *
  * Changes
  * -------
@@ -36,21 +36,21 @@
  */
 package com.jrefinery.report.targets.xml;
 
+import java.awt.print.PageFormat;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.Iterator;
+
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.ReportEventException;
+import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
 import com.jrefinery.report.states.ReportStateProgress;
 import com.jrefinery.report.util.NullOutputStream;
-
-import java.awt.print.PageFormat;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.Iterator;
 
 /**
  * The XMLProcessor coordinates the report processing for the XML-Output.
