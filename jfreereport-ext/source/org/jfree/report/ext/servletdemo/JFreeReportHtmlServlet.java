@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportHtmlServlet.java,v 1.1 2003/07/08 14:21:48 taqua Exp $
+ * $Id: JFreeReportHtmlServlet.java,v 1.2 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,10 @@ import org.jfree.report.util.Log;
  */
 public class JFreeReportHtmlServlet extends HttpServlet
 {
+  public JFreeReportHtmlServlet ()
+  {
+  }
+
   /**
    * Handles the GET method for the servlet. The GET method is mapped to
    * the POST method, both commands are handled equal.
@@ -99,8 +103,10 @@ public class JFreeReportHtmlServlet extends HttpServlet
 
     final URL base = getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");
     Log.debug("Base: " + base);
+    final StaticTableModelProvider tableModelProvider =
+            new StaticTableModelProvider(new ServletSwingIconsDemoTableModel(base));
     final AbstractTableReportServletWorker worker =
-        new DefaultTableReportServletWorker(in, new DemoModelProvider(base));
+        new DefaultTableReportServletWorker(in, tableModelProvider);
 
     // display the content in the browser window (see RFC2183)
     response.setHeader("Content-Disposition", "inline; filename=\"" + "unknown.html" + "\"");

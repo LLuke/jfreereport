@@ -15,19 +15,39 @@ public class Barcode93Ext extends Barcode93
   /**
    * Allowed characters
    */
-  protected static String[] EXTENDEDTABLE = {
-    ch2 + "U",
-    ch1 + "A", ch1 + "B", ch1 + "C", ch1 + "D", ch1 + "E", ch1 + "F", ch1 + "G", ch1 + "H", ch1 + "I", ch1 + "J", ch1 + "K", ch1 + "L", ch1 + "M", ch1 + "N", ch1 + "O", ch1 + "P", ch1 + "Q", ch1 + "R", ch1 + "S", ch1 + "T", ch1 + "U", ch1 + "V", ch1 + "W", ch1 + "X", ch1 + "Y", ch1 + "Z",
-    ch2 + "A", ch2 + "B", ch2 + "C", ch2 + "D", ch2 + "E",
+  protected static final String[] EXTENDEDTABLE = {
+    SPECIAL_CHAR2 + "U",
+    SPECIAL_CHAR1 + "A", SPECIAL_CHAR1 + "B", SPECIAL_CHAR1 + "C", SPECIAL_CHAR1 + "D",
+    SPECIAL_CHAR1 + "E", SPECIAL_CHAR1 + "F", SPECIAL_CHAR1 + "G", SPECIAL_CHAR1 + "H",
+    SPECIAL_CHAR1 + "I", SPECIAL_CHAR1 + "J", SPECIAL_CHAR1 + "K", SPECIAL_CHAR1 + "L",
+    SPECIAL_CHAR1 + "M", SPECIAL_CHAR1 + "N", SPECIAL_CHAR1 + "O", SPECIAL_CHAR1 + "P",
+    SPECIAL_CHAR1 + "Q", SPECIAL_CHAR1 + "R", SPECIAL_CHAR1 + "S", SPECIAL_CHAR1 + "T",
+    SPECIAL_CHAR1 + "U", SPECIAL_CHAR1 + "V", SPECIAL_CHAR1 + "W", SPECIAL_CHAR1 + "X",
+    SPECIAL_CHAR1 + "Y", SPECIAL_CHAR1 + "Z",
+    SPECIAL_CHAR2 + "A", SPECIAL_CHAR2 + "B", SPECIAL_CHAR2 + "C", SPECIAL_CHAR2 + "D",
+    SPECIAL_CHAR2 + "E",
     " ",
-    ch3 + "A", ch3 + "B", ch3 + "C", ch3 + "D", ch3 + "E", ch3 + "F", ch3 + "G", ch3 + "H", ch3 + "I", ch3 + "J", ch3 + "K", ch3 + "L", "-", ".", ch3 + "O",
+    SPECIAL_CHAR3 + "A", SPECIAL_CHAR3 + "B", SPECIAL_CHAR3 + "C", SPECIAL_CHAR3 + "D",
+    SPECIAL_CHAR3 + "E", SPECIAL_CHAR3 + "F", SPECIAL_CHAR3 + "G", SPECIAL_CHAR3 + "H",
+    SPECIAL_CHAR3 + "I", SPECIAL_CHAR3 + "J", SPECIAL_CHAR3 + "K", SPECIAL_CHAR3 + "L",
+    "-", ".", SPECIAL_CHAR3 + "O",
     "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-    ch3 + "Z",
-    ch2 + "F", ch2 + "G", ch2 + "H", ch2 + "I", ch2 + "J", ch2 + "V",
-    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-    ch2 + "K", ch2 + "L", ch2 + "M", ch2 + "N", ch2 + "O", ch2 + "W",
-    ch4 + "A", ch4 + "B", ch4 + "C", ch4 + "D", ch4 + "E", ch4 + "F", ch4 + "G", ch4 + "H", ch4 + "I", ch4 + "J", ch4 + "K", ch4 + "L", ch4 + "M", ch4 + "N", ch4 + "O", ch4 + "P", ch4 + "Q", ch4 + "R", ch4 + "S", ch4 + "T", ch4 + "U", ch4 + "V", ch4 + "W", ch4 + "X", ch4 + "Y", ch4 + "Z",
-    ch2 + "P", ch2 + "Q", ch2 + "R", ch2 + "S", ch2 + "T"
+    SPECIAL_CHAR3 + "Z",
+    SPECIAL_CHAR2 + "F", SPECIAL_CHAR2 + "G", SPECIAL_CHAR2 + "H", SPECIAL_CHAR2 + "I",
+    SPECIAL_CHAR2 + "J", SPECIAL_CHAR2 + "V",
+    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
+    "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+    SPECIAL_CHAR2 + "K", SPECIAL_CHAR2 + "L", SPECIAL_CHAR2 + "M", SPECIAL_CHAR2 + "N",
+    SPECIAL_CHAR2 + "O", SPECIAL_CHAR2 + "W",
+    SPECIAL_CHAR4 + "A", SPECIAL_CHAR4 + "B", SPECIAL_CHAR4 + "C", SPECIAL_CHAR4 + "D",
+    SPECIAL_CHAR4 + "E", SPECIAL_CHAR4 + "F", SPECIAL_CHAR4 + "G", SPECIAL_CHAR4 + "H",
+    SPECIAL_CHAR4 + "I", SPECIAL_CHAR4 + "J", SPECIAL_CHAR4 + "K", SPECIAL_CHAR4 + "L",
+    SPECIAL_CHAR4 + "M", SPECIAL_CHAR4 + "N", SPECIAL_CHAR4 + "O", SPECIAL_CHAR4 + "P",
+    SPECIAL_CHAR4 + "Q", SPECIAL_CHAR4 + "R", SPECIAL_CHAR4 + "S", SPECIAL_CHAR4 + "T",
+    SPECIAL_CHAR4 + "U", SPECIAL_CHAR4 + "V", SPECIAL_CHAR4 + "W", SPECIAL_CHAR4 + "X",
+    SPECIAL_CHAR4 + "Y", SPECIAL_CHAR4 + "Z",
+    SPECIAL_CHAR2 + "P", SPECIAL_CHAR2 + "Q", SPECIAL_CHAR2 + "R", SPECIAL_CHAR2 + "S",
+    SPECIAL_CHAR2 + "T"
   };
 
   /**

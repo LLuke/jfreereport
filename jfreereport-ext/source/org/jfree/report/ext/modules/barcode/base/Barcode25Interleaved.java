@@ -26,11 +26,11 @@ public class Barcode25Interleaved extends Barcode
   /**
    * Start symbol
    */
-  protected static byte STARTInterleaved[] = {1, 0, 1, 0};
+  private static final byte STARTInterleaved[] = {1, 0, 1, 0};
   /**
    * Stop symbol
    */
-  protected static byte STOPInterleaved[] = {1, 1, 0, 1};
+  private static final byte STOPInterleaved[] = {1, 1, 0, 1};
 
   private char checkSum;
 
@@ -45,17 +45,17 @@ public class Barcode25Interleaved extends Barcode
   /**
    * Table holding symbols to be drawn
    */
-  protected ArrayList codeTable;
+  private ArrayList codeTable;
 
   /**
    * Allowed characters
    */
-  protected static String CHARTABLE = "0123456789";
+  protected static final String CHARTABLE = "0123456789";
 
   /**
    * Allowed symbols
    */
-  protected static byte TABLE[][] = {
+  private static final byte TABLE[][] = {
     {0, 0, 1, 1, 0}, //0
     {1, 0, 0, 0, 1},
     {0, 1, 0, 0, 1},

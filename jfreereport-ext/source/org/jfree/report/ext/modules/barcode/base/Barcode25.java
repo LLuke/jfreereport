@@ -19,22 +19,21 @@ import org.jfree.report.util.Log;
  * @author Mimil
  */
 public class Barcode25 extends Barcode
-        {
-
+{
   /**
    * Charaters allowed
    */
-  protected static String CHARTABLE = "0123456789";
+  protected static final String CHARTABLE = "0123456789";
 
   /**
    * Stop symbol
    */
-  protected static byte START[] = {1, 1, 0, 1, 1, 0, 1, 0};
+  protected static final byte START[] = {1, 1, 0, 1, 1, 0, 1, 0};
 
   /**
    * Start symbol
    */
-  protected static byte STOP[] = {1, 1, 0, 1, 0, 1, 1};
+  protected static final byte STOP[] = {1, 1, 0, 1, 0, 1, 1};
 
   private char checkSum;
 
@@ -47,12 +46,12 @@ public class Barcode25 extends Barcode
   /**
    * Table holding symbols to be drawn
    */
-  protected ArrayList codeTable;
+  private ArrayList codeTable;
 
   /**
    * Symbols allowed
    */
-  protected static byte TABLE[][] = {
+  protected static final byte TABLE[][] = {
     {0, 0, 1, 1, 0}, //0
     {1, 0, 0, 0, 1},
     {0, 1, 0, 0, 1},

@@ -64,13 +64,10 @@
     <condition property="jfreechart.present">
       <and>
          <available file="${ext.libdir}/${jfreechart-jar-file}"/>
-         <available file="${ext.libdir}/${jfreechart-demo-jar-file}"/>
-
          <available classname="org.jfree.chart.JFreeChart">
            <classpath>
              <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-              <pathelement location="${ext.libdir}/${jfreechart-jar-file}"/>
-              <pathelement location="${ext.libdir}/${jfreechart-demo-jar-file}"/>
+             <pathelement location="${ext.libdir}/${jfreechart-jar-file}"/>
            </classpath>
          </available>
       </and>
@@ -128,6 +125,7 @@
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/ext/junit/**/*.java"/>
       <classpath>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${libdir}/${pixie-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${libdir}/${itext-jar-file}"/>
@@ -174,6 +172,7 @@
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/ext/servletdemo/*.java"/>
       <classpath>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${jfreereport-demo-jar-file}"/>
@@ -219,6 +218,7 @@
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/ext/chartdemo/*.java"/>
       <classpath>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${jfreereport-demo-jar-file}"/>
@@ -534,6 +534,7 @@
       overview="source/overview.html">
       <classpath>
         <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${libdir}/${pixie-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${libdir}/${itext-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>

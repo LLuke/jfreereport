@@ -15,11 +15,11 @@ import org.jfree.report.ext.modules.barcode.Barcode;
 public class Barcode128 extends Barcode
 {
 
-  private static byte[] STOP = {2, 3, 3, 1, 1, 1, 2};
+  private static final byte[] STOP = {2, 3, 3, 1, 1, 1, 2};
 
   private ArrayList codeTable;
 
-  private static byte[][] TABLE = {
+  private static final byte[][] TABLE = {
     {2, 1, 2, 2, 2, 2},
     {2, 2, 2, 1, 2, 2},
     {2, 2, 2, 2, 2, 1},
@@ -128,13 +128,13 @@ public class Barcode128 extends Barcode
     {2, 1, 1, 2, 3, 2}
   };
 
-  private static int CODESET_AB_TO_C = 99;
-  private static int CODESET_BC_TO_A = 101;
-  private static int CODESET_CA_TO_B = 100;
-  private static int SHIFT_AB = 98;
-  private static int START_A = 103;
-  private static int START_B = 104;
-  private static int START_C = 105;
+  private static final int CODESET_AB_TO_C = 99;
+  private static final int CODESET_BC_TO_A = 101;
+  private static final int CODESET_CA_TO_B = 100;
+  private static final int SHIFT_AB = 98;
+  private static final int START_A = 103;
+  private static final int START_B = 104;
+  private static final int START_C = 105;
 
 
   /**
@@ -356,18 +356,18 @@ public class Barcode128 extends Barcode
 
     if (Pattern.matches("^\\d{4,}", str))
     {
-      System.out.println("------STARTC");
+      //System.out.println("------STARTC");
       return START_C;
     }
 
     if (Pattern.matches("^\\W{4,}", str))
     {
-      System.out.println("------STARTA");
+      //System.out.println("------STARTA");
       return START_A;
     }
 
 
-    System.out.println("------STARTB");
+    //System.out.println("------STARTB");
 
     return START_B;
   }

@@ -33,11 +33,11 @@ public class Barcode39 extends Barcode
   /**
    * Table holding symbols to be drawn
    */
-  protected ArrayList codeTable;
+  private ArrayList codeTable;
   /**
    * Characters allowed
    */
-  protected static String CHARTABLE = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%*";
+  protected static final String CHARTABLE = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%*";
   /**
    * Checksum character
    */
@@ -52,7 +52,7 @@ public class Barcode39 extends Barcode
   /**
    * Symbols allowed
    */
-  protected static byte TABLE[][] = {
+  protected static final byte TABLE[][] = {
     {0, 0, 0, 1, 1, 0, 1, 0, 0},
     {1, 0, 0, 1, 0, 0, 0, 0, 1},
     {0, 0, 1, 1, 0, 0, 0, 0, 1},

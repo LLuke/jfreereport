@@ -42,9 +42,8 @@ public class BarcodeEAN8 extends BarcodeEAN13
 
     int check = 0;
 
-    this.codeTable = new ArrayList();
-
-    this.codeTable.add(START);   //add the start character
+    final ArrayList codeTable = getCodeTable();
+    codeTable.add(START);   //add the start character
 
 
     for (int i = 0; i < code.length(); i++)
@@ -60,15 +59,15 @@ public class BarcodeEAN8 extends BarcodeEAN13
       {
         if (i < 4)
         { //the number system digit + the manufacturer code  (the left part)
-          this.codeTable.add(LEFTATABLE[index]);
+          codeTable.add(LEFTATABLE[index]);
         }
         else
         {    //the product code  (the right part)
           if (i == 4)
           {    //center guard
-            this.codeTable.add(CENTER);
+            codeTable.add(CENTER);
           }
-          this.codeTable.add(RIGHTTABLE[index]);
+          codeTable.add(RIGHTTABLE[index]);
         }
 
         //compute the check digit
@@ -101,14 +100,14 @@ public class BarcodeEAN8 extends BarcodeEAN13
     if (tmpCheck == 0)
     {
       this.checkSum = (char) (tmpCheck + 48);
-      this.codeTable.add(RIGHTTABLE[tmpCheck]);
+      codeTable.add(RIGHTTABLE[tmpCheck]);
     }
     else
     {
       this.checkSum = (char) (10 - tmpCheck + 48);
-      this.codeTable.add(RIGHTTABLE[10 - tmpCheck]);
+      codeTable.add(RIGHTTABLE[10 - tmpCheck]);
     }
-    this.codeTable.add(STOP);      //add the stop character
+    codeTable.add(STOP);      //add the stop character
 
     super.setCode(code);
   }

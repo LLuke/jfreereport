@@ -22,34 +22,34 @@ public class BarcodeEAN13 extends Barcode
   /**
    * Allowed characters
    */
-  protected static String CHARTABLE = "0123456789";
+  protected static final String CHARTABLE = "0123456789";
 
   /**
    * Start symbol
    */
-  protected static byte START[] = {1, 0, 1};
+  protected static final byte START[] = {1, 0, 1};
 
   /**
    * Center symbol
    */
-  protected static byte CENTER[] = {0, 1, 0, 1, 0};
+  protected static final byte CENTER[] = {0, 1, 0, 1, 0};
 
   /**
    * Stop symbol
    */
-  protected static byte STOP[] = {1, 0, 1};
+  protected static final byte STOP[] = {1, 0, 1};
 
   private char checkSum;
 
   /**
    * Table holding symbols to be drawn
    */
-  protected ArrayList codeTable;
+  private ArrayList codeTable;
 
   /**
    * Allowed symbols in the right part the the barcode
    */
-  protected static byte RIGHTTABLE[][] = {
+  protected static final byte RIGHTTABLE[][] = {
     {1, 1, 1, 0, 0, 1, 0},
     {1, 1, 0, 0, 1, 1, 0},
     {1, 1, 0, 1, 1, 0, 0},
@@ -65,7 +65,7 @@ public class BarcodeEAN13 extends Barcode
   /**
    * Allowed symbols in the left part the the barcode, version A (odd parity)
    */
-  protected static byte LEFTATABLE[][] = {//odd parity
+  protected static final byte LEFTATABLE[][] = {//odd parity
     {0, 0, 0, 1, 1, 0, 1},
     {0, 0, 1, 1, 0, 0, 1},
     {0, 0, 1, 0, 0, 1, 1},
@@ -81,7 +81,7 @@ public class BarcodeEAN13 extends Barcode
   /**
    * Allowed symbols in the left part the the barcode, version B (even parity)
    */
-  protected static byte LEFTBTABLE[][] = {//even paroty
+  protected static final byte LEFTBTABLE[][] = {//even paroty
     {0, 1, 0, 0, 1, 1, 1},
     {0, 1, 1, 0, 0, 1, 1},
     {0, 0, 1, 1, 0, 1, 1},
@@ -97,7 +97,7 @@ public class BarcodeEAN13 extends Barcode
   /**
    * Allowed parity symbols
    */
-  protected static byte PARITY[][] = {//1 = odd and 0 = even
+  protected static final byte PARITY[][] = {//1 = odd and 0 = even
     {1, 1, 1, 1, 1, 1},
     {1, 1, 0, 1, 0, 0},
     {1, 1, 0, 0, 1, 0},
@@ -115,6 +115,12 @@ public class BarcodeEAN13 extends Barcode
    */
   protected BarcodeEAN13 ()
   {
+    this.codeTable = new ArrayList();
+  }
+
+  protected ArrayList getCodeTable ()
+  {
+    return codeTable;
   }
 
   /**
@@ -130,11 +136,9 @@ public class BarcodeEAN13 extends Barcode
 
 
     int check = 0;
-
     byte currentParity[] = {};
 
     this.codeTable = new ArrayList();
-
     this.codeTable.add(START);   //add the start character
 
     for (int i = 0; i < code.length(); i++)

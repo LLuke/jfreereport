@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTest.java,v 1.4 2003/11/01 19:57:03 taqua Exp $
+ * $Id: PlainTextExportTest.java,v 1.5 2005/01/31 17:16:37 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,6 +41,7 @@ package org.jfree.report.ext.junit.base.functionality;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
 import java.net.URL;
 
 import junit.framework.TestCase;
@@ -51,7 +52,17 @@ import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.TextFilePrinterDriver;
 import org.jfree.report.modules.parser.base.ReportGenerator;
+import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory;
+import org.jfree.report.modules.parser.ext.factory.elements.DefaultElementFactory;
+import org.jfree.report.modules.parser.ext.factory.objects.BandLayoutClassFactory;
+import org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory;
+import org.jfree.report.modules.parser.ext.factory.stylekey.DefaultStyleKeyFactory;
+import org.jfree.report.modules.parser.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
+import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
+import org.jfree.report.modules.parser.extwriter.ReportWriter;
 import org.jfree.report.util.Log;
+import org.jfree.xml.factory.objects.ArrayClassFactory;
+import org.jfree.xml.factory.objects.URLClassFactory;
 
 public class PlainTextExportTest extends TestCase
 {
@@ -73,7 +84,7 @@ public class PlainTextExportTest extends TestCase
     final ByteArrayOutputStream bo = new ByteArrayOutputStream();
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(bo);
-    final PrinterDriver pc = new TextFilePrinterDriver(fout, 10, 15);
+    final PrinterDriver pc = new TextFilePrinterDriver(fout, 15, 10);
     final PlainTextOutputTarget target = 
       new PlainTextOutputTarget (pc);
     target.setEncoding(encoding);
@@ -102,8 +113,44 @@ public class PlainTextExportTest extends TestCase
       Log.debug("Failed to parse " + url, e);
       fail();
     }
+    final String rdefBeforeFirst = writeReport(report);
     final String utf16 = exportReport(report, "UTF-16");
+    final String rdefAfterFirst = writeReport(report);
+    assertEquals(rdefBeforeFirst, rdefAfterFirst);
     final String utf8 = exportReport(report, "UTF-8");
     assertEquals(utf8, utf16);
+    Log.debug (utf16);
+
+  }
+
+  private String writeReport (final JFreeReport report)
+  {
+    try
+    {
+      final StringWriter oWriter = new StringWriter();
+      final ReportWriter rc = new ReportWriter
+        (report, "UTF-16", ReportWriter.createDefaultConfiguration(report));
+
+      rc.addClassFactoryFactory(new URLClassFactory());
+      rc.addClassFactoryFactory(new DefaultClassFactory());
+      rc.addClassFactoryFactory(new BandLayoutClassFactory());
+      rc.addClassFactoryFactory(new ArrayClassFactory());
+
+      rc.addStyleKeyFactory(new DefaultStyleKeyFactory());
+      rc.addStyleKeyFactory(new PageableLayoutStyleKeyFactory());
+      rc.addTemplateCollection(new DefaultTemplateCollection());
+      rc.addElementFactory(new DefaultElementFactory());
+      rc.addDataSourceFactory(new DefaultDataSourceFactory());
+
+      rc.write(oWriter);
+      oWriter.close();
+      return oWriter.toString();
+    }
+    catch (Exception e)
+    {
+      Log.debug("Failed to write", e);
+    }
+    fail();
+    return null;
   }
 }

@@ -31,35 +31,37 @@ public class Barcode93 extends Barcode
   /**
    * special character '$'
    */
-  protected static char ch1 = 0x80;
+  protected static final char SPECIAL_CHAR1 = 0x80;
   /**
    * special character '%'
    */
-  protected static char ch2 = 0x81;
+  protected static final char SPECIAL_CHAR2 = 0x81;
   /**
    * special character '/'
    */
-  protected static char ch3 = 0x82;
+  protected static final char SPECIAL_CHAR3 = 0x82;
   /**
    * special character '+'
    */
-  protected static char ch4 = 0x83;
+  protected static final char SPECIAL_CHAR4 = 0x83;
 
   /**
    * Allowed characters
    */
-  protected static String CHARTABLE = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%" + ch1 + ch2 + ch3 + ch4 + "*";
+  protected static final String CHARTABLE =
+          "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%" +
+          SPECIAL_CHAR1 + SPECIAL_CHAR2 + SPECIAL_CHAR3 + SPECIAL_CHAR4 + "*";
 
   /**
    * Table holding symbols to be drawn
    */
-  protected ArrayList codeTable;
+  private ArrayList codeTable;
 
   private boolean showCheckSum = false;
   /**
    * Allowed symbols
    */
-  protected static byte TABLE[][] = {
+  private static final byte TABLE[][] = {
     {1, 0, 0, 0, 1, 0, 1, 0, 0},
     {1, 0, 1, 0, 0, 1, 0, 0, 0},
     {1, 0, 1, 0, 0, 0, 1, 0, 0},

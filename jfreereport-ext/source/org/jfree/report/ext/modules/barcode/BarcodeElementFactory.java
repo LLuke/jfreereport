@@ -18,7 +18,7 @@ import org.jfree.report.style.FontDefinition;
  * change this template use File | Settings | File Templates.
  */
 public class BarcodeElementFactory extends ElementFactory
-        {
+{
 
   private static final int CODE39 = 1;
   private static final int USD3 = 1;

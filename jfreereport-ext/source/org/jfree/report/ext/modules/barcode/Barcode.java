@@ -46,14 +46,10 @@ public abstract class Barcode implements Drawable, Cloneable
   /**
    * Creates a new instance of Barcode
    */
-  public Barcode (final String code)
+  protected Barcode (final String code)
   {
     this();
-    if (code == null)
-    {
-      throw new NullPointerException("Barcode code must be not null.");
-    }
-    this.code = code;
+    setCode(code);
   }
 
   /**
@@ -92,6 +88,10 @@ public abstract class Barcode implements Drawable, Cloneable
    */
   public void setCode (final String code)
   {
+    if (code == null)
+    {
+      throw new NullPointerException("Barcode code must be not null.");
+    }
     this.code = code;
   }
 
@@ -336,6 +336,10 @@ public abstract class Barcode implements Drawable, Cloneable
    */
   public void setQuietZones (final Insets quietZone)
   {
+    if (quietZone == null)
+    {
+      throw new NullPointerException();
+    }
     this.quietZones = quietZone;
   }
 
@@ -528,7 +532,7 @@ public abstract class Barcode implements Drawable, Cloneable
    * @param barcodeArea The barcode symbols area
    * @return The full barcode area (symbols + code)
    */
-  public Rectangle2D createFullArea (final Rectangle2D drawBounds,
+  protected Rectangle2D createFullArea (final Rectangle2D drawBounds,
                                      final Rectangle2D codeArea,
                                      final Rectangle2D barcodeArea)
   {
@@ -587,7 +591,7 @@ public abstract class Barcode implements Drawable, Cloneable
    * @param graphics2D The full drawable area available
    * @param fullArea   The full barcode drawable area
    */
-  public void printFullArea (final Graphics2D graphics2D, final Rectangle2D fullArea)
+  protected void printFullArea (final Graphics2D graphics2D, final Rectangle2D fullArea)
   {
     //set the background color
     if (this.backGroundColor != null)
@@ -688,7 +692,7 @@ public abstract class Barcode implements Drawable, Cloneable
    * @param rectangle2D The full drawable area available
    * @see Barcode#draw(java.awt.Graphics2D, java.awt.geom.Rectangle2D)
    */
-  public void init (final Graphics2D graphics2D, final Rectangle2D rectangle2D)
+  protected void init (final Graphics2D graphics2D, final Rectangle2D rectangle2D)
   {
 
     if (this.getMinWidth() == 0)
@@ -703,15 +707,13 @@ public abstract class Barcode implements Drawable, Cloneable
 
   }
 
-  //todo: do clones
   public Object clone ()
           throws CloneNotSupportedException
   {
     final Barcode barcode = (Barcode) super.clone();
     barcode.font = (FontDefinition) this.font.clone();
-    //barcode.barcodeColor = new Color(this.barcodeColor);
-
-
+    barcode.margins = (Insets) this.margins.clone();
+    barcode.quietZones = (Insets) this.quietZones.clone();
     return barcode;
   }
 }

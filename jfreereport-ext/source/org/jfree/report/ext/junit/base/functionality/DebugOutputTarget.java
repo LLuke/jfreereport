@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DebugOutputTarget.java,v 1.4 2003/11/01 19:57:03 taqua Exp $
+ * $Id: DebugOutputTarget.java,v 1.5 2005/01/31 17:16:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,10 +42,9 @@ import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
 
-import org.jfree.report.ImageContainer;
 import org.jfree.report.PageDefinition;
-import org.jfree.report.content.ImageContent;
 import org.jfree.report.content.DrawableContent;
+import org.jfree.report.content.ImageContent;
 import org.jfree.report.layout.DefaultSizeCalculator;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.layout.SizeCalculatorException;
@@ -53,6 +52,7 @@ import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 public class DebugOutputTarget extends AbstractOutputTarget
 {
@@ -60,13 +60,74 @@ public class DebugOutputTarget extends AbstractOutputTarget
   private Paint paint;
   private Stroke stroke;
   private FontDefinition font;
+  private float hAlign;
+  private float vAlign;
+
+  public DebugOutputTarget ()
+  {
+    this (0, 0);
+  }
 
   /**
    * Creates a new output target.  Both the logical page size and the physical page size will be
    * the same.
    */
-  public DebugOutputTarget()
+  public DebugOutputTarget (final float hAlign, final float vAlign)
   {
+    this.hAlign = hAlign;
+    this.vAlign = vAlign;
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public float getHorizontalAlignmentBorder ()
+  {
+    return hAlign;
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public float getVerticalAlignmentBorder ()
+  {
+    return vAlign;
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>. Returning 0 will disable the alignment.
+   * <p/>
+   * Q&D Hack: Save some cycles of processor time by computing that thing only once.
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public long getInternalHorizontalAlignmentBorder ()
+  {
+    return StrictGeomUtility.toInternalValue(getHorizontalAlignmentBorder());
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>. Returning 0 will disable the alignment.
+   * <p/>
+   * Q&D Hack: Save some cycles of processor time by computing that thing only once.
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public long getInternalVerticalAlignmentBorder ()
+  {
+    return StrictGeomUtility.toInternalValue(getVerticalAlignmentBorder());
   }
 
   /**
@@ -175,15 +236,6 @@ public class DebugOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Draws a string at the current cursor position.
-   *
-   * @param text  the text.
-   */
-  public void drawString(final String text)
-  {
-  }
-
-  /**
    * Draws a shape relative to the current position.
    *
    * @param shape  the shape to draw.
@@ -253,12 +305,12 @@ public class DebugOutputTarget extends AbstractOutputTarget
 
   }
 
-  protected boolean isPaintSupported (Paint p)
+  protected boolean isPaintSupported (final Paint p)
   {
     return true;
   }
 
-  protected void printText (String text)
+  protected void printText (final String text)
   {
     // todo implement me
 

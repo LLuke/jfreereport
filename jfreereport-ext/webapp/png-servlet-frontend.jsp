@@ -8,10 +8,10 @@
 
 <%
   // initalize the report if not already done ...
-  URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
+  URL in = getClass().getResource("/org/jfree/report/demo/swing-icons.xml");
   if (in == null)
   {
-    throw new ServletException("Missing Resource: /com/jrefinery/report/demo/swing-icons.xml");
+    throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");
   }
 
   URL base = getServletConfig().getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");
@@ -19,8 +19,7 @@
       new DefaultPageableReportServletWorker(null,
                                              in,
                                              new DemoModelProvider(base));
-  JFreeReport report = worker.getReport();
-  G2OutputTarget target = new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), report.getDefaultPageFormat());
+  G2OutputTarget target = new G2OutputTarget(G2OutputTarget.createEmptyGraphics());
   worker.setOutputTarget(target);
   int numberOfPages = worker.getNumberOfPages();
 %>

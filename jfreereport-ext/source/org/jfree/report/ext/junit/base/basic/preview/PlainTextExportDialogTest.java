@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialogTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
+ * $Id: PlainTextExportDialogTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -65,7 +65,10 @@ public class PlainTextExportDialogTest extends TestCase
     d.setEncoding("Cp850");
     assertEquals("Cp850", d.getEncoding());
 
-    d.setSelectedPrinter(PlainTextExportDialog.TYPE_EPSON_OUTPUT);
+    d.setSelectedPrinter(PlainTextExportDialog.TYPE_EPSON9_OUTPUT);
+    assertEquals("Cp850", d.getEncoding());
+
+    d.setSelectedPrinter(PlainTextExportDialog.TYPE_EPSON24_OUTPUT);
     assertEquals("Cp850", d.getEncoding());
 
     d.setSelectedPrinter(PlainTextExportDialog.TYPE_IBM_OUTPUT);

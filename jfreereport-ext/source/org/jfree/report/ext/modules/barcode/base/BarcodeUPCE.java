@@ -19,7 +19,7 @@ public class BarcodeUPCE extends BarcodeEAN13
   /**
    * Allowed symbols, used when the code starts by a '0'
    */
-  protected static byte PARITY0[][] = {//1 = odd, 0 = even, if code starts by a '0'
+  protected static final byte PARITY0[][] = {//1 = odd, 0 = even, if code starts by a '0'
     {0, 0, 0, 1, 1, 1},
     {0, 0, 1, 0, 1, 1},
     {0, 0, 1, 1, 0, 1},
@@ -35,7 +35,7 @@ public class BarcodeUPCE extends BarcodeEAN13
   /**
    * Allowed symbols, used when the code starts by a '1'
    */
-  protected static byte PARITY1[][] = {//1 = odd, 0 = even, if code starts by a '1'
+  protected static final byte PARITY1[][] = {//1 = odd, 0 = even, if code starts by a '1'
     {1, 1, 1, 0, 0, 0},
     {1, 1, 0, 1, 0, 0},
     {1, 1, 0, 0, 1, 0},
@@ -51,7 +51,7 @@ public class BarcodeUPCE extends BarcodeEAN13
   /**
    * Stop symbol
    */
-  protected static byte STOP[] = {1};
+  protected static final byte STOP[] = {1};
 
   /**
    * Creates a new instance of BarcodeUPCE, can only be used by derivated class
@@ -68,23 +68,23 @@ public class BarcodeUPCE extends BarcodeEAN13
   public BarcodeUPCE (String code)
   {
     super(code);
-    int firstChar = 0;
-    byte currentParity[] = {};
     final int check = this.getCheckSum() - 47;
 
-    this.codeTable = new ArrayList();
+    final ArrayList codeTable = getCodeTable();
 
     if (code.length() != 7)
     {
       throw new BarcodeIllegalLengthException(this, 7, 7);
     }
-    if ((firstChar = (code.charAt(0)) - 47) != (0 | 1))
+
+    final int firstChar = code.charAt(0);
+    if ((firstChar == '0' || firstChar == '1') == false)
     {
       throw new IllegalArgumentException("Barcode UPC-E must start by a '0' or a '1'.");
     }
 
-
-    if (firstChar == 0)
+    byte currentParity[];
+    if (firstChar == '0')
     {
       currentParity = PARITY0[check];
     }
@@ -94,21 +94,18 @@ public class BarcodeUPCE extends BarcodeEAN13
     }
 
 
-    this.codeTable.add(START);   //add the start character
+    codeTable.add(START);   //add the start character
 
     code = code.substring(1);   //remove the leading '0' or '1'
 
-
     for (int i = 0; i < code.length(); i++)
     {
-
       final int index = CHARTABLE.indexOf(code.charAt(i));
-
       if (index < 0)
-      {//not found
+      {
+        //not found
         Log.warn("The character '" + code.charAt(i) + "' is illegal in code UPC-E.");
         throw new IllegalArgumentException("The character '" + code.charAt(i) + "' is illegal in code UPC-E.");
-
       }
       else
       {
@@ -117,11 +114,11 @@ public class BarcodeUPCE extends BarcodeEAN13
         {
           if (currentParity[i - 1] == 1)
           {   //use odd parity table  (A)
-            this.codeTable.add(LEFTATABLE[index]);
+            codeTable.add(LEFTATABLE[index]);
           }
           else
           { //else even parity table  (B)
-            this.codeTable.add(LEFTBTABLE[index]);
+            codeTable.add(LEFTBTABLE[index]);
           }
         }
         else
@@ -141,8 +138,8 @@ public class BarcodeUPCE extends BarcodeEAN13
 
     }
     //this.codeTable.add(RIGHTTABLE[check]);
-    this.codeTable.add(CENTER);
-    this.codeTable.add(STOP);
+    codeTable.add(CENTER);
+    codeTable.add(STOP);
 
     super.setCode(code);
 

@@ -22,27 +22,27 @@ public class BarcodeCodabar extends Barcode
   /**
    * Characters allowed
    */
-  protected static String CHARTABLE = "0123456789-$:/.+";
+  protected static final String CHARTABLE = "0123456789-$:/.+";
 
   /**
    * First Start-Stop symbol
    */
-  protected static byte STARTSTOPA[] = {0, 0, 1, 1, 0, 1, 0};
+  protected static final byte STARTSTOPA[] = {0, 0, 1, 1, 0, 1, 0};
 
   /**
    * Second Start-Stop symbol
    */
-  protected static byte STARTSTOPB[] = {0, 0, 0, 1, 0, 1, 1};
+  protected static final byte STARTSTOPB[] = {0, 0, 0, 1, 0, 1, 1};
 
   /**
    * Third Start-Stop symbol
    */
-  protected static byte STARTSTOPC[] = {0, 1, 0, 1, 0, 0, 1};
+  protected static final byte STARTSTOPC[] = {0, 1, 0, 1, 0, 0, 1};
 
   /**
    * Fourth Start-Stop symbol
    */
-  protected static byte STARTSTOPD[] = {0, 0, 0, 1, 1, 1, 0};
+  protected static final byte STARTSTOPD[] = {0, 0, 0, 1, 1, 1, 0};
 
   private byte defaultStart[] = STARTSTOPA;
 
@@ -53,12 +53,12 @@ public class BarcodeCodabar extends Barcode
   /**
    * Table holding symbols to be drawn
    */
-  protected ArrayList codeTable;
+  private ArrayList codeTable;
 
   /**
    * Symbols allowed
    */
-  protected static byte TABLE[][] = {
+  protected static final byte TABLE[][] = {
     {0, 0, 0, 0, 0, 1, 1},
     {0, 0, 0, 0, 1, 1, 0},
     {0, 0, 0, 1, 0, 0, 1},
@@ -151,7 +151,8 @@ public class BarcodeCodabar extends Barcode
     // wides*narrowtowidemultiplier (n wide bars)
     //nbchar-1 intercharcters
     final int nbChars = this.codeTable.size();
-    final float barcodeWidth = this.getMinWidth() * (narrows + wides * this.narrowToWideMultiplier + 1 * (nbChars - 1));
+    final float barcodeWidth = this.getMinWidth() * (narrows +
+            wides * this.narrowToWideMultiplier + (nbChars - 1));
 
 
     final Rectangle2D barcodeArea = this.computeBarcodeArea(rectangle2D, barcodeWidth);

@@ -22,6 +22,11 @@
   </servlet>
 
   <servlet>
+    <servlet-name>imageServlet</servlet-name>
+    <servlet-class>org.jfree.report.ext.servletdemo.DemoImageServlet</servlet-class>
+  </servlet>
+
+  <servlet>
     <servlet-name>xlsreport</servlet-name>
     <servlet-class>org.jfree.report.ext.servletdemo.JFreeReportExcelServlet</servlet-class>
   </servlet>
@@ -34,6 +39,11 @@
   <servlet-mapping>
     <servlet-name>htmlreport</servlet-name>
     <url-pattern>/htmlreport</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>imageServlet</servlet-name>
+    <url-pattern>/imageServlet</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
