@@ -1,9 +1,47 @@
+/**
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------
+ * MfCmdCreatePalette.java
+ * ----------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: MfCmd.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
+ *
+ * Changes
+ * -------
+ */
 package org.jfree.pixie.wmf.records;
+
+import java.awt.Color;
 
 import org.jfree.pixie.wmf.MfLogPalette;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
+import org.jfree.pixie.wmf.GDIColor;
 import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
@@ -11,14 +49,16 @@ import org.jfree.pixie.wmf.records.MfCmd;
  */
 public class MfCmdCreatePalette extends MfCmd
 {
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
-  {
-    System.out.println ("Create Palette is not implemented.");
-  }
+  private static final int POS_HPALETTE = 0;
+  private static final int POS_CENTRIES = 1;
+  private static final int POS_START_ENTRIES = 2;
+
+  private int hPalette;
+  private Color[] colors;
 
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.CREATE_PALETTE;
+    return MfType.CREATE_PALETTE;
   }
 
   public MfCmdCreatePalette ()
@@ -26,18 +66,76 @@ public class MfCmdCreatePalette extends MfCmd
   }
 
   /**
-   * Writer function
+   * Returns the number of colors defined for the AnimatePalette command.
    *
-   * Need to implement a dummy
+   * @return the number of colors or 0 if no colors are defined.
    */
-  public org.jfree.pixie.wmf.MfRecord getRecord ()
+  public int getEntriesCount ()
   {
-    return null;
+    if (colors == null)
+      return 0;
+
+    return colors.length;
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  /**
+   * Creates a new record based on the data stored in the MfCommand.
+   * <i>This function may or may not work, there is not much HQ documentation
+   * about metafiles available in the net. </i>
+   *
+   * @return the created record.
+   */
+  public MfRecord getRecord () throws RecordCreationException
   {
-    org.jfree.pixie.wmf.MfLogPalette pal = new org.jfree.pixie.wmf.MfLogPalette ();
+    int cEntries = getEntriesCount();
+    if (cEntries == 0)
+      throw new RecordCreationException("Empty CreatePaletteRecord is not valid");
+
+    MfRecord record = new MfRecord(2 + cEntries * 2);
+    record.setParam(POS_HPALETTE, getHPalette());
+    record.setParam(POS_CENTRIES, cEntries);
+
+    Color[] colors = new Color[cEntries];
+
+    for (int i = 0; i < cEntries; i++)
+    {
+      Color c = colors[i];
+      // a long parameter is 2 words long
+      record.setLongParam(i * 2 + POS_START_ENTRIES, GDIColor.translateColor(c));
+    }
+    return record;
+  }
+
+  /**
+   * Reads the command data from the given record and adjusts the internal
+   * parameters according to the data parsed.
+   * <p>
+   * This method is not implemented, as a Palette implementation is still missing.
+   *
+   * @param record the record.
+   */
+  public void setRecord (MfRecord record)
+  {
+    // the handle to the palette object ignored
+    int hPalette = record.getParam (POS_HPALETTE);
+    setHPalette(hPalette);
+    // the number of defined entries ...
+    int cEntries = record.getParam (POS_CENTRIES);
+    Color[] colors = new Color[cEntries];
+
+    for (int i = 0; i < cEntries; i++)
+    {
+      int cr = record.getLongParam(i * 2 + POS_START_ENTRIES);
+      GDIColor color = new GDIColor (cr);
+      colors[i] = color;
+    }
+    setEntries (colors);
+  }
+
+  public void replay (WmfFile file)
+  {
+    // no real implementation, as palettes are not yet fully supported ...
+    MfLogPalette pal = new MfLogPalette ();
     file.getCurrentState ().setLogPalette (pal);
     file.storeObject (pal);
   }
@@ -55,12 +153,38 @@ public class MfCmdCreatePalette extends MfCmd
     return new MfCmdCreatePalette ();
   }
 
+  /**
+   * Not implemented as no scaling needed for this operation.
+   */
   protected void scaleXChanged ()
   {
   }
 
+  /**
+   * Not implemented as no scaling needed for this operation.
+   */
   protected void scaleYChanged ()
   {
+  }
+
+  public int getHPalette ()
+  {
+    return hPalette;
+  }
+
+  public void setHPalette (int hPalette)
+  {
+    this.hPalette = hPalette;
+  }
+
+  public Color[] getEntries ()
+  {
+    return colors;
+  }
+
+  public void setEntries (Color[] colors)
+  {
+    this.colors = colors;
   }
 
 }

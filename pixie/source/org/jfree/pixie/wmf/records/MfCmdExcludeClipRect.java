@@ -14,6 +14,12 @@ import java.awt.Rectangle;
  */
 public class MfCmdExcludeClipRect extends MfCmd
 {
+  private static final int RECORD_SIZE = 4;
+  private static final int POS_TOP = 2;
+  private static final int POS_LEFT = 3;
+  private static final int POS_RIGHT = 1;
+  private static final int POS_BOTTOM = 0;
+
   private int x;
   private int y;
   private int width;
@@ -27,9 +33,10 @@ public class MfCmdExcludeClipRect extends MfCmd
   {
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  public void replay (WmfFile file)
   {
     // Not implemented!
+    // no clipping is implemented at all ...
   }
 
   public MfCmd getInstance ()
@@ -37,7 +44,7 @@ public class MfCmdExcludeClipRect extends MfCmd
     return new MfCmdExcludeClipRect ();
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  public void setRecord (MfRecord record)
   {
     int bottom = record.getParam (0);
     int right = record.getParam (1);
@@ -48,10 +55,10 @@ public class MfCmdExcludeClipRect extends MfCmd
   }
 
   /** Writer function */
-  public org.jfree.pixie.wmf.MfRecord getRecord ()
+  public MfRecord getRecord ()
   {
     Rectangle rc = getBounds();
-    org.jfree.pixie.wmf.MfRecord record = new org.jfree.pixie.wmf.MfRecord(4);
+    MfRecord record = new MfRecord(4);
     record.setParam(0, (int)(rc.getY() + rc.getHeight()));
     record.setParam(1, (int)(rc.getX() + rc.getWidth()));
     record.setParam(2, (int)(rc.getY()));
@@ -101,6 +108,6 @@ public class MfCmdExcludeClipRect extends MfCmd
 
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.EXCLUDE_CLIP_RECT;
+    return MfType.EXCLUDE_CLIP_RECT;
   }
 }

@@ -7,10 +7,13 @@ import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
  * The layout of META_ESC is unknown, but it doesnt matter,
- * as it has no effect on on screen metafile display (i think).
- *
+ * as it has no effect on on screen metafile display.
+ * <p>
  * This sends MCI-Informations to the device-driver. Java and all
  * non-windows systems have no use of Windows-Driver-Details at all.
+ * <p>
+ * Wine just dumps the given data into the file. As we operate in
+ * a non native environment, this record could never be implemented.
  */
 public class MfCmdEscape extends MfCmd
 {
@@ -18,7 +21,12 @@ public class MfCmdEscape extends MfCmd
   {
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  /**
+   * Replays the command on the given WmfFile.
+   *
+   * @param file the meta file.
+   */
+  public void replay (WmfFile file)
   {
   }
 
@@ -29,32 +37,64 @@ public class MfCmdEscape extends MfCmd
     return b.toString ();
   }
 
+  /**
+   * Creates a empty unintialized copy of this command implementation.
+   *
+   * @return a new instance of the command.
+   */
   public MfCmd getInstance ()
   {
     return new MfCmdEscape ();
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  /**
+   * Reads the command data from the given record and adjusts the internal
+   * parameters according to the data parsed.
+   * <p>
+   * After the raw record was read from the datasource, the record is parsed
+   * by the concrete implementation.
+   *
+   * @param record the raw data that makes up the record.
+   */
+  public void setRecord (MfRecord record)
   {
     System.out.println ("Escape is not implemented.");
   }
 
+  /**
+   * Reads the function identifier. Every record type is identified by a
+   * function number corresponding to one of the Windows GDI functions used.
+   *
+   * @return the function identifier.
+   */
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.ESCAPE;
+    return MfType.ESCAPE;
   }
 
+  /**
+   * A callback function to inform the object, that the x scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
   protected void scaleXChanged ()
   {
   }
 
+  /**
+   * A callback function to inform the object, that the y scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
   protected void scaleYChanged ()
   {
   }
 
-  /** Writer function */
-  public org.jfree.pixie.wmf.MfRecord getRecord ()
+  /**
+   * Creates a new record based on the data stored in the MfCommand.
+   *
+   * @return the created record.
+   */
+  public MfRecord getRecord ()
   {
-    return null;
+    throw new UnsupportedOperationException("Native functions are not supported");
   }
 }

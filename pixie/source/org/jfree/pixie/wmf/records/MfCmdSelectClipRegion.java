@@ -15,16 +15,16 @@ public class MfCmdSelectClipRegion extends MfCmd
   {
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  public void replay (WmfFile file)
   {
-    org.jfree.pixie.wmf.WmfObject object = file.getObject (objectId);
+    WmfObject object = file.getObject (objectId);
     if (object == null)
       throw new NullPointerException ();
 
     switch (object.getType ())
     {
-      case org.jfree.pixie.wmf.WmfObject.OBJ_REGION:
-        file.getCurrentState ().setLogRegion ((org.jfree.pixie.wmf.MfLogRegion) object);
+      case WmfObject.OBJ_REGION:
+        file.getCurrentState ().setLogRegion ((MfLogRegion) object);
         break;
       default:
         throw new IllegalStateException ("Object is no region");
@@ -36,7 +36,7 @@ public class MfCmdSelectClipRegion extends MfCmd
     return new MfCmdSelectClipRegion ();
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  public void setRecord (MfRecord record)
   {
     int id = record.getParam (0);
     setObjectId (id);
@@ -44,7 +44,7 @@ public class MfCmdSelectClipRegion extends MfCmd
 
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.SELECT_CLIP_REGION;
+    return MfType.SELECT_CLIP_REGION;
   }
 
   public int getObjectId ()

@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ----------------
- * BrushConstants.java
+ * CommandFactory.java
  * ----------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BrushConstants.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: CommandFactory.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
  *
  * Changes
  * -------

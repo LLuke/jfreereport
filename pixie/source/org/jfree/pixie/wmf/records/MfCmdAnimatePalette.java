@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BrushConstants.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: MfCmdAnimatePalette.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
  *
  * Changes
  * -------
@@ -125,6 +125,7 @@ public class MfCmdAnimatePalette extends MfCmd
   {
     // the handle to the palette object
     int hPalette = record.getParam (POS_HPALETTE);
+    setHPalette(hPalette);
     // the number of defined entries ...
     int cEntries = record.getParam (POS_CENTRIES);
     Color[] colors = new Color[cEntries];

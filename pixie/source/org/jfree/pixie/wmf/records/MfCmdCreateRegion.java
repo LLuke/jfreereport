@@ -1,23 +1,130 @@
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Rectangle;
+
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
 import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
- * Currently i have no clue, how this is implemented. Lets have a
- * look at the WINE-Sources.
+ * Currently i have no clue, how this is implemented.
+ *
+ * From The WINE-Sources:
+ * <p>
+ * <pre>
+ *	The layout of the record looks something like this:
+ *
+ *	 rdParm	meaning
+ *	 0		Always 0?
+ *	 1		Always 6?
+ *	 2		Looks like a handle? - not constant
+ *	 3		0 or 1 ??
+ *	 4		Total number of bytes
+ *	 5		No. of separate bands = n [see below]
+ *	 6		Largest number of x co-ords in a band
+ *	 7-10		Bounding box x1 y1 x2 y2
+ *	 11-...		n bands
+ *
+ *	 Regions are divided into bands that are uniform in the
+ *	 y-direction. Each band consists of pairs of on/off x-coords and is
+ *	 written as
+ *		m y0 y1 x1 x2 x3 ... xm m
+ *	 into successive rdParm[]s.
+ *
+ *	 This is probably just a dump of the internal RGNOBJ?
+ * </pre>
+ * <p>
+ * <pre>
+ static BOOL MF_Play_MetaCreateRegion( METARECORD *mr, HRGN hrgn )
+ {
+     WORD band, pair;
+     WORD *start, *end;
+     INT16 y0, y1;
+     HRGN hrgn2 = CreateRectRgn( 0, 0, 0, 0 );
+
+     for(band  = 0, start = &(mr->rdParm[11]);
+                    band < mr->rdParm[5];
+                    band++, start = end + 1)
+     {
+       if(*start / 2 != (*start + 1) / 2)
+       {
+          WARN("Delimiter not even.\n");
+          DeleteObject( hrgn2 );
+          return FALSE;
+       }
+
+       end = start + *start + 3;
+       if(end > (WORD *)mr + mr->rdSize)
+       {
+         WARN("End points outside record.\n");
+         DeleteObject( hrgn2 );
+         return FALSE;
+       }
+
+       if(*start != *end)
+       {
+         WARN("Mismatched delimiters.\n");
+         DeleteObject( hrgn2 );
+         return FALSE;
+       }
+
+       y0 = *(INT16 *)(start + 1);
+       y1 = *(INT16 *)(start + 2);
+       for(pair = 0; pair < *start / 2; pair++)
+       {
+         SetRectRgn( hrgn2, *(INT16 *)(start + 3 + 2*pair), y0,
+           *(INT16 *)(start + 4 + 2*pair), y1 );
+         CombineRgn(hrgn, hrgn, hrgn2, RGN_OR);
+       }
+     }
+     DeleteObject( hrgn2 );
+     return TRUE;
+   }
+ </pre>
+ </p>
  */
 public class MfCmdCreateRegion extends MfCmd
 {
+  private int regionX;
+  private int regionY;
+  private int regionWidth;
+  private int regionHeight;
+  private Rectangle[] rects;
+
   public MfCmdCreateRegion ()
   {
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  public void setRecord (MfRecord record)
   {
     System.out.println ("Create Region is not implemented.");
+
+  }
+
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    int len = 0;
+    int bands = 0; int maxBands = 0;
+
+    MfRecord record = new MfRecord(0);
+    record.setParam(0,0);
+    record.setParam(1,6);
+    record.setParam(2,0x1234);
+    record.setParam(3,0);
+    record.setParam(4, len * 2);
+    record.setParam(5, bands);
+    record.setParam(6, maxBands);
+    record.setParam(7, regionX);
+    record.setParam(8, regionY);
+    record.setParam(9, regionX + regionWidth);
+    record.setParam(10, regionY + regionHeight);
+
+    // some more data ... a array of rectangles (16bit x 4)
+    // which makes up the defined region
+    // the rectangles are sorted and seem to be packed in some way
+    return null;
   }
 
   public String toString ()
@@ -31,17 +138,11 @@ public class MfCmdCreateRegion extends MfCmd
 
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.CREATE_REGION;
+    return MfType.CREATE_REGION;
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  public void replay (WmfFile file)
   {
-  }
-
-  /** Writer function */
-  public org.jfree.pixie.wmf.MfRecord getRecord ()
-  {
-    return null;
   }
 
   public MfCmd getInstance ()
@@ -55,5 +156,55 @@ public class MfCmdCreateRegion extends MfCmd
 
   protected void scaleYChanged ()
   {
+  }
+
+  public int getRegionX()
+  {
+    return regionX;
+  }
+
+  public void setRegionX(int regionX)
+  {
+    this.regionX = regionX;
+  }
+
+  public int getRegionY()
+  {
+    return regionY;
+  }
+
+  public void setRegionY(int regionY)
+  {
+    this.regionY = regionY;
+  }
+
+  public int getRegionWidth()
+  {
+    return regionWidth;
+  }
+
+  public void setRegionWidth(int regionWidth)
+  {
+    this.regionWidth = regionWidth;
+  }
+
+  public int getRegionHeight()
+  {
+    return regionHeight;
+  }
+
+  public void setRegionHeight(int regionHeight)
+  {
+    this.regionHeight = regionHeight;
+  }
+
+  public Rectangle[] getRects()
+  {
+    return rects;
+  }
+
+  public void setRects(Rectangle[] rects)
+  {
+    this.rects = rects;
   }
 }

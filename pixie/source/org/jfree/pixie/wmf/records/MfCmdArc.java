@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BrushConstants.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: MfCmdArc.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
  *
  * Changes
  * -------
@@ -98,8 +98,8 @@ public class MfCmdArc extends MfCmd
   }
 
   /**
-   * Fire a callback function, that the x scale has changed and the internal
-   * coordinate values have to be adjusted.
+   * A callback function to inform the object, that the x scale has changed and the
+   * internal coordinate values have to be adjusted.
    */
   protected void scaleXChanged ()
   {
@@ -110,8 +110,8 @@ public class MfCmdArc extends MfCmd
   }
 
   /**
-   * Fire a callback function, that the y scale has changed and the internal
-   * coordinate values have to be adjusted.
+   * A callback function to inform the object, that the x scale has changed and the
+   * internal coordinate values have to be adjusted.
    */
   protected void scaleYChanged ()
   {
@@ -165,7 +165,7 @@ public class MfCmdArc extends MfCmd
   }
 
   /**
-   * Reads the function identifiert .Every record type is identified by a
+   * Reads the function identifier. Every record type is identified by a
    * function number corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.

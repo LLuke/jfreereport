@@ -30,9 +30,9 @@ public class MfCmdIntersectClipRect extends MfCmd
   {
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  public void replay (WmfFile file)
   {
-    org.jfree.pixie.wmf.MfDcState state = file.getCurrentState ();
+    MfDcState state = file.getCurrentState ();
     Rectangle rect = state.getClipRegion ();
     Rectangle2D rec2 = rect.createIntersection (getScaledIntersectClipRect ());
     state.setClipRegion (
@@ -50,7 +50,7 @@ public class MfCmdIntersectClipRect extends MfCmd
 
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.INTERSECT_CLIP_RECT;
+    return MfType.INTERSECT_CLIP_RECT;
   }
 
   public Rectangle getIntersectClipRect ()
@@ -81,7 +81,7 @@ public class MfCmdIntersectClipRect extends MfCmd
     scaleYChanged ();
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  public void setRecord (MfRecord record)
   {
     int bottom = record.getParam (0);
     int right = record.getParam (1);
@@ -91,10 +91,10 @@ public class MfCmdIntersectClipRect extends MfCmd
   }
 
   /** Writer function */
-  public org.jfree.pixie.wmf.MfRecord getRecord ()
+  public MfRecord getRecord ()
   {
     Rectangle rc = getIntersectClipRect();
-    org.jfree.pixie.wmf.MfRecord record = new org.jfree.pixie.wmf.MfRecord(4);
+    MfRecord record = new MfRecord(4);
     record.setParam(0, (int)(rc.getY() + rc.getHeight()));
     record.setParam(1, (int)(rc.getX() + rc.getWidth()));
     record.setParam(2, (int)(rc.getY()));
