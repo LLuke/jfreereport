@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,12 @@
  * -----------------
  * SaveAsAction.java
  * -----------------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: SaveAsAction.java,v 1.10 2002/09/13 15:38:06 mungady Exp $
+ * $Id: SaveAsAction.java,v 1.11 2002/12/02 17:13:10 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,12 @@
  * 16-May-2002 : Load images from jar (JS)
  * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
  * 29-Aug-2002 : Downport to JDK 1.2.2
+ * 04-Dec-2002 : Added ActionDowngrade reference to resolve ambiguity (compile error) (DG);
  */
 
 package com.jrefinery.report.action;
 
+import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.util.AbstractActionDowngrade;
 
 import java.util.ResourceBundle;
@@ -63,8 +65,10 @@ public abstract class SaveAsAction extends AbstractActionDowngrade
   {
     this.putValue (NAME, resources.getString ("action.save-as.name"));
     this.putValue (SHORT_DESCRIPTION, resources.getString ("action.save-as.description"));
-    this.putValue (MNEMONIC_KEY, resources.getObject ("action.save-as.mnemonic"));
-    this.putValue (ACCELERATOR_KEY, resources.getObject ("action.save-as.accelerator"));
+    this.putValue (ActionDowngrade.MNEMONIC_KEY, 
+                   resources.getObject ("action.save-as.mnemonic"));
+    this.putValue (ActionDowngrade.ACCELERATOR_KEY, 
+                   resources.getObject ("action.save-as.accelerator"));
     this.putValue (SMALL_ICON, resources.getObject ("action.save-as.small-icon"));
     this.putValue ("ICON24", resources.getObject ("action.save-as.icon"));
   }

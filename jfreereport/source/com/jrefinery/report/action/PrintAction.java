@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,12 @@
  * ----------------
  * PrintAction.java
  * ----------------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: PrintAction.java,v 1.11 2002/09/13 15:38:06 mungady Exp $
+ * $Id: PrintAction.java,v 1.12 2002/12/02 17:13:10 taqua Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,12 @@
  * 05-Jun-2002 : Documentation, removed unused imports.
  * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
  * 29-Aug-2002 : Downport to JDK 1.2.2
+ * 04-Dec-2002 : Added ActionDowngrade reference to resolve ambiguity (compile error) (DG);
  */
 
 package com.jrefinery.report.action;
 
+import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.util.AbstractActionDowngrade;
 
 import java.util.ResourceBundle;
@@ -64,8 +66,10 @@ public abstract class PrintAction extends AbstractActionDowngrade implements Run
   {
     this.putValue (NAME, resources.getString ("action.print.name"));
     this.putValue (SHORT_DESCRIPTION, resources.getString ("action.print.description"));
-    this.putValue (MNEMONIC_KEY, resources.getObject ("action.print.mnemonic"));
-    this.putValue (ACCELERATOR_KEY, resources.getObject ("action.print.accelerator"));
+    this.putValue (ActionDowngrade.MNEMONIC_KEY, 
+                   resources.getObject ("action.print.mnemonic"));
+    this.putValue (ActionDowngrade.ACCELERATOR_KEY, 
+                   resources.getObject ("action.print.accelerator"));
     this.putValue (SMALL_ICON, resources.getObject ("action.print.small-icon"));
     this.putValue ("ICON24", resources.getObject ("action.print.icon"));
   }

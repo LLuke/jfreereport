@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,14 +20,14 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- *
  * --------------------
  * FirstPageAction.java
  * --------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  Joerg Schoemer;
- * Contributor(s):   -;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *                   Thomas Morgner;
  *
  * $Id$
  *
@@ -37,10 +37,12 @@
  * 05-Jun-2002 : These comments and documentation
  * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
  * 29-Aug-2002 : Downport to JDK 1.2.2
+ * 04-Dec-2002 : Added ActionDowngrade reference to resolve ambiguity (compile error) (DG);
  *
  */
 package com.jrefinery.report.action;
 
+import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.util.AbstractActionDowngrade;
 
 import java.util.ResourceBundle;
@@ -64,8 +66,10 @@ public abstract class FirstPageAction extends AbstractActionDowngrade
   {
     putValue (NAME, resources.getString ("action.firstpage.name"));
     putValue (SHORT_DESCRIPTION, resources.getString ("action.firstpage.description"));
-    putValue (MNEMONIC_KEY, resources.getObject ("action.firstpage.mnemonic"));
-    putValue (ACCELERATOR_KEY, resources.getObject ("action.firstpage.accelerator"));
+    putValue (ActionDowngrade.MNEMONIC_KEY, 
+              resources.getObject ("action.firstpage.mnemonic"));
+    putValue (ActionDowngrade.ACCELERATOR_KEY, 
+              resources.getObject ("action.firstpage.accelerator"));
     putValue (SMALL_ICON, resources.getObject ("action.firstpage.small-icon"));
     putValue ("ICON24", resources.getObject ("action.firstpage.icon"));
   }

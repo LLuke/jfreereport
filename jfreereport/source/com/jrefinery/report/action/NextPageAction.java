@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,17 +23,23 @@
  * -------------------
  * NextPageAction.java
  * -------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * $Id: NextPageAction.java,v 1.11 2002/11/07 21:45:27 taqua Exp $
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: NextPageAction.java,v 1.12 2002/12/02 17:13:00 taqua Exp $
  *
  * Changes
  * -------
  * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
  * 29-Aug-2002 : Downport to JDK 1.2.2
+ * 04-Dec-2002 : Added ActionDowngrade reference to resolve ambiguity (compile error) (DG);
  */
+
 package com.jrefinery.report.action;
 
+import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.util.AbstractActionDowngrade;
 
 import java.util.ResourceBundle;
@@ -56,8 +62,10 @@ public abstract class NextPageAction extends AbstractActionDowngrade
   {
     putValue (NAME, resources.getString ("action.forward.name"));
     putValue (SHORT_DESCRIPTION, resources.getString ("action.forward.description"));
-    putValue (ACCELERATOR_KEY, resources.getObject ("action.forward.accelerator"));
-    putValue (MNEMONIC_KEY, resources.getObject ("action.forward.mnemonic"));
+    putValue (ActionDowngrade.ACCELERATOR_KEY, 
+              resources.getObject ("action.forward.accelerator"));
+    putValue (ActionDowngrade.MNEMONIC_KEY, 
+              resources.getObject ("action.forward.mnemonic"));
     putValue (SMALL_ICON, resources.getObject ("action.forward.small-icon"));
     putValue ("ICON24", resources.getObject ("action.forward.icon"));
   }

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,9 +23,12 @@
  * -------------------
  * GotoPageAction.java
  * -------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * $Id: GotoPageAction.java,v 1.8 2002/11/07 21:45:27 taqua Exp $
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: GotoPageAction.java,v 1.9 2002/12/02 17:12:58 taqua Exp $
  *
  * Changes
  * -------------------
@@ -33,9 +36,12 @@
  * 04-Jun-2002 : Documentation
  * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
  * 29-Aug-2002 : Downport to JDK 1.2.2
+ * 04-Dec-2002 : Added ActionDowngrade reference to resolve ambiguity (compile error) (DG);
  */
+
 package com.jrefinery.report.action;
 
+import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.util.AbstractActionDowngrade;
 
 import java.util.ResourceBundle;
@@ -58,8 +64,10 @@ public abstract class GotoPageAction extends AbstractActionDowngrade
   {
     this.putValue (NAME, resources.getString ("action.gotopage.name"));
     this.putValue (SHORT_DESCRIPTION, resources.getString ("action.gotopage.description"));
-    this.putValue (MNEMONIC_KEY, resources.getObject ("action.gotopage.mnemonic"));
-    this.putValue (ACCELERATOR_KEY, resources.getObject ("action.gotopage.accelerator"));
+    this.putValue (ActionDowngrade.MNEMONIC_KEY, 
+                   resources.getObject ("action.gotopage.mnemonic"));
+    this.putValue (ActionDowngrade.ACCELERATOR_KEY, 
+                   resources.getObject ("action.gotopage.accelerator"));
   }
 
 }
