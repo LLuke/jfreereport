@@ -33,12 +33,14 @@ package com.jrefinery.report.ext.demo;
 import com.jrefinery.io.FileUtilities;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportStateList;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.states.ReportState;
-import com.jrefinery.report.states.StartState;
 import com.jrefinery.report.demo.IconTableModel;
 import com.jrefinery.report.io.ReportGenerator;
+import com.jrefinery.report.states.ReportState;
+import com.jrefinery.report.states.StartState;
+import com.jrefinery.report.targets.G2OutputTarget;
+import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.PDFOutputTarget;
+import com.jrefinery.report.util.Log;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -48,7 +50,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.ImageIcon;
 import javax.swing.table.TableModel;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -93,7 +97,7 @@ public class JFreeReportJpegServlet extends HttpServlet
     return thisRpt;
   }
 
-  private ReportStateList getReportSession (HttpServletRequest request, PDFOutputTarget target)
+  private ReportStateList getReportSession (HttpServletRequest request, OutputTarget target, JFreeReport report)
   {
     ReportStateList psl = null;
     HttpSession session = request.getSession(true);
@@ -101,7 +105,7 @@ public class JFreeReportJpegServlet extends HttpServlet
     {
       try
       {
-        psl = JFreeReport.repaginate(target, new StartState (createReport()));
+        psl = JFreeReport.repaginate(target, new StartState (report));
         session.setAttribute("PageStateList", psl);
       }
       catch (Exception e)
@@ -121,14 +125,19 @@ public class JFreeReportJpegServlet extends HttpServlet
   {
     Log.debug("in processRequest..." + getClass());
 
-    response.setHeader("Content-Type", "image/jpeg");
-    ServletOutputStream out = response.getOutputStream();
+    JFreeReport report = createReport();
+    PageFormat pf = report.getDefaultPageFormat();
+    double width = pf.getWidth();
+    double height = pf.getHeight();
+    //write the report to the temp file
+    BufferedImage bi = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_BYTE_INDEXED);
+    Graphics2D g2 = bi.createGraphics();
+    G2OutputTarget target = new G2OutputTarget(g2, report.getDefaultPageFormat());
 
-    PDFOutputTarget target = new PDFOutputTarget(out, new PageFormat(), true);
     target.setProperty(PDFOutputTarget.TITLE, "Title");
     target.setProperty(PDFOutputTarget.AUTHOR, "Author");
 
-    ReportStateList psl = getReportSession(request, target);
+    ReportStateList psl = getReportSession(request, target, report);
     HttpSession session = request.getSession(true);
     if (session.isNew())
     {
@@ -167,6 +176,15 @@ public class JFreeReportJpegServlet extends HttpServlet
       ReportState state = psl.get(page);
       JFreeReport.processPage(target, state, true);
       target.close();
+
+      response.setHeader("Content-Type", "image/jpeg");
+      ServletOutputStream out = response.getOutputStream();
+
+      // from JFreeChart ...
+      ChartUtilities.writeBufferedImageAsJPEG(out, bi);
+      out.flush();
+      out.close();
+
     }
     catch (Exception e)
     {
