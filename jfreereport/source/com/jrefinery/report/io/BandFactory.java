@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,14 +20,21 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ----------------
  * BandFactory.java
- * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ----------------
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
+ * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * Changes
+ * -------
  * 10-May-2002 : Initial version
  * 22-May-2002 : Structured parsing functions: all tags have a startXXX and endXXX function
+ * 05-Jun-2002 : Updated Javadoc comments (DG);
  */
+
 package com.jrefinery.report.io;
 
 import com.jrefinery.report.Band;
@@ -43,19 +50,23 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * The band factory handles all Bands. Bands can be one of
+ * This class handles the SAX events generated for report bands:
  * <ul>
- * <li>pageheader
- * <li>pagefooter
- * <li>reportheader
- * <li>reporthooter
- * <li>items
+ * <li>pageheader</li>
+ * <li>pagefooter</li>
+ * <li>reportheader</li>
+ * <li>reporthooter</li>
+ * <li>items</li>
  * </ul>
+ *
  */
 public class BandFactory extends DefaultHandler implements ReportDefinitionTags
 {
+
   private ReportDefinitionContentHandler handler;
+
   private FontFactory fontFactory;
+
   private JFreeReport report;
 
   public BandFactory (ReportFactory base)

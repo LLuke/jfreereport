@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.14 2002/05/31 19:31:14 taqua Exp $
+ * $Id: JFreeReport.java,v 1.15 2002/06/05 21:45:10 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -41,12 +41,13 @@
  *               group, reported by Steven Feinstein (DG);
  * 10-May-2002 : Rewrote report-processing. All reportstate-changes are handled by ReportState
  *               Objects. Created AccessorMethods for Properties. (TM)
- * 11-May-2002 : All bands have to be initialized. Null is no longer allowed for pageHeader,pageFooter,
- *               reportHeader, reportFooter, itemBand, functionCollection
+ * 11-May-2002 : All bands have to be initialized. Null is no longer allowed for pageHeader,
+ *               pageFooter, reportHeader, reportFooter, itemBand, functionCollection.
  * 17-May-2002 : Fixed reportPropertyInitialisation and checked if the report is proceeding on
  *               print.
  * 26-May-2002 : Changed repagination behaviour. Reports are repaginated before printed, so that
  *               global initialisations can be done.
+ * 05-Jun-2002 : Updated Javadoc comments (DG);
  */
 
 package com.jrefinery.report;
@@ -78,12 +79,14 @@ import java.util.LinkedList;
  */
 public class JFreeReport implements JFreeReportConstants
 {
+
+  /** Information about the JFreeReport project. */
   public static final ProjectInfo INFO = new JFreeReportInfo();
 
   /** The report name. */
   private String name;
 
-  /** Storage for arbitrary properties that a user can assign to a report.*/
+  /** Storage for arbitrary properties that a user can assign to the report. */
   private ReportProperties properties;
 
   /** An ordered list of report groups (each group defines its own header and footer). */
@@ -110,9 +113,7 @@ public class JFreeReport implements JFreeReportConstants
   /** The table model containing the data for the report. */
   private TableModel data;
 
-  /**
-   * The page format used for the report (determines the page size, and therefore the report
-   * width). */
+  /** The page format for the report (determines the page size, and therefore the report width). */
   private PageFormat defaultPageFormat;
 
   /**
@@ -137,7 +138,8 @@ public class JFreeReport implements JFreeReportConstants
 
   /**
    * Constructs a report with the specified attributes.
-   * @param name the name of the report
+   *
+   * @param name The name of the report.
    * @param reportHeader The report header <i>not null</i>.
    * @param reportFooter The report footer <i>not null</i>.
    * @param pageHeader The page header <i>not null</i>.
@@ -194,7 +196,9 @@ public class JFreeReport implements JFreeReportConstants
   }
 
   /**
-   * @return the name of the report.
+   * Returns the name of the report.
+   *
+   * @return The name.
    */
   public String getName()
   {
@@ -203,9 +207,12 @@ public class JFreeReport implements JFreeReportConstants
   }
 
   /**
-   * Sets the name of the report. This defines the NAME_PROPERTY.
+   * Sets the name of the report.
+   * <P>
+   * The report name is stored as a property (NAME_PROPERTY = "report.name") of the report.  If you
+   * supply null as the name, the property is removed.
    *
-   * @param name the name of the report. If name is null, the property will be removed.
+   * @param name The name of the report.
    */
   public void setName(String name)
   {
@@ -330,7 +337,7 @@ public class JFreeReport implements JFreeReportConstants
   }
 
   /**
-   * @return the item band for the report.
+   * @return The item band for the report.
    */
   public ItemBand getItemBand()
   {
@@ -352,6 +359,8 @@ public class JFreeReport implements JFreeReportConstants
    * empty list is given, an default group is created. This default
    * group contains no elements and starts at the first record of the
    * data and ends on the last record.
+   *
+   * @param groupList The list of groups.
    */
   public void setGroups(GroupList groupList)
   {
@@ -378,7 +387,8 @@ public class JFreeReport implements JFreeReportConstants
 
   /**
    * Returns the list of groups for the report.
-   * @return The list of groups for the report.
+   *
+   * @return The group list.
    */
   public GroupList getGroups()
   {
@@ -386,10 +396,11 @@ public class JFreeReport implements JFreeReportConstants
   }
 
   /**
-   * returns the number of groups in this report. Every report has at least one group
-   * defined.
+   * Returns the number of groups in this report.
+   * <P>
+   * Every report has at least one group defined.
    *
-   * @return the number of groups in the report.
+   * @return The group count.
    */
   public int getGroupCount()
   {
@@ -399,9 +410,12 @@ public class JFreeReport implements JFreeReportConstants
   /**
    * Returns the group at the specified index or null, if there is no such group.
    *
+   * @param count The group index.
+   *
+   * @return the requested group.
+   *
    * @throws IllegalArgumentException if the count is negative.
    * @throws IndexOutOfBoundsException if the count is greater than the number of defined groups.
-   * @return the requested group.
    */
   public Group getGroup(int count)
   {
@@ -474,10 +488,13 @@ public class JFreeReport implements JFreeReportConstants
   }
 
   /**
-   * Sets the data for the report.  Reports are generated from a TableModel (as used by Swing's
-   * JTable). If you don't want to give data to the report, use an empty TableModel instead of null.
+   * Sets the data for the report.
+   * <P>
+   * Reports are generated from a TableModel (as used by Swing's JTable). If you don't want to
+   * give data to the report, use an empty TableModel instead of null.
    *
    * @param data The data for the report.
+   *
    * @throws NullPointerException if the given data is null.
    */
   public void setData(TableModel data)
@@ -491,7 +508,7 @@ public class JFreeReport implements JFreeReportConstants
   /**
    * Returns the current data for this report.
    *
-   * @return the data in form of a table model.
+   * @return The data in form of a table model.
    */
   public TableModel getData()
   {
@@ -502,7 +519,9 @@ public class JFreeReport implements JFreeReportConstants
    * Sends the entire report to the specified target. The report is always drawn.
    *
    * @param target The output target.
+   *
    * @return The last state of the report, usually ReportState.Finish
+   *
    * @throws ReportProcessingException if the report did not proceed and got stuck.
    */
   public ReportState processReport(OutputTarget target)
@@ -531,7 +550,12 @@ public class JFreeReport implements JFreeReportConstants
     return rs;
   }
 
-  /** Processes the entire report and records the state at the end of every page. */
+  /**
+   * Processes the entire report and records the state at the end of every page.
+   *
+   * @param output The output target.
+   * @param state The report state.
+   */
   public ReportStateList repaginate (OutputTarget output, ReportState state)
       throws ReportProcessingException
   {
@@ -569,11 +593,12 @@ public class JFreeReport implements JFreeReportConstants
    * <p>
    * To check the progress, use ReportState.isProceeding(oldstate).
    *
-   * @param target The graphics device on which the report is being drawn.
+   * @param target The output target.
    * @param currPage The report state at the beginning of the current page.
-   * @param draw A flag that indicates whether or not we are actually drawing to the graphics
-   *             device.
+   * @param draw A flag that indicates whether or not the report is being written to the target.
+   *
    * @return The report state suitable for the next page or ReportState.Finish.
+   *
    * @throws IllegalArgumentException if the given state is a start or a finish state.
    */
   public ReportState processPage(
@@ -662,8 +687,13 @@ public class JFreeReport implements JFreeReportConstants
   /**
    * Returns true if the current row is the end of a group.
    * <p>
-   * To work as expected, this method assumes that a lower group
-   * includes all fields from an higher group.
+   * To work as expected, this method assumes that a lower group includes all fields from an
+   * higher group.
+   *
+   * @param row The current row.
+   * @param groupIndex The current group.
+   *
+   * @return A boolean indicating whether this is the last row in this group or a higher group.
    */
   public boolean isLastItemInHigherGroups(int row, int groupIndex)
   {
@@ -681,4 +711,5 @@ public class JFreeReport implements JFreeReportConstants
     }
     return false;
   }
+
 }

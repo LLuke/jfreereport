@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,17 +20,21 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------------------
+ * ------------------------------------
  * AbstractReportDefinitionHandler.java
- * ---------------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * ------------------------------------
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * 24-Apr-2002: Created to enable the XML-Parser to load external resources.
- * 10-May-2002: Added helper functions to ease up the parsing.
+ * Changes
+ * -------
+ * 24-Apr-2002 : Created to enable the XML-Parser to load external resources.
+ * 10-May-2002 : Added helper functions to ease up the parsing.
+ * 05-Jun-2002 : Updated Javadoc comments (DG);
  */
+
 package com.jrefinery.report.io;
 
 import com.jrefinery.report.JFreeReport;
@@ -43,26 +47,45 @@ import java.net.URL;
  */
 public abstract class AbstractReportDefinitionHandler extends DefaultHandler
 {
+
+  /** Base URL for loading resources. */
   private URL contentBase;
+
+  /** ??? */
   private int nameCounter;
 
   /**
-   * Empty DefaultConstructor
+   * Default constructor.
    */
   public AbstractReportDefinitionHandler ()
   {
   }
 
   /**
-   * Returns the report after the parsing is complete. Don't call until the report is
-   * completly build or you may get unexpected results.
+   * Returns the report after the parsing is complete.
+   * <P>
+   * Don't call until the report is completely built or you may get unexpected results.
+   *
+   * @return The parsed report.
    */
   public abstract JFreeReport getReport ();
 
   /**
-   * Sets the contentBase for this report. The contentBase is used to resolve relative
-   * URLs and to reload the DTD and external resources if needed. If no contentBase is
-   * set, no resources will be loaded and the results may be not defined.
+   * @return the current contentbase, or null if no contentBase is set.
+   */
+  public URL getContentBase ()
+  {
+    return contentBase;
+  }
+
+  /**
+   * Sets the contentBase for this report.
+   * <P>
+   * The contentBase is used to resolve relative URLs and to reload the DTD and external resources
+   * if needed. If no contentBase is set, no resources will be loaded and the results may be not
+   * defined.
+   *
+   * @param url The base URL.
    */
   public void setContentBase (URL url)
   {
@@ -70,13 +93,11 @@ public abstract class AbstractReportDefinitionHandler extends DefaultHandler
   }
 
   /**
-   * @return the current contentbase or null, if no contentBase is set.
+   * If a name is supplied, then this method simply returns it.  Otherwise, if name is null, then
+   * a unique name is generating by appending a number to the prefix '@anonymous'.
+   *
+   * @param name The name.
    */
-  public URL getContentBase ()
-  {
-    return contentBase;
-  }
-
   protected String generateName (String name)
   {
     if (name == null)
@@ -88,7 +109,7 @@ public abstract class AbstractReportDefinitionHandler extends DefaultHandler
   }
 
   /**
-   * Returns a initialized version of the definition handler.
+   * Returns an initialized version of the definition handler.
    */
   public abstract AbstractReportDefinitionHandler getInstance ();
 
