@@ -1,13 +1,13 @@
 ***********************************************
-* JFREEREPORT 0.7.3 INSTALLATION INSTRUCTIONS *
+* JFREEREPORT 0.7.4 INSTALLATION INSTRUCTIONS *
 ***********************************************
 
-Written by David Gilbert, 09 Jun 2002.
+Written by David Gilbert, 10 Jun 2002.
 
 1. INTRODUCTION
 ---------------
 This document describes how to download and install the latest version
-of JFreeReport (0.7.3).  The procedure has changed from the previous
+of JFreeReport (0.7.4).  The procedure has changed from the previous
 version, as the release is now being packaged up by Thomas Morgner,
 the new Project Leader for JFreeReport.
 
@@ -19,10 +19,10 @@ JFreeReport project page on SourceForge:
 http://sourceforge.net/projects/jfreereport
 
 You need to download all of the following files (I'd recommend saving
-them to a new directory called jfreereport-0.7.3):
+them to a new directory called jfreereport-0.7.4):
 
-- jfreereport-0.7.3.jar     : the JFreeReport runtime jar file;
-- jfreereport-src-0.7.3.jar : source code files;
+- jfreereport-0.7.4.jar     : the JFreeReport runtime jar file;
+- jfreereport-src-0.7.4.jar : source code files;
 - pixie.jar                 : the Pixie runtime jar file;
 - pixie-res.jar             : resources for Pixie;
 - pixie-src.jar             : Pixie source code;
@@ -38,7 +38,7 @@ You need to unpack some of the jar files in order to run the
 demonstration application.
 
 Create a subdirectory called libs within the
-jfreereport-0.7.3 directory.  Move the libs.zip file to this new
+jfreereport-0.7.4 directory.  Move the libs.zip file to this new
 subdirectory, and unzip it:
 
 unzip libs.zip
@@ -65,7 +65,7 @@ This extracts all the source code files.
 4. RUNNING THE DEMONSTRATION APPLICATION
 ----------------------------------------
 To run the demonstration application, type the following command from
-the jfreereport-0.7.3 directory:
+the jfreereport-0.7.4 directory:
 
 java -jar 
 start-demo.jar

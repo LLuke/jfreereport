@@ -33,6 +33,7 @@
  * -------------------------
  * 31-May-2002 : Derived from JFreeReportDemo
  * 04-Jun-2002 : Some documentation
+ * 10-Jun-2002 : Updated code to work with latest version of the JCommon class library;
  */
 
 package com.jrefinery.report.demo;

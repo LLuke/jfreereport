@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.19 2002/06/09 17:29:30 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.20 2002/06/09 22:57:43 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -39,6 +39,7 @@
  *               get report definition from jar (getResource())
  *               close behaviour unified
  * 05-Jun-2002 : Documentation
+ * 10-Jun-2002 : Updated code to work with latest version of the JCommon class library;
  */
 
 package com.jrefinery.report.demo;

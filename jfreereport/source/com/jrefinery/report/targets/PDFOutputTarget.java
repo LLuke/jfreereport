@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.9 2002/06/08 16:28:59 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.10 2002/06/09 17:29:30 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
  * 27-May-2002 : Fonts are embedded now, TrueType fonts are loaded directly into the pdf.
  *               See report4.xml for a demo. An encoding property is added to support unicode.
  * 08-Jun-2002 : Documentation.
+ * 10-Jun-2002 : Fixed a bug in FontFactory which caused the class to crash in Linux
  */
 
 package com.jrefinery.report.targets;
@@ -209,7 +210,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       String fs = System.getProperty ("file.separator");
 
       Log.debug ("Running on operating system: " + osname);
-      if (!osname.substring (0, 7).equalsIgnoreCase ("windows"))
+      if (!startsWithIgnoreCase(osname, "windows"))
       {
         Log.debug ("Assuming unix like file structures");
         // Assume X11 is installed in the default location.
@@ -474,7 +475,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @see String#startsWith
    */
-  private boolean startsWithIgnoreCase (String base, String start)
+  private static boolean startsWithIgnoreCase (String base, String start)
   {
     return base.regionMatches (true, 0, start, 0, start.length ());
   }

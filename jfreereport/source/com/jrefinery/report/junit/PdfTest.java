@@ -25,6 +25,10 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * Changes
+ * -------
+ * 10-Jun-2002 : Updated code to work with latest version of the JCommon class library;
+ *
  */
 package com.jrefinery.report.junit;
 
