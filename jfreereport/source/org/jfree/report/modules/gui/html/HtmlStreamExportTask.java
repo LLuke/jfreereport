@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStreamExportTask.java,v 1.6 2003/10/18 19:22:32 taqua Exp $
+ * $Id: HtmlStreamExportTask.java,v 1.7 2003/11/07 18:33:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -108,7 +108,12 @@ public class HtmlStreamExportTask extends ExportTask
       progressDialog.setModal(false);
       progressDialog.setVisible(true);
       target.addRepaginationListener(progressDialog);
-      target.setFilesystem(new StreamHtmlFilesystem(out));
+      // as this is a local report generation (no servlets involved)
+      // we can safely reference local files. It is up to the user to
+      // define the report properly to not scatter the image files over the
+      // whole local filesystem.
+      target.setFilesystem
+          (new StreamHtmlFilesystem(out, true, file.getParentFile().toURL()));
       target.processReport();
       out.close();
       out = null;

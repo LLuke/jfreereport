@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.3 2003/11/05 14:56:16 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.4 2003/11/07 18:33:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -101,6 +101,7 @@ public class SimplePageLayoutDelegate implements
   private boolean lastPagebreak;
   /** The current group index (used to select the correct group header and footer).*/
   private int currentEffectiveGroupIndex;
+  private boolean groupFinishPending;
 
   /**
    * DefaultConstructor. A worker needs to be assigned to use this delegate.
@@ -302,6 +303,14 @@ public class SimplePageLayoutDelegate implements
           worker.print(g.getHeader(), SimplePageLayoutWorker.BAND_SPOOLED, 
             SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
         }
+      }
+
+      if (groupFinishPending)
+      {
+        // now as the group footer should get printed soon, we correct the
+        // active groups ..
+        currentEffectiveGroupIndex -= 1;
+        groupFinishPending = false;
       }
 
       // mark the current position to calculate the maxBand-Height
@@ -517,13 +526,18 @@ public class SimplePageLayoutDelegate implements
     }
     try
     {
-      currentEffectiveGroupIndex -= 1;
+      //currentEffectiveGroupIndex -= 1;
+      groupFinishPending = true;
 
       final int gidx = event.getState().getCurrentGroupIndex();
       final Group g = event.getReport().getGroup(gidx);
       final Band b = g.getFooter();
-      worker.print(b, SimplePageLayoutWorker.BAND_PRINTED, 
-        SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
+      if (worker.print(b, SimplePageLayoutWorker.BAND_PRINTED,
+        SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED))
+      {
+        groupFinishPending = false;
+        currentEffectiveGroupIndex -= 1;
+      }
     }
     catch (FunctionProcessingException fe)
     {

@@ -7,15 +7,22 @@ A list of changes in recent versions:
           reference to the local LayoutSupport. This part was ugly
           and was completly rewritten.
 
+        * BugFix: Repeating group headers were lost if the printing
+          of the group footer of that group was delayed until a new
+          page was started.
+
         * BugFix: Exceptions in the SimplePageLayouter may be lost when
           the clearCurrentEvent() method throws an other exception. This
           was stupid coding and this method does no longer throw that
-          unnecessary exception.
+          unnecessary exception causing all the trouble.
 
         * The preview components are now fully configurable. The creation
           and contents of the toolbar and menubar can now be controlled
           using the report configuration.
 
+        * The preview base is reuseable now. The report can be redefined
+          using the setReport(..) method.
+          
         * The Total* Function now support a global computation, if no
           group is defined. They do no longer depend on the existence
           of the default group.
