@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultLayoutSupport.java,v 1.6 2005/02/23 21:04:47 taqua Exp $
+ * $Id: DefaultLayoutSupport.java,v 1.7 2005/03/03 14:42:34 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public class DefaultLayoutSupport implements LayoutSupport
   /**
    * The content factory.
    */
-  private final DefaultContentFactory contentFactory;
+  private ContentFactory contentFactory;
 
   private LayoutManagerCache cache;
 
@@ -68,15 +68,27 @@ public class DefaultLayoutSupport implements LayoutSupport
    */
   public DefaultLayoutSupport ()
   {
-    contentFactory = new DefaultContentFactory();
+    final DefaultContentFactory contentFactory = new DefaultContentFactory();
     contentFactory.addModule(new TextContentFactoryModule());
     contentFactory.addModule(new ImageContentFactoryModule());
     contentFactory.addModule(new ShapeContentFactoryModule());
     contentFactory.addModule(new DrawableContentFactoryModule());
     contentFactory.addModule(new AnchorContentFactoryModule());
+    this.contentFactory = contentFactory;
+
     cache = new LayoutManagerCache();
   }
 
+  public DefaultLayoutSupport (final ContentFactory cf)
+  {
+    if (cf == null)
+    {
+      throw new NullPointerException();
+    }
+    this.contentFactory = cf;
+
+    cache = new LayoutManagerCache();
+  }
   /**
    * Creates a size calculator for the current state of the output target.  The calculator
    * is used to calculate the string width and line height and later maybe more...

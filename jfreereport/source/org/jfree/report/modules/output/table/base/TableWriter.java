@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.20 2005/03/03 14:42:38 taqua Exp $
+ * $Id: TableWriter.java,v 1.21 2005/03/03 17:07:58 taqua Exp $
  *
  * Changes
  * -------
@@ -133,7 +133,7 @@ public strictfp class TableWriter
     setDependencyLevel(OUTPUT_LEVEL);
     this.delegate = new SimplePageLayoutDelegate(this);
     this.metaBandProducer = metaBandProducer;
-    this.layoutSupport = new DefaultLayoutSupport();
+    this.layoutSupport = metaBandProducer.getLayoutSupport();
   }
 
   /**

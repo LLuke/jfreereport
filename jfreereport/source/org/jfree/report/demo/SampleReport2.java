@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport2.java,v 1.8 2005/02/19 13:29:52 taqua Exp $
+ * $Id: SampleReport2.java,v 1.9 2005/02/23 21:04:39 taqua Exp $
  *
  * Changes:
  * --------
@@ -42,6 +42,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 
 import org.jfree.report.Band;
 import org.jfree.report.JFreeReport;
@@ -92,6 +93,8 @@ public class SampleReport2
         // remove the old content pane from the dialog, so that it has no
         // parent ...
         dlg.setContentPane(new JPanel());
+
+        pif = new JButton("Test");
       }
       catch (Exception e)
       {
@@ -215,10 +218,9 @@ public class SampleReport2
     pc.setName("PaintComponent");
     pc.setField("CreateComponent");
     pc.setElement("element");
-    pc.setScale(5);
+    pc.setScale(2);
     report.addExpression(pc);
 
     return report;
   }
-
 }

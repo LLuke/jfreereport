@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlImageMetaElement.java,v 1.8 2005/03/18 13:49:39 taqua Exp $
+ * $Id: HtmlImageMetaElement.java,v 1.9 2005/03/29 18:32:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -53,14 +53,23 @@ import org.jfree.report.util.geom.StrictGeomUtility;
 
 public class HtmlImageMetaElement extends HtmlMetaElement
 {
-  public HtmlImageMetaElement
-          (final ImageContent elementContent, final ElementStyleSheet style,
-           final boolean usesXHTML)
+  private boolean useDevIndependentImageSizes;
+
+  public HtmlImageMetaElement (final ImageContent elementContent,
+                               final ElementStyleSheet style,
+                               final boolean usesXHTML,
+                               final boolean useDevIndependentImageSizes)
   {
     super(elementContent, style, usesXHTML);
+    this.useDevIndependentImageSizes = useDevIndependentImageSizes;
   }
 
-  public void write (final PrintWriter pout, 
+  public boolean isUseDevIndependentImageSizes ()
+  {
+    return useDevIndependentImageSizes;
+  }
+
+  public void write (final PrintWriter pout,
                      final HtmlFilesystem filesystem,
                      final boolean emptyCellsUseCSS)
   {
@@ -78,10 +87,25 @@ public class HtmlImageMetaElement extends HtmlMetaElement
 
         pout.print("<img src=\"");
         pout.print(referenceData);
-        pout.print("\" width=\"");
+        pout.print("\" style=\"width:");
         pout.write(String.valueOf(imageWidth));
-        pout.print("\" height=\"");
+        if (useDevIndependentImageSizes)
+        {
+          pout.print("pt; height:");
+        }
+        else
+        {
+          pout.print("px; height:");
+        }
         pout.write(String.valueOf(imageHeight));
+        if (useDevIndependentImageSizes)
+        {
+          pout.print("pt;");
+        }
+        else
+        {
+          pout.print("px;");
+        }
         if (referenceData != null)
         {
           pout.print("\" alt=\"");

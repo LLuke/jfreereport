@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlProcessor.java,v 1.13 2005/03/04 12:08:18 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.14 2005/03/29 18:32:01 taqua Exp $
  *
  * Changes
  * -------
@@ -100,6 +100,7 @@ public class HtmlProcessor extends TableProcessor
   public static final String BODY_FRAGMENT = "BodyFragment";
 
   public static final String EMPTY_CELLS_USE_CSS = "EmptyCellsUseCSS";
+  private static final String USE_DEVICE_INDEPENDENT_IMAGESIZES = "UseDeviceIndependentImageSize";
 
   /**
    * Creates a new HtmlProcessor, which generates HTML4 output and uses the standard file
@@ -203,6 +204,18 @@ public class HtmlProcessor extends TableProcessor
             (getReportConfigurationPrefix() + "." + EMPTY_CELLS_USE_CSS, String.valueOf(emptyCellsUseCSS));
   }
 
+  public boolean isUseDeviceIndependentImageSize ()
+  {
+    return getReport().getReportConfiguration().getConfigProperty
+            (getReportConfigurationPrefix() + "." + USE_DEVICE_INDEPENDENT_IMAGESIZES, "false").equals("true");
+  }
+
+  public void setUseDeviceIndependentImageSize (final boolean useDeviceIndependentImageSize)
+  {
+    getReport().getReportConfiguration().setConfigProperty
+            (getReportConfigurationPrefix() + "." + USE_DEVICE_INDEPENDENT_IMAGESIZES, String.valueOf(useDeviceIndependentImageSize));
+  }
+
   public String getEncoding()
   {
     return getReport().getReportConfiguration().getConfigProperty
@@ -268,6 +281,6 @@ public class HtmlProcessor extends TableProcessor
 
   protected MetaBandProducer createMetaBandProducer ()
   {
-    return new HtmlMetaBandProducer(isGenerateXHTML());
+    return new HtmlMetaBandProducer(isGenerateXHTML(), isUseDeviceIndependentImageSize());
   }
 }

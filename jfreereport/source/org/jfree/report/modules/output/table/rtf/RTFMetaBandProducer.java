@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFMetaBandProducer.java,v 1.6 2005/02/23 21:05:36 taqua Exp $
+ * $Id: RTFMetaBandProducer.java,v 1.7 2005/03/16 21:06:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,8 +41,14 @@ package org.jfree.report.modules.output.table.rtf;
 import com.lowagie.text.pdf.BaseFont;
 import org.jfree.report.Element;
 import org.jfree.report.ImageContainer;
+import org.jfree.report.content.AnchorContentFactoryModule;
 import org.jfree.report.content.ContentCreationException;
+import org.jfree.report.content.ContentFactory;
+import org.jfree.report.content.DefaultContentFactory;
 import org.jfree.report.content.ImageContent;
+import org.jfree.report.content.ImageContentFactoryModule;
+import org.jfree.report.content.ShapeContentFactoryModule;
+import org.jfree.report.content.TextContentFactoryModule;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.support.itext.BaseFontCreateException;
@@ -65,7 +71,7 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
 
   public RTFMetaBandProducer (final String encoding)
   {
-    super(new DefaultLayoutSupport());
+    super(new DefaultLayoutSupport(createContentFactory()));
     if (encoding == null)
     {
       throw new NullPointerException("Encoding must be a non null value");
@@ -75,6 +81,20 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
     this.imageCache = new ITextImageCache();
   }
 
+
+  private static ContentFactory createContentFactory()
+  {
+    final DefaultContentFactory contentFactory = new DefaultContentFactory();
+    contentFactory.addModule(new TextContentFactoryModule());
+    contentFactory.addModule(new ShapeContentFactoryModule());
+    contentFactory.addModule(new AnchorContentFactoryModule());
+    if (isImageSupportEnabled())
+    {
+      contentFactory.addModule(new ImageContentFactoryModule());
+    }
+    return contentFactory;
+
+  }
   /**
    * The RTF-Target does not support drawable content.
    *
@@ -98,8 +118,7 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
       return null;
     }
 
-    if ("true".equals(ReportConfiguration.getGlobalConfig().getConfigProperty
-            ("org.jfree.report.modules.output.table.rtf.EnableImages")) == false)
+    if (isImageSupportEnabled() == false)
     {
       return null;
     }
@@ -112,6 +131,12 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
     }
     return new RTFImageMetaElement(new ImageContent((ImageContainer) o, rect),
             createStyleForImageElement(e, x, y), imageCache);
+  }
+
+  private static boolean isImageSupportEnabled ()
+  {
+    return "true".equals(ReportConfiguration.getGlobalConfig().getConfigProperty
+                ("org.jfree.report.modules.output.table.rtf.EnableImages"));
   }
 
   protected MetaElement createTextCell (final Element e,

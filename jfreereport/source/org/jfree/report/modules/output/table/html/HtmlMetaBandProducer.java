@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaBandProducer.java,v 1.9 2005/03/03 17:07:58 taqua Exp $
+ * $Id: HtmlMetaBandProducer.java,v 1.10 2005/03/16 21:06:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -64,11 +64,14 @@ import org.jfree.util.Log;
 public class HtmlMetaBandProducer extends TableMetaBandProducer
 {
   private boolean useXHTML;
+  private boolean useDeviceIndependentImageSizes;
 
-  public HtmlMetaBandProducer (final boolean useXHTML)
+  public HtmlMetaBandProducer (final boolean useXHTML,
+                               final boolean imageUnitIsPoint)
   {
     super(new DefaultLayoutSupport());
     this.useXHTML = useXHTML;
+    this.useDeviceIndependentImageSizes = imageUnitIsPoint;
   }
 
   protected MetaElement createTextCell
@@ -84,10 +87,6 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
     final MetaElement me = new HtmlTextMetaElement(new RawContent(rect, o),
             createStyleForTextElement(e, x, y), useXHTML);
     me.setName(e.getName());
-    if ("RH-02".equals(e.getName()))
-    {
-      Log.debug ("HERE");
-    }
     return me;
   }
 
@@ -108,7 +107,8 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
       return null;
     }
     final ImageContent ic = new ImageContent((ImageContainer) o, (StrictBounds) rect.clone());
-    final HtmlMetaElement me = new HtmlImageMetaElement(ic, createStyleForImageElement(e, x, y), useXHTML);
+    final HtmlMetaElement me = new HtmlImageMetaElement
+            (ic, createStyleForImageElement(e, x, y), useXHTML, useDeviceIndependentImageSizes);
     me.setName(e.getName());
     return me;
   }
@@ -151,6 +151,7 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
       return null;
     }
     final ImageContent ic = new ImageContent(imgref, (StrictBounds) rect.clone());
-    return new HtmlImageMetaElement(ic, createStyleForDrawableElement(e, x, y), useXHTML);
+    return new HtmlImageMetaElement
+            (ic, createStyleForDrawableElement(e, x, y), useXHTML, useDeviceIndependentImageSizes);
   }
 }

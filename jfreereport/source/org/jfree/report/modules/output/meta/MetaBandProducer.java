@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaBandProducer.java,v 1.10 2005/03/03 14:42:35 taqua Exp $
+ * $Id: MetaBandProducer.java,v 1.11 2005/03/24 22:24:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -87,7 +87,7 @@ public class MetaBandProducer
     this.support = support;
   }
 
-  protected LayoutSupport getLayoutSupport ()
+  public LayoutSupport getLayoutSupport ()
   {
     return support;
   }

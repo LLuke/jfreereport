@@ -29,7 +29,7 @@
   </configuration>
 
   <reportheader height="90" fontname="Arial Unicode MS" fontstyle="bold" fontsize="20">
-    <label name="RH0" x="0" y="0" width="100%" height="20" fsunderline="true" alignment="center">LIST OF COUNTRIES BY CONTINENT (${title})</label>
+    <label name="RH0" x="0" y="0" width="100%" height="20" color="green" fsunderline="true" alignment="center">LIST OF COUNTRIES BY CONTINENT (${title})</label>
     <label name="RH1" x="0" y="20" width="100%" height="30" vertical-alignment="bottom" alignment="center">Sample Thai chars: &#3648;&#3614;&#3636;&#3656;&#3617;, &#3621;&#3641;&#3585;&#3588;&#3657;&#3634;</label>
   </reportheader>
 

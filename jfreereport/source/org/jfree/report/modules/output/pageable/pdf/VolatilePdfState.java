@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: VolatilePdfState.java,v 1.1 2005/03/10 19:08:45 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,8 @@ public class VolatilePdfState
 
   private PdfContentByte contentByte;
   private BasicStroke stroke;
-  private Paint paint;
+  private Paint fillPaint;
+  private Paint strokePaint;
   private float height;
   private StrictBounds currentBounds;
 
@@ -122,9 +123,19 @@ public class VolatilePdfState
 
   public void setPaint (final Paint paint, final boolean fill)
   {
-    if (ObjectUtilities.equal(this.paint, paint))
+    if (fill)
     {
-      return;
+      if (ObjectUtilities.equal(this.fillPaint, paint))
+      {
+        return;
+      }
+    }
+    else
+    {
+      if (ObjectUtilities.equal(this.strokePaint, paint))
+      {
+        return;
+      }
     }
 
     if (paint instanceof Color)
@@ -143,7 +154,14 @@ public class VolatilePdfState
     {
       createTextureFromPaint(paint, fill);
     }
-    this.paint = paint;
+    if (fill)
+    {
+      this.fillPaint = paint;
+    }
+    else
+    {
+      this.strokePaint = paint;
+    }
   }
 
   private void createTextureFromPaint (final Paint paint,
@@ -385,9 +403,14 @@ public class VolatilePdfState
     return false;
   }
 
-  public Paint getPaint ()
+  public Paint getFillPaint ()
   {
-    return paint;
+    return fillPaint;
+  }
+
+  public Paint getStrokePaint ()
+  {
+    return fillPaint;
   }
 
   public BasicStroke getStroke ()

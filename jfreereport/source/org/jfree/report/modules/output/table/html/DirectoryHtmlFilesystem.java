@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.14 2005/03/03 23:00:02 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.15 2005/03/04 12:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -152,7 +152,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
 
     if (file.exists() && file.isFile() == false)
     {
-      throw new IOException("The given file-parameter does not point to a data file");
+      throw new IOException("The given file-parameter does not point to a data file: " + file);
     }
     else
     {
@@ -336,7 +336,8 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
           // now encode the image. We don't need to create digest data
           // for the image contents, as the image is perfectly identifyable
           // by its URL
-          final String entryName = encodeImage(image, false);
+          final String entryName = encodeImage
+                  (image, false);
           usedImages.put(url, entryName);
           return new HtmlImageReference(entryName);
         }
@@ -398,7 +399,8 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    *
    * @throws IOException if an IO erro occured.
    */
-  private String encodeImage (final Image image, final boolean createComparator)
+  private String encodeImage (final Image image,
+                              final boolean createComparator)
           throws IOException
   {
     // quick caching ... use a weak list ...

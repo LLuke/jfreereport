@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.11 2005/03/24 22:24:56 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.12 2005/03/29 18:32:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -625,15 +625,18 @@ public class HtmlContentCreator extends TableContentCreator
     }
     if (emptyCellsUseCSS == false)
     {
-      pout.print("&nbsp;");
-    }
-    if (isUseXHTML())
-    {
-      pout.println("\" />");
+      pout.println("\">&nbsp;</td>");
     }
     else
     {
-      pout.println("\"></td>");
+      if (isUseXHTML())
+      {
+        pout.println("\" />");
+      }
+      else
+      {
+        pout.println("\"></td>");
+      }
     }
   }
 

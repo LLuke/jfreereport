@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.30 2005/03/18 13:49:39 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.31 2005/03/24 22:24:55 taqua Exp $
  *
  * Changes
  * -------
@@ -853,6 +853,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     final PdfContentByte cb = this.writer.getDirectContent();
 
     pdfGraphics.setPaint(getPaint(), true);
+    pdfGraphics.setPaint(getPaint(), false);
     pdfGraphics.setStroke(getStroke());
 
     cb.beginText();
@@ -867,7 +868,6 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
             text, x1, this.getPageHeight() - y2, 0);
     cb.endText();
 
-    pdfGraphics.setPaint(getPaint(), false);
 
     if (getFont().isUnderline())
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.9 2005/01/25 00:13:08 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.10 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ import java.io.Writer;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.content.DefaultContentFactory;
+import org.jfree.report.content.TextContentFactoryModule;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.modules.output.csv.CSVProcessor;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
@@ -66,6 +68,7 @@ import org.jfree.report.modules.output.table.base.TableProcessor;
  */
 public class CSVTableProcessor extends TableProcessor
 {
+  private DefaultContentFactory contentFactory;
   /**
    * The writer used for the output.
    */
@@ -99,6 +102,8 @@ public class CSVTableProcessor extends TableProcessor
           throws ReportProcessingException
   {
     super(report);
+    contentFactory = new DefaultContentFactory();
+    contentFactory.addModule(new TextContentFactoryModule());
   }
 
   /**
@@ -180,6 +185,6 @@ public class CSVTableProcessor extends TableProcessor
 
   protected MetaBandProducer createMetaBandProducer ()
   {
-    return new CSVMetaBandProducer(new DefaultLayoutSupport());
+    return new CSVMetaBandProducer(new DefaultLayoutSupport(contentFactory));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaBandProducer.java,v 1.7 2005/02/23 21:05:37 taqua Exp $
+ * $Id: ExcelMetaBandProducer.java,v 1.8 2005/03/01 10:09:41 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,6 +43,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.jfree.report.Element;
+import org.jfree.report.content.AnchorContentFactoryModule;
+import org.jfree.report.content.ContentFactory;
+import org.jfree.report.content.DefaultContentFactory;
+import org.jfree.report.content.ShapeContentFactoryModule;
+import org.jfree.report.content.TextContentFactoryModule;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.DataTarget;
 import org.jfree.report.filter.DateFormatFilter;
@@ -67,8 +72,17 @@ public class ExcelMetaBandProducer
 
   public ExcelMetaBandProducer (final boolean defineDataFormats)
   {
-    super(new DefaultLayoutSupport());
+    super(new DefaultLayoutSupport(createExcelContentFactory()));
     this.defineDataFormats = defineDataFormats;
+  }
+
+  private static ContentFactory createExcelContentFactory()
+  {
+    final DefaultContentFactory contentFactory = new DefaultContentFactory();
+    contentFactory.addModule(new TextContentFactoryModule());
+    contentFactory.addModule(new ShapeContentFactoryModule());
+    contentFactory.addModule(new AnchorContentFactoryModule());
+    return contentFactory;
   }
 
   /**
