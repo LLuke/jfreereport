@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.24 2003/02/04 17:56:09 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.25 2003/02/08 19:32:06 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@
 package com.jrefinery.report.io;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -268,7 +267,7 @@ public class ReportGenerator
 
   /**
    * Creates a new instance of the currently set default handler and sets the contentbase
-   * for the handler to <code>contentBase</code>
+   * for the handler to <code>contentBase</code>.
    *
    * @param contentBase  the content base.
    *

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.15 2003/02/11 23:07:13 taqua Exp $
+ * $Id: GroupList.java,v 1.16 2003/02/12 17:35:49 taqua Exp $
  *
  * Changes:
  * --------
@@ -153,7 +153,7 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
     /**
      * All comparators of this type are equal.
      *
-     * @return
+     * @return the hashcode.
      */
     public int hashCode()
     {

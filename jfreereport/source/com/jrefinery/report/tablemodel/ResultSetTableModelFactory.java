@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.3 2003/02/07 20:26:02 taqua Exp $
  *
  * Changes
  * -------
@@ -112,7 +112,7 @@ public class ResultSetTableModelFactory
     {
       Log.info("ResultSet type could not be determined, assuming default table model.");
     }
-    if (rs.getType() == ResultSet.TYPE_FORWARD_ONLY)
+    if (resultSetType == ResultSet.TYPE_FORWARD_ONLY)
     {
       return generateDefaultTableModel(rs);
     }

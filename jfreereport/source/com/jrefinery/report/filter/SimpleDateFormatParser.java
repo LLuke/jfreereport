@@ -25,7 +25,7 @@
  * ---------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: SimpleDateFormatParser.java,v 1.7 2002/12/02 17:19:51 taqua Exp $
+ * $Id: SimpleDateFormatParser.java,v 1.8 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import java.text.SimpleDateFormat;
 public class SimpleDateFormatParser extends DateFormatParser
 {
   /**
-   * DefaultConstructor
+   * DefaultConstructor.
    */
   public SimpleDateFormatParser ()
   {
@@ -62,7 +62,7 @@ public class SimpleDateFormatParser extends DateFormatParser
 
 
   /**
-   * Returns the SimpleDateFormat object used in this parser
+   * Returns the SimpleDateFormat object used in this parser.
    *
    * @return The date format object.
    */
@@ -101,6 +101,7 @@ public class SimpleDateFormatParser extends DateFormatParser
    * of SimpleDateFormat formatstrings see java.text.SimpleDateFormat.
    *
    * @see java.text.SimpleDateFormat
+   * @return the formatstring used for this DateFormat.
    */
   public String getFormatString ()
   {
@@ -123,6 +124,7 @@ public class SimpleDateFormatParser extends DateFormatParser
    * of SimpleDateFormat formatstrings see java.text.SimpleDateFormat.
    *
    * @see java.text.SimpleDateFormat
+   * @return the localized format string.
    */
   public String getLocalizedFormatString ()
   {

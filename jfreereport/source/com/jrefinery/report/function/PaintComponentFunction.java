@@ -28,14 +28,14 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.16 2003/01/14 21:07:12 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.5 2003/02/25 09:55:51 taqua Exp $
  *
  * Changes
  * -------
  * 12-Feb-2003 : Initial version
  * 25-Feb-2003 : BugFixes: Images got lost on pagebreaks ...
  *
- * $Id: PaintComponentFunction.java,v 1.4 2003/02/23 20:39:29 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.5 2003/02/25 09:55:51 taqua Exp $
  */
 package com.jrefinery.report.function;
 
@@ -67,21 +67,21 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
   /** Literal text for the 'scale' property. */
   public static final String SCALE_PROPERTY = "scale";
 
-  /** the created image, cached for getValue() */
+  /** the created image, cached for getValue(). */
   private Image image;
 
   /**
-   * DefaultConstructor
+   * DefaultConstructor.
    */
   public PaintComponentFunction()
   {
   }
 
   /**
-   * Try to find the element in the last active root-band.
+   * Try to find the defined element in the last active root-band.
    *
-   * @param band
-   * @return
+   * @param band the band that is suspected to contain the element.
+   * @return the found element or null, if no element could be found.
    */
   private Element findElement (Band band)
   {

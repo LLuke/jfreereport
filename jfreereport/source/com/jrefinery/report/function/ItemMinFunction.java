@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemMinFunction.java,v 1.4 2002/12/12 12:26:56 mungady Exp $
+ * $Id: ItemMinFunction.java,v 1.5 2003/01/14 21:06:46 taqua Exp $
  *
  * Changes
  * -------
@@ -88,10 +88,10 @@ public class ItemMinFunction extends AbstractFunction
   /** The minimum value. */
   private BigDecimal min;
 
-  /** The parser for performing data conversion */
+  /** The parser for performing data conversion. */
   private NumberFormatParser parser;
 
-  /** The datasource of the parser */
+  /** The datasource of the parser. */
   private StaticDataSource datasource;
 
   /**

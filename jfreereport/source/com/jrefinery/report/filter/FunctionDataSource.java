@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionDataSource.java,v 1.13 2002/09/13 15:38:07 mungady Exp $
+ * $Id: FunctionDataSource.java,v 1.14 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
 {
 
   /**
-   * The name of the function as defined in the function collection for the report
+   * The name of the function as defined in the function collection for the report.
    *
    * @see com.jrefinery.report.function.Function#setName(String)
    * @see com.jrefinery.report.function.Function#getName
@@ -134,6 +134,8 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
   }
 
   /**
+   * Clones this datasource.
+   *
    * @return a clone of this object.
    * @throws CloneNotSupportedException if the cloning failed.
    */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumFunction.java,v 1.15 2002/12/12 12:26:56 mungady Exp $
+ * $Id: TotalGroupSumFunction.java,v 1.16 2003/01/14 21:07:19 taqua Exp $
  *
  * Changes
  * -------
@@ -124,10 +124,10 @@ public class TotalGroupSumFunction extends AbstractFunction
   /** A useful constant representing zero. */
   private static final BigDecimal ZERO = new BigDecimal(0.0);
 
-  /** The parser for performing data conversion */
+  /** The parser for performing data conversion. */
   private NumberFormatParser parser;
 
-  /** The datasource of the parser */
+  /** The datasource of the parser. */
   private StaticDataSource datasource;
 
   /** The group sum. */

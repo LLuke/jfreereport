@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemMaxFunction.java,v 1.5 2002/12/12 12:26:56 mungady Exp $
+ * $Id: ItemMaxFunction.java,v 1.6 2003/01/14 21:06:39 taqua Exp $
  *
  * Changes
  * -------
@@ -74,16 +74,16 @@ public class ItemMaxFunction extends AbstractFunction
   /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
 
-  /** A useful constant for zero */
+  /** A useful constant for zero. */
   private static final BigDecimal ZERO = new BigDecimal(0.0);
 
-  /** The maximum value */
+  /** The maximum value. */
   private BigDecimal max;
 
-  /** The parser for performing data conversion */
+  /** The parser for performing data conversion. */
   private NumberFormatParser parser;
 
-  /** The datasource of the parser */
+  /** The datasource of the parser. */
   private StaticDataSource datasource;
 
   /**

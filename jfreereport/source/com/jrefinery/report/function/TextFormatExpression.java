@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *
 
- * $Id: TextFormatExpression.java,v 1.5 2002/12/02 17:29:22 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.6 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,7 @@ import java.util.Iterator;
  */
 public class TextFormatExpression extends AbstractExpression
 {
-  /** The property key for the pattern property */
+  /** The property key for the pattern property. */
   public static final String PATTERN_PROPERTY = "pattern";
 
   /** An ordered list containing the fieldnames used in the expression. */

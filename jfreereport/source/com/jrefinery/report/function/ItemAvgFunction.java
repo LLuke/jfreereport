@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemAvgFunction.java,v 1.6 2002/12/12 12:26:56 mungady Exp $
+ * $Id: ItemAvgFunction.java,v 1.7 2003/01/14 21:06:21 taqua Exp $
  *
  * Changes
  * -------
@@ -86,10 +86,10 @@ public class ItemAvgFunction extends AbstractFunction
   /** The item count. */
   private BigDecimal itemCount;
 
-  /** The parser for performing data conversion */
+  /** The parser for performing data conversion. */
   private NumberFormatParser parser;
 
-  /** The data source of the parser */
+  /** The data source of the parser. */
   private StaticDataSource datasource;
 
   /**

@@ -25,7 +25,7 @@
  * ------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportDefinitionException.java,v 1.12 2002/12/02 17:30:52 taqua Exp $
+ * $Id: ReportDefinitionException.java,v 1.13 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public class ReportDefinitionException extends SAXException
 
   /**
    * Creates a new ReportDefinitionException with an parent exception and with the parents
-   * message as explaination
+   * message as explaination.
    *
    * @param e the parentException that caused this exception
    */
@@ -74,7 +74,7 @@ public class ReportDefinitionException extends SAXException
 
   /**
    * Creates a new ReportDefinitionException with an parent exception and with the given
-   * message as explaination
+   * message as explaination.
    *
    * @param e the parentException that caused this exception
    * @param message a detail message explaining the reasons for this exception

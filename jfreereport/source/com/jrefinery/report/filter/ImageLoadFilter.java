@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.12 2003/01/25 02:47:09 taqua Exp $
+ * $Id: ImageLoadFilter.java,v 1.13 2003/02/04 17:56:08 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -70,7 +70,7 @@ public class ImageLoadFilter implements DataFilter
   private KeyedQueue imageCache;
 
   /**
-   * The datasource from where to read the urls
+   * The datasource from where to read the urls.
    */
   private DataSource source;
 

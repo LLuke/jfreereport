@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.4 2003/02/02 23:43:50 taqua Exp $
+ * $Id: BandFactory.java,v 1.5 2003/02/08 19:32:06 taqua Exp $
  *
  * Changes
  * -------
@@ -51,12 +51,13 @@ import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * This class handles the SAX events generated for report bands:
+ * This class handles the SAX events generated for report bands.
+ * <p>
+ * Recognized root bands are:
  * <ul>
  * <li>pageheader</li>
  * <li>pagefooter</li>
@@ -78,6 +79,9 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
   /**
    * Initializes this BandFactory based on the data contained in the ReportFactory.
    *
+   * @param parser the used parser to coordinate the parsing process.
+   * @param finishTag the finish tag, that should trigger the deactivation of this parser.
+   * @throws NullPointerException if the finishTag or the parser are null.
    */
   public BandFactory (Parser parser, String finishTag)
   {
@@ -362,7 +366,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
    *
    * @param attr  the element attributes.
    *
-   * @throws org.xml.sax.SAXException if there is a parsing problem.
+   * @throws SAXException if there is a parsing problem.
    *
    * @see com.jrefinery.report.ItemBand
    */
@@ -399,6 +403,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
    * Handles the end of an ItemBand definition.
    *
    * @see com.jrefinery.report.ItemBand
+   * @throws SAXException if a Parser error occurs.
    */
   public void endItems () throws SAXException
   {
@@ -409,6 +414,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
    * Handles the end of a PageHeader definition.
    *
    * @see com.jrefinery.report.PageHeader
+   * @throws SAXException if a parser error occurs.
    */
   public void endPageHeader () throws SAXException
   {
@@ -419,6 +425,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
    * Handles the end of a PageFooter definition.
    *
    * @see com.jrefinery.report.PageFooter
+   * @throws SAXException if a parser error occurs.
    */
   private void endPageFooter () throws SAXException
   {
@@ -429,6 +436,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
    * Handles the end of a ReportHeader definition.
    *
    * @see com.jrefinery.report.ReportHeader
+   * @throws SAXException if a parser error occurs.
    */
   private void endReportHeader () throws SAXException
   {
@@ -439,6 +447,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
    * Handles the end of a ReportFooter definition.
    *
    * @see com.jrefinery.report.ReportFooter
+   * @throws SAXException if a parser error occurs.
    */
   private void endReportFooter () throws SAXException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.11 2003/02/22 18:52:27 taqua Exp $
+ * $Id: ElementFactory.java,v 1.12 2003/02/24 14:59:22 mungady Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@
 package com.jrefinery.report.io.simple;
 
 import com.jrefinery.report.Band;
-import com.jrefinery.report.Element;
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.ImageElement;
 import com.jrefinery.report.ItemFactory;
@@ -53,7 +52,6 @@ import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.util.CharacterEntityParser;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -77,13 +75,13 @@ import java.net.URL;
  */
 public class ElementFactory extends AbstractReportDefinitionHandler implements ReportDefinitionTags
 {
-  /** Storage for the current CDATA */
+  /** Storage for the current CDATA. */
   private StringBuffer currentText;
 
-  /** The current band, where created elements are added to */
+  /** The current band, where created elements are added to. */
   private Band currentBand;
 
-  /** the fontfactory used to fill TextElements font definitions */
+  /** the fontfactory used to fill TextElements font definitions. */
   private FontFactory fontFactory;
 
   /** The text element name. */
@@ -127,6 +125,9 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * and will add created element to this band. If unknown end-Tags are encountered, the
    * parsing for elements will stop and the previous handler will be activated.
    *
+   * @param parser the used parser to coordinate the parsing process.
+   * @param finishTag the finish tag, that should trigger the deactivation of this parser.
+   * @throws NullPointerException if the finishTag or the parser are null.
    */
   public ElementFactory(Parser parser, String finishTag, Band band)
   {
@@ -773,6 +774,13 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   {
   }
 
+  /**
+   * Creates a resource label element, an text element with an static datasource attached.
+   *
+   * @param attrs  the attributes.
+   *
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   */
   protected void startResourceLabel (Attributes attrs)
       throws SAXException
   {
@@ -793,6 +801,13 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     clearCurrentText();
   }
 
+  /**
+   * Creates a resource field element.
+   *
+   * @param attrs  the attributes.
+   *
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
+   */
   protected void startResourceField (Attributes attrs)
     throws SAXException
   {
@@ -810,6 +825,10 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
   }
 
+  /**
+   * Ends a resource label tag, sets the static key for the resource label,
+   * which was build during the parsing. The label is added to the current band.
+   */
   protected void endResourceLabel ()
   {
     TextElement te = ItemFactory.createResourceLabel(textElementName,
@@ -827,6 +846,9 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     getCurrentBand().addElement(te);
   }
 
+  /**
+   * Ends the resource field and adds it to the current band.
+   */
   protected void endResourceField ()
   {
     TextElement te = ItemFactory.createResourceElement(textElementName,

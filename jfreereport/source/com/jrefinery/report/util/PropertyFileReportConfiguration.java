@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyFileReportConfiguration.java,v 1.3 2003/02/05 17:56:03 taqua Exp $
+ * $Id: PropertyFileReportConfiguration.java,v 1.4 2003/02/22 18:52:31 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,17 @@ package com.jrefinery.report.util;
 import java.io.IOException;
 import java.io.InputStream;
 
-/** A report configuration that reads its values from the jfreereport.properties file. */
+/**
+ * A report configuration that reads its values from the jfreereport.properties file.
+ */
 public class PropertyFileReportConfiguration extends ReportConfiguration
 {
+  /**
+   * Loads the properties stored in the given file. This method does nothing if
+   * the file does not exist or is unreadable.
+   *
+   * @param fileName the file name of the stored properties.
+   */
   public void load(String fileName)
   {
     InputStream in = this.getClass().getResourceAsStream(fileName);

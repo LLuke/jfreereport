@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportConstants.java,v 1.11 2002/09/13 15:38:04 mungady Exp $
+ * $Id: JFreeReportConstants.java,v 1.12 2002/12/05 16:55:16 mungady Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,11 @@ public interface JFreeReportConstants
   /** Key for the 'report page format' property. */
   public static final String REPORT_PAGEFORMAT_PROPERTY = "report.pageformat";
 
-  /** Key for the 'report page count' property. */
+  /**
+   * Key for the 'report page count' property.
+   * @deprecated pagecount should be calculated by functions. The property is
+   * no longer filled by the ReportProcessor.
+   */
   public static final String REPORT_PAGECOUNT_PROPERTY = "report.pagecount";
 
   /** Key for the 'report prepare run' property. */
@@ -74,11 +78,5 @@ public interface JFreeReportConstants
 
   /** Key for the 'report definition content base' property. */
   public static final String REPORT_DEFINITION_CONTENTBASE = "report.definition.contentbase";
-
-  /** A useful constant that signals that a page is full. */
-  public static final boolean PAGE_FULL = true;
-
-  /** A useful constant that signals that a page is not yet full. */
-  public static final boolean PAGE_NOT_FULL = false;
 
 }

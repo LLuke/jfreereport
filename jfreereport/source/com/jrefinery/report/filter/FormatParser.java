@@ -25,7 +25,7 @@
  * -----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FormatParser.java,v 1.10 2002/11/07 21:45:27 taqua Exp $
+ * $Id: FormatParser.java,v 1.11 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public class FormatParser implements DataFilter
   private Object nullvalue;
 
   /**
-   * DefaultConstructor
+   * DefaultConstructor.
    */
   public FormatParser ()
   {

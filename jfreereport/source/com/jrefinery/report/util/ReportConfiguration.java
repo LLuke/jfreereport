@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.33 2003/02/09 18:43:06 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.34 2003/02/16 19:02:39 taqua Exp $
  *
  * Changes
  * -------
@@ -274,14 +274,14 @@ public class ReportConfiguration
   public static final String G2TARGET_USEALIASING
                              = "com.jrefinery.report.targets.G2OutputTarget.useAliasing";
 
-  /** The text aliasing configuration default value. Is "false" */
+  /** The text aliasing configuration default value. Is "false". */
   public static final String G2TARGET_USEALIASING_DEFAULT = "false";
 
-  /** The G2 fontrenderer bug override configuration key */
+  /** The G2 fontrenderer bug override configuration key. */
   public static final String G2TARGET_ISBUGGY_FRC
                              = "com.jrefinery.report.targets.G2OutputTarget.isBuggyFRC";
 
-  /** The G2 fontrenderer bug override. Is "false" */
+  /** The G2 fontrenderer bug override. Is "false". */
   public static final String G2TARGET_ISBUGGY_FRC_DEFAULT = "false";
 
   /** The preferred width key. */
@@ -370,10 +370,15 @@ public class ReportConfiguration
   /** Disable strict layout by default */ 
   public static final String STRICT_TABLE_LAYOUT_DEFAULT = "false";
 
+  /** The property that defines whether to enable PDF export in the PreviewFrame. */
   public static final String ENABLE_EXPORT_PDF = "com.jrefinery.report.preview.plugin.pdf";
+  /** The property that defines whether to enable CSV export in the PreviewFrame. */
   public static final String ENABLE_EXPORT_CSV = "com.jrefinery.report.preview.plugin.csv";
+  /** The property that defines whether to enable Html export in the PreviewFrame. */
   public static final String ENABLE_EXPORT_HTML = "com.jrefinery.report.preview.plugin.html";
+  /** The property that defines whether to enable Excel export in the PreviewFrame. */
   public static final String ENABLE_EXPORT_EXCEL = "com.jrefinery.report.preview.plugin.excel";
+  /** The property that defines whether to enable PlainText export in the PreviewFrame. */
   public static final String ENABLE_EXPORT_PLAIN = "com.jrefinery.report.preview.plugin.plain";
 
 
@@ -517,7 +522,7 @@ public class ReportConfiguration
   }
 
   /**
-   * Returns whether to search for ttf-fonts when the PDFOutputTarget is loaded..
+   * Returns whether to search for ttf-fonts when the PDFOutputTarget is loaded.
    *
    * @return the PDFOutputTarget autoinitialisation value.
    */
@@ -540,7 +545,7 @@ public class ReportConfiguration
   /**
    * Returns <code>true</code> if logging is disabled, and <code>false</code> otherwise.
    *
-   * @return boolean.
+   * @return true, if logging is completly disabled, false otherwise.
    */
   public boolean isDisableLogging()
   {

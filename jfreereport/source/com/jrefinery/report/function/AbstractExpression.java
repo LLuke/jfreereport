@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.18 2003/01/14 21:05:58 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.19 2003/02/17 16:07:17 taqua Exp $
  *
  * Changes
  * -------
@@ -145,7 +145,7 @@ public abstract class AbstractExpression implements Expression
    * called by the system regardless of whether this expression is referenced in the 
    * {@link DataRow}.
    *
-   * @return boolean.
+   * @return true, if the expression is activated automaticly, false otherwise.
    */
   public boolean isActive()
   {

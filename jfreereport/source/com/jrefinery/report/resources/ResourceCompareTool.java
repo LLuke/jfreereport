@@ -2,7 +2,7 @@
  * Date: Feb 3, 2003
  * Time: 8:41:37 PM
  *
- * $Id: ResourceCompareTool.java,v 1.1 2003/02/03 20:34:12 taqua Exp $
+ * $Id: ResourceCompareTool.java,v 1.2 2003/02/04 17:56:19 taqua Exp $
  */
 package com.jrefinery.report.resources;
 
@@ -38,6 +38,7 @@ public class ResourceCompareTool
     if (compare == null)
     {
       System.err.println("The locale " + args[0] + " is not implemented.");
+      System.exit(1);
     }
 
     Object[][] contentsRes = resources.getContents();

@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.17 2003/02/08 19:32:06 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.18 2003/02/18 19:37:35 taqua Exp $
  *
  * Changes
  * -------
@@ -760,26 +760,56 @@ public class PageFormatFactory
                           + " W: " + pf.getImageableWidth());
   }
 
+  /**
+   * Returns the left border of the given paper.
+   *
+   * @param p the paper that defines the borders.
+   * @return the left border.
+   */
   public double getLeftBorder (Paper p)
   {
     return p.getImageableX();
   }
 
+  /**
+   * Returns the right border of the given paper.
+   *
+   * @param p the paper that defines the borders.
+   * @return the right border.
+   */
   public double getRightBorder (Paper p)
   {
     return p.getWidth() - (p.getImageableX() + p.getImageableWidth());
   }
 
+  /**
+   * Returns the top border of the given paper.
+   *
+   * @param p the paper that defines the borders.
+   * @return the top border.
+   */
   public double getTopBorder (Paper p)
   {
     return p.getImageableY();
   }
 
+  /**
+   * Returns the bottom border of the given paper.
+   *
+   * @param p the paper that defines the borders.
+   * @return the bottom border.
+   */
   public double getBottomBorder (Paper p)
   {
     return p.getHeight() - (p.getImageableY() + p.getImageableHeight());
   }
 
+  /**
+   * Resolves a page format, so that the result can be serialized.
+   *
+   * @param format the page format that should be prepared for serialisation.
+   * @return the prepared page format data.
+   */
   public Object[] resolvePageFormat (PageFormat format)
   {
     Integer orientation = new Integer (format.getOrientation());
@@ -792,6 +822,12 @@ public class PageFormatFactory
     return new Object[] { orientation, fdim, rect };
   }
 
+  /**
+   * Restores a page format after it has been serialized.
+   *
+   * @param data the serialized page format data.
+   * @return the restored page format.
+   */
   public PageFormat createPageFormat (Object[] data)
   {
     Integer orientation = (Integer) data[0];

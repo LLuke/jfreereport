@@ -25,7 +25,7 @@
  * --------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: LogTarget.java,v 1.7 2002/12/18 10:13:16 mungady Exp $
+ * $Id: LogTarget.java,v 1.8 2003/02/05 17:56:03 taqua Exp $
  *
  * Changes
  * -------
@@ -45,22 +45,22 @@ package com.jrefinery.report.util;
 public interface LogTarget
 {
   /**
-   * Loglevel ERROR
+   * Loglevel ERROR.
    */
   public static final int ERROR = 0;
 
   /**
-   * Loglevel WARN
+   * Loglevel WARN.
    */
   public static final int WARN = 1;
 
   /**
-   * Loglevel INFO
+   * Loglevel INFO.
    */
   public static final int INFO = 2;
 
   /**
-   * Loglevel DEBUG
+   * Loglevel DEBUG.
    */
   public static final int DEBUG = 3;
 

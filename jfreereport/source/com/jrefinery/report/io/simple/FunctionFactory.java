@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.5 2003/02/09 18:42:49 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.6 2003/02/22 18:14:08 taqua Exp $
  *
  * Changes
  * -------
@@ -81,6 +81,10 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
 
   /**
    * Creates a new function handler.
+   *
+   * @param parser the used parser to coordinate the parsing process.
+   * @param finishTag the finish tag, that should trigger the deactivation of this parser.
+   * @throws NullPointerException if the finishTag or the parser are null.
    */
   public FunctionFactory (Parser parser, String finishTag)
   {
@@ -214,7 +218,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   }
 
   /**
-   * starts a new property entry for the current function
+   * Starts a new property entry for the current function.
    *
    * @param atts  the element attributes.
    *

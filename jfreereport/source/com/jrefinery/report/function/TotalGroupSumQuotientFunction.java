@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited)
  *                   for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientFunction.java,v 1.2 2003/01/14 21:07:25 taqua Exp $
+ * $Id: TotalGroupSumQuotientFunction.java,v 1.3 2003/02/02 23:43:49 taqua Exp $
  *
  * Changes
  * -------
@@ -126,10 +126,10 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
   /** A useful constant representing zero. */
   private static final BigDecimal ZERO = new BigDecimal(0.0);
 
-  /** The parser for performing data conversion */
+  /** The parser for performing data conversion. */
   private NumberFormatParser parser;
 
-  /** The datasource of the parser */
+  /** The datasource of the parser. */
   private StaticDataSource datasource;
 
   /** The group sums for dividend and divisor. */

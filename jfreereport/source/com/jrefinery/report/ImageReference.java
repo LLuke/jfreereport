@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.25 2003/02/18 19:36:59 taqua Exp $
+ * $Id: ImageReference.java,v 1.26 2003/02/23 20:39:10 taqua Exp $
  *
  * Changes:
  * --------
@@ -362,7 +362,8 @@ public class ImageReference implements Serializable, Cloneable
   }
 
   /**
-   * compute a hashcode for this imageReference
+   * compute a hashcode for this imageReference.
+   * 
    * @return the hashcode
    */
   public int hashCode()

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ReportConverterGUI.java,v 1.4 2003/02/21 11:31:13 mungady Exp $
  *
  * Changes
  * -------
@@ -249,7 +249,7 @@ public class ReportConverterGUI extends JFrame
   }
 
   /**
-   * Starting point for the utility application
+   * Starting point for the utility application.
    * 
    * @param args  ignored.
    */

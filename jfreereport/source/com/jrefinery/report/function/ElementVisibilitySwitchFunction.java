@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.11 2003/02/02 23:43:49 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.12 2003/02/22 18:52:25 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -69,10 +69,10 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   }
 
   /**
-   * Try to find the element in the last active root-band.
+   * Try to find the defined element in the last active root-band.
    *
-   * @param band
-   * @return
+   * @param band the band that is suspected to contain the element.
+   * @return the found element or null, if no element could be found.
    */
   private Element findElement (Band band)
   {
@@ -170,6 +170,9 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   }
 
   /**
+   * Returns the defined visibility of the element. Returns either true or false as
+   * java.lang.Boolean.
+   *
    * @return the visibility of the element, either Boolean.TRUE or Boolean.FALSE.
    */
   public Object getValue()

@@ -25,7 +25,7 @@
  * --------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: URLFilter.java,v 1.8 2002/12/02 17:19:52 taqua Exp $
+ * $Id: URLFilter.java,v 1.9 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ public class URLFilter implements DataFilter
   private URL baseURL;
 
   /**
-   * DefaultConstructor
+   * DefaultConstructor.
    */
   public URLFilter ()
   {
@@ -143,6 +143,8 @@ public class URLFilter implements DataFilter
   }
 
   /**
+   * Gets the base url used to make relative URLs absolute.
+   *
    * @return the base url used to complete relative urls.
    */
   public URL getBaseURL ()

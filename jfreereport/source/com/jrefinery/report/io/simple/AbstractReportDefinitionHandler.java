@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractReportDefinitionHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: AbstractReportDefinitionHandler.java,v 1.2 2003/02/02 23:43:50 taqua Exp $
  *
  * Changes
  * -------
@@ -54,20 +54,35 @@ import java.net.URL;
  */
 public abstract class AbstractReportDefinitionHandler implements ReportDefinitionHandler
 {
+  /** the name generator parser-property name. */
   private static final String NAME_GENERATOR = "name-generator";
 
+  /** the parser used to coordinate the ReportDefinitionHandlers. */
   private Parser parser;
+  /** the current finishtag. */
   private String finishTag;
 
   /**
    * Default constructor.
+   *
+   * @param parser the used parser to coordinate the parsing process.
+   * @param finishTag the finish tag, that should trigger the deactivation of this parser.
+   * @throws NullPointerException if the finishTag or the parser are null.
    */
   public AbstractReportDefinitionHandler (Parser parser, String finishTag)
   {
+    if (parser == null) throw new NullPointerException();
+    if (finishTag == null) throw new NullPointerException();
     this.parser = parser;
     this.finishTag = finishTag;
   }
 
+  /**
+   * Gets the selected finishTag for this ReportDefinitionHandler. The finish tag
+   * is used to recognize the right moment for deactivating this handler.
+   *
+   * @return the defined finish tag.
+   */
   public String getFinishTag()
   {
     return finishTag;
@@ -86,6 +101,8 @@ public abstract class AbstractReportDefinitionHandler implements ReportDefinitio
   }
 
   /**
+   * Gets the ContentBase used to resolve relative URLs.
+   *
    * @return the current contentbase, or null if no contentBase is set.
    */
   public URL getContentBase ()
@@ -93,6 +110,12 @@ public abstract class AbstractReportDefinitionHandler implements ReportDefinitio
     return (URL) getParser().getConfigurationValue(Parser.CONTENTBASE_KEY);
   }
 
+  /**
+   * Returns the name generator instance for naming anonymous elements.
+   *
+   * @return the name generator instance used to name anonymous element during
+   * the parsing process.
+   */
   public NameGenerator getNameGenerator ()
   {
     NameGenerator ng = (NameGenerator) getParser().getConfigurationValue(NAME_GENERATOR);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.23 2003/01/14 21:06:58 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.24 2003/02/12 10:00:01 taqua Exp $
  *
  * Changes
  * -------
@@ -91,10 +91,10 @@ public class ItemSumFunction extends AbstractFunction
   /** The item sum. */
   private BigDecimal sum;
 
-  /** The parser for performing data conversion */
+  /** The parser for performing data conversion. */
   private NumberFormatParser parser;
 
-  /** The datasource of the parser */
+  /** The datasource of the parser. */
   private StaticDataSource datasource;
 
   /**

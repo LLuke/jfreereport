@@ -25,7 +25,7 @@
  * ---------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: SimpleDateFormatFilter.java,v 1.8 2002/12/12 12:26:55 mungady Exp $
+ * $Id: SimpleDateFormatFilter.java,v 1.9 2003/01/21 17:11:37 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import java.text.SimpleDateFormat;
 public class SimpleDateFormatFilter extends DateFormatFilter
 {
   /**
-   * DefaultConstructor
+   * DefaultConstructor.
    */
   public SimpleDateFormatFilter ()
   {
@@ -61,7 +61,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
   }
 
   /**
-   * Returns the SimpleDateFormat object used in this filter
+   * Returns the SimpleDateFormat object used in this filter.
    *
    * @return The date format object.
    */
@@ -100,6 +100,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    * of SimpleDateFormat formatstrings see java.text.SimpleDateFormat.
    *
    * @see java.text.SimpleDateFormat
+   * @return the format string for the used DateFormat.
    */
   public String getFormatString ()
   {
@@ -125,6 +126,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    * of SimpleDateFormat formatstrings see java.text.SimpleDateFormat.
    *
    * @see java.text.SimpleDateFormat
+   * @return the localized format string.
    */
   public String getLocalizedFormatString ()
   {

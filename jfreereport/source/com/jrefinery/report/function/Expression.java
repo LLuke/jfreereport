@@ -24,7 +24,7 @@
  * Expression.java
  * ---------------
  *
- * $Id: Expression.java,v 1.13 2002/12/12 20:18:40 taqua Exp $
+ * $Id: Expression.java,v 1.14 2003/01/14 21:06:16 taqua Exp $
  *
  * ChangeLog
  * ------------
@@ -100,7 +100,7 @@ public interface Expression extends Cloneable
    * Returns true if this expression contains autoactive content and should be called by the
    * system, regardless whether this expression is referenced in the datarow.
    *
-   * @return boolean.
+   * @return true, if the expression is activated automaticly, false otherwise.
    */
   public boolean isActive();
 

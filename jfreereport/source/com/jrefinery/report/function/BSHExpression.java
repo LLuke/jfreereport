@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.12 2003/01/14 21:06:11 taqua Exp $
+ * $Id: BSHExpression.java,v 1.13 2003/01/29 03:13:00 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -105,7 +105,7 @@ public class BSHExpression extends AbstractExpression
   private static final String BSHHEADERFILE =
       "com/jrefinery/report/function/BSHExpressionHeader.txt";
 
-  /** The beanshell-interpreter used for evaluating the expression */
+  /** The beanshell-interpreter used to evaluate the expression. */
   private Interpreter interpreter;
 
   /**

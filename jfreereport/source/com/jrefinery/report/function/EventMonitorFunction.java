@@ -138,8 +138,8 @@ public class EventMonitorFunction extends AbstractFunction
    */
   public void itemsAdvanced(ReportEvent event)
   {
-    //Log.info ("Items Advanced: Level = " + event.getState().getLevel() 
-    //                  + " Prepare Run: " + event.getState().isPrepareRun());
+    Log.info ("Items Advanced: Level = " + event.getState().getLevel()
+                      + " Prepare Run: " + event.getState().isPrepareRun());
   }
 
   /**
@@ -149,8 +149,8 @@ public class EventMonitorFunction extends AbstractFunction
    */
   public void itemsStarted(ReportEvent event)
   {
-    //Log.info ("Items Started: Level = " + event.getState().getLevel() 
-    //                 + " Prepare Run: " + event.getState().isPrepareRun());
+    Log.info ("Items Started: Level = " + event.getState().getLevel()
+                     + " Prepare Run: " + event.getState().isPrepareRun());
   }
 
   /**
@@ -160,8 +160,8 @@ public class EventMonitorFunction extends AbstractFunction
    */
   public void itemsFinished(ReportEvent event)
   {
-    //Log.info ("Items Finished: Level = " + event.getState().getLevel() 
-    //                  + " Prepare Run: " + event.getState().isPrepareRun());
+    Log.info ("Items Finished: Level = " + event.getState().getLevel()
+                      + " Prepare Run: " + event.getState().isPrepareRun());
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EmptyDataSource.java,v 1.6 2002/09/13 15:38:07 mungady Exp $
+ * $Id: EmptyDataSource.java,v 1.7 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ public class EmptyDataSource implements DataSource
   /**
    * Returns the value for the data source (always null in this case).
    *
-   * @return null.
+   * @return always null.
    */
   public Object getValue ()
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.26 2003/01/14 21:06:03 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.27 2003/02/17 16:07:17 taqua Exp $
  *
  * Changes
  * -------
@@ -151,7 +151,7 @@ public abstract class AbstractFunction implements Function
    * Returns true if this expression contains autoactive content and should be called by the system,
    * regardless whether this expression is referenced in the datarow.
    *
-   * @return boolean
+   * @return true, if the expression is activated automaticly, false otherwise.
    */
   public boolean isActive()
   {
@@ -178,6 +178,9 @@ public abstract class AbstractFunction implements Function
   }
 
   /**
+   * Gets a copy of the properties used in this function. Modifying the returned
+   * properties has no effect on the function.
+   *
    * @return a copy of the properties defined for this function.
    */
   public Properties getProperties()

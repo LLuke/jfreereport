@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ExpressionCollection.java,v 1.3 2002/12/02 17:29:10 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.4 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ public class ExpressionCollection implements Cloneable
   /** Storage for the Expressions in the collection. */
   protected Hashtable expressionPositions;
 
-  /** Ordered storage for the Expressions */
+  /** Ordered storage for the Expressions. */
   protected ArrayList expressionList;
 
   /**

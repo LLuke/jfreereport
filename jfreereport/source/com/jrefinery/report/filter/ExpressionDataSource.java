@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * $Id: ExpressionDataSource.java,v 1.5 2002/11/07 21:45:27 taqua Exp $
+ * $Id: ExpressionDataSource.java,v 1.6 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import com.jrefinery.report.DataRow;
 public class ExpressionDataSource implements DataSource, DataRowConnectable
 {
   /**
-   * The name of the expression as defined in the function collection for the report
+   * The name of the expression as defined in the function collection for the report.
    *
    * @see com.jrefinery.report.function.Expression#setName(String)
    * @see com.jrefinery.report.function.Expression#getName
@@ -122,7 +122,9 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable
   }
 
   /**
-   * @return a clone of this ExpressionDataSource
+   * Clones this data source.
+   *
+   * @return a clone of this ExpressionDataSource.
    * @throws CloneNotSupportedException if the cloning is not supported.
    */
   public Object clone () throws CloneNotSupportedException
@@ -175,6 +177,8 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable
   }
 
   /**
+   * Gets the assigned dataRow.
+   *
    * @return the datarow connected with this datasource.
    */
   protected DataRow getDataRow ()

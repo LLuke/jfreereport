@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ResourceFileFilter.java,v 1.1 2003/01/25 02:50:56 taqua Exp $
+ * $Id: ResourceFileFilter.java,v 1.2 2003/02/23 20:39:28 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -46,9 +46,9 @@ import java.util.ResourceBundle;
  */
 public class ResourceFileFilter implements DataFilter
 {
-  /** the used resource bundle */
+  /** the used resource bundle. */
   private ResourceBundle resources;
-  /** the filtered data source */
+  /** the filtered data source. */
   private DataSource dataSource;
 
   /**

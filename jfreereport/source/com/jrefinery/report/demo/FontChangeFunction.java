@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontChangeFunction.java,v 1.8 2002/11/07 21:45:27 taqua Exp $
+ * $Id: FontChangeFunction.java,v 1.9 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,7 @@ package com.jrefinery.report.demo;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.TextElement;
+import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.function.FunctionInitializeException;
@@ -103,7 +104,7 @@ public class FontChangeFunction extends AbstractFunction
     if (e != null && (e instanceof TextElement))
     {
       TextElement tx = (TextElement) e;
-      tx.setFont (new Font (fontname, Font.PLAIN, 10));
+      tx.getStyle().setFontDefinitionProperty (new FontDefinition(new Font (fontname, Font.PLAIN, 10)));
     }
   }
 

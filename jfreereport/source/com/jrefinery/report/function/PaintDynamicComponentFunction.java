@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.1 2003/02/22 18:14:08 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.2 2003/02/25 09:55:52 taqua Exp $
  *
  * Changes
  * -------
@@ -58,11 +58,11 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   /** Literal text for the 'scale' property. */
   public static final String SCALE_PROPERTY = "scale";
 
-  /** the created image, cached for getValue() */
+  /** the created image, cached for getValue(). */
   private Image image;
 
   /**
-   * DefaultConstructor
+   * DefaultConstructor.
    */
   public PaintDynamicComponentFunction()
   {
@@ -168,6 +168,8 @@ public class PaintDynamicComponentFunction extends AbstractFunction
 
   /**
    * Creates the component.
+   *
+   * @returns the created image or null, if no image could be created.
    */
   private Image createComponentImage()
   {

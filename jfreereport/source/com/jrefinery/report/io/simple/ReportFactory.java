@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.4 2003/02/04 17:56:14 taqua Exp $
+ * $Id: ReportFactory.java,v 1.5 2003/02/18 19:37:26 taqua Exp $
  *
  * Changes
  * -------
@@ -74,6 +74,10 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
 
   /**
    * Constructs a new handler.
+   *
+   * @param parser the used parser to coordinate the parsing process.
+   * @param finishTag the finish tag, that should trigger the deactivation of this parser.
+   * @throws NullPointerException if the finishTag or the parser are null.
    */
   public ReportFactory(Parser parser, String finishTag)
   {

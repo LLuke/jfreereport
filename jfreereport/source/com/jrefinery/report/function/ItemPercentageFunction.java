@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemPercentageFunction.java,v 1.13 2002/12/12 12:26:56 mungady Exp $
+ * $Id: ItemPercentageFunction.java,v 1.14 2003/01/14 21:06:53 taqua Exp $
  *
  * Changes
  * -------
@@ -74,10 +74,10 @@ public class ItemPercentageFunction extends AbstractFunction
   /** A useful constant representing zero. */
   private static final BigDecimal ZERO = new BigDecimal(0.0);
 
-  /** The parser for performing data conversion */
+  /** The parser for performing data conversion. */
   private NumberFormatParser parser;
 
-  /** The datasource of the parser */
+  /** The datasource of the parser. */
   private StaticDataSource datasource;
 
   /**
