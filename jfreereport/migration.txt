@@ -294,4 +294,5 @@ Changes from 0.8.3e to 0.8.4
 + removed the ItemFactory
 + removed deprecated ItemColumnQuotientFunction (replaced by ~expression)
 + removed StaticLayoutManager.DYNAMIC_HEIGHT stylekey ->ElementStyleSheet
++ removed pagination event listener from pageable modules
 
