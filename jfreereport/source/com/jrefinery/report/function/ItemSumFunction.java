@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.24 2003/02/12 10:00:01 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.25 2003/02/25 14:07:26 taqua Exp $
  *
  * Changes
  * -------
@@ -48,14 +48,13 @@
 
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.Group;
+import java.math.BigDecimal;
+
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.filter.NumberFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.util.Log;
-
-import java.math.BigDecimal;
 
 /**
  * A report function that calculates the sum of one field (column) from the TableModel.
@@ -144,14 +143,7 @@ public class ItemSumFunction extends AbstractFunction
    */
   public void groupStarted(ReportEvent event)
   {
-    String mygroup = getGroup();
-    if (mygroup == null)
-    {
-      return;
-    }
-
-    Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
-    if (getGroup().equals(group.getName()))
+    if (FunctionUtilities.isGroupInGroup(getGroup(), event))
     {
       this.sum = ZERO;
     }
@@ -222,14 +214,13 @@ public class ItemSumFunction extends AbstractFunction
     Object fieldValue = getDataRow().get(getField());
     datasource.setValue(fieldValue);
     Number n = (Number) parser.getValue();
-    try
-    {
-      sum = sum.add(new BigDecimal(n.doubleValue()));
-    }
-    catch (Exception e)
+    if (n == null)
     {
       Log.error("ItemSumFunction.advanceItems(): problem adding number.");
+      return;
     }
+
+    sum = sum.add(new BigDecimal(n.doubleValue()));
   }
 
   /**

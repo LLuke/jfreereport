@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited)
  *                   for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientFunction.java,v 1.4 2003/02/25 14:07:28 taqua Exp $
+ * $Id: TotalGroupSumQuotientFunction.java,v 1.5 2003/02/26 13:57:57 mungady Exp $
  *
  * Changes
  * -------
@@ -39,17 +39,14 @@
 
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.Group;
-import com.jrefinery.report.JFreeReport;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.filter.NumberFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
-import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.util.Log;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
 
 /**
  * A report function that calculates the quotient of two summed fields (columns) from the 
@@ -72,7 +69,7 @@ import java.util.ArrayList;
  * the name of an ItemBand-field which gets summed up as divisor.
  * <p>
  * The parameter <code>group</code> denotes the name of a group. When this group is started,
- * the counter gets reseted to null.
+ * the counter gets reseted to null. This parameter is optional.
  *
  * @author Thomas Morgner
  */
@@ -173,17 +170,11 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
   public void reportStarted(ReportEvent event)
   {
     currentIndex = -1;
-    if (event.getState().isPrepareRun() == false)
-    {
-      return;
-    }
-    else
+
+    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
     {
       dividendResults.clear();
       divisorResults.clear();
-      // just make sure that we dont get any nullpointerexceptions ...
-      groupDividend = new GroupSum();
-      groupDivisor  = new GroupSum();
     }
   }
 
@@ -194,30 +185,26 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
    */
   public void groupStarted(ReportEvent event)
   {
-
-    if (getGroup() != null)
+    if (FunctionUtilities.isGroupInGroup(getGroup(), event) == false)
     {
-      JFreeReport report = event.getReport();
-      ReportState state = event.getState();
-      Group group = report.getGroup(state.getCurrentGroupIndex());
-      if (getGroup().equals(group.getName()))
-      {
-        if (event.getState().isPrepareRun() == false)
-        {
-          // Activate the current group, which was filled in the prepare run.
-          currentIndex += 1;
-          groupDividend = (GroupSum) dividendResults.get(currentIndex);
-          groupDivisor  = (GroupSum) divisorResults.get(currentIndex);
-        }
-        else
-        {
-          groupDividend = new GroupSum();
-          dividendResults.add(groupDividend);
+      // wrong group ...
+      return;
+    }
 
-          groupDivisor = new GroupSum();
-          divisorResults.add(groupDivisor);
-        }
-      }
+    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
+    {
+      groupDividend = new GroupSum();
+      dividendResults.add(groupDividend);
+
+      groupDivisor = new GroupSum();
+      divisorResults.add(groupDivisor);
+    }
+    else
+    {
+      // Activate the current group, which was filled in the prepare run.
+      currentIndex += 1;
+      groupDividend = (GroupSum) dividendResults.get(currentIndex);
+      groupDivisor  = (GroupSum) divisorResults.get(currentIndex);
     }
   }
 
@@ -229,7 +216,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
    */
   public void itemsAdvanced(ReportEvent event)
   {
-    if (event.getState().isPrepareRun() == false)
+    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event) == false)
     {
       return;
     }
@@ -384,7 +371,6 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
       throw new FunctionInitializeException("Divisor is required");
     }
   }
-
 
   /**
    * Return a completly separated copy of this function. The copy does no

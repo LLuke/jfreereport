@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.14 2003/02/28 12:02:38 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.15 2003/03/04 20:28:44 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -39,7 +39,6 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Element;
-import com.jrefinery.report.Band;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.util.Log;
 
@@ -66,30 +65,6 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    */
   public ElementVisibilitySwitchFunction()
   {
-  }
-
-  /**
-   * Try to find the defined element in the last active root-band.
-   *
-   * @param band the band that is suspected to contain the element.
-   * @return the found element or null, if no element could be found.
-   */
-  private Element findElement (Band band)
-  {
-    Element[] elements = band.getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      Element e = elements[i];
-      if (e instanceof Band)
-      {
-        return findElement((Band) e);
-      }
-      else if (e.getName().equals(getElement()))
-      {
-        return e;
-      }
-    }
-    return null;
   }
 
   /**
@@ -120,7 +95,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
     }
     
     trigger = (!trigger);
-    Element e = findElement(event.getReport().getItemBand());
+    Element e = FunctionUtilities.findElement(event.getReport().getItemBand(), getElement());
     if (e != null)
     {
       e.setVisible(trigger);

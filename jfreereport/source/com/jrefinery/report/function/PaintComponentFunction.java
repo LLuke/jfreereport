@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.9 2003/02/28 04:17:18 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.10 2003/02/28 12:02:38 taqua Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,6 @@
  */
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.Band;
-import com.jrefinery.report.Element;
-import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.event.LayoutEvent;
-import com.jrefinery.report.event.LayoutListener;
-import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -56,6 +49,12 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+
+import com.jrefinery.report.Element;
+import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.event.LayoutEvent;
+import com.jrefinery.report.event.LayoutListener;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 
 /**
  * Paints a AWT or Swing Component, fitting the component into the element bounds.
@@ -87,30 +86,6 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
   {
     peerSupply = new Frame();
     peerSupply.setLayout(new BorderLayout());
-  }
-
-  /**
-   * Try to find the defined element in the last active root-band.
-   *
-   * @param band the band that is suspected to contain the element.
-   * @return the found element or null, if no element could be found.
-   */
-  private Element findElement (Band band)
-  {
-    Element[] elements = band.getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      Element e = elements[i];
-      if (e instanceof Band)
-      {
-        return findElement((Band) e);
-      }
-      else if (e.getName().equals(getElement()))
-      {
-        return e;
-      }
-    }
-    return null;
   }
 
   /**
@@ -189,7 +164,7 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     }
 
     // this is not the band with the element in it ...
-    Element element = findElement(event.getLayoutedBand());
+    Element element = FunctionUtilities.findElement(event.getLayoutedBand(), getElement());
     if (element == null)
     {
       // don't change/delete the image if already created ...

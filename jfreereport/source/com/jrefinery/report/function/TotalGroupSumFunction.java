@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumFunction.java,v 1.16 2003/01/14 21:07:19 taqua Exp $
+ * $Id: TotalGroupSumFunction.java,v 1.17 2003/02/25 14:07:28 taqua Exp $
  *
  * Changes
  * -------
@@ -42,17 +42,14 @@
 
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.Group;
-import com.jrefinery.report.JFreeReport;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.filter.NumberFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
-import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.util.Log;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
 
 /**
  * A report function that calculates the sum of one field (column) from the TableModel.
@@ -72,7 +69,7 @@ import java.util.ArrayList;
  * denotes the name of an ItemBand-field which gets summed up.
  * <p>
  * The parameter <code>group</code> denotes the name of a group. When this group is started,
- * the counter gets reseted to null.
+ * the counter gets reseted to null. This parameter is optional.
  *
  * @author Thomas Morgner
  */
@@ -162,15 +159,9 @@ public class TotalGroupSumFunction extends AbstractFunction
   public void reportStarted(ReportEvent event)
   {
     currentIndex = -1;
-    if (event.getState().isPrepareRun() == false)
-    {
-      return;
-    }
-    else
+    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
     {
       results.clear();
-      // just make sure that we dont get any nullpointerexceptions ...
-      groupResult = new GroupSum();
     }
   }
 
@@ -181,26 +172,22 @@ public class TotalGroupSumFunction extends AbstractFunction
    */
   public void groupStarted(ReportEvent event)
   {
-
-    if (getGroup() != null)
+    if (FunctionUtilities.isGroupInGroup(getGroup(), event) == false)
     {
-      JFreeReport report = event.getReport();
-      ReportState state = event.getState();
-      Group group = report.getGroup(state.getCurrentGroupIndex());
-      if (getGroup().equals(group.getName()))
-      {
-        if (event.getState().isPrepareRun() == false)
-        {
-          // Activate the current group, which was filled in the prepare run.
-          currentIndex += 1;
-          groupResult = (GroupSum) results.get(currentIndex);
-        }
-        else
-        {
-          groupResult = new GroupSum();
-          results.add(groupResult);
-        }
-      }
+      // wrong group ...
+      return;
+    }
+
+    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
+    {
+      groupResult = new GroupSum();
+      results.add(groupResult);
+    }
+    else
+    {
+      // Activate the current group, which was filled in the prepare run.
+      currentIndex += 1;
+      groupResult = (GroupSum) results.get(currentIndex);
     }
   }
 
@@ -212,7 +199,7 @@ public class TotalGroupSumFunction extends AbstractFunction
    */
   public void itemsAdvanced(ReportEvent event)
   {
-    if (event.getState().isPrepareRun() == false)
+    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event) == false)
     {
       return;
     }
