@@ -2,6 +2,16 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+0.8.5-3: (??)
+        * [BUG] The 'pagebreak-before-print' and 'pagebreak-after-print' of
+           the SimpleXML DTD were inconsistent. Now all pagebreak attributes
+           use the names given above, as these attribute names have been
+           used for the group header/footer for some time.
+
+        * The HTML-Export now uses the fixed table-layout alogorithm as
+          specified in the CSS-standard. Additionally, the total width of
+          the table is now specified in the table tag to help the HTML renderer.
+
 0.8.5-2: (18-Mar-2005)
         * [BUG] FontPath caching did not validate the cache integrety. This way,
           some fonts might be left unregistered.

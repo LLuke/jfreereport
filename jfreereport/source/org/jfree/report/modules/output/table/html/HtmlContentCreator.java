@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.7 2005/03/04 12:08:18 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.8 2005/03/18 18:50:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -199,7 +199,16 @@ public class HtmlContentCreator extends TableContentCreator
 
     pout.print("<table cellspacing=\"0\" cellpadding=\"0\" style=\"");
     pout.print(style);
-    pout.print("\">");
+    pout.println("\">");
+    for (int i = 1; i < noc; i++)
+    {
+      final int width = (int)
+               StrictGeomUtility.toExternalValue(layout.getCellWidth(i-1, 1));
+      pout.print("<col style=\"");
+      pout.print("width:");
+      pout.print(width);
+      pout.print("pt\">");
+    }
   }
 
   protected void handleEndTable ()
@@ -489,8 +498,8 @@ public class HtmlContentCreator extends TableContentCreator
     // now check, whether an equal style is already stored.
     // if so, then reference that style instead of printing the
     // whole stuff over and over again ..
-    final int width = (int) StrictGeomUtility.toExternalValue
-            (layout.getCellWidth(rectangle.getX1(), rectangle.getX2()));
+//    final int width = (int) StrictGeomUtility.toExternalValue
+//            (layout.getCellWidth(rectangle.getX1(), rectangle.getX2()));
 
     final String cellStyleName =
             layout.getStyleCollection().getPublicName(style);
@@ -498,18 +507,18 @@ public class HtmlContentCreator extends TableContentCreator
     {
       pout.print("class=\"");
       pout.print(cellStyleName);
-      pout.print("\" style=\"");
-      pout.print("width: ");
-      pout.print(width);
-      pout.print("pt");
+//      pout.print("\" style=\"");
+//      pout.print("width: ");
+//      pout.print(width);
+//      pout.print("pt");
       pout.println("\">");
     }
     else
     {
       pout.print("style=\"");
-      pout.print("width: ");
-      pout.print(width);
-      pout.print("pt;");
+//      pout.print("width: ");
+//      pout.print(width);
+//      pout.print("pt;");
       pout.print(style.getCSSString(HtmlStyle.INLINE));
       pout.println("\">");
     }
@@ -589,26 +598,30 @@ public class HtmlContentCreator extends TableContentCreator
       pout.println("<!-- empty cell @(" + x + "," + y + ")-->");
     }
 
-    final int width = (int) StrictGeomUtility.toExternalValue(layout.getCellWidth(x, x + 1));
+//    final int width = (int) StrictGeomUtility.toExternalValue(layout.getCellWidth(x, x + 1));
     if (cellStyleName != null && (isCreateBodyFragment() == false))
     {
       pout.print("<td class=\"");
       pout.print(cellStyleName);
-      pout.print("\" style=\"");
-      pout.print("width: ");
-      pout.print(width);
-      pout.print("pt");
+//      pout.print("\" style=\"");
+//      pout.print("width: ");
+//      pout.print(width);
+//      pout.print("pt");
       pout.println("\">&nbsp;</td>");
     }
     else
     {
       pout.print("<td style=\"");
-      pout.print("width: ");
-      pout.print(width);
-      pout.print("pt;");
+//      pout.print("width: ");
+//      pout.print(width);
+//      pout.print("pt;");
       pout.print(style.getCSSString(HtmlStyle.INLINE));
       pout.println("\">&nbsp;</td>");
     }
   }
 
+  protected PrintWriter getPrintWriter ()
+  {
+    return pout;
+  }
 }
