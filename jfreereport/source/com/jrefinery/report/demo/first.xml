@@ -15,7 +15,7 @@
     <rectangle x="0" y="0" width="100%" height="100%" color="#CCFFCC" weight="0" />
     <line x1="0" y1="0" x2="0" y2="0" weight="0.5" />
     <line x1="0" y1="30" x2="0" y2="30" weight="0.5" />
-    <label x="0" y="10" width="100%" height="24" alignment="left">REPORT TOTAL:</label>
+    <label x="0" y="10" width="100%" height="12" alignment="left">REPORT TOTAL:</label>
     <number-field fieldname="OverallCount" format="0" x="240" y="10" width="64" height="9" alignment="center" />
     <number-field fieldname="OverallSum" format="#,##0" x="0" y="10" width="100%" height="9" alignment="right" />
   </reportfooter>
