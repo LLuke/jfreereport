@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGrid.java,v 1.5 2003/01/29 21:57:12 taqua Exp $
+ * $Id: TableGrid.java,v 1.6 2003/02/11 20:20:18 taqua Exp $
  *
  * Changes
  * -------
@@ -43,16 +43,45 @@ import java.util.TreeSet;
 
 /**
  * The TableGrid is used to collect all table cells and to finally create the
- * TableGridLayout. The bounds of the 
+ * TableGridLayout.
+ * <p>
+ * The TableGird stores TableCellData elements and collects their boundries.
+ * The CellData-bounds are used to define the positions of the cells of the generated
+ * table.
+ * <p>
+ * The TableGrid has two modes of operation. In the strict layoutmode, all bounds
+ * of the cells are used to define the generated cells. The strict layout mode tries
+ * to layout the cells, so that the generated results equal the printed layout.
+ * <p>
+ * If strict mode is disabled, only the origin of the TableCellData is used to
+ * define the generated cells. This reduces the table complexity, the table appears
+ * cleaner, unnecessary cell boundries are removed. The layout of the table contents
+ * can be slightly different to the printed results.
+ * <p>
+ * If you plan to print the generated file, then the strict layout is for you.
+ * If you need to change the tables (edit contents f.i.), then the non-strict layout
+ * is more usefull for you.
+ *
+ * @see TableGridLayout
  */
 public class TableGrid
 {
+  /** The XBounds, all vertical cell boundries */
   private TreeSet xBounds;
+  /** The YBounds, all horizontal cell boundries */
   private TreeSet yBounds;
 
+  /** The elements stored in the table grid */
   private ArrayList elements;
+  /** A flag, defining whether to use strict layout mode */
   private boolean strict;
 
+  /**
+   * Creates a new TableGrid. If strict mode is enabled, all cell bounds are
+   * used to create the table grid, resulting in a more complex layout.
+   *
+   * @param strict the strict mode for the layout.
+   */
   public TableGrid(boolean strict)
   {
     xBounds = new TreeSet();
@@ -61,12 +90,18 @@ public class TableGrid
     this.strict = strict;
   }
 
+  /**
+   * Adds a TableCellData to the grid.
+   *
+   * @param pos the position that should be added to the grid.
+   * @throws NullPointerException if the given position is null
+   */
   public void addData (TableCellData pos)
   {
-    //Log.debug ("Add TableCellData: " + pos);
-
+    if (pos == null) throw new NullPointerException();
     elements.add(pos);
 
+    // collect the bounds and add them to the xBounds and yBounds collection.
     Rectangle2D bounds = pos.getBounds();
     Integer x = new Integer((int) bounds.getX());
     Integer y = new Integer((int) bounds.getY());
@@ -82,11 +117,21 @@ public class TableGrid
     }
   }
 
+  /**
+   * Gets the strict mode flag.
+   *
+   * @return true, if strict mode is enabled, false otherwise.
+   */
   public boolean isStrict()
   {
     return strict;
   }
 
+  /**
+   * Create a TableGridLayout based on the contents of this table grid.
+   *
+   * @return the new TableGridLayout.
+   */
   public TableGridLayout performLayout ()
   {
     TableCellData[] positions =
@@ -97,6 +142,9 @@ public class TableGrid
     return layout;
   }
 
+  /**
+   * Removes all elements from the grid and removes all previously found bounds.
+   */
   public void clear ()
   {
     xBounds.clear();
@@ -104,11 +152,22 @@ public class TableGrid
     elements.clear();
   }
 
+  /**
+   * Returns the number of table cell data elements in this grid.
+   *
+   * @return the number of element in the grid.
+   */
   public int size()
   {
     return elements.size();
   }
 
+  /**
+   * Returns the horizontal boundries of the table cells. The array contains
+   * the start positions of the cells.
+   *
+   * @return the horizontal start position of the table cells.
+   */
   public int[] getXCuts()
   {
     if (xBounds.size() == 0)
@@ -136,6 +195,12 @@ public class TableGrid
     return retval;
   }
 
+  /**
+   * Returns the vertical boundries of the table cells. The array contains
+   * the start positions of the cells.
+   *
+   * @return the vertical start position of the table cells.
+   */
   public int[] getYCuts()
   {
     int[] yBoundsArray = new int[yBounds.size()];

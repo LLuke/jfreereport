@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.5 2003/02/07 20:26:26 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.6 2003/02/12 17:36:10 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.NullOutputStream;
 
 import java.awt.print.PageFormat;
@@ -55,21 +54,27 @@ import java.util.Iterator;
  * The XMLProcessor coordinates the report processing for the XML-Output.
  * This class is responsible to initialize and maintain the XMLWriter, which performs
  * the output process.
+ * <p>
+ * The XMLProcessor is not intended to produce complex output, it is an educational
+ * example. If you want valid xml data enriched with layouting information, then
+ * have a look at the HTML-OutputTarget, this target is also able to write XHTMl code.
  */
 public class XMLProcessor
 {
-  /** */
+  /** the name of the writer function used in the report processing */
   private static final String XML_WRITER = "com.jrefinery.report.targets.xml-writer";
-  /** */
+  /** the writer */
   private Writer writer;
-  /** */
+  /** the report */
   private JFreeReport report;
 
   /**
+   * Creates a new XMLProcessor. The processor will output the report as simple xml
+   * stream.
    *
-   * @param report
-   * @throws ReportProcessingException
-   * @throws FunctionInitializeException
+   * @param report the report that should be processed
+   * @throws ReportProcessingException if the report could not be initialized
+   * @throws FunctionInitializeException if the writer function could not be initialized.
    */
   public XMLProcessor (JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
@@ -125,47 +130,73 @@ public class XMLProcessor
    * Processes the entire report and records the state at the end of the report preparation.
    *
    * @return the final ReportState
-   * @throws com.jrefinery.report.ReportProcessingException if there was a problem processing the report.
+   * @throws ReportProcessingException if there was a problem processing the report.
    */
   private ReportState repaginate() throws ReportProcessingException, CloneNotSupportedException
   {
     StartState startState = new StartState(getReport());
     ReportState state = startState;
     ReportState retval = null;
-
-    // PrepareRuns, part 1: resolve the function dependencies by running the report
-    // until all function levels are completed.
     JFreeReport report = state.getReport();
 
-    // all prepare runs have this property set, test details with getLevel()
+
+    // the report processing can be splitted into 2 separate processes.
+    // The first is the ReportPreparation; all function values are resolved and
+    // a dummy run is done to calculate the final layout. This dummy run is
+    // also necessary to resolve functions which use or depend on the PageCount.
+
+    // the second process is the printing of the report, this is done in the
+    // processReport() method.
+
+    // during a prepare run the REPORT_PREPARERUN_PROPERTY is set to true.
     state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
+
+    // the pageformat is added to the report properties, PageFormat is not serializable,
+    // so a repaginated report is no longer serializable.
+    //
+    // The pageformat will cause trouble in later versions, when printing over
+    // multiple pages gets implemented. This property will be replaced by a more
+    // suitable alternative.
     PageFormat p = report.getDefaultPageFormat();
     state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
-    // now set a dummy writer into the xml-processor.
+    // now change the writer function to be a dummy writer. We don't want any
+    // output in the prepare runs.
     XMLWriter w = (XMLWriter) state.getDataRow().get(XML_WRITER);
     w.setWriter(new OutputStreamWriter(new NullOutputStream()));
 
+    // now process all function levels.
+    // there is at least one level defined, as we added the CSVWriter
+    // to the report.
     Iterator it = startState.getLevels();
-    boolean hasNext;
-    int level = 0;
-    if (it.hasNext())
+    if (it.hasNext() == false)
     {
-      level = ((Integer) it.next()).intValue();
+      throw new IllegalStateException("No functions defined, invalid implementation.");
     }
 
+    boolean hasNext;
+    int level = ((Integer) it.next()).intValue();
+    // outer loop: process all function levels
     do
     {
+      // if the current level is the output-level, then save the report state.
+      // The state is used later to restart the report processing.
       if (level == -1)
       {
         retval = state.copyState();
       }
+
+      // inner loop: process the complete report, calculate the function values
+      // for the current level. Higher level functions are not available in the
+      // dataRow.
       while (!state.isFinish())
       {
         ReportState oldstate = state;
         state = oldstate.copyState().advance();
         if (!state.isFinish())
         {
+          // if the report processing is stalled, throw an exception; an infinite
+          // loop would be caused.
           if (!state.isProceeding(oldstate))
           {
             throw new ReportProcessingException("State did not proceed, bailing out!");
@@ -173,6 +204,9 @@ public class XMLProcessor
         }
       }
 
+      // if there is an other level to process, then use the finish state to
+      // create a new start state, which will continue the report processing on
+      // the next higher level.
       hasNext = it.hasNext();
       if (hasNext)
       {
@@ -190,33 +224,35 @@ public class XMLProcessor
     while (hasNext == true);
 
     // root of evilness here ... pagecount should not be handled specially ...
-
+    // The pagecount should not be added as report property, there are functions to
+    // do this.
+    /*
     state.setProperty(JFreeReportConstants.REPORT_PAGECOUNT_PROPERTY,
                       new Integer(state.getCurrentPage() - 1));
+    */
     state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
-    // part 3: (done by processing the ReportStateList:) Print the report
+    // finally prepeare the returned start state.
     StartState sretval = (StartState) retval;
-    sretval.resetState();
     if (sretval == null)
-      throw new IllegalStateException("Repaginate did no produce a final state");
+    {
+      throw new IllegalStateException("There was no valid pagination done.");
+    }
+    // reset the state, so that the datarow points to the first row of the tablemodel.
+    sretval.resetState();
     return sretval;
   }
 
   /**
-   * Processes the report in two passes, the first pass calculates function
-   * values, the second pass sends the report to the output target.
-   * <p>
-   * It is possible for the report processing to fail.  A base cause is that the report is
-   * designed for a certain page size, but ends up being sent to an output target with a much
-   * smaller page size.  If the headers and footers don't leave enough room on the page for at
-   * least one row of data to be printed, then no progress is made.  An exception will be thrown
-   * if this happens.
+   * Processes the report. The generated output is written using the defined
+   * writer, the report is repaginated before the final writing.
    *
-   * @throws ReportProcessingException if the report did not proceed and got stuck.
+   * @throws ReportProcessingException if the report processing failed.
+   * @throws IllegalStateException if there is no writer defined.
    */
   public void processReport () throws ReportProcessingException
   {
+    if (writer == null) throw new IllegalStateException("No writer defined");
     try
     {
       ReportState state = repaginate();

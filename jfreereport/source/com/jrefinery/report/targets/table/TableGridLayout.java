@@ -1,8 +1,39 @@
 /**
- * Date: Jan 25, 2003
- * Time: 9:40:17 AM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: TableGridLayout.java,v 1.7 2003/01/30 00:04:54 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------------
+ * TableGridLayout.java
+ * -------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: TableGridLayout.java,v 1.8 2003/02/02 23:43:52 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 25-Jan-2003 : Initial version
+ *
  */
 package com.jrefinery.report.targets.table;
 
@@ -12,20 +43,69 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * The table grid layout is used to layout the collected TableCellData object from
+ * the TableGrid into the table. The cells position is calculated by comparing the cell
+ * bounds with the collected x and y-cuts.
+ *
+ */
 public class TableGridLayout
 {
+  /**
+   * The Element class encapsulates all TableCellData-object within a single grid cell.
+   * When the report is badly designed, cells may overlay. This will cause trouble when
+   * the table is printed later, so we do not accept multiple non-background
+   * TableCellData objects.
+   * <p>
+   * TableCellData backgrounds can be combined to create complex
+   * background structures. Usually, the cell backgrounds must be merged before the
+   * cellbackground can be applied to the generated table. As this is dependent
+   * on the table implementation, we do not assume anything here, and just collect all
+   * backgrounds in the list.
+   *
+   * @see TableCellData#isBackground
+   */
   public static class Element
   {
+    /** The root position, a data carrying TableCellData */
     private TableGridPosition root;
+    /** The backgrounds for the data cell */
     private ArrayList backGrounds;
 
+    /**
+     * Creates a new element. The element has no initial background or
+     * cell data.
+     */
     public Element()
     {
       backGrounds = new ArrayList();
     }
 
+    /**
+     * Adds a new TableGridPosition to the element.
+     * <p>
+     * If the new position contains a data cell: <br>
+     * if no data cell has been set so far, the cell is added as new
+     * data element. if there is a data cell already set, the new cell data
+     * is ignored.
+     * <p>
+     * If the new position contains a background information: <br>
+     * if no data cell has been set so far, the cell is added to the list of
+     * available backgrounds. When a new data cell is added, the backgrounds
+     * are validated. A cell background is valid, if it fully contains the
+     * data cell area. <br>
+     * If there is a data cell already set, the background is validated imediatly
+     * and added if valid.
+     * <p>
+     * Invalid backgrounds or duplicate data cells are discarded.
+     *
+     * @param pos the new TableGridPosition to be added to this element.
+     * @throws NullPointerException if the given position is null
+     */
     public void add(TableGridPosition pos)
     {
+      if (pos == null) throw new NullPointerException();
+
       if (root == null)
       {
         if (pos.getElement().isBackground())
@@ -43,10 +123,8 @@ public class TableGridLayout
             if (gpos.contains(root) == false)
             {
               it.remove();
-              //Log.debug ("backGrounds !!removed " + backGrounds.size());
             }
           }
-          //Log.debug ("backGrounds -> removed " + backGrounds.size());
         }
       }
       else
@@ -56,11 +134,6 @@ public class TableGridLayout
           if (pos.contains(root))
           {
             backGrounds.add(0, pos);
-//            Log.debug ("backGrounds -> added " + backGrounds.size());
-          }
-          else
-          {
-//            Log.debug ("The background was not fully contained in this element");
           }
         }
         else
@@ -76,16 +149,32 @@ public class TableGridLayout
       }
     }
 
+    /**
+     * Returns the list of backgrounds of this element.
+     *
+     * @return the collected backgrounds of the element.
+     */
     public List getBackground ()
     {
       return backGrounds;
     }
 
+    /**
+     * Returns the data cell for this element. This can be null if no data cell
+     * has been defined.
+     *
+     * @return the data cell or null, if this element does not have any data defined.
+     */
     public TableGridPosition getRoot()
     {
       return root;
     }
 
+    /**
+     * Creates a string representation of this Element.
+     *
+     * @return a string representation of the element for debugging purposes.
+     */
     public String toString ()
     {
       StringBuffer buffer = new StringBuffer();
@@ -98,12 +187,24 @@ public class TableGridLayout
     }
   }
 
+  /** The table data as table */
   private Object data[][];
+  /** the collected xcuts, sorted */
   private int[] xCuts;
+  /** the collected ycuts, sorted */
   private int[] yCuts;
+  /** the maximum horizontal position the table ever reached. */
   private int maxX;
+  /** the maximum vertical position the table ever reached. */
   private int maxY;
 
+  /**
+   * Creates a new TableGridLayout.
+   *
+   * @param pxCuts the collected horizontal cell bounds from the TableGrid,.
+   * @param pyCuts the collected vertical cell bounds from the TableGrid.
+   * @param positions the positions collected by the table grid.
+   */
   public TableGridLayout(int[] pxCuts, int[] pyCuts, TableCellData[] positions)
   {
     this.xCuts = new int[pxCuts.length];
@@ -135,6 +236,12 @@ public class TableGridLayout
     }
   }
 
+  /**
+   * Adds the table cell data position into the table grid. The coordinates are
+   * calculated by using the sorted x- and y-cuts.
+   *
+   * @param pos the new position that should be added into the grid
+   */
   protected void add (TableCellData pos)
   {
     Rectangle2D bounds = pos.getBounds();
@@ -142,11 +249,11 @@ public class TableGridLayout
     int maxBoundsX = (int) (bounds.getX() + bounds.getWidth());
     int maxBoundsY = (int) (bounds.getY() + bounds.getHeight());
 
-    TableGridPosition gPos = new TableGridPosition(pos);
-    gPos.setCol(findBoundry(xCuts, (int) bounds.getX()));
-    gPos.setRow(findBoundry(yCuts, (int) bounds.getY()));
-    gPos.setColSpan(Math.max(1, findBoundry(xCuts, maxBoundsX, true) - gPos.getCol()));
-    gPos.setRowSpan(Math.max(1, findBoundry(yCuts, maxBoundsY, true) - gPos.getRow()));
+    int col = findBoundry(xCuts, (int) bounds.getX());
+    int row = findBoundry(yCuts, (int) bounds.getY());
+    int colspan = Math.max(1, findBoundry(xCuts, maxBoundsX, true) - col);
+    int rowspan = Math.max(1, findBoundry(yCuts, maxBoundsY, true) - row);
+    TableGridPosition gPos = new TableGridPosition(pos, col, row, colspan, rowspan);
 
 /*
     Log.info ("AddTablePos: Col=" + gPos.getCol() +
@@ -166,6 +273,7 @@ public class TableGridLayout
 */
     int startY = gPos.getRow();
     int endY = gPos.getRow() + gPos.getRowSpan();
+    // calculated the x and y position in the table, now add it to the element.
     for (int posY = startY; posY < endY; posY ++)
     {
       int startX = gPos.getCol();
@@ -180,12 +288,24 @@ public class TableGridLayout
     this.maxY = Math.max(this.maxY, maxBoundsY);
   }
 
+  /**
+   * Adds the gridposition into the table, positionated at the cell (posX, posY).
+   *
+   * @param posX the x position within the tablegrid.
+   * @param posY the y position within the tablegrid.
+   * @param gPos the TableGridPosition that should be added to the table.
+   *
+   * @throws IndexOutOfBoundsException if posX or posY are invalid.
+   * @throws NullPointerException if the given table grid position is invalid
+   */
   protected void addToGrid (int posX, int posY, TableGridPosition gPos)
   {
-    if (posX >= getWidth())
+    if (gPos == null) throw new NullPointerException();
+
+    if (posX >= getWidth() || posX < 0)
       throw new IndexOutOfBoundsException("X: " + posX + " > " + getWidth());
 
-    if (posY >= getHeight())
+    if (posY >= getHeight() || posY < 0)
       throw new IndexOutOfBoundsException("Y: " + posY + " > " + getHeight());
 
     Object o = data[posX][posY];
@@ -203,31 +323,66 @@ public class TableGridLayout
     }
   }
 
+  /**
+   * Returns the element located in the specified cell.
+   *
+   * @param x the table column
+   * @param y the table row
+   * @return the element, or null, if there is no element defined.
+   */
   public Element getData (int x, int y)
   {
     return (Element) data[x][y];
   }
 
+  /**
+   * Returns the number of columns of the table.
+   *
+   * @return the width of the table, the number of columns.
+   */
   public int getWidth()
   {
     return xCuts.length;
   }
 
+  /**
+   * Returns the number of rows of the table.
+   *
+   * @return the height of the table, the number of rows.
+   */
   public int getHeight()
   {
     return yCuts.length;
   }
 
+  /**
+   * Returns the start position of the given column in points.
+   *
+   * @param column the column
+   * @return the position of the column in points
+   */
   public int getColumnStart (int column)
   {
     return xCuts[column];
   }
 
+  /**
+   * Returns the start position of the given row in points.
+   *
+   * @param row the row
+   * @return the position of the row in points
+   */
   public int getRowStart (int row)
   {
     return yCuts[row];
   }
 
+  /**
+   * Returns the end position of the given column in points.
+   *
+   * @param column the column
+   * @return the end position of the column in points
+   */
   public int getColumnEnd (int column)
   {
     if (column == xCuts.length - 1)
@@ -240,6 +395,12 @@ public class TableGridLayout
     }
   }
 
+  /**
+   * Returns the start position of the given row in points.
+   *
+   * @param row the row
+   * @return the end position of the column in points
+   */
   public int getRowEnd (int row)
   {
     if (row == yCuts.length - 1)
@@ -252,27 +413,47 @@ public class TableGridLayout
     }
   }
 
-  public static int findBoundry (int[] data, int d)
+  /**
+   * Tries to find the cell position of the value <code>value</code>. If the position
+   * was not found in the data array, then the next lower position is returned.
+   *
+   * @param data the data where to find the value
+   * @param value the value that is searched in the data array.
+   * @return the position of the value in the array or the next lower position.
+   */
+  private static int findBoundry (int[] data, int value)
   {
-    return findBoundry(data, d, false);
+    return findBoundry(data, value, false);
   }
 
-  public static int findBoundry (int[] data, int d, boolean up)
+  /**
+   * Tries to find the cell position of the value <code>value</code>. If the position
+   * was not found in the data array, then the position of the first element greater or
+   * equal or the value is returned.
+   *
+   * @param data the data where to find the value
+   * @param value the value that is searched in the data array.
+   * @param upperLimit set to true, if index of the first element greater or equal to
+   * the given value is returned, else the first element lesser or equal the value is
+   * returned.
+   * @return the position of the value in the array or the next lower position.
+   */
+  private static int findBoundry (int[] data, int value, boolean upperLimit)
   {
     for (int i = 0; i < data.length; i++)
     {
       int dV = data[i];
-      if (dV == d)
+      if (dV == value)
       {
         return i;
       }
-      if (dV > d)
+      if (dV > value)
       {
         if (i == 0)
           return 0;
         else
         {
-          if (up)
+          if (upperLimit)
           {
             return i;
           }
