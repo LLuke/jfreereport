@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.28 2003/11/07 18:33:50 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.29 2003/11/10 18:01:34 taqua Exp $
  *
  * Changes
  * -------
@@ -642,8 +642,10 @@ public class PreviewProxyBase extends JComponent
   private boolean lockInterface;
   /** A flag that defines, whether the preview component is closed. */
   private boolean closed;
+  
   public static final String CONF_TOOLBAR_ENABLED = "toolbar";
-  public static final String CONF_ALL_ENABLED = "enabled";
+  public static final String CONF_ALL_ENABLED = "enable";
+  public static final String CONF_ALL_DISABLED = "disable";
   public static final String CONF_MENUBAR_ENABLED = "menubar";
 
   /**
