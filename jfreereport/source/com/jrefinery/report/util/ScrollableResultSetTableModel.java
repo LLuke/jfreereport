@@ -62,64 +62,61 @@ public class ScrollableResultSetTableModel extends AbstractTableModel
   /**
    * Constructs the model.
    */
-  public ScrollableResultSetTableModel (ResultSet resultset)
-          throws SQLException
+  public ScrollableResultSetTableModel(ResultSet resultset) throws SQLException
   {
     if (resultset != null)
     {
-      updateResultSet (resultset);
+      updateResultSet(resultset);
     }
     else
     {
-      clear ();
+      clear();
     }
   }
 
   /**
    * DefaultConstructor.
    */
-  protected ScrollableResultSetTableModel ()
+  protected ScrollableResultSetTableModel()
   {
   }
-
 
   /**
    * Updates the result set in this model with the given ResultSet object.
    */
-  public void updateResultSet (ResultSet resultset)
-          throws SQLException
+  public void updateResultSet(ResultSet resultset) throws SQLException
   {
     if (this.resultset != null)
     {
-      clear ();
+      clear();
     }
 
     this.resultset = resultset;
-    this.dbmd = resultset.getMetaData ();
+    this.dbmd = resultset.getMetaData();
 
-    if (resultset.last ())
+    if (resultset.last())
     {
-      rowCount = resultset.getRow ();
+      rowCount = resultset.getRow();
     }
     else
     {
       rowCount = 0;
     }
 
-    fireTableStructureChanged ();
+    fireTableStructureChanged();
   }
 
   /**
    * Clears the model of the current result set.
    */
-  public void clear ()
+  public void clear()
   {
     // Close the old result set if needed.
     if (resultset != null)
     {
       try
       {
-        resultset.close ();
+        resultset.close();
       }
       catch (SQLException e)
       {
@@ -130,23 +127,23 @@ public class ScrollableResultSetTableModel extends AbstractTableModel
     resultset = null;
     dbmd = null;
     rowCount = 0;
-    fireTableStructureChanged ();
+    fireTableStructureChanged();
   }
 
   /**
    * get an rowCount. This can be a very expensive operation on large
    * datasets. Returns -1 if the total amount of rows is not known to the result set.
    */
-  public int getRowCount ()
+  public int getRowCount()
   {
     if (resultset == null)
       return 0;
 
     try
     {
-      if (resultset.last ())
+      if (resultset.last())
       {
-        rowCount = resultset.getRow ();
+        rowCount = resultset.getRow();
         if (rowCount == -1)
         {
           rowCount = 0;
@@ -170,7 +167,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel
    *
    * @see ResultSetMetaData.getColumnCount
    */
-  public int getColumnCount ()
+  public int getColumnCount()
   {
     if (resultset == null)
       return 0;
@@ -179,11 +176,11 @@ public class ScrollableResultSetTableModel extends AbstractTableModel
     {
       try
       {
-        return dbmd.getColumnCount ();
+        return dbmd.getColumnCount();
       }
       catch (SQLException e)
       {
-        e.printStackTrace ();
+        e.printStackTrace();
       }
     }
     return 0;
@@ -194,13 +191,13 @@ public class ScrollableResultSetTableModel extends AbstractTableModel
    *
    * @see ResultSetMetaData.getColumnLabel
    */
-  public String getColumnName (int column)
+  public String getColumnName(int column)
   {
     if (dbmd != null)
     {
       try
       {
-        return dbmd.getColumnLabel (column + 1);
+        return dbmd.getColumnLabel(column + 1);
       }
       catch (SQLException e)
       {
@@ -209,53 +206,53 @@ public class ScrollableResultSetTableModel extends AbstractTableModel
     return null;
   }
 
-  public Object getValueAt (int row, int column)
+  public Object getValueAt(int row, int column)
   {
     if (resultset != null)
     {
       try
       {
-        resultset.absolute (row + 1);
-        return resultset.getObject (column + 1);
+        resultset.absolute(row + 1);
+        return resultset.getObject(column + 1);
       }
       catch (SQLException e)
       {
-        e.printStackTrace ();
+        e.printStackTrace();
       }
     }
     return null;
   }
 
-  public Class getColumnClass (int column)
+  public Class getColumnClass(int column)
   {
     if (dbmd != null)
     {
       try
       {
-        return Class.forName (getColumnClassName (column));
+        return Class.forName(getColumnClassName(column));
       }
       catch (Exception e)
       {
-        e.printStackTrace ();
+        e.printStackTrace();
       }
     }
     return Object.class;
   }
 
-  public String getColumnClassName (int column)
+  public String getColumnClassName(int column)
   {
     if (dbmd != null)
     {
       try
       {
-        return mckoiDBFixClassName (dbmd.getColumnClassName (column + 1));
+        return mckoiDBFixClassName(dbmd.getColumnClassName(column + 1));
       }
       catch (SQLException e)
       {
-        e.printStackTrace ();
+        e.printStackTrace();
       }
     }
-    return Object.class.getName ();
+    return Object.class.getName();
   }
 
   /**
@@ -263,14 +260,12 @@ public class ScrollableResultSetTableModel extends AbstractTableModel
    * McKoiDB version 0.92 was not able to properly return classnames of
    * resultset elements.
    */
-  private String mckoiDBFixClassName (String classname)
+  private String mckoiDBFixClassName(String classname)
   {
-    if (classname.startsWith ("class "))
+    if (classname.startsWith("class "))
     {
-      return classname.substring (6).trim ();
+      return classname.substring(6).trim();
     }
     return classname;
   }
-
-
 }

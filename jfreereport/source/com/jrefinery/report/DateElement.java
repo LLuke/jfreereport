@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DateElement.java,v 1.1.1.1 2002/04/25 17:02:13 taqua Exp $
+ * $Id: DateElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -54,31 +54,31 @@ public class DateElement extends DataElement
   /**
    * Constructs a date element using float coordinates.
    */
-  public DateElement ()
+  public DateElement()
   {
-    setFormatString (null);
+    setFormatString(null);
   }
 
   /**
    * sets the format of the element to SimpleDate using the given formatString.
    */
-  public void setFormatString (String s)
+  public void setFormatString(String s)
   {
     if (s == null)
     {
-      setFormatter (new SimpleDateFormat ());
+      setFormatter(new SimpleDateFormat());
     }
     else
     {
-      setFormatter (new SimpleDateFormat (s));
+      setFormatter(new SimpleDateFormat(s));
     }
   }
 
   /**
-   * returns the current formater for this element. This function will never
+   * @return the current formater for this element. This function will never
    * return null.
    */
-  public DateFormat getFormatter ()
+  public DateFormat getFormatter()
   {
     return formatter;
   }
@@ -87,11 +87,11 @@ public class DateElement extends DataElement
    * Defines the current formater for the element. If the formater is null,
    * an exception is thrown.
    */
-  public void setFormatter (DateFormat format)
+  public void setFormatter(DateFormat format)
   {
     if (format == null)
     {
-      throw new NullPointerException ("Given format may not be null");
+      throw new NullPointerException("Given format may not be null");
     }
     this.formatter = format;
   }
@@ -100,12 +100,12 @@ public class DateElement extends DataElement
    * Returns a string representing the formatted date.
    * @return A formatted version of the data value.
    */
-  public String getFormattedText ()
+  public String getFormattedText()
   {
 
-    if (getValue () instanceof Date)
+    if (getValue() instanceof Date)
     {
-      return formatter.format (getValue ());
+      return formatter.format(getValue());
     }
     else
       return "-";

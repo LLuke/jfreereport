@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.3 2002/05/15 20:47:23 taqua Exp $
+ * $Id: ReportState.java,v 1.4 2002/05/16 19:58:24 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -224,7 +224,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     /**
      * Checks whether there are more groups the work on.
      *
-     * @returns true, if the currentGroupIndex is smaller than the defined groups - 1
+     * @return true, if the currentGroupIndex is smaller than the defined groups - 1
      */
     protected boolean hasMoreGroups()
     {
@@ -528,7 +528,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     }
 
     /**
-     * @returns true, as this report is done and will no longer advance.
+     * @return true, as this report is done and will no longer advance.
      */
     public boolean isFinish()
     {
@@ -922,5 +922,4 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       l.itemsAdvanced(event);
     }
   }
-
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DataElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: DataElement.java,v 1.3 2002/05/16 22:06:09 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -92,7 +92,7 @@ public abstract class DataElement extends TextElement
 
   /**
    * Queries the current value of the element.
-   * @returns the value for the element;
+   * @return the value for the element;
    */
   public Object getValue()
   {

@@ -72,7 +72,7 @@ public abstract class AbstractReportDefinitionHandler extends DefaultHandler
   }
 
   /**
-   * @returns the current contentbase or null, if no contentBase is set.
+   * @return the current contentbase or null, if no contentBase is set.
    */
   public URL getContentBase()
   {

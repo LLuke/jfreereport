@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.3 2002/05/15 20:47:23 taqua Exp $
+ * $Id: TextElement.java,v 1.4 2002/05/16 13:20:09 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -111,7 +111,7 @@ public abstract class TextElement extends Element
   }
 
   /**
-   * @returns the null value representation for this element
+   * @return the null value representation for this element
    */
   public String getNullString()
   {
@@ -130,7 +130,7 @@ public abstract class TextElement extends Element
    * Returns the text alignment for this element's text. This is one of <code>ElementConstants.LEFT</code>,
    * <code>ElementConstants.CENTER</code> or <code>ElementConstants.RIGHT</code>.
    *
-   * @returns the alignment for this element
+   * @return the alignment for this element
    */
   public int getAlignment()
   {

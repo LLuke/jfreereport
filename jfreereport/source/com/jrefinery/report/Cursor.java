@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Cursor.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: Cursor.java,v 1.3 2002/05/16 19:58:24 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -96,7 +96,7 @@ public class Cursor
   }
 
   /**
-   * returns the current y-position of this cursor.
+   * @return the current y-position of this cursor.
    */
   public float getY()
   {
@@ -104,7 +104,7 @@ public class Cursor
   }
 
   /**
-   * returns the left border of the printable area.
+   * @return the left border of the printable area.
    */
   public float getPageLeft()
   {
@@ -112,7 +112,7 @@ public class Cursor
   }
 
   /**
-   * returns the bottom border of the printable area.
+   * @return the bottom border of the printable area.
    */
   public float getPageBottom()
   {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupHeader.java,v 1.1.1.1 2002/04/25 17:02:21 taqua Exp $
+ * $Id: GroupHeader.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -52,16 +52,16 @@ public class GroupHeader extends Band
    *
    * @param height The height of the band.
    */
-  public GroupHeader ()
+  public GroupHeader()
   {
     pageBreak = false;
   }
 
   /**
-   * @returns true if this group should trigger a pagebreak before its header is printed,
+   * @return true if this group should trigger a pagebreak before its header is printed,
    * false otherwise
    */
-  public boolean hasPageBreakBeforePrint ()
+  public boolean hasPageBreakBeforePrint()
   {
     return pageBreak;
   }
@@ -69,7 +69,7 @@ public class GroupHeader extends Band
   /**
    * defines whether this group should trigger a pagebreak before its header is printed.
    */
-  public void setPageBreakBeforePrint (boolean b)
+  public void setPageBreakBeforePrint(boolean b)
   {
     this.pageBreak = b;
   }

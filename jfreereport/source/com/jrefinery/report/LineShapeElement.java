@@ -48,7 +48,7 @@ public class LineShapeElement extends ShapeElement
   private Line2D m_line;
   private boolean m_clacWidth;
 
-  public LineShapeElement ()
+  public LineShapeElement()
   {
     setLine(new Line2D.Float());
   }
@@ -58,7 +58,7 @@ public class LineShapeElement extends ShapeElement
    *
    * @param line the shape for this element of type Line2D
    */
-  public void setLine (Line2D line)
+  public void setLine(Line2D line)
   {
     m_line = line;
     m_clacWidth = (m_line.getX1() == m_line.getX2()) && (m_line.getY1() == m_line.getY2());
@@ -67,9 +67,9 @@ public class LineShapeElement extends ShapeElement
   }
 
   /**
-   * @returns this elements Line2D shape.
+   * @return this elements Line2D shape.
    */
-  public Line2D getLine ()
+  public Line2D getLine()
   {
     return (Line2D) getShape();
   }
@@ -80,9 +80,9 @@ public class LineShapeElement extends ShapeElement
    *
    * @param shape the shape for this element of type Line2D
    */
-  protected void setShape (Shape shape)
+  protected void setShape(Shape shape)
   {
-    super.setShape ((Line2D) shape);
+    super.setShape((Line2D) shape);
   }
 
   /**
@@ -90,7 +90,7 @@ public class LineShapeElement extends ShapeElement
    * this line a horizontal line and adjust the length of this line. This should be done
    * by some sort of relative addressing as in HTML with &lt;hr width="100%"&gt;
    */
-  public void draw (OutputTarget target, Band band, float bandX, float bandY)
+  public void draw(OutputTarget target, Band band, float bandX, float bandY)
   {
     Line2D l = getLine();
 
@@ -98,26 +98,26 @@ public class LineShapeElement extends ShapeElement
     {
       l.setLine(0.0d, m_line.getY1(), target.getUsableWidth(), m_line.getY1());
     }
-    super.draw (target, band, bandX, bandY);
+    super.draw(target, band, bandX, bandY);
   }
 
-  public String toString ()
+  public String toString()
   {
     Line2D line = getLine();
-    StringBuffer b = new StringBuffer ();
-    b.append ("Line={ name=");
-    b.append (getName());
-    b.append (", bounds=");
-    b.append (getBounds ());
-    b.append (", x1=");
-    b.append (line.getX1());
-    b.append (", y1=");
-    b.append (line.getY1());
-    b.append (", x2=");
-    b.append (line.getX2());
-    b.append (", y2=");
-    b.append (line.getY2());
-    b.append ("}");
+    StringBuffer b = new StringBuffer();
+    b.append("Line={ name=");
+    b.append(getName());
+    b.append(", bounds=");
+    b.append(getBounds());
+    b.append(", x1=");
+    b.append(line.getX1());
+    b.append(", y1=");
+    b.append(line.getY1());
+    b.append(", x2=");
+    b.append(line.getX2());
+    b.append(", y2=");
+    b.append(line.getY2());
+    b.append("}");
     return b.toString();
   }
 }

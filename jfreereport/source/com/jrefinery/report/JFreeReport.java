@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.4 2002/05/16 13:26:04 jaosch Exp $
+ * $Id: JFreeReport.java,v 1.5 2002/05/16 19:58:24 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -186,7 +186,7 @@ public class JFreeReport implements JFreeReportConstants
   }
 
   /**
-   * @returns the name of the report.
+   * @return the name of the report.
    */
   public String getName()
   {
@@ -231,7 +231,7 @@ public class JFreeReport implements JFreeReportConstants
    * Returns the value of the property with the specified key.
    *
    * @param key The key.
-   * @result The property value.
+   * @return The property value.
    */
   public Object getProperty(String key)
   {
@@ -254,7 +254,7 @@ public class JFreeReport implements JFreeReportConstants
   }
 
   /**
-   * @returns the report footer or null, if no report footer is defined.
+   * @return the report footer or null, if no report footer is defined.
    */
   public ReportHeader getReportHeader()
   {
@@ -275,7 +275,7 @@ public class JFreeReport implements JFreeReportConstants
   }
 
   /**
-   * @returns the report footer or null, if no report footer is defined.
+   * @return the report footer or null, if no report footer is defined.
    */
   public ReportFooter getReportFooter()
   {
@@ -296,7 +296,7 @@ public class JFreeReport implements JFreeReportConstants
   }
 
   /**
-   * @returns the page header or null, if no page header is defined.
+   * @return the page header or null, if no page header is defined.
    */
   public PageHeader getPageHeader()
   {
@@ -317,7 +317,7 @@ public class JFreeReport implements JFreeReportConstants
   }
 
   /**
-   * @returns the page footer or null, if no page footer is defined.
+   * @return the page footer or null, if no page footer is defined.
    */
   public PageFooter getPageFooter()
   {
@@ -325,7 +325,7 @@ public class JFreeReport implements JFreeReportConstants
   }
 
   /**
-   * @returns the item band for the report.
+   * @return the item band for the report.
    */
   public ItemBand getItemBand()
   {
@@ -384,7 +384,7 @@ public class JFreeReport implements JFreeReportConstants
    * returns the number of groups in this report. Every report has at least one group
    * defined.
    *
-   * @returns the number of groups in the report.
+   * @return the number of groups in the report.
    */
   public int getGroupCount()
   {
@@ -396,7 +396,7 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @throws IllegalArgumentException if the count is negative.
    * @throws IndexOutOfBoundsException if the count is greater than the number of defined groups.
-   * @returns the requested group.
+   * @return the requested group.
    */
   public Group getGroup(int count)
   {
@@ -461,7 +461,7 @@ public class JFreeReport implements JFreeReportConstants
    * Defines the default page format for this report. The defaultPageFormat is a hint
    * to define at least one suitable format.
    *
-   * @returns the default format or null, if no such format has been specified.
+   * @return the default format or null, if no such format has been specified.
    */
   public void setDefaultPageFormat(PageFormat format)
   {
@@ -497,7 +497,7 @@ public class JFreeReport implements JFreeReportConstants
    * Sends the entire report to the specified target.
    *
    * @param target The output target.
-   * @returns The last state of the report, usually ReportState.Finish
+   * @return The last state of the report, usually ReportState.Finish
    * @throws ReportProcessingException if the report did not proceed and got stuck.
    */
   public ReportState processReport(OutputTarget target, boolean draw)

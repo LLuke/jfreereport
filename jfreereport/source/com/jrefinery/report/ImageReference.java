@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageReference.java,v 1.4 2002/05/16 10:49:33 mungady Exp $
+ * $Id: ImageReference.java,v 1.5 2002/05/16 12:14:12 jaosch Exp $
  *
  * Changes:
  * --------
@@ -80,7 +80,6 @@ public class ImageReference
    *
    * @throws IOException if the url could not be read.
    */
-
   public ImageReference(URL url, float width, float height) throws IOException
   {
 
@@ -97,7 +96,6 @@ public class ImageReference
    *
    * @throws IOException if the url could not be read.
    */
-
   public ImageReference(URL url, Rectangle2D bounds) throws IOException
   {
 
@@ -143,9 +141,8 @@ public class ImageReference
    * <P>
    * The image is not scaled in any way.
    *
-   * @returns The current image instance.
+   * @return The current image instance.
    */
-
   public Image getImage()
   {
 
@@ -155,9 +152,8 @@ public class ImageReference
   /**
    * Returns the source URL for the image.
    *
-   * @returns The URL.
+   * @return The URL.
    */
-
   public URL getSourceURL()
   {
 
@@ -169,7 +165,6 @@ public class ImageReference
    *
    * @param surl The URL.
    */
-
   protected void setSourceURL(URL surl)
   {
 
@@ -184,7 +179,6 @@ public class ImageReference
    *
    * @param bounds The size.
    */
-
   protected void setBounds(Rectangle2D bounds)
   {
 
@@ -197,9 +191,8 @@ public class ImageReference
   /**
    * Returns the required width of the image (in points, 1/72 inch).
    *
-   * @returns The width.
+   * @return The width.
    */
-
   public float getWidth()
   {
 
@@ -209,9 +202,8 @@ public class ImageReference
   /**
    * Returns the required height of the image (in points, 1/72 inch).
    *
-   * @returns the desired height of the image.
+   * @return the desired height of the image.
    */
-
   public float getHeight()
   {
 
@@ -221,9 +213,8 @@ public class ImageReference
   /**
    * Returns the required left origin of the image.
    *
-   * @returns The left origin.
+   * @return The left origin.
    */
-
   public float getX()
   {
 
@@ -233,9 +224,8 @@ public class ImageReference
   /**
    * Returns the upper origin of the image.
    *
-   * @returns The upper origin.
+   * @return The upper origin.
    */
-
   public float getY()
   {
 
@@ -248,9 +238,8 @@ public class ImageReference
    * @param carrier You can supply a rectangle in which to store the result, if you want to avoid
    *                creating new objects unnecessarily.
    *
-   * @returns The size.
+   * @return The size.
    */
-
   public Rectangle2D getBounds(Rectangle2D carrier)
   {
 
@@ -270,7 +259,6 @@ public class ImageReference
    *
    * @return The size.
    */
-
   public Rectangle2D getBounds()
   {
 
@@ -280,9 +268,8 @@ public class ImageReference
   /**
    * Returns a String representing this object.  Useful for debugging.
    *
-   * @returns The string.
+   * @return The string.
    */
-
   public String toString()
   {
 
@@ -295,6 +282,5 @@ public class ImageReference
     buf.append("}");
 
     return buf.toString();
-
   }
 }
