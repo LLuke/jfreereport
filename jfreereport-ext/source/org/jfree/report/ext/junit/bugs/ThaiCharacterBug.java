@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ThaiCharacterBug.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
+ * $Id: ThaiCharacterBug.java,v 1.2 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes
  * -------
@@ -48,13 +48,17 @@ import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.CharacterEntityParser;
 
-public class ThaiCharacterBug
+public final class ThaiCharacterBug
 {
+  private ThaiCharacterBug()
+  {
+  }
+  
   public static JFreeReport getReport() throws Exception
   {
     String test =
         CharacterEntityParser.createXMLEntityParser().decodeEntities
-        ("Sample Thai chars: &#3648;&#3614;&#3636;&#3656;&#3617;, &#3621;&#3641;&#3585;&#3588;&#3657;&#3634;");
+        ("Sample Thai chars: &#3648;&#3614;&#3636;&#3656;&#3617;, " +          "&#3621;&#3641;&#3585;&#3588;&#3657;&#3634;");
     //String test = "\u3648\u3614\u3636\u3656\u3617\u3621\u3641\u3585\u3588\u3657\u3634";
     test = new String(test.getBytes("iso-8859-1"), "TIS620");
 

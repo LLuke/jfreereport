@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionGroupBug.java,v 1.1 2003/09/12 17:51:05 taqua Exp $
+ * $Id: ExpressionGroupBug.java,v 1.2 2003/09/12 22:05:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,6 +42,7 @@ import javax.swing.table.TableModel;
 
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.ext.junit.TestSystem;
 import org.jfree.report.util.Log;
 
 public class ExpressionGroupBug extends TestCase
@@ -179,22 +180,18 @@ public class ExpressionGroupBug extends TestCase
     return true;
   }
 
-  public static void main (String [] args)
+  public static void main (String [] args) throws Exception
   {
-    final TableModel m_dataModel = new ExpressionGroupBugDataSet();
+    final TableModel mdataModel = new ExpressionGroupBugDataSet();
     ExpressionGroupBug bug = new ExpressionGroupBug();
-    JFreeReport report = BugLibrary.parse
-        ("/org/jfree/report/ext/junit/bugs/resource/ExpressionGroupBug.xml", m_dataModel);
+    JFreeReport report = TestSystem.loadReport
+        ("/org/jfree/report/ext/junit/bugs/resource/ExpressionGroupBug.xml", mdataModel);
     if (report == null)
     {
       Log.error ("Failed after parse.");
       return;
     }
-    if (BugLibrary.previewDialog(report) == false)
-    {
-      Log.error ("Failed after preview.");
-      return;
-    }
+    TestSystem.showPreview(report);
     if (bug.test(report) == false)
     {
       Log.error ("Failed after test.");
