@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyReferenceGenerator.java,v 1.4 2003/05/02 12:40:13 taqua Exp $
+ * $Id: DataSourceReferenceGenerator.java,v 1.1 2003/06/10 18:14:27 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,6 +39,8 @@
 package com.jrefinery.report.io.ext.factory.datasource;
 
 import java.net.URL;
+
+import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
@@ -55,6 +57,15 @@ public class DataSourceReferenceGenerator
   private static final String REFERENCE_REPORT =
     "/com/jrefinery/report/io/ext/factory/datasource/DataSourceReferenceReport.xml";
 
+  public static TableModel createData ()
+  {
+    DataSourceCollector cc = new DataSourceCollector();
+    cc.addFactory(new DefaultDataSourceFactory());
+
+    DataSourceReferenceTableModel model = new DataSourceReferenceTableModel(cc);
+    return model;
+  }
+
   /**
    * The starting point for the application.
    * 
@@ -62,11 +73,6 @@ public class DataSourceReferenceGenerator
    */
   public static void main (String [] args)
   {
-    DataSourceCollector cc = new DataSourceCollector();
-    cc.addFactory(new DefaultDataSourceFactory());
-
-    DataSourceReferenceTableModel model = new DataSourceReferenceTableModel(cc);
-
     ReportGenerator gen = ReportGenerator.getInstance();
     URL reportURL = gen.getClass().getResource(REFERENCE_REPORT);
     if (reportURL == null)
@@ -90,7 +96,7 @@ public class DataSourceReferenceGenerator
       System.exit(1);
       return;
     }
-    report.setData(model);
+    report.setData(createData());
     try
     {
       ReportProcessorUtil.createStreamHTML(report, System.getProperty("user.home") 

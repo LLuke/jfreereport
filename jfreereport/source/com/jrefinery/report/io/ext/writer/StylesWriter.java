@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.9 2003/06/10 16:07:52 taqua Exp $
+ * $Id: StylesWriter.java,v 1.10 2003/06/10 17:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import com.jrefinery.report.Element;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ShapeElement;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.io.ext.ExtReportHandler;
 import com.jrefinery.report.io.ext.StylesHandler;
 import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
@@ -124,11 +125,12 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
     //now sort the elements ...
     ElementStyleSheet[] styles = (ElementStyleSheet[])
         reportStyles.toArray(new ElementStyleSheet[reportStyles.size()]);
-
+/*
     for (int i = 0; i < styles.length; i++)
     {
       System.out.println(styles[i].getName());
     }
+*/    
     return styles;
   }
 
@@ -153,7 +155,14 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
     Element[] elements = band.getElementArray();
     for (int i = 0; i < elements.length; i++)
     {
-      collectStylesFromElement(elements[i]);
+      if (elements[i] instanceof Band)
+      {
+        collectStylesFromBand((Band) elements[i]);
+      }
+      else
+      {
+        collectStylesFromElement(elements[i]);
+      }
     }
 
   }
@@ -171,6 +180,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
     for (int i = 0; i < parents.size(); i++)
     {
       ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
+      Log.debug ("About to add: [ELEMENT] " + es.getName());
       addCollectableStyleSheet(es);
     }
   }
@@ -206,6 +216,10 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
     if (reportStyles.contains(es) == false)
     {
       reportStyles.add(es);
+    }
+    else
+    {
+      Log.debug ("Already Added: " + es.getName());
     }
   }
 }

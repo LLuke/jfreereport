@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardDemo.java,v 1.3 2003/04/24 18:08:46 taqua Exp $
+ * $Id: CardDemo.java,v 1.4 2003/05/02 12:39:41 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import javax.swing.UIManager;
 import javax.swing.table.TableModel;
 
 import com.jrefinery.report.demo.JFreeReportDemo;
+import com.jrefinery.report.util.Log;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -61,10 +62,11 @@ public class CardDemo extends JFreeReportDemo
 
   /**
    * Creates a <code>TableModel</code> containing data for the demo.
+   * <!-- used in JUnit tests -->
    * 
    * @return A <code>TableModel</code>.
    */
-  private TableModel createSimpleDemoModel ()
+  public static TableModel createSimpleDemoModel ()
   {
     CardTableModel model = new CardTableModel();
     model.addCard(new AdminCard("Jared", "Diamond", "NR123123", "login", "secret", new Date()));
@@ -129,7 +131,7 @@ public class CardDemo extends JFreeReportDemo
       }
       catch (Exception e)
       {
-        System.out.println("Look and feel problem.");
+        Log.info("Look and feel problem.");
       }
 
       CardDemo frame = new CardDemo();

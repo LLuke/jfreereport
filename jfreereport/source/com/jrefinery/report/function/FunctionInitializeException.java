@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -
  *
- * $Id: FunctionInitializeException.java,v 1.5 2002/12/02 17:29:11 taqua Exp $
+ * $Id: FunctionInitializeException.java,v 1.6 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -42,12 +42,14 @@ package com.jrefinery.report.function;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
+import com.jrefinery.report.ReportInitialisationException;
+
 /**
  * An exception that indicates that a function has not been correctly initialised.
  *
  * @author Thomas Morgner
  */
-public class FunctionInitializeException extends Exception
+public class FunctionInitializeException extends ReportInitialisationException
 {
 
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.11 2003/05/14 22:26:40 taqua Exp $
+ * $Id: CharacterEntityParser.java,v 1.12 2003/06/12 19:50:11 taqua Exp $
  *
  * Changes
  * -------
@@ -232,20 +232,5 @@ public class CharacterEntityParser
     }
     return bufValue.toString();
   }
-/*
-  public static void main (String [] args) throws Exception
-  {
-    String test = "Test is a הצüהצü test";
-    OutputStreamWriter w = new OutputStreamWriter(System.err, "UTF-16");
-    w.write(test);
-    w.flush();
-
-    CharacterEntityParser ep = CharacterEntityParser.createHTMLEntityParser();
-    System.out.println ("First Test: " + ep.encodeEntities(test));
-    System.out.println ("Second Test: " );
-    ep.encodeEntities(test, new HtmlWriter (System.err, "UTF-16"));
-
-  }
-*/
 }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.34 2003/04/23 17:13:42 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.35 2003/04/24 18:08:57 taqua Exp $
  *
  * Changes
  * -------
@@ -428,8 +428,10 @@ public class LogicalPageImpl implements LogicalPage
     ContentFactory factory = outputTarget.getContentFactory();
     if (factory.canHandleContent(e.getContentType()) == false)
     {
+      /*
       Log.debug (new Log.SimpleMessage("The OutputTarget does not support the content type: ",
                                        e.getContentType()));
+                                       */
       return;
     }
     Rectangle2D elementBounds = (Rectangle2D)

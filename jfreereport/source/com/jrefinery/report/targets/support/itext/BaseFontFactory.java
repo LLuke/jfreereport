@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.8 2003/04/08 14:20:47 mungady Exp $
+ * $Id: BaseFontFactory.java,v 1.9 2003/05/29 16:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@
 package com.jrefinery.report.targets.support.itext;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -66,6 +67,50 @@ public class BaseFontFactory extends DefaultFontMapper
   /** Fonts stored by name. */
   private HashMap fontsByName;
 
+  private static class FontPathFilter implements FileFilter
+  {
+    public FontPathFilter()
+    {
+    }
+
+    /**
+     * Tests whether or not the specified abstract pathname should be
+     * included in a pathname list.
+     *
+     * @param  pathname  The abstract pathname to be tested
+     * @return  <code>true</code> if and only if <code>pathname</code>
+     *          should be included
+     */
+    public boolean accept(File pathname)
+    {
+      if (pathname.canRead() == false)
+      {
+        return false;
+      }
+      if (pathname.isDirectory())
+      {
+        return true;
+      }
+      String name = pathname.getName();
+      if (StringUtil.endsWithIgnoreCase(name, ".afm"))
+      {
+        return true;
+      }
+      if (StringUtil.endsWithIgnoreCase(name, ".pfb"))
+      {
+        return true;
+      }
+      if (StringUtil.endsWithIgnoreCase(name, ".ttf"))
+      {
+        return true;
+      }
+      return false;
+    }
+
+  }
+
+  private static final FontPathFilter fontPathFilter = new FontPathFilter();
+
   /**
    * Creates a new factory.
    */
@@ -86,74 +131,88 @@ public class BaseFontFactory extends DefaultFontMapper
     if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
     {
       // is this correct?
-      encoding = "iso-8859-1";
+      //encoding = "iso-8859-1";
+      encoding = "UTF-16";
     }
 
     String osname = System.getProperty("os.name");
     String jrepath = System.getProperty("java.home");
-    String fontPath = null;
     String fs = System.getProperty("file.separator");
 
     Log.debug("Running on operating system: " + osname);
     Log.debug("Character encoding used as default: " + encoding);
 
-    if (!StringUtil.startsWithIgnoreCase(osname, "windows"))
+    if (StringUtil.startsWithIgnoreCase(osname, "windows"))
     {
-      Log.debug("Assuming unix like file structures");
-      // Assume X11 is installed in the default location.
-      fontPath = "/usr/X11R6/lib/X11/fonts/truetype";
+      registerWindowsFontPath(encoding);
     }
     else
     {
-      Log.debug("Found windows in os name, assuming DOS/Win32 structures");
-      // Assume windows
-      // If you are not using windows, ignore this. This just checks if a windows system
-      // directory exist and includes a font dir.
+      Log.debug("Assuming unix like file structures");
+      // Assume X11 is installed in the default location.
+      registerFontPath(new File ("/usr/X11R6/lib/X11/fonts"), encoding);
+    }
+    registerFontPath(new File(jrepath, "lib" + fs + "fonts"), encoding);
+  }
 
-      String windirs = System.getProperty("java.library.path");
-      if (windirs != null)
+  private void registerWindowsFontPath (String encoding)
+  {
+    Log.debug("Found windows in os name, assuming DOS/Win32 structures");
+    // Assume windows
+    // If you are not using windows, ignore this. This just checks if a windows system
+    // directory exist and includes a font dir.
+
+    String fontPath = null;
+    String windirs = System.getProperty("java.library.path");
+    String fs = System.getProperty("file.separator");
+
+    if (windirs != null)
+    {
+      StringTokenizer strtok
+          = new StringTokenizer(windirs, System.getProperty("path.separator"));
+      while (strtok.hasMoreTokens())
       {
-        StringTokenizer strtok
-            = new StringTokenizer(windirs, System.getProperty("path.separator"));
-        while (strtok.hasMoreTokens())
+        String token = strtok.nextToken();
+
+        if (token.endsWith("System32"))
         {
-          String token = strtok.nextToken();
+          // found windows folder ;-)
+          int lastBackslash = token.lastIndexOf(fs);
+          fontPath = token.substring(0, lastBackslash) + fs + "Fonts";
 
-          if (token.endsWith("System32"))
-          {
-            // found windows folder ;-)
-            int lastBackslash = token.lastIndexOf(fs);
-            fontPath = token.substring(0, lastBackslash) + fs + "Fonts";
-
-            break;
-          }
+          break;
         }
       }
     }
-
     Log.debug("Fonts located in \"" + fontPath + "\"");
     if (fontPath != null)
     {
-      registerFontPath(fontPath, encoding);
+      File file = new File(fontPath);
+      registerFontPath(file, encoding);
     }
-    registerFontPath(new File(jrepath, "lib" + fs + "fonts").toString(), encoding);
   }
 
   /**
    * Register all fonts (*.ttf files) in the given path.
    *
-   * @param path  the path.
+   * @param file  the directory that contains the font files.
    * @param encoding  the encoding.
    */
-  public synchronized void registerFontPath(String path, String encoding)
+  public synchronized void registerFontPath(File file, String encoding)
   {
-    File file = new File(path);
     if (file.exists() && file.isDirectory() && file.canRead())
     {
-      File[] files = file.listFiles();
+      File[] files = file.listFiles(fontPathFilter);
       for (int i = 0; i < files.length; i++)
       {
-        registerFontFile(files[i].toString(), encoding);
+        if (files[i].isDirectory())
+        {
+          registerFontPath(files[i], encoding);
+        }
+        else
+        {
+          registerFontFile(files[i].toString(), encoding);
+        }
       }
     }
     System.gc();
@@ -209,7 +268,7 @@ public class BaseFontFactory extends DefaultFontMapper
       if (fontsByName.containsKey(ffi[3]) == false)
       {
         fontsByName.put(ffi[3], font);
-        Log.debug("Registered truetype font " + ffi[3] + "; File=" + font);
+        Log.debug(new Log.SimpleMessage("Registered truetype font ", ffi[3], "; File=", font));
       }
     }
   }

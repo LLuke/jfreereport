@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollection.java,v 1.9 2003/03/19 18:34:20 taqua Exp $
+ * $Id: TemplateCollection.java,v 1.10 2003/06/04 21:09:09 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -138,7 +138,6 @@ public class TemplateCollection
       // already configured ... ignored
       return;
     }
-    System.out.println ("Configuring TemplateCollection");
 
     this.config = config;
     Iterator it = templates.values().iterator();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.11 2003/04/09 16:16:07 mungady Exp $
+ * $Id: PreviewDialog.java,v 1.12 2003/05/02 12:40:24 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -255,35 +255,5 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   public PreviewProxyBase getBase()
   {
     return base;
-  }
-
-  /**
-   * Debugging code - please ignore.
-   * 
-   * @param args  ignored.
-   * 
-   * @throws Exception if there is a problem.
-   */
-  public static void main (String[] args) throws Exception
-  {
-    long start = System.currentTimeMillis();
-    PreviewDialog dialog = new PreviewDialog(new JFreeReport(), (Frame) null, true);
-    long mid = System.currentTimeMillis();
-    //dialog.setVisible(true);
-    long end = System.currentTimeMillis();
-
-    System.out.println ("Construction Time: " + (mid - start));
-    System.out.println ("View Time: " + (end - mid));
-    System.out.println ("Total Time: " + (end - start));
-
-    start = System.currentTimeMillis();
-    dialog = new PreviewDialog(new JFreeReport(), (Frame) null, true);
-    mid = System.currentTimeMillis();
-    //dialog.setVisible(true);
-    end = System.currentTimeMillis();
-
-    System.out.println ("Construction Time: " + (mid - start));
-    System.out.println ("View Time: " + (end - mid));
-    System.out.println ("Total Time: " + (end - start));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceGenerator.java,v 1.5 2003/04/24 18:08:51 taqua Exp $
+ * $Id: ObjectReferenceGenerator.java,v 1.6 2003/05/02 12:40:10 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,6 +39,8 @@
 package com.jrefinery.report.io.ext.factory.objects;
 
 import java.net.URL;
+
+import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
@@ -58,12 +60,7 @@ public class ObjectReferenceGenerator
   private static final String REFERENCE_REPORT =
     "/com/jrefinery/report/io/ext/factory/objects/ObjectReferenceReport.xml";
 
-  /**
-   * Starting point for the application.
-   * 
-   * @param args  ignored.
-   */
-  public static void main (String [] args)
+  public static TableModel createData ()
   {
     ClassFactoryCollector cc = new ClassFactoryCollector();
     cc.addFactory(new DefaultClassFactory());
@@ -71,6 +68,15 @@ public class ObjectReferenceGenerator
     cc.addFactory(new TemplateClassFactory());
 
     ObjectReferenceTableModel model = new ObjectReferenceTableModel(cc);
+    return model;
+  }
+  /**
+   * Starting point for the application.
+   * 
+   * @param args  ignored.
+   */
+  public static void main (String [] args)
+  {
 
     ReportGenerator gen = ReportGenerator.getInstance();
     URL reportURL = gen.getClass().getResource(REFERENCE_REPORT);
@@ -95,7 +101,7 @@ public class ObjectReferenceGenerator
       System.exit(1);
       return;
     }
-    report.setData(model);
+    report.setData(createData());
     try
     {
       ReportProcessorUtil.createStreamHTML(report, System.getProperty("user.home") 

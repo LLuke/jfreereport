@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.37 2003/04/09 16:13:49 mungady Exp $
+ * $Id: PageableReportProcessor.java,v 1.38 2003/05/11 13:39:18 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportEventException;
 import com.jrefinery.report.ReportInterruptedException;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.EmptyReportException;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
@@ -264,14 +265,15 @@ public class PageableReportProcessor
    * if this happens.
    *
    * @throws ReportProcessingException if the report did not proceed and got stuck.
+   * @throws EmptyReportException if the repagination returned no pages.
    */
-  public void processReport() throws ReportProcessingException
+  public void processReport() throws ReportProcessingException, EmptyReportException
   {
     // do a repagination
     ReportStateList list = repaginate();
     if (list.size() == 0)
     {
-      throw new ReportProcessingException("Repaginating returned no pages");
+      throw new EmptyReportException("Repaginating returned no pages");
     }
     ReportState rs = list.get(0);
 

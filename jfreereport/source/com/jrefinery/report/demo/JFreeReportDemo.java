@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.64 2003/05/02 12:39:34 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.65 2003/05/14 22:26:37 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -780,7 +780,7 @@ public class JFreeReportDemo extends JFrame
       }
       catch (Exception e)
       {
-        System.out.println("Look and feel problem.");
+        Log.info("Look and feel problem.");
       }
 
       JFreeReportDemo frame = new JFreeReportDemo();

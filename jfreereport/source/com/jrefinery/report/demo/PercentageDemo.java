@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.4 2003/04/24 18:08:46 taqua Exp $
+ * $Id: PercentageDemo.java,v 1.5 2003/05/02 12:39:35 taqua Exp $
  *
  * Changes
  * -------
@@ -227,11 +227,11 @@ public class PercentageDemo extends ApplicationFrame implements ActionListener
   }
 
   /**
-   * Creates a sample dataset.
+   * Creates a sample dataset. <!-- (Used in JUnitTest) -->
    * 
    * @return A <code>TableModel</code>.
    */
-  private TableModel createData() 
+  public static TableModel createData()
   {
       DefaultTableModel data = new DefaultTableModel();
       data.addColumn("A");

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyReferenceGenerator.java,v 1.3 2003/03/07 16:55:58 taqua Exp $
+ * $Id: StyleKeyReferenceGenerator.java,v 1.4 2003/05/02 12:40:13 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,6 +39,8 @@
 package com.jrefinery.report.io.ext.factory.stylekey;
 
 import java.net.URL;
+
+import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
@@ -55,6 +57,16 @@ public class StyleKeyReferenceGenerator
   private static final String REFERENCE_REPORT =
     "/com/jrefinery/report/io/ext/factory/stylekey/StyleKeyReferenceReport.xml";
 
+  public static TableModel createData()
+  {
+    StyleKeyFactoryCollector cc = new StyleKeyFactoryCollector();
+    cc.addFactory(new DefaultStyleKeyFactory());
+    cc.addFactory(new PageableLayoutStyleKeyFactory());
+
+    StyleKeyReferenceTableModel model = new StyleKeyReferenceTableModel(cc);
+    return model;
+  }
+
   /**
    * The starting point for the application.
    * 
@@ -62,11 +74,6 @@ public class StyleKeyReferenceGenerator
    */
   public static void main (String [] args)
   {
-    StyleKeyFactoryCollector cc = new StyleKeyFactoryCollector();
-    cc.addFactory(new DefaultStyleKeyFactory());
-    cc.addFactory(new PageableLayoutStyleKeyFactory());
-
-    StyleKeyReferenceTableModel model = new StyleKeyReferenceTableModel(cc);
 
     ReportGenerator gen = ReportGenerator.getInstance();
     URL reportURL = gen.getClass().getResource(REFERENCE_REPORT);
@@ -91,7 +98,7 @@ public class StyleKeyReferenceGenerator
       System.exit(1);
       return;
     }
-    report.setData(model);
+    report.setData(createData());
     try
     {
       ReportProcessorUtil.createStreamHTML(report, System.getProperty("user.home") 
