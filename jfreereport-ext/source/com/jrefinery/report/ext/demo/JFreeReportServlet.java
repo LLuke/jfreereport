@@ -104,6 +104,7 @@ public class JFreeReportServlet extends HttpServlet
         PDFOutputTarget target = new PDFOutputTarget(out, new PageFormat(), true);
         target.setProperty(PDFOutputTarget.TITLE, "Title");
         target.setProperty(PDFOutputTarget.AUTHOR, "Author");
+        target.open();
         thisRpt.processReport(target);
         target.close();
       }
