@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.7 2003/10/11 13:54:01 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.8 2003/10/11 14:56:26 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-
-import org.jfree.report.util.Log;
 
 /**
  * Encapsulates all TableCellBackground informations, such as borders and background color.
@@ -274,15 +272,15 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
       }
     }
 
-    Log.debug ("This: " + this);
-    Log.debug ("  BG: " + background);
-    Log.debug ("    CellBounds: " + cellBounds);
+//    Log.debug ("This: " + this);
+//    Log.debug ("  BG: " + background);
+//    Log.debug ("    CellBounds: " + cellBounds);
     if (isBottomBorderDefinition(cellBounds, this))
     {
       final TableCellBackground merged = background.createMergedInstance(cellBounds);
       merged.color = color;
       merged.mergeBottomBorder(this);
-      Log.debug ("Bottom:This: " + merged);
+//      Log.debug ("Bottom:This: " + merged);
       return merged;
     }
     if (isBottomBorderDefinition(cellBounds, background))
@@ -290,7 +288,7 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
       final TableCellBackground merged = createMergedInstance(cellBounds);
       merged.color = color;
       merged.mergeBottomBorder(background);
-      Log.debug ("Bottom:Bg: " + merged);
+//      Log.debug ("Bottom:Bg: " + merged);
       return merged;
     }
     if (isRightBorderDefinition(cellBounds, this))
@@ -298,7 +296,7 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
       final TableCellBackground merged = background.createMergedInstance(cellBounds);
       merged.color = color;
       merged.mergeRightBorder(this);
-      Log.debug ("Right:This: " + merged);
+//      Log.debug ("Right:This: " + merged);
       return merged;
     }
     if (isRightBorderDefinition(cellBounds, background))
@@ -306,7 +304,7 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
       final TableCellBackground merged = createMergedInstance(cellBounds);
       merged.color = color;
       merged.mergeRightBorder(background);
-      Log.debug ("Right:Bg: " + merged);
+//      Log.debug ("Right:Bg: " + merged);
       return merged;
     }
 
@@ -316,7 +314,7 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
       final TableCellBackground merged = createMergedInstance(cellBounds);
       merged.color = color;
       merged.mergeAllBorders(background);
-      Log.debug ("Bounds:Equal:This: " + merged);
+//      Log.debug ("Bounds:Equal:This: " + merged);
       return merged;
     }
 
@@ -326,7 +324,7 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
       final TableCellBackground merged = background.createMergedInstance(cellBounds);
       merged.color = color;
       merged.mergeAllBorders(this);
-      Log.debug ("Bottom:Equal:Bg: " + merged);
+//      Log.debug ("Bottom:Equal:Bg: " + merged);
       return merged;
     }
 
@@ -337,14 +335,14 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
     {
       final TableCellBackground merged = createMergedInstance(cellBounds);
       merged.color = color;
-      Log.debug ("None:This: " + merged);
+//      Log.debug ("None:This: " + merged);
       return merged;
     }
     else
     {
       final TableCellBackground merged = background.createMergedInstance(cellBounds);
       merged.color = color;
-      Log.debug ("None:Bg: " + merged);
+//      Log.debug ("None:Bg: " + merged);
       return merged;
     }
     // create an unmerged instance in any other case, as the bounds are not releated
