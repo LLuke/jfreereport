@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.7 2002/12/13 01:26:11 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.8 2002/12/16 17:31:05 mungady Exp $
  *
  * Changes
  * -------
@@ -75,6 +75,7 @@ import java.util.Enumeration;
  * to be printed on the screen and on the printer.
  *
  * @author David Gilbert
+ * @author Thomas Morgner
  */
 public class G2OutputTarget extends AbstractOutputTarget
 {

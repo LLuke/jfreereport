@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.20 2002/12/13 14:49:20 mungady Exp $
+ * $Id: ReportConfiguration.java,v 1.21 2002/12/13 18:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -60,24 +60,32 @@ import java.util.Properties;
  *
  * <h3>Global Configuration keys</h3>
  * <p>
- * These keys affect the whole VM and cannot be changed once
- * they are configured unless the VM is restarted.
+ * These keys affect the whole VM and usually cannot be changed once they are configured unless
+ * the VM is restarted.
  * <p>
  * <ul>
+ *
  * <li><code>com.jrefinery.report.LogLevel</code>
- * <p>The minimum loglevel that is logged. Defaults to "Debug",
- * possible values are "Error", "Warn", "Info", "Debug", "None".
- * "None" disables the logging. Log-level "Error" prints error-messages
- * only. "Warn" prints warnings and errors. "Info" prints informational
- * messages as well as warnings and errors. "Debug" prints all messages,
- * inclusive all debugging messages.
  * <p>
+ * The minimum loglevel that is logged.  Valid values are:
+ * <ul>
+ *   <li><code>"Error"</code> - prints error messages only;
+ *   <li><code>"Warn"</code> - prints warnings and errors;
+ *   <li><code>"Info"</code> - prints informational messages as well as warnings and errors;
+ *   <li><code>"Debug"</code> - prints all messages, including all debugging messages.
+ * </ul>
+ * The default setting is <code>"Debug"</code>.
+ * <p>
+ *
  * <li><code>com.jrefinery.report.LogTarget</code>
- * <p>The default log-target. Give a classname of a  valid LogTarget implementation.
- * The given class is loaded and instantiated and added as primary loggin target.
- * This defaults to "com.jrefinery.report.util.SystemOutLogTarget". An alternative
- * LogTarget for Log4J-Printing can be found in the "Extension" package.
  * <p>
+ * The default log target. This should be set to the classname of a  valid {@link LogTarget}
+ * implementation -- the given class is loaded and instantiated and added as the primary logging
+ * target. This defaults to <code>"com.jrefinery.report.util.SystemOutLogTarget"</code>.
+ * <p>
+ * An alternative {@link LogTarget} for Log4J output can be found in the "Extension" package.
+ * <p>
+ *
  * <li><code>com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT</code>
  * <p>AutoInit the PDFTarget when the class is loaded? This will search and register
  * all ttf-fonts on the system. The search will access the system-directorys and can
@@ -103,9 +111,10 @@ import java.util.Properties;
  * column. This is useful when writing report-definitions, so this option defaults to "true".
  *
  * <li><code>com.jrefinery.report.TableFactoryMode</code>
- * <p>The tablemodel factory mode for the ResultSetTableModelFactory.
- * if set to "simple" the factory will always return a DefaultTableModel. This property is
- * not set by default and it should not be necessary to change this.
+ * <p>
+ * The table model factory mode for the {@link ResultSetTableModelFactory}.
+ * If set to "simple" the factory will always return a <code>DefaultTableModel</code>.
+ * This property is not set by default and it should not be necessary to change this.
  *
  * <li><code>com.jrefinery.report.NoDefaultDebug</code>
  * <p>
@@ -392,7 +401,9 @@ public class ReportConfiguration
   private static class SystemPropertyConfiguration extends ReportConfiguration
   {
     /**
-     * Default constructor.
+     * Creates a report configuration that includes all the system properties (whether they are
+     * related to reports or not).  The parent configuration is a
+     * <code>PropertyFileReportConfiguration</code>.
      */
     public SystemPropertyConfiguration()
     {
@@ -511,13 +522,30 @@ public class ReportConfiguration
   }
 
   /**
-   * Sets the log level.  Permitted log levels are: ERROR, WARN, INFO and DEBUG.
+   * Sets the log level, which is read from the global report configuration at the point that
+   * the classloader loads the {@link Log} class.
+   * <p>
+   * Valid log levels are:
    *
-   * @param logLevel  the new log level.
+   * <ul>
+   * <li><code>"Error"</code> - error messages;</li>
+   * <li><code>"Warn"</code> - warning messages;</li>
+   * <li><code>"Info"</code> - information messages;</li>
+   * <li><code>"Debug"</code> - debug messages;</li>
+   * </ul>
+   *
+   * Notes:
+   * <ul>
+   * <li>the setting is not case sensitive.</li>
+   * <li>changing the log level after the {@Log} class has been loaded will have no effect.</li>
+   * <li>to turn of logging altogether, use the {@link #setDisableLogging} method.</li>
+   * </ul>
+   *
+   * @param level  the new log level.
    */
-  public void setLogLevel(String logLevel)
+  public void setLogLevel(String level)
   {
-    setConfigProperty(LOGLEVEL, logLevel);
+    setConfigProperty(LOGLEVEL, level);
   }
 
   /**
@@ -597,6 +625,17 @@ public class ReportConfiguration
 
   /**
    * Returns the global configuration for JFreeReport.
+   * <p>
+   * In the current implementation, the configuration has no properties defined, but references
+   * a parent configuration that:
+   * <ul>
+   * <li>copies across all the <code>System</code> properties to use as report configuration
+   *     properties (obviously the majority of them will not apply to reports);</li>
+   * <li>itself references a parent configuration that reads its properties from a file
+   *     <code>jfreereport.properties</code>.
+   * </ul>
+   * This three-level set up is probably not necessary - it looks like it has arisen from
+   * evolving code.
    *
    * @return the global configuration.
    */

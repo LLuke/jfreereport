@@ -25,7 +25,7 @@
  * --------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: LogTarget.java,v 1.5 2002/12/06 18:21:38 taqua Exp $
+ * $Id: LogTarget.java,v 1.6 2002/12/12 12:26:57 mungady Exp $
  *
  * Changes
  * -------
@@ -35,7 +35,9 @@
 package com.jrefinery.report.util;
 
 /**
- * Use the LogTarget to redirect all logging messages to a suitable consumer.
+ * An interface that defines a log target (a consumer of log messages).  Classes that implement
+ * this interface can be registered with the {@link Log} class and will then receive logging
+ * messages generated in the JFreeReport code.
  *
  * @author Thomas Morgner
  */

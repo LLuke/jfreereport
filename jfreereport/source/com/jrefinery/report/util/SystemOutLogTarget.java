@@ -23,34 +23,42 @@
  * -----------------------
  * SystemOutLogTarget.java
  * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: SystemOutLogTarget.java,v 1.9 2002/12/09 03:56:34 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: SystemOutLogTarget.java,v 1.10 2002/12/12 12:26:57 mungady Exp $
  *
  * Changes
  * -------
  * 11-May-2002 : Initial version
+ * 17-Dec-2002 : Javadoc updates (DG);
+ *
  */
+
 package com.jrefinery.report.util;
 
 import java.io.Serializable;
 
 /**
- * Prints all log-messages to System.out stream.
+ * A log target that sends all log messages to the <code>System.out</code> stream.
  *
  * @author Thomas Morgner
  */
 public class SystemOutLogTarget implements LogTarget, Serializable
 {
   /**
-   * The default constructor. All LogTargets need a default constructor.
+   * The default constructor.
+   * <p>
+   * All {@link LogTarget} implementations need a default constructor.
    */
   public SystemOutLogTarget()
   {
   }
 
   /**
-   * logs an message to the main-log stream. All attached logStreams will also
+   * Logs a message to the main log stream. All attached logStreams will also
    * receive this message. If the given log-level is higher than the given debug-level
    * in the main config file, no logging will be done.
    *

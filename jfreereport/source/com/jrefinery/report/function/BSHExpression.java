@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.9 2002/12/02 17:29:02 taqua Exp $
+ * $Id: BSHExpression.java,v 1.10 2002/12/11 01:10:41 mungady Exp $
  *
  * ChangeLog
  * ---------
@@ -49,54 +49,53 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 /**
- * The BSHExpression uses the BeanShell scripting framework to perform the calculation.
+ * An expression that uses the BeanShell scripting framework to perform a scripted calculation.
  * The expression itself is contained in a function called
  * <p>
  * <code>Object getValue()</code>
  * <p>
- * and this function is defined in the expression property "expression". You have to overwrite the
- * function getValue() to begin and to end you expression, but you are free to add own function to
- * the script.
+ * and this function is defined in the <code>expression</code> property. You have to overwrite
+ * the function <code>getValue()</code> to begin and to end your expression, but you are free to
+ * add your own functions to the script.
  * <p>
  * By default, common Java core and extension packages are imported for you. They are:
  * <ul>
- * <li>java.lang
- * <li>java.io
- * <li>java.util
- * <li>java.net
- * <li>java.awt
- * <li>java.awt.event
- * <li>javax.swing
- * <li>javax.swing.event
+ * <li><code>java.lang<code>
+ * <li><code>java.io</code>
+ * <li><code>java.util</code>
+ * <li><code>java.net</code>
+ * <li><code>java.awt</code>
+ * <li><code>java.awt.event</code>
+ * <li><code>javax.swing</code>
+ * <li><code>javax.swing.event</code>
  * </ul>
  * <p>
  * An example in the XML format: (from report1.xml)
-<pre>
- <expression name="expression" class="com.jrefinery.report.function.BSHExpression">
- <properties>
- <property name="expression">
- // you may import packages and classes or use the fully qualified name of the class
- import com.jrefinery.report.*;
+ * <p>
+ * <pre><expression name="expression" class="com.jrefinery.report.function.BSHExpression">
+  <properties>
+  <property name="expression">
+  // you may import packages and classes or use the fully qualified name of the class
+  import com.jrefinery.report.*;
 
- String userdefinedFunction (String parameter, Date date)
- {
- return parameter + " - the current date is " + date);
- }
+  String userdefinedFunction (String parameter, Date date)
+  {
+  return parameter + " - the current date is " + date);
+  }
 
- // use simple java code to perform the expression. You may use all classes
- // available in your classpath as if you write "real" java code in your favourite
- // IDE.
- // See the www.beanshell.org site for more information ...
- //
- // A return value of type "Object" is alway implied ...
- getValue ()
- {
- return userdefinedFunction ("Hello World :) ", new Date());
- }
- </property>
- </properties>
- </expression>
-</pre>
+  // use simple java code to perform the expression. You may use all classes
+  // available in your classpath as if you write "real" java code in your favourite
+  // IDE.
+  // See the www.beanshell.org site for more information ...
+  //
+  // A return value of type "Object" is alway implied ...
+  getValue ()
+  {
+  return userdefinedFunction ("Hello World :) ", new Date());
+  }
+  </property>
+  </properties>
+  </expression></pre>
  *
  * @author Thomas Morgner
  */

@@ -28,13 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.12 2002/12/06 20:34:18 taqua Exp $
+ * $Id: Log.java,v 1.13 2002/12/11 00:41:42 mungady Exp $
  *
  * Changes
  * -------
  * 11-May-2002 : Created a simple logging schema.
  * 12-Nov-2002 : Removed redundant import (DG).
  * 10-Dec-2002 : Updated Javadocs (DG);
+ * 17-Dec-2002 : Removed LEVELS since it is not used (it is also declared in LogTarget) (DG);
  *
  */
 
@@ -43,7 +44,7 @@ package com.jrefinery.report.util;
 import java.util.ArrayList;
 
 /**
- * A simple logging facility. Create a class implementing the LogTarget interface to use
+ * A simple logging facility. Create a class implementing the {@link LogTarget} interface to use
  * this feature.
  *
  * @author Thomas Morgner
@@ -51,7 +52,7 @@ import java.util.ArrayList;
 public final class Log
 {
   /**
-   * LogHelper class to print memory usage message if needed.
+   * A helper class to print memory usage message if needed.
    */
   public static class MemoryUsageMessage
   {
@@ -178,38 +179,19 @@ public final class Log
     }
   }
 
-  /**
-   * Loglevel ERROR
-   */
+  /** The log level for error messages. */
   public static final int ERROR = 0;
 
-  /**
-   * Loglevel WARN
-   */
+  /** The log level for warning messages. */
   public static final int WARN = 1;
 
-  /**
-   * Loglevel INFO
-   */
+  /** The log level for information messages. */
   public static final int INFO = 2;
 
-  /**
-   * Loglevel DEBUG
-   */
+  /** The log level for debug messages. */
   public static final int DEBUG = 3;
 
-  /**
-   * String representations of the log levels.
-   */
-  public static final String[] LEVELS =
-          {
-            "ERROR: ",
-            "WARN:  ",
-            "INFO:  ",
-            "DEBUG: "
-          };
-
-  /** The debug level. */
+  /** The logging threshold. */
   private static int debuglevel = 100;
 
   /** Storage for the log targets. */

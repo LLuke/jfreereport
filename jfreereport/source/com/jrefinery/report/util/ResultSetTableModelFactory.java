@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.12 2002/12/09 03:56:34 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.13 2002/12/11 00:41:42 mungady Exp $
  *
  * Changes
  * -------
@@ -48,13 +48,13 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 /**
- * Creates an TableModel which is backed up by a ResultSet.
- * If the resultset is scrollable, a ScrollableResultSetTableModel is
- * created, else all data is copied from the resultSet into an
- * DefaultTableModel.
- *
- * The creation of default table models can be forces if the system property
- * "com.jrefinery.report.TableFactoryMode" is set to "simple".
+ * Creates a <code>TableModel</code> which is backed up by a <code>ResultSet</code>.
+ * If the <code>ResultSet</code> is scrollable, a {@link ScrollableResultSetTableModel} is
+ * created, otherwise all data is copied from the <code>ResultSet</code> into a
+ * <code>DefaultTableModel</code>.
+ * <p>
+ * The creation of a <code>DefaultTableModel</code> can be forced if the system property
+ * <code>"com.jrefinery.report.TableFactoryMode"</code> is set to <code>"simple"</code>.
  *
  * @author Thomas Morgner
  */
@@ -71,14 +71,15 @@ public class ResultSetTableModelFactory
   }
 
   /**
-   * Creates a table model by using the given resultset as backend. If the resultset
-   * is scrollable (the type is not TYPE_FORWARD_ONLY), an instance of ScrollableResultSetTableModel
-   * is returned. This model uses the extended capabilities of scrollable resultsets to directly
-   * read data from the database without caching or the need of copying the complete resultset
-   * into the programms memory.
+   * Creates a table model by using the given <code>ResultSet</code> as the backend.
+   * If the <code>ResultSet</code> is scrollable (the type is not <code>TYPE_FORWARD_ONLY</code>),
+   * an instance of {@link ScrollableResultSetTableModel} is returned. This model uses the
+   * extended capabilities of scrollable resultsets to directly read data from the database
+   * without caching or the need of copying the complete <code>ResultSet</code> into the programs
+   * memory.
    * <p>
-   * If the resultset lacks the scollable features, the data will be copied into an
-   * DefaultTableModel and the resultset gets closed.
+   * If the <code>ResultSet</code> lacks the scollable features, the data will be copied into a
+   * <code>DefaultTableModel</code> and the <code>ResultSet</code> gets closed.
    *
    * @param rs  the result set.
    *
@@ -147,10 +148,11 @@ public class ResultSetTableModelFactory
   }
 
   /**
-   * Generates a TableModel that gets its contents filled from the resultset. The column names
-   * of the resultset will form the column names of the table model.
+   * Generates a <code>TableModel</code> that gets its contents filled from a
+   * <code>ResultSet</code>. The column names of the <code>ResultSet</code> will form the column
+   * names of the table model.
    * <p>
-   * Hint: To customize the names of the columns, use the SQL-Column aliasing (done with
+   * Hint: To customize the names of the columns, use the SQL column aliasing (done with
    * <code>SELECT nativecolumnname AS "JavaColumnName" FROM ....</code>
    *
    * @param rs  the result set.

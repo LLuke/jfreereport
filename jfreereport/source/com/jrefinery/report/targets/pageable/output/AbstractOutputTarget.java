@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.1 2002/12/02 17:57:00 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.2 2002/12/11 01:10:41 mungady Exp $
  *
  * Changes
  * -------
@@ -78,20 +78,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
   private Rectangle2D operationBounds;
 
   /**
-   * Creates a new output target.
-   *
-   * @param logPage  the logical page.
-   */
-  public AbstractOutputTarget(LogicalPage logPage)
-  {
-    properties = new Hashtable();
-    logicalPage = logPage;
-    logicalPage.setOutputTarget(this);
-    operationBounds = new Rectangle2D.Double();
-  }
-
-  /**
-   * Creates a new output target.
+   * Creates a new output target.  Both the logical page size and the physical page size will be
+   * the same.
    *
    * @param format  the page format.
    */
@@ -101,13 +89,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
   }
 
   /**
-   * Creates the outputtarget and adds a default cursor to this band by calling createCursor().
-   * Override createCursor to define a different cursor.
+   * Creates a new output target with the specified logical and physical page sizes.
    *
-   * @param logical the pageformat used by this target for layouting.
-   * @param physical the pageformat used by this target for printing.
-   *
-   * @throws NullPointerException if the format is null
+   * @param logical  the page format used by this target for layouting.
+   * @param physical  the page format used by this target for printing.
    */
   public AbstractOutputTarget(PageFormat logical, PageFormat physical)
   {
@@ -115,14 +100,25 @@ public abstract class AbstractOutputTarget implements OutputTarget
   }
 
   /**
-   * Defines a property for this outputtarget. Properties are the standard way of configuring
-   * an outputtarget.
+   * Creates a new output target.
    *
-   * @param property the name of the property to set
-   * @param value the value of the property. If value is null, the property is removed from the
-   * OutputTarget
+   * @param logicalPage  the logical page.
+   */
+  public AbstractOutputTarget(LogicalPage logicalPage)
+  {
+    properties = new Hashtable();
+    this.logicalPage = logicalPage;
+    logicalPage.setOutputTarget(this);
+    operationBounds = new Rectangle2D.Double();
+  }
+
+  /**
+   * Defines a property for this output target. Properties are the standard way of configuring
+   * an output target.
    *
-   * @throws NullPointerException if property is null
+   * @param property  the name of the property to set (<code>null</code> not permitted).
+   * @param value  the value of the property.  If the value is <code>null</code>, the property is
+   * removed from the output target.
    */
   public void setProperty(String property, Object value)
   {
@@ -193,18 +189,6 @@ public abstract class AbstractOutputTarget implements OutputTarget
   }
 
   /**
-   * Returns the default layout manager.
-   *
-   * @return the default layout manager.
-   */
-  public BandLayoutManager getDefaultLayoutManager()
-  {
-    BandLayoutManager lm = new StaticLayoutManager();
-    lm.setOutputTarget(this);
-    return lm;
-  }
-
-  /**
    * Returns the logical page.
    *
    * @return the logical page.
@@ -227,10 +211,24 @@ public abstract class AbstractOutputTarget implements OutputTarget
   /**
    * Returns the operation bounds.
    *
-   * @return the clipping area.
+   * @return the operation bounds.
    */
   public Rectangle2D getOperationBounds()
   {
     return operationBounds.getBounds2D();
+  }
+
+  /**
+   * Creates and returns a default layout manager for this output target.
+   * <p>
+   * Note that a new layout manager is created every time this method is called.
+   *
+   * @return a default layout manager.
+   */
+  public BandLayoutManager getDefaultLayoutManager()
+  {
+    BandLayoutManager lm = new StaticLayoutManager();
+    lm.setOutputTarget(this);
+    return lm;
   }
 }

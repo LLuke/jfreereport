@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.19 2002/12/11 00:51:20 mungady Exp $
+ * $Id: ReportFactory.java,v 1.20 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -147,7 +147,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
 
 
   /**
-   * starts a new property entry for the current function
+   * Starts a new property entry within the report configuration section.
    *
    * @param atts  the element attributes.
    *
@@ -172,7 +172,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
    */
   private void startConfiguration(Attributes atts)
   {
-    // does nothing yet
+    // no action is required, configuration properties are read as sub-elements...
   }
 
   /**

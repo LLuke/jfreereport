@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.32 2002/12/11 01:00:04 mungady Exp $
+ * $Id: Band.java,v 1.33 2002/12/13 15:43:07 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -129,12 +129,10 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Returns the default StyleSheet for all childs of this band. This StyleSheet
-   * is used to define a set of common properties for all elements. The values
-   * of this StyleSheet are used as default values for all Elements contained in
-   * this band.
+   * Returns the default style sheet for all children of this band. This style sheet
+   * is used to define a set of common (or default) properties for all elements.
    *
-   * @return the default style sheet for all childs of the band.
+   * @return the default style sheet.
    */
   public ElementStyleSheet getBandDefaults ()
   {
@@ -146,7 +144,8 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @param element  the element (null not permitted).
    *
-   * @throws NullPointerException if the Element is null or contains Null-Values.
+   * @throws NullPointerException if the element is <code>null</code> or contains <code>null</code>
+   *                              values.
    */
   public void addElement(Element element)
   {
@@ -155,7 +154,7 @@ public class Band extends Element implements Serializable, Cloneable
       throw new NullPointerException("Band.addElement(...): element is null.");
     }
 
-    // check for component loops ... 
+    // check for component loops ...
     Band parent = getParent();
     while (parent != null)
     {
@@ -287,7 +286,7 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Clones this Band and all Elements contained in this band.
+   * Clones this band and all elements contained in this band.
    *
    * @return the clone of this band.
    *

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.16 2002/12/06 17:59:39 taqua Exp $
+ * $Id: Element.java,v 1.17 2002/12/13 15:43:12 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -66,9 +66,9 @@ import java.io.Serializable;
 /**
  * Base class for all report elements (display items that can appear within a report band).
  * <p>
- * All elements have a non-null name and have a StyleSheet defined. The stylesheet is
+ * All elements have a non-null name and have a style sheet defined. The style sheet is
  * used to store and access all element properties that can be used to layout the
- * element or affect the elements appeareance in an ReportProcessor.
+ * element or affect the elements appeareance in a ReportProcessor.
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -204,18 +204,16 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Define the datasource for this element. This datasource is queried on populateElements(),
-   * to fill in the values. The datasource for an element must not be null.
+   * Sets the data source for this element. This datasource is queried on populateElements(),
+   * to fill in the values.
    *
-   * @param ds  the datasource.
-   *
-   * @throws NullPointerException if an null-datasource is set.
+   * @param ds  the datasource (<code>null</code> not permitted).
    */
   public void setDataSource(DataSource ds)
   {
     if (ds == null)
     {
-      throw new NullPointerException("Null datasource is invalid");
+      throw new NullPointerException("Element.setDataSource(...) : null data source.");
     }
     this.datasource = ds;
   }
@@ -314,7 +312,6 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   public abstract String getContentType ();
 
   /// DEPRECATED METHODS //////////////////////////////////////////////////////////////////////////
-
 
   /**
    * Returns the paint used to draw this element. There is alway a paint defined

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: First.java,v 1.12 2002/12/02 17:16:48 taqua Exp $
+ * $Id: First.java,v 1.13 2002/12/10 15:56:35 mungady Exp $
  *
  * Changes
  * -------
@@ -344,6 +344,7 @@ public class First extends ApplicationFrame implements ActionListener
   public static void main(String[] args)
   {
     ReportConfiguration.getGlobalConfig().setDisableLogging(true);
+    //ReportConfiguration.getGlobalConfig().setLogLevel(Log.);
     First frame = new First("First Report");
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
