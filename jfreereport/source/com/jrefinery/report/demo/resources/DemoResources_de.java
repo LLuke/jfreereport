@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_de.java,v 1.10 2003/01/12 21:33:52 taqua Exp $
+ * $Id: DemoResources_de.java,v 1.11 2003/05/02 12:39:42 taqua Exp $
  *
  * Changes
  * -------
@@ -69,13 +69,10 @@ public class DemoResources_de extends JFreeReportResources
     {"action.close.name", "Schliessen"},
     {"action.close.description", "Beendet JFreeReportDemo"},
     {"action.close.mnemonic", new Integer (KeyEvent.VK_B)},
-    {"action.close.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_X, KeyEvent.CTRL_MASK)},
 
     {"action.print-preview.name", "Seitenansicht ..."},
     {"action.print-preview.description", "Den Bericht in der Seitenansicht betrachten."},
     {"action.print-preview.mnemonic", new Integer (KeyEvent.VK_P)},
-    {"action.print-preview.accelerator",
-        KeyStroke.getKeyStroke (KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
 
     {"action.about.name", "Über..."},
     {"action.about.description", "Informationen über JFreeReport"},

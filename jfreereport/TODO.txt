@@ -15,4 +15,4 @@
   - automaticly adjust encoding if nessesary
 * Formated Text support for printing (RTF, HTML)
 * Implement JFreeChart adapter and Barcode stuff
-
+* Allow access to the last datarow to make reporting results available outside.

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources.java,v 1.13 2003/05/02 12:39:42 taqua Exp $
+ * $Id: DemoResources.java,v 1.14 2003/06/04 21:09:05 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@
 package com.jrefinery.report.demo.resources;
 
 import java.awt.event.KeyEvent;
-import javax.swing.KeyStroke;
 
 import com.jrefinery.report.resources.JFreeReportResources;
 
@@ -65,7 +64,7 @@ public class DemoResources extends JFreeReportResources
   /** The resources to be localised. */
   private static final Object[][] CONTENTS = {
     {"project.name", "JFreeReport"},
-    {"project.version", "0.8.3a"},
+    {"project.version", "0.8.3b"},
     {"project.info", "http://www.object-refinery.com/jfreereport/index.html"},
     {"project.copyright", "(C)opyright 2000-2002, by Simba Management Limited and Contributors"},
 
@@ -75,13 +74,12 @@ public class DemoResources extends JFreeReportResources
     {"action.close.name", "Exit"},
     {"action.close.description", "exits JFreeReportDemo"},
     {"action.close.mnemonic", new Integer (KeyEvent.VK_E)},
-    {"action.close.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_X, KeyEvent.CTRL_MASK)},
+    {"action.close.accelerator", createMenuKeystroke (KeyEvent.VK_X)},
 
     {"action.print-preview.name", "Print Preview..."},
     {"action.print-preview.description", "Preview the report"},
     {"action.print-preview.mnemonic", new Integer (KeyEvent.VK_P)},
-    {"action.print-preview.accelerator",
-        KeyStroke.getKeyStroke (KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
+    {"action.print-preview.accelerator", createMenuKeystroke (KeyEvent.VK_P)},
     {"action.print-preview.small-icon",
         getIcon ("com/jrefinery/report/resources/PrintPreview16.gif")},
     {"action.print-preview.icon", getIcon ("com/jrefinery/report/resources/PrintPreview24.gif")},

@@ -28,7 +28,7 @@
  * Original Author:  Piotr Bzdyl;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_pl.java,v 1.4 2003/05/02 12:39:43 taqua Exp $
+ * $Id: DemoResources_pl.java,v 1.5 2003/06/04 21:09:05 taqua Exp $
  *
  * Changes
  * -------
@@ -70,22 +70,14 @@ public class DemoResources_pl extends JFreeReportResources
     {"action.close.name", "Wyj\u015bcie"},
     {"action.close.description", "Wyj\u015b z JFreeReportDemo"},
     {"action.close.mnemonic", new Integer (KeyEvent.VK_E)},
-    {"action.close.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_X, KeyEvent.CTRL_MASK)},
 
     {"action.print-preview.name", "Podgl\u0105d wydruku..."},
     {"action.print-preview.description", "Podgl\u0105d raportu"},
     {"action.print-preview.mnemonic", new Integer (KeyEvent.VK_P)},
-    {"action.print-preview.accelerator",
-        KeyStroke.getKeyStroke (KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
-    {"action.print-preview.small-icon",
-        getIcon ("com/jrefinery/report/resources/PrintPreview16.gif")},
-    {"action.print-preview.icon", getIcon ("com/jrefinery/report/resources/PrintPreview24.gif")},
 
     {"action.about.name", "O programie..."},
     {"action.about.description", "Informacja o programie"},
     {"action.about.mnemonic", new Integer (KeyEvent.VK_A)},
-    {"action.about.small-icon", getIcon ("com/jrefinery/report/resources/About16.gif")},
-    {"action.about.icon", getIcon ("com/jrefinery/report/resources/About24.gif")},
 
     {"menu.file.name", "Plik"},
     {"menu.file.mnemonic", new Character ('P')},

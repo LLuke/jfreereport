@@ -210,3 +210,22 @@ Functions, which need to initialized themself on the start of the report process
 The ItemColumnQuotientFunction is now deprecated and has been replaced by the
   ItemColumnQuotientExpression.
 
+----------------------------------------------------------------------------------
+Changes from 0.8.3a to 0.8.3b
+
+Functions which depend on page events (pageStarted or pageFinished) should
+  now implement the PageListener interface. This interface provides an additional
+  method to inform all functions of canceled pages.
+
+  Pages get canceled by the PageableReportProcessor, if they are generated empty.
+
+Stylesheets can be accessed by their name by using the StyleSheet collection.This
+  Collection is maintained by the ReportDefinition object and was populated when
+  the reporting started.
+
+  From now on all Stylesheets get cloned during the report processing. Your
+  functions should not hold references to StyleSheets or the StyleSheet collection.
+  The currently valid instance of the stylesheet collection can be queried by using
+  the ReportEvent object.
+
+  

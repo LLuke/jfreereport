@@ -28,7 +28,7 @@
  * Original Author:  Demeter F. Tamás;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_hu.java,v 1.0 2003/05/04 14:17:52 demeterft@dremium.com Exp $
+ * $Id: DemoResources_hu.java,v 1.1 2003/05/16 13:24:20 taqua Exp $
  *
  *
  */
@@ -64,13 +64,10 @@ public class DemoResources_hu extends JFreeReportResources
     {"action.close.name", "Kilépés"},
     {"action.close.description", "kilépés a JFreeReportDemo-ból"},
     {"action.close.mnemonic", new Integer (KeyEvent.VK_K)},
-//    {"action.close.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_X, KeyEvent.CTRL_MASK)},
 
     {"action.print-preview.name", "Nyomtatási elõnézet..."},
     {"action.print-preview.description", "Lista megtekintése"},
     {"action.print-preview.mnemonic", new Integer (KeyEvent.VK_N)},
-//    {"action.print-preview.accelerator",
-//        KeyStroke.getKeyStroke (KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
 
     {"action.about.name", "Névjegy..."},
     {"action.about.description", "Információk az alkalmazásról"},
