@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,19 +20,20 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ------------------------
  * TableCellBackground.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.1 2003/01/27 18:26:26 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.2 2003/02/11 20:20:17 taqua Exp $
  *
  * Changes
  * -------
  * 27-Jan-2003 : Initial version
+ * 24-Feb-2003 : Fixed Checkstyle issues (DG);
  *
  */
 package com.jrefinery.report.targets.table;
@@ -43,39 +44,49 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
- * Encapsulates all TableCellBackground informations, as Borders and Background color.
+ * Encapsulates all TableCellBackground informations, such as borders and background color.
  * <p>
  * The TableCellBackground contains the format information for the table cells.
- * Background information is used to format the tablecells in the TableWriter.
+ * Background information is used to format the tablecells in the {@link TableWriter}.
  * CellBackgrounds can be shared for multiple cells.
+ * 
+ * @author Thomas Morgner
  */
 public class TableCellBackground extends TableCellData
 {
-  /** The top borders size */
+  /** The top border's size */
   private float borderSizeTop;
-  /** The bottom borders size */
+  
+  /** The bottom border's size */
   private float borderSizeBottom;
-  /** The left borders size */
+  
+  /** The left border's size */
   private float borderSizeLeft;
-  /** The right borders size */
+  
+  /** The right border's size */
   private float borderSizeRight;
-  /** The top borders color */
+  
+  /** The top border's color */
   private Color colorTop;
-  /** The left borders color */
+  
+  /** The left border's color */
   private Color colorLeft;
-  /** The bottom borders color */
+  
+  /** The bottom border's color */
   private Color colorBottom;
-  /** The right borders color */
+  
+  /** The right border's color */
   private Color colorRight;
+  
   /** The cell background color */
   private Color color;
 
   /**
    * Creates a table cell background with the given bounds, no borders and the specified
-   * color as background. If the color is null, no background is set.
+   * color as background. If the color is <code>null</code>, no background is set.
    *
-   * @param outerBounds the background cell size
-   * @param color the background color, null for no background.
+   * @param outerBounds  the background cell size
+   * @param color  the background color, <code>null</code> for no background.
    */
   public TableCellBackground(Rectangle2D outerBounds, Color color)
   {
@@ -84,10 +95,11 @@ public class TableCellBackground extends TableCellData
   }
 
   /**
-   * Returns true, as this is a cell background definition.
-   *
-   * @see TableCellData#isBackground
+   * Returns <code>true</code>, as this is a cell background definition.
+   *  
    * @return true
+   * 
+   * @see TableCellData#isBackground
    */
   public boolean isBackground()
   {
@@ -95,9 +107,9 @@ public class TableCellBackground extends TableCellData
   }
 
   /**
-   * Gets the background color for this cell, or null if this cell has no background.
+   * Gets the background color for this cell, or <code>null</code> if this cell has no background.
    *
-   * @return the background color or null.
+   * @return the background color or <code>null</code>.
    */
   public Color getColor()
   {
@@ -319,18 +331,18 @@ public class TableCellBackground extends TableCellData
    */
   private Color addColor (Color base, Color paint)
   {
-    BufferedImage img = new BufferedImage (1,1,BufferedImage.TYPE_INT_ARGB);
+    BufferedImage img = new BufferedImage (1, 1, BufferedImage.TYPE_INT_ARGB);
     Graphics g = img.getGraphics();
 
     g.setColor(Color.white);
-    g.drawRect(0,0,1,1);
+    g.drawRect(0, 0, 1, 1);
 
     g.setColor(base);
-    g.drawRect(0,0,1,1);
+    g.drawRect(0, 0, 1, 1);
     g.setColor(paint);
-    g.drawRect(0,0,1,1);
+    g.drawRect(0, 0, 1, 1);
 
-    return new Color (img.getRGB(0,0), true);
+    return new Color (img.getRGB(0, 0), true);
   }
 
   /**

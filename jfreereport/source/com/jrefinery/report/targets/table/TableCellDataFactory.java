@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,19 +20,21 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * -------------------------
  * TableCellDataFactory.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellDataFactory.java,v 1.3 2003/02/02 23:43:52 taqua Exp $
+ * $Id: TableCellDataFactory.java,v 1.4 2003/02/11 20:20:18 taqua Exp $
  *
  * Changes
  * -------
  * 18-Jan-2003 : Initial version
+ * 24-Feb-2003 : Fixed Checkstyle issues (DG);
+ * 
  */
 package com.jrefinery.report.targets.table;
 
@@ -50,20 +52,23 @@ import java.awt.geom.Rectangle2D;
  * @see TableWriter
  * @see TableCellData
  * @see TableGrid
+ * 
+ * @author Thomas Morgner
  */
 public interface TableCellDataFactory
 {
   /**
-   * Creates the TableCellData for the given Element. The generated CellData
+   * Creates a {@link TableCellData} for an {@link Element}. The generated CellData
    * should contain copies of all needed element attributes, as the element instance
    * will be reused in the later report processing.
    * <p>
-   * If the tablemodel does not support the element type, return null.   
+   * If the tablemodel does not support the element type, return <code>null</code>.   
    *
-   * @param e the element that should be converted into TableCellData.
-   * @param rect the elements bounds within the table. The bounds are specified
-   * in points.
-   * @return null if element type is not supported or the generated TableCellData object.
+   * @param e  the element that should be converted into TableCellData.
+   * @param rect  the element's bounds within the table (specified in points).
+   * 
+   * @return The generated TableCellData object, or <code>null</code> if element type is 
+   *         not supported.
    */
   public TableCellData createCellData (Element e, Rectangle2D rect);
 }

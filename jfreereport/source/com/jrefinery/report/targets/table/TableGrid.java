@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,20 +20,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * --------------
  * TableGrid.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * --------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGrid.java,v 1.6 2003/02/11 20:20:18 taqua Exp $
+ * $Id: TableGrid.java,v 1.7 2003/02/12 21:17:17 taqua Exp $
  *
  * Changes
  * -------
  * 25-Jan-2003 : Initial version
+ * 
  */
+
 package com.jrefinery.report.targets.table;
 
 import java.awt.geom.Rectangle2D;
@@ -45,7 +47,7 @@ import java.util.TreeSet;
  * The TableGrid is used to collect all table cells and to finally create the
  * TableGridLayout.
  * <p>
- * The TableGird stores TableCellData elements and collects their boundries.
+ * The TableGrid stores TableCellData elements and collects their boundaries.
  * The CellData-bounds are used to define the positions of the cells of the generated
  * table.
  * <p>
@@ -55,24 +57,29 @@ import java.util.TreeSet;
  * <p>
  * If strict mode is disabled, only the origin of the TableCellData is used to
  * define the generated cells. This reduces the table complexity, the table appears
- * cleaner, unnecessary cell boundries are removed. The layout of the table contents
+ * cleaner, unnecessary cell boundaries are removed. The layout of the table contents
  * can be slightly different to the printed results.
  * <p>
  * If you plan to print the generated file, then the strict layout is for you.
  * If you need to change the tables (edit contents f.i.), then the non-strict layout
- * is more usefull for you.
+ * is more useful for you.
  *
  * @see TableGridLayout
+ * 
+ * @author Thomas Morgner
+ * 
  */
 public class TableGrid
 {
-  /** The XBounds, all vertical cell boundries */
+  /** The XBounds, all vertical cell boundaries */
   private TreeSet xBounds;
-  /** The YBounds, all horizontal cell boundries */
+  
+  /** The YBounds, all horizontal cell boundaries */
   private TreeSet yBounds;
 
   /** The elements stored in the table grid */
   private ArrayList elements;
+  
   /** A flag, defining whether to use strict layout mode */
   private boolean strict;
 
@@ -98,7 +105,10 @@ public class TableGrid
    */
   public void addData (TableCellData pos)
   {
-    if (pos == null) throw new NullPointerException();
+    if (pos == null) 
+    {
+      throw new NullPointerException();
+    }
     elements.add(pos);
 
     // collect the bounds and add them to the xBounds and yBounds collection.
@@ -163,7 +173,7 @@ public class TableGrid
   }
 
   /**
-   * Returns the horizontal boundries of the table cells. The array contains
+   * Returns the horizontal boundaries of the table cells. The array contains
    * the start positions of the cells.
    *
    * @return the horizontal start position of the table cells.
@@ -171,8 +181,9 @@ public class TableGrid
   public int[] getXCuts()
   {
     if (xBounds.size() == 0)
+    {
       return new int[0];
-
+    }
     int[] xBoundsArray = new int[xBounds.size()];
     Iterator it = xBounds.iterator();
     int count = 0;
@@ -187,7 +198,7 @@ public class TableGrid
     {
       return xBoundsArray;
     }
-    // in strict mode, all boundries are added. The last boundry does
+    // in strict mode, all boundaries are added. The last boundry does
     // not define a start of a cell, so it is removed.
 
     int[] retval = new int[xBoundsArray.length - 1];
@@ -196,7 +207,7 @@ public class TableGrid
   }
 
   /**
-   * Returns the vertical boundries of the table cells. The array contains
+   * Returns the vertical boundaries of the table cells. The array contains
    * the start positions of the cells.
    *
    * @return the vertical start position of the table cells.
@@ -217,7 +228,7 @@ public class TableGrid
     {
       return yBoundsArray;
     }
-    // in strict mode, all boundries are added. The last boundry does
+    // in strict mode, all boundaries are added. The last boundry does
     // not define a start of a cell, so it is removed.
 
     int[] retval = new int[yBoundsArray.length - 1];

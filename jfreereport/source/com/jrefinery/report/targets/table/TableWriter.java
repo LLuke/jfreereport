@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,20 +20,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ----------------
  * TableWriter.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ----------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.12 2003/02/16 23:23:46 taqua Exp $
+ * $Id: TableWriter.java,v 1.13 2003/02/17 22:01:10 taqua Exp $
  *
  * Changes
  * -------
  * 24-Jan-2003 : Initial version
  * 17-Feb-2003 : Documentation
+ * 24-Feb-2003 : Fixed Checkstyle issues (DG);
+ * 
  */
 package com.jrefinery.report.targets.table;
 
@@ -59,6 +61,8 @@ import java.awt.geom.Rectangle2D;
  * semantics depend on concrete implementation of the TableProducer.
  * <p>
  * This writer is not thread-safe.
+ * 
+ * @author Thomas Morgner
  */
 public class TableWriter extends AbstractFunction
 {
@@ -71,23 +75,28 @@ public class TableWriter extends AbstractFunction
 
   /** the layout support used for the band layout */
   private LayoutSupport layoutSupport;
+  
   /** The current event, stored on every call to one of the ReportListener methods */
   private ReportEvent currentEvent;
+  
   /** The table producer used to create the layout */
   private TableProducer producer;
+  
   /** the cursor pointing to the current position on the sheet. */
   private TableWriterCursor cursor;
 
   /** the maximum width, required for the BandLayout */
   private float maxWidth;
+  
   /** the dependency level for this function, usually -1 */
   private int depLevel;
+  
   /** A flag indicating whether the writer is currently handling the end of an page */
   private boolean inEndPage;
+  
   /** A flag indicating whether the current page is empty */
   private boolean isPageEmpty;
-
-
+  
   /** A flag that indicates if the report state is currently inside the item group. */
   private boolean isInItemGroup;
 
@@ -116,7 +125,8 @@ public class TableWriter extends AbstractFunction
     {
       return null;
     }
-    return getCurrentEvent().getReport().getReportConfiguration().getConfigProperty(SHEET_NAME_FUNCTION_PROPERTY);
+    return getCurrentEvent().getReport().getReportConfiguration()
+        .getConfigProperty(SHEET_NAME_FUNCTION_PROPERTY);
   }
 
   /**
@@ -289,8 +299,8 @@ public class TableWriter extends AbstractFunction
    */
   protected void print(Band b)
   {
-    if (!isInEndPage() && (isPageEmpty == false) &&
-        b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
+    if (!isInEndPage() && (isPageEmpty == false) 
+        && b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
     {
       endPage();
       startPage();
@@ -305,8 +315,8 @@ public class TableWriter extends AbstractFunction
     bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
     doPrint(bounds, b);
 
-    if (!isInEndPage() && (isPageEmpty == false) &&
-        b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
+    if (!isInEndPage() && (isPageEmpty == false) 
+        && b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
     {
       endPage();
       startPage();
@@ -314,10 +324,10 @@ public class TableWriter extends AbstractFunction
   }
 
   /**
-   * The dependency level defines the level of execution for this function. Higher dependency functions
-   * are executed before lower dependency functions. For ordinary functions and expressions,
-   * the range for dependencies is defined to start from 0 (lowest dependency possible)
-   * to 2^31 (upper limit of int).
+   * The dependency level defines the level of execution for this function. Higher dependency 
+   * functions are executed before lower dependency functions. For ordinary functions and 
+   * expressions, the range for dependencies is defined to start from 0 (lowest dependency 
+   * possible to 2^31 (upper limit of int).
    * <p>
    * PageLayouter functions override the default behaviour an place them self at depency level -1,
    * an so before any userdefined function.

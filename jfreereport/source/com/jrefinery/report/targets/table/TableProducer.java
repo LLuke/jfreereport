@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,27 +23,28 @@
  * -------------------
  * TableProducer.java
  * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.13 2003/02/17 22:01:09 taqua Exp $
+ * $Id: TableProducer.java,v 1.14 2003/02/18 19:37:34 taqua Exp $
  *
  * Changes
  * -------
  * 18-Jan-2003 : Initial version
+ * 24-Feb-2003 : Fixed Checkstyle issues (DG);
  *
  */
 package com.jrefinery.report.targets.table;
+
+import java.awt.geom.Rectangle2D;
+import java.util.List;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-
-import java.awt.geom.Rectangle2D;
-import java.util.List;
 
 /**
  * The TableProducer is responsible for creating the produced Table. After
@@ -54,11 +55,14 @@ import java.util.List;
  * <p>
  * This class defines the global contract and provides some helper methods for
  * the implementors.
+ * 
+ * @author Thomas Morgner
  */
 public abstract class TableProducer
 {
   /** the grid, that stores the collected TableCellData */
   private TableGrid grid;
+  
   /** the dummy mode flag */
   private boolean dummy;
 
@@ -122,7 +126,11 @@ public abstract class TableProducer
     grid.clear();
   }
 
-  /** Calculates the positions for the Excel cells. */
+  /** 
+   * Calculates the positions for the Excel cells. 
+   * 
+   * @return The table grid layout.
+   */
   protected TableGridLayout layoutGrid()
   {
     return grid.performLayout();

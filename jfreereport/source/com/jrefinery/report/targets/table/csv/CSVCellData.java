@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,19 +20,21 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ----------------
  * CSVCellData.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ----------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVCellData.java,v 1.2 2003/01/25 20:34:11 taqua Exp $
+ * $Id: CSVCellData.java,v 1.3 2003/02/17 22:01:40 taqua Exp $
  *
  * Changes
  * -------
- * 21-Jan-2003 : Initial version
+ * 21-Jan-2003 : Initial version;
+ * 24-Feb-2003 : Fixed Checkstyle issues (DG);
+ * 
  */
 package com.jrefinery.report.targets.table.csv;
 
@@ -41,24 +43,29 @@ import com.jrefinery.report.targets.table.TableCellData;
 import java.awt.geom.Rectangle2D;
 
 /**
- * The CSV implementation of the TableCellData. The cell data implementation contains
+ * The CSV extension of the {@link TableCellData} base class. The cell data implementation contains
  * the string value of the element value.
+ * 
+ * @author Thomas Morgner
  */
 public class CSVCellData extends TableCellData
 {
-  /** the value */
+  /** The value */
   private String value;
 
   /**
-   * Creates a new CSVCellData object.
+   * Creates a new <code>CSVCellData</code> object.
    *
-   * @param value the value of the cell.
-   * @param outerBounds the element bounds.
+   * @param value  the value of the cell (<code>null</code> not permitted).
+   * @param outerBounds  the element bounds.
    */
   public CSVCellData(String value, Rectangle2D outerBounds)
   {
     super(outerBounds);
-    if (value == null) throw new NullPointerException();
+    if (value == null) 
+    {
+      throw new NullPointerException();
+    }
     this.value = value;
   }
 
@@ -73,9 +80,9 @@ public class CSVCellData extends TableCellData
   }
 
   /**
-   * Returns always false, as this is a data cell.
+   * Returns always <code>false</code>, as this is a data cell.
    *
-   * @return false, as this is no background cell.
+   * @return <code>false</code>, as this is no background cell.
    */
   public boolean isBackground()
   {

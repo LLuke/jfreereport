@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,16 +23,17 @@
  * -------------------
  * TableProcessor.java
  * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.5 2003/02/12 17:36:10 taqua Exp $
+ * $Id: TableProcessor.java,v 1.6 2003/02/12 21:17:18 taqua Exp $
  *
  * Changes
  * -------
  * 18-Jan-2003 : Initial version
+ * 24-Feb-2003 : Fixed Checkstyle issues (DG);
  *
  */
 package com.jrefinery.report.targets.table;
@@ -55,6 +56,8 @@ import java.util.Iterator;
  * <p>
  * Implementing classes should supply a table producer by implementing the createProducer
  * method.
+ * 
+ * @author Thomas Morgner
  */
 public abstract class TableProcessor
 {
@@ -63,6 +66,7 @@ public abstract class TableProcessor
 
   /** the report that should be processed */
   private JFreeReport report;
+  
   /** the strict layout flag. */
   private boolean strictLayout;
 
@@ -71,13 +75,17 @@ public abstract class TableProcessor
    * of the supplied report.
    *
    * @param report the report that should be processed.
+   * 
    * @throws ReportProcessingException if the report initialization failed
    * @throws FunctionInitializeException if the table writer initialization failed.
    */
   public TableProcessor (JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
-    if (report == null) throw new NullPointerException();
+    if (report == null) 
+    {
+      throw new NullPointerException();
+    }
     try
     {
       this.report = (JFreeReport) report.clone();
@@ -132,7 +140,9 @@ public abstract class TableProcessor
    * Processes the entire report and records the state at the end of every page.
    *
    * @return a list of report states (one for the beginning of each page in the report).
+   * 
    * @throws ReportProcessingException if there was a problem processing the report.
+   * @throws CloneNotSupportedException if there is a cloning problem.
    */
   private ReportState repaginate() throws ReportProcessingException, CloneNotSupportedException
   {

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,19 +20,20 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ----------------------
  * TableGridPosition.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridPosition.java,v 1.6 2003/02/02 23:43:52 taqua Exp $
+ * $Id: TableGridPosition.java,v 1.7 2003/02/12 21:17:18 taqua Exp $
  *
  * Changes
  * -------
  * 18-Jan-2003 : Initial Version
+ * 24-Feb-2003 : Fixed Checkstyle issues (DG);
  *
  */
 package com.jrefinery.report.targets.table;
@@ -42,17 +43,23 @@ import java.awt.geom.Rectangle2D;
 /**
  * The TableGridPositition is used to bind the layouted table position to an
  * TableCellData object.
+ * 
+ * @author Thomas Morgner
  */
 public final class TableGridPosition
 {
   /** the TableCellData element stored in this position */
   private TableCellData element;
+  
   /** the number of columns spanned by this cell */
   private int colSpan;
+  
   /** the number of rows spanned by this cell. */
   private int rowSpan;
+  
   /** the column, where the cell starts */
   private int col;
+  
   /** the row, where the cell starts */
   private int row;
 
@@ -77,8 +84,9 @@ public final class TableGridPosition
   public TableGridPosition(TableCellData element, int col, int row, int colSpan, int rowSpan)
   {
     if (element == null)
+    {
       throw new NullPointerException();
-
+    }
     this.element = element;
     this.col = col;
     this.row = row;
@@ -168,13 +176,15 @@ public final class TableGridPosition
 
     if ((col + colSpan) < (pos.getCol() + pos.getColSpan()))
     {
-      //Log.debug ("Contains ColSpan: " + (col + colSpan) + " -> " + (pos.getCol() + pos.getColSpan()));
+      //Log.debug ("Contains ColSpan: " + (col + colSpan) + " -> " + (pos.getCol() 
+      //           + pos.getColSpan()));
       return false;
     }
 
     if ((row + rowSpan) < (pos.getRow() + pos.getRowSpan()))
     {
-      //Log.debug ("Contains RowSpan: " + (row + rowSpan) + " -> " + (pos.getRow() + pos.getRowSpan()));
+      //Log.debug ("Contains RowSpan: " + (row + rowSpan) + " -> " + (pos.getRow() 
+      //           + pos.getRowSpan()));
       return false;
     }
 

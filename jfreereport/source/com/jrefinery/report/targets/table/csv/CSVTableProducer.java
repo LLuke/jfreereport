@@ -20,20 +20,23 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ---------------------
  * CSVTableProducer.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ---------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProducer.java,v 1.4 2003/02/03 18:52:47 taqua Exp $
+ * $Id: CSVTableProducer.java,v 1.5 2003/02/17 22:01:40 taqua Exp $
  *
  * Changes
  * -------
  * 21-Jan-2003 : Initial version
+ * 24-Feb-2003 : Fixed Checkstyle issues (DG);
+ * 
  */
+
 package com.jrefinery.report.targets.table.csv;
 
 import com.jrefinery.report.targets.csv.CSVQuoter;
@@ -53,30 +56,41 @@ import java.io.PrintWriter;
  * <p>
  * This class defines the global contract and provides some helper methods for
  * the implementors.
+ * 
+ * @author Thomas Morgner.
  */
 public class CSVTableProducer extends TableProducer
 {
-  /** the writer that is used to write the generated contents */
+  /** The (character stream) writer that is used to write the generated contents. */
   private PrintWriter writer;
-  /** the CSVquoter that is used when writing the content */
+  
+  /** The CSVQuoter that is used when writing the content. */
   private CSVQuoter quoter;
-  /** the CSVCellDataFactory is used to convert Elements into CSVCellData. */
+  
+  /** The class used to convert each {@link Element} into a {@link CSVCellData} instance. */
   private CSVCellDataFactory cellDataFactory;
-  /** A flag that maintains the open state */
+
+  /** A flag that maintains the open state. */
   private boolean isOpen;
 
   /**
-   * Creates a new CSVTableProducer, using the given writer, strict mode and separator.
+   * Creates a new <code>CSVTableProducer</code>, using the given writer, strict mode and separator.
    *
-   * @param writer the used writer for writing the generated content.
-   * @param strict the strict mode that is used for the layouting,
-   * @param separator the sepator that is used to divide the generated cells.
+   * @param writer  the character stream writer for writing the generated content.
+   * @param strict  the strict mode that is used for the layouting.
+   * @param separator  the separator that is used to divide the generated cells.
    */
   public CSVTableProducer(PrintWriter writer, boolean strict, String separator)
   {
     super(strict);
-    if (writer == null) throw new NullPointerException("Writer is null");
-    if (separator == null) throw new NullPointerException("Separator is null");
+    if (writer == null) 
+    {
+      throw new NullPointerException("Writer is null");
+    }
+    if (separator == null) 
+    {
+      throw new NullPointerException("Separator is null");
+    }
 
     this.writer = writer;
     this.quoter = new CSVQuoter(separator);
@@ -115,7 +129,7 @@ public class CSVTableProducer extends TableProducer
   /**
    * Generates the output.
    *
-   * @param layout contains the layouted CSVCellData objects.
+   * @param layout  contains the layouted CSVCellData objects.
    */
   private void generatePage (TableGridLayout layout)
   {
@@ -123,7 +137,7 @@ public class CSVTableProducer extends TableProducer
     {
       for (int x = 0; x < layout.getWidth(); x++)
       {
-        TableGridLayout.Element gridPosition = layout.getData(x,y);
+        TableGridLayout.Element gridPosition = layout.getData(x, y);
         if (gridPosition == null)
         {
           writer.print(quoter.getSeparator());
@@ -137,7 +151,7 @@ public class CSVTableProducer extends TableProducer
         }
 
         TableGridPosition pos = gridPosition.getRoot();
-        if (pos.isOrigin(x,y) == false)
+        if (pos.isOrigin(x, y) == false)
         {
           // colspanned cell
           writer.print(quoter.getSeparator());

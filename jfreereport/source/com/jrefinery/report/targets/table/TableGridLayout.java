@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,19 +20,20 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * --------------------
  * TableGridLayout.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * --------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridLayout.java,v 1.8 2003/02/02 23:43:52 taqua Exp $
+ * $Id: TableGridLayout.java,v 1.9 2003/02/12 21:17:17 taqua Exp $
  *
  * Changes
  * -------
  * 25-Jan-2003 : Initial version
+ * 24-Feb-2003 : Fixed Checkstyle issues (DG);
  *
  */
 package com.jrefinery.report.targets.table;
@@ -47,7 +48,8 @@ import java.util.List;
  * The table grid layout is used to layout the collected TableCellData object from
  * the TableGrid into the table. The cells position is calculated by comparing the cell
  * bounds with the collected x and y-cuts.
- *
+ * 
+ * @author Thomas Morgner
  */
 public class TableGridLayout
 {
@@ -104,7 +106,10 @@ public class TableGridLayout
      */
     public void add(TableGridPosition pos)
     {
-      if (pos == null) throw new NullPointerException();
+      if (pos == null) 
+      {
+        throw new NullPointerException();
+      }
 
       if (root == null)
       {
@@ -142,7 +147,8 @@ public class TableGridLayout
           Log.warn (new Log.SimpleMessage("Root already added: " , pos.getElement().getBounds()));
           Log.warn (new Log.SimpleMessage("+            added: " , root.getElement().getBounds()));
           Log.warn (new Log.SimpleMessage("+            added: " , pos.getElement().debugChunk));
-          Log.warn (new Log.SimpleMessage("+            added: Col=" , new Integer(root.getCol()) , "  Row=" , new Integer(root.getRow())));
+          Log.warn (new Log.SimpleMessage("+            added: Col=" , new Integer(root.getCol()), 
+                                                            "  Row=" , new Integer(root.getRow())));
           */
           pos.setInvalidCell(true);
         }
@@ -249,10 +255,10 @@ public class TableGridLayout
     int maxBoundsX = (int) (bounds.getX() + bounds.getWidth());
     int maxBoundsY = (int) (bounds.getY() + bounds.getHeight());
 
-    int col = findBoundry(xCuts, (int) bounds.getX());
-    int row = findBoundry(yCuts, (int) bounds.getY());
-    int colspan = Math.max(1, findBoundry(xCuts, maxBoundsX, true) - col);
-    int rowspan = Math.max(1, findBoundry(yCuts, maxBoundsY, true) - row);
+    int col = findBoundary(xCuts, (int) bounds.getX());
+    int row = findBoundary(yCuts, (int) bounds.getY());
+    int colspan = Math.max(1, findBoundary(xCuts, maxBoundsX, true) - col);
+    int rowspan = Math.max(1, findBoundary(yCuts, maxBoundsY, true) - row);
     TableGridPosition gPos = new TableGridPosition(pos, col, row, colspan, rowspan);
 
 /*
@@ -267,18 +273,20 @@ public class TableGridLayout
       Log.debug ("DebugChunk: " + pos.debugChunk);
       Log.debug ("gPos.getCol: " + gPos.getCol() + " -> " + getColumnStart(gPos.getCol()));
       Log.debug ("gPos.getRow: " + gPos.getRow() + " -> " + getRowStart(gPos.getRow()));
-      Log.debug ("gPos.getColSpan: " + gPos.getColSpan() + " -> " + getColumnEnd(gPos.getColSpan() + gPos.getCol() - 1));
-      Log.debug ("gPos.getRowSpan: " + gPos.getRowSpan() + " -> " + getRowEnd(gPos.getRowSpan() + gPos.getRow() - 1));
+      Log.debug ("gPos.getColSpan: " + gPos.getColSpan() + " -> " 
+                 + getColumnEnd(gPos.getColSpan() + gPos.getCol() - 1));
+      Log.debug ("gPos.getRowSpan: " + gPos.getRowSpan() + " -> " 
+                 + getRowEnd(gPos.getRowSpan() + gPos.getRow() - 1));
     }
 */
     int startY = gPos.getRow();
     int endY = gPos.getRow() + gPos.getRowSpan();
     // calculated the x and y position in the table, now add it to the element.
-    for (int posY = startY; posY < endY; posY ++)
+    for (int posY = startY; posY < endY; posY++)
     {
       int startX = gPos.getCol();
       int endX = gPos.getCol() + gPos.getColSpan();
-      for (int posX = startX; posX < endX; posX ++)
+      for (int posX = startX; posX < endX; posX++)
       {
         addToGrid(posX, posY, gPos);
       }
@@ -300,14 +308,19 @@ public class TableGridLayout
    */
   protected void addToGrid (int posX, int posY, TableGridPosition gPos)
   {
-    if (gPos == null) throw new NullPointerException();
+    if (gPos == null) 
+    {
+      throw new NullPointerException();
+    }
 
     if (posX >= getWidth() || posX < 0)
+    {
       throw new IndexOutOfBoundsException("X: " + posX + " > " + getWidth());
-
+    }
     if (posY >= getHeight() || posY < 0)
+    {
       throw new IndexOutOfBoundsException("Y: " + posY + " > " + getHeight());
-
+    }
     Object o = data[posX][posY];
     if (o == null)
     {
@@ -421,9 +434,9 @@ public class TableGridLayout
    * @param value the value that is searched in the data array.
    * @return the position of the value in the array or the next lower position.
    */
-  private static int findBoundry (int[] data, int value)
+  private static int findBoundary (int[] data, int value)
   {
-    return findBoundry(data, value, false);
+    return findBoundary(data, value, false);
   }
 
   /**
@@ -438,7 +451,7 @@ public class TableGridLayout
    * returned.
    * @return the position of the value in the array or the next lower position.
    */
-  private static int findBoundry (int[] data, int value, boolean upperLimit)
+  private static int findBoundary (int[] data, int value, boolean upperLimit)
   {
     for (int i = 0; i < data.length; i++)
     {
@@ -450,7 +463,9 @@ public class TableGridLayout
       if (dV > value)
       {
         if (i == 0)
+        {
           return 0;
+        }
         else
         {
           if (upperLimit)
