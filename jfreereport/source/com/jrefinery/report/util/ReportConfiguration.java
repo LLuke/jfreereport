@@ -58,7 +58,10 @@ public class ReportConfiguration
       getConfiguration().put (PDFTARGET_AUTOINIT, PDFTARGET_AUTOINIT_DEFAULT);
       getConfiguration().put (PDFTARGET_ENCODING, PDFTARGET_ENCODING_DEFAULT);
 
-      InputStream in = this.getClass().getResourceAsStream("/com/jrefinery/report/jfreereport.properties");
+      InputStream in = this.getClass().getResourceAsStream("/jfreereport.properties");
+      if (in == null)
+        in = this.getClass().getResourceAsStream("/com/jrefinery/report/jfreereport.properties");
+
       if (in != null)
       {
         try
