@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.3 2003/02/10 19:33:52 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.4 2003/02/10 21:23:36 taqua Exp $
  *
  * Changes
  * -------
@@ -184,7 +184,7 @@ public class BaseFontFactory extends DefaultFontMapper
   }
 
   /**
-   * Adds the fontname by creating the basefont object
+   * Adds the fontname by creating the basefont object.
    *
    * @param font  the font name.
    * @param encoding  the encoding.

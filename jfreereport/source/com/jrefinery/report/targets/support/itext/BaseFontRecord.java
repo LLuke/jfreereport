@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecord.java,v 1.1 2003/02/01 22:10:36 taqua Exp $
+ * $Id: BaseFontRecord.java,v 1.2 2003/02/10 21:23:36 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public class BaseFontRecord
   /** The logical name. */
   private String logicalName;
   
-  /** Embedded? */
+  /** A flag indicating whether this font record describes an embedded PDF font. */
   private boolean embedded;
   
   /** The encoding. */

@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann;
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTableCellDataFactory.java,v 1.6 2003/02/18 19:37:34 taqua Exp $
+ * $Id: ExcelCellData.java,v 1.4 2003/02/19 22:14:11 taqua Exp $
  *
  * Changes
  * -------
@@ -79,6 +79,11 @@ public abstract class ExcelCellData extends TableCellData
    */
   public abstract void applyContent (HSSFCell cell);
 
+  /**
+   * Gets the defined style for this cell.
+   *
+   * @return the defined style for this cell.
+   */
   public ExcelDataCellStyle getExcelCellStyle()
   {
     return style;
@@ -87,7 +92,7 @@ public abstract class ExcelCellData extends TableCellData
   /**
    * Returns always false, as this is a data cell.
    *
-   * @return false.
+   * @return always false.
    */
   public final boolean isBackground()
   {

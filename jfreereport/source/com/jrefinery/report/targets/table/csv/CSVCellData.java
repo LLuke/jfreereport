@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVCellData.java,v 1.3 2003/02/17 22:01:40 taqua Exp $
+ * $Id: CSVCellData.java,v 1.4 2003/02/24 15:06:31 mungady Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import java.awt.geom.Rectangle2D;
  */
 public class CSVCellData extends TableCellData
 {
-  /** The value */
+  /** The value. */
   private String value;
 
   /**

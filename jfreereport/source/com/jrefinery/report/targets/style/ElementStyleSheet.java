@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.14 2003/02/05 13:25:29 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.15 2003/02/23 20:39:29 taqua Exp $
  *
  * Changes
  * -------
@@ -211,6 +211,14 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     }
   }
 
+  /**
+   * Checks, whether the given element stylesheet is already added as child into
+   * the stylesheet tree.
+   *
+   * @param parent the element that should be tested.
+   * @return true, if the element is a child of this element style sheet,
+   * false otherwise.
+   */
   public boolean isSubStyleSheet (ElementStyleSheet parent)
   {
     for (int i = 0; i < parents.size(); i++)
@@ -473,6 +481,11 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     setStyleProperty(EMBEDDED_FONT, new Boolean(font.isEmbeddedFont()));
   }
 
+  /**
+   * Returns an enumeration of all local property keys.
+   *
+   * @return an enumeration of all localy defined style property keys.
+   */
   public Enumeration getDefinedPropertyNames ()
   {
     return properties.keys();

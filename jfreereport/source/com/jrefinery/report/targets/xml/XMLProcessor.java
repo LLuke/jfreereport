@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.6 2003/02/12 17:36:10 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.7 2003/02/12 21:17:20 taqua Exp $
  *
  * Changes
  * -------
@@ -61,11 +61,11 @@ import java.util.Iterator;
  */
 public class XMLProcessor
 {
-  /** the name of the writer function used in the report processing */
+  /** the name of the writer function used in the report processing. */
   private static final String XML_WRITER = "com.jrefinery.report.targets.xml-writer";
-  /** the writer */
+  /** the target writer. */
   private Writer writer;
-  /** the report */
+  /** the source report. */
   private JFreeReport report;
 
   /**

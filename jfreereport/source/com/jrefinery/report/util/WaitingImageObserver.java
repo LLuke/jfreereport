@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morger
  * Contributor(s):   Stefan Prange;
  *
- * $Id: WaitingImageObserver.java,v 1.2 2002/12/09 03:56:34 taqua Exp $
+ * $Id: WaitingImageObserver.java,v 1.3 2002/12/12 12:26:57 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -57,7 +57,7 @@ import java.io.Serializable;
  */
 public class WaitingImageObserver implements ImageObserver, Serializable, Cloneable
 {
-  /** The lock */
+  /** The lock. */
   private boolean lock;
 
   /** The image. */
@@ -85,14 +85,19 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
    * Callback function used by AWT to inform that more data is available. The observer
    * waits until either all data is loaded or AWT signals that the image cannot be loaded.
    *
-   * @param img  the image.
-   * @param infoflags  various flags.
-   * @param x  the x-coordinate.
-   * @param y  the y-coordinate.
-   * @param width  the image width.
-   * @param height  the image height.
+   * @param     img   the image being observed.
+   * @param     infoflags   the bitwise inclusive OR of the following
+   *               flags:  <code>WIDTH</code>, <code>HEIGHT</code>,
+   *               <code>PROPERTIES</code>, <code>SOMEBITS</code>,
+   *               <code>FRAMEBITS</code>, <code>ALLBITS</code>,
+   *               <code>ERROR</code>, <code>ABORT</code>.
+   * @param     x   the <i>x</i> coordinate.
+   * @param     y   the <i>y</i> coordinate.
+   * @param     width    the width.
+   * @param     height   the height.
    *
-   * @return  boolean
+   * @return    <code>false</code> if the infoflags indicate that the
+   *            image is completely loaded; <code>true</code> otherwise.
    */
   public boolean imageUpdate (
           Image img,

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.7 2003/02/05 13:25:29 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.8 2003/02/10 19:33:52 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
 
   /** A shared default style-sheet. */
   private static ElementDefaultStyleSheet defaultStyle;
-  /** a flag indicating the read-only state of this style sheet */
+  /** a flag indicating the read-only state of this style sheet. */
   private boolean locked;
 
   /**

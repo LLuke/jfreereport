@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGrid.java,v 1.7 2003/02/12 21:17:17 taqua Exp $
+ * $Id: TableGrid.java,v 1.8 2003/02/24 15:02:20 mungady Exp $
  *
  * Changes
  * -------
@@ -71,16 +71,16 @@ import java.util.TreeSet;
  */
 public class TableGrid
 {
-  /** The XBounds, all vertical cell boundaries */
+  /** The XBounds, all vertical cell boundaries. */
   private TreeSet xBounds;
   
-  /** The YBounds, all horizontal cell boundaries */
+  /** The YBounds, all horizontal cell boundaries. */
   private TreeSet yBounds;
 
-  /** The elements stored in the table grid */
+  /** The elements stored in the table grid. */
   private ArrayList elements;
   
-  /** A flag, defining whether to use strict layout mode */
+  /** A flag, defining whether to use strict layout mode. */
   private boolean strict;
 
   /**

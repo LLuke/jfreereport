@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.7 2003/02/09 22:49:28 taqua Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.8 2003/02/18 19:37:32 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -69,7 +69,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
   /** The reserved space at the bottom of the page. */
   private float reserved;
 
-  /** The space used by the pageheader */
+  /** The space used by the pageheader. */
   private float pageTop;
 
   /**
@@ -155,6 +155,8 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
   }
 
   /**
+   * Gets the current y-position for printing the next band.
+   *
    * @return the current y-position of this cursor.
    */
   public float getY ()
@@ -163,6 +165,8 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
   }
 
   /**
+   * Returns the bottom border position of the printable page area.
+   *
    * @return the bottom border of the printable area.
    */
   public float getPageBottom ()
@@ -211,11 +215,21 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
     return b.toString();
   }
 
+  /**
+   * Returns the space reserved by the page header.
+   *
+   * @return the reserved page header space.
+   */
   public float getPageTop()
   {
     return pageTop;
   }
 
+  /**
+   * Defines the space reserved by the page header.
+   *
+   * @param pageTop the reserved page header space.
+   */
   public void setPageTop(float pageTop)
   {
     this.pageTop = pageTop;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.34 2003/02/16 19:02:39 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.35 2003/02/25 14:07:32 taqua Exp $
  *
  * Changes
  * -------
@@ -270,7 +270,7 @@ import java.util.Properties;
  */
 public class ReportConfiguration
 {
-  /** The text aliasing configuration key */
+  /** The text aliasing configuration key. */
   public static final String G2TARGET_USEALIASING
                              = "com.jrefinery.report.targets.G2OutputTarget.useAliasing";
 
@@ -352,10 +352,10 @@ public class ReportConfiguration
   /** The 'ResultSet factory mode'. */
   public static final String RESULTSET_FACTORY_MODE = "com.jrefinery.report.TableFactoryMode";
 
-  /** Enable DTD validation of the parsed XML? */
+  /** Enable DTD validation of the parsed XML. */
   public static final String PARSER_VALIDATE = "com.jrefinery.report.io.validate";
 
-  /** disable DTD validation by default */
+  /** disable DTD validation by default. */
   public static final String PARSER_VALIDATE_DEFAULT = "true";
 
   /**
@@ -364,10 +364,10 @@ public class ReportConfiguration
    */
   public static final String REPORT_RESOURCE_BUNDLE = "com.jrefinery.report.ResourceBundle";
 
-  /** Enable stricter table layouting for all TableProcessors? */
+  /** Enable stricter table layouting for all TableProcessors. */
   public static final String STRICT_TABLE_LAYOUT = "com.jrefinery.report.targets.table.StrictLayout";
 
-  /** Disable strict layout by default */ 
+  /** Disable strict layout by default. */
   public static final String STRICT_TABLE_LAYOUT_DEFAULT = "false";
 
   /** The property that defines whether to enable PDF export in the PreviewFrame. */
@@ -477,7 +477,7 @@ public class ReportConfiguration
   /**
    * Returns true if this object has no parent.
    *
-   * @return boolean.
+   * @return true, if this report is the root configuration, false otherwise.
    */
   private boolean isRootConfig ()
   {
@@ -637,7 +637,7 @@ public class ReportConfiguration
    * Set the parent configuration. The parent configuration is queried, if the
    * requested configuration values was not found in this report configuration.
    *
-   * @param config
+   * @param config the parent configuration.
    */
   protected void setParentConfig (ReportConfiguration config)
   {
@@ -836,51 +836,116 @@ public class ReportConfiguration
     setConfigProperty(STRICT_TABLE_LAYOUT, String.valueOf(strict));
   }
 
+  /**
+   * Returns true, if the export to CSV files should be available in the preview
+   * dialog. This setting does not limit the report's ability to be exported as
+   * CSV file, it just controls whether the Export plugin will be added to the
+   * Dialog.
+   *
+   * @return true, if CSV export is enabled, false otherwise.
+   */
   public boolean isEnableExportCSV()
   {
     return getConfigProperty(ENABLE_EXPORT_CSV, "false").equalsIgnoreCase("true");
   }
 
+  /**
+   * Defines, whether the CSV export plugin will be activated in the preview dialog.
+   *
+   * @param enableExportCSV true, if the export plugin should be active, false otherwise.
+   */
   public void setEnableExportCSV(boolean enableExportCSV)
   {
     setConfigProperty(ENABLE_EXPORT_CSV, String.valueOf(enableExportCSV));
   }
 
+  /**
+   * Returns true, if the export to HTML files should be available in the preview
+   * dialog. This setting does not limit the report's ability to be exported as
+   * HTML file, it just controls whether the Export plugin will be added to the
+   * Dialog.
+   *
+   * @return true, if HTML export is enabled, false otherwise.
+   */
   public boolean isEnableExportHTML()
   {
     return getConfigProperty(ENABLE_EXPORT_HTML, "false").equalsIgnoreCase("true");
   }
 
+  /**
+   * Defines, whether the HTML export plugin will be activated in the preview dialog.
+   *
+   * @param enableExportHTML true, if the export plugin should be active, false otherwise.
+   */
   public void setEnableExportHTML(boolean enableExportHTML)
   {
     setConfigProperty(ENABLE_EXPORT_HTML, String.valueOf(enableExportHTML));
   }
 
+  /**
+   * Returns true, if the export to plain text files should be available in the preview
+   * dialog. This setting does not limit the report's ability to be exported as
+   * plain text file, it just controls whether the Export plugin will be added to the
+   * Dialog.
+   *
+   * @return true, if PlainText export is enabled, false otherwise.
+   */
   public boolean isEnableExportPlain()
   {
     return getConfigProperty(ENABLE_EXPORT_PLAIN, "false").equalsIgnoreCase("true");
   }
 
+  /**
+   * Defines, whether the PlainText export plugin will be activated in the preview dialog.
+   *
+   * @param enableExportPlain true, if the export plugin should be active, false otherwise.
+   */
   public void setEnableExportPlain(boolean enableExportPlain)
   {
     setConfigProperty(ENABLE_EXPORT_PLAIN, String.valueOf(enableExportPlain));
   }
 
+  /**
+   * Returns true, if the export to PDF files should be available in the preview
+   * dialog. This setting does not limit the report's ability to be exported as
+   * PDF file, it just controls whether the Export plugin will be added to the
+   * Dialog.
+   *
+   * @return true, if PDF export is enabled, false otherwise.
+   */
   public boolean isEnableExportPDF()
   {
     return getConfigProperty(ENABLE_EXPORT_PDF, "false").equalsIgnoreCase("true");
   }
 
+  /**
+   * Defines, whether the PDF export plugin will be activated in the preview dialog.
+   *
+   * @param enableExportPDF true, if the export plugin should be active, false otherwise.
+   */
   public void setEnableExportPDF(boolean enableExportPDF)
   {
     setConfigProperty(ENABLE_EXPORT_PDF, String.valueOf(enableExportPDF));
   }
 
+  /**
+   * Returns true, if the export to Excel files should be available in the preview
+   * dialog. This setting does not limit the report's ability to be exported as
+   * Excel file, it just controls whether the Export plugin will be added to the
+   * Dialog.
+   *
+   * @return true, if Excel export is enabled, false otherwise.
+   */
   public boolean isEnableExportExcel()
   {
     return getConfigProperty(ENABLE_EXPORT_EXCEL, "false").equalsIgnoreCase("true");
   }
 
+  /**
+   * Defines, whether the Excel export plugin will be activated in the preview dialog.
+   *
+   * @param enableExportExcel true, if the export plugin should be active, false otherwise.
+   */
   public void setEnableExportExcel(boolean enableExportExcel)
   {
     setConfigProperty(ENABLE_EXPORT_EXCEL, String.valueOf(enableExportExcel));

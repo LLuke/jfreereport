@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.24 2003/02/18 19:37:33 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.25 2003/02/19 15:28:16 taqua Exp $
  *
  * Changes
  * -------
@@ -148,11 +148,24 @@ public class LogicalPageImpl implements LogicalPage
     }
   }
 
+  /**
+   * Gets the local instance of the operations factory. The operation factory is
+   * responsible for converting content into basic operations, which can be executed
+   * on the OutputTarget.
+   *
+   * @return the local operation factory.
+   */
   public OperationFactory getOperationFactory()
   {
     return operationFactory;
   }
 
+  /**
+   * Initializes the operations factory. The operation factory is responsible for
+   * converting content into basic operations, which can be executed on the OutputTarget.
+   *
+   * @return the local operation factory.
+   */
   protected OperationFactory createOperationFactory()
   {
     OperationFactory operationFactory = new OperationFactory();
@@ -161,6 +174,7 @@ public class LogicalPageImpl implements LogicalPage
     operationFactory.registerModule(new ShapeOperationModule());
     return operationFactory;
   }
+
   /**
    * Returns the physical page at a particular row and column of the PageGrid.
    * The logical page can be split into multiple physical pages to display content
@@ -307,6 +321,21 @@ public class LogicalPageImpl implements LogicalPage
     return spool;
   }
 
+  /**
+   * Creates a spool made up of the contents generated from the given Band. The band
+   * is printed at the location and with the dimensions specified in <code>bounds</code>.
+   * <p>
+   * Spooling is the process of creating operations suitable for the physical pages.
+   * The generated operations are added to the given spool.
+   * <p>
+   * ToDo: Support distribution over multiple pages ...
+   *
+   * @param bounds the bounds that define where to print the given band on this logical page
+   * @param band the band that should be spooled/printed
+   * @param spool the spool which collects the generated operations.
+   *
+   * @throws OutputTargetException if there is a problem with the output target.
+   */
   protected void spoolBand (Rectangle2D bounds, Band band, Spool spool)
     throws OutputTargetException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: FilesystemFilter.java,v 1.2 2003/02/05 21:48:27 taqua Exp $
  *
  * Changes
  * -------
@@ -123,6 +123,7 @@ public class FilesystemFilter extends FileFilter implements FilenameFilter
   /**
    * Whether the given file is accepted by this filter.
    *
+   * @param dir the file that should be checked.
    * @return true, if the file should be accepted for this filter, false otherwise.
    */
   public boolean accept(File dir)

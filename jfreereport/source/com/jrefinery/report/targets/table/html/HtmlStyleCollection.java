@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.7 2003/02/22 18:52:30 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.8 2003/02/24 16:48:58 taqua Exp $
  *
  * Changes
  * -------
@@ -57,9 +57,9 @@ public class HtmlStyleCollection
 {
   /** the ObjectDescription for color objects is used to translate colors into names or RGB-values. */
   private ColorObjectDescription colorObjectDescription;
-  /** contains all generated style sheets */
+  /** contains all generated style sheets. */
   private Hashtable table;
-  /** the name counter helps to create unique names for the styles */
+  /** the name counter helps to create unique names for the styles. */
   private int nameCounter;
 
   /**
@@ -87,6 +87,7 @@ public class HtmlStyleCollection
    * Adds the given style to the cache, if not already contained in the cache.
    *
    * @param style the generated style, that should be added to the style cache.
+   * @return the registered name for the stylesheet.
    */
   public String addStyle (HtmlCellStyle style)
   {

@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultExcelCellData.java,v 1.3 2003/02/17 22:01:44 taqua Exp $
+ * $Id: DefaultExcelCellData.java,v 1.4 2003/02/19 22:14:11 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import java.awt.geom.Rectangle2D;
  */
 public class DefaultExcelCellData extends ExcelCellData
 {
-  /** the cell value */
+  /** the cell value. */
   private String value;
 
   /**

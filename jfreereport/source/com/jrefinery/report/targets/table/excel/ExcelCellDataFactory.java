@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellDataFactory.java,v 1.5 2003/02/02 23:43:52 taqua Exp $
+ * $Id: ExcelCellDataFactory.java,v 1.6 2003/02/19 22:14:12 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ import java.util.Date;
  */
 public class ExcelCellDataFactory extends AbstractTableCellDataFactory
 {
-  /** the style factory, which is used to create the excel styles */
+  /** the style factory, which is used to create the excel styles. */
   private ExcelCellStyleFactory styleFactory;
 
   /**

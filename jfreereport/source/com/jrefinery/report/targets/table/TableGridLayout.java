@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridLayout.java,v 1.9 2003/02/12 21:17:17 taqua Exp $
+ * $Id: TableGridLayout.java,v 1.10 2003/02/24 15:02:20 mungady Exp $
  *
  * Changes
  * -------
@@ -69,9 +69,9 @@ public class TableGridLayout
    */
   public static class Element
   {
-    /** The root position, a data carrying TableCellData */
+    /** The root position, a data carrying TableCellData. */
     private TableGridPosition root;
-    /** The backgrounds for the data cell */
+    /** The backgrounds for the data cell. */
     private ArrayList backGrounds;
 
     /**
@@ -193,11 +193,11 @@ public class TableGridLayout
     }
   }
 
-  /** The table data as table */
+  /** The table data as table. */
   private Object data[][];
-  /** the collected xcuts, sorted */
+  /** the collected xcuts, sorted. */
   private int[] xCuts;
-  /** the collected ycuts, sorted */
+  /** the collected ycuts, sorted. */
   private int[] yCuts;
   /** the maximum horizontal position the table ever reached. */
   private int maxX;

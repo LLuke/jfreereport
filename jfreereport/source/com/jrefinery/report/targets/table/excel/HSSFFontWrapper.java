@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: HSSFFontWrapper.java,v 1.6 2003/02/02 23:43:52 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.7 2003/02/20 00:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -51,21 +51,21 @@ public class HSSFFontWrapper
   /** scale between Excel and awt. With this value it looks fine. */
   public static final int FONT_FACTOR = 20;
 
-  /** the font name */
+  /** the font name. */
   private String fontName;
-  /** the excel color index */
+  /** the excel color index. */
   private short colorIndex;
-  /** the font size */
+  /** the font size. */
   private int fontHeight;
-  /** the font's bold flag */
+  /** the font's bold flag. */
   private boolean bold;
-  /** the font's italic flag */
+  /** the font's italic flag. */
   private boolean italic;
-  /** the font's underline flag */
+  /** the font's underline flag. */
   private boolean underline;
-  /** the font's strikethrough flag */
+  /** the font's strikethrough flag. */
   private boolean strikethrough;
-  /** the excel font */
+  /** the excel font. */
   private HSSFFont font;
 
   /**

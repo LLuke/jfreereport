@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriterCursor.java,v 1.2 2003/02/17 22:01:11 taqua Exp $
+ * $Id: TableWriterCursor.java,v 1.3 2003/02/24 15:02:20 mungady Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ public class TableWriterCursor
   private float y;
 
   /**
-   * Default Constructor
+   * Default Constructor.
    */
   public TableWriterCursor()
   {
@@ -87,6 +87,8 @@ public class TableWriterCursor
   }
 
   /**
+   * Gets the current vertical (y) position of the cursor.
+   *
    * @return the current y-position of this cursor.
    */
   public float getY ()

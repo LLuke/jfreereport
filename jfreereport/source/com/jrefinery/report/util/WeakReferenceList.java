@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WeakReferenceList.java,v 1.14 2003/02/05 17:56:03 taqua Exp $
+ * $Id: WeakReferenceList.java,v 1.15 2003/02/10 19:33:52 taqua Exp $
  *
  * Changes
  * -------
@@ -95,7 +95,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   /**
    * Returns the maximum number of children in this list.
    *
-   * @return 25
+   * @return the maximum number of elements in this list.
    */
   protected final int getMaxChildCount ()
   {
@@ -248,7 +248,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   }
 
   /**
-   * Serialisation support
+   * Serialisation support. The transient child elements are not saved.
    *
    * @param out  the output stream.
    *
@@ -270,7 +270,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   }
 
   /**
-   * Serialisation support
+   * Serialisation support. The transient child elements were not saved.
    *
    * @param in  the input stream.
    *

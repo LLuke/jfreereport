@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridPosition.java,v 1.7 2003/02/12 21:17:18 taqua Exp $
+ * $Id: TableGridPosition.java,v 1.8 2003/02/24 15:02:20 mungady Exp $
  *
  * Changes
  * -------
@@ -48,19 +48,19 @@ import java.awt.geom.Rectangle2D;
  */
 public final class TableGridPosition
 {
-  /** the TableCellData element stored in this position */
+  /** the TableCellData element stored in this position. */
   private TableCellData element;
   
-  /** the number of columns spanned by this cell */
+  /** the number of columns spanned by this cell. */
   private int colSpan;
   
   /** the number of rows spanned by this cell. */
   private int rowSpan;
   
-  /** the column, where the cell starts */
+  /** the column, where the cell starts. */
   private int col;
   
-  /** the row, where the cell starts */
+  /** the row, where the cell starts.*/
   private int row;
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProcessorUtil.java,v 1.1 2003/02/12 17:46:24 taqua Exp $
+ * $Id: ReportProcessorUtil.java,v 1.2 2003/02/12 21:16:48 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
 import com.jrefinery.report.targets.pageable.output.PrinterCommandSet;
 import com.jrefinery.report.targets.pageable.output.PlainTextOutputTarget;
 import com.jrefinery.report.targets.pageable.PageableReportProcessor;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.function.FunctionInitializeException;
 
 import java.io.IOException;
@@ -75,6 +76,9 @@ public class ReportProcessorUtil
    *
    * @param report  the report.
    * @param filename target file name.
+   * @throws ReportProcessingException if the report processing failed.
+   * @throws FunctionInitializeException if the initialisation of the report processor failed.
+   * @throws IOException if there was an IOerror while processing the report.
    */
   public static void createStreamHTML (JFreeReport report, String filename)
     throws IOException, FunctionInitializeException, ReportProcessingException
@@ -138,9 +142,12 @@ public class ReportProcessorUtil
    *
    * @param report  the report.
    * @param filename target file name.
+   * @throws ReportProcessingException if the report processing failed.
+   * @throws FunctionInitializeException if the initialisation of the report processor failed.
+   * @throws IOException if there was an IOerror while processing the report.
    */
   public static void createPlainText (JFreeReport report, String filename)
-    throws Exception
+   throws IOException, ReportProcessingException, FunctionInitializeException, OutputTargetException
   {
     PageableReportProcessor pr = new PageableReportProcessor(report);
     OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
@@ -158,9 +165,12 @@ public class ReportProcessorUtil
    *
    * @param report  the report.
    * @param filename target file name.
+   * @throws ReportProcessingException if the report processing failed.
+   * @throws FunctionInitializeException if the initialisation of the report processor failed.
+   * @throws IOException if there was an IOerror while processing the report.
    */
   public static void createRTF (JFreeReport report, String filename)
-    throws Exception
+    throws IOException, ReportProcessingException, FunctionInitializeException
   {
     RTFProcessor pr = new RTFProcessor(report);
     pr.setStrictLayout(false);
@@ -175,9 +185,12 @@ public class ReportProcessorUtil
    *
    * @param report  the report.
    * @param filename target file name.
+   * @throws ReportProcessingException if the report processing failed.
+   * @throws FunctionInitializeException if the initialisation of the report processor failed.
+   * @throws IOException if there was an IOerror while processing the report.
    */
   public static void createCSV (JFreeReport report, String filename)
-    throws Exception
+    throws ReportProcessingException, FunctionInitializeException, IOException
   {
     CSVTableProcessor pr = new CSVTableProcessor(report);
     pr.setStrictLayout(false);
@@ -192,9 +205,12 @@ public class ReportProcessorUtil
    *
    * @param report  the report.
    * @param filename target file name.
+   * @throws ReportProcessingException if the report processing failed.
+   * @throws FunctionInitializeException if the initialisation of the report processor failed.
+   * @throws IOException if there was an IOerror while processing the report.
    */
   public static void createXLS (JFreeReport report, String filename)
-    throws Exception
+    throws IOException, FunctionInitializeException, ReportProcessingException
   {
     ExcelProcessor pr = new ExcelProcessor(report);
     pr.setStrictLayout(false);
@@ -210,9 +226,12 @@ public class ReportProcessorUtil
    *
    * @param report  the report.
    * @param filename target file name.
+   * @throws ReportProcessingException if the report processing failed.
+   * @throws FunctionInitializeException if the initialisation of the report processor failed.
+   * @throws IOException if there was an IOerror while processing the report.
    */
   public static void createDirectoryHTML (JFreeReport report, String filename)
-    throws Exception
+    throws IOException, ReportProcessingException, FunctionInitializeException
   {
     HtmlProcessor pr = new HtmlProcessor(report);
     pr.setFilesystem(new DirectoryHtmlFilesystem (new File(filename)));
@@ -224,9 +243,12 @@ public class ReportProcessorUtil
    *
    * @param report  the report.
    * @param filename target file name.
+   * @throws ReportProcessingException if the report processing failed.
+   * @throws FunctionInitializeException if the initialisation of the report processor failed.
+   * @throws IOException if there was an IOerror while processing the report.
    */
   public static void createZIPHTML (JFreeReport report, String filename)
-    throws Exception
+    throws IOException, ReportProcessingException, FunctionInitializeException
   {
     HtmlProcessor pr = new HtmlProcessor(report);
     OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));

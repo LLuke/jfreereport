@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.15 2003/02/24 15:02:20 mungady Exp $
+ * $Id: TableProducer.java,v 1.16 2003/02/25 11:57:41 taqua Exp $
  *
  * Changes
  * -------
@@ -60,10 +60,10 @@ import com.jrefinery.report.targets.style.ElementStyleSheet;
  */
 public abstract class TableProducer
 {
-  /** the grid, that stores the collected TableCellData */
+  /** the grid, that stores the collected TableCellData. */
   private TableGrid grid;
   
-  /** the dummy mode flag */
+  /** the dummy mode flag. */
   private boolean dummy;
 
   /**

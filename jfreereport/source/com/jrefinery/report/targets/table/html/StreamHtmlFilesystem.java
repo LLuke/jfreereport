@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StreamHtmlFilesystem.java,v 1.2 2003/02/20 00:39:37 taqua Exp $
+ * $Id: StreamHtmlFilesystem.java,v 1.3 2003/02/24 20:14:00 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import java.net.URL;
  */
 public class StreamHtmlFilesystem implements HtmlFilesystem
 {
-  /** the output stream */
+  /** the output stream. */
   private OutputStream root;
 
   /**

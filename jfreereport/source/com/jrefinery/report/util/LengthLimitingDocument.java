@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LengthLimitingDocument.java,v 1.5 2002/12/05 16:48:12 mungady Exp $
+ * $Id: LengthLimitingDocument.java,v 1.2 2003/02/05 17:56:02 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public class LengthLimitingDocument extends PlainDocument
    * Sets the maximum number of characters for this document. Existing characters
    * are not removed.
    *
-   * @param maxlen
+   * @param maxlen the maximum number of characters in this document.
    */
   public void setMaxLength (int maxlen)
   {

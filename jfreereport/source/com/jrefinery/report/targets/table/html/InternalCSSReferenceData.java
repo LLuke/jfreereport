@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: InternalCSSReferenceData.java,v 1.2 2003/02/20 00:39:37 taqua Exp $
+ * $Id: InternalCSSReferenceData.java,v 1.3 2003/02/24 17:34:42 taqua Exp $
  *
  * Changes
  * -------
@@ -56,8 +56,10 @@ public class InternalCSSReferenceData extends HtmlReferenceData
   }
 
   /**
-   * 
-   * @return
+   * Generates the reference fragment, which should be inserted into the HTML-Code.
+   * Which content is returned depends on the reference type and the target filesystem.
+   *
+   * @return the reference code, which should be inserted into the generated HTML-Code.
    */
   public String getReference()
   {

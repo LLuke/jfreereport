@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IOUtils.java,v 1.7 2003/02/22 18:52:31 taqua Exp $
+ * $Id: IOUtils.java,v 1.8 2003/02/23 20:39:29 taqua Exp $
  *
  * Changes
  * -------
@@ -137,10 +137,12 @@ public class IOUtils
   }
 
   /**
+   * Compares both name lists, and returns the last common index shared between
+   * the two lists.
    *
-   * @param baseName
-   * @param urlName
-   * @return
+   * @param baseName the name created using the base url.
+   * @param urlName  the target url name.
+   * @return the number of shared elements.
    */
   private int startsWithUntil (List baseName, List urlName)
   {
@@ -294,6 +296,7 @@ public class IOUtils
    *
    * @param in the reader from which to read.
    * @param out the writer where the data is written to.
+   * @param buffersize the size of the used buffer in characters.
    * @throws IOException if a IOError occurs.
    */
   public void copyWriter (Reader in, Writer out, int buffersize)

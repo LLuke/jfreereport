@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.16 2003/02/20 21:05:01 taqua Exp $
+ * $Id: PageLayouter.java,v 1.17 2003/02/22 18:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -154,22 +154,50 @@ public abstract class PageLayouter extends AbstractFunction
     cloneCarrier = new CloneCarrier();
   }
 
+  /**
+   * Returns whether the restarting of the page is completed. Restarting the
+   * page is separated into two processes. The first step restores the save state,
+   * and the second step starts to print the page header and opens the logical page.
+   * The second step is not executed, if no more content is printed.
+   *
+   * @return true, if the restart process for this page is completed, false otherwise.
+   */
   public boolean isPageRestartDone()
   {
     return pageRestartDone;
   }
 
+  /**
+   * Defines whether the restarting of the page is completed. Restarting the
+   * page is separated into two processes. The first step restores the save state,
+   * and the second step starts to print the page header and opens the logical page.
+   * The second step is not executed, if no more content is printed.
+   *
+   * @param pageRestartDone set to true, if the restart process for this page is completed, false otherwise.
+   */
   public void setPageRestartDone(boolean pageRestartDone)
   {
     this.pageRestartDone = pageRestartDone;
   }
 
+  /**
+   * Maintains a flag, whether the generated page was completly empty.
+   *
+   * @return true, if the page was empty when the logical page was closed,
+   * false otherwise.
+   */
   public boolean isGeneratedPageEmpty()
   {
     return generatedPageEmpty;
   }
 
-  public void setGeneratedPageEmpty(boolean generatedPageEmpty)
+  /**
+   * Defines a flag, whether the generated page was completly empty.
+   *
+   * @param generatedPageEmpty true, if the page was empty when the logical page was closed,
+   * false otherwise.
+   */
+  protected void setGeneratedPageEmpty(boolean generatedPageEmpty)
   {
     this.generatedPageEmpty = generatedPageEmpty;
   }
@@ -379,6 +407,12 @@ public abstract class PageLayouter extends AbstractFunction
     return getLogicalPage().isOpen() == false;
   }
 
+  /**
+   * Returns true, if the PageLayouter has successfully started a new page. The
+   * start of the new page is delayed, until the first content is printed.
+   *
+   * @return true, if a new page has already been started, false otherwise.
+   */
   public abstract boolean isNewPageStarted();
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageReferenceData.java,v 1.2 2003/02/20 00:39:37 taqua Exp $
+ * $Id: ImageReferenceData.java,v 1.3 2003/02/24 17:34:42 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ package com.jrefinery.report.targets.table.html;
  */
 public class ImageReferenceData extends HtmlReferenceData
 {
-  /** the referenced file name */
+  /** the referenced file name. */
   private String reference;
 
   /**

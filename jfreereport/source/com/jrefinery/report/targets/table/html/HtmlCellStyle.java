@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellStyle.java,v 1.8 2003/02/20 00:39:37 taqua Exp $
+ * $Id: HtmlCellStyle.java,v 1.9 2003/02/21 18:12:50 taqua Exp $
  *
  * Changes
  * -------
@@ -47,13 +47,13 @@ import java.awt.Color;
  */
 public class HtmlCellStyle
 {
-  /** the font definition used for the text */
+  /** the font definition used for the text. */
   private FontDefinition font;
-  /** the text color */
+  /** the text color. */
   private Color fontColor;
-  /* the vertical content alignment */
+  /* the vertical content alignment. */
   private ElementAlignment verticalAlignment;
-  /** the horizontal content alignment */
+  /** the horizontal content alignment. */
   private ElementAlignment horizontalAlignment;
 
   /**

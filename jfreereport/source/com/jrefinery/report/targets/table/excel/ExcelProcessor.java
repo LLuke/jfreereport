@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.4 2003/02/04 17:56:30 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.5 2003/02/20 00:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import java.io.OutputStream;
  */
 public class ExcelProcessor extends TableProcessor
 {
-  /** The output stream that is used to write the excel file */
+  /** The output stream that is used to write the excel file. */
   private OutputStream outputStream;
 
   /**

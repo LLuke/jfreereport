@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.2 2003/02/05 17:56:03 taqua Exp $
+ * $Id: Worker.java,v 1.3 2003/02/23 20:39:29 taqua Exp $
  *
  *
  * Changes
@@ -73,6 +73,9 @@ public class Worker extends Thread
 
   /**
    * Set the next workload for this worker.
+   *
+   * @param r the next workload for the worker.
+   * @throws IllegalStateException if the worker is not idle.
    */
   public void setWorkload(Runnable r)
   {

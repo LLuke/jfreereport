@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.3 2003/02/07 22:40:44 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.4 2003/02/10 19:33:52 taqua Exp $
  *
  * Changes
  * -------
@@ -81,6 +81,7 @@ public class BaseFontSupport
    *
    * @param font  the new font (null not permitted).
    * @param encoding  the encoding.
+   * @param embedded a flag indicating whether to embed the font glyphs in the generated documents.
    *
    * @return the base font record.
    *
@@ -222,6 +223,7 @@ public class BaseFontSupport
    * @param filename  the filename.
    * @param encoding  the encoding.
    * @param stringEncoding  the string encoding.
+   * @param embedded a flag indicating whether to embed the font glyphs in the generated documents.
    *
    * @return the PDF font record.
    *

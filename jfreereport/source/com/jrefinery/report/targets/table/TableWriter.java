@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.14 2003/02/24 15:02:20 mungady Exp $
+ * $Id: TableWriter.java,v 1.15 2003/02/25 09:55:54 taqua Exp $
  *
  * Changes
  * -------
@@ -73,28 +73,28 @@ public class TableWriter extends AbstractFunction
   public static final String SHEET_NAME_FUNCTION_PROPERTY =
       "com.jrefinery.report.targets.table.TableWriter.SheetNameFunction";
 
-  /** the layout support used for the band layout */
+  /** the layout support used for the band layout. */
   private LayoutSupport layoutSupport;
   
-  /** The current event, stored on every call to one of the ReportListener methods */
+  /** The current event, stored on every call to one of the ReportListener methods. */
   private ReportEvent currentEvent;
   
-  /** The table producer used to create the layout */
+  /** The table producer used to create the layout. */
   private TableProducer producer;
   
   /** the cursor pointing to the current position on the sheet. */
   private TableWriterCursor cursor;
 
-  /** the maximum width, required for the BandLayout */
+  /** the maximum width, required for the BandLayout. */
   private float maxWidth;
   
-  /** the dependency level for this function, usually -1 */
+  /** the dependency level for this function, usually -1. */
   private int depLevel;
   
-  /** A flag indicating whether the writer is currently handling the end of an page */
+  /** A flag indicating whether the writer is currently handling the end of an page. */
   private boolean inEndPage;
   
-  /** A flag indicating whether the current page is empty */
+  /** A flag indicating whether the current page is empty. */
   private boolean isPageEmpty;
   
   /** A flag that indicates if the report state is currently inside the item group. */

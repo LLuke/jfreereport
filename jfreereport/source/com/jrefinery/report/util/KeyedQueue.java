@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: KeyedQueue.java,v 1.12 2003/02/10 19:33:52 taqua Exp $
+ * $Id: KeyedQueue.java,v 1.13 2003/02/23 20:39:29 taqua Exp $
  *
  * Changes
  * -------
@@ -177,7 +177,7 @@ public class KeyedQueue implements Serializable, Cloneable
   }
 
   /**
-   * Removes all elements in the queue
+   * Removes all elements in the queue.
    */
   public void clear ()
   {

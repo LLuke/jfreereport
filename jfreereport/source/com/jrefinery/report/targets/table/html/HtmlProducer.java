@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.17 2003/02/22 18:52:30 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.18 2003/02/24 16:48:57 taqua Exp $
  *
  * Changes
  * -------
@@ -73,26 +73,26 @@ import java.util.zip.InflaterInputStream;
  */
 public class HtmlProducer extends TableProducer
 {
-  /** the printwriter for the main html file */
+  /** the printwriter for the main html file. */
   private PrintWriter pout;
-  /** the report name */
+  /** the report name. */
   private String reportName;
-  /** the cell data factory used for creating the content cells */
+  /** the cell data factory used for creating the content cells. */
   private HtmlCellDataFactory cellDataFactory;
   /** the character entity parser converts Strings into the HTML format. */
   private static CharacterEntityParser entityParser;
-  /** the style collection is used to create the style sheet and the cell styles */
+  /** the style collection is used to create the style sheet and the cell styles. */
   private HtmlStyleCollection styleCollection;
-  /** the Filesystem is used to store the main html file and any external content */
+  /** the Filesystem is used to store the main html file and any external content. */
   private HtmlFilesystem filesystem;
-  /** a flag indicating whether to use XHTML output */
+  /** a flag indicating whether to use XHTML output. */
   private boolean useXHTML;
-  /** the fileencoding for the main html file */
+  /** the fileencoding for the main html file. */
   private String encoding;
 
-  /** the content cache for the main html file */
+  /** the content cache for the main html file. */
   private ByteArrayOutputStream content;
-  /** a flag indicating whether this producer is open */
+  /** a flag indicating whether this producer is open. */
   private boolean isOpen;
 
   /** the standard XHTML document type declaration and header. */

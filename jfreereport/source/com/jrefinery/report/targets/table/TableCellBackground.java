@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.2 2003/02/11 20:20:17 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.3 2003/02/24 15:02:20 mungady Exp $
  *
  * Changes
  * -------
@@ -54,31 +54,31 @@ import java.awt.image.BufferedImage;
  */
 public class TableCellBackground extends TableCellData
 {
-  /** The top border's size */
+  /** The top border's size. */
   private float borderSizeTop;
   
-  /** The bottom border's size */
+  /** The bottom border's size. */
   private float borderSizeBottom;
   
-  /** The left border's size */
+  /** The left border's size. */
   private float borderSizeLeft;
   
-  /** The right border's size */
+  /** The right border's size. */
   private float borderSizeRight;
   
-  /** The top border's color */
+  /** The top border's color. */
   private Color colorTop;
   
-  /** The left border's color */
+  /** The left border's color. */
   private Color colorLeft;
   
-  /** The bottom border's color */
+  /** The bottom border's color. */
   private Color colorBottom;
   
-  /** The right border's color */
+  /** The right border's color. */
   private Color colorRight;
   
-  /** The cell background color */
+  /** The cell background color. */
   private Color color;
 
   /**
@@ -97,7 +97,7 @@ public class TableCellBackground extends TableCellData
   /**
    * Returns <code>true</code>, as this is a cell background definition.
    *  
-   * @return true
+   * @return always true, this is a data cell.
    * 
    * @see TableCellData#isBackground
    */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.6 2003/02/12 21:17:18 taqua Exp $
+ * $Id: TableProcessor.java,v 1.7 2003/02/24 15:02:20 mungady Exp $
  *
  * Changes
  * -------
@@ -61,10 +61,10 @@ import java.util.Iterator;
  */
 public abstract class TableProcessor
 {
-  /** the function name used for the created tablewriter */
+  /** the function name used for the created tablewriter. */
   private static final String TABLE_WRITER = TableProcessor.class.getName() + "$table-writer";
 
-  /** the report that should be processed */
+  /** the report that should be processed. */
   private JFreeReport report;
   
   /** the strict layout flag. */

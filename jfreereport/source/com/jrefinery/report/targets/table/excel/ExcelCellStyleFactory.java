@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * based on ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelCellStyleFactory.java,v 1.5 2003/01/28 22:05:27 taqua Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.6 2003/02/19 22:14:13 taqua Exp $
  *
  * Changes
  * -------
@@ -67,9 +67,9 @@ public class ExcelCellStyleFactory
    */
   private static class StyleCarrier
   {
-    /** The foreground style */
+    /** The foreground style. */
     private ExcelDataCellStyle style;
-    /** the background style */
+    /** the background style. */
     private TableCellBackground background;
 
     /**
@@ -146,12 +146,12 @@ public class ExcelCellStyleFactory
   /** POI 2_0: the data format is used to create format strings. */
   private HSSFDataFormat dataFormat;
 
-	/** The list of fonts that we have used so far */
+	/** The list of fonts that we have used so far. */
   private HSSFCellStyle emptyCellStyle;
 
   /** The workbook, which creates all cells and styles. */
   private HSSFWorkbook workbook;
-  /** The cache for all generated styles */
+  /** The cache for all generated styles. */
   private Hashtable styleCache;
   /** the font factory is used to create excel fonts. */
   private ExcelFontFactory fontFactory;

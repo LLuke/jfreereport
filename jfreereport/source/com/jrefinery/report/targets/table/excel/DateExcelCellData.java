@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner;David Gilbert (for Simba Management Limited);
  *
- * $Id: DateExcelCellData.java,v 1.4 2003/02/19 22:14:09 taqua Exp $
+ * $Id: DateExcelCellData.java,v 1.5 2003/02/20 00:39:19 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,9 @@ import java.util.Date;
  */
 public class DateExcelCellData extends ExcelCellData
 {
-  /** the date stored in this cell */
+  /** the date stored in this cell. */
   private Date date;
-  /** the date format */
+  /** the date format. */
   private String format;
 
   /**

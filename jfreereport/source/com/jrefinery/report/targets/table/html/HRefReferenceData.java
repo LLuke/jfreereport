@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HRefReferenceData.java,v 1.2 2003/02/20 00:39:37 taqua Exp $
+ * $Id: HRefReferenceData.java,v 1.3 2003/02/21 18:12:49 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ package com.jrefinery.report.targets.table.html;
  */
 public class HRefReferenceData extends HtmlReferenceData
 {
-  /** the referenced file or URL */
+  /** the referenced file or URL. */
   private String reference;
 
   /**

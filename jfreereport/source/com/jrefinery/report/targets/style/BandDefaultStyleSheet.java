@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandDefaultStyleSheet.java,v 1.9 2003/02/10 19:33:51 taqua Exp $
+ * $Id: BandDefaultStyleSheet.java,v 1.10 2003/02/18 19:37:33 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ public class BandDefaultStyleSheet extends BandStyleSheet
 {
   /** A shared default style-sheet. */
   private static BandDefaultStyleSheet defaultStyle;
-  /** a flag indicating the read-only state of this style sheet */
+  /** a flag indicating the read-only state of this style sheet. */
   private boolean locked;
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelToolLibrary.java,v 1.3 2003/02/04 17:56:32 taqua Exp $
+ * $Id: ExcelToolLibrary.java,v 1.4 2003/02/20 00:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -60,6 +60,9 @@ public class ExcelToolLibrary
    * smallest tripplet difference and where all tripplets are nearest to the
    * requested color. Damn, why couldn't these guys from microsoft implement
    * a real color system.
+   *
+   * @param awtColor the awt color that should be transformed into an Excel color.
+   * @return the excel color index that is nearest to the supplied color. 
    */
   public static short getNearestColor(Color awtColor)
   {

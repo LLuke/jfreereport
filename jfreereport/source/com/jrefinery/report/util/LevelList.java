@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelList.java,v 1.4 2002/12/02 17:44:50 taqua Exp $
+ * $Id: LevelList.java,v 1.5 2002/12/05 16:48:12 mungady Exp $
  *
  * Changes
  * -------
@@ -69,12 +69,17 @@ public class LevelList implements Cloneable
     }
 
     /**
-     * Compares two objects.
+     * Compares its two arguments for order.  Returns a negative integer,
+     * zero, or a positive integer as the first argument is less than, equal
+     * to, or greater than the second.<p>
      *
-     * @param o1  object1
-     * @param o2  object2
-     *
-     * @return int
+     * @param o1 the first object to be compared.
+     * @param o2 the second object to be compared.
+     * @return a negative integer, zero, or a positive integer as the
+     * 	       first argument is less than, equal to, or greater than the
+     *	       second.
+     * @throws ClassCastException if the arguments' types prevent them from
+     * 	       being compared by this Comparator.
      */
     public int compare(Object o1, Object o2)
     {

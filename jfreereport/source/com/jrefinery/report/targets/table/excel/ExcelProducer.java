@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.9 2003/02/18 19:37:35 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.10 2003/02/20 00:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -74,24 +74,26 @@ public class ExcelProducer extends TableProducer
   /** The output stream. */
   private OutputStream out;
 
-  /** The Excel cell style factory */
+  /** The Excel cell style factory. */
   private ExcelCellDataFactory cellDataFactory;
 
-  /** factor for transformation of internal scale to excel scale */
+  /** factor for transformation of internal scale to excel scale. */
   private static final int XFACTOR = 43;
 
-  /** factor for transformation of internal scale to excel scale */
+  /** factor for transformation of internal scale to excel scale. */
   private static final int YFACTOR = 30;
 
   /** the excel workbook represents the excel document. */
   private HSSFWorkbook workbook;
-  /** the current excel sheet */
+  /** the current excel sheet. */
   private HSSFSheet sheet;
 
   /**
    * Creates a new ExcelOutputTarget.
    *
    * @param out  the output stream.
+   * @param strict true, if a stricter layout should be used, false otherwise.
+   * @see com.jrefinery.report.targets.table.TableGrid#isStrict
    */
   public ExcelProducer(OutputStream out, boolean strict)
   {

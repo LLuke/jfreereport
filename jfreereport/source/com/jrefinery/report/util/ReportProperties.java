@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportProperties.java,v 1.14 2003/01/16 15:35:35 taqua Exp $
+ * $Id: ReportProperties.java,v 1.15 2003/02/05 17:56:03 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,7 @@ public class ReportProperties implements Serializable, Cloneable
   /** Storage for the properties. */
   private Hashtable properties;
 
-  /** Marked properties? */
+  /** Marked property names. */
   private TreeSet markedProperties;
 
   /**
@@ -236,7 +236,7 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @param property  the property key.
    *
-   * @return boolean.
+   * @return true for marked properties, false otherwise.
    */
   public boolean isMarked(String property)
   {

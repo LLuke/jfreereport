@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellDataFactory.java,v 1.9 2003/02/21 18:12:49 taqua Exp $
+ * $Id: HtmlCellDataFactory.java,v 1.10 2003/02/22 18:52:30 taqua Exp $
  *
  * Changes
  * -------
@@ -58,9 +58,9 @@ import java.awt.geom.Rectangle2D;
  */
 public class HtmlCellDataFactory extends AbstractTableCellDataFactory
 {
-  /** The StyleCollection stores all previously created CellStyles for later reuse */
+  /** The StyleCollection stores all previously created CellStyles for later reuse. */
   private HtmlStyleCollection styleCollection;
-  /** A flag indicating whether to use XHTML */
+  /** A flag indicating whether to use XHTML. */
   private final boolean useXHTML;
 
   /**

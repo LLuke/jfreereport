@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FlowPageLayouter.java,v 1.5 2003/02/02 23:43:52 taqua Exp $
+ * $Id: FlowPageLayouter.java,v 1.6 2003/02/17 16:07:20 taqua Exp $
  *
  * Changes
  * -------
@@ -148,7 +148,7 @@ public class FlowPageLayouter extends PageLayouter
   }
 
   /**
-   * A detector whether the last pagebreak was a manual pagebreak or an automatic one
+   * A detector whether the last pagebreak was a manual pagebreak or an automatic one.
    *
    * @return true or false.
    */

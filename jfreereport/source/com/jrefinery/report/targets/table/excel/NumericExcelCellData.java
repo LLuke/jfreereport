@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: NumericExcelCellData.java,v 1.4 2003/02/17 22:01:44 taqua Exp $
+ * $Id: NumericExcelCellData.java,v 1.5 2003/02/20 00:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import java.awt.geom.Rectangle2D;
  */
 public class NumericExcelCellData extends ExcelCellData
 {
-  /** the number stored in this cell */
+  /** the number stored in this cell. */
   private Number number;
   /** the number format string. */
   private String format;

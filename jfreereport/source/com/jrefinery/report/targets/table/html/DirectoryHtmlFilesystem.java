@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.7 2003/02/21 18:12:49 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.8 2003/02/24 20:13:59 taqua Exp $
  *
  * Changes
  * -------
@@ -70,21 +70,44 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     public int count;
   }
 
+  /** the root file to store the generated main html file. */
   private File rootFile;
+  /** the handle to the data directory. */
   private File dataDirectory;
+  /** the root stream for writing the file. */
   private FileOutputStream rootStream;
+  /** A collection of all used file names for generating external content. */
   private Hashtable usedNames;
+  /** A collection of all referenced external content. */
   private Hashtable usedURLs;
+  /** A collection of all previously encoded images. */
   private Hashtable encodedImages;
+  /** the image comparator used to compare generated images. */
   private ImageComparator comparator;
+  /** A flag indicating whether to copy external references into the data directory. */
   private boolean copyExternalImages;
 
+  /**
+   * Creates a new DirectoryHtmlFilesystem, using the <code>file</code> as root
+   * file and the file's directory as data directory to store the generated data files.
+   *
+   * @param file the filename of the root html file.
+   * @throws IOException if an error occurs.
+   */
   public DirectoryHtmlFilesystem (File file)
     throws IOException
   {
     this (file, file.getParentFile());
   }
 
+  /**
+   * Creates a new DirectoryHtmlFilesystem, using the <code>file</code> as root
+   * file and the <code>dataDirectory</code> to store the generated data files.
+   *
+   * @param file the filename of the root html file.
+   * @param dataDirectory the name of the data directory, where the files should be created.
+   * @throws IOException if an error occurs.
+   */
   public DirectoryHtmlFilesystem (File file, File dataDirectory)
     throws IOException
   {

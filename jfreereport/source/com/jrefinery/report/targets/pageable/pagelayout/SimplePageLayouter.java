@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.33 2003/02/22 18:52:30 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.34 2003/02/25 09:55:53 taqua Exp $
  *
  * Changes
  * -------
@@ -48,12 +48,11 @@ package com.jrefinery.report.targets.pageable.pagelayout;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
-import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.function.Expression;
+import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.pageable.LogicalPage;
@@ -124,13 +123,14 @@ public class SimplePageLayouter extends PageLayouter
     }
   }
 
-  /** small carrier class to transport the maximum page number for this report */
+  /** small carrier class to transport the maximum page number for this report. */
   private static class PageCarrier
   {
+    /** stores the last page number of the report processing. */
     public int maxPages;
   }
 
-  /** the page carrier for this pagelayouter contains the number of the last page */
+  /** the page carrier for this pagelayouter contains the number of the last page. */
   private PageCarrier pageCarrier;
 
   /** A useful constant. */
@@ -662,6 +662,8 @@ public class SimplePageLayouter extends PageLayouter
    *
    * @param b  the band.
    * @param spool  a flag that controls whether or not to spool.
+   * @return true, if the band was printed, and false if the printing is delayed
+   * until a new page gets started.
    *
    * @throws ReportProcessingException if the printing failed
    */
@@ -682,6 +684,8 @@ public class SimplePageLayouter extends PageLayouter
    * Prints a band at the bottom of the page.
    *
    * @param b  the band.
+   * @return true, if the band was printed, and false if the printing is delayed
+   * until a new page gets started.
    *
    * @throws ReportProcessingException if the printing failed
    */
@@ -726,6 +730,8 @@ public class SimplePageLayouter extends PageLayouter
    * already done, all Elements contain a valid BOUNDS property.
    * @param spool  a flag that controls whether to print the contents directly
    * or to cache the printing operation for later usage.
+   * @return true, if the band was printed, and false if the printing is delayed
+   * until a new page gets started.
    * @see com.jrefinery.report.targets.pageable.LogicalPage#spoolBand
    *
    * @throws ReportProcessingException if the printing caused an detectable error
@@ -907,6 +913,13 @@ public class SimplePageLayouter extends PageLayouter
     isLastPageBreak = false;
   }
 
+  /**
+   * Handles the restarting of the page. Fires the pageStarted event and prints
+   * the pageheader. Restarting the page is done once after the PageLayouterState
+   * was restored.
+   *
+   * @throws ReportProcessingException if restarting the page failed.
+   */
   public void restartPage () throws ReportProcessingException
   {
     if (isPageRestartDone())
@@ -980,11 +993,24 @@ public class SimplePageLayouter extends PageLayouter
     }
   }
 
+  /**
+   * Returns true, if the PageLayouter has successfully started a new page. The
+   * start of the new page is delayed, until the first content is printed.
+   *
+   * @return true, if a new page has already been started, false otherwise.
+   */
   public boolean isNewPageStarted()
   {
     return startNewPage;
   }
 
+  /**
+   * Defines whether the PageLayouter has successfully started a new page. The
+   * start of the new page is delayed, until the first content is printed, this
+   * flag is used to keep track of the page initialization state.
+   *
+   * @param startNewPage true, if a new page has already been started, false otherwise.
+   */
   public void setStartNewPage(boolean startNewPage)
   {
     this.startNewPage = startNewPage;

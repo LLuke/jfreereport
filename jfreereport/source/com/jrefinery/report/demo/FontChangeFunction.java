@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontChangeFunction.java,v 1.9 2002/12/12 12:26:55 mungady Exp $
+ * $Id: FontChangeFunction.java,v 1.10 2003/02/25 14:07:18 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public class FontChangeFunction extends AbstractFunction
 {
 
   /**
-   * DefaultConstructor
+   * DefaultConstructor.
    */
   public FontChangeFunction ()
   {
@@ -153,7 +153,7 @@ public class FontChangeFunction extends AbstractFunction
    * Returns the value calculated by this function. As this function does not calculate values,
    * this method does always return null.
    *
-   * @return null.
+   * @return always null, as this function does not calculate something.
    */
   public Object getValue ()
   {
