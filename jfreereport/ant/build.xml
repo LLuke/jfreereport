@@ -76,6 +76,7 @@
     </target>
 
     <!-- Compile the JFreeReport DEMO classes -->
+    <!-- This target creates a jar file containing all the classes. -->
     <target name="compile-jfreereport-demo" depends="compile-jfreereport"
             description="Compile the JFreeReport demo source code.">
 
@@ -102,7 +103,12 @@
 
 	<!-- make the jar file -->
         <jar jarfile="${basedir}/${jfreereport.name}-${jfreereport.version}-demo.jar"
-             basedir="${basedir}/build" />
+             basedir="${basedir}/build">
+            <manifest>
+                <attribute name="Main-Class" value="com.jrefinery.report.demo.JFreeReportDemo" />
+                <attribute name="Class-Path" value="${jfreereport.name}-${jfreereport.version}.jar ${jfreereport.name}-${jfreereport.version}-demo.jar lib/gnujaxp.jar lib/iText-0.95.jar lib/jcommon-0.7.1.jar lib/pixie.jar lib/bsh-1.2b6.jar"/>
+            </manifest> 
+        </jar>
         
         <!-- remove the temp build area -->
         <delete dir="${basedir}/build" />
