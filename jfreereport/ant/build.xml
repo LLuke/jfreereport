@@ -147,6 +147,11 @@
             <fileset dir="${basedir}/source" />
         </copy>
 
+        <!-- copy across lib files -->
+        <copy todir="${basedir}/distribution/lib">
+            <fileset dir="${basedir}/lib" />
+        </copy>
+
         <!-- copy across ant build file (this file) -->
         <copy todir="${basedir}/distribution/ant">
             <fileset dir="${basedir}/ant" />
@@ -172,28 +177,66 @@
 
     </target>
 
-    <!-- Make .zip archive for required libs -->
-    <target name="make-lib-zip" depends="init-jfreereport">
-        <zip zipfile="${basedir}/${jfreereport.name}-${jfreereport.version}-libs.zip">
-             <zipfileset dir="${basedir}/lib"
-                         prefix="" />
-        </zip>
-    </target>
+    <!-- Make .tar.gz distribution for JFreeReport -->
+    <target name="make-jfreereport-targz" depends="compile-jfreereport-demo">
 
-    <!-- Make .tar.gz archive for required libs -->
-    <target name="make-lib-targz" depends="init-jfreereport">
-        <tar tarfile="${basedir}/${jfreereport.name}-${jfreereport.version}-libs.tar">
-            <tarfileset dir="${basedir}/lib"
-                        prefix="" />
+        <!-- make a temporary distribution directory -->
+        <mkdir dir="${basedir}/distribution" />
+
+        <!-- copy across README -->
+        <copy file="${basedir}/README" tofile="${basedir}/distribution/README" />
+
+        <!-- copy across CHANGELOG -->
+        <copy file="${basedir}/CHANGELOG" tofile="${basedir}/distribution/CHANGELOG" />
+
+        <!-- copy across LICENCE -->
+        <copy file="${basedir}/licence-LGPL.txt" tofile="${basedir}/distribution/licence-LGPL.txt" />
+
+        <!-- copy across runtime jar file and demo jar file -->
+        <copy file="${basedir}/${jfreereport.name}-${jfreereport.version}.jar" tofile="${basedir}/distribution/${jfreereport.name}-${jfreereport.version}.jar" />
+        <copy file="${basedir}/${jfreereport.name}-${jfreereport.version}-demo.jar" tofile="${basedir}/distribution/${jfreereport.name}-${jfreereport.version}-demo.jar" />
+    
+        <!-- copy across source files -->
+        <copy todir="${basedir}/distribution/source">
+            <fileset dir="${basedir}/source" />
+        </copy>
+
+        <!-- copy across lib files -->
+        <copy todir="${basedir}/distribution/lib">
+            <fileset dir="${basedir}/lib" />
+        </copy>
+
+        <!-- copy across ant build file (this file) -->
+        <copy todir="${basedir}/distribution/ant">
+            <fileset dir="${basedir}/ant" />
+        </copy>
+
+        <!-- copy across checkstyle property file -->
+        <copy todir="${basedir}/distribution/checkstyle">
+            <fileset dir="${basedir}/checkstyle" />
+        </copy>
+
+        <!-- convert end-of-line characters in text files -->
+        <fixcrlf srcdir="${basedir}/distribution/source"
+                 eol="lf" eof="add" />
+
+        <!-- make the tar.gz file -->
+        <tar tarfile="${basedir}/${jfreereport.name}-${jfreereport.version}.tar">
+             <tarfileset dir="${basedir}/distribution"
+                         prefix="${jfreereport.name}-${jfreereport.version}" />
         </tar>
-        <gzip zipfile="${basedir}/${jfreereport.name}-${jfreereport.version}-libs.tar.gz"   
-              src="${basedir}/${jfreereport.name}-${jfreereport.version}-libs.tar" />
-        <delete file="${basedir}/${jfreereport.name}-${jfreereport.version}-libs.tar" />
+        <gzip zipfile="${basedir}/${jfreereport.name}-${jfreereport.version}.tar.gz"   
+              src="${basedir}/${jfreereport.name}-${jfreereport.version}.tar" />
+        <delete file="${basedir}/${jfreereport.name}-${jfreereport.version}.tar" />
+
+        <!-- delete the temporary distribution directory -->
+        <delete dir="${basedir}/distribution" />
+
     </target>
 
     <!-- ALL -->
     <target name="all" 
-            depends="compile-jfreereport,compile-jfreereport-demo,javadoc-jfreereport,make-jfreereport-zip,make-lib-zip,make-lib-targz"
+            depends="compile-jfreereport,compile-jfreereport-demo,javadoc-jfreereport,make-jfreereport-zip,make-jfreereport-targz"
             description="Compiles JFreeReport, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
     </target>
 
