@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: WmfFile.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: WmfFile.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,7 @@ import org.jfree.pixie.wmf.records.MfCmdSetWindowExt;
 import org.jfree.pixie.wmf.records.MfCmdSetWindowOrg;
 import org.jfree.pixie.wmf.records.CommandFactory;
 import org.jfree.ui.Drawable;
+import org.jfree.util.Log;
 
 /**
  * Parses and replays the WmfFile.
@@ -90,8 +91,13 @@ public class WmfFile implements Drawable
   private ArrayList records;
   private Graphics2D graphics;
 
-  private int maxX = 0;
-  private int maxY = 0;
+  private int maxWidth = 0;
+  private int maxHeight = 0;
+  private int imageWidth = 0;
+  private int imageHeight = 0;
+
+  private int minX = 0;
+  private int minY = 0;
   private int imageX = 0;
   private int imageY = 0;
 
@@ -130,14 +136,19 @@ public class WmfFile implements Drawable
   {
     this.inName = inName;
     this.in = in;
-    this.imageX = imageX;
-    this.imageY = imageY;
+    this.imageWidth = imageX;
+    this.imageHeight = imageY;
     records = new ArrayList();
     dcStack = new Stack();
     palette = new MfPalette();
     resetStates();
     readHeader();
     parseRecords();
+  }
+
+  public Dimension getImageSize ()
+  {
+    return new Dimension (maxWidth, maxHeight);
   }
 
   public void resetStates()
@@ -177,7 +188,7 @@ public class WmfFile implements Drawable
    */
   public void assertValid()
   {
-    if ((filePos >= 0 && filePos <= fileSize) == false)
+    if (filePos < 0 || filePos > fileSize)
     {
       throw new IllegalStateException("WmfFile is not valid");
     }
@@ -225,11 +236,13 @@ public class WmfFile implements Drawable
    */
   protected void parseRecords() throws IOException
   {
-    int curX = 0;
-    int curY = 0;
+    minX = Integer.MAX_VALUE;
+    minY = Integer.MAX_VALUE;
+    maxWidth = 0;
+    maxHeight = 0;
 
     final CommandFactory cmdFactory = CommandFactory.getInstance();
-    MfRecord mf = null;
+    MfRecord mf;
     while ((mf = readNextRecord()) != null)
     {
       final MfCmd cmd = cmdFactory.getCommand(mf.getType());
@@ -245,15 +258,17 @@ public class WmfFile implements Drawable
         {
           final MfCmdSetWindowOrg worg = (MfCmdSetWindowOrg) cmd;
           final Point p = worg.getTarget();
-          curX = p.x;
-          curY = p.y;
+          minX = Math.min (p.x, minX);
+          minY = Math.min (p.y, minY);
         }
         else if (cmd.getFunction() == MfType.SET_WINDOW_EXT)
         {
           final MfCmdSetWindowExt worg = (MfCmdSetWindowExt) cmd;
           final Dimension d = worg.getDimension();
-          maxX = Math.max(maxX, curX + d.width);
-          maxY = Math.max(maxY, curY + d.height);
+          maxWidth = Math.max(maxWidth, d.width);
+          maxHeight = Math.max(maxHeight, d.height);
+          System.out.println("New Maximum size: " + d);
+          System.out.println("New Maximum size: " + maxWidth + ", " + maxHeight);
         }
         records.add(cmd);
       }
@@ -261,8 +276,19 @@ public class WmfFile implements Drawable
     in.close();
     in = null;
 
+    // make sure that we don't have invalid values in case no
+    // setWindow records were found ...
+    if (minX == Integer.MAX_VALUE)
+    {
+      minX = 0;
+    }
+    if (minY == Integer.MAX_VALUE)
+    {
+      minY = 0;
+    }
+
     //System.out.println(records.size() + " records read");
-    //System.out.println("Image Extends: " + maxX + " " + maxY);
+    //System.out.println("Image Extends: " + maxWidth + " " + maxHeight);
     scaleToFit(MAX_PICTURE_SIZE, MAX_PICTURE_SIZE);
   }
 
@@ -271,8 +297,8 @@ public class WmfFile implements Drawable
    */
   public void scaleToFit(final float fitWidth, final float fitHeight)
   {
-    final float percentX = (fitWidth * 100) / maxX;
-    final float percentY = (fitHeight * 100) / maxY;
+    final float percentX = (fitWidth * 100) / maxWidth;
+    final float percentY = (fitHeight * 100) / maxHeight;
     scalePercent(percentX < percentY ? percentX : percentY);
   }
 
@@ -296,8 +322,10 @@ public class WmfFile implements Drawable
    */
   public void scalePercent(final float percentX, final float percentY)
   {
-    imageX = (int) ((maxX * percentX) / 100f);
-    imageY = (int) ((maxY * percentY) / 100f);
+    imageWidth = (int) ((maxWidth * percentX) / 100f);
+    imageHeight = (int) ((maxHeight * percentY) / 100f);
+    imageX = (int) ((minX * percentX) / 100f);
+    imageY = (int) ((minY * percentY) / 100f);
   }
 
   public static void main(final String[] args) throws Exception
@@ -368,7 +396,7 @@ public class WmfFile implements Drawable
 
   public void deleteObject(final int slot)
   {
-    if (((slot >= 0) && (slot < objects.length)) == false)
+    if ((slot < 0) || (slot >= objects.length))
       throw new IllegalArgumentException("Range violation");
 
     objects[slot] = null;
@@ -376,7 +404,7 @@ public class WmfFile implements Drawable
 
   public WmfObject getObject(final int slot)
   {
-    if (((slot >= 0) && (slot < objects.length)) == false)
+    if ((slot < 0) || (slot >= objects.length))
       throw new IllegalStateException("Range violation");
 
     return objects[slot];
@@ -408,8 +436,14 @@ public class WmfFile implements Drawable
 
   public synchronized BufferedImage replay()
   {
+    return replay(imageWidth, imageHeight);
+  }
+
+
+  public synchronized BufferedImage replay(final int imageX, final int imageY)
+  {
     final BufferedImage image = new BufferedImage(imageX, imageY, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D graphics = image.createGraphics();
+    final Graphics2D graphics = image.createGraphics();
 
     // clear the image area ...
     graphics.setPaint(new Color (0,0,0,0));
@@ -417,17 +451,19 @@ public class WmfFile implements Drawable
 
     draw(graphics, new Rectangle2D.Float (0,0, imageX, imageY));
     graphics.dispose();
-    graphics = null;
     return image;
   }
 
   public void draw(final Graphics2D graphics, final Rectangle2D bounds)
   {
 
-    // this adjusts imageX and imageY
+    // this adjusts imageWidth and imageHeight
     scaleToFit((float) bounds.getWidth(), (float) bounds.getHeight());
     // adjust translation if needed ...
     graphics.translate(-bounds.getX(), -bounds.getY());
+    // adjust to the image origin
+    Log.debug("Dimensions: " + imageX + " " + imageY);
+    graphics.translate(-imageX, -imageY);
 
     this.graphics = graphics;
 
@@ -437,7 +473,7 @@ public class WmfFile implements Drawable
       try
       {
         final MfCmd command = (MfCmd) records.get(i);
-        command.setScale((float) imageX / (float) maxX, (float) imageY / (float) maxY);
+        command.setScale((float) imageWidth / (float) maxWidth, (float) imageHeight / (float) maxHeight);
         command.replay(this);
       }
       catch (Exception e)

@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfDcState.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfDcState.java,v 1.3 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -165,7 +165,10 @@ public class MfDcState implements Cloneable
     this.breakCount = copy.breakCount;
     this.extraSpaceLength = copy.extraSpaceLength;
 
-    this.clipRegion = new Rectangle (copy.clipRegion);
+    if (copy.clipRegion != null)
+    {
+      this.clipRegion = new Rectangle (copy.clipRegion);
+    }
   }
 
   public void restoredState ()
@@ -554,5 +557,11 @@ public class MfDcState implements Cloneable
   public MfLogPalette getLogPalette()
   {
     return logPalette;
+  }
+
+  public Object clone ()
+          throws CloneNotSupportedException
+  {
+    return super.clone();
   }
 }

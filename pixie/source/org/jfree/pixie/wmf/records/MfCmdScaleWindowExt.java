@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdScaleWindowExt.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdScaleWindowExt.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,6 @@ package org.jfree.pixie.wmf.records;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 public class MfCmdScaleWindowExt extends MfCmd
 {

@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: Buffer.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
+ * $Id: Buffer.java,v 1.3 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -212,7 +212,9 @@ public class Buffer
   public int getShort (final int offset)
   {
     if (offset > (getLength() - 2))
-      throw new IndexOutOfBoundsException();
+      throw new IndexOutOfBoundsException
+              ("Offset " + offset + " is out of limit. " +
+              "Max length is " + (getLength() - 2));
 
     return (bytes[offset] & 0x0ff) | (bytes[offset + 1] << 8);
   }

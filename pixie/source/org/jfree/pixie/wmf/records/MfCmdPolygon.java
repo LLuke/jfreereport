@@ -28,21 +28,20 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdPolygon.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdPolygon.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+
 import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Graphics2D;
-import java.awt.Polygon;
 
 /**
  * The Polygon function draws a polygon consisting of two or more vertices connected

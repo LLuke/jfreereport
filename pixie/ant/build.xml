@@ -20,14 +20,14 @@
     <property name="projectdir" value=".."/>
     <property name="builddir" value="${projectdir}/build"/>
     <property name="libdir" value="${projectdir}/lib"/>
-    <property name="JCommon-jar" value="jcommon-0.9.1a.jar"/>
+    <property name="JCommon-jar" value="jcommon-0.9.7.jar"/>
 
     <path id="build.classpath">
       <pathelement location="${libdir}/${JCommon-jar}"/>
     </path>
 
     <property name="pixie.name" value="pixie"/>
-    <property name="pixie.version" value="0.8.1"/>
+    <property name="pixie.version" value="0.8.2"/>
   </target>
 
   <!-- Compile the Pixie classes -->

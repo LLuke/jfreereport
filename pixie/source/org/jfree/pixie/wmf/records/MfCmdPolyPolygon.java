@@ -28,21 +28,22 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdPolyPolygon.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdPolyPolygon.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.geom.GeneralPath;
+
 import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Graphics2D;
-import java.awt.Polygon;
+import org.jfree.util.Log;
 
 /**
  * PolyPolygon, is a list of polygons, for filled polygons
@@ -74,23 +75,27 @@ public class MfCmdPolyPolygon extends MfCmd
 
     final MfDcState state = file.getCurrentState ();
 
+    final GeneralPath genPath = new GeneralPath();
     for (int i = 0; i < polycount; i++)
     {
       final int[] pointsX = getScaledPointsX (i);
       final int[] pointsY = getScaledPointsY (i);
       final Polygon polygon = new Polygon (pointsX, pointsY, pointsX.length);
-      if (state.getLogBrush ().isVisible ())
-      {
-        state.preparePaint ();
-        graph.fill (polygon);
-        state.postPaint ();
-      }
-      if (state.getLogPen ().isVisible ())
-      {
-        state.prepareDraw ();
-        graph.draw (polygon);
-        state.postDraw ();
-      }
+
+      genPath.append(polygon, false);
+    }
+
+    if (state.getLogBrush ().isVisible ())
+    {
+      state.preparePaint ();
+      graph.fill (genPath);
+      state.postPaint ();
+    }
+    if (state.getLogPen ().isVisible ())
+    {
+      state.prepareDraw ();
+      graph.draw (genPath);
+      state.postDraw ();
     }
   }
 
@@ -157,31 +162,40 @@ public class MfCmdPolyPolygon extends MfCmd
   public void setRecord (final MfRecord record)
   {
     final int numberOfPolygons = record.getParam (0);
+    Log.debug("Number Of Polygons: " + numberOfPolygons);
     final int[] count = new int[numberOfPolygons];
     final Object[] poly_points_x = new Object[numberOfPolygons];
     final Object[] poly_points_y = new Object[numberOfPolygons];
 
-    int numberOfPointsRead = 0;
     // read the length of each polygon
     for (int i = 0; i < numberOfPolygons; i++)
     {
       final int numberOfPointsInPolygon = record.getParam (1 + i);
+      Log.debug("Number Of points in polygon: " + numberOfPointsInPolygon);
       count[i] = numberOfPointsInPolygon;
+    }
 
+    // getLength?
+    Log.debug ("record.getLength(): " + (record.getLength() / 2));
+    // for each polygon, read the points ...
+    int readPosition = 1 + numberOfPolygons;
+    for (int i = 0; i < numberOfPolygons; i++)
+    {
       // Position of the points depends on the number of points
       // of the previous polygons
-      final int[] points_x = new int[numberOfPointsInPolygon];
-      final int[] points_y = new int[numberOfPointsInPolygon];
+      final int numberOfPoints = count[i];
+      final int[] points_x = new int[numberOfPoints];
+      final int[] points_y = new int[numberOfPoints];
       // read position is after numPolygonPointsRead + noOfPolygons + 1 (for the first parameter)
-      final int readPos = numberOfPointsRead * 2 + numberOfPolygons + 1;
-      for (int j = 0; j < numberOfPointsInPolygon; j++)
+      for (int point = 0; point < numberOfPoints; point += 1)
       {
-        points_x[j] = record.getParam ((readPos + 1) + j * 2);
-        points_y[j] = record.getParam ((readPos + 2) + j * 2);
+        points_x[point] = record.getParam (readPosition);
+        readPosition += 1;
+        points_y[point] = record.getParam (readPosition);
+        readPosition += 1;
       }
       poly_points_x[i] = points_x;
       poly_points_y[i] = points_y;
-      numberOfPointsRead += numberOfPointsInPolygon;
     }
     setPolygonCount (numberOfPolygons);
     setPoints (poly_points_x, poly_points_y);

@@ -5,6 +5,7 @@ import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
 import org.jfree.pixie.wmf.records.MfCmd;
+import org.jfree.util.Log;
 
 public class MfCmdSetPolyFillMode extends MfCmd
 {
