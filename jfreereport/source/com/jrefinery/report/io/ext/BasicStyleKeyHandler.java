@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicStyleKeyHandler.java,v 1.9 2003/04/23 13:39:20 taqua Exp $
+ * $Id: BasicStyleKeyHandler.java,v 1.10 2003/04/24 18:08:48 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import com.jrefinery.report.targets.style.StyleKey;
 import com.jrefinery.report.util.CharacterEntityParser;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
+import org.jfree.xml.factory.objects.ClassFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -79,6 +80,8 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
   /** A character entity parser. */
   private CharacterEntityParser entityParser;
 
+  /** The ClassFactory used to create the basic key objects. */
+  private ClassFactory classFactory;
   /**
    * Creates a new BasicStyleKeyHandler handler.
    *
@@ -97,7 +100,7 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
     this.finishTag = finishTag;
     this.buffer = new StringBuffer();
     keyfactory = (StyleKeyFactory)
-        getParser().getConfigurationValue(ParserConfigHandler.STYLEKEY_FACTORY_TAG);
+        getParser().getHelperObject(ParserConfigHandler.STYLEKEY_FACTORY_TAG);
     key = keyfactory.getStyleKey(name);
     if (key == null)
     {
@@ -110,6 +113,12 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
     else
     {
       this.keyValueClass = c;
+    }
+    classFactory = (ClassFactory)
+        getParser().getHelperObject(ParserConfigHandler.OBJECT_FACTORY_TAG);
+    if (classFactory == null)
+    {
+      throw new SAXException("There is no class factory defined for the parser.");
     }
   }
 
@@ -184,7 +193,7 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
   public Object getValue ()
   {
     return keyfactory.createBasicObject(key, entityParser.decodeEntities(buffer.toString()),
-                                        keyValueClass);
+                                        keyValueClass, classFactory);
   }
 
   /**

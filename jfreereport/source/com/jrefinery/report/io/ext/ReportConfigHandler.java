@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.10 2003/04/24 18:08:49 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.11 2003/05/02 12:40:08 taqua Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,15 @@ import org.xml.sax.SAXException;
  */
 public class ReportConfigHandler implements ElementDefinitionHandler
 {
+  /** The 'object-factory' tag name. */
+  public static final String OBJECT_FACTORY_TAG = ParserConfigHandler.OBJECT_FACTORY_TAG;
+
+  /** The 'datasource-factory' tag name. */
+  public static final String DATASOURCE_FACTORY_TAG = ParserConfigHandler.DATASOURCE_FACTORY_TAG;
+
+  /** The 'template-factory' tag name. */
+  public static final String TEMPLATE_FACTORY_TAG = ParserConfigHandler.TEMPLATE_FACTORY_TAG;
+
   /** The 'default page format' tag name. */
   public static final String DEFAULT_PAGEFORMAT_TAG = "defaultpageformat";
 
@@ -246,7 +255,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
    */
   private JFreeReport getReport ()
   {
-    return (JFreeReport) getParser().getConfigurationValue(
+    return (JFreeReport) getParser().getHelperObject(
         InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 

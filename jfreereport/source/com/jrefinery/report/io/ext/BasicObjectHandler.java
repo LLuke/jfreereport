@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicObjectHandler.java,v 1.10 2003/05/02 12:39:57 taqua Exp $
+ * $Id: BasicObjectHandler.java,v 1.11 2003/05/27 08:31:56 taqua Exp $
  *
  * Changes
  * -------
@@ -106,7 +106,7 @@ public class BasicObjectHandler implements ElementDefinitionHandler
     this.finishTag = finishTag;
     this.buffer = new StringBuffer();
 
-    ClassFactory fact = (ClassFactory) getParser().getConfigurationValue(
+    ClassFactory fact = (ClassFactory) getParser().getHelperObject(
         ParserConfigHandler.OBJECT_FACTORY_TAG);
     objectDescription = fact.getDescriptionForClass(targetObject);
     if (objectDescription == null)

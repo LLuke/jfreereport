@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.25 2003/04/09 16:10:29 mungady Exp $
+ * $Id: ElementStyleSheet.java,v 1.26 2003/05/30 18:47:48 taqua Exp $
  *
  * Changes
  * -------
@@ -798,5 +798,20 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     }
   }
 
-  
+  public boolean equals(Object o)
+  {
+    if (this == o) return true;
+    if (!(o instanceof ElementStyleSheet)) return false;
+
+    final ElementStyleSheet elementStyleSheet = (ElementStyleSheet) o;
+
+    if (!name.equals(elementStyleSheet.name)) return false;
+
+    return true;
+  }
+
+  public int hashCode()
+  {
+    return name.hashCode();
+  }
 }

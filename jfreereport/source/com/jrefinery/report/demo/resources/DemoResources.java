@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources.java,v 1.12 2002/12/12 12:26:55 mungady Exp $
+ * $Id: DemoResources.java,v 1.13 2003/05/02 12:39:42 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class DemoResources extends JFreeReportResources
   /** The resources to be localised. */
   private static final Object[][] CONTENTS = {
     {"project.name", "JFreeReport"},
-    {"project.version", "0.7.6"},
+    {"project.version", "0.8.3a"},
     {"project.info", "http://www.object-refinery.com/jfreereport/index.html"},
     {"project.copyright", "(C)opyright 2000-2002, by Simba Management Limited and Contributors"},
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.9 2003/04/23 13:39:21 taqua Exp $
+ * $Id: StylesHandler.java,v 1.10 2003/04/24 18:08:49 taqua Exp $
  *
  * Changes
  * -------
@@ -93,7 +93,7 @@ public class StylesHandler implements ElementDefinitionHandler
     }
     this.parser = parser;
     this.finishTag = finishTag;
-    styleCollection = (HashMap) getParser().getConfigurationValue(STYLES_COLLECTION);
+    styleCollection = (HashMap) getParser().getHelperObject(STYLES_COLLECTION);
     if (styleCollection == null)
     {
       throw new IllegalStateException("No styles collection found in the configuration");

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandHandler.java,v 1.9 2003/04/23 13:39:20 taqua Exp $
+ * $Id: BandHandler.java,v 1.10 2003/04/24 18:08:48 taqua Exp $
  *
  * Changes
  * -------
@@ -108,7 +108,7 @@ public class BandHandler extends ElementHandler
         throw new SAXException("The element's 'type' attribute is missing");
       }
 
-      ElementFactoryCollector fc = (ElementFactoryCollector) getParser().getConfigurationValue(
+      ElementFactoryCollector fc = (ElementFactoryCollector) getParser().getHelperObject(
           ParserConfigHandler.ELEMENT_FACTORY_TAG);
       Element element = fc.getElementForType(type);
 

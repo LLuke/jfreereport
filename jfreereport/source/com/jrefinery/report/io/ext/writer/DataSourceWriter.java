@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.9 2003/05/30 16:57:51 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.10 2003/06/01 19:11:42 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import com.jrefinery.report.util.Log;
 import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**
- * A data-source writer.
+ * A data-source writer. Writes datasources and templates.
  * 
  * @author Thomas Morgner.
  */
@@ -64,10 +64,15 @@ public class DataSourceWriter extends ObjectWriter
    * @param baseObject  the base object.
    * @param objectDescription the object description.
    */
-  public DataSourceWriter(ReportWriter reportWriter, Object baseObject, 
+  public DataSourceWriter(ReportWriter reportWriter, DataSource baseObject,
                           ObjectDescription objectDescription, int indent)
   {
     super(reportWriter, baseObject, objectDescription, indent);
+    if (DataSource.class.isAssignableFrom(objectDescription.getObjectClass()) == false)
+    {
+      throw new IllegalArgumentException("Expect a datasource description, but got "
+          + objectDescription.getObjectClass());
+    }
     dataSourceCollector = getReportWriter().getDataSourceCollector();
   }
 
@@ -91,11 +96,11 @@ public class DataSourceWriter extends ObjectWriter
 
       if (dsname == null)
       {
-        Log.debug ("Name: " + ds);
-        Log.debug ("ObjectDescription: " + dsDesc);
         throw new ReportWriterException("The datasource type is not registered: "
                                         + ds.getClass());
       }
+//      Log.debug ("Name: " + ds);
+//      Log.debug ("ObjectDescription: " + dsDesc);
 
       writeTag(writer, DataSourceHandler.DATASOURCE_TAG, "type", dsname, OPEN);
 

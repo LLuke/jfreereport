@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageURLElementTemplateDescription.java,v 1.4 2003/03/07 16:56:00 taqua Exp $
+ * $Id: ImageURLElementTemplateDescription.java,v 1.5 2003/05/16 15:28:59 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -43,6 +43,8 @@ import java.net.URL;
 import com.jrefinery.report.filter.templates.ImageURLElementTemplate;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
+import org.jfree.xml.factory.objects.ObjectDescription;
+import org.jfree.xml.Parser;
 
 /**
  * An image URL element template description.
@@ -71,7 +73,7 @@ public class ImageURLElementTemplateDescription extends AbstractTemplateDescript
     ImageURLElementTemplate t = (ImageURLElementTemplate) super.createObject();
     if (t.getBaseURL() == null)
     {
-      String baseURL = getConfig().getConfigProperty(Configuration.CONTENT_BASE_KEY);
+      String baseURL = getConfig().getConfigProperty(Parser.CONTENTBASE_KEY);
       try
       {
         URL bURL = new URL(baseURL);
@@ -79,7 +81,7 @@ public class ImageURLElementTemplateDescription extends AbstractTemplateDescript
       }
       catch (Exception e)
       {
-        Log.warn("BaseURL is invalid: ", e);
+        Log.warn(new Log.SimpleMessage ("BaseURL is invalid: ", baseURL), e);
       }
     }
     return t;

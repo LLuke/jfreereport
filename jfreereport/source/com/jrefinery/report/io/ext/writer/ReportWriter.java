@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.11 2003/05/02 17:16:00 taqua Exp $
+ * $Id: ReportWriter.java,v 1.12 2003/05/30 16:57:53 taqua Exp $
  *
  * Changes
  * -------
@@ -107,8 +107,6 @@ public class ReportWriter
     templateCollector = new TemplateCollector();
     this.report = report;
     this.encoding = encoding;
-    dataSourceCollector.configure(report.getReportConfiguration());
-    classFactoryCollector.configure(report.getReportConfiguration());
   }
 
   /**
@@ -242,6 +240,11 @@ public class ReportWriter
   public void write (Writer w) throws IOException, ReportWriterException
   {
     ReportDefinitionWriter writer = new ReportDefinitionWriter(this);
+
+    // configure all factories with the current report configuration ...
+    dataSourceCollector.configure(report.getReportConfiguration());
+    classFactoryCollector.configure(report.getReportConfiguration());
+    templateCollector.configure(report.getReportConfiguration());
     writer.write(w); // we start with indentation level 0
   }
 

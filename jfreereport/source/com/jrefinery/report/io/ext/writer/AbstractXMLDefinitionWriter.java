@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.9 2003/05/02 12:40:14 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.10 2003/05/30 16:57:51 taqua Exp $
  *
  * Changes
  * -------
@@ -185,7 +185,7 @@ public abstract class AbstractXMLDefinitionWriter
    *
    * @return The report writer.
    */
-  public ReportWriter getReportWriter()
+  protected ReportWriter getReportWriter()
   {
     return reportWriter;
   }
@@ -195,7 +195,7 @@ public abstract class AbstractXMLDefinitionWriter
    *
    * @return The report.
    */
-  public JFreeReport getReport()
+  protected JFreeReport getReport()
   {
     return getReportWriter().getReport();
   }
@@ -208,7 +208,7 @@ public abstract class AbstractXMLDefinitionWriter
    *
    * @throws IOException if there is an I/O problem.
    */
-  public void writeTag(Writer w, String name) throws IOException
+  protected void writeTag(Writer w, String name) throws IOException
   {
     indent(w, OPEN_TAG_INCREASE);
 
@@ -229,7 +229,7 @@ public abstract class AbstractXMLDefinitionWriter
    *
    * @throws IOException if there is an I/O problem.
    */
-  public void writeCloseTag(Writer w, String tag) throws IOException
+  protected void writeCloseTag(Writer w, String tag) throws IOException
   {
     // check whether the tag contains CData - we ma not indent such tags
     if (getSafeTags().isSafeForOpen(tag))
@@ -260,7 +260,7 @@ public abstract class AbstractXMLDefinitionWriter
    *
    * @throws IOException if there is an I/O problem.
    */
-  public void writeTag(Writer w, String name, String attributeName, String attributeValue,
+  protected void writeTag(Writer w, String name, String attributeName, String attributeValue,
                        boolean close) throws IOException
   {
     Properties attr = new Properties();
@@ -278,7 +278,7 @@ public abstract class AbstractXMLDefinitionWriter
    *
    * @throws IOException if there is an I/O problem.
    */
-  public void writeTag(Writer w, String name, Properties attributes, boolean close)
+  protected void writeTag(Writer w, String name, Properties attributes, boolean close)
       throws IOException
   {
     indent(w, OPEN_TAG_INCREASE);
@@ -408,7 +408,7 @@ public abstract class AbstractXMLDefinitionWriter
     }
   }
 
-  public int getIndentLevel()
+  protected int getIndentLevel()
   {
     return indentLevel;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractStyleKeyFactory.java,v 1.11 2003/05/02 12:40:11 taqua Exp $
+ * $Id: AbstractStyleKeyFactory.java,v 1.12 2003/05/27 08:32:37 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -42,7 +42,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import com.jrefinery.report.targets.style.StyleKey;
-import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
 
@@ -59,39 +58,12 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
   /** Storage for the keys. */  
   private HashMap knownKeys;
   
-  /** A class factory. */
-  private ClassFactory classFactory;
-
   /**
    * Creates a new factory. 
    */
   public AbstractStyleKeyFactory()
   {
     knownKeys = new HashMap();
-  }
-
-  /**
-   * Returns the class factory.
-   * 
-   * @return The class factory.
-   */
-  public ClassFactory getClassFactory()
-  {
-    return classFactory;
-  }
-
-  /**
-   * Sets the class factory.
-   * 
-   * @param classFactory  the class factory.
-   */
-  public void setClassFactory(ClassFactory classFactory)
-  {
-    if (classFactory == null) 
-    {
-      throw new NullPointerException();
-    }
-    this.classFactory = classFactory;
   }
 
   /**
@@ -125,7 +97,7 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
    * 
    * @return The object.
    */
-  public Object createBasicObject(StyleKey k, String value, Class c)
+  public Object createBasicObject(StyleKey k, String value, Class c, ClassFactory fc)
   {
     if (k == null)
     {
@@ -138,15 +110,15 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
       throw new NullPointerException();
     }
     
-    if (classFactory == null)
+    if (fc == null)
     {
       throw new NullPointerException("Class " + getClass());
     }
     
-    ObjectDescription od = classFactory.getDescriptionForClass(c);
+    ObjectDescription od = fc.getDescriptionForClass(c);
     if (od == null) 
     {
-      od = classFactory.getSuperClassObjectDescription(c, null);
+      od = fc.getSuperClassObjectDescription(c, null);
       if (od == null)
       {
         return null;
@@ -154,21 +126,6 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
     }
     od.setParameter("value", value);
     return od.createObject();
-  }
-
-  /**
-   * Initialise.
-   * 
-   * @param parser  the parser.
-   */
-  public void init(Parser parser)
-  {
-    ClassFactory f = (ClassFactory) parser.getConfigurationValue(OBJECT_FACTORY_TAG);
-    if (f == null)
-    {
-      throw new NullPointerException();
-    }
-    setClassFactory(f);
   }
 
   /**

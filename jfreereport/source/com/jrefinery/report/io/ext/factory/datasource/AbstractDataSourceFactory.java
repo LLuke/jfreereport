@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDataSourceFactory.java,v 1.8 2003/04/23 13:43:04 taqua Exp $
+ * $Id: AbstractDataSourceFactory.java,v 1.9 2003/04/24 18:08:50 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -84,7 +84,12 @@ public abstract class AbstractDataSourceFactory
    */
   public ObjectDescription getDataSourceDescription(String name)
   {
-    return (ObjectDescription) dataSources.get(name);
+    ObjectDescription od = (ObjectDescription) dataSources.get(name);
+    if (od != null)
+    {
+      return od.getInstance();
+    }
+    return null;
   }
 
   /**

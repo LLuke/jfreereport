@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceCollector.java,v 1.14 2003/05/14 22:26:38 taqua Exp $
+ * $Id: DataSourceCollector.java,v 1.15 2003/05/27 08:32:26 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -77,6 +77,10 @@ public class DataSourceCollector implements DataSourceFactory
   public void addFactory (DataSourceFactory factory)
   {
     factories.add (factory);
+    if (getConfig() != null)
+    {
+      factory.configure(getConfig());
+    }
   }
 
   /**
@@ -104,7 +108,7 @@ public class DataSourceCollector implements DataSourceFactory
       ObjectDescription o = fact.getDataSourceDescription(name);
       if (o != null) 
       {  
-        return o;
+        return o.getInstance();
       }
     }
     return null;
@@ -146,7 +150,7 @@ public class DataSourceCollector implements DataSourceFactory
       ObjectDescription o = fact.getDescriptionForClass(c);
       if (o != null) 
       { 
-        return o;
+        return o.getInstance();
       }
     }
     return null;
@@ -185,7 +189,11 @@ public class DataSourceCollector implements DataSourceFactory
         }
       }
     }
-    return knownSuperClass;
+    if (knownSuperClass != null)
+    {
+      return knownSuperClass.getInstance();
+    }
+    return null;
   }
 
   /**
@@ -233,9 +241,18 @@ public class DataSourceCollector implements DataSourceFactory
     Iterator it = factories.iterator();
     while (it.hasNext())
     {
-      ObjectDescription od = (ObjectDescription) it.next();
+      DataSourceFactory od = (DataSourceFactory) it.next();
       od.configure(config);
     }
 
   }
+
+    /**
+     * Returns the currently set configuration or null, if none was set.
+     *
+     * @return the configuration.
+     */
+    public Configuration getConfig() {
+        return config;
+    }
 }

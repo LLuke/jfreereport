@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.11 2003/05/02 16:34:20 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.12 2003/05/14 22:26:38 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,6 @@
 
 package com.jrefinery.report.io.ext;
 
-import java.net.URL;
 import java.util.HashMap;
 
 import com.jrefinery.report.JFreeReport;
@@ -104,13 +103,25 @@ public class ExtReportHandler implements ElementDefinitionHandler
     this.finishTag = finishTag;
 
     // create the initial JFreeReport object.
-    getParser().setConfigurationValue(REPORT_DEFINITION_TAG, new JFreeReport());
-    getParser().setConfigurationValue(StylesHandler.STYLES_COLLECTION, new HashMap());
+    JFreeReport report = new JFreeReport();
+    getParser().setHelperObject(REPORT_DEFINITION_TAG, report);
+    getParser().setHelperObject(StylesHandler.STYLES_COLLECTION, new HashMap());
     createClassFactoryHolder();
     createStyleKeyFactoryHolder();
     createTemplateFactoryHolder();
     createDataSourceFactoryHolder();
     createElementFactoryHolder();
+
+    DataSourceCollector dsfc =
+        (DataSourceCollector) getParser().getHelperObject(ParserConfigHandler.DATASOURCE_FACTORY_TAG);
+    dsfc.configure(getParser());
+    ClassFactoryCollector cffc =
+        (ClassFactoryCollector) getParser().getHelperObject(ParserConfigHandler.OBJECT_FACTORY_TAG);
+    cffc.configure(getParser());
+    TemplateCollector tffc =
+        (TemplateCollector) getParser().getHelperObject(ParserConfigHandler.TEMPLATE_FACTORY_TAG);
+    tffc.configure(getParser());
+
   }
 
   /**
@@ -171,7 +182,7 @@ public class ExtReportHandler implements ElementDefinitionHandler
    */
   private void createClassFactoryHolder ()
   {
-    ClassFactoryCollector fc = (ClassFactoryCollector) getParser().getConfigurationValue(
+    ClassFactoryCollector fc = (ClassFactoryCollector) getParser().getHelperObject(
         ParserConfigHandler.OBJECT_FACTORY_TAG);
     if (fc == null)
     {
@@ -179,7 +190,7 @@ public class ExtReportHandler implements ElementDefinitionHandler
 
       // special treatment for URLs, they need the content base information ...
       fc.addFactory(new URLClassFactory());
-      getParser().setConfigurationValue(ParserConfigHandler.OBJECT_FACTORY_TAG, fc);
+      getParser().setHelperObject(ParserConfigHandler.OBJECT_FACTORY_TAG, fc);
     }
   }
 
@@ -188,13 +199,12 @@ public class ExtReportHandler implements ElementDefinitionHandler
    */
   private void createStyleKeyFactoryHolder ()
   {
-    StyleKeyFactoryCollector fc = (StyleKeyFactoryCollector) getParser().getConfigurationValue(
+    StyleKeyFactoryCollector fc = (StyleKeyFactoryCollector) getParser().getHelperObject(
         ParserConfigHandler.STYLEKEY_FACTORY_TAG);
     if (fc == null)
     {
       fc = new StyleKeyFactoryCollector();
-      getParser().setConfigurationValue(ParserConfigHandler.STYLEKEY_FACTORY_TAG, fc);
-      fc.init(getParser());
+      getParser().setHelperObject(ParserConfigHandler.STYLEKEY_FACTORY_TAG, fc);
     }
   }
 
@@ -203,12 +213,12 @@ public class ExtReportHandler implements ElementDefinitionHandler
    */
   private void createTemplateFactoryHolder ()
   {
-    TemplateCollector fc = (TemplateCollector) getParser().getConfigurationValue(
+    TemplateCollector fc = (TemplateCollector) getParser().getHelperObject(
         ParserConfigHandler.TEMPLATE_FACTORY_TAG);
     if (fc == null)
     {
       fc = new TemplateCollector();
-      getParser().setConfigurationValue(ParserConfigHandler.TEMPLATE_FACTORY_TAG, fc);
+      getParser().setHelperObject(ParserConfigHandler.TEMPLATE_FACTORY_TAG, fc);
     }
   }
 
@@ -217,14 +227,14 @@ public class ExtReportHandler implements ElementDefinitionHandler
    */
   private void createDataSourceFactoryHolder ()
   {
-    DataSourceCollector fc = (DataSourceCollector) getParser().getConfigurationValue(
+    DataSourceCollector fc = (DataSourceCollector) getParser().getHelperObject(
         ParserConfigHandler.DATASOURCE_FACTORY_TAG);
     if (fc == null)
     {
       fc = new DataSourceCollector();
-      getParser().setConfigurationValue(ParserConfigHandler.DATASOURCE_FACTORY_TAG, fc);
+      getParser().setHelperObject(ParserConfigHandler.DATASOURCE_FACTORY_TAG, fc);
 
-      ClassFactoryCollector cfc = (ClassFactoryCollector) getParser().getConfigurationValue(
+      ClassFactoryCollector cfc = (ClassFactoryCollector) getParser().getHelperObject(
           ParserConfigHandler.OBJECT_FACTORY_TAG);
       cfc.addFactory(fc);
     }
@@ -235,12 +245,12 @@ public class ExtReportHandler implements ElementDefinitionHandler
    */
   private void createElementFactoryHolder ()
   {
-    ElementFactoryCollector fc = (ElementFactoryCollector) getParser().getConfigurationValue(
+    ElementFactoryCollector fc = (ElementFactoryCollector) getParser().getHelperObject(
         ParserConfigHandler.ELEMENT_FACTORY_TAG);
     if (fc == null)
     {
       fc = new ElementFactoryCollector();
-      getParser().setConfigurationValue(ParserConfigHandler.ELEMENT_FACTORY_TAG, fc);
+      getParser().setHelperObject(ParserConfigHandler.ELEMENT_FACTORY_TAG, fc);
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionHandler.java,v 1.8 2003/04/23 13:39:21 taqua Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.9 2003/04/24 18:08:49 taqua Exp $
  *
  * Changes
  * -------
@@ -209,7 +209,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
    */
   private JFreeReport getReport ()
   {
-    return (JFreeReport) getParser().getConfigurationValue(
+    return (JFreeReport) getParser().getHelperObject(
         InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyFactoryCollector.java,v 1.9 2003/04/24 18:08:52 taqua Exp $
+ * $Id: StyleKeyFactoryCollector.java,v 1.10 2003/05/02 12:40:12 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.jrefinery.report.targets.style.StyleKey;
-import org.jfree.xml.Parser;
+import org.jfree.xml.factory.objects.ClassFactory;
 
 /**
  * A style key factory.
@@ -112,27 +112,18 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
    * 
    * @return The object.
    */
-  public Object createBasicObject(StyleKey k, String value, Class c)
+  public Object createBasicObject(StyleKey k, String value, Class c, ClassFactory cf)
   {
     for (int i = 0; i < factories.size(); i++)
     {
       StyleKeyFactory fact = (StyleKeyFactory) factories.get(i);
-      Object o = fact.createBasicObject(k, value, c);
+      Object o = fact.createBasicObject(k, value, c, cf);
       if (o != null)
       {
         return o;
       }
     }
     return null;
-  }
-
-  /**
-   * Initialise.
-   * 
-   * @param parser  the parser.
-   */
-  public void init(Parser parser)
-  {
   }
 
   /**

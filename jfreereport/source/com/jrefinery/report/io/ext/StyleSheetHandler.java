@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.13 2003/04/23 13:39:21 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.14 2003/04/24 18:08:49 taqua Exp $
  *
  * Changes
  * -------
@@ -104,7 +104,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
     this.parser = parser;
     this.finishTag = finishTag;
     this.sheet = styleSheet;
-    styleCollection = (HashMap) getParser().getConfigurationValue(
+    styleCollection = (HashMap) getParser().getHelperObject(
         StylesHandler.STYLES_COLLECTION);
     if (styleCollection == null)
     {

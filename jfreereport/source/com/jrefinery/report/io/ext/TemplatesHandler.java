@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesHandler.java,v 1.9 2003/04/23 13:39:21 taqua Exp $
+ * $Id: TemplatesHandler.java,v 1.10 2003/04/24 18:08:49 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,7 @@ public class TemplatesHandler implements ElementDefinitionHandler
     this.parser = parser;
     this.finishTag = finishTag;
     templateCollector = (TemplateCollector)
-        getParser().getConfigurationValue(ParserConfigHandler.TEMPLATE_FACTORY_TAG);
+        getParser().getHelperObject(ParserConfigHandler.TEMPLATE_FACTORY_TAG);
     if (templateCollector == null)
     {
       throw new IllegalStateException("No template collector defined for this parser?");

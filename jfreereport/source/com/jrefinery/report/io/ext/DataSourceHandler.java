@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceHandler.java,v 1.8 2003/04/24 18:08:49 taqua Exp $
+ * $Id: DataSourceHandler.java,v 1.9 2003/05/02 12:40:02 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,7 @@ public class DataSourceHandler extends CompoundObjectHandler
   private static ObjectDescription lookupObjectDescription (Parser parser, String type)
     throws SAXException
   {
-    DataSourceCollector fc = (DataSourceCollector) parser.getConfigurationValue(
+    DataSourceCollector fc = (DataSourceCollector) parser.getHelperObject(
         ParserConfigHandler.DATASOURCE_FACTORY_TAG);
     ObjectDescription od = fc.getDataSourceDescription(type);
     if (od == null)

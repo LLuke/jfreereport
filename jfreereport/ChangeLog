@@ -2,6 +2,25 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+0.8.4    : 
+        * BugFix: Serialization works again. All functions are serializable
+          now.
+        
+        * BugFix: The report writer handles subclasses correctly
+        
+        * BugFix: The parser's extended report definition is working again.
+        
+        * BugFix: Unclean definitions in the ReportState, Band, Element and
+          DataRow classes.
+          
+        * BugFix: The excel and PDF target work again.
+        
+        * BugFix: Unclean definition in Group and GroupList methods removed.
+          Groups can no longer be composed in an invalid way.
+        ... 
+          
+        * Swedish translation
+
 0.8.3    : (26-May-2003)
         * BugFix: The report states where unclean when a pagebreak was issued,
           causing the printing and several computation functions to fail or to

@@ -28,7 +28,7 @@
  * Original Author:  Piotr Bzdyl;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_pl.java,v 1.3 2003/02/27 10:35:16 mungady Exp $
+ * $Id: DemoResources_pl.java,v 1.4 2003/05/02 12:39:43 taqua Exp $
  *
  * Changes
  * -------
@@ -64,11 +64,6 @@ public class DemoResources_pl extends JFreeReportResources
 
   /** The resources to be localised. */
   private static final Object[][] CONTENTS = {
-    {"project.name", "JFreeReport"},
-    {"project.version", "0.7.6"},
-    {"project.info", "http://www.object-refinery.com/jfreereport/index.html"},
-    {"project.copyright", "(C)opyright 2000-2002, by Simba Management Limited and Contributors"},
-
     // in the title pattern, leave in the '{0}' as it gets replaced with the version number
     {"main-frame.title.pattern", "JFreeReport {0} Demo"},
 

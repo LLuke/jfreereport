@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageURLFieldTemplateDescription.java,v 1.4 2003/03/07 16:56:00 taqua Exp $
+ * $Id: ImageURLFieldTemplateDescription.java,v 1.5 2003/05/16 15:29:00 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -41,9 +41,8 @@ package com.jrefinery.report.io.ext.factory.templates;
 import java.net.URL;
 
 import com.jrefinery.report.filter.templates.ImageURLFieldTemplate;
-import com.jrefinery.report.filter.templates.ImageURLElementTemplate;
-import org.jfree.util.Configuration;
 import org.jfree.util.Log;
+import org.jfree.xml.Parser;
 
 /**
  * An image URL field template description.
@@ -72,7 +71,7 @@ public class ImageURLFieldTemplateDescription extends AbstractTemplateDescriptio
     ImageURLFieldTemplate t = (ImageURLFieldTemplate) super.createObject();
     if (t.getBaseURL() == null)
     {
-      String baseURL = getConfig().getConfigProperty(Configuration.CONTENT_BASE_KEY);
+      String baseURL = getConfig().getConfigProperty(Parser.CONTENTBASE_KEY);
       try
       {
         URL bURL = new URL(baseURL);

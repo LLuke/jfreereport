@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.6 2003/03/18 18:28:44 taqua Exp $
+ * $Id: StylesWriter.java,v 1.7 2003/05/30 16:57:53 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ package com.jrefinery.report.io.ext.writer;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
@@ -55,7 +54,6 @@ import com.jrefinery.report.io.ext.StylesHandler;
 import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.util.Log;
 
 /**
  * A styles writer.
@@ -88,12 +86,12 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    */
   public void write(Writer writer) throws IOException, ReportWriterException
   {
-    Object[] styles = collectStyles();
+    ElementStyleSheet[] styles = collectStyles();
     writeTag(writer, ExtReportHandler.STYLES_TAG);
 
     for (int i = 0; i < styles.length; i++)
     {
-      ElementStyleSheet style = (ElementStyleSheet) styles[i];
+      ElementStyleSheet style = styles[i];
       writeTag(writer, StylesHandler.STYLE_TAG, "name", style.getName(), OPEN);
 
       StyleWriter stW = new StyleWriter(getReportWriter(), style, null, getIndentLevel());
@@ -109,7 +107,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    *
    * @return The styles.
    */
-  private Object[] collectStyles ()
+  private ElementStyleSheet[] collectStyles ()
   {
     JFreeReport report = getReport();
     collectStylesFromBand(report.getReportHeader());
@@ -124,33 +122,14 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
       collectStylesFromBand(g.getFooter());
     }
 
-    HashMap collectedStyles = new HashMap();
-
-    for (int i = 0; i < reportStyles.size(); i++)
-    {
-      ElementStyleSheet es = (ElementStyleSheet) reportStyles.get(i);
-      if (collectedStyles.containsKey(es.getName()))
-      {
-        Log.warn ("Duplciate stylesheet-template name: " + es.getName());
-      }
-      else
-      {
-        collectedStyles.put(es.getName(), es);
-      }
-    }
-
-    reportStyles.clear();
-
     //now sort the elements ...
-    TreeSet sortedSet = new TreeSet(new StylesComparator());
-    Iterator keys = collectedStyles.keySet().iterator();
-    while (keys.hasNext())
+    ElementStyleSheet[] styles = (ElementStyleSheet[])
+        reportStyles.toArray(new ElementStyleSheet[reportStyles.size()]);
+
+    for (int i = 0; i < styles.length; i++)
     {
-      String key = (String) keys.next();
-      Object value = collectedStyles.get(key);
-      sortedSet.add(value);
+      System.out.println(styles[i].getName());
     }
-    Object[] styles = sortedSet.toArray();
     return styles;
   }
 
@@ -169,7 +148,15 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
       ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
       addCollectableStyleSheet(es);
     }
+
     collectStylesFromElement(band);
+
+    Element[] elements = band.getElementArray();
+    for (int i = 0; i < elements.length; i++)
+    {
+      collectStylesFromElement(elements[i]);
+    }
+
   }
 
   /**
@@ -180,13 +167,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
   private void collectStylesFromElement (Element element)
   {
     ElementStyleSheet elementSheet = element.getStyle();
-
-    List parents = elementSheet.getParents();
-    for (int i = 0; i < parents.size(); i++)
-    {
-      ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
-      addCollectableStyleSheet(es);
-    }
+    addCollectableStyleSheet(elementSheet);
   }
 
   /**
@@ -209,6 +190,14 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
     {
       return;
     }
+
+    List parents = es.getParents();
+    for (int i = 0; i < parents.size(); i++)
+    {
+      ElementStyleSheet parentsheet = (ElementStyleSheet) parents.get(i);
+      addCollectableStyleSheet(parentsheet);
+    }
+
     if (reportStyles.contains(es) == false)
     {
       reportStyles.add(es);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.12 2003/05/30 16:57:51 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.13 2003/06/01 19:11:42 taqua Exp $
  *
  * Changes
  * -------
@@ -160,21 +160,11 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    */
   protected ObjectDescription getParameterDescription (String name)
   {
+
     // Try to find the object description directly ...
-    Class parameterClass = objectDescription.getParameterDefinition(name);
-    ObjectDescription parameterDescription =
-        cc.getDescriptionForClass(parameterClass);
-
-    if (parameterDescription != null)
-    {
-      //Log.debug ("ParameterDescription found [PARAM]");
-      return parameterDescription;
-    }
-
-    // not found directly ...
-    // try to lookup the object description by the parameter object.
-    // this only works if the object is set, of course ..
-    //Log.debug ("ParameterDescription not found [OBJECT]");
+    // by looking at the given object. This is the most accurate
+    // option ...
+    ObjectDescription parameterDescription = null;
     Object o = objectDescription.getParameter(name);
     if (o != null)
     {
@@ -183,17 +173,32 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
       {
         // try to find the super class of the parameter object.
         // maybe this can be used to save the object....
-        //Log.debug ("ParameterDescription not found [SUPER_OBJECT]");
+        //Log.debug ("ParameterDescription not found [OBJECT]");
         parameterDescription = cc.getSuperClassObjectDescription(o.getClass(), null);
+      }
+      else
+      {
+        //Log.debug ("ParameterDescription found [OBJECT]");
+        return parameterDescription;
       }
     }
     else
     {
+      Class parameterClass = objectDescription.getParameterDefinition(name);
+      parameterDescription = cc.getDescriptionForClass(parameterClass);
+
+      if (parameterDescription != null)
+      {
+        //Log.debug ("ParameterDescription found [PARAM]");
+        return parameterDescription;
+      }
+
       // try to find the super class of the parameter object.
       // maybe this can be used to save the object....
       //Log.debug ("ParameterDescription not found [SUPER_PARAM]");
       parameterDescription = cc.getSuperClassObjectDescription(parameterClass, null);
     }
+
     if (parameterDescription == null)
     {
       Log.info ("Unable to get parameter description for class: " + o.getClass());

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollector.java,v 1.6 2003/03/07 16:56:00 taqua Exp $
+ * $Id: TemplateCollector.java,v 1.7 2003/05/02 12:40:13 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.templates;
@@ -42,10 +42,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.jrefinery.report.filter.templates.Template;
+import org.jfree.util.Configuration;
 
 /**
  * A template collection.
- * 
+ *
  * @author Thomas Morgner
  */
 public class TemplateCollector extends TemplateCollection
@@ -63,29 +64,33 @@ public class TemplateCollector extends TemplateCollection
 
   /**
    * Adds a template collection.
-   * 
+   *
    * @param tc  the template collection.
    */
-  public void addTemplateCollection (TemplateCollection tc)
+  public void addTemplateCollection(TemplateCollection tc)
   {
     factories.add(tc);
+    if (getConfig() != null)
+    {
+      tc.configure(getConfig());
+    }
   }
 
   /**
    * Returns an iterator that provides access to the factories.
-   * 
+   *
    * @return The iterator.
    */
-  public Iterator getFactories ()
+  public Iterator getFactories()
   {
     return factories.iterator();
   }
-  
+
   /**
    * Returns a template description.
-   * 
+   *
    * @param name  the name.
-   * 
+   *
    * @return The template description.
    */
   public TemplateDescription getTemplate(String name)
@@ -94,7 +99,7 @@ public class TemplateCollector extends TemplateCollection
     {
       TemplateCollection fact = (TemplateCollection) factories.get(i);
       TemplateDescription o = fact.getTemplate(name);
-      if (o != null) 
+      if (o != null)
       {
         return o;
       }
@@ -104,9 +109,9 @@ public class TemplateCollector extends TemplateCollection
 
   /**
    * Returns a template description.
-   * 
+   *
    * @param template  the template.
-   * 
+   *
    * @return The description.
    */
   public TemplateDescription getDescription(Template template)
@@ -115,11 +120,38 @@ public class TemplateCollector extends TemplateCollection
     {
       TemplateCollection fact = (TemplateCollection) factories.get(i);
       TemplateDescription o = fact.getDescription(template);
-      if (o != null) 
+      if (o != null)
       {
         return o;
       }
     }
     return super.getDescription(template);
+  }
+
+  /**
+   * Configures this factory. The configuration contains several keys and
+   * their defined values. The given reference to the configuration object
+   * will remain valid until the report parsing or writing ends.
+   * <p>
+   * The configuration contents may change during the reporting.
+   *
+   * @param config the configuration, never null
+   */
+  public void configure(Configuration config)
+  {
+    if (getConfig() != null)
+    {
+      // already configured ...
+      return;
+    }
+    super.configure(config);
+
+    Iterator it = factories.iterator();
+    while (it.hasNext())
+    {
+      TemplateCollection od = (TemplateCollection) it.next();
+      od.configure(config);
+    }
+
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.54 2003/05/09 17:12:13 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.55 2003/05/27 13:44:14 mungady Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -163,7 +163,7 @@ public class JFreeReportResources extends ListResourceBundle
   private static final Object[][] CONTENTS =
           {
             {"project.name", "JFreeReport"},
-            {"project.version", "0.8.3"},
+            {"project.version", "0.8.3a"},
             {"project.info", "http://www.jfree.org/jfreereport/index.html"},
             {"project.copyright",
               "(C)opyright 2000-2003, by Thomas Morgner, Object Refinery Limited and Contributors"},

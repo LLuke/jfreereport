@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.9 2003/05/02 12:40:03 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.10 2003/05/27 08:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -194,7 +194,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
     try
     {
       Class propertyClass = getClass().getClassLoader().loadClass(className);
-      ClassFactoryCollector fc = (ClassFactoryCollector) getParser().getConfigurationValue(
+      ClassFactoryCollector fc = (ClassFactoryCollector) getParser().getHelperObject(
           ParserConfigHandler.OBJECT_FACTORY_TAG);
       ObjectDescription retval = fc.getDescriptionForClass(propertyClass);
       if (retval == null)
@@ -332,7 +332,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
    */
   private JFreeReport getReport ()
   {
-    return (JFreeReport) getParser().getConfigurationValue(
+    return (JFreeReport) getParser().getHelperObject(
         InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 

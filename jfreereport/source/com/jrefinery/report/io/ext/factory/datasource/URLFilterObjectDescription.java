@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: URLFilterObjectDescription.java,v 1.2 2003/05/26 13:30:58 taqua Exp $
+ * $Id: URLFilterObjectDescription.java,v 1.3 2003/05/27 08:32:26 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,6 +44,7 @@ import com.jrefinery.report.filter.URLFilter;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 import org.jfree.xml.factory.objects.BeanObjectDescription;
+import org.jfree.xml.Parser;
 
 /**
  * An ObjectDescription for the URLFilterClass. This class uses either
@@ -75,7 +76,7 @@ public class URLFilterObjectDescription extends BeanObjectDescription
     URLFilter t = (URLFilter) super.createObject();
     if (t.getBaseURL() == null)
     {
-      String baseURL = getConfig().getConfigProperty(Configuration.CONTENT_BASE_KEY);
+      String baseURL = getConfig().getConfigProperty(Parser.CONTENTBASE_KEY);
       try
       {
         URL bURL = new URL(baseURL);

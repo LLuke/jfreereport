@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.4 2003/05/11 13:39:16 taqua Exp $
+ * $Id: ReportParser.java,v 1.5 2003/05/14 22:26:38 taqua Exp $
  *
  * Changes
  * -------
@@ -76,6 +76,6 @@ public class ReportParser extends Parser
    */
   public Object getResult()
   {
-    return getConfigurationValue(InitialReportHandler.REPORT_DEFINITION_TAG);
+    return getHelperObject(InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigHandler.java,v 1.11 2003/04/24 18:08:49 taqua Exp $
+ * $Id: ParserConfigHandler.java,v 1.12 2003/05/02 12:40:03 taqua Exp $
  *
  * Changes
  * -------
@@ -131,14 +131,13 @@ public class ParserConfigHandler implements ElementDefinitionHandler
         throw new SAXException("Attribute 'class' is missing.");
       }
       StyleKeyFactoryCollector fc =
-          (StyleKeyFactoryCollector) getParser().getConfigurationValue(STYLEKEY_FACTORY_TAG);
+          (StyleKeyFactoryCollector) getParser().getHelperObject(STYLEKEY_FACTORY_TAG);
 
       StyleKeyFactory factory = (StyleKeyFactory) createFactory(className);
       if (factory == null)
       {
         throw new SAXException("Unable to create Factory");
       }
-      factory.init(getParser());
       fc.addFactory(factory);
     }
     else if (tagName.equals(OBJECT_FACTORY_TAG))
@@ -149,7 +148,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
         throw new SAXException("Attribute 'class' is missing.");
       }
       ClassFactoryCollector fc =
-          (ClassFactoryCollector) getParser().getConfigurationValue(OBJECT_FACTORY_TAG);
+          (ClassFactoryCollector) getParser().getHelperObject(OBJECT_FACTORY_TAG);
       fc.addFactory((ClassFactory) createFactory(className));
     }
     else if (tagName.equals(TEMPLATE_FACTORY_TAG))
@@ -160,7 +159,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
         throw new SAXException("Attribute 'class' is missing.");
       }
       TemplateCollector fc =
-          (TemplateCollector) getParser().getConfigurationValue(TEMPLATE_FACTORY_TAG);
+          (TemplateCollector) getParser().getHelperObject(TEMPLATE_FACTORY_TAG);
       fc.addTemplateCollection((TemplateCollection) createFactory(className));
     }
     else if (tagName.equals(DATASOURCE_FACTORY_TAG))
@@ -172,7 +171,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
       }
       DataSourceFactory factory = (DataSourceFactory) createFactory(className);
       DataSourceCollector fc =
-          (DataSourceCollector) getParser().getConfigurationValue(DATASOURCE_FACTORY_TAG);
+          (DataSourceCollector) getParser().getHelperObject(DATASOURCE_FACTORY_TAG);
       fc.addFactory(factory);
     }
     else if (tagName.equals(ELEMENT_FACTORY_TAG))
@@ -183,7 +182,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
         throw new SAXException("Attribute 'class' is missing.");
       }
       ElementFactoryCollector fc =
-          (ElementFactoryCollector) getParser().getConfigurationValue(ELEMENT_FACTORY_TAG);
+          (ElementFactoryCollector) getParser().getHelperObject(ELEMENT_FACTORY_TAG);
       fc.addFactory((ElementFactory) createFactory(className));
     }
     else if (tagName.equals(DATADEFINITION_FACTORY_TAG))

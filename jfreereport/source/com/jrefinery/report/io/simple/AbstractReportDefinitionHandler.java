@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractReportDefinitionHandler.java,v 1.6 2003/04/24 18:08:53 taqua Exp $
+ * $Id: AbstractReportDefinitionHandler.java,v 1.7 2003/05/02 12:40:18 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 
 package com.jrefinery.report.io.simple;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.jrefinery.report.JFreeReport;
@@ -105,7 +106,7 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
    */
   public JFreeReport getReport ()
   {
-    return (JFreeReport) getParser().getConfigurationValue(
+    return (JFreeReport) getParser().getHelperObject(
         InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 
@@ -116,7 +117,19 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
    */
   public URL getContentBase ()
   {
-    return (URL) getParser().getConfigurationValue(Parser.CONTENTBASE_KEY);
+    String contentBase = getParser().getConfigProperty(Parser.CONTENTBASE_KEY);
+    if (contentBase == null)
+    {
+      throw new IllegalStateException ("Content Base is null.");
+    }
+    try
+    {
+      return new URL (contentBase);
+    }
+    catch (MalformedURLException mfe)
+    {
+      throw new IllegalStateException ("Content Base is illegal." + contentBase);
+    }
   }
 
   /**
@@ -127,11 +140,11 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
    */
   public NameGenerator getNameGenerator ()
   {
-    NameGenerator ng = (NameGenerator) getParser().getConfigurationValue(NAME_GENERATOR);
+    NameGenerator ng = (NameGenerator) getParser().getHelperObject(NAME_GENERATOR);
     if (ng == null)
     {
       ng = new NameGenerator();
-      getParser().setConfigurationValue(NAME_GENERATOR, ng);
+      getParser().setHelperObject(NAME_GENERATOR, ng);
     }
     return ng;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementHandler.java,v 1.8 2003/04/23 13:39:20 taqua Exp $
+ * $Id: ElementHandler.java,v 1.9 2003/04/24 18:08:49 taqua Exp $
  *
  * Changes
  * -------
@@ -104,13 +104,13 @@ public class ElementHandler implements ElementDefinitionHandler
     this.parser = parser;
     this.element = element;
     styleCollection
-        = (HashMap) getParser().getConfigurationValue(StylesHandler.STYLES_COLLECTION);
+        = (HashMap) getParser().getHelperObject(StylesHandler.STYLES_COLLECTION);
     if (styleCollection == null)
     {
       throw new IllegalStateException("No styles collection found in the configuration");
     }
     templateCollector = (TemplateCollector)
-        getParser().getConfigurationValue(ParserConfigHandler.TEMPLATE_FACTORY_TAG);
+        getParser().getHelperObject(ParserConfigHandler.TEMPLATE_FACTORY_TAG);
     if (templateCollector == null)
     {
       throw new IllegalStateException("No template collector defined for this parser?");
