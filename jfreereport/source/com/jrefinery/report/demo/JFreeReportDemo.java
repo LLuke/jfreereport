@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.22 2002/06/19 19:46:41 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.23 2002/07/03 18:49:48 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -497,7 +497,7 @@ public class JFreeReportDemo extends JFrame
    */
   public static void main (String[] args)
   {
-    Locale.setDefault (Locale.GERMAN);
+    //Locale.setDefault (Locale.GERMAN);
     try
     {
       UIManager.setLookAndFeel (UIManager.getSystemLookAndFeelClassName ());
