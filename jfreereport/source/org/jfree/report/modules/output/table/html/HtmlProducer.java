@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.11 2003/10/11 14:56:26 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.12 2003/10/27 20:40:05 taqua Exp $
  *
  * Changes
  * -------
@@ -419,6 +419,7 @@ public class HtmlProducer extends TableProducer
    * the cell background.
    *
    * @param background the (unmerged) background styles.
+   * @param cellbounds the bounds of the cell for which we create the background.
    * @return the background style sheet definition.
    */
   protected String createHtmlBackgroundStyle(final List background,
@@ -496,7 +497,6 @@ public class HtmlProducer extends TableProducer
 //          }
           continue;
         }
-
         // no data cell defined, but there exists a background defintion
         // for that cell.
         final TableGridPosition gridPosition = gridElement.getRoot();
@@ -513,7 +513,6 @@ public class HtmlProducer extends TableProducer
           // this is a spanned field, skip everything ...
           continue;
         }
-
         final int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
         styleBuilder.delete(0, styleBuilder.length());
         styleBuilder.append("width: ");
@@ -542,7 +541,6 @@ public class HtmlProducer extends TableProducer
 //          pout.print("    <td class=\"");
 //          pout.print(tdStyleClass);
 //        }
-
         // Something's wrong with the given grid position, we can't handle that
         if (gridPosition == null || gridPosition.isInvalidCell())
         {
@@ -551,7 +549,6 @@ public class HtmlProducer extends TableProducer
         }
 
         pout.print("\" ");
-
         // finally we print real data ...
         final HtmlCellData cellData = (HtmlCellData) gridPosition.getElement();
 
@@ -583,7 +580,6 @@ public class HtmlProducer extends TableProducer
           pout.print(styleCollection.createStyleSheetDefinition(cellData.getStyle()));
           pout.print("\">");
         }
-
         cellData.write(pout, filesystem);
 
         pout.print("</div>");

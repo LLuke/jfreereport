@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.11 2003/09/08 18:11:49 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.12 2003/10/08 19:32:32 taqua Exp $
  *
  * Changes
  * -------
@@ -487,7 +487,8 @@ public final class BaseFontFactory extends DefaultFontMapper
     {
       // failed to load the font as embedded font, try not-embedded.
       bfont = BaseFont.createFont(font, encoding, false, false, null, null);
-      Log.info (new Log.SimpleMessage("Font ", font, "  cannot be used as embedded font due to licensing restrictions."));
+      Log.info (new Log.SimpleMessage
+        ("Font ", font, "  cannot be used as embedded font " +          "due to licensing restrictions."));
       embedded = "false";
     }
 
@@ -506,8 +507,9 @@ public final class BaseFontFactory extends DefaultFontMapper
            embedded.equals(knownFontEmbeddedState) == false))
       {
         fontsByName.setProperty(logicalFontname, font);
-        Log.debug(new Log.SimpleMessage("Registered truetype font ", logicalFontname, "; Embedded=", embedded,
-            new Log.SimpleMessage("File=", font)));
+        Log.debug(new Log.SimpleMessage
+          ("Registered truetype font ", logicalFontname, "; Embedded=", 
+            embedded, new Log.SimpleMessage("File=", font)));
       }
     }
   }

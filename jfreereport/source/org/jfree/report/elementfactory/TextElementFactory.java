@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextElementFactory.java,v 1.8 2003/10/18 22:05:11 taqua Exp $
+ * $Id: TextElementFactory.java,v 1.9 2003/10/30 22:15:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,7 +41,6 @@ package org.jfree.report.elementfactory;
 import java.awt.Color;
 
 import org.jfree.report.ElementAlignment;
-import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
@@ -342,21 +341,47 @@ public abstract class TextElementFactory extends ElementFactory
     this.horizontalAlignment = horizontalAlignment;
   }
 
+  /**
+   * Returns the defined reserved literal, which should be appended to the text
+   * to signal text, which was not completly printed.
+   * 
+   * @return the reserved literal.
+   */
   public String getReservedLiteral()
   {
     return reservedLiteral;
   }
 
+  /**
+   * Defines the defined reserved literal, which should be appended to the text
+   * to signal text, which was not completly printed.
+   * 
+   * @param reservedLiteral the reserved literal.
+   */
   public void setReservedLiteral(String reservedLiteral)
   {
     this.reservedLiteral = reservedLiteral;
   }
 
+  /**
+   * Returns, whether the text lines should be trimmed.
+   * 
+   * @return Boolean.TRUE, if the text should be trimmed, Boolean.FALSE
+   * if the text should never be trimmed or null, if the default should
+   * be applied.
+   */
   public Boolean getTrimTextContent()
   {
     return trimTextContent;
   }
 
+  /**
+   * Defines, whether the text lines should be trimmed.
+   * 
+   * @param trimTextContent Boolean.TRUE, if the text should be trimmed, Boolean.FALSE
+   * if the text should never be trimmed or null, if the default should
+   * be applied.
+   */
   public void setTrimTextContent(Boolean trimTextContent)
   {
     this.trimTextContent = trimTextContent;
@@ -370,11 +395,7 @@ public abstract class TextElementFactory extends ElementFactory
    */
   protected void applyStyle(final ElementStyleSheet style)
   {
-    style.setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, getAbsolutePosition());
-    style.setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT, getDynamicHeight());
-    style.setStyleProperty(ElementStyleSheet.MAXIMUMSIZE, getMaximumSize());
-    style.setStyleProperty(ElementStyleSheet.MINIMUMSIZE, getMinimumSize());
-    style.setStyleProperty(ElementStyleSheet.PREFERREDSIZE, getPreferredSize());
+    super.applyStyle(style);
     style.setStyleProperty(ElementStyleSheet.ALIGNMENT, getHorizontalAlignment());
     style.setStyleProperty(ElementStyleSheet.BOLD, getBold());
     style.setStyleProperty(ElementStyleSheet.EMBEDDED_FONT, getEmbedFont());

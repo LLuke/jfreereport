@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PageHeader.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: PageHeader.java,v 1.4 2003/09/24 15:27:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -59,6 +59,15 @@ public class PageHeader extends Band
   {
   }
 
+  /**
+   * Constructs a page footer containing no elements.
+   * 
+   * @param onFirstPage defines, whether the page header will be printed
+   * on the first page
+   * @param onLastPage defines, whether the page footer will be printed on the
+   * last page.
+   * 
+   */
   public PageHeader(boolean onFirstPage, boolean onLastPage)
   {
     super();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResourceFieldElementFactory.java,v 1.5 2003/08/25 14:29:28 taqua Exp $
+ * $Id: ResourceFieldElementFactory.java,v 1.6 2003/10/05 21:52:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,7 +46,6 @@ import org.jfree.report.Element;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.TextElement;
 import org.jfree.report.filter.templates.ResourceFieldTemplate;
-import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
@@ -115,8 +114,7 @@ public class ResourceFieldElementFactory extends TextFieldElementFactory
     applyElementName(element);
     element.setDataSource(template);
 
-    final ElementStyleSheet style = element.getStyle();
-    applyStyle(style);
+    applyStyle(element.getStyle());
     return element;
   }
 

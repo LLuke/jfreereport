@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportPlugin.java,v 1.7 2003/10/18 19:22:32 taqua Exp $
+ * $Id: HtmlExportPlugin.java,v 1.8 2003/10/28 21:07:59 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,7 +49,6 @@ import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.modules.gui.base.ExportTaskListener;
 import org.jfree.report.modules.gui.html.resources.HtmlExportResources;
 import org.jfree.ui.RefineryUtilities;
 
@@ -60,38 +59,6 @@ import org.jfree.ui.RefineryUtilities;
  */
 public class HtmlExportPlugin extends AbstractExportPlugin
 {
-  private class HtmlExportTaskListener implements ExportTaskListener
-  {
-    private ReportProgressDialog progressDialog;
-
-    public HtmlExportTaskListener(ReportProgressDialog progressDialog)
-    {
-      this.progressDialog = progressDialog;
-    }
-
-    public void taskAborted(ExportTask task)
-    {
-      getBase().removeRepaginationListener(progressDialog);
-      HtmlExportPlugin.this.handleExportResult(task);
-    }
-
-    public void taskDone(ExportTask task)
-    {
-      getBase().removeRepaginationListener(progressDialog);
-      HtmlExportPlugin.this.handleExportResult(task);
-    }
-
-    public void taskFailed(ExportTask task)
-    {
-      getBase().removeRepaginationListener(progressDialog);
-      HtmlExportPlugin.this.handleExportResult(task);
-    }
-
-    public void taskWaiting(ExportTask task)
-    {
-    }
-  }
-
   /** The html export dialog which handles the export. */
   private HtmlExportDialog exportDialog;
 
@@ -110,10 +77,14 @@ public class HtmlExportPlugin extends AbstractExportPlugin
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
   }
 
-  /** The progress dialog that monitors the export process. */
+  /** 
+   * Creates the progress dialog that monitors the export process. 
+   *
+   * @return the progress monitor dialog. 
+   */
   protected ReportProgressDialog createProgressDialog ()
   {
-    ReportProgressDialog progressDialog = new ReportProgressDialog();
+    ReportProgressDialog progressDialog = super.createProgressDialog();
     progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
     progressDialog.setTitle(resources.getString("html-export.progressdialog.title"));
     progressDialog.setMessage(resources.getString("html-export.progressdialog.message"));
@@ -189,7 +160,7 @@ public class HtmlExportPlugin extends AbstractExportPlugin
       default:
         throw new IllegalArgumentException("Unexpected export method found.");
     }
-    task.addExportTaskListener(new HtmlExportTaskListener(progressDialog));
+    task.addExportTaskListener(new DefaultExportTaskListener());
     delegateTask(task);
     return handleExportResult(task);
   }

@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources_fr.java,v 1.5 2003/08/24 15:08:18 taqua Exp $
+ * $Id: JFreeReportResources_fr.java,v 1.6 2003/09/14 19:33:24 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -120,7 +120,8 @@ public class JFreeReportResources_fr extends JFreeReportResources
         {"FileChooser.acceptAllFileFilterText", "Tous les fichiers (*.*)"},
         {"FileChooser.cancelButtonMnemonic", new Integer(KeyEvent.VK_A)},
         {"FileChooser.cancelButtonText", "Annuler"},
-        {"FileChooser.cancelButtonToolTipText", "Quitte la boite de dialogue de sélection d’un fichier"},
+        {"FileChooser.cancelButtonToolTipText", 
+          "Quitte la boite de dialogue de sélection d’un fichier"},
         {"FileChooser.detailsViewButtonAccessibleName", "Détails"},
         {"FileChooser.detailsViewButtonToolTipText", "Détails"},
         {"FileChooser.directoryDescriptionText", "Chemin"},
@@ -131,7 +132,8 @@ public class JFreeReportResources_fr extends JFreeReportResources
         {"FileChooser.filesOfTypeLabelText", "Type de fichier:"},
         {"FileChooser.helpButtonMnemonic", new Integer(KeyEvent.VK_A)},
         {"FileChooser.helpButtonText", "Aide"},
-        {"FileChooser.helpButtonToolTipText", "Aide sur la boite de dialogue de sélection d’un fichier"},
+        {"FileChooser.helpButtonToolTipText", 
+          "Aide sur la boite de dialogue de sélection d’un fichier"},
         {"FileChooser.homeFolderAccessibleName", "Home"},
         {"FileChooser.homeFolderToolTipText", "Home"},
         {"FileChooser.listViewButtonAccessibleName", "Liste"},

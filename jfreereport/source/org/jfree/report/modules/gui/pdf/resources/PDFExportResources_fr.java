@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: PDFExportResources_fr.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PDFExportResources_fr.java,v 1.7 2003/09/14 19:33:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -134,7 +134,8 @@ public class PDFExportResources_fr extends JFreeReportResources
         {"pdfsavedialog.confirm", "Confirmer"},
 
         {"pdf-export.progressdialog.title", "Exportation vers un fichier PDF ..."},
-        {"pdf-export.progressdialog.message", "Le rapport est maintenant exporté en fichier PDF ..."},
+        {"pdf-export.progressdialog.message", 
+          "Le rapport est maintenant exporté en fichier PDF ..."},
       };
 
   /**

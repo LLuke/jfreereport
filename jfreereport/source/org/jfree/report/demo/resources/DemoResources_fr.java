@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: DemoResources_fr.java,v 1.1 2003/09/14 19:33:15 taqua Exp $
  *
  * Changes
  * -------
@@ -102,7 +102,8 @@ public class DemoResources_fr extends JFreeReportResources
     {"error", "Erreur"},
     {"example", "Example {0}"},
 
-    {"report.previewfailure.message", "Une erreur est survenue lors de l'initialisation de l'aperçu avant impression."},
+    {"report.previewfailure.message", 
+      "Une erreur est survenue lors de l'initialisation de l'aperçu avant impression."},
     {"report.previewfailure.title", "Erreur aperçu du rapport"},
 
   };

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.9 2003/09/13 15:14:40 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.10 2003/09/30 19:47:30 taqua Exp $
  *
  * Changes
  * -------
@@ -49,13 +49,11 @@ package org.jfree.report.modules.output.pageable.base.pagelayout;
 import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Band;
-import org.jfree.report.Group;
-import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.event.ReportEvent;
-import org.jfree.report.function.Expression;
 import org.jfree.report.function.FunctionProcessingException;
+import org.jfree.report.function.Expression;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
@@ -161,7 +159,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
 
   /** The current state. */
   private SimpleLayoutManagerState state;
-
+  /** The delegate which is used to perform the layouting. */
   private SimplePageLayoutDelegate delegate;
 
   /** The spool. */
@@ -173,8 +171,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
   public SimplePageLayouter()
   {
     setName("Layout");
-    delegate = new SimplePageLayoutDelegate();
-    delegate.setWorker(this);
+    delegate = new SimplePageLayoutDelegate(this);
   }
 
   /**
@@ -186,6 +183,11 @@ public strictfp class SimplePageLayouter extends PageLayouter
     setCursor(new SimplePageLayoutCursor(getLogicalPage().getHeight()));
   }
 
+  /**
+   * Returns the current position of the cursor. 
+   * 
+   * @return the cursor position.
+   */
   public float getCursorPosition()
   {
     if (getCursor() == null)
@@ -195,6 +197,11 @@ public strictfp class SimplePageLayouter extends PageLayouter
     return getCursor().getY();
   }
 
+  /**
+   * Defines the reserved space on the current page. 
+   *  
+   * @param reserved the reserved space.
+   */
   public void setReservedSpace(float reserved)
   {
     if (getCursor() == null)
@@ -204,6 +211,11 @@ public strictfp class SimplePageLayouter extends PageLayouter
     getCursor().setReservedSpace(reserved);
   }
 
+  /**
+   * Returns the reserved space on the current page. 
+   *  
+   * @return the reserved space.
+   */
   public float getReservedSpace()
   {
     if (getCursor() == null)
@@ -213,16 +225,29 @@ public strictfp class SimplePageLayouter extends PageLayouter
     return getCursor().getReservedSpace();
   }
 
-  public void setMaximumBandHeight(float maxBandHeight)
+  /**
+   * Marks the position of the first content after the page header.
+   * This can be used to limit the maximum size of bands so that they
+   * do not exceed the available page space.
+   * <p>
+   * This feature will be obsolete when bands can span multiple pages.
+   *
+   * @param topContentPosition the first content position.
+   */
+  public void setTopPageContentPosition(float topContentPosition)
   {
     if (getCursor() == null)
     {
       throw new IllegalStateException("Cursor is not initialized.");
     }
-    getCursor().setPageTop(getCursor().getY());
+    getCursor().setPageTop(topContentPosition);
   }
 
-  public float getMaximumBandHeight()
+  /**
+   * Returns the position of the first content.
+   * @return the first content position.
+   */
+  public float getTopContentPosition()
   {
     if (getCursor() == null)
     {
@@ -231,6 +256,11 @@ public strictfp class SimplePageLayouter extends PageLayouter
     return getCursor().getPageTop();
   }
 
+  /**
+   * Checks, whether the current page is empty. 
+   * 
+   * @return true, if the current page is empty, false otherwise.
+   */
   public boolean isPageEmpty()
   {
     return getLogicalPage().isEmpty();
@@ -546,6 +576,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
    *
    * @param b  the band.
    * @param spool  a flag that controls whether or not to spool.
+   * @param handlePagebreak a flag that controls whether to handle the 
+   * 'pagebreak-before constraint.
    * @return true, if the band was printed, and false if the printing is delayed
    * until a new page gets started.
    *
@@ -999,6 +1031,23 @@ public strictfp class SimplePageLayouter extends PageLayouter
   public void setStartNewPage(final boolean startNewPage)
   {
     this.startNewPage = startNewPage;
+  }
+
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    final SimplePageLayouter sl = (SimplePageLayouter) super.getInstance();
+    sl.spooledBand = null;
+    sl.delegate = new SimplePageLayoutDelegate(sl);
+    sl.cursor = null;
+    sl.isLastPageBreak = false;
+    sl.state = null;
+    return sl;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.7 2003/09/13 15:14:40 taqua Exp $
+ * $Id: TextContent.java,v 1.8 2003/10/30 22:14:59 taqua Exp $
  *
  * Changes
  * -------
@@ -67,6 +67,8 @@ public strictfp class TextContent extends ContentContainer
    * @param ot  the size calculator.
    * @param reservedLiteral the text that should be appended if the text does
    * not fit into the bounds
+   * @param trimTextContent defines, whether to remove whitespaces from the start
+   * and end of an line.
    */
   public TextContent(final String value, final float lineHeight,
                      final Rectangle2D bounds, final SizeCalculator ot,

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);;
  *
- * $Id: PrinterCommandSet.java,v 1.7 2003/09/14 15:43:07 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.8 2003/10/22 14:44:51 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.io.OutputStream;
 
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.PageFormatFactory;
-import org.jfree.report.util.Log;
 
 /**
  * Implements a printer command set for plain text output. The output is

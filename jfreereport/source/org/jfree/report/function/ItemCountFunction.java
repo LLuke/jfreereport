@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.3 2003/10/17 17:39:33 taqua Exp $
  *
  * Changes
  * -------
@@ -86,11 +86,21 @@ public class ItemCountFunction extends AbstractFunction implements Serializable
     setName(name);
   }
 
+  /**
+   * Returns the current count value.
+   * 
+   * @return the current count value.
+   */
   protected int getCount()
   {
     return count;
   }
 
+  /**
+   * Defines the current count value.
+   * 
+   * @param count the current count value.
+   */
   protected void setCount(int count)
   {
     this.count = count;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextPage.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.5 2003/10/22 14:44:51 taqua Exp $
  *
  * Changes
  * -------
@@ -171,7 +171,7 @@ public class PlainTextPage
 
   /** the height of the page in lines. */
   private int height;
-
+  /** Defines the left border in chars. */
   private int leftBorder;
 
   /** The encoding of the printed text. */
@@ -229,6 +229,10 @@ public class PlainTextPage
     return height;
   }
 
+  /**
+   * Returns the width of the left border in characters. 
+   * @return the left border.
+   */
   public int getLeftBorder()
   {
     return leftBorder;

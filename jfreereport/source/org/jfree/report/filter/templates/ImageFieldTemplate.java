@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageFieldTemplate.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: ImageFieldTemplate.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -44,7 +44,8 @@ import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.ImageRefFilter;
 
 /**
- * An image field template.
+ * An image field template. The image content will be read from
+ * the datarow.
  *
  * @author Thomas Morgner
  */

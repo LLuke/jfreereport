@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableBandArea.java,v 1.3 2003/10/10 17:16:26 taqua Exp $
+ * $Id: TableBandArea.java,v 1.4 2003/10/10 18:46:48 taqua Exp $
  *
  * Changes
  * -------
@@ -62,9 +62,10 @@ public class TableBandArea extends TableCellBackground
   /**
    * Creates a new TableBandArea with the given bounds.
    *
-   * @param outerBounds the band bounds in the table,
+   * @param outerBounds the band bounds in the table
+   * @param color the color of the band area (can be null).
    */
-  protected TableBandArea(final Rectangle2D outerBounds, Color color)
+  protected TableBandArea(final Rectangle2D outerBounds, final Color color)
   {
     super(outerBounds, color);
   }

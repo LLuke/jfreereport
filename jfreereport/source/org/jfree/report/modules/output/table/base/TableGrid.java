@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGrid.java,v 1.7 2003/10/10 17:16:26 taqua Exp $
+ * $Id: TableGrid.java,v 1.8 2003/10/10 18:46:48 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
-
-import org.jfree.report.util.Log;
 
 /**
  * The TableGrid is used to collect all table cells and to finally create the

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.6 2003/10/18 19:22:32 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.7 2003/10/18 20:49:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,6 +37,9 @@
  */
 
 package org.jfree.report.modules.gui.base;
+
+import java.awt.Dialog;
+import java.awt.Frame;
 
 import org.jfree.report.util.WorkerPool;
 
@@ -48,6 +51,65 @@ import org.jfree.report.util.WorkerPool;
  */
 public abstract class AbstractExportPlugin implements ExportPlugin
 {
+  /**
+   * The DefaultExportTaskListener is used to monitor the progress of the
+   * export and to set the export result.
+   * 
+   * @author Thomas Morgner
+   */
+  protected class DefaultExportTaskListener implements ExportTaskListener
+  {
+    /**
+     * Creates a new export task listener, which will wait for the end of the
+     * report processing..
+     */
+    public DefaultExportTaskListener()
+    {
+    }
+
+    /**
+     * Informs the listener, that the export was completed without errors.
+     * The pagination listener is removed from the 
+     * 
+     * @param task the export task which was completed.
+     */
+    public void taskAborted(ExportTask task)
+    {
+      AbstractExportPlugin.this.handleExportResult(task);
+    }
+
+    /**
+     * Informs the listener, that the export was aborted by the user.
+     * 
+     * @param task the export task which was aborted.
+     */
+    public void taskDone(ExportTask task)
+    {
+      AbstractExportPlugin.this.handleExportResult(task);
+    }
+
+    /**
+     * Informs the listener, that the export failed due to errors.
+     * 
+     * @param task the export task which failed.
+     */
+    public void taskFailed(ExportTask task)
+    {
+      AbstractExportPlugin.this.handleExportResult(task);
+    }
+
+    /**
+     * This method is empty as it does not indicate an finish event. 
+     * @see org.jfree.report.modules.gui.base.ExportTaskListener#taskWaiting
+     * (org.jfree.report.modules.gui.base.ExportTask)
+     * 
+     * @param task the export task.
+     */
+    public void taskWaiting(ExportTask task)
+    {
+    }
+  }
+
   /** The backend to perform post or preprocessing. */
   private PreviewProxyBase base;
 
@@ -256,4 +318,26 @@ public abstract class AbstractExportPlugin implements ExportPlugin
     }
   }
 
+  /**
+   * Creates a progress dialog, and tries to assign a parent based on the
+   * given preview proxy.
+   * 
+   * @return the progress dialog.
+   */
+  protected ReportProgressDialog createProgressDialog ()
+  {
+    
+    if (proxy instanceof Frame)
+    {
+      return new ReportProgressDialog((Frame) proxy);
+    }
+    else if (proxy instanceof Dialog)
+    {
+      return new ReportProgressDialog((Dialog) proxy);
+    }
+    else
+    {
+      return new ReportProgressDialog();
+    }
+  }
 }

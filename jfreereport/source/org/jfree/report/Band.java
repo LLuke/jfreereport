@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.8 2003/09/24 13:43:16 taqua Exp $
+ * $Id: Band.java,v 1.9 2003/09/24 15:27:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -144,6 +144,15 @@ public class Band extends Element implements Serializable, Cloneable
     bandDefaults.setAllowCaching(true);
   }
 
+  /**
+   * Constructs a new band with the given pagebreak attributes. Pagebreak
+   * attributes have no effect on subbands.
+   * 
+   * @param pagebreakAfter defines, whether a pagebreak should be done
+   * after that band was printed.
+   * @param pagebreakBefore defines, whether a pagebreak should be done
+   * before that band gets printed.
+   */
   public Band(boolean pagebreakBefore, boolean pagebreakAfter)
   {
     this();

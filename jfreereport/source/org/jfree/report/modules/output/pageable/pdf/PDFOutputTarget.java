@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.12 2003/09/13 15:14:41 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.13 2003/09/30 19:47:30 taqua Exp $
  *
  * Changes
  * -------
@@ -114,6 +114,55 @@ import org.jfree.report.util.WaitingImageObserver;
  */
 public strictfp class PDFOutputTarget extends AbstractOutputTarget
 {
+  /**
+   * A PDF size calculator.
+   */
+  private static final strictfp class PDFSizeCalculator implements SizeCalculator
+  {
+    /** The base font. */
+    private final BaseFont baseFont;
+
+    /** The font size. */
+    private final float fontSize;
+
+    /**
+     * Creates a new size calculator.
+     *
+     * @param font  the font.
+     * @param fontSize  the font size.
+     */
+    private PDFSizeCalculator(final BaseFont font, final float fontSize)
+    {
+      this.baseFont = font;
+      this.fontSize = fontSize;
+    }
+
+    /**
+     * Calculates the width of the specified String in the current Graphics context.
+     *
+     * @param text the text to be weighted.
+     * @param lineStartPos the start position of the substring to be weighted.
+     * @param endPos the position of the last characterto be included in the weightening process.
+     *
+     * @return the width of the given string in 1/72" dpi.
+     */
+    public float getStringWidth(final String text, final int lineStartPos, final int endPos)
+    {
+      return baseFont.getWidthPoint(text.substring(lineStartPos, endPos), fontSize);
+    }
+
+    /**
+     * Returns the height of the current font. The font height specifies the distance between
+     * 2 base lines.
+     *
+     * @return  the font height.
+     */
+    public float getLineHeight()
+    {
+      return fontSize;
+    }
+  }
+
   /** The configuration prefix. */
   public static final String CONFIGURATION_PREFIX
       = "org.jfree.report.modules.output.pageable.pdf.";
@@ -638,6 +687,14 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     }
   }
 
+  /**
+   * Extracts the to be generated PDF version as iText parameter from the
+   * given property value. The value has the form "1.x" where x is the extracted
+   * version.
+   * 
+   * @param version the version string.
+   * @return the itext character defining the version.
+   */
   private char getVersion(String version)
   {
     if (version == null)
@@ -1151,55 +1208,6 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       return false;
     }
     return getDocument().isOpen();
-  }
-
-  /**
-   * A PDF size calculator.
-   */
-  private static strictfp final class PDFSizeCalculator implements SizeCalculator
-  {
-    /** The base font. */
-    private final BaseFont baseFont;
-
-    /** The font size. */
-    private final float fontSize;
-
-    /**
-     * Creates a new size calculator.
-     *
-     * @param font  the font.
-     * @param fontSize  the font size.
-     */
-    private PDFSizeCalculator(final BaseFont font, final float fontSize)
-    {
-      this.baseFont = font;
-      this.fontSize = fontSize;
-    }
-
-    /**
-     * Calculates the width of the specified String in the current Graphics context.
-     *
-     * @param text the text to be weighted.
-     * @param lineStartPos the start position of the substring to be weighted.
-     * @param endPos the position of the last characterto be included in the weightening process.
-     *
-     * @return the width of the given string in 1/72" dpi.
-     */
-    public float getStringWidth(final String text, final int lineStartPos, final int endPos)
-    {
-      return baseFont.getWidthPoint(text.substring(lineStartPos, endPos), fontSize);
-    }
-
-    /**
-     * Returns the height of the current font. The font height specifies the distance between
-     * 2 base lines.
-     *
-     * @return  the font height.
-     */
-    public float getLineHeight()
-    {
-      return fontSize;
-    }
   }
 
   /** The current page format. */

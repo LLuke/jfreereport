@@ -3,6 +3,10 @@ releases. It contains hints on how to upgrade to a new version and how
 to cope with the possible changes of the report behaviour.
 
 ---------------------------------------------------------------------------
+Chagens from 0.8.4_2 to 0.8.4_4
+
+The SimplePageLayouterWorker interface changed slightly. 
+
 Changes from 0.8.4 to 0.8.4-2
 
 The export plugin API changed to resolve several multithreading issues.

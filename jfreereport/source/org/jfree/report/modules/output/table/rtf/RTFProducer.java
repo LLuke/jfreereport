@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProducer.java,v 1.7 2003/10/11 14:56:26 taqua Exp $
+ * $Id: RTFProducer.java,v 1.8 2003/10/11 21:33:08 taqua Exp $
  *
  * Changes
  * -------
@@ -174,6 +174,7 @@ public class RTFProducer extends TableProducer
    * is defined in the background list.
    *
    * @param cell the cell that should be defined.
+   * @param cellbounds the bounds of the cell for which we create the background
    * @param background the background definition for the cell.
    */
   private void setCellBackgroundStyle(final Cell cell,

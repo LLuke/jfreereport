@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ExportTaskListener.java,v 1.1 2003/10/18 20:50:28 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,10 +40,40 @@ package org.jfree.report.modules.gui.base;
 
 import java.util.EventListener;
 
+/**
+ * An export task listener will be informed about the state of an exporttask.
+ * 
+ * @author Thomas Morgner
+ */
 public interface ExportTaskListener extends EventListener
 {
+  /**
+   * Informs the listener, that the export was completed without errors.
+   * 
+   * @param task the export task which was completed.
+   */
   public void taskDone (ExportTask task);
+
+  /**
+   * Informs the listener, that the export was aborted by the user.
+   * 
+   * @param task the export task which was aborted.
+   */
   public void taskAborted (ExportTask task);
+
+  /**
+   * Informs the listener, that the export failed due to errors.
+   * 
+   * @param task the export task which failed.
+   */
   public void taskFailed (ExportTask task);
+
+  /**
+   * Informs the listener, that the export will be processed later as there
+   * is no worker available. The listener has now the option to abort the task.
+   * (TODO: This is not yet implemented).
+   * 
+   * @param task the export task which was completed.
+   */
   public void taskWaiting (ExportTask task);
 }

@@ -28,32 +28,57 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: WorkerPool.java,v 1.1 2003/10/18 20:50:38 taqua Exp $
  *
  * Changes
  * -------------------------
- * 18.10.2003 : Initial version
+ * 18-Oct-2003 : Initial version
  *
  */
 
 package org.jfree.report.util;
 
+/**
+ * A simple static workpool. Worker threads are created when necessary.
+ * 
+ * @author Thomas Morgner
+ */
 public class WorkerPool
 {
+  /** The worker array. */
   private Worker[] workers;
+  /** A flag indicating whether idle workers are available. */
   private boolean workersAvailable;
+  /** the name prefix for all workers of this pool. */
   private String namePrefix;
 
+  /**
+   * Creates a new worker pool with the default size of 10 workers and 
+   * the default name.
+   */
   public WorkerPool()
   {
     this (10);
   }
 
+  /**
+   * Creates a new workerpool with the given number of workers and the default
+   * name.
+   * 
+   * @param size the maximum number of workers available.
+   */
   public WorkerPool(int size)
   {
     this (size, "WorkerPool-worker");
   }
 
+  /**
+   * Creates a new worker pool for the given number of workers and with the
+   * given name prefix.
+   *  
+   * @param size the size of the worker pool.
+   * @param namePrefix the name prefix for all created workers.
+   */
   public WorkerPool(int size, String namePrefix)
   {
     if (size <= 0)
@@ -65,13 +90,19 @@ public class WorkerPool
     this.namePrefix = namePrefix;
   }
 
-
-
+  /**
+   * Checks, whether workers are available.
+   * 
+   * @return true, if at least one worker is idle, false otherwise.
+   */
   public synchronized boolean isWorkerAvailable ()
   {
     return workersAvailable;
   }
 
+  /**
+   * Updates the workersAvailable flag after a worker was assigned.
+   */
   protected void updateWorkersAvailable ()
   {
     for (int i = 0; i < workers.length; i++)
@@ -90,6 +121,9 @@ public class WorkerPool
     workersAvailable = false;
   }
 
+  /**
+   * Waits until a worker will be available.
+   */
   protected synchronized void waitForWorkerAvailable ()
   {
     while (isWorkerAvailable() == false)
@@ -106,6 +140,13 @@ public class WorkerPool
     }
   }
 
+  /**
+   * Returns a workerhandle for the given workload. This method will wait
+   * until an idle worker is found. 
+   * 
+   * @param r the workload for the worker
+   * @return a handle to the worker.
+   */
   public synchronized WorkerHandle getWorkerForWorkload (Runnable r)
   {
     waitForWorkerAvailable();
@@ -143,6 +184,12 @@ public class WorkerPool
         ("At this point, a worker should already have been assigned.");
   }
 
+  /**
+   * Marks the given worker as finished. The worker will be removed from the
+   * list of the available workers.
+   * 
+   * @param worker the worker which was finished.
+   */
   public void workerFinished (Worker worker)
   {
     if (worker.isFinish() == false)
@@ -165,6 +212,11 @@ public class WorkerPool
     return;
   }
 
+  /**
+   * Marks the given worker as available.
+   * 
+   * @param worker the worker which was available.
+   */
   public synchronized void workerAvailable (Worker worker)
   {
     for (int i = 0; i < workers.length; i++)
@@ -182,6 +234,10 @@ public class WorkerPool
     return;
   }
 
+  /**
+   * Finishes all worker of this pool.
+   *
+   */
   public void finishAll ()
   {
     for (int i = 0; i < workers.length; i++)

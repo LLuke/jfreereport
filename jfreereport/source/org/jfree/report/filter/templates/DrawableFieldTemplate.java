@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DrawableFieldTemplate.java,v 1.1 2003/10/01 20:41:36 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,6 +42,12 @@ import org.jfree.report.DataRow;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.DrawableFilter;
 
+/**
+ * An drawable field template. The drawable content will be read from
+ * the datarow.
+ *  
+ * @author Thomas Morgner
+ */
 public class DrawableFieldTemplate extends AbstractTemplate
 {
   /** The data row reader. */

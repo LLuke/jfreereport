@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.10 2003/09/24 13:43:17 taqua Exp $
+ * $Id: Element.java,v 1.11 2003/09/24 15:27:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -443,11 +443,25 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     return treeLock;
   }
 
+  /**
+   * Checks, whether the layout manager should compute the size of this element
+   * based on the current content.
+   * 
+   * @return true, if the element is dynamic, false otherwise.
+   */
   public boolean isDynamicContent()
   {
     return getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT);
   }
 
+  /**
+   * Defines the stylesheet property for the dynamic attribute. Calling this
+   * function with either parameter will override any previously defined value
+   * for the dynamic attribute. The value can no longer be inherited from parent
+   * stylesheets.
+   * 
+   * @param dynamicContent the new state of the dynamic flag. 
+   */
   public void setDynamicContent(boolean dynamicContent)
   {
     getStyle().setBooleanStyleProperty
@@ -458,48 +472,103 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     }
   }
 
+
+  /**
+   * Returns whether the layout of this element is cacheable.
+   * 
+   * @return true, if the layout is cacheable, false otherwise.
+   */
   public boolean isLayoutCacheable()
   {
     return getStyle().getBooleanStyleProperty
         (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE);
   }
 
+  /**
+   * Defines whether the layout of this element can be cached. 
+   * <p>
+   * Calling this function with either parameter will override any 
+   * previously defined value for the layoutcachable attribute. 
+   * The value can no longer be inherited from parent stylesheets.
+   * 
+   * @param layoutCacheable true, if the layout is cacheable, false otherwise. 
+   */
   public void setLayoutCacheable(boolean layoutCacheable)
   {
     getStyle().setBooleanStyleProperty
         (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, layoutCacheable);
   }
 
+
+  /**
+   * Returns the minimum size of this element, if defined.
+   * Warning: The returned object is not immutable and should
+   * not be changed.
+   * 
+   * @return the minimum size
+   */
   public Dimension2D getMinimumSize()
   {
     return (Dimension2D) getStyle().getStyleProperty
         (ElementStyleSheet.MINIMUMSIZE);
   }
 
+  /**
+   * Defines the stylesheet property for the minimum element size. 
+   * 
+   * @param minimumSize the new minimum size or null, if the value should
+   * be inherited.
+   */
   public void setMinimumSize(Dimension2D minimumSize)
   {
     getStyle().setStyleProperty (ElementStyleSheet.MINIMUMSIZE,
         minimumSize);
   }
 
+  /**
+   * Returns the maximum size of this element, if defined.
+   * Warning: The returned object is not immutable and should
+   * not be changed.
+   * 
+   * @return the maximum size
+   */
   public Dimension2D getMaximumSize()
   {
     return (Dimension2D) getStyle().getStyleProperty
         (ElementStyleSheet.MAXIMUMSIZE);
   }
 
+  /**
+   * Defines the stylesheet property for the maximum element size. 
+   * 
+   * @param maximumSize the new maximum size or null, if the value should
+   * be inherited.
+   */
   public void setMaximumSize(Dimension2D maximumSize)
   {
     getStyle().setStyleProperty (ElementStyleSheet.MAXIMUMSIZE,
         maximumSize);
   }
 
+  /**
+   * Returns the preferred size of this element, if defined.
+   * Warning: The returned object is not immutable and should
+   * not be changed.
+   * 
+   * @return the preferred size
+   */
   public Dimension2D getPreferredSize()
   {
     return (Dimension2D) getStyle().getStyleProperty
         (ElementStyleSheet.PREFERREDSIZE);
   }
 
+  /**
+   * Defines the stylesheet property for the preferred element size. 
+   * 
+   * @param preferredSize the new preferred size or null, if the value should
+   * be inherited.
+   */
   public void setPreferredSize(Dimension2D preferredSize)
   {
     getStyle().setStyleProperty (ElementStyleSheet.PREFERREDSIZE,

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.8 2003/09/15 18:26:50 taqua Exp $
+ * $Id: TextParagraph.java,v 1.9 2003/10/30 22:14:59 taqua Exp $
  *
  * Changes
  * -------
@@ -78,6 +78,8 @@ public strictfp class TextParagraph extends ContentContainer
    * @param lineHeight the height of the lines contained in this paragraph.
    * @param reservedLiteral the text that should be appended if the text does 
    * not fit into the bounds
+   * @param trimTextContent defines, whether to remove whitespaces from the start
+   * and end of an line.
    */
   public TextParagraph(final SizeCalculator calc, final float lineHeight, 
                        final String reservedLiteral, final boolean trimTextContent)
@@ -280,10 +282,17 @@ public strictfp class TextParagraph extends ContentContainer
     return returnLines;
   }
 
+  /**
+   * Defines, whether whitespaces were removed from the lines of this paragraph
+   * after performing the linebreaking.
+   *  
+   * @return true, if whitespaces could have been removed, false otherwise.
+   */
   public boolean isTrimTextContent()
   {
     return trimTextContent;
   }
+  
   /**
    * Tests, whether the given character is a whitespace (but not a breakline).
    *

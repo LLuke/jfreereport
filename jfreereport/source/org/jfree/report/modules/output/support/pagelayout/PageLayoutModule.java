@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PageLayoutModule.java,v 1.1 2003/10/01 20:41:41 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,8 +41,17 @@ package org.jfree.report.modules.output.support.pagelayout;
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 
+/**
+ * The module definition for the pagelayout support module.
+ *
+ * @author Thomas Morgner
+ */
 public class PageLayoutModule extends AbstractModule
 {
+  /**
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public PageLayoutModule() throws ModuleInitializeException
   {
     loadModuleInfo();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.6 2003/09/13 15:14:42 taqua Exp $
+ * $Id: TableWriter.java,v 1.7 2003/09/30 19:47:30 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@ package org.jfree.report.modules.output.table.base;
 import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Band;
-import org.jfree.report.Group;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.util.Log;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelegate;
 import org.jfree.report.event.PageEventListener;
@@ -100,6 +100,7 @@ public strictfp class TableWriter extends AbstractFunction
   /** A flag indicating whether the writer is currently handling the end of an page. */
   private boolean inEndPage;
 
+  /** The layout delegate used to perform the page layout. */
   private SimplePageLayoutDelegate delegate;
 
   /**
@@ -109,8 +110,7 @@ public strictfp class TableWriter extends AbstractFunction
   public TableWriter()
   {
     setDependencyLevel(OUTPUT_LEVEL);
-    delegate = new SimplePageLayoutDelegate();
-    delegate.setWorker(this);
+    delegate = new SimplePageLayoutDelegate(this);
   }
 
   /**
@@ -140,34 +140,77 @@ public strictfp class TableWriter extends AbstractFunction
   public Expression getInstance()
   {
     TableWriter tw = (TableWriter) super.getInstance();
-    tw.delegate = new SimplePageLayoutDelegate();
-    tw.delegate.setWorker(tw);
+    tw.delegate = new SimplePageLayoutDelegate(tw);
     return tw;
   }
 
+  /**
+   * Checks, whether the current page is empty. An page is empty if it does
+   * not contain printed content. An empty page may have spooled content.
+   * 
+   * @return true, if the page is empty, false otherwise.
+   */
   public boolean isPageEmpty()
   {
-    return getProducer().isLayoutContainsContent();
+    if (producer == null)
+    {
+      throw new IllegalStateException("Producer is null." + toString());
+    }
+    return producer.isLayoutContainsContent();
   }
 
-  public float getMaximumBandHeight()
+  /**
+   * Returns the position of the first content. As this writer does not limit
+   * the height of the bands, this method returns 0.
+   * 
+   * @return the first content position.
+   */
+  public float getTopContentPosition()
   {
-    return Float.MAX_VALUE;
+    return 0;
   }
 
-  public void setMaximumBandHeight(float maxBandHeight)
+  /**
+   * This writer does not limit the height of an band and therefore does
+   * not implement that feature.
+   *
+   * @param topPosition the first usable position to print content.
+   */
+  public void setTopPageContentPosition(float topPosition)
   {
   }
 
+  /**
+   * Returns the reserved size for the current page. This size is not used
+   * when performing a layout. This is usually used to preserve the pagefooters
+   * space.  As this writer does not limit the height of the bands, this method 
+   * returns 0.
+   * 
+   * @return the reserved page height.
+   */
   public float getReservedSpace()
   {
     return 0;
   }
 
+  /**
+   * Defines the reserved size for the current page. This size is not used
+   * when performing a layout. 
+   * <p>
+   * This method does nothing.
+   * 
+   * @param reserved the reserved page height.
+   */
   public void setReservedSpace(float reserved)
   {
   }
 
+  /**
+   * Returns the current cursor position. It is assumed, that the cursor goes
+   * from top to down, columns are not used.
+   * 
+   * @return the cursor position.
+   */
   public float getCursorPosition()
   {
     return getCursor().getY();
@@ -182,16 +225,48 @@ public strictfp class TableWriter extends AbstractFunction
     setCursor(new TableWriterCursor());
   }
 
+  /**
+   * Checks, whether the page has ended. Once a page that is completly filled,
+   * only the page footer will be printed and a page break will be done after
+   * that.
+   * <p>
+   * As this target has no notion of pages, the virtual page does never end 
+   * automaticly.
+   * 
+   * @return true, if the page is finished, false otherwise.
+   */
   public boolean isPageEnded()
   {
     return false;
   }
 
+  /**
+   * Prints the given band at the bottom of the page.
+   * <p>
+   * As we don't use the idea of pages here, this call is mapped to the
+   * print method.
+   * 
+   * @param band the band.
+   * @return true, if the band was printed successfully, false otherwise.
+   * @throws ReportProcessingException if an exception occured while processing
+   * the band.
+   */
   public boolean printBottom(Band band) throws ReportProcessingException
   {
     return print (band, false, false);
   }
 
+  /**
+   * Prints the given band at the current cursor position.
+   * 
+   * @param band the band to be printed.
+   * @param spoolBand a flag defining whether the content should be spooled.
+   * @param handlePagebreakBefore a flag defining whether the worker should check
+   * for the 'pagebreak-before' flag.
+   * @return true, if the band was printed, false otherwise.
+   * @throws ReportProcessingException if an exception occured while processing
+   * the band.
+   */
   public boolean print(Band band, boolean spoolBand, boolean handlePagebreakBefore)
       throws ReportProcessingException
   {
@@ -426,6 +501,7 @@ public strictfp class TableWriter extends AbstractFunction
     producer.open();
     startPage();
     delegate.reportStarted(event);
+    clearCurrentEvent();
   }
 
   /**
@@ -439,6 +515,7 @@ public strictfp class TableWriter extends AbstractFunction
     delegate.reportFinished(event);
     endPage();
     producer.close();
+    clearCurrentEvent();
   }
 
   /**
@@ -458,7 +535,7 @@ public strictfp class TableWriter extends AbstractFunction
     }
     producer.beginPage(sheetName);
     delegate.pageStarted(event);
-    clearCurrentGroupEvent();
+    clearCurrentEvent();
   }
 
   /**
@@ -471,7 +548,7 @@ public strictfp class TableWriter extends AbstractFunction
     setCurrentEvent(event);
     delegate.pageFinished(event);
     producer.endPage();
-    clearCurrentGroupEvent();
+    clearCurrentEvent();
   }
 
   /**
@@ -483,7 +560,7 @@ public strictfp class TableWriter extends AbstractFunction
   {
     setCurrentEvent(event);
     delegate.groupStarted(event);
-    clearCurrentGroupEvent ();
+    clearCurrentEvent ();
   }
 
   /**
@@ -495,10 +572,13 @@ public strictfp class TableWriter extends AbstractFunction
   {
     setCurrentEvent(event);
     delegate.groupFinished(event);
-    clearCurrentGroupEvent ();
+    clearCurrentEvent ();
   }
 
-  private void clearCurrentGroupEvent()
+  /**
+   * Clear the current event after the event was fully processed.
+   */
+  private void clearCurrentEvent()
   {
     currentEvent = null;
   }
@@ -512,7 +592,7 @@ public strictfp class TableWriter extends AbstractFunction
   {
     setCurrentEvent(event);
     delegate.itemsAdvanced(event);
-    clearCurrentGroupEvent();
+    clearCurrentEvent();
   }
 
   /**
@@ -526,7 +606,7 @@ public strictfp class TableWriter extends AbstractFunction
   {
     setCurrentEvent(event);
     delegate.itemsStarted(event);
-    clearCurrentGroupEvent();
+    clearCurrentEvent();
   }
 
   /**
@@ -541,7 +621,7 @@ public strictfp class TableWriter extends AbstractFunction
     // this event does nothing
     setCurrentEvent(event);
     delegate.itemsFinished(event);
-    clearCurrentGroupEvent();
+    clearCurrentEvent();
   }
 
   /**
@@ -583,6 +663,11 @@ public strictfp class TableWriter extends AbstractFunction
    */
   public void setProducer(final TableProducer producer)
   {
+    if (producer == null)
+    {
+      throw new NullPointerException("Producer given must not be null.");
+    }
+    Log.debug ("Producer set: " + producer + " Writer:" + toString());
     this.producer = producer;
   }
 

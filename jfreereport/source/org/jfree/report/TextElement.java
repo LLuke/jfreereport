@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextElement.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: TextElement.java,v 1.4 2003/09/24 13:43:17 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -170,16 +170,31 @@ public class TextElement extends Element
     return CONTENT_TYPE;
   }
 
+  /**
+   * Returns the name of the current font.
+   * 
+   * @return the font name
+   */
   public String getFontName()
   {
     return (String) getStyle().getStyleProperty(ElementStyleSheet.FONT);
   }
 
+  /**
+   * Defines the font name of the current font.
+   * 
+   * @param fontName the font name
+   */
   public void setFontName(String fontName)
   {
     getStyle().setStyleProperty(ElementStyleSheet.FONT, fontName);
   }
 
+  /**
+   * Returns the font size in points.
+   * 
+   * @return the font size.
+   */
   public int getFontSize()
   {
     Integer i = (Integer) getStyle().getStyleProperty
@@ -188,86 +203,199 @@ public class TextElement extends Element
     return i.intValue();
   }
 
+  /**
+   * Defines the height of the font in points.
+   * <p>
+   * Calling this function with either parameter will override any 
+   * previously defined value for the layoutcachable attribute. 
+   * The value can no longer be inherited from parent stylesheets.
+   * 
+   * @param fontSize the font size in points.
+   */
   public void setFontSize(int fontSize)
   {
     getStyle().setStyleProperty
         (ElementStyleSheet.FONTSIZE, new Integer(fontSize));
   }
 
+  /**
+   * Checks, whether the font should be displayed in bold style.
+   * 
+   * @return true, if the font should be bold, false otherwise.
+   */
   public boolean isBold()
   {
     return getStyle().getBooleanStyleProperty(ElementStyleSheet.BOLD);
   }
-
+  
+  /**
+   * Defines, whether the font should be displayed in bold, false otherwise.
+   * <p>
+   * Calling this function with either parameter will override any 
+   * previously defined value for the layoutcachable attribute. 
+   * The value can no longer be inherited from parent stylesheets.
+   * 
+   * @param bold true, if the font should be displayed in bold, false otherwise
+   */
   public void setBold(boolean bold)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.BOLD, bold);
   }
 
+  /**
+   * Checks, whether the font should be displayed in italic style.
+   * 
+   * @return true, if the font should be italic, false otherwise.
+   */
   public boolean isItalic()
   {
     return getStyle().getBooleanStyleProperty(ElementStyleSheet.ITALIC);
   }
 
+  /**
+   * Defines, whether the font should be displayed in italics.
+   * <p>
+   * Calling this function with either parameter will override any 
+   * previously defined value for the layoutcachable attribute. 
+   * The value can no longer be inherited from parent stylesheets.
+   * 
+   * @param italic true, if the font should be in italic style, false otherwise.
+   */
   public void setItalic(boolean italic)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.ITALIC, italic);
   }
 
+  /**
+   * Returns whether the text should be displayed underlined.
+   * @return true, if the fond should be underlined, false otherwise.
+   */
   public boolean isUnderline()
   {
     return getStyle().getBooleanStyleProperty(ElementStyleSheet.UNDERLINED);
   }
 
+  /**
+   * Defines, whether the text should be displayed with the underline style
+   * applied. 
+   * <p>
+   * Calling this function with either parameter will override any 
+   * previously defined value for the layoutcachable attribute. 
+   * The value can no longer be inherited from parent stylesheets.
+   *
+   * @param underline true, if the text should be displayed underlined, false
+   * otherwise.
+   */
   public void setUnderline(boolean underline)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.UNDERLINED, underline);
   }
 
+  /**
+   * Returns whether the text should have the strikethough style applied.
+   * 
+   * @return true, if the font should be striked through, false otherwise.
+   */
   public boolean isStrikethrough()
   {
     return getStyle().getBooleanStyleProperty(ElementStyleSheet.STRIKETHROUGH);
   }
 
+  /**
+   * Defines, whether the text should be displayed striked through.
+   * <p>
+   * Calling this function with either parameter will override any 
+   * previously defined value for the layoutcachable attribute. 
+   * The value can no longer be inherited from parent stylesheets.
+   * 
+   * @param strikethrough whether to display the text with strikethrough style
+   * applied
+   */
   public void setStrikethrough(boolean strikethrough)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.STRIKETHROUGH, strikethrough);
   }
 
+  /**
+   * Returns the font definition object assigned with this element. Never null.
+   * @return the font definition for this element.
+   */
   public FontDefinition getFont()
   {
     return getStyle().getFontDefinitionProperty();
   }
 
+  /**
+   * Defines all font properties by applying the values from the given
+   * font definition object.
+   * <p>
+   * Calling this function with either parameter will override any 
+   * previously defined value for the layoutcachable attribute. 
+   * The value can no longer be inherited from parent stylesheets.
+   * 
+   * @param font the font definition for this element.
+   */
   public void setFont(FontDefinition font)
   {
     getStyle().setFontDefinitionProperty(font);
 
   }
 
-  public int getLineHeight()
+  /**
+   * Returns the lineheight for the element. The lineheight can be
+   * used to extend the space between two text lines, the effective
+   * lineheight will be the maximum of this property and the font height.
+   *  
+   * @return the defined line height.
+   */
+  public float getLineHeight()
   {
-    Integer i = (Integer) getStyle().getStyleProperty
+    Float i = (Float) getStyle().getStyleProperty
         (ElementStyleSheet.LINEHEIGHT);
     if (i == null)
     {
       return 0;
     }
-    return i.intValue();
+    return i.floatValue();
   }
 
-  public void setLineHeight(int lineHeight)
+  /**
+   * Defines the lineheight for the element. The lineheight can be
+   * used to extend the space between two text lines, the effective
+   * lineheight will be the maximum of this property and the font height.
+   * <p>
+   * Calling this function with any parameter will override any 
+   * previously defined value for the layoutcachable attribute. 
+   * The value can no longer be inherited from parent stylesheets.
+   *  
+   * @param lineHeight the defined line height.
+   */
+  public void setLineHeight(float lineHeight)
   {
     getStyle().setStyleProperty
-        (ElementStyleSheet.LINEHEIGHT, new Integer(lineHeight));
+        (ElementStyleSheet.LINEHEIGHT, new Float(lineHeight));
   }
 
+  /**
+   * Returns the reserved literal for this text element. This literal is appended,
+   * whenever the text from tne content does not fully fit into the element's 
+   * bounds. 
+   *  
+   * @return the reserved literal.
+   */
   public String getReservedLiteral()
   {
     return (String) getStyle().getStyleProperty
         (ElementStyleSheet.RESERVED_LITERAL);
   }
 
+  /**
+   * Defines the reserved literal for this text element. This literal is appended,
+   * whenever the text from tne content does not fully fit into the element's 
+   * bounds. 
+   *  
+   * @param reservedLiteral the reserved literal.
+   */
   public void setReservedLiteral(String reservedLiteral)
   {
     getStyle().setStyleProperty

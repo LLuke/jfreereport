@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportResources_fr.java,v 1.8 2003/08/25 14:29:29 taqua Exp $
+ * $Id: CSVExportResources_fr.java,v 1.10 2003/09/14 19:33:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -114,7 +114,8 @@ public class CSVExportResources_fr extends JFreeReportResources
         {"csvexportdialog.csv-file-description", "Fichiers séparés par une virgule."},
         
         {"cvs-export.progressdialog.title", "Exportation vers un fichier CSV ..."},
-        {"cvs-export.progressdialog.message", "Le rapport est maintenant exporté en fichier CSV ..."},
+        {"cvs-export.progressdialog.message", 
+          "Le rapport est maintenant exporté en fichier CSV ..."},
 
       };
 

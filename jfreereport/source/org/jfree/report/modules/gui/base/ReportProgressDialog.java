@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProgressDialog.java,v 1.2 2003/08/25 14:29:29 taqua Exp $
+ * $Id: ReportProgressDialog.java,v 1.3 2003/09/09 21:31:36 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,6 +38,8 @@
 
 package org.jfree.report.modules.gui.base;
 
+import java.awt.Dialog;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -108,6 +110,32 @@ public class ReportProgressDialog extends JDialog
       JFreeReportResources.class.getName();
 
   /**
+   * Creates a non-modal dialog without a title and with the
+   * specified Dialog owner.  
+   * 
+   * @param dialog the owner of the dialog
+   */
+  public ReportProgressDialog(Dialog dialog)
+  {
+    super (dialog);
+    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    initConstructor();
+  }
+
+  /**
+   * Creates a non-modal dialog without a title and with the
+   * specified Frame owner.  
+   * 
+   * @param frame the owner of the dialog
+   */
+  public ReportProgressDialog(Frame frame)
+  {
+    super (frame);
+    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    initConstructor();
+  }
+
+  /**
    * Creates a non-modal dialog without a title and without
    * a specified Frame owner.  A shared, hidden frame will be
    * set as the owner of the Dialog.
@@ -115,6 +143,15 @@ public class ReportProgressDialog extends JDialog
   public ReportProgressDialog()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    initConstructor();
+  }
+
+  /**
+   * Initializes the dialog (Non-GUI stuff).
+   *
+   */
+  private void initConstructor()
+  {
     initialize();
     addWindowListener(new WindowAdapter()
     {
@@ -133,7 +170,7 @@ public class ReportProgressDialog extends JDialog
     lastMaxRow = -1;
     lastPage = -1;
   }
-
+  
   /**
    * Initializes the GUI components of this dialog. 
    */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.23 2003/10/18 20:49:17 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.24 2003/10/22 14:44:51 taqua Exp $
  *
  * Changes
  * -------
@@ -813,7 +813,8 @@ public class PreviewProxyBase extends JComponent
   public void init(final JFreeReport report) throws ReportProcessingException
   {
     this.zoomActionConcentrator = new ActionConcentrator();
-    this.exportWorkerPool = new WorkerPool(10, "preview-dialog-export-worker [" + report.getName() + "]");
+    this.exportWorkerPool = new WorkerPool
+      (10, "preview-dialog-export-worker [" + report.getName() + "]");
 
     final boolean largeIconsProperty =
         report.getReportConfiguration().getConfigProperty
@@ -1393,6 +1394,12 @@ public class PreviewProxyBase extends JComponent
     return menuBar;
   }
 
+  /**
+   * Creates and returns the file menu of the preview base. The actions must
+   * be assigned in this method.
+   *
+   * @return A ready-made FileMenu.
+   */
   protected JMenu createFileMenu ()
   {
     final ResourceBundle resources = getResources();
@@ -1421,6 +1428,12 @@ public class PreviewProxyBase extends JComponent
     return fileMenu;
   }
 
+  /**
+   * Creates and returns the navigation menu of the preview base. The actions must
+   * be assigned in this method.
+   *
+   * @return A ready-made navigation Menu.
+   */
   protected JMenu createNavigationMenu ()
   {
     final ResourceBundle resources = getResources();
@@ -1438,6 +1451,12 @@ public class PreviewProxyBase extends JComponent
     return navMenu;
   }
 
+  /**
+   * Creates and returns the zoom menu of the preview base. The actions must
+   * be assigned in this method.
+   *
+   * @return A ready-made zoom menu.
+   */
   protected JMenu createZoomMenu ()
   {
     final ResourceBundle resources = getResources();
@@ -1460,6 +1479,12 @@ public class PreviewProxyBase extends JComponent
     return zoomMenu;
   }
 
+  /**
+   * Creates and returns the help menu of the preview base. The actions must
+   * be assigned in this method.
+   *
+   * @return A ready-made help menu.
+   */
   protected JMenu createHelpMenu ()
   {
     final ResourceBundle resources = getResources();

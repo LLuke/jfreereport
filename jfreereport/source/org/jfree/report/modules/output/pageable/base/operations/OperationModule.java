@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModule.java,v 1.6 2003/09/11 22:17:10 taqua Exp $
+ * $Id: OperationModule.java,v 1.7 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ import org.jfree.report.style.ElementStyleSheet;
  *
  * @author Thomas Morgner
  */
-public strictfp abstract class OperationModule
+public abstract strictfp class OperationModule
 {
   /** The module content type. */
   private String moduleContentType;

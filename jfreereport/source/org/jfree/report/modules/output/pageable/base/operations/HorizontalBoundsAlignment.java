@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HorizontalBoundsAlignment.java,v 1.2 2003/08/24 15:03:59 taqua Exp $
+ * $Id: HorizontalBoundsAlignment.java,v 1.3 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @author Thomas Morgner
  */
-public strictfp abstract class HorizontalBoundsAlignment extends BoundsAlignment
+public abstract strictfp class HorizontalBoundsAlignment extends BoundsAlignment
 {
   /**
    * Creates a new horizontal alignment object.

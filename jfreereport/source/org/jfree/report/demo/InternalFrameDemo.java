@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: InternalFrameDemo.java,v 1.2 2003/09/24 16:40:52 taqua Exp $
+ * $Id: InternalFrameDemo.java,v 1.3 2003/10/08 19:31:42 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -70,12 +70,18 @@ import org.jfree.report.util.Log;
 import org.jfree.report.util.WaitingImageObserver;
 import org.jfree.ui.RefineryUtilities;
 
+/**
+ * A demo to show the usage of the InteralPreviewFrame. It shows a
+ * report on a primitive desktop.
+ * 
+ * @author Thomas Morgner
+ */
 public class InternalFrameDemo extends AbstractDemoFrame
 {
 
   /** The data for the report. */
   private final TableModel data;
-
+  /** The desktop pane. */
   private JDesktopPane desktop;
 
   /**

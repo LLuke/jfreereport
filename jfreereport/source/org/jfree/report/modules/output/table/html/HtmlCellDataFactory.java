@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellDataFactory.java,v 1.3 2003/09/30 19:54:32 taqua Exp $
+ * $Id: HtmlCellDataFactory.java,v 1.4 2003/10/11 21:33:08 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@ import java.awt.Shape;
 import java.awt.Image;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Dimension2D;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
@@ -49,7 +48,6 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.ImageReference;
 import org.jfree.report.DrawableContainer;
 import org.jfree.report.util.ImageUtils;
-import org.jfree.report.util.Log;
 import org.jfree.report.modules.output.table.base.AbstractTableCellDataFactory;
 import org.jfree.report.modules.output.table.base.TableCellData;
 import org.jfree.report.style.ElementStyleSheet;

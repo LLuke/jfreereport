@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TotalCalculationFunction.java,v 1.3 2003/08/25 14:29:29 taqua Exp $
+ * $Id: TotalCalculationFunction.java,v 1.4 2003/10/18 19:32:12 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,6 @@ import java.io.Serializable;
 import java.io.ObjectInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.awt.Frame;
-import java.awt.BorderLayout;
 
 import org.jfree.report.event.ReportEvent;
 

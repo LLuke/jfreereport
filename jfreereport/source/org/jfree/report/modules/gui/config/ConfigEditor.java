@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigEditor.java,v 1.6 2003/09/15 15:31:58 taqua Exp $
+ * $Id: ConfigEditor.java,v 1.7 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -228,8 +228,20 @@ public class ConfigEditor extends JFrame
     }
   }
 
+  /** 
+   * A constant defining that text should be escaped in a way 
+   * which is suitable for property keys. 
+   */
   private static final int ESCAPE_KEY = 0;
+  /** 
+   * A constant defining that text should be escaped in a way 
+   * which is suitable for property values. 
+   */
   private static final int ESCAPE_VALUE = 1;
+  /** 
+   * A constant defining that text should be escaped in a way 
+   * which is suitable for property comments. 
+   */
   private static final int ESCAPE_COMMENT = 2;
 
   /** The name of the resource bundle implementation used in this dialog. */
@@ -496,6 +508,11 @@ public class ConfigEditor extends JFrame
     }
   }
 
+  /**
+   * Writes the configuration into the file specified by the given file name.
+   * 
+   * @param filename the target file name
+   */
   private void write(String filename)
   {
     Properties prop = new Properties();
@@ -544,6 +561,12 @@ public class ConfigEditor extends JFrame
 
   }
 
+  /**
+   * Writes a descriptive comment into the given print writer.
+   * @param text the text to be written. If it contains more than
+   * one line, every line will be prepended by the comment character.
+   * @param writer the writer that should receive the content.
+   */
   private void writeDescription(String text, PrintWriter writer)
   {
     // check if empty content ... this case is easy ...
@@ -562,6 +585,14 @@ public class ConfigEditor extends JFrame
     }
   }
 
+  /**
+   * Performs the necessary conversion of an java string into a property
+   * escaped string. 
+   * 
+   * @param text the text to be escaped
+   * @param escapeMode the mode that should be applied.
+   * @param writer the writer that should receive the content.
+   */
   private void saveConvert(String text, int escapeMode, PrintWriter writer)
   {
     char[] string = text.toCharArray();

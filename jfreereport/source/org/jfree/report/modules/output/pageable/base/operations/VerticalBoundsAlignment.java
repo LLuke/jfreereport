@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: VerticalBoundsAlignment.java,v 1.4 2003/09/11 22:17:10 taqua Exp $
+ * $Id: VerticalBoundsAlignment.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @author Thomas Morgner
  */
-public strictfp abstract class VerticalBoundsAlignment extends BoundsAlignment
+public abstract strictfp class VerticalBoundsAlignment extends BoundsAlignment
 {
 
   /**

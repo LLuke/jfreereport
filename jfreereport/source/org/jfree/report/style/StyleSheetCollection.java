@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetCollection.java,v 1.3 2003/09/24 13:43:37 taqua Exp $
+ * $Id: StyleSheetCollection.java,v 1.4 2003/09/24 15:27:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,7 +46,7 @@ import java.util.Set;
 
 import org.jfree.report.util.HashNMap;
 import org.jfree.report.util.InstanceID;
-import org.jfree.report.util.Log;
+
 
 /**
  * The StyleSheet collection is assigned to all Elements, all StyleSheets and
@@ -401,7 +401,8 @@ public class StyleSheetCollection implements Cloneable, Serializable
     }
     if (contains(es) == false)
     {
-      throw new IllegalArgumentException("This stylesheet is not in the collection." + es.getName());
+      throw new IllegalArgumentException
+        ("This stylesheet is not in the collection." + es.getName());
     }
     else
     {
@@ -601,6 +602,10 @@ public class StyleSheetCollection implements Cloneable, Serializable
     return Collections.unmodifiableSet(keySet).iterator();
   }
 
+  /**
+   * Prints debug messages.
+   */
+  /*
   public void debug()
   {
     Log.debug ("DEBUG----------------------------------------------");
@@ -617,4 +622,5 @@ public class StyleSheetCollection implements Cloneable, Serializable
     }
 
   }
+  */
 }

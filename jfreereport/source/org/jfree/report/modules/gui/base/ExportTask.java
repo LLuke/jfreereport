@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportTask.java,v 1.4 2003/09/09 21:31:36 taqua Exp $
+ * $Id: ExportTask.java,v 1.5 2003/10/18 19:22:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -68,7 +68,7 @@ public abstract class ExportTask implements Runnable
   private boolean taskDone;
   /** stores a possible exception that caused the task to fail. */
   private Exception exception;
-
+  /** A list of task listeners. */
   private ArrayList listeners;
 
   /**
@@ -154,6 +154,12 @@ public abstract class ExportTask implements Runnable
     fireExportFailed();
   }
 
+  /**
+   * Adds an export task listener to this task. The listener will be informed
+   * when the task is either aborted or finished.
+   * 
+   * @param listener the task listener to be added.
+   */
   public void addExportTaskListener (ExportTaskListener listener)
   {
     if (listener == null)
@@ -163,6 +169,11 @@ public abstract class ExportTask implements Runnable
     listeners.add (listener);
   }
 
+  /**
+   * Removes an export task listener to this task. 
+   * 
+   * @param listener the task listener to be removed.
+   */
   public void removeExportTaskListener (ExportTaskListener listener)
   {
     if (listener == null)
@@ -172,6 +183,9 @@ public abstract class ExportTask implements Runnable
     listeners.remove (listener);
   }
 
+  /**
+   * Informs all registered listeners, that the report was finished successfully. 
+   */
   protected void fireExportDone ()
   {
     for (int i = 0; i < listeners.size(); i++)
@@ -181,6 +195,10 @@ public abstract class ExportTask implements Runnable
     }
   }
 
+  /**
+   * Informs all registered listeners, that the report was aborted due to 
+   * unexpected errors. 
+   */
   protected void fireExportFailed ()
   {
     for (int i = 0; i < listeners.size(); i++)
@@ -190,6 +208,10 @@ public abstract class ExportTask implements Runnable
     }
   }
 
+  /**
+   * Informs all registered listeners, that the report processing was aborted
+   * by the user. 
+   */
   protected void fireExportAborted ()
   {
     for (int i = 0; i < listeners.size(); i++)
@@ -208,6 +230,12 @@ public abstract class ExportTask implements Runnable
     exception = null;
   }
 
+  /**
+   * Starts the export by calling performExport. If perfomExport causes
+   * Exceptions, the task will be marked as failed. 
+   *  
+   * @see java.lang.Runnable#run()
+   */
   public final void run ()
   {
     try
@@ -222,5 +250,8 @@ public abstract class ExportTask implements Runnable
     dispose();
   }
 
+  /**
+   * Performs the export.
+   */
   protected abstract void performExport ();
 }

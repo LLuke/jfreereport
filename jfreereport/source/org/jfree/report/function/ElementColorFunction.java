@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.3 2003/09/15 18:26:50 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.4 2003/10/08 19:48:58 taqua Exp $
  *
  * Changes
  * -------
@@ -77,9 +77,17 @@ public class ElementColorFunction extends AbstractFunction
 
   /** The color object descripion. */
   private transient ColorObjectDescription cod;
-  
+  /** The default parameter name for the color object description. */
   private static final String VALUE_PARAMETER = "value";
+  /** 
+   * The property name for the color that should be used when the defined 
+   * field evaluates to true.
+   */
   public static final String COLOR_TRUE_PROPERTY = "colorTrue";
+  /** 
+   * The property name for the color that should be used when the defined 
+   * field evaluates to false.
+   */
   public static final String COLOR_FALSE_PROPERTY = "colorFalse";
 
   /**

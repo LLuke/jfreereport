@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridLayout.java,v 1.6 2003/10/10 17:16:26 taqua Exp $
+ * $Id: TableGridLayout.java,v 1.7 2003/10/10 18:46:48 taqua Exp $
  *
  * Changes
  * -------
@@ -43,8 +43,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import org.jfree.report.util.Log;
 
 /**
  * The table grid layout is used to layout the collected TableCellData object from
@@ -373,6 +371,13 @@ public class TableGridLayout
     }
   }
 
+  /**
+   * Checks, whether the cell at the given coordinates contains data.
+   * 
+   * @param x the column of the grid layout
+   * @param y the row of the grid layout
+   * @return true, if the cell contains data, false otherwise.
+   */
   public boolean containsData (final int x, final int y)
   {
     return (getData(x, y) != null);

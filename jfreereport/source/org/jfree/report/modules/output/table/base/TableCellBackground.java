@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.8 2003/10/11 14:56:26 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.9 2003/10/11 15:50:17 taqua Exp $
  *
  * Changes
  * -------
@@ -254,6 +254,7 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
    * background.
    *
    * @param background the other background cell
+   * @param cellBounds the bounds of the cell for which to form the background.
    * @return a union of the background informations.
    */
   public TableCellBackground merge(final TableCellBackground background,
@@ -393,7 +394,12 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
         (bgBounds.getX() == (bounds.getX() + bounds.getWidth())));
   }
 
-
+  /**
+   * Merges the left border of the background definition with the right border
+   * of this one.
+   * 
+   * @param background the other background definition.
+   */
   private void mergeRightBorder (final TableCellBackground background)
   {
     // map the background's left border to the right side
@@ -434,6 +440,12 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
     }
   }
 
+  /**
+   * Creates an merged instance of this background for the given bounds.
+   * 
+   * @param bounds the new bounds of the merged background
+   * @return a copy of this background with new bounds.
+   */
   protected TableCellBackground createMergedInstance (Rectangle2D bounds)
   {
     try

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.13 2003/10/11 14:56:26 taqua Exp $
+ * $Id: TableProducer.java,v 1.14 2003/10/11 21:33:08 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,6 @@ import java.util.Properties;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.util.Log;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
@@ -61,7 +60,7 @@ import org.jfree.report.style.ElementStyleSheet;
  *
  * @author Thomas Morgner
  */
-public strictfp abstract class TableProducer
+public abstract strictfp class TableProducer
 {
   /** Literal text for the 'title' property name. */
   public static final String TITLE = "Title";
@@ -416,6 +415,8 @@ public strictfp abstract class TableProducer
    * Created basicly for utility/debugging purposes.
    *
    * @param background the list of background definitions.
+   * @param cellBounds the bounds of the background cell that should be
+   * created.
    * @return the created (merged) TableCellBackground instance.
    */
   protected static TableCellBackground createStaticTableCellStyle
@@ -450,7 +451,19 @@ public strictfp abstract class TableProducer
     return (bg);
   }
 
-  protected Rectangle2D createCellBounds (TableGridLayout layout, int x, int y, Rectangle2D rect)
+  /**
+   * Creates the cellbounds for the cell specified with x and y of the given
+   * layout. The bounds are filled in the given rectangle, if not null.
+   * 
+   * @param layout the layout from where to read the content
+   * @param x the column within the layout
+   * @param y the row within the layout
+   * @param rect the rectangle which should receive the bounds. If the rectangle
+   * is null, a new rectangle will be created.
+   * @return the rectangle containing the bounds of the given cell.
+   */
+  protected Rectangle2D createCellBounds 
+    (final TableGridLayout layout, final int x, final int y, Rectangle2D rect)
   {
     if (rect == null)
     {

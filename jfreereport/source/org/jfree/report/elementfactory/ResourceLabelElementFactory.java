@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResourceLabelElementFactory.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: ResourceLabelElementFactory.java,v 1.5 2003/10/05 21:52:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,7 +46,6 @@ import org.jfree.report.Element;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.TextElement;
 import org.jfree.report.filter.templates.ResourceLabelTemplate;
-import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
@@ -160,8 +159,7 @@ public class ResourceLabelElementFactory extends TextElementFactory
     final TextElement element = new TextElement();
     applyElementName(element);
     element.setDataSource(template);
-    final ElementStyleSheet style = element.getStyle();
-    applyStyle(style);
+    applyStyle(element.getStyle());
     return element;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.6 2003/10/30 19:38:43 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.7 2003/10/30 19:40:49 taqua Exp $
  *
  * Changes
  * -------
@@ -105,15 +105,12 @@ public final class FunctionUtilities
     }
 
     final Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
-    Log.debug ("Group name " + groupName + " vs. " + group.getName());
     if (groupName.equals(group.getName()))
     {
-      Log.debug ("-> true");
       return true;
     }
     else
     {
-      Log.debug ("-> false");
       return false;
     }
   }
@@ -162,6 +159,12 @@ public final class FunctionUtilities
     return (event.getState().getLevel() < 0);
   }
 
+  /**
+   * Returns the current group instance, based on the given report event.
+   * 
+   * @param event the event which is base for the action.
+   * @return the current group of the event, never null.
+   */
   public static Group getCurrentGroup (final ReportEvent event)
   {
     if (event == null)

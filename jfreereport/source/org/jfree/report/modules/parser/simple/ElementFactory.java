@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.11 2003/10/18 22:05:11 taqua Exp $
+ * $Id: ElementFactory.java,v 1.12 2003/10/30 22:15:38 taqua Exp $
  *
  * Changes
  * -------
@@ -90,12 +90,20 @@ import org.xml.sax.SAXException;
  */
 public class ElementFactory extends AbstractReportDefinitionHandler implements ReportDefinitionTags
 {
+  /** A constant defining the name of the dynamic attribute. */
+  public static final String DYNAMIC_ATT = "dynamic";
+  /** A constant defining the name of the reserved-literal attribute. */
+  public static final String RESERVED_LITERAL_ATT = "reserved-literal";
+  /** A constant defining the name of the trim-text-content attribute. */
+  public static final String TRIM_TEXT_CONTENT_ATT = "trim-text-content";
+
   /** Storage for the current CDATA. */
   private final StringBuffer currentText;
 
   /** The current band, where created elements are added to. */
   private final Band currentBand;
 
+  /** A flag indicating whether this factory current works on an subband. */
   private boolean subbandActive;
 
   /** The current text element factory used to produce the next element. */
@@ -103,9 +111,6 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
 
   /** The character entity parser. */
   private final CharacterEntityParser entityParser;
-  public static final String DYNAMIC_ATT = "dynamic";
-  public static final String RESERVED_LITERAL_ATT = "reserved-literal";
-  public static final String TRIM_TEXT_CONTENT_ATT = "trim-text-content";
 
   /**
    * Creates a new ElementFactory. The factory queries the current Band of the ReportFactory
@@ -611,6 +616,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param value the string that represents the boolean.
    * @return Boolean.TRUE or Boolean.FALSE
+   * @throws SAXException if an parse error occured.
    */
   private Boolean parseBoolean(final String value) throws SAXException
   {
@@ -882,6 +888,13 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
 
   }
 
+  /**
+   * Reads an attribute as float and returns <code>def</code> if that fails.
+   *
+   * @param value the attribute value.
+   * @return the float value.
+   * @throws SAXException if an parse error occured.
+   */
   private Float parseFloat(String value) throws SAXException
   {
     if (value == null)
@@ -926,6 +939,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * @param val the attribute value.
    *
    * @return the int value.
+   * @throws SAXException if an parse error occured.
    */
   private Integer parseInteger(final String val) throws SAXException
   {

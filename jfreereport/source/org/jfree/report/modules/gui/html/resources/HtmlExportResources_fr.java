@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_fr.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
+ * $Id: HtmlExportResources_fr.java,v 1.8 2003/09/14 19:33:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -129,7 +129,8 @@ public class HtmlExportResources_fr extends JFreeReportResources
         {"error.validationfailed.title", "Erreur de validation"},
         
         {"html-export.progressdialog.title", "Exportation au format HTML ..."},
-        {"html-export.progressdialog.message", "Le rapport est maintenant exporté en fichier HTML ..."},
+        {"html-export.progressdialog.message", 
+          "Le rapport est maintenant exporté en fichier HTML ..."},
 
       };
 

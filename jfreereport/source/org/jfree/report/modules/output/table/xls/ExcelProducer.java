@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.10 2003/08/26 16:03:10 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.11 2003/10/11 14:56:26 taqua Exp $
  *
  * Changes
  * -------
@@ -279,7 +279,8 @@ public class ExcelProducer extends TableProducer
 
         final TableGridPosition root = gridPosition.getRoot();
         cellBounds = createCellBounds(layout, x, y, cellBounds);
-        final TableCellBackground bg = createTableCellStyle(gridPosition.getBackground(), cellBounds);
+        final TableCellBackground bg = createTableCellStyle
+          (gridPosition.getBackground(), cellBounds);
         if (root == null)
         {
           // just apply the background, if any ...

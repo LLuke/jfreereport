@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: SimplePageLayoutDelegate.java,v 1.1 2003/10/01 20:41:41 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,10 +50,19 @@ import org.jfree.report.event.ReportListener;
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.style.BandStyleSheet;
 
+/**
+ * The simple page layout delegate encasulates all required tasks to perform
+ * a plain top-to-bottom pagelayouting. It gets fed with report states and 
+ * will perform all necessary steps to prepare the content generation. The
+ * final printing is done in the simple page layout worker (in most cases
+ * the report processor function).
+ * 
+ * @author Thomas Morgner
+ */
 public class SimplePageLayoutDelegate implements
     PageEventListener, ReportListener, Cloneable, Serializable
 {
-
+  /** The pagelayout worker which performs the final printing. */ 
   private SimplePageLayoutWorker worker;
 
   /** small carrier class to transport the maximum page number for this report. */
@@ -66,18 +75,22 @@ public class SimplePageLayoutDelegate implements
   /** the page carrier for this pagelayouter contains the number of the last page. */
   private PageCarrier pageCarrier;
 
+  /** A flag indicating whether the next pagebreak will be the last one. */
   private boolean lastPagebreak;
+  /** The current group index (used to select the correct group header and footer).*/
   private int currentEffectiveGroupIndex;
 
-  public SimplePageLayoutDelegate()
+  /**
+   * DefaultConstructor. A worker needs to be assigned to use this delegate.
+   *
+   * @param worker the worker.
+   */
+  public SimplePageLayoutDelegate(SimplePageLayoutWorker worker)
   {
     pageCarrier = new PageCarrier();
+    setWorker(worker);
   }
 
-  public SimplePageLayoutWorker getWorker()
-  {
-    return worker;
-  }
 
   /**
    * Creates and returns a copy of this object.
@@ -96,37 +109,96 @@ public class SimplePageLayoutDelegate implements
     return super.clone();
   }
 
+  /**
+   * Returns the simple page layout worker for this delegate.
+   * 
+   * @return the worker.
+   */
+  public SimplePageLayoutWorker getWorker()
+  {
+    return worker;
+  }
+
+  /**
+   * Defines the simple page layout worker for this delegate.
+   * 
+   * @param worker the worker.
+   * @throws NullPointerException if the given worker is null.
+   */
   public void setWorker(SimplePageLayoutWorker worker)
   {
+    if (worker == null)
+    {
+      throw new NullPointerException("The given worker is null.");
+    }
     this.worker = worker;
   }
 
-  public int getCurrentEffectiveGroupIndex()
+  /**
+   * Defines the currently effective group index. This index is used for
+   * the repeating group headers feature.
+   * 
+   * @return the current group index.
+   */
+  protected int getCurrentEffectiveGroupIndex()
   {
     return currentEffectiveGroupIndex;
   }
 
-  public void setCurrentEffectiveGroupIndex(int currentEffectiveGroupIndex)
+  /**
+   * Defines the currently effective group index. 
+   * 
+   * @param currentEffectiveGroupIndex the current group index.
+   */
+  protected void setCurrentEffectiveGroupIndex(int currentEffectiveGroupIndex)
   {
     this.currentEffectiveGroupIndex = currentEffectiveGroupIndex;
   }
 
-  public boolean isLastPagebreak()
+  /**
+   * Checks, whether the next pagebreak will be the last one.
+   * After that pagebreak, the report processing is completed.
+   * 
+   * @return true, if the last pagebreak has been reached, 
+   * false otherwise
+   */
+  protected boolean isLastPagebreak()
   {
     return lastPagebreak;
   }
 
-  public void setLastPagebreak(boolean lastPagebreak)
+  /**
+   * Defines, whether the next pagebreak will be the last one.
+   * After that pagebreak, the report processing is completed.
+   * 
+   * @param lastPagebreak set to true, if the last pagebreak has been reached, 
+   * false otherwise
+   */
+  protected void setLastPagebreak(boolean lastPagebreak)
   {
     this.lastPagebreak = lastPagebreak;
   }
 
-  public int getMaxPage()
+  /**
+   * Returns the number of pages in the report (as currently known).
+   * This property is filled during the pagination process and is later
+   * used to support the surpression of the pageheader/footer on the last page. 
+   * 
+   * @return the number of pages in the report.
+   */
+  protected int getMaxPage()
   {
     return pageCarrier.maxPages;
   }
 
-  public void setMaxPage(int maxPage)
+  /**
+   * Defines the number of pages in the report (as currently known).
+   * This property is filled during the pagination process and is later
+   * used to support the surpression of the pageheader/footer on the last page. 
+   * 
+   * @param maxPage the number of pages in the report.
+   */
+  protected void setMaxPage(int maxPage)
   {
     this.pageCarrier.maxPages = maxPage;
   }
@@ -169,26 +241,30 @@ public class SimplePageLayoutDelegate implements
       {
         if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
         {
-          worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
+          worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED, 
+              SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
         }
       }
       else if (event.getState().getCurrentPage() == getMaxPage())
       {
         if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
         {
-          worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
+          worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED, 
+              SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
         }
       }
       else if (isLastPagebreak())
       {
         if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
         {
-          worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
+          worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED, 
+              SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
         }
       }
       else
       {
-        worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
+        worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED, 
+            SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
       }
 
       /**
@@ -201,12 +277,13 @@ public class SimplePageLayoutDelegate implements
         final Group g = report.getGroup(gidx);
         if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
         {
-          worker.print(g.getHeader(), SimplePageLayoutWorker.BAND_SPOOLED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
+          worker.print(g.getHeader(), SimplePageLayoutWorker.BAND_SPOOLED, 
+            SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
         }
       }
 
       // mark the current position to calculate the maxBand-Height
-      worker.setMaximumBandHeight(worker.getCursorPosition());
+      worker.setTopPageContentPosition(worker.getCursorPosition());
     }
     catch (FunctionProcessingException fe)
     {
@@ -301,7 +378,8 @@ public class SimplePageLayoutDelegate implements
     try
     {
       currentEffectiveGroupIndex = -1;
-      worker.print(event.getReport().getReportHeader(), SimplePageLayoutWorker.BAND_PRINTED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
+      worker.print(event.getReport().getReportHeader(), 
+        SimplePageLayoutWorker.BAND_PRINTED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
     }
     catch (FunctionProcessingException fe)
     {
@@ -342,7 +420,8 @@ public class SimplePageLayoutDelegate implements
       setLastPagebreak(true);
 
       final Band b = event.getReport().getReportFooter();
-      worker.print(b, SimplePageLayoutWorker.BAND_PRINTED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
+      worker.print(b, SimplePageLayoutWorker.BAND_PRINTED, 
+        SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
     }
     catch (FunctionProcessingException fe)
     {
@@ -387,7 +466,8 @@ public class SimplePageLayoutDelegate implements
       final int gidx = event.getState().getCurrentGroupIndex();
       final Group g = event.getReport().getGroup(gidx);
       final Band b = g.getHeader();
-      worker.print(b, SimplePageLayoutWorker.BAND_PRINTED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
+      worker.print(b, SimplePageLayoutWorker.BAND_PRINTED, 
+        SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
     }
     catch (FunctionProcessingException fe)
     {
@@ -420,7 +500,8 @@ public class SimplePageLayoutDelegate implements
       final int gidx = event.getState().getCurrentGroupIndex();
       final Group g = event.getReport().getGroup(gidx);
       final Band b = g.getFooter();
-      worker.print(b, SimplePageLayoutWorker.BAND_PRINTED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
+      worker.print(b, SimplePageLayoutWorker.BAND_PRINTED, 
+        SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
     }
     catch (FunctionProcessingException fe)
     {
@@ -483,7 +564,8 @@ public class SimplePageLayoutDelegate implements
 
     try
     {
-      worker.print(event.getReport().getItemBand(), SimplePageLayoutWorker.BAND_PRINTED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
+      worker.print(event.getReport().getItemBand(), 
+        SimplePageLayoutWorker.BAND_PRINTED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
     }
     catch (FunctionProcessingException fe)
     {

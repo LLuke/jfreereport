@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.3 2003/09/15 15:31:58 taqua Exp $
+ * $Id: ReportPropertyDemo.java,v 1.1 2003/11/01 13:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -69,6 +69,7 @@ import org.jfree.ui.RefineryUtilities;
  */
 public class ReportPropertyDemo extends AbstractDemoFrame
 {
+  /** The text area contains the userinput which should be displayed in the report. */  
   private JTextArea textArea;
 
   /**

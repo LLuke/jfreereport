@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.10 2003/10/18 19:22:33 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.11 2003/10/28 21:07:59 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,8 +46,6 @@ import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
-import org.jfree.report.modules.gui.base.ExportTask;
-import org.jfree.report.modules.gui.base.ExportTaskListener;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.xls.resources.XLSExportResources;
@@ -60,38 +58,6 @@ import org.jfree.ui.RefineryUtilities;
  */
 public class ExcelExportPlugin extends AbstractExportPlugin
 {
-  private class ExcelExportTaskListener implements ExportTaskListener
-  {
-    private ReportProgressDialog progressDialog;
-
-    public ExcelExportTaskListener (ReportProgressDialog progressDialog)
-    {
-      this.progressDialog = progressDialog;
-    }
-
-    public void taskAborted(ExportTask task)
-    {
-      getBase().removeRepaginationListener(progressDialog);
-      ExcelExportPlugin.this.handleExportResult(task);
-    }
-
-    public void taskDone(ExportTask task)
-    {
-      getBase().removeRepaginationListener(progressDialog);
-      ExcelExportPlugin.this.handleExportResult(task);
-    }
-
-    public void taskFailed(ExportTask task)
-    {
-      getBase().removeRepaginationListener(progressDialog);
-      ExcelExportPlugin.this.handleExportResult(task);
-    }
-
-    public void taskWaiting(ExportTask task)
-    {
-    }
-  }
-
   /** The excel export dialog which handles the export. */
   private ExcelExportDialog exportDialog;
 
@@ -110,9 +76,14 @@ public class ExcelExportPlugin extends AbstractExportPlugin
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
   }
 
+  /** 
+   * Creates the progress dialog that monitors the export process. 
+   *
+   * @return the progress monitor dialog. 
+   */
   protected ReportProgressDialog createProgressDialog()
   {
-    ReportProgressDialog progressDialog = new ReportProgressDialog();
+    ReportProgressDialog progressDialog = super.createProgressDialog();
     progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
     progressDialog.setTitle(resources.getString("excel-export.progressdialog.title"));
     progressDialog.setMessage(resources.getString("excel-export.progressdialog.message"));
@@ -164,7 +135,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
     final ReportProgressDialog progressDialog = createProgressDialog();
     final ExcelExportTask task =
       new ExcelExportTask(exportDialog.getFilename(), progressDialog, report);
-    task.addExportTaskListener(new ExcelExportTaskListener (progressDialog));
+    task.addExportTaskListener(new DefaultExportTaskListener ());
     delegateTask(task);
     return handleExportResult(task);
   }

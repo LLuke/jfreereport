@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.5 2003/08/25 14:29:28 taqua Exp $
+ * $Id: ElementFactory.java,v 1.6 2003/10/05 21:52:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,8 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
 import org.jfree.report.Element;
+import org.jfree.report.layout.StaticLayoutManager;
+import org.jfree.report.style.ElementStyleSheet;
 
 /**
  * The class element factory is the base class for all Element Factories.
@@ -205,12 +207,31 @@ public abstract class ElementFactory
     this.dynamicHeight = dynamicHeight;
   }
 
+  /**
+   * Applies the defined name to the created element.
+   * 
+   * @param e the element which was created.
+   */
   protected void applyElementName (Element e)
   {
     if (getName() != null)
     {
       e.setName(getName());
     }
+  }
+
+  /**
+   * Applies the style definition to the elements stylesheet.
+   *  
+   * @param style the element stylesheet which should receive the style definition.
+   */
+  protected void applyStyle (ElementStyleSheet style)
+  {
+    style.setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, getAbsolutePosition());
+    style.setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT, getDynamicHeight());
+    style.setStyleProperty(ElementStyleSheet.MAXIMUMSIZE, getMaximumSize());
+    style.setStyleProperty(ElementStyleSheet.MINIMUMSIZE, getMinimumSize());
+    style.setStyleProperty(ElementStyleSheet.PREFERREDSIZE, getPreferredSize());
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: PlainTextExportResources_fr.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PlainTextExportResources_fr.java,v 1.8 2003/09/14 19:33:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -109,7 +109,8 @@ public class PlainTextExportResources_fr extends JFreeReportResources
         {"plain-text-exportdialog.font-settings", "Paramètres de la police"},
         
         {"plaintext-export.progressdialog.title", "Exportation vers un fichier text ..."},
-        {"plaintext-export.progressdialog.message", "Le rapport est maintenant exporté en fichier text ..."},
+        {"plaintext-export.progressdialog.message", 
+          "Le rapport est maintenant exporté en fichier text ..."},
 
       };
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: WorkerHandle.java,v 1.1 2003/10/18 20:50:38 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,15 +38,30 @@
 
 package org.jfree.report.util;
 
+/**
+ * The worker handle is a control structure which allows control over the 
+ * worker without exposing the thread object.
+ * 
+ * @author Thomas Morgner
+ */
 public class WorkerHandle
 {
+  /** The worker for this handle. */
   private Worker worker;
 
+  /**
+   * Creates a new handle for the given worker.
+   * @param worker the worker.
+   */
   public WorkerHandle(Worker worker)
   {
     this.worker = worker;
   }
 
+  /**
+   * Finishes the worker.
+   *
+   */
   public void finish()
   {
     worker.finish();

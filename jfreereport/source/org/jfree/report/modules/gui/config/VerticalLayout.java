@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: VerticalLayout.java,v 1.3 2003/09/30 19:47:29 taqua Exp $
+ * $Id: VerticalLayout.java,v 1.4 2003/10/22 14:44:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -53,7 +53,10 @@ import java.awt.Rectangle;
  */
 public class VerticalLayout implements LayoutManager
 {
-
+  /** 
+   * Defines, whether to use the parents size or whether to compute
+   * the size from the parent's childs during the layouting.
+   */
   private boolean useSizeFromParent;
 
   /**
@@ -65,7 +68,11 @@ public class VerticalLayout implements LayoutManager
   }
 
   /**
-   * DefaultConstructor.
+   * Creates a new vertical layout. If useParent is set to true,
+   * the parents size will be used when performing the layouting,
+   * else only the parents childs are used to compute the layout.
+   * 
+   * @param useParent defines, whether the parent's size is used. 
    */
   public VerticalLayout(boolean useParent)
   {
@@ -158,6 +165,11 @@ public class VerticalLayout implements LayoutManager
     }
   }
 
+  /**
+   * Returns, whether the parent's defined size is used during the layouting,
+   * or whether the childs are used to compute the size. 
+   * @return true, if the parent's size is used, false otherwise.
+   */
   public boolean isUseSizeFromParent()
   {
     return useSizeFromParent;

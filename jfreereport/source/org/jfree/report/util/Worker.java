@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.7 2003/09/09 02:29:13 taqua Exp $
+ * $Id: Worker.java,v 1.8 2003/10/18 20:49:17 taqua Exp $
  *
  *
  * Changes
@@ -57,7 +57,7 @@ public class Worker extends Thread
 
   /** the time in milliseconds beween 2 checks for exit or work requests. */
   private final int sleeptime;
-
+  /** The worker pool, to which this worker is assigned. May be null. */
   private WorkerPool workerPool;
 
   /**
@@ -245,16 +245,32 @@ public class Worker extends Thread
 //    System.out.flush();
 //  }
 
+  /**
+   * Checks whether this worker has received the signal to finish and die.
+   * 
+   * @return true, if the worker should finish the work and end the thread.
+   */
   public boolean isFinish()
   {
     return finish;
   }
 
+  /**
+   * Returns the worker's assigned pool.
+   * 
+   * @return the worker pool (or null, if the worker is not assigned to a pool).
+   */
   public WorkerPool getWorkerPool()
   {
     return workerPool;
   }
 
+  /**
+   * Defines the worker's assigned pool.
+   * 
+   * @param workerPool the worker pool 
+   * (or null, if the worker is not assigned to a pool).
+   */
   public void setWorkerPool(WorkerPool workerPool)
   {
     this.workerPool = workerPool;

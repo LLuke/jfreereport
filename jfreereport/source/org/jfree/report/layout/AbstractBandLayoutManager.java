@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.9 2003/09/15 18:26:50 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.10 2003/10/11 20:44:06 taqua Exp $
  *
  * Changes
  * -------
@@ -462,7 +462,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return the corrected dimension.
    */
-  protected strictfp static Dimension2D correctDimension
+  protected static strictfp Dimension2D correctDimension
       (final Dimension2D dim, final Dimension2D base, final Dimension2D retval)
   {
     float newWidth = (float) dim.getWidth();
@@ -492,7 +492,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    * @param base the base value (the containers value)
    * @return the corrected value if necessary or the dim value unchanged.
    */
-  protected strictfp static float correctRelativeValue (final float dim, final float base)
+  protected static strictfp float correctRelativeValue (final float dim, final float base)
   {
     if (dim < 0)
     {
@@ -512,7 +512,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return the corrected point.
    */
-  protected strictfp static Point2D correctPoint
+  protected static strictfp Point2D correctPoint
     (final Point2D dim, final Dimension2D base, final Point2D retval)
   {
     double x = dim.getX();
@@ -546,7 +546,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return The aligned value.
    */
-  protected strictfp static float align(final float value, final float boundary)
+  protected static strictfp float align(final float value, final float boundary)
   {
     if (boundary == 0)
     {

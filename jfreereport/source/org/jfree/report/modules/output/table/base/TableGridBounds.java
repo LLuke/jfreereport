@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridBounds.java,v 1.4 2003/08/25 14:29:32 taqua Exp $
+ * $Id: TableGridBounds.java,v 1.5 2003/10/10 17:16:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,7 +56,7 @@ public final class TableGridBounds
 
   /** The XBounds, all vertical cell boundaries. */
   private final TreeSet xBounds;
-
+  /** The right border of the grid. This is needed when being not in the strict mode. */
   private int xMaxBounds;
 
   /**

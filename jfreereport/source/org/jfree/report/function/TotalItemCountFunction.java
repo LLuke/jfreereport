@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalItemCountFunction.java,v 1.4 2003/10/22 14:49:41 taqua Exp $
+ * $Id: TotalItemCountFunction.java,v 1.5 2003/10/30 19:38:43 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,7 +52,7 @@ import org.jfree.report.event.ReportEvent;
  * 
  * @author Thomas Morgner
  */
-public class TotalItemCountFunction extends AbstractFunction
+public class TotalItemCountFunction extends AbstractFunction implements Serializable
 {
   /**
    * An internal storage to collect the total value instead of the 

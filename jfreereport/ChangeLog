@@ -3,6 +3,32 @@
 ---------------
 A list of changes in recent versions:
 
+0.8.4-4 (01-Nov-2003):
+        * BugFix: TotalItemCountFunction is now serializable and handles
+          nested groups correctly.
+
+        * BugFix: ExportPlugins had a weird way of registering themself on
+          the ReportProgressDialogs
+
+        * BugFix: SimplePageLayouter did not implement getInstance() correctly.
+
+        * BugFix: TextElement.setLineHeight tried to use Integer where Float
+          was expected causing ClassCastExceptions.
+
+        * BugFix: The PackageManager did not accept some of the version strings
+          correctly causing all export plugins to fail. Additionally all
+          warnings were surpressed.
+
+        * TextElements can now trim the textlines to make the aligned content
+          look properly.
+
+        * The simple xml parser now allows to define the reserved-literal, the
+          string which is appended when a text does not fully fit into the
+          elements bounds. Additionally, the simple parser now can define the
+          trim-text property for all text elements.
+
+        * A new demo shows the usage of ReportProperties.
+
 0.8.4-3 (22-Oct-2003):
         * BugFix: PlainText output fixed. It was funnily messed up when
           handling borders and was fed in the wrong way by some of the demos.
