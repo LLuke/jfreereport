@@ -146,7 +146,8 @@
         <delete dir="${projectdir}/javadoc" />
         <mkdir dir="${projectdir}/javadoc" />
         <javadoc destdir="${projectdir}/javadoc"
-                 windowtitle="JFreeReport Class Library">
+                 windowtitle="JFreeReport Class Library"
+                 Overview="../source/overview.html">
             <classpath refid="build.classpath" />
             <packageset dir="${projectdir}/source" defaultexcludes="yes">
                 <include name="com/jrefinery/report/**" />
