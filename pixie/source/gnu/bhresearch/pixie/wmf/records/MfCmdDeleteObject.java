@@ -40,6 +40,14 @@ public class MfCmdDeleteObject extends MfCmd
     setObjectId (id);
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    MfRecord record = new MfRecord(1);
+    record.setParam(0, getObjectId());
+    return record;
+  }
+
   public int getFunction ()
   {
     return MfType.DELETE_OBJECT;

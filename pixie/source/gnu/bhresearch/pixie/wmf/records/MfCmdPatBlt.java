@@ -53,6 +53,19 @@ public class MfCmdPatBlt extends MfCmd
     setROP (rop);
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    MfRecord record = new MfRecord(6);
+    record.setParam(0, getROP());
+    Rectangle bounds = getBounds();
+    record.setParam(1, bounds.height);
+    record.setParam(2, bounds.width);
+    record.setParam(3, bounds.y);
+    record.setParam(4, bounds.x);
+    return record;
+  }
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();

@@ -65,6 +65,18 @@ public class MfCmdEllipse extends MfCmd
 
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    Rectangle rc = getBounds();
+    MfRecord record = new MfRecord(4);
+    record.setParam(0, (int)(rc.getY() + rc.getHeight()));
+    record.setParam(1, (int)(rc.getX() + rc.getWidth()));
+    record.setParam(2, (int)(rc.getY()));
+    record.setParam(3, (int)(rc.getX()));
+    return record;
+  }
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();

@@ -37,6 +37,12 @@ public class MfCmdCreateRegion extends MfCmd
   {
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    return null;
+  }
+
   public MfCmd getInstance ()
   {
     return new MfCmdCreateRegion ();

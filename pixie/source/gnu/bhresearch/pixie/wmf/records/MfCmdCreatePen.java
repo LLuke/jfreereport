@@ -40,6 +40,16 @@ public class MfCmdCreatePen extends MfCmd
     return MfType.CREATE_PEN_INDIRECT;
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    MfRecord record = new MfRecord(3);
+    record.setParam(0, getStyle());
+    record.setParam(1, getWidth());
+    record.setLongParam(2, GDIColor.translateColor(getColor()));
+    return record;
+  }
+
   public void setRecord (MfRecord record)
   {
     int style = record.getParam (0);

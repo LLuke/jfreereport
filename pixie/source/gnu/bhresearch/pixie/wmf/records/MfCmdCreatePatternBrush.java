@@ -59,4 +59,9 @@ public class MfCmdCreatePatternBrush extends MfCmd
   {
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    return null;
+  }
 }

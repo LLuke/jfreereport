@@ -89,6 +89,18 @@ public class MfCmdIntersectClipRect extends MfCmd
     setIntersectClipRect (left, top, right - left, bottom - top);
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    Rectangle rc = getIntersectClipRect();
+    MfRecord record = new MfRecord(4);
+    record.setParam(0, (int)(rc.getY() + rc.getHeight()));
+    record.setParam(1, (int)(rc.getX() + rc.getWidth()));
+    record.setParam(2, (int)(rc.getY()));
+    record.setParam(3, (int)(rc.getX()));
+    return record;
+  }
+
   protected void scaleXChanged ()
   {
     scaled_x = getScaledX (x);

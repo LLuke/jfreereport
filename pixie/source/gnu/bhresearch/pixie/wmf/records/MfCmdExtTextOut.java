@@ -268,6 +268,36 @@ public class MfCmdExtTextOut extends MfCmd
     setFlags (flag);
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    int flag = getFlags();
+    int parcnt = 4;
+    String text = getText();
+    if ((flag & ETO_CLIPPED) == ETO_CLIPPED)
+    {
+      parcnt = 8;
+    }
+    int recordLength = (int) Math.ceil((text.length() + parcnt) / 2);
+    MfRecord record = new MfRecord(recordLength);
+
+    Point origin = getOrigin();
+    record.setParam(0, (int)origin.getY());
+    record.setParam(1, (int)origin.getX());
+    record.setParam(2, text.length());
+    record.setParam(3, flag);
+    if ((flag & ETO_CLIPPED) == ETO_CLIPPED)
+    {
+      Rectangle rect = getClippingRect();
+      record.setParam(4, rect.x);
+      record.setParam(5, rect.y);
+      record.setParam(6, rect.width);
+      record.setParam(7, rect.height);
+    }
+    record.setStringParam(parcnt, text);
+    return record;
+  }
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();

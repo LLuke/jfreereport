@@ -69,6 +69,16 @@ public class MfCmdOffsetViewportOrg extends MfCmd
     setDestination (x, y);
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    Point dest = getDestination();
+    MfRecord record = new MfRecord(2);
+    record.setParam(0, dest.y);
+    record.setParam(1, dest.x);
+    return record;
+  }
+
   public Point getScaledDestination ()
   {
     return new Point (scaled_x, scaled_y);

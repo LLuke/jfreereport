@@ -84,6 +84,18 @@ public class MfCmdFrameRegion extends MfCmd
     setDimension (width, height);
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    MfRecord record = new MfRecord(4);
+    Dimension dim = getDimension();
+    record.setParam(0, dim.height);
+    record.setParam(1, dim.width);
+    record.setParam(2, getRegion());
+    record.setParam(3, getBrush());
+    return record;
+  }
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();

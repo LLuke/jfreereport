@@ -162,16 +162,16 @@ public class MfCmdBitBlt extends MfCmd implements ROPConstants
   public MfRecord getRecord ()
   {
     MfRecord record = new MfRecord();
-    record.setLongParam(0, getOperation()));
+    record.setLongParam(0, getOperation());
     Rectangle source = getSource();
-    record.setParam(2, (int) source.getY()));
-    record.setParam(3, (int) source.getX()));
+    record.setParam(2, (int) source.getY());
+    record.setParam(3, (int) source.getX());
     // Ignore the handle to the device context
     Rectangle dest = getDestination();
-    record.setParam(4, (int) dest.getHeight()));
-    record.setParam(5, (int) dest.getWidth()));
-    record.setParam(6, (int) dest.getY()));
-    record.setParam(7, (int) dest.getX()));
+    record.setParam(4, (int) dest.getHeight());
+    record.setParam(5, (int) dest.getWidth());
+    record.setParam(6, (int) dest.getY());
+    record.setParam(7, (int) dest.getX());
     return record;
   }
 

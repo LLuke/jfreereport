@@ -58,6 +58,18 @@ public class MfCmdExtFloodFill extends MfCmd
     setFillType (filltype);
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    MfRecord record = new MfRecord(5);
+    record.setParam(0, getFillType());
+    record.setLongParam(1, GDIColor.translateColor(getColor()));
+    Point target = getTarget();
+    record.setParam(3, (int) target.getY());
+    record.setParam(4, (int) target.getX());
+    return null;
+  }
+
   public void setFillType (int filltype)
   {
     this.filltype = filltype;

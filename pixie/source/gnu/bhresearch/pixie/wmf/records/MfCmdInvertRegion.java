@@ -42,6 +42,14 @@ public class MfCmdInvertRegion extends MfCmd
     int region = record.getParam (0);
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    MfRecord record = new MfRecord(1);
+    record.setParam(0, getRegion());
+    return record;
+  }
+
   public void setRegion (int region)
   {
     this.region = region;

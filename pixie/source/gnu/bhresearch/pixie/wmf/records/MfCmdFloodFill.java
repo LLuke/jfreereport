@@ -39,6 +39,17 @@ public class MfCmdFloodFill extends MfCmd
     setColor (color);
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    MfRecord record = new MfRecord(4);
+    record.setLongParam(0, GDIColor.translateColor(getColor()));
+    Point target = getTarget();
+    record.setParam(2, (int) target.getY());
+    record.setParam(3, (int) target.getX());
+    return record;
+  }
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();

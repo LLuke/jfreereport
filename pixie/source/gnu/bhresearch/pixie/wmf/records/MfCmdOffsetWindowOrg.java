@@ -56,6 +56,16 @@ public class MfCmdOffsetWindowOrg extends MfCmd
 
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    Point dest = getDestination();
+    MfRecord record = new MfRecord(2);
+    record.setParam(0, dest.y);
+    record.setParam(1, dest.x);
+    return record;
+  }
+
   public int getFunction ()
   {
     return MfType.OFFSET_WINDOW_ORG;

@@ -50,4 +50,10 @@ public class MfCmdEscape extends MfCmd
   protected void scaleYChanged ()
   {
   }
+
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    return null;
+  }
 }

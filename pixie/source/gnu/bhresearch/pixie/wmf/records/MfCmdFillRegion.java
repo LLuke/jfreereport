@@ -58,6 +58,15 @@ public class MfCmdFillRegion extends MfCmd
     setRegion (regio);
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    MfRecord record = new MfRecord(2);
+    record.setParam(0, getRegion());
+    record.setParam(1, getBrush());
+    return record;
+  }
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();

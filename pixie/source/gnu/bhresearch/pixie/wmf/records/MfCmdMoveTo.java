@@ -76,6 +76,16 @@ public class MfCmdMoveTo extends MfCmd
     setDestination (x, y);
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    Point dest = getDestination();
+    MfRecord record = new MfRecord(2);
+    record.setParam(0, dest.y);
+    record.setParam(1, dest.x);
+    return record;
+  }
+
   protected void scaleXChanged ()
   {
     scaled_destX = getScaledX (destX);
