@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.6 2002/12/07 14:58:33 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.7 2002/12/08 20:30:32 taqua Exp $
  *
  * Changes
  * -------
@@ -66,16 +66,16 @@ public class LogicalPageImpl implements LogicalPage
 {
   /** The output target. */
   private OutputTarget outputTarget;
-  
+
   /** An array of physical pages. */
   private PhysicalPage[] physicalPage;
-  
+
   /** The physical page width. */
   private int physicalPageWidth;
-  
+
   /** The logical page format. */
   private PageFormat pageFormat;
-  
+
   /** The physical page format. */
   private PageFormat physicalPageFormat;
 
@@ -128,9 +128,9 @@ public class LogicalPageImpl implements LogicalPage
     physicalPageWidth = y;
     for (int i = 0; i < physicalPage.length; i++)
     {
-      physicalPage[i] = new PhysicalPage(phys, 
-                                         new Rectangle2D.Double(0, 0, 
-                                                                phys.getImageableWidth(), 
+      physicalPage[i] = new PhysicalPage(phys,
+                                         new Rectangle2D.Double(0, 0,
+                                                                phys.getImageableWidth(),
                                                                 phys.getImageableHeight()));
     }
   }
@@ -189,7 +189,7 @@ public class LogicalPageImpl implements LogicalPage
    */
   public void setPageFormat(PageFormat format)
   {
-    if (format == null) 
+    if (format == null)
     {
       throw new NullPointerException();
     }
@@ -213,7 +213,7 @@ public class LogicalPageImpl implements LogicalPage
    */
   public void setPhysicalPageFormat(PageFormat format)
   {
-    if (format == null) 
+    if (format == null)
     {
       throw new NullPointerException();
     }
@@ -270,13 +270,11 @@ public class LogicalPageImpl implements LogicalPage
     // do nothing if the band is invisble
     if (band.isVisible() == false)
     {
-      Log.debug ("Band Is Not Visible");
       return null;
     }
     // do nothing if the band has a height of 0 (also invisible)
     if (bounds.getHeight() == 0)
     {
-      Log.debug ("Band Height is 0");
       return null;
     }
 

@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.16 2002/11/07 21:45:28 taqua Exp $
+ * $Id: ReportFactory.java,v 1.17 2002/12/06 19:27:55 taqua Exp $
  *
  * Changes
  * -------
@@ -72,6 +72,13 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
 
   /** the current band */
   private Band currentBand;
+
+  /** The current text. */
+  private StringBuffer currentText;
+
+  /** The current property. */
+  private String currentProperty;
+  private String currentEncoding;
 
   /**
    * Constructs a new handler.
@@ -118,13 +125,64 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     {
       startGroups(atts);
     }
+    else if (elementName.equals(CONFIGURATION_TAG))
+    {
+      startConfiguration(atts);
+    }
     else if (elementName.equals(FUNCTIONS_TAG))
     {
       startFunctions(atts);
     }
+    else if (elementName.equals (PROPERTY_TAG))
+    {
+      startProperty (atts);
+    }
     else
     {
       throw new SAXException("Expected one of <report>, <groups>, <items>, <functions>");
+    }
+  }
+
+
+  /**
+   * starts a new property entry for the current function
+   *
+   * @param atts  the element attributes.
+   *
+   * @throws SAXException if there is an error parsing the XML.
+   */
+  protected void startProperty (Attributes atts)
+          throws SAXException
+  {
+    currentProperty = atts.getValue (NAME_ATT);
+    currentEncoding = atts.getValue (PROPERTY_ENCODING_ATT);
+    if (currentEncoding == null) currentEncoding = PROPERTY_ENCODING_TEXT;
+    currentText = new StringBuffer ();
+  }
+
+  /**
+   * Starts the report-configuration tag. Use this to configure the technical side of JFreeReport
+   *
+   * @param atts the element attributes
+   */
+  private void startConfiguration(Attributes atts)
+  {
+    // does nothing yet
+  }
+
+  /**
+   * Receives some (or all) of the text in the current element.
+   *
+   * @param ch  the character array.
+   * @param start  the first character index.
+   * @param length  the length (number of valid characters).
+   */
+  public void characters (char[] ch, int start, int length)
+  {
+    // accumulate the characters in case the text is split into several chunks...
+    if (this.currentText != null)
+    {
+      this.currentText.append (String.copyValueOf (ch, start, length));
     }
   }
 
@@ -144,11 +202,36 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     {
       endReport();
     }
+    else if (elementName.equals(CONFIGURATION_TAG))
+    {
+      endConfiguration();
+    }
+    else if (elementName.equals (PROPERTY_TAG))
+    {
+      endProperty ();
+    }
     else
     {
       Log.error("Expected </report>");
       throw new SAXException("Expected report end tag");
     }
+  }
+
+  private void endConfiguration()
+  {
+  }
+
+  /**
+   * Ends the definition of a single property entry.
+   *
+   * @throws SAXException if there is a problem parsing the element.
+   */
+  protected void endProperty ()
+          throws SAXException
+  {
+    getReport().getReportConfiguration().setConfigProperty(currentProperty, currentText.toString ());
+    currentText = null;
+    currentProperty = null;
   }
 
   /**

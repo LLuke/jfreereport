@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.10 2002/12/06 20:34:19 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.11 2002/12/07 14:58:33 taqua Exp $
  *
  * Changes
  * -------
@@ -84,14 +84,14 @@ public class ReportConfiguration
 
   /** The 'PDF auto init' property key. */
   public static final String PDFTARGET_AUTOINIT
-      = "com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT";
+      = "com.jrefinery.report.targets.pageable.output.PDFOutputTarget.AutoInit";
 
   /** The default 'PDF auto init' property value. */
   public static final String PDFTARGET_AUTOINIT_DEFAULT = "true";
 
   /** The 'PDF encoding' property key. */
   public static final String PDFTARGET_ENCODING
-      = "com.jrefinery.report.targets.PDFOutputTarget.ENCODING";
+      = "com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Encoding";
 
   /** The default 'PDF encoding' property value. */
   public static final String PDFTARGET_ENCODING_DEFAULT = BaseFont.WINANSI;
@@ -212,6 +212,12 @@ public class ReportConfiguration
         value = parentConfiguration.getConfigProperty(key, defaultValue);
       }
     }
+    /*
+    if (value == null)
+    {
+      Log.debug ("Unable to handle Property : " + key);
+    }
+    */
     return value;
   }
 

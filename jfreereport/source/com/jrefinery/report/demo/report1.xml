@@ -3,10 +3,15 @@
  This DOCType declaration is valid, uncomment it to validate the report
  -->
 <!--
+-->
 
 <!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
--->
 <report name="Sample Report 1" orientation="portrait" pageformat="LETTER" topmargin="72" leftmargin="72" bottommargin="72" rightmargin="72">
+
+    <configuration>
+      <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Encoding">iso-8859-15</property>
+      <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Author">Darkwing Duck</property>
+    </configuration>
     <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="18">
         <label x="0" y="0" width="100%" height="48" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
         <label x="0" y="0" width="100%" height="48" vertical-alignment="bottom" alignment="center">This text is valign="bottom"</label>

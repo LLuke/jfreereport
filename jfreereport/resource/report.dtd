@@ -15,7 +15,8 @@
   2002-10-16: All textelements have now a "dynamic" attribute which defaults to false
   2002-12-01: Removed deprecated General and multiline-field and *-function tags
               GroupHeader has "repeat" attribute
-  2002-12-02: Band-heights are no longer required. If they are set, they act as minimum-height.            
+  2002-12-02: Band-heights are no longer required. If they are set, they act as minimum-height.
+  2002-12-08: Added support for ReportConfiguration over XML
  -->
 
 <!ENTITY % boolean
@@ -164,7 +165,7 @@
       SUPERB | TABLOID | TABLOIDEXTRA )"
 >
 
-<!ELEMENT report   (reportheader?, reportfooter?, pageheader?, pagefooter?, groups?, items?, functions?)>
+<!ELEMENT report   (configuation?, reportheader?, reportfooter?, pageheader?, pagefooter?, groups?, items?, functions?)>
 
 <!ATTLIST report
   width          CDATA           #IMPLIED
@@ -178,6 +179,15 @@
   bottommargin   CDATA           #IMPLIED
 >
 
+<!--
+
+  Configure this instance of the report. You may use all defined ReportConfigurationKeys
+  as PropertyNames. See jfreereport.properties for more details.
+
+  This can be used to define the PDF-FontEncoding for an Report.
+
+  -->
+<!ELEMENT configuration (property*)>
 
 <!--
 

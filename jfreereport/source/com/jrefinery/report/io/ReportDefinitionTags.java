@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportDefinitionTags.java,v 1.18 2002/11/29 11:36:16 mungady Exp $
+ * $Id: ReportDefinitionTags.java,v 1.19 2002/12/02 17:30:54 taqua Exp $
  *
  * Changes
  * -------
@@ -248,4 +248,5 @@ public interface ReportDefinitionTags
   public static final String PROPERTY_ENCODING_TEXT = "text";
 
   public static final String REPEAT_HEADER = "repeat";
+  public static final String CONFIGURATION_TAG = "configuration";
 }

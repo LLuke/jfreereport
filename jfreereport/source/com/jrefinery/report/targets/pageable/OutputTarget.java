@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OutputTarget.java,v 1.1 2002/12/02 17:56:51 taqua Exp $
+ * $Id: OutputTarget.java,v 1.2 2002/12/03 16:30:51 mungady Exp $
  *
  * Changes
  * -------
@@ -65,10 +65,10 @@ import java.awt.geom.Rectangle2D;
 public interface OutputTarget
 {
   /** Literal text for the 'title' property name. */
-  public static final String TITLE = "title";
+  public static final String TITLE = "Title";
 
   /** Literal text for the 'author' property name. */
-  public static final String AUTHOR = "author";
+  public static final String AUTHOR = "Author";
 
   /**
    * Returns the value of the specified property.  If the property is not found, the

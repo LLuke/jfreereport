@@ -24,7 +24,7 @@
  * PDFSaveDialog.java
  * ------------------
  *
- * $Id: PDFSaveDialog.java,v 1.15 2002/12/08 19:06:32 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.16 2002/12/08 20:30:32 taqua Exp $
  *
  * Changes
  * --------
@@ -789,17 +789,6 @@ public class PDFSaveDialog extends JDialog
   }
 
   /**
-   * Defines whether low quality printing is allowed for the pdf file. Be aware that
-   * the full-quality printing ability does also imply that low quality printing is allowed.
-   * <p>
-   * @param allowDegradedPrinting the boolean that defines whether to allow lowquality printing.
-   */
-  public void setAllowDegradedPrinting(boolean allowDegradedPrinting)
-  {
-    this.cbAllowPrinting.setSelectedIndex(CBMODEL_DEGRADED);
-  }
-
-  /**
    * @return true, if the generated pdf may be reassembled using an pdf editor.
    */
   public boolean isAllowAssembly()
@@ -939,9 +928,23 @@ public class PDFSaveDialog extends JDialog
    *
    * @param allowPrinting set to true, if this files can be printed, false otherwise
    */
-  public void setAllowPrinting(boolean allowPrinting)
+  public void setPrintLevel(boolean allowPrinting, boolean degraded)
   {
-    this.cbAllowPrinting.setSelectedIndex(CBMODEL_FULL);
+    if (allowPrinting == false)
+    {
+      this.cbAllowPrinting.setSelectedIndex(CBMODEL_NOPRINTING);
+    }
+    else
+    {
+      if (degraded)
+      {
+        this.cbAllowPrinting.setSelectedIndex(CBMODEL_DEGRADED);
+      }
+      else
+      {
+        this.cbAllowPrinting.setSelectedIndex(CBMODEL_FULL);
+      }
+    }
   }
 
   /**
@@ -1037,10 +1040,12 @@ public class PDFSaveDialog extends JDialog
       if (b.equals(PDFOutputTarget.SECURITY_ENCRYPTION_128BIT))
       {
         rbSecurity128Bit.setSelected(true);
+        return;
       }
-      else
+      else if (b.equals(PDFOutputTarget.SECURITY_ENCRYPTION_40BIT))
       {
-        rbSecurity40Bit.setSelected(false);
+        rbSecurity40Bit.setSelected(true);
+        return;
       }
     }
     rbSecurityNone.setSelected(true);
@@ -1122,7 +1127,8 @@ public class PDFSaveDialog extends JDialog
    */
   public boolean performValidate()
   {
-    if (getEncryptionValue() != null)
+    if (getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_128BIT) ||
+        getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_40BIT))
     {
       if (txUserPassword.getText().equals(txConfUserPassword.getText()) == false)
       {
@@ -1174,7 +1180,9 @@ public class PDFSaveDialog extends JDialog
         return false;
       }
     }
-    if (getEncryptionValue() != null)
+
+    if (getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_128BIT) ||
+        getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_40BIT))
     {
       if (txOwnerPassword.getText().trim().length() == 0)
       {
@@ -1285,14 +1293,16 @@ public class PDFSaveDialog extends JDialog
   {
     setAllowAssembly(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY, config, isAllowAssembly()));
     setAllowCopy(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_COPY, config, isAllowCopy()));
-    setAllowDegradedPrinting(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_DEGRADED_PRINTING, config, isAllowDegradedPrinting()));
     setAllowFillIn(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_FILLIN, config, isAllowFillIn()));
     setAllowModifyAnnotations(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_MODIFY_ANNOTATIONS, config, isAllowModifyAnnotations()));
     setAllowModifyContents(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_MODIFY_CONTENTS, config, isAllowModifyContents()));
-    setAllowPrinting(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_PRINTING, config, isAllowPrinting()));
     setAllowScreenreaders(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_SCREENREADERS, config, isAllowScreenreaders()));
 
-    setEncryptionValue(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_ENCRYPTION, getAuthor()));
+    boolean printing = parseBoolean(PDFOutputTarget.SECURITY_ALLOW_PRINTING, config, isAllowPrinting());
+    boolean degraded = parseBoolean(PDFOutputTarget.SECURITY_ALLOW_DEGRADED_PRINTING, config, isAllowDegradedPrinting());
+    setPrintLevel(printing, degraded);
+
+    setEncryptionValue(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_ENCRYPTION, getEncryptionValue()));
     setAuthor(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.AUTHOR, getAuthor()));
     setUserPassword(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_USERPASSWORD, getUserPassword()));
     setOwnerPassword(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword()));

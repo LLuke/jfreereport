@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.5 2002/12/08 19:06:32 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.6 2002/12/08 20:30:32 taqua Exp $
  *
  * Changes
  * -------
@@ -160,7 +160,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       + JFreeReport.getInfo().getVersion();
 
   /** The encoding key. */
-  public static final String ENCODING = "encoding";
+  public static final String ENCODING = "Encoding";
 
   /** The output stream. */
   private OutputStream out;
@@ -455,7 +455,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /**
    * Initialialize the font factory when this class is loaded and the system property
-   * of  <code>"com.jrefinery.report.targets.pageable.output.PDFOutputTarget.AUTOINIT"</code> is
+   * of  <code>"com.jrefinery.report.targets.pageable.output.PDFOutputTarget.AutoInit"</code> is
    * set to <code>true</code>.
    */
   static
@@ -492,7 +492,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
     this.out = out;
     this.fontSupport = new PDFFontSupport();
     setEmbedFonts(embedFonts);
-    setFontEncoding(getDefaultFontEncoding());
   }
 
   /**
@@ -868,6 +867,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public void open() throws OutputTargetException
   {
+    Log.debug ("Opening PDFTarget: " + getFontEncoding());
+
     PageFormat pageFormat = getLogicalPage().getPhysicalPageFormat();
     float urx = (float) pageFormat.getWidth();
     float ury = (float) pageFormat.getHeight();
@@ -893,20 +894,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
       setDocument(new Document(pageSize, marginLeft, marginRight, marginTop, marginBottom));
 
-      String title = (String) getProperty(TITLE);
-      String author = (String) getProperty(AUTHOR);
-
-      if (title != null)
-      {
-        getDocument().addTitle(title);
-      }
-      if (author != null)
-      {
-        getDocument().addAuthor(author);
-      }
-      getDocument().addCreator(CREATOR);
-      getDocument().addCreationDate();
-
       writer = PdfWriter.getInstance(getDocument(), out);
 
       String encrypt = (String) getProperty(SECURITY_ENCRYPTION);
@@ -929,6 +916,26 @@ public class PDFOutputTarget extends AbstractOutputTarget
                                encrypt.equals(SECURITY_ENCRYPTION_128BIT));
         }
       }
+
+      /**
+       * MetaData can be set when the writer is registered to the document.
+       */
+      String title = (String) getProperty(TITLE);
+      String author = (String) getProperty(AUTHOR);
+
+      if (title != null)
+      {
+        Log.debug ("Added Title: " + title);
+        Log.debug ("" + getDocument().addTitle(title));
+      }
+      if (author != null)
+      {
+        Log.debug ("Added Author: " + author);
+        Log.debug ("" + getDocument().addAuthor(author));
+      }
+      Log.debug ("Added Creator: " + title);
+      getDocument().addCreator(CREATOR);
+      getDocument().addCreationDate();
 
       getDocument().open();
 
@@ -1300,7 +1307,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   private void updateProperty(String key, ReportConfiguration config)
   {
-    setProperty(key, getProperty(key, config.getConfigProperty(CONFIGURATION_PREFIX + key)));
+    String configValue = config.getConfigProperty(CONFIGURATION_PREFIX + key);
+    String propertyValue = (String) getProperty(key, configValue);
+    setProperty(key, propertyValue);
   }
 
   /**
