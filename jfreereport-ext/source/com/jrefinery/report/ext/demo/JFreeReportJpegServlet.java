@@ -32,6 +32,10 @@ package com.jrefinery.report.ext.demo;
 
 import com.jrefinery.io.FileUtilities;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportStateList;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.states.ReportState;
+import com.jrefinery.report.states.StartState;
 import com.jrefinery.report.demo.IconTableModel;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.targets.PDFOutputTarget;
@@ -41,6 +45,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.swing.ImageIcon;
 import javax.swing.table.TableModel;
 import java.awt.Image;
@@ -61,7 +66,7 @@ import java.util.zip.ZipFile;
  *
  * @author Jeevan Sunkersett
  */
-public class JFreeReportServlet extends HttpServlet
+public class JFreeReportJpegServlet extends HttpServlet
 {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
@@ -69,57 +74,107 @@ public class JFreeReportServlet extends HttpServlet
     doPost(request, response);
   }
 
-  public void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException
+  private JFreeReport createReport ()
   {
-    Log("in processRequest..." + getClass());
-
     URL rptFormat = getClass().getResource("/com/jrefinery/report/demo/first.xml");
     JFreeReport thisRpt = null;
     try
     {
       ReportGenerator rg = ReportGenerator.getInstance();
-      Log(" (rg) -> " + rg);
+      Log.debug(" (rg) -> " + rg);
       thisRpt = rg.parseReport(rptFormat);
+      thisRpt.setData(readData()); //NOTE: NULL data cannot be set into the report.
     }
     catch (Exception e)
     {
-      Log(e.toString());
+      Log.debug(e.toString());
       e.printStackTrace();
     }
-    Log(" thisRpt -> " + thisRpt);
-    if (null != thisRpt)
+    return thisRpt;
+  }
+
+  private ReportStateList getReportSession (HttpServletRequest request, PDFOutputTarget target)
+  {
+    ReportStateList psl = null;
+    HttpSession session = request.getSession(true);
+    if (session.isNew())
     {
-      thisRpt.setData(readData()); //NOTE: NULL data cannot be set into the report.
-      response.setHeader("Content-Type", "application/pdf");
-
-      response.setHeader("Content-Disposition", "attachment; filename=\"" + "unknown.pdf" + "\"");
-      //above line if enabled will pop-Out the browsers "File Download" dialog
-      //with the standard options: "Open from current location"/ "Save to disk"
-
-      ServletOutputStream out = response.getOutputStream();
-
       try
       {
-        PDFOutputTarget target = new PDFOutputTarget(out, new PageFormat(), true);
-        target.setProperty(PDFOutputTarget.TITLE, "Title");
-        target.setProperty(PDFOutputTarget.AUTHOR, "Author");
-        target.open();
-        thisRpt.processReport(target);
-        target.close();
+        psl = JFreeReport.repaginate(target, new StartState (createReport()));
+        session.setAttribute("PageStateList", psl);
       }
       catch (Exception e)
       {
         e.printStackTrace();
       }
     }
+    else
+    {
+      psl = (ReportStateList) session.getAttribute("PageStateList");
+    }
+    return psl;
   }
 
-  private void Log(String s)
+  public void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException
   {
-    System.out.println(new StringBuffer("JFreeReportServlet::").append(s));
+    Log.debug("in processRequest..." + getClass());
+
+    response.setHeader("Content-Type", "image/jpeg");
+    ServletOutputStream out = response.getOutputStream();
+
+    PDFOutputTarget target = new PDFOutputTarget(out, new PageFormat(), true);
+    target.setProperty(PDFOutputTarget.TITLE, "Title");
+    target.setProperty(PDFOutputTarget.AUTHOR, "Author");
+
+    ReportStateList psl = getReportSession(request, target);
+    HttpSession session = request.getSession(true);
+    if (session.isNew())
+    {
+      try
+      {
+        psl = JFreeReport.repaginate(target, new StartState (createReport()));
+        session.setAttribute("PageStateList", psl);
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace();
+      }
+    }
+    else
+    {
+      psl = (ReportStateList) session.getAttribute("PageStateList");
+    }
+
+    int page = 0;
+    String param = request.getParameter("page");
+    if (param != null)
+    {
+      try
+      {
+        page = Integer.parseInt(param);
+      }
+      catch (Exception e)
+      {
+        Log.debug ("Invalid page parameter given");
+        page = 1;
+      }
+    }
+    try
+    {
+      target.open();
+      ReportState state = psl.get(page);
+      JFreeReport.processPage(target, state, true);
+      target.close();
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
   }
 
+  /** creates the tablemodel **/
   private TableModel readData() //copied from First.java
   {
     IconTableModel result = new IconTableModel();
@@ -131,7 +186,7 @@ public class JFreeReportServlet extends HttpServlet
     File f = FileUtilities.findFileOnClassPath("jlfgr-1_0.jar");
     if (f == null)
     {
-      Log("Unable to find jlfgr-1_0.jar\n" +
+      Log.debug("Unable to find jlfgr-1_0.jar\n" +
           "Unable to load the icons.\n" +
           "Please make sure you have the Java Look and Feel Graphics Repository in your classpath.\n" +
           "You may download this jar-file from http://developer.java.sun.com/developer/techDocs/hi/repository.");
@@ -158,11 +213,12 @@ public class JFreeReportServlet extends HttpServlet
     }
     catch (IOException e)
     {
-      Log("Unable to load the ICONS");
+      Log.debug("Unable to load the ICONS");
     }
     return result;
   }
 
+  /** part of: creates the tablemodel **/
   private Image getImage(ZipFile file, ZipEntry entry) //copied from First.java
   {
     Image result = null;
@@ -181,6 +237,7 @@ public class JFreeReportServlet extends HttpServlet
     return result;
   }
 
+  /** part of: creates the tablemodel **/
   private String getCategory(String fullName) //copied from First.java
   {
     int start = fullName.indexOf("/") + 1;
@@ -188,6 +245,7 @@ public class JFreeReportServlet extends HttpServlet
     return fullName.substring(start, end);
   }
 
+  /** part of: creates the tablemodel **/
   private String getName(String fullName) //copied from First.java
   {
     int start = fullName.lastIndexOf("/") + 1;
