@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.4 2003/02/06 17:38:00 taqua Exp $
+ * $Id: HelloWorld.java,v 1.5 2003/02/25 17:20:39 mungady Exp $
  *
  * Changes
  * -------
@@ -80,7 +80,7 @@ public class HelloWorld
         }
         catch (ReportProcessingException e)
         {
-            Log.error("Failed to parse", e);
+            Log.error("Failed to generate report ", e);
         }
 
     }
