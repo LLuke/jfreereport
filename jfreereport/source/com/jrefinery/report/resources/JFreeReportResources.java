@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Thomas Morgner, Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------------
  * JFreeReportResources.java
  * -------------------------
- * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Object Refinery Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
+ * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.53 2003/05/02 12:40:27 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.54 2003/05/09 17:12:13 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -41,6 +41,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.ListResourceBundle;
+
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
@@ -163,9 +164,9 @@ public class JFreeReportResources extends ListResourceBundle
           {
             {"project.name", "JFreeReport"},
             {"project.version", "0.8.3"},
-            {"project.info", "http://www.object-refinery.com/jfreereport/index.html"},
+            {"project.info", "http://www.jfree.org/jfreereport/index.html"},
             {"project.copyright",
-                "(C)opyright 2000-2003, by Simba Management Limited and Contributors"},
+              "(C)opyright 2000-2003, by Thomas Morgner, Object Refinery Limited and Contributors"},
 
             {"action.save-as.name", "Save As PDF..."},
             {"action.save-as.description", "Save to PDF format"},
