@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.42 2003/06/19 18:44:11 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.43 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -311,6 +311,9 @@ public class PageableReportProcessor
       ReportState state = startState;
       int maxRows = getReport().getData().getRowCount();
       ReportStateList pageStates = null;
+
+      // make sure the output target is configured
+      getOutputTarget().configure(getReport().getReportConfiguration());
 
       // the report processing can be splitted into 2 separate processes.
       // The first is the ReportPreparation; all function values are resolved and

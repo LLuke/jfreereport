@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.21 2003/06/19 18:44:11 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.22 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,7 @@ import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.Log;
 
 /**
  * An outputtarget, that generates plaintext. The text can be enriched with
@@ -206,6 +207,9 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     }
   }
 
+  /** The property to define the encoding of the text. */
+  public static final String ENCODING_PROPERTY = "Encoding";
+
   /** a flag indicating whether this OutputTarget is open. */
   private boolean open;
 
@@ -355,7 +359,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     currentPageWidth = correctedDivisionFloor
         ((float) page.getPageFormat().getImageableWidth(), characterWidth);
 
-    this.pageBuffer = new PlainTextPage(currentPageWidth, currentPageHeight, getCommandSet());
+    this.pageBuffer = new PlainTextPage(currentPageWidth, currentPageHeight,
+        getCommandSet(), getDocumentEncoding());
     savedState = new PlainTextState(this);
   }
 
@@ -535,13 +540,19 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Does nothing, the OutputTarget is configured by supplying a valid
+   * Configures the encoding of the plain text output, if not already set.
+   * The OutputTarget is also configured by supplying a valid
    * PrinterCommand set.
    *
    * @param config  the configuration.
    */
   public void configure(ReportConfiguration config)
   {
+    if (getDocumentEncoding() == null)
+    {
+      setDocumentEncoding(config.getTextTargetEncoding());
+    }
+    Log.debug ("AfterConfigure: " + getDocumentEncoding());
   }
 
   /**
@@ -603,5 +614,37 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    */
   public void drawDrawable(DrawableContainer drawable)
   {
+  }
+
+  /**
+   * Returns the current document encoding.
+   *
+   * @return the document encoding.
+   */
+  public String getDocumentEncoding()
+  {
+    return (String) getProperty(ENCODING_PROPERTY);
+  }
+
+  /**
+   * Defines the document encoding for the plain text output.
+   * The specified encoding must be supported by the assigned PrinterCommandSet.
+   *
+   * @param documentEncoding
+   */
+  public void setDocumentEncoding(String documentEncoding)
+  {
+    if (documentEncoding == null)
+    {
+      throw new NullPointerException("DocumentEncoding must not be null.");
+    }
+    if (getCommandSet().isEncodingSupported(documentEncoding))
+    {
+      setProperty(ENCODING_PROPERTY, documentEncoding);
+    }
+    else
+    {
+      throw new IllegalArgumentException("This encoding is not supported by the printer.");
+    }
   }
 }

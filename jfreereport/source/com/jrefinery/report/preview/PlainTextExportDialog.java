@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.15 2003/06/26 19:55:56 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.16 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * --------
@@ -85,6 +85,7 @@ import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.NullOutputStream;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.StringUtil;
+import com.jrefinery.report.util.Log;
 import org.jfree.ui.ExtensionFileFilter;
 
 /**
@@ -799,7 +800,7 @@ public class PlainTextExportDialog extends JDialog
       {
         return selectedEncodingModel.getEncoding(0);
       }
-      return System.getProperty("file.encoding");
+      return ReportConfiguration.getGlobalConfig().getTextTargetEncoding();
     }
     else
     {
@@ -917,6 +918,10 @@ public class PlainTextExportDialog extends JDialog
               new File(getFilename())));
       PrinterCommandSet pc = getPrinterCommandSet(out, report);
       PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
+      target.configure(report.getReportConfiguration());
+      target.setProperty(PlainTextOutputTarget.ENCODING_PROPERTY, getEncoding());
+      Log.debug ("AfterProperty: " + target.getProperty(PlainTextOutputTarget.ENCODING_PROPERTY));
+      Log.debug ("AfterProperty: " + getEncoding());
 
       PageableReportProcessor proc = new PageableReportProcessor(report);
       proc.setHandleInterruptedState(false);

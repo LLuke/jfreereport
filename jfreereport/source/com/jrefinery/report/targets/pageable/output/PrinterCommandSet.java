@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);;
  *
- * $Id: PrinterCommandSet.java,v 1.10 2003/03/13 18:39:10 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.11 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,11 @@ import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
 
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.util.EncodingSupport;
 import com.jrefinery.report.util.PageFormatFactory;
+import com.jrefinery.report.util.Log;
 
 /**
  * Implements a printer command set for plain text output. The output is
@@ -160,6 +160,18 @@ public class PrinterCommandSet
   /** the emptyCellCounter is used to optimize the printing. */
   private int emptyCellCounter;
 
+  /** the encoding header, if any. */
+  private byte[] encodingHeader;
+
+  /** A single space character encoded in the current codepage. */
+  private byte[] space;
+
+  /**
+   * A flag indicating whether this is the first page that is printed with
+   * this command set.
+   */
+  private boolean firstPage;
+
   /**
    * Creates a new PrinterCommandSet.
    *
@@ -173,7 +185,8 @@ public class PrinterCommandSet
     this.out = out;
     this.defaultLPI = defaultLPI;
     this.defaultCPI = defaultCPI;
-    pageFormat = format;
+    this.pageFormat = format;
+    this.firstPage = true;
   }
 
   /**
@@ -436,6 +449,18 @@ public class PrinterCommandSet
    */
   public void setCodePage(String codepage) throws IOException
   {
+    if (codepage == null)
+    {
+      throw new NullPointerException("The codepage must not be null.");
+    }
+    Log.debug ("CodePage: " + codepage);
+    encodingHeader = " ".getBytes(codepage);
+
+    byte[] spacesWithHeader = "  ".getBytes(codepage);
+    int length = spacesWithHeader.length - encodingHeader.length;
+    space = new byte[length];
+    System.arraycopy(spacesWithHeader, encodingHeader.length, space, 0, length);
+
     this.codepage = codepage;
   }
 
@@ -533,6 +558,13 @@ public class PrinterCommandSet
    */
   public void startPage() throws IOException
   {
+    if (firstPage)
+    {
+      int spaceUsage = encodingHeader.length - space.length;
+      out.write(encodingHeader, 0, spaceUsage);
+      setFirstPage(false);
+    }
+
     int topBorderLines = ((getBorderTop() / 1440) / getLineSpacing());
     for (int i = 0; i < topBorderLines; i++)
     {
@@ -596,9 +628,10 @@ public class PrinterCommandSet
   {
     if (emptyCellCounter != 0)
     {
-      byte[] spaces = new byte[emptyCellCounter];
-      Arrays.fill(spaces, SPACE);
-      out.write(spaces);
+      for (int i = 0; i < emptyCellCounter; i++)
+      {
+        out.write(space);
+      }
       emptyCellCounter = 0;
     }
 
@@ -610,11 +643,14 @@ public class PrinterCommandSet
     FontDefinition fd = chunk.getFont();
     setFontStyle(fd.isBold(), fd.isItalic(), fd.isUnderline(), fd.isStrikeThrough());
 
-    byte[] text = chunk.getText().getBytes(getCodepage());
-    byte[] data = new byte[chunk.getWidth()];
-    Arrays.fill(data, SPACE);
-    System.arraycopy(text, 0, data, 0, Math.min(text.length, data.length));
-    out.write(data);
+    StringBuffer buffer = new StringBuffer(" "); // this space is removed later ..
+    buffer.append(chunk.getText());
+    for (int i = buffer.length(); i < chunk.getWidth(); i++)
+    {
+      buffer.append(' ');
+    }
+    byte[] text = buffer.toString().getBytes(getCodepage());
+    out.write(text, encodingHeader.length, text.length - encodingHeader.length);
   }
 
   /**
@@ -623,7 +659,7 @@ public class PrinterCommandSet
    */
   public void printEmptyChunk() throws IOException
   {
-    out.write(SPACE);
+    out.write(space);
   }
 
   /**
@@ -649,5 +685,26 @@ public class PrinterCommandSet
       return true;
     }
     return false;
+  }
+
+  /**
+   * Returns true, if the current or next page will be the first page of
+   * this printer command set.
+   *
+   * @return true, if this is the first page, false otherwise.
+   */
+  public boolean isFirstPage()
+  {
+    return firstPage;
+  }
+
+  /**
+   * Defines whether this is the first page that is printed, false otherwise.
+   *
+   * @param firstPage the new first page flag.
+   */
+  protected void setFirstPage(boolean firstPage)
+  {
+    this.firstPage = firstPage;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.34 2003/06/26 19:55:56 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.35 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * --------
@@ -1348,19 +1348,22 @@ public class PDFSaveDialog extends JDialog
       target.setProperty(PDFOutputTarget.SECURITY_ENCRYPTION, getEncryptionValue());
       target.setProperty(PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword());
       target.setProperty(PDFOutputTarget.SECURITY_USERPASSWORD, getUserPassword());
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY, createBoolean(isAllowAssembly()));
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_COPY, createBoolean(isAllowCopy()));
+      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY,
+          String.valueOf(isAllowAssembly()));
+      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_COPY,
+          String.valueOf(isAllowCopy()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_DEGRADED_PRINTING,
-          createBoolean(isAllowDegradedPrinting()));
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_FILLIN, createBoolean(isAllowFillIn()));
+          String.valueOf(isAllowDegradedPrinting()));
+      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_FILLIN,
+          String.valueOf(isAllowFillIn()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_MODIFY_ANNOTATIONS,
-          createBoolean(isAllowModifyAnnotations()));
+          String.valueOf(isAllowModifyAnnotations()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_MODIFY_CONTENTS,
-          createBoolean(isAllowModifyContents()));
+          String.valueOf(isAllowModifyContents()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_PRINTING,
-          createBoolean(isAllowPrinting()));
+          String.valueOf(isAllowPrinting()));
       target.setProperty(PDFOutputTarget.SECURITY_ALLOW_SCREENREADERS,
-          createBoolean(isAllowScreenreaders()));
+          String.valueOf(isAllowScreenreaders()));
       target.setProperty(PDFOutputTarget.ENCODING, getEncoding());
       target.open();
 
@@ -1390,21 +1393,6 @@ public class PDFSaveDialog extends JDialog
         showExceptionDialog("error.savefailed", e);
       }
     }
-  }
-
-  /**
-   * Wrapps the given boolean variable into a java.lang.Boolean.
-   *
-   * @param bool the boolean that should be wrapped.
-   * @return the corresponding java.lang.Boolean.
-   */
-  private Boolean createBoolean (boolean bool)
-  {
-    if (bool == true)
-    {
-      return Boolean.TRUE;
-    }
-    return Boolean.FALSE;
   }
 
   /**

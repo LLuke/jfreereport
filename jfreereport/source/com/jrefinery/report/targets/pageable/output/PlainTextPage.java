@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextPage.java,v 1.14 2003/06/13 16:21:39 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.15 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -150,28 +150,37 @@ public class PlainTextPage
   /** the height of the page in lines. */
   private int height;
 
+  /** The encoding of the printed text. */
+  private String pageEncoding;
+
   /**
    * Creates a new PlainTextPage with the given dimensions and the specified
    * PrinterCommandSet.
    *
    * @param w the number of columns on the page
    * @param h the number of rows on the page
+   * @param encoding the document encoding for this page.
    * @param commandSet the commandset for printing and formating the text.
    */
-  public PlainTextPage(int w, int h, PrinterCommandSet commandSet)
+  public PlainTextPage(int w, int h, PrinterCommandSet commandSet, String encoding)
   {
     if (w <= 0)
     {
-      throw new IllegalArgumentException("W <= 0");
+      throw new IllegalArgumentException("Width <= 0");
     }
     if (h <= 0)
     {
-      throw new IllegalArgumentException("W <= 0");
+      throw new IllegalArgumentException("Height <= 0");
+    }
+    if (encoding == null)
+    {
+      throw new NullPointerException("Encoding must be defined.");
     }
     pageBuffer = new TextDataChunk[w][h];
     width = w;
     height = h;
     this.commandSet = commandSet;
+    pageEncoding = encoding;
   }
 
   /**
@@ -257,6 +266,7 @@ public class PlainTextPage
       throws IOException
   {
     commandSet.resetPrinter();
+    commandSet.setCodePage(getPageEncoding());
     commandSet.startPage();
     for (int y = 0; y < height; y++)
     {
@@ -277,5 +287,15 @@ public class PlainTextPage
     }
     commandSet.endPage();
     commandSet.flush();
+  }
+
+  /**
+   * Returns the text encoding for this page.
+   *
+   * @return the page encoding for the page.
+   */
+  public String getPageEncoding()
+  {
+    return pageEncoding;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.14 2003/05/14 22:26:39 taqua Exp $
+ * $Id: OutputTarget.java,v 1.15 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -84,7 +84,7 @@ public interface OutputTarget extends LayoutSupport
    *
    * @throws NullPointerException if <code>property</code> is null.
    */
-  public Object getProperty(String property, Object defaultValue);
+  public String getProperty(String property, String defaultValue);
 
   /**
    * Defines a property for this target.
@@ -95,7 +95,7 @@ public interface OutputTarget extends LayoutSupport
    * @param property  the property name (key).
    * @param value  the property value (use null to remove an existing property).
    */
-  public void setProperty(String property, Object value);
+  public void setProperty(String property, String value);
 
   /**
    * Opens the target.
@@ -142,7 +142,7 @@ public interface OutputTarget extends LayoutSupport
    *
    * @throws NullPointerException if <code>property</code> is null.
    */
-  public Object getProperty(String property);
+  public String getProperty(String property);
 
 
   /**

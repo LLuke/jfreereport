@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.16 2003/05/14 22:26:39 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.17 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -50,8 +50,8 @@ package com.jrefinery.report.targets.pageable.output;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Properties;
 
 import com.jrefinery.report.targets.base.content.ContentFactory;
 import com.jrefinery.report.targets.base.content.DefaultContentFactory;
@@ -74,7 +74,7 @@ import com.jrefinery.report.targets.pageable.physicals.LogicalPageImpl;
 public abstract class AbstractOutputTarget implements OutputTarget
 {
   /** Storage for the output target properties. */
-  private HashMap properties;
+  private Properties properties;
 
   /** The logical page. */
   private LogicalPage logicalPage;
@@ -114,7 +114,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    */
   protected AbstractOutputTarget(LogicalPage logicalPage)
   {
-    properties = new HashMap();
+    properties = new Properties();
     this.logicalPage = new AlignedLogicalPageWrapper(logicalPage.newInstance(), this);
     this.logicalPage.setOutputTarget(this);
     operationBounds = new Rectangle2D.Float();
@@ -130,7 +130,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param value  the value of the property.  If the value is <code>null</code>, the property is
    * removed from the output target.
    */
-  public void setProperty(String property, Object value)
+  public void setProperty(String property, String value)
   {
     if (property == null)
     {
@@ -143,7 +143,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     }
     else
     {
-      properties.put(property, value);
+      properties.setProperty(property, value);
     }
   }
 
@@ -157,7 +157,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @throws java.lang.NullPointerException if <code>property</code> is null
    */
-  public Object getProperty(String property)
+  public String getProperty(String property)
   {
     return getProperty(property, null);
   }
@@ -173,14 +173,14 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @throws NullPointerException if <code>property</code> is null
    */
-  public Object getProperty(String property, Object defaultValue)
+  public String getProperty(String property, String defaultValue)
   {
     if (property == null)
     {
       throw new NullPointerException();
     }
 
-    Object retval = properties.get(property);
+    String retval = properties.getProperty(property);
     if (retval == null)
     {
       return defaultValue;

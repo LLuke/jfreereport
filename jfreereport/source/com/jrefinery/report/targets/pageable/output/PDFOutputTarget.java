@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.41 2003/06/26 19:55:57 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.42 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -629,15 +629,15 @@ public class PDFOutputTarget extends AbstractOutputTarget
       writer = PdfWriter.getInstance(getDocument(), out);
       writer.setLinearPageMode();
 
-      String encrypt = (String) getProperty(SECURITY_ENCRYPTION);
+      String encrypt = getProperty(SECURITY_ENCRYPTION);
 
       if (encrypt != null)
       {
         if (encrypt.equals(SECURITY_ENCRYPTION_128BIT) == true
             || encrypt.equals(SECURITY_ENCRYPTION_40BIT) == true)
         {
-          String userpassword = (String) getProperty(SECURITY_USERPASSWORD);
-          String ownerpassword = (String) getProperty(SECURITY_OWNERPASSWORD);
+          String userpassword = getProperty(SECURITY_USERPASSWORD);
+          String ownerpassword = getProperty(SECURITY_OWNERPASSWORD);
           //Log.debug ("UserPassword: " + userpassword + " - OwnerPassword: " + ownerpassword);
           byte[] userpasswordbytes = DocWriter.getISOBytes(userpassword);
           byte[] ownerpasswordbytes = DocWriter.getISOBytes(ownerpassword);
@@ -653,8 +653,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
       /**
        * MetaData can be set when the writer is registered to the document.
        */
-      String title = (String) getProperty(TITLE);
-      String author = (String) getProperty(AUTHOR);
+      String title = getProperty(TITLE);
+      String author = getProperty(AUTHOR);
 
       if (title != null)
       {
@@ -707,6 +707,28 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
+   * Reads a boolean property. If the property is not set, the given
+   * default value is returned. This method returns true, if the property
+   * is set to the value "true", false otherwise.
+   *
+   * @param key the key that should be queried.
+   * @param value the defaultvalue.
+   * @return the true, if the property has the value "true", false otherwise.
+   */
+  private boolean getBooleanProperty (String key, boolean value)
+  {
+    String val = getProperty(key);
+    if (val == null)
+    {
+      return value;
+    }
+    else
+    {
+      return val.equals("true");
+    }
+  }
+
+  /**
    * Extracts the permissions for this PDF. The permissions are returned as flags in the integer
    * value. All permissions are defined as properties which have to be set before the target is
    * opened.
@@ -715,49 +737,45 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   private int getPermissions()
   {
-    Boolean allowPrinting = (Boolean) getProperty(SECURITY_ALLOW_PRINTING, Boolean.FALSE);
-    Boolean allowModifyContents =
-        (Boolean) getProperty(SECURITY_ALLOW_MODIFY_CONTENTS, Boolean.FALSE);
-    Boolean allowModifyAnnotations =
-        (Boolean) getProperty(SECURITY_ALLOW_MODIFY_ANNOTATIONS, Boolean.FALSE);
-    Boolean allowCopy = (Boolean) getProperty(SECURITY_ALLOW_COPY, Boolean.FALSE);
-    Boolean allowFillIn = (Boolean) getProperty(SECURITY_ALLOW_FILLIN, Boolean.FALSE);
-    Boolean allowScreenReaders =
-        (Boolean) getProperty(SECURITY_ALLOW_SCREENREADERS, Boolean.FALSE);
-    Boolean allowAssembly = (Boolean) getProperty(SECURITY_ALLOW_ASSEMBLY, Boolean.FALSE);
-    Boolean allowDegradedPrinting =
-        (Boolean) getProperty(SECURITY_ALLOW_DEGRADED_PRINTING, Boolean.FALSE);
+    boolean allowPrinting = getBooleanProperty(SECURITY_ALLOW_PRINTING, false);
+    boolean allowModifyContents = getBooleanProperty(SECURITY_ALLOW_MODIFY_CONTENTS, false);
+    boolean allowModifyAnnotations = getBooleanProperty(SECURITY_ALLOW_MODIFY_ANNOTATIONS, false);
+    boolean allowCopy = getBooleanProperty(SECURITY_ALLOW_COPY, false);
+    boolean allowFillIn = getBooleanProperty(SECURITY_ALLOW_FILLIN, false);
+    boolean allowScreenReaders = getBooleanProperty(SECURITY_ALLOW_SCREENREADERS, false);
+    boolean allowAssembly = getBooleanProperty(SECURITY_ALLOW_ASSEMBLY, false);
+    boolean allowDegradedPrinting = getBooleanProperty(SECURITY_ALLOW_DEGRADED_PRINTING, false);
 
     int permissions = 0;
-    if (allowPrinting.booleanValue())
+    if (allowPrinting)
     {
       permissions |= PdfWriter.AllowPrinting;
     }
-    if (allowModifyContents.booleanValue())
+    if (allowModifyContents)
     {
       permissions |= PdfWriter.AllowModifyContents;
     }
-    if (allowModifyAnnotations.booleanValue())
+    if (allowModifyAnnotations)
     {
       permissions |= PdfWriter.AllowModifyAnnotations;
     }
-    if (allowCopy.booleanValue())
+    if (allowCopy)
     {
       permissions |= PdfWriter.AllowCopy;
     }
-    if (allowFillIn.booleanValue())
+    if (allowFillIn)
     {
       permissions |= PdfWriter.AllowFillIn;
     }
-    if (allowScreenReaders.booleanValue())
+    if (allowScreenReaders)
     {
       permissions |= PdfWriter.AllowScreenReaders;
     }
-    if (allowAssembly.booleanValue())
+    if (allowAssembly)
     {
       permissions |= PdfWriter.AllowAssembly;
     }
-    if (allowDegradedPrinting.booleanValue())
+    if (allowDegradedPrinting)
     {
       permissions |= PdfWriter.AllowDegradedPrinting;
     }
@@ -891,7 +909,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   private String getFontEncoding()
   {
-    return (String) getProperty(ENCODING, getDefaultFontEncoding());
+    return getProperty(ENCODING, getDefaultFontEncoding());
   }
 
   /**
@@ -1019,7 +1037,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   private void updateProperty(String key, ReportConfiguration config)
   {
     String configValue = config.getConfigProperty(CONFIGURATION_PREFIX + key);
-    String propertyValue = (String) getProperty(key, configValue);
+    String propertyValue = getProperty(key, configValue);
     if (propertyValue != null)
     {
       setProperty(key, propertyValue);
@@ -1034,13 +1052,17 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   private void updateBooleanProperty(String key, ReportConfiguration config)
   {
-    String value = config.getConfigProperty(key, "");
-    Boolean bValue = Boolean.FALSE;
-    if (value.equalsIgnoreCase("true"))
+    String configValue = config.getConfigProperty(CONFIGURATION_PREFIX + key);
+    String propertyValue = getProperty(key, configValue);
+    
+    if (propertyValue.equalsIgnoreCase("true"))
     {
-      bValue = Boolean.TRUE;
+      setProperty(key, getProperty(key, "true"));
     }
-    setProperty(key, getProperty(key, bValue));
+    else
+    {
+      setProperty(key, getProperty(key, "false"));
+    }
   }
 
   /**
