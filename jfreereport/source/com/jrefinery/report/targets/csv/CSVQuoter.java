@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVQuoter.java,v 1.3 2003/02/09 18:43:05 taqua Exp $
+ * $Id: CSVQuoter.java,v 1.4 2003/02/24 15:00:17 mungady Exp $
  *
  * Changes
  * -------
@@ -77,8 +77,6 @@ public class CSVQuoter
    * @param original  the unquoted string.
    * 
    * @return The quoted string
-   * 
-   * @see CSVQuoter#applyQuote
    */
   public String doQuoting(String original)
   {

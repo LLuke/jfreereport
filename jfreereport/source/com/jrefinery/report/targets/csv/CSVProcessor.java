@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.6 2003/02/09 18:43:05 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.7 2003/02/24 15:00:17 mungady Exp $
  *
  * Changes
  * -------
@@ -65,10 +65,16 @@ import com.jrefinery.report.util.NullOutputStream;
  */
 public class CSVProcessor
 {
-  /** A key for accessing the separator string in the {@link ReportConfiguration}. */
+  /** 
+   * A key for accessing the separator string in the 
+   * {@link com.jrefinery.report.util.ReportConfiguration}. 
+   */
   public static final String CSV_SEPARATOR = "com.jrefinery.report.targets.csv.separator";
   
-  /** A key for accessing the 'print data row names' flag in the {@link ReportConfiguration}. */
+  /** 
+   * A key for accessing the 'print data row names' flag in the 
+   * {@link com.jrefinery.report.util.ReportConfiguration}. 
+   */
   public static final String CSV_DATAROWNAME 
       = "com.jrefinery.report.targets.csv.write-datarow-names";
 
