@@ -253,9 +253,19 @@ public class ElementFactory
   }
 
   protected Stroke parseStroke(String weight) {
-    Float w = new Float(weight);
-
-    return new BasicStroke(w.floatValue());
+    try
+    {
+      if (weight != null)
+      {
+        Float w = new Float(weight);
+        return new BasicStroke(w.floatValue());
+      }
+      return new BasicStroke(1);
+    }
+    catch (NumberFormatException nfe)
+    {
+      Log.debug ("Invalid weight for line element", nfe);
+    }
   }
 
   protected Paint parseColor(String color)
