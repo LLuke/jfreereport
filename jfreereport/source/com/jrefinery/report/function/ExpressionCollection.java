@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2003, by Simba Management Limited.
  *
- * $Id: ExpressionCollection.java,v 1.5 2003/02/25 14:07:25 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.6 2003/02/26 13:57:57 mungady Exp $
  *
  * Changes
  * -------
@@ -118,7 +118,10 @@ public class ExpressionCollection implements Cloneable
    */
   public Expression get(String name)
   {
-    return (Expression) expressionPositions.get(name);
+    Integer position = (Integer) expressionPositions.get(name);
+    if (position == null)
+      return null;
+    return getExpression (position.intValue());
   }
 
   /**

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited); 
  *
- * $Id: HtmlExportDialog.java,v 1.12 2003/02/25 20:15:36 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.13 2003/03/04 20:28:49 taqua Exp $
  *
  * Changes
  * -------
@@ -621,11 +621,6 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     gbc.insets = new Insets(10, 0, 0, 0);
     contentPane.add(buttonPanel, gbc);
 
-    fileChooserDir = new JFileChooser();
-    fileChooserDir.addChoosableFileFilter(new FilesystemFilter(new String[]{".html", ".htm"}, 
-        "Html Documents", true));
-    fileChooserDir.setMultiSelectionEnabled(false);
-
     return contentPane;
   }
 
@@ -707,10 +702,6 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     gbc.insets = new Insets(10, 0, 0, 0);
     contentPane.add(buttonPanel, gbc);
 
-    fileChooserZip = new JFileChooser();
-    fileChooserZip.addChoosableFileFilter(new FilesystemFilter(new String[]{".zip", ".jar"}, 
-        "Zip Archives", true));
-    fileChooserZip.setMultiSelectionEnabled(false);
     return contentPane;
   }
 
@@ -765,11 +756,6 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     gbc.gridy = 6;
     gbc.insets = new Insets(10, 0, 0, 0);
     contentPane.add(buttonPanel, gbc);
-
-    fileChooserStream = new JFileChooser();
-    fileChooserStream.addChoosableFileFilter(new FilesystemFilter(new String[]{".html", ".htm"}, 
-        "Html Documents", true));
-    fileChooserStream.setMultiSelectionEnabled(false);
 
     return contentPane;
   }
@@ -1037,6 +1023,15 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
   protected void performSelectFileStream()
   {
     File file = new File(getStreamFilename());
+
+    if (fileChooserStream == null)
+    {
+      fileChooserStream = new JFileChooser();
+      fileChooserStream.addChoosableFileFilter(new FilesystemFilter(new String[]{".html", ".htm"},
+          "Html Documents", true));
+      fileChooserStream.setMultiSelectionEnabled(false);
+    }
+
     fileChooserStream.setCurrentDirectory(file);
     fileChooserStream.setSelectedFile(file);
     int option = fileChooserStream.showSaveDialog(this);
@@ -1061,6 +1056,15 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
   protected void performSelectFileZip()
   {
     File file = new File(getZipFilename());
+
+    if (fileChooserZip == null)
+    {
+      fileChooserZip = new JFileChooser();
+      fileChooserZip.addChoosableFileFilter(new FilesystemFilter(new String[]{".zip", ".jar"},
+          "Zip Archives", true));
+      fileChooserZip.setMultiSelectionEnabled(false);
+    }
+
     fileChooserZip.setCurrentDirectory(file);
     fileChooserZip.setSelectedFile(file);
     int option = fileChooserZip.showSaveDialog(this);
@@ -1083,6 +1087,14 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
    */
   protected void performSelectFileDir()
   {
+    if (fileChooserDir == null)
+    {
+      fileChooserDir = new JFileChooser();
+      fileChooserDir.addChoosableFileFilter(new FilesystemFilter(new String[]{".html", ".htm"},
+          "Html Documents", true));
+      fileChooserDir.setMultiSelectionEnabled(false);
+    }
+
     File file = new File(getDirFilename());
     fileChooserDir.setCurrentDirectory(file);
     fileChooserDir.setSelectedFile(file);

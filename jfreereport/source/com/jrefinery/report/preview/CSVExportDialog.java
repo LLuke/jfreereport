@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: $
+ * $Id: CSVExportDialog.java,v 1.6 2003/02/25 14:45:25 mungady Exp $
  *
  * Changes
  * --------
@@ -307,11 +307,6 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
    */
   private void initialize()
   {
-    fileChooser = new JFileChooser();
-    fileChooser.addChoosableFileFilter(
-        new ExtensionFileFilter("Comma Separated Value files", ".csv"));
-    fileChooser.setMultiSelectionEnabled(false);
-
     JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
     contentPane.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
@@ -726,6 +721,14 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
    */
   protected void performSelectFile()
   {
+    if (fileChooser == null)
+    {
+      fileChooser = new JFileChooser();
+      fileChooser.addChoosableFileFilter(
+          new ExtensionFileFilter("Comma Separated Value files", ".csv"));
+      fileChooser.setMultiSelectionEnabled(false);
+    }
+
     fileChooser.setSelectedFile(new File(getFilename()));
     int option = fileChooser.showSaveDialog(this);
     if (option == JFileChooser.APPROVE_OPTION)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.27 2003/02/25 14:45:35 mungady Exp $
+ * $Id: PDFSaveDialog.java,v 1.28 2003/02/25 20:15:37 taqua Exp $
  *
  * Changes
  * --------
@@ -365,6 +365,7 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     );
   }
 
+
   /**
    * Gets and initializes the the combobox model for the security setting "allowPrinting".
    *
@@ -582,12 +583,6 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     contentPane.add(buttonPanel, gbc);
 
     setContentPane(contentPane);
-
-    fileChooser = new JFileChooser();
-    FilesystemFilter filter = new FilesystemFilter(".pdf", "PDF Documents");
-    fileChooser.addChoosableFileFilter(filter);
-    fileChooser.setMultiSelectionEnabled(false);
-
   }
 
   /**
@@ -1201,6 +1196,14 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
    */
   protected void performSelectFile()
   {
+    // lazy initialize ... the file chooser is one of the hot spots here ...
+    if (fileChooser == null)
+    {
+      fileChooser = new JFileChooser();
+      FilesystemFilter filter = new FilesystemFilter(".pdf", "PDF Documents");
+      fileChooser.addChoosableFileFilter(filter);
+      fileChooser.setMultiSelectionEnabled(false);
+    }
 
     File file = new File(getFilename());
     fileChooser.setCurrentDirectory(file);

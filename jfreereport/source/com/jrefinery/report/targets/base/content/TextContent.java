@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.7 2003/02/18 19:37:29 taqua Exp $
+ * $Id: TextContent.java,v 1.8 2003/02/25 18:46:57 taqua Exp $
  *
  * Changes
  * -------
@@ -38,15 +38,13 @@
 
 package com.jrefinery.report.targets.base.content;
 
-import com.jrefinery.report.targets.base.layout.SizeCalculator;
-import com.jrefinery.report.util.Log;
-
 import java.awt.geom.Rectangle2D;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.jrefinery.report.targets.base.layout.SizeCalculator;
+import com.jrefinery.report.util.LineBreakIterator;
+import com.jrefinery.report.util.Log;
 
 /**
  * A container for text content. The content will be split into paragraphs.
@@ -114,20 +112,22 @@ public class TextContent extends ContentContainer
   private List splitContent(String text)
   {
     List lines = new ArrayList();
-    try
+
+    // check if empty content ... this case is easy ...
+    if (text.length() == 0)
+      return lines;
+
+    LineBreakIterator iterator = new LineBreakIterator(text);
+    int oldPos = 0;
+    int pos = iterator.nextWithEnd();
+    Log.debug ("Pos: " + pos  + "," + text);
+    while (pos != LineBreakIterator.DONE)
     {
-      BufferedReader reader = new BufferedReader(new StringReader(text));
-      String readLine;
-      while ((readLine = reader.readLine()) != null)
-      {
-        lines.add(readLine);
-      }
-      reader.close();
+      lines.add(text.substring(oldPos, pos));
+      oldPos = pos;
+      pos = iterator.nextWithEnd();
     }
-    catch (IOException ioe)
-    {
-      Log.info("This will not happen.", ioe);
-    }
+    Log.debug ("Lines: " + lines);
     return lines;
   }
 

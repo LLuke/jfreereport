@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  * 
- * $Id: ExcelExportDialog.java,v 1.8 2003/02/25 14:45:29 mungady Exp $
+ * $Id: ExcelExportDialog.java,v 1.9 2003/02/25 20:15:35 taqua Exp $
  *
  * Changes
  * --------
@@ -374,11 +374,6 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     contentPane.add(buttonPanel, gbc);
 
     setContentPane(contentPane);
-
-    fileChooser = new JFileChooser();
-    FilesystemFilter filter = new FilesystemFilter("Excel Documents", ".xls");
-    fileChooser.addChoosableFileFilter(filter);
-    fileChooser.setMultiSelectionEnabled(false);
   }
 
   /**
@@ -457,6 +452,14 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
    */
   protected void performSelectFile()
   {
+    if (fileChooser == null)
+    {
+      fileChooser = new JFileChooser();
+      FilesystemFilter filter = new FilesystemFilter("Excel Documents", ".xls");
+      fileChooser.addChoosableFileFilter(filter);
+      fileChooser.setMultiSelectionEnabled(false);
+    }
+
     File file = new File(getFilename());
     fileChooser.setCurrentDirectory(file);
     fileChooser.setSelectedFile(file);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.9 2003/02/25 14:45:26 mungady Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.10 2003/02/25 20:15:34 taqua Exp $
  *
  * Changes
  * --------
@@ -61,7 +61,8 @@ public class EncodingComboBoxModel implements ComboBoxModel
   /** Storage for the known encodings. */
   private static Hashtable knownEncodings;
 
-  /** 
+  private static final String TEST_STRING = " ";
+  /**
    * An encoding comparator. 
    */
   private static class EncodingCarrierComparator implements Comparator
@@ -621,7 +622,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
 
     try
     {
-      new String (" ").getBytes(encoding);
+      TEST_STRING.getBytes(encoding);
       knownEncodings.put (encoding, Boolean.TRUE);
       return true;
     }
