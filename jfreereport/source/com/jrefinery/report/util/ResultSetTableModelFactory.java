@@ -27,6 +27,7 @@
  *
  * 25-Apr-2002 : Initial version
  * 09-Jun-2002 : Documentation and changed the return value to be a CloseableTableModel
+ * 02-Oct-2002 : <Robert Fuller> Bugs fixed for DefaultTableModel creation.
  */
 package com.jrefinery.report.util;
 
@@ -56,7 +57,7 @@ public class ResultSetTableModelFactory
   /**
    * Default constructor.
    */
-  public ResultSetTableModelFactory ()
+  public ResultSetTableModelFactory()
   {
   }
 
@@ -76,22 +77,22 @@ public class ResultSetTableModelFactory
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public CloseableTableModel createTableModel (ResultSet rs)
-          throws SQLException
+  public CloseableTableModel createTableModel(ResultSet rs)
+      throws SQLException
   {
     // Allow for override, some jdbc drivers are buggy :(
     String key = "com.jrefinery.report.TableFactoryMode";
-    if (System.getProperty (key, "").equalsIgnoreCase ("simple"))
+    if (System.getProperty(key, "").equalsIgnoreCase("simple"))
     {
-      return generateDefaultTableModel (rs);
+      return generateDefaultTableModel(rs);
     }
-    if (rs.getType () == ResultSet.TYPE_FORWARD_ONLY)
+    if (rs.getType() == ResultSet.TYPE_FORWARD_ONLY)
     {
-      return generateDefaultTableModel (rs);
+      return generateDefaultTableModel(rs);
     }
     else
     {
-      return new ScrollableResultSetTableModel (rs);
+      return new ScrollableResultSetTableModel(rs);
     }
   }
 
@@ -106,18 +107,18 @@ public class ResultSetTableModelFactory
      * @param objects  the table data.
      * @param objects1  the column names.
      */
-    public CloseableDefaultTableModel (Object[][] objects, Object[] objects1)
+    public CloseableDefaultTableModel(Object[][] objects, Object[] objects1)
     {
-      super (objects, objects1);
+      super(objects, objects1);
     }
 
     /**
      * If this model has a resultset assigned, close it, if this is a DefaultTableModel,
      * remove all data.
      */
-    public void close ()
+    public void close()
     {
-      setDataVector (new Object[0][0], new Object[0]);
+      setDataVector(new Object[0][0], new Object[0]);
     }
   }
 
@@ -134,30 +135,37 @@ public class ResultSetTableModelFactory
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public CloseableTableModel generateDefaultTableModel (ResultSet rs)
-          throws SQLException
+  public CloseableTableModel generateDefaultTableModel(ResultSet rs)
+      throws SQLException
   {
-    ResultSetMetaData rsmd = rs.getMetaData ();
-    int colcount = rsmd.getColumnCount ();
-    Vector header = new Vector (colcount);
+    ResultSetMetaData rsmd = rs.getMetaData();
+    int colcount = rsmd.getColumnCount();
+    Vector header = new Vector(colcount);
     for (int i = 0; i < colcount; i++)
     {
-      String name = rsmd.getColumnName (i + 1);
-      header.add (name);
+      String name = rsmd.getColumnName(i + 1);
+      header.add(name);
     }
-    ArrayList rows = new ArrayList ();
-    while (rs.next ())
+    ArrayList rows = new ArrayList();
+    while (rs.next())
     {
-      Vector column = new Vector (colcount);
+      Vector column = new Vector(colcount);
       for (int i = 0; i < colcount; i++)
       {
-        Object val = rs.getObject (i + 1);
-        header.add (val);
+        Object val = rs.getObject(i + 1);
+        column.add(val);
       }
-      rows.add (column.toArray ());
+      rows.add(column.toArray());
+    }
+
+    Object[] _rows = rows.toArray();
+    Object[][] rowMap = new Object[_rows.length][];
+    for (int i = 0; i < _rows.length; i++)
+    {
+      rowMap[i] = (Object[]) _rows[i];
     }
     CloseableDefaultTableModel model
-        = new CloseableDefaultTableModel ((Object[][]) rows.toArray (), header.toArray ());
+        = new CloseableDefaultTableModel(rowMap, header.toArray());
     return model;
   }
 
@@ -166,11 +174,11 @@ public class ResultSetTableModelFactory
    *
    * @return an instance of this factory.
    */
-  public static ResultSetTableModelFactory getInstance ()
+  public static ResultSetTableModelFactory getInstance()
   {
     if (defaultInstance == null)
     {
-      defaultInstance = new ResultSetTableModelFactory ();
+      defaultInstance = new ResultSetTableModelFactory();
     }
     return defaultInstance;
   }
