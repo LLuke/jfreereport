@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.12 2003/01/14 21:07:08 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.13 2003/01/30 00:04:52 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -46,6 +46,7 @@ import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.util.Log;
 
 import java.util.Hashtable;
+import java.util.HashMap;
 
 /**
  * This function will only work as expected in group mode if the named group has pagebreak set to
@@ -117,7 +118,7 @@ public class PageTotalFunction extends PageFunction
   private PageStorage pageStorage;
 
   /** The group pages. */
-  private Hashtable groupPages;
+  private HashMap groupPages;
 
   /** The group started flag. */
   private boolean isGroupStarted;
@@ -127,7 +128,7 @@ public class PageTotalFunction extends PageFunction
    */
   public PageTotalFunction()
   {
-    groupPages = new Hashtable();
+    groupPages = new HashMap();
   }
 
   /**
@@ -344,7 +345,7 @@ public class PageTotalFunction extends PageFunction
   public Expression getInstance()
   {
     PageTotalFunction function = (PageTotalFunction) super.getInstance();
-    function.groupPages = new Hashtable();
+    function.groupPages = new HashMap();
     function.pageStorage = null;
     return function;
   }

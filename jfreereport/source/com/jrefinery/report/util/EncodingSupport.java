@@ -2,12 +2,12 @@
  * Date: Mar 13, 2003
  * Time: 7:32:40 PM
  *
- * $Id$
+ * $Id: EncodingSupport.java,v 1.1 2003/03/13 18:39:10 taqua Exp $
  */
 package com.jrefinery.report.util;
 
-import java.util.Hashtable;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
 /**
  * A global registry for all supported encodings.
@@ -15,7 +15,7 @@ import java.io.UnsupportedEncodingException;
 public class EncodingSupport
 {
   /** Storage for the known encodings. */
-  private static Hashtable knownEncodings;
+  private static HashMap knownEncodings;
 
   /** the string that should be encoded */
   private static final String TEST_STRING = " ";
@@ -35,7 +35,7 @@ public class EncodingSupport
     }
     if (knownEncodings == null)
     {
-      knownEncodings = new Hashtable();
+      knownEncodings = new HashMap();
     }
 
     Boolean value = (Boolean) knownEncodings.get(encoding);

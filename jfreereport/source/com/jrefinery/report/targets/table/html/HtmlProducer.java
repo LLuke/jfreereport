@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.21 2003/03/04 20:29:01 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.22 2003/03/13 17:43:09 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
@@ -218,10 +218,10 @@ public class HtmlProducer extends TableProducer
       //
       StringBuffer cssbuffer = new StringBuffer();
 
-      Enumeration styles = styleCollection.getDefinedStyles();
-      while (styles.hasMoreElements())
+      Iterator styles = styleCollection.getDefinedStyles();
+      while (styles.hasNext())
       {
-        HtmlCellStyle style = (HtmlCellStyle) styles.nextElement();
+        HtmlCellStyle style = (HtmlCellStyle) styles.next();
         if (styleCollection.isRegistered(style))
         {
           String name = styleCollection.lookupName(style);
@@ -326,9 +326,12 @@ public class HtmlProducer extends TableProducer
    */
   public void beginPage(String name)
   {
-    pout.println("<hr><h3>");
-    pout.println(name);
-    pout.println("</h3><hr>");
+    if (name != null)
+    {
+      pout.println("<hr><h3>");
+      pout.println(name);
+      pout.println("</h3><hr>");
+    }
     pout.println("<p>");
     pout.println("<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
     //pout.println("<table border=\"2\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");

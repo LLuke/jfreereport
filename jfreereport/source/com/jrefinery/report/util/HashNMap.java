@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HashNMap.java,v 1.10 2002/11/07 21:45:29 taqua Exp $
+ * $Id: HashNMap.java,v 1.11 2002/12/11 00:41:42 mungady Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,7 @@ package com.jrefinery.report.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -56,14 +55,14 @@ import java.util.Set;
 public class HashNMap implements Serializable, Cloneable
 {
   /** The underlying storage. */
-  private Hashtable table = null;
+  private HashMap table = null;
 
   /**
    * Default constructor.
    */
   public HashNMap ()
   {
-    table = new Hashtable ();
+    table = new HashMap();
   }
 
   /**
@@ -155,9 +154,9 @@ public class HashNMap implements Serializable, Cloneable
    *
    * @return an enumeration of the keys.
    */
-  public Enumeration keys ()
+  public Iterator keys ()
   {
-    return table.keys ();
+    return table.keySet().iterator();
   }
 
   /**
@@ -231,11 +230,11 @@ public class HashNMap implements Serializable, Cloneable
    */
   public boolean containsValue (Object value)
   {
-    Enumeration e = keys ();
+    Iterator e = keys ();
     boolean found = false;
-    while (e.hasMoreElements () && !found)
+    while (e.hasNext() && !found)
     {
-      List v = (List) e.nextElement ();
+      List v = (List) e.next();
       found = v.contains (value);
     }
     return found;
@@ -267,11 +266,11 @@ public class HashNMap implements Serializable, Cloneable
   public Object clone () throws CloneNotSupportedException
   {
     HashNMap map = (HashNMap) super.clone ();
-    map.table = new Hashtable ();
-    Enumeration enum = keys ();
-    while (enum.hasMoreElements ())
+    map.table = new HashMap ();
+    Iterator enum = keys ();
+    while (enum.hasNext())
     {
-      Object key = enum.nextElement ();
+      Object key = enum.next();
       Iterator it = getAll (key);
       while (it.hasNext ())
       {

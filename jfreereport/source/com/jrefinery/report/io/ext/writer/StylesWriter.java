@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.4 2003/02/21 11:31:13 mungady Exp $
+ * $Id: StylesWriter.java,v 1.5 2003/02/22 18:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,14 @@
  *
  */
 package com.jrefinery.report.io.ext.writer;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.TreeSet;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
@@ -48,14 +56,6 @@ import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.TreeSet;
 
 /**
  * A styles writer.
@@ -124,7 +124,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
       collectStylesFromBand(g.getFooter());
     }
 
-    Hashtable collectedStyles = new Hashtable();
+    HashMap collectedStyles = new HashMap();
 
     for (int i = 0; i < reportStyles.size(); i++)
     {
@@ -143,10 +143,10 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
 
     //now sort the elements ...
     TreeSet sortedSet = new TreeSet(new StylesComparator());
-    Enumeration keys = collectedStyles.keys();
-    while (keys.hasMoreElements())
+    Iterator keys = collectedStyles.keySet().iterator();
+    while (keys.hasNext())
     {
-      String key = (String) keys.nextElement();
+      String key = (String) keys.next();
       Object value = collectedStyles.get(key);
       sortedSet.add(value);
     }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.11 2003/02/25 18:47:03 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.12 2003/03/07 16:56:03 taqua Exp $
  *
  * Changes
  * -------
@@ -50,17 +50,17 @@ package com.jrefinery.report.targets.pageable.output;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.base.content.ContentFactory;
 import com.jrefinery.report.targets.base.content.DefaultContentFactory;
+import com.jrefinery.report.targets.base.content.DrawableContentFactoryModule;
 import com.jrefinery.report.targets.base.content.ImageContentFactoryModule;
 import com.jrefinery.report.targets.base.content.ShapeContentFactoryModule;
 import com.jrefinery.report.targets.base.content.TextContentFactoryModule;
-import com.jrefinery.report.targets.base.content.DrawableContentFactoryModule;
 import com.jrefinery.report.targets.pageable.AlignedLogicalPageWrapper;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
@@ -76,7 +76,7 @@ import com.jrefinery.report.targets.pageable.physicals.LogicalPageImpl;
 public abstract class AbstractOutputTarget implements OutputTarget
 {
   /** Storage for the output target properties. */
-  private Hashtable properties;
+  private HashMap properties;
 
   /** The logical page. */
   private LogicalPage logicalPage;
@@ -116,7 +116,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    */
   public AbstractOutputTarget(LogicalPage logicalPage)
   {
-    properties = new Hashtable();
+    properties = new HashMap();
     this.logicalPage = new AlignedLogicalPageWrapper(logicalPage.newInstance(), this);
     this.logicalPage.setOutputTarget(this);
     operationBounds = new Rectangle2D.Float();
@@ -195,9 +195,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @return the enumeration.
    */
-  protected Enumeration getPropertyNames()
+  protected Iterator getPropertyNames()
   {
-    return properties.keys();
+    return properties.keySet().iterator();
   }
 
   /**

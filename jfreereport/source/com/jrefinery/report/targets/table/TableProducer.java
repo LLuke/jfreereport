@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.17 2003/02/25 15:42:32 taqua Exp $
+ * $Id: TableProducer.java,v 1.18 2003/03/04 20:28:59 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,10 @@
 package com.jrefinery.report.targets.table;
 
 import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Hashtable;
-import java.util.Enumeration;
+import java.util.Map;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
@@ -75,7 +76,7 @@ public abstract class TableProducer
   private boolean dummy;
 
   /** Storage for the output target properties. */
-  private Hashtable properties;
+  private HashMap properties;
 
   /**
    * Creates a new TableProducer.
@@ -85,7 +86,7 @@ public abstract class TableProducer
    */
   public TableProducer(boolean strictLayout)
   {
-    properties = new Hashtable();
+    properties = new HashMap();
     grid = new TableGrid(strictLayout);
     dummy = false;
   }
@@ -405,9 +406,9 @@ public abstract class TableProducer
    *
    * @return the enumeration.
    */
-  protected Enumeration getPropertyNames()
+  protected Iterator getPropertyNames()
   {
-    return properties.keys();
+    return properties.keySet().iterator();
   }
 
   /**
@@ -416,7 +417,7 @@ public abstract class TableProducer
    *
    * @param table the new properties collection.
    */
-  public void setProperties (Hashtable table)
+  public void setProperties (Map table)
   {
     properties.clear();
     properties.putAll(table);

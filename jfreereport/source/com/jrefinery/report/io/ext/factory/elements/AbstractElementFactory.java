@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractElementFactory.java,v 1.3 2003/03/07 16:55:56 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,9 +38,9 @@
 
 package com.jrefinery.report.io.ext.factory.elements;
 
-import com.jrefinery.report.Element;
+import java.util.HashMap;
 
-import java.util.Hashtable;
+import com.jrefinery.report.Element;
 
 /**
  * A base class for implementing the {@link ElementFactory} interface.
@@ -50,14 +50,14 @@ import java.util.Hashtable;
 public class AbstractElementFactory implements ElementFactory
 {
   /** Storage for the elements. */
-  private Hashtable elements;
+  private HashMap elements;
 
   /**
    * Creates a new element factory.
    */
   public AbstractElementFactory()
   {
-    elements = new Hashtable();
+    elements = new HashMap();
   }
 
   /**

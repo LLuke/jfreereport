@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.9 2003/02/25 15:42:43 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.10 2003/02/26 16:42:28 mungady Exp $
  *
  * Changes
  * -------
@@ -38,8 +38,7 @@ package com.jrefinery.report.targets.table.html;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import com.jrefinery.report.ElementAlignment;
@@ -64,7 +63,7 @@ public class HtmlStyleCollection
   private ColorObjectDescription colorObjectDescription;
   
   /** contains all generated style sheets. */
-  private Hashtable table;
+  private HashMap table;
   
   /** the name counter helps to create unique names for the styles. */
   private int nameCounter;
@@ -75,7 +74,7 @@ public class HtmlStyleCollection
   public HtmlStyleCollection()
   {
     this.colorObjectDescription = new ColorObjectDescription();
-    this.table = new Hashtable();
+    this.table = new HashMap();
   }
 
   /**
@@ -131,9 +130,9 @@ public class HtmlStyleCollection
    *
    * @return the styles as enumeration.
    */
-  public Enumeration getDefinedStyles ()
+  public Iterator getDefinedStyles ()
   {
-    return table.keys();
+    return table.keySet().iterator();
   }
 
   /**

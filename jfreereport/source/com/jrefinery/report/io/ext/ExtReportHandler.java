@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.5 2003/02/24 17:34:00 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.6 2003/02/25 12:48:19 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import java.net.URL;
-import java.util.Hashtable;
+import java.util.HashMap;
 
 /**
  * A handler for the extended report definition format. This is the root handler for
@@ -105,7 +105,7 @@ public class ExtReportHandler implements ReportDefinitionHandler
 
     // create the initial JFreeReport object.
     getParser().setConfigurationValue(REPORT_DEFINITION_TAG, new JFreeReport());
-    getParser().setConfigurationValue(StylesHandler.STYLES_COLLECTION, new Hashtable());
+    getParser().setConfigurationValue(StylesHandler.STYLES_COLLECTION, new HashMap());
     createClassFactoryHolder();
     createStyleKeyFactoryHolder();
     createTemplateFactoryHolder();

@@ -1,6 +1,6 @@
 /**
  * ========================================
- * JFreeReport : a free Java report library 
+ * JFreeReport : a free Java report library
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportProperties.java,v 1.16 2003/02/25 15:42:51 taqua Exp $
+ * $Id: ReportProperties.java,v 1.17 2003/03/18 15:45:32 mungady Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.TreeSet;
+import java.util.HashMap;
 
 /**
  * The report properties is a hashtable with string keys. ReportProperties are bound to
@@ -88,7 +89,7 @@ import java.util.TreeSet;
 public class ReportProperties implements Serializable, Cloneable
 {
   /** Storage for the properties. */
-  private Hashtable properties;
+  private HashMap properties;
 
   /** Marked property names. */
   private TreeSet markedProperties;
@@ -100,7 +101,7 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public ReportProperties(ReportProperties props)
   {
-    this.properties = new Hashtable(props.properties);
+    this.properties = new HashMap(props.properties);
     this.markedProperties = new TreeSet();
   }
 
@@ -109,7 +110,8 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public ReportProperties()
   {
-    this.properties = new Hashtable();
+    this.properties = new HashMap();
+    this.markedProperties = new TreeSet();
     this.markedProperties = new TreeSet();
   }
 
@@ -150,7 +152,7 @@ public class ReportProperties implements Serializable, Cloneable
    * the default value if the key was not stored in this properties collection.
    *
    * @param key  the property key.
-   * @param defaultValue  the default value to be returned when the key is not stored in this 
+   * @param defaultValue  the default value to be returned when the key is not stored in this
    *                      properties collection.
    *
    * @return The stored value, or the default value if the key does not exist in this collection.
@@ -208,7 +210,7 @@ public class ReportProperties implements Serializable, Cloneable
   public Object clone() throws CloneNotSupportedException
   {
     ReportProperties p = (ReportProperties) super.clone();
-    p.properties = (Hashtable) this.properties.clone();
+    p.properties = (HashMap) this.properties.clone();
     p.markedProperties = (TreeSet) this.markedProperties.clone();
     return p;
   }

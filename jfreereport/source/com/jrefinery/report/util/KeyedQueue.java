@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: KeyedQueue.java,v 1.13 2003/02/23 20:39:29 taqua Exp $
+ * $Id: KeyedQueue.java,v 1.14 2003/02/25 15:42:47 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,7 @@
 package com.jrefinery.report.util;
 
 import java.io.Serializable;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -54,7 +54,7 @@ public class KeyedQueue implements Serializable, Cloneable
   private LinkedList list;
 
   /** Keyed storage for the queued items. */
-  private Hashtable table;
+  private HashMap table;
 
   /** The maximum number of items in the queue. */
   private int limit;
@@ -74,7 +74,7 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public KeyedQueue (int limit)
   {
-    table = new Hashtable ();
+    table = new HashMap ();
     list = new LinkedList ();
     setLimit (limit);
   }
@@ -196,7 +196,7 @@ public class KeyedQueue implements Serializable, Cloneable
   {
     KeyedQueue q = (KeyedQueue) super.clone ();
     q.list = (LinkedList) list.clone ();
-    q.table = (Hashtable) table.clone ();
+    q.table = (HashMap) table.clone ();
     return q;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Parser.java,v 1.4 2003/02/23 20:39:29 taqua Exp $
+ * $Id: Parser.java,v 1.5 2003/02/26 16:42:15 mungady Exp $
  *
  * Changes
  * -------
@@ -37,14 +37,14 @@
  */
 package com.jrefinery.report.io;
 
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
+import com.jrefinery.report.JFreeReport;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
-import com.jrefinery.report.JFreeReport;
 
 /**
  * The Parser handles the SAXEvents and forwards the event call to the currently
@@ -65,7 +65,7 @@ public class Parser extends DefaultHandler
   private ReportDefinitionHandler initialFactory;
   
   /** Storage for the parser configuration. */
-  private Hashtable parserConfiguration;
+  private HashMap parserConfiguration;
 
   /**
    * Creates a new parser.
@@ -73,7 +73,7 @@ public class Parser extends DefaultHandler
   public Parser()
   {
     activeFactories = new Stack();
-    parserConfiguration = new Hashtable();
+    parserConfiguration = new HashMap();
   }
 
   /**
@@ -239,7 +239,7 @@ public class Parser extends DefaultHandler
    * 
    * @return A hash table.
    */
-  public Hashtable getParserConfiguration()
+  public Map getParserConfiguration()
   {
     return parserConfiguration;
   }

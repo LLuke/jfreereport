@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.9 2003/02/25 15:42:38 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.10 2003/02/26 16:42:26 mungady Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.Hashtable;
+import java.util.HashMap;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.util.IOUtils;
@@ -82,13 +82,13 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
   private FileOutputStream rootStream;
   
   /** A collection of all used file names for generating external content. */
-  private Hashtable usedNames;
+  private HashMap usedNames;
   
   /** A collection of all referenced external content. */
-  private Hashtable usedURLs;
+  private HashMap usedURLs;
   
   /** A collection of all previously encoded images. */
-  private Hashtable encodedImages;
+  private HashMap encodedImages;
   
   /** the image comparator used to compare generated images. */
   private ImageComparator comparator;
@@ -120,9 +120,9 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
   public DirectoryHtmlFilesystem (File file, File dataDirectory)
     throws IOException
   {
-    this.usedNames = new Hashtable();
-    this.usedURLs = new Hashtable();
-    this.encodedImages = new Hashtable();
+    this.usedNames = new HashMap();
+    this.usedURLs = new HashMap();
+    this.encodedImages = new HashMap();
     this.comparator = new ImageComparator();
 
     if (file.exists() && file.isFile() == false)

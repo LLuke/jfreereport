@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ClassFactoryImpl.java,v 1.6 2003/03/07 16:55:57 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,8 +38,7 @@
 
 package com.jrefinery.report.io.ext.factory.objects;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -50,14 +49,14 @@ import java.util.Iterator;
 public abstract class ClassFactoryImpl implements ClassFactory
 {
   /** Storage for the classes. */
-  private Hashtable classes;
+  private HashMap classes;
 
   /**
    * Creates a new class factory.
    */
   public ClassFactoryImpl()
   {
-    classes = new Hashtable();
+    classes = new HashMap();
   }
 
   /**
@@ -86,13 +85,12 @@ public abstract class ClassFactoryImpl implements ClassFactory
    */
   public ObjectDescription getSuperClassObjectDescription (Class d)
   {
-    Enumeration enum = classes.keys();
-    while (enum.hasMoreElements())
+    Iterator enum = classes.keySet().iterator();
+    while (enum.hasNext())
     {
-      Class keyClass = (Class) enum.nextElement();
+      Class keyClass = (Class) enum.next();
       if (keyClass.isAssignableFrom(d))
       {
-//        Log.debug (keyClass + " is assignable " + d);
         return (ObjectDescription) classes.get (keyClass);
       }
       else

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.11 2003/02/26 16:42:28 mungady Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.12 2003/03/04 20:29:02 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
@@ -91,13 +92,13 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
   private OutputStream rootStream;
   
   /** A collection of all used file names for generating external content. */
-  private Hashtable usedNames;
+  private HashMap usedNames;
   
   /** A collection of all referenced external content. */
-  private Hashtable usedURLs;
+  private HashMap usedURLs;
   
   /** A collection of all previously encoded images. */
-  private Hashtable encodedImages;
+  private HashMap encodedImages;
   
   /** the image comparator used to compare generated images. */
   private ImageComparator comparator;
@@ -154,10 +155,10 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
         this.dataDirectory = dataDirectory;
       }
     }
-    this.usedNames = new Hashtable();
-    this.usedURLs = new Hashtable();
+    this.usedNames = new HashMap();
+    this.usedURLs = new HashMap();
     this.comparator = new ImageComparator();
-    this.encodedImages = new Hashtable();
+    this.encodedImages = new HashMap();
   }
 
   /**

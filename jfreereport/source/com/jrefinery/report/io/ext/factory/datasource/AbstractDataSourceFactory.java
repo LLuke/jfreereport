@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractDataSourceFactory.java,v 1.6 2003/03/07 16:55:55 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,11 +38,11 @@
 
 package com.jrefinery.report.io.ext.factory.datasource;
 
+import java.util.HashMap;
+import java.util.Iterator;
+
 import com.jrefinery.report.io.ext.factory.objects.ClassFactoryImpl;
 import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
-
-import java.util.Enumeration;
-import java.util.Hashtable;
 
 /**
  * A base class for implementing the {@link DataSourceFactory} interface.
@@ -53,14 +53,14 @@ public abstract class AbstractDataSourceFactory
     extends ClassFactoryImpl implements DataSourceFactory
 {
   /** Storage for the data sources. */
-  private Hashtable dataSources;
+  private HashMap dataSources;
 
   /**
    * Creates a new factory.
    */
   public AbstractDataSourceFactory()
   {
-    dataSources = new Hashtable();
+    dataSources = new HashMap();
   }
 
   /**
@@ -96,10 +96,10 @@ public abstract class AbstractDataSourceFactory
    */
   public String getDataSourceName(ObjectDescription od)
   {
-    Enumeration keys = dataSources.keys();
-    while (keys.hasMoreElements())
+    Iterator keys = dataSources.keySet().iterator();
+    while (keys.hasNext())
     {
-      String key = (String) keys.nextElement();
+      String key = (String) keys.next();
       ObjectDescription ds = (ObjectDescription) dataSources.get(key);
       if (ds.getObjectClass().equals(od.getObjectClass()))
       {

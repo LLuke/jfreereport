@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2003, by Simba Management Limited.
  *
- * $Id: ExpressionCollection.java,v 1.6 2003/02/26 13:57:57 mungady Exp $
+ * $Id: ExpressionCollection.java,v 1.7 2003/03/13 17:41:51 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,7 @@ package com.jrefinery.report.function;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -55,7 +55,7 @@ import java.util.Iterator;
 public class ExpressionCollection implements Cloneable
 {
   /** Storage for the Expressions in the collection. */
-  protected Hashtable expressionPositions;
+  protected HashMap expressionPositions;
 
   /** Ordered storage for the Expressions. */
   protected ArrayList expressionList;
@@ -65,7 +65,7 @@ public class ExpressionCollection implements Cloneable
    */
   public ExpressionCollection()
   {
-    expressionPositions = new Hashtable();
+    expressionPositions = new HashMap();
     expressionList = new ArrayList();
   }
 
@@ -214,7 +214,7 @@ public class ExpressionCollection implements Cloneable
   public Object clone() throws CloneNotSupportedException
   {
     ExpressionCollection col = (ExpressionCollection) super.clone();
-    col.expressionPositions = new Hashtable();
+    col.expressionPositions = new HashMap();
     col.expressionList = new ArrayList();
 
     Iterator it = expressionList.iterator();

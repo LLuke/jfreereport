@@ -29,7 +29,7 @@
  *                   JRXlsExporter.java of JasperReports;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellStyleFactory.java,v 1.7 2003/02/25 15:42:36 taqua Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.8 2003/02/26 13:58:03 mungady Exp $
  *
  * Changes
  * -------
@@ -38,18 +38,17 @@
 package com.jrefinery.report.targets.table.excel;
 
 import java.awt.Color;
-import java.util.Hashtable;
-
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
+import java.util.HashMap;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.table.TableCellBackground;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 
 /**
  * The CellStyle factory is used to convert JFreeReport style information
@@ -166,7 +165,7 @@ public class ExcelCellStyleFactory
   private HSSFWorkbook workbook;
 
   /** The cache for all generated styles */
-  private Hashtable styleCache;
+  private HashMap styleCache;
 
   /** the font factory is used to create excel fonts. */
   private ExcelFontFactory fontFactory;
@@ -184,7 +183,7 @@ public class ExcelCellStyleFactory
       throw new NullPointerException();
     }
     this.workbook = workbook;
-    this.styleCache = new Hashtable();
+    this.styleCache = new HashMap();
     this.fontFactory = new ExcelFontFactory(workbook);
   }
 

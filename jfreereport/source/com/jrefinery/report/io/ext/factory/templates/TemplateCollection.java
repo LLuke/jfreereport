@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TemplateCollection.java,v 1.7 2003/03/07 16:56:00 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,10 +38,10 @@
 
 package com.jrefinery.report.io.ext.factory.templates;
 
-import com.jrefinery.report.filter.templates.Template;
+import java.util.HashMap;
+import java.util.Iterator;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
+import com.jrefinery.report.filter.templates.Template;
 
 /**
  * A template collection.
@@ -51,14 +51,14 @@ import java.util.Hashtable;
 public class TemplateCollection
 {
   /** Storage for the templates. */
-  private Hashtable templates;
+  private HashMap templates;
 
   /**
    * Creates a new collection.
    */
   public TemplateCollection()
   {
-    templates = new Hashtable();
+    templates = new HashMap();
   }
 
   /**
@@ -92,10 +92,10 @@ public class TemplateCollection
    */
   public TemplateDescription getDescription (Template template)
   {
-    Enumeration enum = templates.elements();
-    while (enum.hasMoreElements())
+    Iterator enum = templates.keySet().iterator();
+    while (enum.hasNext())
     {
-      TemplateDescription td = (TemplateDescription) enum.nextElement();
+      TemplateDescription td = (TemplateDescription) enum.next();
       if (td.getObjectClass().equals(template.getClass()))
       {
         return td;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.6 2003/02/25 12:48:19 taqua Exp $
+ * $Id: StylesHandler.java,v 1.7 2003/02/26 16:42:18 mungady Exp $
  *
  * Changes
  * -------
@@ -38,13 +38,13 @@
 
 package com.jrefinery.report.io.ext;
 
+import java.util.HashMap;
+
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ReportDefinitionHandler;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
-import java.util.Hashtable;
 
 /**
  * A styles handler. This handler processes the styles collection and collects
@@ -70,7 +70,7 @@ public class StylesHandler implements ReportDefinitionHandler
   private String finishTag;
 
   /** The style collection. */
-  private Hashtable styleCollection;
+  private HashMap styleCollection;
 
   /** The style sheet. */
   private ElementStyleSheet styleSheet;
@@ -93,7 +93,7 @@ public class StylesHandler implements ReportDefinitionHandler
     }
     this.parser = parser;
     this.finishTag = finishTag;
-    styleCollection = (Hashtable) getParser().getConfigurationValue(STYLES_COLLECTION);
+    styleCollection = (HashMap) getParser().getConfigurationValue(STYLES_COLLECTION);
     if (styleCollection == null)
     {
       throw new IllegalStateException("No styles collection found in the configuration");

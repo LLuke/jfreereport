@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractStyleKeyFactory.java,v 1.7 2003/03/07 16:55:57 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,13 +38,13 @@
 
 package com.jrefinery.report.io.ext.factory.stylekey;
 
+import java.util.HashMap;
+import java.util.Iterator;
+
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ext.factory.objects.ClassFactory;
 import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
 import com.jrefinery.report.targets.style.StyleKey;
-
-import java.util.Hashtable;
-import java.util.Iterator;
 
 /**
  * An abstract class for implementing the {@link StyleKeyFactory} interface.
@@ -57,7 +57,7 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
   public static final String OBJECT_FACTORY_TAG = "object-factory";
 
   /** Storage for the keys. */  
-  private Hashtable knownKeys;
+  private HashMap knownKeys;
   
   /** A class factory. */
   private ClassFactory classFactory;
@@ -67,7 +67,7 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
    */
   public AbstractStyleKeyFactory()
   {
-    knownKeys = new Hashtable();
+    knownKeys = new HashMap();
   }
 
   /**

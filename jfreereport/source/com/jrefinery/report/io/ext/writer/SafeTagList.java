@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: SafeTagList.java,v 1.2 2003/02/21 11:31:13 mungady Exp $
  *
  * Changes
  * -------
@@ -37,7 +37,7 @@
  */
 package com.jrefinery.report.io.ext.writer;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 
 /**
  * A container for information relating to the tags in the JFreeReport XML report files.  Some tags
@@ -48,7 +48,7 @@ import java.util.Hashtable;
 public class SafeTagList
 {
   /** Storage for the tag information. */
-  private Hashtable safeTags;
+  private HashMap safeTags;
 
   /**
    * A tag description.
@@ -99,7 +99,7 @@ public class SafeTagList
    */
   public SafeTagList()
   {
-    safeTags = new Hashtable();
+    safeTags = new HashMap();
   }
 
   /**

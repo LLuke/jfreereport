@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.5 2003/02/25 15:42:29 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.6 2003/02/26 13:58:01 mungady Exp $
  *
  * Changes
  * -------
@@ -39,18 +39,18 @@
  */
 package com.jrefinery.report.targets.support.itext;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.StringTokenizer;
+
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.StringUtil;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.DefaultFontMapper;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.StringTokenizer;
 
 /**
  * The BaseFontFactory is used to find and register all TrueTypeFonts for embedding them
@@ -64,14 +64,14 @@ public class BaseFontFactory extends DefaultFontMapper
   private static BaseFontFactory fontFactory;
 
   /** Fonts stored by name. */
-  private Hashtable fontsByName;
+  private HashMap fontsByName;
 
   /**
    * Creates a new factory.
    */
   private BaseFontFactory()
   {
-    fontsByName = new Hashtable();
+    fontsByName = new HashMap();
   }
 
   /**
@@ -79,7 +79,7 @@ public class BaseFontFactory extends DefaultFontMapper
    * systems, X11 is searched in /usr/X11R6 and the default truetype fontpath is added.
    * For windows the system font path is added (%windir%/fonts)
    */
-  public void registerDefaultFontPath()
+  public synchronized void registerDefaultFontPath()
   {
     String encoding = getDefaultFontEncoding();
     // Correct the encoding for truetype fonts
@@ -145,7 +145,7 @@ public class BaseFontFactory extends DefaultFontMapper
    * @param path  the path.
    * @param encoding  the encoding.
    */
-  public void registerFontPath(String path, String encoding)
+  public synchronized void registerFontPath(String path, String encoding)
   {
     File file = new File(path);
     if (file.exists() && file.isDirectory() && file.canRead())
@@ -165,7 +165,7 @@ public class BaseFontFactory extends DefaultFontMapper
    * @param filename  the filename.
    * @param encoding  the encoding.
    */
-  public void registerFontFile(String filename, String encoding)
+  public synchronized void registerFontFile(String filename, String encoding)
   {
     if (!filename.toLowerCase().endsWith("ttf"))
     {
@@ -219,9 +219,9 @@ public class BaseFontFactory extends DefaultFontMapper
    *
    * @return an enumeration of the registered fonts.
    */
-  public Enumeration getRegisteredFonts()
+  public Iterator getRegisteredFonts()
   {
-    return fontsByName.keys();
+    return fontsByName.keySet().iterator();
   }
 
   /**

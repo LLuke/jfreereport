@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.9 2003/02/25 12:48:19 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.10 2003/02/26 16:42:18 mungady Exp $
  *
  * Changes
  * -------
@@ -38,13 +38,13 @@
 
 package com.jrefinery.report.io.ext;
 
+import java.util.HashMap;
+
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ReportDefinitionHandler;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
-import java.util.Hashtable;
 
 /**
  * A style sheet handler. Handles the definition of a single style sheet, either
@@ -77,7 +77,7 @@ public class StyleSheetHandler implements ReportDefinitionHandler
   private BasicStyleKeyHandler basicFactory;
 
   /** The style collection. */
-  private Hashtable styleCollection;
+  private HashMap styleCollection;
 
   /**
    * Creates a new handler.
@@ -104,7 +104,7 @@ public class StyleSheetHandler implements ReportDefinitionHandler
     this.parser = parser;
     this.finishTag = finishTag;
     this.sheet = styleSheet;
-    styleCollection = (Hashtable) getParser().getConfigurationValue(
+    styleCollection = (HashMap) getParser().getConfigurationValue(
         StylesHandler.STYLES_COLLECTION);
     if (styleCollection == null)
     {

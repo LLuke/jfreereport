@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.8 2003/02/25 15:42:31 taqua Exp $
+ * $Id: TableProcessor.java,v 1.9 2003/03/04 20:28:58 taqua Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,11 @@
  */
 package com.jrefinery.report.targets.table;
 
+import java.awt.print.PageFormat;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportEventException;
@@ -46,11 +51,6 @@ import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
-
-import java.awt.print.PageFormat;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Iterator;
 
 /**
  * The TableProcessor is the abstract base class for all table based output targets.
@@ -74,7 +74,7 @@ public abstract class TableProcessor
   private boolean strictLayout;
 
   /** Storage for the output target properties. */
-  private Hashtable properties;
+  private HashMap properties;
 
   /**
    * Creates a new TableProcessor. The TableProcessor creates a private copy
@@ -102,7 +102,7 @@ public abstract class TableProcessor
       throw new ReportProcessingException("Initial Clone of Report failed");
     }
 
-    properties = new Hashtable();
+    properties = new HashMap();
 
     TableWriter lm = new TableWriter();
     lm.setName(TABLE_WRITER);
@@ -397,9 +397,9 @@ public abstract class TableProcessor
    *
    * @return the enumeration.
    */
-  protected Enumeration getPropertyNames()
+  protected Iterator getPropertyNames()
   {
-    return properties.keys();
+    return properties.keySet().iterator();
   }
 
   /**
@@ -407,7 +407,7 @@ public abstract class TableProcessor
    *
    * @return the internal properties storage.
    */
-  protected Hashtable getProperties ()
+  protected Map getProperties ()
   {
     return properties;
   }
