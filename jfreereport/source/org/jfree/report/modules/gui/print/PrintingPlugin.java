@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.5 2003/09/10 18:20:25 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.6 2003/10/18 19:22:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,6 +48,7 @@ import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.base.ExportTaskListener;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.print.resources.PrintExportResources;
+import org.jfree.report.modules.gui.plaintext.PlainTextExportPlugin;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -69,19 +70,19 @@ public class PrintingPlugin extends AbstractExportPlugin
     public void taskAborted(ExportTask task)
     {
       getBase().removeRepaginationListener(progressDialog);
-      handleExportResult(task);
+      PrintingPlugin.this.handleExportResult(task);
     }
 
     public void taskDone(ExportTask task)
     {
       getBase().removeRepaginationListener(progressDialog);
-      handleExportResult(task);
+      PrintingPlugin.this.handleExportResult(task);
     }
 
     public void taskFailed(ExportTask task)
     {
       getBase().removeRepaginationListener(progressDialog);
-      handleExportResult(task);
+      PrintingPlugin.this.handleExportResult(task);
     }
 
     public void taskWaiting(ExportTask task)

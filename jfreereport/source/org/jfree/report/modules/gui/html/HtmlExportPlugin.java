@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportPlugin.java,v 1.6 2003/09/10 18:20:25 taqua Exp $
+ * $Id: HtmlExportPlugin.java,v 1.7 2003/10/18 19:22:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -72,19 +72,19 @@ public class HtmlExportPlugin extends AbstractExportPlugin
     public void taskAborted(ExportTask task)
     {
       getBase().removeRepaginationListener(progressDialog);
-      handleExportResult(task);
+      HtmlExportPlugin.this.handleExportResult(task);
     }
 
     public void taskDone(ExportTask task)
     {
       getBase().removeRepaginationListener(progressDialog);
-      handleExportResult(task);
+      HtmlExportPlugin.this.handleExportResult(task);
     }
 
     public void taskFailed(ExportTask task)
     {
       getBase().removeRepaginationListener(progressDialog);
-      handleExportResult(task);
+      HtmlExportPlugin.this.handleExportResult(task);
     }
 
     public void taskWaiting(ExportTask task)
