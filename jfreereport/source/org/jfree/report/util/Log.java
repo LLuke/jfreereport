@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: Log.java,v 1.2 2003/07/10 20:02:10 taqua Exp $
  *
  * Changes
  * -------
@@ -114,6 +114,7 @@ public final class Log extends org.jfree.util.Log
     jfreeReportLog = new Log();
     org.jfree.util.Log.defineLog(jfreeReportLog);
     jfreeReportLog.addTarget(Log.DEFAULT_LOG_TARGET);
+    jfreeReportLog.setDebuglevel(WARN);
   }
 
   public static Log getJFreeReportLog ()
@@ -124,25 +125,6 @@ public final class Log extends org.jfree.util.Log
   public void init()
   {
     removeTarget(DEFAULT_LOG_TARGET);
-
-    if (ReportConfiguration.getGlobalConfig().isDisableLogging() == false)
-    {
-      String className = ReportConfiguration.getGlobalConfig().getLogTarget();
-
-      try
-      {
-        Class c = ReportConfiguration.getGlobalConfig().getClass().
-            getClassLoader().loadClass(className);
-        LogTarget lt = (LogTarget) c.newInstance();
-        addTarget(lt);
-      }
-      catch (Exception e)
-      {
-        // unable to handle that case, log it anyway.
-        e.printStackTrace();
-      }
-    }
-
     String logLevel = ReportConfiguration.getGlobalConfig().getLogLevel();
     if (logLevel.equalsIgnoreCase("error"))
     {

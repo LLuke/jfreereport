@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractModule.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: AbstractModule.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -102,16 +102,25 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
   {
     setModuleClass(this.getClass().getName());
   }
-
   protected void loadModuleInfo () throws ModuleInitializeException
+  {
+    InputStream in = getClass().getResourceAsStream("module.properties");
+    if (in == null)
+    {
+      throw new ModuleInitializeException
+          ("File 'module.properties' not found in module package.");
+    }
+    loadModuleInfo(in);
+  }
+
+  protected void loadModuleInfo (InputStream in) throws ModuleInitializeException
   {
     try
     {
-      InputStream in = getClass().getResourceAsStream("module.properties");
       if (in == null)
       {
-        throw new ModuleInitializeException
-            ("File 'module.properties' not found in module package.");
+        throw new NullPointerException
+            ("Given InputStream is null.");
       }
       ReaderHelper rh = new ReaderHelper(new BufferedReader
           (new InputStreamReader(in, "ISO-8859-1")));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: PackageManager.java,v 1.1 2003/07/10 20:05:59 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -87,13 +87,13 @@ public class PackageManager
     initSections = new ArrayList();
   }
 
-  public void init ()
+  public synchronized void init ()
   {
     init("org.jfree.report.modules.");
     init("org.jfree.report.ext.modules.");
   }
 
-  public void init (String modulePrefix)
+  public synchronized void init (String modulePrefix)
   {
     if (initSections.contains(modulePrefix))
     {
@@ -108,18 +108,7 @@ public class PackageManager
       String key = (String) it.next();
       if (key.endsWith(".Module"))
       {
-        ArrayList loadModules = new ArrayList();
-        ModuleInfo modInfo = new DefaultModuleInfo
-            (config.getConfigProperty(key), null, null, null);
-        if (loadModule(modInfo, loadModules))
-        {
-          for (int i = 0; i < loadModules.size(); i++)
-          {
-            Module mod = (Module) loadModules.get(i);
-            modules.add (new PackageState(mod));
-            Log.debug (mod.getModuleClass());
-          }
-        }
+        addModule(config.getConfigProperty(key));
       }
       else
       {
@@ -127,7 +116,11 @@ public class PackageManager
       }
     }
     Log.debug ("Loaded a total of " + modules.size() + " modules.");
+    initializeModules();
+  }
 
+  public synchronized void initializeModules ()
+  {
     Collections.sort(modules);
 
     for (int i = 0; i < modules.size(); i++)
@@ -144,6 +137,22 @@ public class PackageManager
       if (mod.initialize())
       {
         Log.debug ("Init: " + mod.getModule().getModuleClass());
+      }
+    }
+  }
+
+  public synchronized void addModule (String modClass)
+  {
+    ArrayList loadModules = new ArrayList();
+    ModuleInfo modInfo = new DefaultModuleInfo
+        (modClass, null, null, null);
+    if (loadModule(modInfo, loadModules))
+    {
+      for (int i = 0; i < loadModules.size(); i++)
+      {
+        Module mod = (Module) loadModules.get(i);
+        modules.add (new PackageState(mod));
+        Log.debug (mod.getModuleClass());
       }
     }
   }
