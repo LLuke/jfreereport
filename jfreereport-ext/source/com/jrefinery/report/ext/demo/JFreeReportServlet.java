@@ -24,6 +24,13 @@
  * JFreeReportServlet.java
  * -----------------------
  *
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
+ *
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: JFreeReportServlet.java,v 1.1 2003/01/25 02:56:17 taqua Exp $
+ *
  * Changes
  * -------
  * 30-Sep-2002: Initial version
@@ -33,13 +40,12 @@ package com.jrefinery.report.ext.demo;
 import com.jrefinery.report.demo.SwingIconsDemoTableModel;
 import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.demo.SwingIconsDemoTableModel;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.net.URL;
 
@@ -79,7 +85,7 @@ public class JFreeReportServlet extends HttpServlet
     }
     catch (Exception e)
     {
-      Log.debug ("Failed to parse the report" , e);
+      Log.debug("Failed to parse the report", e);
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       return;
     }
@@ -108,7 +114,7 @@ public class JFreeReportServlet extends HttpServlet
     }
     catch (Exception e)
     {
-      Log.debug ("Failed to create the report", e);
+      Log.debug("Failed to create the report", e);
     }
   }
 }

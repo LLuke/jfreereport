@@ -21,12 +21,19 @@
  * Boston, MA 02111-1307, USA.
  *
  * -----------------------
- * JFreeReportServlet.java
+ * JFreeReportPngServlet.java
  * -----------------------
+ *
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
+ *
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: JFreeReportPngServlet.java,v 1.1 2003/01/25 02:56:17 taqua Exp $
  *
  * Changes
  * -------
- * 30-Sep-2002: Initial version
+ * 24-Jan-2003: Initial version
  */
 package com.jrefinery.report.ext.demo;
 
