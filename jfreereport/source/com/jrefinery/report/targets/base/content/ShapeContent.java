@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContent.java,v 1.8 2003/03/08 17:20:51 taqua Exp $
+ * $Id: ShapeContent.java,v 1.9 2003/03/09 17:48:58 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,8 @@ package com.jrefinery.report.targets.base.content;
 
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
+
+import com.jrefinery.report.util.Log;
 
 /**
  * A report content item that encapsulates a <code>Shape</code> object.
@@ -82,7 +84,8 @@ public class ShapeContent implements Content
     }
 
     this.shape = s;
-    this.bounds = bounds;
+    this.bounds = (Rectangle2D) bounds.clone();
+    Log.debug ("ShapeContent: " + s.getBounds2D() + " Bounds: " + bounds);
   }
 
   /**

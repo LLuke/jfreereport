@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.37 2003/03/08 16:08:05 taqua Exp $
+ * $Id: ItemFactory.java,v 1.38 2003/03/08 17:20:15 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,7 @@ import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.AffineTransform;
 import java.awt.print.PageFormat;
 import java.net.URL;
 import java.text.DateFormat;
@@ -881,12 +882,19 @@ public class ItemFactory
     // translate the shape to start at 0,0 and let the element start at
     // the shapes origin (x,y).
 
-    // we choose the simple way: the bounds of the element start at 0,0
+    // we have to translate the shape, as anything else would mess up the table layout
+
     Rectangle2D shapeBounds = shape.getBounds2D();
-    Rectangle2D bounds = new Rectangle2D.Float(0,0,
-                                               (float) (shapeBounds.getX() + shapeBounds.getWidth()),
-                                               (float) (shapeBounds.getY() + shapeBounds.getHeight()));
-    return createShapeElement(name, bounds, paint, stroke, shape,
+
+    if (shapeBounds.getX() == 0 && shapeBounds.getY() == 0)
+    {
+      // no need to translate ...
+      return createShapeElement(name, shapeBounds, paint, stroke, shape,
+                                shouldDraw, shouldFill, true);
+    }
+
+    AffineTransform af = AffineTransform.getTranslateInstance(-shapeBounds.getX(), -shapeBounds.getY());
+    return createShapeElement(name, shapeBounds, paint, stroke, af.createTransformedShape(shape),
                               shouldDraw, shouldFill, true);
   }
 
@@ -1050,7 +1058,9 @@ public class ItemFactory
       return createShapeElement(name, shape, paint, stroke, new Rectangle2D.Float(0, 0, 100, 100),
                                 shouldDraw, shouldFill, true);
     }
-    return createShapeElement(name, paint, stroke, shape, shouldDraw, shouldFill);
+    Rectangle2D rect = (Rectangle2D) shape.clone();
+    rect.setRect(0,0, rect.getWidth(), rect.getHeight());
+    return createShapeElement(name, shape, paint, stroke, rect, shouldDraw, shouldFill, false);
   }
 
   /**

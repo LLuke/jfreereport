@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ReportDefinitionWriter.java,v 1.7 2003/02/21 11:31:13 mungady Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
   {
     String reportName = getReport().getName();
     w.write ("<?xml version=\"1.0\" encoding=\"" + getReportWriter().getEncoding() + "\"?>\n");
-    w.write ("<!DOCTYPE report PUBLIC \"");
+    w.write ("<!DOCTYPE report-definition PUBLIC \"");
     w.write (ParserEntityResolver.PUBLIC_ID_EXTENDED);
     w.write ("\"\n");
     w.write ("                         \"http://jfreereport.sourceforge.net/extreport.dtd\">\n");

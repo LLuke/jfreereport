@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContentFactoryModule.java,v 1.6 2003/03/08 17:20:52 taqua Exp $
+ * $Id: ShapeContentFactoryModule.java,v 1.7 2003/03/09 17:48:58 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.StringUtil;
+import com.jrefinery.report.util.Log;
 
 /**
  * The ShapeContentFactoryModule is used to create a content wrapper for java.awt.Shape
@@ -94,8 +95,8 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
   {
     Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
                                                             bounds.getPreferredSize());
-
-    Shape s = ShapeTransform.transformShape((Shape) e.getValue(),
+    Shape value = (Shape) e.getValue();
+    Shape s = ShapeTransform.transformShape(value,
                          e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
                          e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
                          iBounds);

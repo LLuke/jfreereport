@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.5 2003/03/08 16:08:06 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.6 2003/03/08 17:20:50 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
+
+import com.jrefinery.report.util.Log;
 
 /**
  * Utility class, which resizes a Shape.
@@ -64,13 +66,14 @@ public class ShapeTransform
    */
   public static Shape transformShape (Shape s, boolean scale, boolean keepAR, Dimension2D dim)
   {
-    AffineTransform af = AffineTransform.getTranslateInstance(0, 0);
+    Log.debug ("Shape: " + s + " Bounds: " + s.getBounds2D());
 
     /**
      * Always scale to the maximum bounds ...
      */
     if (scale)
     {
+
       Rectangle2D boundsShape = s.getBounds2D();
       double w = boundsShape.getWidth();
       double h = boundsShape.getHeight();
@@ -87,17 +90,32 @@ public class ShapeTransform
       }
       if (scaleX != 1 || scaleY != 1)
       {
+        /**
+         * Apply the normalisation shape transform ... bring the shape to pos (0,0)
+         */
+        Rectangle2D bounds = s.getBounds2D();
+        AffineTransform af = AffineTransform.getTranslateInstance(0 - bounds.getX(), 0 - bounds.getY());
+        // apply normalisation translation ...
+        s = af.createTransformedShape(s);
+
         if (keepAR)
         {
           double scaleFact = Math.min (scaleX, scaleY);
-          af.concatenate(AffineTransform.getScaleInstance(scaleFact, scaleFact));
+          af = AffineTransform.getScaleInstance(scaleFact, scaleFact);
         }
         else
         {
-          af.concatenate(AffineTransform.getScaleInstance(scaleX, scaleY));
+          af = AffineTransform.getScaleInstance(scaleX, scaleY);
         }
+        // apply scaling ...
+        s = af.createTransformedShape(s);
+
+        // now retranslate the shape to its original position ...
+        af = AffineTransform.getTranslateInstance(bounds.getX(), bounds.getY());
+        s = af.createTransformedShape(s);
       }
     }
-    return af.createTransformedShape(s);
+
+    return s;
   }
 }
