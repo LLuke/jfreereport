@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaBandProducer.java,v 1.1 2004/03/16 15:59:34 taqua Exp $
+ * $Id: ExcelMetaBandProducer.java,v 1.2.2.1 2004/12/13 19:27:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -50,9 +50,9 @@ import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.RawContent;
 import org.jfree.report.modules.output.table.base.TableMetaBandProducer;
-import org.jfree.report.modules.output.table.xls.metaelements.ExcelNumberMetaElement;
 import org.jfree.report.modules.output.table.xls.metaelements.ExcelDateMetaElement;
 import org.jfree.report.modules.output.table.xls.metaelements.ExcelMetaElement;
+import org.jfree.report.modules.output.table.xls.metaelements.ExcelNumberMetaElement;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.Log;
 
@@ -95,6 +95,7 @@ public class ExcelMetaBandProducer
   protected MetaElement createDrawableCell (final Element e,
                                             final float x, final float y)
   {
+    // drawable elements are not supported...
     return null;
   }
 
@@ -109,6 +110,7 @@ public class ExcelMetaBandProducer
   protected MetaElement createImageCell (final Element e,
                                          final float x, final float y)
   {
+    // image elements are not supported...
     return null;
   }
 

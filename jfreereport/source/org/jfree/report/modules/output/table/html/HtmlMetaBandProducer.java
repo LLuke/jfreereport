@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaBandProducer.java,v 1.1 2004/03/16 18:03:37 taqua Exp $
+ * $Id: HtmlMetaBandProducer.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,23 +42,18 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 
-import org.jfree.report.Band;
 import org.jfree.report.DefaultImageReference;
 import org.jfree.report.DrawableContainer;
-import org.jfree.report.DrawableElement;
 import org.jfree.report.Element;
-import org.jfree.report.ImageElement;
-import org.jfree.report.ShapeElement;
-import org.jfree.report.TextElement;
 import org.jfree.report.ImageContainer;
-import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.content.ContentCreationException;
+import org.jfree.report.content.ImageContent;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.RawContent;
 import org.jfree.report.modules.output.table.base.TableMetaBandProducer;
 import org.jfree.report.modules.output.table.html.metaelements.HtmlImageMetaElement;
 import org.jfree.report.modules.output.table.html.metaelements.HtmlTextMetaElement;
+import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ImageUtils;
 import org.jfree.ui.Drawable;
 
@@ -97,8 +92,8 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
 
     final Rectangle2D rect = (Rectangle2D)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-    return new HtmlImageMetaElement (new RawContent (rect, o),
-            createStyleForImageElement(e, x, y), useXHTML);
+    final ImageContent ic = new ImageContent((ImageContainer) o, rect.getBounds2D());
+    return new HtmlImageMetaElement (ic, createStyleForImageElement(e, x, y), useXHTML);
   }
 
   protected MetaElement createDrawableCell
@@ -126,11 +121,11 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
     // the clipping bounds are a sub-area of the whole drawable
     // we only want to print a certain area ...
     drawable.draw(g2, new Rectangle2D.Double
-        (rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight()));
+        (0, 0, rect.getWidth(), rect.getHeight()));
     g2.dispose();
     final DefaultImageReference imgref = new DefaultImageReference(image);
-
-    return new HtmlImageMetaElement (new RawContent (rect, imgref),
-            createStyleForDrawableElement(e, x, y), useXHTML);
+    final ImageContent ic = new ImageContent(imgref, rect.getBounds2D());
+    return new HtmlImageMetaElement
+            (ic, createStyleForDrawableElement(e, x, y), useXHTML);
   }
 }

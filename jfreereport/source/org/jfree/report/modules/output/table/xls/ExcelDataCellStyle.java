@@ -30,7 +30,7 @@
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
  *
- * $Id: ExcelDataCellStyle.java,v 1.5 2003/11/07 15:31:40 taqua Exp $
+ * $Id: ExcelDataCellStyle.java,v 1.5.4.1 2004/12/13 19:27:11 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import java.awt.Color;
 
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.util.ObjectUtils;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * The ExcelDataCellStyle is used to collect style information for
@@ -231,7 +231,7 @@ public final class ExcelDataCellStyle
     {
       return false;
     }
-    if (ObjectUtils.equal(dataStyle, style.dataStyle) == false)
+    if (ObjectUtilities.equal(dataStyle, style.dataStyle) == false)
     {
       return false;
     }

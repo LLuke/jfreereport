@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlProcessor.java,v 1.9 2004/03/16 15:09:53 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.8.4.1 2004/12/13 19:27:08 taqua Exp $
  *
  * Changes
  * -------
@@ -189,7 +189,7 @@ public class HtmlProcessor extends TableProcessor
   {
     final HtmlLayoutCreator layoutCreator =
             (HtmlLayoutCreator) getLayoutCreator();
-    return new HtmlTableCreator(getFilesystem(), isGenerateXHTML(),
+    return new HtmlContentCreator(getFilesystem(), isGenerateXHTML(),
             layoutCreator.getStyleCollection(), layoutCreator.getSheetLayoutCollection());
   }
 

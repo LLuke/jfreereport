@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableCellStyle.java,v 1.1 2004/03/16 18:03:37 taqua Exp $
+ * $Id: HtmlTableCellStyle.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,20 +38,17 @@
 
 package org.jfree.report.modules.output.table.html;
 
-import org.jfree.report.modules.output.table.base.TableCellBackground;
 import java.awt.Color;
+
+import org.jfree.report.modules.output.table.base.TableCellBackground;
 
 public class HtmlTableCellStyle implements HtmlStyle
 {
   private TableCellBackground background;
-  private String name;
-  private int width;
 
-  public HtmlTableCellStyle (final TableCellBackground background,
-                             final int width)
+  public HtmlTableCellStyle (final TableCellBackground background)
   {
     this.background = background;
-    this.width = width;
   }
 
   /**
@@ -59,75 +56,47 @@ public class HtmlTableCellStyle implements HtmlStyle
    *
    * @return the generated stylesheet definition.
    */
-  public String getCSSString ()
+  public String getCSSString (final boolean compact)
   {
-    final StringBuffer b = new StringBuffer();
-    b.append("width: ");
-    b.append(width);
-    b.append("pt");
-
     if (background == null)
     {
-      return b.toString();
+      return "";
     }
 
-    b.append(";");
-
+    final StyleBuilder b = new StyleBuilder(compact);
     final Color c = background.getColor();
     if (c != null)
     {
-      b.append("background-color:");
-      b.append(HtmlStyleCollection.getColorString(c));
+      b.append("background-color", HtmlStyleCollection.getColorString(c));
     }
 
     if (background.getColorTop() != null)
     {
-      if (b.length() != 0)
-      {
-        b.append(";");
-      }
-      b.append("border-top: ");
-      b.append(background.getBorderSizeTop());
-      b.append("pt; border-top-style: solid; border-top-color: ");
-      b.append(HtmlStyleCollection.getColorString(background.getColorTop()));
+      b.append("border-top", String.valueOf(background.getBorderSizeTop()), "pt");
+      b.append("border-top-style", "solid");
+      b.append("border-top-color", HtmlStyleCollection.getColorString(background.getColorTop()));
     }
 
     if (background.getColorBottom() != null)
     {
-      if (b.length() != 0)
-      {
-        b.append(";");
-      }
-      b.append("border-bottom: ");
-      b.append(background.getBorderSizeBottom());
-      b.append("pt; border-bottom-style: solid; border-bottom-color: ");
-      b.append(HtmlStyleCollection.getColorString(background.getColorBottom()));
+      b.append("border-bottom", String.valueOf(background.getBorderSizeBottom()), "pt");
+      b.append("border-bottom-style", "solid");
+      b.append("border-bottom-color", HtmlStyleCollection.getColorString(background.getColorBottom()));
     }
 
     if (background.getColorLeft() != null)
     {
-      if (b.length() != 0)
-      {
-        b.append(";");
-      }
-      b.append("border-left: ");
-      b.append(background.getBorderSizeLeft());
-      b.append("pt; border-left-style: solid; border-left-color: ");
-      b.append(HtmlStyleCollection.getColorString(background.getColorLeft()));
+      b.append("border-left", String.valueOf(background.getBorderSizeLeft()), "pt");
+      b.append("border-left-style", "solid");
+      b.append("border-left-color", HtmlStyleCollection.getColorString(background.getColorLeft()));
     }
 
     if (background.getColorRight() != null)
     {
-      if (b.length() != 0)
-      {
-        b.append(";");
-      }
-      b.append("border-right: ");
-      b.append(background.getBorderSizeRight());
-      b.append("pt; border-right-style: solid; border-right-color: ");
-      b.append(HtmlStyleCollection.getColorString(background.getColorRight()));
+      b.append("border-right", String.valueOf(background.getBorderSizeRight()), "pt");
+      b.append("border-right-style", "solid");
+      b.append("border-right-color", HtmlStyleCollection.getColorString(background.getColorRight()));
     }
-
     return b.toString();
   }
 
@@ -155,15 +124,5 @@ public class HtmlTableCellStyle implements HtmlStyle
   public int hashCode ()
   {
     return (background != null ? background.hashCode() : 0);
-  }
-
-  public String getName ()
-  {
-    return name;
-  }
-
-  public void setName (final String name)
-  {
-    this.name = name;
   }
 }

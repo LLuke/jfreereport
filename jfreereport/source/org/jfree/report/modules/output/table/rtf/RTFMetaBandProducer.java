@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFMetaBandProducer.java,v 1.1 2004/03/16 16:03:37 taqua Exp $
+ * $Id: RTFMetaBandProducer.java,v 1.2.2.1 2004/12/13 19:27:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,19 +40,34 @@ package org.jfree.report.modules.output.table.rtf;
 
 import java.awt.geom.Rectangle2D;
 
+import com.lowagie.text.pdf.BaseFont;
 import org.jfree.report.Element;
 import org.jfree.report.ImageContainer;
+import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.modules.output.meta.MetaElement;
+import org.jfree.report.modules.output.support.itext.BaseFontCreateException;
+import org.jfree.report.modules.output.support.itext.BaseFontSupport;
 import org.jfree.report.modules.output.table.base.RawContent;
 import org.jfree.report.modules.output.table.base.TableMetaBandProducer;
+import org.jfree.report.modules.output.table.rtf.metaelements.RTFTextMetaElement;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.style.FontDefinition;
 
 public class RTFMetaBandProducer extends TableMetaBandProducer
 {
-  public RTFMetaBandProducer ()
+  private BaseFontSupport baseFontSupport;
+  private String encoding;
+
+  public RTFMetaBandProducer (final String encoding)
   {
     super(new DefaultLayoutSupport());
+    if (encoding == null)
+    {
+      throw new NullPointerException("Encoding must be a non null value");
+    }
+    this.encoding = encoding;
+    this.baseFontSupport = new BaseFontSupport();
   }
 
   /**
@@ -78,14 +93,16 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
       return null;
     }
 
-    final Rectangle2D rect = (Rectangle2D)
-            e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-    return new MetaElement (new RawContent (rect, o),
-            createStyleForImageElement(e, x, y));
+//    final Rectangle2D rect = (Rectangle2D)
+//            e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+//    return new RTFImageMetaElement (new RawContent (rect, o),
+//            createStyleForImageElement(e, x, y));
+    return null;
   }
 
   protected MetaElement createTextCell (final Element e,
                                         final float x, final float y)
+          throws ContentCreationException
   {
     final Object o = e.getValue();
     if (o instanceof String == false)
@@ -95,7 +112,22 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
     final Rectangle2D rect = (Rectangle2D)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
 
-    return new MetaElement (new RawContent (rect, o),
-            createStyleForTextElement(e, x, y));
+    final FontDefinition def = e.getStyle().getFontDefinitionProperty();
+    final String encoding = (String) e.getStyle().getStyleProperty
+            (ElementStyleSheet.FONTENCODING, this.encoding);
+
+    try
+    {
+      final BaseFont font =
+              baseFontSupport.createBaseFont(def, encoding, false).getBaseFont();
+      return new RTFTextMetaElement (new RawContent (rect, o),
+              createStyleForTextElement(e, x, y), font);
+    }
+    catch (BaseFontCreateException e1)
+    {
+      throw new ContentCreationException
+              ("Unable to create font for text element.", e1);
+    }
+
   }
 }

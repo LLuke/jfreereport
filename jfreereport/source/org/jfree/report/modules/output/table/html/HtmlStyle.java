@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlStyle.java,v 1.1 2004/03/16 18:03:37 taqua Exp $
+ * $Id: HtmlStyle.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,8 +40,10 @@ package org.jfree.report.modules.output.table.html;
 
 public interface HtmlStyle
 {
+  public static final boolean INLINE = true;
+  public static final boolean EXTERNAL = false;
+  
+  public String getCSSString (final boolean compact);
 
-  public String getCSSString ();
-
-  public String getName();
+//  public String getName();
 }

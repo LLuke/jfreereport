@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelColorSupport.java,v 1.1 2004/03/16 16:00:20 taqua Exp $
+ * $Id: ExcelColorSupport.java,v 1.2.2.1 2004/12/13 19:27:12 taqua Exp $
  *
  * Changes
  * -------

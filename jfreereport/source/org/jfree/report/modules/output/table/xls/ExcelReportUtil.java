@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelReportUtil.java,v 1.1 2004/03/16 15:59:34 taqua Exp $
+ * $Id: ExcelReportUtil.java,v 1.2.2.1 2004/12/13 19:27:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,7 +45,6 @@ import java.io.OutputStream;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.FunctionInitializeException;
 
 /**
  * Utility class to provide an easy to use default implementation of
@@ -70,11 +69,10 @@ public final class ExcelReportUtil
    * @param filename target file name.
    *
    * @throws ReportProcessingException if the report processing failed.
-   * @throws FunctionInitializeException if the initialisation of the report processor failed.
    * @throws IOException if there was an IOerror while processing the report.
    */
   public static void createXLS(final JFreeReport report, final String filename)
-      throws IOException, FunctionInitializeException, ReportProcessingException
+      throws IOException, ReportProcessingException
   {
     final ExcelProcessor pr = new ExcelProcessor(report);
     pr.setStrictLayout(false);

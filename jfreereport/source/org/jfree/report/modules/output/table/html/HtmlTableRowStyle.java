@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableRowStyle.java,v 1.1 2004/03/16 18:03:37 taqua Exp $
+ * $Id: HtmlTableRowStyle.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,33 +38,22 @@
 
 package org.jfree.report.modules.output.table.html;
 
+
+
 public class HtmlTableRowStyle implements HtmlStyle
 {
   private int height;
-  private String name;
 
   public HtmlTableRowStyle (final int height)
   {
     this.height = height;
   }
 
-  public String getCSSString ()
+  public String getCSSString (final boolean compact)
   {
-    final StringBuffer styleBuilder = new StringBuffer();
-    styleBuilder.append("height: ");
-    styleBuilder.append(height);
-    styleBuilder.append("pt");
+    final StyleBuilder styleBuilder = new StyleBuilder(compact);
+    styleBuilder.append("height", String.valueOf(height), "pt");
     return styleBuilder.toString();
-  }
-
-  public String getName ()
-  {
-    return name;
-  }
-
-  public void setName (final String name)
-  {
-    this.name = name;
   }
 
   public boolean equals (final Object o)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFTextMetaElement.java,v 1.1 2004/03/16 16:03:37 taqua Exp $
+ * $Id: RTFTextMetaElement.java,v 1.2.2.1 2004/12/13 19:27:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,12 +40,14 @@ package org.jfree.report.modules.output.table.rtf.metaelements;
 
 import java.awt.Color;
 
-import com.lowagie.text.Cell;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.rtf.table.RtfCell;
+import org.jfree.report.ElementAlignment;
 import org.jfree.report.modules.output.table.base.RawContent;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
@@ -68,10 +70,10 @@ public class RTFTextMetaElement extends RTFMetaElement
    * @return the cell with the content.
    * @throws com.lowagie.text.DocumentException if the cell could not be created.
    */
-  public Cell getCell()
+  public RtfCell getCell()
       throws DocumentException
   {
-    final Cell cell = new Cell();
+    final RtfCell cell = new RtfCell();
     cell.setBorderWidth(0);
 
     final RawContent rc = (RawContent) getContent();
@@ -79,8 +81,40 @@ public class RTFTextMetaElement extends RTFMetaElement
     applyTextStyle(chunk);
     final Paragraph paragraph = new Paragraph();
     paragraph.add(chunk);
+    paragraph.setAlignment(getHorizontalAlignment());
+    cell.setVerticalAlignment(getVerticalAlignment());
     cell.addElement(paragraph);
     return cell;
+  }
+
+  private int getVerticalAlignment ()
+  {
+    final ElementAlignment alignment = (ElementAlignment)
+            getProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.TOP);
+    if (alignment.equals(ElementAlignment.MIDDLE))
+    {
+      return Element.ALIGN_MIDDLE;
+    }
+    if (alignment.equals(ElementAlignment.BOTTOM))
+    {
+      return Element.ALIGN_BOTTOM;
+    }
+    return Element.ALIGN_TOP;
+  }
+
+  private int getHorizontalAlignment ()
+  {
+    final ElementAlignment alignment = (ElementAlignment)
+            getProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.LEFT);
+    if (alignment.equals(ElementAlignment.CENTER))
+    {
+      return Element.ALIGN_CENTER;
+    }
+    if (alignment.equals(ElementAlignment.RIGHT))
+    {
+      return Element.ALIGN_RIGHT;
+    }
+    return Element.ALIGN_LEFT;
   }
 
   /**

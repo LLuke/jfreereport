@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFImageMetaElement.java,v 1.1 2004/03/16 16:03:37 taqua Exp $
+ * $Id: RTFImageMetaElement.java,v 1.2.2.1 2004/12/13 19:27:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,15 +42,13 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
 
-import com.keypoint.PngEncoder;
 import com.lowagie.text.BadElementException;
-import com.lowagie.text.Cell;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
-import org.jfree.report.ImageContainer;
+import com.lowagie.text.rtf.table.RtfCell;
 import org.jfree.report.LocalImageContainer;
 import org.jfree.report.URLImageContainer;
-import org.jfree.report.modules.output.table.base.RawContent;
+import org.jfree.report.content.ImageContent;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.StringUtil;
@@ -58,7 +56,7 @@ import org.jfree.report.util.WaitingImageObserver;
 
 public class RTFImageMetaElement extends RTFMetaElement
 {
-  public RTFImageMetaElement (final RawContent elementContent,
+  public RTFImageMetaElement (final ImageContent elementContent,
                               final ElementStyleSheet style)
   {
     super(elementContent, style);
@@ -78,10 +76,10 @@ public class RTFImageMetaElement extends RTFMetaElement
    *         ImageReference.
    * @throws java.io.IOException if the image could not be read.
    */
-  private Image getImage(final ImageContainer imageRef) throws DocumentException, IOException
+  private Image getImage(final ImageContent imageRef) throws DocumentException, IOException
   {
     final Rectangle2D bounds = getBounds();
-    final Rectangle2D imageBounds = imageRef.getBoundsScaled();
+    final Rectangle2D imageBounds = imageRef.getBounds();
 
     if (imageRef instanceof URLImageContainer)
     {
@@ -117,9 +115,7 @@ public class RTFImageMetaElement extends RTFMetaElement
                 new WaitingImageObserver(localImageContainer.getImage());
         obs.waitImageLoaded();
 
-        final PngEncoder encoder = new PngEncoder(localImageContainer.getImage());
-        final byte[] data = encoder.pngEncode();
-        return Image.getInstance(data);
+        return Image.getInstance(localImageContainer.getImage(), null, false);
       }
     }
     throw new DocumentException("Neither an URL nor an Image was given to paint the graphics");
@@ -157,14 +153,15 @@ public class RTFImageMetaElement extends RTFMetaElement
    * @return the cell with the content.
    * @throws DocumentException if the cell could not be created.
    */
-  public Cell getCell() throws DocumentException
+  public RtfCell getCell() throws DocumentException
   {
     try
     {
-      final RawContent rc = (RawContent) getContent();
-      final Image iTextImage = getImage((ImageContainer) rc.getContent());
-      final Cell cell = new Cell();
+      final ImageContent rc = (ImageContent) getContent();
+      final Image iTextImage = getImage(rc);
+      final RtfCell cell = new RtfCell();
       applyAlignment(cell);
+      // can't use RtfImage, as we do not have access to the RtfDocument
       cell.addElement(iTextImage);
       return cell;
     }

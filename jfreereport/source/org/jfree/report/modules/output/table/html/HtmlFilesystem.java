@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlFilesystem.java,v 1.3 2004/03/16 15:09:53 taqua Exp $
+ * $Id: HtmlFilesystem.java,v 1.2.4.1 2004/12/13 19:27:08 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,8 @@ package org.jfree.report.modules.output.table.html;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.jfree.report.modules.output.table.html.ref.HtmlReference;
 import org.jfree.report.ImageContainer;
+import org.jfree.report.modules.output.table.html.ref.HtmlReference;
 
 /**
  * The HtmlFilesystem provides an abstraction layer for the various storage methods

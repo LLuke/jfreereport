@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: ExcelPrintSetupFactory.java,v 1.1 2004/03/16 16:00:20 taqua Exp $
+ * $Id: ExcelPrintSetupFactory.java,v 1.2.2.1 2004/12/13 19:27:12 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
-import org.jfree.report.util.PageFormatFactory;
-import org.jfree.report.modules.output.table.xls.util.ExcelPageDefinition;
 import org.jfree.report.PageDefinition;
+import org.jfree.report.util.PageFormatFactory;
 
 /**
  * Performs all steps to setup the printer page of an excel sheet.
@@ -226,13 +225,13 @@ public final class ExcelPrintSetupFactory
    * @param paperOrientation the paper orientation, either "Landscape" or "Portrait"
    */
   public static void performPageSetup(final HSSFPrintSetup printSetup,
-                                      final PageFormat pageformat,
+                                      final PageDefinition pageformat,
                                       final String paperdef, final String paperOrientation)
   {
     short pageCode = parsePaperSizeProperty(paperdef);
     if (pageCode == -1)
     {
-      pageCode = computePaperSize(pageformat);
+      pageCode = computePaperSize(pageformat.getPageFormat(0));
     }
     if (pageCode != -1)
     {
@@ -244,7 +243,7 @@ public final class ExcelPrintSetupFactory
     }
     else
     {
-      printSetup.setLandscape(pageformat.getOrientation() != PageFormat.PORTRAIT);
+      printSetup.setLandscape(pageformat.getPageFormat(0).getOrientation() != PageFormat.PORTRAIT);
     }
   }
 

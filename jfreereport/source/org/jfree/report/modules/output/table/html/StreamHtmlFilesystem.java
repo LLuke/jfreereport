@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StreamHtmlFilesystem.java,v 1.5 2004/03/16 15:09:53 taqua Exp $
+ * $Id: StreamHtmlFilesystem.java,v 1.4.4.2 2004/12/13 19:27:09 taqua Exp $
  *
  * Changes
  * -------
@@ -41,12 +41,12 @@ import java.io.OutputStream;
 import java.net.URL;
 
 import org.jfree.io.IOUtils;
-import org.jfree.report.modules.output.table.html.ref.EmptyContentReference;
-import org.jfree.report.modules.output.table.html.ref.HtmlReference;
-import org.jfree.report.modules.output.table.html.ref.ImageReference;
-import org.jfree.report.modules.output.table.html.ref.InternalStyleSheetReference;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.URLImageContainer;
+import org.jfree.report.modules.output.table.html.ref.EmptyContentReference;
+import org.jfree.report.modules.output.table.html.ref.HtmlImageReference;
+import org.jfree.report.modules.output.table.html.ref.HtmlReference;
+import org.jfree.report.modules.output.table.html.ref.InternalStyleSheetReference;
 
 /**
  * The StreamHtmlFilesystem is an Implementation for streamed HTML output.
@@ -127,11 +127,7 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
   public HtmlReference createImageReference (final ImageContainer reference)
       throws IOException
   {
-    if (reference instanceof URLImageContainer == false)
-    {
-      return new EmptyContentReference();
-    }
-    else
+    if (reference instanceof URLImageContainer)
     {
       final URLImageContainer urlImageContainer = (URLImageContainer) reference;
       final URL src = urlImageContainer.getSourceURL();
@@ -142,12 +138,12 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
       {
         if (baseURL != null)
         {
-          return new ImageReference
+          return new HtmlImageReference
               (IOUtils.getInstance().createRelativeURL(src, baseURL));
         }
         else
         {
-          return new ImageReference(src.toExternalForm());
+          return new HtmlImageReference(src.toExternalForm());
         }
       }
     }

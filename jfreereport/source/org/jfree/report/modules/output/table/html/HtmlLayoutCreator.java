@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlLayoutCreator.java,v 1.1 2004/03/16 18:03:37 taqua Exp $
+ * $Id: HtmlLayoutCreator.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
  *
  * Changes 
  * -------------------------

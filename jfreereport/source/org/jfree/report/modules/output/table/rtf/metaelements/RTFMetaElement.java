@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFMetaElement.java,v 1.1 2004/03/16 16:03:37 taqua Exp $
+ * $Id: RTFMetaElement.java,v 1.2.2.1 2004/12/13 19:27:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,13 +38,14 @@
 
 package org.jfree.report.modules.output.table.rtf.metaelements;
 
-import org.jfree.report.modules.output.meta.MetaElement;
-import org.jfree.report.content.Content;
-import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.ElementAlignment;
 import com.lowagie.text.Cell;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
+import com.lowagie.text.rtf.table.RtfCell;
+import org.jfree.report.ElementAlignment;
+import org.jfree.report.content.Content;
+import org.jfree.report.modules.output.meta.MetaElement;
+import org.jfree.report.style.ElementStyleSheet;
 
 public abstract class RTFMetaElement extends MetaElement
 {
@@ -100,5 +101,5 @@ public abstract class RTFMetaElement extends MetaElement
    * @return the cell with the content.
    * @throws DocumentException if there is a problem adding the cell to the document.
    */
-  public abstract Cell getCell() throws DocumentException;
+  public abstract RtfCell getCell() throws DocumentException;
 }

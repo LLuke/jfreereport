@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentStyle.java,v 1.1 2004/03/16 18:03:37 taqua Exp $
+ * $Id: HtmlContentStyle.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ public final class HtmlContentStyle implements HtmlStyle
   /** the cached hashcode. */
   private int hashCode;
 
-  private String name;
+  //private String name;
 
   /**
    * Creates a new HTML-StyleDefinition.
@@ -226,55 +226,49 @@ public final class HtmlContentStyle implements HtmlStyle
     return "'" + font.getFontName() + "'";
   }
 
-
-  /**
+    /**
    * Transforms the given HtmlCellStyle into a Cascading StyleSheet definition.
    *
    * @return the generated stylesheet definition.
    */
-  public String getCSSString ()
+  public String getCSSString (final boolean compact)
   {
     final FontDefinition font = getFont();
-    final String colorValue = HtmlStyleCollection.getColorString(getFontColor());
+    final StyleBuilder builder = new StyleBuilder(compact);
 
-    final StringBuffer b = new StringBuffer();
-    b.append("font-family:");
-    b.append(translateFontName(font));
-    b.append("; font-size:");
-    b.append(font.getFontSize());
-    b.append("pt");
+    builder.append("font-family", translateFontName(font));
+    builder.append("font-size", String.valueOf(font.getFontSize()), "pt");
+
     if (font.isBold())
     {
-      b.append("; font-weight:bold");
+      builder.append("font-weight",  "bold");
     }
     if (font.isItalic())
     {
-      b.append("; font-style:italic");
+      builder.append("font-style", "italic");
     }
     if (font.isUnderline() && font.isStrikeThrough())
     {
-      b.append("; text-decoration:underline,line-through");
+      builder.append("text-decoration", "underline, line-through");
     }
     else if (font.isUnderline())
     {
-      b.append("; text-decoration:underline");
+      builder.append("text-decoration", "underline");
     }
     else if (font.isStrikeThrough())
     {
-      b.append("; text-decoration:line-through");
-    }
-    if (colorValue != null)
-    {
-      b.append("; color:");
-      b.append(colorValue);
+      builder.append("text-decoration", "line-through");
     }
 
-    b.append("; vertical-align:");
-    b.append(translateVerticalAlignment(getVerticalAlignment()));
-    b.append("; text-align:");
-    b.append(translateHorizontalAlignment(getHorizontalAlignment()));
-    b.append(";");
-    return b.toString();
+    final String colorValue = HtmlStyleCollection.getColorString(getFontColor());
+    if (colorValue != null)
+    {
+      builder.append("color", colorValue);
+    }
+
+    builder.append("vertical-align", translateVerticalAlignment(getVerticalAlignment()));
+    builder.append("text-align", translateHorizontalAlignment(getHorizontalAlignment()));
+    return builder.toString();
   };
 
 
@@ -319,13 +313,13 @@ public final class HtmlContentStyle implements HtmlStyle
     return "top";
   }
 
-  public String getName ()
-  {
-    return name;
-  }
-
-  public void setName (final String name)
-  {
-    this.name = name;
-  }
+//  public String getName ()
+//  {
+//    return name;
+//  }
+//
+//  public void setName (final String name)
+//  {
+//    this.name = name;
+//  }
 }

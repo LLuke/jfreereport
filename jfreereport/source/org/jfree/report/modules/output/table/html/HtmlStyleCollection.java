@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.7 2004/03/16 15:09:53 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.6.2.1.2.3 2004/12/13 19:27:08 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,10 @@ package org.jfree.report.modules.output.table.html;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.jfree.util.Log;
 import org.jfree.xml.factory.objects.ColorObjectDescription;
 
 /**
@@ -73,6 +77,11 @@ public class HtmlStyleCollection
   /** the name counter helps to create unique names for the styles. */
   private int nameCounter;
 
+  private static final String ROW_STYLE_PREFIX = "tr.";
+  private static final String CELL_STYLE_PREFIX = "td.";
+  private static final String GENERIC_STYLE_PREFIX = ".";
+
+
   /**
    * Creates a new HtmlStyleCollection.
    */
@@ -89,7 +98,8 @@ public class HtmlStyleCollection
    */
   private String createName()
   {
-    final String name = "style-" + nameCounter;
+    // the leading dot is important - it makes the style a generic class definition
+    final String name = GENERIC_STYLE_PREFIX+ "style-" + nameCounter;
     nameCounter++;
     return name;
 
@@ -110,6 +120,10 @@ public class HtmlStyleCollection
       name = createName();
       table.put(style, name);
       reverseTable.put(name, style);
+    }
+    else
+    {
+      Log.debug ("Already contained, will not add");
     }
     return name;
   }
@@ -142,6 +156,18 @@ public class HtmlStyleCollection
     return table.keySet().iterator();
   }
 
+  public TreeMap getSortedStyleMap ()
+  {
+    final TreeMap map = new TreeMap();
+    final Iterator it = table.entrySet().iterator();
+    while (it.hasNext())
+    {
+      final Map.Entry entry = (Map.Entry) it.next();
+      map.put(entry.getValue(), entry.getKey());
+    }
+    return map;
+  }
+
   /**
    * Try to find the registered name of the given style. Returns null,
    * if the style is not registered.
@@ -166,6 +192,27 @@ public class HtmlStyleCollection
   public String lookupName(final HtmlStyle style)
   {
     return (String) table.get(style);
+  }
+
+  public String getPublicName (final HtmlStyle style)
+  {
+    final String styleName = (String) table.get(style);
+    if (styleName == null)
+    {
+      return null;
+    }
+    if (style instanceof HtmlTableCellStyle)
+    {
+      return styleName.substring(CELL_STYLE_PREFIX.length());
+    }
+    if (style instanceof HtmlTableRowStyle)
+    {
+      return styleName.substring(ROW_STYLE_PREFIX.length());
+    }
+    else
+    {
+      return styleName.substring(GENERIC_STYLE_PREFIX.length());
+    }
   }
 
   /**
@@ -206,8 +253,7 @@ public class HtmlStyleCollection
     String name = (String) table.get(style);
     if (name == null)
     {
-      name = "tr.report-style-" + rowCounter;
-      style.setName(name);
+      name = ROW_STYLE_PREFIX + "row-style-" + rowCounter;
       table.put(style, name);
       reverseTable.put(name, style);
       rowCounter++;
@@ -220,8 +266,7 @@ public class HtmlStyleCollection
     String name = (String) table.get(style);
     if (name == null)
     {
-      name = "td.report-style-" + cellCounter;
-      style.setName(name);
+      name = CELL_STYLE_PREFIX + "cell-style-" + cellCounter;
       table.put(style, name);
       reverseTable.put(name, style);
       cellCounter++;

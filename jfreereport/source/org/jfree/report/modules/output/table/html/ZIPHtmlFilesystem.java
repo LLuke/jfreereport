@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.7 2004/03/16 15:09:53 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.6.4.1 2004/12/13 19:27:09 taqua Exp $
  *
  * Changes
  * -------
@@ -60,8 +60,8 @@ import org.jfree.report.LocalImageContainer;
 import org.jfree.report.URLImageContainer;
 import org.jfree.report.modules.output.table.html.ref.EmptyContentReference;
 import org.jfree.report.modules.output.table.html.ref.ExternalStyleSheetReference;
+import org.jfree.report.modules.output.table.html.ref.HtmlImageReference;
 import org.jfree.report.modules.output.table.html.ref.HtmlReference;
-import org.jfree.report.modules.output.table.html.ref.ImageReference;
 import org.jfree.report.modules.output.table.html.util.CounterReference;
 import org.jfree.report.util.ImageComparator;
 import org.jfree.report.util.NoCloseOutputStream;
@@ -277,7 +277,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
       final String name = (String) usedImages.get(url);
       if (name != null)
       {
-        return new ImageReference(name);
+        return new HtmlImageReference(name);
       }
 
       // sadly this one seems to be new, not yet cached ...
@@ -301,13 +301,13 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
           IOUtils.getInstance().copyStreams(urlIn, zipOut);
           urlIn.close();
           usedImages.put(url, entryName);
-          return new ImageReference(entryName);
+          return new HtmlImageReference(entryName);
         }
         else
         {
           final String baseName = urlImage.getSourceURL().toExternalForm();
           usedImages.put(url, baseName);
-          return new ImageReference(baseName);
+          return new HtmlImageReference(baseName);
         }
         // done: Remote image with supported format
       }
@@ -321,7 +321,6 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
       {
         return new EmptyContentReference();
       }
-      // todo BUG: what if the user gives us a valid picture*.png file?
 
       // Check, whether the imagereference contains an AWT image.
 
@@ -343,7 +342,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
       // by its URL
       final String entryName = encodeImage(image, false);
       usedImages.put(url, entryName);
-      return new ImageReference(entryName);
+      return new HtmlImageReference(entryName);
     }
     // check, whether the image is a locally created image
     // such an image has no assigned URL, so we have to find an
@@ -370,17 +369,16 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
           name = encodeImage(image, false);
           usedImages.put (identity, name);
         }
-        return new ImageReference(name);
+        return new HtmlImageReference(name);
       }
-      return new ImageReference(encodeImage(image, true));
+      return new HtmlImageReference(encodeImage(image, true));
     }
     else
     {
       // it is neither a local nor a URL image container, we don't handle
       // that..
       return new EmptyContentReference();
-    }
-  }
+    }  }
 
   /**
    * Encodes the given image as PNG, stores the image in the generated

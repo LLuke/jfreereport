@@ -1,18 +1,16 @@
 <html>
 <body>
-RTF file output, using iText.
+RTF file output, using iText (requires at least version 1.1).
 <p>
-This package is no final version.  iText does not support RTF very well,
-so this target will be ported to an different RTF writer in a later version.
+The cell height cannot be defined directly. The only way of
+influencing the height of a cell is by defining a font for
+the cell.
 <p>
-At the moment, the rtf output does not support ROWSPANning  of cells or
-FONTs other than the standard fonts Serif, SansSerif or Courier.
+The current implementation is not suited for huge documents,
+as the whole document is held in memory until the complete table
+was created. This implementation will be fixed in the future.
 <p>
-This package is not enabled by default and not included in the preview frame.
-There will be no support for bug in this package.
-<p>
-The current implementation is not suited for huge documents, as the whole document
-is held in memory until the complete table was created. This implementation will
-be fixed in the future. 
+If possible, use the HTML export to create reports that can be
+used in a word processor.
 </body>
 </html>

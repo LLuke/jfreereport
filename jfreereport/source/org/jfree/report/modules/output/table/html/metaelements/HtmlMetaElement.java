@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaElement.java,v 1.1 2004/03/16 18:03:42 taqua Exp $
+ * $Id: HtmlMetaElement.java,v 1.2.2.1 2004/12/13 19:27:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,9 +40,9 @@ package org.jfree.report.modules.output.table.html.metaelements;
 
 import java.io.PrintWriter;
 
+import org.jfree.report.content.Content;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.html.HtmlFilesystem;
-import org.jfree.report.content.Content;
 import org.jfree.report.style.ElementStyleSheet;
 
 public abstract class HtmlMetaElement extends MetaElement

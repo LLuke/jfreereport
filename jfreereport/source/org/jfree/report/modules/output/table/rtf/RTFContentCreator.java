@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFContentCreator.java,v 1.1 2004/03/16 16:03:37 taqua Exp $
+ * $Id: RTFContentCreator.java,v 1.2.2.1 2004/12/13 19:27:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,14 +39,21 @@
 package org.jfree.report.modules.output.table.rtf;
 
 import java.awt.Color;
+import java.awt.print.PageFormat;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Cell;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.ElementTags;
+import com.lowagie.text.Meta;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.Table;
-import com.lowagie.text.rtf.RtfWriter;
+import com.lowagie.text.rtf.RtfWriter2;
+import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.modules.output.meta.MetaElement;
@@ -55,12 +62,18 @@ import org.jfree.report.modules.output.table.base.SheetLayout;
 import org.jfree.report.modules.output.table.base.SheetLayoutCollection;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.modules.output.table.base.TableContentCreator;
+import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.base.TableRectangle;
 import org.jfree.report.modules.output.table.rtf.metaelements.RTFMetaElement;
+import org.jfree.report.util.Log;
 import org.jfree.report.util.NoCloseOutputStream;
 
 public class RTFContentCreator extends TableContentCreator
 {
+  /** A useful constant for specifying the PDF creator. */
+  private static final String CREATOR = JFreeReport.getInfo().getName() + " version "
+      + JFreeReport.getInfo().getVersion();
+
   private boolean open;
   private Document document;
   private OutputStream outputStream;
@@ -96,14 +109,20 @@ public class RTFContentCreator extends TableContentCreator
     {
       final GenericObjectTable go = getBackend();
       final int height = go.getRowCount();
-      final int width = go.getColumnCount();
+      final int width = Math.max(go.getColumnCount(), layout.getColumnCount());
 
       final Table table = new Table(width, height);
       table.setAutoFillEmptyCells(false);
 
+      final float[] cellWidths = new float[width];
+      for (int i = 0; i < width; i++)
+      {
+        cellWidths[i] = layout.getCellWidth(i, i + 1);
+      }
+      table.setWidths(cellWidths);
+
       for (int y = 0; y < height; y++)
       {
-        // there is no need to create rows, this is handled automaticly...
         for (int x = 0; x < width; x++)
         {
           final TableCellBackground background = layout.getElementAt(y, x);
@@ -113,8 +132,6 @@ public class RTFContentCreator extends TableContentCreator
           {
             final Cell cell = new Cell();
             cell.setBorderWidth(0);
-            cell.setWidth(String.valueOf (layout.getCellWidth(x, x + 1)));
-
             if (background != null)
             {
               // iText cell width is a string, why?
@@ -150,7 +167,6 @@ public class RTFContentCreator extends TableContentCreator
           {
             cell.setColspan(rectangle.getColumnSpan());
           }
-
           table.addCell(cell, y, x);
           x += rectangle.getColumnSpan() - 1;
         }
@@ -211,22 +227,61 @@ public class RTFContentCreator extends TableContentCreator
 
   protected void handleOpen (final ReportDefinition reportDefinition)
   {
+    final PageFormat pageFormat = reportDefinition.getPageDefinition().getPageFormat(0);
+    final float urx = (float) pageFormat.getWidth();
+    final float ury = (float) pageFormat.getHeight();
+
+    final float marginLeft = (float) pageFormat.getImageableX();
+    final float marginRight =
+        (float) (pageFormat.getWidth()
+        - pageFormat.getImageableWidth()
+        - pageFormat.getImageableX());
+    final float marginTop = (float) pageFormat.getImageableY();
+    final float marginBottom =
+        (float) (pageFormat.getHeight()
+        - pageFormat.getImageableHeight()
+        - pageFormat.getImageableY());
+    final Rectangle pageSize = new Rectangle(urx, ury);
+
+    document = new Document(pageSize, marginLeft, marginRight, marginTop, marginBottom);
+
     // rtf does not support PageFormats or other meta data...
-    document = new Document();
-    RtfWriter.getInstance(document, new NoCloseOutputStream(outputStream));
+    RtfWriter2.getInstance(document, new NoCloseOutputStream(outputStream));
+
+    final String author = reportDefinition.getReportConfiguration().getConfigProperty
+            (RTFProcessor.CONFIG_PREFIX + TableProcessor.AUTHOR);
+    if (author != null)
+    {
+      document.addAuthor(author);
+    }
+
+    if (getSheetNameFunction() != null)
+    {
+      final String sheetName =
+              String.valueOf(reportDefinition.getDataRow().get(getSheetNameFunction()));
+      if (sheetName != null)
+      {
+        document.addTitle(sheetName);
+      }
+    }
+
+    document.addProducer();
+    document.addCreator(CREATOR);
+    // cannot be added due to a bug ..
+
+    try
+    {
+      final SimpleDateFormat sdf =
+              new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+      document.add(new Meta(ElementTags.CREATIONDATE, sdf.format(new Date())));
+    }
+    catch (Exception e)
+    {
+      Log.debug ("Unable to add creation date.", e);
+    }
+
     document.open();
     open = true;
-  }
-
-  /**
-   * Commits all bands. See the class description for details on the flushing process.
-   *
-   * @return always false, as we generate the layout when the table is
-   * closed.
-   */
-  public boolean flush ()
-  {
-    return false;
   }
 
   /**

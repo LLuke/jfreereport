@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelProcessor.java,v 1.9 2004/03/27 17:23:20 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.7.4.1 2004/12/13 19:27:11 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,9 @@ import java.io.OutputStream;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
+import org.jfree.report.modules.output.table.base.LayoutCreator;
 import org.jfree.report.modules.output.table.base.TableCreator;
 import org.jfree.report.modules.output.table.base.TableProcessor;
-import org.jfree.report.modules.output.table.base.LayoutCreator;
 import org.jfree.report.style.StyleKey;
 
 /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HSSFCellStyleProducer.java,v 1.7 2004/03/27 17:23:20 taqua Exp $
+ * $Id: HSSFCellStyleProducer.java,v 1.5.4.2 2004/12/13 19:27:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -66,6 +66,11 @@ public class HSSFCellStyleProducer
     private TableCellBackground background;
     private ExcelDataCellStyle cellStyle;
 
+    /**
+     *
+     * @param background can be null
+     * @param cellStyle can be null
+     */
     public HSSFCellStyleKey (final TableCellBackground background,
                              final ExcelDataCellStyle cellStyle)
     {
@@ -181,13 +186,21 @@ public class HSSFCellStyleProducer
    * If a similiar cell style was previously generated, then reuse that
    * cached result.
    *
-   * @param element
+   * @param element never null
    * @param bg the background style for the table cell.
    * @return the generated or cached HSSFCellStyle.
    */
   public HSSFCellStyle createCellStyle(final MetaElement element, final TableCellBackground bg)
   {
-    final ExcelDataCellStyle style = createCachedStyle(element);
+    final ExcelDataCellStyle style;
+    if (element != null)
+    {
+      style = createCachedStyle(element);
+    }
+    else
+    {
+      style = null;
+    }
     // check, whether that style is already created
     final HSSFCellStyleKey styleKey = new HSSFCellStyleKey(bg, style);
     if (styleCache.containsKey(style))
@@ -207,7 +220,10 @@ public class HSSFCellStyleProducer
       hssfCellStyle.setAlignment(convertAlignment(style.getHorizontalAlignment()));
       hssfCellStyle.setVerticalAlignment(convertAlignment(style.getVerticalAlignment()));
       hssfCellStyle.setFont(fontFactory.getExcelFont(wrapper));
-      hssfCellStyle.setDataFormat(dataFormat.getFormat(style.getDataStyle()));
+      if (style.getDataStyle() != null)
+      {
+        hssfCellStyle.setDataFormat(dataFormat.getFormat(style.getDataStyle()));
+      }
     }
     if (bg != null)
     {

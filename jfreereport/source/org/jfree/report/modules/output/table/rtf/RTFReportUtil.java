@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFReportUtil.java,v 1.5 2003/08/25 14:29:32 taqua Exp $
+ * $Id: RTFReportUtil.java,v 1.5.4.1 2004/12/13 19:27:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,7 +45,6 @@ import java.io.OutputStream;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.FunctionInitializeException;
 
 /**
  * Utility class to provide an easy to use default implementation of
@@ -69,11 +68,10 @@ public final class RTFReportUtil
    * @param filename target file name.
    *
    * @throws ReportProcessingException if the report processing failed.
-   * @throws FunctionInitializeException if the initialisation of the report processor failed.
    * @throws IOException if there was an IOerror while processing the report.
    */
   public static void createRTF(final JFreeReport report, final String filename)
-      throws IOException, ReportProcessingException, FunctionInitializeException
+      throws IOException, ReportProcessingException
   {
     final RTFProcessor pr = new RTFProcessor(report);
     pr.setStrictLayout(false);

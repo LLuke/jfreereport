@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaElement.java,v 1.1 2004/03/16 16:00:20 taqua Exp $
+ * $Id: ExcelMetaElement.java,v 1.2.2.1 2004/12/13 19:27:12 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,10 +38,10 @@
 
 package org.jfree.report.modules.output.table.xls.metaelements;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.RawContent;
 import org.jfree.report.style.ElementStyleSheet;
-import org.apache.poi.hssf.usermodel.HSSFCell;
 
 public class ExcelMetaElement extends MetaElement
 {

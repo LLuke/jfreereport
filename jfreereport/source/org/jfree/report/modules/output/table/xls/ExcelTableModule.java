@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelTableModule.java,v 1.1 2004/03/16 15:59:34 taqua Exp $
+ * $Id: ExcelTableModule.java,v 1.2.2.1 2004/12/13 19:27:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,8 +38,9 @@
 
 package org.jfree.report.modules.output.table.xls;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
 
 /**
  * The module definition for the Excel table export module.
@@ -58,12 +59,17 @@ public class ExcelTableModule extends AbstractModule
   }
 
   /**
-   * Initalizes the module. This method is empty.
-   * @see org.jfree.report.modules.Module#initialize()
+   * Initializes the module. Use this method to perform all initial setup operations. This
+   * method is called only once in a modules lifetime. If the initializing cannot be
+   * completed, throw a ModuleInitializeException to indicate the error,. The module will
+   * not be available to the system.
    *
-   * @throws ModuleInitializeException if an error occured.
+   * @param subSystem the subSystem.
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if an error ocurred while initializing the module.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize (final SubSystem subSystem)
+          throws ModuleInitializeException
   {
     if (isClassLoadable("org.apache.poi.hssf.usermodel.HSSFWorkbook") == false)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFProcessor.java,v 1.7 2004/03/16 15:09:53 taqua Exp $
+ * $Id: RTFProcessor.java,v 1.6.4.1 2004/12/13 19:27:10 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,11 @@ import java.io.OutputStream;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.modules.output.table.base.TableProcessor;
-import org.jfree.report.modules.output.table.base.TableCreator;
-import org.jfree.report.modules.output.table.base.LayoutCreator;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
+import org.jfree.report.modules.output.table.base.LayoutCreator;
+import org.jfree.report.modules.output.table.base.TableCreator;
+import org.jfree.report.modules.output.table.base.TableProcessor;
+import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The ExcelProcessor coordinates the output process for generating
@@ -55,6 +56,7 @@ public class RTFProcessor extends TableProcessor
 {
   /** the target output stream for writing the generated content. */
   private OutputStream outputStream;
+  public static final String CONFIG_PREFIX = "org.jfree.report.targets.table.rtf.";
 
   /**
    * Creates a new RTF processor for the Report.
@@ -96,7 +98,7 @@ public class RTFProcessor extends TableProcessor
    */
   protected String getReportConfigurationPrefix()
   {
-    return "org.jfree.report.targets.table.rtf.";
+    return CONFIG_PREFIX;
   }
 
   protected TableCreator createContentCreator ()
@@ -108,6 +110,9 @@ public class RTFProcessor extends TableProcessor
 
   protected MetaBandProducer createMetaBandProducer ()
   {
-    return new RTFMetaBandProducer();
+    final String encoding = getReport().getReportConfiguration().
+            getConfigProperty(getReportConfigurationPrefix() + "." + "Encoding",
+                    ReportConfiguration.getPlatformDefaultEncoding());
+    return new RTFMetaBandProducer(encoding);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlSheetLayout.java,v 1.1 2004/03/16 18:03:37 taqua Exp $
+ * $Id: HtmlSheetLayout.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,14 +39,16 @@
 package org.jfree.report.modules.output.table.html;
 
 import java.awt.Color;
+import java.util.HashSet;
 
 import org.jfree.report.ElementAlignment;
-import org.jfree.report.content.ContentType;
+import org.jfree.report.content.Content;
 import org.jfree.report.modules.output.meta.MetaElement;
+import org.jfree.report.modules.output.table.base.GenericObjectTable;
+import org.jfree.report.modules.output.table.base.RawContent;
 import org.jfree.report.modules.output.table.base.SheetLayout;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.modules.output.table.base.TableRectangle;
-import org.jfree.report.modules.output.table.base.GenericObjectTable;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 
@@ -61,6 +63,8 @@ public strictfp class HtmlSheetLayout extends SheetLayout
 {
   private HtmlStyleCollection styleCollection;
   private TableRectangle rectangle;
+
+  /** A table of style names; these names are the internal names. */ 
   private GenericObjectTable backgroundStyleTable;
   private GenericObjectTable contentStyleTable;
 
@@ -77,6 +81,8 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     backgroundStyleTable = new GenericObjectTable();
   }
 
+
+
   /**
    * Adds the bounds of the given TableCellData to the grid. The bounds given must be the same as the bounds of the
    * element, or the layouting might produce surprising results.
@@ -89,45 +95,62 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     super.add(element);
     if (element instanceof TableCellBackground)
     {
-      final int width = (int) element.getBounds().getWidth();
-      final TableRectangle rect = getTableBounds(element, rectangle);
-      final HtmlTableCellStyle style =
-              new HtmlTableCellStyle((TableCellBackground) element, width);
-      styleCollection.addCellStyle(style);
-      final String styleName = style.getName();
-      for (int y = rect.getY1(); y < rect.getY2(); y++)
-      {
-        for (int x = rect.getX1(); x < rect.getX2(); x++)
-        {
-          backgroundStyleTable.setObject(y, x, styleName);
-        }
-      }
+      return;
     }
-    else if (element.getContent().getContentType().equals(ContentType.TEXT))
+    final Content co = element.getContent();
+    if (co instanceof RawContent)
     {
-      final FontDefinition font = element.getFontDefinitionProperty();
-      final Color color = (Color) element.getProperty(ElementStyleSheet.PAINT);
-      final ElementAlignment valign
-          = (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
-      final ElementAlignment halign
-          = (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
-
-      final HtmlContentStyle style =
-              new HtmlContentStyle(font, color, valign, halign);
-      final String styleName = style.getName();
-      styleCollection.addContentStyle(style);
-
-      final TableRectangle rect = getTableBounds(element, rectangle);
-      for (int y = rect.getY1(); y < rect.getY2(); y++)
+      final RawContent rawContent = (RawContent) co;
+      if (rawContent.getContent() instanceof String)
       {
-        for (int x = rect.getX1(); x < rect.getX2(); x++)
-        {
-          contentStyleTable.setObject(y, x, styleName);
-        }
+        addStringContentStyle(element);
       }
     }
     // all other elements have no effect on the CSS-definitions
     // or are not yet cachable
+  }
+
+  private void addStringContentStyle (final MetaElement element)
+  {
+    final FontDefinition font = element.getFontDefinitionProperty();
+    final Color color = (Color) element.getProperty(ElementStyleSheet.PAINT);
+    final ElementAlignment valign
+        = (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
+    final ElementAlignment halign
+        = (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
+
+    final HtmlContentStyle style =
+            new HtmlContentStyle(font, color, valign, halign);
+    final String styleName = styleCollection.addContentStyle(style);
+
+    final TableRectangle rect = getTableBounds(element, rectangle);
+    for (int y = rect.getY1(); y < rect.getY2(); y++)
+    {
+      for (int x = rect.getX1(); x < rect.getX2(); x++)
+      {
+
+        final int row = mapRow(y);
+        final int column = mapColumn(x);
+        if (contentStyleTable.getObject(row, column) == null)
+        {
+          contentStyleTable.setObject(row, column, styleName);
+        }
+      }
+    }
+  }
+
+  protected void columnInserted (final int coordinate, final int oldColumn, final int newColumn)
+  {
+    super.columnInserted(coordinate, oldColumn, newColumn);
+    contentStyleTable.copyColumn(oldColumn, newColumn);
+    backgroundStyleTable.copyColumn(oldColumn, newColumn);
+  }
+
+  protected void rowInserted (final int coordinate, final int oldRow, final int newRow)
+  {
+    super.rowInserted(coordinate, oldRow, newRow);
+    contentStyleTable.copyRow(oldRow, newRow);
+    backgroundStyleTable.copyRow(oldRow, newRow);
   }
 
   /**
@@ -138,6 +161,7 @@ public strictfp class HtmlSheetLayout extends SheetLayout
    */
   public void pageCompleted ()
   {
+    super.pageCompleted();
     final Integer[] yCuts = getYCuts();
     if (yCuts.length == 0)
     {
@@ -149,6 +173,23 @@ public strictfp class HtmlSheetLayout extends SheetLayout
       final float end = yCuts[i].floatValue();
       styleCollection.addRowStyle(new HtmlTableRowStyle((int) (end - beginRow)));
       beginRow = end;
+    }
+
+    final HashSet completedElements = new HashSet();
+    for (int layoutRow = 0; layoutRow < getRowCount(); layoutRow++)
+    {
+      for (int layoutCol = 0; layoutCol < getColumnCount(); layoutCol++)
+      {
+        final TableCellBackground element = getElementAt(layoutRow, layoutCol);
+        if (completedElements.contains(element))
+        {
+          continue;
+        }
+        final HtmlTableCellStyle style = new HtmlTableCellStyle(element);
+        final String styleName = styleCollection.addCellStyle(style);
+        backgroundStyleTable.setObject(layoutRow, layoutCol, styleName);
+        completedElements.add (element);
+      }
     }
   }
 
@@ -162,7 +203,7 @@ public strictfp class HtmlSheetLayout extends SheetLayout
    */
   public String getContentStyleAt (final int row, final int column)
   {
-    return (String) contentStyleTable.getObject(row, column);
+    return (String) contentStyleTable.getObject(mapRow(row), mapColumn(column));
   }
 
   /**
@@ -175,6 +216,8 @@ public strictfp class HtmlSheetLayout extends SheetLayout
    */
   public String getBackgroundStyleAt (final int row, final int column)
   {
+    // no mapping necessary, as the background table is filled at the
+    // end-of-the-page
     return (String) backgroundStyleTable.getObject(row, column);
   }
 

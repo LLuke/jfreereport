@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.1 2004/03/16 15:59:34 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.2.2.1 2004/12/13 19:27:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -73,7 +73,6 @@ public class ExcelContentCreator extends TableContentCreator
   private OutputStream outputStream;
   private boolean open;
   private HSSFWorkbook workbook;
-  private int layoutRowCount;
   private HSSFSheet sheet;
 
   public ExcelContentCreator (final SheetLayoutCollection sheetLayoutCollection,
@@ -86,7 +85,6 @@ public class ExcelContentCreator extends TableContentCreator
   protected void handleBeginTable (final ReportDefinition reportDefinition)
           throws ReportProcessingException
   {
-    layoutRowCount = 0;
     String sheetName = null;
     if (getSheetNameFunction() != null)
     {
@@ -109,7 +107,7 @@ public class ExcelContentCreator extends TableContentCreator
 
     final HSSFPrintSetup printSetup = sheet.getPrintSetup();
     ExcelPrintSetupFactory.performPageSetup
-        (printSetup, reportDefinition.getPageDefinition().getPageFormat(0),
+        (printSetup, reportDefinition.getPageDefinition(),
             paper, paperOrientation);
 
   }
@@ -158,30 +156,32 @@ public class ExcelContentCreator extends TableContentCreator
    *
    * @return true, if the content was flushed, false otherwise.
    */
-  public boolean flush () throws ReportProcessingException
+  public boolean handleFlush () throws ReportProcessingException
   {
     final GenericObjectTable go = getBackend();
     final SheetLayout layout = getCurrentLayout();
 
-    final int width = go.getColumnCount();
+    final int width = Math.max(go.getColumnCount(), layout.getColumnCount());
     for (int i = 0; i < width; i++)
     {
-      final float cellWidth = layout.getCellWidth(i , i+1);
-      sheet.setColumnWidth((short) (i), (short) (cellWidth * XFACTOR));
+      final int cellWidth = layout.getCellWidth(i , i+1);
+//      Log.debug ("CellWidth: [" + i + "] " + cellWidth);
+      sheet.setColumnWidth((short) i, (short) (cellWidth * XFACTOR));
     }
 
-    final int startY = layoutRowCount;
     final int height = go.getRowCount();
-    for (int y = 0; y < height; y++)
+    final int layoutOffset = getLayoutOffset();
+    for (int y = layoutOffset; y < height + layoutOffset; y++)
     {
-      final HSSFRow row = sheet.createRow((short) y + startY);
-
-      final float lastRowHeight = layout.getRowHeight(y);
+      final HSSFRow row = sheet.createRow((short) y);
+      final int lastRowHeight = layout.getRowHeight(y);
       row.setHeight((short) (lastRowHeight * YFACTOR));
+//      Log.debug ("RowHeight: [" + y + "] " + lastRowHeight);
 
       for (int x = 0; x < width; x++)
       {
-        final MetaElement element = (MetaElement) go.getObject(y, x);
+        final MetaElement element =
+                (MetaElement) go.getObject(y - layoutOffset, x);
         final TableCellBackground background = layout.getElementAt(y, x);
 
         if (element == null)
@@ -207,12 +207,9 @@ public class ExcelContentCreator extends TableContentCreator
         }
 
         exportCell(row, element, background, rectangle,
-                (short) x, layoutRowCount + y);
+                (short) x, y);
       }
     }
-
-    layoutRowCount += height;
-    go.clear();
     return true;
   }
 

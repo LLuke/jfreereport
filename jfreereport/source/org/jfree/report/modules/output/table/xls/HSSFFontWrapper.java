@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Object Refinery Limited);
  *
- * $Id: HSSFFontWrapper.java,v 1.5 2004/03/16 15:09:54 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.4.4.1 2004/12/13 19:27:12 taqua Exp $
  *
  * Changes
  * -------

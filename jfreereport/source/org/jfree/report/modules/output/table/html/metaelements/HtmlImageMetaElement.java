@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlImageMetaElement.java,v 1.1 2004/03/16 18:03:42 taqua Exp $
+ * $Id: HtmlImageMetaElement.java,v 1.2.2.1 2004/12/13 19:27:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,23 +38,21 @@
 
 package org.jfree.report.modules.output.table.html.metaelements;
 
-import java.io.PrintWriter;
 import java.io.IOException;
-import java.awt.geom.Rectangle2D;
+import java.io.PrintWriter;
 
-import org.jfree.report.content.Content;
-import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.ImageContainer;
+import org.jfree.report.content.ImageContent;
 import org.jfree.report.modules.output.table.html.HtmlFilesystem;
-import org.jfree.report.modules.output.table.html.util.HtmlCharacterEntities;
 import org.jfree.report.modules.output.table.html.ref.HtmlReference;
-import org.jfree.report.modules.output.table.base.RawContent;
+import org.jfree.report.modules.output.table.html.util.HtmlCharacterEntities;
+import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.Log;
-import org.jfree.report.DefaultImageReference;
 
 public class HtmlImageMetaElement extends HtmlMetaElement
 {
   public HtmlImageMetaElement
-          (final Content elementContent, final ElementStyleSheet style,
+          (final ImageContent elementContent, final ElementStyleSheet style,
                   final boolean usesXHTML)
   {
     super(elementContent, style, usesXHTML);
@@ -62,25 +60,24 @@ public class HtmlImageMetaElement extends HtmlMetaElement
 
   public void write (final PrintWriter pout, final HtmlFilesystem filesystem)
   {
-    final RawContent content = (RawContent) getContent();
+    final ImageContent content = (ImageContent) getContent();
     try
     {
-      final DefaultImageReference image = (DefaultImageReference) content.getContent();
+      final ImageContainer image = content.getContent();
       final HtmlReference href = filesystem.createImageReference(image);
       if (href.isExternal())
       {
         pout.print("<img src=\"");
         pout.print(href.getReferenceData());
         pout.print("\" width=\"");
-        final Rectangle2D bounds = image.getBoundsScaled();
-        pout.write(String.valueOf((int) bounds.getWidth()));
+        pout.write(String.valueOf(content.getImageArea().getWidth()));
         pout.print("\" height=\"");
-        pout.write(String.valueOf((int) bounds.getHeight()));
-        if (image.getSourceURL() != null)
+        pout.write(String.valueOf(content.getImageArea().getHeight()));
+        if (href.getReferenceData() != null)
         {
           pout.print("\" alt=\"");
-          pout.print
-              (HtmlCharacterEntities.getEntityParser().encodeEntities(image.getSourceURL().toString()));
+          pout.print (HtmlCharacterEntities.getEntityParser().
+              encodeEntities(href.getReferenceData().toString()));
           pout.print("\"");
         }
         if (isUsesXHTML())

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.8 2004/03/16 15:09:53 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.7.4.1 2004/12/13 19:27:07 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,8 @@
  */
 package org.jfree.report.modules.output.table.html;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -45,22 +47,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.HashMap;
-import java.awt.Image;
-import java.awt.Toolkit;
 
 import com.keypoint.PngEncoder;
 import org.jfree.io.IOUtils;
-import org.jfree.report.modules.output.table.html.util.CounterReference;
-import org.jfree.report.modules.output.table.html.ref.ExternalStyleSheetReference;
-import org.jfree.report.modules.output.table.html.ref.HtmlReference;
-import org.jfree.report.modules.output.table.html.ref.ImageReference;
+import org.jfree.report.ImageContainer;
+import org.jfree.report.LocalImageContainer;
+import org.jfree.report.URLImageContainer;
 import org.jfree.report.modules.output.table.html.ref.EmptyContentReference;
+import org.jfree.report.modules.output.table.html.ref.ExternalStyleSheetReference;
+import org.jfree.report.modules.output.table.html.ref.HtmlImageReference;
+import org.jfree.report.modules.output.table.html.ref.HtmlReference;
+import org.jfree.report.modules.output.table.html.util.CounterReference;
 import org.jfree.report.util.ImageComparator;
 import org.jfree.report.util.StringUtil;
 import org.jfree.report.util.WaitingImageObserver;
-import org.jfree.report.ImageContainer;
-import org.jfree.report.URLImageContainer;
-import org.jfree.report.LocalImageContainer;
 
 /**
  * Writes the generated Html-File and the supplementary data files (images and external
@@ -73,8 +73,7 @@ import org.jfree.report.LocalImageContainer;
  *
  * @author Thomas Morgner
  */
-public class DirectoryHtmlFilesystem
-        implements HtmlFilesystem
+public class DirectoryHtmlFilesystem implements HtmlFilesystem
 {
   /**
    * the root file to store the generated main html file.
@@ -275,7 +274,7 @@ public class DirectoryHtmlFilesystem
       final String name = (String) usedImages.get(url);
       if (name != null)
       {
-        return new ImageReference(name);
+        return new HtmlImageReference(name);
       }
 
       // and is one of the supported image formats ...
@@ -299,14 +298,14 @@ public class DirectoryHtmlFilesystem
           final String filename = IOUtils.getInstance().createRelativeURL
                   (dataFile.toURL(), rootFile.toURL());
           usedImages.put(url, filename);
-          return new ImageReference(filename);
+          return new HtmlImageReference(filename);
         }
         else
         {
           final String baseName = IOUtils.getInstance().createRelativeURL
                   (urlImage.getSourceURL(), rootFile.toURL());
           usedImages.put(url, baseName);
-          return new ImageReference(baseName);
+          return new HtmlImageReference(baseName);
         }
         // done: Remote image with supported format
       }
@@ -320,8 +319,6 @@ public class DirectoryHtmlFilesystem
       {
         return new EmptyContentReference();
       }
-
-      // todo BUG: what if the user gives us a valid picture*.png file?
 
       // Check, whether the imagereference contains an AWT image.
       if (reference instanceof LocalImageContainer)
@@ -339,7 +336,7 @@ public class DirectoryHtmlFilesystem
       // by its URL
       final String entryName = encodeImage(image, false);
       usedImages.put(url, entryName);
-      return new ImageReference(entryName);
+      return new HtmlImageReference(entryName);
     }
     // check, whether the image is a local image
     else if (reference instanceof LocalImageContainer)
@@ -364,9 +361,9 @@ public class DirectoryHtmlFilesystem
           name = encodeImage(image, false);
           usedImages.put (identity, name);
         }
-        return new ImageReference(name);
+        return new HtmlImageReference(name);
       }
-      return new ImageReference(encodeImage(image, true));
+      return new HtmlImageReference(encodeImage(image, true));
     }
     else
     {
