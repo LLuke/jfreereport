@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.2 2002/12/06 19:27:56 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.3 2002/12/10 15:47:00 mungady Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -43,6 +43,7 @@ import com.jrefinery.layout.CenterLayout;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.action.AboutAction;
 import com.jrefinery.report.action.CloseAction;
 import com.jrefinery.report.action.FirstPageAction;
@@ -62,6 +63,8 @@ import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.AbstractActionDowngrade;
+import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.WindowSizeLimiter;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -92,6 +95,7 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.Frame;
 import java.awt.Dialog;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -106,6 +110,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
+
+import org.xml.sax.SAXException;
 
 /**
  * A standard print preview dialog for any JFreeReport.  Allows the user to page back and forward
@@ -791,6 +797,9 @@ public class PreviewDialog extends JDialog implements JFreeReportConstants
   /** A dialog for specifying PDF file properties. */
   private PDFSaveDialog pdfSaveDialog;
 
+  private Dimension maximumSize;
+  private Dimension preferredSize;
+
   /**
    * Creates a preview dialog.
    *
@@ -915,8 +924,6 @@ public class PreviewDialog extends JDialog implements JFreeReportConstants
     reportPaneHolder.add(reportPane);
     reportPaneHolder.setDoubleBuffered(false);
     reportPaneHolder.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    reportPaneHolder.setPreferredSize(new Dimension(DEFAULT_REPORT_PANE_WIDTH, 
-                                                    DEFAULT_REPORT_PANE_HEIGHT));
 
     JScrollPane s1 = new JScrollPane(reportPaneHolder);
     s1.setDoubleBuffered(false);
@@ -931,8 +938,91 @@ public class PreviewDialog extends JDialog implements JFreeReportConstants
     content.add(scrollPaneHolder);
     setContentPane(content);
 
+    applyDefinedDimension(report);
+
     pdfSaveDialog = new PDFSaveDialog(this);
     pdfSaveDialog.pack();
+  }
+
+  private void applyDefinedDimension (JFreeReport report)
+  {
+    String width = report.getReportConfiguration().getConfigProperty(ReportConfiguration.PREVIEW_PREFERRED_WIDTH);
+    String height = report.getReportConfiguration().getConfigProperty(ReportConfiguration.PREVIEW_PREFERRED_HEIGHT);
+
+    // only apply if both values are set.
+    if (width != null && height != null)
+    {
+      try
+      {
+        Dimension pref = createCorrectedDimensions((int) ParserUtil.parseRelativeFloat(width, ""),
+                                                   (int) ParserUtil.parseRelativeFloat(height, ""));
+        setPreferredSize(pref);
+      }
+      catch (SAXException nfe)
+      {
+        Log.debug ("Invalid values for preferred viewport size");
+      }
+    }
+
+    width = report.getReportConfiguration().getConfigProperty(ReportConfiguration.PREVIEW_MAXIMUM_WIDTH);
+    height = report.getReportConfiguration().getConfigProperty(ReportConfiguration.PREVIEW_MAXIMUM_HEIGHT);
+
+    // only apply if at least one value is set.
+    if (width != null || height != null)
+    {
+      try
+      {
+        int iWidth = (width == null) ? Short.MAX_VALUE : (int) ParserUtil.parseRelativeFloat(width, "");
+        int iHeight = (height == null) ? Short.MAX_VALUE : (int) ParserUtil.parseRelativeFloat(height, "");
+        Dimension pref = createCorrectedDimensions(iWidth, iHeight);
+        setMaximumSize(pref);
+        addComponentListener(new WindowSizeLimiter());
+      }
+      catch (SAXException nfe)
+      {
+        Log.debug ("Invalid values for maximum viewport size");
+      }
+    }
+  }
+
+  private Dimension createCorrectedDimensions (int w, int h)
+  {
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    if (w < 0)
+    {
+      w = (w * screenSize.width / -100);
+    }
+    if (h < 0)
+    {
+      h = (h * screenSize.height / -100);
+    }
+    return new Dimension(w, h);
+  }
+
+  public Dimension getMaximumSize()
+  {
+    if (maximumSize == null)
+      return super.getMaximumSize();
+
+    return maximumSize;
+  }
+
+  public void setMaximumSize(Dimension maximumSize)
+  {
+    this.maximumSize = maximumSize;
+  }
+
+  public Dimension getPreferredSize()
+  {
+    if (preferredSize == null)
+      return super.getPreferredSize();
+
+    return preferredSize;
+  }
+
+  public void setPreferredSize(Dimension preferredSize)
+  {
+    this.preferredSize = preferredSize;
   }
 
   /**
