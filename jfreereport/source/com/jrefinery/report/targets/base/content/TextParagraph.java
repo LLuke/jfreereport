@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: TextParagraph.java,v 1.3 2003/02/04 17:56:26 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,9 @@ public class TextParagraph extends ContentContainer
   /** The reserved size. */
   private float reservedSize = 0;
 
+  /** The reserved size. */
+  private float lineHeight = 0;
+
   /** The size calculator. */
   private SizeCalculator sizeCalculator;
 
@@ -65,12 +68,13 @@ public class TextParagraph extends ContentContainer
    *
    * @param calc  the size calculator.
    */
-  public TextParagraph(SizeCalculator calc)
+  public TextParagraph(SizeCalculator calc, float lineHeight)
   {
     super(new Rectangle2D.Float());
     this.sizeCalculator = calc;
     this.reservedSize = getSizeCalculator().getStringWidth(RESERVED_LITERAL, 0, 
                                                            RESERVED_LITERAL.length());
+    this.lineHeight = lineHeight;
   }
 
   /**
@@ -119,7 +123,7 @@ public class TextParagraph extends ContentContainer
     {
       // create Lines
       String lineText = (String) l.get(i);
-      TextLine line = new TextLine(getSizeCalculator());
+      TextLine line = new TextLine(getSizeCalculator(), lineHeight);
       double height = maxBounds.getHeight();
       line.setContent(lineText, new Rectangle2D.Double(x, y + usedHeight,
                                                        maxBounds.getWidth(), height - usedHeight));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.12 2003/01/22 19:38:31 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.13 2003/01/24 16:39:09 taqua Exp $
  *
  * Changes
  * -------
@@ -100,6 +100,9 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
 
   /** A key for the 'font size' used to draw element text. */
   public static final StyleKey FONTSIZE      = StyleKey.getStyleKey("font-size", Integer.class);
+
+  /** A key for the 'font size' used to draw element text. */
+  public static final StyleKey LINEHEIGHT      = StyleKey.getStyleKey("line-height", Float.class);
 
   /** A key for an element's 'bold' flag. */
   public static final StyleKey BOLD          = StyleKey.getStyleKey("font-bold", Boolean.class);

@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportDefinitionTags.java,v 1.2 2003/01/24 16:39:04 taqua Exp $
+ * $Id: ReportDefinitionTags.java,v 1.3 2003/01/25 02:47:09 taqua Exp $
  *
  * Changes
  * -------
@@ -190,6 +190,8 @@ public interface ReportDefinitionTags
   /** Literal text for an XML attribute value. */
   public static final String FS_ENCODING = "font-encoding";
 
+  /** Literal text for an XML attribute value. */
+  public static final String LINEHEIGHT = "line-height";
 
   /** Literal text for an XML report element. */
   public static final String PROPERTY_TAG = "property";

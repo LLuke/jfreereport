@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontFactory.java,v 1.2 2003/01/24 16:39:03 taqua Exp $
+ * $Id: FontFactory.java,v 1.3 2003/01/25 20:34:11 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,7 @@ public class FontFactory implements ReportDefinitionTags
     private Boolean isUnderlined;
     private Boolean isEmbedded;
     private String fontencoding;
+    private Float lineHeight;
 
     public FontInformation()
     {
@@ -141,6 +142,16 @@ public class FontFactory implements ReportDefinitionTags
     {
       this.fontencoding = fontencoding;
     }
+
+    public Float getLineHeight()
+    {
+      return lineHeight;
+    }
+
+    public void setLineHeight(Float lineHeight)
+    {
+      this.lineHeight = lineHeight;
+    }
   }
 
   /**
@@ -168,6 +179,8 @@ public class FontFactory implements ReportDefinitionTags
       es.setStyleProperty(ElementStyleSheet.EMBEDDED_FONT, fi.getEmbedded());
     if (fi.getFontencoding() != null)
       es.setStyleProperty(ElementStyleSheet.FONTENCODING, fi.getFontencoding());
+    if (fi.getLineHeight() != null)
+      es.setStyleProperty(ElementStyleSheet.LINEHEIGHT, fi.getLineHeight());
   }
 
   /**
@@ -264,6 +277,12 @@ public class FontFactory implements ReportDefinitionTags
     {
       target.setFontencoding(attr.getValue (FS_UNDERLINE));
     }
+
+    if (attr.getValue(LINEHEIGHT) != null)
+    {
+      target.setLineHeight(new Float(ParserUtil.parseFloat(attr.getValue (LINEHEIGHT), 0)));
+    }
+
     return target;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.3 2003/02/04 17:56:26 taqua Exp $
  *
  * Changes
  * -------
@@ -208,7 +208,9 @@ public class TextOperationModule extends OperationModule
                                                   point.getY(),
                                                   dim.getWidth(),
                                                   dim.getHeight());
-    TextContent tc = new TextContent(text, tBounds, ot.createTextSizeCalculator(f));
+
+    Float lh = (Float) e.getStyle().getStyleProperty(ElementStyleSheet.LINEHEIGHT);
+    TextContent tc = new TextContent(text, lh.floatValue(), tBounds, ot.createTextSizeCalculator(f));
     return tc;
   }
 

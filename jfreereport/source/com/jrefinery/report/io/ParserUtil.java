@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserUtil.java,v 1.17 2003/01/22 19:38:22 taqua Exp $
+ * $Id: ParserUtil.java,v 1.18 2003/02/01 18:27:03 taqua Exp $
  *
  * Changes
  * -------
@@ -161,6 +161,32 @@ public class ParserUtil
     catch (NumberFormatException nfe)
     {
       throw new SAXException("NumberFormatError: " + message);
+    }
+  }
+
+  /**
+   * Parses the string <code>text</code> into an float. If text is null or does not
+   * contain a parsable value, the message given in <code>message</code> is used to
+   * throw a SAXException.
+   *
+   * @param text  the text to parse.
+   * @param defaultVal the defaultValue returned if parsing fails.
+   *
+   * @return the float value.
+   */
+  public static float parseFloat(String text, float defaultVal)
+  {
+    if (text == null)
+    {
+      return defaultVal;
+    }
+    try
+    {
+      return Float.parseFloat(text);
+    }
+    catch (NumberFormatException nfe)
+    {
+      return defaultVal;
     }
   }
 

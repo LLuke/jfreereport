@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: TextContent.java,v 1.3 2003/02/04 17:56:26 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class TextContent extends ContentContainer
    *
    * Versucht die Optimale Breite & H�he f�r den darzustellenden Text zu finden
    */
-  public TextContent(String value, Rectangle2D bounds, SizeCalculator ot)
+  public TextContent(String value, float lineHeight, Rectangle2D bounds, SizeCalculator ot)
   {
     super (bounds);
     this.sizeCalculator = ot;
@@ -83,7 +83,7 @@ public class TextContent extends ContentContainer
       List paragraphs = splitContent(value);
       for (int i = 0; i < paragraphs.size(); i++)
       {
-        TextParagraph p = new TextParagraph(getSizeCalculator());
+        TextParagraph p = new TextParagraph(getSizeCalculator(), lineHeight);
         p.setContent((String) paragraphs.get(i),
                       new Rectangle2D.Double(x, y + usedHeight, w, h - usedHeight));
         usedHeight += p.getBounds().getHeight();

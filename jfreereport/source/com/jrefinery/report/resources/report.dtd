@@ -88,6 +88,7 @@
   fsstrikethr    (%boolean;)        #IMPLIED
   font-embedded  (%boolean;)        #IMPLIED
   font-encoding  CDATA              #IMPLIED
+  line-height    CDATA              #IMPLIED
 
   alignment      (%alignmentEnum;)  #IMPLIED
   vertical-alignment     (%valignmentEnum;) #IMPLIED"
