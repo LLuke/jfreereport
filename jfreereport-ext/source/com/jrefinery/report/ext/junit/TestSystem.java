@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TestSystem.java,v 1.1 2003/03/26 22:52:44 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public class TestSystem
     }
     catch (Exception ioe)
     {
-      Log.error ("1: report definition failure.");
+      Log.error ("1: report definition failure.", ioe);
       return null;
     }
 

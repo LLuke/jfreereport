@@ -49,6 +49,11 @@
 
   </groups>
 
+  <items height="100">
+    <image-field x="130" y="15" width="60" height="80" fieldname="Foto1"/>
+    <image-field x="130" y="15" width="60" height="80" fieldname="Foto2"/>
+    <image-field x="130" y="15" width="60" height="80" fieldname="Foto3"/>
+  </items>
   <!-- FUNCTIONS -->
   <functions>
     <property-ref name="report.date"/>
