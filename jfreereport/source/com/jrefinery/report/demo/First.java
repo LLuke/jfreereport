@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,30 +23,26 @@
  * ----------
  * First.java
  * ----------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, 2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: First.java,v 1.16 2003/01/25 02:47:09 taqua Exp $
+ * $Id: First.java,v 1.17 2003/02/04 17:56:07 taqua Exp $
  *
  * Changes
  * -------
  * 15-Jul-2002 : Version 1 (DG);
- * 20-Nov-2002 : Corrected possible read error if the icon is not read completly from the zip file;
+ * 20-Nov-2002 : Corrected possible read error if the icon is not read completely from the zip file;
  *
  */
 
 package com.jrefinery.report.demo;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.io.ReportGenerator;
-import com.jrefinery.report.preview.PreviewFrame;
-import com.jrefinery.report.util.ExceptionDialog;
-import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.ui.ApplicationFrame;
-import com.jrefinery.ui.RefineryUtilities;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
@@ -56,10 +52,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URL;
+
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.io.ReportGenerator;
+import com.jrefinery.report.preview.PreviewFrame;
+import com.jrefinery.report.util.ExceptionDialog;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.ui.ApplicationFrame;
+import com.jrefinery.ui.RefineryUtilities;
 
 /**
  * A demonstration application.
@@ -73,7 +75,6 @@ import java.net.URL;
  */
 public class First extends ApplicationFrame implements ActionListener
 {
-
   /** The data for the report. */
   private TableModel data;
 
@@ -226,8 +227,7 @@ public class First extends ApplicationFrame implements ActionListener
    */
   public static void main(String[] args)
   {
-    ReportConfiguration.getGlobalConfig().setDisableLogging(true);
-    //ReportConfiguration.getGlobalConfig().setLogLevel(Log.);
+    ReportConfiguration.getGlobalConfig().setLogLevel("Error");
     First frame = new First("First Report");
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ---------------
  * HelloWorld.java
  * ---------------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2002, 2003, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.3 2003/02/02 23:43:49 taqua Exp $
+ * $Id: HelloWorld.java,v 1.4 2003/02/06 17:38:00 taqua Exp $
  *
  * Changes
  * -------
@@ -38,17 +38,19 @@
 
 package com.jrefinery.report.demo;
 
+import java.awt.Color;
+import java.awt.geom.Rectangle2D;
+
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.TextElement;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.preview.PreviewFrame;
-
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import java.awt.Color;
-import java.awt.geom.Rectangle2D;
+import com.jrefinery.report.util.Log;
 
 /**
  * A very simple JFreeReport demo.  The purpose of this demo is to illustrate the basic steps
@@ -61,13 +63,12 @@ import java.awt.geom.Rectangle2D;
  */
 public class HelloWorld
 {
-
     /**
      * Creates and displays a simple report.
      */
     public HelloWorld()
     {
-
+        
         TableModel data = createData();
         JFreeReport report = createReportDefinition();
         report.setData(data);
@@ -116,8 +117,8 @@ public class HelloWorld
             "T1",
             new Rectangle2D.Double(0.0, 0.0, 150.0, 20.0),
             Color.black,
-            TextElement.LEFT,
-            TextElement.MIDDLE,
+            ElementAlignment.LEFT.getOldAlignment(),
+            ElementAlignment.MIDDLE.getOldAlignment(),
             null, // font
             "-",  // null string
             "Column1"
@@ -129,8 +130,8 @@ public class HelloWorld
             "T2",
             new Rectangle2D.Double(200.0, 0.0, 150.0, 20.0),
             Color.black,
-            TextElement.LEFT,
-            TextElement.MIDDLE,
+            ElementAlignment.LEFT.getOldAlignment(),
+            ElementAlignment.MIDDLE.getOldAlignment(),
             null, // font
             "-",  // null string
             "Column2"

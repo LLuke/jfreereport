@@ -42,13 +42,17 @@ import com.jrefinery.report.Element;
 import com.jrefinery.report.ItemBand;
 import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.PageFooter;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.TextElement;
+import com.jrefinery.report.function.PageFunction;
 import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.style.StyleKey;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.ui.ApplicationFrame;
 import com.jrefinery.ui.RefineryUtilities;
 
@@ -62,8 +66,10 @@ import javax.swing.JTable;
 import javax.swing.table.TableModel;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -194,12 +200,28 @@ public class OpenSourceDemo2 extends ApplicationFrame implements ActionListener
   {
 
     JFreeReport result = new JFreeReport();
-    result.getReportConfiguration().setConfigProperty(
-        "com.jrefinery.report.preview.PreferredWidth", "640.0");
-    result.getReportConfiguration().setConfigProperty(
-        "com.jrefinery.report.preview.PreferredHeight", "480.0");
+    
+    ReportConfiguration config = result.getReportConfiguration();
+    config.setConfigProperty("com.jrefinery.report.preview.PreferredWidth", "640.0");
+    config.setConfigProperty("com.jrefinery.report.preview.PreferredHeight", "480.0");
+
+    // set up the functions...
+    PageFunction f1 = new PageFunction("page_number");
+    try {
+      result.addFunction(f1);
+    }
+    catch (Exception e) {
+        System.err.println(e.toString());
+    }
+    
+    // set up the item band...    
     ItemBand itemBand = result.getItemBand();
     configureItemBand(itemBand);
+
+    // set up the page footer...
+    PageFooter pageFooter = result.getPageFooter();
+    configurePageFooter(pageFooter);
+
     return result;
 
   }
@@ -257,6 +279,31 @@ public class OpenSourceDemo2 extends ApplicationFrame implements ActionListener
 
   }
 
+  /**
+   * Configures a blank page footer.
+   *
+   * @param footer  the page footer to be configured.
+   */
+  private void configurePageFooter(PageFooter footer)
+  {
+    ElementStyleSheet ess = footer.getBandDefaults();
+    ess.setFontDefinitionProperty(new FontDefinition("SansSerif", 9));
+
+    footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new Dimension(0, 20));
+    TextElement pageNumberField = ItemFactory.createNumberElement("PageNumber_Field",
+        new Rectangle2D.Double(0.0, 0.0, -100.0, -100.0),
+        Color.black,
+        Element.RIGHT,
+        null, // font
+        "-", // null string
+        "Page 0",
+        "page_number"
+    );
+    pageNumberField.getStyle().setFontDefinitionProperty(new FontDefinition("SansSerif",
+                                                                   10, true, false, false, false));
+    footer.addElement(pageNumberField);
+  }
+  
   /**
    * Entry point for running the demo application...
    *
