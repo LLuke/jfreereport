@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.7 2002/12/08 23:29:48 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.8 2002/12/11 01:10:41 mungady Exp $
  *
  * Changes
  * -------
@@ -460,7 +460,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   static
   {
-    System.out.println("PDFOutputTarget loaded");
     if (ReportConfiguration.getGlobalConfig().isPDFTargetAutoInit())
     {
       getFontFactory().registerDefaultFontPath();
