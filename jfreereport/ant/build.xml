@@ -14,7 +14,7 @@
 <!-- If you have comments about this script, please post a message -->
 <!-- in the JFreeReport forum. -->
 
-<project name="jfreereport" default="build-jfreereport" basedir="..">
+<project name="jfreereport" default="all" basedir="..">
 
     <!-- General initialisation. -->
     <target name="init-general" description="Initialise general parameters.">
@@ -60,6 +60,9 @@
         <!-- copy across the BeanShell header file -->
         <copy file="${basedir}/source/com/jrefinery/report/function/BSHExpressionHeader.txt" tofile="${basedir}/build/com/jrefinery/report/function/BSHExpressionHeader.txt" />
 
+        <!-- include the jfreereport.properties -->
+        <copy file="${basedir}/source/com/jrefinery/report/jfreereport.properties" tofile="${basedir}/build/com/jrefinery/report/jfreereport.properties" />
+
         <!-- copy across the icons -->
         <copy todir="${basedir}/build/com/jrefinery/report/resources">
             <fileset dir="${basedir}/source/com/jrefinery/report/resources">
@@ -76,7 +79,8 @@
     </target>
 
     <!-- Compile the JFreeReport DEMO classes -->
-    <!-- This target creates a jar file containing all the classes. -->
+    <!-- This target creates a jar file containing all demo classes. -->
+    <!-- The core classes are contained in the JFreeReport jar. -->
     <target name="compile-jfreereport-demo" depends="compile-jfreereport"
             description="Compile the JFreeReport demo source code.">
 
@@ -85,9 +89,9 @@
         <mkdir dir="${basedir}/build" />
 
         <!-- compile the demo source -->
-        <javac srcdir="${basedir}/source" 
+        <javac srcdir="${basedir}/source/com/jrefinery/report/demo" 
                destdir="${basedir}/build"
-               includes="com/jrefinery/report/demo/**">
+	       sourcepath="${basedir}/source">
             <classpath refid="build.classpath" />
         </javac>
 
@@ -103,7 +107,8 @@
 
 	<!-- make the jar file -->
         <jar jarfile="${basedir}/${jfreereport.name}-${jfreereport.version}-demo.jar"
-             basedir="${basedir}/build">
+             basedir="${basedir}/build"
+	     includes="com/jrefinery/report/demo/**">
             <manifest>
                 <attribute name="Main-Class" value="com.jrefinery.report.demo.JFreeReportDemo" />
                 <attribute name="Class-Path" value="${jfreereport.name}-${jfreereport.version}.jar ${jfreereport.name}-${jfreereport.version}-demo.jar lib/gnujaxp.jar lib/iText-0.95.jar lib/jcommon-0.7.1.jar lib/pixie.jar lib/bsh-1.2b6.jar"/>
@@ -112,7 +117,6 @@
         
         <!-- remove the temp build area -->
         <delete dir="${basedir}/build" />
-
     </target>
 
     <!-- Generate the JFreeReport JavaDoc HTML pages -->
@@ -138,11 +142,14 @@
         <!-- copy across README -->
         <copy file="${basedir}/README" tofile="${basedir}/distribution/README" />
 
-        <!-- copy across CHANGELOG -->
-        <copy file="${basedir}/CHANGELOG" tofile="${basedir}/distribution/CHANGELOG" />
+        <!-- copy across ChangeLog -->
+        <copy file="${basedir}/ChangeLog" tofile="${basedir}/distribution/ChangeLog" />
 
         <!-- copy across LICENCE -->
         <copy file="${basedir}/licence-LGPL.txt" tofile="${basedir}/distribution/licence-LGPL.txt" />
+
+        <!-- copy across migration.txt -->
+        <copy file="${basedir}/migration.txt" tofile="${basedir}/distribution/migration.txt" />
 
         <!-- copy across runtime jar file and demo jar file -->
         <copy file="${basedir}/${jfreereport.name}-${jfreereport.version}.jar" tofile="${basedir}/distribution/${jfreereport.name}-${jfreereport.version}.jar" />
@@ -151,6 +158,11 @@
         <!-- copy across source files -->
         <copy todir="${basedir}/distribution/source">
             <fileset dir="${basedir}/source" />
+        </copy>
+
+        <!-- copy across resource files (DTD and example PDFs) -->
+        <copy todir="${basedir}/distribution/resource">
+            <fileset dir="${basedir}/resource" />
         </copy>
 
         <!-- copy across lib files -->
@@ -192,11 +204,14 @@
         <!-- copy across README -->
         <copy file="${basedir}/README" tofile="${basedir}/distribution/README" />
 
-        <!-- copy across CHANGELOG -->
-        <copy file="${basedir}/CHANGELOG" tofile="${basedir}/distribution/CHANGELOG" />
+        <!-- copy across ChangeLog -->
+        <copy file="${basedir}/ChangeLog" tofile="${basedir}/distribution/ChangeLog" />
 
         <!-- copy across LICENCE -->
         <copy file="${basedir}/licence-LGPL.txt" tofile="${basedir}/distribution/licence-LGPL.txt" />
+
+        <!-- copy across migration.txt -->
+        <copy file="${basedir}/migration.txt" tofile="${basedir}/distribution/migration.txt" />
 
         <!-- copy across runtime jar file and demo jar file -->
         <copy file="${basedir}/${jfreereport.name}-${jfreereport.version}.jar" tofile="${basedir}/distribution/${jfreereport.name}-${jfreereport.version}.jar" />
@@ -205,6 +220,11 @@
         <!-- copy across source files -->
         <copy todir="${basedir}/distribution/source">
             <fileset dir="${basedir}/source" />
+        </copy>
+
+        <!-- copy across resource files (DTD and example PDFs) -->
+        <copy todir="${basedir}/distribution/resource">
+            <fileset dir="${basedir}/resource" />
         </copy>
 
         <!-- copy across lib files -->
