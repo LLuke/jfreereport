@@ -1,0 +1,411 @@
+/**
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------------
+ * BaseFontSupport.java
+ * -------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: BaseFontSupport.java,v 1.7 2003/01/27 03:17:43 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 05-Dec-2002 : Added Javadocs (DG);
+ *
+ */
+package com.jrefinery.report.targets.support.itext;
+
+import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.StringUtil;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.pdf.BaseFont;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * PDF font support.
+ *
+ * @author Thomas Morgner
+ */
+public class BaseFontSupport
+{
+  /** Storage for BaseFont objects created. */
+  private Map baseFonts;
+
+  /**
+   * Creates a new support instance.
+   */
+  public BaseFontSupport()
+  {
+    this.baseFonts = new HashMap();
+  }
+
+  /**
+   * Close the font support. 
+   */
+  public void close()
+  {
+    this.baseFonts.clear();
+  }
+
+  /**
+   * Creates a BaseFontRecord for an AWT font.  If no basefont could be created, an
+   * OutputTargetException is thrown.
+   *
+   * @param font  the new font (null not permitted).
+   * @param encoding  the encoding.
+   *
+   * @return the PDF font record.
+   *
+   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there was a problem setting the font for the target.
+   */
+  public BaseFontRecord createBaseFont(FontDefinition font, String encoding, boolean embedded) throws OutputTargetException
+  {
+    if (font == null)
+    {
+      throw new NullPointerException();
+    }
+
+    //Log.debug ("Create Font: " + font + " Encoding: " + encoding + " Embedd: " + embedFonts);
+
+    // use the Java logical font name to map to a predefined iText font.
+    String fontKey = null;
+    String logicalName = font.getFontName();
+    boolean bold = false;
+    boolean italic = false;
+
+    if (StringUtil.endsWithIgnoreCase(logicalName, "bolditalic")
+        || (font.isBold() && font.isItalic()))
+    {
+      bold = true;
+      italic = true;
+    }
+    else if (StringUtil.endsWithIgnoreCase(logicalName, "bold") || (font.isBold()))
+    {
+      bold = true;
+    }
+    else if (StringUtil.endsWithIgnoreCase(logicalName, "italic") || (font.isItalic()))
+    {
+      italic = true;
+    }
+
+    if (font.isCourier())
+    {
+      fontKey = createCourierName(bold, italic);
+    }
+    else if (font.isSerif())
+    {
+      fontKey = createSerifName(bold, italic);
+    }
+    else if (font.isSansSerif ())
+    { // default, this catches Dialog and SansSerif
+      fontKey = createSansSerifName(bold, italic);
+    }
+    else
+    {
+      fontKey = logicalName;
+    }
+
+    // iText uses some weird mapping between IDENTY-H/V and java supported encoding, IDENTITY-H/V is
+    // used to recognize TrueType fonts, but the real JavaEncoding is used to encode Type1 fonts
+    String stringEncoding = encoding;
+
+    // Correct the encoding for truetype fonts
+    // iText will crash if IDENTITY_H is used to create a base font ...
+    if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
+    {
+      stringEncoding = "iso-8859-1";
+    }
+
+    BaseFontRecord fontRecord = getFromCache(fontKey, encoding);
+    if (fontRecord != null)
+    {
+      return fontRecord;
+    }
+    fontRecord = getFromCache(fontKey, stringEncoding);
+    if (fontRecord != null)
+    {
+      return fontRecord;
+    }
+
+    try
+    {
+      String filename = BaseFontFactory.getFontFactory().getFontfileForName(fontKey);
+      if (filename != null)
+      {
+        fontRecord = createFontFromTTF(font, filename, encoding, stringEncoding, embedded);
+        if (fontRecord != null)
+        {
+          return fontRecord;
+        }
+      }
+      else
+      {
+        // filename is null, so no ttf file registered for the fontname, maybe this is
+        // one of the internal fonts ...
+        BaseFont f = BaseFont.createFont(fontKey, stringEncoding, embedded,
+                                         false, null, null);
+
+        if (f != null)
+        {
+          fontRecord = new BaseFontRecord();
+          fontRecord.setFontDefinition(font);
+          fontRecord.setBaseFont(f);
+          fontRecord.setEmbedded(embedded);
+          fontRecord.setEncoding(stringEncoding);
+          fontRecord.setLogicalName(fontKey);
+          putToCache(fontRecord);
+          return fontRecord;
+        }
+      }
+    }
+    catch (Exception e)
+    {
+      Log.warn("BaseFont.createFont failed. Key = " + fontKey, e);
+    }
+    // fallback .. use BaseFont.HELVETICA as default
+    try
+    {
+      BaseFont f = BaseFont.createFont(BaseFont.HELVETICA, stringEncoding, embedded,
+                                       false, null, null);
+      if (f != null)
+      {
+        fontRecord = new BaseFontRecord();
+        fontRecord.setFontDefinition(font);
+        fontRecord.setBaseFont(f);
+        fontRecord.setEmbedded(embedded);
+        fontRecord.setEncoding(stringEncoding);
+        fontRecord.setLogicalName(fontKey);
+        putToCache(fontRecord);
+        return fontRecord;
+      }
+    }
+    catch (Exception e)
+    {
+      Log.warn("BaseFont.createFont for FALLBACK failed.", e);
+      throw new OutputTargetException("Null font = " + fontKey);
+    }
+    throw new OutputTargetException("BaseFont creation failed, null font: " + fontKey);
+  }
+
+  /**
+   * Creates a PDF font record from a true type font.
+   *
+   * @param font  the font.
+   * @param filename  the filename.
+   * @param encoding  the encoding.
+   * @param stringEncoding  the string encoding.
+   *
+   * @return the PDF font record.
+   *
+   * @throws java.io.IOException if there is an I/O problem.
+   * @throws com.lowagie.text.DocumentException ??.
+   */
+  private BaseFontRecord createFontFromTTF (FontDefinition font, String filename,
+                                           String encoding, String stringEncoding,
+                                           boolean embedded)
+    throws IOException, DocumentException
+  {
+
+    // TrueType fonts need extra handling if the font is a symbolic font.
+    if ((StringUtil.endsWithIgnoreCase(filename, ".ttf")
+         || StringUtil.endsWithIgnoreCase(filename, ".ttc")) == false)
+    {
+      return null;
+    }
+
+    String fontKey = null;
+
+    if (font.isBold() && font.isItalic())
+    {
+      fontKey = filename + ",BoldItalic";
+    }
+    else if (font.isBold())
+    {
+      fontKey = filename + ",Bold";
+    }
+    else if (font.isItalic())
+    {
+      fontKey = filename + ",Italic";
+    }
+    else
+    {
+      fontKey = filename;
+    }
+
+    // check if this font is in the cache ...
+    //Log.warn ("TrueTypeFontKey : " + fontKey + " Font: " + font.isItalic() + " Encoding: " 
+    //          + encoding);
+    BaseFontRecord fontRec = getFromCache(fontKey, encoding);
+    if (fontRec != null) 
+    {
+      return fontRec;
+    }
+
+    // no, we have to create a new instance
+    BaseFontRecord record = new BaseFontRecord();
+    record.setFontDefinition(font);
+    record.setEmbedded(embedded);
+    record.setLogicalName(fontKey);
+    try
+    {
+      BaseFont f = BaseFont.createFont(fontKey, encoding, embedded, false, null, null);
+      record.setBaseFont(f);
+      record.setEncoding(encoding);
+    }
+    catch (DocumentException de)
+    {
+      // Fallback to iso8859-1 encoding (!this is not IDENTITY-H)
+      BaseFont f = BaseFont.createFont(fontKey, stringEncoding, embedded, false, null, null);
+      record.setBaseFont(f);
+      record.setEncoding(stringEncoding);
+    }
+    if (record.getBaseFont() != null)
+    {
+      putToCache(record);
+    }
+    return record;
+  }
+
+  /**
+   * Stores a record in the cache.
+   *
+   * @param record  the record.
+   */
+  private void putToCache (BaseFontRecord record)
+  {
+    baseFonts.put (record.createKey(), record);
+  }
+
+  /**
+   * Retrieves a record from the cache.
+   *
+   * @param fontKey  the font key.
+   * @param encoding  the encoding.
+   *
+   * @return the PDF font record.
+   */
+  private BaseFontRecord getFromCache (String fontKey, String encoding)
+  {
+    BaseFontRecord r = (BaseFontRecord) baseFonts.get (new BaseFontRecordKey(fontKey, encoding));
+    return r;
+  }
+
+  /**
+   * Creates a sans-serif font name.
+   *
+   * @param bold  bold?
+   * @param italic  italic?
+   *
+   * @return the font name.
+   */
+  private String createSansSerifName (boolean bold, boolean italic)
+  {
+    String fontKey = null;
+    if (bold && italic)
+    {
+      fontKey = BaseFont.HELVETICA_BOLDOBLIQUE;
+    }
+    else if (bold)
+    {
+      fontKey = BaseFont.HELVETICA_BOLD;
+    }
+    else if (italic)
+    {
+      fontKey = BaseFont.HELVETICA_OBLIQUE;
+    }
+    else
+    {
+      fontKey = BaseFont.HELVETICA;
+    }
+
+    return fontKey;
+  }
+
+  /**
+   * Creates a serif font name.
+   *
+   * @param bold  bold?
+   * @param italic  italic?
+   *
+   * @return the font name.
+   */
+  private String createSerifName (boolean bold, boolean italic)
+  {
+    String fontKey = null;
+    if (bold && italic)
+    {
+      fontKey = BaseFont.TIMES_BOLDITALIC;
+    }
+    else if (bold)
+    {
+      fontKey = BaseFont.TIMES_BOLD;
+    }
+    else if (italic)
+    {
+      fontKey = BaseFont.TIMES_ITALIC;
+    }
+    else
+    {
+      fontKey = BaseFont.TIMES_ROMAN;
+    }
+    return fontKey;
+  }
+
+  /**
+   * Creates a courier font name.
+   *
+   * @param bold  bold?
+   * @param italic  italic?
+   *
+   * @return the font name.
+   */
+  private String createCourierName (boolean bold, boolean italic)
+  {
+    String fontKey = null;
+    if (bold && italic)
+    {
+      fontKey = BaseFont.COURIER_BOLDOBLIQUE;
+    }
+    else if (bold)
+    {
+      fontKey = BaseFont.COURIER_BOLD;
+    }
+    else if (italic)
+    {
+      fontKey = BaseFont.COURIER_OBLIQUE;
+    }
+    else
+    {
+      fontKey = BaseFont.COURIER;
+    }
+    return fontKey;
+  }
+
+}

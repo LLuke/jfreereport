@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.15 2003/01/29 21:57:12 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.16 2003/01/30 00:04:53 taqua Exp $
  *
  * Changes
  * -------
@@ -51,18 +51,18 @@ package com.jrefinery.report.targets.pageable.output;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ShapeElement;
-import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
-import com.jrefinery.report.targets.pageable.physicals.LogicalPageImpl;
-import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.SizeCalculator;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
-import com.jrefinery.report.targets.SizeCalculator;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.pageable.physicals.LogicalPageImpl;
+import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
-import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.support.itext.BaseFontRecord;
+import com.jrefinery.report.targets.support.itext.BaseFontSupport;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.NullOutputStream;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.report.util.StringUtil;
 import com.keypoint.PngEncoder;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocWriter;
@@ -71,26 +71,20 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.DefaultFontMapper;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.StringTokenizer;
 
 /**
  * An output target for the report engine that generates a PDF file using the iText class library
@@ -188,7 +182,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   private Paint awtPaint;
 
   /** The PDF font support. */
-  private PDFFontSupport fontSupport;
+  private BaseFontSupport fontSupport;
 
   /**
    * A bytearray containing an empty password. iText replaces the owner password with random
@@ -253,216 +247,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
       target.setPaint(mypaint);
     }
   }
-  /**
-   * The PDFFontFactory is used to find and register all TrueTypeFonts for embedding them
-   * in the PDF-File.
-   */
-  public static class PDFFontFactory extends DefaultFontMapper
-  {
-    /** Fonts stored by name. */
-    private Hashtable fontsByName;
-
-    /**
-     * Creates a new factory.
-     */
-    private PDFFontFactory()
-    {
-      fontsByName = new Hashtable();
-    }
-
-    /**
-     * Register os-specific font paths to the PDF-FontFactory. For unix-like operating
-     * systems, X11 is searched in /usr/X11R6 and the default truetype fontpath is added.
-     * For windows the system font path is added (%windir%/fonts)
-     */
-    public void registerDefaultFontPath()
-    {
-      String encoding = getDefaultFontEncoding();
-      // Correct the encoding for truetype fonts
-      if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
-      {
-        // is this correct?
-        encoding = "iso-8859-1";
-      }
-
-      String osname = System.getProperty("os.name");
-      String jrepath = System.getProperty("java.home");
-      String fontPath = null;
-      String fs = System.getProperty("file.separator");
-
-      Log.debug("Running on operating system: " + osname);
-      Log.debug("Character encoding used as default: " + encoding);
-
-      if (!StringUtil.startsWithIgnoreCase(osname, "windows"))
-      {
-        Log.debug("Assuming unix like file structures");
-        // Assume X11 is installed in the default location.
-        fontPath = "/usr/X11R6/lib/X11/fonts/truetype";
-      }
-      else
-      {
-        Log.debug("Found windows in os name, assuming DOS/Win32 structures");
-        // Assume windows
-        // If you are not using windows, ignore this. This just checks if a windows system
-        // directory exist and includes a font dir.
-
-        String windirs = System.getProperty("java.library.path");
-        if (windirs != null)
-        {
-          StringTokenizer strtok
-              = new StringTokenizer(windirs, System.getProperty("path.separator"));
-          while (strtok.hasMoreTokens())
-          {
-            String token = strtok.nextToken();
-
-            if (token.endsWith("System32"))
-            {
-              // found windows folder ;-)
-              int lastBackslash = token.lastIndexOf(fs);
-              fontPath = token.substring(0, lastBackslash) + fs + "Fonts";
-
-              break;
-            }
-          }
-        }
-      }
-
-      Log.debug("Fonts located in \"" + fontPath + "\"");
-      if (fontPath != null)
-      {
-        registerFontPath(fontPath, encoding);
-      }
-      registerFontPath(new File(jrepath, "lib" + fs + "fonts").toString(), encoding);
-    }
-
-    /**
-     * Register all fonts (*.ttf files) in the given path.
-     *
-     * @param path  the path.
-     * @param encoding  the encoding.
-     */
-    public void registerFontPath(String path, String encoding)
-    {
-      File file = new File(path);
-      if (file.exists() && file.isDirectory() && file.canRead())
-      {
-        File[] files = file.listFiles();
-        for (int i = 0; i < files.length; i++)
-        {
-          registerFontFile(files[i].toString(), encoding);
-        }
-      }
-      file = null;
-      System.gc();
-    }
-
-    /**
-     * Register the font (must end this *.ttf) to the FontFactory.
-     *
-     * @param filename  the filename.
-     * @param encoding  the encoding.
-     */
-    public void registerFontFile(String filename, String encoding)
-    {
-      if (!filename.toLowerCase().endsWith("ttf"))
-      {
-        return;
-      }
-      File file = new File(filename);
-      if (file.exists() && file.isFile() && file.canRead())
-      {
-        try
-        {
-          addFont(filename, encoding);
-        }
-        catch (Exception e)
-        {
-          Log.warn("Font " + filename + " is invalid. Message:", e);
-        }
-      }
-    }
-
-    /**
-     * Adds the fontname by creating the basefont object
-     *
-     * @param font  the font name.
-     * @param encoding  the encoding.
-     *
-     * @throws DocumentException ??
-     * @throws IOException ??
-     */
-    private void addFont(String font, String encoding)
-        throws DocumentException, IOException
-    {
-      if (fontsByName.containsValue(font))
-      {
-        return; // already in there
-      }
-      BaseFont bfont = BaseFont.createFont(font, encoding, true, false, null, null);
-      String[][] fi = bfont.getFullFontName();
-      for (int i = 0; i < fi.length; i++)
-      {
-        String[] ffi = fi[i];
-        if (fontsByName.containsKey(ffi[3]) == false)
-        {
-          fontsByName.put(ffi[3], font);
-          Log.debug("Registered truetype font " + ffi[3] + "; File=" + font);
-        }
-      }
-    }
-
-    /**
-     * Returns all registered fonts as enumeration.
-     *
-     * @return an enumeration of the registered fonts.
-     */
-    public Enumeration getRegisteredFonts()
-    {
-      return fontsByName.keys();
-    }
-
-    /**
-     * Returns the name of the font file by looking up the name.
-     *
-     * @param font  the font name
-     *
-     * @return the font file name.
-     */
-    public String getFontfileForName(String font)
-    {
-      return (String) fontsByName.get(font);
-    }
-  }
-
-  /** The font factory. */
-  private static PDFFontFactory fontFactory;
-
-  /**
-   * Returns/creates the singleton font factory.
-   *
-   * @return the font factory.
-   */
-  public static PDFFontFactory getFontFactory()
-  {
-    if (fontFactory == null)
-    {
-      fontFactory = new PDFFontFactory();
-    }
-    return fontFactory;
-  }
-
-  /**
-   * Initialialize the font factory when this class is loaded and the system property
-   * of  <code>"com.jrefinery.report.targets.pageable.output.PDFOutputTarget.AutoInit"</code> is
-   * set to <code>true</code>.
-   */
-  static
-  {
-    if (ReportConfiguration.getGlobalConfig().isPDFTargetAutoInit())
-    {
-      getFontFactory().registerDefaultFontPath();
-    }
-  }
 
   /**
    * Constructs a PDFOutputTarget.
@@ -487,7 +271,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   {
     super(logPage);
     this.out = out;
-    this.fontSupport = new PDFFontSupport();
+    this.fontSupport = new BaseFontSupport();
     setEmbedFonts(embedFonts);
   }
 
@@ -512,7 +296,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public static final String getDefaultFontEncoding()
   {
-    return ReportConfiguration.getGlobalConfig().getPdfTargetEncoding();
+    return com.jrefinery.report.targets.support.itext.BaseFontFactory.getDefaultFontEncoding();
   }
 
   /**
@@ -1398,7 +1182,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException
   {
-    PDFFontRecord record = fontSupport.createBaseFont(font,
+    BaseFontRecord record = fontSupport.createBaseFont(font,
                                                       font.getFontEncoding(getFontEncoding()),
                                                       false);
     return new PDFSizeCalculator(record.getBaseFont(), font.getFont().getSize2D());
