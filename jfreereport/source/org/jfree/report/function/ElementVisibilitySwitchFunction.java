@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.3 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -51,8 +51,25 @@ import org.jfree.report.util.Log;
  * value affects a defined elements visibility. If the function evaluates to true, the named
  * element is visible, else the element is invisible.
  * <p>
- * Use the property <code>element</code> to name an element contained in the ItemBand whose
- * visiblity should be affected by this function.
+ * Elements in JFreeReport do not define their own background color attribute.
+ * To create a background, you would place a rectangle shape element behind the
+ * element.
+ * <p>
+ * The ElementVisibilitySwitchFunction is used to trigger the visibility of an
+ * named element. If the element is your background, you will get the alternating
+ * effect.
+ * <p>
+ * The ElementVisibilitySwitchFunction defines two parameters:
+ * <ul>
+ * <li>element
+ * <p>The name of the element in the itemband that should be modified.
+ * The element must be named using the "name" attribute, only the first occurence
+ * of that named element will be modfied.</p>
+ * <li>initial-state
+ * <p>The initial state of the function. (true or false) defaults to false. This
+ * is the revers of the element's visiblity (set to false to start with an visible
+ * element, set to true to hide the element in the first itemrow).</p>
+ * </ul>
  *
  * @author Thomas Morgner
  */

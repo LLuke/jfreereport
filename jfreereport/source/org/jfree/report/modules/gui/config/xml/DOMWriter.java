@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DOMWriter.java,v 1.1 2003/08/27 20:19:53 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 27.08.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.config.xml;
@@ -49,6 +49,9 @@ public class DOMWriter extends XMLWriterSupport
     list.add("config-description");
     list.add("key");
     list.add("class");
+    list.add("enum");
+    list.add("description", false, true);
+    list.add("text", false, true);
     return list;
   }
 

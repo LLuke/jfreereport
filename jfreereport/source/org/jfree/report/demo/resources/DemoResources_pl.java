@@ -28,7 +28,7 @@
  * Original Author:  Piotr Bzdyl;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_pl.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: DemoResources_pl.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.report.demo.resources;
 import java.awt.event.KeyEvent;
 
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
+import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * User interface items for the JFreeReport demonstration application.  These have been put into
@@ -94,5 +95,15 @@ public class DemoResources_pl extends JFreeReportResources
     {"error", "B\u0142\u0105d"},
     {"example", "Przyk\u0142ad {0}"}
   };
+
+  /**
+   * Debugging method, prints all defined contents.
+   *
+   * @param args not used
+   */
+  public static void main(final String[] args)
+  {
+    ResourceCompareTool.main(new String[]{DemoResources.class.getName(), "pl"});
+  }
 
 }

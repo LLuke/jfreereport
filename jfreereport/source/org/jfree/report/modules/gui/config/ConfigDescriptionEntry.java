@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConfigDescriptionEntry.java,v 1.1 2003/08/27 20:19:53 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 26.08.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.config;
@@ -46,6 +46,10 @@ public abstract class ConfigDescriptionEntry
 
   public ConfigDescriptionEntry(String keyName)
   {
+    if (keyName == null)
+    {
+      throw new NullPointerException();
+    }
     this.keyName = keyName;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources_de.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
+ * $Id: ConverterResources_de.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -88,6 +88,10 @@ public class ConverterResources_de extends JFreeReportResources
         {"convertdialog.targetOverwriteTitle", "Datei \u00fcberschreiben?"},
         {"convertdialog.title", "Report-Konverter"},
 
+        {"ResultTableModel.Severity", "Schwere"},
+        {"ResultTableModel.Message", "Nachricht"},
+        {"ResultTableModel.Line", "Zeile"},
+        {"ResultTableModel.Column", "Spalte"},
 
       };
 

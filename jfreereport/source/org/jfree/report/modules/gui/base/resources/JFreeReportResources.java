@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.8 2003/08/27 20:19:53 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -294,7 +294,7 @@ public class JFreeReportResources extends ListResourceBundle
         {"FileChooser.listViewButtonToolTipText", "List"},
         {"FileChooser.lookInLabelMnemonic", new Integer(KeyEvent.VK_I)},
         {"FileChooser.lookInLabelText", "Look in:"},
-        {"FileChooser.newFolderAccessibleNam", "New Folder"},
+        {"FileChooser.newFolderAccessibleName", "New Folder"},
         {"FileChooser.newFolderErrorSeparator", ":"},
         {"FileChooser.newFolderErrorText", "Error creating new folder"},
         {"FileChooser.newFolderToolTipText", "Create New Folder"},
@@ -309,11 +309,18 @@ public class JFreeReportResources extends ListResourceBundle
         {"FileChooser.updateButtonToolTipText", "Update directory listing"},
         {"FileChooser.upFolderAccessibleName", "Up"},
         {"FileChooser.upFolderToolTipText", "Up One Level"},
+        {"FileChooser.openDialogTitleText", "Open"},
+        {"FileChooser.other.newFolder", "New Folder"},
+        {"FileChooser.other.newFolder.subsequent", "New folder. {0}"},
+        {"FileChooser.saveDialogTitleText", "Save"},
+        {"FileChooser.win32.newFolder", "New Folder"},
+        {"FileChooser.win32.newFolder.subsequent", "New folder. ({0})"},
 
         {"OptionPane.yesButtonText", "Yes"},
         {"OptionPane.noButtonText", "No"},
         {"OptionPane.okButtonText", "OK"},
         {"OptionPane.cancelButtonText", "Cancel"},
+        {"OptionPane.titleText", "Choose an option"},
 
         {"ColorChooser.cancelText", "Cancel"},
         {"ColorChooser.hsbNameText", "HSB"},
@@ -367,5 +374,4 @@ public class JFreeReportResources extends ListResourceBundle
         {"progress-dialog.rows-label", "Row: {0} / {1}"},
         {"progress-dialog.pass-label", "Pass: {0} - Computing function values ..."},
       };
-
 }

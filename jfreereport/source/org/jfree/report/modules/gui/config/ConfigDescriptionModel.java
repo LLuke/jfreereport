@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConfigDescriptionModel.java,v 1.1 2003/08/27 20:19:53 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 26.08.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.config;
@@ -44,10 +44,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Properties;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Properties;
 import javax.swing.AbstractListModel;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -165,7 +165,6 @@ public class ConfigDescriptionModel extends AbstractListModel
     {
       String keyname = (String) it.next();
       TextConfigDescriptionEntry entry = new TextConfigDescriptionEntry(keyname);
-      entry.setText(config.getConfigProperty(keyname));
       if (contains(entry) == false)
       {
         add(entry);
@@ -227,11 +226,9 @@ public class ConfigDescriptionModel extends AbstractListModel
       NodeList textNodes = keyElement.getElementsByTagName("text");
       if (textNodes.getLength() != 0)
       {
-        String text = DOMUtilities.getText((Element) textNodes.item(0));
         TextConfigDescriptionEntry textEntry = new TextConfigDescriptionEntry(keyName);
         textEntry.setDescription(descr);
         textEntry.setGlobal(keyGlobal);
-        textEntry.setText(text);
         add(textEntry);
         continue;
       }
@@ -303,21 +300,29 @@ public class ConfigDescriptionModel extends AbstractListModel
       p.setProperty("name", entry.getKeyName());
       p.setProperty("global", String.valueOf(entry.isGlobal()));
       dwriter.writeTag(writer, "key", p, false);
-      dwriter.writeTag(writer, "description");
-      writer.write(parser.encodeEntities(entry.getDescription()));
-      dwriter.writeCloseTag(writer, "description");
+      if (entry.getDescription() != null)
+      {
+        dwriter.writeTag(writer, "description");
+        writer.write(parser.encodeEntities(entry.getDescription()));
+        dwriter.writeCloseTag(writer, "description");
+      }
       if (entry instanceof ClassConfigDescriptionEntry)
       {
         ClassConfigDescriptionEntry ce = (ClassConfigDescriptionEntry) entry;
-        dwriter.writeTag
+        if (ce.getBaseClass() != null)
+        {
+          dwriter.writeTag
             (writer, "class", "instanceof", ce.getBaseClass().getName(), DOMWriter.CLOSE);
+        }
+        else
+        {
+          dwriter.writeTag
+            (writer, "class", "instanceof", "java.lang.Object", DOMWriter.CLOSE);
+        }
       }
       else if (entry instanceof TextConfigDescriptionEntry)
       {
-        TextConfigDescriptionEntry te = (TextConfigDescriptionEntry) entry;
-        dwriter.writeTag (writer, "text");
-        writer.write(parser.encodeEntities(te.getText()));
-        dwriter.writeCloseTag(writer, "text");
+        dwriter.writeTag(writer, "text", new Properties(), DOMWriter.CLOSE);
       }
       else if (entry instanceof EnumConfigDescriptionEntry)
       {
@@ -325,16 +330,20 @@ public class ConfigDescriptionModel extends AbstractListModel
         dwriter.writeTag(writer, "enum");
 
         String[] alts = en.getOptions();
-        for (int optCount = 0; optCount < alts.length; optCount++)
+        if (alts != null)
         {
-          dwriter.writeTag (writer, "text");
-          writer.write(parser.encodeEntities(alts[optCount]));
-          dwriter.writeCloseTag(writer, "text");
+          for (int optCount = 0; optCount < alts.length; optCount++)
+          {
+            dwriter.writeTag (writer, "text");
+            writer.write(parser.encodeEntities(alts[optCount]));
+            dwriter.writeCloseTag(writer, "text");
+          }
         }
         dwriter.writeCloseTag(writer, "enum");
       }
       dwriter.writeCloseTag(writer, "key");
     }
     dwriter.writeCloseTag(writer, "config-description");
+    writer.flush();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_nl.java,v 1.6 2003/08/24 15:08:18 taqua Exp $
+ * $Id: JFreeReportResources_nl.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
  */
 package org.jfree.report.modules.gui.base.resources;
 
@@ -149,8 +149,8 @@ public class JFreeReportResources_nl extends JFreeReportResources
         {"FileChooser.updateButtonToolTipText", "Vernieuw map inhoud"},
         {"FileChooser.upFolderAccessibleName", "Omhoog"},
         {"FileChooser.upFolderToolTipText", "Eén niveau omhoog"},
-        {"FileChooser.other.newFolder", "NieuweMap"},
-        {"FileChooser.other.newFolder.subsequent", "NieuweMap.{0}"},
+        {"FileChooser.other.newFolder", "Nieuwe Map"},
+        {"FileChooser.other.newFolder.subsequent", "Nieuwe Map. {0}"},
         {"FileChooser.win32.newFolder", "Nieuwe Map"},
         {"FileChooser.win32.newFolder.subsequent", "Nieuwe Map ({0})"},
 

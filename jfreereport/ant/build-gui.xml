@@ -172,6 +172,87 @@
 
   <!-- ************************************************************** -->
   <!--                                                                -->
+  <!--  GUI Config modules                                         -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="check-module-parser-simple" depends="init">
+    <available file="${module-parser-simple-file}" property="module-parser-simple-file-present"/>
+  </target>
+
+  <target name="rebuild-module-parser-simple" unless="module-parser-simple-file-present" depends="check-module-parser-simple">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-parser.xml" target="compile-module-parser-simple"/>
+  </target>
+
+  <target name="check-module-parser-extwriter" depends="init">
+    <available file="${module-parser-extwriter-file}" property="module-parser-extwriter-file-present"/>
+  </target>
+
+  <target name="rebuild-module-parser-extwriter" unless="module-parser-extwriter-file-present" depends="check-module-parser-extwriter">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-parser.xml" target="compile-module-parser-extwriter"/>
+  </target>
+
+  <target name="compile-module-gui-converter"
+    depends="compile-module-gui-base, rebuild-module-parser-simple, rebuild-module-parser-extwriter">
+
+    <description>
+      Compiles the Report Configuration GUI. 
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}" target="${build.target}">
+      <include name="org/jfree/report/modules/gui/config/**"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${libdir}/${japx-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-gui-base-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-gui-config" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-gui-config-file}"
+         basedir="build">
+      <manifest>
+        <attribute name="Main-Class" value="org.jfree.report.modules.gui.config.ConfigEditor"/>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${manifest-lib-prefix}${jaxp-jar-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-gui-config">
+    <copy file="source/org/jfree/report/modules/gui/config/configuration.properties"
+      tofile="build/org/jfree/report/modules/gui/config/configuration.properties"/>
+
+    <copy file="source/org/jfree/report/modules/gui/config/module.properties"
+      tofile="build/org/jfree/report/modules/gui/config/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/gui/config/config-description.xml"
+      tofile="build/org/jfree/report/modules/gui/config/config-description.xml"/>
+
+    <copy todir="build/org/jfree/report/modules/gui/base">
+      <fileset dir="source/org/jfree/report/modules/gui/base">
+        <include name="**/*.gif"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
   <!--  CSV Export GUI module                                         -->
   <!--                                                                -->
   <!-- ************************************************************** -->
@@ -554,6 +635,7 @@
 
   <target name="copy-resources"
     depends="copy-resources-gui-converter,
+    copy-resources-gui-config,
     copy-resources-gui-csv,
     copy-resources-gui-html,
     copy-resources-gui-xls,
@@ -564,6 +646,7 @@
 
   <target name="all" depends="init,
   compile-module-gui-base,
+  compile-module-gui-config,
   compile-module-gui-csv,
   compile-module-gui-html,
   compile-module-gui-xls,

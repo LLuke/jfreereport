@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FileConfigStorage.java,v 1.5 2003/08/24 15:08:20 taqua Exp $
+ * $Id: FileConfigStorage.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,6 +50,7 @@ import java.util.Properties;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
+import org.jfree.report.util.Log;
 
 /**
  * The FileConfigStorage is a storage provider that stores its content on
@@ -97,10 +98,13 @@ public class FileConfigStorage implements ConfigStorage
     {
       throw new IllegalArgumentException("The give path is not valid.");
     }
-
+    final File target = new File(baseDirectory, configPath);
+    if (target.canWrite() == false)
+    {
+      Log.info ("The configuration file is not writeable. Ignoring.");
+    }
     try
     {
-      final File target = new File(baseDirectory, configPath);
       final OutputStream out = new BufferedOutputStream(new FileOutputStream(target));
       properties.store(out, CONFIGHEADER);
       out.close();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   Helmut Leininger;
  *
- * $Id: JFreeReportResources_de.java,v 1.6 2003/08/24 15:08:18 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -139,7 +139,7 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"FileChooser.listViewButtonToolTipText", "Listenansicht"},
         {"FileChooser.lookInLabelMnemonic", new Integer(KeyEvent.VK_I)},
         {"FileChooser.lookInLabelText", "Suche in:"},
-        {"FileChooser.newFolderAccessibleNam", "Neuer Ordner"},
+        {"FileChooser.newFolderAccessibleName", "Neuer Ordner"},
         {"FileChooser.newFolderErrorSeparator", ":"},
         {"FileChooser.newFolderErrorText", "Fehler beim erstellen eines neuen Ordners"},
         {"FileChooser.newFolderToolTipText", "Neuen Ordner anlegen"},

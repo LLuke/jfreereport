@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConfigDescriptionEditor.java,v 1.1 2003/08/27 20:19:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,7 +40,6 @@ package org.jfree.report.modules.gui.config;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -49,6 +48,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -72,7 +73,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -86,6 +90,12 @@ import org.jfree.ui.ExtensionFileFilter;
 
 public class ConfigDescriptionEditor extends JFrame
 {
+  private CardLayout detailManager;
+  private JPanel detailManagerPanel;
+  public static final String CLASS_DETAIL_EDITOR_NAME = "Class";
+  public static final String ENUM_DETAIL_EDITOR_NAME = "Enum";
+  public static final String TEXT_DETAIL_EDITOR_NAME = "Text";
+
   private class CloseAction extends AbstractActionDowngrade
   {
     public CloseAction()
@@ -134,6 +144,8 @@ public class ConfigDescriptionEditor extends JFrame
     public void actionPerformed(ActionEvent e)
     {
       model.importFromConfig(ReportConfiguration.getGlobalConfig());
+      model.sort();
+      setStatusText("Import complete.");
     }
   }
 
@@ -150,7 +162,9 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public void actionPerformed(ActionEvent e)
     {
-      model.add(new TextConfigDescriptionEntry("<unnamed entry>"));
+      TextConfigDescriptionEntry te = new TextConfigDescriptionEntry("<unnamed entry>");
+      model.add(te);
+      entryList.setSelectedIndex(model.getSize() - 1);
     }
   }
 
@@ -170,7 +184,7 @@ public class ConfigDescriptionEditor extends JFrame
       int[] selectedEntries = entryList.getSelectedIndices();
       for (int i = selectedEntries.length - 1; i >= 0; i--)
       {
-        model.remove(model.get(i));
+        model.remove(model.get(selectedEntries[i]));
       }
       entryList.clearSelection();
     }
@@ -293,6 +307,25 @@ public class ConfigDescriptionEditor extends JFrame
     }
   }
 
+  private class SetBooleanEnumEntryAction extends AbstractActionDowngrade
+  {
+    public SetBooleanEnumEntryAction()
+    {
+      putValue(NAME, "Boolean");
+    }
+
+    /**
+     * Invoked when an action occurs.
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+      enumEntryListModel.clear();
+      enumEntryEditField.setText("");
+      enumEntryListModel.addElement("true");
+      enumEntryListModel.addElement("false");
+    }
+  }
+
   private class AddEnumEntryAction extends AbstractActionDowngrade
   {
     public AddEnumEntryAction()
@@ -324,7 +357,7 @@ public class ConfigDescriptionEditor extends JFrame
       int[] selectedEntries = enumEntryList.getSelectedIndices();
       for (int i = selectedEntries.length - 1; i >= 0; i--)
       {
-        enumEntryListModel.remove(i);
+        enumEntryListModel.remove(selectedEntries[i]);
       }
       enumEntryList.clearSelection();
     }
@@ -385,9 +418,9 @@ public class ConfigDescriptionEditor extends JFrame
   private DefaultListModel enumEntryListModel;
 
   private ResourceBundle resources;
-  private JPanel enumerationEditor;
-  private JPanel classEditor;
-  private JPanel textEditor;
+//  private JPanel enumerationEditor;
+//  private JPanel classEditor;
+//  private JPanel textEditor;
 
   private JPanel detailEditorPane;
   private JList entryList;
@@ -397,6 +430,7 @@ public class ConfigDescriptionEditor extends JFrame
   private ConfigDescriptionEntry selectedEntry;
   private JFileChooser fileChooser;
 
+  private JLabel statusHolder;
 
   /**
    * Constructs a new frame that is initially invisible.
@@ -412,11 +446,16 @@ public class ConfigDescriptionEditor extends JFrame
     detailEditorPane = createEditPane();
     JSplitPane splitPane = new JSplitPane
         (JSplitPane.HORIZONTAL_SPLIT, createEntryList(), detailEditorPane);
-
+    
     contentPane.add(splitPane, BorderLayout.CENTER);
     contentPane.add(createButtonPane(), BorderLayout.SOUTH);
 
-    setContentPane(contentPane);
+    JPanel cPaneStatus = new JPanel();
+    cPaneStatus.setLayout(new BorderLayout());
+    cPaneStatus.add (contentPane, BorderLayout.CENTER);
+    cPaneStatus.add (createStatusBar(), BorderLayout.SOUTH);
+
+    setContentPane(cPaneStatus);
     setEntryType(TYPE_TEXT);
     setSelectedEntry(null);
 
@@ -425,6 +464,8 @@ public class ConfigDescriptionEditor extends JFrame
         new ExtensionFileFilter
             ("XML files", ".xml"));
     fileChooser.setMultiSelectionEnabled(false);
+
+    setStatusText("Welcome");
   }
 
   private JPanel createEntryList ()
@@ -442,9 +483,12 @@ public class ConfigDescriptionEditor extends JFrame
     toolbar.add(removeEntryAction);
 
     JPanel panel = new JPanel();
+    panel.setMinimumSize(new Dimension(200,0));
     panel.setLayout(new BorderLayout());
     panel.add(toolbar, BorderLayout.NORTH);
-    panel.add(new JScrollPane(entryList), BorderLayout.CENTER);
+    panel.add(new JScrollPane
+        (entryList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), BorderLayout.CENTER);
     return panel;
   }
 
@@ -506,13 +550,15 @@ public class ConfigDescriptionEditor extends JFrame
     listPanel.add(new JScrollPane(enumEntryList), BorderLayout.CENTER);
 
     JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new GridLayout(3,1));
+    buttonPanel.setLayout(new GridLayout(5,1));
     buttonPanel.add(new ActionButton(new AddEnumEntryAction()));
     buttonPanel.add(new ActionButton(new RemoveEnumEntryAction()));
     buttonPanel.add(new ActionButton(new UpdateEnumEntryAction()));
+    buttonPanel.add(new JPanel());
+    buttonPanel.add(new ActionButton(new SetBooleanEnumEntryAction()));
 
     JPanel buttonCarrier = new JPanel();
-    buttonCarrier.setLayout(new FlowLayout());
+    buttonCarrier.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
     buttonCarrier.add (buttonPanel);
 
     JPanel editorPanel = new JPanel();
@@ -586,19 +632,20 @@ public class ConfigDescriptionEditor extends JFrame
     descriptionField.setWrapStyleWord(true);
     keyNameField = new JTextField();
 
-    enumerationEditor = createEnumerationEditor();
-    textEditor = createTextEditor();
-    classEditor = createClassEditor();
+    JPanel enumerationEditor = createEnumerationEditor();
+    JPanel textEditor = createTextEditor();
+    JPanel classEditor = createClassEditor();
 
-    JPanel detailEditorPanel = new JPanel();
-    detailEditorPanel.setBorder(BorderFactory.createLineBorder(Color.green));
-    detailEditorPanel.setLayout(new CardLayout ());
-    detailEditorPanel.add (classEditor, "Class");
-    detailEditorPanel.add (textEditor, "Text");
-    detailEditorPanel.add (enumerationEditor, "Enumeration");
+    detailManagerPanel = new JPanel();
+    detailManager = new CardLayout ();
+    detailManagerPanel.setLayout(detailManager);
+    detailManagerPanel.add (classEditor, CLASS_DETAIL_EDITOR_NAME);
+    detailManagerPanel.add (textEditor, "Text");
+    detailManagerPanel.add (enumerationEditor, "Enum");
 
     JPanel commonEntryEditorPanel = new JPanel();
     commonEntryEditorPanel.setLayout(new GridBagLayout());
+    commonEntryEditorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,0,5));
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
@@ -682,16 +729,14 @@ public class ConfigDescriptionEditor extends JFrame
     gbc.fill = GridBagConstraints.BOTH;
     gbc.insets = new Insets(3, 1, 1, 1);
     gbc.ipadx = 120;
-    commonEntryEditorPanel.add(detailEditorPanel, gbc);
+    commonEntryEditorPanel.add(detailManagerPanel, gbc);
 
-    commonEntryEditorPanel.setBorder(BorderFactory.createLineBorder(Color.blue));
     return commonEntryEditorPanel;
   }
 
   private JPanel createTypeSelectionPane ()
   {
     JPanel panel = new JPanel();
-    panel.setBorder(BorderFactory.createLineBorder(Color.yellow));
     panel.setLayout(new GridLayout(3,1));
 
     rbText = new ActionRadioButton (new SelectTypeAction("Text", TYPE_TEXT));
@@ -710,45 +755,68 @@ public class ConfigDescriptionEditor extends JFrame
     return panel;
   }
 
-  public void setEntryType (int type)
+  /**
+   * Creates the statusbar for this frame. Use setStatus() to display text on the status bar.
+   *
+   * @return the status bar.
+   */
+  protected JPanel createStatusBar()
   {
-    classEditor.setVisible(type == TYPE_CLASS);
-    enumerationEditor.setVisible(type == TYPE_ENUM);
-    textEditor.setVisible(type == TYPE_TEXT);
+    final JPanel statusPane = new JPanel();
+    statusPane.setLayout(new BorderLayout());
+    statusPane.setBorder(
+        BorderFactory.createLineBorder(UIManager.getDefaults().getColor("controlShadow")));
+    statusHolder = new JLabel(" ");
+    statusPane.setMinimumSize(statusHolder.getPreferredSize());
+    statusPane.add(statusHolder, BorderLayout.WEST);
+
+    return statusPane;
+  }
+
+  private void setStatusText (String text)
+  {
+    statusHolder.setText(text);
+  }
+
+  private String getStatusText ()
+  {
+    return statusHolder.getText();
+  }
+
+  private int type;
+
+  private void setEntryType (int type)
+  {
+    this.type = type;
     if (type == TYPE_CLASS)
     {
+      detailManager.show(detailManagerPanel, CLASS_DETAIL_EDITOR_NAME);
       rbClass.setSelected(true);
     }
     else if (type == TYPE_ENUM)
     {
+      detailManager.show(detailManagerPanel, ENUM_DETAIL_EDITOR_NAME);
       rbEnum.setSelected(true);
     }
     else
     {
+      detailManager.show(detailManagerPanel, TEXT_DETAIL_EDITOR_NAME);
       rbText.setSelected(true);
     }
     invalidate();
   }
 
-  public int getEntryType ()
+  private int getEntryType ()
   {
-    if (classEditor.isVisible())
-    {
-      return TYPE_CLASS;
-    }
-    if (enumerationEditor.isVisible())
-    {
-      return TYPE_ENUM;
-    }
-    return TYPE_TEXT;
+    return type;
   }
 
-  public ConfigDescriptionEntry getSelectedEntry()
+  private ConfigDescriptionEntry getSelectedEntry()
   {
     return selectedEntry;
   }
 
-  public void setSelectedEntry(ConfigDescriptionEntry selectedEntry)
+  private void setSelectedEntry(ConfigDescriptionEntry selectedEntry)
   {
     this.selectedEntry = selectedEntry;
 
@@ -792,9 +860,7 @@ public class ConfigDescriptionEditor extends JFrame
     }
   }
 
-
-
-  public void deepEnable (Component comp, boolean state)
+  private void deepEnable (Component comp, boolean state)
   {
     comp.setEnabled(state);
     if (comp instanceof Container)
@@ -808,7 +874,7 @@ public class ConfigDescriptionEditor extends JFrame
     }
   }
 
-  public void save ()
+  private void save ()
   {
     fileChooser.setVisible(true);
 
@@ -820,15 +886,17 @@ public class ConfigDescriptionEditor extends JFrame
         OutputStream out = new BufferedOutputStream(new FileOutputStream(fileChooser.getSelectedFile()));
         model.save(out, "ISO-8859-1");
         out.close();
+        setStatusText("Save complete.");
       }
       catch (Exception ioe)
       {
         Log.debug ("Failed", ioe);
+        setStatusText("Save failed: " + ioe.getMessage());
       }
     }
   }
 
-  public void load ()
+  private void load ()
   {
     fileChooser.setVisible(true);
 
@@ -840,15 +908,18 @@ public class ConfigDescriptionEditor extends JFrame
         InputStream in = new BufferedInputStream(new FileInputStream(fileChooser.getSelectedFile()));
         model.load(in);
         in.close();
+        model.sort();
+        setStatusText("Load complete.");
       }
       catch (Exception ioe)
       {
-        Log.debug ("Failed", ioe);
+        Log.debug ("Load Failed", ioe);
+        setStatusText("Load failed: " + ioe.getMessage());
       }
     }
   }
 
-  public void updateSelectedEntry ()
+  private void updateSelectedEntry ()
   {
     ConfigDescriptionEntry entry;
     switch (getEntryType())
@@ -905,6 +976,7 @@ public class ConfigDescriptionEditor extends JFrame
     model.add(entry);
     model.sort();
     entryList.setSelectedIndex(model.indexOf(entry));
+    setStatusText("Updating entry complete");
   }
 
   public static void main(String[] args)
