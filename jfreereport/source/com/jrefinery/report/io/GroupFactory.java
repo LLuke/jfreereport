@@ -29,17 +29,15 @@
  */
 package com.jrefinery.report.io;
 
-import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.GroupFooter;
 import com.jrefinery.report.GroupHeader;
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class GroupFactory extends AbstractReportDefinitionHandler implements ReportDefinitionTags
+public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
 {
   private JFreeReport report;
   private Group currentGroup;
@@ -47,11 +45,16 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
   private ReportDefinitionContentHandler handler;
   private FontFactory fontFactory;
 
-  public GroupFactory (JFreeReport report, ReportDefinitionContentHandler handler)
+  public GroupFactory (ReportFactory baseFactory)
   {
-    this.report = report;
-    this.handler = handler;
-    fontFactory = handler.getFontFactory();
+    this.report = baseFactory.getReport ();
+    this.handler = baseFactory.getHandler ();
+    fontFactory = handler.getFontFactory ();
+  }
+
+  protected ReportDefinitionContentHandler getHander ()
+  {
+    return handler;
   }
 
   public void startElement (String namespaceURI,
@@ -72,20 +75,79 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     }
     else if (elementName.equals (FIELDS_TAG))
     {
-      // ignore me!
+      startFields (atts);
     }
     else if (elementName.equals (FIELD_TAG))
     {
-      currentText = new StringBuffer();
+      startField (atts);
     }
     else if (elementName.equals (GROUP_TAG))
     {
-      startGroup(atts);
+      startGroup (atts);
     }
     else
     {
       throw new SAXException ("Expected one of: group, groupfooter, groutheader, fields, field");
     }
+  }
+
+  protected void startFields (Attributes atts)
+          throws SAXException
+  {
+  }
+
+  protected void startField (Attributes atts)
+          throws SAXException
+  {
+    currentText = new StringBuffer ();
+  }
+
+
+  protected void startGroup (Attributes attr)
+          throws SAXException
+  {
+    Group group = new Group ();
+    group.setName (handler.generateName (attr.getValue ("name")));
+    setCurrentGroup (group);
+  }
+
+  protected void startGroupHeader (Attributes attr)
+          throws SAXException
+
+  {
+    // get the height...
+    float height = ParserUtil.parseFloat (attr.getValue ("height"), "Element height not specified");
+    boolean pageBreak = ParserUtil.parseBoolean (attr.getValue ("pagebreak"), false);
+    // create the group header...
+    GroupHeader groupHeader = new GroupHeader ();
+    groupHeader.setHeight (height);
+    groupHeader.setPageBreakBeforePrint (pageBreak);
+    groupHeader.setDefaultFont (fontFactory.createDefaultFont (attr));
+    currentGroup.setHeader (groupHeader);
+
+    handler.getReportFactory().setCurrentBand(groupHeader);
+    ElementFactory factory = handler.createElementFactory();
+    handler.setExpectedHandler (factory);
+  }
+
+  /**
+   * Handles the start of a GROUPFOOTER element.
+   */
+  protected void startGroupFooter (Attributes attr) throws SAXException
+  {
+    // get the height...
+    float height = ParserUtil.parseFloat (attr.getValue ("height"), "Element height not specified");
+
+    // get the default font...
+    // create the group footer...
+    GroupFooter groupFooter = new GroupFooter ();
+    groupFooter.setHeight (height);
+    groupFooter.setDefaultFont (fontFactory.createDefaultFont (attr));
+    currentGroup.setFooter (groupFooter);
+
+    handler.getReportFactory().setCurrentBand(groupFooter);
+    ElementFactory factory = handler.createElementFactory();
+    handler.setExpectedHandler (factory);
   }
 
   /**
@@ -104,31 +166,28 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     // *** GROUP HEADER ***
     if (elementName.equals (GROUP_HEADER_TAG))
     {
+      endGroupHeader ();
     }
     // *** GROUP FOOTER ***
     else if (elementName.equals (GROUP_FOOTER_TAG))
     {
+      endGroupFooter ();
     }
     else if (elementName.equals (FIELDS_TAG))
     {
-      // ignore me!
+      endFields ();
     }
     else if (elementName.equals (GROUP_TAG))
     {
-      Log.debug ("Add Group: " + currentGroup.getName());
-      Log.debug ("GroupHeader: " + currentGroup.getName() + " " + currentGroup.getHeader());
-      Log.debug ("GroupFooter: " + currentGroup.getName() + " " + currentGroup.getFooter());
-      report.addGroup(currentGroup);
-      setCurrentGroup(null);
+      endGroup ();
     }
     else if (elementName.equals (FIELD_TAG))
     {
-      this.currentGroup.addField (this.currentText.toString());
-      currentText = null;
+      endField ();
     }
     else if (elementName.equals (GROUPS_TAG))
     {
-      handler.finishedHandler ();
+      endGroups ();
     }
     else
     {
@@ -136,45 +195,39 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     }
   }
 
-  public void startGroup (Attributes attr)
-    throws SAXException
-  {
-    Group group = new Group ();
-    group.setName (generateName (attr.getValue ("name")));
-    setCurrentGroup(group);
-  }
-
-  public void startGroupHeader (Attributes attr)
+  protected void endGroups ()
           throws SAXException
-
   {
-    // get the height...
-    float height = parseFloat (attr.getValue ("height"), "Element height not specified");
-    boolean pageBreak = parseBoolean(attr.getValue ("pagebreak"), false);
-    // create the group header...
-    GroupHeader groupHeader = new GroupHeader ();
-    groupHeader.setHeight (height);
-    groupHeader.setPageBreakBeforePrint(pageBreak);
-    groupHeader.setDefaultFont (fontFactory.createDefaultFont (attr));
-    currentGroup.setHeader (groupHeader);
-    handler.setExpectedHandler(new ElementFactory(groupHeader, handler));
+    handler.finishedHandler ();
   }
 
-  /**
-   * Handles the start of a GROUPFOOTER element.
-   */
-  private void startGroupFooter (Attributes attr) throws SAXException
+  protected void endGroup ()
+          throws SAXException
   {
-    // get the height...
-    float height = parseFloat (attr.getValue ("height"), "Element height not specified");
+    getReport ().addGroup (currentGroup);
+    setCurrentGroup (null);
+  }
 
-    // get the default font...
-    // create the group footer...
-    GroupFooter groupFooter = new GroupFooter ();
-    groupFooter.setHeight (height);
-    groupFooter.setDefaultFont (fontFactory.createDefaultFont (attr));
-    currentGroup.setFooter (groupFooter);
-    handler.setExpectedHandler(new ElementFactory(groupFooter, handler));
+  protected void endField ()
+          throws SAXException
+  {
+    this.currentGroup.addField (this.currentText.toString ());
+    currentText = null;
+  }
+
+  protected void endFields ()
+          throws SAXException
+  {
+  }
+
+  protected void endGroupFooter ()
+          throws SAXException
+  {
+  }
+
+  protected void endGroupHeader ()
+          throws SAXException
+  {
   }
 
   public void setCurrentGroup (Group currentGroup)

@@ -26,9 +26,12 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 10-May-2002 : Initial version
+ * 20-May-2002 : The default font is no longer hardcoded into the factory. It uses the Bands
+ *               default font as fallback.
  */
 package com.jrefinery.report.io;
 
+import com.jrefinery.report.Band;
 import org.xml.sax.Attributes;
 
 import java.awt.Font;
@@ -46,9 +49,10 @@ public class FontFactory implements ReportDefinitionTags
 
   public void init ()
   {
-    defaultFontName = "Serif";
-    defaultFontStyle = Font.PLAIN;
-    defaultFontSize = 12;
+    Font defaultFont = Band.DEFAULT_FONT;
+    defaultFontName = defaultFont.getName ();
+    defaultFontStyle = defaultFont.getStyle ();
+    defaultFontSize = defaultFont.getSize ();
   }
 
   protected int readInt (Attributes attr, String name, int def)
@@ -68,29 +72,38 @@ public class FontFactory implements ReportDefinitionTags
     return def;
   }
 
-  protected String readString (Attributes attr, String name, String def)
-  {
-    String val = attr.getValue (name);
-    if (val == null)
-      return def;
-    return val;
-  }
-
-  protected int readFontStyle (Attributes attr, int def)
+  protected int readSimpleFontStyle (Attributes attr, int def)
   {
     String fontStyle = attr.getValue (FONT_STYLE_ATT);
+    boolean isBold = false;
+    boolean isItalic = false;
+    boolean isUnderline = false;
+    boolean isStriked = false;
+
     int fs = def;
     if (fontStyle != null)
     {
-      if (fontStyle.equals ("plain"))
-        fs = Font.PLAIN;
-      else if (fontStyle.equals ("bold"))
-        fs = Font.BOLD;
+      if (fontStyle.equals ("bold"))
+      {
+        isBold = true;
+      }
       else if (fontStyle.equals ("italic"))
-        fs = Font.ITALIC;
+      {
+        isItalic = true;
+      }
       else if (fontStyle.equals ("bold-italic"))
-        fs = Font.BOLD + Font.ITALIC;
+      {
+        isBold = true;
+        isItalic = true;
+      }
     }
+
+    isBold = ParserUtil.parseBoolean (attr.getValue (FS_BOLD), isBold);
+    isItalic = ParserUtil.parseBoolean (attr.getValue (FS_ITALIC), isItalic);
+//    isUnderline = ParserUtil.parseBoolean (attr.getValue (FS_UNDERLINE), isUnderline);
+//    isStriked = ParserUtil.parseBoolean (attr.getValue (FS_STRIKETHR), isStriked);
+    if (isBold) fs += Font.BOLD;
+    if (isItalic) fs += Font.ITALIC;
     return fs;
   }
 
@@ -98,10 +111,10 @@ public class FontFactory implements ReportDefinitionTags
           throws ReportDefinitionException
   {
     // get the font name...
-    String elementFontName = readString (attr, FONT_NAME_ATT, defaultFontName);
+    String elementFontName = ParserUtil.parseString (attr.getValue (FONT_NAME_ATT), defaultFontName);
 
     // get the font style...
-    int elementFontStyle = readFontStyle (attr, defaultFontStyle);
+    int elementFontStyle = readSimpleFontStyle (attr, defaultFontStyle);
 
     // get the font size...
     int elementFontSize = readInt (attr, FONT_SIZE_ATT, defaultFontSize);
@@ -117,10 +130,10 @@ public class FontFactory implements ReportDefinitionTags
   {
     init ();
     // get the font name...
-    defaultFontName = readString (attr, FONT_NAME_ATT, defaultFontName);
+    defaultFontName = ParserUtil.parseString (attr.getValue (FONT_NAME_ATT), defaultFontName);
 
     // get the font style...
-    defaultFontStyle = readFontStyle (attr, defaultFontStyle);
+    defaultFontStyle = readSimpleFontStyle (attr, defaultFontStyle);
 
     // get the font size...
     defaultFontSize = readInt (attr, FONT_SIZE_ATT, defaultFontSize);

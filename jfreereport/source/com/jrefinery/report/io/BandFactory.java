@@ -26,9 +26,11 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 10-May-2002 : Initial version
+ * 22-May-2002 : Structured parsing functions: all tags have a startXXX and endXXX function
  */
 package com.jrefinery.report.io;
 
+import com.jrefinery.report.Band;
 import com.jrefinery.report.ItemBand;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.PageFooter;
@@ -38,6 +40,7 @@ import com.jrefinery.report.ReportHeader;
 import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * The band factory handles all Bands. Bands can be one of
@@ -49,24 +52,32 @@ import org.xml.sax.SAXException;
  * <li>items
  * </ul>
  */
-public class BandFactory extends AbstractReportDefinitionHandler implements ReportDefinitionTags
+public class BandFactory extends DefaultHandler implements ReportDefinitionTags
 {
   private ReportDefinitionContentHandler handler;
   private FontFactory fontFactory;
   private JFreeReport report;
 
-  public BandFactory (JFreeReport report, ReportDefinitionContentHandler handler)
+  public BandFactory (ReportFactory base)
   {
-    if (report == null)
-      throw new NullPointerException ("No report?");
-    this.handler = handler;
-    this.report = report;
+    this.handler = base.getHandler ();
+    this.report = base.getReport ();
     this.fontFactory = handler.getFontFactory ();
   }
 
-  public JFreeReport getReport ()
+  private JFreeReport getReport ()
   {
     return report;
+  }
+
+  public Band getCurrentBand ()
+  {
+    return handler.getReportFactory().getCurrentBand();
+  }
+
+  protected void setCurrentBand (Band band)
+  {
+    handler.getReportFactory().setCurrentBand(band);
   }
 
   public void startElement (String namespaceURI,
@@ -112,26 +123,26 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     String elementName = qName.toLowerCase ().trim ();
     if (elementName.equals (REPORT_HEADER_TAG))
     {
-      handler.finishedHandler ();
+      endReportHeader ();
     }
     // *** REPORT FOOTER ***
     else if (elementName.equals (REPORT_FOOTER_TAG))
     {
-      handler.finishedHandler ();
+      endReportFooter ();
     }
     // *** PAGE HEADER ***
     else if (elementName.equals (PAGE_HEADER_TAG))
     {
-      handler.finishedHandler ();
+      endPageHeader ();
     }
     // *** PAGE FOOTER ***
     else if (elementName.equals (PAGE_FOOTER_TAG))
     {
-      handler.finishedHandler ();
+      endPageFooter ();
     }
     else if (elementName.equals (ITEMS_TAG))
     {
-      handler.finishedHandler ();
+      endItems ();
     }
     else
     {
@@ -142,8 +153,8 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
   public void startReportHeader (Attributes attr)
           throws SAXException
   {
-    float height = parseFloat (attr.getValue ("height"), "Element height not specified");
-    boolean ownPage = parseBoolean (attr.getValue ("ownpage"), false);
+    float height = ParserUtil.parseFloat (attr.getValue ("height"), "Element height not specified");
+    boolean ownPage = ParserUtil.parseBoolean (attr.getValue ("ownpage"), false);
 
     // create the report header...
     ReportHeader reportHeader = new ReportHeader ();
@@ -151,15 +162,16 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     reportHeader.setOwnPage (ownPage);
     reportHeader.setDefaultFont (fontFactory.createDefaultFont (attr));
     getReport ().setReportHeader (reportHeader);
-    handler.setExpectedHandler (new ElementFactory (reportHeader, handler));
+    setCurrentBand (reportHeader);
+    handler.setExpectedHandler (handler.createElementFactory ());
   }
 
   public void startReportFooter (Attributes attr)
           throws SAXException
   {
     // get the height...
-    float height = parseFloat (attr.getValue ("height"), "Element height not specified");
-    boolean ownPage = parseBoolean (attr.getValue ("ownpage"), false);
+    float height = ParserUtil.parseFloat (attr.getValue ("height"), "Element height not specified");
+    boolean ownPage = ParserUtil.parseBoolean (attr.getValue ("ownpage"), false);
 
     // create the report footer...
     ReportFooter reportFooter = new ReportFooter ();
@@ -167,16 +179,17 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     reportFooter.setOwnPage (ownPage);
     reportFooter.setDefaultFont (fontFactory.createDefaultFont (attr));
     getReport ().setReportFooter (reportFooter);
-    handler.setExpectedHandler (new ElementFactory (reportFooter, handler));
+    setCurrentBand (reportFooter);
+    handler.setExpectedHandler (handler.createElementFactory ());
   }
 
   public void startPageHeader (Attributes attr)
           throws SAXException
   {
     // get the height...
-    float height = parseFloat (attr.getValue ("height"), "Element height not specified");
-    boolean firstPage = parseBoolean (attr.getValue ("onfirstpage"), true);
-    boolean lastPage = parseBoolean (attr.getValue ("onlastpage"), true);
+    float height = ParserUtil.parseFloat (attr.getValue ("height"), "Element height not specified");
+    boolean firstPage = ParserUtil.parseBoolean (attr.getValue ("onfirstpage"), true);
+    boolean lastPage = ParserUtil.parseBoolean (attr.getValue ("onlastpage"), true);
 
     // create the page header...
     PageHeader pageHeader = new PageHeader ();
@@ -184,17 +197,18 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     pageHeader.setDisplayOnFirstPage (firstPage);
     pageHeader.setDisplayOnLastPage (lastPage);
     pageHeader.setDefaultFont (fontFactory.createDefaultFont (attr));
+    setCurrentBand (pageHeader);
     getReport ().setPageHeader (pageHeader);
-    handler.setExpectedHandler (new ElementFactory (pageHeader, handler));
+    handler.setExpectedHandler (handler.createElementFactory ());
   }
 
   public void startPageFooter (Attributes attr)
           throws SAXException
   {
     // get the height...
-    float height = parseFloat (attr.getValue ("height"), "Element height not specified");
-    boolean firstPage = parseBoolean (attr.getValue ("onfirstpage"), true);
-    boolean lastPage = parseBoolean (attr.getValue ("onlastpage"), true);
+    float height = ParserUtil.parseFloat (attr.getValue ("height"), "Element height not specified");
+    boolean firstPage = ParserUtil.parseBoolean (attr.getValue ("onfirstpage"), true);
+    boolean lastPage = ParserUtil.parseBoolean (attr.getValue ("onlastpage"), true);
 
     // create the page footer...
     PageFooter pageFooter = new PageFooter ();
@@ -202,19 +216,46 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     pageFooter.setDisplayOnFirstPage (firstPage);
     pageFooter.setDisplayOnLastPage (lastPage);
     pageFooter.setDefaultFont (fontFactory.createDefaultFont (attr));
+    setCurrentBand (pageFooter);
     getReport ().setPageFooter (pageFooter);
-    handler.setExpectedHandler (new ElementFactory (pageFooter, handler));
+    handler.setExpectedHandler (handler.createElementFactory ());
   }
 
   public void startItems (Attributes attr)
           throws SAXException
   {
     // get the height...
-    float height = parseFloat (attr.getValue ("height"), "Element height not specified");
+    float height = ParserUtil.parseFloat (attr.getValue ("height"), "Element height not specified");
     ItemBand items = new ItemBand ();
     items.setHeight (height);
     items.setDefaultFont (fontFactory.createDefaultFont (attr));
+    setCurrentBand (items);
     getReport ().setItemBand (items);
-    handler.setExpectedHandler (new ElementFactory (items, handler));
+    handler.setExpectedHandler (handler.createElementFactory ());
+  }
+
+  public void endItems ()
+  {
+    handler.finishedHandler ();
+  }
+
+  public void endPageHeader ()
+  {
+    handler.finishedHandler ();
+  }
+
+  public void endPageFooter ()
+  {
+    handler.finishedHandler ();
+  }
+
+  public void endReportHeader ()
+  {
+    handler.finishedHandler ();
+  }
+
+  public void endReportFooter ()
+  {
+    handler.finishedHandler ();
   }
 }

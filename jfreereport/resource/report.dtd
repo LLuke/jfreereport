@@ -4,7 +4,8 @@
 	ChangeLog:
 
 	2002-05-01: Taq: Added multiline-field and multiline-function element
-
+  2002-05-23: Changed the font style for extended attributes. The old attribute is also valid
+              and gets silently mapped to the new style by the parser.
  -->
 
 <!ENTITY % boolean
@@ -29,6 +30,9 @@
  The next element should be placed at the absolute position x+width,
  or the elements will overwrite each other.
 
+ All Fontstyles default to plain and all boolean styles to false. If no font is
+ set either in Band nor in element, a compiled in default font is used.
+
 -->
 <!ENTITY % position
  "x           CDATA          #IMPLIED
@@ -40,26 +44,34 @@
 
 <!ENTITY % basicform
 " height         CDATA          #REQUIRED
-  fontname       CDATA          #IMPLIED
-  fontstyle      (%fontstyle;)  #IMPLIED
-  fontsize       CDATA          #IMPLIED
-  alignment      CDATA          #IMPLIED
-  baseline       CDATA          #IMPLIED
   color          CDATA          #IMPLIED
 	name           CDATA          #IMPLIED"
-
  >
 
+<!ENTITY % fontdef
+" fontname       CDATA          #IMPLIED
+  fontstyle      (%fontstyle;)  #IMPLIED
+  fontsize       CDATA          #IMPLIED
+  fsbold         (%boolean;)    #IMPLIED
+  fsitalic       (%boolean;)    #IMPLIED
+  fsunderline    (%boolean;)    #IMPLIED
+  fsstrikethr    (%boolean;)    #IMPLIED
+  alignment      CDATA          #IMPLIED
+  baseline       CDATA          #IMPLIED"
+ >
+
+<!--
+  Removed multiline function: This element was never implemented and now all text elements
+  support linebreaks.
+  -->
 <!ENTITY % itemelements
   "(label | general-field | string-field | string-function |
   number-field | number-function | date-field | date-function |
-	multiline-field | multiline-function | imageref | line)*">
+	multiline-field | imageref | line)*">
 
 <!--
 
-   A foreword:
-
-     colordefinitions are given either as predefined names as defined
+     Colordefinitions are given either as predefined names as defined
      in HTML or as HTML-RGB-Color-Reference ("#rrggbb");
 
  -->
@@ -245,6 +257,7 @@
 <!ATTLIST label
   %basicform;
   %position;
+  %fontdef;
   nullstring  CDATA    #IMPLIED
 >
 
@@ -256,6 +269,7 @@
 <!ATTLIST general-field
   %basicform;
   %position;
+  %fontdef;
   fieldname   CDATA    #REQUIRED
 >
 
@@ -266,6 +280,7 @@
 <!ATTLIST string-field
   %basicform;
   %position;
+  %fontdef;
   fieldname   CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
 >
@@ -277,6 +292,7 @@
 <!ATTLIST multiline-field
   %basicform;
   %position;
+  %fontdef;
   fieldname   CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
 >
@@ -285,6 +301,7 @@
 <!ATTLIST number-field
   %basicform;
   %position;
+  %fontdef;
   format		CDATA      #IMPLIED
   fieldname   CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
@@ -294,6 +311,7 @@
 <!ATTLIST date-field
   %basicform;
   %position;
+  %fontdef;
   format		CDATA      #IMPLIED
   fieldname   CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
@@ -311,27 +329,32 @@
 <!ATTLIST string-function
   %basicform;
   %position;
+  %fontdef;
   function    CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
 >
 
 <!--
 
-  @0.7.2 This on is not yet implemented. Next release.
+  @0.7.2 This on is not yet implemented. Next Release.
+   ->    Removed, all TextElements support LineBreaks, there no need for a special function
+         anymore
 
-  -->
 <!ELEMENT multiline-function   EMPTY>
 <!ATTLIST multiline-function
   %basicform;
   %position;
+  %fontdef;
   function    CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
 >
+  -->
 
 <!ELEMENT number-function   EMPTY>
 <!ATTLIST number-function
   %basicform;
   %position;
+  %fontdef;
   function    CDATA    #REQUIRED
   format		  CDATA    #IMPLIED
   nullstring  CDATA    #IMPLIED
@@ -341,18 +364,25 @@
 <!ATTLIST date-function
   %basicform;
   %position;
+  %fontdef;
   function    CDATA    #REQUIRED
   format		  CDATA    #IMPLIED
   nullstring  CDATA    #IMPLIED
 >
 
+<!--
+
+ This one was never implemented. Use a generic text function to display objects. The textfunction
+ uses toString() to display the string representation, as this element was intended to do.
+
 <!ELEMENT general-function   EMPTY>
 <!ATTLIST general-function
   %basicform;
   %position;
+  %fontdef;
   function    CDATA #REQUIRED
 >
-
+-->
 <!--
 
    The image reference links an external image into the report.

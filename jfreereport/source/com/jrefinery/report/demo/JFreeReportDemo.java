@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.7 2002/05/17 12:45:06 jaosch Exp $
+ * $Id: JFreeReportDemo.java,v 1.8 2002/05/21 23:06:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -550,7 +550,10 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     catch (Exception e)
     {
     }
-    Log.addTarget(new SystemOutLogTarget());
+    if (System.getProperty("com.jrefinery.report.demo.DEBUG", "false").equals("true"))
+    {
+      Log.addTarget(new SystemOutLogTarget());
+    }
     String baseName = "com.jrefinery.report.demo.resources.DemoResources";
     ResourceBundle resources = ResourceBundle.getBundle(baseName);
 

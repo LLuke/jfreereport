@@ -30,16 +30,20 @@
 package com.jrefinery.report.io;
 
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.Band;
+import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Handles: REPORT_TAG
  */
-public class ReportFactory extends AbstractReportDefinitionHandler implements ReportDefinitionTags
+public class ReportFactory extends DefaultHandler implements ReportDefinitionTags
 {
   private JFreeReport report;
   private ReportDefinitionContentHandler handler;
+  private Band currentBand;
 
   public ReportFactory (ReportDefinitionContentHandler handler)
   {
@@ -54,9 +58,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
     String elementName = qName.toLowerCase ().trim ();
     if (elementName.equals (REPORT_TAG))
     {
-      String name = generateName (atts.getValue ("name"));
-      this.report = new JFreeReport ();
-      this.report.setName (name);
+      startReport(atts);
     }
     else if (elementName.equals (REPORT_HEADER_TAG) ||
             elementName.equals (REPORT_FOOTER_TAG) ||
@@ -64,17 +66,18 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
             elementName.equals (PAGE_FOOTER_TAG) ||
             elementName.equals (ITEMS_TAG))
     {
-      BandFactory bandFactory = new BandFactory (report, handler);
+      // Forward the event to the newly created
+      BandFactory bandFactory = handler.createBandFactory ();
       handler.setExpectedHandler (bandFactory);
       bandFactory.startElement (namespaceURI, localName, qName, atts);
     }
     else if (elementName.equals (GROUPS_TAG))
     {
-      startGroups ();
+      startGroups (atts);
     }
     else if (elementName.equals (FUNCTIONS_TAG))
     {
-      startFunctions ();
+      startFunctions (atts);
     }
     else
     {
@@ -88,29 +91,67 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
     String elementName = qName.toLowerCase ().trim ();
     if (elementName.equals (REPORT_TAG))
     {
-      handler.setReport(report);
+      endReport ();
     }
     else
     {
-      System.err.println ("Expected </report>");
-      throw new SAXException ("Expected report");
+      Log.error ("Expected </report>");
+      throw new SAXException ("Expected report end tag");
     }
   }
 
-  public void startGroups ()
+  public void startReport (Attributes atts)
+          throws SAXException
   {
-    GroupFactory groupFactory = new GroupFactory (report, handler);
-    handler.setExpectedHandler (groupFactory);
+    String name = getHandler ().generateName (atts.getValue ("name"));
+
+    JFreeReport report = new JFreeReport ();
+    report.setName (name);
+    setReport (report);
   }
 
-  public void startFunctions ()
+  public void startGroups (Attributes atts)
+          throws SAXException
   {
-    FunctionFactory functionFactory = new FunctionFactory (report, handler);
-    handler.setExpectedHandler (functionFactory);
+    GroupFactory groupFactory = handler.createGroupFactory ();
+    getHandler ().setExpectedHandler (groupFactory);
+  }
+
+  public void startFunctions (Attributes atts)
+          throws SAXException
+  {
+    FunctionFactory functionFactory = handler.createFunctionFactory ();
+    getHandler ().setExpectedHandler (functionFactory);
+  }
+
+  public void endReport ()
+          throws SAXException
+  {
+    getHandler ().setReport (report);
   }
 
   public JFreeReport getReport ()
   {
     return report;
+  }
+
+  public ReportDefinitionContentHandler getHandler ()
+  {
+    return handler;
+  }
+
+  public Band getCurrentBand ()
+  {
+    return currentBand;
+  }
+
+  public void setCurrentBand (Band band)
+  {
+    this.currentBand = band;
+  }
+
+  public void setReport (JFreeReport report)
+  {
+    this.report = report;
   }
 }

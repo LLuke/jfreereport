@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData1.java,v 1.1.1.1 2002/04/25 17:02:31 taqua Exp $
+ * $Id: SampleData1.java,v 1.2 2002/05/14 21:35:03 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -130,7 +130,6 @@ public class SampleData1 extends AbstractTableModel
    */
   public Object getValueAt (int row, int column)
   {
-    //System.out.println ("R: " + row + " , C: " + column);
     return data[row][column];
   }
 

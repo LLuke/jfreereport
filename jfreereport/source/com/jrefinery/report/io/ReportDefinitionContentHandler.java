@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportDefinitionContentHandler.java,v 1.1.1.1 2002/04/25 17:02:28 taqua Exp $
+ * $Id: ReportDefinitionContentHandler.java,v 1.2 2002/05/14 21:35:05 taqua Exp $
  *
  * Changes
  * -------
@@ -67,15 +67,24 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
         implements ReportDefinitionTags
 {
   private Stack currentHandler;
-  private FontFactory fontFactory;
 
-  /** The report under construction. */
-  private JFreeReport report;
+  private FontFactory fontFactory;
   private ReportFactory factory;
+
+  /**
+   * The report under construction. This element is null until the complete report has been
+   * parsed.
+   */
+  private JFreeReport report;
 
   public FontFactory getFontFactory ()
   {
     return fontFactory;
+  }
+
+  protected ReportFactory getReportFactory ()
+  {
+    return factory;
   }
 
   public void setExpectedHandler (DefaultHandler handler)
@@ -98,8 +107,9 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
    */
   public ReportDefinitionContentHandler ()
   {
-    factory = new ReportFactory (this);
-    fontFactory = new FontFactory();
+    factory = createReportFactory ();
+    fontFactory = createFontFactory ();
+
     currentHandler = new Stack ();
     currentHandler.push (factory);
   }
@@ -116,7 +126,6 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   public void setReport (JFreeReport report)
   {
     this.report = report;
-    System.out.println ("Report: " + report);
     finishedHandler ();
   }
 
@@ -130,7 +139,7 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
                             Attributes atts) throws SAXException
   {
     DefaultHandler handler = getExpectedHandler ();
-    Log.debug ("Parsing delegated to : " + handler.getClass().getName() + " for start tag " + qName);
+    Log.debug ("Parsing delegated to : " + handler.getClass ().getName () + " for start tag " + qName);
     handler.startElement (namespaceURI, localName, qName, atts);
   }
 
@@ -147,7 +156,42 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   public void endElement (String namespaceURI, String localName, String qName) throws SAXException
   {
     DefaultHandler handler = getExpectedHandler ();
-    Log.debug ("Parsing delegated to : " + handler.getClass().getName() + " for end tag " + qName);
+    Log.debug ("Parsing delegated to : " + handler.getClass ().getName () + " for end tag " + qName);
     handler.endElement (namespaceURI, localName, qName);
+  }
+
+  public ElementFactory createElementFactory ()
+  {
+    return new ElementFactory (getReportFactory ());
+  }
+
+  public FontFactory createFontFactory ()
+  {
+    return new FontFactory ();
+  }
+
+  public FunctionFactory createFunctionFactory ()
+  {
+    return new FunctionFactory (getReportFactory ());
+  }
+
+  public GroupFactory createGroupFactory ()
+  {
+    return new GroupFactory (getReportFactory ());
+  }
+
+  public ReportFactory createReportFactory ()
+  {
+    return new ReportFactory (this);
+  }
+
+  public BandFactory createBandFactory ()
+  {
+    return new BandFactory (getReportFactory ());
+  }
+
+  public AbstractReportDefinitionHandler getInstance ()
+  {
+    return new ReportDefinitionContentHandler ();
   }
 }

@@ -29,13 +29,13 @@
  */
 package com.jrefinery.report.io;
 
-import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.util.Log;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.Properties;
 
@@ -48,10 +48,10 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   private String currentProperty;
   private ReportDefinitionContentHandler handler;
 
-  public FunctionFactory (JFreeReport report, ReportDefinitionContentHandler handler)
+  public FunctionFactory (ReportFactory baseFactory)
   {
-    this.report = report;
-    this.handler = handler;
+    this.report = baseFactory.getReport ();
+    this.handler = baseFactory.getHandler ();
   }
 
   public void startElement (String namespaceURI,
@@ -66,75 +66,81 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     }
     else if (elementName.equals (FUNCTIONS_TAG))
     {
+      startFunctions (atts);
     }
     else if (elementName.equals (PROPERTIES_TAG))
     {
-      currentProperties = new Properties ();
+      startProperties (atts);
     }
     else if (elementName.equals (PROPERTY_TAG))
     {
-      currentProperty = atts.getValue ("name");
-      currentText = new StringBuffer ();
+      startProperty (atts);
     }
     else if (elementName.equals (DATAREF_TAG))
     {
+      startDataRef (atts);
     }
     else
       throw new SAXException ("Expected function tag");
+  }
+
+  protected Properties getProperties ()
+  {
+    return currentProperties;
+  }
+
+  protected void setProperties (Properties p)
+  {
+    this.currentProperties = p;
+  }
+
+  protected Function getCurrentFunction ()
+  {
+    return currentFunction;
+  }
+
+  protected void setCurrentFunction (Function function)
+  {
+    this.currentFunction = function;
+  }
+
+  protected JFreeReport getReport ()
+  {
+    return report;
+  }
+
+  protected void startProperties (Attributes atts)
+          throws SAXException
+  {
+    setProperties (new Properties ());
+  }
+
+  protected void startProperty (Attributes atts)
+          throws SAXException
+  {
+    currentProperty = atts.getValue ("name");
+    currentText = new StringBuffer ();
   }
 
   /**
-   * Receives some (or all) of the text in the current element.
+   * Does nothing.
    */
-  public void characters (char[] ch, int start, int length)
+  protected void startDataRef (Attributes atts)
+          throws SAXException
   {
-// @todo: Parse the default entities
-
-// accumulate the characters in case the text is split into several chunks...
-    if (this.currentText != null)
-      this.currentText.append (String.copyValueOf (ch, start, length));
   }
 
-  public void endElement (String namespaceURI,
-                          String localName,
-                          String qName) throws SAXException
+  /**
+   * Does nothing.
+   */
+  protected void startFunctions (Attributes atts)
+          throws SAXException
   {
-    String elementName = qName.toLowerCase ().trim ();
-    if (elementName.equals (FUNCTION_TAG))
-    {
-      try
-      {
-        report.addFunction (currentFunction);
-      }
-      catch (FunctionInitializeException fie)
-      {
-        throw new SAXException(fie);
-      }
-    }
-    else if (elementName.equals (FUNCTIONS_TAG))
-    {
-      handler.finishedHandler ();
-    }
-    else if (elementName.equals (DATAREF_TAG))
-    {
-    }
-    else if (elementName.equals (PROPERTIES_TAG))
-    {
-      currentFunction.setProperties (currentProperties);
-    }
-    else if (elementName.equals (PROPERTY_TAG))
-    {
-      currentProperties.setProperty (currentProperty, currentText.toString ());
-      Log.debug ("FunctionProperty: " + currentProperty + " = " + currentText.toString ());
-      currentText = null;
-    }
-    else
-      throw new SAXException ("Expected function tag");
-
   }
 
-  public void startFunction (Attributes attr)
-    throws SAXException
+
+  protected void startFunction (Attributes attr)
+          throws SAXException
   {
     String name = handler.generateName (attr.getValue ("name"));
     String className = attr.getValue ("class");
@@ -161,6 +167,92 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     {
       throw new SAXException ("Function " + name + " class=" + className + " is not valid: Instantiation: " + e.getMessage ());
     }
+  }
+
+  /**
+   * Receives some (or all) of the text in the current element.
+   */
+  public void characters (char[] ch, int start, int length)
+  {
+    // @todo: Parse the default entities
+    // accumulate the characters in case the text is split into several chunks...
+    if (this.currentText != null)
+      this.currentText.append (String.copyValueOf (ch, start, length));
+  }
+
+  public void endElement (String namespaceURI,
+                          String localName,
+                          String qName) throws SAXException
+  {
+    String elementName = qName.toLowerCase ().trim ();
+    if (elementName.equals (FUNCTION_TAG))
+    {
+      endFunction ();
+    }
+    else if (elementName.equals (FUNCTIONS_TAG))
+    {
+      endFunctions ();
+    }
+    else if (elementName.equals (DATAREF_TAG))
+    {
+      endDataRef ();
+    }
+    else if (elementName.equals (PROPERTIES_TAG))
+    {
+      endProperties ();
+    }
+    else if (elementName.equals (PROPERTY_TAG))
+    {
+      endProperty ();
+    }
+    else
+      throw new SAXException ("Expected function tag");
+
+  }
+
+  protected void endFunction ()
+          throws SAXException
+  {
+    try
+    {
+      getReport ().addFunction (currentFunction);
+    }
+    catch (FunctionInitializeException fie)
+    {
+      throw new SAXException (fie);
+    }
+  }
+
+  protected void endFunctions ()
+          throws SAXException
+  {
+    handler.finishedHandler ();
+  }
+
+  protected void endDataRef ()
+          throws SAXException
+  {
+  }
+
+  protected void endProperties ()
+          throws SAXException
+  {
+    Function f = getCurrentFunction ();
+    if (f == null)
+      throw new SAXException ("End properties reached without a function defined");
+    f.setProperties (currentProperties);
+  }
+
+  protected void endProperty ()
+          throws SAXException
+  {
+    Properties currentProps = getProperties ();
+    if (currentProps == null)
+      throw new SAXException ("EndProperty without properties tag?");
+
+    currentProps.setProperty (currentProperty, currentText.toString ());
+    Log.debug ("FunctionProperty: " + currentProperty + " = " + currentText.toString ());
+    currentText = null;
   }
 }
 

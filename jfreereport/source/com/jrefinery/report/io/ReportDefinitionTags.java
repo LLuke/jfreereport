@@ -74,7 +74,18 @@ public interface ReportDefinitionTags
   public static final String FONT_STYLE_ATT = "fontstyle";
   public static final String FONT_SIZE_ATT = "fontsize";
 
+  public static final String FS_BOLD = "fsbold";
+  public static final String FS_ITALIC = "fsitalic";
+  public static final String FS_UNDERLINE = "fsunderline";
+  public static final String FS_STRIKETHR = "fsstrikethr";
+
   public static final String PROPERTY_TAG = "property";
   public static final String PROPERTIES_TAG = "properties";
 
+  public static final String NAME_ATT = "name";
+  public static final String ALIGNMENT_ATT = "alignment";
+  public static final String COLOR_ATT = "color";
+  public static final String FIELDNAME_ATT = "fieldname";
+  public static final String FUNCTIONNAME_ATT = "function";
+  public static final String NULLSTRING_ATT = "nullstring";
 }

@@ -33,25 +33,23 @@
  */
 package com.jrefinery.report.io;
 
-import java.net.URL;
-
-import org.xml.sax.SAXException;
+import com.jrefinery.report.JFreeReport;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.jrefinery.report.JFreeReport;
+import java.net.URL;
 
 /**
  * Extends the SAX-DefaultHandler with ContentBase capabilities.
  */
 public abstract class AbstractReportDefinitionHandler extends DefaultHandler
 {
-  protected static URL contentBase;
+  private URL contentBase;
   private int nameCounter;
 
   /**
    * Empty DefaultConstructor
    */
-  public AbstractReportDefinitionHandler()
+  public AbstractReportDefinitionHandler ()
   {
   }
 
@@ -59,14 +57,14 @@ public abstract class AbstractReportDefinitionHandler extends DefaultHandler
    * Returns the report after the parsing is complete. Don't call until the report is
    * completly build or you may get unexpected results.
    */
-  public abstract JFreeReport getReport();
+  public abstract JFreeReport getReport ();
 
   /**
    * Sets the contentBase for this report. The contentBase is used to resolve relative
    * URLs and to reload the DTD and external resources if needed. If no contentBase is
    * set, no resources will be loaded and the results may be not defined.
    */
-  public void setContentBase(URL url)
+  public void setContentBase (URL url)
   {
     this.contentBase = url;
   }
@@ -74,54 +72,24 @@ public abstract class AbstractReportDefinitionHandler extends DefaultHandler
   /**
    * @return the current contentbase or null, if no contentBase is set.
    */
-  public URL getContentBase()
+  public URL getContentBase ()
   {
     return contentBase;
   }
 
-  protected String generateName(String name)
+  protected String generateName (String name)
   {
     if (name == null)
     {
       nameCounter += 1;
-      return "@anonymous" + Integer.toHexString(nameCounter);
+      return "@anonymous" + Integer.toHexString (nameCounter);
     }
     return name;
   }
 
-  protected int parseInt(String text, String message) throws SAXException
-  {
-    if (text == null)
-      throw new SAXException(message);
+  /**
+   * Returns a initialized version of the definition handler.
+   */
+  public abstract AbstractReportDefinitionHandler getInstance ();
 
-    try
-    {
-      return Integer.parseInt(text);
-    }
-    catch (NumberFormatException nfe)
-    {
-      throw new SAXException("NumberFormatError: " + message);
-    }
-  }
-
-  protected float parseFloat(String text, String message) throws SAXException
-  {
-    if (text == null)
-      throw new SAXException(message);
-    try
-    {
-      return Float.parseFloat(text);
-    }
-    catch (NumberFormatException nfe)
-    {
-      throw new SAXException("NumberFormatError: " + message);
-    }
-  }
-
-  protected boolean parseBoolean(String text, boolean defaultVal)
-  {
-    if (text == null)
-      return defaultVal;
-    return text.equalsIgnoreCase("true");
-  }
 }

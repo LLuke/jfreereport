@@ -29,20 +29,19 @@
  */
 package com.jrefinery.report.io;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
+import com.jrefinery.io.FileUtilities;
+import com.jrefinery.report.JFreeReport;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import com.jrefinery.io.FileUtilities;
-import com.jrefinery.report.JFreeReport;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * The reportgenerator initializes the parser and provides an interface
@@ -58,47 +57,49 @@ public class ReportGenerator
 {
   private static String defaultDtd;
   private static ReportGenerator generator;
+  private AbstractReportDefinitionHandler defaulthandler;
   private SAXParserFactory factory;
   private String dtd;
 
-  protected ReportGenerator()
+  protected ReportGenerator ()
   {
     dtd = defaultDtd;
+    defaulthandler = new ReportDefinitionContentHandler ();
   }
 
   /**
    * Defines a DTD used to validate the report definition. Your XMLParser
    * must be an validating parse for this feature to work.
    */
-  public void setDTDLocation(String dtd)
+  public void setDTDLocation (String dtd)
   {
     this.dtd = dtd;
   }
 
-  public String getDTDLocation()
+  public String getDTDLocation ()
   {
     return dtd;
   }
 
-  public void initFromSystem()
+  public void initFromSystem ()
   {
-    String reportDtd = System.getProperty("com.jrefinery.report.dtd");
+    String reportDtd = System.getProperty ("com.jrefinery.report.dtd");
     if (reportDtd == null)
       return;
 
-    File f = new File(reportDtd);
-    if (f.exists() && f.isFile() && f.canRead())
+    File f = new File (reportDtd);
+    if (f.exists () && f.isFile () && f.canRead ())
     {
       defaultDtd = reportDtd;
     }
   }
 
-  public JFreeReport parseReport(String file) throws IOException, ReportDefinitionException
+  public JFreeReport parseReport (String file) throws IOException, ReportDefinitionException
   {
     if (file == null)
-      throw new NullPointerException("File may not be null");
+      throw new NullPointerException ("File may not be null");
 
-    return parseReport(new File(file));
+    return parseReport (new File (file));
   }
 
   /**
@@ -106,17 +107,17 @@ public class ReportGenerator
    * needed relative file- and resourcespecification are loaded
    * using the URL <code>contentBase</code> as base.
    */
-  public JFreeReport parseReport(URL file, URL contentBase)
-    throws ReportDefinitionException, IOException
+  public JFreeReport parseReport (URL file, URL contentBase)
+          throws ReportDefinitionException, IOException
   {
     if (file == null)
-      throw new NullPointerException("File may not be null");
+      throw new NullPointerException ("File may not be null");
 
-    BufferedInputStream bin = new BufferedInputStream(file.openStream());
-    InputSource in = new InputSource(bin);
-    in.setSystemId(file.toString());
-    JFreeReport report = parseReport(in, contentBase);
-    bin.close();
+    BufferedInputStream bin = new BufferedInputStream (file.openStream ());
+    InputSource in = new InputSource (bin);
+    in.setSystemId (file.toString ());
+    JFreeReport report = parseReport (in, contentBase);
+    bin.close ();
     return report;
   }
 
@@ -125,31 +126,42 @@ public class ReportGenerator
    * needed relative file- and resourcespecification are loaded
    * using the parent directory of the file <code>file</code> as base.
    */
-  public JFreeReport parseReport(File file) throws IOException, ReportDefinitionException
+  public JFreeReport parseReport (File file) throws IOException, ReportDefinitionException
   {
     if (file == null)
-      throw new NullPointerException();
+      throw new NullPointerException ();
 
-    File contentBase = file.getParentFile();
-    return parseReport(file.toURL(), contentBase.toURL());
+    File contentBase = file.getParentFile ();
+    return parseReport (file.toURL (), contentBase.toURL ());
   }
 
   /**
    * @return an SAXParser.
    */
-  protected SAXParser getParser() throws ParserConfigurationException, SAXException
+  protected SAXParser getParser () throws ParserConfigurationException, SAXException
   {
     if (factory == null)
     {
-      factory = SAXParserFactory.newInstance();
+      factory = SAXParserFactory.newInstance ();
     }
-    return factory.newSAXParser();
+    return factory.newSAXParser ();
   }
 
-  protected AbstractReportDefinitionHandler createDefaultHandler(URL contentBase)
+  public void setDefaultHandler (AbstractReportDefinitionHandler handler)
   {
-    ReportDefinitionContentHandler handler = new ReportDefinitionContentHandler();
-    handler.setContentBase(contentBase);
+    if (handler == null) throw new NullPointerException ();
+    this.defaulthandler = handler;
+  }
+
+  public AbstractReportDefinitionHandler getDefaultHandler ()
+  {
+    return defaulthandler;
+  }
+
+  protected AbstractReportDefinitionHandler createDefaultHandler (URL contentBase)
+  {
+    AbstractReportDefinitionHandler handler = getDefaultHandler ().getInstance ();
+    handler.setContentBase (contentBase);
     return handler;
   }
 
@@ -157,70 +169,70 @@ public class ReportGenerator
    * @return an created JFreeReport.
    * @throws ReportDefinitionException if an error occured
    */
-  public JFreeReport parseReport(InputSource input, URL contentBase)
-    throws ReportDefinitionException
+  public JFreeReport parseReport (InputSource input, URL contentBase)
+          throws ReportDefinitionException
   {
     try
     {
-      SAXParser parser = getParser();
-      AbstractReportDefinitionHandler handler = createDefaultHandler(contentBase);
+      SAXParser parser = getParser ();
+      AbstractReportDefinitionHandler handler = createDefaultHandler (contentBase);
       try
       {
-        parser.parse(input, handler);
-        return handler.getReport();
+        parser.parse (input, handler);
+        return handler.getReport ();
       }
       catch (IOException e)
       {
-        throw new ReportDefinitionException(e);
+        throw new ReportDefinitionException (e);
       }
     }
     catch (ParserConfigurationException e)
     {
-      throw new ReportDefinitionException(e);
+      throw new ReportDefinitionException (e);
     }
     catch (SAXException e)
     {
-      throw new ReportDefinitionException(e);
+      throw new ReportDefinitionException (e);
     }
   }
 
   /**
    * Returns a new ReportGenerator reference.
    */
-  public static ReportGenerator getInstance()
+  public static ReportGenerator getInstance ()
   {
     if (generator == null)
     {
-      generator = new ReportGenerator();
-      generator.initFromSystem();
+      generator = new ReportGenerator ();
+      generator.initFromSystem ();
     }
     return generator;
   }
 
-  public static void main(String[] args)
+  public static void main (String[] args)
   {
-    File file1 = FileUtilities.findFileOnClassPath("report1.xml");
+    File file1 = FileUtilities.findFileOnClassPath ("report1.xml");
     if (file1 == null)
     {
-      JOptionPane.showMessageDialog(
-        null,
-        "ReportDefinition report1.xml not found on classpath");
+      JOptionPane.showMessageDialog (
+              null,
+              "ReportDefinition report1.xml not found on classpath");
       return;
     }
-    ReportGenerator gen = ReportGenerator.getInstance();
+    ReportGenerator gen = ReportGenerator.getInstance ();
 
     try
     {
       for (int i = 0; i < 100; i++)
-        gen.parseReport(file1);
+        gen.parseReport (file1);
     }
     catch (Exception ioe)
     {
-      JOptionPane.showMessageDialog(
-        null,
-        ioe.getMessage(),
-        "Error: " + ioe.getClass().getName(),
-        JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog (
+              null,
+              ioe.getMessage (),
+              "Error: " + ioe.getClass ().getName (),
+              JOptionPane.ERROR_MESSAGE);
       return;
     }
   }

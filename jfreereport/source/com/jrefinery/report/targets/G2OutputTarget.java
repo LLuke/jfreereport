@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.1 2002/05/21 23:06:19 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.2 2002/05/22 21:39:05 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,7 @@ import java.awt.Stroke;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 
@@ -274,7 +275,6 @@ public class G2OutputTarget extends AbstractOutputTarget
   public void drawImage (ImageReference image)
   {
     Rectangle2D bounds = getCursor ().getDrawBounds ();
-    System.out.println ("DrawImage: " + bounds);
     g2.drawImage (image.getImage (),
             (int) (bounds.getX ()),
             (int) (bounds.getY ()),
@@ -313,7 +313,6 @@ public class G2OutputTarget extends AbstractOutputTarget
       Rectangle2D textBounds = g2.getFont ().getStringBounds (text, frc);
       x = (float) ((bounds.getX () + bounds.getWidth ()) - textBounds.getWidth ());
     }
-    System.out.println ("Draw String:  " + text + " :" + x + ": " + baseline);
     g2.drawString (text, x, baseline);
   }
 

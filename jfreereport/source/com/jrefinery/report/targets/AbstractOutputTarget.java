@@ -28,6 +28,8 @@
  */
 package com.jrefinery.report.targets;
 
+import com.jrefinery.report.util.Log;
+
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.io.BufferedReader;
@@ -259,7 +261,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     {
       // Will not happen
     }
-    System.out.println ("The Line count: " + bareLines.size ());
+    Log.debug ("The Line count: " + bareLines.size ());
 
     /**
      * Reserve some space for the last line if there is more than one line to display.
@@ -296,10 +298,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
           w -= reserved;
         }
 
-        System.out.println ("LineStart: " + lineStartPos);
         while (endPos != BreakIterator.DONE)
         {
-          System.out.println ("Measured: st = " + startPos + " vs. " + endPos);
           x = (float) getStringBounds (currentLine, lineStartPos, endPos);
           if (x >= w)
           {
@@ -312,7 +312,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
         if (endPos == BreakIterator.DONE || ((STRICT_MODE == false) && linecount == 1))
         {
-          System.out.println ("Adding : " + lineStartPos + " to End of Line: " + currentLine.substring (lineStartPos));
+          Log.debug ("Adding : " + lineStartPos + " to End of Line: " + currentLine.substring (lineStartPos));
           returnLines.add (currentLine.substring (lineStartPos));
           lineStartPos = lineLength;
         }
@@ -321,13 +321,13 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
           if (i == (linecount - 1))
           {
-            System.out.println ("Adding : " + lineStartPos + " to " + startPos + " : " + currentLine.substring (lineStartPos, startPos));
+            Log.debug ("Adding : " + lineStartPos + " to " + startPos + " : " + currentLine.substring (lineStartPos, startPos));
             returnLines.add (currentLine.substring (lineStartPos, startPos) + RESERVED_LITERAL);
             return returnLines;
           }
           else
           {
-            System.out.println ("Adding : " + lineStartPos + " to " + startPos + " : " + currentLine.substring (lineStartPos, startPos));
+            Log.debug ("Adding : " + lineStartPos + " to " + startPos + " : " + currentLine.substring (lineStartPos, startPos));
             returnLines.add (currentLine.substring (lineStartPos, startPos));
             lineStartPos = startPos;
           }
@@ -391,9 +391,6 @@ public abstract class AbstractOutputTarget implements OutputTarget
       {
         String line = (String) lines.elementAt (linecount);
         float linePos = (float) (linecount * fontheight + bounds.getY ());
-
-        System.out.println ("(linePos + fontheight) = " + linePos + " " + getFont ().getSize ());
-        System.out.println ("(bounds.getHeight() + bounds.getY()) = " + bounds.getHeight () + " " + bounds.getY ());
 
         lineBounds.setRect ((float) bounds.getX (), linePos, bounds.getWidth (), fontheight);
         getCursor ().setDrawBounds (lineBounds);

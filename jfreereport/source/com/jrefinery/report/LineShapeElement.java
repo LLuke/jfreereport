@@ -63,10 +63,7 @@ public class LineShapeElement extends ShapeElement
    */
   public void setLine(Line2D line)
   {
-    m_line = line;
-    m_clacWidth = (m_line.getX1() == m_line.getX2()) && (m_line.getY1() == m_line.getY2());
-
-    setShape((Line2D) line.clone());
+    setShape(line);
   }
 
   /**
@@ -85,7 +82,10 @@ public class LineShapeElement extends ShapeElement
    */
   protected void setShape(Shape shape)
   {
-    super.setShape((Line2D) shape);
+    m_line = (Line2D) ((Line2D) shape).clone();
+    m_clacWidth = (m_line.getX1() == m_line.getX2()) && (m_line.getY1() == m_line.getY2());
+
+    super.setShape(m_line);
   }
 
   /**

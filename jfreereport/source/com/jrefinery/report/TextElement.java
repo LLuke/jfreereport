@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.6 2002/05/21 23:06:18 taqua Exp $
+ * $Id: TextElement.java,v 1.7 2002/05/22 21:39:03 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -69,6 +69,10 @@ public class TextElement extends Element
   /** Text alignment: LEFT, CENTER, RIGHT. */
   private int alignment;
 
+  private boolean isUnderlined;
+
+  private boolean isStrikethr;
+
   /**
    * Constructs an element using a Rectangle2D.
    */
@@ -78,6 +82,26 @@ public class TextElement extends Element
     super.setDataSource(stringfilter);
     setAlignment(ElementConstants.LEFT);
     setNullString("-");
+  }
+
+  public boolean isUnderlined ()
+  {
+    return isUnderlined;
+  }
+
+  public void setUnderlined (boolean b)
+  {
+    isUnderlined = b;
+  }
+
+  public boolean isStrikethrough ()
+  {
+    return isStrikethr;
+  }
+
+  public void setStrikethrough (boolean b)
+  {
+    isStrikethr = b;
   }
 
   /**

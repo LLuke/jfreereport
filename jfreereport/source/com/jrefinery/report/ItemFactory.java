@@ -204,11 +204,13 @@ public class ItemFactory
   }
 
   public static LineShapeElement createLineShapeElement (String name,
+                                                         Paint paint,
                                                          Stroke stroke,
                                                          Line2D shape)
   {
     LineShapeElement line = new LineShapeElement();
     line.setName(name);
+    line.setPaint(paint);
     line.setStroke(stroke);
     line.setShape(shape);
     return line;

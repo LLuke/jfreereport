@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.5 2002/05/18 16:23:49 taqua Exp $
+ * $Id: ShapeElement.java,v 1.6 2002/05/21 23:06:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -124,7 +124,7 @@ public abstract class ShapeElement extends Element
     // set the paint...
     if (m_paint != null)
     {
-      System.out.println ("Paint set to : "+ m_paint);
+      Log.debug ("Paint set to : "+ m_paint);
       target.setPaint(m_paint);
     }
     else
