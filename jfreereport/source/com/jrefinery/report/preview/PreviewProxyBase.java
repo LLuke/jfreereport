@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.14 2003/03/18 22:35:19 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.15 2003/04/06 18:11:29 taqua Exp $
  *
  * Changes
  * -------
@@ -85,6 +85,7 @@ import com.jrefinery.layout.CenterLayout;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.targets.base.bandlayout.LayoutManagerCache;
+import com.jrefinery.report.targets.table.excel.ExcelCellStyleFactory;
 import com.jrefinery.report.action.AboutAction;
 import com.jrefinery.report.action.FirstPageAction;
 import com.jrefinery.report.action.GotoPageAction;
@@ -577,6 +578,7 @@ public class PreviewProxyBase extends JComponent
     public void actionPerformed(ActionEvent e)
     {
       LayoutManagerCache.printResults();
+      ExcelCellStyleFactory.print();
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: LayoutCacheKey.java,v 1.1 2003/04/06 20:43:00 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
 import com.jrefinery.report.Element;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 public class LayoutCacheKey

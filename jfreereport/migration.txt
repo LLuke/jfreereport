@@ -110,9 +110,13 @@ LineElements:
   negative values. If you want to create scaling lines, you will have to use one of the
   createShapeElement methods, which are able to separate bounds from shapes.
 
-JFreeReport object replaced by ReportDefinition object
-
+JFreeReport object replaced by ReportDefinition object:
   Within the functions and the whole report processing process, the JFreeReport object
   was replaced by an read only ReportDefinition object. This object uses the same
   methodnames as the JFreeReport object, but has no means to access the report
-  functions or to change or replace the report bands. 
+  functions or to change or replace the report bands.
+
+  When upgrading you will have to change your functions to use the ReportDefinition
+  instead of the JFreeReport object. It is sufficient to change the object type and
+  to recompile the function.
+
