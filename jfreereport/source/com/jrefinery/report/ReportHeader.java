@@ -28,13 +28,14 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportHeader.java,v 1.3 2002/05/16 19:58:24 jaosch Exp $
+ * $Id: ReportHeader.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 18-Feb-2002 : Multiple changes with introduction of XML format for report definition (DG);
  * 10-May-2002 : Removed all complex constructors. Property "ownPage" can be set by accessor.
+ * 04-Jun-2002 : Documentation tags changed.
  */
 
 package com.jrefinery.report;
@@ -43,7 +44,7 @@ package com.jrefinery.report;
  * A report band that is printed once-only at the beginning of the report.  A report header is
  * optional.
  * <P>
- * A flag can be set telling the report generator to begin a new page after printing the report
+ * A flag can be set forcing the report generator to start a new page after printing the report
  * header.
  */
 public class ReportHeader extends Band
@@ -55,8 +56,6 @@ public class ReportHeader extends Band
 
   /**
    * Constructs a report header, initially containing no elements.
-   *
-   * @param height The band height.
    */
   public ReportHeader()
   {
@@ -64,6 +63,7 @@ public class ReportHeader extends Band
 
   /**
    * defines whether the report header appears on its own page.
+   * @param b the new flag indicating whether to force a pagebreak.
    */
   public void setOwnPage(boolean b)
   {

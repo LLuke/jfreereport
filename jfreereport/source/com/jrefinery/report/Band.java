@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.6 2002/05/28 19:28:21 taqua Exp $
+ * $Id: Band.java,v 1.7 2002/05/31 19:31:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -44,6 +44,7 @@
  *               element.
  * 26-May-2002 : Elements are now stored ordered. Updated drawing to reflect new element property
  *               "Visible".
+ * 04-Jun-2002 : Public methods throw exceptions on illegal values. Documentation update.
  */
 
 package com.jrefinery.report;
@@ -53,25 +54,22 @@ import com.jrefinery.report.filter.DataTarget;
 import com.jrefinery.report.filter.FunctionDataSource;
 import com.jrefinery.report.filter.ReportDataSource;
 import com.jrefinery.report.function.Function;
+import com.jrefinery.report.targets.OutputTarget;
+import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.report.util.HashNMap;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReadOnlyList;
-import com.jrefinery.report.targets.OutputTarget;
-import com.jrefinery.report.targets.OutputTargetException;
 
 import javax.swing.table.TableModel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
-import java.util.List;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Vector;
-import java.util.LinkedList;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A report band contains a list of elements to be displayed, and represents one section of a
@@ -79,8 +77,10 @@ import java.util.ArrayList;
  * or the items within a group).
  * <P>
  * The elements in a report band can contain fixed values, field values from the dataset, or
- * function values.
- *
+ * function values. The elements are not required to have unique names.
+ * <p>
+ * This implementation is not synchronized, to take care that you externaly synchronize
+ * it when using multiple threads.
  */
 public abstract class Band
 {
@@ -115,9 +115,9 @@ public abstract class Band
    */
   protected Band ()
   {
-    setDefaultFont(DEFAULT_FONT);
-    setDefaultPaint(DEFAULT_PAINT);
-    allElements = new ArrayList();
+    setDefaultFont (DEFAULT_FONT);
+    setDefaultPaint (DEFAULT_PAINT);
+    allElements = new ArrayList ();
     dataElements = new HashNMap ();
     functionElements = new HashNMap ();
   }
@@ -155,7 +155,7 @@ public abstract class Band
    */
   public void setDefaultFont (Font font)
   {
-    if (font == null) throw new NullPointerException();
+    if (font == null) throw new NullPointerException ();
     this.defaultFont = font;
   }
 
@@ -173,31 +173,44 @@ public abstract class Band
    * Sets the default paint for the band.
    *
    * @param paint The paint.
+   * @throws NullPointerException if the given paint is null
    */
   public void setDefaultPaint (Paint paint)
   {
-    if (paint == null) throw new NullPointerException();
+    if (paint == null) throw new NullPointerException ();
     this.defaultPaint = paint;
   }
 
   /**
    * Adds an element (display item) to the band.
+   *
    * @param element The element.
+   * @throws NullPointerException if the Element is null or contains Null-Values.
+   * @throws IllegalArgumentException if the element violates validity rules
    */
   public void addElement (Element element)
   {
+    if (element == null)
+      throw new NullPointerException ("Cannot add null-Element");
+    if (element.getName () == null)
+      throw new IllegalArgumentException ("Element is not valid: Valid elements need a name");
+    if (element.getBounds () == null)
+      throw new IllegalArgumentException ("Element is not valid: Valid elements need filled bounds");
 
     allElements.add (element);
-
     DataSource ds = getLastDatasource (element);
     if (ds instanceof ReportDataSource)
     {
       ReportDataSource rds = (ReportDataSource) ds;
+      if (rds.getField () == null)
+        throw new IllegalArgumentException ("DataSource is not valid: ReportDataSources need a field set");
       dataElements.add (rds.getField (), rds);
     }
     else if (ds instanceof FunctionDataSource)
     {
       FunctionDataSource fe = (FunctionDataSource) ds;
+      if (fe.getFunction () == null)
+        throw new IllegalArgumentException ("DataSource is not valid: FunctionDataSources need a function name set");
       functionElements.add (fe.getFunction (), fe);
     }
 
@@ -206,18 +219,21 @@ public abstract class Band
   /**
    * Adds a collection of elements to the band.
    * @param elements The element collection.
+   * @throws NullPointerException if the collection given is null
    */
   public void addElements (Collection elements)
   {
 
-    if (elements != null)
+    if (elements == null)
     {
-      Iterator iterator = elements.iterator ();
-      while (iterator.hasNext ())
-      {
-        Element element = (Element) iterator.next ();
-        addElement (element);
-      }
+      throw new NullPointerException ();
+    }
+
+    Iterator iterator = elements.iterator ();
+    while (iterator.hasNext ())
+    {
+      Element element = (Element) iterator.next ();
+      addElement (element);
     }
 
   }
@@ -227,9 +243,12 @@ public abstract class Band
    * @param data The data source.
    * @param row The current row.
    * @param functions The report functions.
+   * @throws NullPointerException if the state given is null
    */
   public void populateElements (ReportState state)
   {
+    if (state == null) throw new NullPointerException ();
+
     TableModel data = state.getReport ().getData ();
 
     if (data.getRowCount () < 1)
@@ -250,9 +269,9 @@ public abstract class Band
       }
 
       // Fill the value into all elements
-      while (elements.hasNext())
+      while (elements.hasNext ())
       {
-        ReportDataSource element = (ReportDataSource) elements.next();
+        ReportDataSource element = (ReportDataSource) elements.next ();
         element.setValue (value);
       }
     }
@@ -268,13 +287,13 @@ public abstract class Band
       if (f == null) continue;
 
       // get all functionElements for this function
-      Iterator functionsources = functionElements.getAll(name);
+      Iterator functionsources = functionElements.getAll (name);
       if (functionsources == null) continue;
 
       Object functionValue = f.getValue ();
-      while (functionsources.hasNext())
+      while (functionsources.hasNext ())
       {
-        FunctionDataSource fds = (FunctionDataSource) functionsources.next();
+        FunctionDataSource fds = (FunctionDataSource) functionsources.next ();
         fds.setValue (functionValue);
       }
     }
@@ -286,26 +305,29 @@ public abstract class Band
    * @param target The output target.
    * @param x The x-coordinate.
    * @param y The y-coordinate.
+   * @throws NullPointerException if the target given is null
    */
   public void draw (OutputTarget target, float x, float y) throws OutputTargetException
   {
-    Rectangle2D bounds = new Rectangle2D.Float();
-    bounds.setRect(x,y, target.getUsableWidth(), getHeight());
-    target.setClippingArea(bounds);
+    if (target == null) throw new NullPointerException ();
 
-    target.setPaint (getDefaultPaint());
+    Rectangle2D bounds = new Rectangle2D.Float ();
+    bounds.setRect (x, y, target.getUsableWidth (), getHeight ());
+    target.setClippingArea (bounds);
+
+    target.setPaint (getDefaultPaint ());
     Iterator iterator = allElements.iterator ();
     while (iterator.hasNext ())
     {
       Element e = (Element) iterator.next ();
-      if (e.isVisible())
+      if (e.isVisible ())
       {
-        target.getCursor().setElementBounds(translateBounds(target, e.getBounds()));
+        target.getCursor ().setElementBounds (translateBounds (target, e.getBounds ()));
         try
         {
-          Object state = target.saveState();
+          Object state = target.saveState ();
           e.draw (target, this);
-          target.restoreState(state);
+          target.restoreState (state);
         }
         catch (OutputTargetException ex)
         {
@@ -320,11 +342,11 @@ public abstract class Band
    */
   private Rectangle2D translateBounds (OutputTarget target, Rectangle2D bounds)
   {
-    float x = fixValue(bounds.getX(), target.getUsableWidth());
-    float y = fixValue(bounds.getY(), getHeight());
-    float w = fixValue(bounds.getWidth(), target.getUsableWidth());
-    float h = fixValue(bounds.getHeight(), getHeight());
-    bounds.setRect(x,y,w,h);
+    float x = fixValue (bounds.getX (), target.getUsableWidth ());
+    float y = fixValue (bounds.getY (), getHeight ());
+    float w = fixValue (bounds.getWidth (), target.getUsableWidth ());
+    float h = fixValue (bounds.getHeight (), getHeight ());
+    bounds.setRect (x, y, w, h);
     return bounds;
   }
 
@@ -339,13 +361,21 @@ public abstract class Band
     return retval;
   }
 
+  /**
+   * Returns the first element in that list which is registered by the given name
+   *
+   * @returns the first element found or null if there is no such element.
+   * @throws NullPointerException if the given name is null
+   */
   public Element getElement (String name)
   {
-    Iterator it  = allElements.iterator();
-    while (it.hasNext())
+    if (name == null) throw new NullPointerException ();
+
+    Iterator it = allElements.iterator ();
+    while (it.hasNext ())
     {
-      Element e = (Element) it.next();
-      if (e.getName().equals(name))
+      Element e = (Element) it.next ();
+      if (e.getName ().equals (name))
       {
         return e;
       }
@@ -353,11 +383,17 @@ public abstract class Band
     return null;
   }
 
+  /**
+   * @returns an immutable list of all registered elements for this band.
+   */
   public List getElements ()
   {
     return new ReadOnlyList (allElements);
   }
 
+  /**
+   * @returns a string representation of this band and all contained elements.
+   */
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();
@@ -372,9 +408,14 @@ public abstract class Band
 
   /**
    * Queries the last datasource in the chain of targets and filters.
+   * <p>
+   * The last datasource is used to feed data into the data processing chain.
+   * The result of this computation is retrieved by the element using the
+   * registered datasource to query the queue.
    */
   public static DataSource getLastDatasource (DataTarget e)
   {
+    if (e == null) throw new NullPointerException ();
     DataSource s = e.getDataSource ();
     if (s instanceof DataTarget)
     {

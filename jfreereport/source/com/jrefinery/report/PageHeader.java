@@ -28,27 +28,24 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PageHeader.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: PageHeader.java,v 1.3 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 18-Feb-2002 : Multiple changes with introduction of XML format for report definition (DG);
  * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
- *
+ * 04-Jun-2002 : Documentation tags changed.
  */
-
 package com.jrefinery.report;
 
 
 /**
  * A report band used to print information at the top of every page in the report.  There is an
- * option to suppress the page header on the first page.
+ * option to suppress the page header on the first page and the last page.
  */
 public class PageHeader extends Band
 {
-
-
   /** Flag that indicates whether or not the footer is printed on the first page of the report. */
   private boolean displayOnFirstPage;
 
@@ -57,8 +54,6 @@ public class PageHeader extends Band
 
   /**
    * Constructs a page header.
-   *
-   * @param height The height (in points).
    */
   public PageHeader ()
   {

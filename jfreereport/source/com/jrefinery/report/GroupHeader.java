@@ -28,13 +28,14 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupHeader.java,v 1.3 2002/05/17 13:22:32 jaosch Exp $
+ * $Id: GroupHeader.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 18-Feb-2002 : Changed height from Number --> float (DG);
  * 10-May-2002 : remove all compex constructors, added PageBreakBeforePrintProperty
+ * 04-Jun-2002 : Documentation tags changed.
  */
 
 package com.jrefinery.report;
@@ -48,9 +49,7 @@ public class GroupHeader extends Band
   private boolean pageBreak;
 
   /**
-   * Constructs a group header band with the specified height, containing no elements.
-   *
-   * @param height The height of the band.
+   * Constructs a group header band, containing no elements.
    */
   public GroupHeader()
   {
@@ -68,10 +67,11 @@ public class GroupHeader extends Band
 
   /**
    * defines whether this group should trigger a pagebreak before its header is printed.
+   * @param pageBreakBefore the new trigger state
    */
-  public void setPageBreakBeforePrint(boolean b)
+  public void setPageBreakBeforePrint(boolean pageBreakBefore)
   {
-    this.pageBreak = b;
+    this.pageBreak = pageBreakBefore;
   }
 
 }

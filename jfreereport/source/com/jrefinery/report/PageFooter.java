@@ -28,21 +28,21 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PageFooter.java,v 1.3 2002/05/16 19:58:24 jaosch Exp $
+ * $Id: PageFooter.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 18-Feb-2002 : Multiple changes with introduction of XML format for report definition (DG);
  * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
- *
+ * 04-Jun-2002 : Documentation tags changed.
  */
 
 package com.jrefinery.report;
 
 /**
  * A report band that appears at the bottom of every page.  There is an option to suppress the
- * page footer on the first page, and also on the last page.
+ * page footer on the first page, and an other option does the same for the last page.
  */
 public class PageFooter extends Band
 {
@@ -55,8 +55,6 @@ public class PageFooter extends Band
 
   /**
    * Constructs a page footer containing no elements.
-   *
-   * @param height The band height (in points).
    */
   public PageFooter()
   {
