@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.30 2003/11/10 18:04:42 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.31 2003/11/15 18:22:28 taqua Exp $
  *
  * Changes
  * -------
@@ -79,6 +79,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.RepaintManager;
 import javax.swing.UIManager;
+import javax.swing.SwingUtilities;
 
 import org.jfree.layout.CenterLayout;
 import org.jfree.report.JFreeReport;
@@ -642,13 +643,15 @@ public class PreviewProxyBase extends JComponent
   private boolean lockInterface;
   /** A flag that defines, whether the preview component is closed. */
   private boolean closed;
-  
+
   public static final String CONF_TOOLBAR_ENABLED = "toolbar";
   public static final String CONF_ALL_ENABLED = "enable";
   public static final String CONF_ALL_DISABLED = "disable";
   public static final String CONF_MENUBAR_ENABLED = "menubar";
   public static final String REPORT_PANE_PROPERTY = "reportPane";
 
+  private JPanel reportPaneHolder;
+  private ReportPanePropertyChangeListener reportPanePropertyChangeListener;
   /**
    * Creates a preview proxy.
    *
@@ -656,6 +659,10 @@ public class PreviewProxyBase extends JComponent
    */
   public PreviewProxyBase(final PreviewProxy proxy)
   {
+    if (proxy == null)
+    {
+      throw new NullPointerException("Proxy must not be null.");
+    }
     this.baseActionMap = new DowngradeActionMap();
 
     this.exportActionMap = new DowngradeActionMap();
@@ -670,6 +677,50 @@ public class PreviewProxyBase extends JComponent
     this.proxy = proxy;
     this.progressDialog = new ReportProgressDialog();
     this.progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
+    this.reportPanePropertyChangeListener = new ReportPanePropertyChangeListener();
+
+    setLayout(new BorderLayout());
+    setDoubleBuffered(false);
+
+    // handle a JDK bug: windows are not garbage collected if dispose is not called manually.
+    // DisposedState is undone when show() or pack() is called, so this does no harm.
+    proxy.addComponentListener(new ComponentAdapter()
+    {
+      public void componentHidden(final ComponentEvent e)
+      {
+        final Component c = e.getComponent();
+        if (c instanceof Window)
+        {
+          final Window w = (Window) c;
+          w.dispose();
+          dispose();
+        }
+      }
+    });
+
+    this.exportWorkerPool = new WorkerPool
+      (10, "preview-dialog-export-worker");
+
+    createDefaultActions();
+
+    reportPaneHolder = new JPanel(new CenterLayout());
+    reportPaneHolder.setDoubleBuffered(false);
+    reportPaneHolder.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+    final JScrollPane s1 = new JScrollPane(reportPaneHolder);
+    s1.setDoubleBuffered(false);
+    s1.getVerticalScrollBar().setUnitIncrement(20);
+
+    final JPanel scrollPaneHolder = new JPanel();
+    scrollPaneHolder.setLayout(new BorderLayout());
+    scrollPaneHolder.add(s1, BorderLayout.CENTER);
+    scrollPaneHolder.setDoubleBuffered(false);
+
+    scrollPaneHolder.add(createStatusBar(), BorderLayout.SOUTH);
+    add(scrollPaneHolder);
+
+    zoomSelect = createZoomSelector();
+    // todo
   }
 
   /**
@@ -741,91 +792,34 @@ public class PreviewProxyBase extends JComponent
     return repaginationWorker;
   }
 
+  private void closeToolbar ()
+  {
+    if (toolbar.getParent() != this)
+    {
+      // ha!, we detected that the toolbar is floating ...
+      // Log.debug (currentToolbar.getParent());
+      Window w = SwingUtilities.getWindowAncestor(toolbar);
+      if (w != null)
+      {
+        w.setVisible(false);
+        w.dispose();
+      }
+    }
+    toolbar.setVisible(false);
+  }
+
+
   /**
    * Initialises the preview dialog.
    *
    * @param report  the report.
    *
    * @throws ReportProcessingException if there is a problem processing the report.
+   * @deprecated use setReport(..) instead.
    */
   public void init(final JFreeReport report) throws ReportProcessingException
   {
-    //this.zoomActionConcentrator = new ActionConcentrator();
-    this.exportWorkerPool = new WorkerPool
-      (10, "preview-dialog-export-worker [" + report.getName() + "]");
-
-    setLargeIconsEnabled
-        (report.getReportConfiguration().getConfigProperty
-        (LARGE_ICONS_ENABLED_PROPERTY, "true").equals("true"));
-
-    setToolbarFloatable
-        (report.getReportConfiguration().getConfigProperty
-         (TOOLBAR_FLOATABLE_PROPERTY, "true").equals("true"));
-
-    proxy.setTitle(report.getName() + " - " + getResources().getString("preview-frame.title"));
-
-    // handle a JDK bug: windows are not garbage collected if dispose is not called manually.
-    // DisposedState is undone when show() or pack() is called, so this does no harm.
-    proxy.addComponentListener(new ComponentAdapter()
-    {
-      public void componentHidden(final ComponentEvent e)
-      {
-        final Component c = e.getComponent();
-        if (c instanceof Window)
-        {
-          final Window w = (Window) c;
-          w.dispose();
-          dispose();
-        }
-      }
-    });
-
-    // set up the content with a toolbar and a report pane
-    setLayout(new BorderLayout());
-    setDoubleBuffered(false);
-
-    createDefaultActions(proxy.createDefaultCloseAction());
-
-    this.zoomIndex = DEFAULT_ZOOM_INDEX;
-
-    if (isPropertySet(CREATE_TOOLBAR_PROPERTY, true))
-    {
-      toolbar = createToolBar ();
-      toolbar.setFloatable(isToolbarFloatable());
-      toolbar.addPropertyChangeListener(new ToolbarPropertyChangeListener());
-      add(toolbar, BorderLayout.NORTH);
-    }
-
-    reportPane = createReportPane(report);
-    reportPane.addPropertyChangeListener(new ReportPanePropertyChangeListener());
-    reportPane.setVisible(false);
-
-    zoomSelect = createZoomSelector();
-    buildExportPlugins(report);
-
-    final JPanel reportPaneHolder = new JPanel(new CenterLayout());
-    reportPaneHolder.add(reportPane);
-    reportPaneHolder.setDoubleBuffered(false);
-    reportPaneHolder.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-    final JScrollPane s1 = new JScrollPane(reportPaneHolder);
-    s1.setDoubleBuffered(false);
-    s1.getVerticalScrollBar().setUnitIncrement(20);
-
-    final JPanel scrollPaneHolder = new JPanel();
-    scrollPaneHolder.setLayout(new BorderLayout());
-    scrollPaneHolder.add(s1, BorderLayout.CENTER);
-    scrollPaneHolder.setDoubleBuffered(false);
-
-    scrollPaneHolder.add(createStatusBar(), BorderLayout.SOUTH);
-    add(scrollPaneHolder);
-
-    applyDefinedDimension(report);
-
-    reinitialize();
-
-    performPagination(report.getDefaultPageFormat());
-    Log.info("Dialog started pagination ...");
+    setReport(report);
   }
 
   private boolean isPropertySet (String property, boolean defaultValue)
@@ -1175,13 +1169,11 @@ public class PreviewProxyBase extends JComponent
    * Creates all actions by calling the createXXXAction functions and assigning them to
    * the local variables.
    *
-   * @param defaultCloseAction  the default close action.
    */
-  private void createDefaultActions(final Action defaultCloseAction)
+  private void createDefaultActions()
   {
     navigationActionMap.put(GOTO_ACTION_KEY, createDefaultGotoAction());
     baseActionMap.put(ABOUT_ACTION_KEY, createDefaultAboutAction());
-    baseActionMap.put(CLOSE_ACTION_KEY, defaultCloseAction);
     navigationActionMap.put(FIRSTPAGE_ACTION_KEY, createDefaultFirstPageAction());
     navigationActionMap.put(LASTPAGE_ACTION_KEY, createDefaultLastPageAction());
     navigationActionMap.put(NEXT_PAGE_ACTION_KEY, createDefaultNextPageAction());
@@ -2046,26 +2038,22 @@ public class PreviewProxyBase extends JComponent
    * @param pf the new page format object.
    */
   public void updatePageFormat(final PageFormat pf)
+      throws ReportProcessingException
   {
     if (pf == null)
     {
       throw new NullPointerException("The given pageformat is null.");
     }
-    reportPane.setVisible(false);
-    performPagination(pf);
+    JFreeReport report = getReport();
+    report.setDefaultPageFormat(pf);
+    setReport(report);
   }
 
   /**
    * Paginates the report.
-   *
-   * @param format the new page format for the report.
    */
-  protected void performPagination(final PageFormat format)
+  protected void performPagination()
   {
-    if (format == null)
-    {
-      throw new NullPointerException("The given pageformat is null.");
-    }
     setLockInterface(true);
     setStatusText(getResources().getString("statusline.repaginate"));
     progressDialog.setTitle(getResources().getString("statusline.repaginate"));
@@ -2073,11 +2061,13 @@ public class PreviewProxyBase extends JComponent
     progressDialog.pack();
 
     final Worker worker = getRepaginationWorker();
+    Log.debug ("Worker is unavailable (preSync) ... " + worker.isAvailable());
     synchronized (worker)
     {
       while (worker.isAvailable() == false)
       {
         // wait until the worker is done with his current job
+        Log.debug ("Worker is unavailable ... ");
         try
         {
           worker.wait();
@@ -2102,7 +2092,6 @@ public class PreviewProxyBase extends JComponent
             reportPane.setHandleInterruptedState(true);
             reportPane.setVisible(false);
 
-            reportPane.setPageFormat(format);
             reportPane.repaginate();
 
             reportPane.setVisible(true);
@@ -2129,6 +2118,7 @@ public class PreviewProxyBase extends JComponent
         }
       });
     }
+    Log.debug ("Worker is on the way... ");
   }
 
   /**
@@ -2187,17 +2177,67 @@ public class PreviewProxyBase extends JComponent
 
   public void setReport (JFreeReport report) throws ReportProcessingException
   {
-    freeResources();
-    reportPane.removeRepaginationListener(progressDialog);
-    ReportPane oldPane = reportPane;
-    reportPane = new ReportPane(report);
-    // inform all listeners, that we have a new reportpane
+    ReportPane oldPane = this.reportPane;
+
+    if (reportPane != null)
+    {
+      freeResources();
+      reportPane.removeRepaginationListener(progressDialog);
+      reportPane.removePropertyChangeListener(reportPanePropertyChangeListener);
+
+      reportPaneHolder.remove(reportPane);
+      reportPane = null;
+    }
+
+    setLargeIconsEnabled
+        (report.getReportConfiguration().getConfigProperty
+        (LARGE_ICONS_ENABLED_PROPERTY, "true").equals("true"));
+
+    setToolbarFloatable
+        (report.getReportConfiguration().getConfigProperty
+         (TOOLBAR_FLOATABLE_PROPERTY, "true").equals("true"));
+
+    proxy.setTitle(report.getName() + " - " + getResources().getString("preview-frame.title"));
+
+    // set up the content with a toolbar and a report pane
+    baseActionMap.put(CLOSE_ACTION_KEY, proxy.createDefaultCloseAction());
+
+    this.zoomIndex = DEFAULT_ZOOM_INDEX;
+
+    // we have an old toolbar floating around ... lets remove it
+    if (toolbar != null)
+    {
+      closeToolbar();
+      remove(toolbar);
+    }
+
+    if (isPropertySet(CREATE_TOOLBAR_PROPERTY, true))
+    {
+      toolbar = createToolBar ();
+      toolbar.setFloatable(isToolbarFloatable());
+      toolbar.addPropertyChangeListener(new ToolbarPropertyChangeListener());
+      add(toolbar, BorderLayout.NORTH);
+    }
+
+    reportPane = createReportPane(report);
+    reportPane.addPropertyChangeListener(reportPanePropertyChangeListener);
+    reportPane.setVisible(false); // initially hidden
+    reportPaneHolder.add(reportPane);
+
+    buildExportPlugins(report);
+    reinitialize();
+
+    applyDefinedDimension(report);
+
     firePropertyChange(REPORT_PANE_PROPERTY, oldPane, reportPane);
-    performPagination(report.getDefaultPageFormat());
-    Log.info("Refresh() started pagination ...");
+
+    performPagination();
+
+    // inform all listeners, that we have a new reportpane
+    Log.info("setReport(..): started pagination ...");
   }
 
-  public JFreeReport getReport (JFreeReport report)
+  public JFreeReport getReport ()
   {
     return reportPane.getReport();
   }

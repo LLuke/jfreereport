@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewApplet.java,v 1.4 2003/09/06 18:09:16 taqua Exp $
+ * $Id: PreviewApplet.java,v 1.5 2003/09/09 15:52:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -147,7 +147,7 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
     base = new PreviewProxyBase(this);
     try
     {
-      base.init(getReport());
+      base.setReport(getReport());
     }
     catch (ReportProcessingException pre)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.8 2003/11/01 19:52:29 taqua Exp $
+ * $Id: TableWriter.java,v 1.9 2003/11/07 18:33:56 taqua Exp $
  *
  * Changes
  * -------
@@ -668,7 +668,6 @@ public strictfp class TableWriter extends AbstractFunction
     {
       throw new NullPointerException("Producer given must not be null.");
     }
-    Log.debug ("Producer set: " + producer + " Writer:" + toString());
     this.producer = producer;
   }
 

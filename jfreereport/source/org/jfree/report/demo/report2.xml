@@ -94,7 +94,9 @@
   </items>
   <!-- FUNCTIONS -->
   <functions>
-    <!-- <function class="org.jfree.report.function.EventMonitorFunction" name="monitor"/> -->
+    <!--
+     <function class="org.jfree.report.function.EventMonitorFunction" name="monitor"/>
+     -->
     <property-ref name="report.date"/>
     <function name="Count1" class="org.jfree.report.function.ItemCountFunction">
       <properties>
@@ -129,8 +131,10 @@
             <property name="group">Letter Group</property>
         </properties>
         -->
+
     </function>
     <function name="PageTotal" class="org.jfree.report.function.PageTotalFunction">
+
       <!--
         Activating this property counts the pages needed for the given group.
         Only usefull with manual pagebreaks
@@ -147,7 +151,6 @@
         <property name="1">PageTotal</property>
       </properties>
     </expression>
-
   </functions>
 
 </report>

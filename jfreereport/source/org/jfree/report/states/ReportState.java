@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.5 2003/09/09 15:52:53 taqua Exp $
+ * $Id: ReportState.java,v 1.6 2003/11/07 15:31:40 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -888,7 +888,6 @@ public abstract class ReportState implements Cloneable
 
         final Object item1 = currentDataRow.get(column1);
         final Object item2 = nextDataRow.get(column2);
-//        Log.debug ("Item1: " + item1 + " vs. Item2: " + item2);
         if (ObjectUtils.equal(item1, item2) == false)
         {
           return true;

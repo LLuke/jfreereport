@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.8 2003/11/05 14:55:53 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.9 2003/11/07 18:33:54 taqua Exp $
  *
  * Changes
  * -------
@@ -473,13 +473,11 @@ public class PageableReportProcessor
       if (isEmptyPageGenerated(state) == false)
       {
         // add the page start event ..
-        Log.debug ("Page Added");
         pageStates.add(oldstate);
       }
       else
       {
         // inform the next page, that the last one was canceled ...
-        Log.debug ("Page Canceled");
         state.firePageCanceledEvent();
       }
     }

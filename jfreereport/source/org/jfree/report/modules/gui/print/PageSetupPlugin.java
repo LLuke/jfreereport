@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.6 2003/11/07 18:33:53 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.7 2003/11/15 18:22:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,6 +47,7 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ReportPane;
 import org.jfree.report.modules.gui.base.PreviewProxy;
@@ -146,7 +147,15 @@ public class PageSetupPlugin extends AbstractExportPlugin
     }
     else
     {
-      getBase().updatePageFormat(pf);
+      try
+      {
+        getBase().updatePageFormat(pf);
+      }
+      catch (ReportProcessingException rpe)
+      {
+        Log.warn ("Invalid pageformat update");
+        return false;
+      }
       return true;
     }
   }
@@ -254,5 +263,6 @@ public class PageSetupPlugin extends AbstractExportPlugin
     reportPane.removePropertyChangeListener(repaginationListener);
     reportPane = getBase().getReportPane();
     reportPane.addPropertyChangeListener(repaginationListener);
+    setEnabled((reportPane.isPrinting() || reportPane.isPaginating()) == false);
   }
 }

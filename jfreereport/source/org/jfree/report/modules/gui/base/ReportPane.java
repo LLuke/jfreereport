@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.8 2003/09/09 21:31:36 taqua Exp $
+ * $Id: ReportPane.java,v 1.9 2003/11/15 18:22:28 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -207,7 +207,8 @@ public class ReportPane extends JComponent
    *
    * @throws ReportProcessingException if there was a problem processing the report.
    */
-  public ReportPane(final JFreeReport report) throws ReportProcessingException
+  public ReportPane(final JFreeReport report)
+      throws ReportProcessingException
   {
     if (report == null)
     {
@@ -348,7 +349,10 @@ public class ReportPane extends JComponent
    * Sets the page format.
    *
    * @param pageFormat The new page format;
-   *
+   * @deprecated changing the page format should no longer be done this
+   * way, update the report definition instead and create a new ReportPane
+   * for that changed report definition. This method will be removed with
+   * version 0.8.5
    */
   public void setPageFormat(final PageFormat pageFormat)
   {
@@ -947,7 +951,7 @@ public class ReportPane extends JComponent
 
   /**
    * Free some of the used memory. It is the duty of the caller to
-   * interrupt a possible pagination process. 
+   * interrupt a possible pagination process.
    */
   public void dispose()
   {
@@ -980,9 +984,9 @@ public class ReportPane extends JComponent
   }
 
   /**
-   * Adds a repagination listener to this component. The listener will be 
+   * Adds a repagination listener to this component. The listener will be
    * informed about the pagination progress.
-   *  
+   *
    * @param listener the listener to be added.
    */
   public void addRepaginationListener(final RepaginationListener listener)
@@ -997,7 +1001,7 @@ public class ReportPane extends JComponent
 
   /**
    * Removes the specified repagination listener from this component.
-   * 
+   *
    * @param listener the listener to be removed.
    */
   public void removeRepaginationListener(final RepaginationListener listener)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.7 2003/09/09 21:31:36 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.8 2003/10/08 19:32:27 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -187,7 +187,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   private void init(final JFreeReport report) throws ReportProcessingException
   {
     base = new PreviewProxyBase(this);
-    base.init(report);
+    base.setReport(report);
     setContentPane(base);
   }
 
