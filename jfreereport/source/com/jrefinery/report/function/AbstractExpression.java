@@ -28,13 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.15 2002/12/12 12:26:55 mungady Exp $
+ * $Id: AbstractExpression.java,v 1.16 2002/12/12 20:18:39 taqua Exp $
  *
  * Changes
  * -------
  * 12-Aug-2002 : Initial version
  * 27-Aug-2002 : Documentation
  * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
+ * 18-Dec-2002 : More Javadoc updates (DG);
  *
  */
 
@@ -46,11 +47,10 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 /**
- * The abstract expression is a base class for expressions used in JFreeReport. This class provides
- * a default implementation to make own expressions easier to implement.
+ * An abstract base class for implementing new report expressions. 
  * <p>
- * Expressions are stateless functions which have access to the datarow of the report. All
- * expressions are named and the defined names have to be unique within the reports expressions,
+ * Expressions are stateless functions which have access to the report's {@link DataRow}. All
+ * expressions are named and the defined names have to be unique within the report's expressions,
  * functions and fields of the datasource. Expressions are configured using properties.
  * <p>
  * todo: define a property query interface similar to the JDBC-Property interface
@@ -72,8 +72,8 @@ public abstract class AbstractExpression implements Expression
   private DataRow dataRow;
 
   /**
-   * Creates an unnamed expression. Make sure the name of the expression is set using setName()
-   * before the expression is added to an expressioncollection.
+   * Creates an unnamed expression. Make sure the name of the expression is set using 
+   * {@link #setName} before the expression is added to the report's expression collection.
    */
   public AbstractExpression()
   {
@@ -82,11 +82,9 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * Returns the name of the expression. Do not change the name of the expression after this
-   * expression was added to the expression collection. The name of the expression has to be
-   * unique with the scope of the report's functions, expressions and datasource fields.
-   *
-   * @return the name of the expression.
+   * Returns the name of the expression.
+   * 
+   * @return the name.
    */
   public String getName()
   {
@@ -94,68 +92,35 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * Defines the name of the expression. Do not change the name of the expression after this
-   * expression was added to the expression collection. The name of the expression has to be
-   * unique with the scope of the reports functions, expressions and datasource fields.
+   * Sets the name of the expression.
+   * <P>
+   * The name should be unique among:
+   * <ul>
+   *   <li>the functions and expressions for the report;
+   *   <li>the columns in the report's <code>TableModel</code>;
+   * </ul>
+   * This allows the expression to be referenced by name from any report element.
+   * <p>
+   * You should not change the name of an expression once it has been added to the report's
+   * expression collection.
    *
-   * @param name  the name of the expression.
-   *
-   * @throws NullPointerException if the name is null
+   * @param name  the name (<code>null</code> not permitted).
    */
   public void setName(String name)
   {
     if (name == null)
     {
-      throw new NullPointerException("Name must not be null");
+      throw new NullPointerException("AbstractExpression.setName(...) : name is null.");
     }
     this.name = name;
   }
 
   /**
-   * Sets the properties for this expression. All parameters are defined
-   * by properties. Common parameters are "field" and "group" to define
-   * the targets of the expression.
+   * Returns the value of a property, or <code>null</code> if no such property is defined.
    *
-   * Every expression defines its own set of properties and it is up to
-   * the report generator to fill the properties.
+   * @param name  the property name.
    *
-   * The properties in <code>p</code> are added to the expressions properties,
-   * eventually overwriting existing properties with the same name.
-   *
-   * @param p The properties.
-   */
-  public void setProperties(Properties p)
-  {
-    if (p != null)
-    {
-      Enumeration names = p.keys();
-      while (names.hasMoreElements())
-      {
-        String name = (String) names.nextElement();
-        String prop = (String) p.get(name);
-        setProperty(name, prop);
-      }
-    }
-  }
-
-  /**
-   * @return a copy of the properties defined for this expression.
-   */
-  public Properties getProperties()
-  {
-    Properties retval = new Properties();
-    retval.putAll(properties);
-    return retval;
-  }
-
-  /**
-   * Returns the value of a property.
-   * <P>
-   * Returns null if no such property was found.
-   *
-   * @param name The property name.
-   *
-   * @return The property value.
+   * @return the property value.
    */
   public String getProperty(String name)
   {
@@ -163,14 +128,12 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * Returns the value of a property.
-   * <P>
-   * If there is no property with the specified name, then the defaultVal is returned.
+   * Returns the value of a property, or <code>defaultVal</code> if no such property is defined.
    *
-   * @param name The property name.
-   * @param defaultVal The default property value.
+   * @param name  the property name.
+   * @param defaultVal  the default value.
    *
-   * @return The property value.
+   * @return the property value.
    */
   public String getProperty(String name, String defaultVal)
   {
@@ -178,12 +141,23 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * Sets a property for the function. The the property value is null, the property will be removed
-   * from this expressions set of properties.
+   * Returns <code>true</code> if this expression contains "auto-active" content and should be 
+   * called by the system regardless of whether this expression is referenced in the 
+   * {@link DataRow}.
    *
-   * @param name The property name.
-   * @param value The property value.
-   * @throws NullPointerException if the name is null
+   * @return boolean.
+   */
+  public boolean isActive()
+  {
+    return getProperty(AUTOACTIVATE_PROPERTY, "false").equals("true");
+  }
+
+  /**
+   * Sets a property for the expression.  If the property value is <code>null</code>, the property 
+   * will be removed from the property collection.
+   *
+   * @param name  the property name (<code>null</code> not permitted).
+   * @param value  the property value.
    */
   public final void setProperty(String name, String value)
   {
@@ -202,10 +176,75 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * returns the datarow for this expression. A datarow is used to query the values of functions,
-   * expressions and datasource fields in an uniform way.
+   * Returns a copy of the properties for this expression.
    *
-   * @return the assigned datarow for this expression.
+   * @return the properties.
+   */
+  public Properties getProperties()
+  {
+    Properties retval = new Properties();
+    retval.putAll(properties);
+    return retval;
+  }
+
+  /**
+   * Adds a property collection to the properties for this expression (overwriting existing
+   * properties with the same name).
+   * <P>
+   * Expression parameters are recorded as properties.  The required parameters (if any) will be 
+   * specified in the documentation for the class that implements the expression.
+   *
+   * @param p  the properties.
+   */
+  public void setProperties(Properties p)
+  {
+    if (p != null)
+    {
+      Enumeration names = p.keys();
+      while (names.hasMoreElements())
+      {
+        String name = (String) names.nextElement();
+        String prop = (String) p.get(name);
+        setProperty(name, prop);
+      }
+    }
+  }
+
+  /**
+   * Returns the dependency level for the expression (controls evaluation order for expressions
+   * and functions).
+   *
+   * @return the level.
+   */
+  public int getDependencyLevel()
+  {
+    return dependency;
+  }
+
+  /**
+   * Sets the dependency level for the expression.
+   * <p>
+   * The dependency level controls the order of evaluation for expressions and functions.  Higher
+   * level expressions are evaluated before lower level expressions.  Any level in the range
+   * 0 to Integer.MAX_VALUE is allowed.  Negative values are reserved for system functions 
+   * (printing and layouting).
+   * 
+   * @param level  the level (must be greater than or equal to 0).
+   */
+  public void setDependencyLevel(int level)
+  {
+    if (level < 0)
+    {
+      throw new IllegalArgumentException("AbstractExpression.setDependencyLevel(...) : negative "
+          + "dependency not allowed for user-defined expressions.");
+    }
+    this.dependency = level;
+  }
+
+  /**
+   * Returns the current {@link DataRow}.
+   *
+   * @return the data row.
    */
   public DataRow getDataRow()
   {
@@ -213,36 +252,25 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * Defines the datarow for this expression. A datarow is used to query the values of functions,
-   * expressions and datasource fields in an uniform way.
+   * Sets the current {@link DataRow} for the expression.  The data row is set when the report 
+   * processing starts and can be used to access the values of other expressions, functions, and 
+   * the report's <code>TableModel</code>.
+   * <p>
+   * This method is used by the report processing engine, you shouldn't need to call it yourself.
    *
-   * @param dataRow assigns the datarow for this expression.
+   * @param row the data row.
    */
-  public void setDataRow(DataRow dataRow)
+  public void setDataRow(DataRow row)
   {
-    this.dataRow = dataRow;
+    this.dataRow = row;
   }
 
   /**
-   * Clones this expression. Expressions are cloned when the report processing starts, to
-   * remove any connection to outside objects which could influence the reporting process.
+   * Checks that the expression has been correctly initialized.
+   * <p>
+   * The only check performed at present is to make sure the name is not <code>null</code>.
    *
-   * @return a clone of the expression.
-   *
-   * @throws CloneNotSupportedException this should never happen.
-   */
-  public Object clone() throws CloneNotSupportedException
-  {
-    AbstractExpression function = (AbstractExpression) super.clone();
-    function.properties = (Properties) properties.clone();
-    return function;
-  }
-
-  /**
-   * Initializes this Expression, and throws a FunctionInitializeException if the expression has
-   * no name defined.
-   *
-   * @throws FunctionInitializeException if no name was defined for this function.
+   * @throws FunctionInitializeException in case the expression is not initialized properly.
    */
   public void initialize() throws FunctionInitializeException
   {
@@ -253,43 +281,20 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * Returns true if this expression contains autoactive content and should be called by the system,
-   * regardless whether this expression is referenced in the datarow.
+   * Clones the expression.  The expression should be reinitialized after the cloning.
+   * <P>
+   * Expressions maintain no state, cloning is done at the beginning of the report processing to
+   * disconnect the expression from any other object space.
    *
-   * @return boolean
+   * @return a clone of this expression.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
-  public boolean isActive()
+  public Object clone() throws CloneNotSupportedException
   {
-    return getProperty(AUTOACTIVATE_PROPERTY, "false").equals("true");
+    AbstractExpression function = (AbstractExpression) super.clone();
+    function.properties = (Properties) properties.clone();
+    return function;
   }
 
-  /**
-   * The dependency level defines the level of execution for this function. Higher dependency functions
-   * are executed before lower dependency functions. For ordinary functions and expressions,
-   * the range for dependencies is defined to start from 0 (lowest dependency possible)
-   * to 2^31 (upper limit of int).
-   * <p>
-   * Levels below 0 are reserved for system-functionality (printing and layouting).
-   *
-   * @return the dependency level for this function
-   */
-  public int getDependencyLevel()
-  {
-    return dependency;
-  }
-
-  /**
-   * Sets the dependency level for the expression.
-   *
-   * @param level  the level.
-   */
-  public void setDependencyLevel(int level)
-  {
-    if (level < 0)
-    {
-      throw new IllegalArgumentException("No negative dependency allowed for user-defined "
-                                         + "expressions.");
-    }
-    this.dependency = level;
-  }
 }
