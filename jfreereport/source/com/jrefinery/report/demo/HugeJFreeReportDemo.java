@@ -40,6 +40,7 @@ package com.jrefinery.report.demo;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
+import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.Log;
