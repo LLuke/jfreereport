@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineShapeCreateTest.java,v 1.5 2003/11/01 19:57:03 taqua Exp $
+ * $Id: LineShapeCreateTest.java,v 1.6 2005/01/31 17:16:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -60,6 +60,7 @@ import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.PageFormatFactory;
+import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.xml.ParserUtil;
 
 public class LineShapeCreateTest extends TestCase
@@ -179,7 +180,7 @@ public class LineShapeCreateTest extends TestCase
     report.getReportHeader().addElement(element);
 
     BandLayoutManagerUtil.doLayout(report.getReportHeader(), new DefaultLayoutSupport(), 500, 200);
-    assertEquals(new Rectangle2D.Float(0, 0, 500, 70),
+    assertEquals(new StrictBounds(0, 0, 500, 0),
         BandLayoutManagerUtil.getBounds(report.getReportHeader(), null));
 
     final PageFormatFactory pff = PageFormatFactory.getInstance();

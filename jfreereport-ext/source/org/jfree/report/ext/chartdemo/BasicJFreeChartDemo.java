@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicJFreeChartDemo.java,v 1.1 2003/11/05 17:29:41 taqua Exp $
+ * $Id: BasicJFreeChartDemo.java,v 1.2 2005/01/31 17:14:41 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,9 +48,7 @@ import javax.swing.JMenuBar;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.Pie3DPlot;
-import org.jfree.data.DefaultPieDataset;
-import org.jfree.data.PieDataset;
+import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
@@ -62,6 +60,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.util.Rotation;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 
 public class BasicJFreeChartDemo extends AbstractDemoFrame
 {
@@ -173,7 +173,7 @@ public class BasicJFreeChartDemo extends AbstractDemoFrame
   private JFreeChart createChart(final PieDataset dataset)
   {
 
-    final JFreeChart chart = ChartFactory.createPie3DChart(
+    final JFreeChart chart = ChartFactory.createPieChart3D(
         "Pie Chart 3D Demo 1", // chart title
         dataset, // data
         true, // include legend
@@ -183,7 +183,7 @@ public class BasicJFreeChartDemo extends AbstractDemoFrame
 
     // set the background color for the chart...
     chart.setBackgroundPaint(Color.yellow);
-    final Pie3DPlot plot = (Pie3DPlot) chart.getPlot();
+    final PiePlot3D plot = (PiePlot3D) chart.getPlot();
     plot.setStartAngle(270);
     plot.setDirection(Rotation.CLOCKWISE);
     plot.setForegroundAlpha(0.5f);

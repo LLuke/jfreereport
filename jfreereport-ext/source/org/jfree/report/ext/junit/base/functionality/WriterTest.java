@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WriterTest.java,v 1.4 2003/11/01 19:57:03 taqua Exp $
+ * $Id: WriterTest.java,v 1.5 2005/02/19 16:15:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -98,6 +98,10 @@ public class WriterTest extends TestCase
       {
         report = ReportGenerator.getInstance().parseReport(url);
         ReportBuilderHints ph = report.getReportBuilderHints();
+        if (ph == null)
+        {
+          continue;
+        }
         String type = (String) ph.getHint(report, "parser.type", String.class);
         if (type == null)
         {
