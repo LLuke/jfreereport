@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.15 2002/06/11 17:35:03 taqua Exp $
+ * $Id: ReportState.java,v 1.16 2002/06/23 16:42:24 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -46,6 +46,7 @@
  *               repaginated.
  * 11-May-2002 : A bug in the ReportPropertyHandling is fixed.
  * 24-Jun-2002 : Populate Elements must not be called before Function values are calculated.
+ *
  */
 
 package com.jrefinery.report;

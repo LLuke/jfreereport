@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Cursor.java,v 1.7 2002/06/04 21:44:34 taqua Exp $
+ * $Id: Cursor.java,v 1.8 2002/07/03 18:49:45 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -37,6 +37,7 @@
  *               encapsulated in functions.
  * 20-May-2002 : Added advanceTo to better support PageFooter drawing.
  * 04-Jun-2002 : Documentation updated.
+ * 04-Jul-2002 : Serializable and Cloneable
  */
 
 package com.jrefinery.report;

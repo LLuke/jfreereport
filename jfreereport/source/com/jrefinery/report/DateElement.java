@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DateElement.java,v 1.7 2002/07/02 20:33:08 taqua Exp $
+ * $Id: DateElement.java,v 1.8 2002/07/03 18:49:45 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -37,6 +37,7 @@
  * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
  *               TextElements instead which get different filters attached.
  * 04-May-2002 : cleanup, documentation.
+ * 04-Jul-2002 : Serializable and Cloneable
  */
 
 package com.jrefinery.report;

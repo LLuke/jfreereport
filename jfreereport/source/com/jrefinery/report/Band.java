@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.9 2002/07/03 18:49:45 taqua Exp $
+ * $Id: Band.java,v 1.10 2002/07/03 19:09:08 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -45,6 +45,7 @@
  * 26-May-2002 : Elements are now stored ordered. Updated drawing to reflect new element property
  *               "Visible".
  * 04-Jun-2002 : Public methods throw exceptions on illegal values. Documentation update.
+ * 04-Jul-2002 : Serializable and Cloneable
  */
 
 package com.jrefinery.report;
@@ -64,13 +65,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Collections;
-import java.io.Serializable;
 
 /**
  * A report band contains a list of elements to be displayed, and represents one section of a
@@ -389,7 +390,7 @@ public abstract class Band implements Serializable, Cloneable
    */
   public List getElements ()
   {
-    return Collections.unmodifiableList(allElements);
+    return Collections.unmodifiableList (allElements);
   }
 
   /**
@@ -430,8 +431,8 @@ public abstract class Band implements Serializable, Cloneable
   {
     Band b = (Band) super.clone ();
     b.allElements = new ArrayList (allElements);
-    b.dataElements = (HashNMap) dataElements.clone();
-    b.functionElements = (HashNMap) functionElements.clone();
+    b.dataElements = (HashNMap) dataElements.clone ();
+    b.functionElements = (HashNMap) functionElements.clone ();
     return b;
   }
 }

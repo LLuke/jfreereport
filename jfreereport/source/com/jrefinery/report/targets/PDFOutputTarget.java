@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.13 2002/06/30 16:31:43 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.14 2002/07/03 18:49:48 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@
  *               See report4.xml for a demo. An encoding property is added to support unicode.
  * 08-Jun-2002 : Documentation.
  * 10-Jun-2002 : Fixed a bug in FontFactory which caused the class to crash in Linux
+ * 17-Jul-2002 : Fixed a nullpointer when an ImageReference did not contain a graphics
  */
 
 package com.jrefinery.report.targets;
@@ -50,6 +51,7 @@ import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.util.Log;
+import com.keypoint.PngEncoder;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -59,12 +61,10 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPatternPainter;
 import com.lowagie.text.pdf.PdfWriter;
-import com.keypoint.PngEncoder;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -211,7 +211,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       String fs = System.getProperty ("file.separator");
 
       Log.debug ("Running on operating system: " + osname);
-      if (!startsWithIgnoreCase(osname, "windows"))
+      if (!startsWithIgnoreCase (osname, "windows"))
       {
         Log.debug ("Assuming unix like file structures");
         // Assume X11 is installed in the default location.
@@ -707,7 +707,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     {
       Rectangle2D bounds = getCursor ().getDrawBounds ();
 
-      Image image = getImage(imageRef);
+      Image image = getImage (imageRef);
       image.setAbsolutePosition ((float) bounds.getX (),
               (float) (getPageHeight () - bounds.getY () - bounds.getHeight ()));
       image.scaleAbsolute ((float) bounds.getWidth (), (float) bounds.getHeight ());
@@ -735,14 +735,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   private Image getImage (ImageReference imageRef) throws DocumentException, IOException
   {
-    if (imageRef.getSourceURL() != null)
-      return Image.getInstance(imageRef.getSourceURL());
+    if (imageRef.getSourceURL () != null)
+      return Image.getInstance (imageRef.getSourceURL ());
 
-    if (imageRef.getImage() != null)
+    if (imageRef.getImage () != null)
     {
-      PngEncoder encoder = new PngEncoder(imageRef.getImage());
-      byte[] data = encoder.pngEncode();
-      return Image.getInstance(data);
+      PngEncoder encoder = new PngEncoder (imageRef.getImage ());
+      byte[] data = encoder.pngEncode ();
+      return Image.getInstance (data);
     }
 
     throw new DocumentException ("Neither an URL nor an Image was given to paint the graphics");
@@ -913,7 +913,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       document.addTitle (title);
       document.addAuthor (author);
       document.addCreator (
-              JFreeReport.getInfo().getName () + " version " + JFreeReport.getInfo().getVersion ());
+              JFreeReport.getInfo ().getName () + " version " + JFreeReport.getInfo ().getVersion ());
       document.addCreationDate ();
 
       writer = PdfWriter.getInstance (document, out);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.5 2002/06/05 23:21:47 mungady Exp $
+ * $Id: ItemCountFunction.java,v 1.6 2002/07/18 18:47:27 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  *               AbstractFunction
  * 10-May-2002 : Applied the ReportEvent interface.
  * 05-Jun-2002 : Updated Javadoc comments (DG);
+ * 18-Jul-2002 : Added system-out message ...
+ * 20-Jul-2002 : removed the message leftover from last commit
  */
 
 package com.jrefinery.report.function;
@@ -131,10 +133,6 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
     if (getGroup ().equals (group.getName ()))
     {
       this.count = 0;
-    }
-    else
-    {
-      System.out.println ("No Match: " + getGroup() + " + " + group.getName());
     }
   }
 

@@ -25,6 +25,14 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * 21-May-2002 : Initial version
+ * 22-May-2002 : TextAlignment fixed
+ * 23-May-2002 : Replaced System.out logging with Log-class
+ * 30-May-2002 : Performance upgrade: One-line texts are not processed by linebreak-method
+ * 08-Jun-2002 : Documentation
+ * 17-Jul-2002 : Added NullPointer handling for drawText(). Whitespaces are now replaced by
+ *               space (0x20) if the text to be printed fits on a single line
+ * 20-Jul-2002 : created this changelog
  */
 package com.jrefinery.report.targets;
 

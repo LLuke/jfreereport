@@ -26,6 +26,7 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 10-May-2002: Extracted from ReportDefinitionContentHandler
+ * 10-Jul-2002: Added Image-field and image-function tags
  */
 package com.jrefinery.report.io;
 

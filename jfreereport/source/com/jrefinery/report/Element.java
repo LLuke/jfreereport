@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.9 2002/06/08 14:31:52 taqua Exp $
+ * $Id: Element.java,v 1.10 2002/07/03 18:49:45 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -45,6 +45,7 @@
  *               is set. Elements paint is no longer protected, the paint is retrieved by the
  *               getPaint (Band) method. If neither band nor element have a paint declared, fail
  *               with and exception.
+ * 04-Jul-2002 : Serializable and Cloneable
  */
 
 package com.jrefinery.report;
@@ -301,8 +302,8 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
   public Object clone () throws CloneNotSupportedException
   {
     Element e = (Element) super.clone ();
-    e.area = (Rectangle2D) area.clone();
-    e.datasource = (DataSource) datasource.clone();
+    e.area = (Rectangle2D) area.clone ();
+    e.datasource = (DataSource) datasource.clone ();
     return e;
   }
 }

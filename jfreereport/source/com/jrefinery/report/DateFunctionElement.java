@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFunctionElement.java,v 1.6 2002/07/02 20:33:08 taqua Exp $
+ * $Id: DateFunctionElement.java,v 1.7 2002/07/03 18:49:45 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,7 @@
  * 10-May-2002 : Removed all complex constructors.
  * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
  *               TextElements instead which get different filters attached.
+ * 04-Jul-2002 : Serializable and Cloneable
  */
 
 package com.jrefinery.report;

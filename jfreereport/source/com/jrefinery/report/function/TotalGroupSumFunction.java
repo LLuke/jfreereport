@@ -1,19 +1,45 @@
 /**
+ * =============================================================
+ * JFreeReport : an open source reporting class library for Java
+ * =============================================================
  *
- *  Date: 23.06.2002
- *  TotalGroupSumFunction.java
- *  ------------------------------
- *  23.06.2002 : ...
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ---------------------------
+ * TotalGroupSumFunction.java
+ * ---------------------------
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
+ *
+ * Changes
+ * -------
+ * 23-Jun-2002 : Inital version
+ * 17-Jul-2002 : Handle empty data source without a crashing
+ * 18-Jul-2002 : Handle out-of-bounds dataquery to the tablemodel
  */
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportState;
-import com.jrefinery.report.Group;
+import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.filter.NumberFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
-import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.util.Log;
 
 import javax.swing.table.TableModel;
@@ -28,12 +54,12 @@ public class TotalGroupSumFunction extends AbstractFunction
 
     public GroupSum ()
     {
-      result = new BigDecimal(0);
+      result = new BigDecimal (0);
     }
 
     public void add (Number n)
     {
-      result = result.add (new BigDecimal(n.toString()));
+      result = result.add (new BigDecimal (n.toString ()));
     }
 
     public BigDecimal getResult ()
@@ -53,6 +79,7 @@ public class TotalGroupSumFunction extends AbstractFunction
   private GroupSum groupResult;
   private ArrayList results;
   private int currentIndex;
+
   /**
    * Constructs a new function.
    * <P>
@@ -60,12 +87,12 @@ public class TotalGroupSumFunction extends AbstractFunction
    */
   public TotalGroupSumFunction ()
   {
-    groupResult = new GroupSum();
-    datasource = new StaticDataSource();
-    parser = new DecimalFormatParser();
-    parser.setNullValue(ZERO);
-    parser.setDataSource(datasource);
-    results = new ArrayList();
+    groupResult = new GroupSum ();
+    datasource = new StaticDataSource ();
+    parser = new DecimalFormatParser ();
+    parser.setNullValue (ZERO);
+    parser.setDataSource (datasource);
+    results = new ArrayList ();
   }
 
   /**
@@ -77,15 +104,15 @@ public class TotalGroupSumFunction extends AbstractFunction
    */
   public void reportStarted (ReportEvent event)
   {
-    if (event.getState().isPrepareRun() == false)
+    if (event.getState ().isPrepareRun () == false)
     {
       currentIndex = -1;
       return;
     }
 
     currentIndex = -1;
-    results.clear();
-    groupResult = new GroupSum();
+    results.clear ();
+    groupResult = new GroupSum ();
   }
 
   /**
@@ -105,7 +132,7 @@ public class TotalGroupSumFunction extends AbstractFunction
       Group group = report.getGroup (state.getCurrentGroupIndex ());
       if (getGroup ().equals (group.getName ()))
       {
-        if (event.getState().isPrepareRun() == false)
+        if (event.getState ().isPrepareRun () == false)
         {
           // Activate the current group, which was filled in the prepare run.
           currentIndex += 1;
@@ -113,7 +140,7 @@ public class TotalGroupSumFunction extends AbstractFunction
         }
         else
         {
-          groupResult = new GroupSum();
+          groupResult = new GroupSum ();
           results.add (groupResult);
         }
       }
@@ -130,21 +157,21 @@ public class TotalGroupSumFunction extends AbstractFunction
    */
   public void itemsAdvanced (ReportEvent event)
   {
-    if (event.getState().isPrepareRun() == false)
+    if (event.getState ().isPrepareRun () == false)
     {
       return;
     }
 
-    TableModel data = event.getReport().getData ();
-    int row = event.getState().getCurrentDataItem();
+    TableModel data = event.getReport ().getData ();
+    int row = event.getState ().getCurrentDataItem ();
 
     // Handle the case when the tablemodel contains no rows
-    if (data.getRowCount() >= row) return;
+    if (data.getRowCount () >= row) return;
 
     Object fieldValue = null;
     for (int c = 0; c < data.getColumnCount (); c++)
     {
-      if (getField().equals (data.getColumnName (c)))
+      if (getField ().equals (data.getColumnName (c)))
       {
         fieldValue = data.getValueAt (row, c);
       }
@@ -157,8 +184,8 @@ public class TotalGroupSumFunction extends AbstractFunction
     }
     try
     {
-      datasource.setValue(fieldValue);
-      Number n = (Number) parser.getValue();
+      datasource.setValue (fieldValue);
+      Number n = (Number) parser.getValue ();
       groupResult.add (n);
     }
     catch (Exception e)
@@ -185,7 +212,7 @@ public class TotalGroupSumFunction extends AbstractFunction
    */
   public String getGroup ()
   {
-    return (String) getProperty("group");
+    return (String) getProperty ("group");
   }
 
   /**
@@ -207,7 +234,7 @@ public class TotalGroupSumFunction extends AbstractFunction
    */
   public Object getValue ()
   {
-    return groupResult.getResult();
+    return groupResult.getResult ();
   }
 
   /**
@@ -219,7 +246,7 @@ public class TotalGroupSumFunction extends AbstractFunction
    */
   public String getField ()
   {
-    return getProperty("field");
+    return getProperty ("field");
   }
 
   /**
@@ -249,6 +276,6 @@ public class TotalGroupSumFunction extends AbstractFunction
   public void initialize () throws FunctionInitializeException
   {
     super.initialize ();
-    if (getProperty("field") == null) throw new FunctionInitializeException("Field is required");
+    if (getProperty ("field") == null) throw new FunctionInitializeException ("Field is required");
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Group.java,v 1.7 2002/07/03 18:49:45 taqua Exp $
+ * $Id: Group.java,v 1.8 2002/07/03 19:09:08 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -37,6 +37,7 @@
  *               not modifyable outside this list. Header and footer are no longer allowed to
  *               contain null values. Is lastItemInGroup returns always true, if the end of the
  *               data had been reached.
+ * 03-Jul-2002 : Serializable and cloneable, replaces own ReadOnlyList with standard implementation
  */
 
 package com.jrefinery.report;

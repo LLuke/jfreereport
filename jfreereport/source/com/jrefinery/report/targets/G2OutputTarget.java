@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.8 2002/06/17 21:33:28 jaosch Exp $
+ * $Id: G2OutputTarget.java,v 1.9 2002/07/17 20:43:43 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,7 @@
  * 18-Apr-2002 : MultilineText is working again, ImageElement support
  * 16-May-2002 : Interface of drawShape changhed so we can draw different line width (JS)
  * 08-Jun-2002 : Documentation
+ * 17-Jul-2002 : Fixed a nullpointer when an ImageReference did not contain a graphics
  */
 
 package com.jrefinery.report.targets;
@@ -274,13 +275,13 @@ public class G2OutputTarget extends AbstractOutputTarget
   public void drawImage (ImageReference image)
   {
     Rectangle2D bounds = getCursor ().getDrawBounds ();
-    if (image.getImage() != null)
-    g2.drawImage (image.getImage (),
-            (int) (bounds.getX ()),
-            (int) (bounds.getY ()),
-            (int) bounds.getWidth (),
-            (int) bounds.getHeight (),
-            null);
+    if (image.getImage () != null)
+      g2.drawImage (image.getImage (),
+              (int) (bounds.getX ()),
+              (int) (bounds.getY ()),
+              (int) bounds.getWidth (),
+              (int) bounds.getHeight (),
+              null);
   }
 
   /**

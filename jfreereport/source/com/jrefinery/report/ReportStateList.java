@@ -28,6 +28,7 @@
  * -------
  * 31-May-2002 : Initial version
  * 09-Jun-2002 : Documentation
+ * 10-Jul-2002 : additional checks for method-input-parameters
  */
 package com.jrefinery.report;
 

@@ -28,6 +28,7 @@
  * Changes
  * -------
  * 16-May-2002 : Initial version
+ * 08-Jun-2002 : Documentation added
  */
 package com.jrefinery.report.targets;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.11 2002/07/17 20:43:43 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.12 2002/07/18 18:47:27 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,9 @@
  * 24-Apr-2002 : Changed the implementation to reflect the changes in Function and
  *               AbstractFunction
  * 10-May-2002 : Applied the ReportEvent interface
- *
+ * 23-Jun-2002 : Documentation
+ * 17-Jul-2002 : Handle empty data source without a crashing
+ * 18-Jul-2002 : Handle out-of-bounds dataquery to the tablemodel
  */
 
 package com.jrefinery.report.function;

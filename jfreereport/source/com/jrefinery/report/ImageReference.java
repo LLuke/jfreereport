@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.11 2002/07/14 21:59:34 taqua Exp $
+ * $Id: ImageReference.java,v 1.12 2002/07/15 16:50:31 mungady Exp $
  *
  * Changes:
  * --------
@@ -36,6 +36,7 @@
  * 16-May-2002 : Updated Javadoc comments (DG);
  * 16-May-2002 : Line Delimiters adjusted and imports organized (JS);
  * 14-Jul-2002 : BugFixed: WaitingImageObserver dead-locked (bugfix by Stefan Prange)
+ * 15-Jul-2002 : Fixed a bug in the constructor (DG);
  */
 
 package com.jrefinery.report;
