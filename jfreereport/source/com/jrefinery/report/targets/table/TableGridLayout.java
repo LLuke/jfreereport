@@ -2,7 +2,7 @@
  * Date: Jan 25, 2003
  * Time: 9:40:17 AM
  *
- * $Id$
+ * $Id: TableGridLayout.java,v 1.1 2003/01/25 20:38:30 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -59,8 +59,8 @@ public class TableGridLayout
         else
         {
 
-          Log.debug (new Log.SimpleMessage("Root already added: " , pos.getElement()));
-          Log.debug (new Log.SimpleMessage("+            added: " , root.getElement()));
+          Log.debug (new Log.SimpleMessage("Root already added: " , pos.getElement().getBounds()));
+          Log.debug (new Log.SimpleMessage("+            added: " , root.getElement().getBounds()));
           Log.debug (new Log.SimpleMessage("+            added: " , pos.getElement().debugChunk));
           Log.debug (new Log.SimpleMessage("+            added: Col=" , new Integer(root.getCol()) , "  Row=" , new Integer(root.getRow())));
         }
@@ -79,12 +79,12 @@ public class TableGridLayout
   }
 
   private Object data[][];
-  private Double[] xCuts;
-  private Double[] yCuts;
-  private double maxX;
-  private double maxY;
+  private int[] xCuts;
+  private int[] yCuts;
+  private int maxX;
+  private int maxY;
 
-  public TableGridLayout(Double[] xCuts, Double[] yCuts)
+  public TableGridLayout(int[] xCuts, int[] yCuts)
   {
     // +1 for outer boundry ...
     data = new Object[xCuts.length + 1][yCuts.length + 1];
@@ -106,20 +106,15 @@ public class TableGridLayout
       e.add(pos);
       data[x][y] = e;
 
-      Rectangle2D bounds = pos.getBounds();
-      maxX = Math.max(bounds.getX() + bounds.getWidth(), maxX);
-      maxY = Math.max(bounds.getY() + bounds.getHeight(), maxY);
-
     }
     else
     {
       Element e = (Element) data[x][y];
       e.add(pos);
-
-      Rectangle2D bounds = pos.getBounds();
-      maxX = Math.max(bounds.getX() + bounds.getWidth(), maxX);
-      maxY = Math.max(bounds.getY() + bounds.getHeight(), maxY);
     }
+    Rectangle2D bounds = pos.getBounds();
+    maxX = (int) Math.max(bounds.getX() + bounds.getWidth(), maxX);
+    maxY = (int) Math.max(bounds.getY() + bounds.getHeight(), maxY);
   }
 
   public Element getData (int x, int y)
@@ -137,17 +132,17 @@ public class TableGridLayout
     return yCuts.length;
   }
 
-  public double getColumnStart (int column)
+  public int getColumnStart (int column)
   {
-    return xCuts[column].doubleValue();
+    return xCuts[column];
   }
 
-  public double getRowStart (int row)
+  public int getRowStart (int row)
   {
-    return yCuts[row].doubleValue();
+    return yCuts[row];
   }
 
-  public double getColumnEnd (int column)
+  public int getColumnEnd (int column)
   {
     if (column == xCuts.length - 1)
     {
@@ -159,7 +154,7 @@ public class TableGridLayout
     }
   }
 
-  public double getRowEnd (int row)
+  public int getRowEnd (int row)
   {
     if (row == yCuts.length - 1)
     {

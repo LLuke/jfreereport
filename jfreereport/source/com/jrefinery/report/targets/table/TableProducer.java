@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 7:19:44 PM
  *
- * $Id: TableProducer.java,v 1.2 2003/01/25 02:47:10 taqua Exp $
+ * $Id: TableProducer.java,v 1.3 2003/01/25 20:34:11 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -149,7 +149,7 @@ public abstract class TableProducer
     TableCellData data = getCellDataFactory().createCellData(e, drawBounds);
     if (data != null)
     {
-      Log.debug ("Element " + e + " was added");
+//      Log.debug ("Element " + e + " was added");
       addCell(data);
       data.debugChunk = "Element" + e.getClass().getName() + " -> " + e.getName() + " (" + band + ")";
     }

@@ -2,9 +2,11 @@
  * Date: Jan 24, 2003
  * Time: 4:08:26 PM
  *
- * $Id: FontDefinition.java,v 1.1 2003/01/24 16:39:05 taqua Exp $
+ * $Id: FontDefinition.java,v 1.2 2003/01/25 20:34:11 taqua Exp $
  */
 package com.jrefinery.report.targets;
+
+import com.jrefinery.report.util.StringUtil;
 
 import java.io.Serializable;
 import java.awt.Font;
@@ -18,7 +20,7 @@ public class FontDefinition implements Serializable, Cloneable
   private boolean isItalic;
   private boolean isUnderline;
   private boolean isStrikeThrough;
-  private Font font;
+  private transient Font font;
   private boolean embeddedFont;
   // color is defined elsewhere
 
@@ -112,6 +114,22 @@ public class FontDefinition implements Serializable, Cloneable
       return fontEncoding;
   }
 
+
+  public String toString ()
+  {
+    StringBuffer buffer = new StringBuffer();
+    buffer.append("FontDefinition='fontname=\"");
+    buffer.append(fontName);
+    buffer.append("; fontSize=" + fontSize);
+    buffer.append("; bold=" + isBold);
+    buffer.append("; italic=" + isItalic);
+    buffer.append("; underline=" + isUnderline);
+    buffer.append("; strike=" + isStrikeThrough);
+    buffer.append("; embedded=" + embeddedFont);
+    buffer.append ("'");
+    return buffer.toString();
+  }
+
   public boolean equals(Object o)
   {
     if (this == o) return true;
@@ -145,18 +163,37 @@ public class FontDefinition implements Serializable, Cloneable
     return result;
   }
 
-  public String toString ()
+  /**
+   * Returns true if the logical font name is equivalent to 'SansSerif', and false otherwise.
+   *
+   * @return true or false.
+   */
+  public boolean isSansSerif ()
   {
-    StringBuffer buffer = new StringBuffer();
-    buffer.append("FontDefinition='fontname=\"");
-    buffer.append(fontName);
-    buffer.append("; fontSize=" + fontSize);
-    buffer.append("; bold=" + isBold);
-    buffer.append("; italic=" + isItalic);
-    buffer.append("; underline=" + isUnderline);
-    buffer.append("; strike=" + isStrikeThrough);
-    buffer.append("; embedded=" + embeddedFont);
-    buffer.append ("'");
-    return buffer.toString();
+    return StringUtil.startsWithIgnoreCase(fontName, "SansSerif")
+        || StringUtil.startsWithIgnoreCase(fontName, "Dialog");
   }
+
+  /**
+   * Returns true if the logical font name is equivalent to 'Courier', and false otherwise.
+   *
+   * @return true or false.
+   */
+  public boolean isCourier ()
+  {
+     return (StringUtil.startsWithIgnoreCase(fontName, "dialoginput")
+        || StringUtil.startsWithIgnoreCase(fontName, "monospaced"));
+  }
+
+  /**
+   * Returns true if the logical font name is equivalent to 'Serif', and false otherwise.
+   *
+   * @return true or false.
+   */
+  public boolean isSerif ()
+  {
+    return (StringUtil.startsWithIgnoreCase(fontName, "serif"));
+  }
+
+
 }

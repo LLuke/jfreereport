@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.18 2002/12/18 10:12:59 mungady Exp $
+ * $Id: Element.java,v 1.19 2003/01/22 19:38:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -141,30 +141,24 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Return the parent of the element. You can use this to explore the component tree.
+   * Return the parent of the element.
+   * You can use this to explore the component tree.
+   *
    * @return the parent of the element.
    */
-  protected Band getParent()
+  public final Band getParent()
   {
     return parent;
   }
 
   /**
-   * defines the parent of the element and adds the parents default settings
-   * to the stylesheet.
+   * defines the parent of the element. Only a band should call this method.
+   *
    * @param parent (null allowed).
    */
-  protected void setParent(Band parent)
+  protected final void setParent(Band parent)
   {
-    if (this.parent != null)
-    {
-      getStyle().removeParent(this.parent.getBandDefaults());
-    }
     this.parent = parent;
-    if (this.parent != null)
-    {
-      getStyle().addParent(this.parent.getBandDefaults());
-    }
   }
 
   /**

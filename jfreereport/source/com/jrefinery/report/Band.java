@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.35 2003/01/03 16:20:33 mungady Exp $
+ * $Id: Band.java,v 1.36 2003/01/23 18:07:43 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -141,6 +141,11 @@ public class Band extends Element implements Serializable, Cloneable
     return bandDefaults;
   }
 
+  public void addElement (Element element)
+  {
+    addElement(0, element);
+  }
+
   /**
    * Adds a report element to the band.
    *
@@ -149,24 +154,32 @@ public class Band extends Element implements Serializable, Cloneable
    * @throws NullPointerException if the element is <code>null</code> or contains <code>null</code>
    *                              values.
    */
-  public void addElement(Element element)
+  public void addElement(int position, Element element)
   {
+    if (position < 0)
+      throw new IllegalArgumentException("Position < 0");
+
     if (element == null)
     {
       throw new NullPointerException("Band.addElement(...): element is null.");
     }
 
     // check for component loops ...
-    Band parent = getParent();
-    while (parent != null)
+    if (element instanceof Band)
     {
-      if (parent == element)
+      Band band = this;
+      while (band != null)
       {
-        throw new IllegalArgumentException("Cannot add one of my parents to self");
+        if (band == element)
+        {
+          throw new IllegalArgumentException("adding container's parent to itself");
+        }
+        band = band.getParent();
       }
     }
 
-    allElements.add(element);
+    allElements.add(position, element);
+    element.getStyle().addParent(getBandDefaults());
     element.setParent(this);
   }
 
@@ -243,8 +256,9 @@ public class Band extends Element implements Serializable, Cloneable
       // this is none of my childs, ignore the request ...
       return;
     }
-    allElements.remove(e);
+    e.getStyle().removeParent(getBandDefaults());
     e.setParent(null);
+    allElements.remove(e);
   }
 
   /**
@@ -321,6 +335,30 @@ public class Band extends Element implements Serializable, Cloneable
   {
     return CONTENT_TYPE;
   }
+
+  /**
+   *
+   * @param element
+   * @return
+   */
+  public boolean isChild (Element element)
+  {
+    for (int i = 0; i < allElements.size(); i++)
+    {
+      Element es = (Element) allElements.get(i);
+      if (es == element)
+        return true;
+
+      if (es instanceof Band)
+      {
+        Band b = (Band) es;
+        return b.isChild(element);
+      }
+    }
+    return false;
+  }
+
+
 
   /// DEPRECATED METHODS //////////////////////////////////////////////////////////////////////////
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.28 2003/01/25 02:47:10 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.29 2003/01/25 20:34:12 taqua Exp $
  *
  * Changes
  * -------
@@ -111,7 +111,7 @@ import java.util.Properties;
  *
  * <li><code>com.jrefinery.report.TableFactoryMode</code>
  * <p>
- * The table model factory mode for the {@link ResultSetTableModelFactory}.
+ * The table model factory mode for the {@link com.jrefinery.report.tablemodel.ResultSetTableModelFactory}.
  * If set to "simple" the factory will always return a <code>DefaultTableModel</code>.
  * This property is not set by default and it should not be necessary to change this.
  *

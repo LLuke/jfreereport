@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFFontSupport.java,v 1.5 2003/01/17 14:48:12 taqua Exp $
+ * $Id: PDFFontSupport.java,v 1.6 2003/01/24 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -115,15 +115,15 @@ public class PDFFontSupport
       italic = true;
     }
 
-    if (isCourier(logicalName))
+    if (font.isCourier())
     {
       fontKey = createCourierName(bold, italic);
     }
-    else if (isSerif(logicalName))
+    else if (font.isSerif())
     {
       fontKey = createSerifName(bold, italic);
     }
-    else if (isSansSerif (logicalName))
+    else if (font.isSansSerif ())
     { // default, this catches Dialog and SansSerif
       fontKey = createSansSerifName(bold, italic);
     }
@@ -315,44 +315,6 @@ public class PDFFontSupport
   {
     PDFFontRecord r = (PDFFontRecord) baseFonts.get (new PDFFontRecordKey(fontKey, encoding));
     return r;
-  }
-
-  /**
-   * Returns true if the logical font name is equivalent to 'Courier', and false otherwise.
-   *
-   * @param logicalName  the logical font name.
-   *
-   * @return true or false.
-   */
-  private boolean isCourier (String logicalName)
-  {
-     return (StringUtil.startsWithIgnoreCase(logicalName, "dialoginput")
-        || StringUtil.startsWithIgnoreCase(logicalName, "monospaced"));
-  }
-
-  /**
-   * Returns true if the logical font name is equivalent to 'Serif', and false otherwise.
-   *
-   * @param logicalName  the logical font name.
-   *
-   * @return true or false.
-   */
-  private boolean isSerif (String logicalName)
-  {
-    return (StringUtil.startsWithIgnoreCase(logicalName, "serif"));
-  }
-
-  /**
-   * Returns true if the logical font name is equivalent to 'SansSerif', and false otherwise.
-   *
-   * @param logicalName  the logical font name.
-   *
-   * @return true or false.
-   */
-  private boolean isSansSerif (String logicalName)
-  {
-    return StringUtil.startsWithIgnoreCase(logicalName, "SansSerif")
-        || StringUtil.startsWithIgnoreCase(logicalName, "Dialog");
   }
 
   /**

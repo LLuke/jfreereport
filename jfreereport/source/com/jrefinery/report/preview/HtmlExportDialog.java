@@ -30,7 +30,7 @@
                      based on PDFSaveDialog by Thomas Morgner, David Gilbert (for Simba Management Limited) and contributors
  * Contributor(s):
  *
- * $Id: HtmlExportDialog.java,v 1.1 2003/01/18 20:50:12 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.2 2003/01/22 19:38:29 taqua Exp $
  *
  * Changes
  * --------
@@ -41,6 +41,7 @@ package com.jrefinery.report.preview;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.targets.table.html.HtmlProcessor;
+import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.ReportConfiguration;
@@ -71,6 +72,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
@@ -597,13 +601,13 @@ public class HtmlExportDialog extends JDialog
    */
   public boolean writeHtml(JFreeReport report)
   {
-    Writer out = null;
+    OutputStream out = null;
     try
     {
 
-      out = new BufferedWriter(new FileWriter(new File(getFilename())));
+      out = new BufferedOutputStream(new FileOutputStream(new File(getFilename())));
       HtmlProcessor target = new HtmlProcessor(report);
-      target.setWriter(out);
+      target.setFilesystem(new StreamHtmlFilesystem (out));
       target.processReport();
       out.close();
       return true;

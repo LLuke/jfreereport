@@ -2,19 +2,18 @@
  * Date: Jan 18, 2003
  * Time: 8:01:24 PM
  *
- * $Id: HtmlCellDataFactory.java,v 1.2 2003/01/25 02:47:10 taqua Exp $
+ * $Id: HtmlCellDataFactory.java,v 1.3 2003/01/25 20:34:12 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.util.StringUtil;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.table.TableCellData;
 import com.jrefinery.report.targets.table.TableCellDataFactory;
+import com.jrefinery.report.util.Log;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
@@ -22,10 +21,12 @@ import java.awt.geom.Rectangle2D;
 public class HtmlCellDataFactory implements TableCellDataFactory
 {
   private HtmlStyleCollection styleCollection;
+  private boolean useXHTML;
 
-  public HtmlCellDataFactory(HtmlStyleCollection styleCollection)
+  public HtmlCellDataFactory(HtmlStyleCollection styleCollection, boolean useXHTML)
   {
     this.styleCollection = styleCollection;
+    this.useXHTML = useXHTML;
   }
 
   public TableCellData createCellData(Element e, Rectangle2D rect)
@@ -40,14 +41,14 @@ public class HtmlCellDataFactory implements TableCellDataFactory
     if (value instanceof ImageReference)
     {
       HtmlCellStyle style = new HtmlCellStyle(font, color, valign, halign);
-      styleCollection.addStyle(style, StringUtil.encodeCSS(e.getName()));
-      return new HtmlImageCellData(rect, (ImageReference) value, style);
+      styleCollection.addStyle(style);
+      return new HtmlImageCellData(rect, (ImageReference) value, style, useXHTML);
     }
     if (value instanceof String)
     {
       HtmlCellStyle style = new HtmlCellStyle(font, color, valign, halign);
-      styleCollection.addStyle(style, StringUtil.encodeCSS(e.getName()));
-      return new HtmlTextCellData(rect, (String) value, style);
+      styleCollection.addStyle(style);
+      return new HtmlTextCellData(rect, (String) value, style, useXHTML);
     }
     Log.debug ("Element " + e + " ignored");
     return null;

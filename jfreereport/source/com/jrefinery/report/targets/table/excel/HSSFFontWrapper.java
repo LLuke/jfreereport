@@ -2,12 +2,11 @@
  * Date: Jan 14, 2003
  * Time: 4:14:39 PM
  *
- * $Id: HSSFFontWrapper.java,v 1.2 2003/01/25 02:47:10 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.3 2003/01/25 20:34:12 taqua Exp $
  */
 package com.jrefinery.report.targets.table.excel;
 
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.util.StringUtil;
 import com.jrefinery.report.util.Log;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -32,15 +31,15 @@ public class HSSFFontWrapper
   {
     Log.debug ("Added Font: " + font);
     String fName = font.getFontName();
-    if (isSansSerif(fName))
+    if (font.isSansSerif())
     {
       fontName = "Arial";
     }
-    else if (isCourier(fName))
+    else if (font.isCourier())
     {
       fontName = "Courier New";
     }
-    else if (isSerif(fName))
+    else if (font.isSerif())
     {
       fontName = "Times New Roman";
     }
@@ -127,43 +126,5 @@ public class HSSFFontWrapper
     result = 29 * result + (bold ? 1 : 0);
     result = 29 * result + (italic ? 1 : 0);
     return result;
-  }
-
-  /**
-   * Returns true if the logical font name is equivalent to 'Courier', and false otherwise.
-   *
-   * @param logicalName  the logical font name.
-   *
-   * @return true or false.
-   */
-  private boolean isCourier (String logicalName)
-  {
-     return (StringUtil.startsWithIgnoreCase(logicalName, "dialoginput")
-        || StringUtil.startsWithIgnoreCase(logicalName, "monospaced"));
-  }
-
-  /**
-   * Returns true if the logical font name is equivalent to 'Serif', and false otherwise.
-   *
-   * @param logicalName  the logical font name.
-   *
-   * @return true or false.
-   */
-  private boolean isSerif (String logicalName)
-  {
-    return (StringUtil.startsWithIgnoreCase(logicalName, "serif"));
-  }
-
-  /**
-   * Returns true if the logical font name is equivalent to 'SansSerif', and false otherwise.
-   *
-   * @param logicalName  the logical font name.
-   *
-   * @return true or false.
-   */
-  private boolean isSansSerif (String logicalName)
-  {
-    return StringUtil.startsWithIgnoreCase(logicalName, "SansSerif")
-        || StringUtil.startsWithIgnoreCase(logicalName, "Dialog");
   }
 }

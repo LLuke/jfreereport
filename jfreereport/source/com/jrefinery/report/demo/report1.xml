@@ -18,9 +18,9 @@
       <property name="com.jrefinery.report.preview.MaximumHeight">600</property>
 -->      
     </configuration>
-    <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="18" fsunderline="true">
-        <label x="0" y="0" width="100%" height="48" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
-        <label x="0" y="0" width="100%" height="48" vertical-alignment="bottom" alignment="center">This text is valign="bottom"</label>
+    <reportheader height="50" fontname="Serif" fontstyle="bold" fontsize="18" fsunderline="true">
+        <label x="0" y="0" width="100%" height="20" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
+        <label x="0" y="20" width="100%" height="30" vertical-alignment="bottom" alignment="center">This text is valign="bottom"</label>
     </reportheader>
     <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
         <label x="0" y="0" width="100%" height="24" alignment="center">*** END OF REPORT ***</label>
@@ -35,6 +35,7 @@
     <pagefooter height="18">
         <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0" draw="false" fill="true"/>
     </pagefooter>
+
     <groups>
         <group name="Continent Group">
             <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" vertical-alignment="middle" pagebreak="false">
@@ -43,7 +44,7 @@
                 <line x1="0" y1="10" x2="0" y2="10" weight="0.5"/>
             </groupheader>
             <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
-                <label x="0" y="0" width="450" height="12" alignment="left">Population:</label>
+                <label x="0" y="0" width="220" height="12" alignment="left">Population:</label>
                 <number-field x="220" y="0" width="116" height="12" alignment="right" format="#,##0" fieldname="sum"/>
             </groupfooter>
             <fields>
@@ -57,11 +58,11 @@
         <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
         <line x1="0" y1="0" x2="0" y2="0" color="#FF0FFF" weight="0.1"/>
         <line x1="0" y1="10" x2="0" y2="10" color="#0FDFDF" weight="0.1"/>
-        <string-field x="0" y="0" width="176" height="10" alignment="left" fieldname="Country" />
-        <string-field x="180" y="0" width="50" height="10" alignment="left" fieldname="ISO Code"/>
-        <number-field x="240" y="0" width="76" height="10" alignment="right" format="#,##0" fieldname="Population"/>
-        <string-field x="330" y="0" width="76" height="10" alignment="right" fieldname="expression"/>
-        <number-field x="390" y="0" width="76" height="10" alignment="right" format="#,##0.00 '%'" fieldname="percent"/>
+        <string-field name="first" x="0" y="0" width="25%" height="10" alignment="left" fieldname="Country" />
+        <string-field name="sF" x="25%" y="0" width="5%" height="10" alignment="left" fieldname="ISO Code"/>
+        <number-field name="here?" x="30%" y="0" width="20%" height="10" alignment="right" format="#,##0" fieldname="Population"/>
+        <string-field name="or?" x="50%" y="0" width="25%" height="10" alignment="right" fieldname="expression"/>
+        <number-field name="numF" x="75%" y="0" width="25%" height="10" alignment="right" format="#,##0.00 '%'" fieldname="percent"/>
     </items>
 
     <functions>

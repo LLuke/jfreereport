@@ -32,22 +32,14 @@ public class CharacterEntityParser
 
   private CharacterEntityParser(Properties characterEntities)
   {
-    try
+    entities = characterEntities;
+    reverese = new Properties();
+    Enumeration enum = entities.keys();
+    while (enum.hasMoreElements())
     {
-      entities = characterEntities;
-      reverese = new Properties();
-      Enumeration enum = entities.keys();
-      while (enum.hasMoreElements())
-      {
-        String key = (String) enum.nextElement();
-        String value = entities.getProperty(key);
-        reverese.setProperty(value, key);
-      }
-    }
-    catch (Exception e)
-    {
-      Log.debug("Unable to load file: ", e);
-      return;
+      String key = (String) enum.nextElement();
+      String value = entities.getProperty(key);
+      reverese.setProperty(value, key);
     }
   }
 
@@ -96,7 +88,7 @@ public class CharacterEntityParser
       return character;
     }
     else
-      return val;
+      return "&" + val + ";";
   }
 
   public String encodeEntities (String value)
@@ -137,7 +129,7 @@ public class CharacterEntityParser
       }
       else
       {
-        replaceString = (String) getEntities().get(buf);
+        replaceString = lookupCharacter(buf.toString());
       }
       if (replaceString != null)
       {
@@ -150,5 +142,11 @@ public class CharacterEntityParser
     return bufValue.toString();
   }
 
+  public static void main (String [] args)
+  {
+    CharacterEntityParser html = createXMLEntityParser();
+
+    Log.debug (html.decodeEntities(html.encodeEntities("The \" is encoded right")));
+  }
 }
 

@@ -2,12 +2,13 @@
  * Date: Jan 18, 2003
  * Time: 7:59:00 PM
  *
- * $Id: HtmlCellStyle.java,v 1.2 2003/01/25 02:47:10 taqua Exp $
+ * $Id: HtmlCellStyle.java,v 1.3 2003/01/25 20:34:12 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.util.Log;
 
 import java.awt.Color;
 
@@ -54,14 +55,34 @@ public class HtmlCellStyle
   public boolean equals(Object o)
   {
     if (this == o) return true;
-    if (!(o instanceof HtmlCellStyle)) return false;
+    if (!(o instanceof HtmlCellStyle))
+    {
+      Log.debug ("Not the same class");
+      return false;
+    }
 
     final HtmlCellStyle style = (HtmlCellStyle) o;
 
-    if (!font.equals(style.font)) return false;
-    if (!fontColor.equals(style.fontColor)) return false;
-    if (!horizontalAlignment.equals(style.horizontalAlignment)) return false;
-    if (!verticalAlignment.equals(style.verticalAlignment)) return false;
+    if (!font.equals(style.font))
+    {
+      Log.debug ("Not the same font");
+      return false;
+    }
+    if (!fontColor.equals(style.fontColor))
+    {
+      Log.debug ("Not the same fontcolor");
+      return false;
+    }
+    if (!horizontalAlignment.equals(style.horizontalAlignment))
+    {
+      Log.debug ("Not the same horizontal alignment");
+      return false;
+    }
+    if (!verticalAlignment.equals(style.verticalAlignment))
+    {
+      Log.debug ("Not the same vertical alignment");
+      return false;
+    }
 
     return true;
   }

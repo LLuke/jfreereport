@@ -2,57 +2,60 @@
  * Date: Jan 25, 2003
  * Time: 6:17:21 AM
  *
- * $Id$
+ * $Id: HtmlStyleCollection.java,v 1.1 2003/01/25 20:38:34 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
-import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.style.StyleSheet;
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.io.ext.factory.objects.ColorObjectDescription;
+import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.util.Log;
 
 import java.awt.Color;
-import java.util.Hashtable;
 import java.util.Enumeration;
-import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class HtmlStyleCollection
 {
   private ColorObjectDescription colorObjectDescription;
   private Hashtable table;
-  private ArrayList styleBlacklist;
+  private boolean compressed;
+  private int nameCounter;
+
+  private boolean useXHTML = false;
 
   public HtmlStyleCollection()
   {
     this.colorObjectDescription = new ColorObjectDescription();
     this.table = new Hashtable();
-    this.styleBlacklist = new ArrayList();
   }
 
+  public boolean isCompressed()
+  {
+    return compressed;
+  }
+
+  private String createName ()
+  {
+    String name = "style-" + nameCounter;
+    nameCounter++;
+    return name;
+
+  }
   /**
    *
    * @param style
-   * @param name
    */
-  public void addStyle (HtmlCellStyle style, String name)
+  public String addStyle (HtmlCellStyle style)
   {
-    if (table.containsValue(name))
-    {
-      // stylesheet already registed. blacklist it ...
-      if (isBlacklisted(name) == false)
-        styleBlacklist.add (name);
-    }
-    else
+    String name = lookupName(style);
+    if (name == null)
     {
       // Style did not change during the report processing, add it
+      name = createName();
       table.put(style, name);
     }
-  }
-
-  public boolean isBlacklisted(String name)
-  {
-    return styleBlacklist.contains(name);
+    return name;
   }
 
   public boolean isRegistered(HtmlCellStyle style)
@@ -61,10 +64,11 @@ public class HtmlStyleCollection
 
     // if the table does not contain this style, it is not registered.
     if (name == null)
+    {
+      Log.debug ("There is no such style ");
       return false;
-
-    // if the style is blacklisted, it is treated as if it is not registered
-    return isBlacklisted(name);
+    }
+    return true;
   }
 
   public Enumeration getDefinedStyles ()
@@ -80,7 +84,23 @@ public class HtmlStyleCollection
   public void clear ()
   {
     table.clear();
-    styleBlacklist.clear();
+  }
+
+  private String translateFontName (FontDefinition font)
+  {
+    if (font.isCourier())
+    {
+      return "monospaced";
+    }
+    if (font.isSerif())
+    {
+      return "serif";
+    }
+    if (font.isSansSerif())
+    {
+      return "sans-serif";
+    }
+    return "'" + font.getFontName() + "'";
   }
 
   public String createStyleSheetDefinition (HtmlCellStyle style)
@@ -89,41 +109,42 @@ public class HtmlStyleCollection
     String colorValue = getColorString(style.getFontColor());
 
     StringBuffer b = new StringBuffer();
-    b.append ("font-family:'");
-    b.append (font.getFontName());
-    b.append ("';font-size:");
+    b.append ("font-family:");
+    b.append (translateFontName(font));
+    b.append ("; font-size:");
     b.append (font.getFontSize());
+    b.append ("pt");
     if (font.isBold())
     {
-      b.append (";font-weight:bold");
+      b.append ("; font-weight:bold");
     }
     if (font.isItalic())
     {
-      b.append (";font-style:italic");
+      b.append ("; font-style:italic");
     }
     if (font.isUnderline() && font.isStrikeThrough())
     {
-      b.append (";text-decoration:underline,line-through");
+      b.append ("; text-decoration:underline,line-through");
     }
     else
     if (font.isUnderline())
     {
-      b.append (";text-decoration:underline");
+      b.append ("; text-decoration:underline");
     }
     else if (font.isStrikeThrough())
     {
-      b.append (";text-decoration:line-through");
+      b.append ("; text-decoration:line-through");
     }
     if (colorValue != null)
     {
-      b.append (";color:");
+      b.append ("; color:");
       b.append (colorValue);
     }
 
-    b.append (";vertical-align:");
+    b.append ("; vertical-align:");
     b.append (translateVerticalAlignment(style.getVerticalAlignment()));
-    b.append (";text-align:");
-    b.append (translateHorizontalAlignment(style.getVerticalAlignment()));
+    b.append ("; text-align:");
+    b.append (translateHorizontalAlignment(style.getHorizontalAlignment()));
     b.append (";");
     return b.toString();
   };
@@ -160,5 +181,8 @@ public class HtmlStyleCollection
     return null;
   }
 
+  public void compactNames ()
+  {
 
+  }
 }

@@ -2,11 +2,12 @@
  * Date: Jan 24, 2003
  * Time: 11:00:35 PM
  *
- * $Id$
+ * $Id: FirstDemoTableModel.java,v 1.1 2003/01/25 02:50:56 taqua Exp $
  */
 package com.jrefinery.report.demo;
 
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.IOUtils;
 
 import javax.swing.ImageIcon;
 import javax.swing.table.TableModel;
@@ -91,25 +92,7 @@ public class FirstDemoTableModel extends IconTableModel
     ByteArrayOutputStream byteIn = new ByteArrayOutputStream();
     try
     {
-      // create a 4kbyte buffer to read the file
-      byte[] bytes = new byte[4096];
-
-      // the input stream does not supply accurate available() data
-      // the zip entry does not know the size of the data
-      while (in.available() != 0)
-      {
-        int bytesRead = in.read(bytes);
-        if (bytesRead > -1)
-        {
-          byteIn.write(bytes, 0, bytesRead);
-        }
-        else
-        {
-          // no more data...
-          break;
-        }
-      }
-
+      IOUtils.getInstance().copyStreams(in, byteIn);
       ImageIcon temp = new ImageIcon(byteIn.toByteArray());
       result = temp.getImage();
     }

@@ -2,7 +2,9 @@
  * Date: Jan 18, 2003
  * Time: 8:06:54 PM
  *
- * $Id: HtmlProducer.java,v 1.5 2003/01/25 02:47:10 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.6 2003/01/25 20:34:12 taqua Exp $
+ *
+ * This file now produces valid HTML4
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -22,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.Writer;
 import java.util.Enumeration;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
@@ -30,32 +31,52 @@ import java.util.zip.InflaterInputStream;
 
 public class HtmlProducer extends TableProducer
 {
-  private Writer writer;
   private PrintWriter pout;
   private String reportName;
   private HtmlCellDataFactory cellDataFactory;
-  private CharacterEntityParser entityParser;
+  private static CharacterEntityParser entityParser;
   private HtmlStyleCollection styleCollection;
+  private HtmlFilesystem filesystem;
+  private boolean useXHTML;
 
   private ByteArrayOutputStream content;
   private boolean isOpen;
-  private static final String XHTML_HEADER =
-       "<!DOCTYPE html \n" +
-       "     PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n" +
-       "     \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n" +
-       "<html xmlns=\"http://www.w3.org/1999/xhtml\" >\n" +
-       "<head>\n";
+  private static final String[] XHTML_HEADER = {
+       "<?xml version=\"1.0\" encoding=\"us-ascii\"?>",
+       "<!DOCTYPE html",
+       "     PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"",
+       "     \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"",
+       "<html xmlns=\"http://www.w3.org/1999/xhtml\" >",
+       "<head>"};
 
-  public HtmlProducer(Writer w, String reportName, boolean strict)
+  private static final String[] HTML4_HEADER = {
+       "<!DOCTYPE HTML ",
+       "     PUBLIC \"-//W3C//DTD HTML 4.01//EN\"",
+       "     \"http://www.w3.org/TR/html4/strict.dtd\">",
+       "<html>",
+       "<head>"};
+
+
+  public HtmlProducer(HtmlFilesystem filesystem,
+                      String reportName, boolean strict, boolean useXHTML)
   {
     super(strict);
-    this.writer = w;
+    this.filesystem = filesystem;
     this.content = null;
     this.pout = null;
     this.reportName = reportName;
     this.styleCollection = new HtmlStyleCollection();
-    this.cellDataFactory = new HtmlCellDataFactory(styleCollection);
-    this.entityParser = CharacterEntityParser.createHTMLEntityParser();
+    this.cellDataFactory = new HtmlCellDataFactory(styleCollection, useXHTML);
+    this.useXHTML = useXHTML;
+  }
+
+  private static CharacterEntityParser getEntityParser ()
+  {
+    if (entityParser == null)
+    {
+      entityParser = CharacterEntityParser.createHTMLEntityParser();
+    }
+    return entityParser;
   }
 
   public void open()
@@ -64,9 +85,20 @@ public class HtmlProducer extends TableProducer
     DeflaterOutputStream deflaterStream = new DeflaterOutputStream(content, new Deflater(Deflater.BEST_COMPRESSION));
     this.pout = new PrintWriter(deflaterStream);
 
-    // the style sheet definition will be inserted before the content is written ...
+    // the style sheet definition will be inserted right before the content is written ...
+    pout.print("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=");
+    // todo get the file encoding
+    pout.print("us-ascii");
+    if (useXHTML)
+    {
+      pout.println("\" />");
+    }
+    else
+    {
+      pout.println("\">");
+    }
     pout.print("<title>");
-    pout.print(entityParser.encodeEntities(reportName));
+    pout.print(getEntityParser().encodeEntities(reportName));
     pout.println("</title></head>");
     pout.println("<body>");
     isOpen = true;
@@ -74,13 +106,11 @@ public class HtmlProducer extends TableProducer
 
   public void close()
   {
-    pout.println("</body></html>");
-
     try
     {
-      // now finish the style sheet definition
-      writer.write(XHTML_HEADER);
-      writer.write("<style>");
+      pout.println("</body></html>");
+
+      StringBuffer cssbuffer = new StringBuffer();
 
       Enumeration styles = styleCollection.getDefinedStyles();
       while (styles.hasMoreElements())
@@ -89,15 +119,55 @@ public class HtmlProducer extends TableProducer
         if (styleCollection.isRegistered(style))
         {
           String name = styleCollection.lookupName(style);
-          writer.write ("span.");
-          writer.write (name);
-          writer.write (" { ");
-          writer.write (styleCollection.createStyleSheetDefinition(style));
-          writer.write (" }; ");
+          cssbuffer.append (".");
+          cssbuffer.append (name);
+          cssbuffer.append (" { ");
+          cssbuffer.append (styleCollection.createStyleSheetDefinition(style));
+          cssbuffer.append (" } ");
+          cssbuffer.append (System.getProperty("line.separator", "\n"));
         }
       }
+      HtmlReferenceData cssRef = filesystem.createCSSReference(cssbuffer.toString());
 
-      writer.write("</style>");
+
+      PrintWriter writer = new PrintWriter(filesystem.getRootStream());
+
+      if (useXHTML)
+      {
+        // now finish the style sheet definition
+        for (int i = 0; i < XHTML_HEADER.length; i++)
+        {
+          writer.println(XHTML_HEADER[i]);
+        }
+      }
+      else
+      {
+        // now finish the style sheet definition
+        for (int i = 0; i < HTML4_HEADER.length; i++)
+        {
+          writer.println(HTML4_HEADER[i]);
+        }
+      }
+      // is a href type ...
+      if (cssRef.isExternal())
+      {
+        writer.print("<link rel=\"stylesheet\" type=\"text/css\" ");
+        writer.print(cssRef.getReference());
+        if (useXHTML)
+        {
+          writer.println(" />");
+        }
+        else
+        {
+          writer.println(">");
+        }
+      }
+      else
+      {
+        writer.println("<style type=\"text/css\">");
+        writer.print(cssRef.getReference());
+        writer.println("</style>");
+      }
       writer.flush();
 
       pout.flush();
@@ -120,6 +190,8 @@ public class HtmlProducer extends TableProducer
       }
 
       inReader.close();
+      writer.flush();
+      filesystem.close();
     }
     catch (IOException ioe)
     {
@@ -138,7 +210,8 @@ public class HtmlProducer extends TableProducer
 
   public void beginPage(String name)
   {
-    pout.println("<table width=\"100%\" border=\"2\">");
+    // border=\"2\"
+    pout.println("<table width=\"100%\">");
   }
 
   public TableCellDataFactory getCellDataFactory()
@@ -157,23 +230,25 @@ public class HtmlProducer extends TableProducer
 
     for (int y = 0; y < layout.getHeight(); y++)
     {
-      int lastRowHeight = (int)(layout.getRowEnd(y) - layout.getRowStart(y));
+      int lastRowHeight = layout.getRowEnd(y) - layout.getRowStart(y);
 
-      pout.println("<tr height=\"" + lastRowHeight + "\">");
+      pout.println("<tr style=\"height:" + lastRowHeight + "pt\">");
 
       for (int x = 0; x < layout.getWidth(); x++)
       {
         TableGridLayout.Element gridElement = layout.getData(x, y);
         if (gridElement == null)
         {
-          pout.println("<td>&nbsp;</td>");
+          int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
+          pout.println("<td style=\"width:" + width + "pt\">&nbsp;</td>");
           continue;
         }
 
         TableGridPosition gridPosition = gridElement.getRoot();
         if (gridPosition == null)
         {
-          pout.println("<td>&nbsp;</td>");
+          int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
+          pout.println("<td   style=\"width:" + width + "pt\">&nbsp;</td>");
           continue;
         }
 
@@ -185,7 +260,13 @@ public class HtmlProducer extends TableProducer
 
         HtmlCellData cellData = (HtmlCellData) gridPosition.getElement();
 
-        pout.print("    <td");
+        pout.print("    <td style=\"width:");
+        pout.print((int) gridPosition.getBounds().getWidth());
+        pout.print("pt");
+        pout.print("; height:");
+        pout.print((int) gridPosition.getBounds().getHeight());
+        pout.print("pt\"");
+
         if (gridPosition.getRowSpan() > 1)
         {
           pout.print(" rowspan=\"");
@@ -203,21 +284,21 @@ public class HtmlProducer extends TableProducer
         if (styleCollection.isRegistered(cellData.getStyle()))
         {
           // stylesheet defined in the header
-          pout.print("<span class=\"");
+          pout.print("<div class=\"");
           pout.print(styleCollection.lookupName(cellData.getStyle()));
           pout.print("\">");
         }
         else
         {
           // stylesheet defined as inline style
-          pout.print("<span style=\"");
+          pout.print("<div style=\"");
           pout.print(styleCollection.createStyleSheetDefinition(cellData.getStyle()));
           pout.print("\">");
         }
 
-        //printText(entityParser.encodeEntities(gridPosition.getElement().debugChunk));
-        printText(entityParser.encodeEntities(cellData.getValue()));
-        pout.print("</span>");
+        cellData.write(pout, filesystem);
+
+        pout.print("</div>");
         pout.println("</td>");
 
         x += gridPosition.getColSpan() - 1;
@@ -226,11 +307,11 @@ public class HtmlProducer extends TableProducer
     }
   }
 
-  private void printText (String text)
+  public static void printText (PrintWriter pout, String text, boolean useXHTML)
   {
     if (text.length() == 0)
     {
-      pout.print("&nbsp;");
+      pout.print("");
       return;
     }
 
@@ -247,9 +328,16 @@ public class HtmlProducer extends TableProducer
         }
         else
         {
-          pout.println("<br>");
+          if (useXHTML)
+          {
+            pout.println("<br />&nbsp;");
+          }
+          else
+          {
+            pout.println("<br>&nbsp;");
+          }
         }
-        pout.print(readLine);
+        pout.print(getEntityParser().encodeEntities(readLine));
       }
       reader.close();
     }
