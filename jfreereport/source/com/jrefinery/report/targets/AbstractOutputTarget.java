@@ -301,7 +301,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
         {
           System.out.println ("Measured: st = " + startPos + " vs. " + endPos);
           x = (float) getStringBounds (currentLine, lineStartPos, endPos);
-          if (x >= w) break;
+          if (x >= w)
+          {
+            break;
+          }
 
           startPos = endPos;
           endPos = breakit.next ();
@@ -358,6 +361,11 @@ public abstract class AbstractOutputTarget implements OutputTarget
   public void drawMultiLineText (
           String mytext, int align)
   {
+    if (false)
+    {
+      drawString(mytext, align);
+      return;
+    }
     Rectangle2D bounds = getCursor ().getDrawBounds ();
     float fontheight = getFontHeight ();
     int maxLinesToDisplay = (int) (bounds.getHeight () / fontheight);
@@ -371,7 +379,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     if (lines.size () == 1)
     {
       lineBounds.setRect ((float) bounds.getX (), bounds.getY (), bounds.getWidth (), fontheight);
-      getCursor ().setElementBounds (lineBounds);
+      getCursor ().setDrawBounds (lineBounds);
       drawString ((String) lines.elementAt (0), align);
     }
     else
@@ -388,7 +396,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
         System.out.println ("(bounds.getHeight() + bounds.getY()) = " + bounds.getHeight () + " " + bounds.getY ());
 
         lineBounds.setRect ((float) bounds.getX (), linePos, bounds.getWidth (), fontheight);
-        getCursor ().setElementBounds (lineBounds);
+        getCursor ().setDrawBounds (lineBounds);
         drawString (line, align);
       }
     }

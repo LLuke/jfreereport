@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.4 2002/05/16 17:01:06 jaosch Exp $
+ * $Id: G2OutputTarget.java,v 1.1 2002/05/21 23:06:19 taqua Exp $
  *
  * Changes
  * -------
@@ -313,6 +313,7 @@ public class G2OutputTarget extends AbstractOutputTarget
       Rectangle2D textBounds = g2.getFont ().getStringBounds (text, frc);
       x = (float) ((bounds.getX () + bounds.getWidth ()) - textBounds.getWidth ());
     }
+    System.out.println ("Draw String:  " + text + " :" + x + ": " + baseline);
     g2.drawString (text, x, baseline);
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.5 2002/05/17 13:24:40 jaosch Exp $
+ * $Id: TextElement.java,v 1.6 2002/05/21 23:06:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -53,6 +53,7 @@ import com.jrefinery.report.targets.OutputTargetException;
 
 import java.awt.Font;
 import java.awt.Paint;
+import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -67,7 +68,6 @@ public class TextElement extends Element
 
   /** Text alignment: LEFT, CENTER, RIGHT. */
   private int alignment;
-  private float baseline;
 
   /**
    * Constructs an element using a Rectangle2D.
@@ -76,6 +76,7 @@ public class TextElement extends Element
   {
     stringfilter = new StringFilter ();
     super.setDataSource(stringfilter);
+    setAlignment(ElementConstants.LEFT);
     setNullString("-");
   }
 
@@ -179,15 +180,12 @@ public class TextElement extends Element
     {
       target.setPaint (band.getDefaultPaint ());
     }
-
     // set the font...
     if (getFont (band) != null)
     {
       target.setFont (getFont (band));
     }
-
     // draw the text...
-    Rectangle2D area = getBounds ();
     target.drawMultiLineText (this.getFormattedText (), getAlignment ());
   }
 

@@ -95,4 +95,13 @@ public class BandCursor
   {
     return getElementBounds ();
   }
+
+  /**
+   * Translated values. Use this if you call an TargetInteral function
+   */
+  public void setDrawBounds (Rectangle2D bounds)
+  {
+    setElementBounds (bounds);
+  }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.5 2002/05/16 17:06:08 jaosch Exp $
+ * $Id: PDFOutputTarget.java,v 1.1 2002/05/21 23:06:19 taqua Exp $
  *
  * Changes
  * -------
@@ -122,6 +122,17 @@ public class PDFOutputTarget extends AbstractOutputTarget
       double w = bounds.getWidth ();
       double h = bounds.getHeight ();
       return new Rectangle2D.Double (x, y, w, h);
+    }
+
+    public void setDrawBounds (Rectangle2D rect)
+    {
+      Rectangle2D bbounds = getBandBounds ();
+      super.setElementBounds (
+              new Rectangle2D.Double (
+                      rect.getX () - bbounds.getX (),
+                      rect.getY () - bbounds.getY (),
+                      rect.getWidth (),
+                      rect.getHeight ()));
     }
   }
 
@@ -450,6 +461,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
       cb.setLineWidth (bstroke.getLineWidth ());
     }
 
+    System.out.println ("Draw Line: " + shape.getBounds ());
+
     float[] params = new float[6];
     // How to apply this? This should be needed in fillShape
     while (pit.isDone () == false)
@@ -642,6 +655,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
           int alignment)
   {
     Rectangle2D bounds = getCursor ().getDrawBounds ();
+
+    System.out.println ("Draw String: " + getCursor ().getDrawBounds ());
 
     PdfContentByte cb = this.writer.getDirectContent ();
     cb.beginText ();
