@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.11 2002/07/20 20:48:47 taqua Exp $
+ * $Id: Band.java,v 1.12 2002/07/28 13:25:24 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -54,13 +54,11 @@ import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.DataTarget;
 import com.jrefinery.report.filter.FunctionDataSource;
 import com.jrefinery.report.filter.ReportDataSource;
-import com.jrefinery.report.function.Function;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.report.util.HashNMap;
 import com.jrefinery.report.util.Log;
 
-import javax.swing.table.TableModel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
@@ -69,7 +67,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
@@ -247,61 +244,61 @@ public abstract class Band implements Serializable, Cloneable
    * @param functions The report functions.
    * @throws NullPointerException if the state given is null
    *
-  public void populateElements (ReportState state)
-  {
-    if (state == null) throw new NullPointerException ();
+   public void populateElements (ReportState state)
+   {
+   if (state == null) throw new NullPointerException ();
 
-    TableModel data = state.getReport ().getData ();
+   TableModel data = state.getReport ().getData ();
 
-    if (data.getRowCount () < 1)
-      return;
+   if (data.getRowCount () < 1)
+   return;
 
-    int row = state.getCurrentDisplayItem ();
-    row = Math.min (row, data.getRowCount () - 1);
+   int row = state.getCurrentDisplayItem ();
+   row = Math.min (row, data.getRowCount () - 1);
 
-    for (int column = 0; column < data.getColumnCount (); column++)
-    {
-      Object value = data.getValueAt (row, column);
-      String name = data.getColumnName (column);
-      Iterator elements = dataElements.getAll (name);
-      if (elements == null)
-      {
-        // No data elements for this column in this band
-        continue;
-      }
+   for (int column = 0; column < data.getColumnCount (); column++)
+   {
+   Object value = data.getValueAt (row, column);
+   String name = data.getColumnName (column);
+   Iterator elements = dataElements.getAll (name);
+   if (elements == null)
+   {
+   // No data elements for this column in this band
+   continue;
+   }
 
-      // Fill the value into all elements
-      while (elements.hasNext ())
-      {
-        ReportDataSource element = (ReportDataSource) elements.next ();
-        element.setValue (value);
-      }
-    }
+   // Fill the value into all elements
+   while (elements.hasNext ())
+   {
+   ReportDataSource element = (ReportDataSource) elements.next ();
+   element.setValue (value);
+   }
+   }
 
-    // iterate through the function elements
-    FunctionCollection functions = state.getFunctions ();
-    Enumeration enum = this.functionElements.keys ();
-    while (enum.hasMoreElements ())
-    {
-      // elements are keyed by function name
-      String name = (String) enum.nextElement ();
-      Function f = functions.get (name);
-      if (f == null) continue;
+   // iterate through the function elements
+   FunctionCollection functions = state.getFunctions ();
+   Enumeration enum = this.functionElements.keys ();
+   while (enum.hasMoreElements ())
+   {
+   // elements are keyed by function name
+   String name = (String) enum.nextElement ();
+   Function f = functions.get (name);
+   if (f == null) continue;
 
-      // get all functionElements for this function
-      Iterator functionsources = functionElements.getAll (name);
-      if (functionsources == null) continue;
+   // get all functionElements for this function
+   Iterator functionsources = functionElements.getAll (name);
+   if (functionsources == null) continue;
 
-      Object functionValue = f.getValue ();
-      while (functionsources.hasNext ())
-      {
-        FunctionDataSource fds = (FunctionDataSource) functionsources.next ();
-        fds.setValue (functionValue);
-      }
-    }
+   Object functionValue = f.getValue ();
+   while (functionsources.hasNext ())
+   {
+   FunctionDataSource fds = (FunctionDataSource) functionsources.next ();
+   fds.setValue (functionValue);
+   }
+   }
 
-  }
-*/
+   }
+   */
 
   /**
    * Draws the band onto the specified output target.
@@ -309,10 +306,41 @@ public abstract class Band implements Serializable, Cloneable
    * @param x The x-coordinate.
    * @param y The y-coordinate.
    * @throws NullPointerException if the target given is null
+   public void draw (OutputTarget target, float x, float y) throws OutputTargetException
+   {
+   if (target == null) throw new NullPointerException ();
+
+   Rectangle2D bounds = new Rectangle2D.Float ();
+   bounds.setRect (x, y, target.getUsableWidth (), getHeight ());
+   target.setClippingArea (bounds);
+
+   target.setPaint (getDefaultPaint ());
+   Iterator iterator = allElements.iterator ();
+   while (iterator.hasNext ())
+   {
+   Element e = (Element) iterator.next ();
+   if (e.isVisible ())
+   {
+   target.getCursor ().setElementBounds (translateBounds (target, e.getBounds ()));
+   try
+   {
+   Object state = target.saveState ();
+   e.draw (target, this);
+   target.restoreState (state);
+   }
+   catch (OutputTargetException ex)
+   {
+   Log.error ("Failed to draw band", ex);
+   }
+   }
+   }
+   }
    */
-  public void draw (OutputTarget target, float x, float y) throws OutputTargetException
+
+  public float draw (OutputTarget target, float x, float y) throws OutputTargetException
   {
     if (target == null) throw new NullPointerException ();
+    float maxheight = 0;
 
     Rectangle2D bounds = new Rectangle2D.Float ();
     bounds.setRect (x, y, target.getUsableWidth (), getHeight ());
@@ -336,8 +364,12 @@ public abstract class Band implements Serializable, Cloneable
         {
           Log.error ("Failed to draw band", ex);
         }
+        double eh = target.getCursor ().getDrawBounds ().getY () +
+                target.getCursor ().getDrawBounds ().getHeight ();
+        if (eh > maxheight) maxheight = (float) eh;
       }
     }
+    return maxheight;
   }
 
   /**

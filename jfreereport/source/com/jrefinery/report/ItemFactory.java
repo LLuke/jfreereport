@@ -457,13 +457,17 @@ public class ItemFactory
   public static RectangleShapeElement createRectangleShapeElement (String name,
                                                                    Paint paint,
                                                                    Stroke stroke,
-                                                                   Rectangle2D shape)
+                                                                   Rectangle2D shape,
+                                                                   boolean shouldDraw,
+                                                                   boolean shouldFill)
   {
     RectangleShapeElement line = new RectangleShapeElement ();
     line.setName (name);
     line.setPaint (paint);
     line.setStroke (stroke);
     line.setShape (shape);
+    line.setShouldDraw(shouldDraw);
+    line.setShouldFill(shouldFill);
     return line;
   }
 

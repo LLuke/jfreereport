@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.11 2002/06/04 21:44:34 taqua Exp $
+ * $Id: ShapeElement.java,v 1.12 2002/06/09 15:15:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -66,6 +66,9 @@ public abstract class ShapeElement extends Element
   private Shape shape;
   
   private Stroke m_stroke;
+
+  private boolean shouldFill;
+  private boolean shouldDraw;
 
   /**
    * Constructs a shape element.
@@ -125,8 +128,8 @@ public abstract class ShapeElement extends Element
     // set the paint...
     target.setPaint(getPaint(band));
     target.setStroke(getStroke());
-    if (shouldDraw()) target.drawShape(getShape());
-    if (shouldFill()) target.fillShape(getShape());
+    if (isShouldDraw()) target.drawShape(getShape());
+    if (isShouldFill()) target.fillShape(getShape());
   }
 
   /**
@@ -154,9 +157,9 @@ public abstract class ShapeElement extends Element
    *
    * @returns true if the outline should be drawn, false otherwise
    */
-  protected boolean shouldDraw ()
+  public boolean isShouldDraw ()
   {
-    return true;
+    return shouldDraw;
   }
 
   /**
@@ -165,8 +168,18 @@ public abstract class ShapeElement extends Element
    *
    * @returns true if the outline should be drawn, false otherwise
    */
-  protected boolean shouldFill ()
+  public boolean isShouldFill ()
   {
-    return true;
+    return shouldFill;
+  }
+
+  public void setShouldDraw (boolean shouldDraw)
+  {
+    this.shouldDraw = shouldDraw;
+  }
+
+  public void setShouldFill (boolean shouldFill)
+  {
+    this.shouldFill = shouldFill;
   }
 }

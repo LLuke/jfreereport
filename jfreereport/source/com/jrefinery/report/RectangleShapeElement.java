@@ -48,6 +48,8 @@ public class RectangleShapeElement extends ShapeElement
    */
   public RectangleShapeElement ()
   {
+    setShouldDraw(false);
+    setShouldFill(true);
   }
 
   /**
@@ -106,13 +108,5 @@ public class RectangleShapeElement extends ShapeElement
   {
     super.setShape(target.getCursor().getElementBounds());
     super.draw(target, band);
-  }
-
-  /**
-   * returns false to define that no outline should be drawn.
-   */
-  protected boolean shouldDraw ()
-  {
-    return false;
   }
 }

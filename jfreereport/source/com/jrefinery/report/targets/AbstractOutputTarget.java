@@ -45,6 +45,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.text.BreakIterator;
 import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The abstract OutputTarget implements common code for all OutputTargets. It contains
@@ -253,15 +255,15 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @param mytext the text to be broken down
    * @param width the boundry on which the text is broken if no manual linebreak is encountered.
-   * @param linecount the number of lines to be displayed. If linecount is lesser than 0, a 1 is
-   * assumed.
+   * @param maxlines the number of lines to be displayed. If linecount is lesser than 1, an unlimited
+   * textelement is assumed and the whole string is processed without obeying to any limit.
    */
-  protected Vector breakLines (String mytext, final float width, int linecount)
+  protected List breakLines (String mytext, final float width, int maxLines)
   {
     // Correct the linecount. We display at least a single line
-    if (linecount < 1) linecount = 1;
+    // if (linecount < 1) linecount = 1;
 
-    Vector bareLines = new Vector ();
+    ArrayList bareLines = new ArrayList ();
     try
     {
       BufferedReader reader = new BufferedReader (new StringReader (mytext));
@@ -285,19 +287,29 @@ public abstract class AbstractOutputTarget implements OutputTarget
      * mode later, but without any visual editing it would be cruel to any report designer.
      */
     float reserved = 0;
-    if (linecount > 1 || STRICT_MODE == false)
+    if (STRICT_MODE == false)
     {
       reserved = getStringBounds (RESERVED_LITERAL, 0, RESERVED_LITERAL.length ());
     }
 
     BreakIterator breakit = BreakIterator.getLineInstance ();
-    Vector returnLines = new Vector ();
+    ArrayList returnLines = new ArrayList();
 
-    int linesToDo = Math.min (linecount, bareLines.size ());
+    int linesToDo = 0;
+    boolean limitedMode = false;
+    if (maxLines > 0)
+    {
+      linesToDo = Math.min(bareLines.size (), maxLines);
+      limitedMode = true;
+    }
+    else
+    {
+      linesToDo = bareLines.size ();
+    }
 
     for (int i = 0; i < linesToDo; i++)
     {
-      String currentLine = (String) bareLines.elementAt (i);
+      String currentLine = (String) bareLines.get (i);
       breakit.setText (currentLine);
 
       int lineStartPos = 0;
@@ -309,14 +321,13 @@ public abstract class AbstractOutputTarget implements OutputTarget
         float x = 0;
 
         float w = width;
-        if (i == (linecount - 1))
+        if (limitedMode && i == (linesToDo - 1))
         {
           w -= reserved;
         }
 
         while (endPos != BreakIterator.DONE)
         {
-//          x = (float) getStringBounds (currentLine, lineStartPos, endPos);
           x += (float) getStringBounds (currentLine, startPos, endPos);
           if (x >= w)
           {
@@ -327,7 +338,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
           endPos = breakit.next ();
         }
 
-        if (endPos == BreakIterator.DONE || ((STRICT_MODE == false) && linecount == 1))
+        if (endPos == BreakIterator.DONE || ((STRICT_MODE == false) && linesToDo == 1))
         {
           Log.debug ("Adding : " + lineStartPos + " to End of Line: " + currentLine.substring (lineStartPos));
           returnLines.add (currentLine.substring (lineStartPos));
@@ -336,7 +347,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
         else
         {
 
-          if (i == (linecount - 1))
+          if (limitedMode && i == (linesToDo - 1))
           {
             Log.debug ("Adding : " + lineStartPos + " to " + startPos + " : " + currentLine.substring (lineStartPos, startPos));
             returnLines.add (currentLine.substring (lineStartPos, startPos) + RESERVED_LITERAL);
@@ -371,28 +382,48 @@ public abstract class AbstractOutputTarget implements OutputTarget
   protected abstract float getFontHeight ();
 
   /**
+   * Draws a string inside a rectangular area (the lower edge is aligned with the baseline of
+   * the text). The text is split at the end of the line and continued in the next line.
+   *
+   * @param text The text.
+   * @param alignment The horizontal alignment.
+   */
+  public void drawMultiLineText (String mytext, int align)
+  {
+    drawMultiLineText(mytext, align, false);
+  }
+
+  /**
    * Draws the band onto the specified graphics device.
    * @param mytext The text to be displayed.
    * @param align The alignment of a text line
    */
-  public void drawMultiLineText (
-          String mytext, int align)
+  public void drawMultiLineText (String mytext, int align, boolean dynamic)
   {
     // don othing if there is nothing to print
     if (mytext == null) return;
 
     Rectangle2D bounds = getCursor ().getDrawBounds ();
     float fontheight = getFontHeight ();
-    int maxLinesToDisplay = (int) (bounds.getHeight () / fontheight);
-    Vector lines = null;
-    if (maxLinesToDisplay <= 1)
+
+    List lines = null;
+    if (dynamic == true)
     {
-      lines = new Vector ();
-      lines.add (clearWhitespaces(mytext));
+      // Dont define a limit for the number of lines, the size of the band is adjusted.
+      lines = breakLines (mytext, (float) bounds.getWidth (), 0);
     }
     else
     {
+      int maxLinesToDisplay = (int) (bounds.getHeight () / fontheight);
       lines = breakLines (mytext, (float) bounds.getWidth (), maxLinesToDisplay);
+    }
+
+    float newheight = lines.size () * (fontheight + 1);
+    float oldheight = (float) bounds.getHeight ();
+    if (newheight > oldheight)
+    {
+      bounds.setRect (bounds.getX (), bounds.getY (), bounds.getWidth (), newheight);
+      getCursor ().setElementBounds (bounds);
     }
 
     Rectangle2D lineBounds = new Rectangle2D.Float ();
@@ -405,7 +436,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     {
       lineBounds.setRect ((float) bounds.getX (), bounds.getY (), bounds.getWidth (), fontheight);
       getCursor ().setDrawBounds (lineBounds);
-      drawString ((String) lines.elementAt (0), align);
+      drawString ((String) lines.get (0), align);
     }
     else
     {
@@ -414,7 +445,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
        */
       for (int linecount = 0; linecount < lines.size (); linecount++)
       {
-        String line = (String) lines.elementAt (linecount);
+        String line = (String) lines.get (linecount);
         float linePos = (float) (linecount * fontheight + bounds.getY ());
 
         lineBounds.setRect ((float) bounds.getX (), linePos, bounds.getWidth (), fontheight);
@@ -426,10 +457,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
   protected String clearWhitespaces (String text)
   {
-    char[] textdata = text.toCharArray();
+    char[] textdata = text.toCharArray ();
     for (int i = 0; i < textdata.length; i++)
     {
-      if (Character.isWhitespace(textdata[i]))
+      if (Character.isWhitespace (textdata[i]))
       {
         textdata[i] = ' ';
       }

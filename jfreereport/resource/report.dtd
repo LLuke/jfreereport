@@ -543,4 +543,6 @@
 <!ATTLIST rectangle
   %position;
   %basicform;
+  draw     (%boolean;)   #IMPLIED
+  fill     (%boolean;)   #IMPLIED
 >

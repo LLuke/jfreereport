@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportProcessor.java,v 1.7 2002/06/09 14:46:04 taqua Exp $
+ * $Id: ReportProcessor.java,v 1.8 2002/07/10 18:38:05 taqua Exp $
  * Changes
  * -------------------------
  * 10-May-2002 : Initial version
@@ -95,18 +95,22 @@ public class ReportProcessor implements JFreeReportConstants
    */
   protected void draw (Band band, float y)
   {
-    if (isDraw())
+    float dheight = 0;
+    if (isDraw ())
     {
       try
       {
-        band.draw (target, cursor.getPageLeft (), y);
+        dheight = band.draw (target, cursor.getPageLeft (), y);
       }
       catch (OutputTargetException e)
       {
         Log.error ("Unable to draw band", e);
       }
     }
-    cursor.advance (y - cursor.getY() + band.getHeight ());
+    //cursor.advance (y - cursor.getY() + band.getHeight ());
+    if (dheight < band.getHeight ()) dheight = band.getHeight ();
+
+    cursor.advance (y - cursor.getY () + dheight);
   }
 
   /**
@@ -242,7 +246,7 @@ public class ReportProcessor implements JFreeReportConstants
     if (band == null)
       throw new NullPointerException ("Band must not be null");
 
-    if (isPageDone())
+    if (isPageDone ())
       return false;
 
     if (cursor.isSpaceFor (band.getHeight ()) == false)

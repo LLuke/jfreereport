@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OutputTarget.java,v 1.1 2002/05/21 23:06:19 taqua Exp $
+ * $Id: OutputTarget.java,v 1.2 2002/05/28 19:38:10 taqua Exp $
  *
  * Changes
  * -------
@@ -213,6 +213,15 @@ public interface OutputTarget
    * @param alignment The horizontal alignment.
    */
   public void drawMultiLineText (String mytext, int align);
+
+  /**
+   * Draws a string inside a rectangular area (the lower edge is aligned with the baseline of
+   * the text). The text is split at the end of the line and continued in the next line.
+   *
+   * @param text The text.
+   * @param alignment The horizontal alignment.
+   */
+  public void drawMultiLineText (String mytext, int align, boolean dynamic);
 
   /**
    * Draws a shape relative to the specified coordinates.

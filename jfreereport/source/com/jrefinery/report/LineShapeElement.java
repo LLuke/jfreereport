@@ -50,6 +50,8 @@ public class LineShapeElement extends ShapeElement
   public LineShapeElement()
   {
     setLine(new Line2D.Float());
+    setShouldDraw(true);
+    setShouldFill(false);
   }
 
   /**

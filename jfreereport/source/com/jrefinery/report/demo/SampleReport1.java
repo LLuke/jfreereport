@@ -60,7 +60,9 @@ public class SampleReport1
                     "anonymous",
                     Color.decode ("#AFAFAF"),
                     new BasicStroke(0),
-                    new Rectangle2D.Float(0,0,-100,-100)
+                    new Rectangle2D.Float(0,0,-100,-100),
+                    false,
+                    true
             )
     );
     header.addElement(
@@ -180,7 +182,7 @@ public class SampleReport1
                     "background",
                     Color.decode("#DFDFDF"),
                     new BasicStroke (0),
-                    new Rectangle2D.Float (0,0,-100,-100)
+                    new Rectangle2D.Float (0,0,-100,-100), false, true
             )
     );
     items.addElement(
