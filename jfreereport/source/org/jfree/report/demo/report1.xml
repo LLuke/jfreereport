@@ -24,16 +24,6 @@
     -->
   </configuration>
 
-  <watermark>
-    <imageref x="10%" y="10%" width="80%" height="80%" src="earth.png" keepAspectRatio="true" scale="true"/>
-  </watermark>
-
-  <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
-    <rectangle name="PH0" x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
-    <date-field name="PH1" x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" fieldname="report.date"  line-height="20"/>
-    <line name="PH2" x1="0" y1="18" x2="0" y2="18" color="#CFCFCF" weight="2.0"/>
-  </pageheader>
-
   <reportheader height="90" fontname="Arial Unicode MS" fontstyle="bold" fontsize="18">
     <label name="RH0" x="0" y="0" width="100%" height="18" fsunderline="true" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
     <label name="RH1" x="0" y="18" width="100%" height="30" vertical-alignment="bottom" alignment="center">Sample Thai chars: &#3648;&#3614;&#3636;&#3656;&#3617;, &#3621;&#3641;&#3585;&#3588;&#3657;&#3634;</label>
@@ -43,9 +33,27 @@
     <label name="RF0" x="0" y="0" width="100%" height="24" alignment="center">*** &gt; END OF REPORT &lt; ***</label>
   </reportfooter>
 
+  <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
+    <rectangle name="PH0" x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
+    <line name="PH2" x1="0" y1="18" x2="0" y2="18" color="#CFCFCF" weight="2.0"/>
+    <date-field name="PH1" x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" fieldname="report.date"/>
+  </pageheader>
+
   <pagefooter height="18">
     <rectangle name="PF0" x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0" draw="false" fill="true"/>
   </pagefooter>
+
+  <!--
+    The watermark is a special section. It always consumes the complete space on a page.
+    Output targets can choose whether to support this section, at the moment only the
+    PDF and Graphics2D output support watermarks, HTML will follow in the near future.
+
+    The water mark band accepts all element types, and is printed together with the
+    page header.
+  -->
+  <watermark>
+    <imageref x="10%" y="10%" width="80%" height="80%" src="earth.png" keepAspectRatio="true" scale="true"/>
+  </watermark>
 
   <groups>
     <group name="Continent Group">
@@ -56,7 +64,7 @@
         <line name="Continent-H2" x1="0" y1="10" x2="0" y2="10" weight="0.5"/>
       </groupheader>
       <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
-        <label name="Continent-F0" x="0" y="0" width="220" height="12" alignment="left">Population:</label>
+        <label name="Continent-F0" x="0" y="0" width="220" height="12" alignment="left" fontname="SansSerif" fsunderline="true">Population:</label>
         <number-field name="Continent-F1" x="220" y="0" width="116" height="12" alignment="right" format="#,##0" fieldname="sum"/>
       </groupfooter>
       <fields>

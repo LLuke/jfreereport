@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProgressBar.java,v 1.3 2004/03/27 17:23:19 taqua Exp $
+ * $Id: ReportProgressBar.java,v 1.1.2.2 2004/10/11 21:00:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -96,11 +96,7 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
 
 
   /** Localised resources. */
-  private final ResourceBundle resources;
-
-  /** The base resource class. */
-  public static final String BASE_RESOURCE_CLASS =
-          "org.jfree.report.modules.gui.base.resources.jfreereport-resources";
+  private ResourceBundle resources;
 
   /**
    * Creates a horizontal progress bar
@@ -116,7 +112,7 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
    */
   public ReportProgressBar()
   {
-    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    resources = ResourceBundle.getBundle(PreviewBaseModule.RESOURCES_BASE_NAME);
     pageMessageFormatter = new MessageFormat(resources.getString("progress-dialog.page-label"));
     passMessageFormatter = new MessageFormat(resources.getString("progress-dialog.pass-label"));
     setOutputText(resources.getString("progress-dialog.perform-output"));
@@ -134,7 +130,7 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
    */
   public void repaginationUpdate(final RepaginationState state)
   {
-    ScreenUpdateRunnable runnable = new ScreenUpdateRunnable
+    final ScreenUpdateRunnable runnable = new ScreenUpdateRunnable
         (state.getCurrentRow(), state.getMaxRow(), state.getPage(),
             state.getPass(), state.isPrepare());
     if (SwingUtilities.isEventDispatchThread())
@@ -152,7 +148,7 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
 
     if (lastPage != page || lastPass != pass)
     {
-      StringBuffer message = new StringBuffer();
+      final StringBuffer message = new StringBuffer();
       final Object[] pageparameters = new Object[]{new Integer(page)};
       message.append(pageMessageFormatter.format(pageparameters));
 

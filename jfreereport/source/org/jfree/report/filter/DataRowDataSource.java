@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowDataSource.java,v 1.4 2003/12/21 20:51:42 taqua Exp $
+ * $Id: DataRowDataSource.java,v 1.5 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ import org.jfree.report.ReportDefinition;
  * @author Thomas Morgner
  */
 public class DataRowDataSource
-    implements DataSource, DataRowConnectable, Serializable, ReportConnectable
+    implements DataSource, Serializable, ReportConnectable
 {
   /**  The name of the field/expression/function referenced by this data source. */
   private String dataSourceColumnName;
@@ -136,7 +136,7 @@ public class DataRowDataSource
    */
   public Object clone() throws CloneNotSupportedException
   {
-    DataRowDataSource drs = (DataRowDataSource) super.clone();
+    final DataRowDataSource drs = (DataRowDataSource) super.clone();
     drs.reportDefinition = null;
     return drs;
   }
@@ -185,7 +185,7 @@ public class DataRowDataSource
   }
 
 
-  public void registerReportDefinition(ReportDefinition reportDefinition)
+  public void registerReportDefinition(final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != null)
     {
@@ -198,7 +198,7 @@ public class DataRowDataSource
     this.reportDefinition = reportDefinition;
   }
 
-  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != reportDefinition)
     {

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GotoPageAction.java,v 1.5 2004/03/16 15:09:23 taqua Exp $
+ * $Id: GotoPageAction.java,v 1.4 2003/08/31 19:27:56 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,10 @@
 
 package org.jfree.report.modules.gui.base;
 
-import java.util.ResourceBundle;
-
-import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
-import org.jfree.report.modules.gui.base.components.ActionDowngrade;
 import org.jfree.report.util.ImageUtils;
+import org.jfree.ui.action.AbstractActionDowngrade;
+import org.jfree.ui.action.ActionDowngrade;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * The GotoPageAction is used to direclty jump to a page. A simple dialog opens to
@@ -61,14 +60,14 @@ public abstract class GotoPageAction extends AbstractActionDowngrade
    *
    * @param resources Localised resources for the action.
    */
-  protected GotoPageAction(final ResourceBundle resources)
+  protected GotoPageAction(final ResourceBundleSupport resources)
   {
     this.putValue(NAME, resources.getString("action.gotopage.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.gotopage.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
-        ResourceBundleUtils.createMnemonic(resources.getString("action.gotopage.mnemonic")));
+        resources.getMnemonic("action.gotopage.mnemonic"));
     this.putValue(ActionDowngrade.ACCELERATOR_KEY,
-        ResourceBundleUtils.createMenuKeystroke(resources.getString("action.gotopage.accelerator")));
+        resources.getKeyStroke("action.gotopage.accelerator"));
     this.putValue(SMALL_ICON, ImageUtils.createTransparentIcon(16, 16));
     this.putValue("ICON24", ImageUtils.createTransparentIcon(24, 24));
   }

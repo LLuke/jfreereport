@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Heiko Evermann and Contributors.
  *
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemColumnQuotientExpression.java,v 1.6 2003/09/08 18:11:48 taqua Exp $
+ * $Id: ItemColumnQuotientExpression.java,v 1.6.4.1 2004/12/30 14:46:11 taqua Exp $
  *
  * Changes
  * -------
@@ -59,11 +59,8 @@ import org.jfree.report.util.Log;
  */
 public class ItemColumnQuotientExpression extends AbstractExpression implements Serializable
 {
-  /** Literal text for the 'dividend' property. */
-  public static final String DIVIDEND_PROPERTY = "dividend";
-
-  /** Literal text for the 'divisor' property. */
-  public static final String DIVISOR_PROPERTY = "divisor";
+  private String dividend;
+  private String divisor;
 
   /**
    * Constructs a new function.
@@ -149,7 +146,7 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
    */
   public String getDividend()
   {
-    return getProperty(DIVIDEND_PROPERTY);
+    return dividend;
   }
 
   /**
@@ -161,7 +158,7 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
    */
   public String getDivisor()
   {
-    return getProperty(DIVISOR_PROPERTY);
+    return divisor;
   }
 
   /**
@@ -173,11 +170,7 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
    */
   public void setDividend(final String dividend)
   {
-    if (dividend == null)
-    {
-      throw new NullPointerException();
-    }
-    setProperty(DIVIDEND_PROPERTY, dividend);
+    this.dividend = dividend;
   }
 
   /**
@@ -189,11 +182,7 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
    */
   public void setDivisor(final String divisor)
   {
-    if (divisor == null)
-    {
-      throw new NullPointerException();
-    }
-    setProperty(DIVISOR_PROPERTY, divisor);
+    this.divisor = divisor;
   }
 
   /**
@@ -206,11 +195,11 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
   public void initialize() throws FunctionInitializeException
   {
     super.initialize();
-    if (getProperty(DIVIDEND_PROPERTY) == null)
+    if (dividend == null)
     {
       throw new FunctionInitializeException("Dividend is required");
     }
-    if (getProperty(DIVISOR_PROPERTY) == null)
+    if (divisor == null)
     {
       throw new FunctionInitializeException("Divisor is required");
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableFieldTemplate.java,v 1.5 2003/12/06 16:47:25 taqua Exp $
+ * $Id: DrawableFieldTemplate.java,v 1.6 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -38,9 +38,7 @@
 
 package org.jfree.report.filter.templates;
 
-import org.jfree.report.DataRow;
 import org.jfree.report.ReportDefinition;
-import org.jfree.report.filter.DataRowConnectable;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.DrawableFilter;
 import org.jfree.report.filter.ReportConnectable;
@@ -52,7 +50,7 @@ import org.jfree.report.filter.ReportConnectable;
  * @author Thomas Morgner
  */
 public class DrawableFieldTemplate extends AbstractTemplate
-    implements DataRowConnectable, ReportConnectable
+    implements ReportConnectable
 {
   /** The data row reader. */
   private DataRowDataSource dataRowDataSource;
@@ -115,39 +113,12 @@ public class DrawableFieldTemplate extends AbstractTemplate
     return template;
   }
 
-  /**
-   * Connects a {@link org.jfree.report.DataRow} to the data source.
-   *
-   * @param row  the data row.
-   *
-   * @throws IllegalStateException if there is already a data row connected.
-   */
-  public void connectDataRow(final DataRow row) throws IllegalStateException
-  {
-    dataRowDataSource.connectDataRow(row);
-  }
-
-  /**
-   * Releases the connection to the data row.
-   * <p>
-   * If no data row is connected, an <code>IllegalStateException</code> is thrown to indicate the
-   * programming error.
-   *
-   * @param row  the data row.
-   *
-   * @throws IllegalStateException if there is already a data row connected.
-   */
-  public void disconnectDataRow(final DataRow row) throws IllegalStateException
-  {
-    dataRowDataSource.disconnectDataRow(row);
-  }
-
-  public void registerReportDefinition(ReportDefinition reportDefinition)
+  public void registerReportDefinition(final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }

@@ -138,8 +138,8 @@
     <expression name="pageXofY" class="org.jfree.report.function.TextFormatExpression">
       <properties>
         <property name="pattern">Page {0} of {1}</property>
-        <property name="0">PageNumber</property>
-        <property name="1">PageTotal</property>
+        <property name="field[0]">PageNumber</property>
+        <property name="field[1]">PageTotal</property>
       </properties>
     </expression>
 

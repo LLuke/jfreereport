@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.4 2003/09/08 18:11:48 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.4.4.6 2005/01/20 14:50:03 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -43,8 +43,6 @@ package org.jfree.report.function;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import org.jfree.report.Group;
-import org.jfree.report.ReportDefinition;
 import org.jfree.report.event.ReportEvent;
 
 /**
@@ -104,9 +102,6 @@ public class PageTotalFunction extends PageFunction
   /** The group pages. */
   private HashMap groupPages;
 
-  /** The group started flag. */
-  private boolean isGroupStarted;
-
   /**
    * Creates a new page total function.
    */
@@ -127,6 +122,8 @@ public class PageTotalFunction extends PageFunction
     {
       pageStorage = new PageStorage(getStartPage() - 1);
     }
+    setIgnoreNextGroup(true);
+    setWaitForFooterPrinted(false);
   }
 
   /**
@@ -141,10 +138,10 @@ public class PageTotalFunction extends PageFunction
   {
     if (event.getState().isPrepareRun() && event.getState().getLevel() < 0)
     {
-      if (isGroupStarted)
+      if (isGroupStarted())
       {
         this.pageStorage = new PageStorage(getStartPage());
-        isGroupStarted = false;
+        setGroupStarted (false);
       }
       else
       {
@@ -165,38 +162,6 @@ public class PageTotalFunction extends PageFunction
               + event.getState().getCurrentDataItem());
 
         }
-      }
-    }
-  }
-
-  /**
-   * Receives notification that a group has started.
-   * <p>
-   * If no group is specified for the function, then the event is ignored.
-   *
-   * @param event  the event.
-   */
-  public void groupStarted(final ReportEvent event)
-  {
-    if (getGroup() == null)
-    {
-      return;
-    }
-
-    final ReportDefinition report = event.getReport();
-    final Group group = report.getGroup(event.getState().getCurrentGroupIndex());
-    if (getGroup().equals(group.getName()) == false)
-    {
-      return;
-    }
-
-    if (event.getState().isPrepareRun())
-    {
-      if (event.getState().getLevel() < 0)
-      {
-        isGroupStarted = true;
-        // this PageStorage is only null, if the report has never reached the first report start
-        // event
       }
     }
   }

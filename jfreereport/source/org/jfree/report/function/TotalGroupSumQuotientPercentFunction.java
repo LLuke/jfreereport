@@ -6,7 +6,7 @@
  * Project Info: http://www.jfree.org/jfreereport/index.html
  * Project Lead: Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,10 +26,10 @@
  * (C)opyright 2002, 2003, by Heiko Evermann and Contributors.
  *
  * Original Author: Heiko Evermann (for Hawesko GmbH & Co KG);
- * Contributor(s): Thomas Morgner, David Gilbert (for Object Refinery Limited)
+ * Contributor(s): Thomas Morgner, David Gilbert (for Simba Management Limited)
  * for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientPercentFunction.java,v 1.1 2003/09/08 18:42:55 taqua Exp $
+ * $Id: TotalGroupSumQuotientPercentFunction.java,v 1.1.4.1 2004/12/30 14:46:12 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
 
 package org.jfree.report.function;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -74,15 +76,6 @@ import org.jfree.report.util.Log;
  */
 public class TotalGroupSumQuotientPercentFunction extends AbstractFunction implements Serializable
 {
-  /** Literal text for the 'group' property. */
-  public static final String GROUP_PROPERTY = "group";
-
-  /** Literal text for the 'dividend' property. */
-  public static final String DIVIDEND_PROPERTY = "dividend";
-
-  /** Literal text for the 'divisor' property. */
-  public static final String DIVISOR_PROPERTY = "divisor";
-
   /**
    * Helperclass to make summing easier.
    */
@@ -121,19 +114,23 @@ public class TotalGroupSumQuotientPercentFunction extends AbstractFunction imple
   }
 
   /** The group sums for dividend and divisor. */
-  private GroupSum groupDividend;
+  private transient GroupSum groupDividend;
 
   /** The group divisor. */
-  private GroupSum groupDivisor;
+  private transient GroupSum groupDivisor;
 
   /** A list of results. */
-  private ArrayList dividendResults;
+  private transient ArrayList dividendResults;
 
   /** A list of divisor results. */
-  private ArrayList divisorResults;
+  private transient ArrayList divisorResults;
 
   /** The current index. */
-  private int currentIndex;
+  private transient int currentIndex;
+
+  private String group;
+  private String dividend;
+  private String divisor;
 
   /**
    * Constructs a new function.
@@ -250,7 +247,7 @@ public class TotalGroupSumQuotientPercentFunction extends AbstractFunction imple
    */
   public String getGroup()
   {
-    return getProperty(GROUP_PROPERTY);
+    return group;
   }
 
   /**
@@ -261,7 +258,7 @@ public class TotalGroupSumQuotientPercentFunction extends AbstractFunction imple
    */
   public void setGroup(final String group)
   {
-    setProperty(GROUP_PROPERTY, group);
+    this.group = group;
   }
 
   /**
@@ -292,7 +289,7 @@ public class TotalGroupSumQuotientPercentFunction extends AbstractFunction imple
    */
   public String getDividend()
   {
-    return getProperty(DIVIDEND_PROPERTY);
+    return dividend;
   }
 
   /**
@@ -304,7 +301,7 @@ public class TotalGroupSumQuotientPercentFunction extends AbstractFunction imple
    */
   public String getDivisor()
   {
-    return getProperty(DIVISOR_PROPERTY);
+    return divisor;
   }
 
   /**
@@ -316,11 +313,7 @@ public class TotalGroupSumQuotientPercentFunction extends AbstractFunction imple
    */
   public void setDividend(final String dividend)
   {
-    if (dividend == null)
-    {
-      throw new NullPointerException();
-    }
-    setProperty(DIVIDEND_PROPERTY, dividend);
+    this.dividend = dividend;
   }
 
   /**
@@ -332,11 +325,7 @@ public class TotalGroupSumQuotientPercentFunction extends AbstractFunction imple
    */
   public void setDivisor(final String divisor)
   {
-    if (divisor == null)
-    {
-      throw new NullPointerException();
-    }
-    setProperty(DIVISOR_PROPERTY, divisor);
+    this.divisor = divisor;
   }
 
   /**
@@ -350,11 +339,11 @@ public class TotalGroupSumQuotientPercentFunction extends AbstractFunction imple
   public void initialize() throws FunctionInitializeException
   {
     super.initialize();
-    if (getProperty(DIVIDEND_PROPERTY) == null)
+    if (dividend == null)
     {
       throw new FunctionInitializeException("Dividend is required");
     }
-    if (getProperty(DIVISOR_PROPERTY) == null)
+    if (divisor == null)
     {
       throw new FunctionInitializeException("Divisor is required");
     }
@@ -376,5 +365,16 @@ public class TotalGroupSumQuotientPercentFunction extends AbstractFunction imple
     function.divisorResults = new ArrayList();
     return function;
   }
+
+  private void readObject(final ObjectInputStream in)
+      throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    groupDividend = new GroupSum();
+    groupDivisor = new GroupSum();
+    dividendResults = new ArrayList();
+    divisorResults = new ArrayList();
+  }
+
 
 }

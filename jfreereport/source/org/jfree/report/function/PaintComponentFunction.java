@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.9 2004/03/16 15:09:23 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.8.4.4 2004/12/30 15:25:01 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.report.function;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -53,8 +54,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 
-import org.jfree.report.Element;
 import org.jfree.report.DefaultImageReference;
+import org.jfree.report.Element;
 import org.jfree.report.event.LayoutEvent;
 import org.jfree.report.event.LayoutListener;
 import org.jfree.report.layout.BandLayoutManagerUtil;
@@ -86,6 +87,9 @@ public class PaintComponentFunction extends AbstractFunction
 
   /** supplies a valid peer for the draw operation. */
   private transient Frame peerSupply;
+  private String element;
+  private String field;
+  private float scale;
 
   /**
    * DefaultConstructor.
@@ -97,6 +101,7 @@ public class PaintComponentFunction extends AbstractFunction
       peerSupply = new Frame();
       peerSupply.setLayout(new BorderLayout());
     }
+    this.scale = 1;
   }
 
   /**
@@ -109,7 +114,7 @@ public class PaintComponentFunction extends AbstractFunction
    */
   public String getElement()
   {
-    return getProperty(ELEMENT_PROPERTY);
+    return element;
   }
 
   /**
@@ -126,7 +131,7 @@ public class PaintComponentFunction extends AbstractFunction
     {
       throw new NullPointerException();
     }
-    setProperty(ELEMENT_PROPERTY, field);
+    this.element = field;
   }
 
   /**
@@ -138,7 +143,7 @@ public class PaintComponentFunction extends AbstractFunction
    */
   public String getField()
   {
-    return getProperty(FIELD_PROPERTY);
+    return field;
   }
 
   /**
@@ -154,7 +159,7 @@ public class PaintComponentFunction extends AbstractFunction
     {
       throw new NullPointerException();
     }
-    setProperty(FIELD_PROPERTY, field);
+    this.field = field;
   }
 
   /**
@@ -215,19 +220,14 @@ public class PaintComponentFunction extends AbstractFunction
     synchronized (peerSupply)
     {
       peerSupply.add(comp, BorderLayout.CENTER);
-      peerSupply.pack();
       peerSupply.setSize(dim);
       peerSupply.validate();
 
-      /*
-      final BufferedImage bi = new BufferedImage((int) (scale * dim.width),
-          (int) (scale * dim.height),
-          BufferedImage.TYPE_INT_ARGB);
-          */
       final BufferedImage bi =
           ImageUtils.createTransparentImage
           ((int) scale * dim.width, (int) scale * dim.height);
       final Graphics2D graph = bi.createGraphics();
+      graph.setBackground(new Color (0,0,0,0));
       graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
       comp.paint(graph);
       graph.dispose();
@@ -264,7 +264,7 @@ public class PaintComponentFunction extends AbstractFunction
    */
   public void setScale(final float scale)
   {
-    setProperty(SCALE_PROPERTY, String.valueOf(scale));
+    this.scale = scale;
   }
 
   /**
@@ -276,20 +276,7 @@ public class PaintComponentFunction extends AbstractFunction
    */
   public float getScale()
   {
-    final String scale = getProperty(SCALE_PROPERTY, "1");
-    try
-    {
-      final float f = Float.parseFloat(scale);
-      if (f == 0)
-      {
-        return 1;
-      }
-      return f;
-    }
-    catch (Exception e)
-    {
-      return 1;
-    }
+    return scale;
   }
 
   /**
@@ -318,13 +305,11 @@ public class PaintComponentFunction extends AbstractFunction
   public void initialize()
       throws FunctionInitializeException
   {
-    final String fieldProp = getProperty(FIELD_PROPERTY);
-    if (fieldProp == null)
+    if (getField() == null)
     {
       throw new FunctionInitializeException("No Such Property : field");
     }
-    final String elementProp = getProperty(ELEMENT_PROPERTY);
-    if (elementProp == null)
+    if (getElement() == null)
     {
       throw new FunctionInitializeException("No Such Property : element");
     }
@@ -347,5 +332,9 @@ public class PaintComponentFunction extends AbstractFunction
       peerSupply = new Frame();
       peerSupply.setLayout(new BorderLayout());
     }
+  }
+
+  public void outputComplete (final LayoutEvent event)
+  {
   }
 }

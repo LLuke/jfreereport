@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------------------------
  * PaintDynamicComponentFunction.java
  * ----------------------------------
- * (C)opyright 2002, 2003, by Object Refinery Limited and Contributors.
+ * (C)opyright 2002, 2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.6 2004/03/16 15:09:23 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.5.4.3 2004/12/30 14:46:12 taqua Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,7 @@
 package org.jfree.report.function;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -63,25 +64,26 @@ import org.jfree.report.util.ImageUtils;
 public class PaintDynamicComponentFunction extends AbstractFunction
     implements Serializable, PageEventListener
 {
-  /** Literal text for the 'field' property. */
-  public static final String FIELD_PROPERTY = "field";
-
-  /** Literal text for the 'scale' property. */
-  public static final String SCALE_PROPERTY = "scale";
-
   /** the created image, cached for getValue(). */
   private transient Image image;
 
   /** supplies a valid peer for the draw operation. */
   private transient Frame peerSupply;
 
+  private String field;
+  private float scale;
+
   /**
    * DefaultConstructor.
+   *
+   * @throws IllegalStateException (HeadlessException) if no full
+   * AWT is available. This function needs a working layout manager.
    */
   public PaintDynamicComponentFunction()
   {
     peerSupply = new Frame();
     peerSupply.setLayout(new BorderLayout());
+    scale = 1;
   }
 
   /**
@@ -93,7 +95,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction
    */
   public String getField()
   {
-    return getProperty(FIELD_PROPERTY);
+    return field;
   }
 
   /**
@@ -105,11 +107,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction
    */
   public void setField(final String field)
   {
-    if (field == null)
-    {
-      throw new NullPointerException();
-    }
-    setProperty(FIELD_PROPERTY, field);
+    this.field = field;
   }
 
   /**
@@ -229,7 +227,6 @@ public class PaintDynamicComponentFunction extends AbstractFunction
       final Dimension dim = comp.getSize();
 
       peerSupply.add(comp);
-      peerSupply.pack();
       peerSupply.setSize(dim);
       peerSupply.validate();
 
@@ -237,6 +234,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction
           ImageUtils.createTransparentImage
           ((int) scale * dim.width, (int) scale * dim.height);
       final Graphics2D graph = bi.createGraphics();
+      graph.setBackground(new Color (0,0,0,0));
       graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
       comp.paint(graph);
       graph.dispose();
@@ -272,7 +270,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction
    */
   public void setScale(final float scale)
   {
-    setProperty(SCALE_PROPERTY, String.valueOf(scale));
+    this.scale = scale;
   }
 
 
@@ -285,20 +283,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction
    */
   public float getScale()
   {
-    final String scale = getProperty(SCALE_PROPERTY, "1");
-    try
-    {
-      final float f = Float.parseFloat(scale);
-      if (f == 0)
-      {
-        return 1;
-      }
-      return f;
-    }
-    catch (Exception e)
-    {
-      return 1;
-    }
+    return scale;
   }
 
   /**
@@ -310,8 +295,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   public void initialize()
       throws FunctionInitializeException
   {
-    final String fieldProp = getProperty(FIELD_PROPERTY);
-    if (fieldProp == null)
+    if (field == null)
     {
       throw new FunctionInitializeException("No Such Property : field");
     }

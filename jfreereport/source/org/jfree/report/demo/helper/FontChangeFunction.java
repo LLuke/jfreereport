@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * -----------------------
  * FontChangeFunction.java
  * -----------------------
- * (C)opyright 2000-2002, by Object Refinery Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontChangeFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: FontChangeFunction.java,v 1.2.4.1 2004/12/30 14:46:11 taqua Exp $
  *
  * Changes
  * -------
@@ -61,13 +61,15 @@ import org.jfree.report.style.FontDefinition;
  */
 public class FontChangeFunction extends AbstractFunction implements Serializable
 {
-
+  private String element;
   /**
    * DefaultConstructor.
    */
   public FontChangeFunction()
   {
   }
+
+
 
   /**
    * Before an ItemBand is printed, the report generator will call itemsAdvanced
@@ -117,7 +119,7 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
   public void initialize() throws FunctionInitializeException
   {
     super.initialize();
-    if (getProperty("element") == null)
+    if (element == null)
     {
       throw new FunctionInitializeException("Element name must be specified");
     }
@@ -133,7 +135,7 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
    */
   public void setElement(final String name)
   {
-    setProperty("element", name);
+    this.element = name;
   }
 
   /**
@@ -144,7 +146,7 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
    */
   public String getElement()
   {
-    return getProperty("element", "");
+    return element;
   }
 
   /**

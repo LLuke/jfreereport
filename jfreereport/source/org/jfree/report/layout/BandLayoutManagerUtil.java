@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.11 2003/12/21 20:51:42 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.10.2.1.2.1 2004/05/11 13:25:29 taqua Exp $
  *
  * Changes
  * -------
@@ -206,7 +206,8 @@ public final strictfp class BandLayoutManagerUtil
     }
     if (width < 0 || height < 0)
     {
-      throw new IllegalArgumentException("Width or height is negative.");
+      throw new IllegalArgumentException
+              ("Width or height is negative. [Width=" + width + ",Height=" + height + "]");
     }
     if (band.isVisible() == false)
     {

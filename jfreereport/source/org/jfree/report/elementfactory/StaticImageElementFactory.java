@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,25 +26,22 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticImageElementFactory.java,v 1.7 2004/03/16 15:09:23 taqua Exp $
+ * $Id: StaticImageElementFactory.java,v 1.6 2003/10/18 22:05:11 taqua Exp $
  *
  * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *
+ * 30-Dec-2004 : Image property points to a ImageContainer and replaces the old
+ *               AWT-Image and ImageReference properties. 
  */
 
 package org.jfree.report.elementfactory;
 
-import java.awt.Image;
-
 import org.jfree.report.Element;
-import org.jfree.report.ImageElement;
-import org.jfree.report.DefaultImageReference;
 import org.jfree.report.ImageContainer;
-import org.jfree.report.LocalImageContainer;
+import org.jfree.report.ImageElement;
 import org.jfree.report.filter.StaticDataSource;
 
 /**
@@ -60,6 +57,7 @@ public class StaticImageElementFactory extends ImageElementFactory
 
   /**
    * Default Constructor.
+   *
    */
   public StaticImageElementFactory()
   {
@@ -70,7 +68,7 @@ public class StaticImageElementFactory extends ImageElementFactory
    *
    * @return the image reference containing the image data.
    */
-  public ImageContainer getImageReference()
+  public ImageContainer getImage()
   {
     return imageReference;
   }
@@ -86,35 +84,6 @@ public class StaticImageElementFactory extends ImageElementFactory
   }
 
   /**
-   * Returns the AWT-image contained in the image reference.
-   *
-   * @return the AWT image.
-   */
-  public Image getImage()
-  {
-    if (getImageReference() == null)
-    {
-      return null;
-    }
-    if (getImageReference() instanceof LocalImageContainer)
-    {
-      final LocalImageContainer li = (LocalImageContainer) getImageReference();
-      return li.getImage();
-    }
-    return null;
-  }
-
-  /**
-   * Defines the image as AWT image. This produces an on-the-fly loaded image.
-   *
-   * @param image the new image.
-   */
-  public void setImage(final Image image)
-  {
-    setImageReference(new DefaultImageReference(image));
-  }
-
-  /**
    * Creates the image element.
    *
    * @see org.jfree.report.elementfactory.ElementFactory#createElement()
@@ -124,12 +93,12 @@ public class StaticImageElementFactory extends ImageElementFactory
    */
   public Element createElement()
   {
-    if (getImageReference() == null)
+    if (getImage() == null)
     {
       throw new IllegalStateException("Content is not set.");
     }
 
-    final StaticDataSource datasource = new StaticDataSource(getImageReference());
+    final StaticDataSource datasource = new StaticDataSource(getImage());
     final ImageElement element = new ImageElement();
     applyElementName(element);
     applyStyle(element.getStyle());

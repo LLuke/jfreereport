@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SelectCardFunction.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: SelectCardFunction.java,v 1.2.4.1 2004/12/30 14:46:10 taqua Exp $
  *
  * Changes
  * -------
@@ -62,11 +62,14 @@ import org.jfree.report.function.FunctionInitializeException;
  */
 public class SelectCardFunction extends AbstractFunction implements Serializable
 {
-  /** Literal text for the field property. */
-  public static final String FIELD_PROPERTY = "field";
-
-  /** Literal text for the baseCard property. */
-  public static final String BASECARD_PROPERTY = "baseCard";
+  private String baseCard;
+  private String field;
+  private String account;
+  private String admin;
+  private String user;
+  private String prepaid;
+  private String free;
+  private String empty;
 
   /**
    * Default constructor.
@@ -84,13 +87,13 @@ public class SelectCardFunction extends AbstractFunction implements Serializable
    */
   private void selectBand(final Band band)
   {
-    CardType type = (CardType) getDataRow().get(getProperty(FIELD_PROPERTY));
+    CardType type = (CardType) getDataRow().get(getField());
     if (type == null)
     {
       type = CardType.EMPTY;
     }
 
-    final String bandName = getProperty(type.getTypeName(), "");
+    final String bandName = getBandForCardType(type);
 
     // if the special type empty is active, then everything will be hidden ...
     if (type == CardType.EMPTY)
@@ -121,7 +124,7 @@ public class SelectCardFunction extends AbstractFunction implements Serializable
   public void itemsAdvanced(final ReportEvent event)
   {
     final Element[] elements = event.getReport().getItemBand().getElementArray();
-    final String rootName = getProperty(BASECARD_PROPERTY, "");
+    final String rootName = getBaseCard();
     // the itemband contains several cards, every card is contained in a single band.
     for (int i = 0; i < elements.length; i++)
     {
@@ -142,11 +145,11 @@ public class SelectCardFunction extends AbstractFunction implements Serializable
   public void initialize() throws FunctionInitializeException
   {
     super.initialize();
-    if (getProperty(BASECARD_PROPERTY) == null)
+    if (baseCard == null)
     {
       throw new FunctionInitializeException("'baseCard' property is not defined");
     }
-    if (getProperty(FIELD_PROPERTY) == null)
+    if (field == null)
     {
       throw new FunctionInitializeException("'field' property is not defined");
     }
@@ -162,5 +165,110 @@ public class SelectCardFunction extends AbstractFunction implements Serializable
   public Object getValue()
   {
     return null;
+  }
+
+  public String getBaseCard()
+  {
+    return baseCard;
+  }
+
+  public void setBaseCard(String baseCard)
+  {
+    this.baseCard = baseCard;
+  }
+
+  public String getField()
+  {
+    return field;
+  }
+
+  public void setField(String field)
+  {
+    this.field = field;
+  }
+
+  public String getAccount()
+  {
+    return account;
+  }
+
+  public void setAccount(String account)
+  {
+    this.account = account;
+  }
+
+  public String getAdmin()
+  {
+    return admin;
+  }
+
+  public void setAdmin(String admin)
+  {
+    this.admin = admin;
+  }
+
+  public String getUser()
+  {
+    return user;
+  }
+
+  public void setUser(String user)
+  {
+    this.user = user;
+  }
+
+  public String getPrepaid()
+  {
+    return prepaid;
+  }
+
+  public void setPrepaid(String prepaid)
+  {
+    this.prepaid = prepaid;
+  }
+
+  public String getFree()
+  {
+    return free;
+  }
+
+  public void setFree(String free)
+  {
+    this.free = free;
+  }
+
+  public String getEmpty()
+  {
+    return empty;
+  }
+
+  public void setEmpty(String empty)
+  {
+    this.empty = empty;
+  }
+
+  protected String getBandForCardType (CardType ct)
+  {
+    if (CardType.ACCOUNT == ct)
+    {
+      return getAccount();
+    }
+    if (CardType.ADMIN == ct)
+    {
+      return getAdmin();
+    }
+    if (CardType.FREE== ct)
+    {
+      return getFree();
+    }
+    if (CardType.PREPAID== ct)
+    {
+      return getPrepaid();
+    }
+    if (CardType.USER == ct)
+    {
+      return getUser();
+    }
+    return getFree();
   }
 }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.13 2003/11/12 22:40:03 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.13.4.4 2004/12/13 21:42:06 taqua Exp $
  *
  * Changes
  * -------
@@ -167,7 +167,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
-      retval = getElementContentBounds(retval, e, maxSize, support);
+      retval = getElementContentBounds(retval, e, containerBounds, support);
     }
 
     retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
@@ -200,7 +200,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
    * @return the preferred size of the element.
    */
   protected Dimension2D computePreferredSize(final Element e,
-      final Dimension2D containerBounds, Dimension2D retval, LayoutSupport support)
+      final Dimension2D containerBounds, Dimension2D retval, final LayoutSupport support)
   {
     final boolean isCachable = cache.isCachable(e);
     if (isCachable)
@@ -267,7 +267,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
-      retval = getElementContentBounds(retval, e, maxSize, support);
+      retval = getElementContentBounds(retval, e, containerBounds, support);
     }
 
     retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
@@ -334,7 +334,8 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       // Now adjust the defined sizes by using the elements stored in the band.
       final Element[] elements = b.getElementArray();
 
-      final Dimension2D tmpResult = null;
+      Dimension2D tmpResult = null;
+      Point2D absPos = null;
       // calculate absolute width
       for (int i = 0; i < elements.length; i++)
       {
@@ -348,7 +349,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
         final boolean staticHeight = isElementStaticHeight(e);
         if (staticWidth || staticHeight)
         {
-          final Point2D absPos = (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS);
+          absPos = (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS);
 
           // check whether the element would be visible .. if not visible, then
           // dont do anything ...
@@ -357,15 +358,15 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
             // dont display, as this element is larger than the container ...
             continue;
           }
-          final Dimension2D absDim = computePreferredSize(e, base, tmpResult, support);
+          tmpResult = computePreferredSize(e, base, tmpResult, support);
 
           if (staticWidth)
           {
-            width = (float) Math.max(absDim.getWidth() + absPos.getX(), width);
+            width = (float) Math.max(tmpResult.getWidth() + absPos.getX(), width);
           }
           if (staticHeight)
           {
-            height = (float) Math.max(absDim.getHeight() + absPos.getY(), height);
+            height = (float) Math.max(tmpResult.getHeight() + absPos.getY(), height);
           }
         }
       }
@@ -380,14 +381,13 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       height = (float)Math.min(height, maxSize.getHeight());
       width = (float) Math.min(width, maxSize.getWidth());
 
-      // Log.debug ("Mid Stream; " + width + ", " + height);
-      // Log.debug ("Dimension after static correction [PREF]: " + width + " -> " + height);
+      //Log.debug ("Mid Stream; " + width + ", " + height);
+      //Log.debug ("Dimension after static correction [PREF]: " + width + " -> " + height);
       // final FloatDimension base = new FloatDimension(width, height);
-      base.setHeight(height);
+      base.setHeight(align(height, support.getVerticalAlignmentBorder()));
 
-      Point2D absPos = null;
       Dimension2D absDim = null;
-
+      absPos = null;
       // calculate relative widths
       for (int i = 0; i < elements.length; i++)
       {
@@ -401,8 +401,10 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
         final boolean staticHeight = isElementStaticHeight(e);
         if (staticWidth == false || staticHeight == false)
         {
-          absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS),
-              base, absPos);
+          final Point2D absPosFromStyle = (Point2D)
+              e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS);
+
+          absPos = correctPoint(absPosFromStyle,  base, absPos);
           // check whether the element would be visible .. if not visible, then
           // dont do anything ...
           if (absPos.getX() > base.getWidth() || absPos.getY() > base.getHeight())
@@ -437,7 +439,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
 
       // now align the calculated data ...
       base.setSize(align(width, support.getHorizontalAlignmentBorder()),
-          align(height, support.getVerticalAlignmentBorder()));
+                   align(height, support.getVerticalAlignmentBorder()));
 
       // Log.debug("<" + base + " vs - " + b.getName());
       return base;
@@ -630,7 +632,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       final Dimension2D parentDim = new FloatDimension((float) parentBounds.getWidth(),
           (float) parentBounds.getHeight());
 
-      // Log.debug ("My LayoutSize: " + b.getName() + " " + parentDim);
+       //Log.debug ("My LayoutSize: " + b.getName() + " " + parentDim);
 
       Dimension2D absDim = null;
       Point2D absPos = null;
@@ -656,9 +658,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
 
         absDim = computePreferredSize(e, parentDim, absDim, support);
         // docmark: Compute preferred size does never return negative values!
-        // Log.debug ("UBounds: Element: " + e.getName() + " Bounds: " + uncorrectedSize);
-        // absDim = correctDimension(uncorrectedSize, parentDim, absDim);
-        // Log.debug ("CBounds: Element: " + e.getName() + " Bounds: " + absDim);
+        // Log.debug ("UBounds: Element: " + e.getName() + " Bounds: " + absDim);
 
         // here apply the maximum bounds ...
         final Rectangle2D bounds = new Rectangle2D.Float(

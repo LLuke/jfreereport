@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2000-2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.4 2003/08/28 17:45:42 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.4.4.2 2004/12/27 16:08:39 mtennes Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -47,76 +47,79 @@ import org.jfree.report.event.ReportEvent;
 import org.jfree.report.util.Log;
 
 /**
- * A function that alternates between true and false for each item within a group. The functions
- * value affects a defined elements visibility. If the function evaluates to true, the named
- * element is visible, else the element is invisible.
- * <p>
- * Elements in JFreeReport do not define their own background color attribute.
- * To create a background, you would place a rectangle shape element behind the
- * element.
- * <p>
- * The ElementVisibilitySwitchFunction is used to trigger the visibility of an
- * named element. If the element is your background, you will get the alternating
- * effect.
- * <p>
- * The ElementVisibilitySwitchFunction defines two parameters:
- * <ul>
- * <li>element
- * <p>The name of the element in the itemband that should be modified.
- * The element must be named using the "name" attribute, only the first occurence
- * of that named element will be modfied.</p>
- * <li>initial-state
- * <p>The initial state of the function. (true or false) defaults to false. This
- * is the revers of the element's visiblity (set to false to start with an visible
- * element, set to true to hide the element in the first itemrow).</p>
+ * A function that alternates between true and false for each item within a group. The
+ * functions value affects a defined elements visibility. If the function evaluates to
+ * true, the named element is visible, else the element is invisible.
+ * <p/>
+ * Elements in JFreeReport do not define their own background color attribute. To create a
+ * background, you would place a rectangle shape element behind the element.
+ * <p/>
+ * The ElementVisibilitySwitchFunction is used to trigger the visibility of an named
+ * element. If the element is your background, you will get the alternating effect.
+ * <p/>
+ * The ElementVisibilitySwitchFunction defines two parameters: <ul> <li>element <p>The
+ * name of the element in the itemband that should be modified. The element must be named
+ * using the "name" attribute, only the first occurence of that named element will be
+ * modfied.</p> <li>initial-state <p>The initial state of the function. (true or false)
+ * defaults to false. This is the revers of the element's visiblity (set to false to start
+ * with an visible element, set to true to hide the element in the first itemrow).</p>
  * </ul>
  *
  * @author Thomas Morgner
  */
 public class ElementVisibilitySwitchFunction extends AbstractFunction
-    implements Serializable, PageEventListener
+        implements Serializable, PageEventListener
 {
-  /** the Property key for the name of the ItemBand element. */
-  public static final String ELEMENT_PROPERTY = "element";
+  /**
+   * The function value.
+   */
+  private transient boolean trigger;
+  private transient int count;
 
-  /** The initial state property key. */
-  public static final String INITIAL_STATE_PROPERTY = "initial-state";
-
-  /** The function value. */
-  private boolean trigger;
-  /** A flag indicating whether a waring has been printed. */
+  private int togglecount;
+  /**
+   * A flag indicating whether a warning has been printed.
+   */
   private boolean warned;
-  /** A flag indicating whether a pagebreak was encountered. */
+  /**
+   * A flag indicating whether a pagebreak was encountered.
+   */
   private boolean pagebreak;
+
+  private int numberOfElements;
+  private String element;
+  private boolean initialState;
 
   /**
    * Default constructor.
    */
-  public ElementVisibilitySwitchFunction()
+  public ElementVisibilitySwitchFunction ()
   {
     warned = false;
+    numberOfElements = 1;
   }
 
   /**
    * Receives notification that a page has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void pageStarted(final ReportEvent event)
+  public void pageStarted (final ReportEvent event)
   {
     pagebreak = false;
-    trigger = (getInitialTriggerValue()); // docmark
+    trigger = !getInitialTriggerValue(); // docmark
+    togglecount = getNumberOfElements();
+    count = 0;
     triggerVisibleState(event);
   }
 
   /**
-   * Receives notification that a page was canceled by the ReportProcessor.
-   * This method is called, when a page was removed from the report after
-   * it was generated.
+   * Receives notification that a page was canceled by the ReportProcessor. This method is
+   * called, when a page was removed from the report after it was generated.
    *
    * @param event The event.
    */
-  public void pageCanceled(final ReportEvent event)
+  public void pageCanceled (final ReportEvent event)
   {
   }
 
@@ -125,22 +128,23 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageFinished(final ReportEvent event)
+  public void pageFinished (final ReportEvent event)
   {
   }
 
   /**
-   * Receives notification that the items are being processed.  Sets the function value to false.
-   * <P>
-   * Following this event, there will be a sequence of itemsAdvanced events until the itemsFinished
-   * event is raised.
+   * Receives notification that the items are being processed.  Sets the function value to
+   * false. <P> Following this event, there will be a sequence of itemsAdvanced events
+   * until the itemsFinished event is raised.
    *
    * @param event Information about the event.
    */
-  public void itemsStarted(final ReportEvent event)
+  public void itemsStarted (final ReportEvent event)
   {
     pagebreak = false;
-    trigger = (getInitialTriggerValue()); // docmark
+    trigger = !getInitialTriggerValue(); // docmark
+    togglecount = getNumberOfElements();
+    count = 0;
   }
 
   /**
@@ -148,13 +152,14 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    * itemsAdvanced call, it gets now invisible and vice versa. This creates the effect,
    * that an element is printed every other line.
    *
-   * @param event  the report event.
+   * @param event the report event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     if (pagebreak)
     {
-      trigger = (getInitialTriggerValue()); // docmark
+      trigger = !getInitialTriggerValue(); // docmark
+      togglecount = getNumberOfElements();
       pagebreak = false;
     }
     triggerVisibleState(event);
@@ -162,14 +167,18 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
 
   /**
    * Triggers the visible state of the specified itemband element. If the named element
-   * was visible at the last call, it gets now invisible and vice versa. This creates
-   * the effect, that an element is printed every other line.
+   * was visible at the last call, it gets now invisible and vice versa. This creates the
+   * effect, that an element is printed every other line.
    *
    * @param event the current report event.
    */
-  private void triggerVisibleState(final ReportEvent event)
+  private void triggerVisibleState (final ReportEvent event)
   {
-    trigger = (!trigger);
+    if ((count % togglecount) == 0)
+    {
+      trigger = (!trigger);
+    }
+    count += 1;
 
     final Element e = FunctionUtilities.findElement(event.getReport().getItemBand(), getElement());
     if (e != null)
@@ -190,17 +199,28 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    * Checks that the function has been correctly initialized. The functions name or the
    * elements name have not been set, and FunctionInitializeException is thrown.
    *
-   * @throws FunctionInitializeException if required parameters were missing and initialisation
-   * cannot be performed.
+   * @throws FunctionInitializeException if required parameters were missing and
+   *                                     initialisation cannot be performed.
    */
-  public void initialize() throws FunctionInitializeException
+  public void initialize ()
+          throws FunctionInitializeException
   {
     super.initialize();
-    if (getProperty(ELEMENT_PROPERTY) == null)
+    if (getElement() == null)
     {
       throw new FunctionInitializeException("Element name must be specified");
     }
     pagebreak = false;
+  }
+
+  public int getNumberOfElements ()
+  {
+    return numberOfElements;
+  }
+
+  public void setNumberOfElements (final int numberOfElements)
+  {
+    this.numberOfElements = numberOfElements;
   }
 
   /**
@@ -208,9 +228,9 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    *
    * @return the initial value for the trigger.
    */
-  public boolean getInitialTriggerValue()
+  public boolean getInitialTriggerValue ()
   {
-    return getProperty(INITIAL_STATE_PROPERTY, "false").equalsIgnoreCase("true");
+    return initialState;
   }
 
   /**
@@ -220,9 +240,14 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    * @param name The element name.
    * @see org.jfree.report.Band#getElement(String)
    */
-  public void setElement(final String name)
+  public void setElement (final String name)
   {
-    setProperty(ELEMENT_PROPERTY, name);
+    element = name;
+  }
+
+  public void setInitialState (final boolean initialState)
+  {
+    this.initialState = initialState;
   }
 
   /**
@@ -230,9 +255,9 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    *
    * @return The element name.
    */
-  public String getElement()
+  public String getElement ()
   {
-    return getProperty(ELEMENT_PROPERTY, "");
+    return element;
   }
 
   /**
@@ -241,7 +266,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    *
    * @return the visibility of the element, either Boolean.TRUE or Boolean.FALSE.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     if (trigger)
     {

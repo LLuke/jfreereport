@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -21,19 +21,18 @@
  * Boston, MA 02111-1307, USA.
  *
  * As a special exception, the copyright holders of JFreeReport give you
- * permission to extend JFreeReport with modules that implement the
- * "org.jfree.report.function.Expression" or the
- * "org.jfree.report.function.Function" interface, regardless
- * of the license terms of these implementations, and to copy and distribute the
+ * permission to extend JFreeReport with independent modules that communicate with
+ * JFreeReport solely through the "Expression" or the "Function" interface, regardless
+ * of the license terms of these independent modules, and to copy and distribute the
  * resulting combined work under terms of your choice, provided that
  * every copy of the combined work is accompanied by a complete copy of
  * the source code of JFreeReport (the version of JFreeReport used to produce the
- * combined work), being distributed under the terms of the GNU Lesser
- * General Public License plus this exception.
+ * combined work), being distributed under the terms of the GNU Lesser General
+ * Public License plus this exception.  An independent module is a module
+ * which is not derived from or based on JFreeReport.
  *
  * This exception applies to the Java interfaces "Expression" and "Function"
- * and the classes "AbstractExpression" and "AbstractFunction" of the package
- * "org.jfree.report.function".
+ * and the classes "AbstractExpression" and "AbstractFunction".
  *
  * Note that people who make modified versions of JFreeReport are not obligated
  * to grant this special exception for their modified versions; it is
@@ -48,9 +47,9 @@
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.5 2004/03/16 15:09:23 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.3.2.1.2.2 2004/12/30 14:46:11 taqua Exp $
  *
  * Changes
  * -------
@@ -63,11 +62,18 @@
 
 package org.jfree.report.function;
 
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Properties;
-import java.io.Serializable;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.util.beans.BeanException;
+import org.jfree.report.util.beans.BeanUtility;
+import org.jfree.util.Log;
 
 /**
  * An abstract base class for implementing new report expressions.
@@ -76,7 +82,6 @@ import org.jfree.report.DataRow;
  * expressions are named and the defined names have to be unique within the report's expressions,
  * functions and fields of the datasource. Expressions are configured using properties.
  * <p>
- * todo: define a property query interface similar to the JDBC-Property interface
  *
  * @author Thomas Morgner
  */
@@ -88,11 +93,12 @@ public abstract class AbstractExpression implements Expression, Serializable
   /** The dependency level. */
   private int dependency;
 
-  /** Storage for the expression properties. */
-  private Properties properties;
-
   /** The data row. */
   private transient DataRow dataRow;
+
+  /** Class to support the deprecated property configuration interface. */
+  private transient BeanUtility beanUtility;
+  private boolean active;
 
   /**
    * Creates an unnamed expression. Make sure the name of the expression is set using
@@ -100,8 +106,17 @@ public abstract class AbstractExpression implements Expression, Serializable
    */
   protected AbstractExpression()
   {
-    setName("");
-    this.properties = new Properties();
+    setName(super.toString());
+    try
+    {
+      beanUtility = new BeanUtility(this);
+    }
+    catch (IntrospectionException e)
+    {
+      Log.warn ("Unable to create Introspector. Old configuration " +
+          "interface will be unavailable for Expression '" +
+          getClass().getName() + "'.");
+    }
   }
 
   /**
@@ -144,6 +159,7 @@ public abstract class AbstractExpression implements Expression, Serializable
    * @param name  the property name.
    *
    * @return the property value.
+   * @deprecated use the beans property accessors instead.
    */
   public String getProperty(final String name)
   {
@@ -157,10 +173,28 @@ public abstract class AbstractExpression implements Expression, Serializable
    * @param defaultVal  the default value.
    *
    * @return the property value.
+   * @deprecated use the bean's property accessors instead.
    */
   public String getProperty(final String name, final String defaultVal)
   {
-    return properties.getProperty(name, defaultVal);
+    if (beanUtility == null)
+    {
+      throw new IllegalStateException("Introspector is not available.");
+    }
+    try
+    {
+      String o = beanUtility.getPropertyAsString(name);
+      if (o == null)
+      {
+        return defaultVal;
+      }
+      return o;
+    }
+    catch (BeanException e)
+    {
+      Log.warn("Unable to query property. [" + name + "]", e);
+      return null;
+    }
   }
 
   /**
@@ -172,7 +206,12 @@ public abstract class AbstractExpression implements Expression, Serializable
    */
   public boolean isActive()
   {
-    return getProperty(AUTOACTIVATE_PROPERTY, "false").equals("true");
+    return active;
+  }
+
+  public void setActive(boolean active)
+  {
+    this.active = active;
   }
 
   /**
@@ -181,6 +220,7 @@ public abstract class AbstractExpression implements Expression, Serializable
    *
    * @param name  the property name (<code>null</code> not permitted).
    * @param value  the property value.
+   * @deprecated use the bean propery accessors instead.
    */
   public final void setProperty(final String name, final String value)
   {
@@ -188,13 +228,17 @@ public abstract class AbstractExpression implements Expression, Serializable
     {
       throw new NullPointerException();
     }
-    if (value == null)
+    if (beanUtility == null)
     {
-      properties.remove(name);
+      throw new IllegalStateException("Introspector is not available.");
     }
-    else
+    try
     {
-      properties.setProperty(name, value);
+      beanUtility.setPropertyAsString(name, value);
+    }
+    catch (BeanException e)
+    {
+      Log.warn("Unable to set property. [" + name + "]", e);
     }
   }
 
@@ -202,11 +246,27 @@ public abstract class AbstractExpression implements Expression, Serializable
    * Returns a copy of the properties for this expression.
    *
    * @return the properties.
+   * @deprecated use the Bean's getter/setter methods to access the
+   * properties directly.
    */
   public Properties getProperties()
   {
+    if (beanUtility == null)
+    {
+      throw new IllegalStateException("Introspector is not available.");
+    }
+
     final Properties retval = new Properties();
-    retval.putAll(properties);
+    PropertyDescriptor[] pds = beanUtility.getPropertyInfos();
+    for (int i = 0; i < pds.length; i++)
+    {
+      String name = pds[i].getName();
+      String value = getProperty(name);
+      if (value != null)
+      {
+        retval.setProperty(name, value);
+      }
+    }
     return retval;
   }
 
@@ -218,9 +278,16 @@ public abstract class AbstractExpression implements Expression, Serializable
    * specified in the documentation for the class that implements the expression.
    *
    * @param p  the properties.
+   * @deprecated use the Bean's getter/setter methods to access the
+   * properties directly.
    */
   public void setProperties(final Properties p)
   {
+    if (beanUtility == null)
+    {
+      throw new IllegalStateException("Introspector is not available.");
+    }
+
     if (p != null)
     {
       final Enumeration names = p.keys();
@@ -316,7 +383,6 @@ public abstract class AbstractExpression implements Expression, Serializable
   public Object clone() throws CloneNotSupportedException
   {
     final AbstractExpression function = (AbstractExpression) super.clone();
-    function.properties = (Properties) properties.clone();
     return function;
   }
 
@@ -339,5 +405,17 @@ public abstract class AbstractExpression implements Expression, Serializable
     }
   }
 
-
+  private void readObject(final ObjectInputStream in)
+      throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    try
+    {
+      beanUtility = new BeanUtility(this);
+    }
+    catch (IntrospectionException e)
+    {
+      Log.warn("Unable to reinitialize the bean utility.");
+    }
+  }
 }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportAction.java,v 1.3 2003/11/15 18:22:28 taqua Exp $
+ * $Id: ExportAction.java,v 1.3.4.2 2004/10/13 18:42:16 taqua Exp $
  *
  * Changes
  * --------
@@ -38,14 +38,14 @@
 package org.jfree.report.modules.gui.base;
 
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.gui.base.components.ActionDowngrade;
 import org.jfree.report.util.Log;
+import org.jfree.ui.action.ActionDowngrade;
 
 /**
  * An export action that works with any class that implements
@@ -57,12 +57,16 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
 {
   private class ExportPluginListener implements PropertyChangeListener
   {
+    public ExportPluginListener ()
+    {
+    }
+
     /**
      * This method gets called when a bound property is changed.
      * @param evt A PropertyChangeEvent object describing the event source
      *   	and the property that has changed.
      */
-    public void propertyChange(PropertyChangeEvent evt)
+    public void propertyChange(final PropertyChangeEvent evt)
     {
       if ("enabled".equals(evt.getPropertyName()))
       {

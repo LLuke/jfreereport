@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * --------------------
  * JFreeReportDemo.java
  * --------------------
- * (C)opyright 2000-2003, by Object Refinery Limited.
+ * (C)opyright 2000-2003, by Simba Management Limited.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.7 2004/03/16 15:09:22 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.6.4.2 2004/04/06 13:56:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -60,26 +60,29 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import org.jfree.report.Boot;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.AboutAction;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.modules.gui.base.PreviewFrame;
-import org.jfree.report.modules.gui.base.components.ActionButton;
-import org.jfree.report.modules.gui.base.components.ActionMenuItem;
-import org.jfree.report.modules.gui.base.components.FloatingButtonEnabler;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.ui.FloatingButtonEnabler;
+import org.jfree.ui.action.ActionButton;
+import org.jfree.ui.action.ActionMenuItem;
+import org.jfree.ui.action.ActionDowngrade;
 import org.jfree.ui.about.AboutFrame;
 
 /**
@@ -342,8 +345,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
     list.add(new DemoDefinition("Dynamic-Demo", data2,
         new URLDemoHandler("/org/jfree/report/demo/report2c.xml")));
 
-    list.add(new DemoDefinition("Band in Band Stacking",
-        new DefaultTableModel(), new DemoHandler()
+    list.add(new DemoDefinition("Band in Band Stacking", new DefaultTableModel(), new DemoHandler()
     {
       public void performPreview(final DemoDefinition def)
       {
@@ -540,15 +542,27 @@ public class JFreeReportDemo extends AbstractDemoFrame
     final JMenuBar menuBar = new JMenuBar();
     menuBar.setBorder(null);
     // first the file menu
-    final JMenu fileMenu = createJMenuItem("menu.file");
+    final JMenu fileMenu = createJMenu("menu.file");
 
-    fileMenu.add(new ActionMenuItem(getPreviewAction()));
+    final JMenuItem printItem = new ActionMenuItem(getPreviewAction());
+    final KeyStroke accelerator = (KeyStroke)
+        getPreviewAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
+    if (accelerator != null)
+    {
+      printItem.setAccelerator(accelerator);
+    }
+    fileMenu.add(printItem);
+
     fileMenu.add(new JSeparator());
-    fileMenu.add(new ActionMenuItem(getCloseAction()));
+
+    final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
+    fileMenu.add(exitItem);
 
     // then the help menu
-    final JMenu helpMenu = createJMenuItem("menu.help");
-    helpMenu.add(new ActionMenuItem(aboutAction));
+    final JMenu helpMenu = createJMenu("menu.help");
+
+    final JMenuItem aboutItem = new ActionMenuItem(aboutAction);
+    helpMenu.add(aboutItem);
 
     // finally, glue together the menu and return it
     menuBar.add(fileMenu);
@@ -602,7 +616,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
   public static void main(final String[] args)
   {
     // initialize JFreeReport 
-    Boot.start();
+    JFreeReportBoot.getInstance().start();
 
     try
     {

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupCountFunction.java,v 1.5 2003/11/10 20:01:59 taqua Exp $
+ * $Id: TotalGroupCountFunction.java,v 1.5.4.2 2004/12/30 14:46:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,6 +38,8 @@
 
 package org.jfree.report.function;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -90,13 +92,13 @@ public class TotalGroupCountFunction extends GroupCountFunction
   }
 
   /** The storage used to save the computed total. */
-  private GroupCountStorage storage;
+  private transient GroupCountStorage storage;
 
   /** A list of results. */
-  private ArrayList results;
+  private transient ArrayList results;
 
   /** The current index. */
-  private int currentIndex;
+  private transient int currentIndex;
 
   /**
    * Default constructor.
@@ -141,7 +143,7 @@ public class TotalGroupCountFunction extends GroupCountFunction
    *
    * @param event the current report event received.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedGroup(getParentGroup(), event))
     {
@@ -213,10 +215,18 @@ public class TotalGroupCountFunction extends GroupCountFunction
    */
   public Expression getInstance()
   {
-    TotalGroupCountFunction fn =
+    final TotalGroupCountFunction fn =
         (TotalGroupCountFunction) super.getInstance();
     fn.storage = null;
     fn.results = new ArrayList();
     return fn;
   }
+
+  private void readObject(final ObjectInputStream in)
+      throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    this.results = new ArrayList();
+  }
+  
 }

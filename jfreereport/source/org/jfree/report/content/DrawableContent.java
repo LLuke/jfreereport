@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableContent.java,v 1.5 2004/03/27 20:21:14 taqua Exp $
+ * $Id: DrawableContent.java,v 1.6 2004/05/07 08:02:48 mungady Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.DrawableContainer;
+import org.jfree.util.ShapeUtilities;
 
 /**
  * A simple wrapper around the DrawableContainer. The ContentImplementation
@@ -130,9 +131,9 @@ public strictfp class DrawableContent implements Content
   {
     final Rectangle2D myBounds = getBounds();
 
-    if (bounds.intersects(myBounds) == false)
+    if (ShapeUtilities.intersects(bounds, myBounds) == false)
     {
-      return null;
+      return new EmptyContent();
     }
     final Rectangle2D newBounds = bounds.createIntersection(myBounds);
     final Rectangle2D clipBounds

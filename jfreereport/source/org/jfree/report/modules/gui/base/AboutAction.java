@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------
  * AboutAction.java
  * ----------------
- * (C)opyright 2002, by Object Refinery Limited and Contributors.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AboutAction.java,v 1.3 2004/03/16 15:09:23 taqua Exp $
+ * $Id: AboutAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -43,10 +43,9 @@
 
 package org.jfree.report.modules.gui.base;
 
-import java.util.ResourceBundle;
-
-import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
-import org.jfree.report.modules.gui.base.components.ActionDowngrade;
+import org.jfree.ui.action.AbstractActionDowngrade;
+import org.jfree.ui.action.ActionDowngrade;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * The About action is used to show some information about the current programm, to which
@@ -65,15 +64,13 @@ public abstract class AboutAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  protected AboutAction(final ResourceBundle resources)
+  protected AboutAction(final ResourceBundleSupport resources)
   {
     putValue(NAME, resources.getString("action.about.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.about.description"));
     putValue(ActionDowngrade.MNEMONIC_KEY,
-        ResourceBundleUtils.createMnemonic(resources.getString("action.about.mnemonic")));
-    putValue(SMALL_ICON,
-        ResourceBundleUtils.getIcon(resources.getString("action.about.small-icon")));
-    putValue("ICON24",
-        ResourceBundleUtils.getIcon(resources.getString("action.about.icon")));
+        resources.getMnemonic("action.about.mnemonic"));
+    putValue(SMALL_ICON, resources.getIcon("action.about.small-icon", false));
+    putValue("ICON24", resources.getIcon("action.about.icon", true));
   }
 }

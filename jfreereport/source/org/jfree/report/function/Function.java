@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -21,19 +21,18 @@
  * Boston, MA 02111-1307, USA.
  *
  * As a special exception, the copyright holders of JFreeReport give you
- * permission to extend JFreeReport with modules that implement the
- * "org.jfree.report.function.Expression" or the
- * "org.jfree.report.function.Function" interface, regardless
- * of the license terms of these implementations, and to copy and distribute the
+ * permission to extend JFreeReport with independent modules that communicate with
+ * JFreeReport solely through the "Expression" or the "Function" interface, regardless
+ * of the license terms of these independent modules, and to copy and distribute the
  * resulting combined work under terms of your choice, provided that
  * every copy of the combined work is accompanied by a complete copy of
  * the source code of JFreeReport (the version of JFreeReport used to produce the
- * combined work), being distributed under the terms of the GNU Lesser
- * General Public License plus this exception.
+ * combined work), being distributed under the terms of the GNU Lesser General
+ * Public License plus this exception.  An independent module is a module
+ * which is not derived from or based on JFreeReport.
  *
  * This exception applies to the Java interfaces "Expression" and "Function"
- * and the classes "AbstractExpression" and "AbstractFunction" of the package
- * "org.jfree.report.function".
+ * and the classes "AbstractExpression" and "AbstractFunction".
  *
  * Note that people who make modified versions of JFreeReport are not obligated
  * to grant this special exception for their modified versions; it is
@@ -48,9 +47,9 @@
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.3 2004/03/16 15:09:23 taqua Exp $
+ * $Id: Function.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------
  * ZoomInAction.java
  * -----------------
- * (C)opyright 2002, 2003, by Object Refinery Limited and Contributors.
+ * (C)opyright 2002, 2003, by Simba Management Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ZoomInAction.java,v 1.3 2004/03/16 15:09:24 taqua Exp $
+ * $Id: ZoomInAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,9 @@
  */
 package org.jfree.report.modules.gui.base;
 
-import java.util.ResourceBundle;
-
-import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
-import org.jfree.report.modules.gui.base.components.ActionDowngrade;
+import org.jfree.ui.action.AbstractActionDowngrade;
+import org.jfree.ui.action.ActionDowngrade;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * The zoomIn action is used to increase the ZoomFactor of the report. Zooming
@@ -59,18 +58,16 @@ public abstract class ZoomInAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  protected ZoomInAction(final ResourceBundle resources)
+  protected ZoomInAction(final ResourceBundleSupport resources)
   {
     putValue(NAME, resources.getString("action.zoomIn.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.zoomIn.description"));
     putValue(ActionDowngrade.MNEMONIC_KEY,
-        ResourceBundleUtils.createMnemonic(resources.getString("action.zoomIn.mnemonic")));
+        resources.getMnemonic("action.zoomIn.mnemonic"));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
-        ResourceBundleUtils.createMenuKeystroke(resources.getString("action.zoomIn.accelerator")));
-    putValue(SMALL_ICON,
-        ResourceBundleUtils.getIcon(resources.getString("action.zoomIn.small-icon")));
-    putValue("ICON24",
-        ResourceBundleUtils.getIcon(resources.getString("action.zoomIn.icon")));
+        resources.getKeyStroke("action.zoomIn.accelerator"));
+    putValue(SMALL_ICON, resources.getIcon("action.zoomIn.small-icon", false));
+    putValue("ICON24", resources.getIcon("action.zoomIn.icon", true));
   }
 
 }

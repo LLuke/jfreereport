@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: URLImageContainer.java,v 1.1 2004/03/16 15:34:26 taqua Exp $
+ * $Id: URLImageContainer.java,v 1.2 2004/05/07 07:43:53 mungady Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 09.03.2004 : Initial version
- *  
+ *
  */
 
 package org.jfree.report;

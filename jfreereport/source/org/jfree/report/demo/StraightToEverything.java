@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.10 2004/03/16 15:09:22 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.9.4.2 2004/12/13 19:26:21 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,6 @@
 
 package org.jfree.report.demo;
 
-import java.awt.print.PageFormat;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -53,7 +52,7 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
-import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
+import org.jfree.report.modules.output.pageable.plaintext.TextFilePrinterDriver;
 import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
 import org.jfree.report.modules.output.table.html.DirectoryHtmlFilesystem;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
@@ -95,7 +94,7 @@ public class StraightToEverything
       createDirectoryHTML(report, filename + ".html");
       createPlainText(report, filename + ".txt");
       createRTF(report, filename + ".rtf");
-      createStreamHTML(report, filename + ".html");
+      createStreamHTML(report, filename + "-single-file.html");
       createXLS(report, filename + ".xls");
       createZIPHTML(report, filename + ".zip");
     }
@@ -185,9 +184,8 @@ public class StraightToEverything
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
     // cpi = 10, lpi = 6
-    final PrinterCommandSet pc = new PrinterCommandSet(fout, 10, 6);
-    final PlainTextOutputTarget target =
-        new PlainTextOutputTarget(pc);
+    final TextFilePrinterDriver pc = new TextFilePrinterDriver(fout, 10, 6);
+    final PlainTextOutputTarget target = new PlainTextOutputTarget(pc);
     pr.setOutputTarget(target);
     target.open();
     pr.processReport();
@@ -261,6 +259,7 @@ public class StraightToEverything
   {
     final HtmlProcessor pr = new HtmlProcessor(report);
     pr.setStrictLayout(false);
+    pr.setGenerateXHTML(true);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
     pr.setFilesystem(new StreamHtmlFilesystem(fout));
     pr.processReport();
@@ -310,9 +309,17 @@ public class StraightToEverything
     // disable PDF target autoinit must be done outside ...
     try
     {
+      final String folder;
+      if (args.length == 0)
+      {
+        folder = System.getProperty("user.home");
+      }
+      else
+      {
+        folder = args[0];
+      }
       //final StraightToEverything demo =
-      new StraightToEverything(System.getProperty("user.home")
-          + "/test-everything");
+      new StraightToEverything(folder + "/test-everything");
       System.exit(0);
     }
     catch (Exception e)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinition.java,v 1.7 2003/12/21 20:51:41 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.4.2.1.2.1 2004/12/13 19:25:18 taqua Exp $
  *
  * Changes
  * -------

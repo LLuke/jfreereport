@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2000-2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.9 2004/03/16 15:09:22 taqua Exp $
+ * $Id: SampleReport1.java,v 1.8.4.1 2004/12/30 14:46:10 taqua Exp $
  *
  * Changes:
  * --------
@@ -42,11 +42,9 @@ package org.jfree.report.demo;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import org.jfree.report.Boot;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.Group;
 import org.jfree.report.GroupFooter;
@@ -54,6 +52,7 @@ import org.jfree.report.GroupHeader;
 import org.jfree.report.GroupList;
 import org.jfree.report.ItemBand;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.PageFooter;
 import org.jfree.report.PageHeader;
 import org.jfree.report.ReportFooter;
@@ -111,9 +110,9 @@ public class SampleReport1
     header.addElement(factory.createElement());
 
     header.addElement(
-        StaticShapeElementFactory.createLineShapeElement(
+        StaticShapeElementFactory.createHorizontalLine(
             "line1", Color.decode("#CFCFCF"),
-            new BasicStroke(2), new Line2D.Float(0, 16, 0, 16))
+            new BasicStroke(2), 16)
     );
     return header;
   }
@@ -211,12 +210,10 @@ public class SampleReport1
     items.addElement(StaticShapeElementFactory.createRectangleShapeElement
         ("background", Color.decode("#DFDFDF"), new BasicStroke(0),
             new Rectangle2D.Float(0, 0, -100, -100), false, true));
-    items.addElement(StaticShapeElementFactory.createLineShapeElement
-        ("top", Color.decode("#DFDFDF"), new BasicStroke(0.1f),
-            new Line2D.Float(0, 0, 0, 0)));
-    items.addElement(StaticShapeElementFactory.createLineShapeElement
-        ("bottom", Color.decode("#DFDFDF"), new BasicStroke(0.1f),
-            new Line2D.Float(0, 10, 0, 10)));
+    items.addElement(StaticShapeElementFactory.createHorizontalLine
+        ("top", Color.decode("#DFDFDF"), new BasicStroke(0.1f), 0));
+    items.addElement(StaticShapeElementFactory.createHorizontalLine
+        ("bottom", Color.decode("#DFDFDF"), new BasicStroke(0.1f), 10));
 
     TextFieldElementFactory factory = new TextFieldElementFactory();
     factory.setName("Country Element");
@@ -281,13 +278,13 @@ public class SampleReport1
 
     final ItemSumFunction sum = new ItemSumFunction();
     sum.setName("sum");
-    sum.setProperty("field", "Population");
-    sum.setProperty("group", "Continent Group");
+    sum.setField("Population");
+    sum.setGroup("Continent Group");
     functions.add(sum);
 
     final ElementVisibilitySwitchFunction backgroundTrigger = new ElementVisibilitySwitchFunction();
     backgroundTrigger.setName("backgroundTrigger");
-    backgroundTrigger.setProperty("element", "background");
+    backgroundTrigger.setElement("background");
     functions.add(backgroundTrigger);
     return functions;
   }
@@ -365,8 +362,8 @@ public class SampleReport1
     tfactory.setFieldname("Continent");
     header.addElement(tfactory.createElement());
 
-    header.addElement(StaticShapeElementFactory.createLineShapeElement
-        ("line1", null, new BasicStroke(0.5f), new Line2D.Float(0, 12, 0, 12)));
+    header.addElement(StaticShapeElementFactory.createHorizontalLine
+        ("line1", null, new BasicStroke(0.5f), 12));
     continentGroup.setHeader(header);
 
     final GroupFooter footer = new GroupFooter();
@@ -436,7 +433,7 @@ public class SampleReport1
   public static void main(final String[] args) throws Exception
   {
     // initialize JFreeReport
-    Boot.start();
+    JFreeReportBoot.getInstance().start();
 
     final JFreeReport report = new SampleReport1().createReport();
     report.setData(new SampleData1());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: NumberFieldTemplate.java,v 1.3 2003/12/06 16:47:25 taqua Exp $
+ * $Id: NumberFieldTemplate.java,v 1.4 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -40,13 +40,11 @@ package org.jfree.report.filter.templates;
 
 import java.text.DecimalFormat;
 
-import org.jfree.report.DataRow;
 import org.jfree.report.ReportDefinition;
-import org.jfree.report.filter.DataRowConnectable;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.DecimalFormatFilter;
-import org.jfree.report.filter.StringFilter;
 import org.jfree.report.filter.ReportConnectable;
+import org.jfree.report.filter.StringFilter;
 
 /**
  * A number field template.
@@ -54,7 +52,7 @@ import org.jfree.report.filter.ReportConnectable;
  * @author Thomas Morgner
  */
 public class NumberFieldTemplate extends AbstractTemplate
-    implements DataRowConnectable, ReportConnectable
+    implements ReportConnectable
 {
   /** A decimal format filter. */
   private DecimalFormatFilter decimalFormatFilter;
@@ -182,34 +180,6 @@ public class NumberFieldTemplate extends AbstractTemplate
     template.dataRowDataSource = (DataRowDataSource) template.decimalFormatFilter.getDataSource();
     return template;
   }
-
-  /**
-   * Connects a {@link DataRow} to the data source.
-   *
-   * @param row  the data row.
-   *
-   * @throws IllegalStateException if there is already a data row connected.
-   */
-  public void connectDataRow(final DataRow row) throws IllegalStateException
-  {
-    dataRowDataSource.connectDataRow(row);
-  }
-
-  /**
-   * Releases the connection to the data row.
-   * <p>
-   * If no data row is connected, an <code>IllegalStateException</code> is thrown to indicate the
-   * programming error.
-   *
-   * @param row  the data row.
-   *
-   * @throws IllegalStateException if there is already a data row connected.
-   */
-  public void disconnectDataRow(final DataRow row) throws IllegalStateException
-  {
-    dataRowDataSource.disconnectDataRow(row);
-  }
-
 
   public void registerReportDefinition(ReportDefinition reportDefinition)
   {

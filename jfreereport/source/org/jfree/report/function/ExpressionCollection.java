@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -28,14 +28,14 @@
  <<<<<<< ExpressionCollection.java
  <<<<<<< ExpressionCollection.java
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionCollection.java,v 1.3 2003/12/06 17:15:19 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  =======
- * $Id: ExpressionCollection.java,v 1.3 2003/12/06 17:15:19 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  >>>>>>> 1.7
  =======
- * $Id: ExpressionCollection.java,v 1.3 2003/12/06 17:15:19 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  >>>>>>> 1.8
  *
  * Changes
@@ -143,8 +143,11 @@ public class ExpressionCollection implements Cloneable, Serializable
    * this collection.
    *
    * @param e  the expression.
+   *
+   * @throws FunctionInitializeException if the Expression could not be initialized correctly
    */
   public void add(final Expression e)
+      throws FunctionInitializeException
   {
     if (e == null)
     {
@@ -155,6 +158,8 @@ public class ExpressionCollection implements Cloneable, Serializable
     {
       removeExpression(e);
     }
+
+    e.initialize();
     privateAdd(e);
   }
 

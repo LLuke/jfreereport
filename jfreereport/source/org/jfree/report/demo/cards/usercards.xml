@@ -880,15 +880,15 @@ Phone: 213123123123</property-ref>
     <expression name="C1_name_concat" class="org.jfree.report.function.TextFormatExpression">
       <properties>
         <property name="pattern">{0} {1}</property>
-        <property name="0">C1_firstName</property>
-        <property name="1">C1_name</property>
+        <property name="field[0]">C1_firstName</property>
+        <property name="field[1]">C1_name</property>
       </properties>
     </expression>
     <expression name="C2_name_concat" class="org.jfree.report.function.TextFormatExpression">
       <properties>
         <property name="pattern">{0} {1}</property>
-        <property name="0">C2_firstName</property>
-        <property name="1">C2_name</property>
+        <property name="field[0]">C2_firstName</property>
+        <property name="field[1]">C2_name</property>
       </properties>
     </expression>
   </functions>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextLine.java,v 1.8 2004/03/27 20:21:14 taqua Exp $
+ * $Id: TextLine.java,v 1.9 2004/05/07 08:02:49 mungady Exp $
  *
  * Changes
  * -------
@@ -180,7 +180,7 @@ public strictfp class TextLine implements Content
     final Rectangle2D actBounds = this.bounds.createIntersection(bounds);
     if (actBounds.getHeight() < this.bounds.getHeight())
     {
-      return null;
+      return EmptyContent.getDefaultEmptyContent();
     }
     final float frontW = (float) (actBounds.getX() - this.bounds.getX());
     final int frontPos = calcStringLength(0, frontW);
@@ -189,7 +189,7 @@ public strictfp class TextLine implements Content
     if (frontPos == endPos)
     {
       // the line would not contain any text ...
-      return null;
+      return EmptyContent.getDefaultEmptyContent();
     }
 
     final TextLine line = new TextLine(getSizeCalculator(), lineHeight);

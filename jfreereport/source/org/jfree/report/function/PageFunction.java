@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.5 2003/11/07 18:33:49 taqua Exp $
+ * $Id: PageFunction.java,v 1.5.4.6 2005/01/20 14:50:02 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
  * 10-May-2002 : Applied the ReportEvent interface
  * 05-Jun-2002 : Updated Javadoc comments (DG);
  * 12-Dec-2002 : Fixed issues reported by Checkstyle (DG);
- *
+ * 19-Jan-2005 : BugFix. Reset on group start did not work correctly.
  */
 
 package org.jfree.report.function;
@@ -46,10 +46,12 @@ package org.jfree.report.function;
 import java.io.Serializable;
 
 import org.jfree.report.Group;
+import org.jfree.report.GroupFooter;
+import org.jfree.report.event.LayoutEvent;
+import org.jfree.report.event.LayoutListener;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.states.ReportState;
-import org.jfree.report.util.StringUtil;
 
 /**
  * A report function that counts pages. This method is only useable when a
@@ -59,18 +61,26 @@ import org.jfree.report.util.StringUtil;
  * As with all page dependent functions: The function will only be active, when
  * the page events get fired, this usually only happens during the last pagination
  * run and the printing. The function level will be negative when this happens.
+ * <p>
  *
  * @author Thomas Morgner
  */
 public class PageFunction extends AbstractFunction
-    implements Serializable, PageEventListener
+    implements Serializable, PageEventListener, LayoutListener
 {
 
   /** The page. */
-  private int page;
+  private transient int page;
 
   /** The 'group-started' flag. */
-  private boolean isGroupStarted;
+  private transient boolean isGroupStarted;
+
+  private transient boolean ignoreNextGroup;
+  private transient boolean waitForFooterPrinted;
+
+  private String group;
+  private int startPage;
+  private boolean ignorePageCancelEvents;
 
   /**
    * Constructs an unnamed function.
@@ -79,6 +89,7 @@ public class PageFunction extends AbstractFunction
    */
   public PageFunction()
   {
+    this.startPage = 1;
   }
 
   /**
@@ -91,6 +102,16 @@ public class PageFunction extends AbstractFunction
     setName(name);
   }
 
+  protected boolean isGroupStarted ()
+  {
+    return isGroupStarted;
+  }
+
+  protected void setGroupStarted (final boolean groupStarted)
+  {
+    isGroupStarted = groupStarted;
+  }
+
   /**
    * Receives notification from the report engine that a new page is starting.  Grabs the page
    * number from the report state and stores it.
@@ -99,10 +120,10 @@ public class PageFunction extends AbstractFunction
    */
   public void pageStarted(final ReportEvent event)
   {
-    if (isGroupStarted)
+    if (isGroupStarted())
     {
       this.setPage(getStartPage());
-      isGroupStarted = false;
+      setGroupStarted(false);
     }
     else
     {
@@ -146,12 +167,67 @@ public class PageFunction extends AbstractFunction
       return;
     }
 
+    if (isGroupStarted())
+    {
+      // don't do anything if already handled ...
+      return;
+    }
+
     final ReportState state = event.getState();
     final Group group = event.getReport().getGroup(state.getCurrentGroupIndex());
     if (getGroup().equals(group.getName()))
     {
-      isGroupStarted = true;
+      // Usually we wait for a group start to reset the page counter
+      // on the next pagebreak. But the first group start will collide
+      // with the report start event.
+      //
+      // During the report start, a new page has been opened by the
+      // report processor. If we now set the groupStarted flag to true
+      // the next page start would reset the counter and create false
+      // results.
+      //
+      // BugFix: Only filter out the first group instance, and process
+      // all subsequent group instances as usual. This way we will behave
+      // correctly if that group is finished on the first page.
+
+      if (isIgnoreNextGroup() == false)
+      {
+        setGroupStarted (true);
+        // this PageStorage is only null, if the report has never reached the first report start
+        // event
+      }
+      setIgnoreNextGroup (false);
     }
+  }
+
+  /**
+   * Receives notification that a group has finished.
+   *
+   * @param event the event.
+   */
+  public void groupFinished (final ReportEvent event)
+  {
+    if (getGroup() == null)
+    {
+      return;
+    }
+
+    final ReportState state = event.getState();
+    final Group group = event.getReport().getGroup(state.getCurrentGroupIndex());
+    if (getGroup().equals(group.getName()))
+    {
+      setWaitForFooterPrinted(true);
+    }
+  }
+
+  protected boolean isIgnoreNextGroup ()
+  {
+    return ignoreNextGroup;
+  }
+
+  protected void setIgnoreNextGroup (final boolean ignoreNextGroup)
+  {
+    this.ignoreNextGroup = ignoreNextGroup;
   }
 
   /**
@@ -162,6 +238,18 @@ public class PageFunction extends AbstractFunction
   public void reportInitialized(final ReportEvent event)
   {
     this.setPage(getStartPage() - 1);
+    setIgnoreNextGroup(true);
+    setWaitForFooterPrinted(false);
+  }
+
+  protected boolean isWaitForFooterPrinted ()
+  {
+    return waitForFooterPrinted;
+  }
+
+  protected void setWaitForFooterPrinted (final boolean waitForFooterPrinted)
+  {
+    this.waitForFooterPrinted = waitForFooterPrinted;
   }
 
   /**
@@ -201,7 +289,7 @@ public class PageFunction extends AbstractFunction
    */
   public String getGroup()
   {
-    return getProperty("group");
+    return group;
   }
 
   /**
@@ -211,7 +299,7 @@ public class PageFunction extends AbstractFunction
    */
   public void setGroup(final String group)
   {
-    setProperty("group", group);
+    this.group = group;
   }
 
   /**
@@ -221,7 +309,12 @@ public class PageFunction extends AbstractFunction
    */
   public int getStartPage()
   {
-    return StringUtil.parseInt(getProperty("start"), 1);
+    return this.startPage;
+  }
+
+  public void setStartPage (final int startPage)
+  {
+    this.startPage = startPage;
   }
 
   /**
@@ -233,7 +326,12 @@ public class PageFunction extends AbstractFunction
    */
   public boolean isIgnorePageCancelEvents()
   {
-    return getProperty("ignore-cancel", "false").equalsIgnoreCase("true");
+    return ignorePageCancelEvents;
+  }
+
+  public void setIgnorePageCancelEvents (final boolean ignorePageCancelEvents)
+  {
+    this.ignorePageCancelEvents = ignorePageCancelEvents;
   }
 
   /**
@@ -254,5 +352,30 @@ public class PageFunction extends AbstractFunction
   protected void setPage(final int page)
   {
     this.page = page;
+  }
+
+  /**
+   * Receives notification that the band layouting has completed. <P> The event carries
+   * the current report state.
+   *
+   * @param event the event.
+   */
+  public void layoutComplete (final LayoutEvent event)
+  {
+  }
+
+  public void outputComplete (final LayoutEvent event)
+  {
+    if (isWaitForFooterPrinted() == false)
+    {
+      return;
+    }
+
+    if (event.getLayoutedBand() instanceof GroupFooter)
+    {
+      setGroupStarted(true);
+      setIgnoreNextGroup (true);
+      setWaitForFooterPrinted(false);
+    }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.6 2003/10/30 22:14:59 taqua Exp $
+ * $Id: TextContentFactoryModule.java,v 1.7 2004/05/07 08:02:49 mungady Exp $
  *
  * Changes
  * -------
@@ -78,13 +78,14 @@ public class TextContentFactoryModule implements ContentFactoryModule
   }
 
   /**
-   * Creates a content wrapper for the element.
+   * Creates a content wrapper for the element. If the text given is null or the text's
+   * length is zero, this method will return the EmptyContent reference.
    *
    * @param e  the element.
    * @param bounds  the bounds.
    * @param ot  the output target.
    *
-   * @return the content.
+   * @return the content, never null.
    *
    * @throws ContentCreationException if there is a problem creating the content.
    */
@@ -95,11 +96,11 @@ public class TextContentFactoryModule implements ContentFactoryModule
     final String text = (String) e.getValue();
     if (text == null)
     {
-      return null;
+      return EmptyContent.getDefaultEmptyContent();
     }
     if (text.length() == 0)
     {
-      return null;
+      return EmptyContent.getDefaultEmptyContent();
     }
 
     final Point2D point = bounds.getAbsolutePosition();
@@ -119,11 +120,12 @@ public class TextContentFactoryModule implements ContentFactoryModule
 
     if (dim.getWidth() == 0 && dim.getHeight() == 0)
     {
-      return null;
+      return EmptyContent.getDefaultEmptyContent();
     }
 
     final FontDefinition f = e.getStyle().getFontDefinitionProperty();
-    final Rectangle2D tBounds = new Rectangle2D.Float((float) point.getX(),
+    final Rectangle2D tBounds = new Rectangle2D.Float
+        ((float) point.getX(),
         (float) point.getY(),
         (float) dim.getWidth(),
         (float) dim.getHeight());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: EmptyContent.java,v 1.2 2004/03/27 20:21:14 taqua Exp $
+ * $Id: EmptyContent.java,v 1.3.2.1 2004/12/13 19:26:20 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -79,7 +79,29 @@ public class EmptyContent implements Content
    */
   public Content getContentForBounds(final Rectangle2D bounds)
   {
-    return null;
+    return this;
+  }
+
+  /**
+   * Returns a sub-content item.
+   *
+   * @param part the sub-content index (zero-based).
+   * @return the subcontent (possibly null).
+   */
+  public Content getContentPart (final int part)
+  {
+    return this;
+  }
+
+  /**
+   * Returns the number of sub-content items for this item. <P> Only subclasses of {@link
+   * org.jfree.report.content.ContentContainer} will return non-zero results.
+   *
+   * @return the number of sub-content items.
+   */
+  public int getContentPartCount ()
+  {
+    return 0;
   }
 
   /**

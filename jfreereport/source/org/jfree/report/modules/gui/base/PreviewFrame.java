@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------
  * PreviewFrame.java
  * -----------------
- * (C)opyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewFrame.java,v 1.10 2004/03/16 15:09:23 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.9 2003/11/15 20:51:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -57,12 +57,12 @@
 package org.jfree.report.modules.gui.base;
 
 import java.awt.event.ActionEvent;
-import java.util.ResourceBundle;
 import javax.swing.Action;
 import javax.swing.JFrame;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * A standard print preview frame for any JFreeReport.  Allows the user to page back and forward
@@ -114,7 +114,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
   private PreviewProxyBase base;
 
   /** Localised resources. */
-  private ResourceBundle resources;
+  private ResourceBundleSupport resources;
 
   /**
    * Constructs a PreviewFrame that displays the specified report.
@@ -176,11 +176,11 @@ public class PreviewFrame extends JFrame implements PreviewProxy
    *
    * @return this frames ResourceBundle.
    */
-  public ResourceBundle getResources()
+  public ResourceBundleSupport getResources()
   {
     if (resources == null)
     {
-      resources = ResourceBundle.getBundle(PreviewProxyBase.RESOURCES_BASE_NAME);
+      resources = new ResourceBundleSupport(PreviewBaseModule.RESOURCES_BASE_NAME);
     }
     return resources;
   }

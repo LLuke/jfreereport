@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.4 2003/08/31 19:27:40 taqua Exp $
+ * $Id: DefaultImageReference.java,v 1.1 2004/03/16 15:34:26 taqua Exp $
  *
  * Changes:
  * --------
@@ -45,7 +45,6 @@ package org.jfree.report;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -74,20 +73,14 @@ public class DefaultImageReference
   /** The image URL. */
   private URL url;
 
-  /** The area of the unscaled image that hould be displayed. */
-  private Rectangle2D bounds = new Rectangle2D.Float();
-
-  /** The width scale factor. */
-  private float scaleX = 1.0f;
-
-  /** The height scale factor. */
-  private float scaleY = 1.0f;
-
   /** The width of the (unscaled) image. */
   private int width;
 
   /** The height of the (unscaled) image. */
   private int height;
+
+  private float scaleX = 1.0f;
+  private float scaleY = 1.0f;
 
   /**
    * Creates a new ImageReference with an origin of 0,0 and the desired
@@ -138,8 +131,6 @@ public class DefaultImageReference
         is.close();
       }
     }
-
-    setBounds(new Rectangle2D.Float(0, 0, image.getWidth(null), image.getHeight(null)));
     this.width = image.getWidth(null);
     this.height = image.getHeight(null);
   }
@@ -159,7 +150,6 @@ public class DefaultImageReference
     this.image = img;
     final WaitingImageObserver obs = new WaitingImageObserver(image);
     obs.waitImageLoaded();
-    setBounds(new Rectangle2D.Float(0, 0, image.getWidth(null), image.getHeight(null)));
     this.width = image.getWidth(null);
     this.height = image.getHeight(null);
   }
@@ -169,104 +159,19 @@ public class DefaultImageReference
    *
    * @param w  the width of the unscaled image.
    * @param h  the height of the unscaled image.
-   * @param bounds  the area of the unscaled image to draw.
    */
-  public DefaultImageReference(final int w, final int h, final Rectangle2D bounds)
+  public DefaultImageReference(final int w, final int h)
   {
     this.width = w;
     this.height = h;
-    this.bounds = bounds;
   }
 
-  /**
-   * Return the bounds of the image contained in that reference. These bounds are
-   * the natural bounds of the raw image, no scaling applied. These bounds may define
-   * a sub-area of the real image contained in that Reference.
-   *
-   * @return the bounds.
-   */
-  public Rectangle2D getBounds()
+  public DefaultImageReference (final DefaultImageReference parent)
   {
-    return bounds.getBounds2D();
-  }
-
-  /**
-   * Define the bounds of the image contained in that reference.
-   *
-   * @param bounds  the bounds.
-   */
-  public void setBounds(final Rectangle2D bounds)
-  {
-    this.bounds.setRect(bounds);
-  }
-
-  /**
-   * Returns the x scale factor.
-   *
-   * @return the x scale factor.
-   */
-  public float getScaleX()
-  {
-    return scaleX;
-  }
-
-  /**
-   * Returns the y scale factor.
-   *
-   * @return the y scale factor.
-   */
-  public float getScaleY()
-  {
-    return scaleY;
-  }
-
-  /**
-   * Sets the y scale factor.
-   *
-   * @param scaleY  the y scale factor.
-   */
-  public void setScale(final float  scaleX, final float scaleY)
-  {
-    if (scaleY == 0)
-    {
-      throw new IllegalArgumentException("Scale factor must not be 0");
-    }
-    if (scaleX == 0)
-    {
-      throw new IllegalArgumentException("Scale factor must not be 0");
-    }
-    this.scaleX = scaleX;
-    this.scaleY = scaleY;
-  }
-
-  /**
-   * Sets the scaled bounds.
-   *
-   * @param bounds  the bounds.
-   */
-  public void setBoundsScaled(final Rectangle2D bounds)
-  {
-    final Rectangle2D boundsNew = getBounds();
-    boundsNew.setRect(bounds.getX() / getScaleX(),
-        bounds.getY() / getScaleY(),
-        bounds.getWidth() / getScaleX(),
-        bounds.getHeight() / getScaleY());
-    setBounds(boundsNew);
-  }
-
-  /**
-   * Returns the scaled bounds.
-   *
-   * @return the scaled bounds.
-   */
-  public Rectangle2D getBoundsScaled()
-  {
-    final Rectangle2D bounds = getBounds();
-    bounds.setRect(bounds.getX() * getScaleX(),
-        bounds.getY() * getScaleY(),
-        bounds.getWidth() * getScaleX(),
-        bounds.getHeight() * getScaleY());
-    return bounds;
+    this.width = parent.width;
+    this.height = parent.height;
+    this.image = parent.image;
+    this.url = parent.url;
   }
 
   /**
@@ -365,7 +270,6 @@ public class DefaultImageReference
   public Object clone() throws CloneNotSupportedException
   {
     final DefaultImageReference ref = (DefaultImageReference) super.clone();
-    ref.bounds = bounds.getBounds2D();
     return ref;
   }
 
@@ -389,12 +293,6 @@ public class DefaultImageReference
     return height;
   }
 
-  public ImageContainer getPartialInstance (final Rectangle2D bounds)
-  {
-    // todo implement me
-    return null;
-  }
-
   public boolean isLoadable ()
   {
     return getSourceURL() != null;
@@ -413,7 +311,10 @@ public class DefaultImageReference
 
   public String getName ()
   {
-    // todo implement me
+    if (url != null)
+    {
+      return url.toExternalForm();
+    }
     return null;
   }
 
@@ -426,5 +327,21 @@ public class DefaultImageReference
   public boolean isIdentifiable ()
   {
     return url != null;
+  }
+
+  public float getScaleX ()
+  {
+    return scaleX;
+  }
+
+  public float getScaleY ()
+  {
+    return scaleY;
+  }
+
+  public void setScale (final float sx, final float sy)
+  {
+    this.scaleX = sx;
+    this.scaleY = sy;
   }
 }

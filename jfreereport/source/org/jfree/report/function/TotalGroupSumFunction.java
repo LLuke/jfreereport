@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumFunction.java,v 1.5 2003/11/15 20:51:14 taqua Exp $
+ * $Id: TotalGroupSumFunction.java,v 1.5.4.1 2004/12/30 14:46:12 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,8 @@
 
 package org.jfree.report.function;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -73,12 +75,6 @@ import org.jfree.report.util.Log;
  */
 public class TotalGroupSumFunction extends AbstractFunction implements Serializable
 {
-  /** Literal text for the 'group' property. */
-  public static final String GROUP_PROPERTY = "group";
-
-  /** Literal text for the 'field' property. */
-  public static final String FIELD_PROPERTY = "field";
-
   /**
    * Helperclass to make summing easier.
    */
@@ -122,13 +118,16 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
   }
 
   /** The group sum. */
-  private GroupSum groupResult;
+  private transient GroupSum groupResult;
 
   /** A list of results. */
-  private ArrayList results;
+  private transient ArrayList results;
 
   /** The current index. */
-  private int currentIndex;
+  private transient int currentIndex;
+
+  private String field;
+  private String group;
 
   /**
    * Constructs a new function.
@@ -181,7 +180,6 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
     if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
     {
       // wrong group ...
-//      Log.debug ("Not correct [" + getGroup() + "]: " + FunctionUtilities.getCurrentGroup(event).getName() + " -> " + currentIndex);
       return;
     }
 
@@ -190,13 +188,11 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
       groupResult = new GroupSum();
       results.add(groupResult);
       currentIndex += 1;
-//      Log.debug ("Added [" + getName() + "]: " + results.size() + " -> " + currentIndex);
     }
     else
     {
       // Activate the current group, which was filled in the prepare run.
       currentIndex += 1;
-//      Log.debug ("Reading [" + getName() + "]: " + results.size() + " -> " + currentIndex);
       groupResult = (GroupSum) results.get(currentIndex);
     }
   }
@@ -238,7 +234,7 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
    */
   public String getGroup()
   {
-    return getProperty(GROUP_PROPERTY);
+    return group;
   }
 
   /**
@@ -249,7 +245,7 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
    */
   public void setGroup(final String group)
   {
-    setProperty(GROUP_PROPERTY, group);
+    this.group = group;
   }
 
   /**
@@ -274,7 +270,7 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
    */
   public String getField()
   {
-    return getProperty(FIELD_PROPERTY);
+    return field;
   }
 
   /**
@@ -290,7 +286,7 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
     {
       throw new NullPointerException();
     }
-    setProperty(FIELD_PROPERTY, field);
+    this.field = field;
   }
 
   /**
@@ -303,7 +299,7 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
   public void initialize() throws FunctionInitializeException
   {
     super.initialize();
-    if (getProperty(FIELD_PROPERTY) == null)
+    if (field == null)
     {
       throw new FunctionInitializeException("Field is required");
     }
@@ -321,5 +317,12 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
     function.groupResult = new GroupSum();
     function.results = new ArrayList();
     return function;
+  }
+
+  private void readObject(final ObjectInputStream in)
+      throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    this.results = new ArrayList();
   }
 }

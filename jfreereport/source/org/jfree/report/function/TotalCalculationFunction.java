@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------------
  * TextFormatExpression.java
  * -------------------------
- * (C)opyright 2002, by Object Refinery Limited and Contributors.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TotalCalculationFunction.java,v 1.7 2003/11/10 20:01:59 taqua Exp $
+ * $Id: TotalCalculationFunction.java,v 1.7.4.2 2004/12/30 14:46:12 taqua Exp $
  *
  * Changes
  * -------
@@ -64,20 +64,17 @@ import org.jfree.report.event.ReportEvent;
 public class TotalCalculationFunction
     extends AbstractFunction implements Serializable
 {
-  /** Literal text for the 'field' property. */
-  public static final String FIELD_PROPERTY = "field";
-
-  /** Literal text for the 'group' property. */
-  public static final String GROUP_PROPERTY = "group";
-
   /** A list of results. */
   private transient ArrayList storedResults;
 
   /** The current index. */
-  private int currentIndex;
+  private transient int currentIndex;
 
   /** The current object. */
   private transient Object currentObject;
+
+  private String field;
+  private String group;
 
   /**
    * Constructs a new function.
@@ -163,7 +160,7 @@ public class TotalCalculationFunction
    *
    * @param event  the event.
    */
-  public void reportFinished(ReportEvent event)
+  public void reportFinished(final ReportEvent event)
   {
     if (getGroup() == null)
     {
@@ -178,7 +175,7 @@ public class TotalCalculationFunction
    */
   public String getGroup()
   {
-    return getProperty(GROUP_PROPERTY);
+    return group;
   }
 
   /**
@@ -189,7 +186,7 @@ public class TotalCalculationFunction
    */
   public void setGroup(final String group)
   {
-    setProperty(GROUP_PROPERTY, group);
+    this.group = group;
   }
 
   /**
@@ -199,7 +196,7 @@ public class TotalCalculationFunction
    */
   public String getField()
   {
-    return getProperty(FIELD_PROPERTY);
+    return field;
   }
 
   /**
@@ -210,7 +207,7 @@ public class TotalCalculationFunction
    */
   public void setField(final String field)
   {
-    setProperty(FIELD_PROPERTY, field);
+    this.field = field;
   }
 
   /**
@@ -256,5 +253,4 @@ public class TotalCalculationFunction
       throw new FunctionInitializeException("Field must be defined.");
     }
   }
-
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
                         "http://jfreereport.sourceforge.net/report.dtd">
-<report name="LGPL" orientation="portrait" pageformat="LETTER" topmargin="72" leftmargin="72" bottommargin="72" rightmargin="72" horizontal-pages="2" >
+<report name="LGPL" orientation="portrait" pageformat="LETTER" topmargin="72" leftmargin="72" bottommargin="72" rightmargin="72">
   <!-- REPORT FOOTER -->
   <!--
     This will print the text of the LGPL, at the moment (v.0.8.0) this will fill up the
@@ -11,7 +11,6 @@
   <reportheader height="24" fontname="SansSerif" fontstyle="bold" fontsize="10" ownpage="false">
     <label x="0" y="0" width="100%" height="0" alignment="left" dynamic="true">
       <![CDATA[
-GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU       
             GNU LESSER GENERAL PUBLIC LICENSE
                  Version 2.1, February 1999
 
@@ -518,7 +517,6 @@ GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU GNU 
 
     ]]>
     </label>
-    <line name="RHline1" x1="380" y1="250" x2="500" y2="250" weight="2.00" color="#ff0000"></line>
   </reportheader>
 
   <pageheader height="18" onfirstpage="true" fontname="SansSerif" fontstyle="bold" fontsize="9">

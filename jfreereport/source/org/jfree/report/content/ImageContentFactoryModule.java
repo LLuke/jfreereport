@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.6 2004/03/16 15:09:22 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.5 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes
  * -------
@@ -91,24 +91,25 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
     // there is no content?
     if (ir == null)
     {
-      return null;
+      return EmptyContent.getDefaultEmptyContent();
     }
 
     final Point2D point = bounds.getAbsolutePosition();
-    final Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
-        bounds.getPreferredSize());
+    final Dimension2D iBounds = ElementLayoutInformation.unionMin
+            (bounds.getMaximumSize(), bounds.getPreferredSize());
 
     if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
     {
-      return null;
+      return EmptyContent.getDefaultEmptyContent();
     }
+
+    double scaleX = ir.getScaleX();
+    double scaleY = ir.getScaleY();
+    final double w = ir.getImageWidth();
+    final double h = ir.getImageHeight();
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE))
     {
-      final double w = ir.getImageWidth();
-      final double h = ir.getImageHeight();
-      double scaleX = 1;
-      double scaleY = 1;
 
       if (w != 0)
       {
@@ -123,19 +124,19 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
         if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO))
         {
           final float scale = (float) Math.min(scaleX, scaleY);
-          ir.setScale(scale, scale);
-        }
-        else
-        {
-          ir.setScale((float) scaleX, (float) scaleY);
+          scaleX = scale;
+          scaleY = scale;
         }
       }
     }
-    final Rectangle2D irBoundsScaled = ir.getBoundsScaled();
-    final Rectangle2D irBounds = new Rectangle2D.Float((float) point.getX(),
-        (float) point.getY(),
-        (float) irBoundsScaled.getWidth(),
-        (float) irBoundsScaled.getHeight());
-    return new ImageContent(ir, irBounds);
+
+    final Rectangle2D.Float contentBounds = new Rectangle2D.Float();
+    contentBounds.setFrame(point.getX(), point.getY(), scaleX * w, scaleY * h);
+
+    final Rectangle2D.Float imageArea = new Rectangle2D.Float();
+    imageArea.setFrame(0, 0, w, h);
+
+    final ImageContent ic = new ImageContent(ir, contentBounds, imageArea);
+    return ic;
   }
 }

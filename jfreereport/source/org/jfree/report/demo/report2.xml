@@ -120,7 +120,7 @@
       </properties>
     </function>
 
-    <function name="PageNumber" class="org.jfree.report.function.PageFunction">
+    <function name="PageNumber" class="org.jfree.report.function.PageFunction" deplevel="1">
       <!--
         Activating this property counts the pages needed for the given group.
         Only usefull with manual pagebreaks
@@ -131,7 +131,7 @@
         -->
 
     </function>
-    <function name="PageTotal" class="org.jfree.report.function.PageTotalFunction">
+    <function name="PageTotal" class="org.jfree.report.function.PageTotalFunction" deplevel="1">
 
       <!--
         Activating this property counts the pages needed for the given group.
@@ -145,8 +145,8 @@
     <expression name="pageXofY" class="org.jfree.report.function.TextFormatExpression">
       <properties>
         <property name="pattern">Page {0} of {1}</property>
-        <property name="0">PageNumber</property>
-        <property name="1">PageTotal</property>
+        <property name="field[0]">PageNumber</property>
+        <property name="field[1]">PageTotal</property>
       </properties>
     </expression>
   </functions>

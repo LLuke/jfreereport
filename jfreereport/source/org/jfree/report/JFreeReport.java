@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.13 2004/03/16 15:09:21 taqua Exp $
+ * $Id: JFreeReport.java,v 1.7.2.1.2.1 2004/12/30 14:46:09 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -72,6 +72,7 @@ import javax.swing.table.TableModel;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.ExpressionCollection;
 import org.jfree.report.function.Function;
+import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ReportProperties;
@@ -107,8 +108,7 @@ import org.jfree.report.util.ReportProperties;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class JFreeReport
-        implements Cloneable, Serializable
+public class JFreeReport implements Cloneable, Serializable
 {
 
   /** Key for the 'report name' property. */
@@ -135,6 +135,7 @@ public class JFreeReport
   /** The table model containing the data for the report. */
   private TableModel data;
 
+  /** The page format for the report (determines the page size, and therefore the report width). */
   private PageDefinition pageDefinition;
 
   /** Storage for arbitrary properties that a user can assign to the report. */
@@ -161,7 +162,7 @@ public class JFreeReport
   /** The item band - used once for each row of data. */
   private ItemBand itemBand;
 
-  /** The watermark band - used as page background for output targets who support this feature. */
+  /** The watermark band. */
   private Watermark watermark;
 
   /** The report configuration. */
@@ -413,6 +414,33 @@ public class JFreeReport
   }
 
   /**
+   * Sets the watermark band for the report.
+   *
+   * @param band  the new watermark band (<code>null</code> not permitted).
+   */
+  public void setWatermark(final Watermark band)
+  {
+    if (band == null)
+    {
+      throw new NullPointerException("JFreeReport.setWatermark(...) : null not permitted.");
+    }
+
+    this.watermark.unregisterStyleSheetCollection(getStyleSheetCollection());
+    this.watermark = band;
+    this.watermark.registerStyleSheetCollection(getStyleSheetCollection());
+  }
+
+  /**
+   * Returns the report's watermark band.
+   *
+   * @return the watermark band (never <code>null</code>).
+   */
+  public Watermark getWatermark()
+  {
+    return this.watermark;
+  }
+
+  /**
    * Sets the item band for the report.
    *
    * @param band  the new item band (<code>null</code> not permitted).
@@ -552,8 +580,10 @@ public class JFreeReport
    * Adds a function to the report's collection of functions.
    *
    * @param function  the function.
+   *
+   * @throws FunctionInitializeException if any of the functions cannot be initialized.
    */
-  public void addExpression(final Expression function)
+  public void addExpression(final Expression function) throws FunctionInitializeException
   {
     expressions.add(function);
   }
@@ -562,24 +592,47 @@ public class JFreeReport
    * Adds a function to the report's collection of functions.
    *
    * @param function  the function.
-   * @deprecated use addException(..) instead.
+   *
+   * @throws FunctionInitializeException if any of the functions cannot be initialized.
+   * @deprecated use addExpression instead.
    */
-  public void addFunction(final Function function)
+  public void addFunction(final Function function) throws FunctionInitializeException
   {
-    addExpression(function);
+    expressions.add(function);
   }
 
-  private PageFormat createSystemDefaultPageFormat ()
+  /**
+   * Returns the default page format.
+   *
+   * @return the page definition.
+   */
+  public PageDefinition getPageDefinition()
   {
-    if (ReportConfiguration.getGlobalConfig().getConfigProperty
-        (ReportConfiguration.NO_PRINTER_AVAILABLE, "false").equals("true"))
+    return pageDefinition;
+  }
+
+  /**
+   * Defines the default page format for this report. The default is a hint
+   * to define at least one suitable format. If no format is defined the system's default
+   * page format is used.
+   *
+   * @param format  the default format (<code>null</code> permitted).
+   */
+  public void setPageDefinition(PageDefinition format)
+  {
+    if (format == null)
     {
-      return new PageFormat();
+      if (ReportConfiguration.getGlobalConfig().getConfigProperty
+          (ReportConfiguration.NO_PRINTER_AVAILABLE, "false").equals("true"))
+      {
+        format = new SimplePageDefinition(new PageFormat());
+      }
+      else
+      {
+        format = new SimplePageDefinition(PrinterJob.getPrinterJob().defaultPage());
+      }
     }
-    else
-    {
-      return PrinterJob.getPrinterJob().defaultPage();
-    }
+    pageDefinition = format;
   }
 
   /**
@@ -623,22 +676,22 @@ public class JFreeReport
     report.data = data; // data is defined to be immutable, so don't clone the thing
     report.pageDefinition = (PageDefinition) pageDefinition.clone();
     report.groups = (GroupList) groups.clone();
+    report.watermark = (Watermark) watermark.clone();
     report.itemBand = (ItemBand) itemBand.clone();
     report.pageFooter = (PageFooter) pageFooter.clone();
     report.pageHeader = (PageHeader) pageHeader.clone();
     report.properties = (ReportProperties) properties.clone();
     report.reportFooter = (ReportFooter) reportFooter.clone();
     report.reportHeader = (ReportHeader) reportHeader.clone();
-    report.watermark = (Watermark) watermark.clone();
     report.expressions = (ExpressionCollection) expressions.clone();
     report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
     report.groups.updateStyleSheetCollection(report.styleSheetCollection);
     report.itemBand.updateStyleSheetCollection(report.styleSheetCollection);
+    report.watermark.updateStyleSheetCollection(report.styleSheetCollection);
     report.reportFooter.updateStyleSheetCollection(report.styleSheetCollection);
     report.reportHeader.updateStyleSheetCollection(report.styleSheetCollection);
     report.pageFooter.updateStyleSheetCollection(report.styleSheetCollection);
     report.pageHeader.updateStyleSheetCollection(report.styleSheetCollection);
-    report.watermark.updateStyleSheetCollection(report.styleSheetCollection);
     report.reportBuilderHints = new ReportBuilderHints();
     return report;
   }
@@ -718,36 +771,5 @@ public class JFreeReport
   public ReportBuilderHints getReportBuilderHints()
   {
     return reportBuilderHints;
-  }
-
-  public Watermark getWatermark()
-  {
-    return watermark;
-  }
-
-  public void setWatermark(final Watermark watermark)
-  {
-    if (watermark == null)
-    {
-      throw new NullPointerException("JFreeReport.setWatermark(...) : null not permitted.");
-    }
-
-    this.watermark.unregisterStyleSheetCollection(getStyleSheetCollection());
-    this.watermark = watermark;
-    this.watermark.registerStyleSheetCollection(getStyleSheetCollection());
-  }
-
-  public PageDefinition getPageDefinition()
-  {
-    return pageDefinition;
-  }
-
-  public void setPageDefinition(PageDefinition pageDefinition)
-  {
-    if (pageDefinition == null)
-    {
-      pageDefinition = new SimplePageDefinition(createSystemDefaultPageFormat());
-    }
-    this.pageDefinition = pageDefinition;
   }
 }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldElementFactory.java,v 1.5 2003/10/05 21:52:32 taqua Exp $
+ * $Id: NumberFieldElementFactory.java,v 1.5.4.1 2004/10/06 19:46:14 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -135,10 +135,10 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
   public Element createElement()
   {
     final DataSource dataSource;
-    if (getFormatString() != null)
+    if (getFormat() instanceof DecimalFormat)
     {
       final NumberFieldTemplate template = new NumberFieldTemplate();
-      template.setFormat(getFormatString());
+      template.setDecimalFormat ((DecimalFormat) getFormat());
       if (getNullString() != null)
       {
         template.setNullValue(getNullString());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: JFreeReportCoreModule.java,v 1.3 2003/09/08 18:11:48 taqua Exp $
+ * $Id: JFreeReportCoreModule.java,v 1.4 2004/05/07 07:43:53 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -40,8 +40,10 @@ package org.jfree.report;
 
 import java.io.InputStream;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
+
 
 /**
  * The CoreModule is used to represent the base classes of JFreeReport
@@ -71,12 +73,17 @@ public class JFreeReportCoreModule extends AbstractModule
   }
 
   /**
-   * Initializes the module. This method does nothing.
+   * Initializes the module. Use this method to perform all initial setup operations. This
+   * method is called only once in a modules lifetime. If the initializing cannot be
+   * completed, throw a ModuleInitializeException to indicate the error,. The module will
+   * not be available to the system.
    *
-   * @throws ModuleInitializeException if an error ocurred while initializing the module.
+   * @param subSystem the subSystem.
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if an error ocurred while initializing the module.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize (final SubSystem subSystem)
+          throws ModuleInitializeException
   {
-    // this does nothing ...
   }
 }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------
  * PreviewAction.java
  * ------------------
- * (C)opyright 2002, by Object Refinery Limited and Contributors.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewAction.java,v 1.3 2004/03/16 15:09:22 taqua Exp $
+ * $Id: PreviewAction.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,9 @@
 
 package org.jfree.report.demo;
 
-import java.util.ResourceBundle;
-
-import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
-import org.jfree.report.modules.gui.base.components.ActionDowngrade;
-import org.jfree.report.modules.gui.base.ResourceBundleUtils;
+import org.jfree.util.ResourceBundleSupport;
+import org.jfree.ui.action.AbstractActionDowngrade;
+import org.jfree.ui.action.ActionDowngrade;
 
 /**
  * The preview action invokes the parsing and processing of the currently selected sample
@@ -59,17 +57,15 @@ public abstract class PreviewAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  public PreviewAction(final ResourceBundle resources)
+  public PreviewAction(final ResourceBundleSupport resources)
   {
     this.putValue(NAME, resources.getString("action.print-preview.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.print-preview.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
-        ResourceBundleUtils.createMnemonic(resources.getString("action.print-preview.mnemonic")));
+        resources.getMnemonic("action.print-preview.mnemonic"));
     this.putValue(ActionDowngrade.ACCELERATOR_KEY,
-        ResourceBundleUtils.createMenuKeystroke(resources.getString("action.print-preview.accelerator")));
-    this.putValue(SMALL_ICON,
-        ResourceBundleUtils.getIcon(resources.getString("action.print-preview.small-icon")));
-    this.putValue("ICON24",
-        ResourceBundleUtils.getIcon(resources.getString("action.print-preview.icon")));
+        resources.getKeyStroke("action.print-preview.accelerator"));
+    this.putValue(SMALL_ICON, resources.getIcon("action.print-preview.small-icon", false));
+    this.putValue("ICON24", resources.getIcon("action.print-preview.icon", false));
   }
 }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: LayoutListener.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: LayoutListener.java,v 1.2.4.1 2005/01/19 21:52:02 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -55,4 +55,6 @@ public interface LayoutListener extends EventListener
    * @param event  the event.
    */
   public void layoutComplete(LayoutEvent event);
+
+  public void outputComplete(LayoutEvent event);
 }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.10 2003/11/15 18:22:28 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.10.4.2 2004/10/11 21:00:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -268,7 +268,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
     }
     else if (task.getReturnValue() == ExportTask.RETURN_SUCCESS)
     {
-      updateStatusText("Export was successfull.");
+      updateStatusText("Export was successful.");
       return true;
     }
     else if (task.getReturnValue() == ExportTask.RETURN_ABORT)
@@ -353,24 +353,24 @@ public abstract class AbstractExportPlugin implements ExportPlugin
     }
   }
 
-  public void addPropertyChangeListener(PropertyChangeListener l)
+  public void addPropertyChangeListener(final PropertyChangeListener l)
   {
     propertyChangeSupport.addPropertyChangeListener(l);
   }
 
-  public void addPropertyChangeListener(String property, PropertyChangeListener l)
+  public void addPropertyChangeListener(final String property, final PropertyChangeListener l)
   {
     propertyChangeSupport.addPropertyChangeListener(property, l);
   }
 
-  public void removePropertyChangeListener(PropertyChangeListener l)
+  public void removePropertyChangeListener(final PropertyChangeListener l)
   {
     propertyChangeSupport.removePropertyChangeListener(l);
   }
 
-  public void setEnabled(boolean enabled)
+  public void setEnabled(final boolean enabled)
   {
-    boolean oldEnabled = this.enabled;
+    final boolean oldEnabled = this.enabled;
     this.enabled = enabled;
     propertyChangeSupport.firePropertyChange("enabled", oldEnabled, enabled);
   }

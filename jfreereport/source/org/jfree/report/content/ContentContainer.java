@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ContentContainer.java,v 1.5 2004/03/27 20:21:14 taqua Exp $
+ * $Id: ContentContainer.java,v 1.6 2004/05/07 08:02:49 mungady Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,8 @@
 package org.jfree.report.content;
 
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
+
+import org.jfree.util.ShapeUtilities;
 
 /**
  * A report content item that contains other report content items.
@@ -49,7 +50,8 @@ import java.util.ArrayList;
 public strictfp class ContentContainer implements MultipartContent
 {
   /** Storage for the content items. */
-  private final ArrayList content;
+  private Content[] content;
+  private int size;
 
   /** The content bounds. */
   private final Rectangle2D bounds;
@@ -62,7 +64,6 @@ public strictfp class ContentContainer implements MultipartContent
   protected ContentContainer(final Rectangle2D bounds)
   {
     this.bounds = bounds;
-    content = new ArrayList(5);
   }
 
   /**
@@ -116,7 +117,24 @@ public strictfp class ContentContainer implements MultipartContent
    */
   protected void addContentPart(final Content cp)
   {
-    content.add(cp);
+    if (size == 0)
+    {
+      content = new Content[10];
+      content[0] = cp;
+      size = 1;
+    }
+    else
+    {
+      // check, whether the new element will fit in ..
+      if ((size + 1) >= content.length)
+      {
+        final Content[] newContent = new Content[size + 10];
+        System.arraycopy(content, 0, newContent, 0, size);
+        content = newContent;
+      }
+      content[size] = cp;
+      size += 1;
+    }
   }
 
   /**
@@ -126,7 +144,7 @@ public strictfp class ContentContainer implements MultipartContent
    */
   public int getContentPartCount()
   {
-    return content.size();
+    return size;
   }
 
   /**
@@ -138,7 +156,7 @@ public strictfp class ContentContainer implements MultipartContent
    */
   public Content getContentPart(final int part)
   {
-    return (Content) content.get(part);
+    return content[part];
   }
 
   /**
@@ -154,13 +172,13 @@ public strictfp class ContentContainer implements MultipartContent
     for (int i = 0; i < getContentPartCount(); i++)
     {
       final Content contentPart = getContentPart(i);
-      if (contentPart.getBounds().intersects(bounds) == false)
+      if (ShapeUtilities.intersects(contentPart.getBounds(), bounds) == false)
       {
         continue;
       }
 
       final Content retval = contentPart.getContentForBounds(bounds);
-      if (retval == null)
+      if (retval instanceof EmptyContent)
       {
         continue;
       }
@@ -174,6 +192,10 @@ public strictfp class ContentContainer implements MultipartContent
         }
         cc.addContentPart(retval);
       }
+    }
+    if (cc == null)
+    {
+      return new EmptyContent();
     }
     return cc;
   }

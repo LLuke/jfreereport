@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.9 2003/11/07 18:33:48 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.9.4.1 2004/10/11 21:00:35 taqua Exp $
  *
  * Changes
  * -------
@@ -104,14 +104,7 @@ public final class FunctionUtilities
     }
 
     final Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
-    if (groupName.equals(group.getName()))
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
+    return groupName.equals(group.getName());
   }
 
   /**

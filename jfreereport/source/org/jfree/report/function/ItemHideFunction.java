@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.5 2003/11/07 15:31:08 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.5.4.4 2004/12/30 14:46:11 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,9 @@ package org.jfree.report.function;
 import java.io.Serializable;
 
 import org.jfree.report.Element;
+import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
-import org.jfree.util.ObjectUtils;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * The ItemHideFunction hides equal values in a group. Only the first changed value is printed.
@@ -52,22 +53,20 @@ import org.jfree.util.ObjectUtils;
  *
  * @author Thomas Morgner
  */
-public class ItemHideFunction extends AbstractFunction implements Serializable
+public class ItemHideFunction extends AbstractFunction
+        implements Serializable, PageEventListener
 {
-  /** Literal text for the 'element' property. */
-  public static final String ELEMENT_PROPERTY = "element";
-
-  /** Literal text for the 'field' property. */
-  public static final String FIELD_PROPERTY = "field";
-
   /** The last object. */
   private transient Object lastObject;
 
   /** The 'visible' flag. */
-  private boolean visible;
+  private transient boolean visible;
 
   /** The 'first-in-group' flag. */
-  private boolean firstInGroup;
+  private transient boolean firstInGroup;
+
+  private String element;
+  private String field;
 
   /**
    * Constructs an unnamed function.
@@ -98,7 +97,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
    */
   public String getElement()
   {
-    return getProperty(ELEMENT_PROPERTY);
+    return element;
   }
 
   /**
@@ -108,7 +107,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
    */
   public void setElement(final String name)
   {
-    setProperty(ELEMENT_PROPERTY, name);
+    this.element = name;
   }
 
   /**
@@ -120,7 +119,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
    */
   public String getField()
   {
-    return getProperty(FIELD_PROPERTY);
+    return field;
   }
 
   /**
@@ -132,11 +131,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
    */
   public void setField(final String field)
   {
-    if (field == null)
-    {
-      throw new NullPointerException();
-    }
-    setProperty(FIELD_PROPERTY, field);
+    this.field = field;
   }
 
   /**
@@ -159,7 +154,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
     }
     else
     {
-      visible = (ObjectUtils.equal(lastObject, fieldValue) == false);
+      visible = (ObjectUtilities.equal(lastObject, fieldValue) == false);
     }
     lastObject = fieldValue;
     final Element e = event.getReport().getItemBand().getElement(getElement());
@@ -168,6 +163,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
       e.setVisible(visible);
     }
   }
+
 
   /**
    * Resets the state of the function when a new ItemGroup has started.
@@ -195,6 +191,47 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
   }
 
   /**
+   * Receives notification that a page was canceled by the ReportProcessor. This method is
+   * called, when a page was removed from the report after it was generated.
+   *
+   * @param event The event.
+   */
+  public void pageCanceled (final ReportEvent event)
+  {
+  }
+
+  /**
+   * Receives notification that a page is completed.
+   *
+   * @param event The event.
+   */
+  public void pageFinished (final ReportEvent event)
+  {
+  }
+
+  /**
+   * Receives notification that a new page is being started.
+   *
+   * @param event The event.
+   */
+  public void pageStarted (final ReportEvent event)
+  {
+    final Object fieldValue = event.getDataRow().get(getField());
+
+    // is visible when last and current object are not equal
+    // first element in group is always visible
+    // after a page start, reset the function ...
+    visible = true;
+    firstInGroup = false;
+    lastObject = fieldValue;
+    final Element e = event.getReport().getItemBand().getElement(getElement());
+    if (e != null)
+    {
+      e.setVisible(visible);
+    }
+  }
+
+  /**
    * Initializes the function and tests that all required properties are set. If the required
    * field property or the element property are not set, a FunctionInitializeException is thrown.
    *
@@ -203,13 +240,12 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
   public void initialize()
       throws FunctionInitializeException
   {
-    final String fieldProp = getProperty(FIELD_PROPERTY);
-    if (fieldProp == null)
+    super.initialize();
+    if (field == null)
     {
       throw new FunctionInitializeException("No Such Property : field");
     }
-    final String elementProp = getProperty(ELEMENT_PROPERTY);
-    if (elementProp == null)
+    if (element == null)
     {
       throw new FunctionInitializeException("No Such Property : element");
     }

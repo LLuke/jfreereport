@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewApplet.java,v 1.7 2004/03/16 15:09:23 taqua Exp $
+ * $Id: PreviewApplet.java,v 1.6 2003/11/15 20:51:14 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,12 +39,12 @@
 package org.jfree.report.modules.gui.base;
 
 import java.awt.event.ActionEvent;
-import java.util.ResourceBundle;
 import javax.swing.Action;
 import javax.swing.JApplet;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * The preview applet implements the preview proxy interface for JApplets.
@@ -90,7 +90,7 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
   private PreviewProxyBase base;
 
   /** Localised resources. */
-  private ResourceBundle resources;
+  private ResourceBundleSupport resources;
 
   /**
    * DefaultConstructor.
@@ -213,11 +213,11 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
    *
    * @return this frames ResourceBundle.
    */
-  public ResourceBundle getResources()
+  public ResourceBundleSupport getResources()
   {
     if (resources == null)
     {
-      resources = ResourceBundle.getBundle(PreviewProxyBase.RESOURCES_BASE_NAME);
+      resources = new ResourceBundleSupport(PreviewBaseModule.RESOURCES_BASE_NAME);
     }
     return resources;
   }

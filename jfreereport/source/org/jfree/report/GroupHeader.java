@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: GroupHeader.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: GroupHeader.java,v 1.4.4.2 2004/10/11 21:00:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -43,6 +43,8 @@
 
 package org.jfree.report;
 
+import org.jfree.report.style.BandStyleSheet;
+
 
 /**
  * A report band that appears at the beginning of each instance of a group.
@@ -56,5 +58,25 @@ public class GroupHeader extends Band
    */
   public GroupHeader()
   {
+  }
+
+  /**
+   * Checks, whether this group header should be repeated on new pages.
+   *
+   * @return true, if the header will be repeated, false otherwise
+   */
+  public boolean isRepeat()
+  {
+    return getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER);
+  }
+
+  /**
+   * Defines, whether this group header should be repeated on new pages.
+   *
+   * @param repeat true, if the header will be repeated, false otherwise
+   */
+  public void setRepeat(final boolean repeat)
+  {
+    getStyle().setBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER, repeat);
   }
 }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * LGPLTextDemo.java
  * -------------------
- * (C)opyright 2002, by Object Refinery Limited.
+ * (C)opyright 2002, by Simba Management Limited.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: LGPLTextDemo.java,v 1.4 2003/11/07 18:33:48 taqua Exp $
+ * $Id: LGPLTextDemo.java,v 1.4.4.2 2004/10/11 21:00:34 taqua Exp $
  *
  * Changes
  * -------
@@ -38,28 +38,15 @@
 
 package org.jfree.report.demo;
 
-import java.awt.BorderLayout;
-import java.net.URL;
-import java.text.MessageFormat;
-import javax.swing.BorderFactory;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import java.io.IOException;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
-import org.jfree.report.Boot;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.ReportProcessingException;
-import org.jfree.report.demo.helper.AbstractDemoFrame;
-import org.jfree.report.modules.gui.base.PreviewDialog;
-import org.jfree.report.modules.gui.base.components.ActionMenuItem;
-import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
+import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.demo.helper.SimpleDemoFrame;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.xml.ElementDefinitionException;
 
 /**
  * A simple JFreeReport demonstration.  The generated report contains
@@ -67,120 +54,31 @@ import org.jfree.ui.RefineryUtilities;
  *
  * @author Thomas Morgner
  */
-public class LGPLTextDemo extends AbstractDemoFrame
+public class LGPLTextDemo extends SimpleDemoFrame
 {
 
   /**
    * Constructs the demo application.
-   *
-   * @param title  the frame title.
    */
-  public LGPLTextDemo(final String title)
+  public LGPLTextDemo()
   {
-    setTitle(title);
-    setJMenuBar(createMenuBar());
-    setContentPane(createContent());
+    init();
   }
 
-  /**
-   * Creates a menu bar.
-   *
-   * @return the menu bar.
-   */
-  private JMenuBar createMenuBar()
+  protected JFreeReport createReport ()
+          throws ElementDefinitionException, IOException
   {
-    final JMenuBar mb = new JMenuBar();
-    final JMenu fileMenu = createJMenuItem("menu.file");
-
-    final JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
-    final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
-
-    fileMenu.add(previewItem);
-    fileMenu.addSeparator();
-    fileMenu.add(exitItem);
-    mb.add(fileMenu);
-    return mb;
+    return loadReport("/org/jfree/report/demo/lgpl.xml");
   }
 
-  /**
-   * Creates the content for the application frame.
-   *
-   * @return a panel containing the basic user interface.
-   */
-  private JPanel createContent()
+  protected TableModel getData ()
   {
-    final JPanel content = new JPanel(new BorderLayout());
-    content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-    final JTable table = new JTable();
-    final JScrollPane scrollPane = new JScrollPane(table);
-    content.add(scrollPane);
-    return content;
+    return new DefaultTableModel();
   }
 
-  /**
-   * Displays a print preview screen for the sample report.
-   */
-  protected void attemptPreview()
+  protected String getResourcePrefix ()
   {
-    final URL in = getClass().getResource("/org/jfree/report/demo/lgpl.xml");
-    if (in == null)
-    {
-      JOptionPane.showMessageDialog(this,
-          MessageFormat.format(getResources().getString("report.definitionnotfound"),
-              new Object[]{in}),
-          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
-    }
-
-    final JFreeReport report;
-    try
-    {
-      report = parseReport(in);
-      report.setData(new DefaultTableModel());
-    }
-    catch (Exception ex)
-    {
-      showExceptionDialog("report.definitionfailure", ex);
-      return;
-    }
-
-    try
-    {
-      final PreviewDialog frame = new PreviewDialog(report);
-      frame.getBase().setToolbarFloatable(true);
-      frame.pack();
-      RefineryUtilities.positionFrameRandomly(frame);
-      frame.setVisible(true);
-      frame.requestFocus();
-    }
-    catch (ReportProcessingException pre)
-    {
-      showExceptionDialog("report.previewfailure", pre);
-    }
-  }
-
-  /**
-   * Reads the report from the specified template file.
-   *
-   * @param templateURL  the template location.
-   *
-   * @return a report.
-   */
-  private JFreeReport parseReport(final URL templateURL)
-  {
-
-    JFreeReport result = null;
-    final ReportGenerator generator = ReportGenerator.getInstance();
-    try
-    {
-      result = generator.parseReport(templateURL);
-    }
-    catch (Exception e)
-    {
-      Log.error("Failed to parses", e);
-
-    }
-    return result;
-
+    return "demo.lgpl";
   }
 
   /**
@@ -191,9 +89,9 @@ public class LGPLTextDemo extends AbstractDemoFrame
   public static void main(final String[] args)
   {
     // initialize JFreeReport
-    Boot.start();
+    JFreeReportBoot.getInstance().start();
 
-    final LGPLTextDemo frame = new LGPLTextDemo("LGPL text Demo");
+    final LGPLTextDemo frame = new LGPLTextDemo();
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);

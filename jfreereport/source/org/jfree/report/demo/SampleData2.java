@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------
  * SampleData2.java
  * ----------------
- * (C)opyright 2000-2002, by Object Refinery Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData2.java,v 1.6 2003/11/25 17:27:59 taqua Exp $
+ * $Id: SampleData2.java,v 1.6.4.1 2004/10/11 21:00:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,11 +51,24 @@ public class SampleData2 extends AbstractTableModel
   /** Storage for the data. */
   private final Object[][] data;
 
+  private int size;
+
+  public SampleData2 ()
+  {
+    this (120);
+  }
+
   /**
    * Default constructor - builds a sample data source.
    */
-  public SampleData2()
+  public SampleData2(final int size)
   {
+    if (size > 120 || size < 0)
+    {
+      throw new IndexOutOfBoundsException("Size is invalid.");
+    }
+    this.size = size;
+
     data = new Object[120][5];
     data[0] = new Object[]{"One", "Red", "A", new Integer(1), new Double(1.1)};
     data[1] = new Object[]{"Two", "Red", "A", new Integer(2), new Double(2.2)};
@@ -206,7 +219,7 @@ public class SampleData2 extends AbstractTableModel
    */
   public int getRowCount()
   {
-    return 120;
+    return size;
   }
 
   /**

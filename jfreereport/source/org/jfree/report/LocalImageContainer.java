@@ -28,23 +28,23 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LocalImageContainer.java,v 1.1 2004/03/16 15:34:26 taqua Exp $
+ * $Id: LocalImageContainer.java,v 1.2 2004/05/07 07:43:53 mungady Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 09.03.2004 : Initial version
- *  
+ *
  */
 
 package org.jfree.report;
 
 import java.awt.Image;
 
-public interface LocalImageContainer
+public interface LocalImageContainer extends ImageContainer
 {
   public Image getImage();
   public String getName();
-  
+
   /**
    * Checks, whether this image has a assigned identity.
    * Two identities should be equal, if the image

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemAvgFunction.java,v 1.3 2003/08/28 19:36:30 taqua Exp $
+ * $Id: ItemAvgFunction.java,v 1.3.4.2 2004/12/30 14:46:11 taqua Exp $
  *
  * Changes
  * -------
@@ -66,12 +66,6 @@ import org.jfree.report.util.Log;
  */
 public class ItemAvgFunction extends AbstractFunction implements Serializable
 {
-  /** Literal text for the 'group' property. */
-  public static final String GROUP_PROPERTY = "group";
-
-  /** Literal text for the 'field' property. */
-  public static final String FIELD_PROPERTY = "field";
-
   /** Useful constant for zero. */
   private static final BigDecimal ZERO = new BigDecimal(0.0);
 
@@ -79,10 +73,13 @@ public class ItemAvgFunction extends AbstractFunction implements Serializable
   private static final BigDecimal ONE = new BigDecimal(1.0);
 
   /** The item sum. */
-  private BigDecimal sum;
+  private transient BigDecimal sum;
 
   /** The item count. */
-  private BigDecimal itemCount;
+  private transient BigDecimal itemCount;
+
+  private String group;
+  private String field;
 
   /**
    * Constructs an unnamed function. Make sure to set a Name or function initialisation
@@ -150,7 +147,7 @@ public class ItemAvgFunction extends AbstractFunction implements Serializable
    */
   public String getGroup()
   {
-    return getProperty(GROUP_PROPERTY);
+    return group;
   }
 
   /**
@@ -163,7 +160,7 @@ public class ItemAvgFunction extends AbstractFunction implements Serializable
    */
   public void setGroup(final String name)
   {
-    setProperty(GROUP_PROPERTY, name);
+    this.group = name;
   }
 
   /**
@@ -175,7 +172,7 @@ public class ItemAvgFunction extends AbstractFunction implements Serializable
    */
   public String getField()
   {
-    return getProperty(FIELD_PROPERTY);
+    return field;
   }
 
   /**
@@ -192,7 +189,7 @@ public class ItemAvgFunction extends AbstractFunction implements Serializable
       throw new NullPointerException();
     }
 
-    setProperty(FIELD_PROPERTY, field);
+    this.field = field;
   }
 
   /**
@@ -228,22 +225,13 @@ public class ItemAvgFunction extends AbstractFunction implements Serializable
    */
   public Object getValue()
   {
-    return sum.divide(itemCount, BigDecimal.ROUND_HALF_DOWN);
-  }
-
-  /**
-   * Initializes the function and tests that all required properties are set. If the required
-   * field property is not set, a FunctionInitializeException is thrown.
-   *
-   * @throws FunctionInitializeException when no field is set.
-   */
-  public void initialize()
-      throws FunctionInitializeException
-  {
-    final String fieldProp = getProperty(FIELD_PROPERTY);
-    if (fieldProp == null)
+    if (itemCount.longValue() == 0)
     {
-      throw new FunctionInitializeException("No Such Property : field");
+      return null;
+    }
+    else
+    {
+      return sum.divide(itemCount, BigDecimal.ROUND_HALF_DOWN);
     }
   }
 

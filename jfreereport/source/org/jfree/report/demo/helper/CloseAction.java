@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------
  * CloseAction.java
  * ----------------
- * (C)opyright 2002, by Object Refinery Limited.
+ * (C)opyright 2002, by Simba Management Limited.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.5 2004/03/16 15:09:22 taqua Exp $
+ * $Id: CloseAction.java,v 1.4 2003/08/31 19:27:56 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,10 @@
 
 package org.jfree.report.demo.helper;
 
-import java.util.ResourceBundle;
-
-import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
-import org.jfree.report.modules.gui.base.components.ActionDowngrade;
-import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 import org.jfree.report.util.ImageUtils;
+import org.jfree.util.ResourceBundleSupport;
+import org.jfree.ui.action.AbstractActionDowngrade;
+import org.jfree.ui.action.ActionDowngrade;
 
 /**
  * An action for closing the demo programms frame.
@@ -60,12 +58,12 @@ public abstract class CloseAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  protected CloseAction(final ResourceBundle resources)
+  protected CloseAction(final ResourceBundleSupport resources)
   {
     this.putValue(NAME, resources.getString("action.close.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.close.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
-        ResourceBundleUtils.createMnemonic(resources.getString("action.close.mnemonic")));
+        resources.getMnemonic("action.close.mnemonic"));
     this.putValue(SMALL_ICON, ImageUtils.createTransparentIcon(16, 16));
     this.putValue("ICON24", ImageUtils.createTransparentIcon(24, 24));
   }

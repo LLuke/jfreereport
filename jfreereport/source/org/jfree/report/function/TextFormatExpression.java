@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------------
  * TextFormatExpression.java
  * -------------------------
- * (C)opyright 2002, by Object Refinery Limited and Contributors.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextFormatExpression.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.2.4.1 2004/12/30 14:46:12 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,7 @@ package org.jfree.report.function;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.jfree.report.util.PropertiesIterator;
+import java.util.Arrays;
 
 /**
  * A TextFormatExpression uses a java.text.MessageFormat to concat and format one or more values
@@ -69,18 +67,16 @@ import org.jfree.report.util.PropertiesIterator;
  */
 public class TextFormatExpression extends AbstractExpression implements Serializable
 {
-  /** The property key for the pattern property. */
-  public static final String PATTERN_PROPERTY = "pattern";
-
   /** An ordered list containing the fieldnames used in the expression. */
-  private ArrayList fieldList;
+  private ArrayList fields;
+  private String pattern;
 
   /**
    * Default constructor, creates a new unnamed TextFormatExpression.
    */
   public TextFormatExpression()
   {
-    fieldList = new ArrayList();
+    fields = new ArrayList();
   }
 
   /**
@@ -91,7 +87,7 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
    */
   public Object getValue()
   {
-    return MessageFormat.format(getPattern(), collectValues());
+    return MessageFormat.format(getPattern(), getFieldValues());
   }
 
   /**
@@ -99,31 +95,15 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
    *
    * @return an Objectarray containing all defined values from the datarow
    */
-  private Object[] collectValues()
+  protected Object[] getFieldValues()
   {
-    final Object[] retval = new Object[fieldList.size()];
-    for (int i = 0; i < fieldList.size(); i++)
+    final Object[] retval = new Object[fields.size()];
+    for (int i = 0; i < fields.size(); i++)
     {
-      final String field = (String) fieldList.get(i);
+      final String field = (String) fields.get(i);
       retval[i] = getDataRow().get(field);
     }
     return retval;
-  }
-
-  /**
-   * Initializes the expression and creates the fieldlist.
-   *
-   * @throws FunctionInitializeException if the expression has no name set
-   */
-  public void initialize() throws FunctionInitializeException
-  {
-    super.initialize();
-    fieldList.clear();
-    final Iterator textFormatIterator = new PropertiesIterator(getProperties());
-    while (textFormatIterator.hasNext())
-    {
-      fieldList.add(textFormatIterator.next());
-    }
   }
 
   /**
@@ -133,7 +113,7 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
    */
   public String getPattern()
   {
-    return getProperty(PATTERN_PROPERTY);
+    return pattern;
   }
 
   /**
@@ -145,7 +125,7 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
    */
   public void setPattern(final String pattern)
   {
-    setProperty(PATTERN_PROPERTY, pattern);
+    this.pattern = pattern;
   }
 
   /**
@@ -158,7 +138,40 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
   public Object clone() throws CloneNotSupportedException
   {
     final TextFormatExpression tex = (TextFormatExpression) super.clone();
-    tex.fieldList = new ArrayList(fieldList);
+    tex.fields = new ArrayList(fields);
     return tex;
+  }
+
+  public void setField (final int index, final String field)
+  {
+    if (fields.size() == index)
+    {
+      fields.add(field);
+    }
+    else
+    {
+      fields.set (index, field);
+    }
+  }
+
+  public String getField (final int index)
+  {
+    return (String) fields.get(index);
+  }
+
+  public int getFieldCount()
+  {
+    return fields.size();
+  }
+
+  public String[] getField()
+  {
+    return (String[]) fields.toArray(new String[fields.size()]);
+  }
+
+  public void setField(final String[] fields)
+  {
+    this.fields.clear();
+    this.fields.addAll(Arrays.asList(fields));
   }
 }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.11 2004/03/16 15:09:23 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.8.4.3 2005/01/19 21:52:03 taqua Exp $
  *
  * Changes
  * -------
@@ -95,24 +95,8 @@ public final class LevelledExpressionList implements ReportListener,
    * Creates a new list.
    *
    * @param ec  the expressions from the report definition.
-   * @param fc  the functions from the report definition.
-   * @deprecated use the single parameter call instead.
-   * @throws FunctionInitializeException if one of the functions
-   * could not be initialized
    */
-  public LevelledExpressionList(final ExpressionCollection ec, final ExpressionCollection fc)
-    throws FunctionInitializeException
-  {
-    this();
-    if (ec != fc)
-    {
-      throw new UnsupportedOperationException("Only one unified expression list is expected.");
-    }
-    initialize(ec);
-  }
-
   public LevelledExpressionList(final ExpressionCollection ec)
-      throws FunctionInitializeException
   {
     this();
     initialize(ec);
@@ -744,6 +728,46 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
   /**
+   * Receives notification that the band output has completed.
+   * <P>
+   * The event carries the current report state.
+   *
+   * @param event The event.
+   */
+  public void outputComplete(final LayoutEvent event)
+  {
+    // this is an internal event, no need to handle prepare outside ..
+    // clearError();
+    firePrepareEventLayoutListener(event);
+
+    for (int i = 0; i < levels.length; i++)
+    {
+      final int level = levels[i];
+      if (level < getLevel())
+      {
+        break;
+      }
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
+      {
+        final Expression e = (Expression) itLevel[l];
+        if (e instanceof LayoutListener && e instanceof Function)
+        {
+          final LayoutListener f = (LayoutListener) e;
+          try
+          {
+            f.outputComplete(event);
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
+          }
+        }
+      }
+    }
+  }
+
+  /**
    * Receives notification that report generation has completed, the report footer was printed,
    * no more output is done. This is a helper event to shut down the output service.
    *
@@ -851,14 +875,12 @@ public final class LevelledExpressionList implements ReportListener,
    * Initialises the expressions.
    *
    * @param expressionCollection  the expression collection.
-   * @throws FunctionInitializeException if one of the functions could not be initialized.
    */
   private void initialize(final ExpressionCollection expressionCollection)
-    throws FunctionInitializeException
   {
     final LevelList expressionList = new LevelList();
 
-    int size = expressionCollection.size();
+    final int size = expressionCollection.size();
     for (int i = 0; i < size; i++)
     {
       Expression f = expressionCollection.getExpression(i);
@@ -867,7 +889,6 @@ public final class LevelledExpressionList implements ReportListener,
         f = f.getInstance();
         expressionList.add(f);
         expressionList.setLevel(f, f.getDependencyLevel());
-        f.initialize();
       }
     }
     initializeFromLevelList(expressionList);

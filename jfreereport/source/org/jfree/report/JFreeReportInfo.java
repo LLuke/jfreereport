@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.15 2004/03/16 15:21:03 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.16 2004/12/30 14:50:38 taqua Exp $
  *
  * Changes:
  * --------
@@ -47,8 +47,8 @@ import java.util.Arrays;
 import org.jfree.JCommon;
 import org.jfree.base.Library;
 import org.jfree.ui.about.Contributor;
-import org.jfree.ui.about.ProjectInfo;
 import org.jfree.ui.about.Licences;
+import org.jfree.ui.about.ProjectInfo;
 
 /**
  * Details about the JFreeReport project.

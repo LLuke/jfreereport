@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.6 2003/11/07 18:33:48 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.6.4.2 2004/12/30 14:46:11 taqua Exp $
  *
  * Changes
  * -------
@@ -48,12 +48,11 @@ import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.SerializerHelper;
-import org.jfree.xml.factory.objects.ColorObjectDescription;
 
 /**
  * A function that alternates between true and false for each item within a group. The functions
  * value affects a defined elements color. If the function evaluates to true, the named
- * element is painted with the elementColorTrue, else the element is painted with elementColorFalse.
+ * element is painted with the colorTrue, else the element is painted with colorFalse.
  * <p>
  * Use the property <code>element</code> to name an element contained in the ItemBand whose
  * color should be affected by this function. All colors have the color 'black' by default.
@@ -63,39 +62,18 @@ import org.jfree.xml.factory.objects.ColorObjectDescription;
 public class ElementColorFunction extends AbstractFunction
     implements Serializable, PageEventListener
 {
-  /** the Property key for the name of the ItemBand element. */
-  public static final String ELEMENT_PROPERTY = "element";
-
-  /** Literal text for the 'field' property. */
-  public static final String FIELD_PROPERTY = "field";
-
   /** the color if the field is TRUE. */
-  private transient Color elementColorTrue;
+  private transient Color colorTrue;
+  private transient Color colorFalse;
 
-  /** the color if the field is FALSE. */
-  private transient Color elementColorFalse;
-
-  /** The color object descripion. */
-  private transient ColorObjectDescription cod;
-  /** The default parameter name for the color object description. */
-  private static final String VALUE_PARAMETER = "value";
-  /** 
-   * The property name for the color that should be used when the defined 
-   * field evaluates to true.
-   */
-  public static final String COLOR_TRUE_PROPERTY = "colorTrue";
-  /** 
-   * The property name for the color that should be used when the defined 
-   * field evaluates to false.
-   */
-  public static final String COLOR_FALSE_PROPERTY = "colorFalse";
+  private String element;
+  private String field;
 
   /**
    * Default constructor.
    */
   public ElementColorFunction()
   {
-    cod = new ColorObjectDescription();
   }
 
   /**
@@ -107,7 +85,7 @@ public class ElementColorFunction extends AbstractFunction
    */
   public void setElement(final String name)
   {
-    setProperty(ELEMENT_PROPERTY, name);
+    this.element = name;
   }
 
   /**
@@ -117,7 +95,7 @@ public class ElementColorFunction extends AbstractFunction
    */
   public String getElement()
   {
-    return getProperty(ELEMENT_PROPERTY, "");
+    return element;
   }
 
   /**
@@ -129,7 +107,7 @@ public class ElementColorFunction extends AbstractFunction
    */
   public String getField()
   {
-    return getProperty(FIELD_PROPERTY);
+    return field;
   }
 
   /**
@@ -145,76 +123,27 @@ public class ElementColorFunction extends AbstractFunction
     {
       throw new NullPointerException();
     }
-    setProperty(FIELD_PROPERTY, field);
-  }
-
-  /**
-   * Checks that the function has been correctly initialized.
-   * <p>
-   * The only check performed at present is to make sure the name is not <code>null</code>.
-   *
-   * @throws FunctionInitializeException in case the function is not initialized properly.
-   */
-  public void initialize() throws FunctionInitializeException
-  {
-    super.initialize();
-    try
-    {
-      cod.setParameter(VALUE_PARAMETER, getProperty(COLOR_TRUE_PROPERTY, "black"));
-      elementColorTrue = (Color) cod.createObject();
-      cod.setParameter(VALUE_PARAMETER, getProperty(COLOR_FALSE_PROPERTY, "black"));
-      elementColorFalse = (Color) cod.createObject();
-    }
-    catch (Exception e)
-    {
-      throw new FunctionInitializeException("Failed to parse colors", e);
-    }
+    this.field = field;
   }
 
   /**
    * Sets the color for true values.
    *
-   * @param elementColorTrue  the color.
+   * @param colorTrue  the color.
    */
-  public void setElementColorTrue(final Color elementColorTrue)
+  public void setColorTrue(final Color colorTrue)
   {
-    if (elementColorTrue == null)
-    {
-      throw new NullPointerException();
-    }
-    try
-    {
-      cod.setParameterFromObject(elementColorTrue);
-      setProperty(COLOR_TRUE_PROPERTY, (String) cod.getParameter(VALUE_PARAMETER));
-    }
-    catch (Exception e)
-    {
-      // ignore me, should never happen...
-    }
-    this.elementColorTrue = elementColorTrue;
+    this.colorTrue = colorTrue;
   }
 
   /**
    * Sets the color for false values.
    *
-   * @param elementColorFalse  the color.
+   * @param colorFalse  the color.
    */
-  public void setElementColorFalse(final Color elementColorFalse)
+  public void setColorFalse(final Color colorFalse)
   {
-    if (elementColorFalse == null)
-    {
-      throw new NullPointerException();
-    }
-    try
-    {
-      cod.setParameterFromObject(elementColorTrue);
-      setProperty(COLOR_FALSE_PROPERTY, (String) cod.getParameter(VALUE_PARAMETER));
-    }
-    catch (Exception e)
-    {
-      // ignore me, should never happen...
-    }
-    this.elementColorFalse = elementColorFalse;
+    this.colorFalse = colorFalse;
   }
 
   /**
@@ -222,9 +151,9 @@ public class ElementColorFunction extends AbstractFunction
    *
    * @return A color.
    */
-  public Color getElementColorTrue()
+  public Color getColorTrue()
   {
-    return elementColorTrue;
+    return colorTrue;
   }
 
   /**
@@ -232,9 +161,9 @@ public class ElementColorFunction extends AbstractFunction
    *
    * @return A color.
    */
-  public Color getElementColorFalse()
+  public Color getColorFalse()
   {
-    return elementColorFalse;
+    return colorFalse;
   }
 
   /**
@@ -388,11 +317,11 @@ public class ElementColorFunction extends AbstractFunction
     }
     if (value)
     {
-      e.getStyle().setStyleProperty(ElementStyleSheet.PAINT, elementColorTrue);
+      e.getStyle().setStyleProperty(ElementStyleSheet.PAINT, colorTrue);
     }
     else
     {
-      e.getStyle().setStyleProperty(ElementStyleSheet.PAINT, elementColorFalse);
+      e.getStyle().setStyleProperty(ElementStyleSheet.PAINT, colorFalse);
     }
   }
 
@@ -419,8 +348,8 @@ public class ElementColorFunction extends AbstractFunction
       throws IOException
   {
     out.defaultWriteObject();
-    SerializerHelper.getInstance().writeObject(elementColorFalse, out);
-    SerializerHelper.getInstance().writeObject(elementColorTrue, out);
+    SerializerHelper.getInstance().writeObject(colorFalse, out);
+    SerializerHelper.getInstance().writeObject(colorTrue, out);
   }
 
   /**
@@ -435,8 +364,9 @@ public class ElementColorFunction extends AbstractFunction
       throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
-    elementColorFalse = (Color) SerializerHelper.getInstance().readObject(in);
-    elementColorTrue = (Color) SerializerHelper.getInstance().readObject(in);
-    cod = new ColorObjectDescription();
+    colorFalse = (Color) SerializerHelper.getInstance().readObject(in);
+    colorTrue = (Color) SerializerHelper.getInstance().readObject(in);
   }
+
+  
 }

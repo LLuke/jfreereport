@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemPercentageFunction.java,v 1.3 2003/08/28 19:36:30 taqua Exp $
+ * $Id: ItemPercentageFunction.java,v 1.3.4.1 2004/12/30 14:46:11 taqua Exp $
  *
  * Changes
  * -------
@@ -56,20 +56,17 @@ import org.jfree.report.util.Log;
  */
 public class ItemPercentageFunction extends AbstractFunction implements Serializable
 {
-  /** Literal text for the 'group' property. */
-  public static final String GROUP_PROPERTY = "group";
-
-  /** Literal text for the 'field' property. */
-  public static final String FIELD_PROPERTY = "field";
-
   /** A total group sum function. */
   private TotalGroupSumFunction totalSumFunction;
 
   /** The current value. */
-  private BigDecimal currentValue;
+  private transient BigDecimal currentValue;
 
   /** A useful constant representing zero. */
   private static final BigDecimal ZERO = new BigDecimal(0.0);
+
+  private String group;
+  private String field;
 
   /**
    * Creates a new ItemPercentageFunction.
@@ -178,23 +175,27 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
   }
 
   /**
-   * Returns the name of the group to be counted.  This is stored in the 'group' property.
+   * Returns the group name.
    *
-   * @return  the group name.
+   * @return The group name.
    */
   public String getGroup()
   {
-    return getProperty(GROUP_PROPERTY);
+    return group;
   }
 
   /**
-   * Defines the name of the group to be counted (if the name is null, all groups are counted).
+   * Sets the group name.
+   * <P>
+   * If a group is defined, the minimum value is reset to zero at the start of every instance of
+   * this group.
    *
-   * @param group  the name of the group (null permitted).
+   * @param name  the group name (null permitted).
    */
-  public void setGroup(final String group)
+  public void setGroup(final String name)
   {
-    setProperty(GROUP_PROPERTY, group);
+    this.group = name;
+    this.totalSumFunction.setGroup(group);
   }
 
   /**
@@ -206,7 +207,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
    */
   public String getField()
   {
-    return getProperty(FIELD_PROPERTY);
+    return field;
   }
 
   /**
@@ -218,23 +219,8 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
    */
   public void setField(final String field)
   {
-    if (field == null)
-    {
-      throw new NullPointerException();
-    }
-    setProperty(FIELD_PROPERTY, field);
-  }
-
-  /**
-   * Sets a property for the function.
-   *
-   * @param name The property name.
-   * @param value The property value.
-   */
-  public void setProperty(final String name, final String value)
-  {
-    super.setProperty(name, value);
-    totalSumFunction.setProperty(name, value);
+    this.field = field;
+    this.totalSumFunction.setField(field);
   }
 
   /**

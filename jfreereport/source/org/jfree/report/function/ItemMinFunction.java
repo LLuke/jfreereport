@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemMinFunction.java,v 1.3 2003/08/28 19:36:30 taqua Exp $
+ * $Id: ItemMinFunction.java,v 1.3.4.2 2004/12/30 14:46:11 taqua Exp $
  *
  * Changes
  * -------
@@ -71,20 +71,10 @@ import org.jfree.report.util.Log;
  */
 public class ItemMinFunction extends AbstractFunction implements Serializable
 {
-  /** Literal text for the 'group' property. */
-  public static final String GROUP_PROPERTY = "group";
-
-  /** Literal text for the 'field' property. */
-  public static final String FIELD_PROPERTY = "field";
-
-  /** Zero. */
-  private static final BigDecimal ZERO = new BigDecimal(0.0);
-
-  /** Max. */
-  private static final BigDecimal MAX = new BigDecimal(Double.MAX_VALUE);
-
   /** The minimum value. */
-  private BigDecimal min;
+  private transient BigDecimal min;
+  private String group;
+  private String field;
 
   /**
    * Constructs an unnamed function. Make sure to set a Name or function initialisation
@@ -92,7 +82,7 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
    */
   public ItemMinFunction()
   {
-    min = MAX;
+    min = null;
   }
 
   /**
@@ -118,7 +108,7 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
    */
   public void reportInitialized(final ReportEvent event)
   {
-    this.min = ZERO;
+    this.min = null;
   }
 
   /**
@@ -138,7 +128,7 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
     final Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
     if (getGroup().equals(group.getName()))
     {
-      this.min = ZERO;
+      this.min = null;
     }
   }
 
@@ -149,7 +139,7 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
    */
   public String getGroup()
   {
-    return getProperty(GROUP_PROPERTY);
+    return group;
   }
 
   /**
@@ -162,7 +152,7 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
    */
   public void setGroup(final String name)
   {
-    setProperty(GROUP_PROPERTY, name);
+    this.group = name;
   }
 
   /**
@@ -174,7 +164,7 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
    */
   public String getField()
   {
-    return getProperty(FIELD_PROPERTY);
+    return field;
   }
 
   /**
@@ -186,11 +176,7 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
    */
   public void setField(final String field)
   {
-    if (field == null)
-    {
-      throw new NullPointerException();
-    }
-    setProperty(FIELD_PROPERTY, field);
+    this.field = field;
   }
 
   /**
@@ -206,7 +192,11 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
     try
     {
       final BigDecimal compare = new BigDecimal(n.doubleValue());
-      if (min.compareTo(compare) > 0)
+      if (min == null)
+      {
+        min = compare;
+      }
+      else if (min.compareTo(compare) > 0)
       {
         min = compare;
       }
@@ -237,13 +227,10 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
   public void initialize()
       throws FunctionInitializeException
   {
-    final String fieldProp = getProperty(FIELD_PROPERTY);
-    if (fieldProp == null)
+    if (field == null)
     {
       throw new FunctionInitializeException("No Such Property : field");
     }
-    setField(fieldProp);
-    setGroup(getProperty(GROUP_PROPERTY));
   }
 
 
@@ -256,7 +243,7 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
   public Expression getInstance()
   {
     final ItemMinFunction function = (ItemMinFunction) super.getInstance();
-    function.min = MAX;
+    function.min = null;
     return function;
   }
 

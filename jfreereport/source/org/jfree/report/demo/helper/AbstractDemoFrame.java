@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDemoFrame.java,v 1.5 2004/03/27 17:23:19 taqua Exp $
+ * $Id: AbstractDemoFrame.java,v 1.3.4.2 2004/10/13 18:42:15 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,7 +42,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -50,7 +49,8 @@ import javax.swing.JOptionPane;
 
 import org.jfree.report.demo.PreviewAction;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
-import org.jfree.report.modules.gui.base.ResourceBundleUtils;
+import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * The AbstractDemoFrame provides some basic functionality shared among all demos.
@@ -90,6 +90,10 @@ public abstract class AbstractDemoFrame extends JFrame
    */
   protected class CloseHandler extends WindowAdapter
   {
+    public CloseHandler ()
+    {
+    }
+
     /**
      * Handles the window closing event.
      *
@@ -127,10 +131,10 @@ public abstract class AbstractDemoFrame extends JFrame
 
   /** The base resource class. */
   public static final String RESOURCE_BASE =
-      "org.jfree.report.demo.resources.demo-resources";
+          "org.jfree.report.demo.resources.demo-resources";
 
   /** Localised resources. */
-  private final ResourceBundle resources;
+  private final ResourceBundleSupport resources;
 
   /** The close action is called when closing the frame. */
   private final Action closeAction;
@@ -146,7 +150,7 @@ public abstract class AbstractDemoFrame extends JFrame
    */
   public AbstractDemoFrame()
   {
-    resources = ResourceBundle.getBundle(RESOURCE_BASE);
+    resources = new ResourceBundleSupport(RESOURCE_BASE);
     previewAction = new DemoPreviewAction();
     closeAction = new DemoCloseAction();
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -158,7 +162,7 @@ public abstract class AbstractDemoFrame extends JFrame
    *
    * @return the resource bundle for the localization.
    */
-  public ResourceBundle getResources()
+  public ResourceBundleSupport getResources()
   {
     return resources;
   }
@@ -199,8 +203,16 @@ public abstract class AbstractDemoFrame extends JFrame
             JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
     if (close)
     {
-      dispose();
-      System.exit(0);
+      if (ReportConfiguration.getGlobalConfig().getConfigProperty
+              ("org.jfree.report.demo.Embedded", "false").equals("false"))
+      {
+        System.exit(0);
+      }
+      else
+      {
+        setVisible(false);
+        dispose();
+      }
     }
 
     return close;
@@ -219,11 +231,10 @@ public abstract class AbstractDemoFrame extends JFrame
    *
    * @return the menu.
    */
-  protected JMenu createJMenuItem(final String base)
+  protected JMenu createJMenu(final String base)
   {
     final String label = getResources().getString(base + ".name");
-    final Integer mnemonic = ResourceBundleUtils.createMnemonic
-        (resources.getString(base + ".mnemonic"));
+    final Integer mnemonic = getResources().getMnemonic(base + ".mnemonic");
 
     final JMenu menu = new JMenu(label);
     if (mnemonic != null)

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------
  * CloseAction.java
  * ----------------
- * (C)opyright 2002, by Object Refinery Limited and Contributors.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: CloseAction.java,v 1.6 2004/04/19 17:03:21 taqua Exp $
+ * $Id: CloseAction.java,v 1.4.4.1 2004/02/03 15:14:49 taqua Exp $
  *
  * Changes
  * -------
@@ -44,10 +44,9 @@
 
 package org.jfree.report.modules.gui.base;
 
-import java.util.ResourceBundle;
-
-import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
-import org.jfree.report.modules.gui.base.components.ActionDowngrade;
+import org.jfree.ui.action.AbstractActionDowngrade;
+import org.jfree.ui.action.ActionDowngrade;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * An action for closing the print preview frame.
@@ -61,17 +60,15 @@ public abstract class CloseAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  protected CloseAction(final ResourceBundle resources)
+  protected CloseAction(final ResourceBundleSupport resources)
   {
     this.putValue(NAME, resources.getString("action.close.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.close.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
-        ResourceBundleUtils.createMnemonic(resources.getString("action.close.mnemonic")));
+        resources.getMnemonic("action.close.mnemonic"));
     this.putValue(ActionDowngrade.ACCELERATOR_KEY,
-        ResourceBundleUtils.createMenuKeystroke(resources.getString("action.close.accelerator")));
-    putValue(SMALL_ICON,
-        ResourceBundleUtils.getIcon(resources.getString("action.close.small-icon")));
-    putValue("ICON24",
-        ResourceBundleUtils.getIcon(resources.getString("action.close.icon")));
+        resources.getKeyStroke("action.close.accelerator"));
+    this.putValue(SMALL_ICON, resources.getIcon("action.close.small-icon", false));
+    this.putValue("ICON24", resources.getIcon("action.close.icon", true));
   }
 }

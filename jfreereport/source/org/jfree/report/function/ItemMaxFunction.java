@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemMaxFunction.java,v 1.3 2003/08/28 19:36:30 taqua Exp $
+ * $Id: ItemMaxFunction.java,v 1.3.4.2 2004/12/30 14:46:11 taqua Exp $
  *
  * Changes
  * -------
@@ -66,17 +66,10 @@ import org.jfree.report.util.Log;
  */
 public class ItemMaxFunction extends AbstractFunction implements Serializable
 {
-  /** Literal text for the 'group' property. */
-  public static final String GROUP_PROPERTY = "group";
-
-  /** Literal text for the 'field' property. */
-  public static final String FIELD_PROPERTY = "field";
-
-  /** A useful constant for zero. */
-  private static final BigDecimal ZERO = new BigDecimal(0.0);
-
+  private String group;
+  private String field;
   /** The maximum value. */
-  private BigDecimal max;
+  private transient BigDecimal max;
 
   /**
    * Constructs an unnamed function. Make sure to set a Name or function initialisation
@@ -84,7 +77,7 @@ public class ItemMaxFunction extends AbstractFunction implements Serializable
    */
   public ItemMaxFunction()
   {
-    max = ZERO;
+    max = null;
   }
 
   /**
@@ -110,7 +103,7 @@ public class ItemMaxFunction extends AbstractFunction implements Serializable
    */
   public void reportInitialized(final ReportEvent event)
   {
-    this.max = ZERO;
+    this.max = null;
   }
 
   /**
@@ -130,7 +123,7 @@ public class ItemMaxFunction extends AbstractFunction implements Serializable
     final Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
     if (getGroup().equals(group.getName()))
     {
-      this.max = ZERO;
+      this.max = null;
     }
   }
 
@@ -141,7 +134,7 @@ public class ItemMaxFunction extends AbstractFunction implements Serializable
    */
   public String getGroup()
   {
-    return getProperty(GROUP_PROPERTY);
+    return group;
   }
 
   /**
@@ -154,7 +147,7 @@ public class ItemMaxFunction extends AbstractFunction implements Serializable
    */
   public void setGroup(final String name)
   {
-    setProperty(GROUP_PROPERTY, name);
+    this.group = name;
   }
 
   /**
@@ -166,7 +159,7 @@ public class ItemMaxFunction extends AbstractFunction implements Serializable
    */
   public String getField()
   {
-    return getProperty(FIELD_PROPERTY);
+    return field;
   }
 
   /**
@@ -178,11 +171,7 @@ public class ItemMaxFunction extends AbstractFunction implements Serializable
    */
   public void setField(final String field)
   {
-    if (field == null)
-    {
-      throw new NullPointerException();
-    }
-    setProperty(FIELD_PROPERTY, field);
+    this.field = field;
   }
 
   /**
@@ -199,7 +188,11 @@ public class ItemMaxFunction extends AbstractFunction implements Serializable
     try
     {
       final BigDecimal compare = new BigDecimal(n.doubleValue());
-      if (max.compareTo(compare) < 0)
+      if (max == null)
+      {
+        max = compare;
+      }
+      else if (max.compareTo(compare) < 0)
       {
         max = compare;
       }
@@ -230,13 +223,11 @@ public class ItemMaxFunction extends AbstractFunction implements Serializable
   public void initialize()
       throws FunctionInitializeException
   {
-    final String fieldProp = getProperty(FIELD_PROPERTY);
-    if (fieldProp == null)
+    super.initialize();
+    if (field == null)
     {
       throw new FunctionInitializeException("No Such Property : field");
     }
-    setField(fieldProp);
-    setGroup(getProperty(GROUP_PROPERTY));
   }
 
   /**
@@ -248,7 +239,7 @@ public class ItemMaxFunction extends AbstractFunction implements Serializable
   public Expression getInstance()
   {
     final ItemMaxFunction function = (ItemMaxFunction) super.getInstance();
-    function.max = ZERO;
+    function.max = null;
     return function;
   }
 

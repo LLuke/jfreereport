@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * SwingIconsDemo.java
  * -------------------
- * (C)opyright 2002, 2003, by Object Refinery Limited and Contributors.
+ * (C)opyright 2002, 2003, by Simba Management Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.4 2003/11/07 18:33:48 taqua Exp $
+ * $Id: SwingIconsDemo.java,v 1.4.4.1 2004/04/06 13:56:13 taqua Exp $
  *
  * Changes
  * -------
@@ -54,17 +54,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
-import org.jfree.report.Boot;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.demo.helper.ImageCellRenderer;
 import org.jfree.report.modules.gui.base.PreviewFrame;
-import org.jfree.report.modules.gui.base.components.ActionMenuItem;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.xml.ElementDefinitionException;
 
 /**
@@ -102,7 +102,7 @@ public class SwingIconsDemo extends AbstractDemoFrame
   public JMenuBar createMenuBar()
   {
     final JMenuBar mb = new JMenuBar();
-    final JMenu fileMenu = createJMenuItem("menu.file");
+    final JMenu fileMenu = createJMenu("menu.file");
 
     final JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
     final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
@@ -211,7 +211,7 @@ public class SwingIconsDemo extends AbstractDemoFrame
   public static void main(final String[] args)
   {
     // initialize JFreeReport
-    Boot.start();
+    JFreeReportBoot.getInstance().start();
 
     ReportConfiguration.getGlobalConfig().setLogLevel("Error");
     // update the log system to use the new settings ...

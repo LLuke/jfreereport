@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * NextPageAction.java
  * -------------------
- * (C)opyright 2002, by Object Refinery Limited and Contributors.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: NextPageAction.java,v 1.3 2004/03/16 15:09:23 taqua Exp $
+ * $Id: NextPageAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,9 @@
 
 package org.jfree.report.modules.gui.base;
 
-import java.util.ResourceBundle;
-
-import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
-import org.jfree.report.modules.gui.base.components.ActionDowngrade;
+import org.jfree.ui.action.AbstractActionDowngrade;
+import org.jfree.ui.action.ActionDowngrade;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * Creates a new NextPageAction used by the PreviewPane to directly jump to the next
@@ -58,17 +57,15 @@ public abstract class NextPageAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  protected NextPageAction(final ResourceBundle resources)
+  protected NextPageAction(final ResourceBundleSupport resources)
   {
     putValue(NAME, resources.getString("action.forward.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.forward.description"));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
-        ResourceBundleUtils.createMenuKeystroke(resources.getString("action.forward.accelerator")));
+        resources.getKeyStroke("action.forward.accelerator"));
     putValue(ActionDowngrade.MNEMONIC_KEY,
-        ResourceBundleUtils.createMnemonic(resources.getString("action.forward.mnemonic")));
-    putValue(SMALL_ICON,
-        ResourceBundleUtils.getIcon(resources.getString("action.forward.small-icon")));
-    putValue("ICON24",
-        ResourceBundleUtils.getIcon(resources.getString("action.forward.icon")));
+        resources.getMnemonic("action.forward.mnemonic"));
+    putValue(SMALL_ICON, resources.getIcon("action.forward.small-icon", false));
+    putValue("ICON24", resources.getIcon("action.forward.icon", true));
   }
 }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticShapeElementFactory.java,v 1.6 2003/10/05 21:52:32 taqua Exp $
+ * $Id: StaticShapeElementFactory.java,v 1.6.4.3 2004/12/30 14:46:11 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,38 +41,40 @@ package org.jfree.report.elementfactory;
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Element;
 import org.jfree.report.ShapeElement;
+import org.jfree.report.content.ShapeTransform;
 import org.jfree.report.filter.StaticDataSource;
 import org.jfree.ui.FloatDimension;
+import org.jfree.util.Log;
 
 /**
  * A factory to produce static shape elements. The shapes must not contain negative
- * coordinates and should start at (0,0). The factory does not scale shapes which have
- * a negative width or height. This behaviour was valid for JFreeReport versions up to
+ * coordinates and should start at (0,0). The factory does not scale shapes which have a
+ * negative width or height. This behaviour was valid for JFreeReport versions up to
  * version 0.8.3 and is highly dangerous.
- * <p>
+ * <p/>
  * The shape is considered immutable.
- * <p>
- * The static utility methods provided in that class try to map negative values of
- * lines and rectangles in the createLineShapeElement and createRectangleElement to
- * preserve the old behaviour.
- * <p>
- * The static method
- * {@link StaticShapeElementFactory#createShapeElement(String, Color, Stroke, Shape,
-    * boolean, boolean)} extracts the bounds from the given shape and performs an tranlate
- * transform to map the shape to the coordinate (0,0).
+ * <p/>
+ * The static utility methods provided in that class try to map negative values of lines
+ * and rectangles in the createLineShapeElement and createRectangleElement to preserve the
+ * old behaviour.
+ * <p/>
+ * The static method {@link StaticShapeElementFactory#createShapeElement(String, Color,
+    * Stroke, Shape, boolean, boolean)} extracts the bounds from the given shape and performs
+ * an tranlate transform to map the shape to the coordinate (0,0).
  *
  * @author Thomas Morgner
  */
 public class StaticShapeElementFactory extends ShapeElementFactory
 {
-  /** The shape that should be the content of the element. */
+  /**
+   * The shape that should be the content of the element.
+   */
   private Shape shape;
 
   /**
@@ -110,9 +112,8 @@ public class StaticShapeElementFactory extends ShapeElementFactory
   /**
    * Generates a new shape element.
    *
-   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   *
    * @return the generated element.
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
    */
   public Element createElement()
   {
@@ -123,20 +124,37 @@ public class StaticShapeElementFactory extends ShapeElementFactory
     return e;
   }
 
+  public static ShapeElement createHorizontalLine(final String name,
+                                                  final Color paint,
+                                                  final Stroke stroke,
+                                                  final double y1)
+  {
+    // scale the line, is horizontal,the line is on pos 0,0 within the element
+    final Rectangle2D bounds = new Rectangle2D.Float(0, (float) y1, -100, 0);
+    return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 100, 0),
+        true, false, true);
+  }
+
   /**
-   * Creates a new LineShapeElement. The line must not contain negative coordinates,
-   * or an IllegalArgumentException will be thrown. If you want to define scaling
-   * lines, you will have use one of the createShape methods.
+   * Creates a new LineShapeElement. The line must not contain negative coordinates, or an
+   * IllegalArgumentException will be thrown. If you want to define scaling lines, you
+   * will have use one of the createShape methods.
+   * <p/>
+   * This method is now deprecated, as it has an unclean syntax. For horizontal lines use
+   * the {@link StaticShapeElementFactory#createHorizontalLine(String, Color, Stroke, double)}
+   * method.
    *
-   * @param name the name of the new element
-   * @param paint the line color of this element
+   * @param name   the name of the new element
+   * @param paint  the line color of this element
    * @param stroke the stroke of this shape. For pdf use, restrict to BasicStokes.
-   * @param shape the Line2D shape
-   *
+   * @param shape  the Line2D shape
    * @return a report element for drawing a line.
-   *
-   * @throws NullPointerException if bounds or shape are null
+   * @throws NullPointerException     if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   * @deprecated the line shape elements should be created by using one of the
+   *             <code>createShapeElement</code> methods or the
+   *             <code>createHorizontalLine</code> method for horizontal lines which
+   *             span the complete band.
    */
   public static ShapeElement createLineShapeElement(final String name,
                                                     final Color paint,
@@ -145,10 +163,9 @@ public class StaticShapeElementFactory extends ShapeElementFactory
   {
     if (shape.getX1() == shape.getX2() && shape.getY1() == shape.getY2())
     {
-      // scale the line, is horizontal,the line is on pos 0,0 within the element
-      final Rectangle2D bounds = new Rectangle2D.Float(0, (float) shape.getY1(), -100, 0);
-      return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 100, 0),
-          true, false, true);
+      Log.info("The use of Line(x1, y1, x1, y1) to create a scaled horizontal line is deprecated.\n" +
+          "Use a Horizontal-Line element instead.");
+      return createHorizontalLine(name, paint, stroke, shape.getY1());
     }
     else
     {
@@ -171,21 +188,19 @@ public class StaticShapeElementFactory extends ShapeElementFactory
   }
 
   /**
-   * Creates a new LineShapeElement. This methods extracts the bounds from the shape and correct
-   * the shape to start from point (0,0) by using an AffineTransform. Use one of the createShape
-   * methods, that allow you to supply separate bounds and shapes, if you want to have full
-   * control over the creation process.
+   * Creates a new LineShapeElement. This methods extracts the bounds from the shape and
+   * correct the shape to start from point (0,0) by using an AffineTransform. Use one of
+   * the createShape methods, that allow you to supply separate bounds and shapes, if you
+   * want to have full control over the creation process.
    *
-   * @param name  the name of the new element.
-   * @param paint  the line color of this element.
-   * @param stroke  the stroke of this shape. For pdf use, restrict to BasicStrokes.
-   * @param shape  the shape.
-   * @param shouldDraw  draw the shape?
-   * @param shouldFill  fill the shape?
-   *
+   * @param name       the name of the new element.
+   * @param paint      the line color of this element.
+   * @param stroke     the stroke of this shape. For pdf use, restrict to BasicStrokes.
+   * @param shape      the shape.
+   * @param shouldDraw draw the shape?
+   * @param shouldFill fill the shape?
    * @return a report element for drawing a line.
-   *
-   * @throws NullPointerException if bounds or shape are null
+   * @throws NullPointerException     if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static ShapeElement createShapeElement(final String name,
@@ -207,7 +222,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
     // we have to translate the shape, as anything else would mess up the table layout
 
     final Rectangle2D shapeBounds = shape.getBounds2D();
-
+    // Log.debug ("ShapeBounds: " + shapeBounds);
     if (shapeBounds.getX() == 0 && shapeBounds.getY() == 0)
     {
       // no need to translate ...
@@ -215,9 +230,9 @@ public class StaticShapeElementFactory extends ShapeElementFactory
           shouldDraw, shouldFill, true);
     }
 
-    final AffineTransform af = AffineTransform.getTranslateInstance(-shapeBounds.getX(),
-        -shapeBounds.getY());
-    return createShapeElement(name, shapeBounds, paint, stroke, af.createTransformedShape(shape),
+    final Shape transformedShape =
+        ShapeTransform.translateShape(shape, -shapeBounds.getX(), -shapeBounds.getY());
+    return createShapeElement(name, shapeBounds, paint, stroke, transformedShape,
         shouldDraw, shouldFill, true);
   }
 
@@ -225,18 +240,16 @@ public class StaticShapeElementFactory extends ShapeElementFactory
   /**
    * Creates a new ShapeElement.
    *
-   * @param name  the name of the new element.
-   * @param bounds  the bounds.
-   * @param paint  the line color of this element.
-   * @param stroke  the stroke of this shape. For pdf use, restrict to BasicStrokes.
-   * @param shape  the shape.
+   * @param name        the name of the new element.
+   * @param bounds      the bounds.
+   * @param paint       the line color of this element.
+   * @param stroke      the stroke of this shape. For pdf use, restrict to BasicStrokes.
+   * @param shape       the shape.
    * @param shouldDraw  draw the shape?
    * @param shouldFill  fill the shape?
-   * @param shouldScale  scale the shape?
-   *
+   * @param shouldScale scale the shape?
    * @return a report element for drawing a line.
-   *
-   * @throws NullPointerException if bounds or shape are null
+   * @throws NullPointerException     if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static ShapeElement createShapeElement(final String name,
@@ -255,19 +268,18 @@ public class StaticShapeElementFactory extends ShapeElementFactory
   /**
    * Creates a new ShapeElement.
    *
-   * @param name  the name of the new element.
-   * @param bounds  the bounds.
-   * @param paint  the line color of this element.
-   * @param stroke  the stroke of this shape. For pdf use, restrict to BasicStrokes.
-   * @param shape  the shape.
-   * @param shouldDraw  draw the shape?
-   * @param shouldFill  fill the shape?
-   * @param shouldScale  scale the shape?
-   * @param keepAspectRatio  preserve the aspect ratio?
-   *
+   * @param name            the name of the new element.
+   * @param bounds          the bounds.
+   * @param paint           the line color of this element.
+   * @param stroke          the stroke of this shape. For pdf use, restrict to
+   *                        BasicStrokes.
+   * @param shape           the shape.
+   * @param shouldDraw      draw the shape?
+   * @param shouldFill      fill the shape?
+   * @param shouldScale     scale the shape?
+   * @param keepAspectRatio preserve the aspect ratio?
    * @return a report element for drawing a line.
-   *
-   * @throws NullPointerException if bounds or shape are null
+   * @throws NullPointerException     if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static ShapeElement createShapeElement(final String name,
@@ -299,16 +311,14 @@ public class StaticShapeElementFactory extends ShapeElementFactory
   /**
    * Creates a new RectangleShapeElement.
    *
-   * @param name the name of the new element
-   * @param paint the line color of this element
-   * @param stroke the stroke of this shape. For pdf use, restrict to BasicStokes.
-   * @param shape the Rectangle2D shape
-   * @param shouldDraw  a flag controlling whether or not the shape outline is drawn.
-   * @param shouldFill  a flag controlling whether or not the shape interior is filled.
-   *
+   * @param name       the name of the new element
+   * @param paint      the line color of this element
+   * @param stroke     the stroke of this shape. For pdf use, restrict to BasicStokes.
+   * @param shape      the Rectangle2D shape
+   * @param shouldDraw a flag controlling whether or not the shape outline is drawn.
+   * @param shouldFill a flag controlling whether or not the shape interior is filled.
    * @return a report element for drawing a rectangle.
-   *
-   * @throws NullPointerException if bounds or shape are null
+   * @throws NullPointerException     if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static ShapeElement createRectangleShapeElement(final String name,

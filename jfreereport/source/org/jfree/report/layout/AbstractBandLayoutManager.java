@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.14 2003/11/12 22:40:03 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.14.4.1 2004/12/13 20:22:31 taqua Exp $
  *
  * Changes
  * -------
@@ -106,7 +106,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     // docmark: minimum size also checks the dynamic height.
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
-      retval = getElementContentBounds(retval, e, maxSize, support);
+      retval = getElementContentBounds(retval, e, containerBounds, support);
     }
 
     retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
@@ -178,7 +178,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
-      retval = getElementContentBounds(retval, e, maxSize, support);
+      retval = getElementContentBounds(retval, e, containerBounds, support);
     }
 
     retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
@@ -417,7 +417,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
       return false;
     }
     size = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
-    if (size.getWidth() < 0)
+    if (size.getHeight() < 0)
     {
       return false;
     }
@@ -477,7 +477,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
   {
     if (dim < 0)
     {
-      return (dim * base / -100f);
+      return Math.abs(dim * base / 100f);
     }
     return dim;
   }
@@ -500,11 +500,11 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     double y = dim.getY();
     if (x < 0)
     {
-      x = (dim.getX() * base.getWidth() / -100);
+      x = Math.abs(dim.getX() * base.getWidth() / 100);
     }
     if (y < 0)
     {
-      y = (dim.getY() * base.getHeight() / -100);
+      y = Math.abs(dim.getY() * base.getHeight() / 100);
     }
     if (retval == null)
     {

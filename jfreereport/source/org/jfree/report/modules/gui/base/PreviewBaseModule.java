@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewBaseModule.java,v 1.11 2004/03/16 15:09:23 taqua Exp $
+ * $Id: PreviewBaseModule.java,v 1.10.4.1 2004/05/11 13:25:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,8 +44,9 @@ import java.util.ResourceBundle;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
@@ -61,14 +62,12 @@ public class PreviewBaseModule extends AbstractModule
   /** A configuration key defining whether to translate the swing components. */
   public static final String SWING_TRANSLATE_KEY =
       "org.jfree.report.modules.gui.base.SwingDialogTranslation";
-
-  public static final String RESOURCES_BASE_NAME = 
-      "org.jfree.report.modules.gui.base.resources.jfreereport-resources";
+  public static final String RESOURCES_BASE_NAME = "org.jfree.report.modules.gui.base.resources.jfreereport-resources";
 
   /**
    * Default Constructor. Loads the module definition.
    *
-   * @throws ModuleInitializeException if loading the module definition failed.
+   * @throws org.jfree.base.modules.ModuleInitializeException if loading the module definition failed.
    */
   public PreviewBaseModule() throws ModuleInitializeException
   {
@@ -78,24 +77,22 @@ public class PreviewBaseModule extends AbstractModule
   /**
    * Initalizes the module. If the swing components should be translated, the
    * resources are plugged into the Swing-ResourceManager.
-   * @see org.jfree.report.modules.Module#initialize()
    *
    * @throws ModuleInitializeException if an error occured.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize(final SubSystem subSystem) throws ModuleInitializeException
   {
     if (isTranslateSwingDialogs())
     {
-      final ResourceBundle bundle = ResourceBundle.getBundle
-          (RESOURCES_BASE_NAME);
+      final ResourceBundle bundle = ResourceBundle.getBundle(RESOURCES_BASE_NAME);
 
       final UIDefaults defaults = UIManager.getDefaults();
-      final Enumeration enum = bundle.getKeys();
+      final Enumeration en = bundle.getKeys();
       // JDK1.2 does not know anything about SwingTranslations,
       // we have to put all keys manually in there.
-      while (enum.hasMoreElements())
+      while (en.hasMoreElements())
       {
-        final String keyName = (String) enum.nextElement();
+        final String keyName = (String) en.nextElement();
         try
         {
           defaults.put(keyName, bundle.getObject(keyName));

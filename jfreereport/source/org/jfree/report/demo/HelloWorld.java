@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ---------------
  * HelloWorld.java
  * ---------------
- * (C)opyright 2002, 2003, by Object Refinery Limited.
+ * (C)opyright 2002, 2003, by Simba Management Limited.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.6 2003/11/07 18:33:48 taqua Exp $
+ * $Id: HelloWorld.java,v 1.6.4.3 2004/11/28 19:53:12 taqua Exp $
  *
  * Changes
  * -------
@@ -45,13 +45,14 @@ import java.awt.geom.Point2D;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import org.jfree.report.Boot;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.elementfactory.TextFieldElementFactory;
 import org.jfree.report.modules.gui.base.PreviewDialog;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.FloatDimension;
 
 /**
@@ -70,6 +71,10 @@ public class HelloWorld
    */
   protected static class CloseHandler extends WindowAdapter
   {
+    public CloseHandler ()
+    {
+    }
+
     /**
      * Handles the window closing event.
      *
@@ -77,7 +82,15 @@ public class HelloWorld
      */
     public void windowClosing(final WindowEvent event)
     {
-      System.exit(0);
+      if (ReportConfiguration.getGlobalConfig().getConfigProperty
+              ("org.jfree.report.demo.Embedded", "false").equals("false"))
+      {
+        System.exit(0);
+      }
+      else
+      {
+        event.getWindow().setVisible(false);
+      }
     }
   }
 
@@ -115,8 +128,8 @@ public class HelloWorld
 
     final Object[] columnNames = new String[]{"Column1", "Column2"};
     final DefaultTableModel result = new DefaultTableModel(columnNames, 1);
-    result.setValueAt("Hello", 0, 0);
-    result.setValueAt("World!", 0, 1);
+    result.setValueAt("Hello\n", 0, 0);
+    result.setValueAt("World!\n", 0, 1);
     return result;
 
   }
@@ -130,14 +143,14 @@ public class HelloWorld
   {
 
     final JFreeReport report = new JFreeReport();
-    report.setName("A Very Simple Report");
+    report.setName(getDescription());
 
     TextFieldElementFactory factory = new TextFieldElementFactory();
     factory.setName("T1");
     factory.setAbsolutePosition(new Point2D.Float(0, 0));
-    factory.setMinimumSize(new FloatDimension(150, 20));
+    factory.setMinimumSize(new FloatDimension(150, 12));
     factory.setColor(Color.black);
-    factory.setHorizontalAlignment(ElementAlignment.LEFT);
+    factory.setHorizontalAlignment(ElementAlignment.RIGHT);
     factory.setVerticalAlignment(ElementAlignment.MIDDLE);
     factory.setNullString("-");
     factory.setFieldname("Column1");
@@ -146,7 +159,7 @@ public class HelloWorld
     factory = new TextFieldElementFactory();
     factory.setName("T2");
     factory.setAbsolutePosition(new Point2D.Float(200, 0));
-    factory.setMinimumSize(new FloatDimension(150, 20));
+    factory.setMinimumSize(new FloatDimension(150, 12));
     factory.setColor(Color.black);
     factory.setHorizontalAlignment(ElementAlignment.LEFT);
     factory.setVerticalAlignment(ElementAlignment.MIDDLE);
@@ -158,6 +171,15 @@ public class HelloWorld
   }
 
   /**
+   * Returns a short description of the demo.
+   * @return
+   */
+  public String getDescription ()
+  {
+    return "A Very Simple Report";
+  }
+
+  /**
    * The starting point for the "Hello World" demo application.
    *
    * @param args  ignored.
@@ -165,7 +187,7 @@ public class HelloWorld
   public static void main(final String[] args)
   {
     // initialize JFreeReport
-    Boot.start();
+    JFreeReportBoot.getInstance().start();
 
     //final HelloWorld app =
     new HelloWorld();

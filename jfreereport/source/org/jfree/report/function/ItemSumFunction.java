@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.4 2003/11/07 18:33:48 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.4.4.1 2004/12/30 14:46:11 taqua Exp $
  *
  * Changes
  * -------
@@ -76,17 +76,13 @@ import org.jfree.report.util.Log;
  */
 public class ItemSumFunction extends AbstractFunction implements Serializable
 {
-  /** Literal text for the 'group' property. */
-  public static final String GROUP_PROPERTY = "group";
-
-  /** Literal text for the 'field' property. */
-  public static final String FIELD_PROPERTY = "field";
-
   /** A useful constant representing zero. */
   private static final BigDecimal ZERO = new BigDecimal(0.0);
 
   /** The item sum. */
-  private BigDecimal sum;
+  private transient BigDecimal sum;
+  private String group;
+  private String field;
 
   /**
    * Constructs an unnamed function. Make sure to set a Name or function initialisation
@@ -144,7 +140,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
    */
   public String getGroup()
   {
-    return getProperty(GROUP_PROPERTY);
+    return group;
   }
 
   /**
@@ -157,7 +153,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
    */
   public void setGroup(final String name)
   {
-    setProperty(GROUP_PROPERTY, name);
+    this.group = name;
   }
 
   /**
@@ -169,7 +165,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
    */
   public String getField()
   {
-    return getProperty(FIELD_PROPERTY);
+    return field;
   }
 
   /**
@@ -181,11 +177,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
    */
   public void setField(final String field)
   {
-    if (field == null)
-    {
-      throw new NullPointerException();
-    }
-    setProperty(FIELD_PROPERTY, field);
+    this.field = field;
   }
 
   /**
@@ -230,8 +222,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
   public void initialize()
       throws FunctionInitializeException
   {
-    final String fieldProp = getProperty(FIELD_PROPERTY);
-    if (fieldProp == null)
+    if (field == null)
     {
       throw new FunctionInitializeException("No Such Property : field");
     }

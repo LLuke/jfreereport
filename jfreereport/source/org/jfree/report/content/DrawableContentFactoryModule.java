@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableContentFactoryModule.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.6 2004/05/07 08:02:48 mungady Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,10 @@ import org.jfree.report.util.ElementLayoutInformation;
  */
 public strictfp class DrawableContentFactoryModule implements ContentFactoryModule
 {
+  public DrawableContentFactoryModule ()
+  {
+  }
+
   /**
    * Returns <code>true</code> if the module can handle the specified content type, and
    * <code>false</code> otherwise.
@@ -84,7 +88,7 @@ public strictfp class DrawableContentFactoryModule implements ContentFactoryModu
     final DrawableContainer drawable = (DrawableContainer) e.getValue();
     if (drawable == null)
     {
-      return null;
+      return EmptyContent.getDefaultEmptyContent();
     }
 
     final Point2D point = bounds.getAbsolutePosition();
@@ -92,7 +96,7 @@ public strictfp class DrawableContentFactoryModule implements ContentFactoryModu
         bounds.getPreferredSize());
     if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
     {
-      return null;
+      return EmptyContent.getDefaultEmptyContent();
     }
     // basic drawable object don't have own bounds, so they cannot define
     // scaling or keep-aspect ratio.

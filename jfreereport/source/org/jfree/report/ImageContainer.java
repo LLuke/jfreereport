@@ -28,26 +28,20 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageContainer.java,v 1.1 2004/03/16 15:34:26 taqua Exp $
+ * $Id: ImageContainer.java,v 1.2 2004/05/07 07:43:53 mungady Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 09.03.2004 : Initial version
- *  
+ *
  */
 
 package org.jfree.report;
 
-import java.awt.geom.Rectangle2D;
-
 public interface ImageContainer extends Cloneable
 {
-  public Rectangle2D getBounds();
-  public Rectangle2D getBoundsScaled();
-  public float getScaleX();
-  public float getScaleY();
-  public void setScale (float x, float y);
   public int getImageWidth();
   public int getImageHeight();
-  public ImageContainer getPartialInstance (Rectangle2D bounds);
+  public float getScaleX();
+  public float getScaleY();
 }

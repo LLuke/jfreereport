@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultContentFactory.java,v 1.4 2004/03/16 15:09:22 taqua Exp $
+ * $Id: DefaultContentFactory.java,v 1.5 2004/05/07 08:02:48 mungady Exp $
  *
  * Changes
  * -------
@@ -130,7 +130,12 @@ public class DefaultContentFactory implements ContentFactory
       final ContentFactoryModule cfm = (ContentFactoryModule) modules.get(i);
       if (cfm.canHandleContent(contentType))
       {
-        return cfm.createContentForElement(e, bounds, ot);
+        final Content c = cfm.createContentForElement(e, bounds, ot);
+        if (c == null)
+        {
+          throw new NullPointerException("Content returned must never be null.");
+        }
+        return c;
       }
     }
     throw new ContentCreationException("No module registered for the content-type.");

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalItemCountFunction.java,v 1.9 2003/11/10 20:02:00 taqua Exp $
+ * $Id: TotalItemCountFunction.java,v 1.9.4.1 2004/12/30 14:46:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,6 +38,8 @@
 
 package org.jfree.report.function;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -89,17 +91,16 @@ public class TotalItemCountFunction extends AbstractFunction implements Serializ
     }
   }
 
-  /** Literal text for the 'group' property. */
-  public static final String GROUP_PROPERTY = "group";
-
   /** The group sum. */
-  private ItemCountStorage groupResult;
+  private transient ItemCountStorage groupResult;
 
   /** A list of results. */
-  private ArrayList results;
+  private transient ArrayList results;
 
   /** The current index. */
-  private int currentIndex;
+  private transient int currentIndex;
+
+  private String group;
 
   /**
    * Default constructor.
@@ -198,7 +199,7 @@ public class TotalItemCountFunction extends AbstractFunction implements Serializ
    */
   public String getGroup()
   {
-    return getProperty(GROUP_PROPERTY);
+    return group;
   }
 
   /**
@@ -209,7 +210,7 @@ public class TotalItemCountFunction extends AbstractFunction implements Serializ
    */
   public void setGroup(final String group)
   {
-    setProperty(GROUP_PROPERTY, group);
+    this.group = group;
   }
 
 
@@ -250,4 +251,14 @@ public class TotalItemCountFunction extends AbstractFunction implements Serializ
     function.results = new ArrayList();
     return function;
   }
+
+  private void readObject(final ObjectInputStream in)
+      throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    results = new ArrayList();
+    groupResult = new ItemCountStorage();
+  }
+
+
 }

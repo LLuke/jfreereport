@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------------
  * GroupCountFunction.java
  * -----------------------
- * (C)opyright 2000-2002, by Object Refinery Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.5 2003/11/07 20:37:35 taqua Exp $
+ * $Id: GroupCountFunction.java,v 1.5.4.2 2004/12/30 14:46:11 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@ package org.jfree.report.function;
 import java.io.Serializable;
 
 import org.jfree.report.Group;
-import org.jfree.report.util.Log;
 import org.jfree.report.event.ReportEvent;
+import org.jfree.report.util.Log;
 
 /**
  * A report function that counts groups in a report.
@@ -59,12 +59,8 @@ import org.jfree.report.event.ReportEvent;
  */
 public class GroupCountFunction extends AbstractFunction implements Serializable
 {
-  /** Literal text for the 'group' property. */
-  public static final String GROUP_PROPERTY = "group";
-
-  /** Literal text for the 'group' property. */
-  public static final String PARENTGROUP_PROPERTY = "parent-group";
-
+  private String group;
+  private String parentGroup;
   /** The number of groups. */
   private int count;
 
@@ -95,7 +91,7 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    */
   public String getParentGroup()
   {
-    return getProperty(PARENTGROUP_PROPERTY);
+    return parentGroup;
   }
 
   /**
@@ -106,7 +102,7 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    */
   public void setParentGroup(final String group)
   {
-    setProperty(PARENTGROUP_PROPERTY, group);
+    this.parentGroup = group;
   }
 
   /**
@@ -116,7 +112,7 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    */
   public String getGroup()
   {
-    return getProperty(GROUP_PROPERTY);
+    return group;
   }
 
   /**
@@ -127,7 +123,7 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    */
   public void setGroup(final String group)
   {
-    setProperty(GROUP_PROPERTY, group);
+    this.group = group;
   }
 
   /**

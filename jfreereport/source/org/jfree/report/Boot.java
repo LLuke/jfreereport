@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Boot.java,v 1.6 2003/11/23 16:50:45 taqua Exp $
+ * $Id: Boot.java,v 1.6.4.1 2004/10/06 21:28:43 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -37,10 +37,6 @@
  */
 
 package org.jfree.report;
-
-import org.jfree.report.modules.PackageManager;
-import org.jfree.report.util.CSVTokenizer;
-import org.jfree.report.util.Log;
 
 /**
  * An utility class to safely boot and initialize the JFreeReport library.
@@ -58,14 +54,10 @@ import org.jfree.report.util.Log;
  * list of Module implementations.
  * 
  * @author Thomas Morgner
+ * @deprecated Use JFreeReportBoot now.
  */
 public final class Boot
 {
-  /** A flag indicating whether the booting is currenly in progress. */ 
-  private static boolean bootInProgress;
-  /** A flag indicating whether the booting is complete. */
-  private static boolean bootDone;
-
   /**
    * Hidden default constructor.
    */
@@ -75,22 +67,22 @@ public final class Boot
   
   /**
    * Checks, whether the booting of JFreeReport is in progress.
-   * 
+   *
    * @return true, if the booting is in progress, false otherwise.
    */
-  public static boolean isBootInProgress()
+  public synchronized static boolean isBootInProgress()
   {
-    return bootInProgress;
+    return JFreeReportBoot.getInstance().isBootInProgress();
   }
 
   /**
    * Checks, whether the booting of JFreeReport is complete.
-   * 
+   *
    * @return true, if the booting is complete, false otherwise.
    */
-  public static boolean isBootDone()
+  public synchronized static boolean isBootDone()
   {
-    return bootDone;
+    return JFreeReportBoot.getInstance().isBootDone();
   }
 
   /**
@@ -99,56 +91,7 @@ public final class Boot
    */
   public static void start()
   {
-    if (isBootInProgress() || isBootDone())
-    {
-      return;
-    }
-    bootInProgress = true;
-
-    final JFreeReportInfo info = new JFreeReportInfo();
-    Log.info (info.getName() + " " + info.getVersion());
-
-    if (isStrictFP() == false)
-    {
-      Log.warn ("The used VM seems to use a non-strict floating point arithmetics");
-      Log.warn ("Layouts computed with this Java Virtual Maschine may be invalid.");
-      Log.warn ("JFreeReport and the library 'iText' depend on the strict floating point rules");
-      Log.warn ("of Java1.1 as implemented by the Sun Virtual Maschines.");
-      Log.warn ("If you are using the BEA JRockit VM, start the Java VM with the option");
-      Log.warn ("'-Xstrictfp' to restore the default behaviour."); 
-    }
-
-    final PackageManager mgr = PackageManager.getInstance();
-
-    mgr.addModule(JFreeReportCoreModule.class.getName());
-    mgr.addModule(DefaultLogModule.class.getName());
-    mgr.load("org.jfree.report.modules.");
-    mgr.load("org.jfree.report.ext.modules.");
-    try
-    {
-      final String bootModules = System.getProperty("org.jfree.report.boot.Modules");
-      if (bootModules != null)
-      {
-        final CSVTokenizer csvToken = new CSVTokenizer(bootModules, ",");
-        while (csvToken.hasMoreTokens())
-        {
-          final String token = csvToken.nextToken();
-          mgr.load(token);
-        }
-      }
-    }
-    catch (SecurityException se)
-    {
-      Log.info ("Security settings forbid to check the system properties for extension modules.");
-    }
-    catch (Exception se)
-    {
-      Log.error 
-        ("An error occured while checking the system properties for extension modules.", se);
-    }
-
-    mgr.initializeModules();
-    bootDone = true;
+    JFreeReportBoot.getInstance().start();
   }
 
   /**

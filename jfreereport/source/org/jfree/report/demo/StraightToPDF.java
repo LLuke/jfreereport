@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------
  * StraightToPDF.java
  * ------------------
- * (C)opyright 2002, 2003, by Object Refinery Limited.
+ * (C)opyright 2002, 2003, by Simba Management Limited.
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.8 2004/03/16 15:09:22 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.7.4.1 2004/10/13 17:18:55 taqua Exp $
  *
  * Changes
  * -------
@@ -38,12 +38,13 @@
 
 package org.jfree.report.demo;
 
-import java.awt.print.PageFormat;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
@@ -52,6 +53,7 @@ import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.WaitingImageObserver;
 import org.jfree.xml.ParseException;
 
 /**
@@ -91,7 +93,15 @@ public class StraightToPDF
     final ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
-      return generator.parseReport(templateURL);
+      final JFreeReport report = generator.parseReport(templateURL);
+      final URL imageURL = getClass().getResource("/org/jfree/report/demo/gorilla.jpg");
+      final Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
+      final WaitingImageObserver obs = new WaitingImageObserver(image);
+      obs.waitImageLoaded();
+      report.setProperty("logo", image);
+      report.setPropertyMarked("logo", true);
+
+      return report;
     }
     catch (Exception e)
     {

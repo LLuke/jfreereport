@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageDefinition.java,v 1.4 2004/04/19 17:01:59 taqua Exp $
+ * $Id: SimplePageDefinition.java,v 1.5 2004/05/07 07:43:53 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -38,11 +38,11 @@
 
 package org.jfree.report;
 
-import java.awt.print.PageFormat;
 import java.awt.geom.Rectangle2D;
-import java.io.ObjectOutputStream;
+import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import org.jfree.report.util.SerializerHelper;
 
