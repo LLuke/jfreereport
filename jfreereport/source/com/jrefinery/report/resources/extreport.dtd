@@ -1,0 +1,280 @@
+<!ENTITY % orientations
+  "portrait | landscape | reverse_landscape"
+>
+
+<!ENTITY % pageFormats
+  "(  PAPER10X11 | PAPER10X13 | PAPER10X14 | PAPER12X11 | PAPER15X11 | PAPER7X9 | PAPER8X10 |
+      PAPER9X11 | PAPER9X12 | A0 | A1 | A2 | A3 | A3_TRANSVERSE | A3_EXTRA | A3_EXTRATRANSVERSE |
+      A3_ROTATED | A4 | A4_TRANSVERSE | A4_EXTRA | A4_PLUS | A4_ROTATED | A4_SMALL | A5 |
+      A5_TRANSVERSE | A5_EXTRA | A5_ROTATED | A6 | A6_ROTATED | A7 | A8 | A9 | A10 |
+      ANSIC | ANSID | ANSIE | ARCHA | ARCHB | ARCHC | ARCHD | ARCHE | B0 | B1 | B2 | B3 | B4 |
+      B4_ROTATED | B5 | B5_TRANSVERSE | B5_ROTATED | B6 | B6_ROTATED | B7 | B8 | B9 | B10 |
+      C4 | C5 | C6 | COMM10 | DL | DOUBLEPOSTCARD | DOUBLEPOSTCARD_ROTATED | ENV9 | ENV10 |
+      ENV11 | ENV12 | ENV14 | ENVC0 | ENVC1 | ENVC2 | ENVC3 | ENVC4 | ENVC5 | ENVC6 | ENVC65 | ENVC7 |
+      ENVCHOU3 | ENVCHOU3_ROTATED | ENVCHOU4 | ENVCHOU4_ROTATED | ENVDL | ENVINVITE | ENVISOB4 | ENVISOB5 |
+      ENVISOB6 | ENVITALIAN | ENVKAKU2 | ENVKAKU2_ROTATED | ENVKAKU3 | ENVKAKU3_ROTATED | ENVMONARCH |
+      ENVPERSONAL | ENVPRC1 | ENVPRC1_ROTATED | ENVPRC2 | ENVPRC2_ROTATED | ENVPRC3 | ENVPRC3_ROTATED |
+      ENVPRC4 | ENVPRC4_ROTATED | ENVPRC5 | ENVPRC5_ROTATED | ENVPRC6 | ENVPRC6_ROTATED | ENVPRC7 |
+      ENVPRC7_ROTATED | ENVPRC8 | ENVPRC8_ROTATED | ENVPRC9 | ENVPRC9_ROTATED | ENVPRC10 | ENVPRC10_ROTATED |
+      ENVYOU4 | ENVYOU4_ROTATED | EXECUTIVE | FANFOLDUS | FANFOLDGERMAN | FANFOLDGERMANLEGAL |
+      FOLIO | ISOB0 | ISOB1 | ISOB2 | ISOB3 | ISOB4 | ISOB5 | ISOB5_EXTRA | ISOB6 | ISOB7 | ISOB8 | ISOB9 |
+      ISOB10 | LEDGER | LEGAL | LEGAL_EXTRA | LETTER | LETTER_TRANSVERSE | LETTER_EXTRA | LETTER_EXTRATRANSVERSE |
+      LETTER_PLUS | LETTER_ROTATED | LETTER_SMALL | MONARCH | NOTE | POSTCARD | POSTCARD_ROTATED | PRC16K |
+      PRC16K_ROTATED | PRC32K | PRC32K_ROTATED | PRC32K_BIG | PRC32K_BIGROTATED | QUARTO | STATEMENT | SUPERA |
+      SUPERB | TABLOID | TABLOIDEXTRA )"
+>
+
+<!-- Report definition -->
+<!ELEMENT report-definition (parser-config?, report-config?,
+                             styles?, templates?, report-description?,
+                             functions?, data-definition?)>
+<!ATTLIST report-definition
+  name CDATA   #IMPLIED
+>
+
+<!ELEMENT parser-config ((element-factory|stylekey-factory|template-factory|datadefinition-factory|object-factory|datasource-factory)*)>
+
+<!ELEMENT stylekey-factory EMPTY>
+<!ATTLIST stylekey-factory
+  class      CDATA   #IMPLIED
+>
+
+<!ELEMENT object-factory EMPTY>
+<!ATTLIST object-factory
+  class      CDATA   #IMPLIED
+>
+
+<!ELEMENT datasource-factory EMPTY>
+<!ATTLIST datasource-factory
+  class      CDATA   #IMPLIED
+>
+
+<!ELEMENT template-factory EMPTY>
+<!ATTLIST template-factory
+  class      CDATA   #IMPLIED
+>
+
+<!ELEMENT datadefinition-factory EMPTY>
+<!ATTLIST datadefinition-factory
+  class      CDATA   #IMPLIED
+>
+
+<!ELEMENT element-factory EMPTY>
+<!ATTLIST element-factory
+  class      CDATA   #IMPLIED
+>
+
+
+<!ELEMENT report-config (defaultpageformat?, configuration?)>
+
+<!ELEMENT defaultpageformat EMPTY>
+<!ATTLIST defaultpageformat
+  width          CDATA           #IMPLIED
+  height         CDATA           #IMPLIED
+  pageformat     %pageFormats;   #IMPLIED
+  orientation    (%orientations;) "portrait"
+  leftmargin     CDATA           #IMPLIED
+  rightmargin    CDATA           #IMPLIED
+  topmargin      CDATA           #IMPLIED
+  bottommargin   CDATA           #IMPLIED
+>
+
+<!ELEMENT configuration (property*)>
+
+<!ELEMENT property (#PCDATA)>
+<!ATTLIST property
+  name           CDATA           #REQUIRED
+>
+
+<!ELEMENT output-config (EMPTY)>
+
+<!ELEMENT styles (style*)>
+<!ATTLIST styles
+  external       CDATA           #IMPLIED
+>
+
+<!ELEMENT style  (extends*, (basic-key|compound-key)*)>
+<!ATTLIST style
+  name           CDATA           #IMPLIED
+>
+
+<!ELEMENT default-style  (extends*, (basic-key|compound-key)*)>
+<!ATTLIST default-style
+  name           CDATA           #IMPLIED
+>
+
+<!ELEMENT extends  EMPTY>
+<!ATTLIST extends
+  name          CDATA  #REQUIRED
+>
+
+<!ELEMENT compound-key (basic-object|compound-object)*>
+<!ATTLIST compound-key
+  name           CDATA           #IMPLIED
+  class          CDATA           #IMPLIED
+>
+
+<!ELEMENT basic-key    (#PCDATA)>
+<!ATTLIST basic-key
+  name           CDATA           #IMPLIED
+  class          CDATA           #IMPLIED
+>
+
+
+<!ELEMENT compound-object (basic-object|compound-object)*>
+<!ATTLIST compound-object
+  name           CDATA           #REQUIRED
+  class          CDATA           #IMPLIED
+>
+
+<!ELEMENT basic-object    (#PCDATA)>
+<!ATTLIST basic-object
+  name           CDATA           #REQUIRED
+  class          CDATA           #IMPLIED
+>
+
+<!-- Not yet defined -->
+<!ELEMENT templates    (template*)>
+<!ATTLIST templates
+  external       CDATA           #IMPLIED
+>
+
+<!ELEMENT template     (basic-object|compound-object)*>
+<!ATTLIST template
+  name           CDATA           #IMPLIED
+  references     CDATA           #REQUIRED
+>
+
+<!ELEMENT report-description
+  (report-header?, report-footer?, page-header?, page-footer?, itemband?, groups?)>
+
+<!ELEMENT report-header   (style, default-style, (template | datasource), (band | element)*)>
+<!ATTLIST report-header
+  name           CDATA           #IMPLIED
+>
+
+<!ELEMENT report-footer   (style, default-style, (template | datasource), (band | element)*)>
+<!ATTLIST report-footer
+  name           CDATA           #IMPLIED
+>
+
+<!ELEMENT page-header   (style, default-style, (template | datasource), (band | element)*)>
+<!ATTLIST page-header
+  name           CDATA           #IMPLIED
+>
+
+<!ELEMENT page-footer   (style, default-style, (template | datasource), (band | element)*)>
+<!ATTLIST page-footer
+  name           CDATA           #IMPLIED
+>
+
+<!ELEMENT itemband   (style, default-style, (template | datasource), (band | element)*)>
+<!ATTLIST itemband
+  name           CDATA           #IMPLIED
+>
+
+<!ELEMENT groups     (group*)>
+<!ELEMENT group      (fields, group-header?, group-footer?)>
+<!ATTLIST group
+  name           CDATA           #REQUIRED
+>
+
+<!ELEMENT fields     (field*)>
+<!ELEMENT field      (#PCDATA)>
+
+<!ELEMENT group-header   (style, default-style, (template | datasource), (band | element)*)>
+<!ATTLIST group-header
+  name           CDATA           #IMPLIED
+>
+
+<!ELEMENT group-footer   (style, default-style, (template | datasource), (band | element)*)>
+<!ATTLIST group-footer
+  name           CDATA           #IMPLIED
+>
+
+<!ELEMENT band  (style, default-style, (template | datasource)*, (band | element)*)>
+<!ATTLIST band
+  name           CDATA           #IMPLIED
+>
+
+<!ELEMENT element  (style, (template | datasource))>
+<!ATTLIST element
+  name           CDATA           #IMPLIED
+  type           CDATA           #REQUIRED
+>
+
+<!ELEMENT datasource (datasource?,(basic-object|compound-object)*)>
+<!ATTLIST datasource
+  type          CDATA            #REQUIRED
+>
+
+<!--
+
+  Functions are defined in a function library.
+  Every referenced function has to be defined in the
+  library in order to be loaded and executed correctly.
+
+  -->
+<!ELEMENT functions  (function | expression | data-ref | property-ref)*>
+
+<!--
+
+  A reference to a report property. This property is predefined here and can be accessed
+  like any other datasource. The value defaults to null if no more data is given. The
+  encoding parameter defaults to "text", "serialized-base64" is implemented later to
+  allow serialized objects as value for the property.
+
+  The class parameter specifies the class of this report property value. The given class
+  must have a valid ObjectDescription registered in the ClassFactory.
+
+-->
+<!ELEMENT property-ref  (#PCDATA)>
+<!ATTLIST property-ref
+  name       CDATA   #REQUIRED
+	encoding   CDATA   #IMPLIED
+  class      CDATA   #IMPLIED
+>
+
+<!--
+
+  A defined function has a valid implementing class that implement
+  the com.jrefinery.report.function.Function interface. Functions have access to the datarow and
+  can access other functions or expressions or the datasource. Functions are statefull and maintain
+  their state during the report generation. For stateless userdefined computations consider using
+  an expression instead of functions, as expression are cheaper to compute and maintain when using
+  huge reports.
+
+  Function parameters are given by propery elements. For visual
+  editing, function must obey to the java-beans rules (use get*/set*
+  methods, perhaps provide beaninfo and so on)
+
+  The deplevel attribute can be used to priorize the functions. Functions with an higher depencylevel
+  are executed before any function with lower depency levels. Depencylevels lower than 0 are not allowed.
+  -->
+<!ELEMENT function   (properties?)>
+<!ATTLIST function
+ class      CDATA    #REQUIRED
+	name       CDATA    #REQUIRED
+ deplevel   CDATA    #IMPLIED
+>
+
+
+<!--
+
+  An expression is a stateless userdefined function. It can access the datarow and the reportproperties
+  to perform its task. Using the datarow an expression has access to the datasource and other functions
+  and expressions.
+
+  Expression parameters are given by propery elements. For visual
+  editing, Expressions must obey to the java-beans rules (use get*/set*
+  methods, perhaps provide beaninfo and so on)
+
+  The deplevel attribute can be used to priorize the functions. Functions with an higher depencylevel
+  are executed before any function with lower depency levels. Depencylevels lower than 0 are not allowed.
+  -->
+<!ELEMENT expression   (properties?)>
+<!ATTLIST expression
+  class      CDATA    #REQUIRED
+	name       CDATA    #REQUIRED
+ deplevel   CDATA    #IMPLIED
+>
