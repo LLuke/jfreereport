@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------------
  * ReportConfiguration.java
  * ------------------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002-2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.21 2002/12/13 18:39:08 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.22 2002/12/18 10:13:16 mungady Exp $
  *
  * Changes
  * -------
@@ -69,14 +69,14 @@ import java.util.Properties;
  * <p>
  * The minimum loglevel that is logged.  Valid values are:
  * <ul>
- *   <li><code>"Error"</code> - prints error messages only;
- *   <li><code>"Warn"</code> - prints warnings and errors;
- *   <li><code>"Info"</code> - prints informational messages as well as warnings and errors;
- *   <li><code>"Debug"</code> - prints all messages, including all debugging messages.
+ *   <li><code>"Error"</code> - prints error messages only;</li>
+ *   <li><code>"Warn"</code> - prints warnings and errors;</li>
+ *   <li><code>"Info"</code> - prints informational messages as well as warnings and errors;</li>
+ *   <li><code>"Debug"</code> - prints all messages, including all debugging messages.</li>
  * </ul>
  * The default setting is <code>"Debug"</code>.
  * <p>
- *
+ * </li>
  * <li><code>com.jrefinery.report.LogTarget</code>
  * <p>
  * The default log target. This should be set to the classname of a  valid {@link LogTarget}

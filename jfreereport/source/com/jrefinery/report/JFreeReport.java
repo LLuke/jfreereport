@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.43 2002/12/13 14:55:06 mungady Exp $
+ * $Id: JFreeReport.java,v 1.44 2003/01/03 10:02:25 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -79,29 +79,29 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * This class co-ordinates the process of generating a report from a TableModel.  The report is
- * made up of 'bands', which are used repeatedly as necessary to generate small sections of the
- * report.
+ * This class co-ordinates the process of generating a report from a <code>TableModel</code>.  
+ * The report is made up of 'bands', which are used repeatedly as necessary to generate small 
+ * sections of the report.
  * <p>
  * Accessing the bands and the elements:
  * <p>
- * Elements on a band can be reached by using Band.getElement (String elementName) or
- * by retrieving all elements using Band.getElements() and performing a search on the returned
- * list.
- * <p>
- * The different band can be accessed using the main report definition class (this JFreeReport
- * class).
+ * The different bands can be accessed using the main report definition (this class):
  * <ul>
- * <li>PageHeader and -footer can be reached by using
- *     <code>getPageHeader()</code> and <code>getPageFooter()</code>
- * <li>ReportHeader and -footer can be reached by using
+ * <li>the report header and footer can be reached by using
  *     <code>getReportHeader()</code> and <code>getReportFooter()</code>
- * <li>the ItemBand is reachable with getItemBand ()
- * <li>Groups can be queries using <code>getGroup(String groupName)</code>, groupheader and
- *     footer are accessible through the group object, so use
- *     <code>getGroup(String groupName).getGroupHeader()<code> and
- *     <code>getGroup(String groupName).getGroupFooter()<code>.
+ * <li>the page header and page footer can be reached by using
+ *     <code>getPageHeader()</code> and <code>getPageFooter()</code>
+ * <li>the item band is reachable with <code>getItemBand()</code>
  * </ul>
+ *
+ * Groups can be queried using <code>getGroup(String groupName)</code>.  The group header and
+ * footer are accessible through the group object, so use
+ * <code>getGroup(String groupName).getGroupHeader()<code> and
+ * <code>getGroup(String groupName).getGroupFooter()<code>.
+ * <p>
+ * Elements on a band can be reached by using <code>Band.getElement (String elementName)</code> 
+ * or by retrieving all elements using <code>Band.getElements()</code> and performing a search on 
+ * the returned list.
  *
  * @author David Gilbert
  * @author Thomas Morgner

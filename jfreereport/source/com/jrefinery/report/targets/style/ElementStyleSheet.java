@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,18 +23,20 @@
  * ----------------------
  * ElementStyleSheet.java
  * ----------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003 by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.7 2002/12/11 23:32:26 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.8 2002/12/12 20:24:03 taqua Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Added Javadocs (DG);
  * 12-Dec-2002 : First BugFix: setFontStyle must use font.getName instead of font.getFontName
- *               or a totaly different font family is used. 
+ *               or a totally different font family is used. 
+ * 03-Jan-2002 : Javadoc updates (DG);
+ * 
  */
 
 package com.jrefinery.report.targets.style;
@@ -139,7 +141,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
    * Creates a new element style-sheet with the given name.  The style-sheet initially contains
    * no attributes, and has no parent style-sheets.
    *
-   * @param name  the name (null not permitted).
+   * @param name  the name (<code>null</code> not permitted).
    */
   public ElementStyleSheet (String name)
   {
@@ -155,7 +157,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   /**
    * Returns the name of the style-sheet.
    *
-   * @return the name.
+   * @return the name (never <code>null</code>).
    */
   public String getName()
   {
@@ -166,7 +168,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
    * Adds a parent style-sheet. Parents are queried in reverse order of addition,
    * so the last added parent is queried first.
    *
-   * @param parent  the parent (null not permitted).
+   * @param parent  the parent (<code>null</code> not permitted).
    */
   public void addParent(ElementStyleSheet parent)
   {
@@ -177,10 +179,9 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
    * Adds a parent style-sheet. Parents on a lower position are queried before any
    * parent with an higher position in the list.
    *
-   * @param parent  the parent (null not permitted).
    * @param position the position where to insert the parent style sheet
+   * @param parent  the parent (<code>null</code> not permitted).
    *
-   * @throws NullPointerException if the given parent is null
    * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos &gt;=
    *         numberOfParents)
    */
@@ -196,7 +197,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   /**
    * Removes a parent style-sheet.
    *
-   * @param parent  the style-sheet to remove (null not permitted).
+   * @param parent  the style-sheet to remove (<code>null</code> not permitted).
    */
   public void removeParent(ElementStyleSheet parent)
   {
@@ -219,6 +220,8 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
 
   /**
    * Returns a list of the parent style-sheets.
+   * <p>
+   * The list is unmodifiable.
    *
    * @return the list.
    */
@@ -247,7 +250,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
    * the default value (possibly <code>null</code>) is returned.
    *
    * @param key  the style key.
-   * @param defaultValue  the default value (null permitted).
+   * @param defaultValue  the default value (<code>null</code> permitted).
    *
    * @return the value.
    */
@@ -273,8 +276,8 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   /**
    * Sets a style property (or removes the style if the value is <code>null</code>).
    *
-   * @param key  the style key.
-   * @param value  the value (if null, the style is removed).
+   * @param key  the style key (<code>null</code> not permitted).
+   * @param value  the value.
    */
   public void setStyleProperty (StyleKey key, Object value)
   {
@@ -318,7 +321,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
    *
    * @param key  the style key.
    *
-   * @return true or false.
+   * @return <code>true</code> or <code>false</code>.
    */
   public boolean getBooleanStyleProperty (StyleKey key)
   {
@@ -380,7 +383,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   /**
    * Sets the font for this style-sheet.
    *
-   * @param font  the font (null not permitted).
+   * @param font  the font (<code>null</code> not permitted).
    */
   public void setFontStyleProperty (Font font)
   {

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ---------
  * Band.java
  * ---------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.33 2002/12/13 15:43:07 taqua Exp $
+ * $Id: Band.java,v 1.34 2002/12/18 10:12:59 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -58,6 +58,8 @@
  * 02-Dec-2002 : Removed the drawing and changed Band to use StyleSheets. Band is now an Element-
  *               descentend. No more dynamic fixes, as it is not handled here anymore :)
  * 06-Dec-2002 : Documentation update.
+ * 03-Jan-2002 : More Javadocs (DG);
+ * 
  */
 
 package com.jrefinery.report;
@@ -142,7 +144,7 @@ public class Band extends Element implements Serializable, Cloneable
   /**
    * Adds a report element to the band.
    *
-   * @param element  the element (null not permitted).
+   * @param element  the element (<code>null</code> not permitted).
    *
    * @throws NullPointerException if the element is <code>null</code> or contains <code>null</code>
    *                              values.
