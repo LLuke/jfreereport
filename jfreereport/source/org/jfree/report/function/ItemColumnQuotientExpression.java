@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemColumnQuotientExpression.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ItemColumnQuotientExpression.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,6 @@ package org.jfree.report.function;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import org.jfree.report.filter.DecimalFormatParser;
-import org.jfree.report.filter.NumberFormatParser;
-import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.util.Log;
 
 /**
@@ -72,12 +69,6 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
   /** A useful constant representing zero. */
   private static final BigDecimal ZERO = new BigDecimal(0.0);
 
-  /** The parser for performing data conversion. */
-  private NumberFormatParser parser;
-
-  /** The datasource of the parser. */
-  private StaticDataSource datasource;
-
   /**
    * Constructs a new function.
    * <P>
@@ -85,10 +76,6 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
    */
   public ItemColumnQuotientExpression()
   {
-    datasource = new StaticDataSource();
-    parser = new DecimalFormatParser();
-    parser.setNullValue(ZERO);
-    parser.setDataSource(datasource);
   }
 
   /**
@@ -126,8 +113,7 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
     {
       try
       {
-        datasource.setValue(fieldValue);
-        final Number n = (Number) parser.getValue();
+        final Number n = (Number) fieldValue;
         dividend = n.doubleValue();
       }
       catch (Exception e)
@@ -142,8 +128,7 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
     {
       try
       {
-        datasource.setValue(fieldValue);
-        final Number n = (Number) parser.getValue();
+        final Number n = (Number) fieldValue;
         divisor = n.doubleValue();
       }
       catch (Exception e)
@@ -245,10 +230,6 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
   {
     final ItemColumnQuotientExpression function =
         (ItemColumnQuotientExpression) super.getInstance();
-    function.datasource = new StaticDataSource();
-    function.parser = new DecimalFormatParser();
-    function.parser.setNullValue(ZERO);
-    function.parser.setDataSource(function.datasource);
     return function;
   }
 }

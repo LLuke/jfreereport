@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -52,9 +52,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import org.jfree.report.event.ReportEvent;
-import org.jfree.report.filter.DecimalFormatParser;
-import org.jfree.report.filter.NumberFormatParser;
-import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.util.Log;
 
 /**
@@ -91,12 +88,6 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
   /** The item sum. */
   private BigDecimal sum;
 
-  /** The parser for performing data conversion. */
-  private NumberFormatParser parser;
-
-  /** The datasource of the parser. */
-  private StaticDataSource datasource;
-
   /**
    * Constructs an unnamed function. Make sure to set a Name or function initialisation
    * will fail.
@@ -104,10 +95,6 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
   public ItemSumFunction()
   {
     sum = ZERO;
-    datasource = new StaticDataSource();
-    parser = new DecimalFormatParser();
-    parser.setNullValue(ZERO);
-    parser.setDataSource(datasource);
   }
 
   /**
@@ -213,14 +200,13 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
   public void itemsAdvanced(final ReportEvent event)
   {
     final Object fieldValue = getDataRow().get(getField());
-    datasource.setValue(fieldValue);
-    final Number n = (Number) parser.getValue();
-    if (n == null)
+    if (fieldValue instanceof Number ==  false)
     {
       Log.error("ItemSumFunction.advanceItems(): problem adding number.");
       return;
     }
 
+    Number n = (Number) fieldValue;
     sum = sum.add(new BigDecimal(n.doubleValue()));
   }
 
@@ -261,10 +247,6 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
   {
     final ItemSumFunction function = (ItemSumFunction) super.getInstance();
     function.sum = ZERO;
-    function.datasource = new StaticDataSource();
-    function.parser = new DecimalFormatParser();
-    function.parser.setNullValue(ZERO);
-    function.parser.setDataSource(function.datasource);
     return function;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.9 2003/08/24 15:08:18 taqua Exp $
+ * $Id: PackageManager.java,v 1.10 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,6 +46,7 @@ import java.util.Iterator;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PackageConfiguration;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.JFreeReportCoreModule;
 
 /**
  * The PackageManager is used to load and configure the modules of JFreeReport.
@@ -100,6 +101,9 @@ public final class PackageManager
     packageConfiguration = new PackageConfiguration();
     modules = new ArrayList();
     initSections = new ArrayList();
+
+    addModule(JFreeReportCoreModule.class.getName());
+    initializeModules();
   }
 
   /**
@@ -197,7 +201,7 @@ public final class PackageManager
     final ArrayList loadModules = new ArrayList();
     final ModuleInfo modInfo = new DefaultModuleInfo
         (modClass, null, null, null);
-    if (loadModule(modInfo, loadModules))
+    if (loadModule(modInfo, loadModules, false))
     {
       for (int i = 0; i < loadModules.size(); i++)
       {
@@ -252,7 +256,7 @@ public final class PackageManager
    * @param modules the list of previously loaded modules for this module.
    * @return true, if the module was loaded successfully, false otherwise.
    */
-  private boolean loadModule(final ModuleInfo moduleInfo, final ArrayList modules)
+  private boolean loadModule(final ModuleInfo moduleInfo, final ArrayList modules, boolean fatal)
   {
     try
     {
@@ -272,7 +276,7 @@ public final class PackageManager
         final ModuleInfo[] required = module.getRequiredModules();
         for (int i = 0; i < required.length; i++)
         {
-          if (loadModule(required[i], modules) == false)
+          if (loadModule(required[i], modules, true) == false)
           {
             return false;
           }
@@ -281,7 +285,7 @@ public final class PackageManager
         final ModuleInfo[] optional = module.getOptionalModules();
         for (int i = 0; i < optional.length; i++)
         {
-          if (loadModule(optional[i], modules) == false)
+          if (loadModule(optional[i], modules, true) == false)
           {
             Log.debug(new Log.SimpleMessage("Optional module: ",
                 optional[i].getModuleClass(), " was not loaded."));
@@ -297,14 +301,17 @@ public final class PackageManager
     }
     catch (ClassNotFoundException cnfe)
     {
-      Log.warn(new Log.SimpleMessage
-          ("Unresolved dependency for package: ", moduleInfo.getModuleClass()));
-      Log.debug("ClassNotFound: ", cnfe);
+      if (fatal)
+      {
+        Log.warn(new Log.SimpleMessage
+            ("Unresolved dependency for package: ", moduleInfo.getModuleClass()));
+      }
+      Log.debug(new Log.SimpleMessage ("ClassNotFound: ", cnfe.getMessage()));
       return false;
     }
     catch (Exception e)
     {
-      Log.debug(new Log.SimpleMessage("Exception while loading module: ", moduleInfo), e);
+      Log.warn(new Log.SimpleMessage("Exception while loading module: ", moduleInfo), e);
       return false;
     }
   }
@@ -417,5 +424,16 @@ public final class PackageManager
   public PackageConfiguration getPackageConfiguration()
   {
     return packageConfiguration;
+  }
+
+  public Module[] getActiveModules ()
+  {
+    Module[] mods = new Module[modules.size()];
+    for (int i = 0; i < modules.size(); i++)
+    {
+      PackageState state = (PackageState) modules.get(i);
+      mods[i] = state.getModule();
+    }
+    return mods;
   }
 }

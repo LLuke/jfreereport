@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited)
  *                   for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientFunction.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
+ * $Id: TotalGroupSumQuotientFunction.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -44,9 +44,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import org.jfree.report.event.ReportEvent;
-import org.jfree.report.filter.DecimalFormatParser;
-import org.jfree.report.filter.NumberFormatParser;
-import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.util.Log;
 
 /**
@@ -122,15 +119,6 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
     }
   }
 
-  /** A useful constant representing zero. */
-  private static final BigDecimal ZERO = new BigDecimal(0.0);
-
-  /** The parser for performing data conversion. */
-  private NumberFormatParser parser;
-
-  /** The datasource of the parser. */
-  private StaticDataSource datasource;
-
   /** The group sums for dividend and divisor. */
   private GroupSum groupDividend;
 
@@ -155,10 +143,6 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
   {
     groupDividend = new GroupSum();
     groupDivisor = new GroupSum();
-    datasource = new StaticDataSource();
-    parser = new DecimalFormatParser();
-    parser.setNullValue(ZERO);
-    parser.setDataSource(datasource);
     dividendResults = new ArrayList();
     divisorResults = new ArrayList();
   }
@@ -232,8 +216,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
     {
       try
       {
-        datasource.setValue(fieldValue);
-        final Number n = (Number) parser.getValue();
+        final Number n = (Number) fieldValue;
         groupDividend.add(n);
       }
       catch (Exception e)
@@ -248,8 +231,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
     {
       try
       {
-        datasource.setValue(fieldValue);
-        final Number n = (Number) parser.getValue();
+        final Number n = (Number) fieldValue;
         groupDivisor.add(n);
       }
       catch (Exception e)
@@ -388,10 +370,6 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
         (TotalGroupSumQuotientFunction) super.getInstance();
     function.groupDividend = new GroupSum();
     function.groupDivisor = new GroupSum();
-    function.datasource = new StaticDataSource();
-    function.parser = new DecimalFormatParser();
-    function.parser.setNullValue(ZERO);
-    function.parser.setDataSource(function.datasource);
     function.dividendResults = new ArrayList();
     function.divisorResults = new ArrayList();
     return function;

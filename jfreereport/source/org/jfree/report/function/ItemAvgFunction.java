@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemAvgFunction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: ItemAvgFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,6 @@ import java.math.BigDecimal;
 
 import org.jfree.report.Group;
 import org.jfree.report.event.ReportEvent;
-import org.jfree.report.filter.DecimalFormatParser;
-import org.jfree.report.filter.NumberFormatParser;
-import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.util.Log;
 
 /**
@@ -87,12 +84,6 @@ public class ItemAvgFunction extends AbstractFunction implements Serializable
   /** The item count. */
   private BigDecimal itemCount;
 
-  /** The parser for performing data conversion. */
-  private NumberFormatParser parser;
-
-  /** The data source of the parser. */
-  private StaticDataSource datasource;
-
   /**
    * Constructs an unnamed function. Make sure to set a Name or function initialisation
    * will fail.
@@ -101,10 +92,6 @@ public class ItemAvgFunction extends AbstractFunction implements Serializable
   {
     sum = ZERO;
     itemCount = ZERO;
-    datasource = new StaticDataSource();
-    parser = new DecimalFormatParser();
-    parser.setNullValue(ZERO);
-    parser.setDataSource(datasource);
   }
 
   /**
@@ -220,8 +207,8 @@ public class ItemAvgFunction extends AbstractFunction implements Serializable
   public void itemsAdvanced(final ReportEvent event)
   {
     final Object fieldValue = event.getDataRow().get(getField());
-    datasource.setValue(fieldValue);
-    final Number n = (Number) parser.getValue();
+
+    final Number n = (Number) fieldValue;
     try
     {
       sum = sum.add(new BigDecimal(n.doubleValue()));
@@ -271,10 +258,6 @@ public class ItemAvgFunction extends AbstractFunction implements Serializable
     final ItemAvgFunction function = (ItemAvgFunction) super.getInstance();
     function.sum = ZERO;
     function.itemCount = ZERO;
-    function.datasource = new StaticDataSource();
-    function.parser = new DecimalFormatParser();
-    function.parser.setNullValue(ZERO);
-    function.parser.setDataSource(function.datasource);
     return function;
   }
 }

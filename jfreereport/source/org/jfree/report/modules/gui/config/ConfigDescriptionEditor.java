@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEditor.java,v 1.1 2003/08/27 20:19:53 taqua Exp $
+ * $Id: ConfigDescriptionEditor.java,v 1.2 2003/08/28 17:45:43 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -84,6 +84,11 @@ import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.ActionRadioButton;
 import org.jfree.report.modules.gui.config.resources.ConfigResources;
+import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
+import org.jfree.report.modules.gui.config.model.ConfigDescriptionModel;
+import org.jfree.report.modules.gui.config.model.EnumConfigDescriptionEntry;
+import org.jfree.report.modules.gui.config.model.TextConfigDescriptionEntry;
+import org.jfree.report.modules.gui.config.model.ClassConfigDescriptionEntry;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.ExtensionFileFilter;
@@ -446,7 +451,7 @@ public class ConfigDescriptionEditor extends JFrame
     detailEditorPane = createEditPane();
     JSplitPane splitPane = new JSplitPane
         (JSplitPane.HORIZONTAL_SPLIT, createEntryList(), detailEditorPane);
-    
+
     contentPane.add(splitPane, BorderLayout.CENTER);
     contentPane.add(createButtonPane(), BorderLayout.SOUTH);
 

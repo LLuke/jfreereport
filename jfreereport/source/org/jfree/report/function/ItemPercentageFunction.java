@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemPercentageFunction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: ItemPercentageFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import org.jfree.report.event.ReportEvent;
-import org.jfree.report.filter.DecimalFormatParser;
-import org.jfree.report.filter.NumberFormatParser;
-import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.util.Log;
 
 /**
@@ -74,12 +71,6 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
   /** A useful constant representing zero. */
   private static final BigDecimal ZERO = new BigDecimal(0.0);
 
-  /** The parser for performing data conversion. */
-  private NumberFormatParser parser;
-
-  /** The datasource of the parser. */
-  private StaticDataSource datasource;
-
   /**
    * Creates a new ItemPercentageFunction.
    */
@@ -87,11 +78,6 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
   {
     totalSumFunction = new TotalGroupSumFunction();
     totalSumFunction.setName("total");
-
-    datasource = new StaticDataSource();
-    parser = new DecimalFormatParser();
-    parser.setNullValue(ZERO);
-    parser.setDataSource(datasource);
   }
 
   /**
@@ -124,8 +110,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
     }
     try
     {
-      datasource.setValue(fieldValue);
-      final Number n = (Number) parser.getValue();
+      final Number n = (Number) fieldValue;
       currentValue = new BigDecimal(n.toString());
     }
     catch (Exception e)
@@ -151,8 +136,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
     }
     try
     {
-      datasource.setValue(fieldValue);
-      final Number n = (Number) parser.getValue();
+      final Number n = (Number) fieldValue;
       currentValue = new BigDecimal(n.toString());
     }
     catch (Exception e)
@@ -280,10 +264,6 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
   {
     final ItemPercentageFunction function = (ItemPercentageFunction) super.getInstance();
     function.totalSumFunction = (TotalGroupSumFunction) totalSumFunction.getInstance();
-    function.datasource = new StaticDataSource();
-    function.parser = new DecimalFormatParser();
-    function.parser.setNullValue(ZERO);
-    function.parser.setDataSource(function.datasource);
     function.currentValue = ZERO;
     return function;
   }
