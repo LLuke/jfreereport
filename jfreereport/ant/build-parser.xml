@@ -169,6 +169,7 @@
     <jar jarfile="${module-parser-extwriter-file}"
          basedir="build">
       <manifest>
+          <attribute name="Main-Class" value="org.jfree.report.modules.parser.extwriter.ReportConverter"/>
           <attribute name="Class-Path" value="${core-jar-file} ${module-parser-base-file} ${module-parser-ext-file}"/>
       </manifest>
     </jar>

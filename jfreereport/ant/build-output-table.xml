@@ -80,7 +80,7 @@
   <!--  Depends on: Core task                                         -->
   <!-- ************************************************************** -->
 
-  <target name="check-module-output-csv">
+  <target name="check-module-output-csv" depends="init">
     <available file="${module-output-csv-file}" property="module-output-csv-file-present"/>
   </target>
 
@@ -190,7 +190,7 @@
   <!--  Depends on: Core task                                         -->
   <!-- ************************************************************** -->
 
-  <target name="check-module-output-support-itext">
+  <target name="check-module-output-support-itext" depends="init">
     <available file="${module-output-support-itext-file}" property="module-output-support-itext-file-present"/>
   </target>
 

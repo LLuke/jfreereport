@@ -24,4 +24,545 @@
     <ant antfile="${antfile.dir}/build-core.xml" target="all"/>
   </target>
 
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  GUI Base modules                                              -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="check-module-output-pageable-graphics" depends="init">
+    <available file="${module-output-pageable-graphics-file}" property="module-output-pageable-graphics-file-present"/>
+  </target>
+
+  <target name="rebuild-module-output-pageable-graphics" unless="module-output-pageable-graphics-file-present" depends="check-module-output-pageable-graphics">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-output-pageable.xml" target="compile-module-output-pageable-graphics"/>
+  </target>
+
+  <target name="compile-module-gui-base"
+    depends="init, rebuild-module-output-pageable-graphics">
+    <description>
+      Compiles the GUI base module, contains the preview dialogs/frames etc.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/gui/base/**"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-output-pageable-graphics-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-gui-base" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-gui-base-file}"
+         basedir="build">
+      <manifest>
+          <attribute name="Class-Path" value="${core-jar-file} ${module-output-pageable-graphics-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-gui-base">
+    <copy file="source/org/jfree/report/modules/gui/base/module.properties"
+      tofile="build/org/jfree/report/modules/gui/base/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/gui/base/components/jfreereport-encodings.properties"
+      tofile="build/org/jfree/report/modules/gui/base/components/jfreereport-encodings.properties"/>
+
+    <copy file="source/org/jfree/report/modules/gui/base/configuration.properties"
+      tofile="build/org/jfree/report/modules/gui/base/configuration.properties"/>
+
+    <copy todir="build/org/jfree/report/modules/gui/base">
+      <fileset dir="source/org/jfree/report/modules/gui/base">
+        <include name="**/*.gif"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  GUI Converter modules                                         -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="check-module-parser-simple" depends="init">
+    <available file="${module-parser-simple-file}" property="module-parser-simple-file-present"/>
+  </target>
+
+  <target name="rebuild-module-parser-simple" unless="module-parser-simple-file-present" depends="check-module-parser-simple">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-parser.xml" target="compile-module-parser-simple"/>
+  </target>
+
+  <target name="check-module-parser-extwriter" depends="init">
+    <available file="${module-parser-extwriter-file}" property="module-parser-extwriter-file-present"/>
+  </target>
+
+  <target name="rebuild-module-parser-extwriter" unless="module-parser-extwriter-file-present" depends="check-module-parser-extwriter">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-parser.xml" target="compile-module-parser-extwriter"/>
+  </target>
+
+  <target name="compile-module-gui-converter"
+    depends="compile-module-gui-base, rebuild-module-parser-simple, rebuild-module-parser-extwriter">
+
+    <description>
+      Compiles the Report Converter GUI. The real report converter is contained
+      in the ext writer package.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/gui/converter/**"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-gui-base-file}"/>
+        <pathelement location="${module-parser-extwriter-file}"/>
+        <pathelement location="${module-parser-simple-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-gui-converter" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-gui-converter-file}"
+         basedir="build">
+      <manifest>
+        <attribute name="Main-Class" value="org.jfree.report.modules.gui.converter.ReportConverterGUI"/>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-parser-extwriter-file} ${module-parser-simple-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-gui-converter">
+    <copy file="source/org/jfree/report/modules/gui/converter/module.properties"
+      tofile="build/org/jfree/report/modules/gui/converter/module.properties"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  CSV Export GUI module                                         -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="check-module-output-csv"  depends="init">
+    <available file="${module-output-csv-file}" property="module-output-csv-file-present"/>
+  </target>
+
+  <target name="rebuild-module-output-csv" unless="module-output-csv-file-present" depends="check-module-output-csv">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-output-misc.xml" target="compile-module-output-csv"/>
+  </target>
+
+  <target name="check-module-output-table-csv" depends="init">
+    <available file="${module-output-table-csv-file}" property="module-output-table-csv-file-present"/>
+  </target>
+
+  <target name="rebuild-module-output-table-csv" unless="module-output-table-csv-file-present" depends="check-module-output-table-csv">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-output-table.xml" target="compile-module-output-table-csv"/>
+  </target>
+
+  <target name="compile-module-gui-csv"
+    depends="compile-module-gui-base,
+    rebuild-module-output-csv,
+    rebuild-module-output-table-csv">
+
+    <description>
+      Compiles the CSV Export GUI. This export handles both the raw and the table
+      output.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/gui/csv/**"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-gui-base-file}"/>
+        <pathelement location="${module-output-csv-file}"/>
+        <pathelement location="${module-output-table-csv-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-gui-csv" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-gui-csv-file}"
+         basedir="build">
+      <manifest>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-csv-file} ${module-output-table-csv-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-gui-csv">
+    <copy file="source/org/jfree/report/modules/gui/csv/module.properties"
+      tofile="build/org/jfree/report/modules/gui/csv/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/gui/csv/configuration.properties"
+      tofile="build/org/jfree/report/modules/gui/csv/configuration.properties"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Html Export GUI module                                         -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="check-module-output-table-html" depends="init">
+    <available file="${module-output-table-html-file}" property="module-output-table-html-file-present"/>
+  </target>
+
+  <target name="rebuild-module-output-table-html" unless="module-output-table-html-file-present" depends="check-module-output-table-html">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-output-table.xml" target="compile-module-output-table-html"/>
+  </target>
+
+  <target name="compile-module-gui-html"
+    depends="compile-module-gui-base,
+    rebuild-module-output-table-html">
+
+    <description>
+      Compiles the HTML Export GUI.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/gui/html/**"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-gui-base-file}"/>
+        <pathelement location="${module-output-table-html-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-gui-html" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-gui-html-file}"
+         basedir="build">
+      <manifest>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-table-html-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-gui-html">
+    <copy file="source/org/jfree/report/modules/gui/html/module.properties"
+      tofile="build/org/jfree/report/modules/gui/html/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/gui/html/configuration.properties"
+      tofile="build/org/jfree/report/modules/gui/html/configuration.properties"/>
+  </target>
+
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Excel Export GUI module                                         -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="check-module-output-table-xls" depends="init">
+    <available file="${module-output-table-xls-file}" property="module-output-table-xls-file-present"/>
+  </target>
+
+  <target name="rebuild-module-output-table-xls" unless="module-output-table-xls-file-present" depends="check-module-output-table-xls">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-output-table.xml" target="compile-module-output-table-xls"/>
+  </target>
+
+  <target name="compile-module-gui-xls"
+    depends="compile-module-gui-base,
+    rebuild-module-output-table-xls">
+
+    <description>
+      Compiles the xls Export GUI.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/gui/xls/**"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-gui-base-file}"/>
+        <pathelement location="${module-output-table-xls-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-gui-xls" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-gui-xls-file}"
+         basedir="build">
+      <manifest>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-table-xls-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-gui-xls">
+    <copy file="source/org/jfree/report/modules/gui/xls/module.properties"
+      tofile="build/org/jfree/report/modules/gui/xls/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/gui/xls/configuration.properties"
+      tofile="build/org/jfree/report/modules/gui/xls/configuration.properties"/>
+  </target>
+
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  PDF Export GUI module                                         -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="check-module-output-pageable-pdf" depends="init">
+    <available file="${module-output-pageable-pdf-file}" property="module-output-pageable-pdf-file-present"/>
+  </target>
+
+  <target name="rebuild-module-output-pageable-pdf" unless="module-output-pageable-pdf-file-present" depends="check-module-output-pageable-pdf">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-output-pageable.xml" target="compile-module-output-pageable-pdf"/>
+  </target>
+
+  <target name="compile-module-gui-pdf"
+    depends="compile-module-gui-base,
+    rebuild-module-output-pageable-pdf">
+
+    <description>
+      Compiles the PDF Export GUI.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/gui/pdf/**"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-gui-base-file}"/>
+        <pathelement location="${module-output-pageable-pdf-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-gui-pdf" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-gui-pdf-file}"
+         basedir="build">
+      <manifest>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-pageable-pdf-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-gui-pdf">
+    <copy file="source/org/jfree/report/modules/gui/pdf/module.properties"
+      tofile="build/org/jfree/report/modules/gui/pdf/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/gui/pdf/configuration.properties"
+      tofile="build/org/jfree/report/modules/gui/pdf/configuration.properties"/>
+  </target>
+
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  PlainText Export GUI module                                   -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="check-module-output-pageable-plaintext" depends="init">
+    <available file="${module-output-pageable-plaintext-file}" property="module-output-pageable-plaintext-file-present"/>
+  </target>
+
+  <target name="rebuild-module-output-pageable-plaintext" unless="module-output-pageable-plaintext-file-present" depends="check-module-output-pageable-plaintext">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-output-pageable.xml" target="compile-module-output-pageable-plaintext"/>
+  </target>
+
+  <target name="compile-module-gui-plaintext"
+    depends="compile-module-gui-base,
+    rebuild-module-output-pageable-plaintext">
+
+    <description>
+      Compiles the plaintext Export GUI.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/gui/plaintext/**"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-gui-base-file}"/>
+        <pathelement location="${module-output-pageable-plaintext-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-gui-plaintext" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-gui-plaintext-file}"
+         basedir="build">
+      <manifest>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-pageable-plaintext-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-gui-plaintext">
+    <copy file="source/org/jfree/report/modules/gui/plaintext/module.properties"
+      tofile="build/org/jfree/report/modules/gui/plaintext/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/gui/plaintext/configuration.properties"
+      tofile="build/org/jfree/report/modules/gui/plaintext/configuration.properties"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  AWT Printing Export GUI module                                -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="compile-module-gui-print"
+    depends="compile-module-gui-base">
+
+    <description>
+      Compiles the AWT Print Export GUI.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/gui/print/**"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-gui-base-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-gui-print" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-gui-print-file}"
+         basedir="build">
+      <manifest>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-gui-print">
+    <copy file="source/org/jfree/report/modules/gui/print/module.properties"
+      tofile="build/org/jfree/report/modules/gui/print/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/gui/print/configuration.properties"
+      tofile="build/org/jfree/report/modules/gui/print/configuration.properties"/>
+  </target>
+
+  <target name="copy-resources"
+    depends="copy-resources-gui-converter,
+    copy-resources-gui-csv,
+    copy-resources-gui-html,
+    copy-resources-gui-xls,
+    copy-resources-gui-plaintext,
+    copy-resources-gui-pdf,
+    copy-resources-gui-print,
+    copy-resources-gui-base"/>
+
+  <target name="all" depends="init,
+  compile-module-gui-base,
+  compile-module-gui-csv,
+  compile-module-gui-html,
+  compile-module-gui-xls,
+  compile-module-gui-plaintext,
+  compile-module-gui-pdf,
+  compile-module-gui-print,
+  compile-module-gui-converter"/>
 </project>

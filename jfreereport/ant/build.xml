@@ -23,6 +23,7 @@
     <ant antfile="${antfile.dir}/build-output-pageable.xml" target="all"/>
     <ant antfile="${antfile.dir}/build-parser.xml" target="all"/>
     <ant antfile="${antfile.dir}/build-reference.xml" target="all"/>
+    <ant antfile="${antfile.dir}/build-gui.xml" target="all"/>
   </target>
 
 </project>
