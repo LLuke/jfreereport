@@ -30,32 +30,18 @@
  */
 package com.jrefinery.report.ext.demo;
 
-import com.jrefinery.io.FileUtilities;
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportInitialisationException;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.demo.FirstDemoTableModel;
 import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
-import com.jrefinery.report.targets.pageable.PageableReportProcessor;
-import com.jrefinery.report.demo.IconTableModel;
-import com.jrefinery.report.io.ReportGenerator;
+import com.jrefinery.report.util.Log;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.ImageIcon;
-import javax.swing.table.TableModel;
-import java.awt.Image;
 import java.awt.print.PageFormat;
-import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /**
  * A Sample HttpServlet to show how JFreeReports can be used in a
@@ -77,10 +63,19 @@ public class JFreeReportServlet extends HttpServlet
   {
     Log.debug("in processRequest..." + getClass());
 
-    JFreeReport thisRpt = null;
+    URL in = getClass().getResource("/com/jrefinery/report/demo/first.xml");
+    if (in == null)
+      throw new NullPointerException();
+
+    AbstractPageableReportServletWorker worker =
+        new DefaultPageableReportServletWorker(null,
+                                               in,
+                                               new FirstDemoTableModel());
+
     try
     {
-      thisRpt = createReport();
+      // this throws an exception if the report could not be parsed
+      worker.getReport();
     }
     catch (Exception e)
     {
@@ -91,125 +86,26 @@ public class JFreeReportServlet extends HttpServlet
 
     response.setHeader("Content-Type", "application/pdf");
 
-    response.setHeader("Content-Disposition", "attachment; filename=\"" + "unknown.pdf" + "\"");
+    // display the content in the browser window (see RFC2183)
+    response.setHeader("Content-Disposition", "inline; filename=\"" + "unknown.pdf" + "\"");
+
+    //response.setHeader("Content-Disposition", "attachment; filename=\"" + "unknown.pdf" + "\"");
     //above line if enabled will pop-Out the browsers "File Download" dialog
     //with the standard options: "Open from current location"/ "Save to disk"
 
-    ServletOutputStream out = response.getOutputStream();
-
     try
     {
-      PDFOutputTarget target = new PDFOutputTarget(out, new PageFormat(), true);
+      PDFOutputTarget target = new PDFOutputTarget(response.getOutputStream(),
+                                                   worker.getReport().getDefaultPageFormat(),
+                                                   true);
       target.setProperty(PDFOutputTarget.TITLE, "Title");
       target.setProperty(PDFOutputTarget.AUTHOR, "Author");
-      target.open();
-
-      PageableReportProcessor proc = new PageableReportProcessor(thisRpt);
-      proc.setOutputTarget(target);
-      proc.processReport();
-
-      target.close();
+      worker.repaginateReport(target);
+      worker.processReport();
     }
     catch (Exception e)
     {
       Log.debug ("Failed to create the report", e);
     }
-  }
-
-  /**
-   * parses the report and returns the fully initialized report.
-   * @return
-   */
-  private JFreeReport createReport() throws ReportInitialisationException
-  {
-    URL rptFormat = getClass().getResource("/com/jrefinery/report/demo/first.xml");
-    if (rptFormat == null)
-      throw new ReportInitialisationException("The report was not found on the classpath");
-
-    try
-    {
-      JFreeReport thisRpt = ReportGenerator.getInstance().parseReport(rptFormat);
-      thisRpt.setData(readData()); //NOTE: NULL data cannot be set into the report.
-      return thisRpt;
-    }
-    catch (Exception e)
-    {
-      throw new ReportInitialisationException("Creating the report failed", e);
-    }
-  }
-
-  private TableModel readData() //copied from First.java
-  {
-    IconTableModel result = new IconTableModel();
-    //find the file on the classpath...
-    //File f = new File("e:\\Jeevan\\jlfgr-1_0.jar");	//hardcoded the location of the file.
-
-    // can this cause trouble? If you get a "unable to find ... " message try to hardcode
-    // the file as shown above. (? in this case: find a better solution ...)
-    File f = FileUtilities.findFileOnClassPath("jlfgr-1_0.jar");
-    if (f == null)
-    {
-      Log.debug("Unable to find jlfgr-1_0.jar\n" +
-          "Unable to load the icons.\n" +
-          "Please make sure you have the Java Look and Feel Graphics Repository in your classpath.\n" +
-          "You may download this jar-file from http://developer.java.sun.com/developer/techDocs/hi/repository.");
-
-      return result;
-    }
-    try
-    {
-      ZipFile iconJar = new ZipFile(f);
-      Enumeration e = iconJar.entries();
-      while (e.hasMoreElements())
-      {
-        ZipEntry ze = (ZipEntry) e.nextElement();
-        String fullName = ze.getName();
-        if (fullName.endsWith(".gif"))
-        {
-          String category = getCategory(fullName);
-          String name = getName(fullName);
-          Image image = getImage(iconJar, ze);
-          Long bytes = new Long(ze.getSize());
-          result.addIconEntry(name, category, image, bytes);
-        }
-      }
-    }
-    catch (IOException e)
-    {
-      Log.debug("Unable to load the ICONS");
-    }
-    return result;
-  }
-
-  private Image getImage(ZipFile file, ZipEntry entry) //copied from First.java
-  {
-    Image result = null;
-    try
-    {
-      InputStream in = new BufferedInputStream(file.getInputStream(entry));
-      byte[] bytes = new byte[(int) entry.getSize()];
-      in.read(bytes);
-      ImageIcon temp = new ImageIcon(bytes);
-      result = temp.getImage();
-    }
-    catch (IOException e)
-    {
-      System.out.println(e.toString());
-    }
-    return result;
-  }
-
-  private String getCategory(String fullName) //copied from First.java
-  {
-    int start = fullName.indexOf("/") + 1;
-    int end = fullName.lastIndexOf("/");
-    return fullName.substring(start, end);
-  }
-
-  private String getName(String fullName) //copied from First.java
-  {
-    int start = fullName.lastIndexOf("/") + 1;
-    int end = fullName.indexOf(".");
-    return fullName.substring(start, end);
   }
 }
