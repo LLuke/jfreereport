@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.12 2003/09/09 21:31:36 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.13 2003/10/18 20:49:17 taqua Exp $
  *
  * Changes
  * --------
@@ -236,6 +236,7 @@ public final class ExportPluginFactory
       {
         exportPlugins.add(def);
       }
+      Log.debug ("Registered Plugin "  + plugin);
     }
   }
 

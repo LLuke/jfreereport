@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.14 2003/09/08 18:11:48 taqua Exp $
+ * $Id: PackageManager.java,v 1.15 2003/09/14 19:24:07 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -296,8 +296,8 @@ public final class PackageManager
       if (acceptVersion(moduleInfo, module) == false)
       {
         // module conflict!
-        Log.debug("Module " + module.getName() + ": required version: " + moduleInfo +
-            ", but found Version: " + module);
+        Log.warn("Module " + module.getName() + ": required version: " + moduleInfo +
+            ", but found Version: \n" + module);
         PackageState state = new PackageState(module, PackageState.STATE_ERROR);
         dropFailedModule(state);
         return false;
@@ -429,6 +429,8 @@ public final class PackageManager
       if (acceptVersion(moduleRequirement.getPatchLevel(),
           module.getPatchLevel()) == false)
       {
+        Log.debug ("Did not accept patchlevel: " + moduleRequirement.getPatchLevel() + " - " +
+          module.getPatchLevel());
         return false;
       }
     }
@@ -448,26 +450,31 @@ public final class PackageManager
   private boolean acceptVersion(final String modVer, final String depModVer)
   {
     final int mLength = Math.max(modVer.length(), depModVer.length());
+    char[] modVerArray = null;
+    char[] depVerArray = null;
     if (modVer.length() > depModVer.length())
     {
-      final char[] b2 = new char[mLength];
+      modVerArray = modVer.toCharArray();
+      depVerArray = new char[mLength];
       final int delta = modVer.length() - depModVer.length();
-      Arrays.fill(b2, 0, delta, ' ');
-      System.arraycopy(b2, delta, depModVer.toCharArray(), 0, depModVer.length());
-      return (new String(b2).compareTo(modVer) <= 0);
+      Arrays.fill(depVerArray, 0, delta, ' ');
+      System.arraycopy(depVerArray, delta, depModVer.toCharArray(), 0, depModVer.length());
     }
     else if (modVer.length() < depModVer.length())
     {
+      depVerArray = depModVer.toCharArray();
+      modVerArray = new char[mLength];
       final char[] b1 = new char[mLength];
       final int delta = depModVer.length() - modVer.length();
       Arrays.fill(b1, 0, delta, ' ');
       System.arraycopy(b1, delta, modVer.toCharArray(), 0, modVer.length());
-      return (new String(b1).compareTo(depModVer) <= 0);
     }
     else
     {
-      return (depModVer.compareTo(modVer) <= 0);
+      depVerArray = depModVer.toCharArray();
+      modVerArray = modVer.toCharArray();
     }
+    return new String(modVerArray).compareTo(new String (depVerArray)) <= 0;
   }
 
   /**
