@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.8 2005/03/18 18:50:58 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.9 2005/03/21 14:39:44 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -203,11 +203,18 @@ public class HtmlContentCreator extends TableContentCreator
     for (int i = 1; i < noc; i++)
     {
       final int width = (int)
-               StrictGeomUtility.toExternalValue(layout.getCellWidth(i-1, 1));
+               StrictGeomUtility.toExternalValue(layout.getCellWidth(i-1, i));
       pout.print("<col style=\"");
       pout.print("width:");
       pout.print(width);
-      pout.print("pt\">");
+      if (isUseXHTML())
+      {
+        pout.println("pt\" />");
+      }
+      else
+      {
+        pout.println("pt\">");
+      }
     }
   }
 
@@ -284,7 +291,7 @@ public class HtmlContentCreator extends TableContentCreator
         }
         else
         {
-          report.getProperties().get(JFreeReport.NAME_PROPERTY, "<unnamed>");
+          pout.print(report.getProperties().get(JFreeReport.NAME_PROPERTY, "<unnamed>"));
         }
         pout.println("</title>");
 
