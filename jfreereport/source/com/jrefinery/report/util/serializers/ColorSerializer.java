@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ColorSerializer.java,v 1.1 2003/05/30 18:47:49 taqua Exp $
+ * $Id: ColorSerializer.java,v 1.2 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,6 +48,13 @@ import com.jrefinery.report.util.SerializeMethod;
 
 public class ColorSerializer implements SerializeMethod
 {
+  /**
+   * Default Constructor.
+   */
+  public ColorSerializer()
+  {
+  }
+
   public void writeObject(Object o, ObjectOutputStream out) throws IOException
   {
     Color c = (Color) o;

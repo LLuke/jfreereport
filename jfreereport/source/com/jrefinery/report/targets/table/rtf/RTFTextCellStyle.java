@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: RTFTextCellStyle.java,v 1.1 2003/06/19 18:50:18 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 18.06.2003 : Initial version
+ * 18-Jun-2003 : Initial version
  *  
  */
 
@@ -46,11 +46,17 @@ import com.lowagie.text.Chunk;
 import com.lowagie.text.Font;
 import com.lowagie.text.pdf.BaseFont;
 
+/**
+ * Encapsulates the style information for text cells in the RTF table.
+ *
+ * @author Thomas Morgner
+ */
 public class RTFTextCellStyle extends RTFCellStyle
 {
   /** The used font definition. */
   private FontDefinition font;
 
+  /** The basefont used in that cell style. */
   private BaseFont baseFont;
 
   /** The text color. */
@@ -60,6 +66,7 @@ public class RTFTextCellStyle extends RTFCellStyle
    * Creates a new RTFTextCellStyle.
    *
    * @param font the font definition.
+   * @param baseFont the baseFont used to represent the font definition in the RTF document.
    * @param fontColor the font color.
    * @param verticalAlignment the vertical text alignment.
    * @param horizontalAlignment the horizontal text alignment.

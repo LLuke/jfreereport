@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.33 2003/06/23 14:36:57 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.34 2003/06/23 16:08:27 taqua Exp $
  *
  * Changes
  * -------
@@ -78,11 +78,20 @@ import com.jrefinery.report.util.InstanceID;
  */
 public class ElementStyleSheet implements Serializable, StyleChangeListener, Cloneable
 {
+  /**
+   * Internal helper class to handle the style sheet collection properly.
+   */
   private static class ElementStyleSheetCollectionHelper
       extends StyleSheetCollectionHelper
   {
+    /** The ElementStyleSheet for which we handle the stylesheet collection. */
     private ElementStyleSheet es;
 
+    /**
+     * Creates a new helper for the given ElementStyleSheet.
+     *
+     * @param es the ElementStyleSheet whose stylesheet collection should be managed.
+     */
     public ElementStyleSheetCollectionHelper(ElementStyleSheet es)
     {
       if (es == null)
@@ -92,11 +101,19 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       this.es = es;
     }
 
+    /**
+     * Handles the stylesheet collection registration for the ElementStyleSheet and
+     * all parent and default parent stylesheets.
+     */
     protected void handleRegisterStyleSheetCollection()
     {
       getStyleSheetCollection().addStyleSheet(es);
     }
 
+    /**
+     * Handles the stylesheet collection unregistration for the ElementStyleSheet and
+     * all parent and default parent stylesheets.
+     */
     protected void handleUnregisterStyleSheetCollection()
     {
       getStyleSheetCollection().remove(es);
@@ -179,7 +196,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    */
   public static final StyleKey ELEMENT_LAYOUT_CACHEABLE = StyleKey.getStyleKey("layout-cacheable",
                                                                     Boolean.class);
-
+  /** The instance id of this ElementStyleSheet. This id is shared among all clones. */
   private InstanceID id;
 
   /** The style-sheet name. */
@@ -209,8 +226,15 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   /** A flag that controls whether or not caching is allowed. */
   private boolean allowCaching;
 
+  /** An unmodifiable list, chaching the return value from getParents(). */
   private transient List parentsListCached;
+  /** An unmodifiable list, chaching the return value from getDefaultParents(). */
   private transient List defaultParentsListCached;
+
+  /**
+   * The stylesheet collection helper implementation that manages the
+   * stylesheet collection for this ElementStyleSheet.
+   */
   private transient ElementStyleSheetCollectionHelper collectionHelper;
 
   /**
@@ -310,7 +334,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       parents.add (position, parent);
       parentsCached = null;
       parentsListCached = null;
-      parent.addListener(this);
+      if (parent.isGlobalDefault() == false)
+      {
+        parent.addListener(this);
+      }
       if (getStyleSheetCollection() != null)
       {
         parent.registerStyleSheetCollection(getStyleSheetCollection());
@@ -351,6 +378,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       if (getStyleSheetCollection() != null)
       {
         parent.registerStyleSheetCollection(getStyleSheetCollection());
+      }
+      if (parent.isGlobalDefault() == false)
+      {
+        parent.addListener(this);
       }
     }
     else
@@ -415,7 +446,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       return;
     }
     parents.remove (parent);
-    parent.removeListener(this);
+    if (parent.isGlobalDefault() == false)
+    {
+      parent.removeListener(this);
+    }
     parentsCached = null;
     parentsListCached = null;
     if (getStyleSheetCollection() != null)
@@ -436,7 +470,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       throw new NullPointerException("ElementStyleSheet.removeParent(...): parent is null.");
     }
     defaultSheets.remove (parent);
-    parent.removeListener(this);
+    if (parent.isGlobalDefault() == false)
+    {
+      parent.removeListener(this);
+    }
     defaultCached = null;
     defaultParentsListCached = null;
   }
@@ -923,28 +960,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       properties.put (key, value);
     }
   }
-/*
-  public boolean equals(Object o)
-  {
-    if (this == o) return true;
-    if (!(o instanceof ElementStyleSheet)) return false;
 
-    final ElementStyleSheet elementStyleSheet = (ElementStyleSheet) o;
-
-    if (!id.equals(elementStyleSheet.id)) return false;
-    if (!name.equals(elementStyleSheet.name)) return false;
-
-    return true;
-  }
-
-  public int hashCode()
-  {
-    int result;
-    result = id.hashCode();
-    result = 29 * result + name.hashCode();
-    return result;
-  }
-*/
   /**
    * Creates and returns a copy of this object. This method calls getCopy().
    *
@@ -967,17 +983,40 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     return collectionHelper.getStyleSheetCollection();
   }
 
+  /**
+   * Registers the given StyleSheet collection with this ElementStyleSheet.
+   * If there is already another stylesheet collection registered, this method
+   * will throw an <code>InvalidStyleSheetCollectionException</code>.
+   *
+   * @param styleSheetCollection the stylesheet collection that should be registered.
+   * @throws InvalidStyleSheetCollectionException if there is already an other
+   * stylesheet registered.
+   * @throws NullPointerException if the given stylesheet collection is null.
+   */
   public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
     collectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
 
+  /**
+   * Unregisters the given stylesheet collection from this ElementStyleSheet. If this stylesheet
+   * collection is not registered with this ElementStyleSheet, this method will throw an
+   * <code>InvalidStyleSheetCollectionException</code>
+   *
+   * @param styleSheetCollection the stylesheet collection that should be unregistered.
+   * @throws InvalidStyleSheetCollectionException  if there is already an other stylesheet
+   * registered.
+   * @throws NullPointerException if the given stylesheet collection is null.
+   */
   public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
     collectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
 
   /**
+   * Returns the ID of the stylesheet. The ID does identify an element stylesheet an
+   * all all cloned instances of that stylesheet.
+   *
    * @return the ID of this stylesheet.
    */
   public InstanceID getId()
@@ -985,6 +1024,13 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     return id;
   }
 
+  /**
+   * Returns true, if this stylesheet is one of the global default stylesheets.
+   * Global default stylesheets are unmodifiable and shared among all element stylesheets.
+   *
+   * @return true, if this is one of the unmodifiable global default stylesheets,
+   * false otherwise.
+   */
   public boolean isGlobalDefault()
   {
     return false;

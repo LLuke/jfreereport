@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportAction.java,v 1.5 2003/06/13 22:54:00 taqua Exp $
+ * $Id: ExportAction.java,v 1.6 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes
  * --------
@@ -43,9 +43,11 @@ import javax.swing.SwingUtilities;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.util.ActionDowngrade;
+import com.jrefinery.report.util.Log;
 
 /**
- * An export action that works with any class that implements the {@link ExportPlugin} interface.
+ * An export action that works with any class that implements
+ * the {@link ExportPlugin} interface.
  * 
  * @author Thomas Morgner. 
  */
@@ -56,9 +58,6 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
   
   /** The report. */ 
   private JFreeReport report;
-
-  /** The backend that is used to execute the report. */
-  private PreviewProxyBase proxyBase;
 
   /**
    * Defines an <code>Action</code> object with a default description string and default icon.
@@ -119,16 +118,6 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
     this.report = report;
   }
 
-  public PreviewProxyBase getProxyBase()
-  {
-    return proxyBase;
-  }
-
-  public void setProxyBase(PreviewProxyBase proxyBase)
-  {
-    this.proxyBase = proxyBase;
-  }
-
   /**
    * Exports the current report using the installed export plug-in.
    * 
@@ -162,7 +151,7 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
     boolean retval = plugin.performExport(report);
     if (plugin.isControlPlugin() == false && retval == false)
     {
-      proxyBase.setStatusText(plugin.getFailureDescription());
+      Log.info ("Export failed: " + plugin.getFailureDescription());
     }
   }
 }

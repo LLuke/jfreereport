@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Line2DSerializer.java,v 1.1 2003/05/30 18:47:49 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,6 +49,13 @@ import org.jfree.io.SerialUtilities;
 
 public class Line2DSerializer implements SerializeMethod
 {
+  /**
+   * Default Constructor.
+   */
+  public Line2DSerializer()
+  {
+  }
+
   public void writeObject(Object o, ObjectOutputStream out) throws IOException
   {
     SerialUtilities.writeShape((Shape) o, out);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicStrokeSerializer.java,v 1.1 2003/05/30 18:47:49 taqua Exp $
+ * $Id: BasicStrokeSerializer.java,v 1.2 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,6 +49,13 @@ import org.jfree.io.SerialUtilities;
 
 public class BasicStrokeSerializer implements SerializeMethod
 {
+  /**
+   * Default Constructor.
+   */
+  public BasicStrokeSerializer()
+  {
+  }
+
   public void writeObject(Object o, ObjectOutputStream out) throws IOException
   {
     SerialUtilities.writeStroke((Stroke) o, out);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: InstanceID.java,v 1.1 2003/06/19 18:50:18 taqua Exp $
+ * $Id: InstanceID.java,v 1.2 2003/06/23 14:36:57 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,14 +41,26 @@ package com.jrefinery.report.util;
 import java.io.Serializable;
 
 /**
- * This class can be used as ID to mark instances of objects.
+ * This class can be used as ID to mark instances of objects. This allows to
+ * track and identify objects and their clones.
+ *
+ * @author Thomas Morgner
  */
 public final class InstanceID implements Serializable
 {
+  /**
+   * DefaultConstructor.
+   */
   public InstanceID()
   {
   }
 
+  /**
+   * Returns a simple string representation of this object to make is identifiable
+   * by human users.
+   *
+   * @return the string representation.
+   */
   public String toString()
   {
     return "InstanceID[" + hashCode() + "]";

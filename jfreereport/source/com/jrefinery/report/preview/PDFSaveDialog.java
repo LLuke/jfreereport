@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.32 2003/06/13 22:54:00 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.33 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes
  * --------
@@ -1312,15 +1312,17 @@ public class PDFSaveDialog extends JDialog
    *
    * @param report  the report being processed.
    *
-   * @return true or false.
+   * @return true, if the export was performed without errors or the user canceled the dialog,
+   * or false on errors during the export.
    */
   public boolean performExport (JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
+    setModal(true);
     setVisible(true);
     if (isConfirmed() == false)
     {
-      return false;
+      return true;
     }
     return writePDF(report, report.getDefaultPageFormat());
   }

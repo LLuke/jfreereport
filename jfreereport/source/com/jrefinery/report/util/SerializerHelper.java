@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SerializerHelper.java,v 1.2 2003/06/01 17:39:27 taqua Exp $
+ * $Id: SerializerHelper.java,v 1.3 2003/06/15 21:26:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -57,6 +57,13 @@ import com.jrefinery.report.util.serializers.Point2DSerializer;
 import com.jrefinery.report.util.serializers.Rectangle2DSerializer;
 import org.jfree.xml.factory.objects.ClassComparator;
 
+/**
+ * The SerializeHelper is used to make implementing custom serialization
+ * handlers easier. Handlers for certain object types need to be added to
+ * this helper before this implementation is usable.
+ *
+ * @author Thomas Morgner
+ */
 public class SerializerHelper
 {
   /** The singleton instance of the serialize helper. */
@@ -99,7 +106,7 @@ public class SerializerHelper
   /** A collection of the serializer methods. */
   private HashMap methods;
 
-  /** A class comparator for searching the super class */
+  /** A class comparator for searching the super class of an certain class. */
   private ClassComparator comparator;
 
   /**
@@ -173,6 +180,7 @@ public class SerializerHelper
    * SerializeMethod for the given class. This method searches all superclasses.
    *
    * @param d the class for which we want to lookup a serialize method.
+   * @param knownSuperClass the known super class, if any or null.
    * @return the method or null, if there is no registered method for the class.
    */
   protected SerializeMethod getSuperClassObjectDescription

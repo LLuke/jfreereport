@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.3 2003/05/02 12:39:41 taqua Exp $
+ * $Id: SwingIconsDemo.java,v 1.4 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -189,6 +189,8 @@ public class SwingIconsDemo extends AbstractDemoFrame
    * @param templateURL The template location.
    *
    * @return A report.
+   * @throws ElementDefinitionException if the report generator encountered an error.
+   * @throws IOException if there was an IO error while reading from the URL.
    */
   private JFreeReport parseReport(URL templateURL)
       throws IOException, ElementDefinitionException

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  * 
- * $Id: ExcelExportDialog.java,v 1.12 2003/06/13 22:54:00 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.13 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes
  * --------
@@ -538,10 +538,11 @@ public class ExcelExportDialog extends JDialog
   public boolean performExport(JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
+    setModal(true);
     setVisible(true);
     if (isConfirmed() == false)
     {
-      return false;
+      return true;
     }
     return writeExcel(report);
   }

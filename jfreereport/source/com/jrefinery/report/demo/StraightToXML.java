@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToXML.java,v 1.8 2003/05/02 12:39:41 taqua Exp $
+ * $Id: StraightToXML.java,v 1.9 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -64,6 +64,7 @@ public class StraightToXML
    * Creates a new demo application.
    *
    * @param filename  the output filename.
+   * @throws ParseException if the report could not be parsed.
    */
   public StraightToXML(String filename) throws ParseException
   {
@@ -80,6 +81,7 @@ public class StraightToXML
    * @param templateURL  the template location.
    *
    * @return a report.
+   * @throws ParseException if the report could not be parsed.
    */
   private JFreeReport parseReport(URL templateURL) throws ParseException
   {

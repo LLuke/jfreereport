@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetCollection.java,v 1.5 2003/06/23 14:36:57 taqua Exp $
+ * $Id: StyleSheetCollection.java,v 1.6 2003/06/23 16:08:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,55 +46,118 @@ import java.util.Set;
 
 import com.jrefinery.report.util.HashNMap;
 import com.jrefinery.report.util.InstanceID;
-import com.jrefinery.report.util.Log;
 
 /**
  * The StyleSheet collection is assigned to all Elements, all StyleSheets and
- * to the JFreeReport and the ReportDefinition objects.
+ * to the JFreeReport and the ReportDefinition objects. This collection is used
+ * to coordinate the deep cloning of the stylesheets of an report. As bonus
+ * functionality it allows simplified access to the stylesheets.
  *
- * ?? ID may be invalid, reconsider this ...
+ * @author Thomas Morgner
  */
 public class StyleSheetCollection implements Cloneable, Serializable
 {
+  /**
+   * A style collection entry. This class holds the stylesheet and an reference
+   * count to the contained stylesheet. A stylesheet can only be removed if
+   * the reference count is 0.
+   */
   private static class StyleCollectionEntry implements Serializable
   {
+    /** The reference count of the stylesheet. */
     private int referenceCount;
+    /** The stylesheet. */
     private ElementStyleSheet styleSheet;
 
+    /**
+     * Creates a new StyleCollectionEntry for the stylesheet with an reference
+     * count of 0.
+     *
+     * @param styleSheet The ElementStyleSheet that should be stored in that entry.
+     */
     public StyleCollectionEntry(ElementStyleSheet styleSheet)
     {
       this (0, styleSheet);
     }
 
+    /**
+     * Creates a new StyleCollectionEntry for the stylesheet and with the given
+     * reference count.
+     *
+     * @param styleSheet The ElementStyleSheet that should be stored in that entry.
+     * @param referenceCount the initial reference count.
+     * @throws IllegalArgumentException if the reference count is negative.
+     * @throws NullPointerException if the given stylesheet is null.
+     */
     public StyleCollectionEntry(int referenceCount, ElementStyleSheet styleSheet)
     {
+      if (referenceCount < 0)
+      {
+        throw new IllegalArgumentException("Initial reference count may not be negative.");
+      }
+      if (styleSheet == null)
+      {
+        throw new NullPointerException("StyleSheet for the entry must not be null.");
+      }
       this.referenceCount = referenceCount;
       this.styleSheet = styleSheet;
     }
 
+    /**
+     * Returns the reference count.
+     *
+     * @return the reference count.
+     */
     public int getReferenceCount()
     {
       return referenceCount;
     }
 
+    /**
+     * Defines the new reference count for this stylesheet.
+     *
+     * @param referenceCount the reference count.
+     * @throws IllegalArgumentException if the reference count is negative.
+     */
     public void setReferenceCount(int referenceCount)
     {
+      if (referenceCount < 0)
+      {
+        throw new IllegalArgumentException("Initial reference count may not be negative.");
+      }
       this.referenceCount = referenceCount;
     }
 
+    /**
+     * Returns the stylesheet stored in that entry.
+     *
+     * @return the stylesheet.
+     */
     public ElementStyleSheet getStyleSheet()
     {
       return styleSheet;
     }
   }
 
+  /** The stylesheet storage. */
   private HashNMap styleSheets;
 
+  /**
+   * DefaultConstructor.
+   */
   public StyleSheetCollection()
   {
     styleSheets = new HashNMap();
   }
 
+  /**
+   * Adds the given stylesheet to this collection. This throw an
+   * IllegalArgumentException if the stylesheet is already added to another
+   * stylesheet collection.
+   *
+   * @param es the element stylesheet
+   * @throws NullPointerException if the given stylesheet is null.
+   */
   public void addStyleSheet (ElementStyleSheet es)
   {
     addStyleSheet(es, true);
@@ -105,11 +168,19 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * IllegalArgumentException if the stylesheet is already added to another
    * stylesheet collection.
    *
-   * @param es
-   * @param updateRefs
+   * @param es the element stylesheet that should be added.
+   * @param updateRefs true, if the reference counts should be recomputed,
+   * false otherwise.
+   * @throws IllegalStateException if the stylesheet is already added, but has
+   * a different stylesheet collection assigned.
+   * @throws NullPointerException if the given element stylesheet is null.
    */
   protected void addStyleSheet (ElementStyleSheet es, boolean updateRefs)
   {
+    if (es == null)
+    {
+      throw new NullPointerException("Element stylesheet to be added must not be null.");
+    }
     if (contains(es) == false)
     {
       styleSheets.add(es.getName(), new StyleCollectionEntry(es));
@@ -168,15 +239,16 @@ public class StyleSheetCollection implements Cloneable, Serializable
    */
   public ElementStyleSheet[] getAll (String name)
   {
-    Object[] data = styleSheets.toArray(name);
-    if (data == null)
+    StyleCollectionEntry[] data = (StyleCollectionEntry[])
+        styleSheets.toArray(name, new StyleCollectionEntry[styleSheets.getValueCount(name)]);
+    if (data.length == 0)
     {
       return null;
     }
     ElementStyleSheet[] retval = new ElementStyleSheet[data.length];
     for (int i = 0; i < data.length; i++)
     {
-      StyleCollectionEntry se = (StyleCollectionEntry) data[i];
+      StyleCollectionEntry se = data[i];
       retval[i] = se.getStyleSheet();
     }
     return retval;
@@ -212,13 +284,15 @@ public class StyleSheetCollection implements Cloneable, Serializable
     col.styleSheets = new HashNMap();
     // clone all contained stylesheets ...
     Iterator it = styleSheets.keySet().iterator();
+    StyleCollectionEntry[] allElements = new StyleCollectionEntry[0];
     while (it.hasNext())
     {
       Object key = it.next();
-      Object[] allElements = styleSheets.toArray(key);
-      for (int i = 0; i < allElements.length; i++)
+      int len = styleSheets.getValueCount(key);
+      allElements = (StyleCollectionEntry[]) styleSheets.toArray(key, allElements);
+      for (int i = 0; i < len; i++)
       {
-        StyleCollectionEntry se = (StyleCollectionEntry) allElements[i];
+        StyleCollectionEntry se = allElements[i];
         ElementStyleSheet es = se.getStyleSheet();
         ElementStyleSheet esCopy = es.getCopy();
         col.styleSheets.add(esCopy.getName(),
@@ -233,10 +307,11 @@ public class StyleSheetCollection implements Cloneable, Serializable
     while (it.hasNext())
     {
       Object key = it.next();
-      Object[] allElements = col.styleSheets.toArray(key);
-      for (int ai = 0; ai < allElements.length; ai++)
+      int len = col.styleSheets.getValueCount(key);
+      allElements = (StyleCollectionEntry[]) col.styleSheets.toArray(key, allElements);
+      for (int ai = 0; ai < len; ai++)
       {
-        StyleCollectionEntry se = (StyleCollectionEntry) allElements[ai];
+        StyleCollectionEntry se = allElements[ai];
         ElementStyleSheet es = se.getStyleSheet();
 
         List parents = es.getParents();
@@ -264,10 +339,11 @@ public class StyleSheetCollection implements Cloneable, Serializable
     while (it.hasNext())
     {
       Object key = it.next();
-      Object[] allElements = col.styleSheets.toArray(key);
-      for (int i = 0; i < allElements.length; i++)
+      int len = col.styleSheets.getValueCount(key);
+      allElements = (StyleCollectionEntry[]) col.styleSheets.toArray(key, allElements);
+      for (int i = 0; i < len; i++)
       {
-        StyleCollectionEntry se = (StyleCollectionEntry) allElements[i];
+        StyleCollectionEntry se = allElements[i];
         ElementStyleSheet es = se.getStyleSheet();
         es.registerStyleSheetCollection(col);
       }
@@ -286,13 +362,16 @@ public class StyleSheetCollection implements Cloneable, Serializable
    */
   private StyleCollectionEntry findStyleSheet (String name, InstanceID id)
   {
-    Object[] data = styleSheets.toArray(name);
-    if (data == null)
+    int len = styleSheets.getValueCount(name);
+    if (len == 0)
       return null;
+
+    StyleCollectionEntry[] data = (StyleCollectionEntry[])
+        styleSheets.toArray(name, new StyleCollectionEntry[len]);
 
     for (int i = 0; i < data.length; i++)
     {
-      StyleCollectionEntry es = (StyleCollectionEntry) data[i];
+      StyleCollectionEntry es = data[i];
       if (es.getStyleSheet().getId() == id)
       {
         return es;
@@ -377,14 +456,16 @@ public class StyleSheetCollection implements Cloneable, Serializable
   protected void updateReferences ()
   {
     Iterator keyIterator = styleSheets.keys();
+    StyleCollectionEntry[] allElements = new StyleCollectionEntry[0];
     while (keyIterator.hasNext())
     {
       // reset the reference count ...
       Object key = keyIterator.next();
-      Object[] data = styleSheets.toArray(key);
-      for (int i = 0; i < data.length; i++)
+      int len = styleSheets.getValueCount(key);
+      allElements = (StyleCollectionEntry[]) styleSheets.toArray(key, allElements);
+      for (int i = 0; i < len; i++)
       {
-        StyleCollectionEntry se = (StyleCollectionEntry) data[i];
+        StyleCollectionEntry se = allElements[i];
         se.setReferenceCount(0);
       }
     }
@@ -394,10 +475,11 @@ public class StyleSheetCollection implements Cloneable, Serializable
     {
       // compute the reference count ...
       Object key = keyIterator.next();
-      Object[] data = styleSheets.toArray(key);
-      for (int ai = 0; ai < data.length; ai++)
+      int len = styleSheets.getValueCount(key);
+      allElements = (StyleCollectionEntry[]) styleSheets.toArray(key, allElements);
+      for (int ai = 0; ai < len; ai++)
       {
-        StyleCollectionEntry se = (StyleCollectionEntry) data[ai];
+        StyleCollectionEntry se = allElements[ai];
         ElementStyleSheet es = se.getStyleSheet();
 
         List parents = es.getParents();
@@ -493,6 +575,12 @@ public class StyleSheetCollection implements Cloneable, Serializable
 
   }
 
+  /**
+   * Returns the names of all registered stylesheets as iterator. There can
+   * be more than one stylesheet be registered with a certain name.
+   *
+   * @return the names of all stylesheets.
+   */
   public Iterator keys ()
   {
     Set keySet = styleSheets.keySet();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.1 2003/06/13 22:54:00 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.2 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,8 +46,14 @@ import javax.swing.KeyStroke;
 
 import com.jrefinery.report.JFreeReport;
 
+/**
+ * Encapsulates the ExcelExportDialog into a separate plugin.
+ *
+ * @author Thomas Morgner
+ */
 public class ExcelExportPlugin extends AbstractExportPlugin
 {
+  /** The excel export dialog which handles the export. */
   private ExcelExportDialog exportDialog;
 
   /** Localised resources. */
@@ -57,7 +63,9 @@ public class ExcelExportPlugin extends AbstractExportPlugin
   public static final String BASE_RESOURCE_CLASS =
       "com.jrefinery.report.resources.JFreeReportResources";
 
-
+  /**
+   * DefaultConstructor.
+   */
   public ExcelExportPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
@@ -96,7 +104,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport(JFreeReport report)
   {
-    return exportDialog.performExport(report);
+    return handleExportResult(exportDialog.performExport(report));
   }
 
   /**
@@ -160,9 +168,11 @@ public class ExcelExportPlugin extends AbstractExportPlugin
   }
 
   /**
-   * Returns <code>false</code>.
+   * Returns true if the action is separated, and false otherwise. A separated
+   * action starts a new action group and will be spearated from previous actions
+   * on the menu and toolbar.
    *
-   * @return A boolean.
+   * @return always true.
    */
   public boolean isSeparated()
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumFunction.java,v 1.24 2003/06/19 18:44:09 taqua Exp $
+ * $Id: TotalGroupSumFunction.java,v 1.25 2003/06/26 15:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -151,7 +151,6 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
     currentIndex = -1;
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
     {
-      Log.error ("Results Cleared...");
       results.clear();
     }
   }
@@ -173,7 +172,6 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
     {
       groupResult = new GroupSum();
       results.add(groupResult);
-      Log.error ("Result group added..." + results.size());
     }
     else
     {
@@ -181,18 +179,7 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
       {
         // Activate the current group, which was filled in the prepare run.
         currentIndex += 1;
-        // todo fix me, it crashes !
-//        if (currentIndex < results.size())
-//        {
-          groupResult = (GroupSum) results.get(currentIndex);
-          Log.error ("Result group queried..." + currentIndex);
-/*
-        }
-        else
-        {
-          Log.error ("IndexOutOfBounds: " + results.size() + " vs. " + currentIndex, new IndexOutOfBoundsException());
-        }
-*/
+        groupResult = (GroupSum) results.get(currentIndex);
       }
     }
   }

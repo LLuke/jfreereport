@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.13 2003/06/13 18:58:23 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.14 2003/06/15 21:26:30 taqua Exp $
  *
  * Changes
  * -------
@@ -108,6 +108,14 @@ public class BaseFontFactory extends DefaultFontMapper
         return true;
       }
       if (StringUtil.endsWithIgnoreCase(name, ".ttf"))
+      {
+        return true;
+      }
+      if (StringUtil.endsWithIgnoreCase(name, ".ttc"))
+      {
+        return true;
+      }
+      if (StringUtil.endsWithIgnoreCase(name, ".otf"))
       {
         return true;
       }

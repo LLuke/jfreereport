@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportPlugin.java,v 1.1 2003/06/13 22:54:00 taqua Exp $
+ * $Id: PlainTextExportPlugin.java,v 1.2 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,8 +46,14 @@ import javax.swing.KeyStroke;
 
 import com.jrefinery.report.JFreeReport;
 
+/**
+ * Encapsulates the PlainTextExportDialog into a separate plugin.
+ *
+ * @author Thomas Morgner
+ */
 public class PlainTextExportPlugin extends AbstractExportPlugin
 {
+  /** The plain text export dialog. */
   private PlainTextExportDialog exportDialog;
 
   /** Localised resources. */
@@ -57,7 +63,9 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
   public static final String BASE_RESOURCE_CLASS =
       "com.jrefinery.report.resources.JFreeReportResources";
 
-
+  /**
+   * DefaultConstructor.
+   */
   public PlainTextExportPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
@@ -96,7 +104,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport(JFreeReport report)
   {
-    return exportDialog.performExport(report);
+    return handleExportResult(exportDialog.performExport(report));
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.39 2003/05/29 09:01:59 mungady Exp $
+ * $Id: PDFOutputTarget.java,v 1.40 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -410,7 +410,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       WaitingImageObserver obs = new WaitingImageObserver(imageRef.getImage());
       obs.waitImageLoaded();
  
-      PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.NO_ALPHA,
+      PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.ENCODE_ALPHA,
                                           PngEncoder.FILTER_NONE, 5);
       byte[] data = encoder.pngEncode();
       return Image.getInstance(data);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.18 2003/05/02 12:40:21 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.19 2003/05/11 13:39:17 taqua Exp $
  *
  * Changes
  * --------
@@ -89,7 +89,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
     {
       EncodingCarrier e1 = (EncodingCarrier) o1;
       EncodingCarrier e2 = (EncodingCarrier) o2;
-      return e1.getName().compareTo(e2.getName());
+      return e1.getName().toLowerCase().compareTo(e2.getName().toLowerCase());
     }
 
     /**
@@ -206,7 +206,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
 
       final EncodingCarrier carrier = (EncodingCarrier) o;
 
-      if (!name.equals(carrier.name))
+      if (!name.equalsIgnoreCase(carrier.name))
       {
         return false;
       }

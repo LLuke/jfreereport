@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFExportPlugin.java,v 1.1 2003/06/13 22:54:00 taqua Exp $
+ * $Id: PDFExportPlugin.java,v 1.2 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 13.06.2003 : Initial version
+ * 13-Jun-2003 : Initial version
  *  
  */
 
@@ -46,9 +46,14 @@ import javax.swing.KeyStroke;
 
 import com.jrefinery.report.JFreeReport;
 
+/**
+ * Encapsulates the PDF export into a separate export plugin.
+ *
+ * @author Thomas Morgner
+ */
 public class PDFExportPlugin extends AbstractExportPlugin
 {
-
+  /** The PDFSaveDialog that should handle the export. */
   private PDFSaveDialog exportDialog;
 
   /** Localised resources. */
@@ -59,6 +64,9 @@ public class PDFExportPlugin extends AbstractExportPlugin
       "com.jrefinery.report.resources.JFreeReportResources";
 
 
+  /**
+   * DefaultConstructor.
+   */
   public PDFExportPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
@@ -71,6 +79,7 @@ public class PDFExportPlugin extends AbstractExportPlugin
    */
   public void init (PreviewProxy proxy)
   {
+    super.init(proxy);
     if (proxy instanceof Frame)
     {
       exportDialog = new PDFSaveDialog((Frame) proxy);
@@ -96,7 +105,7 @@ public class PDFExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport(JFreeReport report)
   {
-    return exportDialog.performExport(report);
+    return handleExportResult(exportDialog.performExport(report));
   }
 
   /**

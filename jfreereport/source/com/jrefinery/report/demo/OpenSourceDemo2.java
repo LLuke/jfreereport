@@ -158,7 +158,7 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
    *
    * @return a report.
    */
-  private JFreeReport createReport()
+  public static JFreeReport createReport()
   {
 
     JFreeReport result = new JFreeReport();
@@ -195,7 +195,7 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
    *
    * @param band  the item band to be configured.
    */
-  private void configureItemBand(ItemBand band)
+  public static void configureItemBand(ItemBand band)
   {
     ElementStyleSheet ess = band.getBandDefaults();
     ess.setFontDefinitionProperty(new FontDefinition("SansSerif", 9));
@@ -248,7 +248,7 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
    *
    * @param footer  the page footer to be configured.
    */
-  private void configurePageFooter(PageFooter footer)
+  public static void configurePageFooter(PageFooter footer)
   {
     ElementStyleSheet ess = footer.getBandDefaults();
     ess.setFontDefinitionProperty(new FontDefinition("SansSerif", 9));

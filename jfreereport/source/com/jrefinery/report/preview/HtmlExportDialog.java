@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited); 
  *
- * $Id: HtmlExportDialog.java,v 1.18 2003/05/02 12:40:22 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.19 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes
  * -------
@@ -1254,7 +1254,7 @@ public class HtmlExportDialog extends JDialog
     setVisible(true);
     if (isConfirmed() == false)
     {
-      return false;
+      return true;
     }
     if (getSelectedExportMethod() == EXPORT_STREAM)
     {

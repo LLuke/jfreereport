@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.21 2003/06/19 18:44:10 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.22 2003/06/26 15:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,6 @@ import com.jrefinery.report.action.PreviousPageAction;
 import com.jrefinery.report.action.ZoomInAction;
 import com.jrefinery.report.action.ZoomOutAction;
 import com.jrefinery.report.targets.base.bandlayout.LayoutManagerCache;
-import com.jrefinery.report.targets.table.excel.ExcelCellStyleFactory;
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ActionDowngrade;
@@ -688,6 +687,7 @@ public class PreviewProxyBase extends JComponent
   /** A preview proxy. */
   private PreviewProxy proxy;
 
+  /** A list of all export plugins known to this preview proxy base. */
   private ArrayList exportPlugIns;
 
   /** A collection of actions, keyed by the export plugin. */
@@ -722,7 +722,6 @@ public class PreviewProxyBase extends JComponent
     {
       ExportPlugin ep = (ExportPlugin) it.next();
       ExportAction ea = new ExportAction(ep);
-      ea.setProxyBase(this);
       ea.setReport(report);
       pluginActions.put(ep, ea);
     }
@@ -1233,15 +1232,20 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
-   * Returns the status label used to display the text.
+   * Returns the status text of the status line.
    *
-   * @return the status label.
+   * @return the status text.
    */
   public String getStatusText()
   {
     return statusHolder.getText();
   }
 
+  /**
+   * Defines the text of the status line.
+   *
+   * @param text the new text of the status line.
+   */
   public void setStatusText(String text)
   {
     statusHolder.setText(text);

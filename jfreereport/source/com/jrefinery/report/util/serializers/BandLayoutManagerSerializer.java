@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerSerializer.java,v 1.1 2003/05/30 18:47:49 taqua Exp $
+ * $Id: BandLayoutManagerSerializer.java,v 1.2 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,11 +48,37 @@ import com.jrefinery.report.util.SerializeMethod;
 
 public class BandLayoutManagerSerializer implements SerializeMethod
 {
+  /**
+   * Default Constructor.
+   */
+  public BandLayoutManagerSerializer()
+  {
+  }
+
+  /**
+   * Writes a serializable object description to the given object output stream.
+   * As bandlayoutmanagers need to be instantiable by their default constructor,
+   * it is sufficient to write the class of the layout manager.
+   *
+   * @param o the to be serialized object.
+   * @param out the outputstream that should receive the object.
+   * @throws IOException if an I/O error occured.
+   */
   public void writeObject(Object o, ObjectOutputStream out) throws IOException
   {
     out.writeObject(o.getClass());
   }
 
+  /**
+   * Reads the object from the object input stream. This will read a serialized
+   * class name of the BandLayoutManager. The specified class is then instantiated
+   * using its default constructor.
+   *
+   * @param in the object input stream from where to read the serialized data.
+   * @return the generated object.
+   * @throws IOException if reading the stream failed.
+   * @throws ClassNotFoundException if serialized object class cannot be found.
+   */
   public Object readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
   {
     Class c = (Class) in.readObject();
@@ -66,6 +92,11 @@ public class BandLayoutManagerSerializer implements SerializeMethod
     }
   }
 
+  /**
+   * The class of the object, which this object can serialize.
+   *
+   * @return the class <code>com.jrefinery.report.targets.base.bandlayout.BandLayoutManager</code>.
+   */
   public Class getObjectClass()
   {
     return BandLayoutManager.class;

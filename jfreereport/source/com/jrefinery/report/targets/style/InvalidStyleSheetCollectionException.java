@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: InvalidStyleSheetCollectionException.java,v 1.1 2003/06/19 18:50:18 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 19.06.2003 : Initial version
+ * 19-Jun-2003 : Initial version
  *  
  */
 
@@ -40,17 +40,44 @@ package com.jrefinery.report.targets.style;
 
 import org.jfree.util.StackableRuntimeException;
 
+/**
+ * Informs the caller, that an invalid state was encountered while handling a
+ * stylesheetcollection operation.
+ * <p>
+ * The InvalidStyleSheetCollectionException is thrown, if the stylesheet collection
+ * encountered an invalid stylesheet collection for one of its children or when the
+ * StyleSheetCollectionHandler detected an invalid StyleSheetCollection on its
+ * child.
+ *
+ * @author Thomas Morgner
+ */
 public class InvalidStyleSheetCollectionException extends StackableRuntimeException
 {
+  /**
+   * DefaultConstructor. Initializes this exception without an message or parent
+   * exception.
+   */
   public InvalidStyleSheetCollectionException()
   {
   }
 
+  /**
+   * Creates a new InvalidStyleSheetCollectionException with the given message
+   * and parent exception.
+   *
+   * @param s the exception message.
+   * @param e the parent exception.
+   */
   public InvalidStyleSheetCollectionException(String s, Exception e)
   {
     super(s, e);
   }
 
+  /**
+   * Creates a new InvalidStyleSheetCollectionException with the give message.
+   *
+   * @param s the exception message.
+   */
   public InvalidStyleSheetCollectionException(String s)
   {
     super(s);

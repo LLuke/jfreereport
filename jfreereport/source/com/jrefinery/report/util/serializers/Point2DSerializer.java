@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Point2DSerializer.java,v 1.1 2003/05/30 18:47:49 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,6 +47,13 @@ import com.jrefinery.report.util.SerializeMethod;
 
 public class Point2DSerializer implements SerializeMethod
 {
+  /**
+   * Default Constructor.
+   */
+  public Point2DSerializer()
+  {
+  }
+
   public void writeObject(Object o, ObjectOutputStream out) throws IOException
   {
     Point2D point = (Point2D) o;

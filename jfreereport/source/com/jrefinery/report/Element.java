@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.33 2003/06/23 14:36:56 taqua Exp $
+ * $Id: Element.java,v 1.34 2003/06/23 16:08:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -70,7 +70,7 @@ import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleSheetCollection;
 import com.jrefinery.report.targets.style.StyleSheetCollectionHelper;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException;
 
 /**
  * Base class for all report elements (display items that can appear within a report band).
@@ -84,10 +84,20 @@ import com.jrefinery.report.util.Log;
  */
 public abstract class Element implements DataTarget, Serializable, Cloneable
 {
+  /**
+   * Internal helper class to handle the style sheet collection properly.
+   */
   private static class ElementStyleSheetCollectionHelper extends StyleSheetCollectionHelper
   {
+    /** The Element for which we handle the style sheet collection. */
     private Element element;
 
+    /**
+     * Creates a new ElementStyleSheetCollectionHelper for the given element.
+     *
+     * @param e the element.
+     * @throws NullPointerException if the given element is null.
+     */
     public ElementStyleSheetCollectionHelper(Element e)
     {
       if (e == null)
@@ -97,11 +107,19 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       this.element = e;
     }
 
+    /**
+     * Handles the stylesheet collection registration.
+     * Forwards the call to the element.
+     */
     protected void handleRegisterStyleSheetCollection()
     {
       element.handleRegisterStyleSheetCollection();
     }
 
+    /**
+     * Handles the stylesheet collection removal.
+     * Forwards the call to the element.
+     */
     protected void handleUnregisterStyleSheetCollection()
     {
       element.handleUnregisterStyleSheetCollection();
@@ -120,6 +138,11 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   /** The stylesheet defines global appearance for elements. */
   private ElementStyleSheet style;
 
+  /**
+   * The stylesheet collection helper is used to manage the StyleSheetCollection of
+   * this element. The use of the stylesheet collection is evil voodo, so we dont
+   * handle it in the element ...
+   */
   private ElementStyleSheetCollectionHelper styleSheetCollectionHelper;
 
   /**
@@ -340,45 +363,111 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   public abstract String getContentType ();
 
-
+  /**
+   * Returns the stylesheet collection which is assigned with this element and
+   * all stylesheets of this element.
+   *
+   * @return the element stylesheet collection or null, if no collection is assigned.
+   */
   public StyleSheetCollection getStyleSheetCollection()
   {
     return styleSheetCollectionHelper.getStyleSheetCollection();
   }
 
+  /**
+   * Registers the given StyleSheet collection with this element. If there is already
+   * another stylesheet collection registered, this method will throw an
+   * <code>InvalidStyleSheetCollectionException</code>.
+   *
+   * @param styleSheetCollection the stylesheet collection that should be registered.
+   * @throws InvalidStyleSheetCollectionException if there is already an other
+   * stylesheet registered.
+   * @throws NullPointerException if the given stylesheet collection is null.
+   */
   public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
     styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
 
+  /**
+   * Unregisters the given stylesheet collection from this element. If this stylesheet
+   * collection is not registered with this element, this method will throw an
+   * <code>InvalidStyleSheetCollectionException</code>
+   *
+   * @param styleSheetCollection the stylesheet collection that should be unregistered.
+   * @throws InvalidStyleSheetCollectionException  if there is already an other stylesheet
+   * registered.
+   * @throws NullPointerException if the given stylesheet collection is null.
+   */
   public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
     styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
 
+  /**
+   * Handles the unregistration of the stylesheet collection.
+   */
   protected void handleUnregisterStyleSheetCollection ()
   {
-    //getStyleSheetCollection().remove(getStyle());
     getStyle().unregisterStyleSheetCollection(getStyleSheetCollection());
   }
 
+  /**
+   * Handles the registration of the stylesheet collection.
+   */
   protected void handleRegisterStyleSheetCollection ()
   {
     getStyle().registerStyleSheetCollection(getStyleSheetCollection());
-    // assert: 
+
+    /**
+     * This is an assertation implementation ... leave it alive to be
+     * sure that everything works as expected ...
+     */
     if (getStyle().getStyleSheetCollection() != getStyleSheetCollection())
     {
-      getStyle().registerStyleSheetCollection(getStyleSheetCollection());
-//      getStyleSheetCollection().addStyleSheet(getStyle());
-      throw new IllegalStateException(getStyle().getName() + " " + getName());
+      throw new IllegalStateException("HandleRegisterStyleSheetCollection failed: " +
+          getStyle().getName() + " for element " + getName());
     }
   }
 
-  /// DEPRECATED METHODS //////////////////////////////////////////////////////////////////////////
+  /**
+   * Updates the stylesheet collection for this element and all substylesheets.
+   * This method must be called after the element was cloned, to make sure that
+   * all stylesheets are registered properly.
+   * <p>
+   * If you don't call this function after cloning prepare to be doomed.
+   * This method will replace all inherited stylesheets with clones from the stylesheet
+   * collection.
+   *
+   * @param sc the stylesheet collection that contains the updated information and
+   * that should be assigned with that element.
+   * @throws NullPointerException if the given stylesheet collection is null.
+   * @throws InvalidStyleSheetCollectionException if there is an other stylesheet
+   * collection already registered with that element.
+   */
+  public void updateStyleSheetCollection (StyleSheetCollection sc)
+  {
+    if (sc == null)
+    {
+      throw new NullPointerException("StyleSheetCollection is null.");
+    }
+    if (getStyleSheetCollection() != null)
+    {
+      throw new InvalidStyleSheetCollectionException("There is a stylesheet collection already registered.");
+    }
 
+    sc.updateStyleSheet(getStyle());
+
+    registerStyleSheetCollection(sc);
+  }
+
+  /// DEPRECATED METHODS //////////////////////////////////////////////////////////////////////////
+  // todo: Remove the deprecated method in version 0.8.5
   /**
    * Returns the paint used to draw this element. There is alway a paint defined
    * for an element.
+   * <p>
+   * This method will be removed in version 0.8.5.
    *
    * @deprecated don't store and access the paint directly, use the stylesheet.
    * @return The paint.
@@ -399,6 +488,8 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * default paint of the band used to draw this element is used.
    * <p>
    * The paint object must be an instance of color. Generic paints are not permitted.
+   * <p>
+   * This method will be removed in version 0.8.5.
    *
    * @param p  the paint for this element (null permitted).
    *
@@ -420,21 +511,5 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     {
       throw new IllegalArgumentException("This style-key requires a Color object");
     }
-  }
-
-  public void updateStyleSheetCollection (StyleSheetCollection sc)
-  {
-    if (sc == null)
-    {
-      throw new NullPointerException("StyleSheetCollection is null.");
-    }
-    if (getStyleSheetCollection() != null)
-    {
-      throw new NullPointerException("There is a stylesheet collection already registered.");
-    }
-
-    sc.updateStyleSheet(getStyle());
-
-    registerStyleSheetCollection(sc);
   }
 }

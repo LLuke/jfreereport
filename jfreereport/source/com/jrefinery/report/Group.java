@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.25 2003/06/23 14:36:56 taqua Exp $
+ * $Id: Group.java,v 1.26 2003/06/23 16:08:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -76,21 +76,38 @@ import com.jrefinery.report.targets.style.StyleSheetCollectionHelper;
  */
 public class Group implements Serializable, Cloneable, Comparable
 {
+  /**
+   * Internal helper class to handle the style sheet collection properly.
+   */
   private static class GroupStyleSheetCollectionHelper extends StyleSheetCollectionHelper
   {
+    /** The group for which we handle the stylesheet collection. */
     private Group group;
 
+    /**
+     * Creates a new helper for the given group.
+     *
+     * @param group the group whose stylesheet collection should be managed.
+     */
     public GroupStyleSheetCollectionHelper(Group group)
     {
       this.group = group;
     }
 
+    /**
+     * Handles the stylesheet collection registration for the group and
+     * all group bands.
+     */
     protected void handleRegisterStyleSheetCollection()
     {
       group.footer.registerStyleSheetCollection(getStyleSheetCollection());
       group.header.registerStyleSheetCollection(getStyleSheetCollection());
     }
 
+    /**
+     * Handles the stylesheet collection unregistration for the group and
+     * all group bands.
+     */
     protected void handleUnregisterStyleSheetCollection()
     {
       group.footer.unregisterStyleSheetCollection(getStyleSheetCollection());
@@ -113,6 +130,7 @@ public class Group implements Serializable, Cloneable, Comparable
   /** The group footer (optional). */
   private GroupFooter footer;
 
+  /** The helper implementation that manages the stylesheet collection. */
   private GroupStyleSheetCollectionHelper styleSheetCollectionHelper;
 
   /**
@@ -204,6 +222,7 @@ public class Group implements Serializable, Cloneable, Comparable
    * Sets the footer for the group.
    *
    * @param footer  the footer (null not permitted).
+   * @throws NullPointerException if the given footer is null.
    */
   public void setFooter(GroupFooter footer)
   {
@@ -472,21 +491,61 @@ public class Group implements Serializable, Cloneable, Comparable
     return b.toString();
   }
 
+  /**
+   * Returns the stylesheet collection which is assigned with this group and
+   * all stylesheets of this group.
+   *
+   * @return the stylesheet collection or null, if no collection is assigned.
+   */
   public StyleSheetCollection getStyleSheetCollection()
   {
     return styleSheetCollectionHelper.getStyleSheetCollection();
   }
 
+  /**
+   * Registers the given StyleSheet collection with this group. If there is already
+   * another stylesheet collection registered, this method will throw an
+   * <code>InvalidStyleSheetCollectionException</code>.
+   *
+   * @param styleSheetCollection the stylesheet collection that should be registered.
+   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException
+   * if there is already an other stylesheet registered.
+   * @throws NullPointerException if the given stylesheet collection is null.
+   */
   public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
     styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
 
+  /**
+   * Unregisters the given stylesheet collection from this group. If this stylesheet
+   * collection is not registered with this group, this method will throw an
+   * <code>InvalidStyleSheetCollectionException</code>
+   *
+   * @param styleSheetCollection the stylesheet collection that should be unregistered.
+   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException
+   * @throws NullPointerException if the given stylesheet collection is null.
+   */
   public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
     styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
 
+  /**
+   * Updates the stylesheet collection for this group and all bands of the group.
+   * This method must be called after the group was cloned, to make sure that
+   * all stylesheets are registered properly.
+   * <p>
+   * If you don't call this function after cloning prepare to be doomed.
+   * This method will replace all inherited stylesheets with clones from the stylesheet
+   * collection.
+   *
+   * @param sc the stylesheet collection that contains the updated information and
+   * that should be assigned with that element.
+   * @throws NullPointerException if the given stylesheet collection is null.
+   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException if there is an other stylesheet
+   * collection already registered with that element.
+   */
   public void updateStyleSheetCollection (StyleSheetCollection sc)
   {
     footer.updateStyleSheetCollection(sc);

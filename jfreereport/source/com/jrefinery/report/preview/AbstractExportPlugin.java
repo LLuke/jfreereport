@@ -28,30 +28,44 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractExportPlugin.java,v 1.1 2003/06/19 18:50:18 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 18.06.2003 : Initial version
+ * 18-Jun-2003 : Initial version
  *  
  */
 
 package com.jrefinery.report.preview;
 
+/**
+ * The AbstractExportPlugin provides a basic implementation of the ExportPlugin
+ * interface.
+ *
+ * @author Thomas Morgner
+ */
 public abstract class AbstractExportPlugin implements ExportPlugin
 {
   /** The backend to perform post or preprocessing. */
   private PreviewProxyBase base;
+
+  /** The preview proxy used to display the preview component. */
   private PreviewProxy proxy;
 
+  /**
+   * DefaultConstructor.
+   */
   public AbstractExportPlugin()
   {
   }
 
   /**
-   * Returns true if the action is separated, and false otherwise.
+   * Returns true if the action is separated, and false otherwise. A separated
+   * action starts a new action group and will be spearated from previous actions
+   * on the menu and toolbar.
    *
-   * @return A boolean.
+   * @return true, if the action should be separated from previous actions,
+   * false otherwise.
    */
   public boolean isSeparated()
   {
@@ -59,7 +73,9 @@ public abstract class AbstractExportPlugin implements ExportPlugin
   }
 
   /**
-   * Returns an error description for the last operation.
+   * Returns an error description for the last operation. This implementation
+   * provides a basic default failure description text and should be overriden
+   * to give a more detailed explaination.
    *
    * @return returns a error description.
    */
@@ -82,7 +98,9 @@ public abstract class AbstractExportPlugin implements ExportPlugin
   /**
    * Initializes the plugin to work with the given PreviewProxy.
    *
-   * @param proxy
+   * @param proxy the preview proxy that created this plugin.
+   * @throws NullPointerException if the proxy or the proxy's basecomponent
+   * is null.
    */
   public void init(PreviewProxy proxy)
   {
@@ -98,11 +116,22 @@ public abstract class AbstractExportPlugin implements ExportPlugin
     this.proxy = proxy;
   }
 
+  /**
+   * Returns the preview proxy base. This is the same as
+   * calling <code>getProxy().getBase()</code>.
+   *
+   * @return the preview proxy base.
+   */
   public PreviewProxyBase getBase()
   {
     return base;
   }
 
+  /**
+   * Returns the preview proxy used to create the export plugin.
+   *
+   * @return the preview proxy.
+   */
   public PreviewProxy getProxy()
   {
     return proxy;
@@ -111,10 +140,36 @@ public abstract class AbstractExportPlugin implements ExportPlugin
   /**
    * Returns true if the action should be added to the toolbar, and false otherwise.
    *
-   * @return A boolean.
+   * @return true, if the plugin should be added to the toolbar, false otherwise.
    */
   public boolean isAddToToolbar()
   {
     return false;
+  }
+
+  /**
+   * Updates the status text of the base component.
+   *
+   * @param text the new status line text.
+   */
+  protected void updateStatusText (String text)
+  {
+    getBase().setStatusText(text);
+  }
+
+  /**
+   * Provides a default implementation to handle export errors.
+   * This implementation updates the status line of the preview component. 
+   *
+   * @param result the result of the export operation.
+   * @return the value of result unmodified.
+   */
+  protected boolean handleExportResult (final boolean result)
+  {
+    if (isControlPlugin() == false && result == false)
+    {
+      updateStatusText ("Export failed: " + getFailureDescription());
+    }
+    return result;
   }
 }

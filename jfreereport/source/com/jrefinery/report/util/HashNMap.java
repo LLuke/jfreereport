@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HashNMap.java,v 1.13 2003/06/19 18:44:11 taqua Exp $
+ * $Id: HashNMap.java,v 1.14 2003/06/23 14:36:57 taqua Exp $
  *
  * Changes
  * -------
@@ -54,8 +54,15 @@ import java.util.Set;
  */
 public class HashNMap implements Serializable, Cloneable
 {
+  /**
+   * An helper class to implement an empty iterator. This iterator will always
+   * return false when <code>hasNext</code> is called.
+   */
   private static class EmptyIterator implements Iterator
   {
+    /**
+     * DefaultConstructor.
+     */
     public EmptyIterator()
     {
     }
@@ -104,6 +111,9 @@ public class HashNMap implements Serializable, Cloneable
       throw new UnsupportedOperationException("This iterator is empty, no remove supported.");
     }
   }
+
+  /** A singleton instance of the empty iterator. This object can be safely shared. */
+  private static final Iterator EMPTY_ITERATOR = new EmptyIterator();
 
   /** The underlying storage. */
   private HashMap table = null;
@@ -195,7 +205,7 @@ public class HashNMap implements Serializable, Cloneable
     ArrayList v = (ArrayList) table.get (key);
     if (v == null)
     {
-      return new EmptyIterator();
+      return EMPTY_ITERATOR;
     }
     return v.iterator ();
   }
@@ -226,6 +236,7 @@ public class HashNMap implements Serializable, Cloneable
    *
    * @param key  the key.
    * @param value  the value.
+   * @return true, if removing the element was successfull, false otherwise.
    */
   public boolean remove (Object key, Object value)
   {
@@ -335,18 +346,62 @@ public class HashNMap implements Serializable, Cloneable
     return map;
   }
 
+  /**
+   * Returns the contents for the given key as object array. If there were
+   * no objects registered with that key, an empty object array is returned.
+   *
+   * @param key the key.
+   * @param data the object array to receive the contents.
+   * @return the contents.
+   */
+  public Object[] toArray (Object key, Object[] data)
+  {
+    if (key == null)
+    {
+      throw new NullPointerException("Key must not be null.");
+    }
+    ArrayList list = (ArrayList) table.get(key);
+    if (list != null)
+    {
+      return list.toArray(data);
+    }
+    return new Object[0];
+  }
+
+  /**
+   * Returns the contents for the given key as object array. If there were
+   * no objects registered with that key, an empty object array is returned.
+   *
+   * @param key the key.
+   * @return the contents.
+   */
   public Object[] toArray (Object key)
   {
+    if (key == null)
+    {
+      throw new NullPointerException("Key must not be null.");
+    }
     ArrayList list = (ArrayList) table.get(key);
     if (list != null)
     {
       return list.toArray();
     }
-    return null;
+    return new Object[0];
   }
 
-  public int getValueCount (String key)
+  /**
+   * Returns the number of elements registered with the given key.
+   *
+   * @param key the key.
+   * @return the number of element for this key, or 0 if there are no elements
+   * registered.
+   */
+  public int getValueCount (Object key)
   {
+    if (key == null)
+    {
+      throw new NullPointerException("Key must not be null.");
+    }
     ArrayList list = (ArrayList) table.get(key);
     if (list != null)
     {

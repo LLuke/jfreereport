@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractDemoFrame.java,v 1.1 2003/06/19 18:46:35 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 19.06.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.demo.helper;
@@ -51,6 +51,13 @@ import javax.swing.JMenu;
 import com.jrefinery.report.demo.PreviewAction;
 import com.jrefinery.report.util.ExceptionDialog;
 
+/**
+ * The AbstractDemoFrame provides some basic functionality shared among all demos.
+ * It provides default handlers for preview and the window-closing event as well
+ * as helper function to display error messages.
+ *
+ * @author Thomas Morgner
+ */
 public abstract class AbstractDemoFrame extends JFrame
 {
   /**
@@ -123,8 +130,10 @@ public abstract class AbstractDemoFrame extends JFrame
   /** Localised resources. */
   private ResourceBundle resources;
 
+  /** The close action is called when closing the frame. */
   private Action closeAction;
 
+  /** The preview action is called when the user chooses to preview the report. */
   private Action previewAction;
 
   /**
@@ -142,16 +151,31 @@ public abstract class AbstractDemoFrame extends JFrame
     addWindowListener(new CloseHandler());
   }
 
+  /**
+   * Returns the resource bundle for this demo frame.
+   *
+   * @return the resource bundle for the localization.
+   */
   public ResourceBundle getResources()
   {
     return resources;
   }
 
+  /**
+   * Returns the close action implementation to handle the closing of the frame.
+   *
+   * @return the close action.
+   */
   public Action getCloseAction()
   {
     return closeAction;
   }
 
+  /**
+   * Returns the preview action implementation to handle the preview action event.
+   *
+   * @return the preview action.
+   */
   public Action getPreviewAction()
   {
     return previewAction;
@@ -170,8 +194,7 @@ public abstract class AbstractDemoFrame extends JFrame
             getResources().getString("exitdialog.message"),
             getResources().getString("exitdialog.title"),
             JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE)
-        == JOptionPane.YES_OPTION;
+            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
     if (close)
     {
       dispose();
@@ -181,7 +204,11 @@ public abstract class AbstractDemoFrame extends JFrame
     return close;
   }
 
-  protected abstract void attemptPreview ();
+  /**
+   * Handler method called by the preview action. This method should perform all
+   * operations to preview the report.
+   */
+  protected abstract void attemptPreview();
 
   /**
    * Creates a JMenu which gets initialized from the current resource bundle.
@@ -221,6 +248,5 @@ public abstract class AbstractDemoFrame extends JFrame
         ),
         e);
   }
-
 
 }

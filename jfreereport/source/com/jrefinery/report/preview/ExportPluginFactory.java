@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.6 2003/02/25 14:45:31 mungady Exp $
+ * $Id: ExportPluginFactory.java,v 1.7 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes
  * --------
@@ -57,14 +57,18 @@ public class ExportPluginFactory
 
 
   /**
-   * Creates an Excel plug-in.
+   * Loads and instatiaties an export plug-in.
    * 
    * @param proxy  the preview proxy.
-   * 
+   * @param className the class name of the export plugin.
    * @return The plug-in.
    */
   protected ExportPlugin createPlugIn (PreviewProxy proxy, String className)
   {
+    if (proxy == null)
+    {
+      throw new NullPointerException("PreviewProxy must not be null.");
+    }
     try
     {
       Class c = Class.forName(className);
@@ -94,6 +98,7 @@ public class ExportPluginFactory
 
   /**
    * Creates a list containing all available export plugins.
+   * todo 0.8.4 move it into the report configuration ...
    * 
    * @param proxy  the preview proxy.
    * @param config  the report configuration.

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.56 2003/06/23 14:36:56 taqua Exp $
+ * $Id: JFreeReport.java,v 1.57 2003/06/23 16:08:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -106,6 +106,9 @@ import com.jrefinery.report.targets.style.StyleSheetCollection;
  * Elements on a band can be reached by using <code>Band.getElement (String elementName)</code>
  * or by retrieving all elements using <code>Band.getElements()</code> and performing a search on
  * the returned list.
+ * <p>
+ * All report elements share the same stylesheet collection. Report elements
+ * cannot be shared between two different report instances.
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -151,7 +154,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /** The report configuration. */
   private ReportConfiguration reportConfiguration;
 
+  /** The stylesheet collection used for this report. */
   private StyleSheetCollection styleSheetCollection;
+
   /**
    * The default constructor. Creates an empty but fully initialized report.
    */
@@ -531,6 +536,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     checkGroups();
   }
 
+  /**
+   * Verifies the group list and adds the default group to the list if necessary.
+   */
   protected void checkGroups ()
   {
     // if this was an empty group, fix it by adding an default group
@@ -804,6 +812,14 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     defaultPageFormat = (PageFormat) SerializerHelper.getInstance().readObject(in);
   }
 
+  /**
+   * Returns the stylesheet collection of this report. The stylesheet collection
+   * is fixed for the report and all elements of the report. When a band or
+   * group is added to the report it will get registered with this stylesheet
+   * collection and cannot be used in an different report.
+   *
+   * @return the stylesheet collection of the report, never null.
+   */
   public StyleSheetCollection getStyleSheetCollection()
   {
     return styleSheetCollection;

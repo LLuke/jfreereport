@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.6 2003/05/02 12:39:40 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.7 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -81,6 +81,7 @@ public class StraightToEverything
    * Creates a new demo application.
    *
    * @param filename  the output filename.
+   * @throws ParseException if the report could not be parsed.
    */
   public StraightToEverything(String filename) throws ParseException
   {
@@ -111,6 +112,7 @@ public class StraightToEverything
    * @param templateURL  the template location.
    *
    * @return a report.
+   * @throws ParseException if the report could not be parsed.
    */
   private JFreeReport parseReport(URL templateURL) throws ParseException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellDataFactory.java,v 1.7 2003/05/14 22:26:40 taqua Exp $
+ * $Id: RTFCellDataFactory.java,v 1.8 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import java.awt.geom.Rectangle2D;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
@@ -61,6 +62,7 @@ import com.jrefinery.report.util.Log;
  */
 public class RTFCellDataFactory extends AbstractTableCellDataFactory
 {
+  /** The baseFontSupport is used to handle truetype fonts in iText. */
   private BaseFontSupport baseFontSupport;
 
   /** Default Constructor. */
@@ -105,13 +107,13 @@ public class RTFCellDataFactory extends AbstractTableCellDataFactory
     /**
      * Images cause OutOfMemoryError so they get removed ...
      */
-    /*
+/*
     if (value instanceof ImageReference)
     {
       RTFCellStyle style = new RTFCellStyle(valign, halign);
       return new RTFImageCellData(rect, (ImageReference) value, style);
     }
-    */
+*/
     
     if (value instanceof String)
     {

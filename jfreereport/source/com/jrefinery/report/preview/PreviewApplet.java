@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PreviewApplet.java,v 1.1 2003/06/19 18:50:18 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,6 +48,19 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.action.CloseAction;
 
+/**
+ * The preview applet implements the preview proxy interface for JApplets.
+ * <p>
+ * Due to the special lifecycle of applets, this implementation must also
+ * provide methods to handle the creation of reports. Implementations of this
+ * class must implement the <code>getReport()</code> method to provide their
+ * fully initialized report definitions.
+ * <p>
+ * The <code>getReport()</code> method is called from the <code>init()</code>
+ * method.
+ *
+ * @author Thomas Morgner
+ */
 public abstract class PreviewApplet extends JApplet implements PreviewProxy
 {
   /**
@@ -146,6 +159,15 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
     setContentPane(base);
   }
 
+  /**
+   * Returns the report that should be displayed in that applet.
+   * Make sure, that subsequent calls to this method return the same report instance.
+   * <p>
+   * This method is called from PreviewApplet.init(), so make sure that all
+   * initialization is done before the init() method is called.
+   *
+   * @return the report that should be previewed.
+   */
   public abstract JFreeReport getReport ();
 
   /**
@@ -181,7 +203,7 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
    */
   public void setTitle(String title)
   {
-    // no need to implement it, except you want to implement something
+    // no need to implement it, except you want to do something
     // special ...
   }
 

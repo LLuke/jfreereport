@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.9 2003/05/14 22:26:38 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.10 2003/06/23 14:36:56 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 import com.jrefinery.report.util.CloseableTableModel;
@@ -182,7 +181,7 @@ public class ResultSetTableModelFactory
   {
     ResultSetMetaData rsmd = rs.getMetaData();
     int colcount = rsmd.getColumnCount();
-    Vector header = new Vector(colcount);
+    ArrayList header = new ArrayList(colcount);
     for (int i = 0; i < colcount; i++)
     {
       String name = rsmd.getColumnName(i + 1);
@@ -191,13 +190,13 @@ public class ResultSetTableModelFactory
     ArrayList rows = new ArrayList();
     while (rs.next())
     {
-      Vector column = new Vector(colcount);
+      Object[] column = new Object[colcount];
       for (int i = 0; i < colcount; i++)
       {
         Object val = rs.getObject(i + 1);
-        column.add(val);
+        column[i] = val;
       }
-      rows.add(column.toArray());
+      rows.add(column);
     }
 
     Object[] tempRows = rows.toArray();

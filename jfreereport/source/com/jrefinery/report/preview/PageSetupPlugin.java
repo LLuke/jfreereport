@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.1 2003/06/13 22:54:00 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.2 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,6 +47,12 @@ import javax.swing.KeyStroke;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.util.PageFormatFactory;
 
+/**
+ * An export control plugin that handles the setup of page format objects for
+ * the report.
+ *
+ * @author Thomas Morgner
+ */
 public class PageSetupPlugin extends AbstractExportPlugin
 {
   /** Localised resources. */
@@ -158,9 +164,11 @@ public class PageSetupPlugin extends AbstractExportPlugin
   }
 
   /**
-   * Returns true if the action is separated, and false otherwise.
+   * Returns true if the action is separated, and false otherwise. A separated
+   * action starts a new action group and will be spearated from previous actions
+   * on the menu and toolbar.
    *
-   * @return A boolean.
+   * @return always true.
    */
   public boolean isSeparated()
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.13 2003/05/11 13:39:17 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.14 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes
  * --------
@@ -837,10 +837,11 @@ public class PlainTextExportDialog extends JDialog
   public boolean performExport(JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
+    setModal(true);
     setVisible(true);
     if (isConfirmed() == false)
     {
-      return false;
+      return true;
     }
     return writeReport(report);
   }

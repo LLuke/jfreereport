@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.27 2003/06/23 14:36:56 taqua Exp $
+ * $Id: GroupList.java,v 1.28 2003/06/23 16:08:20 taqua Exp $
  *
  * Changes:
  * --------
@@ -70,45 +70,66 @@ import com.jrefinery.report.util.ReadOnlyIterator;
  */
 public class GroupList implements Cloneable, Serializable
 {
+  /**
+   * Internal helper class to handle the style sheet collection properly.
+   */
   private static class GroupListStyleSheetCollectionHelper extends StyleSheetCollectionHelper
   {
+    /** The group list for which we handle the stylesheet collection. */
     private GroupList groupList;
 
+    /**
+     * Creates a new helper for the given group list.
+     *
+     * @param groupList the group list whose stylesheet colllection should be managed.
+     */
     public GroupListStyleSheetCollectionHelper(GroupList groupList)
     {
       this.groupList = groupList;
     }
 
+    /**
+     * Handles the stylesheet collection registration for the group list and
+     * all groups.
+     */
     protected void handleRegisterStyleSheetCollection()
     {
       if (groupList.cache == null)
       {
-        groupList.cache = groupList.backend.toArray();
+        groupList.cache = (Group[]) groupList.backend.toArray
+            (new Group[groupList.backend.size()]);
       }
       for (int i = 0; i < groupList.cache.length; i++)
       {
-        Group g = (Group) groupList.cache[i];
+        Group g = groupList.cache[i];
         g.registerStyleSheetCollection(getStyleSheetCollection());
       }
     }
 
+    /**
+     * Handles the stylesheet collection unregistration for the group list and
+     * all groups.
+     */
     protected void handleUnregisterStyleSheetCollection()
     {
       if (groupList.cache == null)
       {
-        groupList.cache = groupList.backend.toArray();
+        groupList.cache = (Group[]) groupList.backend.toArray
+            (new Group[groupList.backend.size()]);
       }
       for (int i = 0; i < groupList.cache.length; i++)
       {
-        Group g = (Group) groupList.cache[i];
+        Group g = groupList.cache[i];
         g.unregisterStyleSheetCollection(null);
       }
     }
   }
 
   /** Cache (this is a set, we need list functionality, but creating Iterators is expensive). */
-  private Object[] cache;
+  private transient Group[] cache;
+  /** The backend to store the groups. */
   private ArrayList backend;
+  /** The stylesheet collection helper for managing the stylesheet collection of this list. */
   private GroupListStyleSheetCollectionHelper styleSheetCollectionHelper;
 
   /**
@@ -121,7 +142,9 @@ public class GroupList implements Cloneable, Serializable
   }
 
   /**
-   * Creates a new group list.
+   * Creates a new group list and copies the contents of the given grouplist.
+   * If the given group list was assigned with an stylesheet collection, then the
+   * new group list will share that registration.
    *
    * @param list  groups to add to the list.
    */
@@ -146,20 +169,24 @@ public class GroupList implements Cloneable, Serializable
   {
     if (cache == null)
     {
-      cache = backend.toArray();
+      cache = (Group[]) backend.toArray (new Group[backend.size()]);
     }
-    return (Group) cache[i];
+    return cache[i];
   }
 
   /**
-   * Removes an object from the list.
+   * Removes an group from the list.
    *
-   * @param o  the object.
-   *
+   * @param o  the group that should be removed.
    * @return a boolean indicating whether or not the object was removed.
+   * @throws NullPointerException if the given group object is null.
    */
   public boolean remove(Group o)
   {
+    if (o == null)
+    {
+      throw new NullPointerException();
+    }
     cache = null;
     int idxOf = findGroup(o);
     if (idxOf == -1)
@@ -176,6 +203,14 @@ public class GroupList implements Cloneable, Serializable
     return true;
   }
 
+  /**
+   * Tries to find the group in the group list. This compares the group by using
+   * the compareTo function instead of using equals(), as we don't care about
+   * group names here.
+   *
+   * @param group the group that is searched.
+   * @return the index of the group or -1 if this group is not contained in that list.
+   */
   private int findGroup (Group group)
   {
     for (int i = 0; i < backend.size(); i++)
@@ -222,6 +257,14 @@ public class GroupList implements Cloneable, Serializable
     Collections.sort(backend);
   }
 
+  /**
+   * Adds all groups of the collection to this group list. This method will
+   * result in a ClassCastException if the collection does not contain Group objects.
+   *
+   * @param c the collection that contains the groups.
+   * @throws NullPointerException if the given collection is null.
+   * @throws ClassCastException if the collection does not contain groups.
+   */
   public void addAll (Collection c)
   {
     Iterator it = c.iterator();
@@ -232,9 +275,9 @@ public class GroupList implements Cloneable, Serializable
   }
 
   /**
-   * Clones the list.
+   * Clones the group list and all contained groups.
    *
-   * @return a clone.
+   * @return a clone of this list.
    */
   public Object clone()
   {
@@ -258,9 +301,9 @@ public class GroupList implements Cloneable, Serializable
   }
 
   /**
-   * Returns an iterator for the list.
+   * Returns an iterator for the groups of the list.
    *
-   * @return An iterator for the list.
+   * @return An iterator over all groups of the list.
    */
   public Iterator iterator ()
   {
@@ -291,30 +334,70 @@ public class GroupList implements Cloneable, Serializable
     return b.toString();
   }
 
+  /**
+   * Returns the stylesheet collection which is assigned with this group and
+   * all stylesheets of this group.
+   *
+   * @return the stylesheet collection or null, if no collection is assigned.
+   */
   public StyleSheetCollection getStyleSheetCollection()
   {
     return styleSheetCollectionHelper.getStyleSheetCollection();
   }
 
+  /**
+   * Registers the given StyleSheet collection with this group list. If there is already
+   * another stylesheet collection registered, this method will throw an
+   * <code>InvalidStyleSheetCollectionException</code>.
+   *
+   * @param styleSheetCollection the stylesheet collection that should be registered.
+   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException
+   * if there is already an other stylesheet registered.
+   * @throws NullPointerException if the given stylesheet collection is null.
+   */
   public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
     styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
 
+  /**
+   * Unregisters the given stylesheet collection from this group list. If this stylesheet
+   * collection is not registered with this group list, this method will throw an
+   * <code>InvalidStyleSheetCollectionException</code>
+   *
+   * @param styleSheetCollection the stylesheet collection that should be unregistered.
+   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException
+   * @throws NullPointerException if the given stylesheet collection is null.
+   */
   public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
     styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
 
+  /**
+   * Updates the stylesheet collection for this group list and all group in this list.
+   * This method must be called after the group list was cloned, to make sure that
+   * all stylesheets are registered properly.
+   * <p>
+   * If you don't call this function after cloning prepare to be doomed.
+   * This method will replace all inherited stylesheets with clones from the stylesheet
+   * collection.
+   *
+   * @param styleSheetCollection the stylesheet collection that contains the updated information and
+   * that should be assigned with that element.
+   * @throws NullPointerException if the given stylesheet collection is null.
+   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException if there is an other stylesheet
+   * collection already registered with that element.
+   */
   public void updateStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
     if (cache == null)
     {
-      cache = backend.toArray();
+      cache = (Group[]) backend.toArray (new Group[backend.size()]);
     }
     for (int i = 0; i < cache.length; i++)
     {
-      Group g = (Group) cache[i];
+      Group g = cache[i];
       g.updateStyleSheetCollection(styleSheetCollection);
     }
   }

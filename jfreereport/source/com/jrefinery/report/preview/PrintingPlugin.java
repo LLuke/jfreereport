@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.1 2003/06/13 22:54:00 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.2 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,11 @@ import javax.swing.KeyStroke;
 
 import com.jrefinery.report.JFreeReport;
 
+/**
+ * An export plugin for the <code>java.awt.print</code> API.
+ * <p>
+ * @author Thomas Morgner
+ */
 public class PrintingPlugin extends AbstractExportPlugin
 {
   /** Localised resources. */
@@ -55,6 +60,9 @@ public class PrintingPlugin extends AbstractExportPlugin
       "com.jrefinery.report.resources.JFreeReportResources";
 
 
+  /**
+   * DefaultConstructor.
+   */
   public PrintingPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
@@ -81,7 +89,7 @@ public class PrintingPlugin extends AbstractExportPlugin
     }
     catch (Exception e)
     {
-      return false;
+      return handleExportResult(false);
     }
   }
 

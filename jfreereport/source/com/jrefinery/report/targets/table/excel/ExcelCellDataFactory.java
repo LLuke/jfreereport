@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellDataFactory.java,v 1.12 2003/05/23 20:12:15 taqua Exp $
+ * $Id: ExcelCellDataFactory.java,v 1.13 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -258,7 +258,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
       }
       catch (ParseException pe)
       {
-        Log.debug ("Unable to restore date:", pe);
+        Log.debug ("Unable to restore number:", pe);
       }
     }
     return null;

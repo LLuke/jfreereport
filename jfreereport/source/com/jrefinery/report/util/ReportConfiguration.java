@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.48 2003/06/19 18:44:11 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.49 2003/06/26 15:18:57 taqua Exp $
  *
  * Changes
  * -------
@@ -1239,7 +1239,7 @@ public class ReportConfiguration implements Configuration, Serializable
   }
 
   /**
-   *
+   * Searches all property keys that start with a given prefix. 
    *
    * @param prefix the prefix that all selected property keys should share
    * @return the properties as iterator.
@@ -1252,10 +1252,12 @@ public class ReportConfiguration implements Configuration, Serializable
   }
 
   /**
+   * Collects property keys from this and all parent report configurations, which
+   * start with the given prefix.
    *
-   * @param prefix
-   * @param config
-   * @param collector
+   * @param prefix the prefix, that selects the property keys.
+   * @param config the currently processed report configuration.
+   * @param collector the target list, that should receive all valid keys.
    */
   private void collectPropertyKeys (String prefix, ReportConfiguration config,
                                     ArrayList collector)

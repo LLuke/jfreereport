@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.15 2003/05/11 13:39:18 taqua Exp $
+ * $Id: TableProcessor.java,v 1.16 2003/06/23 16:08:27 taqua Exp $
  *
  * Changes
  * -------
@@ -119,6 +119,11 @@ public abstract class TableProcessor
     strictLayout = report.getReportConfiguration().isStrictTableLayout();
   }
 
+  /**
+   * Returns the tablewriter function used in to create the report contents.
+   *
+   * @return the tablewriter function of the current report.
+   */
   protected TableWriter getTableWriter()
   {
     return tableWriter;

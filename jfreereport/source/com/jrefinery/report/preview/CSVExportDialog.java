@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.10 2003/05/02 12:40:21 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.11 2003/06/13 22:54:00 taqua Exp $
  *
  * Changes
  * --------
@@ -808,10 +808,11 @@ public class CSVExportDialog extends JDialog
   public boolean performExport(JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
+    setModal(true);
     setVisible(true);
     if (isConfirmed() == false)
     {
-      return false;
+      return true;
     }
     if (isExportRawData())
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinition.java,v 1.8 2003/06/23 14:36:56 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.9 2003/06/23 16:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -74,6 +74,7 @@ public class ReportDefinition implements Cloneable
   /** The report configuration. */
   private ReportConfiguration reportConfiguration;
 
+  /** The stylesheet collection of this report definition. */
   private StyleSheetCollection styleSheetCollection;
 
   /**
@@ -249,5 +250,18 @@ public class ReportDefinition implements Cloneable
     report.pageFooter.updateStyleSheetCollection(report.styleSheetCollection);
     report.pageHeader.updateStyleSheetCollection(report.styleSheetCollection);
     return report;
+  }
+
+  /**
+   * Returns the stylesheet collection of this report definition. The stylesheet
+   * collection is fixed for the report definition and all elements of the report.
+   * When a band or group is added to the report it will get registered with this
+   * stylesheet collection and cannot be used in an different report.
+   *
+   * @return the stylesheet collection of the report, never null.
+   */
+  public StyleSheetCollection getStyleSheetCollection()
+  {
+    return styleSheetCollection;
   }
 }

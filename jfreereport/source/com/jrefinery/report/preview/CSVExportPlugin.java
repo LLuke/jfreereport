@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportPlugin.java,v 1.1 2003/06/13 22:54:00 taqua Exp $
+ * $Id: CSVExportPlugin.java,v 1.2 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,8 +46,14 @@ import javax.swing.KeyStroke;
 
 import com.jrefinery.report.JFreeReport;
 
+/**
+ * Encapsulates the CSVExportDialog into a separate plugin.
+ *
+ * @author Thomas Morgner
+ */
 public class CSVExportPlugin extends AbstractExportPlugin
 {
+  /** The CSV export dialog. */
   private CSVExportDialog exportDialog;
 
   /** Localised resources. */
@@ -58,6 +64,9 @@ public class CSVExportPlugin extends AbstractExportPlugin
       "com.jrefinery.report.resources.JFreeReportResources";
 
 
+  /**
+   * DefaultConstructor.
+   */
   public CSVExportPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
@@ -65,7 +74,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
 
   /**
    * Shows this dialog and (if the dialog is confirmed) saves the complete report into an
-   * Excel file.
+   * comma separated values file.
    *
    * @param report  the report being processed.
    *
@@ -73,7 +82,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport(JFreeReport report)
   {
-    return exportDialog.performExport(report);
+    return handleExportResult(exportDialog.performExport(report));
   }
 
   /**

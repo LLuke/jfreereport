@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFormatSerializer.java,v 1.1 2003/06/01 20:35:26 taqua Exp $
+ * $Id: PageFormatSerializer.java,v 1.2 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,6 +48,9 @@ import com.jrefinery.report.util.SerializeMethod;
 
 public class PageFormatSerializer implements SerializeMethod
 {
+  /**
+   * Default Constructor.
+   */
   public PageFormatSerializer()
   {
   }

@@ -28,31 +28,61 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetCollectionHelper.java,v 1.1 2003/06/19 18:50:18 taqua Exp $
+ * $Id: StyleSheetCollectionHelper.java,v 1.2 2003/06/23 14:36:57 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
- * 19.06.2003 : Initial version
- *  
+ * 19-Jun-2003 : Initial version
  */
 
 package com.jrefinery.report.targets.style;
 
 import java.io.Serializable;
 
+/**
+ * An abstract helper implementation to make handling the complex registration
+ * and unregistration of the StyleSheetCollection easier.
+ * <p>
+ * If the stylesheet collection is not registered/unregistered properly, it
+ * may cause horrible effects like OutOfMemoryExceptions or uncontrollable
+ * missbehaviour.
+ *
+ * @see StyleSheetCollection
+ * @see ElementStyleSheet
+ * @author Thomas Morgner
+ */
 public abstract class StyleSheetCollectionHelper implements Serializable
 {
+  /** The local stylesheet collection managed by this helper implementation. */
   private StyleSheetCollection styleSheetCollection;
 
+  /**
+   * DefaultConstructor. Does nothing.
+   */
   public StyleSheetCollectionHelper()
   {
   }
 
+  /**
+   * Returns the stylesheet collection assigned with this StyleSheetCollectioHelper,
+   * or null, if no collection is registered.
+   *
+   * @return the registered collection or null.
+   */
   public StyleSheetCollection getStyleSheetCollection()
   {
     return styleSheetCollection;
   }
 
+  /**
+   * Unregisters the given stylesheet collection from this helper. If this stylesheet
+   * collection is not registered with this helper, this method will throw an
+   * <code>InvalidStyleSheetCollectionException</code>
+   *
+   * @param styleSheetCollection the stylesheet collection that should be unregistered.
+   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException
+   * @throws NullPointerException if the given stylesheet collection is null.
+   */
   public void unregisterStyleSheetCollection (StyleSheetCollection styleSheetCollection)
   {
     if (styleSheetCollection == null)
@@ -60,12 +90,17 @@ public abstract class StyleSheetCollectionHelper implements Serializable
       throw new NullPointerException();
     }
 
+    if (this.styleSheetCollection == null)
+    {
+      // already unregistered, do nothing ...
+      return;
+    }
     /**
      * Do nothing if both stylesheets are equal.
      */
     if (this.styleSheetCollection != styleSheetCollection)
     {
-      throw new IllegalArgumentException("This styleCollectio is not known.");
+      throw new InvalidStyleSheetCollectionException("This styleCollection is not known.");
     }
 
     handleUnregisterStyleSheetCollection();
@@ -74,6 +109,16 @@ public abstract class StyleSheetCollectionHelper implements Serializable
 
   }
 
+  /**
+   * Registers the given StyleSheet collection with this helper. If there is already
+   * another stylesheet collection registered, this method will throw an
+   * <code>InvalidStyleSheetCollectionException</code>.
+   *
+   * @param styleSheetCollection the stylesheet collection that should be registered.
+   * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException
+   * if there is already an other stylesheet registered.
+   * @throws NullPointerException if the given stylesheet collection is null.
+   */
   public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
     if (styleSheetCollection == null)
@@ -103,8 +148,14 @@ public abstract class StyleSheetCollectionHelper implements Serializable
     handleRegisterStyleSheetCollection();
   }
 
+  /**
+   * Handles the stylesheet collection registration.
+   */
   protected abstract void handleRegisterStyleSheetCollection();
 
+  /**
+   * Handles the stylesheet collection removal.
+   */
   protected abstract void handleUnregisterStyleSheetCollection();
 
 }
