@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.5 2003/01/30 00:04:53 taqua Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.6 2003/02/02 23:43:52 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -39,7 +39,10 @@
  * 04-Jun-2002 : Documentation updated.
  * 04-Jul-2002 : Serializable and Cloneable
  * 05-Sep-2002 : Documentation
+ * 02-Dec-2002 : Old layouting implementation got transformed into SimplePageLayout
  * 05-Dec-2002 : Updates to Javadocs (DG);
+ * 07-Dec-2002 : More documentation
+ * 07-Jan-2003 : Layouting Fix III: Limited max band height to the available space of a single page
  */
 
 package com.jrefinery.report.targets.pageable.pagelayout;

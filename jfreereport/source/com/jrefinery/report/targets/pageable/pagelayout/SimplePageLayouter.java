@@ -28,14 +28,20 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.21 2003/02/01 18:27:04 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.22 2003/02/08 19:32:06 taqua Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Updated Javadocs (DG);
  * 07-Dec-2002 : Removed manual-pagebreak flag, was a left-over. PageFinished
  *               did not query the DISPLAY_ON_FIRSTPAGE flag.
+ * 12-Dec-2002 : Layouting Fix    I: Layouting failed for non-absolute band elements if no
+ *               absolute positioned elements were defined.
+ * 18-Dec-2002 : Layouting Fix  II: PageFooter on own page failed
+ * 07-Jan-2003 : Layouting Fix III: Limited max band height to the available space of a single page
+ * 08-Jan-2003 : Layouting Fix IIa: PageFooter fix fix
  * 27-Jan-2003 : BugFix: printing empty bands caused a commit spooled operations
+ * 01-Feb-2003 : Layouting moved into BandLayoutManagerUtil (Common code)
  */
 
 package com.jrefinery.report.targets.pageable.pagelayout;
@@ -52,7 +58,6 @@ import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
 import com.jrefinery.report.targets.style.BandStyleSheet;
-import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
 
@@ -99,6 +104,7 @@ public class SimplePageLayouter extends PageLayouter
    * is printed. Bool-or this flag with PageBreakBefore ...
    */
   private boolean startNewPage;
+
   /**
    * Represents the current state of the page layouter.
    */
@@ -316,8 +322,7 @@ public class SimplePageLayouter extends PageLayouter
           printBottom(b);
         }
       }
-      else
-      if (isLastPageBreak)
+      else if (isLastPageBreak)
       {
         if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
         {
@@ -461,7 +466,7 @@ public class SimplePageLayouter extends PageLayouter
    * @throws ReportProcessingException if the printing or spooling of the band failed.
    * @return true, if the band was printed, false if the printing was delayed to the next page
    */
-  private boolean printBand (Band b) throws ReportProcessingException
+  private boolean printBand(Band b) throws ReportProcessingException
   {
     if (isPageEnded())
     {
@@ -516,8 +521,8 @@ public class SimplePageLayouter extends PageLayouter
    *
    * @throws ReportProcessingException if the printing failed
    */
-  protected boolean printBottom (Band b)
-    throws ReportProcessingException
+  protected boolean printBottom(Band b)
+      throws ReportProcessingException
   {
     // don't save the state if the current page is currently beeing finished
     // or restarted; PageHeader and PageFooter are printed out of order and
@@ -541,10 +546,10 @@ public class SimplePageLayouter extends PageLayouter
   {
     float width = (float) getLogicalPage().getWidth();
     float height = getCursor().getPageBottomReserved() - getCursor().getPageTop();
-    return BandLayoutManagerUtil.doLayout(band, 
-                                   getLogicalPage().getOutputTarget(),
-                                   width,
-                                   height);
+    return BandLayoutManagerUtil.doLayout(band,
+                                          getLogicalPage().getOutputTarget(),
+                                          width,
+                                          height);
   }
 
   /**
@@ -561,7 +566,7 @@ public class SimplePageLayouter extends PageLayouter
    * while printing the band
    */
   protected boolean doPrint(Rectangle2D bounds, Band band, boolean spool)
-    throws ReportProcessingException
+      throws ReportProcessingException
   {
     try
     {
@@ -571,7 +576,7 @@ public class SimplePageLayouter extends PageLayouter
       {
         if (spooledBand != null)
         {
-          getLogicalPage().replaySpool (spooledBand);
+          getLogicalPage().replaySpool(spooledBand);
           spooledBand = null;
         }
         getLogicalPage().addBand(bounds, band);
@@ -583,7 +588,7 @@ public class SimplePageLayouter extends PageLayouter
       {
         if ((spooledBand != null) && (spool == false))
         {
-          getLogicalPage().replaySpool (spooledBand);
+          getLogicalPage().replaySpool(spooledBand);
           spooledBand = null;
         }
 
@@ -607,7 +612,7 @@ public class SimplePageLayouter extends PageLayouter
           }
           else
           {
-            spooledBand.merge (newSpool);
+            spooledBand.merge(newSpool);
           }
 
           cursor.advance(height);
@@ -620,7 +625,7 @@ public class SimplePageLayouter extends PageLayouter
           {
             if (spooledBand != null)
             {
-              getLogicalPage().replaySpool (spooledBand);
+              getLogicalPage().replaySpool(spooledBand);
               spooledBand = null;
             }
 
@@ -838,7 +843,7 @@ public class SimplePageLayouter extends PageLayouter
    *
    * @throws CloneNotSupportedException if there is a problem cloning.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
     SimplePageLayouter sl = (SimplePageLayouter) super.clone();
     if (spooledBand != null)

@@ -28,12 +28,16 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.20 2003/02/07 22:40:43 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.21 2003/02/08 19:32:06 taqua Exp $
  *
  * Changes
  * -------
+ * 02-Dec-2002 : Initial version
  * 04-Dec-2002 : Added Javadocs (DG);
  * 14-Jan-2003 : BugFix: SubBands were not spooled ...
+ * 29-Jan-2003 : LogicalPage is closed by default, need explicit open call
+ * 01-Feb-2003 : BugFix: SubBand layouting was not translated correctly
+ * 07-Feb-2003 : Added explict OperationFactory support
  */
 
 package com.jrefinery.report.targets.pageable.physicals;

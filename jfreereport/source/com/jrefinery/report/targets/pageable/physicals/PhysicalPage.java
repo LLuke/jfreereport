@@ -28,15 +28,18 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.10 2003/02/02 23:43:52 taqua Exp $
+ * $Id: PhysicalPage.java,v 1.11 2003/02/07 22:40:44 taqua Exp $
  *
  * Changes
  * -------
+ * 02-Dec-2002 : Initial version
+ * 16-Dec-2002 : Documentation
  */
 package com.jrefinery.report.targets.pageable.physicals;
 
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
@@ -100,8 +103,8 @@ public class PhysicalPage
   public void write(OutputTarget ot) throws OutputTargetException
   {
     ot.beginPage(this);
-    com.jrefinery.report.targets.pageable.operations.PhysicalOperation[] ops = new com.jrefinery.report.targets.pageable.operations.PhysicalOperation[bandOperations.size()];
-    ops = (com.jrefinery.report.targets.pageable.operations.PhysicalOperation[]) bandOperations.toArray(ops);
+    PhysicalOperation[] ops = new PhysicalOperation[bandOperations.size()];
+    ops = (PhysicalOperation[]) bandOperations.toArray(ops);
 
     for (int i = 0; i < ops.length; i++)
     {
