@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.9 2002/12/12 20:24:03 taqua Exp $
+ * $Id: PageLayouter.java,v 1.10 2002/12/13 01:26:11 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,7 @@ public abstract class PageLayouter extends AbstractFunction
   /**
    * Represents the state of the page layouter. Subclasses must override this
    * class to create an internal state which can be saved and restored when
-   * an PageBreak occures.
+   * a page-break occurs.
    * <p>
    * The state is required to be cloneable and must support deep-cloning so that
    * the state can be restored multiple times whenever the page printing continues.
@@ -230,7 +230,7 @@ public abstract class PageLayouter extends AbstractFunction
 
   /**
    * Returns the report that should be printed. This is the report contained
-   * in the last ReportEvent received, or null, if no event occured here.
+   * in the last ReportEvent received, or null, if no event occurred here.
    *
    * @return the report.
    */
@@ -371,7 +371,7 @@ public abstract class PageLayouter extends AbstractFunction
 
   /**
    * Restores the layoutmanager state by using this state as new base for
-   * processing. This state must be an clone of the last report state for
+   * processing. This state must be a clone of the last report state for
    * the previous page or the original last report state - or the processing
    * will print stupid things.
    *

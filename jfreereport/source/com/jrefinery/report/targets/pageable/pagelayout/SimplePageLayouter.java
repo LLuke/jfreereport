@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.8 2002/12/12 20:24:03 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.9 2002/12/13 01:26:11 taqua Exp $
  *
  * Changes
  * -------
@@ -97,7 +97,7 @@ public class SimplePageLayouter extends PageLayouter
   private boolean isLastPageBreak;
 
   /**
-   * Represent the current state of the page layouter.
+   * Represents the current state of the page layouter.
    */
   protected static class SimpleLayoutManagerState extends PageLayouter.LayoutManagerState
   {
@@ -149,7 +149,7 @@ public class SimplePageLayouter extends PageLayouter
    * <P>
    * Layout and draw the report header after the PageStartEvent was fired.
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void reportStarted(ReportEvent event)
   {
@@ -470,7 +470,7 @@ public class SimplePageLayouter extends PageLayouter
       throws ReportProcessingException
   {
     float y = getCursor().getY();
-    // don't save the state if the current page is currently beeing finished
+    // don't save the state if the current page is currently being finished
     // or restarted; PageHeader and PageFooter are printed out of order and
     // do not influence the reporting state
 
@@ -500,8 +500,8 @@ public class SimplePageLayouter extends PageLayouter
   }
 
   /**
-   * Perform the layout of a band. The height of the band is calculated and the
-   * set to the bands bounds. A band will always span the complete printable width.
+   * Perform the layout of a band. The height of the band is calculated according to the contents
+   * of the band.  The width of the band will always span the complete printable width.
    *
    * @param band  the band.
    *
