@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,21 +23,24 @@
  * ------------------
  * PreviewAction.java
  * ------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewAction.java,v 1.9 2002/09/16 14:13:46 mungady Exp $
+ * $Id: PreviewAction.java,v 1.10 2002/12/02 17:16:58 taqua Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
  * 05-Jun-2002 : Documentation.
+ * 04-Dec-2002 : Added ActionDowngrade reference to resolve ambiguity (compile error) (DG);
+ *
  */
 
 package com.jrefinery.report.demo;
 
+import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.util.AbstractActionDowngrade;
 
 import java.util.ResourceBundle;
@@ -46,7 +49,7 @@ import java.util.ResourceBundle;
  * The preview action invokes the parsing and processing of the currently selected sample
  * report. The actual work is done in the JFreeReportDemos method attemptPreview ()
  *
- * @author DG
+ * @author David Gilbert
  */
 public abstract class PreviewAction extends AbstractActionDowngrade
 {
@@ -59,8 +62,10 @@ public abstract class PreviewAction extends AbstractActionDowngrade
   {
     this.putValue (NAME, resources.getString ("action.print-preview.name"));
     this.putValue (SHORT_DESCRIPTION, resources.getString ("action.print-preview.description"));
-    this.putValue (MNEMONIC_KEY, resources.getObject ("action.print-preview.mnemonic"));
-    this.putValue (ACCELERATOR_KEY, resources.getObject ("action.print-preview.accelerator"));
+    this.putValue (ActionDowngrade.MNEMONIC_KEY, 
+                   resources.getObject ("action.print-preview.mnemonic"));
+    this.putValue (ActionDowngrade.ACCELERATOR_KEY, 
+                   resources.getObject ("action.print-preview.accelerator"));
     this.putValue (SMALL_ICON, resources.getObject ("action.print-preview.small-icon"));
     this.putValue ("ICON24", resources.getObject ("action.print-preview.icon"));
   }
