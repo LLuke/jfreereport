@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * ImageReference.java
  * -------------------
- * (C)opyright 2002, by Thomas Morgner.
+ * (C)opyright 2002, 2003, by Thomas Morgner.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.26 2003/02/23 20:39:10 taqua Exp $
+ * $Id: ImageReference.java,v 1.27 2003/02/25 14:06:31 taqua Exp $
  *
  * Changes:
  * --------
@@ -43,9 +43,7 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.util.WaitingImageObserver;
 import gnu.bhresearch.pixie.wmf.WmfFile;
-
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
@@ -53,6 +51,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
+
+import com.jrefinery.report.util.WaitingImageObserver;
 
 /**
  * An image reference encapsulates the source of an image together with a
