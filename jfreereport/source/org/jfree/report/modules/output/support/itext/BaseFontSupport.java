@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.9 2003/06/29 16:59:29 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -86,10 +86,10 @@ public class BaseFontSupport
    *
    * @return the base font record.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there was a problem setting the font for the target.
+   * @throws BaseFontCreateException if there was a problem setting the font for the target.
    */
   public BaseFontRecord createBaseFont(final FontDefinition font, final String encoding, final boolean embedded)
-      throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+      throws BaseFontCreateException
   {
     if (font == null)
     {
@@ -213,9 +213,9 @@ public class BaseFontSupport
     catch (Exception e)
     {
       Log.warn("BaseFont.createFont for FALLBACK failed.", e);
-      throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("Null font = " + fontKey);
+      throw new BaseFontCreateException("Null font = " + fontKey);
     }
-    throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("BaseFont creation failed, null font: " + fontKey);
+    throw new BaseFontCreateException("BaseFont creation failed, null font: " + fontKey);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
@@ -117,7 +118,7 @@ public class StraightToPDF
       target.configure(report.getReportConfiguration());
       target.open();
 
-      final org.jfree.report.modules.output.pageable.base.PageableReportProcessor proc = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+      final PageableReportProcessor proc = new PageableReportProcessor(report);
       proc.setOutputTarget(target);
       proc.processReport();
 

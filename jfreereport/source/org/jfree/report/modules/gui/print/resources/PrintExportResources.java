@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PrintExportResources.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,7 +42,6 @@ import java.awt.event.KeyEvent;
 
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
-import org.jfree.report.modules.gui.plaintext.resources.PlainTextExportResources;
 
 public class PrintExportResources extends JFreeReportResources
 {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.25 2003/07/03 15:59:29 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,9 @@ import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
 import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
 import org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage;
+import org.jfree.report.modules.output.pageable.base.OutputTarget;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
+import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.ReportConfiguration;
 
@@ -119,7 +122,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      *
      * @param source the source outputtarget.
      */
-    private PlainTextState(final org.jfree.report.modules.output.pageable.base.OutputTarget source)
+    private PlainTextState(final OutputTarget source)
     {
       save(source);
     }
@@ -129,7 +132,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      *
      * @param source  the OutputTarget.
      */
-    protected void save(final org.jfree.report.modules.output.pageable.base.OutputTarget source)
+    protected void save(final OutputTarget source)
     {
       mypaint = source.getPaint();
       myfont = source.getFont();
@@ -140,10 +143,10 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      * Copies the state back to the specified OutputTarget.
      *
      * @param target  the OutputTarget.
-     * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if restoring the output target state failed.
+     * @throws OutputTargetException if restoring the output target state failed.
      */
-    protected void restore(final org.jfree.report.modules.output.pageable.base.OutputTarget target)
-        throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+    protected void restore(final OutputTarget target)
+        throws OutputTargetException
     {
       target.setStroke(mystroke);
       target.setFont(myfont);
@@ -295,7 +298,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    * @param logicalPage  the page format used by this target for layouting.
    * @throws java.lang.NullPointerException if the printer command set is null
    */
-  public PlainTextOutputTarget(final org.jfree.report.modules.output.pageable.base.LogicalPage logicalPage, final PrinterCommandSet commandSet)
+  public PlainTextOutputTarget(final LogicalPage logicalPage, final PrinterCommandSet commandSet)
   {
     super(logicalPage);
     if (commandSet == null)
@@ -317,9 +320,9 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   /**
    * Opens the target.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is some problem opening the target.
+   * @throws OutputTargetException if there is some problem opening the target.
    */
-  public void open() throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void open() throws OutputTargetException
   {
     try
     {
@@ -329,7 +332,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     }
     catch (Exception e)
     {
-      throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("Failed to parse page format", e);
+      throw new OutputTargetException("Failed to parse page format", e);
     }
     open = true;
   }
@@ -374,9 +377,9 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    * Signals that the current page is ended.  Writes the page buffer to the
    * printer.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is some problem with the target.
+   * @throws OutputTargetException if there is some problem with the target.
    */
-  public void endPage() throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void endPage() throws OutputTargetException
   {
     try
     {
@@ -384,7 +387,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     }
     catch (IOException ioe)
     {
-      throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("Failed to write the page", ioe);
+      throw new OutputTargetException("Failed to write the page", ioe);
     }
     pageBuffer = null;
   }
@@ -392,9 +395,9 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   /**
    * Restores the state of this graphics.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if the argument is not an instance of G2State.
+   * @throws OutputTargetException if the argument is not an instance of G2State.
    */
-  public void restoreState() throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void restoreState() throws OutputTargetException
   {
     savedState.restore(this);
   }
@@ -414,9 +417,9 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param font  the font.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the font.
+   * @throws OutputTargetException if there is a problem setting the font.
    */
-  public void setFont(final FontDefinition font) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void setFont(final FontDefinition font) throws OutputTargetException
   {
     this.font = font;
   }
@@ -436,9 +439,9 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param stroke  the stroke.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the stroke.
+   * @throws OutputTargetException if there is a problem setting the stroke.
    */
-  public void setStroke(final Stroke stroke) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void setStroke(final Stroke stroke) throws OutputTargetException
   {
     this.stroke = stroke;
   }
@@ -458,9 +461,9 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param paint The paint.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the paint.
+   * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void setPaint(final Paint paint) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void setPaint(final Paint paint) throws OutputTargetException
   {
     this.paint = paint;
   }
@@ -527,9 +530,9 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param image The image to draw (as ImageReference for possible embedding of raw data).
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the paint.
+   * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void drawImage(final ImageReference image) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void drawImage(final ImageReference image) throws OutputTargetException
   {
   }
 
@@ -540,7 +543,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @return a dummy output target.
    */
-  public org.jfree.report.modules.output.pageable.base.OutputTarget createDummyWriter()
+  public OutputTarget createDummyWriter()
   {
     return new DummyOutputTarget(this);
   }
@@ -583,9 +586,9 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @return the size calculator.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem with the output target.
+   * @throws OutputTargetException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(final FontDefinition font) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public SizeCalculator createTextSizeCalculator(final FontDefinition font) throws OutputTargetException
   {
     return new PlainTextSizeCalculator(characterWidth, characterHeight);
   }

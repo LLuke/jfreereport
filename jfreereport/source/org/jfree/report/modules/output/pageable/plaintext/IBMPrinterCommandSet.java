@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IBMPrinterCommandSet.java,v 1.12 2003/06/29 16:59:29 taqua Exp $
+ * $Id: IBMPrinterCommandSet.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -53,8 +53,8 @@ import org.jfree.report.util.StringUtil;
  * <p>
  * This implementation does only work for 8-Bit character sets.
  *
- * @see org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet
- * @see org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget
+ * @see PrinterCommandSet
+ * @see PlainTextOutputTarget
  *
  * @author Thomas Morgner
  */
@@ -368,7 +368,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * string must be in the format CpXXXX where XXXX is the number of the codepage.
    * <p>
    * You may test whether the printer supports a certain encoding by calling
-   * {@link org.jfree.report.modules.output.pageable.plaintext.EpsonPrinterCommandSet#isEncodingSupported}.
+   * {@link IBMPrinterCommandSet#isEncodingSupported}.
    *
    * @param cp the code page
    * @return the epson byte code.

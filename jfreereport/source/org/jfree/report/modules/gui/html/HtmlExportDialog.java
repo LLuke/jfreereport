@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.23 2003/07/03 15:59:28 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -99,7 +99,7 @@ public class HtmlExportDialog extends JDialog
 {
   /** The 'HTML encoding' property key. */
   public static final String HTML_OUTPUT_ENCODING
-      = "org.jfree.report.targets.table.html.Encoding";
+      = "org.jfree.report.modules.output.table.html.Encoding";
   /** A default value of the 'HTML encoding' property key. */
   public static final String HTML_OUTPUT_ENCODING_DEFAULT = "UTF-16";
 

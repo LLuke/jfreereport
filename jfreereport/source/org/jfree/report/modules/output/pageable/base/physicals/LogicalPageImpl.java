@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.38 2003/06/29 16:59:29 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,10 @@ import org.jfree.report.modules.output.pageable.base.operations.OperationFactory
 import org.jfree.report.modules.output.pageable.base.operations.PhysicalOperation;
 import org.jfree.report.modules.output.pageable.base.operations.ShapeOperationModule;
 import org.jfree.report.modules.output.pageable.base.operations.TextOperationModule;
+import org.jfree.report.modules.output.pageable.base.LogicalPage;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
+import org.jfree.report.modules.output.pageable.base.Spool;
+import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.util.Log;
@@ -67,10 +71,10 @@ import org.jfree.report.util.ReportConfiguration;
  *
  * @author Thomas Morgner
  */
-public class LogicalPageImpl implements org.jfree.report.modules.output.pageable.base.LogicalPage
+public class LogicalPageImpl implements LogicalPage
 {
   /** The output target. */
-  private org.jfree.report.modules.output.pageable.base.OutputTarget outputTarget;
+  private OutputTarget outputTarget;
 
   /** An array of physical pages. */
   private PhysicalPage[] physicalPage;
@@ -195,7 +199,7 @@ public class LogicalPageImpl implements org.jfree.report.modules.output.pageable
    * @param ot the outputTarget, must not be null
    * @throws NullPointerException if the given OutputTarget is null
    */
-  public void setOutputTarget(final org.jfree.report.modules.output.pageable.base.OutputTarget ot)
+  public void setOutputTarget(final OutputTarget ot)
   {
     if (ot == null)
     {
@@ -209,7 +213,7 @@ public class LogicalPageImpl implements org.jfree.report.modules.output.pageable
    *
    * @return the defined OutputTarget
    */
-  public org.jfree.report.modules.output.pageable.base.OutputTarget getOutputTarget()
+  public OutputTarget getOutputTarget()
   {
     return outputTarget;
   }
@@ -268,11 +272,11 @@ public class LogicalPageImpl implements org.jfree.report.modules.output.pageable
    *
    * @param bounds where to add the band. The bands were calculated by the PageLayouter
    * @param band the band which will be added to the page
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if the band addition failed
+   * @throws OutputTargetException if the band addition failed
    */
-  public void addBand(final Rectangle2D bounds, final Band band) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void addBand(final Rectangle2D bounds, final Band band) throws OutputTargetException
   {
-    final org.jfree.report.modules.output.pageable.base.Spool operations = spoolBand(bounds, band);
+    final Spool operations = spoolBand(bounds, band);
     if (operations.isEmpty())
     {
       return;
@@ -285,7 +289,7 @@ public class LogicalPageImpl implements org.jfree.report.modules.output.pageable
    *
    * @param operations  the operations.
    */
-  public void replaySpool(final org.jfree.report.modules.output.pageable.base.Spool operations)
+  public void replaySpool(final Spool operations)
   {
     final PhysicalOperation[] ops = operations.getOperations();
     for (int i = 0; i < ops.length; i++)
@@ -306,16 +310,16 @@ public class LogicalPageImpl implements org.jfree.report.modules.output.pageable
    * @param band the band that should be spooled/printed
    * @return the generated spool for the given band
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem with the output target.
+   * @throws OutputTargetException if there is a problem with the output target.
    */
-  public org.jfree.report.modules.output.pageable.base.Spool spoolBand(final Rectangle2D bounds, final Band band) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public Spool spoolBand(final Rectangle2D bounds, final Band band) throws OutputTargetException
   {
     if (isOpen() == false)
     {
       throw new IllegalStateException("Band already closed");
     }
 
-    final org.jfree.report.modules.output.pageable.base.Spool spool = new org.jfree.report.modules.output.pageable.base.Spool();
+    final Spool spool = new Spool();
     spoolBand(bounds, band, spool);
     return spool;
   }
@@ -333,10 +337,10 @@ public class LogicalPageImpl implements org.jfree.report.modules.output.pageable
    * @param band the band that should be spooled/printed
    * @param spool the spool which collects the generated operations.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem with the output target.
+   * @throws OutputTargetException if there is a problem with the output target.
    */
-  protected void spoolBand(final Rectangle2D bounds, final Band band, final org.jfree.report.modules.output.pageable.base.Spool spool)
-      throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  protected void spoolBand(final Rectangle2D bounds, final Band band, final Spool spool)
+      throws OutputTargetException
   {
     // do nothing if the band is invisble
     if (band.isVisible() == false)
@@ -410,12 +414,12 @@ public class LogicalPageImpl implements org.jfree.report.modules.output.pageable
    * @param e  the element.
    * @param operations  the operations.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there was content that could not be handled
+   * @throws OutputTargetException if there was content that could not be handled
    * @throws NullPointerException if the element has no valid layout (no BOUNDS defined).
    * Bounds are usually defined by the BandLayoutManager.
    */
-  private void addElement(final Rectangle2D bounds, final Element e, final org.jfree.report.modules.output.pageable.base.Spool operations)
-      throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  private void addElement(final Rectangle2D bounds, final Element e, final Spool operations)
+      throws OutputTargetException
   {
     if (e.isVisible() == false)
     {
@@ -460,7 +464,7 @@ public class LogicalPageImpl implements org.jfree.report.modules.output.pageable
     }
     catch (ContentCreationException ce)
     {
-      throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("Unable to create content", ce);
+      throw new OutputTargetException("Unable to create content", ce);
     }
   }
 
@@ -552,7 +556,7 @@ public class LogicalPageImpl implements org.jfree.report.modules.output.pageable
    *
    * @return a new instance of this LogicalPage
    */
-  public org.jfree.report.modules.output.pageable.base.LogicalPage newInstance()
+  public LogicalPage newInstance()
   {
     return new LogicalPageImpl(getPageFormat(), getPhysicalPageFormat());
   }

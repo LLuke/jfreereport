@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.16 2003/06/29 16:59:29 taqua Exp $
+ * $Id: PhysicalPage.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,8 @@ import java.awt.print.PageFormat;
 import java.util.ArrayList;
 
 import org.jfree.report.modules.output.pageable.base.operations.PhysicalOperation;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
+import org.jfree.report.modules.output.pageable.base.OutputTarget;
 
 /**
  * Represents a physical page.
@@ -96,9 +98,9 @@ public class PhysicalPage
    *
    * @param ot  the output target.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem with the output target.
+   * @throws OutputTargetException if there is a problem with the output target.
    */
-  public void write(final org.jfree.report.modules.output.pageable.base.OutputTarget ot) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void write(final OutputTarget ot) throws OutputTargetException
   {
     ot.beginPage(this);
     PhysicalOperation[] ops = new PhysicalOperation[bandOperations.size()];

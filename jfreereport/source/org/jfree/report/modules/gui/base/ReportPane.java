@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.49 2003/06/29 16:59:27 taqua Exp $
+ * $Id: ReportPane.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -65,6 +65,10 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
+import org.jfree.report.modules.output.pageable.base.ReportStateList;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
+import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.util.Log;
@@ -119,7 +123,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
   private int pageCount;
 
   /** Storage for end-of-page state information. */
-  private org.jfree.report.modules.output.pageable.base.ReportStateList pageStateList;
+  private ReportStateList pageStateList;
 
   /** A flag to indicate whether the border is painted or not. */
   private boolean borderPainted;
@@ -163,14 +167,14 @@ public class ReportPane extends JComponent implements Printable, Pageable
   private PaginateLock paginateLock = new PaginateLock();
 
   /** The report processor. */
-  private org.jfree.report.modules.output.pageable.base.PageableReportProcessor processor;
+  private PageableReportProcessor processor;
 
   /**
    * Creates a report pane to display the specified report.
    *
    * @param report  the report to display within the pane.
    *
-   * @throws org.jfree.report.ReportProcessingException if there was a problem processing the report.
+   * @throws ReportProcessingException if there was a problem processing the report.
    */
   public ReportPane(final JFreeReport report) throws ReportProcessingException
   {
@@ -178,7 +182,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
     setDoubleBuffered(true);
     try
     {
-      processor = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+      processor = new PageableReportProcessor(report);
     }
     catch (FunctionInitializeException fe)
     {
@@ -215,7 +219,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
    *
    * @return the report state list.
    */
-  protected org.jfree.report.modules.output.pageable.base.ReportStateList getPageStateList()
+  protected ReportStateList getPageStateList()
   {
     return pageStateList;
   }
@@ -226,9 +230,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
    *
    * @param list  the report state list.
    */
-  protected void setPageStateList(final org.jfree.report.modules.output.pageable.base.ReportStateList list)
+  protected void setPageStateList(final ReportStateList list)
   {
-    final org.jfree.report.modules.output.pageable.base.ReportStateList oldList = pageStateList;
+    final ReportStateList oldList = pageStateList;
     if (oldList != null)
     {
       oldList.clear();
@@ -672,7 +676,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
       getProcessor().setOutputTarget(null);
       target.close();
     }
-    catch (org.jfree.report.modules.output.pageable.base.OutputTargetException oe)
+    catch (OutputTargetException oe)
     {
       Log.error("Report generated an error", oe);
       setError(oe);
@@ -701,7 +705,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
    * This function synchronizes on the paginateLock. While a ReportPane is paginating,
    * no other pane may print.
    *
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report.
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   public void repaginate()
       throws ReportProcessingException
@@ -724,12 +728,12 @@ public class ReportPane extends JComponent implements Printable, Pageable
       {
         try
         {
-          final org.jfree.report.modules.output.pageable.base.OutputTarget target = new DummyOutputTarget(
+          final OutputTarget target = new DummyOutputTarget(
               new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), getPageFormat()));
           target.open();
           getProcessor().setOutputTarget(target);
         }
-        catch (org.jfree.report.modules.output.pageable.base.OutputTargetException oe)
+        catch (OutputTargetException oe)
         {
           // does not happen when using the dummy target
         }
@@ -741,7 +745,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
       try
       {
-        final org.jfree.report.modules.output.pageable.base.ReportStateList list = processor.repaginate();
+        final ReportStateList list = processor.repaginate();
         int pageCount = 0;
         int pageNr = 0;
         if (list.size() > 0)
@@ -821,7 +825,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
    *
    * @return the report processor.
    */
-  public org.jfree.report.modules.output.pageable.base.PageableReportProcessor getProcessor()
+  public PageableReportProcessor getProcessor()
   {
     return processor;
   }

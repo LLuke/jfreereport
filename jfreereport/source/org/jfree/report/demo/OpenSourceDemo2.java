@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: OpenSourceDemo2.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes
  * -------
@@ -163,10 +163,6 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
   {
 
     final JFreeReport result = new JFreeReport();
-
-    final ReportConfiguration config = result.getReportConfiguration();
-    config.setConfigProperty("org.jfree.report.preview.PreferredWidth", "640.0");
-    config.setConfigProperty("org.jfree.report.preview.PreferredHeight", "480.0");
 
     // set up the functions...
     final PageFunction f1 = new PageFunction("page_number");

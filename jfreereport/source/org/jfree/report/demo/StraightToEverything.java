@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
 import org.jfree.report.modules.output.table.html.DirectoryHtmlFilesystem;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
@@ -144,7 +145,7 @@ public class StraightToEverything
       target.configure(report.getReportConfiguration());
       target.open();
 
-      final org.jfree.report.modules.output.pageable.base.PageableReportProcessor proc = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+      final PageableReportProcessor proc = new PageableReportProcessor(report);
       proc.setOutputTarget(target);
       proc.processReport();
 
@@ -182,7 +183,7 @@ public class StraightToEverything
   public static void createPlainText(final JFreeReport report, final String filename)
       throws Exception
   {
-    final org.jfree.report.modules.output.pageable.base.PageableReportProcessor pr = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+    final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
     final PrinterCommandSet pc = new PrinterCommandSet(fout, report.getDefaultPageFormat(), 6, 10);
     final PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);

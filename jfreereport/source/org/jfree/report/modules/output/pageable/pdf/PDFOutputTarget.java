@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.3 2003/07/14 17:37:07 taqua Exp $
  *
  * Changes
  * -------
@@ -82,6 +82,9 @@ import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget
 import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
 import org.jfree.report.modules.output.pageable.base.physicals.LogicalPageImpl;
 import org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage;
+import org.jfree.report.modules.output.pageable.base.LogicalPage;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
+import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.support.itext.BaseFontFactory;
 import org.jfree.report.modules.output.support.itext.BaseFontRecord;
 import org.jfree.report.modules.output.support.itext.BaseFontSupport;
@@ -236,7 +239,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param logPage  the logical page.
    * @param embedFonts  embed the fonts?
    */
-  public PDFOutputTarget(final OutputStream out, final org.jfree.report.modules.output.pageable.base.LogicalPage logPage, final boolean embedFonts)
+  public PDFOutputTarget(final OutputStream out, final LogicalPage logPage, final boolean embedFonts)
   {
     super(logPage);
     this.out = out;
@@ -304,9 +307,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param font  the new font (null not permitted).
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there was a problem setting the font for the target.
+   * @throws OutputTargetException if there was a problem setting the font for the target.
    */
-  public void setFont(final FontDefinition font) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void setFont(final FontDefinition font) throws OutputTargetException
   {
     if (font == null)
     {
@@ -324,19 +327,19 @@ public class PDFOutputTarget extends AbstractOutputTarget
         (isEmbedFonts() || font.isEmbeddedFont())).getBaseFont();
     if (baseFont == null)
     {
-      throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("The font definition was not successfull.");
+      throw new OutputTargetException("The font definition was not successfull.");
     }
   }
 
   /**
-   * Draws an image from this {@link org.jfree.report.ImageReference}. The image is directly embedded into the
+   * Draws an image from this {@link ImageReference}. The image is directly embedded into the
    * pdf file to provide the best scaling support.
    *
    * @param imageRef  the image reference.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there was a problem drawing the image to the target.
+   * @throws OutputTargetException if there was a problem drawing the image to the target.
    */
-  public void drawImage(final ImageReference imageRef) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void drawImage(final ImageReference imageRef) throws OutputTargetException
   {
     try
     {
@@ -366,19 +369,19 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
     catch (BadElementException be)
     {
-      throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("BadElementException", be);
+      throw new OutputTargetException("BadElementException", be);
     }
     catch (DocumentException de)
     {
-      throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("DocumentException", de);
+      throw new OutputTargetException("DocumentException", de);
     }
     catch (MalformedURLException mf)
     {
-      throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("Invalid URL in ImageReference", mf);
+      throw new OutputTargetException("Invalid URL in ImageReference", mf);
     }
     catch (IOException mf)
     {
-      throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("URL Content could not be read", mf);
+      throw new OutputTargetException("URL Content could not be read", mf);
     }
   }
 
@@ -591,9 +594,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * This method is called when the page is ended.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there was a problem with the target.
+   * @throws OutputTargetException if there was a problem with the target.
    */
-  public void endPage() throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void endPage() throws OutputTargetException
   {
     try
     {
@@ -602,16 +605,16 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
     catch (Exception e)
     {
-      throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("Failed to end page", e);
+      throw new OutputTargetException("Failed to end page", e);
     }
   }
 
   /**
    * Opens the document.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem with the target.
+   * @throws OutputTargetException if there is a problem with the target.
    */
-  public void open() throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void open() throws OutputTargetException
   {
 
     final PageFormat pageFormat = getLogicalPage().getPhysicalPageFormat();
@@ -686,7 +689,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
     catch (Exception e)
     {
-      throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("Opening Document failed.", e);
+      throw new OutputTargetException("Opening Document failed.", e);
     }
   }
 
@@ -710,7 +713,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       setStroke(ShapeElement.DEFAULT_STROKE);
       setFont(ElementDefaultStyleSheet.DEFAULT_FONT_DEFINITION);
     }
-    catch (org.jfree.report.modules.output.pageable.base.OutputTargetException oe)
+    catch (OutputTargetException oe)
     {
       Log.error("Should not happen", oe);
     }
@@ -837,9 +840,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param stroke  the stroke.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem with the target.
+   * @throws OutputTargetException if there is a problem with the target.
    */
-  public void setStroke(final Stroke stroke) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void setStroke(final Stroke stroke) throws OutputTargetException
   {
     if (stroke == null)
     {
@@ -847,7 +850,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
     if (stroke instanceof BasicStroke == false)
     {
-      throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("Unable to handle this stroke type");
+      throw new OutputTargetException("Unable to handle this stroke type");
     }
 
     // If this stroke is already set, do nothing
@@ -878,9 +881,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param paint  the paint.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if the paint is invalid.
+   * @throws OutputTargetException if the paint is invalid.
    */
-  public void setPaint(final Paint paint) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void setPaint(final Paint paint) throws OutputTargetException
   {
     if (paint == null)
     {
@@ -889,7 +892,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     if (paint instanceof Color == false)
     {
-      throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("Unsupported paint type, currently only color is supported");
+      throw new OutputTargetException("Unsupported paint type, currently only color is supported");
     }
 
     // If this paint is already set, do nothing
@@ -975,18 +978,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return a dummy output target.
    */
-  public org.jfree.report.modules.output.pageable.base.OutputTarget createDummyWriter()
+  public OutputTarget createDummyWriter()
   {
-    /*
-    PDFOutputTarget dummy = new PDFOutputTarget(new NullOutputStream(),
-                                                getLogicalPage(), isEmbedFonts());
-    Enumeration enum = getPropertyNames();
-    while (enum.hasMoreElements())
-    {
-      String key = (String) enum.nextElement();
-      dummy.setProperty(key, getProperty(key));
-    }
-    */
     return new DummyOutputTarget(this);
   }
 
@@ -1161,9 +1154,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the size calculator.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem with the output target.
+   * @throws OutputTargetException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(final FontDefinition font) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public SizeCalculator createTextSizeCalculator(final FontDefinition font) throws OutputTargetException
   {
     final BaseFontRecord record = fontSupport.createBaseFont(font,
         font.getFontEncoding(getFontEncoding()),

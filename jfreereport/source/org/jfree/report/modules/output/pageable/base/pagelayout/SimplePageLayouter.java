@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.55 2003/06/29 16:59:29 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,9 @@ import org.jfree.report.Band;
 import org.jfree.report.Group;
 import org.jfree.report.JFreeReportConstants;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.modules.output.pageable.base.Spool;
+import org.jfree.report.modules.output.pageable.base.LogicalPage;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.Expression;
@@ -158,7 +161,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
   private SimpleLayoutManagerState state;
 
   /** The spool. */
-  private org.jfree.report.modules.output.pageable.base.Spool spooledBand;
+  private Spool spooledBand;
 
   /** The current state for repeating group headers. */
   private int currentEffectiveGroupIndex;
@@ -736,7 +739,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    * or to cache the printing operation for later usage.
    * @return true, if the band was printed, and false if the printing is delayed
    * until a new page gets started.
-   * @see org.jfree.report.modules.output.pageable.base.LogicalPage#spoolBand
+   * @see LogicalPage#spoolBand
    *
    * @throws ReportProcessingException if the printing caused an detectable error
    * while printing the band
@@ -752,7 +755,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
       {
         if (spool)
         {
-          final org.jfree.report.modules.output.pageable.base.Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+          final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
           if (spooledBand == null)
           {
             spooledBand = newSpool;
@@ -764,7 +767,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
         }
         else
         {
-          final org.jfree.report.modules.output.pageable.base.Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+          final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
           if (newSpool.isEmpty() == false)
           {
             if (spooledBand != null)
@@ -809,7 +812,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
       {
         if (spool)
         {
-          final org.jfree.report.modules.output.pageable.base.Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+          final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
           if (spooledBand == null)
           {
             spooledBand = newSpool;
@@ -824,7 +827,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
         }
         else
         {
-          final org.jfree.report.modules.output.pageable.base.Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+          final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
           if (newSpool.isEmpty() == false)
           {
             if (spooledBand != null)
@@ -857,7 +860,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       throw rpe;
     }
-    catch (org.jfree.report.modules.output.pageable.base.OutputTargetException ote)
+    catch (OutputTargetException ote)
     {
       throw new FunctionProcessingException("Failed to print", ote);
     }
@@ -1015,7 +1018,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param logicalPage  the logical page.
    */
-  public void setLogicalPage(final org.jfree.report.modules.output.pageable.base.LogicalPage logicalPage)
+  public void setLogicalPage(final LogicalPage logicalPage)
   {
     super.setLogicalPage(logicalPage);
     setCursor(new SimplePageLayoutCursor(getLogicalPage().getHeight()));
@@ -1086,7 +1089,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     final SimplePageLayouter sl = (SimplePageLayouter) super.clone();
     if (spooledBand != null)
     {
-      sl.spooledBand = (org.jfree.report.modules.output.pageable.base.Spool) spooledBand.clone();
+      sl.spooledBand = (Spool) spooledBand.clone();
     }
     return sl;
   }

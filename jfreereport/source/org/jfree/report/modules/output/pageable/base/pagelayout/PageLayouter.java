@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.27 2003/06/29 16:59:29 taqua Exp $
+ * $Id: PageLayouter.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.output.pageable.base.pagelayout;
 
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
@@ -95,7 +96,7 @@ public abstract class PageLayouter extends AbstractFunction
   private LayoutManagerState layoutManagerState;
 
   /** The logical page used to output the generated content. */
-  private org.jfree.report.modules.output.pageable.base.LogicalPage logicalPage;
+  private LogicalPage logicalPage;
 
   /** The latest report event. */
   private ReportEvent currentEvent;
@@ -195,7 +196,7 @@ public abstract class PageLayouter extends AbstractFunction
    * @param logicalPage  the logical page (null not permitted).
    * @throws NullPointerException it the logical page is null
    */
-  public void setLogicalPage(final org.jfree.report.modules.output.pageable.base.LogicalPage logicalPage)
+  public void setLogicalPage(final LogicalPage logicalPage)
   {
     if (logicalPage == null)
     {
@@ -218,7 +219,7 @@ public abstract class PageLayouter extends AbstractFunction
    *
    * @return the logical page.
    */
-  public org.jfree.report.modules.output.pageable.base.LogicalPage getLogicalPage()
+  public LogicalPage getLogicalPage()
   {
     return logicalPage;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationFactory.java,v 1.14 2003/06/29 16:59:29 taqua Exp $
+ * $Id: OperationFactory.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import org.jfree.report.Element;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.content.Content;
 
 /**
@@ -93,10 +94,10 @@ public class OperationFactory
    * @param content  the content type.
    *
    * @return the module or null if no handler is registered for that content-type.
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if no module was found for the given content.
+   * @throws OutputTargetException if no module was found for the given content.
    */
   public OperationModule getModule(final String content)
-      throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+      throws OutputTargetException
   {
     for (int i = 0; i < modules.size(); i++)
     {
@@ -106,7 +107,7 @@ public class OperationFactory
         return mod;
       }
     }
-    throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("No operation module for " + content);
+    throw new OutputTargetException("No operation module for " + content);
   }
 
   /**
@@ -136,11 +137,12 @@ public class OperationFactory
    * @param value the content that should be printed.
    * @param bounds the content bounds.
    * @param col the operations collector for the ops.
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if this factory is not able to handle that content.
+   * @throws OutputTargetException if this factory is not able to handle that content.
    */
-  public void createOperations(final PhysicalOperationsCollector col, final Element e, final Content value,
+  public void createOperations(final PhysicalOperationsCollector col,
+                               final Element e, final Content value,
                                final Rectangle2D bounds)
-      throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+      throws OutputTargetException
   {
     final String contentType = e.getContentType();
     for (int i = 0; i < modules.size(); i++)
@@ -153,7 +155,7 @@ public class OperationFactory
         return;
       }
     }
-    throw new org.jfree.report.modules.output.pageable.base.OutputTargetException("No operation module for " + contentType);
+    throw new OutputTargetException("No operation module for " + contentType);
   }
 
 }

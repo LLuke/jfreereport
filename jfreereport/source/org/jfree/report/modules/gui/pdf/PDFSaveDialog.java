@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
  *
  * Changes
  * --------
@@ -85,12 +85,13 @@ import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.pdf.resources.PDFExportResources;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.util.FilesystemFilter;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
  * A dialog that is used to perform the printing of a report into a PDF file. It is primarily
- * used to edit the properties of the {@link org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget} before the target is used to print
+ * used to edit the properties of the {@link PDFOutputTarget} before the target is used to print
  * the report.
  * <p>
  * The main method to call the dialog is PDFSaveDialog.savePDF(). Given a report and a pageformat,
@@ -1376,7 +1377,7 @@ public class PDFSaveDialog extends JDialog
       target.setProperty(PDFOutputTarget.ENCODING, getEncoding());
       target.open();
 
-      final org.jfree.report.modules.output.pageable.base.PageableReportProcessor proc = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+      final PageableReportProcessor proc = new PageableReportProcessor(report);
       proc.setOutputTarget(target);
       proc.processReport();
 

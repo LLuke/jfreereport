@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPlugin.java,v 1.6 2003/06/27 14:25:22 taqua Exp $
+ * $Id: ExportPlugin.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * --------
@@ -43,8 +43,8 @@ import javax.swing.KeyStroke;
 import org.jfree.report.JFreeReport;
 
 /**
- * An export plug-in is a class that can work with the {@link org.jfree.report.modules.gui.base.ExportAction} class to implement
- * an export function for reports.
+ * An export plug-in is a class that can work with the {@link ExportAction}
+ * class to implement an export function for reports.
  *
  * @author Thomas Morgner.
  */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DummyOutputTarget.java,v 1.14 2003/07/03 15:59:29 taqua Exp $
+ * $Id: DummyOutputTarget.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ import org.jfree.report.content.ContentFactory;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.layout.SizeCalculatorException;
 import org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage;
+import org.jfree.report.modules.output.pageable.base.OutputTarget;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.ReportConfiguration;
 
@@ -83,7 +85,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
      *
      * @param s  the graphics device.
      */
-    private OutputTargetState(final org.jfree.report.modules.output.pageable.base.OutputTarget s)
+    private OutputTargetState(final OutputTarget s)
     {
       save(s);
     }
@@ -93,7 +95,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
      *
      * @param source  the OutputTarget, that should save its state.
      */
-    public void save(final org.jfree.report.modules.output.pageable.base.OutputTarget source)
+    public void save(final OutputTarget source)
     {
       mypaint = source.getPaint();
       myfont = source.getFont();
@@ -104,10 +106,10 @@ public class DummyOutputTarget extends AbstractOutputTarget
      * Copies the state back to the specified OutputTarget.
      *
      * @param target  the output target, that receives the restored state.
-     * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if the state restoration failed.
+     * @throws OutputTargetException if the state restoration failed.
      */
-    protected void restore(final org.jfree.report.modules.output.pageable.base.OutputTarget target)
-        throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+    protected void restore(final OutputTarget target)
+        throws OutputTargetException
     {
       target.setStroke(mystroke);
       target.setFont(myfont);
@@ -117,7 +119,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
 
 
   /** The wrapped outputtarget. */
-  private org.jfree.report.modules.output.pageable.base.OutputTarget backend;
+  private OutputTarget backend;
   /** A flag to maintain the open state of this output target. */
   private boolean isOpen;
   /** The current font definition. */
@@ -134,7 +136,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @param backend the original outputtarget, that should be used in this proxy.
    */
-  public DummyOutputTarget(final org.jfree.report.modules.output.pageable.base.OutputTarget backend)
+  public DummyOutputTarget(final OutputTarget backend)
   {
     super(backend.getLogicalPage());
     this.backend = backend;
@@ -143,9 +145,9 @@ public class DummyOutputTarget extends AbstractOutputTarget
   /**
    * Opens the target. The request is not forwarded to the backend.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is some problem opening the target.
+   * @throws OutputTargetException if there is some problem opening the target.
    */
-  public void open() throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void open() throws OutputTargetException
   {
     isOpen = true;
   }
@@ -181,18 +183,18 @@ public class DummyOutputTarget extends AbstractOutputTarget
   /**
    * This method does nothing.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is some problem with the target.
+   * @throws OutputTargetException if there is some problem with the target.
    */
-  public void endPage() throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void endPage() throws OutputTargetException
   {
   }
 
   /**
    * Restores the state from the beginning of the page.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is some problem with the target.
+   * @throws OutputTargetException if there is some problem with the target.
    */
-  public void restoreState() throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void restoreState() throws OutputTargetException
   {
     if (state == null)
     {
@@ -216,9 +218,9 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @param font  the font.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the font.
+   * @throws OutputTargetException if there is a problem setting the font.
    */
-  public void setFont(final FontDefinition font) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void setFont(final FontDefinition font) throws OutputTargetException
   {
     this.font = font;
   }
@@ -240,9 +242,9 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @param stroke  the stroke.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the stroke.
+   * @throws OutputTargetException if there is a problem setting the stroke.
    */
-  public void setStroke(final Stroke stroke) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void setStroke(final Stroke stroke) throws OutputTargetException
   {
     this.stroke = stroke;
   }
@@ -262,9 +264,9 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @param paint The paint.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the paint.
+   * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void setPaint(final Paint paint) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void setPaint(final Paint paint) throws OutputTargetException
   {
     this.paint = paint;
   }
@@ -301,9 +303,9 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @param image The image to draw (as ImageReference for possible embedding of raw data).
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the paint.
+   * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void drawImage(final ImageReference image) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void drawImage(final ImageReference image) throws OutputTargetException
   {
   }
 
@@ -314,7 +316,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @return a dummy output target.
    */
-  public org.jfree.report.modules.output.pageable.base.OutputTarget createDummyWriter()
+  public OutputTarget createDummyWriter()
   {
     return new DummyOutputTarget(this);
   }

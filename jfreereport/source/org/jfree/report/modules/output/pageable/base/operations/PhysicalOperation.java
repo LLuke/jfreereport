@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.18 2003/06/29 16:59:29 taqua Exp $
+ * $Id: PhysicalOperation.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -45,12 +45,14 @@ import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.DrawableContainer;
 import org.jfree.report.ImageReference;
+import org.jfree.report.modules.output.pageable.base.OutputTarget;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;
 
 /**
  * The base class for an operation that can be applied to an
- * {@link org.jfree.report.modules.output.pageable.base.OutputTarget}.
+ * {@link OutputTarget}.
  * These operations are typically added to a
  * {@link org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage} in the process of being
  * sent to the output target.
@@ -66,7 +68,7 @@ public abstract class PhysicalOperation
 {
   /**
    * An operation that sets the font for an
-   * {@link org.jfree.report.modules.output.pageable.base.OutputTarget}.
+   * {@link OutputTarget}.
    */
   public static class SetFontOperation extends PhysicalOperation
   {
@@ -92,9 +94,9 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(final org.jfree.report.modules.output.pageable.base.OutputTarget ot) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       if (font.equals(ot.getFont()) == false)
       {
@@ -130,9 +132,9 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(final org.jfree.report.modules.output.pageable.base.OutputTarget ot) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       Log.debug(new Log.SimpleMessage("Physical Operation Comment: ", comment));
     }
@@ -140,7 +142,7 @@ public abstract class PhysicalOperation
 
   /**
    * An operation that sets the paint for an
-   * {@link org.jfree.report.modules.output.pageable.base.OutputTarget}.
+   * {@link OutputTarget}.
    */
   public static class SetPaintOperation extends PhysicalOperation
   {
@@ -166,9 +168,9 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(final org.jfree.report.modules.output.pageable.base.OutputTarget ot) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       if (paint.equals(ot.getPaint()) == false)
       {
@@ -179,7 +181,7 @@ public abstract class PhysicalOperation
 
   /**
    * An operation that sets the stroke for an
-   * {@link org.jfree.report.modules.output.pageable.base.OutputTarget}.
+   * {@link OutputTarget}.
    */
   public static class SetStrokeOperation extends PhysicalOperation
   {
@@ -205,9 +207,9 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(final org.jfree.report.modules.output.pageable.base.OutputTarget ot) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       if (stroke.equals(ot.getStroke()) == false)
       {
@@ -218,7 +220,7 @@ public abstract class PhysicalOperation
 
   /**
    * An operation that sets the bounds for an
-   * {@link org.jfree.report.modules.output.pageable.base.OutputTarget}.
+   * {@link OutputTarget}.
    */
   public static class SetBoundsOperation extends PhysicalOperation
   {
@@ -245,9 +247,9 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(final org.jfree.report.modules.output.pageable.base.OutputTarget ot) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       ot.setOperationBounds(bounds);
     }
@@ -264,7 +266,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that draws text on an {@link org.jfree.report.modules.output.pageable.base.OutputTarget}.
+   * An operation that draws text on an {@link OutputTarget}.
    */
   public static class PrintTextOperation extends PhysicalOperation
   {
@@ -290,9 +292,9 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(final org.jfree.report.modules.output.pageable.base.OutputTarget ot) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       ot.drawString(text);
     }
@@ -310,7 +312,7 @@ public abstract class PhysicalOperation
 
   /**
    * An operation that prints an Image on an
-   * {@link org.jfree.report.modules.output.pageable.base.OutputTarget}.
+   * {@link OutputTarget}.
    */
   public static class PrintImageOperation extends PhysicalOperation
   {
@@ -336,9 +338,9 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(final org.jfree.report.modules.output.pageable.base.OutputTarget ot) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       ot.drawImage(image);
     }
@@ -346,7 +348,7 @@ public abstract class PhysicalOperation
 
   /**
    * An operation that draws a shape on an
-   * {@link org.jfree.report.modules.output.pageable.base.OutputTarget}.
+   * {@link OutputTarget}.
    */
   public static class PrintShapeOperation extends PhysicalOperation
   {
@@ -372,9 +374,9 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(final org.jfree.report.modules.output.pageable.base.OutputTarget ot) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       ot.drawShape(shape);
     }
@@ -382,7 +384,7 @@ public abstract class PhysicalOperation
 
   /**
    * An operation that draws a filled shape on an
-   * {@link org.jfree.report.modules.output.pageable.base.OutputTarget}.
+   * {@link OutputTarget}.
    */
   public static class PrintFilledShapeOperation extends PhysicalOperation
   {
@@ -408,9 +410,9 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(final org.jfree.report.modules.output.pageable.base.OutputTarget ot) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       ot.fillShape(shape);
     }
@@ -418,7 +420,7 @@ public abstract class PhysicalOperation
 
   /**
    * An operation that processes a Drawable on an
-   * {@link org.jfree.report.modules.output.pageable.base.OutputTarget}.
+   * {@link OutputTarget}.
    */
   public static class ProcessDrawableOperation extends PhysicalOperation
   {
@@ -444,20 +446,20 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(final org.jfree.report.modules.output.pageable.base.OutputTarget ot) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       ot.drawDrawable(drawableContainer);
     }
   }
 
   /**
-   * Performs an operation on an {@link org.jfree.report.modules.output.pageable.base.OutputTarget}.
+   * Performs an operation on an {@link OutputTarget}.
    *
    * @param ot  the output target.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem operating on the target.
+   * @throws OutputTargetException if there is a problem operating on the target.
    */
-  public abstract void performOperation(org.jfree.report.modules.output.pageable.base.OutputTarget ot) throws org.jfree.report.modules.output.pageable.base.OutputTargetException;
+  public abstract void performOperation(OutputTarget ot) throws OutputTargetException;
 }

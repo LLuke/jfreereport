@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.3 2003/07/14 19:37:53 taqua Exp $
  *
  * Changes
  * -------
@@ -113,19 +113,19 @@ public class PreviewProxyBase extends JComponent
 
   /** The preferred width key. */
   public static final String PREVIEW_PREFERRED_WIDTH
-      = "org.jfree.report.preview.PreferredWidth";
+      = "org.jfree.report.modules.gui.base.PreferredWidth";
 
   /** The preferred height key. */
   public static final String PREVIEW_PREFERRED_HEIGHT
-      = "org.jfree.report.preview.PreferredHeight";
+      = "org.jfree.report.modules.gui.base.PreferredHeight";
 
   /** The maximum width key. */
   public static final String PREVIEW_MAXIMUM_WIDTH
-      = "org.jfree.report.preview.MaximumWidth";
+      = "org.jfree.report.modules.gui.base.MaximumWidth";
 
   /** The maximum height key. */
   public static final String PREVIEW_MAXIMUM_HEIGHT
-      = "org.jfree.report.preview.MaximumHeight";
+      = "org.jfree.report.modules.gui.base.MaximumHeight";
 
   /**
    * A wrapper action.
@@ -715,7 +715,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @param report  the report.
    *
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report.
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   public void init(final JFreeReport report) throws ReportProcessingException
   {
@@ -950,7 +950,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @return the report pane.
    *
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report.
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   protected ReportPane createReportPane(final JFreeReport report) throws ReportProcessingException
   {
@@ -1005,14 +1005,14 @@ public class PreviewProxyBase extends JComponent
 
   /**
    * Returns the report pane used to preview the report.
-   * 
+   *
    * @return the report pane.
    */
   protected ReportPane getReportPane()
   {
     return reportPane;
   }
-  
+
   /**
    * Shows the exception dialog by using localized messages. The message base is
    * used to construct the localisation key by appending ".title" and ".message" to the
