@@ -86,6 +86,9 @@
         <description>A module definition. Please do not edit this entry.</description>
         <class instanceof="org.jfree.report.modules.Module"/>
     </key>
+    <key name="org.jfree.report.ext.modules.java14print.AddToToolbar" global="false" hidden="false">
+        <text/>
+    </key>
     <key name="org.jfree.report.ext.modules.java14print.Enable" global="true" hidden="false">
         <description>Defines, whether to enable the Java.1.4 style printing plugin. At the moment, this only usses the default dialogs, and you should not see any difference to the AWT engine.</description>
         <enum>
@@ -99,6 +102,9 @@
     </key>
     <key name="org.jfree.report.ext.modules.java14print.Order" global="false" hidden="false">
         <description>Defines the export plugin order in the preview dialogs.</description>
+        <text/>
+    </key>
+    <key name="org.jfree.report.ext.modules.java14print.Separated" global="false" hidden="false">
         <text/>
     </key>
     <key name="org.jfree.report.ext.modules.jfreechart.Module" global="true" hidden="true">
@@ -121,6 +127,15 @@
         <enum>
             <text>true</text>
             <text>false</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.gui.base.About" global="true" hidden="false">
+        <description>Defines, whether an how the About-Dialog functionallity will be exposed to the user. (Yes, it is an very, very important part of JFreeReport, isn&apos;t it :))</description>
+        <enum>
+            <text>disable</text>
+            <text>toolbar</text>
+            <text>menubar</text>
+            <text>enable</text>
         </enum>
     </key>
     <key name="org.jfree.report.modules.gui.base.EncodingsAvailable" global="true" hidden="false">
@@ -146,12 +161,35 @@ The property points to a resources in the classpath, not to a real file!</descri
             <text>false</text>
         </enum>
     </key>
+    <key name="org.jfree.report.modules.gui.base.MenuBarAvailable" global="true" hidden="false">
+        <description>Defines, whether a menubar will be created and be available in the preview.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
     <key name="org.jfree.report.modules.gui.base.Module" global="true" hidden="true">
         <description>A module definition. Please do not edit this entry.</description>
         <class instanceof="org.jfree.report.modules.Module"/>
     </key>
-    <key name="org.jfree.report.modules.gui.base.SwingDialogTranslation" global="false" hidden="false">
+    <key name="org.jfree.report.modules.gui.base.Navigate" global="true" hidden="false">
+        <description>Defines, whether and how the navigation functionallity will be exposed to the user. </description>
+        <enum>
+            <text>disable</text>
+            <text>toolbar</text>
+            <text>menubar</text>
+            <text>enable</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.gui.base.SwingDialogTranslation" global="true" hidden="false">
         <description>Defines, whether we should translate the standard swing dialogs.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.gui.base.ToolbarAvailable" global="true" hidden="false">
+        <description>Defines, whether a toolbar will be available in the preview.</description>
         <enum>
             <text>true</text>
             <text>false</text>
@@ -162,6 +200,15 @@ The property points to a resources in the classpath, not to a real file!</descri
         <enum>
             <text>true</text>
             <text>false</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.gui.base.Zoom" global="true" hidden="false">
+        <description>Defines, whether and how the zoom functionality will be available to the user.</description>
+        <enum>
+            <text>disable</text>
+            <text>toolbar</text>
+            <text>menubar</text>
+            <text>enable</text>
         </enum>
     </key>
     <key name="org.jfree.report.modules.gui.config.EditorFont" global="true" hidden="false">
@@ -196,7 +243,7 @@ The property points to a resources in the classpath, not to a real file!</descri
     </key>
     <key name="org.jfree.report.modules.gui.csv.Encoding" global="false" hidden="false">
         <description>Selected default encoding for the csv export dialog.
-This properties does not affect the CSV export directly, it is used to configure the used writer when writing. 
+This properties does not affect the CSV export directly, it is used to configure the used writer when writing.
 
 If not defined here, it will default to the platform specific encoding.</description>
         <text/>
@@ -539,7 +586,7 @@ The encoding can also be defined on a per-element level.</description>
         <text/>
     </key>
     <key name="org.jfree.report.modules.output.pageable.pdf.Encryption" global="false" hidden="false">
-        <description>Defines whether the PDF file should be encrypted by default. Set this to &quot;none&quot; &quot;40bit&quot; or &quot;128bit&quot;. 
+        <description>Defines whether the PDF file should be encrypted by default. Set this to &quot;none&quot; &quot;40bit&quot; or &quot;128bit&quot;.
 
 Access restrictions have no effect if the document
 is not encrypted, and not all security settings are active on 40-Bit encryption.</description>
@@ -612,7 +659,7 @@ be adjusted when using one of the printer specifc command sets, as these command
 
 Lazy font registration will defer the registration process until the font factory is first used. If the registration is defined to happen on init, the fonts will be registered as soon as the module get active for the first time.
 
-The automatic registration can be disabled by setting this configuration entry to &quot;never&quot;. You will have to register the fonts manually before you start the output, or TrueType fonts will not be available. 
+The automatic registration can be disabled by setting this configuration entry to &quot;never&quot;. You will have to register the fonts manually before you start the output, or TrueType fonts will not be available.
 
 Valid values are &quot;onInit&quot;, &quot;never&quot; or &quot;lazy&quot;.</description>
         <enum>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GridBLayoutManager.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: GridBLayoutManager.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,8 @@ public strictfp class GridBLayoutManager extends AbstractBandLayoutManager
    *
    * @return the preferred size.
    */
-  public Dimension2D preferredLayoutSize(final Band b, final Dimension2D containerDims)
+  public Dimension2D preferredLayoutSize
+      (final Band b, final Dimension2D containerDims, final LayoutSupport support)
   {
     final ElementLayoutInformation eli = createLayoutInformationForPreferredSize(b, containerDims);
     if (eli.getPreferredSize() != null)
@@ -91,7 +92,8 @@ public strictfp class GridBLayoutManager extends AbstractBandLayoutManager
    *
    * @return the minimum size.
    */
-  public Dimension2D minimumLayoutSize(final Band b, final Dimension2D containerBounds)
+  public Dimension2D minimumLayoutSize
+      (final Band b, final Dimension2D containerBounds, final LayoutSupport support)
   {
     // Check the position of the elements inside and calculate the minimum width
     // needed to display all elements
@@ -104,7 +106,7 @@ public strictfp class GridBLayoutManager extends AbstractBandLayoutManager
    *
    * @param b  the band.
    */
-  public void doLayout(final Band b)
+  public void doLayout(final Band b, final LayoutSupport support)
   {
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.27 2003/11/07 16:25:42 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.28 2003/11/07 18:33:50 taqua Exp $
  *
  * Changes
  * -------
@@ -97,6 +97,7 @@ import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.Worker;
 import org.jfree.report.util.WorkerPool;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.xml.ParserUtil;
 
@@ -158,9 +159,38 @@ public class PreviewProxyBase extends JComponent
   public static final String TOOLBAR_FLOATABLE_PROPERTY
       = "org.jfree.report.modules.gui.base.ToolbarFloatable";
 
+  /** A configuration key to define whether the toolbar is created. */
+  public static final String CREATE_TOOLBAR_PROPERTY
+      = "org.jfree.report.modules.gui.base.ToolbarAvailable";
+
+  /** A configuration key to define whether the toolbar is floatable. */
+  public static final String CREATE_MENUBAR_PROPERTY
+      = "org.jfree.report.modules.gui.base.MenuBarAvailable";
+
   /** The property name for the toolbarFloatable property. */
   public static final String TOOLBAR_FLOATABLE_PROPERTYNAME
       = "toolbarFloatable";
+
+  /**
+   * A configuration key to define whether and how the about action
+   * should be included. Can be set to "disable", "menu", "toolbar", "enable"
+   */
+  public static final String ACTION_ABOUT_PROPERTY
+      = "org.jfree.report.modules.gui.base.About";
+
+  /**
+   * A configuration key to define whether and how the zoom actions
+   * should be included. Can be set to "disable", "menu", "toolbar", "enable"
+   */
+  public static final String ACTION_ZOOM_PROPERTY
+      = "org.jfree.report.modules.gui.base.Zoom";
+
+  /**
+   * A configuration key to define whether and how the navigation actions
+   * should be included. Can be set to "disable", "menu", "toolbar", "enable"
+   */
+  public static final String ACTION_NAVIGATION_PROPERTY
+      = "org.jfree.report.modules.gui.base.Navigate";
 
   /**
    * An property change handler for the toolbar. Handles the toolbarFloatable
@@ -612,6 +642,9 @@ public class PreviewProxyBase extends JComponent
   private boolean lockInterface;
   /** A flag that defines, whether the preview component is closed. */
   private boolean closed;
+  public static final String CONF_TOOLBAR_ENABLED = "toolbar";
+  public static final String CONF_ALL_ENABLED = "enabled";
+  public static final String CONF_MENUBAR_ENABLED = "menubar";
 
   /**
    * Creates a preview proxy.
@@ -752,11 +785,15 @@ public class PreviewProxyBase extends JComponent
 
     this.zoomIndex = DEFAULT_ZOOM_INDEX;
 
-    toolbar = createToolBar ();
-    toolbar.setFloatable(isToolbarFloatable());
-    toolbar.addPropertyChangeListener(new ToolbarPropertyChangeListener());
-    add(toolbar, BorderLayout.NORTH);
+    if (isPropertySet(CREATE_TOOLBAR_PROPERTY, true))
+    {
+      toolbar = createToolBar ();
+      toolbar.setFloatable(isToolbarFloatable());
+      toolbar.addPropertyChangeListener(new ToolbarPropertyChangeListener());
+      add(toolbar, BorderLayout.NORTH);
+    }
 
+    zoomSelect = createZoomSelector();
     buildExportPlugins(report);
 
     reportPane = createReportPane(report);
@@ -788,6 +825,17 @@ public class PreviewProxyBase extends JComponent
     Log.info("Dialog started pagination ...");
   }
 
+  private boolean isPropertySet (String property, boolean defaultValue)
+  {
+    String value =
+        ReportConfiguration.getGlobalConfig().getConfigProperty(property);
+    if (value == null)
+    {
+      return defaultValue;
+    }
+    return (value.equals(String.valueOf(defaultValue)));
+  }
+
   /**
    * Call this method, whenever actions have changed. The menu and toolbar
    * will be rebuild.
@@ -796,7 +844,10 @@ public class PreviewProxyBase extends JComponent
   {
     initializeToolBar();
     // set up the menu
-    proxy.setJMenuBar(createMenuBar());
+    if (isPropertySet(CREATE_MENUBAR_PROPERTY, true))
+    {
+      proxy.setJMenuBar(createMenuBar());
+    }
   }
 
   /**
@@ -809,6 +860,42 @@ public class PreviewProxyBase extends JComponent
   {
     final JToolBar toolbar = new JToolBar();
     return toolbar;
+  }
+
+  protected boolean isMenuActionEnabled (String property)
+  {
+    String value = ReportConfiguration.getGlobalConfig().getConfigProperty(property);
+    if (value == null)
+    {
+      return true;
+    }
+    if (value.equals(CONF_MENUBAR_ENABLED))
+    {
+      return true;
+    }
+    if (value.equals(CONF_ALL_ENABLED))
+    {
+      return true;
+    }
+    return false;
+  }
+
+  protected boolean isToolbarActionEnabled (String property)
+  {
+    String value = ReportConfiguration.getGlobalConfig().getConfigProperty(property);
+    if (value == null)
+    {
+      return true;
+    }
+    if (value.equals(CONF_TOOLBAR_ENABLED))
+    {
+      return true;
+    }
+    if (value.equals(CONF_ALL_ENABLED))
+    {
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -1100,9 +1187,6 @@ public class PreviewProxyBase extends JComponent
     final Action zoomOutAction = createDefaultZoomOutAction();
     zoomActionMap.put(ZOOM_IN_ACTION_KEY, zoomInAction);
     zoomActionMap.put(ZOOM_OUT_ACTION_KEY, zoomOutAction);
-    // todo asdasd
-//    zoomActionConcentrator.addAction(zoomInAction);
-//    zoomActionConcentrator.addAction(zoomOutAction);
   }
 
   /**
@@ -1245,15 +1329,20 @@ public class PreviewProxyBase extends JComponent
   {
     // create the menus
     final JMenuBar menuBar = new JMenuBar();
-    // first the file menu
-
-    // finally, glue together the menu and return it
-
     menuBar.add(createFileMenu());
-    menuBar.add(createNavigationMenu());
-    menuBar.add(createZoomMenu());
-    menuBar.add(createHelpMenu());
 
+    if (isMenuActionEnabled(ACTION_NAVIGATION_PROPERTY))
+    {
+      menuBar.add(createNavigationMenu());
+    }
+    if (isMenuActionEnabled(ACTION_ZOOM_PROPERTY))
+    {
+      menuBar.add(createZoomMenu());
+    }
+    if (isMenuActionEnabled(ACTION_ABOUT_PROPERTY))
+    {
+      menuBar.add(createHelpMenu());
+    }
     return menuBar;
   }
 
@@ -1402,8 +1491,10 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
-   * Returns the toolbar used in this component.
-   * @return the toolbar of this component
+   * Returns the toolbar used in this component. If the toolbar is disabled
+   * in the global report configuration, then <code>null</code> is returned.
+   *
+   * @return the toolbar of this component or null
    */
   protected final JToolBar getToolbar()
   {
@@ -1416,6 +1507,12 @@ public class PreviewProxyBase extends JComponent
    */
   protected void initializeToolBar()
   {
+    // Maybe the toolbar is disabled, then we don't want to touch it.
+    if (toolbar == null)
+    {
+      return;
+    }
+
     final Iterator it = exportPlugIns.iterator();
     final boolean addedItem = it.hasNext();
     while (it.hasNext())
@@ -1436,18 +1533,26 @@ public class PreviewProxyBase extends JComponent
     {
       toolbar.addSeparator();
     }
-
-    toolbar.add(createButton(getFirstPageAction()));
-    toolbar.add(createButton(getPreviousPageAction()));
-    toolbar.add(createButton(getNextPageAction()));
-    toolbar.add(createButton(getLastPageAction()));
-    toolbar.addSeparator();
-    toolbar.add(createButton(getZoomInAction()));
-    toolbar.add(createButton(getZoomOutAction()));
-    toolbar.addSeparator();
-    toolbar.add(createZoomPane());
-    toolbar.addSeparator();
-    toolbar.add(createButton(getAboutAction()));
+    if (isToolbarActionEnabled(ACTION_NAVIGATION_PROPERTY))
+    {
+      toolbar.add(createButton(getFirstPageAction()));
+      toolbar.add(createButton(getPreviousPageAction()));
+      toolbar.add(createButton(getNextPageAction()));
+      toolbar.add(createButton(getLastPageAction()));
+      toolbar.addSeparator();
+    }
+    if (isToolbarActionEnabled(ACTION_ZOOM_PROPERTY))
+    {
+      toolbar.add(createButton(getZoomInAction()));
+      toolbar.add(createButton(getZoomOutAction()));
+      toolbar.addSeparator();
+      toolbar.add(createZoomPane());
+      toolbar.addSeparator();
+    }
+    if (isToolbarActionEnabled(ACTION_ABOUT_PROPERTY))
+    {
+      toolbar.add(createButton(getAboutAction()));
+    }
   }
 
   /**
@@ -1472,6 +1577,21 @@ public class PreviewProxyBase extends JComponent
     firePropertyChange("toolbarFloatable", oldValue, b);
   }
 
+  protected JComboBox createZoomSelector ()
+  {
+    final DefaultComboBoxModel model = new DefaultComboBoxModel();
+    for (int i = 0; i < ZOOM_FACTORS.length; i++)
+    {
+      model.addElement(String.valueOf((int) (ZOOM_FACTORS[i] * 100)) + " %");
+    }
+    JComboBox zoomSelect = new JComboBox(model);
+    zoomSelect.setActionCommand("ZoomSelect");
+    zoomSelect.setSelectedIndex(DEFAULT_ZOOM_INDEX);
+    zoomSelect.addActionListener(createZoomSelectAction());
+    zoomSelect.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    return zoomSelect;
+  }
+
   /**
    * Creates a panel containing a combobox with available zoom-values.
    *
@@ -1479,17 +1599,6 @@ public class PreviewProxyBase extends JComponent
    */
   protected JComponent createZoomPane()
   {
-    final DefaultComboBoxModel model = new DefaultComboBoxModel();
-    for (int i = 0; i < ZOOM_FACTORS.length; i++)
-    {
-      model.addElement(String.valueOf((int) (ZOOM_FACTORS[i] * 100)) + " %");
-    }
-    zoomSelect = new JComboBox(model);
-    zoomSelect.setActionCommand("ZoomSelect");
-    zoomSelect.setSelectedIndex(DEFAULT_ZOOM_INDEX);
-    zoomSelect.addActionListener(createZoomSelectAction());
-    zoomSelect.setAlignmentX(Component.RIGHT_ALIGNMENT);
-
     final JPanel zoomPane = new JPanel();
     zoomPane.setLayout(new FlowLayout(FlowLayout.LEFT));
     zoomPane.add(zoomSelect);

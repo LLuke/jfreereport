@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.9 2003/10/30 22:15:39 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.10 2003/11/07 18:33:57 taqua Exp $
  *
  * Changes
  * -------
@@ -297,6 +297,15 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     return allowCaching;
   }
 
+  /**
+   * Returns true, if the given key is locally defined, false otherwise.
+   * @param key the key to test
+   * @return true, if the key is local, false otherwise.
+   */
+  public boolean isLocalKey(StyleKey key)
+  {
+    return properties.containsKey(key);
+  }
   /**
    * Sets the flag that controls whether or not caching is allowed.
    *

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardLayoutBLayoutManager.java,v 1.4 2003/09/13 15:14:40 taqua Exp $
+ * $Id: CardLayoutBLayoutManager.java,v 1.5 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes
  * -------
@@ -77,7 +77,8 @@ public strictfp class CardLayoutBLayoutManager extends AbstractBandLayoutManager
    *
    * @return the preferred size.
    */
-  public Dimension2D minimumLayoutSize(final Band b, final Dimension2D containerDims)
+  public Dimension2D minimumLayoutSize
+      (final Band b, final Dimension2D containerDims, final LayoutSupport support)
   {
     final ElementLayoutInformation eli = createLayoutInformationForMinimumSize(b, containerDims);
 
@@ -87,7 +88,7 @@ public strictfp class CardLayoutBLayoutManager extends AbstractBandLayoutManager
     for (int i = 0; i < elements.length; i++)
     {
       final Element e = elements[i];
-      unionMax(retval, computeMinimumSize(e, containerDims, tmpDim));
+      unionMax(retval, computeMinimumSize(e, containerDims, tmpDim, support));
     }
     return ElementLayoutInformation.unionMin(eli.getMaximumSize(), retval);
   }
@@ -100,7 +101,8 @@ public strictfp class CardLayoutBLayoutManager extends AbstractBandLayoutManager
    *
    * @return the preferred size.
    */
-  public Dimension2D preferredLayoutSize(final Band b, final Dimension2D containerDims)
+  public Dimension2D preferredLayoutSize
+      (final Band b, final Dimension2D containerDims, final LayoutSupport support)
   {
     final ElementLayoutInformation eli = createLayoutInformationForPreferredSize(b, containerDims);
     if (eli.getPreferredSize() != null)
@@ -115,7 +117,7 @@ public strictfp class CardLayoutBLayoutManager extends AbstractBandLayoutManager
     for (int i = 0; i < elements.length; i++)
     {
       final Element e = elements[i];
-      unionMax(retval, computePreferredSize(e, containerDims, tmpDim));
+      unionMax(retval, computePreferredSize(e, containerDims, tmpDim, support));
     }
     return ElementLayoutInformation.unionMin(eli.getMaximumSize(), retval);
   }
@@ -138,7 +140,7 @@ public strictfp class CardLayoutBLayoutManager extends AbstractBandLayoutManager
    *
    * @param b  the band.
    */
-  public void doLayout(final Band b)
+  public void doLayout(final Band b, final LayoutSupport layoutSupport)
   {
     final Rectangle2D parentBounds = BandLayoutManagerUtil.getBounds(b, null);
     if (parentBounds == null)
@@ -149,9 +151,8 @@ public strictfp class CardLayoutBLayoutManager extends AbstractBandLayoutManager
     final Dimension2D parentDim = new FloatDimension((float) parentBounds.getWidth(),
         (float) parentBounds.getHeight());
 
-    final Dimension2D dim = preferredLayoutSize(b, parentDim);
+    final Dimension2D dim = preferredLayoutSize(b, parentDim, layoutSupport);
     final Element[] elements = b.getElementArray();
-    final LayoutSupport layoutSupport = getLayoutSupport();
     dim.setSize(align((float) dim.getWidth(), layoutSupport.getHorizontalAlignmentBorder()),
         align((float) dim.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
 
@@ -169,8 +170,8 @@ public strictfp class CardLayoutBLayoutManager extends AbstractBandLayoutManager
       BandLayoutManagerUtil.setBounds(e, bounds);
       if (e instanceof Band)
       {
-        final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e, getLayoutSupport());
-        lm.doLayout((Band) e);
+        final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e);
+        lm.doLayout((Band) e, layoutSupport);
       }
     }
   }

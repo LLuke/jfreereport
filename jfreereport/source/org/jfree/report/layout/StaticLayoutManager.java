@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.10 2003/10/11 21:32:46 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.11 2003/11/07 18:33:49 taqua Exp $
  *
  * Changes
  * -------
@@ -109,7 +109,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
    * @return the minimum size.
    */
   protected Dimension2D computeMinimumSize(final Element e, final Dimension2D containerBounds,
-                                           Dimension2D retval)
+                                           Dimension2D retval, final LayoutSupport support)
   {
     final boolean isCacheable = cache.isCachable(e);
     if (isCacheable)
@@ -145,8 +145,8 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
     // if this is a band, then try to calculate the min-size
     if (e instanceof Band)
     {
-      final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e, getLayoutSupport());
-      retval = lm.minimumLayoutSize((Band) e, containerBounds);
+      final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e);
+      retval = lm.minimumLayoutSize((Band) e, containerBounds, support);
     }
     else
     {
@@ -166,7 +166,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
-      retval = getElementContentBounds(retval, e, maxSize);
+      retval = getElementContentBounds(retval, e, maxSize, support);
     }
 
     retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
@@ -198,7 +198,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
    * @return the preferred size of the element.
    */
   protected Dimension2D computePreferredSize(final Element e,
-      final Dimension2D containerBounds, Dimension2D retval)
+      final Dimension2D containerBounds, Dimension2D retval, LayoutSupport support)
   {
     final boolean isCachable = cache.isCachable(e);
     if (isCachable)
@@ -235,8 +235,8 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
     // if e is a band, then try to calculate the preferred size
     if (e instanceof Band)
     {
-      final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e, getLayoutSupport());
-      retval = lm.preferredLayoutSize((Band) e, containerBounds);
+      final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e);
+      retval = lm.preferredLayoutSize((Band) e, containerBounds, support);
     }
     else
     {
@@ -265,7 +265,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
-      retval = getElementContentBounds(retval, e, maxSize);
+      retval = getElementContentBounds(retval, e, maxSize, support);
     }
 
     retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
@@ -299,8 +299,21 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @return the preferred size.
    */
-  public Dimension2D preferredLayoutSize(final Band b, final Dimension2D containerDims)
+  public Dimension2D preferredLayoutSize
+      (final Band b, final Dimension2D containerDims, final LayoutSupport support)
   {
+    if (support == null)
+    {
+      throw new NullPointerException("LayoutSupport is null.");
+    }
+    if (b == null)
+    {
+      throw new NullPointerException("Band is null.");
+    }
+    if (containerDims == null)
+    {
+      throw new NullPointerException("ContainerBounds are null.");
+    }
     synchronized (b.getTreeLock())
     {
       //Log.debug(">" + containerDims + " vs - " + b.getName());
@@ -341,7 +354,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
             // dont display, as this element is larger than the container ...
             continue;
           }
-          final Dimension2D absDim = computePreferredSize(e, base, tmpResult);
+          final Dimension2D absDim = computePreferredSize(e, base, tmpResult, support);
 
           if (staticWidth)
           {
@@ -395,7 +408,8 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
             continue;
           }
 
-          absDim = correctDimension(computePreferredSize(e, base, absDim), base, absDim);
+          absDim = correctDimension
+              (computePreferredSize(e, base, absDim, support), base, absDim);
 
           if (staticWidth == false)
           {
@@ -419,8 +433,8 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       width = (float) Math.min(width, maxSize.getWidth());
 
       // now align the calculated data ...
-      base.setSize(align(width, getLayoutSupport().getHorizontalAlignmentBorder()),
-          align(height, getLayoutSupport().getVerticalAlignmentBorder()));
+      base.setSize(align(width, support.getHorizontalAlignmentBorder()),
+          align(height, support.getVerticalAlignmentBorder()));
 
       // Log.debug("<" + base + " vs - " + b.getName());
       return base;
@@ -437,8 +451,21 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @return the minimum size.
    */
-  public Dimension2D minimumLayoutSize(final Band b, final Dimension2D containerBounds)
+  public Dimension2D minimumLayoutSize
+      (final Band b, final Dimension2D containerBounds, final LayoutSupport support)
   {
+    if (support == null)
+    {
+      throw new NullPointerException("LayoutSupport is null.");
+    }
+    if (b == null)
+    {
+      throw new NullPointerException("Band is null.");
+    }
+    if (containerBounds == null)
+    {
+      throw new NullPointerException("ContainerBounds is null.");
+    }
     synchronized (b.getTreeLock())
     {
       final ElementLayoutInformation eli =
@@ -479,7 +506,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
             // dont display, as this element is larger than the container ...
             continue;
           }
-          final Dimension2D size = computeMinimumSize(e, maxSize, tmpResult);
+          final Dimension2D size = computeMinimumSize(e, maxSize, tmpResult, support);
 
           if (staticWidth)
           {
@@ -530,7 +557,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
             // dont display, as this element is larger than the container ...
             continue;
           }
-          absDim = correctDimension(computeMinimumSize(e, base, absDim), base, absDim);
+          absDim = correctDimension(computeMinimumSize(e, base, absDim, support), base, absDim);
 
           if (staticWidth == false)
           {
@@ -558,8 +585,8 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       //Log.debug ("Dimension after dynamic correction: " + width + " -> " + height);
       // now align the calculated data ...
       final FloatDimension fdim = new FloatDimension(
-          align(width, getLayoutSupport().getHorizontalAlignmentBorder()),
-          align(height, getLayoutSupport().getVerticalAlignmentBorder()));
+          align(width, support.getHorizontalAlignmentBorder()),
+          align(height, support.getVerticalAlignmentBorder()));
       return fdim;
     }
   }
@@ -576,8 +603,16 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
    * @param b the band to lay out.
    * @throws java.lang.IllegalStateException if the bands has no bounds set.
    */
-  public synchronized void doLayout(final Band b)
+  public synchronized void doLayout(final Band b, final LayoutSupport support)
   {
+    if (support == null)
+    {
+      throw new NullPointerException("LayoutSupport is null.");
+    }
+    if (b == null)
+    {
+      throw new NullPointerException("Band is null.");
+    }
     synchronized (b.getTreeLock())
     {
       final Element[] elements = b.getElementArray();
@@ -594,7 +629,6 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
 
       Dimension2D absDim = null;
       Point2D absPos = null;
-      final LayoutSupport layoutSupport = getLayoutSupport();
       for (int i = 0; i < elements.length; i++)
       {
         final Element e = elements[i];
@@ -615,7 +649,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
           continue;
         }
 
-        absDim = computePreferredSize(e, parentDim, absDim);
+        absDim = computePreferredSize(e, parentDim, absDim, support);
         // docmark: Compute preferred size does never return negative values!
         // Log.debug ("UBounds: Element: " + e.getName() + " Bounds: " + uncorrectedSize);
         // absDim = correctDimension(uncorrectedSize, parentDim, absDim);
@@ -623,17 +657,17 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
 
         // here apply the maximum bounds ...
         final Rectangle2D bounds = new Rectangle2D.Float(
-            align((float) absPos.getX(), layoutSupport.getHorizontalAlignmentBorder()),
-            align((float) absPos.getY(), layoutSupport.getVerticalAlignmentBorder()),
-            align((float) absDim.getWidth(), layoutSupport.getHorizontalAlignmentBorder()),
-            align((float) absDim.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
+            align((float) absPos.getX(), support.getHorizontalAlignmentBorder()),
+            align((float) absPos.getY(), support.getVerticalAlignmentBorder()),
+            align((float) absDim.getWidth(), support.getHorizontalAlignmentBorder()),
+            align((float) absDim.getHeight(), support.getVerticalAlignmentBorder()));
         BandLayoutManagerUtil.setBounds(e, bounds);
         // Log.debug ("Bounds: Element: " + e.getName() + " Bounds: " + bounds);
         if (e instanceof Band)
         {
           final BandLayoutManager lm =
-            BandLayoutManagerUtil.getLayoutManager(e, getLayoutSupport());
-          lm.doLayout((Band) e);
+            BandLayoutManagerUtil.getLayoutManager(e);
+          lm.doLayout((Band) e, support);
         }
       }
     }

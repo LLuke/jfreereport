@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManager.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: BandLayoutManager.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,7 @@ public interface BandLayoutManager
    *
    * @return the preferred size.
    */
-  public Dimension2D preferredLayoutSize(Band b, Dimension2D containerDims);
+  public Dimension2D preferredLayoutSize(Band b, Dimension2D containerDims, LayoutSupport support);
 
   /**
    * Calculates the minimum layout size for a band.
@@ -79,28 +79,14 @@ public interface BandLayoutManager
    *
    * @return the minimum size.
    */
-  public Dimension2D minimumLayoutSize(Band b, Dimension2D containerDims);
+  public Dimension2D minimumLayoutSize(Band b, Dimension2D containerDims, LayoutSupport support);
 
   /**
    * Performs the layout of a band.
    *
    * @param b  the band.
    */
-  public void doLayout(Band b);
-
-  /**
-   * Sets the output target for the layout manager.
-   *
-   * @param target  the target.
-   */
-  public void setLayoutSupport(LayoutSupport target);
-
-  /**
-   * Returns the output target for the layout manager.
-   *
-   * @return the target.
-   */
-  public LayoutSupport getLayoutSupport();
+  public void doLayout(Band b, LayoutSupport support);
 
   /**
    * Clears any cached items used by the layout manager. Invalidates the layout.

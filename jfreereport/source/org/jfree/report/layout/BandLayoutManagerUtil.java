@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.7 2003/10/11 20:44:06 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.8 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -65,26 +65,19 @@ public final strictfp class BandLayoutManagerUtil
    * Returns the layout manager for an element in a report.
    *
    * @param e  the element.
-   * @param ot  the output target.
    *
    * @return the layout manager.
    */
-  public static BandLayoutManager getLayoutManager(final Element e, final LayoutSupport ot)
+  public static BandLayoutManager getLayoutManager(final Element e)
   {
     final BandLayoutManager lm =
         (BandLayoutManager) e.getStyle().getStyleProperty(BandLayoutManager.LAYOUTMANAGER);
 
-    if (ot == null)
-    {
-      throw new NullPointerException();
-    }
     if (lm == null)
     {
       throw new IllegalStateException("There is no layout manager defined for that band.");
     }
-
     // always update the layout support ...
-    lm.setLayoutSupport(ot);
     return lm;
   }
 
@@ -158,10 +151,10 @@ public final strictfp class BandLayoutManagerUtil
       throw new IllegalArgumentException("Width or height is negative.");
     }
     final BandLayoutManager lm
-        = BandLayoutManagerUtil.getLayoutManager(band, support);
+        = BandLayoutManagerUtil.getLayoutManager(band);
     // in this layouter the width of a band is always the full page width
     //final Dimension2D fdim = lm.minimumLayoutSize(band, new FloatDimension(width, height));
-    final Dimension2D fdim = lm.preferredLayoutSize(band, new FloatDimension(width, height));
+    final Dimension2D fdim = lm.preferredLayoutSize(band, new FloatDimension(width, height), support);
 
     // the height is redefined by the band's requirements to support
     // the dynamic elements.
@@ -171,8 +164,7 @@ public final strictfp class BandLayoutManagerUtil
     // the given computation as reliable as possible.
     final Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, (float) fdim.getHeight());
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
-    lm.doLayout(band);
-    lm.setLayoutSupport(null);
+    lm.doLayout(band, support);
     return bounds;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.11 2003/11/01 19:52:27 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.12 2003/11/07 18:33:49 taqua Exp $
  *
  * Changes
  * -------
@@ -56,9 +56,6 @@ import org.jfree.ui.FloatDimension;
  */
 public abstract class AbstractBandLayoutManager implements BandLayoutManager
 {
-  /** Layout support. */
-  private LayoutSupport support;
-
   /**
    * Default constructor.
    */
@@ -77,7 +74,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    * @return the minimum size.
    */
   protected strictfp Dimension2D computeMinimumSize
-    (final Element e, final Dimension2D containerBounds, Dimension2D retval)
+    (final Element e, final Dimension2D containerBounds, Dimension2D retval, final LayoutSupport support)
   {
     if (containerBounds.getWidth() < 0 || containerBounds.getHeight() < 0)
     {
@@ -87,8 +84,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     // if this is a band, then try to calculate the min-size
     if (e instanceof Band)
     {
-      final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e, getLayoutSupport());
-      retval = lm.minimumLayoutSize((Band) e, containerBounds);
+      final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e);
+      retval = lm.minimumLayoutSize((Band) e, containerBounds, support);
     }
     else
     {
@@ -107,7 +104,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     // docmark: minimum size also checks the dynamic height.
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
-      retval = getElementContentBounds(retval, e, maxSize);
+      retval = getElementContentBounds(retval, e, maxSize, support);
     }
 
     retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
@@ -134,7 +131,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    * @return the preferred size of the element.
    */
   protected strictfp Dimension2D computePreferredSize
-      (final Element e, final Dimension2D containerBounds, Dimension2D retval)
+      (final Element e, final Dimension2D containerBounds,
+       Dimension2D retval, final LayoutSupport support)
   {
     if (containerBounds.getWidth() < 0 || containerBounds.getHeight() < 0)
     {
@@ -146,8 +144,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     // if e is a band, then try to calculate the preferred size
     if (e instanceof Band)
     {
-      final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e, getLayoutSupport());
-      retval = lm.preferredLayoutSize((Band) e, containerBounds);
+      final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e);
+      retval = lm.preferredLayoutSize((Band) e, containerBounds, support);
     }
     else
     {
@@ -177,7 +175,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
-      retval = getElementContentBounds(retval, e, maxSize);
+      retval = getElementContentBounds(retval, e, maxSize, support);
     }
 
     retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
@@ -210,13 +208,13 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return the new elements dimension.
    */
-  protected strictfp Dimension2D getElementContentBounds(final Dimension2D bounds,
-                                                final Element e,
-                                                final Dimension2D conBounds)
+  protected strictfp Dimension2D getElementContentBounds
+      (final Dimension2D bounds, final Element e,
+       final Dimension2D conBounds, final LayoutSupport support)
   {
     // check if we can handle the content before doing anything...
     // ...
-    final ContentFactory contentFactory = getLayoutSupport().getContentFactory();
+    final ContentFactory contentFactory = support.getContentFactory();
     if (contentFactory.canHandleContent(e.getContentType()) == false)
     {
       return bounds;
@@ -227,7 +225,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     try
     {
 
-      final Content content = contentFactory.createContentForElement(e, eli, getLayoutSupport());
+      final Content content = contentFactory.createContentForElement(e, eli, support);
       if (content == null)
       {
         bounds.setSize(0,0);
@@ -366,27 +364,6 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     // some more content ...
     minSize.setSize(width, height);
     return new ElementLayoutInformation(new Point2D.Float(), minSize, maxSize, prefSize);
-  }
-
-  /**
-   * Sets the output target for the layout manager. The LayoutManager support must
-   * be cleared (set to null) after the layouting is complete.
-   *
-   * @param target  the target.
-   */
-  public void setLayoutSupport(final LayoutSupport target)
-  {
-    support = target;
-  }
-
-  /**
-   * Returns the output target for the layout manager.
-   *
-   * @return the target.
-   */
-  public LayoutSupport getLayoutSupport()
-  {
-    return support;
   }
 
   /**
