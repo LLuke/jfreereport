@@ -137,4 +137,11 @@ public class URLFilter implements DataFilter
   {
     this.baseURL = baseURL;
   }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    URLFilter f = (URLFilter) super.clone();
+    f.source = (DataSource) source.clone();
+    return f;
+  }
 }

@@ -36,12 +36,13 @@ import java.util.Enumeration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
+import java.io.Serializable;
 
 /**
  * The HashNMap can be used to store multiple values by a single key value. The values stored
  * can be retrieved using a direct query or by creating an enumeration over the stored elements.
  */
-public class HashNMap
+public class HashNMap implements Serializable, Cloneable
 {
 	private Hashtable table = null;
 
@@ -209,4 +210,21 @@ public class HashNMap
 		}
 		return containsValue (value);
 	}
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    HashNMap map = (HashNMap) super.clone ();
+    map.table = new Hashtable();
+    Enumeration enum = keys();
+    while (enum.hasMoreElements())
+    {
+      Object key = enum.nextElement();
+      Iterator it = getAll(key);
+      while (it.hasNext())
+      {
+        map.add (key, it.next());
+      }
+    }
+    return map;
+  }
 }

@@ -45,9 +45,8 @@ import java.util.ResourceBundle;
 /**
  * Details about the JFreeReport project.
  */
-public class JFreeReportInfo extends ProjectInfo
+public class JFreeReportInfo extends ProjectInfo implements Cloneable
 {
-
   /**
    * Constructs an object containing information about the JFreeReport project.
    * <p>

@@ -139,4 +139,13 @@ public class ImageLoadFilter implements DataFilter
 
     source = ds;
   }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    ImageLoadFilter il = (ImageLoadFilter) super.clone ();
+    il.imageCache = (KeyedQueue) imageCache.clone();
+    il.source = (DataSource) source.clone();
+    return il;
+  }
+
 }

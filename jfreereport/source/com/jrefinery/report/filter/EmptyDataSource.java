@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: EmptyDataSource.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
  *
  * Changes
  * -------
@@ -53,5 +53,10 @@ public class EmptyDataSource implements DataSource
   public Object getValue ()
   {
     return null;
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    return super.clone ();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionCollection.java,v 1.7 2002/05/31 19:31:14 taqua Exp $
+ * $Id: FunctionCollection.java,v 1.8 2002/06/09 14:46:04 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.io.Serializable;
 
 /**
  * A function collection contains all function elements of a particular report.
@@ -60,7 +61,7 @@ import java.util.Iterator;
  * A function collection gets immutable after it is passed to the report state.
  * An immutable function collection cannot have functions added or removed.
  */
-public class FunctionCollection extends ReportListenerAdapter implements Cloneable
+public class FunctionCollection extends ReportListenerAdapter implements Cloneable, Serializable
 {
   private static class ReadOnlyFunctionCollection extends FunctionCollection
   {
@@ -412,4 +413,11 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     return functionList.size ();
   }
 
+  public Object clone () throws CloneNotSupportedException
+  {
+    FunctionCollection col = (FunctionCollection) super.clone();
+    col.functionList = (ArrayList) functionList.clone();
+    col.functionPositions = (Hashtable) functionPositions.clone();
+    return col;
+  }
 }

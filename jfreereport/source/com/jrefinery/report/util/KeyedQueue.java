@@ -31,12 +31,13 @@ package com.jrefinery.report.util;
 
 import java.util.LinkedList;
 import java.util.Hashtable;
+import java.io.Serializable;
 
 /**
  * A keyed queue is a hashtable like structure which will store a certain number of
  * elements. If the defined element size is exceed, the firstly stored element gets removed.
  */
-public class KeyedQueue
+public class KeyedQueue implements Serializable, Cloneable
 {
   private LinkedList list;
   private Hashtable table;
@@ -132,4 +133,14 @@ public class KeyedQueue
     table.clear();
     list.clear();
   }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    KeyedQueue q = (KeyedQueue) super.clone ();
+    q.list = (LinkedList) list.clone();
+    q.table = (Hashtable) table.clone();
+    return q;
+  }
+
+
 }

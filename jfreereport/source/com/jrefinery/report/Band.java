@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.7 2002/05/31 19:31:14 taqua Exp $
+ * $Id: Band.java,v 1.8 2002/06/04 19:20:36 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -70,6 +70,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * A report band contains a list of elements to be displayed, and represents one section of a
@@ -82,14 +83,14 @@ import java.util.List;
  * This implementation is not synchronized, to take care that you externaly synchronize
  * it when using multiple threads.
  */
-public abstract class Band
+public abstract class Band implements Serializable, Cloneable
 {
 
   /** The default font. */
-  public static final Font DEFAULT_FONT = new Font ("Serif", Font.PLAIN, 10);
+  public static final transient Font DEFAULT_FONT = new Font ("Serif", Font.PLAIN, 10);
 
   /** The default paint. */
-  public static final Paint DEFAULT_PAINT = Color.black;
+  public static final transient Paint DEFAULT_PAINT = Color.black;
 
   /** The height of the band. */
   private float height;
@@ -423,5 +424,14 @@ public abstract class Band
       return getLastDatasource (tgt);
     }
     return s;
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    Band b = (Band) super.clone ();
+    b.allElements = new ArrayList (allElements);
+    b.dataElements = (HashNMap) dataElements.clone();
+    b.functionElements = (HashNMap) functionElements.clone();
+    return b;
   }
 }

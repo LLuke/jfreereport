@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFunctionElement.java,v 1.5 2002/06/04 21:44:34 taqua Exp $
+ * $Id: NumberFunctionElement.java,v 1.6 2002/07/02 20:33:08 taqua Exp $
  *
  * Changes
  * -------
@@ -105,4 +105,17 @@ public class NumberFunctionElement extends FunctionElement
     }
     setFormatter (new DecimalFormat (df));
   }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    NumberFunctionElement e = (NumberFunctionElement) super.clone();
+    if ((e.getDataSource() instanceof NumberFormatFilter) == false)
+    {
+      throw new CloneNotSupportedException("Modified function element is not clonable");
+    }
+    e.filter = (NumberFormatFilter) e.getDataSource();
+    return e;
+  }
+
+
 }

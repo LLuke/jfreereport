@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.8 2002/06/04 21:44:34 taqua Exp $
+ * $Id: Element.java,v 1.9 2002/06/08 14:31:52 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -57,11 +57,12 @@ import com.jrefinery.report.targets.OutputTargetException;
 
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 
 /**
  * Base class for all report elements (display items that can appear within a report band).
  */
-public abstract class Element implements ElementConstants, DataTarget
+public abstract class Element implements ElementConstants, DataTarget, Serializable, Cloneable
 {
   private static final DataSource NULL_DATASOURCE = new EmptyDataSource ();
 
@@ -297,4 +298,11 @@ public abstract class Element implements ElementConstants, DataTarget
    */
   public abstract void draw (OutputTarget target, Band band) throws OutputTargetException;
 
+  public Object clone () throws CloneNotSupportedException
+  {
+    Element e = (Element) super.clone ();
+    e.area = (Rectangle2D) area.clone();
+    e.datasource = (DataSource) datasource.clone();
+    return e;
+  }
 }

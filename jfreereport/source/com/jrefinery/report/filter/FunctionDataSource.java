@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionDataSource.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
+ * $Id: FunctionDataSource.java,v 1.4 2002/06/06 21:40:40 taqua Exp $
  *
  * Changes
  * -------
@@ -128,6 +128,11 @@ public class FunctionDataSource implements DataSource
   public Object getValue ()
   {
     return value;
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    return super.clone();
   }
 
 }

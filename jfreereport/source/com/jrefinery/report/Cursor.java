@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Cursor.java,v 1.6 2002/05/28 19:28:22 taqua Exp $
+ * $Id: Cursor.java,v 1.7 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -43,13 +43,15 @@ package com.jrefinery.report;
 
 import com.jrefinery.report.targets.OutputTarget;
 
+import java.io.Serializable;
+
 /**
  * A utility class for keeping track of the current position on a report page. The cursor
  * is used by the ReportProcessor to determine the current position on the paper.
  * The cursor is only able to advance forward. There is no way of reseting the cursor once
  * it has moved.
  */
-public class Cursor
+public class Cursor implements Cloneable, Serializable
 {
 
   /** The y-coordinate. */
@@ -141,5 +143,10 @@ public class Cursor
   public float getPageBottom()
   {
     return pageBottom;
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    return super.clone ();
   }
 }

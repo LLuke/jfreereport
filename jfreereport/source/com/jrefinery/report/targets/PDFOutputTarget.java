@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.12 2002/06/27 19:16:54 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.13 2002/06/30 16:31:43 taqua Exp $
  *
  * Changes
  * -------
@@ -913,7 +913,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       document.addTitle (title);
       document.addAuthor (author);
       document.addCreator (
-              JFreeReport.INFO.getName () + " version " + JFreeReport.INFO.getVersion ());
+              JFreeReport.getInfo().getName () + " version " + JFreeReport.getInfo().getVersion ());
       document.addCreationDate ();
 
       writer = PdfWriter.getInstance (document, out);

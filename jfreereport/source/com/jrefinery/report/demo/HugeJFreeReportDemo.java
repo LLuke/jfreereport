@@ -183,7 +183,7 @@ public class HugeJFreeReportDemo extends JFrame
     setDefaultCloseOperation (DO_NOTHING_ON_CLOSE);
     addWindowListener (new CloseHandler ());
     m_resources = resources;
-    Object[] arguments = new Object[]{JFreeReport.INFO.getVersion ()};
+    Object[] arguments = new Object[]{JFreeReport.getInfo().getVersion ()};
     String pattern = resources.getString ("main-frame.title.pattern");
     setTitle (MessageFormat.format (pattern, arguments));
 
@@ -357,7 +357,7 @@ public class HugeJFreeReportDemo extends JFrame
   {
     if (aboutFrame == null)
     {
-      aboutFrame = new AboutFrame (getResources().getString("action.about.name"), JFreeReport.INFO);
+      aboutFrame = new AboutFrame (getResources().getString("action.about.name"), JFreeReport.getInfo());
 
       aboutFrame.pack ();
       RefineryUtilities.centerFrameOnScreen (aboutFrame);

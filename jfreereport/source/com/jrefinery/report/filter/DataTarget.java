@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DataTarget.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
  *
  * Changes
  * -------
@@ -38,11 +38,13 @@
 
 package com.jrefinery.report.filter;
 
+import java.io.Serializable;
+
 /**
  * A DataTarget is a consumer in the DataProcessing chain. All Elements are DataTargets.
  * Targets query their data from assigned DataSources.
  */
-public interface DataTarget
+public interface DataTarget extends Serializable, Cloneable
 {
   /**
    * Returns the assigned DataSource for this Target.
@@ -58,4 +60,5 @@ public interface DataTarget
    */
   public void setDataSource (DataSource ds);
 
+  public Object clone () throws CloneNotSupportedException;
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morger
  * Contributor(s):   -;
  *
- * $Id: WaitingImageObserver.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
+ * $Id: WaitingImageObserver.java,v 1.5 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -42,6 +42,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.io.Serializable;
 
 /**
  * This image observer blocks until the image is completly loaded. AWT
@@ -51,7 +52,7 @@ import java.awt.image.ImageObserver;
  * was completely loaded, so this observer forces the loading of the image
  * until a final state (either ALLBITS, ABORT or ERROR) is reached.
  */
-public class WaitingImageObserver implements ImageObserver, Runnable
+public class WaitingImageObserver implements ImageObserver, Runnable, Serializable, Cloneable
 {
   private boolean lock;
   private Image image;
@@ -110,5 +111,11 @@ public class WaitingImageObserver implements ImageObserver, Runnable
       {
       }
     }
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    WaitingImageObserver obs = (WaitingImageObserver) super.clone ();
+    return obs;
   }
 }

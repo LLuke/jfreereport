@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFunctionElement.java,v 1.5 2002/06/04 21:44:34 taqua Exp $
+ * $Id: DateFunctionElement.java,v 1.6 2002/07/02 20:33:08 taqua Exp $
  *
  * Changes
  * -------
@@ -107,4 +107,17 @@ public class DateFunctionElement extends FunctionElement
     }
     this.formatter.setDateFormat (format);
   }
+
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    DateFunctionElement e = (DateFunctionElement) super.clone();
+    if ((e.getDataSource() instanceof DateFormatFilter) == false)
+    {
+      throw new CloneNotSupportedException("Modified function element is not clonable");
+    }
+    e.formatter = (DateFormatFilter) e.getDataSource();
+    return e;
+  }
+
 }

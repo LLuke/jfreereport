@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DataElement.java,v 1.7 2002/06/04 21:44:34 taqua Exp $
+ * $Id: DataElement.java,v 1.8 2002/07/02 20:33:08 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -45,6 +45,7 @@ package com.jrefinery.report;
 import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.ReportDataSource;
 import com.jrefinery.report.filter.DataFilter;
+import com.jrefinery.report.filter.FunctionDataSource;
 
 /**
  * The base class for all report elements that display data (that is, information from the report's
@@ -106,4 +107,17 @@ public abstract class DataElement extends TextElement
   {
     return fieldsource;
   }
+
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    DataElement e = (DataElement) super.clone();
+    if ((e.getDataSource() instanceof ReportDataSource) == false)
+    {
+      throw new CloneNotSupportedException("Modified data element is not clonable");
+    }
+    e.fieldsource = (ReportDataSource) e.getDataSource();
+    return e;
+  }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DataSource.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
  *
  * Changes
  * -------
@@ -38,12 +38,14 @@
  */
 package com.jrefinery.report.filter;
 
+import java.io.Serializable;
+
 /**
  * A DataSource is a producer in the data chain. Common Sources are StaticSources (predefined
  * data), ReportDataSources (data filled from the reports data set) or FunctionDataSource (the
  * data is filled by querying an assigned function).
  */
-public interface DataSource
+public interface DataSource extends Serializable, Cloneable
 {
   /**
    * Returns the current value for the data source.
@@ -51,5 +53,7 @@ public interface DataSource
    * @return The value.
    */
   public Object getValue ();
+
+  public Object clone () throws CloneNotSupportedException;
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StaticDataSource.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
  *
  * Changes
  * -------
@@ -84,4 +84,8 @@ public class StaticDataSource implements DataSource
     return value;
   }
 
+  public Object clone () throws CloneNotSupportedException
+  {
+    return super.clone();
+  }
 }

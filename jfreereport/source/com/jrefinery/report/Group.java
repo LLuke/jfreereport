@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Group.java,v 1.5 2002/05/31 19:31:14 taqua Exp $
+ * $Id: Group.java,v 1.6 2002/06/09 14:46:04 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -48,6 +48,8 @@ import javax.swing.table.AbstractTableModel;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * A report group.  Reports can contain any number of groups.
@@ -56,14 +58,14 @@ import java.util.Vector;
  * @see GroupList
  * @todo cache the fieldname to indexPos.
  */
-public class Group
+public class Group implements Serializable, Cloneable
 {
 
   /** The name of the group. */
   private String name;
 
   /** The fields that define the group (can be empty). */
-  private List fields;
+  private ArrayList fields;
 
   /** The group header (optional). */
   private GroupHeader header;
@@ -76,7 +78,7 @@ public class Group
    */
   public Group ()
   {
-    fields = new Vector ();
+    fields = new ArrayList ();
     setFooter (new GroupFooter ());
     setHeader (new GroupHeader ());
   }
@@ -258,5 +260,14 @@ public class Group
     }
     return -1;  // no field with that name
 
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    Group g = (Group) super.clone ();
+    g.fields = (ArrayList) fields.clone();
+    g.footer = (GroupFooter) footer.clone();
+    g.header = (GroupHeader) header.clone();
+    return g;
   }
 }

@@ -49,4 +49,12 @@ public class ImageRefFilter implements DataFilter
   {
     return ImageReference.class;
   }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    ImageRefFilter r = (ImageRefFilter) super.clone ();
+    r.dataSource = (DataSource) clone();
+    return r;
+  }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: NumberElement.java,v 1.6 2002/06/09 14:46:04 taqua Exp $
+ * $Id: NumberElement.java,v 1.7 2002/07/02 20:33:08 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -43,6 +43,7 @@ package com.jrefinery.report;
 
 import com.jrefinery.report.filter.DataFilter;
 import com.jrefinery.report.filter.NumberFormatFilter;
+import com.jrefinery.report.filter.StaticDataSource;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -105,4 +106,17 @@ public class NumberElement extends DataElement
     }
     setFormatter (new DecimalFormat (df));
   }
+
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    NumberElement e = (NumberElement) super.clone();
+    if ((e.getDataSource() instanceof NumberFormatFilter) == false)
+    {
+      throw new CloneNotSupportedException("Modified function element is not clonable");
+    }
+    e.formatter = (NumberFormatFilter) e.getDataSource();
+    return e;
+  }
+
 }

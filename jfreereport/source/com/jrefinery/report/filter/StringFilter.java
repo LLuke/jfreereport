@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StringFilter.java,v 1.5 2002/06/06 16:00:59 mungady Exp $
  *
  * Changes
  * -------
@@ -121,4 +121,10 @@ public class StringFilter implements DataFilter
     source = ds;
   }
 
+  public Object clone () throws CloneNotSupportedException
+  {
+    StringFilter f = (StringFilter) super.clone();
+    f.source = (DataSource) source.clone();
+    return f;
+  }
 }

@@ -33,6 +33,7 @@ package com.jrefinery.report.util;
 
 import java.util.Hashtable;
 import java.util.Enumeration;
+import java.io.Serializable;
 
 /**
  * The report properties is a hashtable with string keys. ReportProperties are bound to
@@ -71,7 +72,7 @@ import java.util.Enumeration;
  * once per PageFormat. Subsequent report printings are restarted on clones of the stored page
  * states.
  */
-public class ReportProperties
+public class ReportProperties implements Serializable, Cloneable
 {
   private Hashtable properties;
 
@@ -161,5 +162,12 @@ public class ReportProperties
   public boolean containsKey (String key)
   {
     return properties.containsKey(key);
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    ReportProperties p = (ReportProperties) super.clone ();
+    p.properties = (Hashtable) properties.clone();
+    return p;
   }
 }

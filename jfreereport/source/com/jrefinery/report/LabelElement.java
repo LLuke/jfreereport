@@ -41,6 +41,7 @@
 package com.jrefinery.report;
 
 import com.jrefinery.report.filter.StaticDataSource;
+import com.jrefinery.report.filter.FunctionDataSource;
 
 /**
  * An element that draws static text within a report band.
@@ -104,4 +105,14 @@ public class LabelElement extends TextElement
     return b.toString ();
   }
 
+  public Object clone () throws CloneNotSupportedException
+  {
+    LabelElement e = (LabelElement ) super.clone();
+    if ((e.getDataSource() instanceof StaticDataSource) == false)
+    {
+      throw new CloneNotSupportedException("Modified function element is not clonable");
+    }
+    e.label = (StaticDataSource) e.getDataSource();
+    return e;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageReference.java,v 1.8 2002/05/28 19:28:22 taqua Exp $
+ * $Id: ImageReference.java,v 1.9 2002/06/30 16:31:41 taqua Exp $
  *
  * Changes:
  * --------
@@ -45,6 +45,7 @@ import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URL;
 
 import gnu.bhresearch.pixie.wmf.WmfImageProducer;
@@ -58,7 +59,7 @@ import gnu.bhresearch.pixie.wmf.WmfImageProducer;
  * An ImageReference is always used in conjunction with an ImageElement.
  */
 
-public class ImageReference
+public class ImageReference implements Serializable, Cloneable
 {
 
   /** The image. */
@@ -182,5 +183,10 @@ public class ImageReference
     if (ref.url == null) return false;
     if (url == null) return false;
     return ref.url.equals(url);
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    return super.clone();
   }
 }

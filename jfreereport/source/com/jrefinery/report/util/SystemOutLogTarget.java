@@ -29,10 +29,12 @@
  */
 package com.jrefinery.report.util;
 
+import java.io.Serializable;
+
 /**
  * prints all log-messages to System.out stream.
  */
-public class SystemOutLogTarget implements LogTarget
+public class SystemOutLogTarget implements LogTarget, Serializable
 {
   /**
  	 * logs an message to the main-log stream. All attached logStreams will also

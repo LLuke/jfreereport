@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ReportDataSource.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
  *
  * Changes
  * -------
@@ -113,4 +113,9 @@ public class ReportDataSource implements DataSource
     return value;
   }
 
+  public Object clone () throws CloneNotSupportedException
+  {
+    ReportDataSource rd = (ReportDataSource) super.clone ();
+    return rd;
+  }
 }
