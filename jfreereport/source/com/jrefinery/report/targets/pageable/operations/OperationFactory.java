@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationFactory.java,v 1.2 2002/12/05 12:05:09 mungady Exp $
+ * $Id: OperationFactory.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
  *
  * Changes
  * -------
@@ -60,9 +60,9 @@ public class OperationFactory
     if (factory == null)
     {
       factory = new OperationFactory();
-      factory.registerModule(new ImageOperationModul());
-      factory.registerModule(new ShapeOperationModul());
-      factory.registerModule(new TextOperationModul());
+      factory.registerModule(new ImageOperationModule());
+      factory.registerModule(new ShapeOperationModule());
+      factory.registerModule(new TextOperationModule());
     }
     return factory;
   }
@@ -80,7 +80,7 @@ public class OperationFactory
    *
    * @param modul  the module.
    */
-  public void registerModule (OperationModul modul)
+  public void registerModule (OperationModule modul)
   {
     modules.add (0, modul);
   }
@@ -90,7 +90,7 @@ public class OperationFactory
    *
    * @param modul  the module.
    */
-  public void unregisterModule (OperationModul modul)
+  public void unregisterModule (OperationModule modul)
   {
     modules.remove(modul);
   }
@@ -104,11 +104,11 @@ public class OperationFactory
    *
    * @return the module or null if no handler is registered for that content-type.
    */
-  public OperationModul getModul (String content)
+  public OperationModule getModul (String content)
   {
     for (int i = 0; i < modules.size(); i++)
     {
-      OperationModul mod = (OperationModul) modules.get (i);
+      OperationModule mod = (OperationModule) modules.get (i);
       if (mod.canHandleContent(content))
       {
         return mod;

@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------
- * ImageOperationModul.java
+ * ImageOperationModule.java
  * ------------------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageOperationModul.java,v 1.1 2002/12/02 17:56:58 taqua Exp $
+ * $Id: ImageOperationModule.java,v 1.2 2002/12/05 12:05:09 mungady Exp $
  *
  * Changes
  * -------
@@ -52,12 +52,12 @@ import java.util.List;
  *
  * @author Thomas Morgner
  */
-public class ImageOperationModul extends OperationModul
+public class ImageOperationModule extends OperationModule
 {
   /**
    * Default constructor.
    */
-  public ImageOperationModul()
+  public ImageOperationModule()
   {
     super("image/*");
   }

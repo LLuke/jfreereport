@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * -------------------
- * OperationModul.java
+ * OperationModule.java
  * -------------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModul.java,v 1.2 2002/12/05 12:05:10 mungady Exp $
+ * $Id: OperationModule.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ import java.util.List;
  *
  * @author Thomas Morgner
  */
-public abstract class OperationModul
+public abstract class OperationModule
 {
   /** The module type. */
   private String moduleContentType;
@@ -68,7 +68,7 @@ public abstract class OperationModul
    *
    * @param content  the content type (null not permitted).
    */
-  public OperationModul (String content)
+  public OperationModule (String content)
   {
     if (content == null) 
     {

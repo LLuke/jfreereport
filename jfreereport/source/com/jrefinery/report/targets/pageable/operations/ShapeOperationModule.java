@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------
- * ShapeOperationModul.java
+ * ShapeOperationModule.java
  * ------------------------
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModul.java,v 1.1 2002/12/02 17:56:58 taqua Exp $
+ * $Id: ShapeOperationModule.java,v 1.2 2002/12/05 16:51:47 mungady Exp $
  *
  * Changes
  * -------
@@ -58,12 +58,12 @@ import java.util.List;
  *
  * @author Thomas Morgner
  */
-public class ShapeOperationModul extends OperationModul
+public class ShapeOperationModule extends OperationModule
 {
   /**
    * Default constructor.
    */
-  public ShapeOperationModul()
+  public ShapeOperationModule()
   {
     super("shape/*");
   }

@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * -----------------------
- * TextOperationModul.java
+ * TextOperationModule.java
  * -----------------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModul.java,v 1.5 2002/12/11 01:10:41 mungady Exp $
+ * $Id: TextOperationModule.java,v 1.6 2002/12/11 23:32:26 taqua Exp $
  *
  * Changes
  * -------
@@ -59,12 +59,12 @@ import java.util.List;
  *
  * @author Thomas Morgner
  */
-public class TextOperationModul extends OperationModul
+public class TextOperationModule extends OperationModule
 {
   /**
    * Default constructor.
    */
-  public TextOperationModul ()
+  public TextOperationModule ()
   {
     super ("text/*");
   }
