@@ -28,12 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.3 2002/12/05 16:49:44 mungady Exp $
+ * $Id: SimplePageLayouter.java,v 1.4 2002/12/06 20:34:16 taqua Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Updated Javadocs (DG);
- *
+ * 07-Dec-2002 : Removed manual-pagebreak flag, was a left-over. PageFinished
+ *               did not query the DISPLAY_ON_FIRSTPAGE flag.
  */
 
 package com.jrefinery.report.targets.pageable.pagelayout;
@@ -41,7 +42,6 @@ package com.jrefinery.report.targets.pageable.pagelayout;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.states.ReportState;
@@ -59,6 +59,24 @@ import java.awt.geom.Rectangle2D;
 /**
  * A simple page layouter.  This class replicates the 'old' behaviour of JFreeReport, 
  * simple and straightforward.
+ * <p>
+ * Layout Constraints used:
+ * <ul>
+ * <li>PageHeader, PageFooter: BandStyleSheet.DISPLAY_ON_FIRST_PAGE
+ * <p>Defines whether a PageHeader or ~footer should be printed on the first page.</p>
+ * <li>PageHeader, PageFooter: BandStyleSheet.DISPLAY_ON_LAST_PAGE
+ * <p>Defines whether a PageHeader or ~footer should be printed on the last page.
+ * A warning: For the PageHeader this works only if the ReportFooter has a pagebreak
+ * before printing.
+ * </p>
+ * <li>GroupHeader: BandStyleSheet.REPEAT_HEADER
+ * <p>Defines whether this GroupHeader should be repeated on every page as long as this
+ * group is active</p>
+ * <li>All Bands: BandStyleSheet.PAGEBREAK_BEFORE, BandStyleSheet.PAGEBREAK_AFTER
+ * <p>defines whether to start a new page before the band is printed or after the
+ * band is printed. This request is ignored, if the current page is empty (not counting
+ * the PageHeader and the repeating GroupHeader).</p>
+ * </ul>
  *
  * @author Thomas Morgner
  */
@@ -73,7 +91,7 @@ public class SimplePageLayouter extends PageLayouter
   /** A flag that indicates if the report state is currently inside the item group. */
   private boolean isInItemGroup;
   
-  /** A flag that indicates if ??. */
+  /** A flag that indicates that the current pagebreak will be the last one. */
   private boolean isLastPageBreak;
 
   /**
@@ -84,20 +102,15 @@ public class SimplePageLayouter extends PageLayouter
     /** The band. */
     private Band band;
     
-    /** Manual page break? */
-    private boolean isManualPagebreak;
-
     /**
      * Creates a new state.  The band can be <code>null</code> if there is no band to be printed 
      * on the next page.
      *
      * @param band  the band.
-     * @param manualBreak  a manual break?
      */
-    public SimpleLayoutManagerState(Band band, boolean manualBreak)
+    public SimpleLayoutManagerState(Band band)
     {
       this.band = band;
-      this.isManualPagebreak = manualBreak;
     }
 
     /**
@@ -108,26 +121,6 @@ public class SimplePageLayouter extends PageLayouter
     public Band getBand()
     {
       return band;
-    }
-
-    /**
-     * Returns the 'manual page break' flag.
-     *
-     * @return the 'manual page break' flag.
-     */
-    public boolean isManualPagebreak()
-    {
-      return isManualPagebreak;
-    }
-
-    /**
-     * Sets the manual page break flag.
-     * 
-     * @param manualPagebreak  the manual page break flag.
-     */
-    public void setManualPagebreak(boolean manualPagebreak)
-    {
-      isManualPagebreak = manualPagebreak;
     }
   }
 
@@ -152,7 +145,7 @@ public class SimplePageLayouter extends PageLayouter
    * Receives notification that the report has started. Also invokes the
    * start of the first page ...
    * <P>
-   * Layout and draw the header
+   * Layout and draw the report header after the PageStartEvent was fired.
    *
    * @param event Information about the event.
    */
@@ -171,7 +164,7 @@ public class SimplePageLayouter extends PageLayouter
     }
     catch (Exception e)
     {
-      throw new FunctionProcessingException("ReportFinished failed", e);
+      throw new FunctionProcessingException("ReportStarted failed", e);
     }
   }
 
@@ -202,7 +195,19 @@ public class SimplePageLayouter extends PageLayouter
   /**
    * Receives notification that a page has started.
    * <P>
-   * Maps the pageStarted-method to the legacy function startPage (int).
+   * This prints the PageHeader. If this is the first page, the header is not
+   * printed if the pageheader style-flag DISPLAY_ON_FIRSTPAGE is set to false.
+   * If this event is known to be the last pageStarted event, the DISPLAY_ON_LASTPAGE
+   * is evaluated and the header is printed only if this flag is set to TRUE.
+   * <p>
+   * If there is an active repeating GroupHeader, print the last one. The GroupHeader
+   * is searched for the current group and all parent groups, starting at the
+   * current group and ascending to the parents. The first goupheader that has the
+   * StyleFlag REPEAT_HEADER set to TRUE is printed.
+   * <p>
+   * The PageHeader and the repeating GroupHeader are spooled until the first real
+   * content is printed. This way, the LogicalPage remains empty until an other band
+   * is printed.
    *
    * @param event Information about the event.
    */
@@ -217,6 +222,13 @@ public class SimplePageLayouter extends PageLayouter
       if (event.getState().getCurrentPage() == 1)
       {
         if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
+        {
+          print(b, true);
+        }
+      }
+      else if (isLastPageBreak)
+      {
+        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
         {
           print(b, true);
         }
@@ -252,7 +264,7 @@ public class SimplePageLayouter extends PageLayouter
         }
       }
       // to do: do not print on last page ... how to get the information when the last page is 
-      // reached?
+      // reached for all events?
     }
     catch (FunctionProcessingException fe)
     {
@@ -260,12 +272,18 @@ public class SimplePageLayouter extends PageLayouter
     }
     catch (Exception e)
     {
-      throw new FunctionProcessingException("ReportFinished failed", e);
+      throw new FunctionProcessingException("PageStarted failed", e);
     }
   }
 
   /**
    * Receives notification that a page has ended.
+   * <p>
+   * This prints the PageFooter. If this is the first page, the footer is not
+   * printed if the pagefooter style-flag DISPLAY_ON_FIRSTPAGE is set to false.
+   * If this event is known to be the last pageFinished event, the DISPLAY_ON_LASTPAGE
+   * is evaluated and the footer is printed only if this flag is set to TRUE.
+   * <p>
    *
    * @param event  the report event.
    */
@@ -275,9 +293,17 @@ public class SimplePageLayouter extends PageLayouter
     {
       getCursor().setReservedSpace(0);
       Band b = getReport().getPageFooter();
-      if (isLastPageBreak)
+      if (event.getState().getCurrentPage() == 1)
       {
         if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
+        {
+          printBottom(b);
+        }
+      }
+      else
+      if (isLastPageBreak)
+      {
+        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
         {
           printBottom(b);
         }
@@ -293,14 +319,14 @@ public class SimplePageLayouter extends PageLayouter
     }
     catch (Exception e)
     {
-      throw new FunctionProcessingException("ReportFinished failed", e);
+      throw new FunctionProcessingException("PageFinished failed", e);
     }
   }
 
   /**
    * Receives notification that the report has finished.
    * <P>
-   * Maps the reportFinished-method to the legacy function endReport ().
+   * Prints the ReportFooter and forces the last pagebreak.
    *
    * @param event Information about the event.
    */
@@ -309,12 +335,13 @@ public class SimplePageLayouter extends PageLayouter
     try
     {
       setCurrentEvent(event);
+      // force the last pagebreak ...
+      isLastPageBreak = true;
+
       Band b = getReport().getReportFooter();
       printBand(b);
 
-      // force the last pagebreak ...
-      isLastPageBreak = true;
-      createSaveState(null, true);
+      createSaveState(null);
       endPage(ENDPAGE_FORCED);
     }
     catch (FunctionProcessingException fe)
@@ -328,32 +355,9 @@ public class SimplePageLayouter extends PageLayouter
   }
 
   /**
-   * Prints a band.
-   *
-   * @param b  the band.
-   *
-   * @throws ReportProcessingException ??.
-   */
-  private void printBand (Band b) throws ReportProcessingException
-  {
-    if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
-    {
-      createSaveState(b, true);
-      if (endPage(ENDPAGE_REQUESTED) == false)
-      {
-        print(b, false);
-      }
-    }
-    else
-    {
-      print(b, false);
-    }
-  }
-
-  /**
    * Receives notification that a group has started.
    * <P>
-   * Maps the groupStarted-method to the legacy function startGroup (int).
+   * Prints the GroupHeader
    *
    * @param event Information about the event.
    */
@@ -373,14 +377,14 @@ public class SimplePageLayouter extends PageLayouter
     }
     catch (Exception e)
     {
-      throw new FunctionProcessingException("ReportFinished failed", e);
+      throw new FunctionProcessingException("GroupStarted failed", e);
     }
   }
 
   /**
    * Receives notification that a group has finished.
    * <P>
-   * Maps the groupFinished-method to the legacy function endGroup (int).
+   * Prints the GroupFooter.
    *
    * @param event Information about the event.
    */
@@ -400,7 +404,7 @@ public class SimplePageLayouter extends PageLayouter
     }
     catch (Exception e)
     {
-      throw new FunctionProcessingException("ReportFinished failed", e);
+      throw new FunctionProcessingException("GroupFinished failed", e);
     }
   }
 
@@ -408,7 +412,7 @@ public class SimplePageLayouter extends PageLayouter
   /**
    * Receives notification that a row of data is being processed.
    * <P>
-   * Maps the itemsAdvanced-method to the legacy function advanceItems (int).
+   * prints the ItemBand.
    *
    * @param event Information about the event.
    */
@@ -417,9 +421,7 @@ public class SimplePageLayouter extends PageLayouter
     try
     {
       setCurrentEvent(event);
-      setCurrentEvent(event);
-      Band b = getReport().getItemBand();
-      printBand(b);
+      printBand(getReport().getItemBand());
     }
     catch (FunctionProcessingException fe)
     {
@@ -427,7 +429,30 @@ public class SimplePageLayouter extends PageLayouter
     }
     catch (Exception e)
     {
-      throw new FunctionProcessingException("ReportFinished failed", e);
+      throw new FunctionProcessingException("ItemsAdvanced failed", e);
+    }
+  }
+
+  /**
+   * Prints a band.
+   *
+   * @param b  the band.
+   *
+   * @throws ReportProcessingException ??.
+   */
+  private void printBand (Band b) throws ReportProcessingException
+  {
+    if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
+    {
+      createSaveState(b);
+      if (endPage(ENDPAGE_REQUESTED) == false)
+      {
+        print(b, false);
+      }
+    }
+    else
+    {
+      print(b, false);
     }
   }
 
@@ -437,7 +462,7 @@ public class SimplePageLayouter extends PageLayouter
    * @param b  the band.
    * @param spool  a flag that controls whether or not to spool.
    *
-   * @throws ReportProcessingException ??.
+   * @throws ReportProcessingException if the printing failed
    */
   protected void print(Band b, boolean spool)
       throws ReportProcessingException
@@ -457,7 +482,7 @@ public class SimplePageLayouter extends PageLayouter
    *
    * @param b  the band.
    *
-   * @throws ReportProcessingException ??.
+   * @throws ReportProcessingException if the printing failed
    */
   protected void printBottom (Band b)
     throws ReportProcessingException
@@ -473,7 +498,8 @@ public class SimplePageLayouter extends PageLayouter
   }
 
   /**
-   * Perform the layout of a band.
+   * Perform the layout of a band. The height of the band is calculated and the
+   * set to the bands bounds. A band will always span the complete printable width.
    *
    * @param band  the band.
    *
@@ -498,11 +524,17 @@ public class SimplePageLayouter extends PageLayouter
   /**
    * Prints a band.
    *
-   * @param bounds  the bounds.
-   * @param band  the band.
-   * @param spool  a flag that controls ??.
+   * @param bounds  the bounds of the band within the logical page
+   * @param band  the band that should be printed. The internal band layouting is
+   * already done, all Elements contain a valid BOUNDS property.
+   * @param spool  a flag that controls whether to print the contents directly
+   * or to cache the printing operation for later usage.
+   * @see com.jrefinery.report.targets.pageable.LogicalPage#spoolBand
    *
-   * @throws ReportProcessingException ??.
+   * @throws ReportProcessingException if the printing caused an detectable error
+   * while printing the band
+   * @throws FunctionProcessingException if the OutputTarget was not able to process
+   * a request while printing.
    */
   protected void doPrint(Rectangle2D bounds, Band band, boolean spool)
     throws ReportProcessingException
@@ -523,12 +555,12 @@ public class SimplePageLayouter extends PageLayouter
       // handle a automatic pagebreak in case there is not enough space here ...
       else if ((isSpaceFor(height) == false) && (isPageEnded() == false))
       {
-        createSaveState(band, false);
+        createSaveState(band);
         endPage(ENDPAGE_FORCED);
       }
       else if (isPageEnded()) // page has ended before, but that band should be printed
       {
-        createSaveState(band, true);
+        createSaveState(band);
       }
       else
       {
@@ -552,7 +584,7 @@ public class SimplePageLayouter extends PageLayouter
           cursor.advance(height);
           if (band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
           {
-            createSaveState(null, true);
+            createSaveState(null);
             endPage(ENDPAGE_REQUESTED);
           }
         }
@@ -564,8 +596,7 @@ public class SimplePageLayouter extends PageLayouter
     }
     catch (OutputTargetException ote)
     {
-      ote.printStackTrace();
-      throw new FunctionProcessingException("Failed to print");
+      throw new FunctionProcessingException("Failed to print", ote);
     }
   }
 
@@ -589,6 +620,7 @@ public class SimplePageLayouter extends PageLayouter
    * Returns the cursor.
    *
    * @return the cursor.
+   * @throws IllegalStateException if a cursor is requested but no OutputTarget is set.
    */
   protected SimplePageLayoutCursor getCursor()
   {
@@ -603,6 +635,7 @@ public class SimplePageLayouter extends PageLayouter
    * Sets the cursor.
    *
    * @param cursor  the cursor (null not permitted).
+   * @throws NullPointerException if the given cursor is null
    */
   protected void setCursor(SimplePageLayoutCursor cursor)
   {
@@ -617,17 +650,17 @@ public class SimplePageLayouter extends PageLayouter
    * Records state information.
    *
    * @param b  the band.
-   * @param manualBreak  has a manual break been requested.
    */
-  protected void createSaveState(Band b, boolean manualBreak)
+  protected void createSaveState(Band b)
   {
-    state = new SimpleLayoutManagerState(b, manualBreak);
+    state = new SimpleLayoutManagerState(b);
   }
 
   /**
-   * Returns the current state.
+   * Returns the current state. The state was previously recorded using the
+   * <code>createSaveState(Band b)</code> method.
    *
-   * @return the current state.
+   * @return the current state, never null
    */
   protected PageLayouter.LayoutManagerState saveCurrentState()
   {
@@ -643,7 +676,10 @@ public class SimplePageLayouter extends PageLayouter
    *
    * @param anchestor  the ancestor state.
    *
-   * @throws ReportProcessingException ??.
+   * @throws ReportProcessingException if the printing failed or a pagebreak is
+   * requested while the page is restored.
+   * @throws IllegalStateException if there is no SavedState but this is not the
+   * first page.
    */
   public void restoreSaveState(ReportState anchestor)
       throws ReportProcessingException
@@ -678,7 +714,7 @@ public class SimplePageLayouter extends PageLayouter
   }
 
   /**
-   * Sets the logical page.
+   * Sets the logical page and adjust the cursor.
    *
    * @param logicalPage  the logical page.
    */
@@ -691,9 +727,11 @@ public class SimplePageLayouter extends PageLayouter
   /**
    * Ends the page.
    *
-   * @param force ??.
+   * @param force set to true, to skip the test whether the logical page is empty and
+   * to enforce an pagebreak. This is a requirement when an completly empty report
+   * (no bands or elements printed) should be finished.
    *
-   * @return true or false.
+   * @return true if the pageBreak is done, false otherwise.
    *
    * @throws ReportProcessingException ??.
    */
@@ -713,16 +751,6 @@ public class SimplePageLayouter extends PageLayouter
     {
       return false;
     }
-  }
-
-  /**
-   * A detector whether the last pagebreak was a manual pagebreak or an automatic one
-   *
-   * @return true or false.
-   */
-  public boolean isManualPageBreak()
-  {
-    return false;
   }
 
   /**

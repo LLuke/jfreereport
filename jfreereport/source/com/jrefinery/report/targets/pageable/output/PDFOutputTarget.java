@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.2 2002/12/05 16:50:51 mungady Exp $
+ * $Id: PDFOutputTarget.java,v 1.3 2002/12/06 20:34:16 taqua Exp $
  *
  * Changes
  * -------
@@ -961,7 +961,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       throw new IllegalStateException("Target " + hashCode() + " is not open");
     }
     this.writer.getDirectContent().saveState();
-    this.currentPageFormat = (PageFormat) format.getPageFormat().clone();
+    this.currentPageFormat = (PageFormat) format.getPageFormat();
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:  $
+ * $Id: FlowPageLayouter.java,v 1.2 2002/12/05 16:49:44 mungady Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import java.util.Stack;
 import java.util.ArrayList;
 
 /**
- * A page layouter.
+ * A page layouter.  No real implementation ... next release ..
  *
  * @author Thomas Morgner.
  */

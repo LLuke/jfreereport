@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManager.java,v 1.2 2002/12/03 13:49:16 mungady Exp $
+ * $Id: EventType.java,v 1.2 2002/12/04 16:20:57 mungady Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,7 @@
 package com.jrefinery.report.targets.pageable.pagelayout;
 
 /**
- * A class that represents an event type.
+ * A class that represents an event type. No real implementation ... next release ..
  *
  * @author Thomas Morgner
  */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPage.java,v 1.2 2002/12/03 16:30:49 mungady Exp $
+ * $Id: LogicalPage.java,v 1.3 2002/12/05 16:57:58 mungady Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,11 @@ import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 
 /**
- * An interface that defines a logical page.
+ * An interface that defines a logical page. A logical page is responsible for
+ * distributing the received bands so that they can be printed. Don't make any
+ * assumptions how the content gets distributed.
  *
+ * @see com.jrefinery.report.targets.pageable.physicals.LogicalPageImpl
  * @author Thomas Morgner.
  */
 public interface LogicalPage
@@ -89,14 +92,19 @@ public interface LogicalPage
   public void open();
   
   /**
-   * Replays a spool.
+   * Replays a spool.A spool is a collection of previously prepared content which
+   * should be printed later.
    *
-   * @param operations ??.
+   * @param operations the spool that should be replayed.
    */
   public void replaySpool (Spool operations);
   
   /**
-   * ??.
+   * Generate a spool. A spool is a collection (or macro) of lowlevel processing instruction
+   * on how to distribute a band and its contents. When a spool is recorded, all operations
+   * needed to replay the spool later are created and stored within the spool object.
+   * <p>
+   * The spool can be saved, cloned and replayed at a later time.
    *
    * @param bounds  the bounds.
    * @param band  the band.
@@ -119,6 +127,8 @@ public interface LogicalPage
   
   /**
    * Returns the physical page format.
+   * todo: Find a better way of handling this. Support different pageformats in one
+   * logical Page (BookStyle).
    *
    * @return the physical page format.
    */

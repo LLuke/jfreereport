@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: $
+ * $Id: LayoutAgentProgress.java,v 1.2 2002/12/04 16:20:57 mungady Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package com.jrefinery.report.targets.pageable.pagelayout;
 
 /**
  * A class that conveys the completion status of a LayoutTask.
+ *  No real implementation ... next release ..
  *
  * @author Thomas Morgner.
  */

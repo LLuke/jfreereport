@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: SampleReport1.java,v 1.9 2002/11/29 12:02:15 mungady Exp $
+ * $Id: SampleReport1.java,v 1.10 2002/12/02 17:17:00 taqua Exp $
  *
  * Changes:
  * --------
@@ -400,9 +400,9 @@ public class SampleReport1
     footer.addElement (
             ItemFactory.createLabelElement (
                     "Label 6",
-                    new Rectangle2D.Float (0, 0, 450, 12),
+                    new Rectangle2D.Float (0, 0, -100, 12),
                     null,
-                    Element.RIGHT, Element.MIDDLE,
+                    Element.LEFT, Element.MIDDLE,
                     null,
                     "Population:"
             )
@@ -412,7 +412,7 @@ public class SampleReport1
                     "anonymous",
                     new Rectangle2D.Float (260, 0, 76, 12),
                     null,
-                    Element.RIGHT, Element.MIDDLE,
+                    Element.LEFT, Element.MIDDLE,
                     null,
                     "<null>",
                     "#,##0",

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.20 2002/12/02 18:23:59 taqua Exp $
+ * $Id: ImageReference.java,v 1.21 2002/12/06 17:17:54 mungady Exp $
  *
  * Changes:
  * --------
@@ -152,9 +152,9 @@ public class ImageReference implements Serializable, Cloneable
     {
       throw new NullPointerException();
     }
+    this.image = img;
     WaitingImageObserver obs = new WaitingImageObserver(image);
     obs.waitImageLoaded();
-    this.image = img;
     setBounds (new Rectangle2D.Double(0, 0, image.getWidth(null), image.getHeight(null)));
     this.width = image.getWidth(null);
     this.height = image.getHeight(null);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.2 2002/12/04 16:21:33 mungady Exp $
+ * $Id: PhysicalPage.java,v 1.3 2002/12/06 20:34:17 taqua Exp $
  *
  * Changes
  * -------
@@ -111,6 +111,9 @@ public class PhysicalPage
     ot.endPage();
   }
 
+  /**
+   * Clears the logical page.
+   */
   public void flush()
   {
     bandOperations.clear();
@@ -128,11 +131,21 @@ public class PhysicalPage
     return bounds.getBounds2D();
   }
 
+  /**
+   * Get the pageformat for this Physical Page.
+   *
+   * @return a copy of this physical pages PageFormat
+   */
   public PageFormat getPageFormat ()
   {
-    return pageFormat;
+    return (PageFormat) pageFormat.clone();
   }
 
+  /**
+   * Test whether this Page is empty.
+   * @return true, if no operations were performed on this page since the last
+   * flush, false otherwise.
+   */
   public boolean isEmpty ()
   {
     return bandOperations.size() == 0;

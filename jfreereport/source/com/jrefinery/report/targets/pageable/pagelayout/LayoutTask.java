@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: $
+ * $Id: LayoutTask.java,v 1.2 2002/12/04 16:20:57 mungady Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ import com.jrefinery.report.event.ReportEvent;
 import java.util.Hashtable;
 
 /**
- * A layout task.
+ * A layout task. No real implementation ... next release ..
  *
  * @author Thomas Morgner
  */

@@ -28,10 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.9 2002/12/06 18:21:51 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.10 2002/12/06 20:34:19 taqua Exp $
  *
  * Changes
  * -------
+ * 06-Nov-2002 : Initial release
  * 12-Nov-2002 : Added Javadoc comments (DG);
  *
  */
@@ -372,21 +373,44 @@ public class ReportConfiguration
     setConfigProperty(LOGTARGET, logTarget);
   }
 
+  /**
+   * Returns true, if invalid columns in the dataRow are logged as warning.
+   *
+   * @return true, if invalid columns in the dataRow are logged as warning.
+   */
   public boolean isWarnInvalidColumns()
   {
     return getConfigProperty(WARN_INVALID_COLUMNS , WARN_INVALID_COLUMNS_DEFAULT).equalsIgnoreCase("true");
   }
 
+  /**
+   * Set to true, if you want to get informed when invalid column-requests are
+   * made to the DataRow.
+   *
+   * @param warnInvalidColumns the warning flag
+   */
   public void setWarnInvalidColumns(boolean warnInvalidColumns)
   {
     setConfigProperty(WARN_INVALID_COLUMNS, String.valueOf(warnInvalidColumns));
   }
 
+  /**
+   * Returns true, if physical operation comments should be added to the physical page.
+   * This is only usefull for debugging.
+   *
+   * @return true, if comments are enabled.
+   */
   public boolean isPrintOperationComment()
   {
     return getConfigProperty(PRINT_OPERATION_COMMENT , PRINT_OPERATION_COMMENT_DEFAULT).equalsIgnoreCase("true");
   }
 
+  /**
+   * set to true, if physical operation comments should be added to the physical page.
+   * This is only usefull for debugging.
+   *
+   * @param print set to true, if comments should be enabled.
+   */
   public void setPrintOperationComment(boolean print)
   {
     setConfigProperty(PRINT_OPERATION_COMMENT, String.valueOf(print));
