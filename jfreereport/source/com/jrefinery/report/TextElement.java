@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.16 2002/08/08 13:40:14 taqua Exp $
+ * $Id: TextElement.java,v 1.17 2002/08/08 15:28:38 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -102,17 +102,17 @@ public class TextElement extends Element
   /**
    * Constructs an element using a Rectangle2D.
    */
-  public TextElement ()
+  public TextElement()
   {
-    stringfilter = new StringFilter ();
-    setAlignment (ElementConstants.LEFT);
-    setNullString (null);
+    stringfilter = new StringFilter();
+    setAlignment(ElementConstants.LEFT);
+    setNullString(null);
   }
 
   /**
    * @returns true, if the text should be printed in underline style.
    */
-  public boolean isUnderlined ()
+  public boolean isUnderlined()
   {
     return isUnderlined;
   }
@@ -120,7 +120,7 @@ public class TextElement extends Element
   /**
    * Defines whether the text should be printed in underline style.
    */
-  public void setUnderlined (boolean b)
+  public void setUnderlined(boolean b)
   {
     isUnderlined = b;
   }
@@ -128,7 +128,7 @@ public class TextElement extends Element
   /**
    * @returns true, if the text should be printed in strike-though style.
    */
-  public boolean isStrikethrough ()
+  public boolean isStrikethrough()
   {
     return isStrikethr;
   }
@@ -136,7 +136,7 @@ public class TextElement extends Element
   /**
    * Defines whether the text should be printed in strike-though style.
    */
-  public void setStrikethrough (boolean b)
+  public void setStrikethrough(boolean b)
   {
     isStrikethr = b;
   }
@@ -147,7 +147,7 @@ public class TextElement extends Element
    *
    * @param f the new elements font or null if the default font should be used.
    */
-  public void setFont (Font f)
+  public void setFont(Font f)
   {
     this.font = f;
   }
@@ -157,9 +157,9 @@ public class TextElement extends Element
    *
    * @return the font or null if no font has been defined for this element.
    */
-  public Font getFont ()
+  public Font getFont()
   {
-    return getFont (null);
+    return getFont(null);
   }
 
   /**
@@ -174,7 +174,7 @@ public class TextElement extends Element
    * If neither the band and the element have defined a font, a
    * NullPointerException is thrown instead.
    */
-  public Font getFont (Band band)
+  public Font getFont(Band band)
   {
     if (band == null)
       return font;
@@ -183,10 +183,10 @@ public class TextElement extends Element
 
     if (this.font == null)
     {
-      result = band.getDefaultFont ();
+      result = band.getDefaultFont();
     }
     if (result == null)
-      throw new NullPointerException ("Neither element nor band have defined a font, this is not valid");
+      throw new NullPointerException("Neither element nor band have defined a font, this is not valid");
 
     return result;
 
@@ -199,19 +199,19 @@ public class TextElement extends Element
    * @return the null value representation for this element.
    * @see setNullString
    */
-  public String getNullString ()
+  public String getNullString()
   {
-    return stringfilter.getNullValue ();
+    return stringfilter.getNullValue();
   }
 
   /**
    * Defines the null value representation for this element. If null is given, the value
    * is set to a reasonable value (this implementation sets the value to the string "null".
    */
-  public void setNullString (String s)
+  public void setNullString(String s)
   {
     String nstring = (s == null) ? "-" : s;
-    stringfilter.setNullValue (nstring);
+    stringfilter.setNullValue(nstring);
   }
 
   /**
@@ -220,7 +220,7 @@ public class TextElement extends Element
    *
    * @return the alignment for this element
    */
-  public int getAlignment ()
+  public int getAlignment()
   {
     return alignment;
   }
@@ -231,12 +231,12 @@ public class TextElement extends Element
    *
    * @param alignent the alignment for this element.
    */
-  public void setAlignment (int alignment)
+  public void setAlignment(int alignment)
   {
     if (alignment == LEFT || alignment == RIGHT || alignment == CENTER)
       this.alignment = alignment;
     else
-      throw new IllegalArgumentException ("The element alignment must be one of LEFT, RIGHT or CENTER");
+      throw new IllegalArgumentException("The element alignment must be one of LEFT, RIGHT or CENTER");
   }
 
   /**
@@ -245,13 +245,13 @@ public class TextElement extends Element
    * @param target The output target.
    * @param band The band.
    */
-  public void draw (OutputTarget target, Band band) throws OutputTargetException
+  public void draw(OutputTarget target, Band band) throws OutputTargetException
   {
-    target.setPaint (getPaint (band));
+    target.setPaint(getPaint(band));
     // set the font...
-    target.setFont (getFont (band));
+    target.setFont(getFont(band));
     // draw the text...
-    target.drawMultiLineText (this.getFormattedText (), getAlignment (), isDynamic ());
+    target.drawMultiLineText(this.getFormattedText(), getAlignment(), isDynamic());
   }
 
   /**
@@ -261,26 +261,26 @@ public class TextElement extends Element
    * @return A formatted version of the data value.
    * @deprecated this method is replaced by Element.getValue().
    */
-  public String getFormattedText ()
+  public String getFormattedText()
   {
-    return String.valueOf (getValue ());
+    return String.valueOf(getValue());
   }
 
   /**
    * Makes sure that getFormattedText is called and evaluated.
    */
-  public final Object getValue ()
+  public final Object getValue()
   {
-    stringfilter.setDataSource (getDataSource ());
-    return stringfilter.getValue ();
+    stringfilter.setDataSource(getDataSource());
+    return stringfilter.getValue();
   }
 
-  public boolean isDynamic ()
+  public boolean isDynamic()
   {
     return dynamic;
   }
 
-  public void setDynamic (boolean dynamic)
+  public void setDynamic(boolean dynamic)
   {
     this.dynamic = dynamic;
   }
@@ -288,21 +288,21 @@ public class TextElement extends Element
   /**
    * Debugging: returns the String representation of this element.
    */
-  public String toString ()
+  public String toString()
   {
-    StringBuffer b = new StringBuffer ();
-    b.append (this.getClass ().getName ());
-    b.append ("={ name=");
-    b.append (getName ());
-    b.append (", bounds=");
-    b.append (getBounds ());
-    b.append (", font=");
-    b.append (getFont ());
-    b.append (", text=");
-    b.append (getValue ());
-    b.append (", getFormattedText=");
-    b.append (getFormattedText ());
-    b.append ("}");
-    return b.toString ();
+    StringBuffer b = new StringBuffer();
+    b.append(this.getClass().getName());
+    b.append("={ name=");
+    b.append(getName());
+    b.append(", bounds=");
+    b.append(getBounds());
+    b.append(", font=");
+    b.append(getFont());
+    b.append(", text=");
+    b.append(getValue());
+    b.append(", getFormattedText=");
+    b.append(getFormattedText());
+    b.append("}");
+    return b.toString();
   }
 }

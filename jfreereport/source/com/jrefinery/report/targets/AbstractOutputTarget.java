@@ -35,10 +35,9 @@
  * 20-Jul-2002 : created this changelog
  * 23-Aug-2002 : breakLines was broken, fixed and removed useless code ..
  * 23-Aug-2002 : removed the strictmode, the reserved literal is now always added
+ * 26-Aug-2002 : Corrected Fontheight calculations.
  */
 package com.jrefinery.report.targets;
-
-import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
@@ -71,10 +70,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param format the pageformat used by this target.
    * @throws NullPointerException if the format is null
    */
-  public AbstractOutputTarget (PageFormat format)
+  public AbstractOutputTarget(PageFormat format)
   {
-    cursor = createCursor ();
-    setPageFormat (format);
+    cursor = createCursor();
+    setPageFormat(format);
   }
 
   /**
@@ -82,9 +81,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * element within its band. This is basicly the same as AffineTransform.translate, but it
    * also works with the PDFOutputTarget.
    */
-  protected BandCursor createCursor ()
+  protected BandCursor createCursor()
   {
-    return new BandCursor ();
+    return new BandCursor();
   }
 
   /**
@@ -92,7 +91,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @return The page format.
    */
-  public PageFormat getPageFormat ()
+  public PageFormat getPageFormat()
   {
     return pageformat;
   }
@@ -102,9 +101,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @param format The page format.
    */
-  public void setPageFormat (PageFormat format)
+  public void setPageFormat(PageFormat format)
   {
-    if (format == null) throw new NullPointerException ();
+    if (format == null) throw new NullPointerException();
     this.pageformat = format;
   }
 
@@ -113,7 +112,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @return The left edge of the page.
    */
-  public float getPageX ()
+  public float getPageX()
   {
     return 0;
   }
@@ -123,7 +122,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @return The top edge of the page.
    */
-  public float getPageY ()
+  public float getPageY()
   {
     return 0;
   }
@@ -133,9 +132,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @return The page width.
    */
-  public float getPageWidth ()
+  public float getPageWidth()
   {
-    return (float) (getPageFormat ().getWidth ());
+    return (float) (getPageFormat().getWidth());
   }
 
   /**
@@ -143,9 +142,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @return The page height.
    */
-  public float getPageHeight ()
+  public float getPageHeight()
   {
-    return (float) (getPageFormat ().getHeight ());
+    return (float) (getPageFormat().getHeight());
   }
 
   /**
@@ -153,9 +152,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @return The left edge of the printable area of the page.
    */
-  public float getUsableX ()
+  public float getUsableX()
   {
-    return (float) (getPageFormat ().getImageableX ());
+    return (float) (getPageFormat().getImageableX());
   }
 
   /**
@@ -163,9 +162,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @return The top edge of the printable area of the page.
    */
-  public float getUsableY ()
+  public float getUsableY()
   {
-    return (float) (getPageFormat ().getImageableY ());
+    return (float) (getPageFormat().getImageableY());
   }
 
   /**
@@ -173,9 +172,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @return The width of the printable area of the page.
    */
-  public float getUsableWidth ()
+  public float getUsableWidth()
   {
-    return (float) (getPageFormat ().getImageableWidth ());
+    return (float) (getPageFormat().getImageableWidth());
   }
 
   /**
@@ -183,9 +182,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @return The height of the printable area of the page.
    */
-  public float getUsableHeight ()
+  public float getUsableHeight()
   {
-    return (float) (getPageFormat ().getImageableHeight ());
+    return (float) (getPageFormat().getImageableHeight());
   }
 
   /**
@@ -195,25 +194,25 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @return the bounds for the current band.
    */
-  public Rectangle2D getClippingArea ()
+  public Rectangle2D getClippingArea()
   {
-    return getCursor ().getBandBounds ();
+    return getCursor().getBandBounds();
   }
 
   /**
    * Defines the current clipping are for the band to be drawn. This method is called by
    * the band and should not be called by other entities.
    */
-  public void setClippingArea (Rectangle2D bounds)
+  public void setClippingArea(Rectangle2D bounds)
   {
-    getCursor ().setBandBounds (bounds);
+    getCursor().setBandBounds(bounds);
   }
 
   /**
    * Returns the cursor for this outputtarget. The cursor is a readonly property. if you want
    * to define your own cursor, override createCursor() to return an suitable instance.
    */
-  public BandCursor getCursor ()
+  public BandCursor getCursor()
   {
     return cursor;
   }
@@ -222,7 +221,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * Signals that the current page is ended.  Some targets need to know when a page is being started,
    * others can simply ignore this message.
    */
-  public void beginPage () throws OutputTargetException
+  public void beginPage() throws OutputTargetException
   {
   }
 
@@ -230,7 +229,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * Signals that the current page is ended.  Some targets need to know when a page is finished,
    * others can simply ignore this message.
    */
-  public void endPage () throws OutputTargetException
+  public void endPage() throws OutputTargetException
   {
   }
 
@@ -251,22 +250,22 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param maxlines the number of lines to be displayed. If linecount is lesser than 1, an unlimited
    * textelement is assumed and the whole string is processed without obeying to any limit.
    */
-  protected List breakLines (String mytext, final float width, int maxLines)
+  protected List breakLines(String mytext, final float width, int maxLines)
   {
     // Correct the linecount. We display at least a single line
     // if (linecount < 1) linecount = 1;
 
-    ArrayList bareLines = new ArrayList ();
+    ArrayList bareLines = new ArrayList();
     try
     {
-      BufferedReader reader = new BufferedReader (new StringReader (mytext));
-      String readLine = reader.readLine ();
+      BufferedReader reader = new BufferedReader(new StringReader(mytext));
+      String readLine = reader.readLine();
       while (readLine != null)
       {
-        bareLines.add (readLine);
-        readLine = reader.readLine ();
+        bareLines.add(readLine);
+        readLine = reader.readLine();
       }
-      reader.close ();
+      reader.close();
     }
     catch (IOException ioe)
     {
@@ -278,31 +277,31 @@ public abstract class AbstractOutputTarget implements OutputTarget
      * If there is only one line, don't cut the line yet. Perhaps we intruduce the strict
      * mode later, but without any visual editing it would be cruel to any report designer.
      */
-    float reserved = getStringBounds (RESERVED_LITERAL, 0, RESERVED_LITERAL.length ());
+    float reserved = getStringBounds(RESERVED_LITERAL, 0, RESERVED_LITERAL.length());
 
-    BreakIterator breakit = BreakIterator.getLineInstance ();
-    ArrayList returnLines = new ArrayList ();
+    BreakIterator breakit = BreakIterator.getLineInstance();
+    ArrayList returnLines = new ArrayList();
 
-    int linesToDo = bareLines.size ();
+    int linesToDo = bareLines.size();
 
     for (int i = 0; i < linesToDo; i++)
     {
-      String currentLine = (String) bareLines.get (i);
-      breakit.setText (currentLine);
+      String currentLine = (String) bareLines.get(i);
+      breakit.setText(currentLine);
 
       int lineStartPos = 0;
-      int lineLength = currentLine.length ();
+      int lineLength = currentLine.length();
       while (lineStartPos < lineLength)
       {
         int startPos = lineStartPos;
-        int endPos = breakit.next ();
+        int endPos = breakit.next();
         float x = 0;
 
         float w = width;
 
         while (endPos != BreakIterator.DONE)
         {
-          x += (float) getStringBounds (currentLine, startPos, endPos);
+          x += (float) getStringBounds(currentLine, startPos, endPos);
           if ((maxLines != 0) && (i == (maxLines - 1)))
           {
             if (x >= (w - reserved))
@@ -319,12 +318,12 @@ public abstract class AbstractOutputTarget implements OutputTarget
           }
 
           startPos = endPos;
-          endPos = breakit.next ();
+          endPos = breakit.next();
         }
 
         if (endPos == BreakIterator.DONE)
         {
-          returnLines.add (currentLine.substring (lineStartPos));
+          returnLines.add(currentLine.substring(lineStartPos));
           return returnLines;
         }
         else
@@ -332,12 +331,12 @@ public abstract class AbstractOutputTarget implements OutputTarget
           // if this is the last allowed row, add the RESERVED_LITERAL to the string ..
           if ((maxLines != 0) && (i == (maxLines - 1)))
           {
-            returnLines.add (currentLine.substring (lineStartPos, startPos) + RESERVED_LITERAL);
+            returnLines.add(currentLine.substring(lineStartPos, startPos) + RESERVED_LITERAL);
             return returnLines;
           }
           else
           {
-            returnLines.add (currentLine.substring (lineStartPos, startPos));
+            returnLines.add(currentLine.substring(lineStartPos, startPos));
             lineStartPos = startPos;
           }
         }
@@ -354,13 +353,13 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param endPos the position of the last characterto be included in the weightening process.
    * @returns the width of the given string in 1/72" dpi.
    */
-  protected abstract float getStringBounds (String text, int lineStartPos, int endPos);
+  protected abstract float getStringBounds(String text, int lineStartPos, int endPos);
 
   /**
    * Returns the height of the current font. The font height specifies the distance between
    * 2 base lines.
    */
-  protected abstract float getFontHeight ();
+  protected abstract float getFontHeight();
 
   /**
    * Draws a string inside a rectangular area (the lower edge is aligned with the baseline of
@@ -369,9 +368,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param text The text.
    * @param alignment The horizontal alignment.
    */
-  public void drawMultiLineText (String mytext, int align)
+  public void drawMultiLineText(String mytext, int align)
   {
-    drawMultiLineText (mytext, align, false);
+    drawMultiLineText(mytext, align, false);
   }
 
   /**
@@ -379,73 +378,73 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param mytext The text to be displayed.
    * @param align The alignment of a text line
    */
-  public void drawMultiLineText (String mytext, int align, boolean dynamic)
+  public void drawMultiLineText(String mytext, int align, boolean dynamic)
   {
     // don othing if there is nothing to print
     if (mytext == null) return;
 
-    Rectangle2D bounds = getCursor ().getDrawBounds ();
-    float fontheight = getFontHeight ();
+    Rectangle2D bounds = getCursor().getDrawBounds();
+    float fontheight = getFontHeight();
 
     List lines = null;
     if (dynamic == true)
     {
       // Dont define a limit for the number of lines, the size of the band is adjusted.
-      lines = breakLines (mytext, (float) bounds.getWidth (), 0);
+      lines = breakLines(mytext, (float) bounds.getWidth(), 0);
     }
     else
     {
-      int maxLinesToDisplay = (int) (bounds.getHeight () / fontheight);
-      lines = breakLines (mytext, (float) bounds.getWidth (), maxLinesToDisplay);
+      int maxLinesToDisplay = (int) (bounds.getHeight() / fontheight);
+      lines = breakLines(mytext, (float) bounds.getWidth(), maxLinesToDisplay);
     }
 
-    float newheight = lines.size () * (fontheight + 1);
-    float oldheight = (float) bounds.getHeight ();
+    float newheight = lines.size() * (fontheight);
+    float oldheight = (float) bounds.getHeight();
     if (newheight > oldheight)
     {
-      bounds.setRect (bounds.getX (), bounds.getY (), bounds.getWidth (), newheight);
-      getCursor ().setElementBounds (bounds);
+      bounds.setRect(bounds.getX(), bounds.getY(), bounds.getWidth(), newheight);
+      getCursor().setElementBounds(bounds);
     }
 
-    Rectangle2D lineBounds = new Rectangle2D.Float ();
+    Rectangle2D lineBounds = new Rectangle2D.Float();
 
     /**
      * If this is the only line to print, always draw. This is a simplification to ease the report
      * definition building process.
      */
-    if (lines.size () == 1)
+    if (lines.size() == 1)
     {
-      lineBounds.setRect ((float) bounds.getX (), bounds.getY (), bounds.getWidth (), fontheight);
-      getCursor ().setDrawBounds (lineBounds);
-      drawString ((String) lines.get (0), align);
+      lineBounds.setRect((float) bounds.getX(), bounds.getY(), bounds.getWidth(), fontheight);
+      getCursor().setDrawBounds(lineBounds);
+      drawString((String) lines.get(0), align);
     }
     else
     {
       /**
        * There is more than one line. Calculate the positions and print line for line.
        */
-      for (int linecount = 0; linecount < lines.size (); linecount++)
+      for (int linecount = 0; linecount < lines.size(); linecount++)
       {
-        String line = (String) lines.get (linecount);
-        float linePos = (float) (linecount * fontheight + bounds.getY ());
+        String line = (String) lines.get(linecount);
+        float linePos = (float) (linecount * fontheight + bounds.getY());
 
-        lineBounds.setRect ((float) bounds.getX (), linePos, bounds.getWidth (), fontheight);
-        getCursor ().setDrawBounds (lineBounds);
-        drawString (line, align);
+        lineBounds.setRect((float) bounds.getX(), linePos, bounds.getWidth(), fontheight);
+        getCursor().setDrawBounds(lineBounds);
+        drawString(line, align);
       }
     }
   }
 
-  protected String clearWhitespaces (String text)
+  protected String clearWhitespaces(String text)
   {
-    char[] textdata = text.toCharArray ();
+    char[] textdata = text.toCharArray();
     for (int i = 0; i < textdata.length; i++)
     {
-      if (Character.isWhitespace (textdata[i]))
+      if (Character.isWhitespace(textdata[i]))
       {
         textdata[i] = ' ';
       }
     }
-    return new String (textdata);
+    return new String(textdata);
   }
 }

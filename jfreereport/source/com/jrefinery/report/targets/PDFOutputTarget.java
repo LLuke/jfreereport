@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.18 2002/08/22 21:08:24 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.19 2002/08/23 19:18:09 taqua Exp $
  *
  * Changes
  * -------
@@ -133,26 +133,26 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   private static class PDFBandCursor extends BandCursor
   {
-    public Rectangle2D getDrawBounds ()
+    public Rectangle2D getDrawBounds()
     {
-      Rectangle2D bbounds = getBandBounds ();
-      Rectangle2D bounds = getElementBounds ();
-      double x = bounds.getX () + bbounds.getX ();
-      double y = bounds.getY () + bbounds.getY ();
-      double w = bounds.getWidth ();
-      double h = bounds.getHeight ();
-      return new Rectangle2D.Double (x, y, w, h);
+      Rectangle2D bbounds = getBandBounds();
+      Rectangle2D bounds = getElementBounds();
+      double x = bounds.getX() + bbounds.getX();
+      double y = bounds.getY() + bbounds.getY();
+      double w = bounds.getWidth();
+      double h = bounds.getHeight();
+      return new Rectangle2D.Double(x, y, w, h);
     }
 
-    public void setDrawBounds (Rectangle2D rect)
+    public void setDrawBounds(Rectangle2D rect)
     {
-      Rectangle2D bbounds = getBandBounds ();
-      super.setElementBounds (
-              new Rectangle2D.Double (
-                      rect.getX () - bbounds.getX (),
-                      rect.getY () - bbounds.getY (),
-                      rect.getWidth (),
-                      rect.getHeight ()));
+      Rectangle2D bbounds = getBandBounds();
+      super.setElementBounds(
+          new Rectangle2D.Double(
+              rect.getX() - bbounds.getX(),
+              rect.getY() - bbounds.getY(),
+              rect.getWidth(),
+              rect.getHeight()));
     }
   }
 
@@ -165,23 +165,23 @@ public class PDFOutputTarget extends AbstractOutputTarget
     private Stroke mystroke;
     private Paint mypaint;
 
-    public PDFState (PDFOutputTarget source)
+    public PDFState(PDFOutputTarget source)
     {
-      save (source);
+      save(source);
     }
 
-    public void save (PDFOutputTarget source)
+    public void save(PDFOutputTarget source)
     {
-      this.myfont = source.getFont ();
-      this.mystroke = source.getStroke ();
-      this.mypaint = source.getPaint ();
+      this.myfont = source.getFont();
+      this.mystroke = source.getStroke();
+      this.mypaint = source.getPaint();
     }
 
-    public void restore (PDFOutputTarget target) throws OutputTargetException
+    public void restore(PDFOutputTarget target) throws OutputTargetException
     {
-      target.setFont (myfont);
-      target.setStroke (mystroke);
-      target.setPaint (mypaint);
+      target.setFont(myfont);
+      target.setStroke(mystroke);
+      target.setPaint(mypaint);
     }
   }
 
@@ -193,9 +193,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   {
     private Hashtable fontsByName;
 
-    private PDFFontFactory ()
+    private PDFFontFactory()
     {
-      fontsByName = new Hashtable ();
+      fontsByName = new Hashtable();
     }
 
     /**
@@ -203,41 +203,41 @@ public class PDFOutputTarget extends AbstractOutputTarget
      * systems, X11 is searched in /usr/X11R6 and the default truetype fontpath is added.
      * For windows the system font path is added (%windir%/fonts)
      */
-    public void registerDefaultFontPath ()
+    public void registerDefaultFontPath()
     {
-      String osname = System.getProperty ("os.name");
-      String jrepath = System.getProperty ("java.home");
+      String osname = System.getProperty("os.name");
+      String jrepath = System.getProperty("java.home");
       String fontPath = null;
-      String fs = System.getProperty ("file.separator");
+      String fs = System.getProperty("file.separator");
 
-      Log.debug ("Running on operating system: " + osname);
-      if (!startsWithIgnoreCase (osname, "windows"))
+      Log.debug("Running on operating system: " + osname);
+      if (!startsWithIgnoreCase(osname, "windows"))
       {
-        Log.debug ("Assuming unix like file structures");
+        Log.debug("Assuming unix like file structures");
         // Assume X11 is installed in the default location.
-        registerFontPath (new File (jrepath, "lib/fonts").toString ());
+        registerFontPath(new File(jrepath, "lib/fonts").toString());
         fontPath = "/usr/X11R6/lib/X11/fonts/truetype";
       }
       else
       {
-        Log.debug ("Found windows in os name, assuming DOS/Win32 structures");
+        Log.debug("Found windows in os name, assuming DOS/Win32 structures");
         // Assume windows
         // If you are not using windows, ignore this. This just checks if a windows system
         // directory exist and includes a font dir.
 
-        String windirs = System.getProperty ("java.library.path");
+        String windirs = System.getProperty("java.library.path");
         if (windirs != null)
         {
-          StringTokenizer strtok = new StringTokenizer (windirs, System.getProperty ("path.separator"));
-          while (strtok.hasMoreTokens ())
+          StringTokenizer strtok = new StringTokenizer(windirs, System.getProperty("path.separator"));
+          while (strtok.hasMoreTokens())
           {
-            String token = strtok.nextToken ();
+            String token = strtok.nextToken();
 
-            if (token.endsWith ("System32"))
+            if (token.endsWith("System32"))
             {
               // found windows folder ;-)
-              int lastBackslash = token.lastIndexOf (fs);
-              fontPath = token.substring (0, lastBackslash) + fs + "Fonts";
+              int lastBackslash = token.lastIndexOf(fs);
+              fontPath = token.substring(0, lastBackslash) + fs + "Fonts";
 
               break;
             }
@@ -245,52 +245,52 @@ public class PDFOutputTarget extends AbstractOutputTarget
         }
       }
 
-      Log.debug ("Fonts located in \"" + fontPath + "\"");
+      Log.debug("Fonts located in \"" + fontPath + "\"");
       if (fontPath != null)
       {
-        registerFontPath (fontPath);
+        registerFontPath(fontPath);
       }
-      registerFontPath (new File (jrepath, "lib" + fs + "fonts").toString ());
+      registerFontPath(new File(jrepath, "lib" + fs + "fonts").toString());
     }
 
     /**
      * Register all fonts (*.ttf files) in the given path.
      */
-    public void registerFontPath (String path)
+    public void registerFontPath(String path)
     {
-      File file = new File (path);
-      if (file.exists () && file.isDirectory () && file.canRead ())
+      File file = new File(path);
+      if (file.exists() && file.isDirectory() && file.canRead())
       {
-        File[] files = file.listFiles ();
+        File[] files = file.listFiles();
         for (int i = 0; i < files.length; i++)
         {
-          registerFontFile (files[i].toString ());
+          registerFontFile(files[i].toString());
         }
       }
       file = null;
-      System.gc ();
+      System.gc();
     }
 
     /**
      * Register the font (must end this *.ttf) to the FontFactory.
      */
-    public void registerFontFile (String filename)
+    public void registerFontFile(String filename)
     {
-      if (!filename.toLowerCase ().endsWith ("ttf"))
+      if (!filename.toLowerCase().endsWith("ttf"))
       {
         return;
       }
-      File file = new File (filename);
-      if (file.exists () && file.isFile () && file.canRead ())
+      File file = new File(filename);
+      if (file.exists() && file.isFile() && file.canRead())
       {
         try
         {
-          addFont (filename);
-          Log.debug ("Registered truetype font " + filename);
+          addFont(filename);
+          Log.debug("Registered truetype font " + filename);
         }
         catch (Exception e)
         {
-          Log.warn ("Font " + filename + " is invalid." + e.getMessage ());
+          Log.warn("Font " + filename + " is invalid." + e.getMessage());
         }
       }
     }
@@ -298,32 +298,32 @@ public class PDFOutputTarget extends AbstractOutputTarget
     /**
      * Adds the fontname by creating the basefont object
      */
-    private void addFont (String font)
-            throws DocumentException, IOException
+    private void addFont(String font)
+        throws DocumentException, IOException
     {
-      BaseFont bfont = BaseFont.createFont (font, BaseFont.WINANSI, true);
-      String[][] fi = bfont.getFullFontName ();
+      BaseFont bfont = BaseFont.createFont(font, BaseFont.WINANSI, true);
+      String[][] fi = bfont.getFullFontName();
       for (int i = 0; i < fi.length; i++)
       {
         String[] ffi = fi[i];
-        fontsByName.put (ffi[3], font);
+        fontsByName.put(ffi[3], font);
       }
     }
 
     /**
      * Returns all registered fonts as enumeration.
      */
-    public Enumeration getRegisteredFonts ()
+    public Enumeration getRegisteredFonts()
     {
-      return fontsByName.keys ();
+      return fontsByName.keys();
     }
 
     /**
      * Returns the font by looking up the name in the Factory.
      */
-    public String getFontfileForName (String font)
+    public String getFontfileForName(String font)
     {
-      return (String) fontsByName.get (font);
+      return (String) fontsByName.get(font);
     }
   }
 
@@ -332,11 +332,11 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * returns/creates the singleton font factory.
    */
-  public static PDFFontFactory getFontFactory ()
+  public static PDFFontFactory getFontFactory()
   {
     if (fontFactory == null)
     {
-      fontFactory = new PDFFontFactory ();
+      fontFactory = new PDFFontFactory();
     }
     return fontFactory;
   }
@@ -358,9 +358,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Creates a PDFBandCursor to support coordinate space transformation.
    */
-  public BandCursor createCursor ()
+  public BandCursor createCursor()
   {
-    return new PDFBandCursor ();
+    return new PDFBandCursor();
   }
 
   /**
@@ -370,23 +370,23 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param pageFormat The page format.
    * @param embedFonts Embed fonts?
    */
-  public PDFOutputTarget (OutputStream out, PageFormat pageFormat, boolean embedFonts)
+  public PDFOutputTarget(OutputStream out, PageFormat pageFormat, boolean embedFonts)
   {
 
-    super (pageFormat);
+    super(pageFormat);
     this.out = out;
     this.embedFonts = embedFonts;
-    this.baseFonts = new TreeMap ();
-    setFontEncoding (System.getProperty ("com.jrefinery.report.targets.PDFOutputTarget.ENCODING", BaseFont.WINANSI));
+    this.baseFonts = new TreeMap();
+    setFontEncoding(System.getProperty("com.jrefinery.report.targets.PDFOutputTarget.ENCODING", BaseFont.WINANSI));
   }
 
 
   /**
    * Returns the coordinate of the left edge of the page.
    */
-  public float getPageX ()
+  public float getPageX()
   {
-    return this.document.getPageSize ().left ();
+    return this.document.getPageSize().left();
   }
 
   /**
@@ -396,69 +396,69 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * works with y values increasing as you move up the page - this method translates the
    * iText value to match JFreeReport.
    */
-  public float getPageY ()
+  public float getPageY()
   {
-    return this.document.getPageSize ().bottom ();
+    return this.document.getPageSize().bottom();
   }
 
   /**
    * Returns the total width of the page.
    */
-  public float getPageWidth ()
+  public float getPageWidth()
   {
-    return this.document.getPageSize ().width ();
+    return this.document.getPageSize().width();
   }
 
   /**
    * Returns the total height of the page.
    */
-  public float getPageHeight ()
+  public float getPageHeight()
   {
-    return this.document.getPageSize ().height ();
+    return this.document.getPageSize().height();
   }
 
   /**
    * Returns the coordinate of the left hand edge of the usable area on the page (after taking
    * into account the left margin).
    */
-  public float getUsableX ()
+  public float getUsableX()
   {
-    return this.document.getPageSize ().left () + this.document.leftMargin ();
+    return this.document.getPageSize().left() + this.document.leftMargin();
   }
 
   /**
    * Returns the coordinate of the top edge of the usable area on the page (after taking
    * into account the top margin and translating to JFreeReport's orientation).
    */
-  public float getUsableY ()
+  public float getUsableY()
   {
-    return this.document.getPageSize ().bottom () + this.document.topMargin ();
+    return this.document.getPageSize().bottom() + this.document.topMargin();
   }
 
   /**
    * Returns the width of the usable area on the page (after taking into account margins).
    */
-  public float getUsableWidth ()
+  public float getUsableWidth()
   {
-    return this.document.getPageSize ().width ()
-            - this.document.leftMargin ()
-            - this.document.rightMargin ();
+    return this.document.getPageSize().width()
+        - this.document.leftMargin()
+        - this.document.rightMargin();
   }
 
   /**
    * Returns the height of the usable area on the page (after taking into account margins).
    */
-  public float getUsableHeight ()
+  public float getUsableHeight()
   {
-    return this.document.getPageSize ().height ()
-            - this.document.topMargin ()
-            - this.document.bottomMargin ();
+    return this.document.getPageSize().height()
+        - this.document.topMargin()
+        - this.document.bottomMargin();
   }
 
   /**
    * Returns the currently active AWT-Font.
    */
-  public Font getFont ()
+  public Font getFont()
   {
     return awtFont;
   }
@@ -466,7 +466,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Returns the current fonts fontsize.
    */
-  public int getFontSize ()
+  public int getFontSize()
   {
     return fontSize;
   }
@@ -476,9 +476,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @see String#startsWith
    */
-  private static boolean startsWithIgnoreCase (String base, String start)
+  private static boolean startsWithIgnoreCase(String base, String start)
   {
-    return base.regionMatches (true, 0, start, 0, start.length ());
+    return base.regionMatches(true, 0, start, 0, start.length());
   }
 
   /**
@@ -486,52 +486,52 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @see String#endsWith
    */
-  private boolean endsWithIgnoreCase (String base, String end)
+  private boolean endsWithIgnoreCase(String base, String end)
   {
-    if (base.length () < end.length ())
+    if (base.length() < end.length())
       return false;
-    return base.regionMatches (true, base.length () - end.length (), end, 0, end.length ());
+    return base.regionMatches(true, base.length() - end.length(), end, 0, end.length());
   }
 
   /**
    * Sets the current font. The font is mapped to pdf specific fonts if possible.
    * If no basefont could be created, an OutputTargetException is thrown.
    */
-  public void setFont (Font font) throws OutputTargetException
+  public void setFont(Font font) throws OutputTargetException
   {
-    if (font == null) throw new NullPointerException ();
+    if (font == null) throw new NullPointerException();
 
     // do nothing if this font is already set
-    if (awtFont != null && awtFont.equals (font)) return;
+    if (awtFont != null && awtFont.equals(font)) return;
 
     this.awtFont = font;
-    this.fontSize = font.getSize ();
+    this.fontSize = font.getSize();
 
     // use the Java logical font name to map to a predefined iText font.
 
     String fontKey = null;
-    String logicalName = font.getName ();
+    String logicalName = font.getName();
     String encoding = getFontEncoding();
 
-    if (startsWithIgnoreCase (logicalName, "dialoginput") ||
-            startsWithIgnoreCase (logicalName, "monospaced"))
+    if (startsWithIgnoreCase(logicalName, "dialoginput") ||
+        startsWithIgnoreCase(logicalName, "monospaced"))
     {
       boolean bold = false;
       boolean italic = false;
 
-      if (endsWithIgnoreCase (logicalName, "bolditalic") ||
-              (font.isBold () && font.isItalic ()))
+      if (endsWithIgnoreCase(logicalName, "bolditalic") ||
+          (font.isBold() && font.isItalic()))
       {
         bold = true;
         italic = true;
       }
-      else if (endsWithIgnoreCase (logicalName, "bold") ||
-              (font.isBold ()))
+      else if (endsWithIgnoreCase(logicalName, "bold") ||
+          (font.isBold()))
       {
         bold = true;
       }
-      else if (endsWithIgnoreCase (logicalName, "italic") ||
-              (font.isItalic ()))
+      else if (endsWithIgnoreCase(logicalName, "italic") ||
+          (font.isItalic()))
       {
         italic = true;
       }
@@ -553,7 +553,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
         fontKey = BaseFont.COURIER;
       }
       // hope this one is correct ...
-      if (encoding.equals (BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
+      if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
       {
         encoding = "iso-8859-1";
       }
@@ -563,24 +563,24 @@ public class PDFOutputTarget extends AbstractOutputTarget
       }
 
     }
-    else if (startsWithIgnoreCase (logicalName, "Serif"))
+    else if (startsWithIgnoreCase(logicalName, "Serif"))
     {
       boolean bold = false;
       boolean italic = false;
 
-      if (endsWithIgnoreCase (logicalName, "bolditalic") ||
-              (font.isBold () && font.isItalic ()))
+      if (endsWithIgnoreCase(logicalName, "bolditalic") ||
+          (font.isBold() && font.isItalic()))
       {
         bold = true;
         italic = true;
       }
-      else if (endsWithIgnoreCase (logicalName, "bold") ||
-              (font.isBold ()))
+      else if (endsWithIgnoreCase(logicalName, "bold") ||
+          (font.isBold()))
       {
         bold = true;
       }
-      else if (endsWithIgnoreCase (logicalName, "italic") ||
-              (font.isItalic ()))
+      else if (endsWithIgnoreCase(logicalName, "italic") ||
+          (font.isItalic()))
       {
         italic = true;
       }
@@ -603,7 +603,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       }
 
       // hope this one is correct ...
-      if (encoding.equals (BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
+      if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
       {
         encoding = "iso-8859-1";
       }
@@ -613,25 +613,25 @@ public class PDFOutputTarget extends AbstractOutputTarget
       }
 
     }
-    else if (startsWithIgnoreCase (logicalName, "SansSerif") ||
-            startsWithIgnoreCase (logicalName, "Dialog"))
+    else if (startsWithIgnoreCase(logicalName, "SansSerif") ||
+        startsWithIgnoreCase(logicalName, "Dialog"))
     { // default, this catches Dialog and SansSerif
       boolean bold = false;
       boolean italic = false;
 
-      if (endsWithIgnoreCase (logicalName, "bolditalic") ||
-              (font.isBold () && font.isItalic ()))
+      if (endsWithIgnoreCase(logicalName, "bolditalic") ||
+          (font.isBold() && font.isItalic()))
       {
         bold = true;
         italic = true;
       }
-      else if (endsWithIgnoreCase (logicalName, "bold") ||
-              (font.isBold ()))
+      else if (endsWithIgnoreCase(logicalName, "bold") ||
+          (font.isBold()))
       {
         bold = true;
       }
-      else if (endsWithIgnoreCase (logicalName, "italic") ||
-              (font.isItalic ()))
+      else if (endsWithIgnoreCase(logicalName, "italic") ||
+          (font.isItalic()))
       {
         italic = true;
       }
@@ -653,7 +653,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
         fontKey = BaseFont.HELVETICA;
       }
       // hope this one is correct ...
-      if (encoding.equals (BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
+      if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
       {
         encoding = "iso-8859-1";
       }
@@ -667,13 +667,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
       fontKey = logicalName;
     }
 
-    BaseFont f = (BaseFont) this.baseFonts.get (fontKey);
+    BaseFont f = (BaseFont) this.baseFonts.get(fontKey);
     if (f != null)
     {
       // the encoding does not match, reset ...
-      if (f.getEncoding().equals (encoding) == false)
+      if (f.getEncoding().equals(encoding) == false)
       {
-        f == null;
+        f = null;
       }
     }
 
@@ -681,18 +681,18 @@ public class PDFOutputTarget extends AbstractOutputTarget
     {
       try
       {
-        String filename = getFontFactory ().getFontfileForName (fontKey);
+        String filename = getFontFactory().getFontfileForName(fontKey);
         if (filename != null)
         {
-          if (font.isBold () && font.isItalic ())
+          if (font.isBold() && font.isItalic())
           {
             fontKey = filename + ",BoldItalic";
           }
-          else if (font.isBold ())
+          else if (font.isBold())
           {
             fontKey = filename + ",Bold";
           }
-          else if (font.isItalic ())
+          else if (font.isItalic())
           {
             fontKey = filename + ",Italic";
           }
@@ -701,33 +701,33 @@ public class PDFOutputTarget extends AbstractOutputTarget
             fontKey = filename;
           }
         }
-        f = BaseFont.createFont (fontKey, encoding, this.embedFonts);
+        f = BaseFont.createFont(fontKey, encoding, this.embedFonts);
       }
       catch (Exception e)
       {
-        Log.warn ("BaseFont.createFont failed. Key = " + fontKey, e);
+        Log.warn("BaseFont.createFont failed. Key = " + fontKey, e);
       }
       if (f == null)
       {
         // fallback .. use BaseFont.HELVETICA as default
         try
         {
-          f = BaseFont.createFont (BaseFont.HELVETICA, encoding, this.embedFonts);
+          f = BaseFont.createFont(BaseFont.HELVETICA, encoding, this.embedFonts);
         }
         catch (Exception e)
         {
-          Log.warn ("BaseFont.createFont for FALLBACK failed.", e);
+          Log.warn("BaseFont.createFont for FALLBACK failed.", e);
         }
       }
     }
 
     if (f == null)
     {
-      throw new OutputTargetException ("Null font = " + fontKey);
+      throw new OutputTargetException("Null font = " + fontKey);
     }
     else
     {
-      this.baseFonts.put (fontKey, f);
+      this.baseFonts.put(fontKey, f);
     }
 
     this.baseFont = f;
@@ -738,115 +738,115 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * Draws an Image from this imageReference. The image is directly embedded into the
    * pdf file to provide the best scaling support.
    */
-  public void drawImage (ImageReference imageRef) throws OutputTargetException
+  public void drawImage(ImageReference imageRef) throws OutputTargetException
   {
     try
     {
-      Rectangle2D bounds = getCursor ().getDrawBounds ();
+      Rectangle2D bounds = getCursor().getDrawBounds();
 
-      Image image = getImage (imageRef);
-      image.setAbsolutePosition ((float) bounds.getX (),
-              (float) (getPageHeight () - bounds.getY () - bounds.getHeight ()));
-      image.scaleAbsolute ((float) bounds.getWidth (), (float) bounds.getHeight ());
+      Image image = getImage(imageRef);
+      image.setAbsolutePosition((float) bounds.getX(),
+          (float) (getPageHeight() - bounds.getY() - bounds.getHeight()));
+      image.scaleAbsolute((float) bounds.getWidth(), (float) bounds.getHeight());
 
-      if (document.add (image) == false)
-        throw new OutputTargetException ("Unable to add the element");
+      if (document.add(image) == false)
+        throw new OutputTargetException("Unable to add the element");
     }
     catch (BadElementException be)
     {
-      throw new OutputTargetException ("BadElementException", be);
+      throw new OutputTargetException("BadElementException", be);
     }
     catch (DocumentException de)
     {
-      throw new OutputTargetException ("DocumentException", de);
+      throw new OutputTargetException("DocumentException", de);
     }
     catch (MalformedURLException mf)
     {
-      throw new OutputTargetException ("Invalid URL in ImageReference", mf);
+      throw new OutputTargetException("Invalid URL in ImageReference", mf);
     }
     catch (IOException mf)
     {
-      throw new OutputTargetException ("URL Content could not be read", mf);
+      throw new OutputTargetException("URL Content could not be read", mf);
     }
   }
 
-  private Image getImage (ImageReference imageRef) throws DocumentException, IOException
+  private Image getImage(ImageReference imageRef) throws DocumentException, IOException
   {
     try
     {
-      if (imageRef.getSourceURL () != null)
-        return Image.getInstance (imageRef.getSourceURL ());
+      if (imageRef.getSourceURL() != null)
+        return Image.getInstance(imageRef.getSourceURL());
     }
     catch (BadElementException be)
     {
-      Log.debug ("Caught illegal Image, will recode to PNG instead", be);
+      Log.debug("Caught illegal Image, will recode to PNG instead", be);
     }
     catch (IOException ioe)
     {
-      Log.debug ("Unable to read the raw-data, will try to recode image-data.", ioe);
+      Log.debug("Unable to read the raw-data, will try to recode image-data.", ioe);
     }
 
-    if (imageRef.getImage () != null)
+    if (imageRef.getImage() != null)
     {
-      PngEncoder encoder = new PngEncoder (imageRef.getImage ());
-      byte[] data = encoder.pngEncode ();
-      return Image.getInstance (data);
+      PngEncoder encoder = new PngEncoder(imageRef.getImage());
+      byte[] data = encoder.pngEncode();
+      return Image.getInstance(data);
     }
 
-    throw new DocumentException ("Neither an URL nor an Image was given to paint the graphics");
+    throw new DocumentException("Neither an URL nor an Image was given to paint the graphics");
   }
 
   /**
    * Draws a shape at the specified location. The shape is drawn using a PathIterator. All
    * Shapes are supported. Set a stroke and a paint before drawing. The shape is not filled.
    */
-  public void drawShape (Shape shape)
+  public void drawShape(Shape shape)
   {
-    Rectangle2D bounds = getCursor ().getDrawBounds ();
-    float ycorr = (float) (getPageHeight () - bounds.getY ());
-    float xcorr = (float) bounds.getX ();
+    Rectangle2D bounds = getCursor().getDrawBounds();
+    float ycorr = (float) (getPageHeight() - bounds.getY());
+    float xcorr = (float) bounds.getX();
 
-    PathIterator pit = shape.getPathIterator (null);
-    PdfContentByte cb = this.writer.getDirectContent ();
+    PathIterator pit = shape.getPathIterator(null);
+    PdfContentByte cb = this.writer.getDirectContent();
 
     float[] params = new float[6];
     // How to apply this? This should be needed in fillShape
-    while (pit.isDone () == false)
+    while (pit.isDone() == false)
     {
-      int cmd = pit.currentSegment (params);
+      int cmd = pit.currentSegment(params);
       switch (cmd)
       {
         case PathIterator.SEG_MOVETO:
           {
-            cb.moveTo (params[0] + xcorr, ycorr - params[1]);
+            cb.moveTo(params[0] + xcorr, ycorr - params[1]);
             break;
           }
         case PathIterator.SEG_LINETO:
           {
-            cb.lineTo (params[0] + xcorr, ycorr - params[1]);
+            cb.lineTo(params[0] + xcorr, ycorr - params[1]);
             break;
           }
         case PathIterator.SEG_CUBICTO:
           {
-            cb.curveTo (params[0] + xcorr, ycorr - params[1],
-                    params[2] + xcorr, ycorr - params[3],
-                    params[4] + xcorr, ycorr - params[5]);
+            cb.curveTo(params[0] + xcorr, ycorr - params[1],
+                params[2] + xcorr, ycorr - params[3],
+                params[4] + xcorr, ycorr - params[5]);
             break;
           }
         case PathIterator.SEG_QUADTO:
           {
-            cb.curveTo (params[0] + xcorr, ycorr - params[1],
-                    params[2] + xcorr, ycorr - params[3]);
+            cb.curveTo(params[0] + xcorr, ycorr - params[1],
+                params[2] + xcorr, ycorr - params[3]);
             break;
           }
         case PathIterator.SEG_CLOSE:
           {
-            cb.closePath ();
+            cb.closePath();
           }
       }
-      pit.next ();
+      pit.next();
     }
-    cb.stroke ();
+    cb.stroke();
   }
 
   /**
@@ -854,75 +854,75 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * Shapes are supported. Set a stroke and a paint before drawing. The shape is filled using
    * the current paint and no outline is drawn.
    */
-  public void fillShape (Shape shape)
+  public void fillShape(Shape shape)
   {
-    Rectangle2D bounds = getCursor ().getDrawBounds ();
-    float ycorr = (float) (getPageHeight () - bounds.getY ());
-    float xcorr = (float) bounds.getX ();
+    Rectangle2D bounds = getCursor().getDrawBounds();
+    float ycorr = (float) (getPageHeight() - bounds.getY());
+    float xcorr = (float) bounds.getX();
 
-    PathIterator pit = shape.getPathIterator (null);
-    PdfContentByte cb = this.writer.getDirectContent ();
-    int windingRule = pit.getWindingRule ();
+    PathIterator pit = shape.getPathIterator(null);
+    PdfContentByte cb = this.writer.getDirectContent();
+    int windingRule = pit.getWindingRule();
 
     float[] params = new float[6];
     // How to apply this? This should be needed in fillShape
-    while (pit.isDone () == false)
+    while (pit.isDone() == false)
     {
-      int cmd = pit.currentSegment (params);
+      int cmd = pit.currentSegment(params);
       switch (cmd)
       {
         case PathIterator.SEG_MOVETO:
           {
-            cb.moveTo (params[0] + xcorr, ycorr - params[1]);
+            cb.moveTo(params[0] + xcorr, ycorr - params[1]);
             break;
           }
         case PathIterator.SEG_LINETO:
           {
-            cb.lineTo (params[0] + xcorr, ycorr - params[1]);
+            cb.lineTo(params[0] + xcorr, ycorr - params[1]);
             break;
           }
         case PathIterator.SEG_CUBICTO:
           {
-            cb.curveTo (params[0] + xcorr, ycorr - params[1],
-                    params[2] + xcorr, ycorr - params[3],
-                    params[4] + xcorr, ycorr - params[5]);
+            cb.curveTo(params[0] + xcorr, ycorr - params[1],
+                params[2] + xcorr, ycorr - params[3],
+                params[4] + xcorr, ycorr - params[5]);
             break;
           }
         case PathIterator.SEG_QUADTO:
           {
-            cb.curveTo (params[0] + xcorr, ycorr - params[1],
-                    params[2] + xcorr, ycorr - params[3]);
+            cb.curveTo(params[0] + xcorr, ycorr - params[1],
+                params[2] + xcorr, ycorr - params[3]);
             break;
           }
         case PathIterator.SEG_CLOSE:
           {
-            cb.closePath ();
+            cb.closePath();
           }
       }
-      pit.next ();
+      pit.next();
     }
     if (windingRule == PathIterator.WIND_EVEN_ODD)
     {
-      cb.eoFill ();
+      cb.eoFill();
     }
     else
     {
-      cb.fill ();
+      cb.fill();
     }
   }
 
   /**
    * This method is called when the page is ended.
    */
-  public void endPage () throws OutputTargetException
+  public void endPage() throws OutputTargetException
   {
     try
     {
-      this.document.newPage ();
+      this.document.newPage();
     }
     catch (Exception e)
     {
-      throw new OutputTargetException ("Failed to end page", e);
+      throw new OutputTargetException("Failed to end page", e);
     }
   }
 
@@ -932,55 +932,55 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param title The report title.
    * @param author The report author.
    */
-  public void open (String title, String author) throws OutputTargetException
+  public void open(String title, String author) throws OutputTargetException
   {
-    PageFormat pageFormat = getPageFormat ();
-    float urx = (float) pageFormat.getWidth ();
-    float ury = (float) pageFormat.getHeight ();
+    PageFormat pageFormat = getPageFormat();
+    float urx = (float) pageFormat.getWidth();
+    float ury = (float) pageFormat.getHeight();
 
-    float marginLeft = (float) pageFormat.getImageableX ();
+    float marginLeft = (float) pageFormat.getImageableX();
     float marginRight =
-            (float) (pageFormat.getWidth ()
-            - pageFormat.getImageableWidth ()
-            - pageFormat.getImageableX ());
-    float marginTop = (float) pageFormat.getImageableY ();
+        (float) (pageFormat.getWidth()
+        - pageFormat.getImageableWidth()
+        - pageFormat.getImageableX());
+    float marginTop = (float) pageFormat.getImageableY();
     float marginBottom =
-            (float) (pageFormat.getHeight ()
-            - pageFormat.getImageableHeight ()
-            - pageFormat.getImageableY ());
-    Rectangle pageSize = new Rectangle (urx, ury);
+        (float) (pageFormat.getHeight()
+        - pageFormat.getImageableHeight()
+        - pageFormat.getImageableY());
+    Rectangle pageSize = new Rectangle(urx, ury);
 
     try
     {
-      if (pageFormat.getOrientation () != PageFormat.PORTRAIT)
+      if (pageFormat.getOrientation() != PageFormat.PORTRAIT)
       {
-        pageSize.rotate ();
+        pageSize.rotate();
       }
 
-      this.document = new Document (pageSize, marginLeft, marginRight, marginTop, marginBottom);
-      document.addTitle (title);
-      document.addAuthor (author);
-      document.addCreator (
-              JFreeReport.getInfo ().getName () + " version " + JFreeReport.getInfo ().getVersion ());
-      document.addCreationDate ();
+      this.document = new Document(pageSize, marginLeft, marginRight, marginTop, marginBottom);
+      document.addTitle(title);
+      document.addAuthor(author);
+      document.addCreator(
+          JFreeReport.getInfo().getName() + " version " + JFreeReport.getInfo().getVersion());
+      document.addCreationDate();
 
-      writer = PdfWriter.getInstance (document, out);
-      this.document.open ();
+      writer = PdfWriter.getInstance(document, out);
+      this.document.open();
 
       try
       {
-        setPaint (Band.DEFAULT_PAINT);
-        setStroke (ShapeElement.DEFAULT_STROKE);
-        setFont (Band.DEFAULT_FONT);
+        setPaint(Band.DEFAULT_PAINT);
+        setStroke(ShapeElement.DEFAULT_STROKE);
+        setFont(Band.DEFAULT_FONT);
       }
       catch (OutputTargetException oe)
       {
-        Log.error ("Should not happen", oe);
+        Log.error("Should not happen", oe);
       }
     }
     catch (Exception e)
     {
-      throw new OutputTargetException ("Opening Document failed.", e);
+      throw new OutputTargetException("Opening Document failed.", e);
     }
 
   }
@@ -988,9 +988,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Closes the document.
    */
-  public void close ()
+  public void close()
   {
-    this.document.close ();
+    this.document.close();
   }
 
   /**
@@ -1000,45 +1000,45 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param mytext The text to be printed.
    * @param align The vertical alignment for the text.
    */
-  public void drawString (
-          String text,
-          int alignment)
+  public void drawString(
+      String text,
+      int alignment)
   {
-    Rectangle2D bounds = getCursor ().getDrawBounds ();
+    Rectangle2D bounds = getCursor().getDrawBounds();
 
-    PdfContentByte cb = this.writer.getDirectContent ();
-    cb.beginText ();
-    cb.setFontAndSize (this.baseFont, this.fontSize);
+    PdfContentByte cb = this.writer.getDirectContent();
+    cb.beginText();
+    cb.setFontAndSize(this.baseFont, this.fontSize);
 
-    float y2 = (float) (bounds.getY () + bounds.getHeight ());
+    float y2 = (float) (bounds.getY() + bounds.getHeight());
     if (alignment == Element.LEFT)
     {
-      cb.showTextAligned (
-              PdfContentByte.ALIGN_LEFT,
-              text,
-              (float) bounds.getX (),
-              this.getPageHeight () - y2,
-              0);
+      cb.showTextAligned(
+          PdfContentByte.ALIGN_LEFT,
+          text,
+          (float) bounds.getX(),
+          this.getPageHeight() - y2,
+          0);
     }
     else if (alignment == Element.CENTER)
     {
-      cb.showTextAligned (
-              PdfContentByte.ALIGN_CENTER,
-              text,
-              (float) (bounds.getX () + (bounds.getWidth () / 2)),
-              this.getPageHeight () - y2,
-              0);
+      cb.showTextAligned(
+          PdfContentByte.ALIGN_CENTER,
+          text,
+          (float) (bounds.getX() + (bounds.getWidth() / 2)),
+          this.getPageHeight() - y2,
+          0);
     }
     else if (alignment == Element.RIGHT)
     {
-      cb.showTextAligned (
-              PdfContentByte.ALIGN_RIGHT,
-              text,
-              (float) (bounds.getX () + bounds.getWidth ()),
-              this.getPageHeight () - y2,
-              0);
+      cb.showTextAligned(
+          PdfContentByte.ALIGN_RIGHT,
+          text,
+          (float) (bounds.getX() + bounds.getWidth()),
+          this.getPageHeight() - y2,
+          0);
     }
-    cb.endText ();
+    cb.endText();
   }
 
   /**
@@ -1049,18 +1049,18 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param endPos the position of the last characterto be included in the weightening process.
    * @returns the width of the given string in 1/72" dpi.
    */
-  protected float getStringBounds (String text, int lineStartPos, int endPos)
+  protected float getStringBounds(String text, int lineStartPos, int endPos)
   {
-    return (float) baseFont.getWidthPoint (text.substring (lineStartPos, endPos), getFontSize ());
+    return (float) baseFont.getWidthPoint(text.substring(lineStartPos, endPos), getFontSize());
   }
 
   /**
    * Returns the height of the current font. The font height specifies the distance between
    * 2 base lines.
    */
-  protected float getFontHeight ()
+  protected float getFontHeight()
   {
-    return getFontSize ();
+    return getFontSize();
   }
 
   /**
@@ -1069,24 +1069,24 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException
    */
-  public void setStroke (Stroke stroke) throws OutputTargetException
+  public void setStroke(Stroke stroke) throws OutputTargetException
   {
-    if (stroke == null) throw new NullPointerException ();
-    if (stroke instanceof BasicStroke == false) throw new OutputTargetException ("Unable to handle this stroke type");
+    if (stroke == null) throw new NullPointerException();
+    if (stroke instanceof BasicStroke == false) throw new OutputTargetException("Unable to handle this stroke type");
 
     // If this stroke is already set, do nothing
-    if (awtStroke != null && awtStroke.equals (stroke)) return;
+    if (awtStroke != null && awtStroke.equals(stroke)) return;
 
     this.awtStroke = stroke;
     BasicStroke bstroke = (BasicStroke) stroke;
-    PdfContentByte cb = this.writer.getDirectContent ();
-    cb.setLineWidth (bstroke.getLineWidth ());
+    PdfContentByte cb = this.writer.getDirectContent();
+    cb.setLineWidth(bstroke.getLineWidth());
   }
 
   /**
    * Returns the currently set stroke.
    */
-  public Stroke getStroke ()
+  public Stroke getStroke()
   {
     return awtStroke;
   }
@@ -1097,30 +1097,30 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if the paint is invalid.
    */
-  public void setPaint (Paint paint) throws OutputTargetException
+  public void setPaint(Paint paint) throws OutputTargetException
   {
-    if (paint == null) throw new NullPointerException ();
+    if (paint == null) throw new NullPointerException();
 
     if (paint instanceof Color == false)
     {
-      throw new OutputTargetException ("Unsupported paint type, currently only color is supported");
+      throw new OutputTargetException("Unsupported paint type, currently only color is supported");
     }
 
     // If this paint is already set, do nothing
-    if (awtPaint != null && awtPaint.equals (paint)) return;
+    if (awtPaint != null && awtPaint.equals(paint)) return;
 
     this.awtPaint = paint;
-    PdfContentByte cb = this.writer.getDirectContent ();
+    PdfContentByte cb = this.writer.getDirectContent();
     PdfPatternPainter painter = null;
 
-    cb.setColorStroke ((Color) paint);
-    cb.setColorFill ((Color) paint);
+    cb.setColorStroke((Color) paint);
+    cb.setColorFill((Color) paint);
   }
 
   /**
    * Returns the currently set paint.
    */
-  public Paint getPaint ()
+  public Paint getPaint()
   {
     return awtPaint;
   }
@@ -1129,9 +1129,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * Defines the current clipping are for the band to be drawn. This method is called by
    * the band and should not be called by other entities.
    */
-  public void setClippingArea (Rectangle2D bounds)
+  public void setClippingArea(Rectangle2D bounds)
   {
-    super.setClippingArea (bounds);
+    super.setClippingArea(bounds);
   }
 
   /**
@@ -1139,11 +1139,11 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if the given state object is not valid.
    */
-  public void restoreState (Object o) throws OutputTargetException
+  public void restoreState(Object o) throws OutputTargetException
   {
-    if (o instanceof PDFState == false) throw new OutputTargetException ("Need a pdf state");
+    if (o instanceof PDFState == false) throw new OutputTargetException("Need a pdf state");
     PDFState state = (PDFState) o;
-    state.restore (this);
+    state.restore(this);
   }
 
   /**
@@ -1152,15 +1152,15 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @returns the state container.
    */
-  public Object saveState () throws OutputTargetException
+  public Object saveState() throws OutputTargetException
   {
-    return new PDFState (this);
+    return new PDFState(this);
   }
 
   /**
    * returns the font encoding used in this output target.
    */
-  public String getFontEncoding ()
+  public String getFontEncoding()
   {
     return encoding;
   }
@@ -1177,9 +1177,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * <li>"MacRoman"
    * </ul>
    */
-  public void setFontEncoding (String encoding)
+  public void setFontEncoding(String encoding)
   {
-    if (encoding == null) throw new NullPointerException ();
+    if (encoding == null) throw new NullPointerException();
     this.encoding = encoding;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.11 2002/08/22 21:08:24 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.12 2002/08/23 19:18:09 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,7 @@
  * 16-May-2002 : Interface of drawShape changhed so we can draw different line width (JS)
  * 08-Jun-2002 : Documentation
  * 17-Jul-2002 : Fixed a nullpointer when an ImageReference did not contain a graphics
+ * 26-Aug-2002 : Fixed drawString: Text was placed too deep, Fontheight is defined MaxAscent, not font.getFontheight()!
  */
 
 package com.jrefinery.report.targets;
@@ -50,9 +51,9 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
@@ -75,12 +76,12 @@ public class G2OutputTarget extends AbstractOutputTarget
   /**
    * Creates an empty graphics by using a 1x1 pixel buffered image.
    */
-  public static Graphics2D createEmptyGraphics ()
+  public static Graphics2D createEmptyGraphics()
   {
     if (dummyGraphics == null)
     {
-      BufferedImage image = new BufferedImage (BufferedImage.TYPE_INT_ARGB, 1, 1);
-      dummyGraphics = image.createGraphics ();
+      BufferedImage image = new BufferedImage(BufferedImage.TYPE_INT_ARGB, 1, 1);
+      dummyGraphics = image.createGraphics();
     }
     return dummyGraphics;
   }
@@ -97,27 +98,27 @@ public class G2OutputTarget extends AbstractOutputTarget
     private AffineTransform mytransform;
     private Color mybackground;
 
-    public G2State (Graphics2D s)
+    public G2State(Graphics2D s)
     {
-      save (s);
+      save(s);
     }
 
-    public void save (Graphics2D source)
+    public void save(Graphics2D source)
     {
-      mypaint = source.getPaint ();
-      myfont = source.getFont ();
-      mystroke = source.getStroke ();
-      mytransform = source.getTransform ();
-      mybackground = source.getBackground ();
+      mypaint = source.getPaint();
+      myfont = source.getFont();
+      mystroke = source.getStroke();
+      mytransform = source.getTransform();
+      mybackground = source.getBackground();
     }
 
-    public void restore (Graphics2D dest)
+    public void restore(Graphics2D dest)
     {
-      dest.setStroke (mystroke);
-      dest.setFont (myfont);
-      dest.setPaint (mypaint);
-      dest.setTransform (mytransform);
-      dest.setBackground (mybackground);
+      dest.setStroke(mystroke);
+      dest.setFont(myfont);
+      dest.setPaint(mypaint);
+      dest.setTransform(mytransform);
+      dest.setBackground(mybackground);
     }
   }
 
@@ -127,10 +128,10 @@ public class G2OutputTarget extends AbstractOutputTarget
    * @param g2 The graphics device.
    * @param pageFormat The page format.
    */
-  public G2OutputTarget (Graphics2D g2, PageFormat pageFormat)
+  public G2OutputTarget(Graphics2D g2, PageFormat pageFormat)
   {
-    super (pageFormat);
-    setGraphics2D (g2);
+    super(pageFormat);
+    setGraphics2D(g2);
   }
 
   /**
@@ -138,10 +139,10 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param g2 The graphics device.
    */
-  public void setGraphics2D (Graphics2D g2)
+  public void setGraphics2D(Graphics2D g2)
   {
     if (g2 == null)
-      throw new NullPointerException ("Graphics must not be null");
+      throw new NullPointerException("Graphics must not be null");
 
     this.g2 = g2;
     g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
@@ -150,7 +151,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   /**
    * Returns the currently assigned Graphics2D object.
    */
-  public Graphics2D getGraphics2D ()
+  public Graphics2D getGraphics2D()
   {
     return g2;
   }
@@ -161,7 +162,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    * @param title The report title.
    * @param author The report author.
    */
-  public void open (String title, String author)
+  public void open(String title, String author)
   {
     // do nothing.
   }
@@ -169,7 +170,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   /**
    * Closes the target.
    */
-  public void close ()
+  public void close()
   {
     // do nothing.
   }
@@ -179,17 +180,17 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param font The font.
    */
-  public void setFont (Font font)
+  public void setFont(Font font)
   {
-    g2.setFont (font);
+    g2.setFont(font);
   }
 
   /**
    * Returns the currently set font of this Graphics2D object.
    */
-  public Font getFont ()
+  public Font getFont()
   {
-    return g2.getFont ();
+    return g2.getFont();
   }
 
   /**
@@ -197,17 +198,17 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param paint The paint.
    */
-  public void setPaint (Paint paint)
+  public void setPaint(Paint paint)
   {
-    g2.setPaint (paint);
+    g2.setPaint(paint);
   }
 
   /**
    * Returns the currently defined paint
    */
-  public Paint getPaint ()
+  public Paint getPaint()
   {
-    return g2.getPaint ();
+    return g2.getPaint();
   }
 
   /**
@@ -217,9 +218,9 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param shape The shape.
    */
-  public void drawShape (Shape shape)
+  public void drawShape(Shape shape)
   {
-    g2.draw (shape);
+    g2.draw(shape);
   }
 
   /**
@@ -229,35 +230,35 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param shape The shape.
    */
-  public void fillShape (Shape shape)
+  public void fillShape(Shape shape)
   {
-    g2.fill (shape);
+    g2.fill(shape);
   }
 
   /**
    * This method is called when the page is ended. This returns the initial transformation state
    * of the graphics object.
    */
-  public void endPage () throws OutputTargetException
+  public void endPage() throws OutputTargetException
   {
-    restoreState (savedState);
+    restoreState(savedState);
   }
 
   /**
    * Signals that the current page is ended.  Some targets need to know when a page is being started,
    * others can simply ignore this message.
    */
-  public void beginPage () throws OutputTargetException
+  public void beginPage() throws OutputTargetException
   {
-    savedState = saveState ();
+    savedState = saveState();
   }
 
   /**
    * returns the Stroke for the Graphics2D context.
    */
-  public Stroke getStroke ()
+  public Stroke getStroke()
   {
-    return g2.getStroke ();
+    return g2.getStroke();
   }
 
   /**
@@ -265,9 +266,9 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException this exception is not thrown here.
    */
-  public void setStroke (Stroke stroke) throws OutputTargetException
+  public void setStroke(Stroke stroke) throws OutputTargetException
   {
-    g2.setStroke (stroke);
+    g2.setStroke(stroke);
   }
 
   /**
@@ -275,16 +276,16 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param the imagereference used to contain the image.
    */
-  public void drawImage (ImageReference image)
+  public void drawImage(ImageReference image)
   {
-    Rectangle2D bounds = getCursor ().getDrawBounds ();
-    if (image.getImage () != null)
-      g2.drawImage (image.getImage (),
-              (int) (bounds.getX ()),
-              (int) (bounds.getY ()),
-              (int) bounds.getWidth (),
-              (int) bounds.getHeight (),
-              null);
+    Rectangle2D bounds = getCursor().getDrawBounds();
+    if (image.getImage() != null)
+      g2.drawImage(image.getImage(),
+          (int) (bounds.getX()),
+          (int) (bounds.getY()),
+          (int) bounds.getWidth(),
+          (int) bounds.getHeight(),
+          null);
   }
 
   /**
@@ -294,16 +295,16 @@ public class G2OutputTarget extends AbstractOutputTarget
    * @param text The text.
    * @param alignment The horizontal alignment.
    */
-  public void drawString (String text, int alignment)
+  public void drawString(String text, int alignment)
   {
-    Rectangle2D bounds = getCursor ().getDrawBounds ();
+    Rectangle2D bounds = getCursor().getDrawBounds();
 
-    float x = (float) bounds.getX ();
+    float x = (float) bounds.getX();
 
-    FontRenderContext frc = g2.getFontRenderContext ();
-    Rectangle2D textBounds = g2.getFont ().getStringBounds (text, frc);
+    FontRenderContext frc = g2.getFontRenderContext();
+    Rectangle2D textBounds = g2.getFont().getStringBounds(text, frc);
     float textLength = (float) textBounds.getWidth();
-    float elementLength = (float)(bounds.getX () + bounds.getWidth ());
+    float elementLength = (float) (bounds.getX() + bounds.getWidth());
 
     GlyphVector gv = g2.getFont().createGlyphVector(frc, text);
 /*
@@ -312,12 +313,8 @@ public class G2OutputTarget extends AbstractOutputTarget
     Log.debug ("GV:TextLength : " + gv.getLogicalBounds().getWidth());
     Log.debug ("GV:ElementLength : " + gv.getVisualBounds().getWidth());
 */
-    FontMetrics fm = g2.getFontMetrics ();
-    float baseline = (float) (bounds.getY () + bounds.getHeight () - fm.getDescent ());
-/*
-    Log.debug ("TextLength : " + textLength);
-    Log.debug ("ElementLength : " + elementLength);
-*/
+    FontMetrics fm = g2.getFontMetrics();
+    float baseline = (float) (bounds.getY() + fm.getMaxAscent());
     if (alignment == Element.LEFT)
     {
       // no adjustment required
@@ -330,24 +327,24 @@ public class G2OutputTarget extends AbstractOutputTarget
     {
       x = (float) (elementLength - textLength);
     }
-    int display = getFont ().canDisplayUpTo (text);
-    if (display > 0 && display < text.length ())
+    int display = getFont().canDisplayUpTo(text);
+    if (display > 0 && display < text.length())
     {
-      Log.warn ("Unable to display the string completely. Can display up to " + display + " chars.");
+      Log.warn("Unable to display the string completely. Can display up to " + display + " chars.");
     }
 //    Log.debug ("X = " + x);
 //    g2.draw(new Rectangle2D.Float(x, (float) bounds.getY(), textLength, (float) (bounds.getHeight())));
-    g2.drawString (text, x, baseline);
+    g2.drawString(text, x, baseline);
   }
 
   /**
    * Returns the height of the current font. The font height specifies the distance between
    * 2 base lines.
    */
-  protected float getFontHeight ()
+  protected float getFontHeight()
   {
-    FontMetrics fm = g2.getFontMetrics ();
-    return fm.getHeight ();
+    FontMetrics fm = g2.getFontMetrics();
+    return fm.getAscent();
   }
 
   /**
@@ -358,14 +355,14 @@ public class G2OutputTarget extends AbstractOutputTarget
    * @param endPos the position of the last characterto be included in the weightening process.
    * @returns the width of the given string in 1/72" dpi.
    */
-  public float getStringBounds (String currentLine, int lineStartPos, int endPos)
+  public float getStringBounds(String currentLine, int lineStartPos, int endPos)
   {
-    Graphics2D g2 = getGraphics2D ();
-    Font font = g2.getFont ();
-    FontRenderContext frc = g2.getFontRenderContext ();
+    Graphics2D g2 = getGraphics2D();
+    Font font = g2.getFont();
+    FontRenderContext frc = g2.getFontRenderContext();
 
-    Rectangle2D textBounds2 = font.getStringBounds (currentLine, lineStartPos, endPos, frc);
-    float x2 = (float) textBounds2.getWidth ();
+    Rectangle2D textBounds2 = font.getStringBounds(currentLine, lineStartPos, endPos, frc);
+    float x2 = (float) textBounds2.getWidth();
     return x2;
   }
 
@@ -374,28 +371,28 @@ public class G2OutputTarget extends AbstractOutputTarget
    * Defines the current clipping are for the band to be drawn. This method is called by
    * the band and should not be called by other entities.
    */
-  public void setClippingArea (Rectangle2D bounds)
+  public void setClippingArea(Rectangle2D bounds)
   {
-    super.setClippingArea (bounds);
+    super.setClippingArea(bounds);
     try
     {
-      restoreState (savedState);
+      restoreState(savedState);
     }
     catch (OutputTargetException ote)
     {
-      Log.warn ("Unable to restore state on setClippingArea()", ote);
+      Log.warn("Unable to restore state on setClippingArea()", ote);
     }
-    g2.transform (AffineTransform.getTranslateInstance (bounds.getX (), bounds.getY ()));
+    g2.transform(AffineTransform.getTranslateInstance(bounds.getX(), bounds.getY()));
   }
 
   /**
    * Restores the state of this graphics.
    */
-  public void restoreState (Object o) throws OutputTargetException
+  public void restoreState(Object o) throws OutputTargetException
   {
-    if (o instanceof G2State == false) throw new OutputTargetException ("Need a g2state");
+    if (o instanceof G2State == false) throw new OutputTargetException("Need a g2state");
     G2State state = (G2State) o;
-    state.restore (this.getGraphics2D ());
+    state.restore(this.getGraphics2D());
   }
 
   /**
@@ -404,9 +401,9 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @returns the state container.
    */
-  public Object saveState () throws OutputTargetException
+  public Object saveState() throws OutputTargetException
   {
-    return new G2State (this.getGraphics2D ());
+    return new G2State(this.getGraphics2D());
   }
 
 }

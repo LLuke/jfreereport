@@ -40,7 +40,7 @@
             </groupheader>
             <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
                 <label name="Label 6" x="0" y="0" width="450" height="12" alignment="left" baseline="10">Population:</label>
-                <number-function x="260" y="0" width="76" height="12" alignment="right" baseline="10" format="#,##0" function="sum"/>
+                <number-function x="220" y="0" width="116" height="12" alignment="right" baseline="10" format="#,##0" function="sum"/>
             </groupfooter>
             <fields>
                  <field>Continent</field>
@@ -50,8 +50,8 @@
 
     <items height="10" fontname="Serif" fontstyle="plain" fontsize="8">
         <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
-        <line name="top" x1="0" y1="0" x2="0" y2="0" color="#DFDFDF" weight="0.1"/>
-        <line name="bottom" x1="0" y1="10" x2="0" y2="10" color="#DFDFDF" weight="0.1"/>
+        <line name="top" x1="0" y1="0" x2="0" y2="0" color="#FF0FFF" weight="0.1"/>
+        <line name="bottom" x1="0" y1="10" x2="0" y2="10" color="#0FDFDF" weight="0.1"/>
         <string-field name="Country Element" x="0" y="0" width="176" height="8" alignment="left" fieldname="Country" />
         <string-field name="Code Element" x="180" y="0" width="76" height="8" alignment="left" fieldname="ISO Code"/>
         <number-field name="Population Element" x="260" y="0" width="76" height="8" alignment="right" format="#,##0" fieldname="Population"/>

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.17 2002/08/20 20:58:19 taqua Exp $
+ * $Id: Band.java,v 1.18 2002/08/22 19:19:27 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -267,7 +267,8 @@ public abstract class Band implements Serializable, Cloneable
       Element e = (Element) iterator.next();
       if (e.isVisible())
       {
-        target.getCursor().setElementBounds(translateBounds(target, e.getBounds()));
+        Rectangle2D rect = translateBounds(target, e.getBounds());
+        target.getCursor().setElementBounds(rect);
         try
         {
           Object state = target.saveState();

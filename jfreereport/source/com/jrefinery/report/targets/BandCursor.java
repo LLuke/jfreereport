@@ -46,49 +46,49 @@ public class BandCursor
   /**
    * Creates a new Cursor.
    */
-  public BandCursor ()
+  public BandCursor()
   {
-    elementBounds = new Rectangle2D.Float ();
-    bandBounds = new Rectangle2D.Float ();
+    elementBounds = new Rectangle2D.Float();
+    bandBounds = new Rectangle2D.Float();
   }
 
   /**
    * Defines the bounds for the currently drawn band.
    */
-  public void setBandBounds (Rectangle2D bounds)
+  public void setBandBounds(Rectangle2D bounds)
   {
     if (bounds == null)
-      throw new NullPointerException ();
-    this.bandBounds.setRect (bounds);
+      throw new NullPointerException();
+    this.bandBounds.setRect(bounds);
   }
 
   /**
    * returns the bounds for the currently drawn band.
    */
-  public Rectangle2D getBandBounds ()
+  public Rectangle2D getBandBounds()
   {
-    Rectangle2D bounds = new Rectangle2D.Float ();
-    bounds.setRect (bandBounds);
+    Rectangle2D bounds = new Rectangle2D.Float();
+    bounds.setRect(bandBounds);
     return bounds;
   }
 
   /**
    * defines the bounds for the currently drawn element within the defined band.
    */
-  public void setElementBounds (Rectangle2D bounds)
+  public void setElementBounds(Rectangle2D bounds)
   {
     if (bounds == null)
-      throw new NullPointerException ();
-    this.elementBounds.setRect (bounds);
+      throw new NullPointerException();
+    this.elementBounds.setRect(bounds);
   }
 
   /**
    * returns the bounds for the currently drawn element within the defined band.
    */
-  public Rectangle2D getElementBounds ()
+  public Rectangle2D getElementBounds()
   {
-    Rectangle2D bounds = new Rectangle2D.Float ();
-    bounds.setRect (elementBounds);
+    Rectangle2D bounds = new Rectangle2D.Float();
+    bounds.setRect(elementBounds);
     return bounds;
   }
 
@@ -96,17 +96,17 @@ public class BandCursor
    * returns the translated element bounds. Some targets may have a different coordinate
    * system and may require the translation of the coordinates into the native format.
    */
-  public Rectangle2D getDrawBounds ()
+  public Rectangle2D getDrawBounds()
   {
-    return getElementBounds ();
+    return getElementBounds();
   }
 
   /**
    * Translated values. Use this if you call an TargetInteral function
    */
-  public void setDrawBounds (Rectangle2D bounds)
+  public void setDrawBounds(Rectangle2D bounds)
   {
-    setElementBounds (bounds);
+    setElementBounds(bounds);
   }
 
 }
