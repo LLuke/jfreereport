@@ -68,12 +68,20 @@ public class ExceptionDialog extends JDialog
   {
     public DetailsAction ()
     {
-      putValue (NAME, UIManager.getDefaults ().getString ("Details"));
+      putValue (NAME, ">>");
     }
 
     public void actionPerformed (ActionEvent event)
     {
       scroller.setVisible (!(scroller.isVisible ()));
+      if (scroller.isVisible())
+      {
+        putValue (NAME, "<<");
+      }
+      else
+      {
+        putValue (NAME, ">>");
+      }
       adjustSize ();
     }
   }
@@ -101,7 +109,6 @@ public class ExceptionDialog extends JDialog
 
     JPanel detailPane = new JPanel ();
     detailPane.setLayout (new GridBagLayout ());
-    detailPane.setBorder (BorderFactory.createEtchedBorder ());
     GridBagConstraints gbc = new GridBagConstraints ();
     gbc.anchor = GridBagConstraints.CENTER;
     gbc.fill = GridBagConstraints.NONE;
@@ -183,8 +190,14 @@ public class ExceptionDialog extends JDialog
     okAction = new OKAction ();
     detailsAction = new DetailsAction ();
 
-    buttonPane.add (new JButton (okAction));
-    buttonPane.add (new JButton (detailsAction));
+    JButton ok = new JButton (okAction);
+    JButton details = new JButton (detailsAction);
+
+    FloatingButtonEnabler.getInstance().addButton(ok);
+    FloatingButtonEnabler.getInstance().addButton(details);
+
+    buttonPane.add (ok);
+    buttonPane.add (details);
     return buttonPane;
   }
 

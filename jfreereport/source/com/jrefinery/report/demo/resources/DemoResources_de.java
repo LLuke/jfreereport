@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources_de.java,v 1.4 2002/05/28 19:28:23 taqua Exp $
+ * $Id: DemoResources_de.java,v 1.5 2002/06/05 21:32:49 taqua Exp $
  *
  * Changes
  * -------
@@ -79,6 +79,17 @@ public class DemoResources_de extends JFreeReportResources
     {"menu.file.name", "Demo"},
     {"menu.file.mnemonic", new Character ('D')},
     {"menu.help.name", "Hilfe"},
-    {"menu.help.mnemonic", new Character ('H')}
+    {"menu.help.mnemonic", new Character ('H')},
+
+    {"exitdialog.title", "Programmende"},
+    {"exitdialog.message", "Möchten Sie das Programm beenden?"},
+
+    {"report.definitionnotfound", "ReportDefinition {0} wurde nicht im ClassPath gefunden."},
+    {"report.definitionfailure.message", "Reportdefinition {0} konnte nicht geladen werden."},
+    {"report.definitionfailure.title", "Das Laden der Berichtdefinition schlug fehl."},
+    {"report.definitionnull", "Es wurde keine Reportdefinition erzeugt"},
+    {"error", "Fehler" },
+    {"example", "Beispiel {0}"}
+
   };
 }

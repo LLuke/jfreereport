@@ -267,7 +267,10 @@ public class HugeJFreeReportDemo extends JFrame
     URL in = getClass ().getResource (urlname);
     if (in == null)
     {
-      JOptionPane.showMessageDialog (this, "ReportDefinition " + urlname + " not found");
+
+      JOptionPane.showMessageDialog (this,
+              MessageFormat.format(getResources().getString("report.definitionnotfound"), new Object[]{ urlname }),
+              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
       return;
     }
     ReportGenerator gen = ReportGenerator.getInstance ();
@@ -276,15 +279,20 @@ public class HugeJFreeReportDemo extends JFrame
     try
     {
       report1 = gen.parseReport (in, in);
+
     }
     catch (Exception ioe)
     {
-      ExceptionDialog.showExceptionDialog (urlname, "Failed to load ReportDefinition", ioe);
+      showExceptionDialog("report.definitionfailure", ioe);
       return;
     }
 
     if (report1 == null)
-      throw new NullPointerException ("Damn, is null");
+    {
+      JOptionPane.showMessageDialog (this,
+              MessageFormat.format(getResources().getString("report.definitionnull"), new Object[]{ urlname }),
+              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+    }
 
     report1.setData (data);
 
@@ -293,6 +301,22 @@ public class HugeJFreeReportDemo extends JFrame
     JRefineryUtilities.positionFrameRandomly (frame1);
     frame1.setVisible (true);
     frame1.requestFocus ();
+  }
+
+  /**
+   * Shows the exception dialog by using localized messages. The message base is
+   * used to construct the localisation key by appending ".title" and ".message" to the
+   * base name.
+   */
+  private void showExceptionDialog (String localisationBase, Exception e)
+  {
+    ExceptionDialog.showExceptionDialog (
+            getResources().getString(localisationBase + ".title"),
+            MessageFormat.format(
+                    getResources().getString(localisationBase + ".message"),
+                    new Object[]{ e.getLocalizedMessage()}
+            ),
+            e);
   }
 
   /**
@@ -311,8 +335,8 @@ public class HugeJFreeReportDemo extends JFrame
     boolean close =
             JOptionPane.showConfirmDialog (
                     this,
-                    "Are you sure you want to exit?",
-                    "Confirmation...",
+                    getResources ().getString ("exitdialog.message"),
+                    getResources ().getString ("exitdialog.title"),
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE)
             == JOptionPane.YES_OPTION;
@@ -332,7 +356,7 @@ public class HugeJFreeReportDemo extends JFrame
   {
     if (aboutFrame == null)
     {
-      aboutFrame = new AboutFrame ("About...", JFreeReport.INFO);
+      aboutFrame = new AboutFrame (getResources().getString("action.about.name"), JFreeReport.INFO);
 
       aboutFrame.pack ();
       JRefineryUtilities.centerFrameOnScreen (aboutFrame);

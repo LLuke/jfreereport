@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources.java,v 1.6 2002/05/28 19:28:23 taqua Exp $
+ * $Id: DemoResources.java,v 1.7 2002/06/05 21:32:49 taqua Exp $
  *
  * Changes
  * -------
@@ -90,6 +90,16 @@ public class DemoResources extends JFreeReportResources
     {"menu.file.name", "File"},
     {"menu.file.mnemonic", new Character ('F')},
     {"menu.help.name", "Help"},
-    {"menu.help.mnemonic", new Character ('H')}
+    {"menu.help.mnemonic", new Character ('H')},
+    {"exitdialog.title", "Confirmation .."},
+    {"exitdialog.message", "Are you sure that you want to exit the programm?"},
+
+
+    {"report.definitionnotfound", "ReportDefinition {0} not found in the classpath"},
+    {"report.definitionfailure.message", "Reportdefinition {0} could not be loaded."},
+    {"report.definitionfailure.title", "Loader error"},
+    {"report.definitionnull", "Reportdefinition was not generated"},
+    {"error", "Error" },
+    {"example", "Example {0}"}
   };
 }

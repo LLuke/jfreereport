@@ -6,6 +6,7 @@
 	2002-05-01: Taq: Added multiline-field and multiline-function element
   2002-05-23: Changed the font style for extended attributes. The old attribute is also valid
               and gets silently mapped to the new style by the parser.
+  2002-06-09: Added the rectangle shape element
  -->
 
 <!ENTITY % boolean
@@ -42,6 +43,17 @@
   width       CDATA          #REQUIRED"
 >
 
+<!--
+
+  Colors are specified in HTML Syntax, so use #FFFFFF for white and #000000
+  for black when using RGB numeric values. You may also use defined named
+  constants for the color, as "black", "white" and so on.
+
+  The constants understood by the parser are:
+  "black", "blue", "cyan", darkGray", "gray", "green", "lightGray", "magenta",
+  "orange", "pink", "red", "white", "yellow"
+
+  -->
 <!ENTITY % basicform
 " height         CDATA          #REQUIRED
   color          CDATA          #IMPLIED
@@ -465,4 +477,15 @@
 	color     CDATA       #IMPLIED
 	name      CDATA       #IMPLIED
 	weight    CDATA       #IMPLIED
+>
+
+<!--
+
+  The rectangle is a filled rectangular area. No outline is drawn.
+
+  -->
+<!ELEMENT rectangle EMPTY>
+<!ATTLIST rectangle
+  %position;
+  %basicform;
 >

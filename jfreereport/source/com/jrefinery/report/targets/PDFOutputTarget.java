@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.8 2002/06/04 15:56:25 jaosch Exp $
+ * $Id: PDFOutputTarget.java,v 1.9 2002/06/08 16:28:59 taqua Exp $
  *
  * Changes
  * -------
@@ -208,15 +208,17 @@ public class PDFOutputTarget extends AbstractOutputTarget
       String fontPath = null;
       String fs = System.getProperty ("file.separator");
 
-      System.out.println (osname);
+      Log.debug ("Running on operating system: " + osname);
       if (!osname.substring (0, 7).equalsIgnoreCase ("windows"))
       {
+        Log.debug ("Assuming unix like file structures");
         // Assume X11 is installed in the default location.
         registerFontPath (new File (jrepath, "lib/fonts").toString ());
         fontPath = "/usr/X11R6/lib/X11/fonts/truetype";
       }
       else
       {
+        Log.debug ("Found windows in os name, assuming DOS/Win32 structures");
         // Assume windows
         // If you are not using windows, ignore this. This just checks if a windows system
         // directory exist and includes a font dir.
@@ -241,7 +243,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
         }
       }
 
-      System.out.println ("Fonts located in \"" + fontPath + "\"");
+      Log.debug ("Fonts located in \"" + fontPath + "\"");
       if (fontPath != null)
       {
         registerFontPath (fontPath);

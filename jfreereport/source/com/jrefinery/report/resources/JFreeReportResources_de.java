@@ -38,6 +38,9 @@ public class JFreeReportResources_de extends JFreeReportResources
       { "action.gotopage.name", "Gehe zu ..."},
       { "action.gotopage.description", "Wechselt zu einer bestimmten Seite im Bericht."},
 
+      { "dialog.gotopage.message", "Seitenzahl eingeben"},
+      { "dialog.gotopage.title", "Gehe zu Seite ..."},
+
       { "action.about.name", "Über..." },
       { "action.about.description", "Informationen über JFreeReport" }, 
       { "action.about.mnemonic", new Integer(KeyEvent.VK_A) },
@@ -67,5 +70,16 @@ public class JFreeReportResources_de extends JFreeReportResources
 
       { "menu.help.name", "Hilfe" },
       { "menu.help.mnemonic", new Character('H') },
+
+      { "file.save.pdfdescription", "PDF Dateien" },
+      { "statusline.pages", "Seite {0} von {1}" },
+      { "statusline.error", "Die ReportGenerierung ist fehlgeschlagen: {0}" },
+      { "error.processingfailed.title", "Fehler beim bearbeiten des Berichtes" },
+      { "error.processingfailed.message", "Die Berichtsgenerirung ist fehlgeschlagen: {0}" },
+      { "error.savefailed.message", "Der Bericht konnte nicht gespeichert werden: {0}" },
+      { "error.savefailed.title", "Speichern fehlgeschlagen"},
+      { "error.printfailed.message", "Das Drucken ist fehlgeschlagen: {0}" },
+      { "error.printfailed.title", "Druck fehlgeschlagen"},
+
   };
 }

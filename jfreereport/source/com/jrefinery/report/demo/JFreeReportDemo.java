@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.17 2002/06/05 21:20:47 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.18 2002/06/08 17:03:52 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -78,6 +78,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -197,10 +198,10 @@ public class JFreeReportDemo extends JFrame
 
     tabbedPane = new JTabbedPane ();
     tabbedPane.setBorder (BorderFactory.createEmptyBorder (4, 4, 4, 4));
-    tabbedPane.addTab ("Example 1", JRefineryUtilities.createTablePanel (data1));
-    tabbedPane.addTab ("Example 2", JRefineryUtilities.createTablePanel (data2));
-    tabbedPane.addTab ("Example 3", JRefineryUtilities.createTablePanel (data3));
-    tabbedPane.addTab ("Example 4", JRefineryUtilities.createTablePanel (data4));
+    tabbedPane.addTab (formExample(1), JRefineryUtilities.createTablePanel (data1));
+    tabbedPane.addTab (formExample(2), JRefineryUtilities.createTablePanel (data2));
+    tabbedPane.addTab (formExample(3), JRefineryUtilities.createTablePanel (data3));
+    tabbedPane.addTab (formExample(4), JRefineryUtilities.createTablePanel (data4));
 
     content.add (tabbedPane);
 
@@ -208,20 +209,29 @@ public class JFreeReportDemo extends JFrame
 
     JButton helpButton = buttons.getLeftButton ();
     helpButton.setAction (aboutAction);
-    FloatingButtonEnabler.getInstance().addButton (helpButton);
+    FloatingButtonEnabler.getInstance ().addButton (helpButton);
 
     JButton previewButton = buttons.getRightButton1 ();
     previewButton.setAction (previewAction);
-    FloatingButtonEnabler.getInstance().addButton (previewButton);
+    FloatingButtonEnabler.getInstance ().addButton (previewButton);
 
     JButton closeButton = buttons.getRightButton2 ();
     closeButton.setAction (closeAction);
-    FloatingButtonEnabler.getInstance().addButton (closeButton);
+    FloatingButtonEnabler.getInstance ().addButton (closeButton);
 
     buttons.setBorder (BorderFactory.createEmptyBorder (0, 4, 4, 4));
     content.add (buttons, BorderLayout.SOUTH);
 
     setContentPane (content);
+
+  }
+
+  /**
+   * Forms the localized example string.
+   */
+  private String formExample (int ex)
+  {
+    return MessageFormat.format(getResources().getString("example"), new Object[]{ new Integer(ex) });
 
   }
 
@@ -251,23 +261,26 @@ public class JFreeReportDemo extends JFrame
     }
   }
 
-   /**
-    * Displays a preview frame for report defined in the file specified by <code>urlname</code>.
-    * The contents of the url are parsed and the report is fed into a new PreviewPane.
-    * The given TableModel is assigned to the report as report data source.
-    * <p>
-    * If the report contains external references in specified in relative urls, the urls
-    * are loaded using the reports parent directory as content base.
-    *
-    * @param urlname the filename from where to load the report
-    * @param data the datamodel for the report
-    */
+  /**
+   * Displays a preview frame for report defined in the file specified by <code>urlname</code>.
+   * The contents of the url are parsed and the report is fed into a new PreviewPane.
+   * The given TableModel is assigned to the report as report data source.
+   * <p>
+   * If the report contains external references in specified in relative urls, the urls
+   * are loaded using the reports parent directory as content base.
+   *
+   * @param urlname the filename from where to load the report
+   * @param data the datamodel for the report
+   */
   public void preview (String urlname, TableModel data)
   {
     URL in = getClass ().getResource (urlname);
     if (in == null)
     {
-      JOptionPane.showMessageDialog (this, "ReportDefinition " + urlname + " not found", "Error", JOptionPane.ERROR_MESSAGE);
+
+      JOptionPane.showMessageDialog (this,
+              MessageFormat.format(getResources().getString("report.definitionnotfound"), new Object[]{ urlname }),
+              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
       return;
     }
     ReportGenerator gen = ReportGenerator.getInstance ();
@@ -276,15 +289,20 @@ public class JFreeReportDemo extends JFrame
     try
     {
       report1 = gen.parseReport (in, in);
+
     }
     catch (Exception ioe)
     {
-      ExceptionDialog.showExceptionDialog (urlname, "Failed to load ReportDefinition", ioe);
+      showExceptionDialog("report.definitionfailure", ioe);
       return;
     }
 
     if (report1 == null)
-      throw new NullPointerException ("Damn, is null");
+    {
+      JOptionPane.showMessageDialog (this,
+              MessageFormat.format(getResources().getString("report.definitionnull"), new Object[]{ urlname }),
+              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+    }
 
     report1.setData (data);
 
@@ -293,6 +311,22 @@ public class JFreeReportDemo extends JFrame
     JRefineryUtilities.positionFrameRandomly (frame1);
     frame1.setVisible (true);
     frame1.requestFocus ();
+  }
+
+  /**
+   * Shows the exception dialog by using localized messages. The message base is
+   * used to construct the localisation key by appending ".title" and ".message" to the
+   * base name.
+   */
+  private void showExceptionDialog (String localisationBase, Exception e)
+  {
+    ExceptionDialog.showExceptionDialog (
+            getResources().getString(localisationBase + ".title"),
+            MessageFormat.format(
+                    getResources().getString(localisationBase + ".message"),
+                    new Object[]{ e.getLocalizedMessage()}
+            ),
+            e);
   }
 
   /**
@@ -311,8 +345,8 @@ public class JFreeReportDemo extends JFrame
     boolean close =
             JOptionPane.showConfirmDialog (
                     this,
-                    "Are you sure you want to exit?",
-                    "Confirmation...",
+                    getResources ().getString ("exitdialog.message"),
+                    getResources ().getString ("exitdialog.title"),
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE)
             == JOptionPane.YES_OPTION;
@@ -332,7 +366,7 @@ public class JFreeReportDemo extends JFrame
   {
     if (aboutFrame == null)
     {
-      aboutFrame = new AboutFrame ("About...", JFreeReport.INFO);
+      aboutFrame = new AboutFrame (getResources().getString("action.about.name"), JFreeReport.INFO);
 
       aboutFrame.pack ();
       JRefineryUtilities.centerFrameOnScreen (aboutFrame);
@@ -412,7 +446,7 @@ public class JFreeReportDemo extends JFrame
     JButton button = new JButton (action);
     button.setMargin (new Insets (0, 0, 0, 0));
     button.setText (null);
-    FloatingButtonEnabler.getInstance().addButton (button);
+    FloatingButtonEnabler.getInstance ().addButton (button);
     return button;
   }
 
@@ -439,6 +473,7 @@ public class JFreeReportDemo extends JFrame
    */
   public static void main (String[] args)
   {
+    Locale.setDefault (Locale.GERMAN);
     try
     {
       UIManager.setLookAndFeel (UIManager.getSystemLookAndFeelClassName ());

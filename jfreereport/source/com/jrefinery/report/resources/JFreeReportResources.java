@@ -107,6 +107,9 @@ public class JFreeReportResources extends ListResourceBundle
       { "action.gotopage.mnemonic", new Integer(KeyEvent.VK_G) },
       { "action.gotopage.accelerator", KeyStroke.getKeyStroke("control G") },
 
+      { "dialog.gotopage.message", "Enter a page number"},
+      { "dialog.gotopage.title", "Go to page"},
+
       { "action.about.name", "About..."},
       { "action.about.description", "Information about the application"},
       { "action.about.mnemonic", new Integer (KeyEvent.VK_A)},
@@ -164,6 +167,18 @@ public class JFreeReportResources extends ListResourceBundle
   
       { "menu.help.name", "Help"},
       { "menu.help.mnemonic", new Character ('H')},
+
+      { "file.save.pdfdescription", "PDF documents" },
+      { "statusline.pages", "Page {0} of {1}" },
+      { "statusline.error", "Reportgeneration produced an error: {0}" },
+      { "error.processingfailed.title", "Report processing failed" },
+      { "error.processingfailed.message", "Error on processing this report: {0}" },
+      { "error.savefailed.message", "Error on saving the PDF file: {0}" },
+      { "error.savefailed.title", "Error on save"},
+      { "error.printfailed.message", "Error on printing the report: {0}" },
+      { "error.printfailed.title", "Error on printing"},
+
+
     };
   
 }

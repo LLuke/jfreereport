@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.18 2002/06/08 16:28:59 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.19 2002/06/08 17:03:55 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -112,6 +112,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ResourceBundle;
+import java.text.MessageFormat;
 
 /**
  * A standard print preview frame for any JFreeReport.  Allows the user to page back and forward
@@ -358,8 +359,8 @@ public class PreviewFrame
     public void actionPerformed (ActionEvent e)
     {
       String result = JOptionPane.showInputDialog (PreviewFrame.this,
-              "Enter page",
-              "Goto Page",
+              getResources().getString("dialog.gotopage.title"),
+              getResources().getString("dialog.gotopage.message"),
               JOptionPane.OK_CANCEL_OPTION);
       if (result == null)
         return;
@@ -563,18 +564,11 @@ public class PreviewFrame
       }
       catch (IOException ioe)
       {
-        ExceptionDialog.showExceptionDialog ("Error",
-                "Error on saving PDF: " + ioe.getLocalizedMessage (), ioe);
+        showExceptionDialog("error.savefailed", ioe);
       }
-      catch (OutputTargetException re)
+      catch (Exception re)
       {
-        ExceptionDialog.showExceptionDialog ("Error",
-                "Error on processing this report: " + re.getLocalizedMessage (), re);
-      }
-      catch (ReportProcessingException re)
-      {
-        ExceptionDialog.showExceptionDialog ("Error",
-                "Error on processing this report: " + re.getLocalizedMessage (), re);
+        showExceptionDialog("error.processingfailed", re);
       }
     }
   }
@@ -606,10 +600,25 @@ public class PreviewFrame
       }
       catch (PrinterException e)
       {
-        ExceptionDialog.showExceptionDialog ("Printing failed",
-                "Error on printing this report: " + e.getLocalizedMessage (), e);
+        showExceptionDialog("error.printfailed", e);
       }
     }
+  }
+
+  /**
+   * Shows the exception dialog by using localized messages. The message base is
+   * used to construct the localisation key by appending ".title" and ".message" to the
+   * base name.
+   */
+  private void showExceptionDialog (String localisationBase, Exception e)
+  {
+    ExceptionDialog.showExceptionDialog (
+            getResources().getString(localisationBase + ".title"),
+            MessageFormat.format(
+                    getResources().getString(localisationBase + ".message"),
+                    new Object[]{ e.getLocalizedMessage()}
+            ),
+            e);
   }
 
   /**
@@ -1051,9 +1060,17 @@ public class PreviewFrame
     if (property.equals (ReportPane.PAGENUMBER_PROPERTY)
             || property.equals (ReportPane.NUMBER_OF_PAGES_PROPERTY))
     {
-      getStatus ().setText (
-              "Page " + reportPane.getPageNumber () + " of " + reportPane.getNumberOfPages ());
 
+      Object[] params = new Object[] {
+        new Integer (reportPane.getPageNumber ()),
+        new Integer (reportPane.getNumberOfPages ())
+      };
+      getStatus ().setText (
+              MessageFormat.format (
+                      getResources().getString("statusline.pages"),
+                      params
+              )
+      );
       validate ();
     }
     else if (property.equals (ReportPane.ERROR_PROPERTY))
@@ -1061,7 +1078,13 @@ public class PreviewFrame
       if (reportPane.hasError ())
       {
         Exception ex = reportPane.getError ();
-        getStatus ().setText ("Report generation prduced an error: " + ex.getMessage ());
+
+        getStatus ().setText (
+                MessageFormat.format (
+                        getResources().getString("statusline.error"),
+                        new Object[] { ex.getMessage() }
+                )
+        );
       }
       validate ();
     }
