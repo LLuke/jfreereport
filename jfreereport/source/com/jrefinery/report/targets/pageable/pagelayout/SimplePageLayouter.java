@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.46 2003/05/11 13:39:18 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.47 2003/05/14 14:08:37 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.PrepareEventListener;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.Expression;
@@ -163,12 +164,16 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
   /** The spool. */
   private Spool spooledBand;
 
+  /** The current state for repeating group headers. */
+  private int currentEffectiveGroupIndex;
+
   /**
    * Creates a new page layouter.
    */
   public SimplePageLayouter()
   {
     setName("Layout");
+    currentEffectiveGroupIndex = -1;
     pageCarrier = new PageCarrier();
   }
 
@@ -227,6 +232,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     }
     try
     {
+      currentEffectiveGroupIndex = -1;
       printBand(getReport().getReportHeader());
     }
     catch (FunctionProcessingException fe)
@@ -257,6 +263,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       throw new IllegalStateException();
     }
+    currentEffectiveGroupIndex -= 1;
   }
 
   /**
@@ -305,6 +312,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       throw new IllegalStateException();
     }
+    currentEffectiveGroupIndex += 1;
   }
 
   /**
@@ -370,7 +378,8 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
        * Repeating group header are only printed while ItemElements are
        * processed.
        */
-      for (int gidx = event.getState().getCurrentGroupIndex(); gidx >= 0; gidx--)
+      // was currentEffectiveGroupIndex - 1
+      for (int gidx = 0; gidx < currentEffectiveGroupIndex; gidx++)
       {
         Group g = getReport().getGroup(gidx);
         if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
@@ -470,6 +479,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     try
     {
       setCurrentEvent(event);
+      currentEffectiveGroupIndex -= 1;
 
       Object prepareRun =
           event.getState().getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY,
@@ -516,6 +526,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     try
     {
       setCurrentEvent(event);
+      currentEffectiveGroupIndex += 1;
 
       int gidx = event.getState().getCurrentGroupIndex();
       Group g = getReport().getGroup(gidx);
@@ -553,6 +564,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     try
     {
       setCurrentEvent(event);
+      currentEffectiveGroupIndex -= 1;
 
       int gidx = event.getState().getCurrentGroupIndex();
       Group g = getReport().getGroup(gidx);

@@ -28,14 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.19 2003/05/02 12:40:37 taqua Exp $
+ * $Id: TableWriter.java,v 1.20 2003/05/14 14:08:37 taqua Exp $
  *
  * Changes
  * -------
  * 24-Jan-2003 : Initial version
  * 17-Feb-2003 : Documentation
  * 24-Feb-2003 : Fixed Checkstyle issues (DG);
- * 
+ *
  */
 package com.jrefinery.report.targets.table;
 
@@ -63,7 +63,7 @@ import com.jrefinery.report.targets.style.BandStyleSheet;
  * semantics depend on concrete implementation of the TableProducer.
  * <p>
  * This writer is not thread-safe.
- * 
+ *
  * @author Thomas Morgner
  */
 public class TableWriter extends AbstractFunction
@@ -81,30 +81,33 @@ public class TableWriter extends AbstractFunction
 
   /** The current event, stored on every call to one of the ReportListener methods. */
   private ReportEvent currentEvent;
-  
+
   /** The table producer used to create the layout. */
   private TableProducer producer;
-  
+
   /** the cursor pointing to the current position on the sheet. */
   private TableWriterCursor cursor;
 
   /** the maximum width, required for the BandLayout. */
   private float maxWidth;
-  
+
   /** the dependency level for this function, usually -1. */
   private int depLevel;
-  
+
   /** A flag indicating whether the writer is currently handling the end of an page. */
   private boolean inEndPage;
-  
+
   /** A flag indicating whether the current page is empty. */
   private boolean isPageEmpty;
-  
+
   /** A flag that indicates that the current pagebreak will be the last one. */
   private boolean isLastPageBreak;
 
   /** Locale-specific resources. */
   private ResourceBundle resources;
+
+  /** The current state for repeating group headers. */
+  private int currentEffectiveGroupIndex;
 
   /**
    * Creates a new TableWriter. The dependency level is set to -1 and the maxwidth
@@ -114,6 +117,7 @@ public class TableWriter extends AbstractFunction
   {
     setDependencyLevel(-1);
     setMaxWidth(1000);
+    currentEffectiveGroupIndex = -1;
   }
 
   /**
@@ -298,7 +302,7 @@ public class TableWriter extends AbstractFunction
    */
   protected void print(Band b)
   {
-    if (!isInEndPage() && (isPageEmpty == false) 
+    if (!isInEndPage() && (isPageEmpty == false)
         && b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
     {
       endPage();
@@ -314,7 +318,7 @@ public class TableWriter extends AbstractFunction
     bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
     doPrint(bounds, b);
 
-    if (!isInEndPage() && (isPageEmpty == false) 
+    if (!isInEndPage() && (isPageEmpty == false)
         && b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
     {
       endPage();
@@ -323,9 +327,9 @@ public class TableWriter extends AbstractFunction
   }
 
   /**
-   * The dependency level defines the level of execution for this function. Higher dependency 
-   * functions are executed before lower dependency functions. For ordinary functions and 
-   * expressions, the range for dependencies is defined to start from 0 (lowest dependency 
+   * The dependency level defines the level of execution for this function. Higher dependency
+   * functions are executed before lower dependency functions. For ordinary functions and
+   * expressions, the range for dependencies is defined to start from 0 (lowest dependency
    * possible to 2^31 (upper limit of int).
    * <p>
    * PageLayouter functions override the default behaviour an place them self at depency level -1,
@@ -357,7 +361,7 @@ public class TableWriter extends AbstractFunction
     setCurrentEvent(event);
 
     producer.open();
-
+    currentEffectiveGroupIndex = -1;
     startPage();
     print(event.getReport().getReportHeader());
   }
@@ -371,6 +375,7 @@ public class TableWriter extends AbstractFunction
   {
     isLastPageBreak = true;
     setCurrentEvent(event);
+    currentEffectiveGroupIndex -= 1;
     print(event.getReport().getReportFooter());
     endPage();
     producer.close();
@@ -442,7 +447,7 @@ public class TableWriter extends AbstractFunction
      * Repeating group header are only printed while ItemElements are
      * processed.
      */
-    for (int gidx = event.getState().getCurrentGroupIndex(); gidx >= 0; gidx--)
+    for (int gidx = 0; gidx < currentEffectiveGroupIndex; gidx++)
     {
       Group g = event.getReport().getGroup(gidx);
       if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
@@ -492,6 +497,7 @@ public class TableWriter extends AbstractFunction
   public void groupStarted(ReportEvent event)
   {
     setCurrentEvent(event);
+    currentEffectiveGroupIndex += 1;
     int gidx = event.getState().getCurrentGroupIndex();
     Group g = event.getReport().getGroup(gidx);
     Band b = g.getHeader();
@@ -506,6 +512,7 @@ public class TableWriter extends AbstractFunction
   public void groupFinished(ReportEvent event)
   {
     setCurrentEvent(event);
+    currentEffectiveGroupIndex -= 1;
     int gidx = event.getState().getCurrentGroupIndex();
     Group g = event.getReport().getGroup(gidx);
     Band b = g.getFooter();
@@ -533,6 +540,7 @@ public class TableWriter extends AbstractFunction
   public void itemsStarted(ReportEvent event)
   {
     setCurrentEvent(event);
+    currentEffectiveGroupIndex += 1;
   }
 
   /**
@@ -546,6 +554,7 @@ public class TableWriter extends AbstractFunction
   {
     // this event does nothing
     setCurrentEvent(event);
+    currentEffectiveGroupIndex -= 1;
   }
 
   /**
