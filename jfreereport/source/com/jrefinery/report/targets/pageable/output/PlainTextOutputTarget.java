@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.23 2003/06/27 18:46:25 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.24 2003/06/29 16:59:29 taqua Exp $
  *
  * Changes
  * -------
@@ -122,7 +122,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      *
      * @param source  the OutputTarget.
      */
-    private void save(final OutputTarget source)
+    protected void save(final OutputTarget source)
     {
       mypaint = source.getPaint();
       myfont = source.getFont();
@@ -135,7 +135,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      * @param target  the OutputTarget.
      * @throws OutputTargetException if restoring the output target state failed.
      */
-    private void restore(final OutputTarget target)
+    protected void restore(final OutputTarget target)
         throws OutputTargetException
     {
       target.setStroke(mystroke);

@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.16 2003/06/27 14:25:24 taqua Exp $
+ * $Id: ReportStateList.java,v 1.17 2003/06/29 16:59:28 taqua Exp $
  *
  * Changes
  * -------
@@ -156,7 +156,7 @@ public class ReportStateList
       {
         progress = state.createStateProgress(progress);
         //Log.debug("o-State: " + state.getClass());
-        state = master.proc.processPage(state, master.getDummyWriter());
+        state = master.getReportProcessor().processPage(state, master.getDummyWriter());
         set(state, i + 1);
         //Log.debug("n-State: " + state.getClass());
         if (state.isFinish())
@@ -244,11 +244,20 @@ public class ReportStateList
    *
    * @return the dummy output target.
    */
-  private OutputTarget getDummyWriter()
+  protected OutputTarget getDummyWriter()
   {
     return dummyWriter;
   }
 
+  /**
+   * Returns the used report processor.
+   * 
+   * @return the used report processor.
+   */
+  protected PageableReportProcessor getReportProcessor()
+  {
+    return proc;
+  }
   /**
    * Returns the number of elements in this list.
    *

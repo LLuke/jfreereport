@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.13 2003/06/27 14:25:18 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.14 2003/06/29 16:59:25 taqua Exp $
  *
  * Changes
  * -------
@@ -51,14 +51,15 @@ import java.io.Serializable;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.event.ReportEvent;
-
+import com.jrefinery.report.event.PageEventListener;
 /**
  * Paints a AWT or Swing Component. The component must be contained in the
  * dataRow.
  *
  * @author Thomas Morgner
  */
-public class PaintDynamicComponentFunction extends AbstractFunction implements Serializable
+public class PaintDynamicComponentFunction extends AbstractFunction
+ implements Serializable, PageEventListener
 {
   /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
@@ -161,6 +162,18 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
     image = null;
   }
 
+  /**
+   * Receives notification that a page was canceled by the ReportProcessor.
+   * This method is called, when a page was removed from the report after
+   * it was generated.
+   *
+   * @param event The event.
+   */
+  public void pageCanceled(ReportEvent event)
+  {
+    image = null;
+  }
+  
   /**
    * Receives notification that a group has started.
    *

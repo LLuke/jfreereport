@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.13 2003/06/27 14:25:22 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.14 2003/06/29 16:59:27 taqua Exp $
  *
  * Changes
  * --------
@@ -292,7 +292,7 @@ public class CSVExportDialog extends JDialog
    *
    * @return this frames ResourceBundle.
    */
-  private ResourceBundle getResources()
+  protected ResourceBundle getResources()
   {
     if (resources == null)
     {
@@ -946,7 +946,7 @@ public class CSVExportDialog extends JDialog
   /**
    * Enables or disables the 'other' separator text field.
    */
-  private void performSeparatorSelection()
+  protected void performSeparatorSelection()
   {
     if (rbSeparatorOther.isSelected())
     {

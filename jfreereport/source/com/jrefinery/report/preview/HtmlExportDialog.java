@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.21 2003/06/27 14:25:22 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.22 2003/06/29 16:59:27 taqua Exp $
  *
  * Changes
  * -------
@@ -397,19 +397,29 @@ public class HtmlExportDialog extends JDialog
     {
       public void windowClosing(final WindowEvent e)
       {
-        actionCancel.actionPerformed(null);
+        getCancelAction().actionPerformed(null);
       }
     }
     );
   }
 
   /**
+   * Returns the cancel action.
+   * 
+   * @return the cancel action.
+   */
+  protected Action getCancelAction()
+  {
+    return actionCancel;    
+  }
+  
+  /**
    * Retrieves the resources for this dialog. If the resources are not initialized,
    * they get loaded on the first call to this method.
    *
    * @return this frames ResourceBundle.
    */
-  private ResourceBundle getResources()
+  protected ResourceBundle getResources()
   {
     if (resources == null)
     {

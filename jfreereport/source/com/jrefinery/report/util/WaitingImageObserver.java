@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   Stefan Prange;
  *
- * $Id: WaitingImageObserver.java,v 1.8 2003/06/27 14:25:26 taqua Exp $
+ * $Id: WaitingImageObserver.java,v 1.9 2003/06/29 16:59:30 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -144,7 +144,7 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
       }
       try
       {
-        Thread.currentThread().sleep(200);
+        Thread.sleep(200);
       }
       catch (InterruptedException e)
       {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SubSetTableModel.java,v 1.13 2003/06/27 14:25:23 taqua Exp $
+ * $Id: SubSetTableModel.java,v 1.14 2003/06/29 16:59:28 taqua Exp $
  *
  * Changes
  * -------
@@ -80,14 +80,14 @@ public class SubSetTableModel implements TableModel
       int firstRow = e.getFirstRow();
       if (e.getFirstRow() > 0)
       {
-        firstRow -= start;
+        firstRow -= getStart();
       }
 
       int lastRow = e.getLastRow();
       if (lastRow > 0)
       {
-        lastRow -= start;
-        lastRow -= (model.getRowCount() - end);
+        lastRow -= getStart();
+        lastRow -= (getEnclosedModel().getRowCount() - getEnd());
       }
       final int type = e.getType();
       final int column = e.getColumn();
@@ -107,7 +107,7 @@ public class SubSetTableModel implements TableModel
      *
      * @param l the tablemodel listener
      */
-    private void addTableModelListener(final TableModelListener l)
+    protected void addTableModelListener(final TableModelListener l)
     {
       listeners.add(l);
     }
@@ -117,7 +117,7 @@ public class SubSetTableModel implements TableModel
      *
      * @param l the tablemodel listener
      */
-    private void removeTableModelListener(final TableModelListener l)
+    protected void removeTableModelListener(final TableModelListener l)
     {
       listeners.remove(l);
     }
@@ -310,5 +310,20 @@ public class SubSetTableModel implements TableModel
   public void removeTableModelListener(final TableModelListener l)
   {
     eventHandler.removeTableModelListener(l);
+  }
+  
+  protected TableModel getEnclosedModel ()
+  {
+    return model;
+  }
+  
+  protected int getStart()
+  {
+    return start;
+  }
+  
+  protected int getEnd ()
+  {
+    return end;
   }
 }

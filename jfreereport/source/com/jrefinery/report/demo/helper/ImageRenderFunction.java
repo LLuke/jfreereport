@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageRenderFunction.java,v 1.2 2003/06/27 14:25:16 taqua Exp $
+ * $Id: ImageRenderFunction.java,v 1.3 2003/06/29 16:59:24 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -45,16 +45,18 @@ import javax.swing.JButton;
 import javax.swing.JRadioButton;
 
 import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.event.PageEventListener;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 
 /**
  * The ImageRenderFunction creates a simple Image using a BufferedImage within a function to show
- * the use of the ImageFunctionElement.
+ * the use of the ImageFunctionElement. The image is created whenever a new page is started.
  *
  * @author Thomas Morgner
  */
-public class ImageRenderFunction extends AbstractFunction implements Serializable
+public class ImageRenderFunction extends AbstractFunction 
+  implements Serializable, PageEventListener
 {
   /** The function value. */
   private transient ImageReference functionValue;
@@ -87,6 +89,7 @@ public class ImageRenderFunction extends AbstractFunction implements Serializabl
     functionValue = new ImageReference(image);
   }
 
+  
   /**
    * Return the last generated Image.
    *
@@ -96,4 +99,18 @@ public class ImageRenderFunction extends AbstractFunction implements Serializabl
   {
     return functionValue;
   }
+  
+
+  /**
+   * Receives notification that a page was canceled by the ReportProcessor.
+   * This method is called, when a page was removed from the report after
+   * it was generated.
+   *
+   * @param event The event.
+   */
+  public void pageCanceled(ReportEvent event)
+  {
+    functionValue = null;
+  }
+
 }

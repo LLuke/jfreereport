@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.14 2003/06/27 14:25:19 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.15 2003/06/29 16:59:27 taqua Exp $
  *
  * Changes
  * -------
@@ -371,7 +371,7 @@ public class ReportConverterGUI extends JFrame
    *
    * @return The resources.
    */
-  private ResourceBundle getResources()
+  protected ResourceBundle getResources()
   {
     if (resources == null)
     {
@@ -385,7 +385,7 @@ public class ReportConverterGUI extends JFrame
    *
    * @param file  the file name.
    */
-  private void setSourceFile(final String file)
+  protected void setSourceFile(final String file)
   {
     sourceField.setText(file);
   }
@@ -395,7 +395,7 @@ public class ReportConverterGUI extends JFrame
    *
    * @param file  the file name.
    */
-  private void setTargetFile(final String file)
+  protected void setTargetFile(final String file)
   {
     targetField.setText(file);
   }
@@ -405,7 +405,7 @@ public class ReportConverterGUI extends JFrame
    *
    * @return The name.
    */
-  private String getSourceFile()
+  protected String getSourceFile()
   {
     return sourceField.getText();
   }
@@ -415,7 +415,7 @@ public class ReportConverterGUI extends JFrame
    *
    * @return The name.
    */
-  private String getTargetFile()
+  protected String getTargetFile()
   {
     return targetField.getText();
   }

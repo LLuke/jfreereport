@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.17 2003/06/27 18:46:12 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.18 2003/06/29 16:59:27 taqua Exp $
  *
  * Changes
  * --------
@@ -85,7 +85,6 @@ import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.NullOutputStream;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.StringUtil;
-import com.jrefinery.report.util.Log;
 import org.jfree.ui.ExtensionFileFilter;
 
 /**
@@ -1086,7 +1085,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @return this frames ResourceBundle.
    */
-  private ResourceBundle getResources()
+  protected ResourceBundle getResources()
   {
     if (resources == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.24 2003/06/27 14:25:22 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.25 2003/06/29 16:59:27 taqua Exp $
  *
  * Changes
  * -------
@@ -272,6 +272,7 @@ public class PreviewProxyBase extends JComponent
     public void propertyChange(final PropertyChangeEvent event)
     {
       final String property = event.getPropertyName();
+      final ReportPane reportPane = getReportPane();
 
       if (property.equals(ReportPane.PAGINATED_PROPERTY))
       {
@@ -537,7 +538,7 @@ public class PreviewProxyBase extends JComponent
       {
         final int page = Integer.parseInt(result);
 
-        // thanks to anonymous
+        final ReportPane reportPane = getReportPane(); 
         if (page > 0 && page <= reportPane.getNumberOfPages())
         {
           reportPane.setPageNumber(page);
@@ -651,7 +652,7 @@ public class PreviewProxyBase extends JComponent
   private WrapperAction gotoAction;
 
   /** The available zoom factors. */
-  private static final float[]
+  protected static final float[]
       ZOOM_FACTORS = {0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 2.0f, 3.0f, 4.0f};
 
   /** The default zoom index (corresponds to a zoomFactor of 1.0. */
@@ -981,7 +982,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @return the report pane.
    */
-  protected Pageable getPageable()
+  public Pageable getPageable()
   {
     return reportPane;
   }
@@ -991,11 +992,21 @@ public class PreviewProxyBase extends JComponent
    *
    * @return the report pane.
    */
-  protected Printable getPrintable()
+  public Printable getPrintable()
   {
     return reportPane;
   }
 
+  /**
+   * Returns the report pane used to preview the report.
+   * 
+   * @return the report pane.
+   */
+  protected ReportPane getReportPane()
+  {
+    return reportPane;
+  }
+  
   /**
    * Shows the exception dialog by using localized messages. The message base is
    * used to construct the localisation key by appending ".title" and ".message" to the
@@ -1469,7 +1480,7 @@ public class PreviewProxyBase extends JComponent
     zoomSelect.setActionCommand("ZoomSelect");
     zoomSelect.setSelectedIndex(DEFAULT_ZOOM_INDEX);
     zoomSelect.addActionListener(createZoomSelectAction());
-    zoomSelect.setAlignmentX(zoomSelect.RIGHT_ALIGNMENT);
+    zoomSelect.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
     final JPanel zoomPane = new JPanel();
     zoomPane.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -1778,6 +1789,7 @@ public class PreviewProxyBase extends JComponent
     {
       public void run()
       {
+        final ReportPane reportPane = getReportPane();
         try
         {
           reportPane.setHandleInterruptedState(true);

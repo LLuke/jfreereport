@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.40 2003/06/27 14:25:24 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.41 2003/06/29 16:59:29 taqua Exp $
  *
  * Changes
  * -------
@@ -183,14 +183,16 @@ public class G2OutputTarget extends AbstractOutputTarget
      *
      * @param source  the Graphics2D.
      */
-    private void save(final G2OutputTarget source)
+    protected void save(final G2OutputTarget source)
     {
       mypaint = source.getPaint();
       myfont = source.getFont();
       mystroke = source.getStroke();
-      mytransform = source.g2.getTransform();
-      mybackground = source.g2.getBackground();
-      myclip = source.g2.getClip();
+
+      Graphics2D g2 = source.getGraphics2D();
+      mytransform = g2.getTransform();
+      mybackground = g2.getBackground();
+      myclip = g2.getClip();
     }
 
     /**
@@ -199,15 +201,17 @@ public class G2OutputTarget extends AbstractOutputTarget
      * @param target  the Graphics2D.
      * @throws OutputTargetException if restoring the state failes.
      */
-    private void restore(final G2OutputTarget target)
+    protected void restore(final G2OutputTarget target)
         throws OutputTargetException
     {
       target.setStroke(mystroke);
       target.setFont(myfont);
       target.setPaint(mypaint);
-      target.g2.setTransform(mytransform);
-      target.g2.setBackground(mybackground);
-      target.g2.setClip(myclip);
+
+      Graphics2D g2 = target.getGraphics2D();
+      g2.setTransform(mytransform);
+      g2.setBackground(mybackground);
+      g2.setClip(myclip);
     }
   }
 
@@ -532,6 +536,15 @@ public class G2OutputTarget extends AbstractOutputTarget
     return new G2State(this);
   }
 
+  /**
+   * Returns a reference to the used graphics2D instance.
+   * 
+   * @return the graphics2D instance used in this target.
+   */
+  protected Graphics2D getGraphics2D()
+  {
+    return g2;
+  }
   /**
    * Creates an output target that mimics a real output target, but produces no output.
    * This is used by the reporting engine when it makes its first pass through the report,

@@ -3,7 +3,7 @@
 ---------------
 A list of changes in recent versions:
 
-0.8.3d: ()
+0.8.3d: (29-Jun-2003)
         * BugFix: All table report processors had problems with reports, that
           had a PageFormat with a imagable size > 1000 points. This issue was
           pure stupidity and is fixed now...
@@ -18,7 +18,7 @@ A list of changes in recent versions:
           which prevent them from selecting encodings correctly.
 
         * BugFix: The StyleSheetCollection now handles stylesheets with the
-          same name correctly. 
+          same name correctly.
 
         * All OutputTargets use String properties now for their configuration.
           The object interface was no great idea and caused confusion so it

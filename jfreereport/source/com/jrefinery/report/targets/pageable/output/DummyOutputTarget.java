@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DummyOutputTarget.java,v 1.12 2003/06/27 14:25:24 taqua Exp $
+ * $Id: DummyOutputTarget.java,v 1.13 2003/06/29 16:59:29 taqua Exp $
  *
  * Changes
  * -------
@@ -108,7 +108,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
      * @param target  the output target, that receives the restored state.
      * @throws OutputTargetException if the state restoration failed.
      */
-    private void restore(final OutputTarget target)
+    protected void restore(final OutputTarget target)
         throws OutputTargetException
     {
       target.setStroke(mystroke);

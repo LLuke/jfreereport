@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.36 2003/06/27 14:25:24 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.37 2003/06/29 16:59:29 taqua Exp $
  *
  * Changes
  * -------
@@ -107,7 +107,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
      */
     protected void handleRegisterStyleSheetCollection()
     {
-      getStyleSheetCollection().addStyleSheet(es);
+      this.getStyleSheetCollection().addStyleSheet(es);
     }
 
     /**
@@ -116,7 +116,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
      */
     protected void handleUnregisterStyleSheetCollection()
     {
-      getStyleSheetCollection().remove(es);
+      this.getStyleSheetCollection().remove(es);
     }
   }
 

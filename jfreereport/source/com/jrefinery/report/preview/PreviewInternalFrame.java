@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewInternalFrame.java,v 1.5 2003/06/27 14:25:22 taqua Exp $
+ * $Id: PreviewInternalFrame.java,v 1.6 2003/06/29 16:59:27 taqua Exp $
  *
  * Changes
  * -------
@@ -168,7 +168,7 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
        */
       public void internalFrameClosing(final InternalFrameEvent e)
       {
-        base.getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
+        getBase().getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
             "CloseFrame"));
       }
     }

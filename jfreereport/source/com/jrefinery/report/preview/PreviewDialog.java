@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.15 2003/06/27 14:25:22 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.16 2003/06/29 16:59:27 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -226,7 +226,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
        */
       public void windowClosing(final WindowEvent e)
       {
-        base.getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
+        getBase().getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
             "CloseFrame"));
       }
     }

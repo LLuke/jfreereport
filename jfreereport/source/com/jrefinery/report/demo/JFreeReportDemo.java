@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.68 2003/06/27 14:25:16 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.69 2003/06/29 16:59:23 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -401,7 +401,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
    *
    * @param data  the data for the report.
    */
-  private void previewAPIReport(final TableModel data)
+  protected void previewAPIReport(final TableModel data)
   {
     try
     {
@@ -423,7 +423,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
   /**
    * Preview.
    */
-  private void previewBandInBandStacking()
+  protected void previewBandInBandStacking()
   {
     try
     {

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.15 2003/06/27 14:25:22 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.16 2003/06/29 16:59:27 taqua Exp $
  *
  * Changes
  * --------
@@ -256,7 +256,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @return the resource bundle
    */
-  public ResourceBundle getResources()
+  protected ResourceBundle getResources()
   {
     return resources;
   }
@@ -294,7 +294,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @return the action.
    */
-  private Action getActionCancel()
+  protected Action getActionCancel()
   {
     if (actionCancel == null)
     {

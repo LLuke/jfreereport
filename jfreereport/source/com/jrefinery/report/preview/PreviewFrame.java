@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewFrame.java,v 1.52 2003/06/27 14:25:22 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.53 2003/06/29 16:59:27 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -177,7 +177,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
        */
       public void windowClosing(final WindowEvent e)
       {
-        base.getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
+        getBase().getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
             "CloseFrame"));
       }
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.30 2003/06/27 14:25:15 taqua Exp $
+ * $Id: GroupList.java,v 1.31 2003/06/29 16:59:23 taqua Exp $
  *
  * Changes:
  * --------
@@ -94,15 +94,11 @@ public class GroupList implements Cloneable, Serializable
      */
     protected void handleRegisterStyleSheetCollection()
     {
-      if (groupList.cache == null)
+      Group[] cache = groupList.getGroupCache();
+      for (int i = 0; i < cache.length; i++)
       {
-        groupList.cache = (Group[]) groupList.backend.toArray
-            (new Group[groupList.backend.size()]);
-      }
-      for (int i = 0; i < groupList.cache.length; i++)
-      {
-        final Group g = groupList.cache[i];
-        g.registerStyleSheetCollection(getStyleSheetCollection());
+        final Group g = cache[i];
+        g.registerStyleSheetCollection(this.getStyleSheetCollection());
       }
     }
 
@@ -112,14 +108,10 @@ public class GroupList implements Cloneable, Serializable
      */
     protected void handleUnregisterStyleSheetCollection()
     {
-      if (groupList.cache == null)
+      Group[] cache = groupList.getGroupCache();
+      for (int i = 0; i < cache.length; i++)
       {
-        groupList.cache = (Group[]) groupList.backend.toArray
-            (new Group[groupList.backend.size()]);
-      }
-      for (int i = 0; i < groupList.cache.length; i++)
-      {
-        final Group g = groupList.cache[i];
+        final Group g = cache[i];
         g.unregisterStyleSheetCollection(null);
       }
     }
@@ -401,4 +393,19 @@ public class GroupList implements Cloneable, Serializable
       g.updateStyleSheetCollection(styleSheetCollection);
     }
   }
+  
+  /**
+   * Returns a direct reference to the group cache.
+   * 
+   * @return the groups of this list as array.
+   */
+  protected Group[] getGroupCache ()
+  {
+    if (cache == null)
+    {
+      cache = (Group[]) backend.toArray(new Group[backend.size()]);
+    }
+    return cache;
+  } 
+  
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExceptionDialog.java,v 1.16 2003/06/27 14:25:25 taqua Exp $
+ * $Id: ExceptionDialog.java,v 1.17 2003/06/29 16:59:30 taqua Exp $
  *
  * Changes
  * -------
@@ -108,8 +108,8 @@ public class ExceptionDialog extends JDialog
      */
     public void actionPerformed(final ActionEvent event)
     {
-      scroller.setVisible(!(scroller.isVisible()));
-      if (scroller.isVisible())
+      setScrollerVisible(!(isScrollerVisible()));
+      if (isScrollerVisible())
       {
         putValue(NAME, "<<");
       }
@@ -227,6 +227,16 @@ public class ExceptionDialog extends JDialog
     filler.setMinimumSize(cbase);
     pack();
 
+  }
+
+  protected void setScrollerVisible (boolean b)
+  {
+    scroller.setVisible(b);
+  }
+  
+  protected boolean isScrollerVisible ()
+  {
+    return scroller.isVisible();
   }
 
   /**

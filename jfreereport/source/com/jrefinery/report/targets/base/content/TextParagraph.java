@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.22 2003/06/27 14:25:23 taqua Exp $
+ * $Id: TextParagraph.java,v 1.23 2003/06/29 16:59:28 taqua Exp $
  *
  * Changes
  * -------
@@ -256,6 +256,7 @@ public class TextParagraph extends ContentContainer
    * @return true, if this is a whitespace character, but not a
    * linebreak character, false otherwise.
    */
+  /*
   private boolean isWhitespace(final char c)
   {
     if (c == '\n' || c == '\r')
@@ -267,6 +268,7 @@ public class TextParagraph extends ContentContainer
       return Character.isWhitespace(c);
     }
   }
+  */
 
   /**
    * Locates the next linebreak for the given text.

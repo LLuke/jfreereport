@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.28 2003/06/27 14:25:15 taqua Exp $
+ * $Id: Group.java,v 1.29 2003/06/29 16:59:23 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -100,8 +100,8 @@ public class Group implements Serializable, Cloneable, Comparable
      */
     protected void handleRegisterStyleSheetCollection()
     {
-      group.footer.registerStyleSheetCollection(getStyleSheetCollection());
-      group.header.registerStyleSheetCollection(getStyleSheetCollection());
+      group.getFooter().registerStyleSheetCollection(this.getStyleSheetCollection());
+      group.getHeader().registerStyleSheetCollection(this.getStyleSheetCollection());
     }
 
     /**
@@ -110,8 +110,8 @@ public class Group implements Serializable, Cloneable, Comparable
      */
     protected void handleUnregisterStyleSheetCollection()
     {
-      group.footer.unregisterStyleSheetCollection(getStyleSheetCollection());
-      group.header.unregisterStyleSheetCollection(getStyleSheetCollection());
+      group.getFooter().unregisterStyleSheetCollection(this.getStyleSheetCollection());
+      group.getHeader().unregisterStyleSheetCollection(this.getStyleSheetCollection());
     }
   }
 

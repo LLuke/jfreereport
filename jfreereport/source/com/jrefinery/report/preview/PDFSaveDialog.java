@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.36 2003/06/27 18:46:12 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.37 2003/06/29 16:59:27 taqua Exp $
  *
  * Changes
  * --------
@@ -129,18 +129,7 @@ public class PDFSaveDialog extends JDialog
      */
     public void actionPerformed(final ActionEvent e)
     {
-      final boolean b = (rbSecurityNone.isSelected() == false);
-      txUserPassword.setEnabled(b);
-      txOwnerPassword.setEnabled(b);
-      txConfOwnerPassword.setEnabled(b);
-      txConfUserPassword.setEnabled(b);
-      cxAllowAssembly.setEnabled(b);
-      cxAllowCopy.setEnabled(b);
-      cbAllowPrinting.setEnabled(b);
-      cxAllowFillIn.setEnabled(b);
-      cxAllowModifyAnnotations.setEnabled(b);
-      cxAllowModifyContents.setEnabled(b);
-      cxAllowScreenReaders.setEnabled(b);
+      updateSecurityPanelEnabled();
     }
   }
 
@@ -343,6 +332,26 @@ public class PDFSaveDialog extends JDialog
   }
 
   /**
+   * Updates the security panel state. If no encryption is selected, all security
+   * setting components will be disabled. 
+   */
+  protected void updateSecurityPanelEnabled ()
+  {
+    final boolean b = (rbSecurityNone.isSelected() == false);
+    txUserPassword.setEnabled(b);
+    txOwnerPassword.setEnabled(b);
+    txConfOwnerPassword.setEnabled(b);
+    txConfUserPassword.setEnabled(b);
+    cxAllowAssembly.setEnabled(b);
+    cxAllowCopy.setEnabled(b);
+    cbAllowPrinting.setEnabled(b);
+    cxAllowFillIn.setEnabled(b);
+    cxAllowModifyAnnotations.setEnabled(b);
+    cxAllowModifyContents.setEnabled(b);
+    cxAllowScreenReaders.setEnabled(b);
+  }
+
+  /**
    * Initialisation.
    */
   private void initConstructor()
@@ -362,7 +371,6 @@ public class PDFSaveDialog extends JDialog
     }
     );
   }
-
 
   /**
    * Gets and initializes the the combobox model for the security setting "allowPrinting".
@@ -389,7 +397,7 @@ public class PDFSaveDialog extends JDialog
    *
    * @return this frames ResourceBundle.
    */
-  private ResourceBundle getResources()
+  protected ResourceBundle getResources()
   {
     if (resources == null)
     {
@@ -445,7 +453,7 @@ public class PDFSaveDialog extends JDialog
    *
    * @return the action.
    */
-  private Action getActionCancel()
+  protected Action getActionCancel()
   {
     if (actionCancel == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelList.java,v 1.12 2003/06/27 14:25:25 taqua Exp $
+ * $Id: LevelList.java,v 1.13 2003/06/29 16:59:30 taqua Exp $
  *
  * Changes
  * -------
@@ -206,11 +206,14 @@ public class LevelList implements Cloneable
         throw new NullPointerException();
       }
 
-      this.datalist = new ArrayList();
-      for (int i = 0; i < list.size(); i++)
+      Object[] rawElements = list.getRawElements();
+      Integer[] rawLevels = list.getRawLevels();
+      
+      this.datalist = new ArrayList(rawElements.length);
+      for (int i = 0; i < rawElements.length; i++)
       {
-        final Object iNext = list.elements.get(i);
-        final Integer iLevel = (Integer) list.levels.get(i);
+        final Object iNext = rawElements[i];
+        final Integer iLevel = rawLevels[i];
         if (iLevel.intValue() == level)
         {
           datalist.add(iNext);
@@ -223,7 +226,7 @@ public class LevelList implements Cloneable
      *
      * @return An iterator.
      */
-    private Iterator createIterator()
+    protected Iterator createIterator()
     {
       return new ElementLevelListIterator(datalist);
     }
@@ -455,4 +458,13 @@ public class LevelList implements Cloneable
     iteratorSetDesc = null;
   }
 
+  protected Object[] getRawElements ()
+  {
+    return levels.toArray(new Object[levels.size()]);
+  }
+
+  protected Integer[] getRawLevels ()
+  {
+    return (Integer[]) levels.toArray(new Integer[levels.size()]);
+  }
 }
