@@ -31,7 +31,14 @@ public class WmfFile
 
   // Maximal picture size is 1600x1600. A average wmf file scales easily
   // to 20000 and more, so we have to limit the pixel image's size.
-  private static final int MAX_PICTURE_SIZE = 1600;
+
+  private static final int MAX_PICTURE_SIZE = getMaxPictureSize ();
+
+  private static int getMaxPictureSize ()
+  {
+    System.out.println ("Total Mem: " + Runtime.getRuntime().totalMemory());
+    return 1600;
+  }
 
   private WmfObject[] objects;
   private Stack dcStack;

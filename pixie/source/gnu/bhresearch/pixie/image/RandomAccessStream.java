@@ -152,6 +152,7 @@ public class RandomAccessStream extends InputStream implements DataInput
     return datain.readInt ();
   }
 
+  // Implement a readLine function later ...
   public String readLine () throws IOException
   {
     return datain.readLine ();

@@ -12,7 +12,7 @@ import java.util.Hashtable;
 public abstract class MfCmd
 {
   /** Writer function */
-  public abstract MfRecord getRecord ();
+  //public abstract MfRecord getRecord ();
 
   /** reader function */
   public abstract void setRecord (MfRecord record);

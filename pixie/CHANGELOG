@@ -1,1 +1,3 @@
+29-Aug-2002 : Downport to JDK1.2.2 : Altered WmfImageProducer to use less 
+              memory on producing.
 

@@ -29,6 +29,12 @@ public class MfCmdUnknownCommand extends MfCmd
     System.out.println (this);
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    return null;
+  }
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();

@@ -725,7 +725,7 @@ public class PixieSlide extends Applet implements Runnable
 
   private int lastHotSpot = -1;
 
-  /** Clicking on hotspots. */
+  /** Clicking on hotspots.
   public boolean handleEvent (Event e)
   {
     int hotSpot = -1;
@@ -786,6 +786,7 @@ public class PixieSlide extends Applet implements Runnable
     showStatus ((cmd == Constants.HOT_SPOT_URL) ? "Shortcut to " + arg : arg);
     return true;
   }
+*/
 
   private synchronized void doAction (int cmd, String arg)
   {
