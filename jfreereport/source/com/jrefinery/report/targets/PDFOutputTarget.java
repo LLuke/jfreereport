@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.5 2002/05/27 21:42:46 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.6 2002/05/28 19:38:10 taqua Exp $
  *
  * Changes
  * -------
@@ -122,7 +122,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * The PDFBandCursor is used to translate between the band specific coordinate space
    * and the page coordinate space.
    */
-  private class PDFBandCursor extends BandCursor
+  private static class PDFBandCursor extends BandCursor
   {
     public Rectangle2D getDrawBounds ()
     {
@@ -150,7 +150,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * The pdf state is used to store and restore the current state of this outputtarget.
    */
-  private class PDFState
+  private static class PDFState
   {
     private Font myfont;
     private Stroke mystroke;
@@ -784,7 +784,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public void endPage () throws OutputTargetException
   {
-    System.out.println("Ending the page ");
     try
     {
       this.document.newPage ();
@@ -1035,7 +1034,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
     {
       if (getFontFactory().getFontfileForName(fonts[i].getName()) == null) continue;
       BaseFont bf = BaseFont.createFont(getFontFactory().getFontfileForName(fonts[i].getName()), BaseFont.WINANSI, true);
-      System.out.println (bf);
     }
   }
 

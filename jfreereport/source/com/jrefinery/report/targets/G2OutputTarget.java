@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.4 2002/05/27 21:42:46 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.5 2002/05/28 19:38:10 taqua Exp $
  *
  * Changes
  * -------
@@ -87,7 +87,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    * a state of an Graphics2D object. This does not store clipping regions or advanced
    * properties.
    */
-  private class G2State
+  private static class G2State
   {
     private Paint mypaint;
     private Font myfont;
