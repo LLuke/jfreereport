@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionHandler.java,v 1.5 2003/08/18 18:28:02 taqua Exp $
+ * $Id: ExpressionHandler.java,v 1.6 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -66,14 +66,14 @@ public class ExpressionHandler extends AbstractExtReportParserHandler
 
   /** The comment hint path that should be used to store additional parser information. */
   private CommentHintPath path;
-  
+
   /**
    * Creates a new expression handler.
    *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param expression  the expression.
-   * @param base the comment hint path that should be used to store additional xml 
+   * @param base the comment hint path that should be used to store additional xml
    * informations for the writer.
    */
   public ExpressionHandler(final ReportParser parser, final String finishTag,
@@ -104,7 +104,7 @@ public class ExpressionHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(PROPERTIES_TAG))
     {
-      CommentHintPath path = this.path.getInstance();
+      final CommentHintPath path = this.path.getInstance();
       path.addName(tagName);
       getReport().getReportBuilderHints().putHint
           (path, CommentHandler.OPEN_TAG_COMMENT, getReportParser().getComments());
@@ -142,7 +142,7 @@ public class ExpressionHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(PROPERTIES_TAG))
     {
-      CommentHintPath path = this.path.getInstance();
+      final CommentHintPath path = this.path.getInstance();
       path.addName(tagName);
       getReport().getReportBuilderHints().putHint
           (path, CommentHandler.CLOSE_TAG_COMMENT, getReportParser().getComments());

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridBounds.java,v 1.2 2003/08/20 17:24:34 taqua Exp $
+ * $Id: TableGridBounds.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 12-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.output.table.base;
@@ -46,16 +46,16 @@ import java.util.TreeSet;
  * The table grid bounds are used to collect the cell boundaries during
  * the repagination process and to recall these boundries later during the
  * content creation process.
- * 
+ *
  * @author Thomas Morgner
  */
 public final class TableGridBounds
 {
   /** A flag, defining whether to use strict layout mode. */
-  private boolean strict;
+  private final boolean strict;
 
   /** The XBounds, all vertical cell boundaries. */
-  private TreeSet xBounds;
+  private final TreeSet xBounds;
 
   /**
    * Creates a new TableGrid-object. If strict mode is enabled, all cell bounds are
@@ -71,7 +71,7 @@ public final class TableGridBounds
 
   /**
    * Creates a new TableGrid-object and reuses the grid bounds from the given
-   * copy object. 
+   * copy object.
    *
    * @param copy the precomputed table grid bounds.
    */
@@ -87,7 +87,7 @@ public final class TableGridBounds
    * @param pos the position that should be added to the grid.
    * @throws NullPointerException if the given position is null
    */
-  public void addData (TableCellData pos)
+  public void addData(final TableCellData pos)
   {
     if (pos == null)
     {

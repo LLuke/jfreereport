@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ExportTask.java,v 1.1 2003/08/24 15:08:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 23.08.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.base;
@@ -56,7 +56,7 @@ public abstract class ExportTask implements Runnable
     return returnValue;
   }
 
-  public void setReturnValue(int returnValue)
+  public void setReturnValue(final int returnValue)
   {
     this.returnValue = returnValue;
   }
@@ -66,17 +66,17 @@ public abstract class ExportTask implements Runnable
     return exception;
   }
 
-  public void setException(Exception exception)
+  public void setException(final Exception exception)
   {
     this.exception = exception;
   }
 
-  public synchronized boolean isTaskDone ()
+  public synchronized boolean isTaskDone()
   {
     return taskDone;
   }
 
-  protected synchronized void setTaskDone(boolean taskDone)
+  protected synchronized void setTaskDone(final boolean taskDone)
   {
     this.taskDone = taskDone;
   }

@@ -28,12 +28,12 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: PDFExportResources_nl.java,v 1.3 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PDFExportResources_nl.java,v 1.4 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.pdf.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * Dutch language resource for the PDF export GUI.
- * 
+ *
  * @author Hendri Smit
  */
 public class PDFExportResources_nl extends JFreeReportResources

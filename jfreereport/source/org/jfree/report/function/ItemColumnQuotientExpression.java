@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemColumnQuotientExpression.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: ItemColumnQuotientExpression.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -243,8 +243,8 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
    */
   public Expression getInstance()
   {
-    final ItemColumnQuotientExpression function = 
-      (ItemColumnQuotientExpression) super.getInstance();
+    final ItemColumnQuotientExpression function =
+        (ItemColumnQuotientExpression) super.getInstance();
     function.datasource = new StaticDataSource();
     function.parser = new DecimalFormatParser();
     function.parser.setNullValue(ZERO);

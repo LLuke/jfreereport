@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo2.java,v 1.3 2003/07/23 16:02:19 taqua Exp $
+ * $Id: OpenSourceDemo2.java,v 1.4 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -198,7 +198,7 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
 
     TextFieldElementFactory factory = new TextFieldElementFactory();
     factory.setName("Name_Field");
-    factory.setAbsolutePosition(new Point2D.Float(0,7));
+    factory.setAbsolutePosition(new Point2D.Float(0, 7));
     factory.setMinimumSize(new FloatDimension(140, 10));
     factory.setColor(Color.black);
     factory.setHorizontalAlignment(ElementAlignment.LEFT);
@@ -212,7 +212,7 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
 
     factory = new TextFieldElementFactory();
     factory.setName("URL_Field");
-    factory.setAbsolutePosition(new Point2D.Float(0,9));
+    factory.setAbsolutePosition(new Point2D.Float(0, 9));
     factory.setMinimumSize(new FloatDimension(-100, 10));
     factory.setColor(Color.black);
     factory.setHorizontalAlignment(ElementAlignment.RIGHT);
@@ -225,7 +225,7 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
 
     factory = new TextFieldElementFactory();
     factory.setName("Description_Field");
-    factory.setAbsolutePosition(new Point2D.Float(0,20));
+    factory.setAbsolutePosition(new Point2D.Float(0, 20));
     factory.setMinimumSize(new FloatDimension(-100, 10));
     factory.setColor(Color.black);
     factory.setHorizontalAlignment(ElementAlignment.LEFT);
@@ -248,9 +248,9 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
     final ElementStyleSheet ess = footer.getBandDefaults();
     ess.setFontDefinitionProperty(new FontDefinition("SansSerif", 9));
 
-    NumberFieldElementFactory factory = new NumberFieldElementFactory();
+    final NumberFieldElementFactory factory = new NumberFieldElementFactory();
     factory.setName("PageNumber_Field");
-    factory.setAbsolutePosition(new Point2D.Float(0,0));
+    factory.setAbsolutePosition(new Point2D.Float(0, 0));
     factory.setMinimumSize(new Dimension(-100, -100));
     factory.setColor(Color.black);
     factory.setHorizontalAlignment(ElementAlignment.RIGHT);

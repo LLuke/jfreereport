@@ -103,7 +103,7 @@
   "(label | string-field | number-field | date-field |
 	imageref | image-field | imageurl-field | rectangle |
   resource-label | resource-field | line |
-  drawable-field | shape-field)*">
+  drawable-field | shape-field | band)*">
 
 
 <!--
@@ -224,7 +224,7 @@
 <!ATTLIST reportfooter
   ownpage        (%boolean;)    #IMPLIED
   height         CDATA          #IMPLIED
-   %basicform;
+  %basicform;
   %fontdef;
 >
 
@@ -337,6 +337,20 @@
   %basicform;
   %fontdef;
 >
+
+<!--
+
+  Defines a sub band.
+
+  -->
+<!ELEMENT band ( %itemelements; )>
+<!ATTLIST band
+  height         CDATA          #IMPLIED
+  %position;
+  %basicform;
+  %fontdef;
+>
+
 
 <!--
 

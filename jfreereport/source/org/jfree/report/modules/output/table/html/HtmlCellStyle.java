@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellStyle.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
+ * $Id: HtmlCellStyle.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public class HtmlCellStyle
    * @param horizontalAlignment the horizontal content alignment.
    * @throws NullPointerException if any of the parameters is null.
    */
-  public HtmlCellStyle(final FontDefinition font, final Color fontColor, 
+  public HtmlCellStyle(final FontDefinition font, final Color fontColor,
                        final ElementAlignment verticalAlignment,
                        final ElementAlignment horizontalAlignment)
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.7 2003/08/22 20:27:20 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.8 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * --------
@@ -54,7 +54,7 @@ public class ExportPluginFactory
 {
   /**
    * A class to manage the plugin module definitions.
-   * 
+   *
    * @author Thomas Morgner
    */
   private static class PluginDefinition implements Comparable
@@ -68,13 +68,13 @@ public class ExportPluginFactory
 
     /**
      * Creates a new plugin definition.
-     * 
+     *
      * @param pluginClass the plugin class that should be defined.
      * @param preference the preference of the class in the menu.
-     * @param enableKey the report configuration key that triggers the visiblity 
+     * @param enableKey the report configuration key that triggers the visiblity
      * of the plugin.
      */
-    public PluginDefinition(Class pluginClass, String preference, String enableKey)
+    public PluginDefinition(final Class pluginClass, final String preference, final String enableKey)
     {
       if (pluginClass == null)
       {
@@ -97,20 +97,20 @@ public class ExportPluginFactory
      * Checks whether this plugin definition is equal to the given object.
      * The object will be considered equal if it is a plugin definition pointing
      * to the same export plugin.
-     *  
+     *
      * @see java.lang.Object#equals(java.lang.Object)
-     * 
+     *
      * @param o the object to compare
      * @return true, if the object is equal, false otherwise.
      */
-    public boolean equals(Object o)
+    public boolean equals(final Object o)
     {
       if (this == o)
-      { 
+      {
         return true;
       }
       if (!(o instanceof PluginDefinition))
-      { 
+      {
         return false;
       }
 
@@ -125,9 +125,9 @@ public class ExportPluginFactory
     }
 
     /**
-     * Computes an hashcode for this export plugin. 
+     * Computes an hashcode for this export plugin.
      * @see java.lang.Object#hashCode()
-     * 
+     *
      * @return the computed hashcode.
      */
     public int hashCode()
@@ -137,7 +137,7 @@ public class ExportPluginFactory
 
     /**
      * Returns the export plugin class defined for this plugin definition.
-     * 
+     *
      * @return the export plugin class.
      */
     public Class getPluginClass()
@@ -148,7 +148,7 @@ public class ExportPluginFactory
     /**
      * Returns the preference of the plugin in the menu. The preference is used
      * to order the export plugins.
-     * 
+     *
      * @return the preference of the plugin in the menu
      */
     public String getPreference()
@@ -159,7 +159,7 @@ public class ExportPluginFactory
     /**
      * Returns the enable key of the report configuration which defines whether this
      * plugin will be visible.
-     * 
+     *
      * @return the enable key.
      */
     public String getEnableKey()
@@ -179,13 +179,13 @@ public class ExportPluginFactory
      * @throws ClassCastException if the specified object's type prevents it
      *         from being compared to this Object.
      */
-    public int compareTo(Object o)
+    public int compareTo(final Object o)
     {
       if (this == o)
-      { 
+      {
         return 0;
       }
-      PluginDefinition def = (PluginDefinition) o;
+      final PluginDefinition def = (PluginDefinition) o;
       return getPreference().compareTo(def.getPreference());
     }
   }
@@ -195,7 +195,7 @@ public class ExportPluginFactory
 
   /**
    * Returns the singleton instance of the export plugin factory.
-   * 
+   *
    * @return the factory instance
    */
   public static ExportPluginFactory getInstance()
@@ -207,8 +207,8 @@ public class ExportPluginFactory
     return factory;
   }
 
-  /** The list of all known export plugins. */ 
-  private ArrayList exportPlugins;
+  /** The list of all known export plugins. */
+  private final ArrayList exportPlugins;
 
   /**
    * DefaultConstructor. Defines a new export plugin factory.
@@ -220,17 +220,17 @@ public class ExportPluginFactory
   }
 
   /**
-   * Registers the given plugin in this factory. 
-   * 
+   * Registers the given plugin in this factory.
+   *
    * @param plugin the implementing class of the export plugin
    * @param preference the preference in the menu
    * @param enableKey the enable key of the export plugin to trigger the visiblity
    */
-  public void registerPlugin (Class plugin, String preference, String enableKey)
+  public void registerPlugin(final Class plugin, final String preference, final String enableKey)
   {
     if (ExportPlugin.class.isAssignableFrom(plugin))
     {
-      PluginDefinition def = new PluginDefinition(plugin, preference, enableKey);
+      final PluginDefinition def = new PluginDefinition(plugin, preference, enableKey);
       if (exportPlugins.contains(def) == false)
       {
         exportPlugins.add(def);
@@ -288,15 +288,15 @@ public class ExportPluginFactory
   public ArrayList createExportPlugIns
       (final PreviewProxy proxy, final ReportConfiguration config, final Worker worker)
   {
-    PluginDefinition[] def = (PluginDefinition[])
+    final PluginDefinition[] def = (PluginDefinition[])
         exportPlugins.toArray(new PluginDefinition[exportPlugins.size()]);
 
     Arrays.sort(def);
-    ArrayList retval = new ArrayList();
+    final ArrayList retval = new ArrayList();
 
     for (int i = 0; i < def.length; i++)
     {
-      PluginDefinition definition = def[i];
+      final PluginDefinition definition = def[i];
       if (isPluginEnabled(config, definition.getEnableKey()))
       {
         final ExportPlugin ep = createPlugIn(proxy, definition.getPluginClass());
@@ -308,8 +308,8 @@ public class ExportPluginFactory
       }
       else
       {
-        Log.debug(new Log.SimpleMessage("Plugin ", definition.getPluginClass(), 
-                  " is not enabled."));
+        Log.debug(new Log.SimpleMessage("Plugin ", definition.getPluginClass(),
+            " is not enabled."));
       }
     }
     return retval;

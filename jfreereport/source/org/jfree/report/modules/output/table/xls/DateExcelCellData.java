@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateExcelCellData.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: DateExcelCellData.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 public class DateExcelCellData extends ExcelCellData
 {
   /** the date stored in this cell. */
-  private Date date;
+  private final Date date;
 
   /**
    * Creates a new instance.

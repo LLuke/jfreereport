@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import java.io.Serializable;
 import org.jfree.report.ImageReference;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
+
 /**
  * Paints a AWT or Swing Component. The component must be contained in the
  * dataRow.
@@ -59,7 +60,7 @@ import org.jfree.report.event.ReportEvent;
  * @author Thomas Morgner
  */
 public class PaintDynamicComponentFunction extends AbstractFunction
- implements Serializable, PageEventListener
+    implements Serializable, PageEventListener
 {
   /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
@@ -169,11 +170,11 @@ public class PaintDynamicComponentFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageCanceled(ReportEvent event)
+  public void pageCanceled(final ReportEvent event)
   {
     image = null;
   }
-  
+
   /**
    * Receives notification that a group has started.
    *

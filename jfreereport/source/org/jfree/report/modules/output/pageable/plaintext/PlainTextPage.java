@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextPage.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.3 2003/08/24 15:05:18 taqua Exp $
  *
  * Changes
  * -------
@@ -55,19 +55,19 @@ public class PlainTextPage
   protected class TextDataChunk
   {
     /** The text that should be printed. */
-    private String text;
+    private final String text;
 
     /** The font definition stores the font style. */
-    private FontDefinition font;
+    private final FontDefinition font;
 
     /** the column where the text starts. */
-    private int x;
+    private final int x;
 
     /** the row of the text. */
-    private int y;
+    private final int y;
 
     /** the text width. */
-    private int width;
+    private final int width;
 
     /**
      * Creates a new text data chunk.
@@ -78,7 +78,7 @@ public class PlainTextPage
      * @param y the row of the text
      * @param w the number of characters of the text that should be printed.
      */
-    protected TextDataChunk(final String text, final FontDefinition font, 
+    protected TextDataChunk(final String text, final FontDefinition font,
                             final int x, final int y, final int w)
     {
       this.text = text;
@@ -163,7 +163,7 @@ public class PlainTextPage
    * @param encoding the document encoding for this page.
    * @param commandSet the commandset for printing and formating the text.
    */
-  public PlainTextPage(final int w, final int h, 
+  public PlainTextPage(final int w, final int h,
                        final PrinterCommandSet commandSet, final String encoding)
   {
     if (w <= 0)
@@ -213,7 +213,7 @@ public class PlainTextPage
    * @param text the text that should be printed.
    * @param format the fontdefinition used to format the text.
    */
-  public void addTextChunk(final int x, final int y, 
+  public void addTextChunk(final int x, final int y,
                            final int w, final String text, final FontDefinition format)
   {
     if (x < 0)

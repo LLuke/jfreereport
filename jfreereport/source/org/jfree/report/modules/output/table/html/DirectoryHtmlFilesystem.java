@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.3 2003/08/20 17:24:34 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.4 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -83,16 +83,16 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
   private FileOutputStream rootStream;
 
   /** A collection of all used file names for generating external content. */
-  private HashMap usedNames;
+  private final HashMap usedNames;
 
   /** A collection of all referenced external content. */
-  private HashMap usedURLs;
+  private final HashMap usedURLs;
 
   /** A collection of all previously encoded images. */
-  private HashMap encodedImages;
+  private final HashMap encodedImages;
 
   /** the image comparator used to compare generated images. */
-  private ImageComparator comparator;
+  private final ImageComparator comparator;
 
   /** A flag indicating whether to copy external references into the data directory. */
   private boolean copyExternalImages;
@@ -375,7 +375,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * Returns, whether to use digest image compare instead of internal
    * java methods. This method reduces memory consumption for the price
    * of complexer computations (and reduced execution speed).
-   * 
+   *
    * @return true, if the digest compare should be used, false otherwise.
    */
   public boolean isDigestImageCompare()
@@ -387,11 +387,11 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * Defines, whether to use digest image compare instead of internal
    * java methods. This method reduces memory consumption for the price
    * of complexer computations (and reduced execution speed).
-   * 
-   * @param digestImageCompare set to true, if the digest compare should 
+   *
+   * @param digestImageCompare set to true, if the digest compare should
    * be used, false otherwise.
    */
-  public void setDigestImageCompare(boolean digestImageCompare)
+  public void setDigestImageCompare(final boolean digestImageCompare)
   {
     this.digestImageCompare = digestImageCompare;
   }

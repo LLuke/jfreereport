@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFExportResources.java,v 1.4 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PDFExportResources.java,v 1.5 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.pdf.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * English language resource for the PDF export GUI.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PDFExportResources extends JFreeReportResources
@@ -74,10 +74,10 @@ public class PDFExportResources extends JFreeReportResources
         {"action.save-as.description", "Save to PDF format"},
         {"action.save-as.mnemonic", new Integer(KeyEvent.VK_A)},
         {"action.save-as.accelerator", createMenuKeystroke(KeyEvent.VK_S)},
-        {"action.save-as.small-icon", 
-          getIcon("org/jfree/report/modules/gui/base/resources/SaveAs16.gif")},
-        {"action.save-as.icon", 
-          getIcon("org/jfree/report/modules/gui/base/resources/SaveAs24.gif")},
+        {"action.save-as.small-icon",
+         getIcon("org/jfree/report/modules/gui/base/resources/SaveAs16.gif")},
+        {"action.save-as.icon",
+         getIcon("org/jfree/report/modules/gui/base/resources/SaveAs24.gif")},
 
         {"error.processingfailed.title", "Report processing failed"},
         {"error.processingfailed.message", "Error on processing this report: {0}"},

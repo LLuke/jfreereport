@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.6 2003/08/19 21:01:34 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.7 2003/08/24 15:06:42 taqua Exp $
  *
  * Changes
  * -------
@@ -80,7 +80,7 @@ public final class BaseFontFactory extends DefaultFontMapper
   /** The default 'PDF auto init' property value. */
   public static final String ITEXT_FONT_AUTOINIT_DEFAULT = ITEXT_FONT_AUTOINIT_LAZY;
 
-  /** 
+  /**
    * The iText font encoding specifies how to encode the text of iText documents
    * for the given font.
    */
@@ -95,7 +95,7 @@ public final class BaseFontFactory extends DefaultFontMapper
   private static BaseFontFactory fontFactory;
 
   /** Fonts stored by name. */
-  private Properties fontsByName;
+  private final Properties fontsByName;
 
   /** A flag to check whether this factory is initialized. */
   private boolean initialized;
@@ -160,12 +160,12 @@ public final class BaseFontFactory extends DefaultFontMapper
   /** The singleton instance of the font path filter. */
   private static final FontPathFilter FONTPATHFILTER = new FontPathFilter();
 
-  /** 
+  /**
    * The storage path for the config storage provider to cache the registered
    * font names.
    */
   private static final String FONTS_STORAGE_PATH = "registered_itext_fonts";
-  
+
   /**
    * Creates a new factory.
    */
@@ -181,7 +181,7 @@ public final class BaseFontFactory extends DefaultFontMapper
    */
   public synchronized void registerDefaultFontPath()
   {
-    ConfigStorage store = ConfigFactory.getInstance().getSystemStorage();
+    final ConfigStorage store = ConfigFactory.getInstance().getSystemStorage();
     if (store.existsProperties(FONTS_STORAGE_PATH))
     {
       try
@@ -239,7 +239,7 @@ public final class BaseFontFactory extends DefaultFontMapper
     }
     catch (ConfigStoreException cse)
     {
-      Log.info ("Failed to store font configuration. This error is non-fatal, " +
+      Log.info("Failed to store font configuration. This error is non-fatal, " +
           "the font configuration will be rebuild from scratch, if necessary.");
     }
     initialized = true;
@@ -401,7 +401,7 @@ public final class BaseFontFactory extends DefaultFontMapper
 
   /**
    * Checks, whether the factory is initialized.
-   * 
+   *
    * @return true, if the factory is initalized, false otherwise.
    */
   public boolean isInitialized()

@@ -28,9 +28,9 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources_de.java,v 1.3 2003/08/19 13:37:23 taqua Exp $
+ * $Id: ConverterResources_de.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
  *
@@ -42,7 +42,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * German language resource for the report converter GUI.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ConverterResources_de extends JFreeReportResources

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceReferenceTableModel.java,v 1.2 2003/07/23 16:02:20 taqua Exp $
+ * $Id: DataSourceReferenceTableModel.java,v 1.3 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -60,13 +60,13 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
   private class DataSourceDescriptionRow
   {
     /** The factory. */
-    private DataSourceFactory datasourceFactory;
+    private final DataSourceFactory datasourceFactory;
 
     /** The key. */
-    private String datasourceName;
+    private final String datasourceName;
 
     /** The implementing class for the datasource name. */
-    private Class implementingClass;
+    private final Class implementingClass;
 
     /**
      * Creates a new row.
@@ -123,7 +123,7 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
       };
 
   /** Storage for the rows. */
-  private ArrayList rows;
+  private final ArrayList rows;
 
   /**
    * Creates a new table model.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GeneralPathObjectDescription.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: GeneralPathObjectDescription.java,v 1.2 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -66,6 +66,7 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
 
   /** The number of maximum points in a path iterator segment. */
   private static final int MAX_POINTS = 6;
+
   /**
    * DefaultConstructor. Initializes this object description to produce
    * GeneralPath objects.

@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageRenderFunction.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: ImageRenderFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -55,8 +55,8 @@ import org.jfree.report.function.AbstractFunction;
  *
  * @author Thomas Morgner
  */
-public class ImageRenderFunction extends AbstractFunction 
-  implements Serializable, PageEventListener
+public class ImageRenderFunction extends AbstractFunction
+    implements Serializable, PageEventListener
 {
   /** The function value. */
   private transient ImageReference functionValue;
@@ -94,7 +94,7 @@ public class ImageRenderFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageFinished(ReportEvent event)
+  public void pageFinished(final ReportEvent event)
   {
   }
 
@@ -107,7 +107,7 @@ public class ImageRenderFunction extends AbstractFunction
   {
     return functionValue;
   }
-  
+
 
   /**
    * Receives notification that a page was canceled by the ReportProcessor.
@@ -116,7 +116,7 @@ public class ImageRenderFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageCanceled(ReportEvent event)
+  public void pageCanceled(final ReportEvent event)
   {
     functionValue = null;
   }

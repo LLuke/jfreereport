@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportRootHandler.java,v 1.5 2003/08/20 17:24:35 taqua Exp $
+ * $Id: ReportRootHandler.java,v 1.6 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,21 +43,21 @@ import org.xml.sax.SAXException;
 
 /**
  * The report root handler provides a special initialization method
- * to resolve the definition of the current parser instance. It is 
- * guaranteed that the init method is called as soon as the object 
+ * to resolve the definition of the current parser instance. It is
+ * guaranteed that the init method is called as soon as the object
  * was created.
- * 
+ *
  * @author Thomas Morgner
  */
 public interface ReportRootHandler extends ElementDefinitionHandler
 {
   /**
-   * Initializes the report root handler and finishes the report 
+   * Initializes the report root handler and finishes the report
    * initalisation.
-   * 
+   *
    * @param parser the report parser to be used to generate the report.
    * @param tagName the tagname that caused the creation of this parser
    * @throws SAXException if an error occurs.
    */
-  public void init (ReportParser parser, String tagName) throws SAXException;
+  public void init(ReportParser parser, String tagName) throws SAXException;
 }

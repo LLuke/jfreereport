@@ -42,7 +42,7 @@
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/output/csv/*"/>
       <classpath>
@@ -92,7 +92,7 @@
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/output/xml/*"/>
       <classpath>
@@ -160,7 +160,7 @@
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/output/support/itext/*"/>
       <classpath>

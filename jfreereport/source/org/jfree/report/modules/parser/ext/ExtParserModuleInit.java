@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModuleInit.java,v 1.5 2003/08/20 17:24:35 taqua Exp $
+ * $Id: ExtParserModuleInit.java,v 1.6 2003/08/24 15:08:20 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.parser.ext;
@@ -47,7 +47,7 @@ import org.jfree.report.modules.parser.base.ParserEntityResolver;
 
 /**
  * Performs the module initialization for the extended parser.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ExtParserModuleInit implements ModuleInitializer
@@ -67,14 +67,14 @@ public class ExtParserModuleInit implements ModuleInitializer
   }
 
   /**
-   * Initializes the ext-parser and registers it at the parser base module. 
+   * Initializes the ext-parser and registers it at the parser base module.
    * @see org.jfree.report.modules.ModuleInitializer#performInit()
-   * 
+   *
    * @throws ModuleInitializeException if an error ocurres.
    */
   public void performInit() throws ModuleInitializeException
   {
-    ParserEntityResolver res = ParserEntityResolver.getDefaultResolver();
+    final ParserEntityResolver res = ParserEntityResolver.getDefaultResolver();
 
     final URL urlExtReportDTD = res.getClass().getResource(
         "/org/jfree/report/modules/parser/ext/resources/extreport.dtd");

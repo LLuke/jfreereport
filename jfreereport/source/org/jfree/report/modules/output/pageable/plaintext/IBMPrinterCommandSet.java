@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IBMPrinterCommandSet.java,v 1.4 2003/08/18 18:28:01 taqua Exp $
+ * $Id: IBMPrinterCommandSet.java,v 1.5 2003/08/24 15:05:18 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @param defaultCPI the characters-per-inch for the output.
    * @param defaultLPI the lines-per-inch for the output.
    */
-  public IBMPrinterCommandSet(final OutputStream out, final PageFormat format, 
+  public IBMPrinterCommandSet(final OutputStream out, final PageFormat format,
                               final int defaultCPI, final int defaultLPI)
   {
     super(out, format, defaultCPI, defaultLPI);
@@ -163,7 +163,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @param strike true, if the text should be strikethrough, false otherwise
    * @throws java.io.IOException if there was an IOError while writing the command
    */
-  public void setFontStyle(final boolean bold, final boolean italic, 
+  public void setFontStyle(final boolean bold, final boolean italic,
                            final boolean underline, final boolean strike)
       throws IOException
   {

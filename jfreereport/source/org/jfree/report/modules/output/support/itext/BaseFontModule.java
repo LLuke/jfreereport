@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontModule.java,v 1.3 2003/08/19 21:01:34 taqua Exp $
+ * $Id: BaseFontModule.java,v 1.4 2003/08/24 15:06:42 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.output.support.itext;
@@ -43,12 +43,12 @@ import org.jfree.report.modules.ModuleInitializeException;
 
 /**
  * The module definition for the itext font processing module.
- * 
+ *
  * @author Thomas Morgner
  */
 public class BaseFontModule extends AbstractModule
 {
-  /** 
+  /**
    * DefaultConstructor. Loads the module specification.
    * @throws ModuleInitializeException if an error occured.
    */
@@ -61,7 +61,7 @@ public class BaseFontModule extends AbstractModule
    * Initialialize the font factory when this class is loaded and the system property
    * of  <code>"org.jfree.report.modules.output.pageable.itext.PDFOutputTarget.AutoInit"</code> is
    * set to <code>true</code>.
-   * 
+   *
    * @see org.jfree.report.modules.Module#initialize()
    * @throws ModuleInitializeException if an error occured.
    */

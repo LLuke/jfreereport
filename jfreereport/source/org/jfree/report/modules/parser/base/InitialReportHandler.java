@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
 
- * $Id: InitialReportHandler.java,v 1.4 2003/08/20 17:24:35 taqua Exp $
+ * $Id: InitialReportHandler.java,v 1.5 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -65,11 +65,11 @@ public class InitialReportHandler implements ElementDefinitionHandler
 
   /**
    * Registers a new handler for the given tagname.
-   * 
+   *
    * @param tagname the tagname for which this handler class should be registered.
    * @param handlerClass the handler class name.
    */
-  public static void registerHandler (String tagname, String handlerClass)
+  public static void registerHandler(final String tagname, final String handlerClass)
   {
     if (definedHandlers == null)
     {
@@ -79,12 +79,12 @@ public class InitialReportHandler implements ElementDefinitionHandler
   }
 
   /**
-   * Removes the tagname and its assigned handler from the list of 
+   * Removes the tagname and its assigned handler from the list of
    * registered report definition handlers.
-   * 
+   *
    * @param tagname the tagname that should be removed from the list.
    */
-  public static void unregisterHandler (String tagname)
+  public static void unregisterHandler(final String tagname)
   {
     if (definedHandlers == null)
     {
@@ -95,12 +95,12 @@ public class InitialReportHandler implements ElementDefinitionHandler
 
   /**
    * Looks up a handler for the given tagname.
-   *  
+   *
    * @param tagname the tagname for which we search an handler.
    * @return the handler class name or null, if no handler is registered
    * for this tag.
    */
-  public static String getRegisteredHandler (String tagname)
+  public static String getRegisteredHandler(final String tagname)
   {
     if (definedHandlers == null)
     {
@@ -110,7 +110,7 @@ public class InitialReportHandler implements ElementDefinitionHandler
   }
 
   /** the parser that is used to coordinate the report parsing process. */
-  private Parser parser;
+  private final Parser parser;
 
   /** THe currently processed document element tag. */
   private String activeRootTag;
@@ -127,16 +127,16 @@ public class InitialReportHandler implements ElementDefinitionHandler
 
   /**
    * Tries to resolve the handler and to load the specified class.
-   * 
+   *
    * @param className the name of the handler implementation.
    * @return the instantiated handler
    * @throws SAXException if the handler could not be loaded.
    */
-  private ReportRootHandler loadHandler (String className) throws SAXException
+  private ReportRootHandler loadHandler(final String className) throws SAXException
   {
     try
     {
-      Class handler = Class.forName(className);
+      final Class handler = Class.forName(className);
       return (ReportRootHandler) handler.newInstance();
     }
     catch (Exception e)
@@ -146,6 +146,7 @@ public class InitialReportHandler implements ElementDefinitionHandler
           "this report definition type is missing.");
     }
   }
+
   /**
    * Callback to indicate that an XML element start tag has been read by the parser.
    * Selects the parser profile depending on the current tag name.
@@ -158,7 +159,7 @@ public class InitialReportHandler implements ElementDefinitionHandler
   public void startElement(final String tagName, final Attributes attrs)
       throws SAXException
   {
-    String activeHandler = getRegisteredHandler(tagName);
+    final String activeHandler = getRegisteredHandler(tagName);
     if (activeHandler == null)
     {
       throw new SAXException("No handler registered for the tag '" + tagName + "'");

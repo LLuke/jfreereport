@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.7 2003/08/18 18:27:59 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.8 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -82,19 +82,19 @@ import javax.swing.UIManager;
 import org.jfree.layout.CenterLayout;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionButton;
+import org.jfree.report.modules.gui.base.components.ActionConcentrator;
 import org.jfree.report.modules.gui.base.components.ActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionMenuItem;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.FloatingButtonEnabler;
-import org.jfree.report.modules.gui.base.components.ActionConcentrator;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
-import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.Worker;
-import org.jfree.xml.ParserUtil;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.xml.ParserUtil;
 
 /**
  * A preview proxy.
@@ -590,7 +590,7 @@ public class PreviewProxyBase extends JComponent
   protected class ZoomSetAction extends AbstractActionDowngrade
   {
     /** The zoom factor index. */
-    private int zoomFactor;
+    private final int zoomFactor;
 
     /**
      * Creates a new action.
@@ -702,7 +702,7 @@ public class PreviewProxyBase extends JComponent
   private Dimension preferredSize;
 
   /** A preview proxy. */
-  private PreviewProxy proxy;
+  private final PreviewProxy proxy;
 
   /** A list of all export plugins known to this preview proxy base. */
   private ArrayList exportPlugIns;
@@ -710,7 +710,7 @@ public class PreviewProxyBase extends JComponent
   /** A collection of actions, keyed by the export plugin. */
   private HashMap pluginActions;
 
-  private ReportProgressDialog progressDialog;
+  private final ReportProgressDialog progressDialog;
 
   private boolean lockInterface;
   private ActionConcentrator zoomActionConcentrator;
@@ -740,7 +740,7 @@ public class PreviewProxyBase extends JComponent
     this.exportWorker = new Worker();
     this.exportWorker.setName("preview-dialog-export-worker: report: " + report.getName());
 
-    boolean largeIconsProperty =
+    final boolean largeIconsProperty =
         report.getReportConfiguration().getConfigProperty
         (LARGE_ICONS_ENABLED_PROPERTY, "true").equals("true");
     setLargeIconsEnabled(largeIconsProperty);
@@ -796,7 +796,7 @@ public class PreviewProxyBase extends JComponent
     setLayout(new BorderLayout());
     setDoubleBuffered(false);
 
-    boolean toolbarFloatableProperty =
+    final boolean toolbarFloatableProperty =
         report.getReportConfiguration().getConfigProperty
         (TOOLBAR_FLOATABLE_PROPERTY, "true").equals("true");
     toolbar = createToolBar(toolbarFloatableProperty);
@@ -1373,7 +1373,7 @@ public class PreviewProxyBase extends JComponent
     zoomMenu.add(new JSeparator());
     for (int i = 0; i < ZOOM_FACTORS.length; i++)
     {
-      Action action = new ZoomSetAction(i);
+      final Action action = new ZoomSetAction(i);
       zoomActionConcentrator.addAction(action);
       zoomMenu.add(createMenuItem(action));
     }
@@ -1443,7 +1443,7 @@ public class PreviewProxyBase extends JComponent
    * @param floatable defines, whether the toolbar will be initially floatable.
    * @return A completely initialized JToolBar.
    */
-  protected JToolBar createToolBar(boolean floatable)
+  protected JToolBar createToolBar(final boolean floatable)
   {
     final JToolBar toolbar = new JToolBar();
     toolbar.setFloatable(floatable);
@@ -1659,7 +1659,7 @@ public class PreviewProxyBase extends JComponent
     RepaintManager.setCurrentManager(null);
   }
 
-  public void close ()
+  public void close()
   {
     dispose();
     exportWorker.finish();
@@ -1932,7 +1932,7 @@ public class PreviewProxyBase extends JComponent
     return lockInterface;
   }
 
-  public void setLockInterface(boolean lockInterface)
+  public void setLockInterface(final boolean lockInterface)
   {
     this.lockInterface = lockInterface;
     if (lockInterface == true)
@@ -1945,12 +1945,12 @@ public class PreviewProxyBase extends JComponent
     }
   }
 
-  public void addRepaginationListener (RepaginationListener listener)
+  public void addRepaginationListener(final RepaginationListener listener)
   {
     reportPane.addRepaginationListener(listener);
   }
 
-  public void removeRepaginationListener (RepaginationListener listener)
+  public void removeRepaginationListener(final RepaginationListener listener)
   {
     reportPane.removeRepaginationListener(listener);
   }

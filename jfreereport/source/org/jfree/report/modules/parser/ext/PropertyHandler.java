@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyHandler.java,v 1.5 2003/08/18 18:28:02 taqua Exp $
+ * $Id: PropertyHandler.java,v 1.6 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ public class PropertyHandler extends AbstractExtReportParserHandler
   public static final String NAME_ATTR = "name";
 
   /** The properties. */
-  private Properties properties;
+  private final Properties properties;
 
   /** The string buffer. */
   private StringBuffer buffer = null;
@@ -73,7 +73,7 @@ public class PropertyHandler extends AbstractExtReportParserHandler
   private String name;
 
   /** The character entity parser. */
-  private CharacterEntityParser entityParser;
+  private final CharacterEntityParser entityParser;
 
   /** The base of the comment hint path. */
   private CommentHintPath base;
@@ -120,7 +120,7 @@ public class PropertyHandler extends AbstractExtReportParserHandler
     }
     buffer = new StringBuffer();
 
-    CommentHintPath path = base.getInstance();
+    final CommentHintPath path = base.getInstance();
     path.addName(name);
     getReport().getReportBuilderHints().putHint
         (path, CommentHandler.OPEN_TAG_COMMENT, getReportParser().getComments());

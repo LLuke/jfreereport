@@ -28,12 +28,12 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: PrintExportResources_si.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PrintExportResources_si.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.print.resources;
@@ -43,7 +43,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * Slovenian language resource for the printing export GUI.
- * 
+ *
  * @author Sergey M Mozgovoi
  */
 public class PrintExportResources_si extends JFreeReportResources
@@ -76,7 +76,7 @@ public class PrintExportResources_si extends JFreeReportResources
 
         {"error.printfailed.message", "Napaka pri tiskanju poro\u010Dila: {0}"},
         {"error.printfailed.title", "Napaka pri tiskanju"},
-        
+
       };
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleChangeSupport.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: StyleChangeSupport.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ public class StyleChangeSupport
   private ArrayList listeners;
 
   /** The source. */
-  private ElementStyleSheet source;
+  private final ElementStyleSheet source;
 
   /**
    * Creates a new support object.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.2 2003/08/24 15:08:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -58,7 +58,7 @@ import org.jfree.report.util.PageFormatFactory;
 public class PageSetupPlugin extends AbstractExportPlugin
 {
   /** Localised resources. */
-  private ResourceBundle resources;
+  private final ResourceBundle resources;
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =

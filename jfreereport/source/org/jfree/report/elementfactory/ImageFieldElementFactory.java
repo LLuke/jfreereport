@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageFieldElementFactory.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: ImageFieldElementFactory.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.elementfactory;
@@ -51,7 +51,7 @@ import org.jfree.ui.FloatDimension;
 /**
  * A factory to define ImageFieldElements. These elements expect an java.awt.Image
  * or an ImageReference instance as content and will display the content in the report.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ImageFieldElementFactory extends ImageElementFactory
@@ -69,7 +69,7 @@ public class ImageFieldElementFactory extends ImageElementFactory
 
   /**
    * Returns the field name from where to read the content of the element.
-   * 
+   *
    * @return the field name.
    */
   public String getFieldname()
@@ -80,19 +80,19 @@ public class ImageFieldElementFactory extends ImageElementFactory
   /**
    * Defines the field name from where to read the content of the element.
    * The field name is the name of a datarow column.
-   * 
+   *
    * @param fieldname the field name.
    */
-  public void setFieldname(String fieldname)
+  public void setFieldname(final String fieldname)
   {
     this.fieldname = fieldname;
   }
 
   /**
    * Creates the image element based on the defined properties.
-   *  
+   *
    * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   * 
+   *
    * @return the created image element.
    * @throws IllegalStateException if the fieldname is not set.
    */
@@ -186,7 +186,7 @@ public class ImageFieldElementFactory extends ImageElementFactory
                                                        final boolean scale,
                                                        final boolean keepAspectRatio)
   {
-    ImageFieldElementFactory factory = new ImageFieldElementFactory();
+    final ImageFieldElementFactory factory = new ImageFieldElementFactory();
     factory.setName(name);
     factory.setName(name);
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));

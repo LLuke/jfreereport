@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TotalCalculationFunction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: TotalCalculationFunction.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class TotalCalculationFunction extends AbstractFunction implements Serial
   public static final String GROUP_PROPERTY = "group";
 
   /** A list of results. */
-  private ArrayList storedResults;
+  private final ArrayList storedResults;
 
   /** The current index. */
   private int currentIndex;

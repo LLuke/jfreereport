@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.5 2003/08/18 18:27:58 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.6 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -156,10 +156,10 @@ public class StraightToPDF
   public static void main(final String[] args)
   {
     ReportConfiguration.getGlobalConfig().setDisableLogging(true);
-    
+
     try
     {
-      //final StraightToPDF demo = 
+      //final StraightToPDF demo =
       new StraightToPDF(System.getProperty("user.home") + "/test99.pdf");
       System.exit(0);
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.7 2003/08/20 17:24:35 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.8 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -75,9 +75,9 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
   /** The style collection. */
   private StyleSheetCollection styleCollection;
 
-  /** 
-   * The comment hint path is used to store xml comments in the 
-   * report builder hints collection. 
+  /**
+   * The comment hint path is used to store xml comments in the
+   * report builder hints collection.
    */
   private CommentHintPath commentKey;
 
@@ -133,15 +133,15 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
         catch (ClassNotFoundException cnfe)
         {
           throw new ParseException
-            ("The specified class for key " + name + " was not valid: " + className,
-              getParser().getLocator());
+              ("The specified class for key " + name + " was not valid: " + className,
+                  getParser().getLocator());
         }
         catch (Exception e)
         {
           // ignore me ...
           // if the specified class could not be loaded, the default implementation
           // will be used.
-          Log.warn ("Non-fatal Exception while parsing: ", e);
+          Log.warn("Non-fatal Exception while parsing: ", e);
         }
       }
 
@@ -167,9 +167,9 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
         // ignore me ...
       }
 
-      CompoundStyleKeyHandler factory = 
-        new CompoundStyleKeyHandler(getReportParser(), tagName, name, c);
-      CommentHintPath path = createCommentPath(factory.getStyleKey());
+      final CompoundStyleKeyHandler factory =
+          new CompoundStyleKeyHandler(getReportParser(), tagName, name, c);
+      final CommentHintPath path = createCommentPath(factory.getStyleKey());
       factory.setCommentPath(path);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       basicFactory = factory;
@@ -256,13 +256,13 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
   /**
    * Creates a new comment hint path for the given name by appending
    * it to a copy of the current path.
-   * 
+   *
    * @param name the name of the new path segment.
    * @return the new comment path.
    */
-  private CommentHintPath createCommentPath (Object name)
+  private CommentHintPath createCommentPath(final Object name)
   {
-    CommentHintPath path = commentKey.getInstance();
+    final CommentHintPath path = commentKey.getInstance();
     path.addName(name);
     return path;
   }

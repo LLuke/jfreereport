@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationFactory.java,v 1.3 2003/07/23 16:02:20 taqua Exp $
+ * $Id: OperationFactory.java,v 1.4 2003/08/24 15:03:59 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 public class OperationFactory
 {
   /** Storage for the modules. */
-  private ArrayList modules;
+  private final ArrayList modules;
 
   /**
    * Default constructor.

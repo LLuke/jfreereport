@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollection.java,v 1.6 2003/08/20 17:24:35 taqua Exp $
+ * $Id: TemplateCollection.java,v 1.7 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -53,7 +53,7 @@ import org.jfree.util.Configuration;
 public class TemplateCollection implements Serializable
 {
   /** Storage for the templates. */
-  private HashMap templates;
+  private final HashMap templates;
 
   /** The parser/report configuration. */
   private Configuration config;
@@ -161,27 +161,27 @@ public class TemplateCollection implements Serializable
   }
 
   /**
-   * Indicated whether an other object is equal to this one. 
+   * Indicated whether an other object is equal to this one.
    * @see java.lang.Object#equals(java.lang.Object)
-   * 
+   *
    * @param o the other object.
    * @return true, if the object is equal, false otherwise.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
-    { 
+    {
       return true;
     }
     if (!(o instanceof TemplateCollection))
-    { 
+    {
       return false;
     }
 
     final TemplateCollection templateCollection = (TemplateCollection) o;
 
     if (!templates.equals(templateCollection.templates))
-    { 
+    {
       return false;
     }
 
@@ -189,9 +189,9 @@ public class TemplateCollection implements Serializable
   }
 
   /**
-   * Computes an hashcode for this factory. 
+   * Computes an hashcode for this factory.
    * @see java.lang.Object#hashCode()
-   * 
+   *
    * @return the hashcode.
    */
   public int hashCode()

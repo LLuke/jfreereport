@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StreamHtmlFilesystem.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: StreamHtmlFilesystem.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ import org.jfree.report.ImageReference;
 public class StreamHtmlFilesystem implements HtmlFilesystem
 {
   /** the output stream. */
-  private OutputStream root;
+  private final OutputStream root;
 
   /**
    * Creates a new StreamHtmlFilesystem for the given output stream.

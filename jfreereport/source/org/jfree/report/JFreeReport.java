@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.5 2003/08/18 18:27:57 taqua Exp $
+ * $Id: JFreeReport.java,v 1.6 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -132,7 +132,7 @@ public class JFreeReport implements Cloneable, Serializable
 
   /** Key for the 'report definition content base' property. */
   public static final String REPORT_DEFINITION_CONTENTBASE = "report.definition.contentbase";
-  
+
   /** Information about the JFreeReport class library. */
   private static JFreeReportInfo info;
 
@@ -170,7 +170,7 @@ public class JFreeReport implements Cloneable, Serializable
   private ItemBand itemBand;
 
   /** The report configuration. */
-  private ReportConfiguration reportConfiguration;
+  private final ReportConfiguration reportConfiguration;
 
   /** The stylesheet collection used for this report. */
   private StyleSheetCollection styleSheetCollection;
@@ -547,7 +547,7 @@ public class JFreeReport implements Cloneable, Serializable
    * @return the group or null if not found.
    * @see GroupList#getGroupByName
    */
-  public Group getGroupByName (final String name)
+  public Group getGroupByName(final String name)
   {
     return groups.getGroupByName(name);
   }

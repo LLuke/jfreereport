@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PathIteratorSegmentObjectDescription.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: PathIteratorSegmentObjectDescription.java,v 1.2 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -162,7 +162,7 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
    * predefined PathIterator types.
    */
   private String createSegmentType(final int segment)
-    throws IllegalArgumentException
+      throws IllegalArgumentException
   {
     switch (segment)
     {

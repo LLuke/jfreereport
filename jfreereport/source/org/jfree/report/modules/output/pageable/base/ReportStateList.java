@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.4 2003/08/18 18:28:00 taqua Exp $
+ * $Id: ReportStateList.java,v 1.5 2003/08/24 15:03:52 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,7 @@ public class ReportStateList
   private static final class MasterList extends WeakReferenceList
   {
     /** The master list. */
-    private ReportStateList master;
+    private final ReportStateList master;
 
     /**
      * Creates a new master list.
@@ -249,13 +249,14 @@ public class ReportStateList
 
   /**
    * Returns the used report processor.
-   * 
+   *
    * @return the used report processor.
    */
   protected PageableReportProcessor getReportProcessor()
   {
     return proc;
   }
+
   /**
    * Returns the number of elements in this list.
    *

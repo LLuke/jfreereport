@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultModuleInfo.java,v 1.4 2003/08/19 13:37:23 taqua Exp $
+ * $Id: DefaultModuleInfo.java,v 1.5 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,7 +40,7 @@ package org.jfree.report.modules;
 
 /**
  * Provides a default implementation of the module info interface.
- * 
+ *
  * @author Thomas Morgner
  */
 public class DefaultModuleInfo implements ModuleInfo
@@ -63,7 +63,7 @@ public class DefaultModuleInfo implements ModuleInfo
 
   /**
    * Creates a new module info an initalizes it with the given values.
-   * 
+   *
    * @param moduleClass the class name of the module implementation holding the module
    * description.
    * @param majorVersion the modules major version.
@@ -71,8 +71,8 @@ public class DefaultModuleInfo implements ModuleInfo
    * @param patchLevel the modules patchlevel.
    * @throws NullPointerException if the moduleClass is null.
    */
-  public DefaultModuleInfo(String moduleClass, String majorVersion,
-                           String minorVersion, String patchLevel)
+  public DefaultModuleInfo(final String moduleClass, final String majorVersion,
+                           final String minorVersion, final String patchLevel)
   {
     if (moduleClass == null)
     {
@@ -86,9 +86,9 @@ public class DefaultModuleInfo implements ModuleInfo
 
   /**
    * Returns the class name of the module described implementation.
-   *  
+   *
    * @see org.jfree.report.modules.ModuleInfo#getModuleClass()
-   * 
+   *
    * @return the module class name.
    */
   public String getModuleClass()
@@ -98,10 +98,10 @@ public class DefaultModuleInfo implements ModuleInfo
 
   /**
    * Defines the module class name.
-   * 
+   *
    * @param moduleClass the class name of the module implementation.
    */
-  public void setModuleClass(String moduleClass)
+  public void setModuleClass(final String moduleClass)
   {
     if (moduleClass == null)
     {
@@ -111,10 +111,10 @@ public class DefaultModuleInfo implements ModuleInfo
   }
 
   /**
-   * Returns the major version of the module. This property may be 
+   * Returns the major version of the module. This property may be
    * null to indicate that the module version is not specified.
    * @see org.jfree.report.modules.ModuleInfo#getMajorVersion()
-   * 
+   *
    * @return the major version.
    */
   public String getMajorVersion()
@@ -123,22 +123,22 @@ public class DefaultModuleInfo implements ModuleInfo
   }
 
   /**
-   * Defines the major version of the module. This property may be 
+   * Defines the major version of the module. This property may be
    * null to indicate that the module version is not specified.
    * @see org.jfree.report.modules.ModuleInfo#getMajorVersion()
-   * 
+   *
    * @param majorVersion the major version.
    */
-  public void setMajorVersion(String majorVersion)
+  public void setMajorVersion(final String majorVersion)
   {
     this.majorVersion = majorVersion;
   }
 
   /**
-   * Returns the minor version of the module. This property may be 
+   * Returns the minor version of the module. This property may be
    * null to indicate that the module version is not specified.
    * @see org.jfree.report.modules.ModuleInfo#getMajorVersion()
-   * 
+   *
    * @return the minor version.
    */
   public String getMinorVersion()
@@ -147,22 +147,22 @@ public class DefaultModuleInfo implements ModuleInfo
   }
 
   /**
-   * Defines the minor version of the module. This property may be 
+   * Defines the minor version of the module. This property may be
    * null to indicate that the module version is not specified.
    * @see org.jfree.report.modules.ModuleInfo#getMajorVersion()
-   * 
+   *
    * @param minorVersion the minor version.
    */
-  public void setMinorVersion(String minorVersion)
+  public void setMinorVersion(final String minorVersion)
   {
     this.minorVersion = minorVersion;
   }
 
   /**
-   * Returns the patch level version of the module. This property may be 
+   * Returns the patch level version of the module. This property may be
    * null to indicate that the module version is not specified.
    * @see org.jfree.report.modules.ModuleInfo#getMajorVersion()
-   * 
+   *
    * @return the patch level version.
    */
   public String getPatchLevel()
@@ -171,31 +171,31 @@ public class DefaultModuleInfo implements ModuleInfo
   }
 
   /**
-   * Defines the patch level version of the module. This property may be 
+   * Defines the patch level version of the module. This property may be
    * null to indicate that the module version is not specified.
    * @see org.jfree.report.modules.ModuleInfo#getMajorVersion()
-   * 
+   *
    * @param patchLevel the patch level version.
    */
-  public void setPatchLevel(String patchLevel)
+  public void setPatchLevel(final String patchLevel)
   {
     this.patchLevel = patchLevel;
   }
 
   /**
    * Two moduleinfos are equal,if they have the same module class.
-   * 
+   *
    * @param o the other object to compare.
    * @return true, if the module points to the same module, false otherwise.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
-    if (this == o) 
+    if (this == o)
     {
       return true;
     }
     if (!(o instanceof DefaultModuleInfo))
-    { 
+    {
       return false;
     }
 
@@ -209,28 +209,28 @@ public class DefaultModuleInfo implements ModuleInfo
   }
 
   /**
-   * Computes an hashcode for this module information. 
+   * Computes an hashcode for this module information.
    * @see java.lang.Object#hashCode()
-   * 
+   *
    * @return the hashcode.
    */
   public int hashCode()
   {
-    int result;
+    final int result;
     result = moduleClass.hashCode();
     return result;
   }
 
   /**
    * Returns a string representation of this module information.
-   *  
+   *
    * @see java.lang.Object#toString()
-   *  
+   *
    * @return a string describing this class.
    */
-  public String toString ()
+  public String toString()
   {
-    StringBuffer buffer = new StringBuffer();
+    final StringBuffer buffer = new StringBuffer();
     buffer.append(getClass().getName());
     buffer.append("={ModuleClass=");
     buffer.append(getModuleClass());

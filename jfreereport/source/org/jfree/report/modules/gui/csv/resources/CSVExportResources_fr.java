@@ -28,12 +28,12 @@
  * Original Author:  PR;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportResources_fr.java,v 1.6 2003/08/19 13:37:23 taqua Exp $
+ * $Id: CSVExportResources_fr.java,v 1.7 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.csv.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * French language resource for the CSV export GUI.
- * 
+ *
  * @author PR
  */
 public class CSVExportResources_fr extends JFreeReportResources
@@ -84,8 +84,8 @@ public class CSVExportResources_fr extends JFreeReportResources
         {"csvexportdialog.errorTitle", "Erreur"},
         {"csvexportdialog.targetIsEmpty",
          "Veuillez spécifier un nom de fichier pour le fichier CSV."},
-        {"csvexportdialog.targetIsNoFile", 
-          "Le fichier cible spécifié n'est pas un fichier ordinaire."},
+        {"csvexportdialog.targetIsNoFile",
+         "Le fichier cible spécifié n'est pas un fichier ordinaire."},
         {"csvexportdialog.targetIsNotWritable",
          "Le fichier sélectionner est en lecture seule."},
         {"csvexportdialog.targetOverwriteConfirmation",
@@ -105,12 +105,12 @@ public class CSVExportResources_fr extends JFreeReportResources
         {"csvexportdialog.export.printed_elements", "Eléments imprimés  (Layouted Data)"},
         {"csvexportdialog.strict-layout",
          "Effectuer une disposition stricte pendant l'export."},
-         
+
         {"error.processingfailed.title", "Echec du traitement du Report"},
         {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
         {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
         {"error.savefailed.title", "Erreur durant l'enregistrement"},
-        
+
         {"csvexportdialog.csv-file-description", "Fichiers séparés par une virgule."},
 
       };

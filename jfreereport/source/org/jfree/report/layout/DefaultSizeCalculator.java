@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public class DefaultSizeCalculator implements SizeCalculator
     private boolean isBuggyVersion;
 
     /** a flag that checks whether aliasing is used to draw the contents on Graphics objects. */
-    private boolean isAliased;
+    private final boolean isAliased;
 
     /** Cache the created FontRenderContext. FRC is read only. */
     private FontRenderContext fontRenderContext;
@@ -101,8 +101,8 @@ public class DefaultSizeCalculator implements SizeCalculator
       final String myText = "A simple text with some characters to calculate the length.";
 
       final double wAlias = font.getStringBounds(myText, 0, myText.length(), frcAlias).getWidth();
-      final double wNoAlias = 
-        font.getStringBounds(myText, 0, myText.length(), frcNoAlias).getWidth();
+      final double wNoAlias =
+          font.getStringBounds(myText, 0, myText.length(), frcNoAlias).getWidth();
       isBuggyVersion = (wAlias != wNoAlias);
       final boolean buggyOverride = ReportConfiguration.getGlobalConfig().isFontRendererBuggy();
       Log.debug("This is a buggy version of the font-renderer context: " + isBuggyVersion);

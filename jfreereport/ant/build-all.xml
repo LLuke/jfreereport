@@ -22,7 +22,7 @@
     <!-- compile the source -->
     <javac srcdir="source"
       destdir="build"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}" target="${build.target}">
       <exclude name="org/jfree/report/demo/**"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}"/>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.5 2003/08/18 21:36:39 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.6 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * --------
@@ -258,7 +258,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
   private static Properties defaultEncodings;
 
   /** Storage for the encodings. */
-  private ArrayList encodings;
+  private final ArrayList encodings;
 
   /** Storage for registered listeners. */
   private ArrayList listDataListeners;
@@ -368,18 +368,15 @@ public class EncodingComboBoxModel implements ComboBoxModel
   public void setSelectedItem(final Object anItem)
   {
     selectedObject = anItem;
-    if (anItem != null)
+    if (anItem instanceof String)
     {
-      if (anItem != null && anItem instanceof String)
+      final int size = getSize();
+      for (int i = 0; i < size; i++)
       {
-        final int size = getSize();
-        for (int i = 0; i < size; i++)
+        if (anItem.equals(getElementAt(i)))
         {
-          if (anItem.equals(getElementAt(i)))
-          {
-            selectedIndex = i;
-            return;
-          }
+          selectedIndex = i;
+          return;
         }
       }
     }
@@ -495,12 +492,12 @@ public class EncodingComboBoxModel implements ComboBoxModel
     }
     listDataListeners.remove(l);
   }
-  
+
   /**
-   * Adds the basic encodings from the international JDK to the default 
+   * Adds the basic encodings from the international JDK to the default
    * encoding names collection.
    */
-  private static void addBasicEncodings ()
+  private static void addBasicEncodings()
   {
     // basic encoding set, base encodings
     defaultEncodings.put("ASCII", "American Standard Code for Information Interchange");
@@ -555,10 +552,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
   }
 
   /**
-   * Adds the extended encodings from the international JDK to the default 
+   * Adds the extended encodings from the international JDK to the default
    * encoding names collection.
    */
-  private static void addExtendedEncodings ()
+  private static void addExtendedEncodings()
   {
     //extended encoding set, contained in lib/charsets.jar
     // international JDK only ...
@@ -660,7 +657,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
     defaultEncodings.put("MacThai", "Macintosh Thai");
     defaultEncodings.put("MacTurkish", "Macintosh Turkish");
     defaultEncodings.put("MacUkraine", "Macintosh Ukraine");
-    
+
   }
 
   /**

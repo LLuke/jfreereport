@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.4 2003/08/18 18:28:01 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.5 2003/08/24 15:03:59 taqua Exp $
  *
  * Changes
  * -------
@@ -77,10 +77,10 @@ public class LogicalPageImpl implements LogicalPage
   private OutputTarget outputTarget;
 
   /** An array of physical pages. */
-  private PhysicalPage[] physicalPage;
+  private final PhysicalPage[] physicalPage;
 
   /** The physical page width. */
-  private int physicalPageWidth;
+  private final int physicalPageWidth;
 
   /** The logical page format. */
   private PageFormat pageFormat;
@@ -92,14 +92,14 @@ public class LogicalPageImpl implements LogicalPage
   private boolean closed;
 
   /** The operation factory. */
-  private OperationFactory operationFactory;
+  private final OperationFactory operationFactory;
 
   /**
    * A flag that indicates whether or not to add comments to the generated
    * physical operations. This is a usefull debugging option, but you won't have
    * fun with it elsewhere.
    */
-  private boolean addOperationComments;
+  private final boolean addOperationComments;
 
   /**
    * Creates a new logical page, where the physical page format is equal to the
@@ -374,8 +374,8 @@ public class LogicalPageImpl implements LogicalPage
       final Element e = elements[i];
       if (e instanceof Band)
       {
-        final Rectangle2D bbounds = (Rectangle2D) 
-          e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+        final Rectangle2D bbounds = (Rectangle2D)
+            e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
         spoolBand(translateSubRect(bounds, bbounds), (Band) e, spool);
       }
       else
@@ -396,10 +396,10 @@ public class LogicalPageImpl implements LogicalPage
    */
   private Rectangle2D translateSubRect(final Rectangle2D outer, final Rectangle2D inner)
   {
-    final float w = 
-      (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
-    final float h = 
-      (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
+    final float w =
+        (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
+    final float h =
+        (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
     final Rectangle2D rc = new Rectangle2D.Float(
         (float) (outer.getX() + inner.getX()),
         (float) (outer.getY() + inner.getY()),

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractModule.java,v 1.5 2003/08/19 13:37:23 taqua Exp $
+ * $Id: AbstractModule.java,v 1.6 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,7 +47,7 @@ import java.util.ArrayList;
 /**
  * The abstract module provides a default implementation of the module interface.
  * <p>
- * The module can be specified in an external property file. The file name of this 
+ * The module can be specified in an external property file. The file name of this
  * specification defaults to "module.properties". This file is no real property file,
  * it follows a more complex rule set.
  * <p>
@@ -56,7 +56,7 @@ import java.util.ArrayList;
  * are indented with at least one whitespace.
  * <p>
  * The first section is always the module info and contains the basic module
- * properties like name, version and a short description. 
+ * properties like name, version and a short description.
  * <p>
  * <pre>
  * module-info:
@@ -84,14 +84,14 @@ import java.util.ArrayList;
  * </pre>
  * <p>
  * The property module references to the module implementation of the module package.
- * 
+ *
  * @author Thomas Morgner
  */
 public abstract class AbstractModule extends DefaultModuleInfo implements Module
 {
   /**
    * The reader helper provides a pushback interface for the reader to read and
-   * buffer  complete lines. 
+   * buffer  complete lines.
    * @author Thomas Morgner
    */
   private static class ReaderHelper
@@ -99,14 +99,14 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     /** The line buffer containing the last line read. */
     private String buffer;
     /** The reader from which to read the text. */
-    private BufferedReader reader;
+    private final BufferedReader reader;
 
     /**
      * Creates a new reader helper for the given buffered reader.
-     * 
+     *
      * @param reader the buffered reader that is the source of the text.
      */
-    public ReaderHelper(BufferedReader reader) 
+    public ReaderHelper(final BufferedReader reader)
     {
       this.reader = reader;
     }
@@ -114,11 +114,11 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     /**
      * Checks, whether the reader contains a next line. Returns false if the end
      * of the stream has been reached.
-     *  
+     *
      * @return true, if there is a next line to read, false otherwise.
      * @throws IOException if an error occures.
      */
-    public boolean hasNext () throws IOException
+    public boolean hasNext() throws IOException
     {
       if (buffer == null)
       {
@@ -129,12 +129,12 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
 
     /**
      * Returns the next line.
-     * 
+     *
      * @return the next line.
      */
-    public String next () 
+    public String next()
     {
-      String line = buffer;
+      final String line = buffer;
       buffer = null;
       return line;
     }
@@ -142,21 +142,21 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     /**
      * Pushes the given line back into the buffer. Only one line can be contained in
      * the buffer at one time.
-     * 
+     *
      * @param line the line that should be pushed back into the buffer.
      */
-    public void pushBack (String line)
+    public void pushBack(final String line)
     {
       buffer = line;
     }
 
     /**
      * Reads the next line skipping all comment lines.
-     * 
+     *
      * @return the next line, or null if no line can be read.
      * @throws IOException if an IO error occures.
      */
-    protected String readLine () throws IOException
+    protected String readLine() throws IOException
     {
       String line = reader.readLine();
       while (line != null && (line.length() == 0 || line.startsWith("#")))
@@ -169,7 +169,7 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
 
     /**
      * Closes the reader.
-     * 
+     *
      * @throws IOException if an IOError occurs.
      */
     public void close() throws IOException
@@ -197,16 +197,16 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
   {
     setModuleClass(this.getClass().getName());
   }
-  
+
   /**
    * Loads the default module description from the file "module.properties". This file
    * must be in the same package as the implementing class.
-   * 
+   *
    * @throws ModuleInitializeException if an error occurs.
    */
-  protected void loadModuleInfo () throws ModuleInitializeException
+  protected void loadModuleInfo() throws ModuleInitializeException
   {
-    InputStream in = getClass().getResourceAsStream("module.properties");
+    final InputStream in = getClass().getResourceAsStream("module.properties");
     if (in == null)
     {
       throw new ModuleInitializeException
@@ -218,12 +218,12 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
   /**
    * Loads the module descriptiong from the given input stream. The module description
    * must conform to the rules define in the class description. The file must be encoded
-   * with "ISO-8859-1" (like property files). 
-   * 
+   * with "ISO-8859-1" (like property files).
+   *
    * @param in the input stream from where to read the file
    * @throws ModuleInitializeException if an error occurs.
    */
-  protected void loadModuleInfo (InputStream in) throws ModuleInitializeException
+  protected void loadModuleInfo(final InputStream in) throws ModuleInitializeException
   {
     try
     {
@@ -232,26 +232,26 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
         throw new NullPointerException
             ("Given InputStream is null.");
       }
-      ReaderHelper rh = new ReaderHelper(new BufferedReader
+      final ReaderHelper rh = new ReaderHelper(new BufferedReader
           (new InputStreamReader(in, "ISO-8859-1")));
 
-      ArrayList optionalModules = new ArrayList();
-      ArrayList dependendModules = new ArrayList();
+      final ArrayList optionalModules = new ArrayList();
+      final ArrayList dependendModules = new ArrayList();
 
       while (rh.hasNext())
       {
-        String lastLineRead = rh.next();
+        final String lastLineRead = rh.next();
         if (lastLineRead.startsWith("module-info:"))
         {
           readModuleInfo(rh);
         }
         else if (lastLineRead.startsWith("depends:"))
         {
-          dependendModules.add (readExternalModule (rh));
+          dependendModules.add(readExternalModule(rh));
         }
         else if (lastLineRead.startsWith("optional:"))
         {
-          optionalModules.add (readExternalModule(rh));
+          optionalModules.add(readExternalModule(rh));
         }
         else
         {
@@ -275,17 +275,15 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
 
   /**
    * Reads a multiline value the stream. This will read the stream until
-   * a new key is found or the end of the file is reached.  
-   * 
+   * a new key is found or the end of the file is reached.
+   *
    * @param reader the reader from where to read.
    * @param firstLine the first line (which was read elsewhere).
    * @return the complete value, never null
-   * @throws IOException if an error occures
    */
-  private String readValue (ReaderHelper reader, String firstLine)
-    throws IOException
+  private String readValue(final ReaderHelper reader, String firstLine)
   {
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     while (firstLine != null && parseKey(firstLine) == null)
     {
       if (b.length() != 0)
@@ -300,16 +298,16 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
 
   /**
    * Reads the module definition header. This header contains information about
-   * the module itself. 
-   * 
+   * the module itself.
+   *
    * @param reader the reader from where to read the content.
    * @throws IOException if an error occures
    */
-  private void readModuleInfo (ReaderHelper reader) throws IOException
+  private void readModuleInfo(final ReaderHelper reader) throws IOException
   {
     while (reader.hasNext())
     {
-      String lastLineRead = reader.next();
+      final String lastLineRead = reader.next();
 
       if (Character.isWhitespace(lastLineRead.charAt(0)) == false)
       {
@@ -318,12 +316,12 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
         return;
       }
 
-      String line = lastLineRead.trim();
-      String key = parseKey(line);
+      final String line = lastLineRead.trim();
+      final String key = parseKey(line);
       if (key != null)
       {
         // parse error: Non data line does not contain a colon
-        String b = readValue(reader, parseValue(line.trim()));
+        final String b = readValue(reader, parseValue(line.trim()));
 
         if (key.equals("name"))
         {
@@ -356,13 +354,13 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
   /**
    * Parses an string to find the key section of the line. This section ends with
    * an colon.
-   * 
+   *
    * @param line the line which to parse
    * @return the key or null if no key is found.
    */
-  private String parseKey (String line)
+  private String parseKey(final String line)
   {
-    int idx = line.indexOf(':');
+    final int idx = line.indexOf(':');
     if (idx == -1)
     {
       return null;
@@ -371,14 +369,14 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
   }
 
   /**
-   * Parses the value section of the given line. 
-   * 
+   * Parses the value section of the given line.
+   *
    * @param line the line that should be parsed
    * @return the value, never null
    */
-  private String parseValue (String line)
+  private String parseValue(final String line)
   {
-    int idx = line.indexOf(':');
+    final int idx = line.indexOf(':');
     if (idx == -1)
     {
       return line;
@@ -386,26 +384,26 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     if ((idx + 1) == line.length())
     {
       return "";
-    } 
+    }
     return line.substring(idx + 1);
   }
 
   /**
    * Reads an external module description. This describes either an optional or
    * a required module.
-   * 
+   *
    * @param reader the reader from where to read the module
    * @return the read module, never null
    * @throws IOException if an error occures.
    */
-  private DefaultModuleInfo readExternalModule (ReaderHelper reader)
+  private DefaultModuleInfo readExternalModule(final ReaderHelper reader)
       throws IOException
   {
-    DefaultModuleInfo mi = new DefaultModuleInfo();
+    final DefaultModuleInfo mi = new DefaultModuleInfo();
 
     while (reader.hasNext())
     {
-      String lastLineRead = reader.next();
+      final String lastLineRead = reader.next();
 
       if (Character.isWhitespace(lastLineRead.charAt(0)) == false)
       {
@@ -414,11 +412,11 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
         return mi;
       }
 
-      String line = lastLineRead.trim();
-      String key = parseKey(line);
+      final String line = lastLineRead.trim();
+      final String key = parseKey(line);
       if (key != null)
       {
-        String b = readValue(reader, parseValue(line));
+        final String b = readValue(reader, parseValue(line));
         if (key.equals("module"))
         {
           mi.setModuleClass(b);
@@ -442,9 +440,9 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
 
   /**
    * Returns the name of this module.
-   *  
+   *
    * @see org.jfree.report.modules.Module#getName()
-   * 
+   *
    * @return the module name
    */
   public String getName()
@@ -454,18 +452,18 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
 
   /**
    * Defines the name of the module.
-   * 
+   *
    * @param name the module name.
    */
-  protected void setName(String name)
+  protected void setName(final String name)
   {
     this.name = name;
   }
 
   /**
-   * Returns the module description. 
+   * Returns the module description.
    * @see org.jfree.report.modules.Module#getDescription()
-   * 
+   *
    * @return the description of the module.
    */
   public String getDescription()
@@ -475,19 +473,19 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
 
   /**
    * Defines the description of the module.
-   * 
+   *
    * @param description the module's desciption.
    */
-  protected void setDescription(String description)
+  protected void setDescription(final String description)
   {
     this.description = description;
   }
 
   /**
    * Returns the producer of the module.
-   *  
+   *
    * @see org.jfree.report.modules.Module#getProducer()
-   * 
+   *
    * @return the producer.
    */
   public String getProducer()
@@ -497,48 +495,48 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
 
   /**
    * Defines the producer of the module.
-   * 
+   *
    * @param producer the producer.
    */
-  protected void setProducer(String producer)
+  protected void setProducer(final String producer)
   {
     this.producer = producer;
   }
 
   /**
    * Returns a copy of the required modules array. This array contains all
-   * description of the modules that need to be present to make this module work.  
+   * description of the modules that need to be present to make this module work.
    * @see org.jfree.report.modules.Module#getRequiredModules()
-   * 
+   *
    * @return an array of all required modules.
    */
   public ModuleInfo[] getRequiredModules()
   {
-    ModuleInfo[] retval = new ModuleInfo[requiredModules.length];
+    final ModuleInfo[] retval = new ModuleInfo[requiredModules.length];
     System.arraycopy(requiredModules, 0, retval, 0, requiredModules.length);
     return retval;
   }
 
   /**
    * Returns a copy of the required modules array. This array contains all
-   * description of the optional modules that may improve the modules functonality.  
+   * description of the optional modules that may improve the modules functonality.
    * @see org.jfree.report.modules.Module#getRequiredModules()
-   * 
+   *
    * @return an array of all required modules.
    */
   public ModuleInfo[] getOptionalModules()
   {
-    ModuleInfo[] retval = new ModuleInfo[optionalModules.length];
+    final ModuleInfo[] retval = new ModuleInfo[optionalModules.length];
     System.arraycopy(optionalModules, 0, retval, 0, optionalModules.length);
     return retval;
   }
 
   /**
    * Defines the required module descriptions for this module.
-   * 
+   *
    * @param requiredModules the required modules.
    */
-  protected void setRequiredModules(ModuleInfo[] requiredModules)
+  protected void setRequiredModules(final ModuleInfo[] requiredModules)
   {
     this.requiredModules = new ModuleInfo[requiredModules.length];
     System.arraycopy(requiredModules, 0, this.requiredModules, 0, requiredModules.length);
@@ -546,24 +544,24 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
 
   /**
    * Defines the optional module descriptions for this module.
-   * 
+   *
    * @param optionalModules the optional modules.
    */
-  protected void setOptionalModules(ModuleInfo[] optionalModules)
+  protected void setOptionalModules(final ModuleInfo[] optionalModules)
   {
     this.optionalModules = new ModuleInfo[optionalModules.length];
     System.arraycopy(optionalModules, 0, this.optionalModules, 0, optionalModules.length);
   }
 
   /**
-   * Returns a string representation of this module. 
+   * Returns a string representation of this module.
    * @see java.lang.Object#toString()
-   * 
+   *
    * @return the string representation of this module for debugging purposes.
    */
-  public String toString ()
+  public String toString()
   {
-    StringBuffer buffer = new StringBuffer();
+    final StringBuffer buffer = new StringBuffer();
     buffer.append("Module : ");
     buffer.append(getName());
     buffer.append("\n");
@@ -593,7 +591,7 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
    * @param name the name of the library class.
    * @return true, if the class could be loaded, false otherwise.
    */
-  public boolean isClassLoadable (String name)
+  protected static boolean isClassLoadable(final String name)
   {
     try
     {
@@ -612,7 +610,7 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
    */
   public void configure()
   {
-    InputStream in = getClass().getResourceAsStream("configuration.properties");
+    final InputStream in = getClass().getResourceAsStream("configuration.properties");
     if (in == null)
     {
       return;
@@ -623,24 +621,26 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
   /**
    * Tries to load an module initializer and uses this initializer to initialize
    * the module.
-   * 
+   *
    * @param classname the class name of the initializer.
    * @throws ModuleInitializeException if an error occures
    */
-  public void performExternalInitialize (String classname)
-    throws ModuleInitializeException
+  protected void performExternalInitialize(final String classname)
+      throws ModuleInitializeException
   {
-    ModuleInitializer mi = null;
     try
     {
       Class c = Thread.currentThread().getContextClassLoader().loadClass(classname);
-      mi = (ModuleInitializer) c.newInstance();
+      ModuleInitializer mi = (ModuleInitializer) c.newInstance();
+      mi.performInit();
+    }
+    catch (ModuleInitializeException mie)
+    {
+      throw mie;
     }
     catch (Exception e)
     {
       throw new ModuleInitializeException("Failed to load specified initializer class.", e);
     }
-    mi.performInit();
-
   }
 }

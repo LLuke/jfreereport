@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.3 2003/07/12 14:00:43 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.4 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -359,7 +359,7 @@ public class ReportConfiguration implements Configuration, Serializable
   }
 
   /** Storage for the configuration properties. */
-  private Properties configuration;
+  private final Properties configuration;
 
   /** The parent configuration (null if this is the root configuration). */
   private transient ReportConfiguration parentConfiguration;

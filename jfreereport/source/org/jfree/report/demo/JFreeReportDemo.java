@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -114,7 +114,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
   protected class URLDemoHandler extends DemoHandler
   {
     /** The report definition URL. */
-    private String definitionURL;
+    private final String definitionURL;
 
     /**
      * Creates a new handler.
@@ -241,10 +241,10 @@ public class JFreeReportDemo extends AbstractDemoFrame
   private AboutFrame aboutFrame;
 
   /** A tabbed pane for displaying the sample data sets. */
-  private JTabbedPane tabbedPane;
+  private final JTabbedPane tabbedPane;
 
   /** A list of the available demos. */
-  private List availableDemos;
+  private final List availableDemos;
 
   /**
    * Constructs a frame containing sample reports created using the JFreeReport Class Library.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultLayoutSupport.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: DefaultLayoutSupport.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ import org.jfree.report.style.FontDefinition;
 public class DefaultLayoutSupport implements LayoutSupport
 {
   /** The content factory. */
-  private DefaultContentFactory contentFactory;
+  private final DefaultContentFactory contentFactory;
 
   /** A singleton instance of the DefaultLayoutSupport. */
   private static DefaultLayoutSupport singleton;

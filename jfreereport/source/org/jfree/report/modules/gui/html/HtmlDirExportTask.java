@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: HtmlDirExportTask.java,v 1.1 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 24.08.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.html;
@@ -41,21 +41,21 @@ package org.jfree.report.modules.gui.html;
 import java.io.File;
 import java.io.IOException;
 
-import org.jfree.report.modules.output.table.html.HtmlProcessor;
-import org.jfree.report.modules.output.table.html.DirectoryHtmlFilesystem;
-import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.gui.base.ExportTask;
+import org.jfree.report.modules.gui.base.ReportProgressDialog;
+import org.jfree.report.modules.output.table.html.DirectoryHtmlFilesystem;
+import org.jfree.report.modules.output.table.html.HtmlProcessor;
 
 public class HtmlDirExportTask extends ExportTask
 {
-  private ReportProgressDialog progressDialog;
-  private String fileName;
-  private String dataDirectory;
-  private JFreeReport report;
+  private final ReportProgressDialog progressDialog;
+  private final String fileName;
+  private final String dataDirectory;
+  private final JFreeReport report;
 
-  public HtmlDirExportTask(String fileName, String dataDirectory,
-                        ReportProgressDialog dialog, JFreeReport report)
+  public HtmlDirExportTask(final String fileName, final String dataDirectory,
+                           final ReportProgressDialog dialog, final JFreeReport report)
   {
     this.fileName = fileName;
     this.progressDialog = dialog;

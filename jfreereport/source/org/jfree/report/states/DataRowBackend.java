@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: DataRowBackend.java,v 1.1 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class DataRowBackend implements Cloneable
 {
 
   /** The item cache. */
-  private HashMap colcache;
+  private final HashMap colcache;
 
   /** The functions (set by the report state). */
   private LevelledExpressionList functions;
@@ -86,7 +86,7 @@ public class DataRowBackend implements Cloneable
   private boolean[] columnlocks;
 
   /** if true, invalid columns get printed to the logs. */
-  private boolean warnInvalidColumns;
+  private final boolean warnInvalidColumns;
 
   /** An empty boolean array. */
   private static final boolean[] EMPTY_BOOLS = new boolean[0];
@@ -139,7 +139,7 @@ public class DataRowBackend implements Cloneable
     revalidateColumnLock();
   }
 
-  protected DataRowConnector getDataRowConnector ()
+  protected DataRowConnector getDataRowConnector()
   {
     return dataRowConnector;
   }

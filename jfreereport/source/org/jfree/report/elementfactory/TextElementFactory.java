@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextElementFactory.java,v 1.4 2003/08/22 20:27:20 taqua Exp $
+ * $Id: TextElementFactory.java,v 1.5 2003/08/24 15:13:22 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.elementfactory;
@@ -48,7 +48,7 @@ import org.jfree.report.style.ElementStyleSheet;
  * The text element factory is the abstract base class for all
  * text element factory implementations. It provides common properties
  * shared among all text elements.
- * 
+ *
  * @author Thomas Morgner
  */
 public abstract class TextElementFactory extends ElementFactory
@@ -87,8 +87,8 @@ public abstract class TextElementFactory extends ElementFactory
 
   /**
    * Returns the font embedding flag for the new text elements. Font embedding
-   * is only used in some output targets. 
-   * 
+   * is only used in some output targets.
+   *
    * @return the font embedding flag.
    */
   public Boolean getEmbedFont()
@@ -98,17 +98,17 @@ public abstract class TextElementFactory extends ElementFactory
 
   /**
    * Defines that the font should be embedded if possible.
-   * 
+   *
    * @param embedFont embedds the font if possible.
    */
-  public void setEmbedFont(Boolean embedFont)
+  public void setEmbedFont(final Boolean embedFont)
   {
     this.embedFont = embedFont;
   }
 
   /**
    * Returns the name of the font that should be used to print the text.
-   * 
+   *
    * @return the font name.
    */
   public String getFontName()
@@ -118,18 +118,18 @@ public abstract class TextElementFactory extends ElementFactory
 
   /**
    * Defines the name of the font that should be used to print the text.
-   * 
+   *
    * @param fontName the name of the font.
    */
-  public void setFontName(String fontName)
+  public void setFontName(final String fontName)
   {
     this.fontName = fontName;
   }
 
   /**
    * Returns the state of the bold flag for the font. This method may return
-   * null to indicate that that value should be inherited from the parents. 
-   * 
+   * null to indicate that that value should be inherited from the parents.
+   *
    * @return the bold-flag.
    */
   public Boolean getBold()
@@ -139,19 +139,19 @@ public abstract class TextElementFactory extends ElementFactory
 
   /**
    * Defines the state of the bold flag for the font. This value may be set to
-   * null to indicate that that value should be inherited from the parents. 
-   * 
+   * null to indicate that that value should be inherited from the parents.
+   *
    * @param bold the bold-flag.
    */
-  public void setBold(Boolean bold)
+  public void setBold(final Boolean bold)
   {
     this.bold = bold;
   }
 
   /**
    * Returns the state of the italic flag for the font. This method may return
-   * null to indicate that that value should be inherited from the parents. 
-   * 
+   * null to indicate that that value should be inherited from the parents.
+   *
    * @return the italic-flag.
    */
   public Boolean getItalic()
@@ -161,19 +161,19 @@ public abstract class TextElementFactory extends ElementFactory
 
   /**
    * Defines the state of the italic flag for the font. This value may be set to
-   * null to indicate that that value should be inherited from the parents. 
-   * 
+   * null to indicate that that value should be inherited from the parents.
+   *
    * @param italic the italic-flag.
    */
-  public void setItalic(Boolean italic)
+  public void setItalic(final Boolean italic)
   {
     this.italic = italic;
   }
 
   /**
    * Returns the state of the underline flag for the font. This method may return
-   * null to indicate that that value should be inherited from the parents. 
-   * 
+   * null to indicate that that value should be inherited from the parents.
+   *
    * @return the underline-flag.
    */
   public Boolean getUnderline()
@@ -183,19 +183,19 @@ public abstract class TextElementFactory extends ElementFactory
 
   /**
    * Defines the state of the underline flag for the font. This value may be set to
-   * null to indicate that that value should be inherited from the parents. 
-   * 
+   * null to indicate that that value should be inherited from the parents.
+   *
    * @param underline the underline-flag.
    */
-  public void setUnderline(Boolean underline)
+  public void setUnderline(final Boolean underline)
   {
     this.underline = underline;
   }
 
   /**
    * Returns the state of the strike through flag for the font. This method may return
-   * null to indicate that that value should be inherited from the parents. 
-   * 
+   * null to indicate that that value should be inherited from the parents.
+   *
    * @return the strike-through-flag.
    */
   public Boolean getStrikethrough()
@@ -205,18 +205,18 @@ public abstract class TextElementFactory extends ElementFactory
 
   /**
    * Defines the state of the strike through flag for the font. This value may be set to
-   * null to indicate that that value should be inherited from the parents. 
-   * 
+   * null to indicate that that value should be inherited from the parents.
+   *
    * @param strikethrough the strikethrough-flag.
    */
-  public void setStrikethrough(Boolean strikethrough)
+  public void setStrikethrough(final Boolean strikethrough)
   {
     this.strikethrough = strikethrough;
   }
 
   /**
    * Returns the font size in points.
-   * 
+   *
    * @return the font size.
    */
   public Integer getFontSize()
@@ -226,10 +226,10 @@ public abstract class TextElementFactory extends ElementFactory
 
   /**
    * Returns the font size in points.
-   * 
+   *
    * @param fontSize the font size.
    */
-  public void setFontSize(Integer fontSize)
+  public void setFontSize(final Integer fontSize)
   {
     this.fontSize = fontSize;
   }
@@ -237,7 +237,7 @@ public abstract class TextElementFactory extends ElementFactory
   /**
    * Returns the lineheight defined for the text element. The lineheight must be greater
    * than the font size, or this value will be ignored.
-   * 
+   *
    * @return the line height.
    */
   public Integer getLineHeight()
@@ -248,17 +248,17 @@ public abstract class TextElementFactory extends ElementFactory
   /**
    * Defines the lineheight defined for the text element. The lineheight must be greater
    * than the font size, or this value will be ignored.
-   * 
+   *
    * @param lineHeight the line height.
    */
-  public void setLineHeight(Integer lineHeight)
+  public void setLineHeight(final Integer lineHeight)
   {
     this.lineHeight = lineHeight;
   }
 
   /**
    * Returns the text color for the new element.
-   * 
+   *
    * @return the text color.
    */
   public Color getColor()
@@ -268,10 +268,10 @@ public abstract class TextElementFactory extends ElementFactory
 
   /**
    * Defines the text color for the new element.
-   * 
+   *
    * @param color the text color.
    */
-  public void setColor(Color color)
+  public void setColor(final Color color)
   {
     this.color = color;
   }
@@ -279,7 +279,7 @@ public abstract class TextElementFactory extends ElementFactory
   /**
    * Returns the font encoding used to write the text. This parameter is only
    * used by some output targets and will be ignored otherwise.
-   * 
+   *
    * @return the font encoding.
    */
   public String getEncoding()
@@ -290,17 +290,17 @@ public abstract class TextElementFactory extends ElementFactory
   /**
    * Defines the font encoding used to write the text. This parameter is only
    * used by some output targets and will be ignored otherwise.
-   * 
+   *
    * @param encoding the font encoding.
    */
-  public void setEncoding(String encoding)
+  public void setEncoding(final String encoding)
   {
     this.encoding = encoding;
   }
 
   /**
    * Returns the vertical alignment for the content of this text element.
-   * 
+   *
    * @return the vertical alignment.
    */
   public ElementAlignment getVerticalAlignment()
@@ -310,17 +310,17 @@ public abstract class TextElementFactory extends ElementFactory
 
   /**
    * Defines the vertical alignment for the content of this text element.
-   * 
+   *
    * @param verticalAlignment the vertical alignment.
    */
-  public void setVerticalAlignment(ElementAlignment verticalAlignment)
+  public void setVerticalAlignment(final ElementAlignment verticalAlignment)
   {
     this.verticalAlignment = verticalAlignment;
   }
 
   /**
    * Returns the horizontal alignment for the content of this text element.
-   * 
+   *
    * @return the horizontal alignment.
    */
   public ElementAlignment getHorizontalAlignment()
@@ -330,21 +330,21 @@ public abstract class TextElementFactory extends ElementFactory
 
   /**
    * Defines the horizontal alignment for the content of this text element.
-   * 
+   *
    * @param horizontalAlignment the vertical alignment.
    */
-  public void setHorizontalAlignment(ElementAlignment horizontalAlignment)
+  public void setHorizontalAlignment(final ElementAlignment horizontalAlignment)
   {
     this.horizontalAlignment = horizontalAlignment;
   }
 
   /**
-   * Applies the defined element style to the given stylesheet. This is a 
+   * Applies the defined element style to the given stylesheet. This is a
    * helper function to reduce the code size of the implementors.
-   * 
+   *
    * @param style the stlyesheet.
    */
-  protected void applyStyle (ElementStyleSheet style)
+  protected void applyStyle(final ElementStyleSheet style)
   {
     style.setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, getAbsolutePosition());
     style.setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT, getDynamicHeight());

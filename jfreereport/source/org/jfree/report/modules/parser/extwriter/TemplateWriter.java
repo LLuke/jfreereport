@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateWriter.java,v 1.3 2003/08/20 17:24:35 taqua Exp $
+ * $Id: TemplateWriter.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,9 +51,9 @@ import org.jfree.util.ObjectUtils;
 
 /**
  * The template writer writes a single template definition to the xml-definition
- * stream. This writer requires report builder hints to be present for all 
- * templates. 
- * 
+ * stream. This writer requires report builder hints to be present for all
+ * templates.
+ *
  * @author Thomas Morgner
  */
 public class TemplateWriter extends ObjectWriter
@@ -65,12 +65,12 @@ public class TemplateWriter extends ObjectWriter
 
   /**
    * Creates a new template writer.
-   * 
+   *
    * @param reportWriter the report writer that is used to coordinate the writing.
    * @param indentLevel the current indention level.
    * @param template the template that should be written.
    * @param parent the parent of the template.
-   * @param path the comment hint path used to resolve xml-comments from the 
+   * @param path the comment hint path used to resolve xml-comments from the
    * parser.
    */
   public TemplateWriter(final ReportWriter reportWriter, final int indentLevel,
@@ -101,7 +101,7 @@ public class TemplateWriter extends ObjectWriter
    * @throws java.io.IOException if there is an I/O problem.
    * @throws ReportWriterException if the report serialisation failed.
    */
-  public void write(Writer writer) throws IOException, ReportWriterException
+  public void write(final Writer writer) throws IOException, ReportWriterException
   {
     final Properties p = new Properties();
     p.setProperty("references", parent.getName());
@@ -116,10 +116,10 @@ public class TemplateWriter extends ObjectWriter
 
     boolean tagWritten = false;
 
-    Iterator it = template.getParameterNames();
+    final Iterator it = template.getParameterNames();
     while (it.hasNext())
     {
-      String name = (String) it.next();
+      final String name = (String) it.next();
       if (shouldWriteParameter(name))
       {
         if (tagWritten == false)
@@ -147,19 +147,19 @@ public class TemplateWriter extends ObjectWriter
    * Tests, whether the given parameter should be written in this template.
    * This will return false, if the parameter is not set, or the parent
    * contains the same value.
-   * 
+   *
    * @param parameterName the name of the parameter that should be tested
    * @return true, if the parameter should be written, false otherwise.
    */
-  private boolean shouldWriteParameter (String parameterName)
+  private boolean shouldWriteParameter(final String parameterName)
   {
-    Object parameterObject = template.getParameter(parameterName);
+    final Object parameterObject = template.getParameter(parameterName);
     if (parameterObject == null)
     {
       //Log.debug ("Should not write: Parameter is null.");
       return false;
     }
-    Object parentObject = parent.getParameter(parameterName);
+    final Object parentObject = parent.getParameter(parameterName);
     if (ObjectUtils.equalOrBothNull(parameterObject, parentObject))
     {
       //Log.debug ("Should not write: Parameter objects are equal.");

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -77,8 +77,8 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    * @param reportWriter  the report writer.
    * @param baseObject  the base object (<code>null</code> not permitted).
    * @param objectDescription  the object description (<code>null</code> not permitted)
-   * for the to be written object. The base object will be used to fill the object 
-   * description parameters. 
+   * for the to be written object. The base object will be used to fill the object
+   * description parameters.
    * @param indentLevel the current indention level.
    * @param commentHintPath the comment hint path used to store additional comments.
    * @throws ReportWriterException if no writer could be found for the given
@@ -89,9 +89,9 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
                       final ObjectDescription objectDescription,
                       final int indentLevel,
                       final CommentHintPath commentHintPath)
-    throws ReportWriterException
+      throws ReportWriterException
   {
-    this (reportWriter, objectDescription, indentLevel, commentHintPath);
+    this(reportWriter, objectDescription, indentLevel, commentHintPath);
     if (baseObject == null)
     {
       throw new NullPointerException("BaseObject is null");
@@ -108,11 +108,11 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Creates a new object writer for the given object description.
-   * 
+   *
    * @param reportWriter the report writer used to write the generated description.
-   * @param objectDescription the object description that should be written. It is 
+   * @param objectDescription the object description that should be written. It is
    * assumed, that the object description is completly initialized for writing.
-   * @param indentLevel the current code indention level 
+   * @param indentLevel the current code indention level
    * @param commentHintPath the comment hint path used to write the comments from
    * the ext-parser.
    */
@@ -159,8 +159,8 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    *
    * @param writer  the writer.
    *
-   * @throws IOException if there is an I/O problem. 
-   * @throws ReportWriterException if the object could not be written. 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if the object could not be written.
    */
   public void write(final Writer writer) throws IOException, ReportWriterException
   {
@@ -223,7 +223,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
     if (parameterDescription == null)
     {
-      Log.info("Unable to get parameter description for class: " + o.getClass());
+      Log.info("Unable to get parameter description for parameter: " + name);
     }
     return parameterDescription;
   }
@@ -271,7 +271,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
       p.setProperty("class", parameterValue.getClass().getName());
     }
 
-    CommentHintPath path = commentHintPath.getInstance();
+    final CommentHintPath path = commentHintPath.getInstance();
     path.addName(parameterName);
 
     final List parameterNames = getParameterNames(parameterDescription);
@@ -301,12 +301,12 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
   /**
    * Checks, whether the writer would use the default object type for the given
    * parameter type and value.
-   * 
+   *
    * @param parameter the defined parameter base type
-   * @param o the parameter value to test 
+   * @param o the parameter value to test
    * @return true, if the default parameter description would be used, false otherwise.
    */
-  private boolean isUseParameterObjectDescription (final Class parameter, final Object o)
+  private boolean isUseParameterObjectDescription(final Class parameter, final Object o)
   {
     final ClassFactoryCollector cc = getReportWriter().getClassFactoryCollector();
     ObjectDescription odObject = cc.getDescriptionForClass(o.getClass());
@@ -376,8 +376,8 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Returns the comment hint path object for this writer. This path is used to
-   * store comments found in the xml code. 
-   * 
+   * store comments found in the xml code.
+   *
    * @return the comment hint path object for this writer.
    */
   public CommentHintPath getCommentHintPath()

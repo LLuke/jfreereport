@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceProjects.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: OpenSourceProjects.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -52,22 +52,22 @@ import javax.swing.table.AbstractTableModel;
 public class OpenSourceProjects extends AbstractTableModel
 {
   /** The number of projects. */
-  private int projectCount;
+  private final int projectCount;
 
   /** Storage for the project categories. */
-  private String[] category;
+  private final String[] category;
 
   /** Storage for the project names. */
-  private String[] name;
+  private final String[] name;
 
   /** Storage for the project descriptions. */
-  private String[] description;
+  private final String[] description;
 
   /** Storage for the project licences. */
-  private String[] licence;
+  private final String[] licence;
 
   /** Storage for the project URLs. */
-  private String[] url;
+  private final String[] url;
 
   /**
    * Creates a new TableModel, populated with data about various software projects.

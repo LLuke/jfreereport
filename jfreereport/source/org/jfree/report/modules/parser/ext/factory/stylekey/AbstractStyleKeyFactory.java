@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractStyleKeyFactory.java,v 1.5 2003/08/20 17:24:35 taqua Exp $
+ * $Id: AbstractStyleKeyFactory.java,v 1.6 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -59,7 +59,7 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
   public static final String OBJECT_FACTORY_TAG = "object-factory";
 
   /** Storage for the keys. */
-  private HashMap knownKeys;
+  private final HashMap knownKeys;
 
   /**
    * Creates a new factory.
@@ -101,7 +101,7 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
    *
    * @return The object.
    */
-  public Object createBasicObject(final StyleKey k, final String value, 
+  public Object createBasicObject(final StyleKey k, final String value,
                                   final Class c, final ClassFactory fc)
   {
     if (k == null)
@@ -139,12 +139,12 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
    * @param c the class from where to load the stylekeys.
    * @throws SecurityException if the current security settings deny class access.
    */
-  protected void loadFromClass (Class c)
+  protected void loadFromClass(final Class c)
   {
-    Field[] fields = c.getFields();
+    final Field[] fields = c.getFields();
     for (int i = 0; i < fields.length; i++)
     {
-      Field f = fields[i];
+      final Field f = fields[i];
       if (StyleKey.class.isAssignableFrom(f.getType()) == false)
       {
         // is no instance of stylekey...
@@ -159,7 +159,7 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
         }
         catch (IllegalAccessException ex)
         {
-          Log.warn ("Unexpected Exception while loading stylekeys", ex);
+          Log.warn("Unexpected Exception while loading stylekeys", ex);
         }
       }
     }
@@ -176,27 +176,27 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
   }
 
   /**
-   * Indicated whether an other object is equal to this one. 
+   * Indicated whether an other object is equal to this one.
    * @see java.lang.Object#equals(java.lang.Object)
-   * 
+   *
    * @param o the other object.
    * @return true, if the object is equal, false otherwise.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
-    { 
+    {
       return true;
     }
     if (!(o instanceof AbstractStyleKeyFactory))
-    { 
+    {
       return false;
     }
 
     final AbstractStyleKeyFactory abstractStyleKeyFactory = (AbstractStyleKeyFactory) o;
 
     if (!knownKeys.equals(abstractStyleKeyFactory.knownKeys))
-    { 
+    {
       return false;
     }
 
@@ -204,9 +204,9 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
   }
 
   /**
-   * Computes an hashcode for this factory. 
+   * Computes an hashcode for this factory.
    * @see java.lang.Object#hashCode()
-   * 
+   *
    * @return the hashcode.
    */
   public int hashCode()

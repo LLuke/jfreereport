@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.3 2003/07/23 16:02:22 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -79,7 +79,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   private String currentEncoding;
 
   /** A character entity parser. */
-  private CharacterEntityParser entityParser;
+  private final CharacterEntityParser entityParser;
 
   /**
    * Creates a new function handler.
@@ -114,7 +114,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     }
     else if (elementName.equals(FUNCTIONS_TAG))
     {
-      startFunctions(atts);
+      // do nothing
     }
     else if (elementName.equals(PROPERTIES_TAG))
     {
@@ -236,19 +236,6 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
       currentEncoding = PROPERTY_ENCODING_TEXT;
     }
     currentText = new StringBuffer();
-  }
-
-  /**
-   * Starts a new function collection. Function collections are already contained in
-   * the report, so this function does nothing.
-   *
-   * @param atts  the element attributes.
-   *
-   * @throws SAXException if there is an error parsing the XML.
-   */
-  protected void startFunctions(final Attributes atts)
-      throws SAXException
-  {
   }
 
   /**

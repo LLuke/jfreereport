@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardTableModel.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: CardTableModel.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import javax.swing.table.AbstractTableModel;
 public class CardTableModel extends AbstractTableModel
 {
   /** Storage for the cards. */
-  private ArrayList cards;
+  private final ArrayList cards;
 
   /** The type index. */
   private static final int POS_TYPE = 0;

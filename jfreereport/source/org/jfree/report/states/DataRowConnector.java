@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowConnector.java,v 1.3 2003/08/18 18:27:57 taqua Exp $
+ * $Id: DataRowConnector.java,v 1.1 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -43,15 +43,14 @@ package org.jfree.report.states;
 
 import java.util.List;
 
+import org.jfree.report.Band;
+import org.jfree.report.DataRow;
+import org.jfree.report.Element;
+import org.jfree.report.Group;
+import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.DataRowConnectable;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.DataTarget;
-import org.jfree.report.states.DataRowBackend;
-import org.jfree.report.DataRow;
-import org.jfree.report.ReportDefinition;
-import org.jfree.report.Group;
-import org.jfree.report.Band;
-import org.jfree.report.Element;
 
 /**
  * This is the connection-proxy to the various data sources contained in the elements.

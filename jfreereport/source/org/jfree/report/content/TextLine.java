@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: TextLine.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -50,16 +50,16 @@ import org.jfree.report.layout.SizeCalculator;
 public class TextLine implements Content
 {
   /** The size calculator. */
-  private SizeCalculator sizeCalc;
+  private final SizeCalculator sizeCalc;
 
   /** The string. */
   private String content;
 
   /** The content bounds. */
-  private Rectangle2D bounds;
+  private final Rectangle2D bounds;
 
   /** The lineHeight defined for this line. */
-  private float lineHeight;
+  private final float lineHeight;
 
   /**
    * Creates a new line of text.
@@ -117,7 +117,7 @@ public class TextLine implements Content
    * @param width the width of the bounds.
    * @param height the height of the bounds.
    */
-  public void setContent(final String content, final float x, 
+  public void setContent(final String content, final float x,
                          final float y, float width, float height)
   {
     if (x < 0)

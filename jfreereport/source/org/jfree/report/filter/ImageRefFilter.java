@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageRefFilter.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: ImageRefFilter.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -109,18 +109,6 @@ public class ImageRefFilter implements DataFilter, Serializable
     }
 
     return new ImageReference((Image) o);
-  }
-
-  /**
-   * Returns the data type for the filter.
-   * <P>
-   * The type is ImageReference.
-   *
-   * @return The data type.
-   */
-  public Class getDataType()
-  {
-    return ImageReference.class;
   }
 
   /**

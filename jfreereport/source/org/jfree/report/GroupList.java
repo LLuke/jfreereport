@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: GroupList.java,v 1.4 2003/08/18 18:27:57 taqua Exp $
+ * $Id: GroupList.java,v 1.5 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes:
  * --------
@@ -77,7 +77,7 @@ public class GroupList implements Cloneable, Serializable
   private static class GroupListStyleSheetCollectionHelper extends StyleSheetCollectionHelper
   {
     /** The group list for which we handle the stylesheet collection. */
-    private GroupList groupList;
+    private final GroupList groupList;
 
     /**
      * Creates a new helper for the given group list.
@@ -95,7 +95,7 @@ public class GroupList implements Cloneable, Serializable
      */
     protected void handleRegisterStyleSheetCollection()
     {
-      Group[] cache = groupList.getGroupCache();
+      final Group[] cache = groupList.getGroupCache();
       for (int i = 0; i < cache.length; i++)
       {
         final Group g = cache[i];
@@ -109,7 +109,7 @@ public class GroupList implements Cloneable, Serializable
      */
     protected void handleUnregisterStyleSheetCollection()
     {
-      Group[] cache = groupList.getGroupCache();
+      final Group[] cache = groupList.getGroupCache();
       for (int i = 0; i < cache.length; i++)
       {
         final Group g = cache[i];
@@ -349,7 +349,7 @@ public class GroupList implements Cloneable, Serializable
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-    throws InvalidStyleSheetCollectionException
+      throws InvalidStyleSheetCollectionException
   {
     styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
@@ -364,7 +364,7 @@ public class GroupList implements Cloneable, Serializable
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-    throws InvalidStyleSheetCollectionException
+      throws InvalidStyleSheetCollectionException
   {
     styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
@@ -385,7 +385,7 @@ public class GroupList implements Cloneable, Serializable
    * there is an other stylesheet collection already registered with that element.
    */
   public void updateStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-    throws InvalidStyleSheetCollectionException
+      throws InvalidStyleSheetCollectionException
   {
     if (cache == null)
     {
@@ -397,13 +397,13 @@ public class GroupList implements Cloneable, Serializable
       g.updateStyleSheetCollection(styleSheetCollection);
     }
   }
-  
+
   /**
    * Returns a direct reference to the group cache.
-   * 
+   *
    * @return the groups of this list as array.
    */
-  protected Group[] getGroupCache ()
+  protected Group[] getGroupCache()
   {
     if (cache == null)
     {
@@ -419,9 +419,9 @@ public class GroupList implements Cloneable, Serializable
    * @param name the name of the group.
    * @return the group or null if not found.
    */
-  public Group getGroupByName (String name)
+  public Group getGroupByName(final String name)
   {
-    Group[] cache = getGroupCache();
+    final Group[] cache = getGroupCache();
     for (int i = 0; i < cache.length; i++)
     {
       if (cache[i].getName().equals(name))

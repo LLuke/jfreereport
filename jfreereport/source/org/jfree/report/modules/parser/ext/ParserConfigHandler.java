@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigHandler.java,v 1.6 2003/08/20 17:24:35 taqua Exp $
+ * $Id: ParserConfigHandler.java,v 1.7 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -89,20 +89,20 @@ public class ParserConfigHandler extends AbstractExtReportParserHandler
   public static final String CLASS_ATTRIBUTE = "class";
 
   /** A constant defining a style key factory parser hint. */
-  public static final String STYLEKEY_FACTORY_HINT = 
-    "ext.parser.parser-config.stylekeyfactories";
+  public static final String STYLEKEY_FACTORY_HINT =
+      "ext.parser.parser-config.stylekeyfactories";
   /** A constant defining an object factory parser hint. */
-  public static final String OBJECT_FACTORY_HINT = 
-    "ext.parser.parser-config.objectfactories";
+  public static final String OBJECT_FACTORY_HINT =
+      "ext.parser.parser-config.objectfactories";
   /** A constant defining a datasource factory parser hint. */
-  public static final String DATASOURCE_FACTORY_HINT = 
-    "ext.parser.parser-config.datasourcefactories";
+  public static final String DATASOURCE_FACTORY_HINT =
+      "ext.parser.parser-config.datasourcefactories";
   /** A constant defining a template factory parser hint. */
-  public static final String TEMPLATE_FACTORY_HINT = 
-    "ext.parser.parser-config.templatefactories";
+  public static final String TEMPLATE_FACTORY_HINT =
+      "ext.parser.parser-config.templatefactories";
   /** A constant defining a element factory parser hint. */
-  public static final String ELEMENT_FACTORY_HINT = 
-    "ext.parser.parser-config.elementfactories";
+  public static final String ELEMENT_FACTORY_HINT =
+      "ext.parser.parser-config.elementfactories";
 
   /**
    * The parser configuration handler.
@@ -283,13 +283,13 @@ public class ParserConfigHandler extends AbstractExtReportParserHandler
   /**
    * Adds a xml comment to the report builder hints using the given
    * parameters as last segments in a predefined comment hint path.
-   * 
+   *
    * @param tagName the tag name that holds the comment
-   * @param className the classname that describes the factory of the tag. 
+   * @param className the classname that describes the factory of the tag.
    */
-  private void addComment (String tagName, String className)
+  private void addComment(final String tagName, final String className)
   {
-    CommentHintPath path = new CommentHintPath();
+    final CommentHintPath path = new CommentHintPath();
     path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
     path.addName(ExtReportHandler.PARSER_CONFIG_TAG);
     path.addName(tagName);

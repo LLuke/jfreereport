@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportGUIModule.java,v 1.4 2003/08/19 13:37:23 taqua Exp $
+ * $Id: CSVExportGUIModule.java,v 1.5 2003/08/24 15:08:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.csv;
@@ -45,17 +45,17 @@ import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The module definition for the CSV export gui module.
- * 
+ *
  * @author Thomas Morgner
  */
 public class CSVExportGUIModule extends AbstractModule
 {
-  /** The export plugin preference key. */ 
+  /** The export plugin preference key. */
   private static final String ORDER_KEY = "org.jfree.report.modules.gui.csv.Order";
   /** The export plugin enable key. */
   private static final String ENABLE_KEY = "org.jfree.report.modules.gui.csv.Enable";
 
-  /** 
+  /**
    * DefaultConstructor. Loads the module specification.
    * @throws ModuleInitializeException if an error occured.
    */
@@ -65,14 +65,14 @@ public class CSVExportGUIModule extends AbstractModule
   }
 
   /**
-   * Initalizes the module and registes it with the export plugin factory. 
+   * Initalizes the module and registes it with the export plugin factory.
    * @see org.jfree.report.modules.Module#initialize()
-   * 
+   *
    * @throws ModuleInitializeException if an error occured.
    */
   public void initialize() throws ModuleInitializeException
   {
-    String order = ReportConfiguration.getGlobalConfig().getConfigProperty
+    final String order = ReportConfiguration.getGlobalConfig().getConfigProperty
         (ORDER_KEY, "0");
 
     ExportPluginFactory.getInstance().registerPlugin(CSVExportPlugin.class, order, ENABLE_KEY);

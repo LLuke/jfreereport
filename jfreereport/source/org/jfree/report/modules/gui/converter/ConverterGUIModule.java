@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConverterGUIModule.java,v 1.2 2003/08/19 13:37:23 taqua Exp $
+ * $Id: ConverterGUIModule.java,v 1.3 2003/08/24 15:08:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.converter;
@@ -42,15 +42,15 @@ import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 
 /**
- * Provides the module definition for the ReportConverterGUI. 
- * 
+ * Provides the module definition for the ReportConverterGUI.
+ *
  * @author Thomas Morgner
  */
 public class ConverterGUIModule extends AbstractModule
 {
   /**
    * Creates a new module definition and loads the module properties.
-   * 
+   *
    * @throws ModuleInitializeException if an error occures.
    */
   public ConverterGUIModule() throws ModuleInitializeException
@@ -60,9 +60,9 @@ public class ConverterGUIModule extends AbstractModule
 
   /**
    * This method does nothing.
-   *  
+   *
    * @see org.jfree.report.modules.Module#initialize()
-   * 
+   *
    * @throws ModuleInitializeException if an error occures.
    */
   public void initialize() throws ModuleInitializeException

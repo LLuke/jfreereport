@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.3 2003/07/23 16:02:21 taqua Exp $
+ * $Id: PhysicalPage.java,v 1.4 2003/08/24 15:03:59 taqua Exp $
  *
  * Changes
  * -------
@@ -60,13 +60,13 @@ import org.jfree.report.modules.output.pageable.base.operations.PhysicalOperatio
 public class PhysicalPage
 {
   /** Storage for band operations. */
-  private ArrayList bandOperations;
+  private final ArrayList bandOperations;
 
   /** The physical page format. */
-  private PageFormat pageFormat;
+  private final PageFormat pageFormat;
 
   /** The bounds. */
-  private Rectangle2D bounds;
+  private final Rectangle2D bounds;
 
   /**
    * Creates a new physical page.

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultExcelCellData.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
+ * $Id: DefaultExcelCellData.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 public class DefaultExcelCellData extends ExcelCellData
 {
   /** the cell value. */
-  private String value;
+  private final String value;
 
   /**
    * Creates new DefaultExcelCellData. The cell data is placed in the grid
@@ -62,7 +62,7 @@ public class DefaultExcelCellData extends ExcelCellData
    * @param style  the assigned cell style.
    * @param value  the value stored in the cell data object.
    */
-  public DefaultExcelCellData(final Rectangle2D elementBounds, 
+  public DefaultExcelCellData(final Rectangle2D elementBounds,
                               final ExcelDataCellStyle style, final String value)
   {
     super(elementBounds, style);

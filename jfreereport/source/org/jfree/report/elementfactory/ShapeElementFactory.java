@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeElementFactory.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: ShapeElementFactory.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,15 +42,15 @@ import java.awt.Color;
 import java.awt.Stroke;
 
 /**
- * A base implementation of a factory to define ShapeElements. 
- * 
+ * A base implementation of a factory to define ShapeElements.
+ *
  * @author Thomas Morgner
  */
 public abstract class ShapeElementFactory extends ElementFactory
 {
   /** The shape color. */
   private Color color;
-  /** The shape's stroke.*/ 
+  /** The shape's stroke.*/
   private Stroke stroke;
   /** Defines, whether to scale the shape to fit the element bounds. */
   private Boolean scale;
@@ -58,7 +58,7 @@ public abstract class ShapeElementFactory extends ElementFactory
   private Boolean keepAspectRatio;
   /** Defines, whether the shape should be filled. */
   private Boolean shouldFill;
-  /** Defines, whether the shape outline should be drawn. */ 
+  /** Defines, whether the shape outline should be drawn. */
   private Boolean shouldDraw;
 
   /**
@@ -70,7 +70,7 @@ public abstract class ShapeElementFactory extends ElementFactory
 
   /**
    * Returns the shape color.
-   * 
+   *
    * @return the color of the shape.
    */
   public Color getColor()
@@ -80,7 +80,7 @@ public abstract class ShapeElementFactory extends ElementFactory
 
   /**
    * Defines the color of the shape.
-   * 
+   *
    * @param color the color of the shape.
    */
   public void setColor(final Color color)
@@ -88,9 +88,9 @@ public abstract class ShapeElementFactory extends ElementFactory
     this.color = color;
   }
 
-  /** 
+  /**
    * Returns the shapes stroke. The stroke is used to draw the outline of the shape.
-   * 
+   *
    * @return the stoke.
    */
   public Stroke getStroke()
@@ -98,9 +98,9 @@ public abstract class ShapeElementFactory extends ElementFactory
     return stroke;
   }
 
-  /** 
+  /**
    * Defines the shapes stroke. The stroke is used to draw the outline of the shape.
-   * 
+   *
    * @param stroke the stoke.
    */
   public void setStroke(final Stroke stroke)
@@ -111,7 +111,7 @@ public abstract class ShapeElementFactory extends ElementFactory
   /**
    * Returns, whether the image content should be scaled to fit the complete image
    * element bounds.
-   * 
+   *
    * @return the scale flag of the image element.
    */
   public Boolean getScale()
@@ -122,10 +122,10 @@ public abstract class ShapeElementFactory extends ElementFactory
   /**
    * Defines, whether the image content should be scaled to fit the complete image
    * element bounds.
-   * 
+   *
    * @param scale the scale flag of the image element.
    */
-  public void setScale(Boolean scale)
+  public void setScale(final Boolean scale)
   {
     this.scale = scale;
   }
@@ -134,7 +134,7 @@ public abstract class ShapeElementFactory extends ElementFactory
    * Returns whether the generated image element should preserve the original aspect
    * ratio of the image content during scaling. This property has no effect if the image
    * content is not scaled.
-   * 
+   *
    * @return the keep aspect ratio flag.
    */
   public Boolean getKeepAspectRatio()
@@ -150,14 +150,14 @@ public abstract class ShapeElementFactory extends ElementFactory
    * @param keepAspectRatio whether to keep the aspect ratio of the image content during
    * the scaling.
    */
-  public void setKeepAspectRatio(Boolean keepAspectRatio)
+  public void setKeepAspectRatio(final Boolean keepAspectRatio)
   {
     this.keepAspectRatio = keepAspectRatio;
   }
 
   /**
    * Return whether to fill the shape on report generation.
-   * 
+   *
    * @return the should fill flag.
    */
   public Boolean getShouldFill()
@@ -167,7 +167,7 @@ public abstract class ShapeElementFactory extends ElementFactory
 
   /**
    * Defines wether to fill the shape on report generation.
-   * 
+   *
    * @param shouldFill the fill flag.
    */
   public void setShouldFill(final Boolean shouldFill)
@@ -177,7 +177,7 @@ public abstract class ShapeElementFactory extends ElementFactory
 
   /**
    * Returns whether to draw the shape outline on report generation.
-   * 
+   *
    * @return the draw shape flag.
    */
   public Boolean getShouldDraw()
@@ -187,7 +187,7 @@ public abstract class ShapeElementFactory extends ElementFactory
 
   /**
    * Defines whether to draw the shape outline on report generation.
-   * 
+   *
    * @param shouldDraw the draw shape flag.
    */
   public void setShouldDraw(final Boolean shouldDraw)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionWriter.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
+ * $Id: ReportDefinitionWriter.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -71,17 +71,17 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
    * header and the opening tag is written, this class delegates work to:
    *
    * <ul>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.ParserConfigWriter} 
+   * <li>{@link org.jfree.report.modules.parser.extwriter.ParserConfigWriter}
    * to write the parser configuration;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.ReportConfigWriter} 
+   * <li>{@link org.jfree.report.modules.parser.extwriter.ReportConfigWriter}
    * to write the report configuration;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.StylesWriter} 
+   * <li>{@link org.jfree.report.modules.parser.extwriter.StylesWriter}
    * to write the styles;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.TemplatesWriter} 
+   * <li>{@link org.jfree.report.modules.parser.extwriter.TemplatesWriter}
    * to write the templates;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.ReportDescriptionWriter} 
+   * <li>{@link org.jfree.report.modules.parser.extwriter.ReportDescriptionWriter}
    * to write the report description;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.FunctionsWriter} 
+   * <li>{@link org.jfree.report.modules.parser.extwriter.FunctionsWriter}
    * to write the function definitions;</li>
    * </ul>
    *
@@ -132,8 +132,8 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
         = new ReportDescriptionWriter(getReportWriter(), getIndentLevel());
     reportDescriptionWriter.write(w);
 
-    final FunctionsWriter functionsWriter = 
-      new FunctionsWriter(getReportWriter(), getIndentLevel());
+    final FunctionsWriter functionsWriter =
+        new FunctionsWriter(getReportWriter(), getIndentLevel());
     functionsWriter.write(w);
 
     writeComment(w, ROOT_HINT_PATH, CommentHandler.CLOSE_TAG_COMMENT);

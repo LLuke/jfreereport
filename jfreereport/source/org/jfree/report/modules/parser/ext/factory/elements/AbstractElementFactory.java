@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractElementFactory.java,v 1.4 2003/08/20 17:24:35 taqua Exp $
+ * $Id: AbstractElementFactory.java,v 1.5 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -50,7 +50,7 @@ import org.jfree.report.Element;
 public class AbstractElementFactory implements ElementFactory
 {
   /** Storage for the elements. */
-  private HashMap elements;
+  private final HashMap elements;
 
   /**
    * Creates a new element factory.
@@ -111,27 +111,27 @@ public class AbstractElementFactory implements ElementFactory
    * Compares this object with the given object for equality.
    * The object will be considered equal if it is a element factory
    * and contains the same elements.
-   *  
+   *
    * @see java.lang.Object#equals(java.lang.Object)
-   * 
+   *
    * @param o the object that should be compared.
    * @return true, if the given object is equal, false otherwise.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
-    { 
+    {
       return true;
     }
     if (!(o instanceof AbstractElementFactory))
-    { 
+    {
       return false;
     }
 
     final AbstractElementFactory abstractElementFactory = (AbstractElementFactory) o;
 
     if (!elements.keySet().equals(abstractElementFactory.elements.keySet()))
-    { 
+    {
       return false;
     }
 
@@ -139,9 +139,9 @@ public class AbstractElementFactory implements ElementFactory
   }
 
   /**
-   * Computes an hashcode for this factory. 
+   * Computes an hashcode for this factory.
    * @see java.lang.Object#hashCode()
-   * 
+   *
    * @return the hashcode.
    */
   public int hashCode()

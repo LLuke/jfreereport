@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: GroupCountFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -110,7 +110,7 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    */
   public void reportInitialized(final ReportEvent event)
   {
-    this.count = 0;
+    setCount(0);
   }
 
   /**
@@ -123,7 +123,8 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
   {
     if (getGroup() == null)
     {
-      this.count++;  // count all groups...
+      // count all groups...
+      setCount(getCount() + 1);
       return;
     }
 
@@ -131,9 +132,29 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
     final Group group = event.getReport().getGroup(state.getCurrentGroupIndex());
     if (getGroup().equals(group.getName()))
     {
-      this.count++;
+      setCount(getCount() + 1);
     }
 
+  }
+
+  /**
+   * Returns the current group count value.
+   *
+   * @return the curernt group count.
+   */
+  protected int getCount()
+  {
+    return count;
+  }
+
+  /**
+   * Defines the current group count value.
+   *
+   * @param count the curernt group count.
+   */
+  protected void setCount(final int count)
+  {
+    this.count = count;
   }
 
   /**
@@ -143,6 +164,6 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    */
   public Object getValue()
   {
-    return new Integer(count);
+    return new Integer(getCount());
   }
 }

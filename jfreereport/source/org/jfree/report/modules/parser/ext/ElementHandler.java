@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementHandler.java,v 1.7 2003/08/20 17:24:35 taqua Exp $
+ * $Id: ElementHandler.java,v 1.8 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -81,9 +81,9 @@ public class ElementHandler extends AbstractExtReportParserHandler
   /** A datasource handler. */
   private DataSourceHandler dataSourceHandler;
 
-  /** 
-   * The comment hint path is used to store xml comments in the 
-   * report builder hints collection. 
+  /**
+   * The comment hint path is used to store xml comments in the
+   * report builder hints collection.
    */
   private CommentHintPath commentPath;
 
@@ -145,7 +145,7 @@ public class ElementHandler extends AbstractExtReportParserHandler
       // Clone the defined template ... we don't change the original ..
       getParserHints().putHint(getElement(), "ext.parser.template-reference", references);
       template = (TemplateDescription) template.getInstance();
-      CommentHintPath commentPath = createCommentPath(TEMPLATE_TAG);
+      final CommentHintPath commentPath = createCommentPath(TEMPLATE_TAG);
       addComment(commentPath, CommentHandler.OPEN_TAG_COMMENT);
       templateFactory = new TemplateHandler(getReportParser(), TEMPLATE_TAG, template, commentPath);
       getParser().pushFactory(templateFactory);
@@ -158,14 +158,14 @@ public class ElementHandler extends AbstractExtReportParserHandler
         throw new ParseException("The datasource type must be specified",
             getParser().getLocator());
       }
-      CommentHintPath path = createCommentPath(tagName);
+      final CommentHintPath path = createCommentPath(tagName);
       dataSourceHandler = new DataSourceHandler(getReportParser(), tagName, typeName, path);
       getParser().pushFactory(dataSourceHandler);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
     }
     else if (tagName.equals(STYLE_TAG))
     {
-      CommentHintPath path = createCommentPath(tagName);
+      final CommentHintPath path = createCommentPath(tagName);
       final ElementStyleSheet styleSheet = element.getStyle();
       final StyleSheetHandler styleSheetFactory
           = new StyleSheetHandler(getReportParser(), STYLE_TAG, styleSheet, path);
@@ -243,7 +243,7 @@ public class ElementHandler extends AbstractExtReportParserHandler
   /**
    * Returns the comment hint path used in this factory. This path
    * is used to mark the parse position in the report builder hints.
-   * 
+   *
    * @return the comment hint path.
    */
   protected CommentHintPath getCommentPath()
@@ -254,13 +254,13 @@ public class ElementHandler extends AbstractExtReportParserHandler
   /**
    * Creates a new comment hint path for the given name by appending
    * it to a copy of the current path.
-   * 
+   *
    * @param name the name of the new path segment.
    * @return the new comment path.
    */
-  protected CommentHintPath createCommentPath (Object name)
+  protected CommentHintPath createCommentPath(final Object name)
   {
-    CommentHintPath path = getCommentPath().getInstance();
+    final CommentHintPath path = getCommentPath().getInstance();
     path.addName(name);
     return path;
   }

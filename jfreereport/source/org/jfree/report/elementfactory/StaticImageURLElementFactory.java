@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticImageURLElementFactory.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: StaticImageURLElementFactory.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.elementfactory;
@@ -53,7 +53,7 @@ import org.jfree.ui.FloatDimension;
  * A factory to create an image element that loads its image from an
  * static URL. The content string may contain a relative URL if an valid
  * base URL is given.
- * 
+ *
  * @author Thomas Morgner
  */
 public class StaticImageURLElementFactory extends ImageElementFactory
@@ -73,9 +73,9 @@ public class StaticImageURLElementFactory extends ImageElementFactory
 
   /**
    * Creates the image URL element.
-   *   
+   *
    * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   * 
+   *
    * @return the generated element.
    * @throws IllegalStateException if the content is not defined.
    */
@@ -111,7 +111,7 @@ public class StaticImageURLElementFactory extends ImageElementFactory
   /**
    * Returns the content part of the URL. This string may contain a relative URL,
    * if the base URL is defined.
-   * 
+   *
    * @return the content part of the URL.
    */
   public String getContent()
@@ -122,10 +122,10 @@ public class StaticImageURLElementFactory extends ImageElementFactory
   /**
    * Defines the content part of the URL. This string may contain a relative URL,
    * if the base URL is defined.
-   * 
+   *
    * @param content the content part of the URL.
    */
-  public void setContent(String content)
+  public void setContent(final String content)
   {
     this.content = content;
   }
@@ -133,7 +133,7 @@ public class StaticImageURLElementFactory extends ImageElementFactory
   /**
    * Returns the BaseURL. The base URL is used to build the complete URL if the
    * content url is relative.
-   * 
+   *
    * @return the base URL.
    */
   public URL getBaseURL()
@@ -143,10 +143,10 @@ public class StaticImageURLElementFactory extends ImageElementFactory
 
   /**
    * Defines the base URL.
-   * 
+   *
    * @param baseURL the base URL.
    */
-  public void setBaseURL(URL baseURL)
+  public void setBaseURL(final URL baseURL)
   {
     this.baseURL = baseURL;
   }
@@ -215,7 +215,7 @@ public class StaticImageURLElementFactory extends ImageElementFactory
                                                 final boolean keepAspectRatio)
   {
 
-    StaticImageURLElementFactory factory = new StaticImageURLElementFactory();
+    final StaticImageURLElementFactory factory = new StaticImageURLElementFactory();
     factory.setName(name);
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
     factory.setMinimumSize(new FloatDimension

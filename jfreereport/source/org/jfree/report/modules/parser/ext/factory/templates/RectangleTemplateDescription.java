@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RectangleTemplateDescription.java,v 1.2 2003/08/20 17:24:35 taqua Exp $
+ * $Id: RectangleTemplateDescription.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 12.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.parser.ext.factory.templates;
@@ -42,7 +42,7 @@ import org.jfree.report.filter.templates.RectangleTemplate;
 
 /**
  * A rectangle template description.
- * 
+ *
  * @author Thomas Morgner
  */
 public class RectangleTemplateDescription extends AbstractTemplateDescription

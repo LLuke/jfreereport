@@ -28,12 +28,12 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: PrintExportResources_fr.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PrintExportResources_fr.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.print.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * French language resource for the printing export GUI.
- * 
+ *
  * @author PR
  */
 public class PrintExportResources_fr extends JFreeReportResources
@@ -80,7 +80,7 @@ public class PrintExportResources_fr extends JFreeReportResources
 
         {"error.printfailed.message", "Erreur à l'impression du rapport: {0}"},
         {"error.printfailed.title", "Erreur à l'impression"},
-        
+
       };
 
   /**

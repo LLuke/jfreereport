@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.6 2003/08/20 17:24:35 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.7 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -150,7 +150,7 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
     else if (tagName.equals(CONFIGURATION_TAG))
     {
       addComment(createPath(tagName), CommentHandler.OPEN_TAG_COMMENT);
-      CommentHintPath path = createPath(tagName);
+      final CommentHintPath path = createPath(tagName);
       currentPropertyFactory = new PropertyHandler(getReportParser(), CONFIGURATION_TAG, path);
       getParser().pushFactory(currentPropertyFactory);
     }
@@ -274,7 +274,7 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
         break;
       default:
         // will not happen..
-        Log.debug ("Unexpected paper orientation.");
+        Log.debug("Unexpected paper orientation.");
     }
 
     format.setPaper(p);
@@ -295,8 +295,8 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
    *
    * @throws SAXException if there is an error parsing the report.
    */
-  private PageFormat createPageFormat(final PageFormat format, final Attributes atts) 
-    throws SAXException
+  private PageFormat createPageFormat(final PageFormat format, final Attributes atts)
+      throws SAXException
   {
     final String pageformatName = atts.getValue(PAGEFORMAT_ATT);
 
@@ -356,13 +356,13 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
   /**
    * Creates a new comment hint path for the given name by appending
    * it to a copy of the current path.
-   * 
+   *
    * @param tagName the name of the new path segment.
    * @return the new comment path.
    */
-  private CommentHintPath createPath (String tagName)
+  private CommentHintPath createPath(final String tagName)
   {
-    CommentHintPath path = new CommentHintPath();
+    final CommentHintPath path = new CommentHintPath();
     path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
     path.addName(ExtReportHandler.REPORT_CONFIG_TAG);
     path.addName(tagName);

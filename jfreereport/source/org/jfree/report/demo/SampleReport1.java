@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: SampleReport1.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes:
  * --------
@@ -98,9 +98,9 @@ public class SampleReport1
             new Rectangle2D.Float(0, 0, -100, -100),
             false, true)
     );
-    DateFieldElementFactory factory = new DateFieldElementFactory();
+    final DateFieldElementFactory factory = new DateFieldElementFactory();
     factory.setName("date1");
-    factory.setAbsolutePosition(new Point2D.Float(0,0));
+    factory.setAbsolutePosition(new Point2D.Float(0, 0));
     factory.setMinimumSize(new FloatDimension(-100, 14));
     factory.setHorizontalAlignment(ElementAlignment.RIGHT);
     factory.setVerticalAlignment(ElementAlignment.MIDDLE);
@@ -124,7 +124,7 @@ public class SampleReport1
    */
   private PageFooter createPageFooter()
   {
-    final PageFooter pageFooter = new PageFooter ();
+    final PageFooter pageFooter = new PageFooter();
     pageFooter.getStyle().setStyleProperty
         (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 30));
     pageFooter.getBandDefaults().setFontDefinitionProperty(new FontDefinition("Dialog", 10));
@@ -132,9 +132,9 @@ public class SampleReport1
     pageFooter.addElement(StaticShapeElementFactory.createRectangleShapeElement
         (null, Color.black, null, new Rectangle2D.Float(0, 0, -100, -100), true, false));
 
-    LabelElementFactory factory = new LabelElementFactory();
+    final LabelElementFactory factory = new LabelElementFactory();
     factory.setName("Label 2");
-    factory.setAbsolutePosition(new Point2D.Float(0,0));
+    factory.setAbsolutePosition(new Point2D.Float(0, 0));
     factory.setMinimumSize(new FloatDimension(-100, 0));
     factory.setHorizontalAlignment(ElementAlignment.LEFT);
     factory.setVerticalAlignment(ElementAlignment.TOP);
@@ -151,15 +151,15 @@ public class SampleReport1
    */
   private ReportFooter createReportFooter()
   {
-    final ReportFooter footer =  new ReportFooter();
+    final ReportFooter footer = new ReportFooter();
     footer.getStyle().setStyleProperty
         (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 48));
     footer.getBandDefaults().setFontDefinitionProperty
         (new FontDefinition("Serif", 16, true, false, false, false));
 
-    LabelElementFactory factory = new LabelElementFactory();
+    final LabelElementFactory factory = new LabelElementFactory();
     factory.setName("Label 2");
-    factory.setAbsolutePosition(new Point2D.Float(0,0));
+    factory.setAbsolutePosition(new Point2D.Float(0, 0));
     factory.setMinimumSize(new FloatDimension(-100, 24));
     factory.setHorizontalAlignment(ElementAlignment.CENTER);
     factory.setVerticalAlignment(ElementAlignment.MIDDLE);
@@ -175,15 +175,15 @@ public class SampleReport1
    */
   private ReportHeader createReportHeader()
   {
-    final ReportHeader header =  new ReportHeader();
+    final ReportHeader header = new ReportHeader();
     header.getStyle().setStyleProperty
         (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 48));
     header.getBandDefaults().setFontDefinitionProperty
         (new FontDefinition("Serif", 20, true, false, false, false));
 
-    LabelElementFactory factory = new LabelElementFactory();
+    final LabelElementFactory factory = new LabelElementFactory();
     factory.setName("Label 1");
-    factory.setAbsolutePosition(new Point2D.Float(0,0));
+    factory.setAbsolutePosition(new Point2D.Float(0, 0));
     factory.setMinimumSize(new FloatDimension(-100, 24));
     factory.setHorizontalAlignment(ElementAlignment.CENTER);
     factory.setVerticalAlignment(ElementAlignment.MIDDLE);
@@ -209,17 +209,17 @@ public class SampleReport1
 
     items.addElement(StaticShapeElementFactory.createRectangleShapeElement
         ("background", Color.decode("#DFDFDF"), new BasicStroke(0),
-         new Rectangle2D.Float(0, 0, -100, -100), false, true));
+            new Rectangle2D.Float(0, 0, -100, -100), false, true));
     items.addElement(StaticShapeElementFactory.createLineShapeElement
         ("top", Color.decode("#DFDFDF"), new BasicStroke(0.1f),
-         new Line2D.Float(0, 0, 0, 0)));
+            new Line2D.Float(0, 0, 0, 0)));
     items.addElement(StaticShapeElementFactory.createLineShapeElement
         ("bottom", Color.decode("#DFDFDF"), new BasicStroke(0.1f),
-         new Line2D.Float(0, 10, 0, 10)));
+            new Line2D.Float(0, 10, 0, 10)));
 
     TextFieldElementFactory factory = new TextFieldElementFactory();
     factory.setName("Country Element");
-    factory.setAbsolutePosition(new Point2D.Float(0,0));
+    factory.setAbsolutePosition(new Point2D.Float(0, 0));
     factory.setMinimumSize(new FloatDimension(176, 10));
     factory.setHorizontalAlignment(ElementAlignment.LEFT);
     factory.setVerticalAlignment(ElementAlignment.MIDDLE);
@@ -229,7 +229,7 @@ public class SampleReport1
 
     factory = new TextFieldElementFactory();
     factory.setName("Code Element");
-    factory.setAbsolutePosition(new Point2D.Float(180,0));
+    factory.setAbsolutePosition(new Point2D.Float(180, 0));
     factory.setMinimumSize(new FloatDimension(76, 10));
     factory.setHorizontalAlignment(ElementAlignment.LEFT);
     factory.setVerticalAlignment(ElementAlignment.MIDDLE);
@@ -237,7 +237,7 @@ public class SampleReport1
     factory.setFieldname("ISO Code");
     items.addElement(factory.createElement());
 
-    NumberFieldElementFactory nfactory = new NumberFieldElementFactory();
+    final NumberFieldElementFactory nfactory = new NumberFieldElementFactory();
     nfactory.setName("Population Element");
     nfactory.setAbsolutePosition(new Point2D.Float(260, 0));
     nfactory.setMinimumSize(new FloatDimension(76, 10));
@@ -347,14 +347,14 @@ public class SampleReport1
 
     LabelElementFactory factory = new LabelElementFactory();
     factory.setName("Label 5");
-    factory.setAbsolutePosition(new Point2D.Float(0,1));
+    factory.setAbsolutePosition(new Point2D.Float(0, 1));
     factory.setMinimumSize(new FloatDimension(76, 9));
     factory.setHorizontalAlignment(ElementAlignment.LEFT);
     factory.setVerticalAlignment(ElementAlignment.MIDDLE);
     factory.setText("CONTINENT:");
     header.addElement(factory.createElement());
 
-    TextFieldElementFactory tfactory = new TextFieldElementFactory();
+    final TextFieldElementFactory tfactory = new TextFieldElementFactory();
     tfactory.setName("Continent Element");
     tfactory.setAbsolutePosition(new Point2D.Float(96, 1));
     tfactory.setMinimumSize(new FloatDimension(76, 9));
@@ -370,9 +370,9 @@ public class SampleReport1
 
     final GroupFooter footer = new GroupFooter();
     footer.getStyle().setStyleProperty
-            (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 18));
+        (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 18));
     footer.getBandDefaults().setFontDefinitionProperty
-            (new FontDefinition("Monospaced", 9, true, false, false, false));
+        (new FontDefinition("Monospaced", 9, true, false, false, false));
 
     factory = new LabelElementFactory();
     factory.setName("Label 6");
@@ -383,7 +383,7 @@ public class SampleReport1
     factory.setText("Population:");
     footer.addElement(factory.createElement());
 
-    NumberFieldElementFactory nfactory = new NumberFieldElementFactory();
+    final NumberFieldElementFactory nfactory = new NumberFieldElementFactory();
     nfactory.setName("anonymous");
     nfactory.setAbsolutePosition(new Point2D.Float(260, 0));
     nfactory.setMinimumSize(new FloatDimension(76, 12));
@@ -428,16 +428,16 @@ public class SampleReport1
 
   /**
    * Runs this report and shows a preview dialog.
-   * 
+   *
    * @param args the arguments (ignored).
    * @throws Exception if an error occurs (default: print a stack trace)
    */
-  public static void main (String [] args) throws Exception
+  public static void main(final String[] args) throws Exception
   {
-    JFreeReport report = new SampleReport1().createReport();
+    final JFreeReport report = new SampleReport1().createReport();
     report.setData(new SampleData1());
 
-    PreviewDialog dialog = new PreviewDialog(report);
+    final PreviewDialog dialog = new PreviewDialog(report);
     dialog.setModal(true);
     dialog.pack();
     dialog.setVisible(true);

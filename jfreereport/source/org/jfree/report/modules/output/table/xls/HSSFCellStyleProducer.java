@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HSSFCellStyleProducer.java,v 1.3 2003/08/20 17:24:35 taqua Exp $
+ * $Id: HSSFCellStyleProducer.java,v 1.4 2003/08/24 15:06:10 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 13-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.output.table.xls;
@@ -51,7 +51,7 @@ import org.jfree.report.modules.output.table.base.TableCellBackground;
  * The cellstyle producer converts the JFreeReport content into excel
  * cell styles. This class is able to use the POI 2.0 features to build
  * data cells.
- * 
+ *
  * @author Thomas Morgner
  */
 public class HSSFCellStyleProducer

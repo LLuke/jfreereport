@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResourceLabelElementFactory.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: ResourceLabelElementFactory.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.elementfactory;
@@ -51,18 +51,18 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
 /**
- * A factory to define translateable LabelElements. LabelElements are considered 
- * immutable and should not be modified once they are created. The label expects 
- * plain text. The content of the label will be translated using an assigned 
+ * A factory to define translateable LabelElements. LabelElements are considered
+ * immutable and should not be modified once they are created. The label expects
+ * plain text. The content of the label will be translated using an assigned
  * resource bundle.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ResourceLabelElementFactory extends TextElementFactory
 {
-  /** The resource base from which to read the translations. */ 
+  /** The resource base from which to read the translations. */
   private String resourceBase;
-  
+
   /** The nullstring of the text element if the translation was not found. */
   private String nullString;
   /** The resource key which is used to retrieve the translation. */
@@ -77,7 +77,7 @@ public class ResourceLabelElementFactory extends TextElementFactory
 
   /**
    * Returns the base name of the resource bundle used to translate the content later.
-   * 
+   *
    * @return the resource bundle name of the element.
    */
   public String getResourceBase()
@@ -87,10 +87,10 @@ public class ResourceLabelElementFactory extends TextElementFactory
 
   /**
    * Defines the base name of the resource bundle used to translate the content later.
-   * 
+   *
    * @param resourceBase the resource bundle name of the element.
    */
-  public void setResourceBase(String resourceBase)
+  public void setResourceBase(final String resourceBase)
   {
     this.resourceBase = resourceBase;
   }
@@ -98,7 +98,7 @@ public class ResourceLabelElementFactory extends TextElementFactory
   /**
    * Returns the null string for the text element. The null string is used when no
    * content is found for that element.
-   * 
+   *
    * @return the null string.
    */
   public String getNullString()
@@ -109,17 +109,17 @@ public class ResourceLabelElementFactory extends TextElementFactory
   /**
    * Defines the null string for the text element. The null string is used when no
    * content is found for that element. The nullstring itself can be null.
-   * 
+   *
    * @param nullString the null string.
    */
-  public void setNullString(String nullString)
+  public void setNullString(final String nullString)
   {
     this.nullString = nullString;
   }
 
   /**
    * Returns the resource key that contains the label text.
-   * 
+   *
    * @return the label resource bundle key.
    */
   public String getResourceKey()
@@ -129,17 +129,17 @@ public class ResourceLabelElementFactory extends TextElementFactory
 
   /**
    * Defines the resource key, which will be used to read the translated label text.
-   * 
+   *
    * @param resourceKey the resource bundle key.
    */
-  public void setResourceKey(String resourceKey)
+  public void setResourceKey(final String resourceKey)
   {
     this.resourceKey = resourceKey;
   }
 
   /**
    * Generates the element based on the defined properties.
-   *  
+   *
    * @see org.jfree.report.elementfactory.ElementFactory#createElement()
    * @return the generated element.
    * @throws NullPointerException if the resource class name is null.
@@ -152,12 +152,12 @@ public class ResourceLabelElementFactory extends TextElementFactory
       throw new IllegalStateException("ResourceKey is not set.");
     }
 
-    ResourceLabelTemplate template = new ResourceLabelTemplate();
+    final ResourceLabelTemplate template = new ResourceLabelTemplate();
     template.setResourceClassName(getResourceBase());
     template.setContent(getResourceKey());
     template.setNullValue(getNullString());
 
-    TextElement element = new TextElement();
+    final TextElement element = new TextElement();
     element.setDataSource(template);
     if (getName() != null)
     {
@@ -194,7 +194,7 @@ public class ResourceLabelElementFactory extends TextElementFactory
                                                 final String resourceBase,
                                                 final String resourceKey)
   {
-    ResourceLabelElementFactory factory = new ResourceLabelElementFactory();
+    final ResourceLabelElementFactory factory = new ResourceLabelElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
     factory.setMinimumSize(new FloatDimension
         ((float) bounds.getWidth(), (float) bounds.getHeight()));

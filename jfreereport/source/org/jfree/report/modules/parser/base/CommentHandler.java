@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CommentHandler.java,v 1.3 2003/08/20 18:56:51 taqua Exp $
+ * $Id: CommentHandler.java,v 1.4 2003/08/24 15:08:20 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 20-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.parser.base;
@@ -44,10 +44,10 @@ import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
 
 /**
- * The comment handler is used to collect all XML comments from the 
+ * The comment handler is used to collect all XML comments from the
  * SAX parser. The parser implementation must support comments to make
  * this feature work.
- * 
+ *
  * @author Thomas Morgner
  */
 public class CommentHandler implements LexicalHandler
@@ -58,7 +58,7 @@ public class CommentHandler implements LexicalHandler
   public static final String CLOSE_TAG_COMMENT = "parser.comment.close";
 
   /** A list containing all collected comments. */
-  private ArrayList comment;
+  private final ArrayList comment;
   /** a flag marking whether the SAX parser is currently working in the DTD. */
   private boolean inDTD;
 
@@ -85,8 +85,8 @@ public class CommentHandler implements LexicalHandler
    * @see #endDTD
    * @see #startEntity
    */
-  public void startDTD(String name, String publicId,
-                       String systemId)
+  public void startDTD(final String name, final String publicId,
+                       final String systemId)
       throws SAXException
   {
     inDTD = true;
@@ -119,7 +119,7 @@ public class CommentHandler implements LexicalHandler
    * @see org.xml.sax.ext.DeclHandler#internalEntityDecl
    * @see org.xml.sax.ext.DeclHandler#externalEntityDecl
    */
-  public void startEntity(String name)
+  public void startEntity(final String name)
       throws SAXException
   {
   }
@@ -133,7 +133,7 @@ public class CommentHandler implements LexicalHandler
    * @exception org.xml.sax.SAXException The application may raise an exception.
    * @see #startEntity
    */
-  public void endEntity(String name)
+  public void endEntity(final String name)
       throws SAXException
   {
   }
@@ -178,7 +178,7 @@ public class CommentHandler implements LexicalHandler
    * @param length The number of characters to use from the array.
    * @exception org.xml.sax.SAXException The application may raise an exception.
    */
-  public void comment(char ch[], int start, int length)
+  public void comment(final char[] ch, final int start, final int length)
       throws SAXException
   {
     if (inDTD == false)
@@ -204,7 +204,7 @@ public class CommentHandler implements LexicalHandler
   /**
    * Clears all comments.
    */
-  public void clearComments ()
+  public void clearComments()
   {
     comment.clear();
   }

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextFieldElementFactory.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: TextFieldElementFactory.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.elementfactory;
@@ -51,9 +51,9 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
 /**
- * A factory to define text fields. Text fields read their content from the 
+ * A factory to define text fields. Text fields read their content from the
  * dataRow and try to print it as plain text (using toString() if required).
- * 
+ *
  * @author Thomas Morgner
  */
 public class TextFieldElementFactory extends TextElementFactory
@@ -72,7 +72,7 @@ public class TextFieldElementFactory extends TextElementFactory
 
   /**
    * Returns the field name from where to read the content of the element.
-   * 
+   *
    * @return the field name.
    */
   public String getFieldname()
@@ -83,10 +83,10 @@ public class TextFieldElementFactory extends TextElementFactory
   /**
    * Defines the field name from where to read the content of the element.
    * The field name is the name of a datarow column.
-   * 
+   *
    * @param fieldname the field name.
    */
-  public void setFieldname(String fieldname)
+  public void setFieldname(final String fieldname)
   {
     this.fieldname = fieldname;
   }
@@ -94,7 +94,7 @@ public class TextFieldElementFactory extends TextElementFactory
   /**
    * Returns the null string for the text element. The null string is used when no
    * content is found for that element.
-   * 
+   *
    * @return the null string.
    */
   public String getNullString()
@@ -105,19 +105,19 @@ public class TextFieldElementFactory extends TextElementFactory
   /**
    * Defines the null string for the text element. The null string is used when no
    * content is found for that element. The nullstring itself can be null.
-   * 
+   *
    * @param nullString the null string.
    */
-  public void setNullString(String nullString)
+  public void setNullString(final String nullString)
   {
     this.nullString = nullString;
   }
 
   /**
    * Creates the text field element.
-   *  
+   *
    * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   * 
+   *
    * @return the generated text field element
    * @throws IllegalStateException if the fieldname is null.
    */
@@ -128,14 +128,14 @@ public class TextFieldElementFactory extends TextElementFactory
       throw new IllegalStateException("Fieldname is not set.");
     }
 
-    StringFieldTemplate template = new StringFieldTemplate();
+    final StringFieldTemplate template = new StringFieldTemplate();
     template.setField(getFieldname());
     if (getNullString() != null)
     {
       template.setNullValue(getNullString());
     }
 
-    TextElement element = new TextElement();
+    final TextElement element = new TextElement();
     element.setDataSource(template);
     if (getName() != null)
     {
@@ -200,7 +200,7 @@ public class TextFieldElementFactory extends TextElementFactory
                                                 final String nullString,
                                                 final String field)
   {
-    TextFieldElementFactory factory = new TextFieldElementFactory();
+    final TextFieldElementFactory factory = new TextFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
     factory.setMinimumSize(new FloatDimension
         ((float) bounds.getWidth(), (float) bounds.getHeight()));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundStyleKeyHandler.java,v 1.5 2003/08/20 17:24:35 taqua Exp $
+ * $Id: CompoundStyleKeyHandler.java,v 1.6 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -70,12 +70,12 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
   /** A parameter name. */
   private String parameterName;
 
-  /** 
-   * The comment hint path is used to store xml comments in the 
-   * report builder hints collection. 
+  /**
+   * The comment hint path is used to store xml comments in the
+   * report builder hints collection.
    */
   private CommentHintPath commentPath;
-  
+
   /**
    * Creates a new handler.
    *
@@ -107,7 +107,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
 
   /**
    * Returns the current comment hint path for this handler.
-   * 
+   *
    * @return the comment hint path.
    */
   public CommentHintPath getCommentPath()
@@ -117,13 +117,13 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
 
   /**
    * Defines the comment hint path that should be used in this handler.
-   * The comment hint path is used to store xml comments in the 
+   * The comment hint path is used to store xml comments in the
    * report builder hints collection.
-   *  
+   *
    * @param commentPath the comment hint path that should be used in this
    * handler.
    */
-  public void setCommentPath(CommentHintPath commentPath)
+  public void setCommentPath(final CommentHintPath commentPath)
   {
     this.commentPath = commentPath;
   }
@@ -174,7 +174,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
         }
       }
 
-      CommentHintPath path = createCommentKey(parameterName);
+      final CommentHintPath path = createCommentKey(parameterName);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       basicFactory = new BasicObjectHandler(getReportParser(), tagName, parameter, path);
       getParser().pushFactory(basicFactory);
@@ -206,7 +206,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
         }
       }
 
-      CommentHintPath path = createCommentKey(parameterName);
+      final CommentHintPath path = createCommentKey(parameterName);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       basicFactory = new CompoundObjectHandler(getReportParser(), tagName, parameter, path);
       getParser().pushFactory(basicFactory);
@@ -223,13 +223,13 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
   /**
    * Creates a new comment hint path for the given name by appending
    * it to a copy of the current path.
-   * 
+   *
    * @param name the name of the new path segment.
    * @return the new comment path.
    */
-  protected CommentHintPath createCommentKey(Object name)
+  protected CommentHintPath createCommentKey(final Object name)
   {
-    CommentHintPath path = commentPath.getInstance();
+    final CommentHintPath path = commentPath.getInstance();
     path.addName(name);
     return path;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultContentFactory.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
+ * $Id: DefaultContentFactory.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ import org.jfree.report.util.ElementLayoutInformation;
 public class DefaultContentFactory implements ContentFactory
 {
   /** a list of all registered modules. */
-  private ArrayList modules;
+  private final ArrayList modules;
 
   /**
    * Creates an empty DefaultContentFactory.

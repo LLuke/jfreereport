@@ -68,7 +68,7 @@
 
     <!-- compile the source -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/misc/referencedoc/*"/>
       <classpath>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDataSourceFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: AbstractDataSourceFactory.java,v 1.2 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -53,7 +53,7 @@ public abstract class AbstractDataSourceFactory
     extends ClassFactoryImpl implements DataSourceFactory
 {
   /** Storage for the data sources. */
-  private HashMap dataSources;
+  private final HashMap dataSources;
 
   /**
    * Creates a new factory.

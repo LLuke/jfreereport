@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProcessor.java,v 1.4 2003/08/20 14:06:36 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -154,7 +154,7 @@ public class HtmlProcessor extends TableProcessor
   protected TableProducer createDummyProducer()
   {
     return new HtmlProducer
-      (new HtmlLayoutInfo(false, getReport().getDefaultPageFormat()), isStrictLayout());
+        (new HtmlLayoutInfo(false, getReport().getDefaultPageFormat()), isStrictLayout());
   }
 
   /**
@@ -163,7 +163,7 @@ public class HtmlProcessor extends TableProcessor
    * @param gridLayoutBounds the grid layout that contain the bounds from the pagination run.
    * @return the created table producer, never null.
    */
-  protected TableProducer createProducer(TableLayoutInfo gridLayoutBounds)
+  protected TableProducer createProducer(final TableLayoutInfo gridLayoutBounds)
   {
     return new HtmlProducer(getFilesystem(), (HtmlLayoutInfo) gridLayoutBounds);
   }

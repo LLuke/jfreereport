@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementAlignment.java,v 1.3 2003/08/18 18:27:57 taqua Exp $
+ * $Id: ElementAlignment.java,v 1.4 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -97,17 +97,6 @@ public final class ElementAlignment implements Serializable
   public String toString()
   {
     return myName;
-  }
-
-  /**
-   * Returns the alignment code, used by the old XML parsing code, that corresponds to this
-   * alignment object.
-   *
-   * @return the alignment code.
-   */
-  public int getOldAlignment()
-  {
-    return oldAlignment;
   }
 
   /**
@@ -189,71 +178,7 @@ public final class ElementAlignment implements Serializable
     {
       return ElementAlignment.MIDDLE;
     }
-
     // unknown element alignment...
     throw new ObjectStreamResolveException();
   }
-
-  /**
-   * Translates the old alignment (<code>int</code>) constants into the new
-   * {@link ElementAlignment} objects.
-   *
-   * @param alignment  the alignment code.
-   *
-   * @return The corresponding alignment object.
-   *
-   * @throws IllegalArgumentException if the supplied code does not match one
-   *                                  of the predefined constant values.
-   */
-  public static ElementAlignment translateHorizontalAlignment(final int alignment)
-  {
-    if (alignment == LEFT.getOldAlignment())
-    {
-      return ElementAlignment.LEFT;
-    }
-    else if (alignment == RIGHT.getOldAlignment())
-    {
-      return ElementAlignment.RIGHT;
-    }
-    else if (alignment == CENTER.getOldAlignment())
-    {
-      return ElementAlignment.CENTER;
-    }
-    else
-    {
-      throw new IllegalArgumentException("The alignment must be one of LEFT, RIGHT or CENTER.");
-    }
-  }
-
-  /**
-   * Translates the old alignment (<code>int</code>) constants into the new
-   * {@link ElementAlignment} objects.
-   *
-   * @param alignment  the alignment code.
-   *
-   * @return The corresponding alignment object.
-   *
-   * @throws IllegalArgumentException if the supplied code does not match one
-   *                                  of the predefined constant values.
-   */
-  public static ElementAlignment translateVerticalAlignment(final int alignment)
-  {
-    if (alignment == TOP.getOldAlignment())
-    {
-      return ElementAlignment.TOP;
-    }
-    else if (alignment == BOTTOM.getOldAlignment())
-    {
-      return ElementAlignment.BOTTOM;
-    }
-    else if (alignment == MIDDLE.getOldAlignment())
-    {
-      return ElementAlignment.MIDDLE;
-    }
-    else
-    {
-      throw new IllegalArgumentException("The alignment must be one of TOP, BOTTOM or MIDDLE.");
-    }
-  }
-
 }

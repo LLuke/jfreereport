@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
+ * $Id: PageLayouter.java,v 1.5 2003/08/24 15:03:59 taqua Exp $
  *
  * Changes
  * -------
@@ -558,7 +558,7 @@ public abstract class PageLayouter extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageCanceled(ReportEvent event)
+  public void pageCanceled(final ReportEvent event)
   {
     // does nothing, we dont care about canceled pages by default..
   }

@@ -28,12 +28,12 @@
  * Original Author:  PB;
  * Contributor(s):   -;
  *
- * $Id: PrintExportResources_pl.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PrintExportResources_pl.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.print.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * Polish language resource for the printing export GUI.
- * 
+ *
  * @author PB
  */
 public class PrintExportResources_pl extends JFreeReportResources
@@ -81,7 +81,7 @@ public class PrintExportResources_pl extends JFreeReportResources
         {"error.printfailed.message",
          "Podczas drukowania wyst\u0105pi\u0142 nast\u0119puj\u0105cy b\u0142\u0105d: {0}"},
         {"error.printfailed.title", "B\u0142\u0105d podczas drukowania"},
-        
+
       };
 
   /**

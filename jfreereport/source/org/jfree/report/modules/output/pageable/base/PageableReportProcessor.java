@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.3 2003/08/18 18:28:00 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.4 2003/08/24 15:03:52 taqua Exp $
  *
  * Changes
  * -------
@@ -50,9 +50,9 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
+import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.modules.output.pageable.base.pagelayout.PageLayouter;
 import org.jfree.report.modules.output.pageable.base.pagelayout.SimplePageLayouter;
 import org.jfree.report.states.FinishState;
@@ -291,11 +291,11 @@ public class PageableReportProcessor
     }
 
     final boolean failOnError = getReport().getReportConfiguration().isStrictErrorHandling();
-    RepaginationState repaginationState = new RepaginationState(this, 0, 0, 0, 0, false);
+    final RepaginationState repaginationState = new RepaginationState(this, 0, 0, 0, 0, false);
 
     for (int i = 0; i < list.size(); i++)
     {
-      ReportState rs = list.get(i);
+      final ReportState rs = list.get(i);
       // fire an event for every generated page. It does not really matter
       // if that policy is not very informative, it is sufficient ...
       repaginationState.reuse(PRINT_FUNCTION_LEVEL,
@@ -401,7 +401,8 @@ public class PageableReportProcessor
             throw new IllegalStateException("Repaginate did not produce an finish state");
           }
         }
-      } while (hasNext == true);
+      }
+      while (hasNext == true);
 
       dummyOutput.close();
       state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
@@ -430,13 +431,13 @@ public class PageableReportProcessor
    * @return the finish state for the report.
    * @throws ReportProcessingException if there was a problem processing the report.
    */
-  private ReportState processPrintedPages (ReportState state, final ReportStateList pageStates,
-                                           final OutputTarget dummyOutput, final int maxRows)
+  private ReportState processPrintedPages(ReportState state, final ReportStateList pageStates,
+                                          final OutputTarget dummyOutput, final int maxRows)
       throws ReportProcessingException
   {
     final boolean failOnError = getReport().getReportConfiguration().isStrictErrorHandling();
     ReportStateProgress progress = null;
-    RepaginationState repaginationState = new RepaginationState(this, 0, 0, 0, 0, true);
+    final RepaginationState repaginationState = new RepaginationState(this, 0, 0, 0, 0, true);
 
     // inner loop: process the complete report, calculate the function values
     // for the current level. Higher level functions are not available in the
@@ -486,16 +487,16 @@ public class PageableReportProcessor
    * @throws org.jfree.report.ReportProcessingException if processing failed or if there are
    * exceptions during the function execution.
    */
-  private ReportState processPrepareLevels (ReportState state, final int level, final int maxRows)
-    throws ReportProcessingException
+  private ReportState processPrepareLevels(ReportState state, final int level, final int maxRows)
+      throws ReportProcessingException
   {
     final boolean failOnError = getReport().getReportConfiguration().isStrictErrorHandling();
     ReportStateProgress progress = null;
 
     int lastRow = -1;
     int eventCount = 0;
-    int eventTrigger = maxRows / MAX_EVENTS_PER_RUN;
-    RepaginationState repaginationState = new RepaginationState(this, 0, 0, 0, 0, true);
+    final int eventTrigger = maxRows / MAX_EVENTS_PER_RUN;
+    final RepaginationState repaginationState = new RepaginationState(this, 0, 0, 0, 0, true);
     // Function processing does not use the PageLayouter, so we don't need
     // the expensive cloning ...
     while (!state.isFinish())
@@ -595,7 +596,7 @@ public class PageableReportProcessor
    * @throws ReportProcessingException if there is a problem processing the report or the
    *                                   current thread has been interrupted.
    */
-  public ReportState processPage(final ReportState currPage, final OutputTarget out, 
+  public ReportState processPage(final ReportState currPage, final OutputTarget out,
                                  final boolean failOnError)
       throws ReportProcessingException
   {

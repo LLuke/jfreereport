@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVWriter.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: CSVWriter.java,v 1.2 2003/08/24 15:06:42 taqua Exp $
  *
  * Changes
  * -------
@@ -66,13 +66,13 @@ public class CSVWriter extends AbstractFunction
   private static class CSVRow
   {
     /** The data. */
-    private ArrayList data;
+    private final ArrayList data;
 
     /** A quoter utility object. */
-    private CSVQuoter quoter;
+    private final CSVQuoter quoter;
 
     /** The line separator. */
-    private String lineSeparator;
+    private final String lineSeparator;
 
     /**
      * Creates a new CSVQuoter. The Quoter uses the system's default line separator.
@@ -135,7 +135,7 @@ public class CSVWriter extends AbstractFunction
   private int depLevel;
 
   /** the CSVQuoter used to encode the column values. */
-  private CSVQuoter quoter;
+  private final CSVQuoter quoter;
 
   /** a flag indicating whether to writer data row names as column header. */
   private boolean writeDataRowNames;

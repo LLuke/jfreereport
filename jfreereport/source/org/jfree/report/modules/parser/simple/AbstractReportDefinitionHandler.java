@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractReportDefinitionHandler.java,v 1.2 2003/07/18 17:56:39 taqua Exp $
+ * $Id: AbstractReportDefinitionHandler.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -80,7 +80,7 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
    *
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  protected void init (final ReportParser parser, final String finishTag)
+  protected void init(final ReportParser parser, final String finishTag)
   {
     if (parser == null)
     {
@@ -104,7 +104,7 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
    */
   public AbstractReportDefinitionHandler(final ReportParser parser, final String finishTag)
   {
-    init (parser, finishTag);
+    init(parser, finishTag);
   }
 
   /**
@@ -127,7 +127,7 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
    */
   public JFreeReport getReport()
   {
-    ReportParser rparser = (ReportParser) getParser();
+    final ReportParser rparser = (ReportParser) getParser();
     return rparser.getReport();
   }
 

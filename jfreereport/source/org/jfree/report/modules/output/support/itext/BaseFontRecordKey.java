@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecordKey.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: BaseFontRecordKey.java,v 1.2 2003/08/24 15:06:42 taqua Exp $
  *
  * Changes
  * -------
@@ -48,10 +48,10 @@ package org.jfree.report.modules.output.support.itext;
 public class BaseFontRecordKey
 {
   /** The logical name. */
-  private String logicalName;
+  private final String logicalName;
 
   /** The encoding. */
-  private String encoding;
+  private final String encoding;
 
   /**
    * Creates a new key.

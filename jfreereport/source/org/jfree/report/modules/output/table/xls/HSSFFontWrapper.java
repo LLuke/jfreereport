@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: HSSFFontWrapper.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -53,25 +53,25 @@ public class HSSFFontWrapper
   public static final int FONT_FACTOR = 20;
 
   /** the font name. */
-  private String fontName;
+  private final String fontName;
 
   /** the excel color index. */
-  private short colorIndex;
+  private final short colorIndex;
 
   /** the font size. */
-  private int fontHeight;
+  private final int fontHeight;
 
   /** the font's bold flag. */
-  private boolean bold;
+  private final boolean bold;
 
   /** the font's italic flag. */
-  private boolean italic;
+  private final boolean italic;
 
   /** the font's underline flag. */
-  private boolean underline;
+  private final boolean underline;
 
   /** the font's strikethrough flag. */
-  private boolean strikethrough;
+  private final boolean strikethrough;
 
   /** the excel font. */
   private HSSFFont font;

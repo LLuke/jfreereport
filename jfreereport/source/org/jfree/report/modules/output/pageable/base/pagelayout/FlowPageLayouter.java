@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FlowPageLayouter.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: FlowPageLayouter.java,v 1.2 2003/08/24 15:03:59 taqua Exp $
  *
  * Changes
  * -------
@@ -53,10 +53,10 @@ import org.jfree.report.states.ReportState;
 public class FlowPageLayouter extends PageLayouter
 {
   /** Tasks. */
-  private Stack tasks;
+  private final Stack tasks;
 
   /** ??. */
-  private ArrayList taskWorker;
+  private final ArrayList taskWorker;
 
   /**
    * Creates a new page layouter.
@@ -112,7 +112,8 @@ public class FlowPageLayouter extends PageLayouter
           isProceeding = true;
         }
       }
-    } while (isProceeding);
+    }
+    while (isProceeding);
 
     if (task.isDone())
     {
@@ -182,7 +183,7 @@ public class FlowPageLayouter extends PageLayouter
    *
    * @param event The event.
    */
-  public void pageStarted(ReportEvent event)
+  public void pageStarted(final ReportEvent event)
   {
   }
 
@@ -191,7 +192,7 @@ public class FlowPageLayouter extends PageLayouter
    *
    * @param event The event.
    */
-  public void pageFinished(ReportEvent event)
+  public void pageFinished(final ReportEvent event)
   {
   }
 

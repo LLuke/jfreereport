@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CommentHintPath.java,v 1.3 2003/08/20 18:56:51 taqua Exp $
+ * $Id: CommentHintPath.java,v 1.4 2003/08/24 15:08:20 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 21-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.parser.base;
@@ -42,9 +42,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * The comment hint path is used to mark the parse position and to 
+ * The comment hint path is used to mark the parse position and to
  * store the comments for such an parser path.
- * 
+ *
  * @author Thomas Morgner
  */
 public final class CommentHintPath implements Serializable, Cloneable
@@ -63,23 +63,23 @@ public final class CommentHintPath implements Serializable, Cloneable
   /**
    * Creates a new comment hint path and adds the given object
    * as first name segment.
-   * 
+   *
    * @param name the first name segment.
    */
-  public CommentHintPath(Object name)
+  public CommentHintPath(final Object name)
   {
     this();
 
-    addName (name);
+    addName(name);
   }
 
   /**
    * Creates a new comment hint path and adds the given objects
    * as name segments.
-   * 
+   *
    * @param name the name segments.
    */
-  public CommentHintPath(Object[] name)
+  public CommentHintPath(final Object[] name)
   {
     this();
     for (int i = 0; i < name.length; i++)
@@ -90,52 +90,52 @@ public final class CommentHintPath implements Serializable, Cloneable
 
   /**
    * Appends the given object as last element to the path.
-   * 
+   *
    * @param name the new path segment.
    */
-  public void addName (Object name)
+  public void addName(final Object name)
   {
     if (name == null)
     {
       throw new NullPointerException();
     }
-    nameElements.add (name);
+    nameElements.add(name);
   }
 
   /**
    * Returns a copy of this comment hint path.
-   * 
+   *
    * @return a copy of this path.
    */
   public CommentHintPath getInstance()
   {
-    CommentHintPath hint = new CommentHintPath();
+    final CommentHintPath hint = new CommentHintPath();
     hint.nameElements = new ArrayList(nameElements);
     return hint;
   }
 
   /**
-   * Tests, whether this object is equal to the given object. 
+   * Tests, whether this object is equal to the given object.
    * @see java.lang.Object#equals(java.lang.Object)
-   * 
+   *
    * @param o the object that should be compared.
    * @return true, if the other object is equal, false otherwise.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
-    { 
+    {
       return true;
     }
     if (!(o instanceof CommentHintPath))
-    { 
+    {
       return false;
     }
 
     final CommentHintPath commentHintPath = (CommentHintPath) o;
 
     if (!nameElements.equals(commentHintPath.nameElements))
-    { 
+    {
       return false;
     }
 
@@ -143,9 +143,9 @@ public final class CommentHintPath implements Serializable, Cloneable
   }
 
   /**
-   * Computes a hashcode for this path. 
+   * Computes a hashcode for this path.
    * @see java.lang.Object#hashCode()
-   * 
+   *
    * @return a hashcode for this object.
    */
   public int hashCode()
@@ -154,14 +154,14 @@ public final class CommentHintPath implements Serializable, Cloneable
   }
 
   /**
-   * Returns a string representation of this object for debugging purposes. 
+   * Returns a string representation of this object for debugging purposes.
    * @see java.lang.Object#toString()
-   * 
+   *
    * @return the object as string.
    */
   public String toString()
   {
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     b.append("CommentHintPath={");
     b.append(nameElements);
     b.append("}");

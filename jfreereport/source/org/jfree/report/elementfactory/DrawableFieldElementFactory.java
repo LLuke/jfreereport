@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableFieldElementFactory.java,v 1.3 2003/08/18 18:27:58 taqua Exp $
+ * $Id: DrawableFieldElementFactory.java,v 1.4 2003/08/24 15:13:22 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.elementfactory;
@@ -47,16 +47,16 @@ import org.jfree.report.style.ElementStyleSheet;
 
 /**
  * The drawable field element factory can be used to create elements that display
- * org.jfree.ui.Drawable elements. 
+ * org.jfree.ui.Drawable elements.
  * <p>
  * Once the desired properties are set, the factory can be reused to create
- * similiar elements. 
- *  
+ * similiar elements.
+ *
  * @author Thomas Morgner
  */
 public class DrawableFieldElementFactory extends ElementFactory
 {
-  /** The fieldname of the datarow from where to read the element data. */ 
+  /** The fieldname of the datarow from where to read the element data. */
   private String fieldname;
 
   /**
@@ -68,7 +68,7 @@ public class DrawableFieldElementFactory extends ElementFactory
 
   /**
    * Returns the field name from where to read the content of the element.
-   * 
+   *
    * @return the field name.
    */
   public String getFieldname()
@@ -79,22 +79,22 @@ public class DrawableFieldElementFactory extends ElementFactory
   /**
    * Defines the field name from where to read the content of the element.
    * The field name is the name of a datarow column.
-   * 
+   *
    * @param fieldname the field name.
    */
-  public void setFieldname(String fieldname)
+  public void setFieldname(final String fieldname)
   {
     this.fieldname = fieldname;
   }
 
   /**
    * Creates a new drawable field element based on the defined properties.
-   *  
+   *
    * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   * 
+   *
    * @return the generated elements
    * @throws IllegalStateException if the field name is not set.
-   */ 
+   */
   public Element createElement()
   {
     if (getFieldname() == null)
@@ -102,7 +102,7 @@ public class DrawableFieldElementFactory extends ElementFactory
       throw new IllegalStateException("Fieldname is not set.");
     }
 
-    DrawableElement element = new DrawableElement();
+    final DrawableElement element = new DrawableElement();
     if (getName() != null)
     {
       element.setName(getName());
@@ -113,7 +113,7 @@ public class DrawableFieldElementFactory extends ElementFactory
     filter.setDataSource(drds);
     element.setDataSource(filter);
 
-    ElementStyleSheet style = element.getStyle();
+    final ElementStyleSheet style = element.getStyle();
     style.setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, getAbsolutePosition());
     style.setStyleProperty(ElementStyleSheet.MAXIMUMSIZE, getMaximumSize());
     style.setStyleProperty(ElementStyleSheet.MINIMUMSIZE, getMinimumSize());

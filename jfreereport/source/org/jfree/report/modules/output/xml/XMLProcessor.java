@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.3 2003/08/24 15:06:42 taqua Exp $
  *
  * Changes
  * -------
@@ -238,7 +238,8 @@ public class XMLProcessor
           throw new IllegalStateException("Repaginate did not produce an finish state");
         }
       }
-    } while (hasNext == true);
+    }
+    while (hasNext == true);
 
     // root of evilness here ... pagecount should not be handled specially ...
     // The pagecount should not be added as report property, there are functions to

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SubSetTableModel.java,v 1.2 2003/08/18 18:28:00 taqua Exp $
+ * $Id: SubSetTableModel.java,v 1.3 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public class SubSetTableModel implements TableModel
   private final class TableEventTranslator implements TableModelListener
   {
     /** the registered listeners. */
-    private ArrayList listeners;
+    private final ArrayList listeners;
 
     /**
      * Default Constructor.
@@ -311,33 +311,33 @@ public class SubSetTableModel implements TableModel
   {
     eventHandler.removeTableModelListener(l);
   }
-  
+
   /**
    * Returns the enclosed tablemodel, which is wrapped by this subset table model.
-   * 
+   *
    * @return the enclosed table model, never null.
    */
-  protected TableModel getEnclosedModel ()
+  protected TableModel getEnclosedModel()
   {
     return model;
   }
-  
+
   /**
    * Returns the start row that should be mapped to row 0 of this model.
-   * 
+   *
    * @return the first row that should be visible.
    */
   protected int getStart()
   {
     return start;
   }
-  
+
   /**
    * Returns the last row that should be visible.
-   * 
+   *
    * @return the number of the last row.
    */
-  protected int getEnd ()
+  protected int getEnd()
   {
     return end;
   }

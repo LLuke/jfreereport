@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageComparator.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
+ * $Id: ImageComparator.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public class ImageComparator
   private static final class CompleteImageCompareData extends ImageCompareData
   {
     /** The image content. */
-    private byte[] image;
+    private final byte[] image;
 
     /**
      * Create a new CompleteImageCompareData instance.
@@ -222,12 +222,12 @@ public class ImageComparator
    * @param image the image data which should be prepared for comparison
    * @param fast whether to prefer the memory intensive faster compare method to
    * the digest based comparation. This may result in outofmemory errors on
-   * huge reports or images. 
+   * huge reports or images.
    * @return the prepared image data.
    */
-  public ImageCompareData createCompareData(final byte[] image, boolean fast)
+  public ImageCompareData createCompareData(final byte[] image, final boolean fast)
   {
-    if (digestMD5 != null && digestSHA != null)
+    if (fast == false && (digestMD5 != null && digestSHA != null))
     {
       final byte[] dataMD5 = digestMD5.digest(image);
       final byte[] dataSHA = digestSHA.digest(image);

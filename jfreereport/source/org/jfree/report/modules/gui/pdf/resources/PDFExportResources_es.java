@@ -28,12 +28,12 @@
  * Original Author:  Ramon Juanes;
  * Contributor(s):   -;
  *
- * $Id: PDFExportResources_es.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PDFExportResources_es.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.pdf.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * Spanish language resource for the PDF export GUI.
- * 
+ *
  * @author Ramon Juanes
  */
 public class PDFExportResources_es extends JFreeReportResources

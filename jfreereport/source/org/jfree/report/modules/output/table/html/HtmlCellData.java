@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellData.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
+ * $Id: HtmlCellData.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -51,10 +51,10 @@ import org.jfree.report.modules.output.table.base.TableCellData;
 public abstract class HtmlCellData extends TableCellData
 {
   /** The assigned cell style. */
-  private HtmlCellStyle style;
+  private final HtmlCellStyle style;
 
   /** a flag indicating whether to generate XHTML for the output. */
-  private boolean useXHTML;
+  private final boolean useXHTML;
 
   /**
    * Creates a new HtmlCellData-object. The cell data will encapsulate images or
@@ -64,7 +64,7 @@ public abstract class HtmlCellData extends TableCellData
    * @param style the assigned cell style for this data cell.
    * @param useXHTML a flag indicating whether to generate XHTML.
    */
-  public HtmlCellData(final Rectangle2D outerBounds, final HtmlCellStyle style, 
+  public HtmlCellData(final Rectangle2D outerBounds, final HtmlCellStyle style,
                       final boolean useXHTML)
   {
     super(outerBounds);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigWriter.java,v 1.3 2003/08/20 17:24:35 taqua Exp $
+ * $Id: ParserConfigWriter.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -59,13 +59,13 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
 {
   /** The standard parser config comment hint path. */
   private static final CommentHintPath PARSER_CONFIG_PATH = new CommentHintPath
-        (
-          new String[] 
-          { 
-            ExtParserModuleInit.REPORT_DEFINITION_TAG, 
+      (
+          new String[]
+          {
+            ExtParserModuleInit.REPORT_DEFINITION_TAG,
             ExtReportHandler.PARSER_CONFIG_TAG
           }
-         );
+      );
 
   /**
    * Creates a new writer.
@@ -113,13 +113,13 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
    * @param it the unfiltered factories iterator.
    * @return a cleaned version of the iterator.
    */
-  private Iterator filterFactories (final Iterator it)
+  private Iterator filterFactories(final Iterator it)
   {
-    ReportWriter writer = getReportWriter();
-    ArrayList factories = new ArrayList();
+    final ReportWriter writer = getReportWriter();
+    final ArrayList factories = new ArrayList();
     while (it.hasNext())
     {
-      Object o = it.next();
+      final Object o = it.next();
       if (o.equals(writer.getClassFactoryCollector()))
       {
         continue;
@@ -176,7 +176,7 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
       }
       catch (Exception e)
       {
-        StringBuffer message = new StringBuffer();
+        final StringBuffer message = new StringBuffer();
         message.append("FactoryClass ");
         message.append(itObject.getClass());
         message.append(" has no default constructor. This class will be ignored");
@@ -186,7 +186,7 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
       }
 
       final String className = itObject.getClass().getName();
-      CommentHintPath path = PARSER_CONFIG_PATH.getInstance();
+      final CommentHintPath path = PARSER_CONFIG_PATH.getInstance();
       path.addName(tagName);
       path.addName(itObject.getClass().getName());
       writeComment(w, path, CommentHandler.OPEN_TAG_COMMENT);

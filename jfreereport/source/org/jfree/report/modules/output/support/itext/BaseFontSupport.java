@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.4 2003/08/18 18:28:01 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.5 2003/08/24 15:06:42 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ import org.jfree.report.util.StringUtil;
 public class BaseFontSupport
 {
   /** Storage for BaseFont objects created. */
-  private Map baseFonts;
+  private final Map baseFonts;
 
   /**
    * Creates a new support instance.
@@ -88,7 +88,7 @@ public class BaseFontSupport
    *
    * @throws BaseFontCreateException if there was a problem setting the font for the target.
    */
-  public BaseFontRecord createBaseFont(final FontDefinition font, 
+  public BaseFontRecord createBaseFont(final FontDefinition font,
                                        final String encoding, final boolean embedded)
       throws BaseFontCreateException
   {
@@ -192,7 +192,7 @@ public class BaseFontSupport
     }
     catch (Exception e)
     {
-      Log.warn(new Log.SimpleMessage("BaseFont.createFont failed. Key = ",fontKey, e.getMessage()));
+      Log.warn(new Log.SimpleMessage("BaseFont.createFont failed. Key = ", fontKey, e.getMessage()));
     }
     // fallback .. use BaseFont.HELVETICA as default
     try
@@ -315,8 +315,8 @@ public class BaseFontSupport
    */
   private BaseFontRecord getFromCache(final String fontKey, final String encoding)
   {
-    final BaseFontRecord r = 
-      (BaseFontRecord) baseFonts.get(new BaseFontRecordKey(fontKey, encoding));
+    final BaseFontRecord r =
+        (BaseFontRecord) baseFonts.get(new BaseFontRecordKey(fontKey, encoding));
     return r;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventMonitorFunction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: EventMonitorFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -140,7 +140,7 @@ public class EventMonitorFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageCanceled(ReportEvent event)
+  public void pageCanceled(final ReportEvent event)
   {
     Log.info("Page Canceled: Level = " + event.getState().getLevel()
         + " Prepare Run: " + event.getState().isPrepareRun());

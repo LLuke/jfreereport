@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportResources_de.java,v 1.2 2003/08/19 13:37:23 taqua Exp $
+ * $Id: CSVExportResources_de.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.csv.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * German language resource for the CSV export GUI.
- * 
+ *
  * @author Thomas Morgner
  */
 public class CSVExportResources_de extends JFreeReportResources

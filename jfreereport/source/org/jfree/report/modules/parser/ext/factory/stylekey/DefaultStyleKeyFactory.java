@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultStyleKeyFactory.java,v 1.2 2003/07/23 16:02:22 taqua Exp $
+ * $Id: DefaultStyleKeyFactory.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -65,12 +65,12 @@ public class DefaultStyleKeyFactory extends AbstractStyleKeyFactory
 
     try
     {
-      loadFromClass (Thread.currentThread().getContextClassLoader().
+      loadFromClass(Thread.currentThread().getContextClassLoader().
           loadClass("org.jfree.report.modules.output.table.xls.ExcelProcessor"));
     }
     catch (Exception e)
     {
-      Log.debug ("Loading excel stylekeys failed. Keys " +
+      Log.debug("Loading excel stylekeys failed. Keys " +
           "from that module will not be available.");
     }
 /*

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFieldElementFactory.java,v 1.3 2003/08/18 18:27:58 taqua Exp $
+ * $Id: DateFieldElementFactory.java,v 1.4 2003/08/24 15:13:22 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.elementfactory;
@@ -59,8 +59,8 @@ import org.jfree.ui.FloatDimension;
  * These text elements have special abilities to format date/time values.
  * <p>
  * Once the desired properties are set, the factory can be reused to create
- * similiar text elements. 
- *  
+ * similiar text elements.
+ *
  * @author Thomas Morgner
  */
 public class DateFieldElementFactory extends TextFieldElementFactory
@@ -76,9 +76,9 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   }
 
   /**
-   * Returns the date format used for all generated text elements. The 
+   * Returns the date format used for all generated text elements. The
    * date format is shared among all generated elements.
-   * 
+   *
    * @return the date format used in this factory.
    */
   public DateFormat getFormat()
@@ -87,12 +87,12 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   }
 
   /**
-   * Defines the date format used for all generated text elements. The 
+   * Defines the date format used for all generated text elements. The
    * date format is shared among all generated elements.
-   * 
+   *
    * @param format the date format used in this factory.
    */
-  public void setFormat(DateFormat format)
+  public void setFormat(final DateFormat format)
   {
     this.format = format;
   }
@@ -100,14 +100,14 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   /**
    * Returns the format string of the used date format. This method will
    * return null, if the current date format is no instance of SimpleDateFormat.
-   *  
+   *
    * @return the formatstring of the date format instance.
    */
   public String getFormatString()
   {
     if (getFormat() instanceof SimpleDateFormat)
     {
-      SimpleDateFormat decFormat = (SimpleDateFormat) getFormat();
+      final SimpleDateFormat decFormat = (SimpleDateFormat) getFormat();
       return decFormat.toPattern();
     }
     return null;
@@ -116,11 +116,11 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   /**
    * Defines the format string of the used date format. This method will
    * replace the date format instance of this factory. If the format string
-   * is null, the default format string of the current locale is used. 
-   *  
+   * is null, the default format string of the current locale is used.
+   *
    * @param formatString the formatstring of the date format instance.
    */
-  public void setFormatString(String formatString)
+  public void setFormatString(final String formatString)
   {
     if (formatString == null)
     {
@@ -135,14 +135,14 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   /**
    * Creates the date text element based on the defined settings.
    * Undefined properties will not be set in the generated element.
-   *  
+   *
    * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   * 
+   *
    * @return the generated date text element
    */
   public Element createElement()
   {
-    DataSource dataSource;
+    final DataSource dataSource;
     if (getFormatString() != null)
     {
       final DateFieldTemplate template = new DateFieldTemplate();
@@ -165,7 +165,7 @@ public class DateFieldElementFactory extends TextFieldElementFactory
       dataSource = filter;
     }
 
-    TextElement element = new TextElement();
+    final TextElement element = new TextElement();
     element.setDataSource(dataSource);
     applyStyle(element.getStyle());
 
@@ -236,7 +236,7 @@ public class DateFieldElementFactory extends TextFieldElementFactory
                                               final String format,
                                               final String field)
   {
-    DateFieldElementFactory factory = new DateFieldElementFactory();
+    final DateFieldElementFactory factory = new DateFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
     factory.setMinimumSize(new FloatDimension
         ((float) bounds.getWidth(), (float) bounds.getHeight()));
@@ -320,7 +320,7 @@ public class DateFieldElementFactory extends TextFieldElementFactory
                                               final DateFormat format,
                                               final String field)
   {
-    DateFieldElementFactory factory = new DateFieldElementFactory();
+    final DateFieldElementFactory factory = new DateFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
     factory.setMinimumSize(new FloatDimension
         ((float) bounds.getWidth(), (float) bounds.getHeight()));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.5 2003/08/18 18:28:02 taqua Exp $
+ * $Id: Log.java,v 1.6 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public final class Log extends org.jfree.util.Log
   public static class MemoryUsageMessage
   {
     /** The message. */
-    private String message;
+    private final String message;
 
     /**
      * Creates a new message.
@@ -100,7 +100,7 @@ public final class Log extends org.jfree.util.Log
   private static final SystemOutLogTarget DEFAULT_LOG_TARGET = new SystemOutLogTarget();
 
   /** The JFreeReport log instance. */
-  private static Log jfreeReportLog;
+  private static final Log jfreeReportLog;
 
   /**
    * Private to prevent creating instances.
@@ -119,10 +119,10 @@ public final class Log extends org.jfree.util.Log
 
   /**
    * Returns the JFreeReport log instance.
-   * 
+   *
    * @return the log object.
    */
-  public static Log getJFreeReportLog ()
+  public static Log getJFreeReportLog()
   {
     return jfreeReportLog;
   }
@@ -134,7 +134,7 @@ public final class Log extends org.jfree.util.Log
   public void init()
   {
     removeTarget(DEFAULT_LOG_TARGET);
-    String logLevel = ReportConfiguration.getGlobalConfig().getLogLevel();
+    final String logLevel = ReportConfiguration.getGlobalConfig().getLogLevel();
     if (logLevel.equalsIgnoreCase("error"))
     {
       setDebuglevel(ERROR);

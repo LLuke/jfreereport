@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToXML.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: StraightToXML.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -148,7 +148,7 @@ public class StraightToXML
   {
     try
     {
-      //final StraightToXML demo = 
+      //final StraightToXML demo =
       new StraightToXML(System.getProperty("user.home") + "/test99.xml");
       System.exit(0);
     }

@@ -28,12 +28,12 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: XLSExportResources_fr.java,v 1.5 2003/08/19 13:37:24 taqua Exp $
+ * $Id: XLSExportResources_fr.java,v 1.6 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.xls.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * French language resource for the Excel export GUI.
- * 
+ *
  * @author PR
  */
 public class XLSExportResources_fr extends JFreeReportResources
@@ -74,7 +74,7 @@ public class XLSExportResources_fr extends JFreeReportResources
         {"action.export-to-excel.name", "Exporter en Excel..."},
         {"action.export-to-excel.description", "Enregistrer au format MS-Excel"},
         {"action.export-to-excel.mnemonic", new Integer(KeyEvent.VK_E)},
-        
+
         {"error.processingfailed.title", "Echec du traitement du Report"},
         {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
         {"error.savefailed.message", "Erreur durant l'enregistrement en MS-Excel : {0}"},
@@ -90,7 +90,7 @@ public class XLSExportResources_fr extends JFreeReportResources
         {"excelexportdialog.errorTitle", "Erreur"},
         {"excelexportdialog.targetIsEmpty",
          "Veuillez spécifier un nom de fichier pour le fichier Excel."},
-        {"excelexportdialog.targetIsNoFile", 
+        {"excelexportdialog.targetIsNoFile",
          "Le fichier cible spécifié n'est pas un fichier ordinaire."},
         {"excelexportdialog.targetIsNotWritable",
          "Le fichier sélectionner est en lecture seule."},
@@ -102,7 +102,7 @@ public class XLSExportResources_fr extends JFreeReportResources
         {"excelexportdialog.confirm", "Confirmer"},
         {"excelexportdialog.strict-layout",
          "Effectuer une disposition stricte pendant l'export."},
-        
+
       };
 
   /**

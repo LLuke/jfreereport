@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.9 2003/08/22 20:27:20 taqua Exp $
+ * $Id: ReportParser.java,v 1.10 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -53,10 +53,10 @@ import org.xml.sax.SAXException;
  */
 public class ReportParser extends Parser
 {
-  /** The key that stores the report defintion in the helper objects collection. */ 
+  /** The key that stores the report defintion in the helper objects collection. */
   public static final String HELPER_OBJ_REPORT_NAME = "report";
   /** The current comment handler used to receive xml comments. */
-  private CommentHandler commentHandler;
+  private final CommentHandler commentHandler;
 
   /**
    * Default constuctor. Initalizes the parser to use the JFreeReport parser
@@ -94,20 +94,20 @@ public class ReportParser extends Parser
    *
    * @return the current JFreeReport instance.
    */
-  public JFreeReport getReport ()
+  public JFreeReport getReport()
   {
     return (JFreeReport) getResult();
   }
 
   /**
-   * Returns the report builder hints instance used to collect all 
+   * Returns the report builder hints instance used to collect all
    * comments and other valueable information that cannot be restored
    * with just the parsed object model. This information is optional
    * but may support other automated tools like the ReportWriter.
-   *  
+   *
    * @return the report builder hints used to build this report.
    */
-  public ReportBuilderHints getParserHints ()
+  public ReportBuilderHints getParserHints()
   {
     if (getReport() == null)
     {
@@ -130,7 +130,7 @@ public class ReportParser extends Parser
    * Returns the currently collected comments.
    * @return the comments.
    */
-  public String[] getComments ()
+  public String[] getComments()
   {
     return getCommentHandler().getComments();
   }
@@ -138,44 +138,44 @@ public class ReportParser extends Parser
   /**
    * Checks whether this report is a included report and not the main
    * report definition.
-   *  
+   *
    * @return true, if the report is included, false otherwise.
    */
-  public boolean isIncluded ()
+  public boolean isIncluded()
   {
     return getConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "false").equals("true");
   }
 
   /**
-   * Handles the end of an element. 
-   *  
+   * Handles the end of an element.
+   *
    * @see org.xml.sax.ContentHandler#endElement
    * (java.lang.String, java.lang.String, java.lang.String)
-   * 
+   *
    * @param tagName the tagname of the element.
-   * @param namespace the current namespace 
+   * @param namespace the current namespace
    * @param qName the fully qualified name
    * @throws SAXException if an error occured.
    */
-  public void endElement(String tagName, String namespace, String qName) throws SAXException
+  public void endElement(final String tagName, final String namespace, final String qName) throws SAXException
   {
     super.endElement(tagName, namespace, qName);
     getCommentHandler().clearComments();
   }
 
   /**
-   * Handles the start of an element. 
+   * Handles the start of an element.
    * @see org.xml.sax.ContentHandler#startElement
    * (java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   * 
+   *
    * @param tagName the tagname of the element.
-   * @param namespace the current namespace 
+   * @param namespace the current namespace
    * @param qName the fully qualified name
    * @param attributes the elements attributes.
    * @throws SAXException if an error occured.
    */
-  public void startElement(String tagName, String namespace, 
-                           String qName, Attributes attributes) throws SAXException
+  public void startElement(final String tagName, final String namespace,
+                           final String qName, final Attributes attributes) throws SAXException
   {
     super.startElement(tagName, namespace, qName, attributes);
     getCommentHandler().clearComments();

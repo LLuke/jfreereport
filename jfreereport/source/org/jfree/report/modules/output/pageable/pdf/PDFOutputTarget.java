@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.8 2003/08/22 20:27:20 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.9 2003/08/24 15:05:18 taqua Exp $
  *
  * Changes
  * -------
@@ -185,7 +185,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   public static final String ENCODING = "Encoding";
 
   /** The output stream. */
-  private OutputStream out;
+  private final OutputStream out;
 
   /** The document. */
   private Document pdfDocument;
@@ -206,7 +206,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   private Paint awtPaint;
 
   /** The PDF font support. */
-  private BaseFontSupport fontSupport;
+  private final BaseFontSupport fontSupport;
 
   /**
    * A bytearray containing an empty password. iText replaces the owner password with random
@@ -228,7 +228,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param pageFormat  the page format.
    * @param embedFonts  embed fonts?
    */
-  public PDFOutputTarget(final OutputStream out, final PageFormat pageFormat, 
+  public PDFOutputTarget(final OutputStream out, final PageFormat pageFormat,
                          final boolean embedFonts)
   {
     this(out, pageFormat, pageFormat, embedFonts);
@@ -241,7 +241,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param logPage  the logical page.
    * @param embedFonts  embed the fonts?
    */
-  public PDFOutputTarget(final OutputStream out, final LogicalPage logPage, 
+  public PDFOutputTarget(final OutputStream out, final LogicalPage logPage,
                          final boolean embedFonts)
   {
     super(logPage);
@@ -258,7 +258,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param physPageFormat  the physical page format.
    * @param embedFonts  embed the fonts?
    */
-  public PDFOutputTarget(final OutputStream out, final PageFormat logPageFormat, 
+  public PDFOutputTarget(final OutputStream out, final PageFormat logPageFormat,
                          final PageFormat physPageFormat, final boolean embedFonts)
   {
     this(out, new LogicalPageImpl(logPageFormat, physPageFormat), embedFonts);
@@ -521,7 +521,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
           }
         default:
           {
-            Log.warn ("Unexpected path iterator type: " + cmd);
+            Log.warn("Unexpected path iterator type: " + cmd);
           }
       }
       pit.next();
@@ -596,7 +596,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
           }
         default:
           {
-            Log.warn ("Unexpected path iterator type: " + cmd);
+            Log.warn("Unexpected path iterator type: " + cmd);
           }
       }
       pit.next();
@@ -751,7 +751,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param value the defaultvalue.
    * @return the true, if the property has the value "true", false otherwise.
    */
-  private boolean getBooleanProperty (final String key, final boolean value)
+  private boolean getBooleanProperty(final String key, final boolean value)
   {
     final String val = getProperty(key);
     if (val == null)
@@ -775,14 +775,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
   {
     final boolean allowPrinting = getBooleanProperty(SECURITY_ALLOW_PRINTING, false);
     final boolean allowModifyContents = getBooleanProperty(SECURITY_ALLOW_MODIFY_CONTENTS, false);
-    final boolean allowModifyAnnotations = 
-      getBooleanProperty(SECURITY_ALLOW_MODIFY_ANNOTATIONS, false);
+    final boolean allowModifyAnnotations =
+        getBooleanProperty(SECURITY_ALLOW_MODIFY_ANNOTATIONS, false);
     final boolean allowCopy = getBooleanProperty(SECURITY_ALLOW_COPY, false);
     final boolean allowFillIn = getBooleanProperty(SECURITY_ALLOW_FILLIN, false);
     final boolean allowScreenReaders = getBooleanProperty(SECURITY_ALLOW_SCREENREADERS, false);
     final boolean allowAssembly = getBooleanProperty(SECURITY_ALLOW_ASSEMBLY, false);
-    final boolean allowDegradedPrinting = 
-      getBooleanProperty(SECURITY_ALLOW_DEGRADED_PRINTING, false);
+    final boolean allowDegradedPrinting =
+        getBooleanProperty(SECURITY_ALLOW_DEGRADED_PRINTING, false);
 
     int permissions = 0;
     if (allowPrinting)
@@ -846,8 +846,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
     cb.beginText();
     cb.setFontAndSize(this.baseFont, fontSize);
 
-    final float y2 = (float) (bounds.getY() + 
-      baseFont.getFontDescriptor(BaseFont.ASCENT, fontSize));
+    final float y2 = (float) (bounds.getY() +
+        baseFont.getFontDescriptor(BaseFont.ASCENT, fontSize));
     cb.showTextAligned(
         PdfContentByte.ALIGN_LEFT,
         text,
@@ -1120,10 +1120,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
   private static final class PDFSizeCalculator implements SizeCalculator
   {
     /** The base font. */
-    private BaseFont baseFont;
+    private final BaseFont baseFont;
 
     /** The font size. */
-    private float fontSize;
+    private final float fontSize;
 
     /**
      * Creates a new size calculator.
@@ -1179,8 +1179,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(final FontDefinition font) 
-    throws OutputTargetException
+  public SizeCalculator createTextSizeCalculator(final FontDefinition font)
+      throws OutputTargetException
   {
     try
     {
@@ -1237,8 +1237,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     final Rectangle2D clipBounds = drawable.getClippingBounds();
 
-    final Graphics2D target = 
-      writer.getDirectContent().createGraphics
+    final Graphics2D target =
+        writer.getDirectContent().createGraphics
         ((float) clipBounds.getWidth(), (float) clipBounds.getHeight());
     target.translate(-clipBounds.getX(), -clipBounds.getY());
     target.clip(new Rectangle2D.Float(0, 0,

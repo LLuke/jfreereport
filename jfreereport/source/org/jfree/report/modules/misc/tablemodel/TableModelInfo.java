@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableModelInfo.java,v 1.2 2003/08/18 18:28:00 taqua Exp $
+ * $Id: TableModelInfo.java,v 1.3 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -51,10 +51,10 @@ public final class TableModelInfo
    * DefaultConstructor.
    *
    */
-  private TableModelInfo ()
+  private TableModelInfo()
   {
   }
-  
+
   /**
    * Prints a table model to standard output.
    *

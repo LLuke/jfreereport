@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);;
  *
- * $Id: PrinterCommandSet.java,v 1.3 2003/08/18 18:28:01 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.4 2003/08/24 15:05:18 taqua Exp $
  *
  * Changes
  * -------
@@ -99,7 +99,7 @@ public class PrinterCommandSet
   public static final byte SPACE = 0x20;
 
   /** the output stream. */
-  private OutputStream out;
+  private final OutputStream out;
 
   /** the font selector byte. */
   private byte font;
@@ -147,13 +147,13 @@ public class PrinterCommandSet
   private boolean letterQuality;
 
   /** the lines per inch for this page. */
-  private int defaultLPI;
+  private final int defaultLPI;
 
   /** the characters per inch for this page. */
-  private int defaultCPI;
+  private final int defaultCPI;
 
   /** the pageformat used in this page. */
-  private PageFormat pageFormat;
+  private final PageFormat pageFormat;
 
   /** the emptyCellCounter is used to optimize the printing. */
   private int emptyCellCounter;
@@ -178,7 +178,7 @@ public class PrinterCommandSet
    * @param defaultCPI the characters-per-inch for the output.
    * @param defaultLPI the lines-per-inch for the output.
    */
-  public PrinterCommandSet(final OutputStream out, final PageFormat format, 
+  public PrinterCommandSet(final OutputStream out, final PageFormat format,
                            final int defaultCPI, final int defaultLPI)
   {
     this.out = out;
@@ -279,7 +279,7 @@ public class PrinterCommandSet
    * @param strike true, if the text should be strikethrough, false otherwise
    * @throws java.io.IOException if there was an IOError while writing the command
    */
-  public void setFontStyle(final boolean bold, final boolean italic, 
+  public void setFontStyle(final boolean bold, final boolean italic,
                            final boolean underline, final boolean strike)
       throws IOException
   {
@@ -594,10 +594,10 @@ public class PrinterCommandSet
    * @param ctrl the control character.
    * @throws java.io.IOException if an error occured.
    */
-  protected void writeControlChar (final byte ctrl) throws IOException
+  protected void writeControlChar(final byte ctrl) throws IOException
   {
     // encode as ascii string ...
-    final String s = new String (new byte[]{ctrl}, "ASCII");
+    final String s = new String(new byte[]{ctrl}, "ASCII");
     writeEncodedText(s);
   }
 
@@ -669,7 +669,7 @@ public class PrinterCommandSet
    * @param textString the text that should be written.
    * @throws java.io.IOException if an error occures.
    */
-  protected void writeEncodedText (final String textString) throws IOException
+  protected void writeEncodedText(final String textString) throws IOException
   {
     final StringBuffer buffer = new StringBuffer(" ");
     buffer.append(textString);

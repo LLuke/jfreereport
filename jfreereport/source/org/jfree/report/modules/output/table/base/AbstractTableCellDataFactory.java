@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTableCellDataFactory.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
+ * $Id: AbstractTableCellDataFactory.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -97,14 +97,14 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
    *         shape is not supported.
    */
   public TableCellBackground createBackground
-    (final Element e, final Shape shape, final Rectangle2D bounds)
+      (final Element e, final Shape shape, final Rectangle2D bounds)
   {
     TableCellBackground bg = null;
 
     final Color color = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
     final Point2D point = new Point2D.Float((float) bounds.getX(), (float) bounds.getY());
     final Dimension2D dim = new FloatDimension
-      ((float) bounds.getWidth(), (float) bounds.getHeight());
+        ((float) bounds.getWidth(), (float) bounds.getHeight());
 
     final Shape s = ShapeTransform.transformShape(
         shape,
@@ -119,8 +119,8 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
 
     if (e.getStyle().getBooleanStyleProperty(ShapeElement.DRAW_SHAPE))
     {
-      final BasicStroke stroke = (BasicStroke) 
-        e.getStyle().getStyleProperty(ElementStyleSheet.STROKE);
+      final BasicStroke stroke = (BasicStroke)
+          e.getStyle().getStyleProperty(ElementStyleSheet.STROKE);
       final float width = stroke.getLineWidth();
 
 

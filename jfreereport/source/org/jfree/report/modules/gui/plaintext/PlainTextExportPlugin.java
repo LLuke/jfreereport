@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportPlugin.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: PlainTextExportPlugin.java,v 1.2 2003/08/24 15:08:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -63,13 +63,13 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
   private PlainTextExportDialog exportDialog;
 
   /** Localised resources. */
-  private ResourceBundle resources;
+  private final ResourceBundle resources;
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
       PlainTextExportResources.class.getName();
 
-  private ReportProgressDialog progressDialog;
+  private final ReportProgressDialog progressDialog;
 
   /**
    * DefaultConstructor.
@@ -118,14 +118,14 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport(final JFreeReport report)
   {
-    boolean result = exportDialog.performQueryForExport(report);
+    final boolean result = exportDialog.performQueryForExport(report);
     if (result == false)
     {
       // user canceled the dialog ...
       return handleExportResult(true);
     }
 
-    PlainTextExportTask task = new PlainTextExportTask
+    final PlainTextExportTask task = new PlainTextExportTask
         (exportDialog.getFilename(), progressDialog,
             exportDialog.getSelectedPrinter(), report);
     delegateTask(task);

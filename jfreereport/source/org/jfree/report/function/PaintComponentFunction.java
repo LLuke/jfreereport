@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.4 2003/08/18 18:27:58 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.5 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -158,10 +158,10 @@ public class PaintComponentFunction extends AbstractFunction
 
   /**
    * Tests, whether the report generation is executed in an headless environment.
-   * 
+   *
    * @return true, if this is an headless environment, false otherwise.
    */
-  protected boolean isHeadless ()
+  protected static boolean isHeadless()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
         ("java.awt.headless", "false").equals("true");

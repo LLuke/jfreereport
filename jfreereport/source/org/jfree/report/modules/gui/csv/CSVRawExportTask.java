@@ -28,33 +28,33 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: CSVRawExportTask.java,v 1.1 2003/08/24 15:08:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 24.08.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.csv;
 
-import java.io.Writer;
 import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-import java.io.FileOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
+import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.csv.CSVProcessor;
-import org.jfree.report.JFreeReport;
 
 public class CSVRawExportTask extends ExportTask
 {
-  private ReportProgressDialog progressDialog;
-  private String fileName;
-  private String encoding;
-  private JFreeReport report;
+  private final ReportProgressDialog progressDialog;
+  private final String fileName;
+  private final String encoding;
+  private final JFreeReport report;
 
   public CSVRawExportTask
       (final String fileName, final String encoding,

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FilesystemFilter.java,v 1.1 2003/07/25 01:06:49 taqua Exp $
+ * $Id: FilesystemFilter.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -52,10 +52,10 @@ import org.jfree.report.util.StringUtil;
 public class FilesystemFilter extends FileFilter implements FilenameFilter
 {
   /** File extensions. */
-  private ArrayList fileext;
+  private final ArrayList fileext;
 
   /** A description. */
-  private String descr;
+  private final String descr;
 
   /** Accept directories. */
   private boolean accDirs;

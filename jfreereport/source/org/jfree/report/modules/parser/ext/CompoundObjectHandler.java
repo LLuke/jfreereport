@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundObjectHandler.java,v 1.5 2003/08/20 17:24:35 taqua Exp $
+ * $Id: CompoundObjectHandler.java,v 1.6 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -151,7 +151,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
         }
       }
 
-      CommentHintPath path = createCommentKey(parameterName);
+      final CommentHintPath path = createCommentKey(parameterName);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       basicFactory = new BasicObjectHandler(getReportParser(), tagName, parameter, path);
       getParser().pushFactory(basicFactory);
@@ -188,7 +188,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
         }
       }
 
-      CommentHintPath path = createCommentKey(parameterName);
+      final CommentHintPath path = createCommentKey(parameterName);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       basicFactory = new CompoundObjectHandler(getReportParser(), tagName, parameter, path);
       getParser().pushFactory(basicFactory);

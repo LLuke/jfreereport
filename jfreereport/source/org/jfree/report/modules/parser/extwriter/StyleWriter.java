@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.3 2003/08/20 17:24:35 taqua Exp $
+ * $Id: StyleWriter.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -71,9 +71,9 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
   /** The default style sheet. */
   private ElementStyleSheet defaultStyleSheet;
 
-  /** 
-   * The comment hint path is used to read xml comments from the 
-   * report builder hints collection. 
+  /**
+   * The comment hint path is used to read xml comments from the
+   * report builder hints collection.
    */
   private CommentHintPath commentPath;
 
@@ -120,7 +120,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
       final ElementStyleSheet parent = (ElementStyleSheet) parents.get(p);
       if (isDefaultStyleSheet(parent) == false)
       {
-        CommentHintPath extendsPath = commentPath.getInstance();
+        final CommentHintPath extendsPath = commentPath.getInstance();
         extendsPath.addName(parent.getName());
         writeComment(writer, extendsPath, CommentHandler.OPEN_TAG_COMMENT);
         writeTag(writer, StyleSheetHandler.EXTENDS_TAG, "name", parent.getName(), CLOSE);
@@ -181,14 +181,14 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    * Checks, whether this key object would use the default object description
    * for this key type. If this method returns true, the object class can be
    * omitted in the xml definition.
-   * 
+   *
    * @param key the style key that should be used as base
-   * @param o the value object for this key type. 
+   * @param o the value object for this key type.
    * @return true, of the object can be described using the default object description,
    * false otherwise.
    */
-  private boolean isUseKeyObjectDescription 
-    (final StyleKey key, final Object o)
+  private boolean isUseKeyObjectDescription
+      (final StyleKey key, final Object o)
   {
     final ClassFactoryCollector cc = getReportWriter().getClassFactoryCollector();
     ObjectDescription odObject = cc.getDescriptionForClass(o.getClass());
@@ -243,7 +243,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
       p.setProperty("class", o.getClass().getName());
     }
 
-    CommentHintPath styleKeyPath = commentPath.getInstance();
+    final CommentHintPath styleKeyPath = commentPath.getInstance();
     styleKeyPath.addName(key);
 
     final List parameterNames = getParameterNames(od);

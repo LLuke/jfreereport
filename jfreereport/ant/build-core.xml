@@ -44,7 +44,7 @@
     <!-- We exclude all module implementations and the demos by default -->
     <javac srcdir="source"
       destdir="build"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}" target="${build.target}">
       <include name="**/*.java"/>
       <exclude name="org/jfree/report/demo/**"/>
       <exclude name="org/jfree/report/modules/gui/**"/>

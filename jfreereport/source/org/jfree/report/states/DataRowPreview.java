@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowPreview.java,v 1.3 2003/08/22 20:27:17 taqua Exp $
+ * $Id: DataRowPreview.java,v 1.1 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@ import javax.swing.table.TableModel;
 
 import org.jfree.report.function.LevelledExpressionList;
 import org.jfree.report.util.ReportPropertiesList;
-import org.jfree.report.states.DataRowBackend;
 
 /**
  * A 'preview' data row backend. Shows how the next row would look like if there
@@ -64,7 +63,7 @@ public final class DataRowPreview extends DataRowBackend
     super(db);
     if (db.getFunctions() != null)
     {
-      LevelledExpressionList le = db.getFunctions().getPreviewInstance();
+      final LevelledExpressionList le = db.getFunctions().getPreviewInstance();
       super.setFunctions(le);
     }
   }

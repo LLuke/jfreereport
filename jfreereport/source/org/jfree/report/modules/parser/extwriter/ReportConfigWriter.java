@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -121,7 +121,7 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
         final String value = config.getConfigProperty(key);
         if (value != null)
         {
-          CommentHintPath path = CONFIGURATION_HINT_PATH.getInstance();
+          final CommentHintPath path = CONFIGURATION_HINT_PATH.getInstance();
           path.addName(key);
           writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
           writeTag(writer, "property", "name", key, OPEN);
@@ -230,7 +230,7 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
   }
 
   /**
-   * Finds the page definition from the 
+   * Finds the page definition from the
    * {@link org.jfree.report.util.PageFormatFactory} class that matches the
    * specified width and height.
    *

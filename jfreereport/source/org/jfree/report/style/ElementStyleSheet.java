@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.3 2003/08/18 18:28:02 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.4 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -581,11 +581,11 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
 
   /**
    * Puts an object into the cache (if caching is enabled).
-   * 
+   *
    * @param key the stylekey for that object
    * @param value the object.
    */
-  private void putInCache (StyleKey key, Object value)
+  private void putInCache(final StyleKey key, final Object value)
   {
     if (isAllowCaching())
     {
@@ -704,7 +704,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   /**
    * Creates the cached object array for the default element style sheets.
    */
-  private void defaultToCache ()
+  private void defaultToCache()
   {
     if (defaultCached == null)
     {
@@ -717,7 +717,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * Creates the cached object array for the parent element style sheets.
    *
    */
-  private void parentsToCache ()
+  private void parentsToCache()
   {
     if (parentsCached == null)
     {
@@ -952,7 +952,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-    throws InvalidStyleSheetCollectionException
+      throws InvalidStyleSheetCollectionException
   {
     collectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
@@ -968,7 +968,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-    throws InvalidStyleSheetCollectionException
+      throws InvalidStyleSheetCollectionException
   {
     collectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }

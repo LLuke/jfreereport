@@ -28,9 +28,9 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources_fr.java,v 1.5 2003/08/19 13:37:23 taqua Exp $
+ * $Id: ConverterResources_fr.java,v 1.6 2003/08/24 15:08:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
  */
@@ -41,7 +41,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * French language resource for the report converter GUI.
- * 
+ *
  * @author PR
  */
 public class ConverterResources_fr extends JFreeReportResources
@@ -63,8 +63,8 @@ public class ConverterResources_fr extends JFreeReportResources
 
         {"convertdialog.targetIsEmpty", "Le fichier cible n'est pas spécifié"},
         {"convertdialog.errorTitle", "Erreur"},
-        {"convertdialog.targetIsNoFile", 
-          "Le fichier cible spécifié n'est pas un fichier ordinaire."},
+        {"convertdialog.targetIsNoFile",
+         "Le fichier cible spécifié n'est pas un fichier ordinaire."},
         {"convertdialog.targetIsNotWritable", "Le fichier sélectionner est en lecture seule."},
         {"convertdialog.targetOverwriteConfirmation",
          "Le fichier ''{0}'' existe. Voulez vous l'écraser?"},
@@ -72,8 +72,8 @@ public class ConverterResources_fr extends JFreeReportResources
         {"convertdialog.encoding", "Encodage"},
         {"convertdialog.targetFile", "Fichier cible"},
         {"convertdialog.sourceIsEmpty", "Le fichier source n'est pas spécifié"},
-        {"convertdialog.sourceIsNoFile", 
-          "Le fichier source spécifié n'est pas un fichier ordinaire."},
+        {"convertdialog.sourceIsNoFile",
+         "Le fichier source spécifié n'est pas un fichier ordinaire."},
         {"convertdialog.sourceIsNotReadable", "Le fichier source n'est pas lisible."},
         {"convertdialog.sourceFile", "Fichier source"},
 

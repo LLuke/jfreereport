@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: DemoResources.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -77,8 +77,8 @@ public class DemoResources extends JFreeReportResources
     {"action.print-preview.accelerator", createMenuKeystroke(KeyEvent.VK_P)},
     {"action.print-preview.small-icon",
      getIcon("org/jfree/report/modules/gui/base/resources/PrintPreview16.gif")},
-    {"action.print-preview.icon", 
-      getIcon("org/jfree/report/modules/gui/base/resources/PrintPreview24.gif")},
+    {"action.print-preview.icon",
+     getIcon("org/jfree/report/modules/gui/base/resources/PrintPreview24.gif")},
 
     {"action.about.name", "About..."},
     {"action.about.description", "Information about the application"},

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.2 2003/08/22 20:27:20 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.3 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -185,7 +185,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
    *
    * @param worker the worker.
    */
-  public void defineWorker(Worker worker)
+  public void defineWorker(final Worker worker)
   {
     this.worker = worker;
   }
@@ -196,7 +196,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
    *
    * @param runnable the task that should be executed.
    */
-  public void delegateTask (Runnable runnable)
+  public void delegateTask(final Runnable runnable)
   {
     if (worker != null)
     {

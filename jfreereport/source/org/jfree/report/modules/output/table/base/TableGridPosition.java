@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridPosition.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
+ * $Id: TableGridPosition.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ public final class TableGridPosition
    * @param colSpan the width in columns within the layouted grid
    * @param rowSpan the height in rows within the layouted grid
    */
-  public TableGridPosition(final TableCellData element, final int col, 
+  public TableGridPosition(final TableCellData element, final int col,
                            final int row, final int colSpan, final int rowSpan)
   {
     if (element == null)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportStateProgress.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
+ * $Id: ReportStateProgress.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public class ReportStateProgress
    * @param currentPage  the current page.
    * @param stateClass  the state class.
    */
-  public ReportStateProgress(final int currentGroupIndex, final int currentDataItem, 
+  public ReportStateProgress(final int currentGroupIndex, final int currentDataItem,
                              final int currentPage, final Class stateClass)
   {
     this.currentGroupIndex = currentGroupIndex;

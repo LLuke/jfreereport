@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyFileReportConfiguration.java,v 1.3 2003/07/23 16:02:22 taqua Exp $
+ * $Id: PropertyFileReportConfiguration.java,v 1.4 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public class PropertyFileReportConfiguration extends ReportConfiguration
    *
    * @param in the input stream used to read the properties.
    */
-  public void load (final InputStream in)
+  public void load(final InputStream in)
   {
     if (in == null)
     {
@@ -86,7 +86,7 @@ public class PropertyFileReportConfiguration extends ReportConfiguration
     try
     {
       final BufferedInputStream bin = new BufferedInputStream(in);
-      Properties p = new Properties();
+      final Properties p = new Properties();
       p.load(bin);
       this.getConfiguration().putAll(p);
       bin.close();

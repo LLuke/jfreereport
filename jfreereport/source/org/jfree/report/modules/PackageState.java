@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageState.java,v 1.3 2003/08/19 13:37:23 taqua Exp $
+ * $Id: PackageState.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 10-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules;
@@ -45,7 +45,7 @@ import org.jfree.report.util.Log;
 /**
  * The package state class is used by the package manager to keep track of
  * the activation level of the installed packages.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PackageState implements Comparable
@@ -60,7 +60,7 @@ public class PackageState implements Comparable
   public static final int STATE_ERROR = -2;
 
   /** The module class that contains the package information. */
-  private Module module;
+  private final Module module;
   /** The state of the module. */
   private int state;
   /** A reference to the module comparator to sort modules by dependency. */
@@ -68,10 +68,10 @@ public class PackageState implements Comparable
 
   /**
    * Provides a singleton interface to the comparator.
-   * 
+   *
    * @return the module comparator.
    */
-  protected Comparator getComparator ()
+  protected static Comparator getComparator()
   {
     if (comparator == null)
     {
@@ -83,10 +83,10 @@ public class PackageState implements Comparable
   /**
    * Creates a new package state for the given module. The module state will
    * be initialized to STATE_NEW.
-   * 
+   *
    * @param module the module.
    */
-  public PackageState(Module module)
+  public PackageState(final Module module)
   {
     this.module = module;
     this.state = STATE_NEW;
@@ -95,7 +95,7 @@ public class PackageState implements Comparable
   /**
    * Configures the module and raises the state to STATE_CONFIGURED if the
    * module is not yet configured.
-   * 
+   *
    * @return true, if the module was configured, false otherwise.
    */
   public boolean configure()
@@ -111,7 +111,7 @@ public class PackageState implements Comparable
 
   /**
    * Returns the module managed by this state implementation.
-   * 
+   *
    * @return the module.
    */
   public Module getModule()
@@ -122,7 +122,7 @@ public class PackageState implements Comparable
   /**
    * Returns the current state of the module. This method returns either
    * STATE_NEW, STATE_CONFIGURED, STATE_INITIALIZED or STATE_ERROR.
-   * 
+   *
    * @return the module state.
    */
   public int getState()
@@ -134,11 +134,11 @@ public class PackageState implements Comparable
    * Initializes the contained module and raises the set of the module to
    * STATE_INITIALIZED, if the module was not yet initialized. In case of an
    * error, the module state will be set to STATE_ERROR and the module will
-   * not be available. 
-   * 
+   * not be available.
+   *
    * @return true, if the module was successfully initialized, false otherwise.
    */
-  public boolean initialize ()
+  public boolean initialize()
   {
     if (state == STATE_CONFIGURED)
     {
@@ -150,7 +150,7 @@ public class PackageState implements Comparable
       }
       catch (ModuleInitializeException me)
       {
-        Log.warn ("Unable to initialize the module " + module.getName(), me);
+        Log.warn("Unable to initialize the module " + module.getName(), me);
         state = STATE_ERROR;
       }
     }
@@ -167,13 +167,13 @@ public class PackageState implements Comparable
    * @throws ClassCastException if the specified object's type prevents it
    *         from being compared to this Object.
    */
-  public int compareTo(Object o)
+  public int compareTo(final Object o)
   {
     if (o == null)
     {
       return 1;
     }
-    PackageState state = (PackageState) o;
+    final PackageState state = (PackageState) o;
     return getComparator().compare(this.getModule(), state.getModule());
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: XMLWriter.java,v 1.2 2003/08/24 15:06:42 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class XMLWriter extends AbstractFunction
   private int depLevel;
 
   /** the XMLEntity parser used to encode the xml characters. */
-  private CharacterEntityParser entityParser;
+  private final CharacterEntityParser entityParser;
 
   /**
    * Creates a new XMLWriter function. The Writer gets a dependency level of

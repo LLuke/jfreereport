@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.7 2003/08/20 14:06:36 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.8 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,7 @@ public class ExcelProducer extends TableProducer
 
   /** A flag to keep track of the open state. */
   private boolean open;
-  
+
   /** the row count used to indicate the progress. */
   private int layoutRowCount;
 
@@ -119,7 +119,7 @@ public class ExcelProducer extends TableProducer
    * @param info the tablelayout that will contain the grid boundries.
    * @see org.jfree.report.modules.output.table.base.TableGridBounds#isStrict
    */
-  public ExcelProducer(TableLayoutInfo info, final boolean strict)
+  public ExcelProducer(final TableLayoutInfo info, final boolean strict)
   {
     super(info, strict);
     cellDataFactory = null;
@@ -251,11 +251,11 @@ public class ExcelProducer extends TableProducer
       sheet.setColumnWidth((short) (i), (short) (width * XFACTOR));
     }
 
-    HSSFPrintSetup printSetup = sheet.getPrintSetup();
+    final HSSFPrintSetup printSetup = sheet.getPrintSetup();
     ExcelPrintSetupFactory.performPageSetup
-      (printSetup, getGridBoundsCollection().getPageFormat(), getProperty("Paper"));
-        
-    int startY = layoutRowCount;
+        (printSetup, getGridBoundsCollection().getPageFormat(), getProperty("Paper"));
+
+    final int startY = layoutRowCount;
 
     for (int y = 0; y < layout.getHeight(); y++)
     {
@@ -345,10 +345,10 @@ public class ExcelProducer extends TableProducer
 
   /**
    * Checks, whether to map numeric and date content to excel data cells.
-   * 
+   *
    * @return true, if enhanced mapping is enabled, false otherwise.
    */
-  private boolean isMapDataFormats ()
+  private boolean isMapDataFormats()
   {
     final String mapData = getProperty
         (ExcelProcessor.ENHANCED_DATA_FORMAT_PROPERTY, "true");

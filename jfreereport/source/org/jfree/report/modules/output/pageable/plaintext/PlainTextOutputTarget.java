@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.4 2003/08/18 18:28:01 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.5 2003/08/24 15:05:18 taqua Exp $
  *
  * Changes
  * -------
@@ -96,7 +96,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
 {
   /** The configuration prefix for all properties. */
   public static final String CONFIGURATION_PREFIX =
-    "org.jfree.report.modules.output.pageable.plaintext.";
+      "org.jfree.report.modules.output.pageable.plaintext.";
 
   /** The property to define the encoding of the text. */
   public static final String ENCODING_PROPERTY = "Encoding";
@@ -170,10 +170,10 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   private static final class PlainTextSizeCalculator implements SizeCalculator
   {
     /** the current character width. */
-    private float characterWidth;
+    private final float characterWidth;
 
     /** the current character height. */
-    private float characterHeight;
+    private final float characterHeight;
 
     /**
      * Creates a new PlainTextSizeCalculator.
@@ -581,7 +581,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     {
       config = ReportConfiguration.getGlobalConfig();
     }
-    return config.getConfigProperty (TEXT_OUTPUT_ENCODING, TEXT_OUTPUT_ENCODING_DEFAULT);
+    return config.getConfigProperty(TEXT_OUTPUT_ENCODING, TEXT_OUTPUT_ENCODING_DEFAULT);
   }
 
 
@@ -595,8 +595,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(final FontDefinition font) 
-    throws OutputTargetException
+  public SizeCalculator createTextSizeCalculator(final FontDefinition font)
+      throws OutputTargetException
   {
     return new PlainTextSizeCalculator(characterWidth, characterHeight);
   }
@@ -676,7 +676,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     else
     {
       throw new IllegalArgumentException
-        ("This encoding is not supported by the printer. : " + documentEncoding);
+          ("This encoding is not supported by the printer. : " + documentEncoding);
     }
   }
 }

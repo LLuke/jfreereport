@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.3 2003/08/18 18:28:01 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.4 2003/08/24 15:05:18 taqua Exp $
  *
  * Changes
  * -------
@@ -191,7 +191,7 @@ public class G2OutputTarget extends AbstractOutputTarget
       myfont = source.getFont();
       mystroke = source.getStroke();
 
-      Graphics2D g2 = source.getGraphics2D();
+      final Graphics2D g2 = source.getGraphics2D();
       mytransform = g2.getTransform();
       mybackground = g2.getBackground();
       myclip = g2.getClip();
@@ -210,7 +210,7 @@ public class G2OutputTarget extends AbstractOutputTarget
       target.setFont(myfont);
       target.setPaint(mypaint);
 
-      Graphics2D g2 = target.getGraphics2D();
+      final Graphics2D g2 = target.getGraphics2D();
       g2.setTransform(mytransform);
       g2.setBackground(mybackground);
       g2.setClip(myclip);
@@ -236,7 +236,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    * @param physPageFormat  the page format for the physical page used to print the report.
    * @param logPageFormat  the page format for the logical page used to layout the report.
    */
-  public G2OutputTarget(final Graphics2D g2, final PageFormat physPageFormat, 
+  public G2OutputTarget(final Graphics2D g2, final PageFormat physPageFormat,
                         final PageFormat logPageFormat)
   {
     super(physPageFormat, logPageFormat);
@@ -513,8 +513,8 @@ public class G2OutputTarget extends AbstractOutputTarget
     if (getFont().isStrikeThrough())
     {
       final float fontHeight = getFont().getFont().getSize2D();
-      final Line2D line = new Line2D.Float(0, fontHeight / 2, 
-        (float) getOperationBounds().getWidth(), fontHeight / 2);
+      final Line2D line = new Line2D.Float(0, fontHeight / 2,
+          (float) getOperationBounds().getWidth(), fontHeight / 2);
       g2.draw(line);
     }
   }
@@ -542,13 +542,14 @@ public class G2OutputTarget extends AbstractOutputTarget
 
   /**
    * Returns a reference to the used graphics2D instance.
-   * 
+   *
    * @return the graphics2D instance used in this target.
    */
   protected Graphics2D getGraphics2D()
   {
     return g2;
   }
+
   /**
    * Creates an output target that mimics a real output target, but produces no output.
    * This is used by the reporting engine when it makes its first pass through the report,

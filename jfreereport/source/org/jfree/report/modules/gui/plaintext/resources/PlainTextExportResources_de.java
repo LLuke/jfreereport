@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportResources_de.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PlainTextExportResources_de.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.plaintext.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * German language resource for the plain text export GUI.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PlainTextExportResources_de extends JFreeReportResources
@@ -102,7 +102,7 @@ public class PlainTextExportResources_de extends JFreeReportResources
         {"error.processingfailed.message", "Die Berichtsgenerierung ist fehlgeschlagen: {0}"},
         {"error.savefailed.message", "Der Bericht konnte nicht gespeichert werden: {0}"},
         {"error.savefailed.title", "Speichern fehlgeschlagen"},
-        
+
         {"plaintext-export.progressdialog.title", "Exportiere in eine Text Datei ..."},
         {"plaintext-export.progressdialog.message", "Der Bericht wird nun in eine Text Datei exportiert ..."},
 

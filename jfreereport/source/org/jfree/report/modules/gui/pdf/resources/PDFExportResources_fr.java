@@ -28,12 +28,12 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: PDFExportResources_fr.java,v 1.4 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PDFExportResources_fr.java,v 1.5 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.pdf.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * French language resource for the PDF export GUI.
- * 
+ *
  * @author PR
  */
 public class PDFExportResources_fr extends JFreeReportResources
@@ -81,7 +81,7 @@ public class PDFExportResources_fr extends JFreeReportResources
         {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
         {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
         {"error.savefailed.title", "Erreur durant la sauvegarde"},
-        
+
         {"file.save.pdfdescription", "Documents PDF"},
 
         {"pdfsavedialog.dialogtitle", "Enregistrement du rapport en PDF ..."},
@@ -109,8 +109,8 @@ public class PDFExportResources_fr extends JFreeReportResources
         {"pdfsavedialog.warningTitle", "Attention"},
         {"pdfsavedialog.errorTitle", "Erreur"},
         {"pdfsavedialog.targetIsEmpty", "Veuillez spécifier un chemin pour le PDF."},
-        {"pdfsavedialog.targetIsNoFile", 
-           "Le fichier cible spécifié n'est pas un fichier ordinaire."},
+        {"pdfsavedialog.targetIsNoFile",
+         "Le fichier cible spécifié n'est pas un fichier ordinaire."},
         {"pdfsavedialog.targetIsNotWritable", "Le fichier sélectionné est en lecture seule."},
         {"pdfsavedialog.targetOverwriteConfirmation",
          "Le fichier ''{0}'' existe. Voulez vous l'écraser?"},

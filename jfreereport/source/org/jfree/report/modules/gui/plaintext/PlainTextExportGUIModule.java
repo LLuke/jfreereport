@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportGUIModule.java,v 1.5 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PlainTextExportGUIModule.java,v 1.6 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.plaintext;
@@ -45,17 +45,17 @@ import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The module definition for the plain text export gui module.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PlainTextExportGUIModule extends AbstractModule
 {
-  /** The export plugin preference key. */ 
+  /** The export plugin preference key. */
   private static final String ORDER_KEY = "org.jfree.report.modules.gui.plaintext.Order";
   /** The export plugin enable key. */
   private static final String ENABLE_KEY = "org.jfree.report.modules.gui.plaintext.Enable";
 
-  /** 
+  /**
    * DefaultConstructor. Loads the module specification.
    * @throws ModuleInitializeException if an error occured.
    */
@@ -65,17 +65,17 @@ public class PlainTextExportGUIModule extends AbstractModule
   }
 
   /**
-   * Initalizes the module and registes it with the export plugin factory. 
+   * Initalizes the module and registes it with the export plugin factory.
    * @see org.jfree.report.modules.Module#initialize()
-   * 
+   *
    * @throws ModuleInitializeException if an error occured.
    */
   public void initialize() throws ModuleInitializeException
   {
-    String order = ReportConfiguration.getGlobalConfig().getConfigProperty
+    final String order = ReportConfiguration.getGlobalConfig().getConfigProperty
         (ORDER_KEY, "0");
 
     ExportPluginFactory.getInstance().registerPlugin
-      (PlainTextExportPlugin.class, order, ENABLE_KEY);
+        (PlainTextExportPlugin.class, order, ENABLE_KEY);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicObjectHandler.java,v 1.5 2003/08/20 17:24:35 taqua Exp $
+ * $Id: BasicObjectHandler.java,v 1.6 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -60,19 +60,19 @@ import org.xml.sax.SAXException;
 public class BasicObjectHandler extends AbstractExtReportParserHandler
 {
   /** A buffer to store CDATA. */
-  private StringBuffer buffer;
+  private final StringBuffer buffer;
 
   /** An object description of the to be generated object. */
-  private ObjectDescription objectDescription;
+  private final ObjectDescription objectDescription;
 
   /** A character entity parser to resolve CDATA entities. */
-  private CharacterEntityParser entityParser;
+  private final CharacterEntityParser entityParser;
 
-  /** 
-   * The comment hint path is used to store xml comments in the 
-   * report builder hints collection. 
+  /**
+   * The comment hint path is used to store xml comments in the
+   * report builder hints collection.
    */
-  private CommentHintPath commentKey;
+  private final CommentHintPath commentKey;
 
 
   /**
@@ -109,13 +109,13 @@ public class BasicObjectHandler extends AbstractExtReportParserHandler
                             final Class targetObject, final CommentHintPath commentHintPath)
       throws SAXException
   {
-    this (parser, finishTag, createObjectDescriptionFromObject(parser, targetObject),
+    this(parser, finishTag, createObjectDescriptionFromObject(parser, targetObject),
         commentHintPath);
   }
 
   /**
    * Tries to find a matching object description for the given class.
-   * 
+   *
    * @param parser the current report parser which holds all factories.
    * @param targetObject the target object class that should be built.
    * @return the object description for the target object, never null.
@@ -123,8 +123,8 @@ public class BasicObjectHandler extends AbstractExtReportParserHandler
    * object type.
    */
   private static ObjectDescription createObjectDescriptionFromObject
-      (ReportParser parser, Class targetObject)
-    throws ParseException
+      (final ReportParser parser, final Class targetObject)
+      throws ParseException
   {
     final ClassFactory fact = (ClassFactory) parser.getHelperObject(
         ParserConfigHandler.OBJECT_FACTORY_TAG);
@@ -209,7 +209,7 @@ public class BasicObjectHandler extends AbstractExtReportParserHandler
   /**
    * Returns the comment hint path used in this factory. This path
    * is used to mark the parse position in the report builder hints.
-   * 
+   *
    * @return the comment hint path.
    */
   protected CommentHintPath getCommentKey()
@@ -220,13 +220,13 @@ public class BasicObjectHandler extends AbstractExtReportParserHandler
   /**
    * Creates a new comment hint path for the given name by appending
    * it to a copy of the current path.
-   * 
+   *
    * @param name the name of the new path segment.
    * @return the new comment path.
    */
-  protected CommentHintPath createCommentKey(Object name)
+  protected CommentHintPath createCommentKey(final Object name)
   {
-    CommentHintPath path = commentKey.getInstance();
+    final CommentHintPath path = commentKey.getInstance();
     path.addName(name);
     return path;
   }

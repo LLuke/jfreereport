@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.4 2003/08/20 14:06:36 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public class ExcelProcessor extends TableProcessor
 
   /** The output stream that is used to write the excel file. */
   private OutputStream outputStream;
-  
+
   public static final String CONFIGURATION_PREFIX =
       "org.jfree.report.modules.output.table.xls.";
 
@@ -113,7 +113,7 @@ public class ExcelProcessor extends TableProcessor
    * @param gridLayoutBounds the grid layout that contain the bounds from the pagination run.
    * @return the created table producer, never null.
    */
-  protected TableProducer createProducer(TableLayoutInfo gridLayoutBounds)
+  protected TableProducer createProducer(final TableLayoutInfo gridLayoutBounds)
   {
     return new ExcelProducer(gridLayoutBounds, getOutputStream());
   }
@@ -126,7 +126,7 @@ public class ExcelProcessor extends TableProcessor
   protected TableProducer createDummyProducer()
   {
     return new ExcelProducer
-      (new TableLayoutInfo(false, getReport().getDefaultPageFormat()), isStrictLayout());
+        (new TableLayoutInfo(false, getReport().getDefaultPageFormat()), isStrictLayout());
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.4 2003/08/18 18:27:57 taqua Exp $
+ * $Id: Group.java,v 1.5 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -83,7 +83,7 @@ public class Group implements Serializable, Cloneable, Comparable
   private static class GroupStyleSheetCollectionHelper extends StyleSheetCollectionHelper
   {
     /** The group for which we handle the stylesheet collection. */
-    private Group group;
+    private final Group group;
 
     /**
      * Creates a new helper for the given group.
@@ -136,6 +136,7 @@ public class Group implements Serializable, Cloneable, Comparable
 
   /** The internal constant to mark anonymous group names. */
   public static final String ANONYMOUS_GROUP_PREFIX = "anonymousGroup@";
+
   /**
    * Constructs a group with no fields, and an empty header and footer.
    */
@@ -306,7 +307,7 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @return the fields as string array.
    */
-  public String[] getFieldsArray ()
+  public String[] getFieldsArray()
   {
     if (fieldsCached == null)
     {
@@ -420,7 +421,7 @@ public class Group implements Serializable, Cloneable, Comparable
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-    throws InvalidStyleSheetCollectionException
+      throws InvalidStyleSheetCollectionException
   {
     styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
@@ -436,7 +437,7 @@ public class Group implements Serializable, Cloneable, Comparable
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-    throws InvalidStyleSheetCollectionException
+      throws InvalidStyleSheetCollectionException
   {
     styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
@@ -457,7 +458,7 @@ public class Group implements Serializable, Cloneable, Comparable
    * if there is an other stylesheet collection already registered with that element.
    */
   public void updateStyleSheetCollection(final StyleSheetCollection sc)
-    throws InvalidStyleSheetCollectionException
+      throws InvalidStyleSheetCollectionException
   {
     footer.updateStyleSheetCollection(sc);
     header.updateStyleSheetCollection(sc);

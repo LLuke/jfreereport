@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.3 2003/07/23 16:02:21 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.4 2003/08/24 15:03:59 taqua Exp $
  *
  * Changes
  * -------
@@ -74,16 +74,16 @@ import org.jfree.report.modules.output.pageable.base.physicals.LogicalPageImpl;
 public abstract class AbstractOutputTarget implements OutputTarget
 {
   /** Storage for the output target properties. */
-  private Properties properties;
+  private final Properties properties;
 
   /** The logical page. */
-  private LogicalPage logicalPage;
+  private final LogicalPage logicalPage;
 
   /** The operation bounds. */
-  private Rectangle2D operationBounds;
+  private final Rectangle2D operationBounds;
 
   /** The content factory used to create content for this output-target. */
-  private ContentFactory contentFactory;
+  private final ContentFactory contentFactory;
 
   /**
    * Creates a new output target.  Both the logical page size and the physical page size will be

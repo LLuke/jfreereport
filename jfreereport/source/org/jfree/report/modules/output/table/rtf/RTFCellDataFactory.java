@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellDataFactory.java,v 1.6 2003/08/20 17:24:34 taqua Exp $
+ * $Id: RTFCellDataFactory.java,v 1.7 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -62,16 +62,16 @@ import org.jfree.report.util.Log;
 public class RTFCellDataFactory extends AbstractTableCellDataFactory
 {
   /** The baseFontSupport is used to handle truetype fonts in iText. */
-  private BaseFontSupport baseFontSupport;
+  private final BaseFontSupport baseFontSupport;
 
   /**
    * Creates a new RTFCellDataFactory. This factory will be used
    * to create RTF content from the JFreeReport elements.
-   * 
+   *
    * @param baseFontSupport the base font support from the table layout
    * info
    */
-  public RTFCellDataFactory(BaseFontSupport baseFontSupport)
+  public RTFCellDataFactory(final BaseFontSupport baseFontSupport)
   {
     this.baseFontSupport = baseFontSupport;
   }

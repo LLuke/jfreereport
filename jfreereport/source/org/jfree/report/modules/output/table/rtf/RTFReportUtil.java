@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFReportUtil.java,v 1.3 2003/08/20 17:24:34 taqua Exp $
+ * $Id: RTFReportUtil.java,v 1.4 2003/08/24 15:06:10 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.output.table.rtf;
@@ -50,7 +50,7 @@ import org.jfree.report.function.FunctionInitializeException;
 /**
  * Utility class to provide an easy to use default implementation of
  * RTF exports.
- * 
+ *
  * @author Thomas Morgner
  */
 public final class RTFReportUtil
@@ -58,10 +58,10 @@ public final class RTFReportUtil
   /**
    * Default Constructor.
    */
-  private RTFReportUtil ()
+  private RTFReportUtil()
   {
   }
-  
+
   /**
    * Saves a report to rich-text format (RTF).
    *

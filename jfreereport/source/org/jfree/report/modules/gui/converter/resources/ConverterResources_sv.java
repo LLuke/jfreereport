@@ -28,9 +28,9 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources_sv.java,v 1.3 2003/08/19 13:37:23 taqua Exp $
+ * $Id: ConverterResources_sv.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
  *
@@ -42,7 +42,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * Swedish language resource for the report converter GUI.
- * 
+ *
  * @author Thomas Dilts
  */
 public class ConverterResources_sv extends JFreeReportResources

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.2 2003/08/18 18:28:00 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.3 2003/08/24 15:06:42 taqua Exp $
  *
  * Changes
  * -------
@@ -142,7 +142,7 @@ public class CSVProcessor
    * @throws ReportProcessingException if the report initialisation failed.
    * @throws FunctionInitializeException if the writer initialization failed.
    */
-  public CSVProcessor(final JFreeReport report, final String separator, 
+  public CSVProcessor(final JFreeReport report, final String separator,
                       final boolean writeDataRowNames)
       throws ReportProcessingException, FunctionInitializeException
   {
@@ -307,7 +307,8 @@ public class CSVProcessor
           throw new IllegalStateException("The processing did not produce an finish state");
         }
       }
-    } while (hasNext == true);
+    }
+    while (hasNext == true);
 
     // root of evilness here ... pagecount should not be handled specially ...
     // The pagecount should not be added as report property, there are functions to

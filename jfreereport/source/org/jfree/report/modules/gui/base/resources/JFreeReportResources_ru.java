@@ -28,12 +28,11 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_ru.java,v 1.3 2003/08/19 13:37:23 taqua Exp $
+ * $Id: JFreeReportResources_ru.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
  *
  *
  */
 package org.jfree.report.modules.gui.base.resources;
-
 
 
 /**

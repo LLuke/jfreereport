@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.3 2003/08/18 18:28:00 taqua Exp $
+ * $Id: PhysicalOperation.java,v 1.4 2003/08/24 15:03:59 taqua Exp $
  *
  * Changes
  * -------
@@ -54,12 +54,12 @@ import org.jfree.report.util.Log;
  * The base class for an operation that can be applied to an
  * {@link OutputTarget}.
  * These operations are typically added to a
- * {@link org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage} 
+ * {@link org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage}
  * in the process of being sent to the output target.
  * <P>
  * Refer to the subclasses for some examples.
  * <p>
- * A sequence of operations can be stored in a 
+ * A sequence of operations can be stored in a
  * {@link org.jfree.report.modules.output.pageable.base.Spool}
  * and replayed at any time.
  *

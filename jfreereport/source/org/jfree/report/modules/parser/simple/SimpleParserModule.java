@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleParserModule.java,v 1.3 2003/08/18 18:28:02 taqua Exp $
+ * $Id: SimpleParserModule.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 10.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.parser.simple;
@@ -44,14 +44,14 @@ import org.jfree.report.modules.ModuleInitializeException;
 /**
  * The Module specification for the simple parser module. This module handles the
  * simple report definition format.
- * 
+ *
  * @author Thomas Morgner
  */
 public class SimpleParserModule extends AbstractModule
 {
   /**
    * Loads the module information from the module.properties file.
-   * 
+   *
    * @throws ModuleInitializeException if loading the specifications failed.
    */
   public SimpleParserModule() throws ModuleInitializeException
@@ -61,7 +61,7 @@ public class SimpleParserModule extends AbstractModule
 
   /**
    * Initializes the module.
-   * 
+   *
    * @throws ModuleInitializeException if initialisation fails.
    */
   public void initialize() throws ModuleInitializeException

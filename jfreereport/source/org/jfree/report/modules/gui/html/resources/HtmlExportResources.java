@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportResources.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
+ * $Id: HtmlExportResources.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.html.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * English language resource for the Html export GUI.
- * 
+ *
  * @author Thomas Morgner
  */
 public class HtmlExportResources extends JFreeReportResources

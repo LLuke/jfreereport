@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SerializerHelper.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: SerializerHelper.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -104,10 +104,10 @@ public class SerializerHelper
   }
 
   /** A collection of the serializer methods. */
-  private HashMap methods;
+  private final HashMap methods;
 
   /** A class comparator for searching the super class of an certain class. */
-  private ClassComparator comparator;
+  private final ClassComparator comparator;
 
   /**
    * Creates a new SerializerHelper.

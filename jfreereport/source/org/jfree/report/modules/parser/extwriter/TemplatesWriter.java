@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesWriter.java,v 1.3 2003/08/20 17:24:35 taqua Exp $
+ * $Id: TemplatesWriter.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
 {
   /** the standard templates comment hint path. */
   private static final CommentHintPath TEMPLATES_PATH = new CommentHintPath
-        (new String[] { ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.TEMPLATES_TAG});
+      (new String[]{ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.TEMPLATES_TAG});
 
   /**
    * Creates a new writer.
@@ -85,8 +85,8 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
 
     writeComment(writer, TEMPLATES_PATH, CommentHandler.OPEN_TAG_COMMENT);
 
-    ReportBuilderHints hints = getReport().getReportBuilderHints();
-    List l = (List) hints.getHint(getReport(), "ext.parser.template-definition", List.class);
+    final ReportBuilderHints hints = getReport().getReportBuilderHints();
+    final List l = (List) hints.getHint(getReport(), "ext.parser.template-definition", List.class);
     if (l == null)
     {
       return;
@@ -97,47 +97,47 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
     }
 
     writeTag(writer, ExtReportHandler.TEMPLATES_TAG);
-    ArrayList invalidTemplates = new ArrayList();
+    final ArrayList invalidTemplates = new ArrayList();
 
-    TemplateDescription[] td = (TemplateDescription[]) 
-      l.toArray(new TemplateDescription[l.size()]);
-      
+    final TemplateDescription[] td = (TemplateDescription[])
+        l.toArray(new TemplateDescription[l.size()]);
+
     for (int i = 0; i < td.length; i++)
     {
-      TemplateDescription template = td[i];
+      final TemplateDescription template = td[i];
       template.configure(getReportWriter().getConfiguration());
 
-      String templateExtends = (String) 
-        hints.getHint(template, "ext.parser.template-reference", String.class);
+      final String templateExtends = (String)
+          hints.getHint(template, "ext.parser.template-reference", String.class);
       if (templateExtends == null)
       {
         // should not happen with a sane parser here ...
-        Log.warn ("Invalid parser hint: Template reference missing for template " + 
-                  template.getName());
+        Log.warn("Invalid parser hint: Template reference missing for template " +
+            template.getName());
         invalidTemplates.add(template.getName());
         continue;
       }
       if (invalidTemplates.contains(templateExtends))
       {
-        Log.warn ("Invalid parser hint: Template reference points to invalid template " + 
-                  template.getName());
+        Log.warn("Invalid parser hint: Template reference points to invalid template " +
+            template.getName());
         invalidTemplates.add(template.getName());
         continue;
       }
-      TemplateDescription parentTemplate = TemplatesWriter.getTemplateDescription
+      final TemplateDescription parentTemplate = TemplatesWriter.getTemplateDescription
           (getReportWriter(), templateExtends);
       if (parentTemplate == null)
       {
-        Log.warn ("Invalid parser hint: Template reference invalid for template " + 
-                  template.getName());
+        Log.warn("Invalid parser hint: Template reference invalid for template " +
+            template.getName());
         invalidTemplates.add(template.getName());
         continue;
       }
       //Log.debug ("Searching template: " + templateExtends);
 
-      CommentHintPath templatePath = TEMPLATES_PATH.getInstance();
+      final CommentHintPath templatePath = TEMPLATES_PATH.getInstance();
       templatePath.addName(template);
-      TemplateWriter templateWriter = new TemplateWriter
+      final TemplateWriter templateWriter = new TemplateWriter
           (getReportWriter(), getIndentLevel(), template, parentTemplate, templatePath);
       templateWriter.write(writer);
     }
@@ -150,23 +150,23 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
   /**
    * Searches the template description that has the given name using
    * the factories defined in the report writer.
-   * 
+   *
    * @param writer the report writer
    * @param name the template description name, never null
    * @return the template description or null, if there is no such
    * description.
    * @throws NullPointerException if the name is null.
    */
-  public static TemplateDescription getTemplateDescription 
-      (ReportWriter writer, String name)
+  public static TemplateDescription getTemplateDescription
+      (final ReportWriter writer, final String name)
   {
     // search by name in the parser hints ...
     if (name == null)
     {
       throw new NullPointerException("Name must be specified.");
     }
-    ReportBuilderHints hints = writer.getReport().getReportBuilderHints();
-    List l = (List) hints.getHint(writer.getReport(), "ext.parser.template-definition", List.class);
+    final ReportBuilderHints hints = writer.getReport().getReportBuilderHints();
+    final List l = (List) hints.getHint(writer.getReport(), "ext.parser.template-definition", List.class);
     if (l == null)
     {
       return null;
@@ -176,7 +176,7 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
       return null;
     }
 
-    TemplateDescription td[] = (TemplateDescription[]) l.toArray(new TemplateDescription[l.size()]);
+    final TemplateDescription[] td = (TemplateDescription[]) l.toArray(new TemplateDescription[l.size()]);
     for (int i = 0; i < td.length; i++)
     {
       if (td[i].getName().equals(name))

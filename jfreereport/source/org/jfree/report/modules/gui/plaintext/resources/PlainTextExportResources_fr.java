@@ -28,12 +28,12 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: PlainTextExportResources_fr.java,v 1.4 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PlainTextExportResources_fr.java,v 1.5 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.plaintext.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * French language resource for the plain text export GUI.
- * 
+ *
  * @author PR
  */
 public class PlainTextExportResources_fr extends JFreeReportResources
@@ -93,7 +93,7 @@ public class PlainTextExportResources_fr extends JFreeReportResources
         {"plain-text-exportdialog.errorTitle", "Erreur"},
         {"plain-text-exportdialog.targetIsEmpty",
          "Veuillez spécifier un nom de fichier pour le fichier CSV."},
-        {"plain-text-exportdialog.targetIsNoFile", 
+        {"plain-text-exportdialog.targetIsNoFile",
          "Le fichier cible spécifié n'est pas un fichier ordinaire."},
         {"plain-text-exportdialog.targetIsNotWritable",
          "Le fichier sélectionné est en lecture seule."},

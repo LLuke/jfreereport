@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport2.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: SampleReport2.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes:
  * --------
@@ -141,7 +141,7 @@ public class SampleReport2
    * @param height the height of the band and the rectangle
    * @return the created band
    */
-  private Band createBand(final String name, final Color color, 
+  private Band createBand(final String name, final Color color,
                           final int x, final int y, final int width, final int height)
   {
     final Band band = new Band();

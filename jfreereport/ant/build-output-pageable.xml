@@ -42,7 +42,7 @@
 
     <!-- compile the source -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/output/pageable/base/**"/>
       <classpath>
@@ -108,7 +108,7 @@
 
     <!-- compile the source -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/output/pageable/pdf/*"/>
       <classpath>
@@ -160,7 +160,7 @@
 
     <!-- compile the source -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/output/pageable/graphics/*"/>
       <classpath>
@@ -207,7 +207,7 @@
 
     <!-- compile the source -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/output/pageable/plaintext/*"/>
       <classpath>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticShapeElementFactory.java,v 1.3 2003/08/18 18:27:58 taqua Exp $
+ * $Id: StaticShapeElementFactory.java,v 1.4 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -57,19 +57,19 @@ import org.jfree.ui.FloatDimension;
  * A factory to produce static shape elements. The shapes must not contain negative
  * coordinates and should start at (0,0). The factory does not scale shapes which have
  * a negative width or height. This behaviour was valid for JFreeReport versions up to
- * version 0.8.3 and is highly dangerous. 
+ * version 0.8.3 and is highly dangerous.
  * <p>
- * The shape is considered immutable. 
+ * The shape is considered immutable.
  * <p>
- * The static utility methods provided in that class try to map negative values of 
+ * The static utility methods provided in that class try to map negative values of
  * lines and rectangles in the createLineShapeElement and createRectangleElement to
- * preserve the old behaviour. 
+ * preserve the old behaviour.
  * <p>
- * The static method 
- * {@link StaticShapeElementFactory#createShapeElement(String, Color, Stroke, Shape, 
- * boolean, boolean)} extracts the bounds from the given shape and performs an tranlate
- * transform to map the shape to the coordinate (0,0).   
- * 
+ * The static method
+ * {@link StaticShapeElementFactory#createShapeElement(String, Color, Stroke, Shape,
+    * boolean, boolean)} extracts the bounds from the given shape and performs an tranlate
+ * transform to map the shape to the coordinate (0,0).
+ *
  * @author Thomas Morgner
  */
 public class StaticShapeElementFactory extends ShapeElementFactory
@@ -86,7 +86,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
 
   /**
    * Returns the shape object used as content of the new elements.
-   *  
+   *
    * @return the shape content.
    */
   public Shape getShape()
@@ -96,7 +96,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
 
   /**
    * Defines the shape object used as content of the new elements.
-   *  
+   *
    * @param shape the shape content.
    */
   public void setShape(final Shape shape)
@@ -111,9 +111,9 @@ public class StaticShapeElementFactory extends ShapeElementFactory
 
   /**
    * Generates a new shape element.
-   *  
+   *
    * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   * 
+   *
    * @return the generated element.
    */
   public Element createElement()

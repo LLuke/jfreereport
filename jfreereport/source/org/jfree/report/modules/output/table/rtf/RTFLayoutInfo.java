@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFLayoutInfo.java,v 1.4 2003/08/20 17:24:34 taqua Exp $
+ * $Id: RTFLayoutInfo.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 13-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.output.table.rtf;
@@ -46,23 +46,23 @@ import org.jfree.report.modules.output.table.base.TableLayoutInfo;
 /**
  * The RTF Layout info collects grid and font information for the
  * RTF output.
- * 
+ *
  * @author Thomas Morgner
  */
 public class RTFLayoutInfo extends TableLayoutInfo
 {
   /** The baseFontSupport is used to handle truetype fonts in iText. */
-  private BaseFontSupport baseFontSupport;
+  private final BaseFontSupport baseFontSupport;
 
   /**
    * Creates a new RTF Layout info object. This object collects the
    * grid positions and the font definitions used during the repagination.
-   * 
+   *
    * @param globalLayout a flag indicating whether to generate a global
    * layout for all pages.
    * @param format the page format used to generate the report.
    */
-  public RTFLayoutInfo(boolean globalLayout, PageFormat format)
+  public RTFLayoutInfo(final boolean globalLayout, final PageFormat format)
   {
     super(globalLayout, format);
     baseFontSupport = new BaseFontSupport();
@@ -70,7 +70,7 @@ public class RTFLayoutInfo extends TableLayoutInfo
 
   /**
    * Returns the base font support used to create the fonts.
-   * 
+   *
    * @return the base font support.
    */
   public BaseFontSupport getBaseFontSupport()

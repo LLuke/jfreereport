@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeFieldElementFactory.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: ShapeFieldElementFactory.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,8 +51,8 @@ import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 
 /**
- * A factory to define Shape field elements. 
- * 
+ * A factory to define Shape field elements.
+ *
  * @author Thomas Morgner
  */
 public class ShapeFieldElementFactory extends ShapeElementFactory
@@ -70,7 +70,7 @@ public class ShapeFieldElementFactory extends ShapeElementFactory
 
   /**
    * Returns the field name from where to read the content of the element.
-   * 
+   *
    * @return the field name.
    */
   public String getFieldname()
@@ -81,19 +81,19 @@ public class ShapeFieldElementFactory extends ShapeElementFactory
   /**
    * Defines the field name from where to read the content of the element.
    * The field name is the name of a datarow column.
-   * 
+   *
    * @param fieldname the field name.
    */
-  public void setFieldname(String fieldname)
+  public void setFieldname(final String fieldname)
   {
     this.fieldname = fieldname;
   }
 
   /**
    * Creates the shape field element.
-   *  
+   *
    * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   * 
+   *
    * @return the generated shape field element
    * @throws IllegalStateException if the fieldname is not defined.
    */
@@ -162,6 +162,9 @@ public class ShapeFieldElementFactory extends ShapeElementFactory
     factory.setKeepAspectRatio(new Boolean(keepAspectRatio));
     factory.setFieldname(fieldname);
     factory.setStroke(stroke);
+    factory.setShouldDraw(new Boolean(shouldDraw));
+    factory.setShouldFill(new Boolean(shouldFill));
+    factory.setScale(new Boolean(shouldScale));
     return (ShapeElement) factory.createElement();
   }
 

@@ -279,20 +279,65 @@ OutputTarget properties are all strings now. The PDF target uses "true" and
 ---------------------------------------------------------------------------
 Changes from 0.8.3e to 0.8.4
 
-+ removed ReportPropertyFunction
-+ functions do no longer receive page events by default. If they should,
-  they have to implement the PageEventListener interface
-+ abs_pos stylekey is no longer included in the default stylesheets
-+ modules ...
-+ removed ExpressionDataSource, FunctionDataSource, ReportDataSource
-+ removed JFreeReportConstants.REPORT_PAGECOUNT_PROPERTY, it was no longer valid
-  and not maintained anymore.
-+ removed all deprecated methods from Element
-+ removed all deprecated methods from Band
-+ removed all deprecated methods from TextElement
-+ removed all deprecated methods from GroupHeader, GroupFooter, ReportHeader, ReportFooter
-+ removed the ItemFactory
-+ removed deprecated ItemColumnQuotientFunction (replaced by ~expression)
-+ removed StaticLayoutManager.DYNAMIC_HEIGHT stylekey ->ElementStyleSheet
-+ removed pagination event listener from pageable modules
+The ReportProperty function was finally removed from the code. Use the
+  property-ref tag to get the same results.
 
+User functions don't receive page events (PageStarted, PageFinished,
+  PageCanceled) by default anymore. If they need those events, they have
+  to implement the PageEventListener interface.
+
+The AbsPos stylekey does no longer define a default value in the default
+  stylesheets. Queries to that key may now result in a null-value unless a
+  default object is supplied in the getProperty method.
+
+All non-base code is now organized in modules. When assembling your
+  application make sure that all required modules are included.
+
+The BeanShell expression moved into the module
+  org.jfree.report.modules.misc.beanshell.
+
+The deprecated ItemColumnQuotientFunction was removed and got replaced
+  by the ItemColumnQuotientExpression for performance reasons. Expressions
+  won't get cloned during the report processing.
+
+All deprecated methods and classes were finally removed.
+
+The simple parser does no longer recognize *-function elements. These
+  elements were deprecated for a long time and should be replaced by the
+  *-element counterparts.
+
+The REPORT_PAGECOUNT_PROPERTY constant was removed and the
+  JFreeReportConstants interface was merged with the JFreeReport class.
+  Interfaces should define a type and should not be used to solely define
+  constants. The functionality of the page count property is provided
+  by the page count function.
+
+The ItemFactory class was removed and got replaced by the package
+  org.jfree.report.elementfactories. This package contains factory classes
+  to easily build report elements. The factory implementations also provide
+  the old static methods, but be aware that these functions create ugly
+  report definitions.
+
+  Remember, that shape coordinates are relative to the elements origin.
+  That means that if you want to place a rectangle on position x,y within
+  a band, you have to set the absolute position of the ELEMENT to x,y and
+  the rectangle should have an origin of (0,0).
+
+The dynamic height stylekey moved from the class StaticLayoutManager into
+  the more general class ElementStyleSheet. The dynamic height feature is
+  available in all band layout managers.
+
+The pagination event classes are now contained in the global event package.
+
+All UI relateted classes moved into the GUI-base module.
+
+The report configuration class does no longer provide default values for
+  the key. It also does no longer provide simplified access methods or
+  key definitions to set the configuration properties. Module specific
+  configuration settings are defined by the module and the module
+  implementation is responsible to provide suitable default values.
+
+  The global "/jfreereport.properties" file can always be used to override
+  module specific settings. Settings in the file
+  "/org/jfree/report/jfreereport.properties" will be replaced by the module
+  supplied values.

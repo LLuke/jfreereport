@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -87,8 +87,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     else
     {
       // return the minimum size as fallback
-      final Dimension2D dim = (Dimension2D) 
-        e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
+      final Dimension2D dim = (Dimension2D)
+          e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
       retval = correctDimension(dim, containerBounds, null);
     }
 
@@ -142,8 +142,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     else
     {
       // if prefsize is defined, return it
-      final Dimension2D d = (Dimension2D) 
-        e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
+      final Dimension2D d = (Dimension2D)
+          e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
       if (d != null)
       {
         retval = correctDimension(d, containerBounds, null);
@@ -247,7 +247,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    * @return the created layout information.
    */
   protected ElementLayoutInformation createLayoutInfoForDynamics
-    (final Element e, final Dimension2D parentDim)
+      (final Element e, final Dimension2D parentDim)
   {
     final Dimension2D maxSize = correctDimension(
         (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), parentDim, null
@@ -446,8 +446,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return the corrected dimension.
    */
-  protected Dimension2D correctDimension
-    (final Dimension2D dim, final Dimension2D base, final Dimension2D retval)
+  protected static Dimension2D correctDimension
+      (final Dimension2D dim, final Dimension2D base, final Dimension2D retval)
   {
     float newWidth = (float) dim.getWidth();
     if (dim.getWidth() < 0)
@@ -481,7 +481,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return the corrected point.
    */
-  protected Point2D correctPoint(final Point2D dim, final Dimension2D base, final Point2D retval)
+  protected static Point2D correctPoint(final Point2D dim, final Dimension2D base, final Point2D retval)
   {
     double x = dim.getX();
     double y = dim.getY();
@@ -512,7 +512,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return The aligned value.
    */
-  protected float align(final float value, final float boundary)
+  protected static float align(final float value, final float boundary)
   {
     if (boundary == 0)
     {

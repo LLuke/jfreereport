@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.3 2003/08/20 17:24:34 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.4 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -424,7 +424,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    * Returns, whether to use digest image compare instead of internal
    * java methods. This method reduces memory consumption for the price
    * of complexer computations (and reduced execution speed).
-   * 
+   *
    * @return true, if the digest compare should be used, false otherwise.
    */
   public boolean isDigestImageCompare()
@@ -436,11 +436,11 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    * Defines, whether to use digest image compare instead of internal
    * java methods. This method reduces memory consumption for the price
    * of complexer computations (and reduced execution speed).
-   * 
-   * @param digestImageCompare set to true, if the digest compare should 
+   *
+   * @param digestImageCompare set to true, if the digest compare should
    * be used, false otherwise.
    */
-  public void setDigestImageCompare(boolean digestImageCompare)
+  public void setDigestImageCompare(final boolean digestImageCompare)
   {
     this.digestImageCompare = digestImageCompare;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutTask.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: LayoutTask.java,v 1.2 2003/08/24 15:03:59 taqua Exp $
  *
  * Changes
  * -------
@@ -115,7 +115,7 @@ public class LayoutTask
   private ReportEvent event;
 
   /** Storage for progress flags. */
-  private Hashtable progressFlags;
+  private final Hashtable progressFlags;
 
   /**
    * Creates a new layout task.

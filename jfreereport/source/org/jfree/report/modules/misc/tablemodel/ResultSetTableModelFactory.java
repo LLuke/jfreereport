@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.3 2003/08/18 18:28:00 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.4 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ public final class ResultSetTableModelFactory
   /**
    * Creates a table model by using the given <code>ResultSet</code> as the backend.
    * If the <code>ResultSet</code> is scrollable (the type is not <code>TYPE_FORWARD_ONLY</code>),
-   * an instance of 
+   * an instance of
    * {@link org.jfree.report.modules.misc.tablemodel.ScrollableResultSetTableModel} is
    * returned. This model uses the
    * extended capabilities of scrollable resultsets to directly read data from the database
@@ -131,11 +131,11 @@ public final class ResultSetTableModelFactory
   /**
    * A DefaultTableModel that implements the CloseableTableModel interface.
    */
-  private final class CloseableDefaultTableModel extends DefaultTableModel 
-    implements CloseableTableModel
+  private final class CloseableDefaultTableModel extends DefaultTableModel
+      implements CloseableTableModel
   {
     /** The results set. */
-    private ResultSet res;
+    private final ResultSet res;
 
     /**
      * Creates a new closeable table model.
@@ -144,7 +144,7 @@ public final class ResultSetTableModelFactory
      * @param objects1  the column names.
      * @param res  the result set.
      */
-    private CloseableDefaultTableModel(final Object[][] objects, 
+    private CloseableDefaultTableModel(final Object[][] objects,
                                        final Object[] objects1, final ResultSet res)
     {
       super(objects, objects1);
@@ -212,8 +212,8 @@ public final class ResultSetTableModelFactory
     {
       rowMap[i] = (Object[]) tempRows[i];
     }
-    final CloseableDefaultTableModel model = 
-      new CloseableDefaultTableModel(rowMap, header.toArray(), rs);
+    final CloseableDefaultTableModel model =
+        new CloseableDefaultTableModel(rowMap, header.toArray(), rs);
     return model;
   }
 

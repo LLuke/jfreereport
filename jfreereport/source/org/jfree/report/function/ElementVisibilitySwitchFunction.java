@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -99,7 +99,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageCanceled(ReportEvent event)
+  public void pageCanceled(final ReportEvent event)
   {
   }
 
@@ -108,7 +108,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageFinished(ReportEvent event)
+  public void pageFinished(final ReportEvent event)
   {
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FontDefinitionObjectDescription.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: FontDefinitionObjectDescription.java,v 1.2 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -187,7 +187,7 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
    * @param bool the primitive boolean.
    * @return the Boolean object.
    */
-  private Boolean getBoolean (final boolean bool)
+  private Boolean getBoolean(final boolean bool)
   {
     if (bool == true)
     {

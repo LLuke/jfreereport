@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlTextCellData.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
+ * $Id: HtmlTextCellData.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public class HtmlTextCellData extends HtmlCellData
    * @param style the style definition for the cell.
    * @param useXHTML a flag indicating whether to use XHTML.
    */
-  public HtmlTextCellData(final Rectangle2D outerBounds, final String value, 
+  public HtmlTextCellData(final Rectangle2D outerBounds, final String value,
                           final HtmlCellStyle style, final boolean useXHTML)
   {
     super(outerBounds, style, useXHTML);

@@ -28,12 +28,12 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_si.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
+ * $Id: HtmlExportResources_si.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.html.resources;
@@ -43,7 +43,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * Sloveninan language resource for the Html export GUI.
- * 
+ *
  * @author Sergey M Mozgovoi
  */
 public class HtmlExportResources_si extends JFreeReportResources

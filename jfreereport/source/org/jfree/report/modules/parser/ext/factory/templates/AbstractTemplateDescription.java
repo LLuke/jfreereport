@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTemplateDescription.java,v 1.4 2003/08/20 17:24:35 taqua Exp $
+ * $Id: AbstractTemplateDescription.java,v 1.5 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -100,24 +100,24 @@ public abstract class AbstractTemplateDescription
   }
 
   /**
-   * Indicated whether an other object is equal to this one. 
+   * Indicated whether an other object is equal to this one.
    * @see java.lang.Object#equals(java.lang.Object)
-   * 
+   *
    * @param o the other object.
    * @return true, if the object is equal, false otherwise.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
-    { 
+    {
       return true;
     }
     if (!(o instanceof AbstractTemplateDescription))
-    { 
+    {
       return false;
     }
     if (!super.equals(o))
-    { 
+    {
       return false;
     }
 
@@ -133,7 +133,7 @@ public abstract class AbstractTemplateDescription
     else
     {
       if (abstractTemplateDescription.name != null)
-      { 
+      {
         return false;
       }
     }
@@ -142,9 +142,9 @@ public abstract class AbstractTemplateDescription
   }
 
   /**
-   * Computes an hashcode for this factory. 
+   * Computes an hashcode for this factory.
    * @see java.lang.Object#hashCode()
-   * 
+   *
    * @return the hashcode.
    */
   public int hashCode()

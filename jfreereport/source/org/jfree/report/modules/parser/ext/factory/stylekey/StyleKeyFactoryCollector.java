@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyFactoryCollector.java,v 1.4 2003/08/20 17:24:35 taqua Exp $
+ * $Id: StyleKeyFactoryCollector.java,v 1.5 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -52,7 +52,7 @@ import org.jfree.xml.factory.objects.ClassFactory;
 public class StyleKeyFactoryCollector implements StyleKeyFactory
 {
   /** Storage for the factories. */
-  private ArrayList factories;
+  private final ArrayList factories;
 
   /**
    * Creates a new factory.
@@ -113,7 +113,7 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
    *
    * @return The object.
    */
-  public Object createBasicObject(final StyleKey k, final String value, 
+  public Object createBasicObject(final StyleKey k, final String value,
                                   final Class c, final ClassFactory cf)
   {
     for (int i = 0; i < factories.size(); i++)
@@ -149,27 +149,27 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
   }
 
   /**
-   * Indicated whether an other object is equal to this one. 
+   * Indicated whether an other object is equal to this one.
    * @see java.lang.Object#equals(java.lang.Object)
-   * 
+   *
    * @param o the other object.
    * @return true, if the object is equal, false otherwise.
    */
   public boolean equals(Object o)
   {
     if (this == o)
-    { 
+    {
       return true;
     }
     if (!(o instanceof StyleKeyFactoryCollector))
-    { 
+    {
       return false;
     }
 
     final StyleKeyFactoryCollector styleKeyFactoryCollector = (StyleKeyFactoryCollector) o;
 
     if (!factories.equals(styleKeyFactoryCollector.factories))
-    { 
+    {
       return false;
     }
 
@@ -177,9 +177,9 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
   }
 
   /**
-   * Computes an hashcode for this factory. 
+   * Computes an hashcode for this factory.
    * @see java.lang.Object#hashCode()
-   * 
+   *
    * @return the hashcode.
    */
   public int hashCode()

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: HelloWorld.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class HelloWorld
   /**
    * Window close handler.
    */
-  protected class CloseHandler extends WindowAdapter
+  protected static class CloseHandler extends WindowAdapter
   {
     /**
      * Handles the window closing event.
@@ -133,7 +133,7 @@ public class HelloWorld
 
     TextFieldElementFactory factory = new TextFieldElementFactory();
     factory.setName("T1");
-    factory.setAbsolutePosition(new Point2D.Float(0,0));
+    factory.setAbsolutePosition(new Point2D.Float(0, 0));
     factory.setMinimumSize(new FloatDimension(150, 20));
     factory.setColor(Color.black);
     factory.setHorizontalAlignment(ElementAlignment.LEFT);
@@ -144,7 +144,7 @@ public class HelloWorld
 
     factory = new TextFieldElementFactory();
     factory.setName("T2");
-    factory.setAbsolutePosition(new Point2D.Float(200,0));
+    factory.setAbsolutePosition(new Point2D.Float(200, 0));
     factory.setMinimumSize(new FloatDimension(150, 20));
     factory.setColor(Color.black);
     factory.setHorizontalAlignment(ElementAlignment.LEFT);
@@ -163,7 +163,7 @@ public class HelloWorld
    */
   public static void main(final String[] args)
   {
-    //final HelloWorld app = 
+    //final HelloWorld app =
     new HelloWorld();
   }
 

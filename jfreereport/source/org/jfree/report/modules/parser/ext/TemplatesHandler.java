@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesHandler.java,v 1.7 2003/08/20 17:24:35 taqua Exp $
+ * $Id: TemplatesHandler.java,v 1.8 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ import org.xml.sax.SAXException;
  */
 public class TemplatesHandler extends AbstractExtReportParserHandler
 {
-  /** the predefined comment hint path for all template definitions. */ 
+  /** the predefined comment hint path for all template definitions. */
   private static final CommentHintPath TEMPLATES_PATH = new CommentHintPath(new String[]{
     ExtParserModuleInit.REPORT_DEFINITION_TAG,
     ExtReportHandler.REPORT_DESCRIPTION_TAG,
@@ -70,7 +70,7 @@ public class TemplatesHandler extends AbstractExtReportParserHandler
   public static final String TEMPLATE_TAG = "template";
 
   /** A template collector. */
-  private TemplateCollector templateCollector;
+  private final TemplateCollector templateCollector;
 
   /** A template handler. */
   private TemplateHandler templateFactory;
@@ -132,9 +132,9 @@ public class TemplatesHandler extends AbstractExtReportParserHandler
     // Clone the defined template ... we don't change the original ..
     template = (TemplateDescription) template.getInstance();
     template.setName(templateName);
-    ObjectDescription unconfiguredTemplate = template.getUnconfiguredInstance();
+    final ObjectDescription unconfiguredTemplate = template.getUnconfiguredInstance();
     getParserHints().putHint(unconfiguredTemplate, "ext.parser.template-reference", references);
-    CommentHintPath path = createPath(unconfiguredTemplate);
+    final CommentHintPath path = createPath(unconfiguredTemplate);
     addComment(path, CommentHandler.OPEN_TAG_COMMENT);
     templateFactory = new TemplateHandler
         (getReportParser(), TEMPLATE_TAG, template, path);
@@ -144,13 +144,13 @@ public class TemplatesHandler extends AbstractExtReportParserHandler
   /**
    * Creates a new comment hint path for the given name by appending
    * it to a copy of the current path.
-   * 
+   *
    * @param tdesc the name of the new path segment.
    * @return the new comment path.
    */
-  private CommentHintPath createPath (ObjectDescription tdesc)
+  private CommentHintPath createPath(final ObjectDescription tdesc)
   {
-    CommentHintPath path = TEMPLATES_PATH.getInstance();
+    final CommentHintPath path = TEMPLATES_PATH.getInstance();
     path.addName(tdesc);
     return path;
   }
@@ -179,11 +179,11 @@ public class TemplatesHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(TEMPLATE_TAG))
     {
-      TemplateDescription template = templateFactory.getTemplate();
-      ObjectDescription unconfiguredTemplate = template.getUnconfiguredInstance();
-      getParserHints().addHintList 
-        (getReport(), "ext.parser.template-definition", template.getUnconfiguredInstance());
-      CommentHintPath path = createPath(unconfiguredTemplate);
+      final TemplateDescription template = templateFactory.getTemplate();
+      final ObjectDescription unconfiguredTemplate = template.getUnconfiguredInstance();
+      getParserHints().addHintList
+          (getReport(), "ext.parser.template-definition", template.getUnconfiguredInstance());
+      final CommentHintPath path = createPath(unconfiguredTemplate);
       addComment(path, CommentHandler.CLOSE_TAG_COMMENT);
       templateCollector.addTemplate(template);
     }

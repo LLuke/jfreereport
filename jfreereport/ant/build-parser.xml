@@ -50,7 +50,7 @@
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/parser/base/*"/>
       <classpath>
@@ -99,7 +99,7 @@
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/parser/ext/**"/>
       <classpath>
@@ -151,7 +151,7 @@
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/parser/extwriter/*"/>
       <classpath>
@@ -201,7 +201,7 @@
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/parser/simple/*"/>
       <classpath>

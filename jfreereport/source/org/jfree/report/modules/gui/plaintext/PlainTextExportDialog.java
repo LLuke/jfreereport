@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.4 2003/08/18 18:27:59 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.5 2003/08/24 15:08:19 taqua Exp $
  *
  * Changes
  * --------
@@ -891,7 +891,7 @@ public class PlainTextExportDialog extends JDialog
     }
   }
 
-  private int parseInt (String configProperty, int defaultValue)
+  private int parseInt(final String configProperty, final int defaultValue)
   {
     try
     {
@@ -914,7 +914,7 @@ public class PlainTextExportDialog extends JDialog
 
   }
 
-  public boolean performQueryForExport (final JFreeReport report)
+  public boolean performQueryForExport(final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
     setModal(true);

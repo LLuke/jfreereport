@@ -28,20 +28,20 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Module.java,v 1.3 2003/08/19 13:37:23 taqua Exp $
+ * $Id: Module.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules;
 
 /**
  * The module interface describes a JFreeReport-module. Modules are loaded
- * and managed by the package manager. 
- *  
+ * and managed by the package manager.
+ *
  * @author Thomas Morgner
  */
 public interface Module extends ModuleInfo
@@ -49,52 +49,52 @@ public interface Module extends ModuleInfo
   /**
    * Returns an array of all required modules. If one of these modules is missing
    * or cannot be initialized, the module itself will be not available.
-   * 
+   *
    * @return an array of the required modules.
    */
-  public ModuleInfo[] getRequiredModules ();
-  
+  public ModuleInfo[] getRequiredModules();
+
   /**
    * Returns an array of optional modules. Missing or invalid modules are non fatal
    * and will not harm the module itself.
-   * 
+   *
    * @return an array of optional module specifications.
    */
-  public ModuleInfo[] getOptionalModules ();
+  public ModuleInfo[] getOptionalModules();
 
   /**
    * Initializes the module. Use this method to perform all initial setup operations.
    * This method is called only once in a modules lifetime. If the initializing cannot
    * be completed, throw a ModuleInitializeException to indicate the error,. The module
    * will not be available to the system.
-   * 
+   *
    * @throws ModuleInitializeException if an error ocurred while initializing the module.
    */
   public void initialize() throws ModuleInitializeException;
-  
+
   /**
    * Configures the module. This should load the default settings of the module.
    */
-  public void configure ();
+  public void configure();
 
   /**
    * Returns a short description of the modules functionality.
-   * 
+   *
    * @return a module description.
    */
   public String getDescription();
-  
+
   /**
    * Returns the name of the module producer.
-   * 
+   *
    * @return the producer name
    */
   public String getProducer();
-  
+
   /**
    * Returns the module name. This name should be a short descriptive handle of the
-   * module. 
-   * 
+   * module.
+   *
    * @return the module name
    */
   public String getName();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupHandler.java,v 1.7 2003/08/20 17:24:35 taqua Exp $
+ * $Id: GroupHandler.java,v 1.8 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -120,7 +120,7 @@ public class GroupHandler extends AbstractExtReportParserHandler
         band.setName(name);
       }
 
-      CommentHintPath path = createCommentPath(band);
+      final CommentHintPath path = createCommentPath(band);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       bandFactory = new BandHandler(getReportParser(), tagName, band, createRootCommentPath());
       getParser().pushFactory(bandFactory);
@@ -133,7 +133,7 @@ public class GroupHandler extends AbstractExtReportParserHandler
       {
         band.setName(name);
       }
-      CommentHintPath path = createCommentPath(band);
+      final CommentHintPath path = createCommentPath(band);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       bandFactory = new BandHandler(getReportParser(), tagName, band, createRootCommentPath());
       getParser().pushFactory(bandFactory);
@@ -203,7 +203,7 @@ public class GroupHandler extends AbstractExtReportParserHandler
     }
     else if (tagName.equals(FIELD_TAG))
     {
-      String fieldName = entityParser.decodeEntities(buffer.toString());
+      final String fieldName = entityParser.decodeEntities(buffer.toString());
       group.addField(fieldName);
       addFieldComment(fieldName);
       buffer = null;
@@ -231,12 +231,12 @@ public class GroupHandler extends AbstractExtReportParserHandler
 
   /**
    * Adds group fields comments for the given name.
-   * 
+   *
    * @param name the field name for which to add comments.
    */
-  private void addFieldComment (String name)
+  private void addFieldComment(final String name)
   {
-    CommentHintPath path = new CommentHintPath();
+    final CommentHintPath path = new CommentHintPath();
     path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
     path.addName(ExtReportHandler.REPORT_DESCRIPTION_TAG);
     path.addName(ReportDescriptionHandler.GROUPS_TAG);
@@ -250,12 +250,12 @@ public class GroupHandler extends AbstractExtReportParserHandler
   /**
    * Creates the root comment path for all groups tags. All comment
    * path will be descendents from this path.
-   *   
+   *
    * @return the root path.
    */
-  private CommentHintPath createRootCommentPath ()
+  private CommentHintPath createRootCommentPath()
   {
-    CommentHintPath path = new CommentHintPath();
+    final CommentHintPath path = new CommentHintPath();
     path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
     path.addName(ExtReportHandler.REPORT_DESCRIPTION_TAG);
     path.addName(ReportDescriptionHandler.GROUPS_TAG);
@@ -266,13 +266,13 @@ public class GroupHandler extends AbstractExtReportParserHandler
   /**
    * Creates a new comment hint path for the given name by appending
    * it to a copy of the root comment path.
-   * 
+   *
    * @param name the name of the new path segment.
    * @return the new comment path.
    */
-  private CommentHintPath createCommentPath (Object name)
+  private CommentHintPath createCommentPath(final Object name)
   {
-    CommentHintPath path = createRootCommentPath();
+    final CommentHintPath path = createRootCommentPath();
     path.addName(name);
     return path;
   }

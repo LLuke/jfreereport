@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElementFactory.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: ImageElementFactory.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.elementfactory;
@@ -41,7 +41,7 @@ package org.jfree.report.elementfactory;
 /**
  * An ElementFactory that can be used to create ImageElements. This is the base
  * class for all image element factories.
- * 
+ *
  * @author Thomas Morgner
  */
 public abstract class ImageElementFactory extends ElementFactory
@@ -61,7 +61,7 @@ public abstract class ImageElementFactory extends ElementFactory
   /**
    * Returns, whether the image content should be scaled to fit the complete image
    * element bounds.
-   * 
+   *
    * @return the scale flag of the image element.
    */
   public Boolean getScale()
@@ -72,10 +72,10 @@ public abstract class ImageElementFactory extends ElementFactory
   /**
    * Defines, whether the image content should be scaled to fit the complete image
    * element bounds.
-   * 
+   *
    * @param scale the scale flag of the image element.
    */
-  public void setScale(Boolean scale)
+  public void setScale(final Boolean scale)
   {
     this.scale = scale;
   }
@@ -84,7 +84,7 @@ public abstract class ImageElementFactory extends ElementFactory
    * Returns whether the generated image element should preserve the original aspect
    * ratio of the image content during scaling. This property has no effect if the image
    * content is not scaled.
-   * 
+   *
    * @return the keep aspect ratio flag.
    */
   public Boolean getKeepAspectRatio()
@@ -100,7 +100,7 @@ public abstract class ImageElementFactory extends ElementFactory
    * @param keepAspectRatio whether to keep the aspect ratio of the image content during
    * the scaling.
    */
-  public void setKeepAspectRatio(Boolean keepAspectRatio)
+  public void setKeepAspectRatio(final Boolean keepAspectRatio)
   {
     this.keepAspectRatio = keepAspectRatio;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlImageCellData.java,v 1.4 2003/08/22 20:27:20 taqua Exp $
+ * $Id: HtmlImageCellData.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public class HtmlImageCellData extends HtmlCellData
    * @param style the assigned cell style.
    * @param useXHTML a flag indicating whether to create XHTML instead of HTML4 code.
    */
-  public HtmlImageCellData(final Rectangle2D outerBounds, final ImageReference image, 
+  public HtmlImageCellData(final Rectangle2D outerBounds, final ImageReference image,
                            final HtmlCellStyle style, final boolean useXHTML)
   {
     super(outerBounds, style, useXHTML);
@@ -94,7 +94,7 @@ public class HtmlImageCellData extends HtmlCellData
         final Rectangle2D bounds = image.getBoundsScaled();
         pout.write(String.valueOf((int) bounds.getWidth()));
         pout.print("\" height=\"");
-        pout.write(String.valueOf((int)bounds.getHeight()));
+        pout.write(String.valueOf((int) bounds.getHeight()));
         if (image.getSourceURL() != null)
         {
           pout.print("\" alt=\"");

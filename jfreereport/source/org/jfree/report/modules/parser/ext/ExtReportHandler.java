@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.7 2003/08/20 17:24:35 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.8 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -97,16 +97,16 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
 
   /**
    * The common hint name used to store report builder hints generated
-   * by the ext-parser. 
+   * by the ext-parser.
    */
-  public static final String EXT_PARSER_TYPE_HINT_VALUE = 
-    "org.jfree.report.modules.parser.ext";
+  public static final String EXT_PARSER_TYPE_HINT_VALUE =
+      "org.jfree.report.modules.parser.ext";
 
   /**
    * Instantiates the handler. The handler must be initialized properly before
    * it can be used.
    */
-  public ExtReportHandler ()
+  public ExtReportHandler()
   {
   }
 
@@ -117,8 +117,8 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
    * @param finishTag  the finish tag.
    * @throws SAXException if an error occurs.
    */
-  public void init (final ReportParser parser, final String finishTag) 
-    throws SAXException
+  public void init(final ReportParser parser, final String finishTag)
+      throws SAXException
   {
     this.parser = parser;
     this.finishTag = finishTag;
@@ -173,7 +173,7 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
       if (updateReportName)
       {
         addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
-        JFreeReport report = parser.getReport();
+        final JFreeReport report = parser.getReport();
         report.setName(attrs.getValue("name"));
       }
       // ignore it ...
@@ -380,11 +380,11 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
 
   /**
    * Adds an comment to the report builder hints collection.
-   * 
+   *
    * @param tagName the tag name for which to store the comment.
    * @param commentHint the comment hint path.
    */
-  private void addComment (String tagName, String commentHint)
+  private void addComment(final String tagName, final String commentHint)
   {
     parser.getReport().getReportBuilderHints().putHint
         (createCommentHintPath(tagName), commentHint, parser.getComments());
@@ -392,13 +392,13 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
 
   /**
    * Creates a comment hint path for the given name.
-   * 
+   *
    * @param tagName the path name
    * @return the created comment hint path.
    */
-  private CommentHintPath createCommentHintPath (String tagName)
+  private CommentHintPath createCommentHintPath(final String tagName)
   {
-    CommentHintPath path = new CommentHintPath();
+    final CommentHintPath path = new CommentHintPath();
     path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
     if (tagName.equals(ExtParserModuleInit.REPORT_DEFINITION_TAG))
     {

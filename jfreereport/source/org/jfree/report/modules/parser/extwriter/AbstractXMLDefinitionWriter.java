@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.3 2003/08/19 21:01:34 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,7 @@ import org.jfree.xml.writer.XMLWriterSupport;
 public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
 {
   /** A report writer. */
-  private ReportWriter reportWriter;
+  private final ReportWriter reportWriter;
 
   /** A list of safe tags. */
   private static SafeTagList safeTags;
@@ -254,7 +254,7 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
    * @param comment the xml comment that should be written.
    * @throws IOException if an error occurs.
    */
-  protected void writeComment (Writer writer, String comment) throws IOException
+  protected void writeComment(final Writer writer, final String comment) throws IOException
   {
     if (comment == null)
     {
@@ -268,19 +268,19 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
   }
 
   /**
-   * Reads a comment from the given comment hint path and hint name and Writes 
+   * Reads a comment from the given comment hint path and hint name and Writes
    * that comment to the xml stream. This method does nothing if there is no
    * comment stored at that position.
-   *  
+   *
    * @param writer the writer that should receive the content
    * @param path the comment hint path that points to the comment
-   * @param hintName the hint name used to store the comment 
+   * @param hintName the hint name used to store the comment
    * @throws IOException if an error occured.
    */
-  protected void writeComment (Writer writer, CommentHintPath path, String hintName)
-    throws IOException
+  protected void writeComment(final Writer writer, final CommentHintPath path, final String hintName)
+      throws IOException
   {
-    String[] comment = (String[]) getReport().getReportBuilderHints().getHint
+    final String[] comment = (String[]) getReport().getReportBuilderHints().getHint
         (path, hintName, String[].class);
     if (comment == null)
     {

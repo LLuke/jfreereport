@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.3 2003/08/18 18:27:58 taqua Exp $
+ * $Id: ElementFactory.java,v 1.4 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,9 +47,9 @@ import org.jfree.report.Element;
  * The class element factory is the base class for all Element Factories.
  * Element factories can be used to create predefined element types. The
  * properties allow null values, if a property is null, it will not be
- * defined. Undefined properties can inherit their values from the element's 
- * parent bands.  
- *  
+ * defined. Undefined properties can inherit their values from the element's
+ * parent bands.
+ *
  * @author Thomas Morgner
  */
 public abstract class ElementFactory
@@ -75,8 +75,8 @@ public abstract class ElementFactory
   }
 
   /**
-   * Returns the name of the new element. 
-   * 
+   * Returns the name of the new element.
+   *
    * @return the name of the element.
    */
   public String getName()
@@ -87,7 +87,7 @@ public abstract class ElementFactory
   /**
    * Defines the name of the element. If the name is null, the default (anonymous)
    * name will be used.
-   * 
+   *
    * @param name the element name.
    */
   public void setName(final String name)
@@ -98,8 +98,8 @@ public abstract class ElementFactory
   /**
    * Returns the element's minimum size. Whether this property is used during the
    * layouting depends on the layout manager implementation of the container.
-   * 
-   * @return the element's minimum size. 
+   *
+   * @return the element's minimum size.
    */
   public Dimension2D getMinimumSize()
   {
@@ -109,8 +109,8 @@ public abstract class ElementFactory
   /**
    * Defines the element's minimum size. Whether this property is used during the
    * layouting depends on the layout manager implementation of the container.
-   * 
-   * @param minimumSize the element's minimum size. 
+   *
+   * @param minimumSize the element's minimum size.
    */
   public void setMinimumSize(final Dimension2D minimumSize)
   {
@@ -120,8 +120,8 @@ public abstract class ElementFactory
   /**
    * Returns the element's maximum size. Whether this property is used during the
    * layouting depends on the layout manager implementation of the container.
-   * 
-   * @return the element's maximum size. 
+   *
+   * @return the element's maximum size.
    */
   public Dimension2D getMaximumSize()
   {
@@ -131,8 +131,8 @@ public abstract class ElementFactory
   /**
    * Defines the element's maximum size. Whether this property is used during the
    * layouting depends on the layout manager implementation of the container.
-   * 
-   * @param maximumSize the element's maximum size. 
+   *
+   * @param maximumSize the element's maximum size.
    */
   public void setMaximumSize(final Dimension2D maximumSize)
   {
@@ -142,8 +142,8 @@ public abstract class ElementFactory
   /**
    * Returns the element's preferred size. Whether this property is used during the
    * layouting depends on the layout manager implementation of the container.
-   * 
-   * @return the element's preferred size. 
+   *
+   * @return the element's preferred size.
    */
   public Dimension2D getPreferredSize()
   {
@@ -153,8 +153,8 @@ public abstract class ElementFactory
   /**
    * Returns the element's preferred size. Whether this property is used during the
    * layouting depends on the layout manager implementation of the container.
-   * 
-   * @param preferredSize the element's preferred size. 
+   *
+   * @param preferredSize the element's preferred size.
    */
   public void setPreferredSize(final Dimension2D preferredSize)
   {
@@ -164,8 +164,8 @@ public abstract class ElementFactory
   /**
    * Returns the element's absolute position. Whether this property is used during the
    * layouting depends on the layout manager implementation of the container.
-   * 
-   * @return the element's absolute position. 
+   *
+   * @return the element's absolute position.
    */
   public Point2D getAbsolutePosition()
   {
@@ -175,8 +175,8 @@ public abstract class ElementFactory
   /**
    * Returns the element's absolute position. Whether this property is used during the
    * layouting depends on the layout manager implementation of the container.
-   * 
-   * @param absolutePosition the element's absolute position. 
+   *
+   * @param absolutePosition the element's absolute position.
    */
   public void setAbsolutePosition(final Point2D absolutePosition)
   {
@@ -187,7 +187,7 @@ public abstract class ElementFactory
    * Defines whether the element's height should be adjusted automaticly. This feature
    * is expensive and be used with care. Set the value to null, to declare that the
    * dynamic feature is undefined.
-   * 
+   *
    * @return the state of the dynamic feature or null, if the feature is undefined.
    */
   public Boolean getDynamicHeight()
@@ -197,7 +197,7 @@ public abstract class ElementFactory
 
   /**
    * Defines the state of the element's dynamic content height feature.
-   *  
+   *
    * @param dynamicHeight the new value of the elements dynamic height feature.
    */
   public void setDynamicHeight(final Boolean dynamicHeight)
@@ -207,7 +207,7 @@ public abstract class ElementFactory
 
   /**
    * Creates a new instance of the element.
-   * 
+   *
    * @return the newly generated instance of the element.
    */
   public abstract Element createElement();

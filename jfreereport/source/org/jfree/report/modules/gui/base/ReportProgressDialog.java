@@ -28,31 +28,31 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ReportProgressDialog.java,v 1.1 2003/08/24 15:08:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 24.08.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.base;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JProgressBar;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.border.EmptyBorder;
 
-import org.jfree.report.event.RepaginationState;
 import org.jfree.report.event.RepaginationListener;
+import org.jfree.report.event.RepaginationState;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 
 public class ReportProgressDialog extends JDialog
@@ -78,7 +78,7 @@ public class ReportProgressDialog extends JDialog
 
 
   /** Localised resources. */
-  private ResourceBundle resources;
+  private final ResourceBundle resources;
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
@@ -93,11 +93,12 @@ public class ReportProgressDialog extends JDialog
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
     initialize();
-    addWindowListener(new WindowAdapter (){
+    addWindowListener(new WindowAdapter()
+    {
       /**
        * Invoked when a window has been opened.
        */
-      public void windowOpened(WindowEvent e)
+      public void windowOpened(final WindowEvent e)
       {
         ReportProgressDialog.this.toFront();
       }
@@ -110,15 +111,15 @@ public class ReportProgressDialog extends JDialog
     lastPage = -1;
   }
 
-  private void initialize ()
+  private void initialize()
   {
-    JPanel contentPane = new JPanel();
-    contentPane.setBorder(new EmptyBorder (5, 5, 5, 5));
+    final JPanel contentPane = new JPanel();
+    contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
     contentPane.setLayout(new GridBagLayout());
 
-    pageMessageFormatter = new MessageFormat (resources.getString("progress-dialog.page-label"));
-    rowsMessageFormatter = new MessageFormat (resources.getString("progress-dialog.rows-label"));
-    passMessageFormatter = new MessageFormat (resources.getString("progress-dialog.pass-label"));
+    pageMessageFormatter = new MessageFormat(resources.getString("progress-dialog.page-label"));
+    rowsMessageFormatter = new MessageFormat(resources.getString("progress-dialog.rows-label"));
+    passMessageFormatter = new MessageFormat(resources.getString("progress-dialog.pass-label"));
 
     messageCarrier = new JLabel(" ");
     passCountMessage = new JLabel(" ");
@@ -177,12 +178,12 @@ public class ReportProgressDialog extends JDialog
     setContentPane(contentPane);
   }
 
-  public String getMessage ()
+  public String getMessage()
   {
     return messageCarrier.getText();
   }
 
-  public void setMessage (String message)
+  public void setMessage(final String message)
   {
     messageCarrier.setText(message);
   }
@@ -192,9 +193,9 @@ public class ReportProgressDialog extends JDialog
    *
    * @param state  the state.
    */
-  public void repaginationUpdate(RepaginationState state)
+  public void repaginationUpdate(final RepaginationState state)
   {
-    boolean maxRowChanged = lastMaxRow != state.getMaxRow();
+    final boolean maxRowChanged = lastMaxRow != state.getMaxRow();
     updatePageMessage(state.getPage());
     updatePassMessage(state.getPass(), state.isPrepare());
     updateRowsMessage(state.getCurrentRow(), state.getMaxRow());
@@ -205,43 +206,43 @@ public class ReportProgressDialog extends JDialog
     progressBar.setValue(state.getCurrentRow());
   }
 
-  protected void updatePageMessage (int page)
+  protected void updatePageMessage(final int page)
   {
     if (lastPage != page)
     {
-      Object[] parameters = new Object[]{ new Integer(page)};
+      final Object[] parameters = new Object[]{new Integer(page)};
       pageCountMessage.setText(pageMessageFormatter.format(parameters));
       lastPage = page;
     }
   }
 
-  protected void updateRowsMessage (int rows, int maxRows)
+  protected void updateRowsMessage(final int rows, final int maxRows)
   {
     if (maxRows != lastMaxRow)
     {
       lastMaxRowInteger = new Integer(maxRows);
       lastMaxRow = maxRows;
     }
-    Object[] parameters = new Object[]{
+    final Object[] parameters = new Object[]{
       new Integer(rows),
       lastMaxRowInteger
     };
     rowCountMessage.setText(rowsMessageFormatter.format(parameters));
   }
 
-  protected void updatePassMessage (int pass, boolean prepare)
+  protected void updatePassMessage(final int pass, final boolean prepare)
   {
     if (lastPass != pass)
     {
       lastPass = pass;
       if (pass >= 0)
       {
-        Object[] parameters = new Object[]{ new Integer(pass)};
+        final Object[] parameters = new Object[]{new Integer(pass)};
         passCountMessage.setText(passMessageFormatter.format(parameters));
       }
       else
       {
-        String message = null;
+        String message;
         if (prepare)
         {
           message = getLayoutText();
@@ -292,7 +293,7 @@ public class ReportProgressDialog extends JDialog
     return outputText;
   }
 
-  public void setOutputText(String outputText)
+  public void setOutputText(final String outputText)
   {
     this.outputText = outputText;
   }
@@ -302,7 +303,7 @@ public class ReportProgressDialog extends JDialog
     return layoutText;
   }
 
-  public void setLayoutText(String layoutText)
+  public void setLayoutText(final String layoutText)
   {
     this.layoutText = layoutText;
   }

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.5 2003/08/19 13:37:23 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.6 2003/08/24 15:08:19 taqua Exp $
  *
  * Changes
  * -------
@@ -407,14 +407,14 @@ public class HtmlExportDialog extends JDialog
 
   /**
    * Returns the cancel action.
-   * 
+   *
    * @return the cancel action.
    */
   protected Action getCancelAction()
   {
-    return actionCancel;    
+    return actionCancel;
   }
-  
+
   /**
    * Retrieves the resources for this dialog. If the resources are not initialized,
    * they get loaded on the first call to this method.
@@ -728,8 +728,8 @@ public class HtmlExportDialog extends JDialog
     final JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
 
-    final JLabel lblStreamFileName = 
-      new JLabel(getResources().getString("htmlexportdialog.filename"));
+    final JLabel lblStreamFileName =
+        new JLabel(getResources().getString("htmlexportdialog.filename"));
     txStreamFilename = new JTextField();
 
     GridBagConstraints gbc = new GridBagConstraints();
@@ -1042,8 +1042,8 @@ public class HtmlExportDialog extends JDialog
     {
       fileChooserStream = new JFileChooser();
       fileChooserStream.addChoosableFileFilter
-        (new FilesystemFilter(new String[]{".html", ".htm"},
-          getResources().getString("htmlexportdialog.html-documents"), true));
+          (new FilesystemFilter(new String[]{".html", ".htm"},
+              getResources().getString("htmlexportdialog.html-documents"), true));
       fileChooserStream.setMultiSelectionEnabled(false);
     }
 
@@ -1076,8 +1076,8 @@ public class HtmlExportDialog extends JDialog
     {
       fileChooserZip = new JFileChooser();
       fileChooserZip.addChoosableFileFilter
-        (new FilesystemFilter(new String[]{".zip", ".jar"},
-          getResources().getString("htmlexportdialog.zip-archives"), true));
+          (new FilesystemFilter(new String[]{".zip", ".jar"},
+              getResources().getString("htmlexportdialog.zip-archives"), true));
       fileChooserZip.setMultiSelectionEnabled(false);
     }
 
@@ -1257,7 +1257,7 @@ public class HtmlExportDialog extends JDialog
     return true;
   }
 
-  public boolean performQueryForExport (final JFreeReport report)
+  public boolean performQueryForExport(final JFreeReport report)
   {
     setModal(true);
     initFromConfiguration(report.getReportConfiguration());
@@ -1405,26 +1405,26 @@ public class HtmlExportDialog extends JDialog
    */
   public void initFromConfiguration(final ReportConfiguration config)
   {
-    String strict = config.getConfigProperty
+    final String strict = config.getConfigProperty
         (HtmlProcessor.CONFIGURATION_PREFIX +
-          HtmlProcessor.STRICT_LAYOUT,
-            config.getConfigProperty (TableProcessor.STRICT_TABLE_LAYOUT,
+        HtmlProcessor.STRICT_LAYOUT,
+            config.getConfigProperty(TableProcessor.STRICT_TABLE_LAYOUT,
                 TableProcessor.STRICT_TABLE_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
-    String encoding = config.getConfigProperty
+    final String encoding = config.getConfigProperty
         (HtmlProcessor.CONFIGURATION_PREFIX +
-          HtmlProducer.ENCODING, HtmlProducer.ENCODING_DEFAULT);
+        HtmlProducer.ENCODING, HtmlProducer.ENCODING_DEFAULT);
     setAuthor
         (config.getConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-          HtmlProducer.AUTHOR, getAuthor()));
+        HtmlProducer.AUTHOR, getAuthor()));
     setHTMLTitle
         (config.getConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-          HtmlProducer.TITLE, getHTMLTitle()));
+        HtmlProducer.TITLE, getHTMLTitle()));
     encodingModel.ensureEncodingAvailable(encoding);
     setEncoding(encoding);
   }
 
-  public void storeToConfiguration (final ReportConfiguration config)
+  public void storeToConfiguration(final ReportConfiguration config)
   {
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
         HtmlProducer.ENCODING, getEncoding());

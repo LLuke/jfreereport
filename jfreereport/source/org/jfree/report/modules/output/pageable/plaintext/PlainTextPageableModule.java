@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextPageableModule.java,v 1.2 2003/08/20 17:24:34 taqua Exp $
+ * $Id: PlainTextPageableModule.java,v 1.3 2003/08/24 15:05:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.output.pageable.plaintext;
@@ -43,12 +43,12 @@ import org.jfree.report.modules.ModuleInitializeException;
 
 /**
  * The module definition for the plain text pagable export module.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PlainTextPageableModule extends AbstractModule
 {
-  /** 
+  /**
    * DefaultConstructor. Loads the module specification.
    * @throws ModuleInitializeException if an error occured.
    */
@@ -58,9 +58,9 @@ public class PlainTextPageableModule extends AbstractModule
   }
 
   /**
-   * Initalizes the module. This method is empty. 
+   * Initalizes the module. This method is empty.
    * @see org.jfree.report.modules.Module#initialize()
-   * 
+   *
    * @throws ModuleInitializeException if an error occured.
    */
   public void initialize() throws ModuleInitializeException

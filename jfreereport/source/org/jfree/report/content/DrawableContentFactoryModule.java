@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableContentFactoryModule.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -104,7 +104,7 @@ public class DrawableContentFactoryModule implements ContentFactoryModule
         (float) iBounds.getWidth(),
         (float) iBounds.getHeight());
     final DrawableContainer con = new DrawableContainer
-      (drawable.getDrawable(), iBounds, drawableBounds);
+        (drawable.getDrawable(), iBounds, drawableBounds);
     return new DrawableContent(con, point);
   }
 }

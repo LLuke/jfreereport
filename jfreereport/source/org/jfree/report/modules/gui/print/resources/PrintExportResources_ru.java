@@ -28,12 +28,12 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: PrintExportResources_ru.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PrintExportResources_ru.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.print.resources;
@@ -43,7 +43,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * Russian language resource for the printing export GUI.
- * 
+ *
  * @author Sergey M Mozgovoi
  */
 public class PrintExportResources_ru extends JFreeReportResources
@@ -83,7 +83,7 @@ public class PrintExportResources_ru extends JFreeReportResources
         {"error.printfailed.title",
          "\u041e\u0448\u0438\u0431\u043a\u0430 \u043f\u0440\u0438 \u043f\u0435\u0447\u0430" +
       "\u0442\u0438"},
-        
+
       };
 
   /**

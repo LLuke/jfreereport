@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementChooserAgent.java,v 1.3 2003/08/22 20:27:20 taqua Exp $
+ * $Id: ElementChooserAgent.java,v 1.4 2003/08/24 15:03:59 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public class ElementChooserAgent extends LayoutAgent
    */
   public LayoutAgentProgress processTask(final LayoutTask task)
   {
-/*    
+/*
     final EventType type = task.getEventType();
     if (type == EventType.PAGE_START)
     {

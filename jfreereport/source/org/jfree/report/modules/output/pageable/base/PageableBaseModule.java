@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableBaseModule.java,v 1.2 2003/08/20 17:24:18 taqua Exp $
+ * $Id: PageableBaseModule.java,v 1.3 2003/08/24 15:03:52 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.output.pageable.base;
@@ -44,12 +44,12 @@ import org.jfree.report.modules.ModuleInitializeException;
 /**
  * The module definition for the pagable export base module.
  * This module provides base classes for all pageable output targets.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PageableBaseModule extends AbstractModule
 {
-  /** 
+  /**
    * DefaultConstructor. Loads the module specification.
    * @throws ModuleInitializeException if an error occured.
    */
@@ -59,9 +59,9 @@ public class PageableBaseModule extends AbstractModule
   }
 
   /**
-   * Initalizes the module. This method is empty. 
+   * Initalizes the module. This method is empty.
    * @see org.jfree.report.modules.Module#initialize()
-   * 
+   *
    * @throws ModuleInitializeException if an error occured.
    */
   public void initialize() throws ModuleInitializeException

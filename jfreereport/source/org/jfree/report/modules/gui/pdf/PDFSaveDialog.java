@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.8 2003/08/22 20:27:20 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.9 2003/08/24 15:08:19 taqua Exp $
  *
  * Changes
  * --------
@@ -53,11 +53,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.print.PageFormat;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
@@ -82,13 +78,11 @@ import javax.swing.KeyStroke;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
-import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.gui.pdf.resources.PDFExportResources;
-import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.ReportConfiguration;
 
 /**
  * A dialog that is used to perform the printing of a report into a PDF file. It is primarily
@@ -336,9 +330,9 @@ public class PDFSaveDialog extends JDialog
 
   /**
    * Updates the security panel state. If no encryption is selected, all security
-   * setting components will be disabled. 
+   * setting components will be disabled.
    */
-  protected void updateSecurityPanelEnabled ()
+  protected void updateSecurityPanelEnabled()
   {
     final boolean b = (rbSecurityNone.isSelected() == false);
     txUserPassword.setEnabled(b);
@@ -598,7 +592,7 @@ public class PDFSaveDialog extends JDialog
    * Initializes the class member components of the security panel.
    *
    */
-  private void createSecurityPanelComponents ()
+  private void createSecurityPanelComponents()
   {
     txUserPassword = new JPasswordField();
     txConfUserPassword = new JPasswordField();
@@ -774,14 +768,14 @@ public class PDFSaveDialog extends JDialog
 
     return securityPanel;
   }
-  
+
   /**
    * Creates the security config panel. This panel is used to select the level of the
    * PDF security.
-   * 
+   *
    * @return the created security config panel.
    */
-  private JPanel createSecurityConfigPanel ()
+  private JPanel createSecurityConfigPanel()
   {
     rbSecurityNone = new JRadioButton(getResources().getString("pdfsavedialog.securityNone"));
     rbSecurity40Bit = new JRadioButton(getResources().getString("pdfsavedialog.security40bit"));
@@ -1172,7 +1166,7 @@ public class PDFSaveDialog extends JDialog
       }
       else
       {
-        Log.warn ("Invalid encryption value entered. " + b);
+        Log.warn("Invalid encryption value entered. " + b);
       }
     }
     rbSecurityNone.setSelected(true);
@@ -1346,7 +1340,7 @@ public class PDFSaveDialog extends JDialog
     return true;
   }
 
-  public boolean performQueryForExport (final JFreeReport report)
+  public boolean performQueryForExport(final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
     setModal(true);
@@ -1364,7 +1358,7 @@ public class PDFSaveDialog extends JDialog
    *
    * @param config the report configuration.
    */
-  public void storeToConfiguration (final ReportConfiguration config)
+  public void storeToConfiguration(final ReportConfiguration config)
   {
     config.setConfigProperty
         (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.AUTHOR,
@@ -1460,7 +1454,7 @@ public class PDFSaveDialog extends JDialog
    *
    * @return true or false.
    */
-  private boolean parseBoolean(final String key, final ReportConfiguration config, 
+  private boolean parseBoolean(final String key, final ReportConfiguration config,
                                final boolean orgVal)
   {
     final String val = config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + key,

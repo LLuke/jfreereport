@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.4 2003/08/18 18:28:00 taqua Exp $
+ * $Id: BSHExpression.java,v 1.5 2003/08/24 15:08:20 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -143,7 +143,7 @@ public class BSHExpression extends AbstractExpression implements Serializable
     catch (Exception e)
     {
       e.printStackTrace();
-      Log.error(new Log.SimpleMessage("Evaluation error: ", 
+      Log.error(new Log.SimpleMessage("Evaluation error: ",
           e.getClass(), " - ", e.getMessage()));
       throw new NullPointerException();
     }

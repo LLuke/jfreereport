@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.5 2003/08/20 14:06:36 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.6 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -106,7 +106,7 @@ public class HtmlProducer extends TableProducer
     "     \"http://www.w3.org/TR/html4/strict.dtd\">",
     "<html>",
     "<head>"};
-  
+
   /** The property key to define whether to build a html body fragment. */
   public static final String BODY_FRAGMENT = "BodyFragment";
 
@@ -159,10 +159,10 @@ public class HtmlProducer extends TableProducer
 
   /**
    * Returns the html layout info instance used to compute the layout.
-   * 
+   *
    * @return the layout info instance as HTML layout.
    */
-  protected HtmlLayoutInfo getHtmlLayoutInfo ()
+  protected HtmlLayoutInfo getHtmlLayoutInfo()
   {
     return (HtmlLayoutInfo) getGridBoundsCollection();
   }
@@ -177,7 +177,7 @@ public class HtmlProducer extends TableProducer
   {
     if (entityParser == null)
     {
-      entityParser = new CharacterEntityParser (new HtmlCharacterEntities());
+      entityParser = new CharacterEntityParser(new HtmlCharacterEntities());
     }
     return entityParser;
   }
@@ -264,19 +264,19 @@ public class HtmlProducer extends TableProducer
       catch (IOException ioe)
       {
         throw new FunctionProcessingException
-          ("Failed to create the writer or write the header.", ioe);
+            ("Failed to create the writer or write the header.", ioe);
       }
     }
   }
 
   /**
-   * Creates the global Cascading Stylesheet definition for the 
+   * Creates the global Cascading Stylesheet definition for the
    * report.
-   * 
+   *
    * @return the global stylesheet as html reference.
    * @throws IOException if an error occured.
    */
-  private HtmlReferenceData getGlobalCSSData () throws IOException
+  private HtmlReferenceData getGlobalCSSData() throws IOException
   {
     //
     // Creates the stylesheets and the StyleSheet reference.
@@ -343,7 +343,7 @@ public class HtmlProducer extends TableProducer
   /**
    * End the page and closes the generated table of the page.
    */
-  public void endPage ()
+  public void endPage()
   {
     commit();
     if (isDummy() == false)
@@ -538,7 +538,7 @@ public class HtmlProducer extends TableProducer
   /**
    * Checks, whether to create a html body fragment. This fragment contains
    * no html header an generates no global CSS section.
-   * 
+   *
    * @return true, if a body fragment is used, false otherwise.
    */
   public boolean isCreateBodyFragment()
@@ -549,11 +549,11 @@ public class HtmlProducer extends TableProducer
   /**
    * Defines, whether to create a html body fragment. This fragment contains
    * no html header an generates no global CSS section.
-   * 
-   * @param createBodyFragment true, if a body fragment should be created, 
+   *
+   * @param createBodyFragment true, if a body fragment should be created,
    * false otherwise.
    */
-  public void setCreateBodyFragment(boolean createBodyFragment)
+  public void setCreateBodyFragment(final boolean createBodyFragment)
   {
     setProperty(BODY_FRAGMENT, String.valueOf(createBodyFragment));
   }
@@ -570,7 +570,7 @@ public class HtmlProducer extends TableProducer
     this.cellDataFactory = new HtmlCellDataFactory(styleCollection, isGenerateXHTML());
   }
 
-  protected boolean isGenerateXHTML ()
+  protected boolean isGenerateXHTML()
   {
     return getProperty(GENERATE_XHTML, "false").equals("true");
   }

@@ -1,38 +1,42 @@
-* Columns
-* PageBreaks within a band
-* Sub-Reporting
-* Smarter PageLayouting:
-  - FlowLayouter, LayoutAgents
-  - ContentDistribution over multiple physical pages
-* External style definitions for the ext-parser
-* Watermarks for Pages ...
-* more BandLayoutManagers for smarter layouting
-  - FlowLayout
-  - BoxLayout
-  - GridBagLayout
-* Better Support for international Fonts in the PDF-Target
-  - parse TTF-Files for supported Charsets/Unicode-Ranges
-  - automaticly adjust encoding if nessesary
-* Formated Text support for printing (RTF, HTML)
-* Implement JFreeChart adapter and Barcode stuff
-* Allow access to the last datarow to make reporting results available outside.
-* Implement function sets (see #note-1030630)
-*  Document the changes and write a converter for report definitions
-  from 0.8.3 to 0.8.4
-* pluggable input support (WMF, SVG etc)
-* export to OpenOffice 
+0.8.4:
+  * External style definitions for the ext-parser (includes)
+  * Document the changes and write a converter for report definitions
+    from 0.8.3 to 0.8.4
 
-PDF: Fast Web View, PDF 1.2
-Access to bean properties (Category->Description)
-Epression in group-fields dont seem to work (JMI)
-TotalGroupCount function
-Start a poll what functions are needed ...
+0.8.5:
+  * Implement function sets (see #note-1030630)
+  * pluggable input support (WMF, SVG etc)
+  * Watermarks for Pages ...
+  * Multi-Page definition, 1 pageformat for all pages
+    multiple pages (x and y),
+    a defined max width and max height (may be less than the given log page size)
+    a global page header/footer for the complete log page
+    several private page header/footers for every physical page
+  * Implement JFreeChart adapter and Barcode stuff
+  * Formated Text support for printing (RTF, HTML)
+  * Allow access to the last datarow to make reporting results available outside.
+  * Simple parser writer and comment handler ...
 
-Multi-Page definition, 1 pageformat for all pages
-multiple pages (x and y), 
-a defined max width and max height (may be less than the given log page size)
-a global page header/footer for the complete log page
-several private page header/footers for every physical page
+0.8.6:
+  * Columns
+  * PageBreaks within a band
+  * Sub-Reporting
+  * Smarter PageLayouting:
+    - FlowLayouter, LayoutAgents
+    - ContentDistribution over multiple physical pages
+  * more BandLayoutManagers for smarter layouting
+    - FlowLayout
+    - BoxLayout
+    - GridBagLayout
+  * Better Support for international Fonts in the PDF-Target
+    - parse TTF-Files for supported Charsets/Unicode-Ranges
+    - automaticly adjust encoding if nessesary
+  * export to OpenOffice
+  * PDF: Fast Web View, PDF 1.2
 
-Long-Term: create a RPC-Capable report preview so that reports are processed
-on the server and only the minimum of data is sent to the client ...
+general:
+  * Start a poll what functions are needed ...
+
+> 0.9.0:
+  * create a RPC-Capable report preview so that reports are processed
+    on the server and only the minimum of data is sent to the client ...

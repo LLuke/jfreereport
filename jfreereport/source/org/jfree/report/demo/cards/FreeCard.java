@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FreeCard.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: FreeCard.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -46,10 +46,10 @@ import java.util.Date;
 public class FreeCard extends Card
 {
   /** The expiry date. */
-  private Date expires;
+  private final Date expires;
 
   /** The card number. */
-  private String cardNr;
+  private final String cardNr;
 
   /**
    * Creates a new 'free' card.

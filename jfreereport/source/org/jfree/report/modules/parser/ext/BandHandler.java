@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandHandler.java,v 1.6 2003/08/20 17:24:35 taqua Exp $
+ * $Id: BandHandler.java,v 1.7 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -102,7 +102,7 @@ public class BandHandler extends ElementHandler
       {
         band.setName(name);
       }
-      CommentHintPath path = createCommentPath(band);
+      final CommentHintPath path = createCommentPath(band);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       elementHandler = new BandHandler(getReportParser(), tagName, band, getCommentPath());
       getParser().pushFactory(elementHandler);
@@ -127,14 +127,14 @@ public class BandHandler extends ElementHandler
         element.setName(name);
       }
 
-      CommentHintPath path = createCommentPath(element);
+      final CommentHintPath path = createCommentPath(element);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       elementHandler = new ElementHandler(getReportParser(), tagName, element, getCommentPath());
       getParser().pushFactory(elementHandler);
     }
     else if (tagName.equals(DEFAULT_STYLE_TAG))
     {
-      CommentHintPath path = createCommentPath(tagName);
+      final CommentHintPath path = createCommentPath(tagName);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
 
       final ElementStyleSheet styleSheet = getBand().getBandDefaults();
@@ -171,8 +171,8 @@ public class BandHandler extends ElementHandler
     {
       if (elementHandler != null)
       {
-        addComment(createCommentPath(elementHandler.getElement()), 
-                                     CommentHandler.CLOSE_TAG_COMMENT);
+        addComment(createCommentPath(elementHandler.getElement()),
+            CommentHandler.CLOSE_TAG_COMMENT);
         getBand().addElement(elementHandler.getElement());
         elementHandler = null;
       }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WrappingTableModel.java,v 1.2 2003/07/26 18:35:07 taqua Exp $
+ * $Id: WrappingTableModel.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ public class WrappingTableModel implements TableModel
   private class TableEventTranslator implements TableModelListener
   {
     /** the registered listeners. */
-    private ArrayList listeners;
+    private final ArrayList listeners;
 
     /**
      * Default Constructor.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -209,13 +209,6 @@ public class PageTotalFunction extends PageFunction
     {
       if (event.getState().getLevel() < 0)
       {
-        // Correct the calculation:
-        // at this point it is sure, that the previous group has finished. We cannot use the
-        // group finished event, as this event is fired before the layouting is done. So the
-        // groupfooter can move to the next page (without throwing another event), and a function
-        // will not get informed of this.
-        //this.setPage(getPage() - 1);
-
         isGroupStarted = true;
         // this PageStorage is only null, if the report has never reached the first report start
         // event
@@ -251,36 +244,6 @@ public class PageTotalFunction extends PageFunction
     }
 
     return this.pageStorage.getPage();
-  }
-
-  /**
-   * Returns the page number (function value).
-   *
-   * @return the page number.
-   */
-  public Object getValue()
-  {
-    return new Integer(getPage());
-  }
-
-  /**
-   * Checks that the function has been correctly initialized.  If there is a problem, this method
-   * throws a FunctionInitializeException.
-   *
-   * @throws FunctionInitializeException if the function name is not set or the call to
-   * isInitialized returns false.
-   */
-  public void initialize() throws FunctionInitializeException
-  {
-    super.initialize();
-    try
-    {
-      getStartPage();
-    }
-    catch (Exception e)
-    {
-      throw new FunctionInitializeException(e.getMessage());
-    }
   }
 
   /**

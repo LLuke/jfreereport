@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintExportResources.java,v 1.4 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PrintExportResources.java,v 1.5 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.print.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * English language resource for the printing export GUI.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PrintExportResources extends JFreeReportResources
@@ -75,21 +75,21 @@ public class PrintExportResources extends JFreeReportResources
         {"action.page-setup.description", "Page Setup"},
         {"action.page-setup.mnemonic", new Integer(KeyEvent.VK_G)},
         {"action.page-setup.small-icon",
-          getIcon("org/jfree/report/modules/gui/base/resources/PageSetup16.gif")},
-        {"action.page-setup.icon", 
-          getIcon("org/jfree/report/modules/gui/base/resources/PageSetup24.gif")},
+         getIcon("org/jfree/report/modules/gui/base/resources/PageSetup16.gif")},
+        {"action.page-setup.icon",
+         getIcon("org/jfree/report/modules/gui/base/resources/PageSetup24.gif")},
 
         {"action.print.name", "Print..."},
         {"action.print.description", "Print report"},
         {"action.print.mnemonic", new Integer(KeyEvent.VK_P)},
         {"action.print.accelerator", createMenuKeystroke(KeyEvent.VK_P)},
-        {"action.print.small-icon", 
-          getIcon("org/jfree/report/modules/gui/base/resources/Print16.gif")},
+        {"action.print.small-icon",
+         getIcon("org/jfree/report/modules/gui/base/resources/Print16.gif")},
         {"action.print.icon", getIcon("org/jfree/report/modules/gui/base/resources/Print24.gif")},
 
         {"error.printfailed.message", "Error on printing the report: {0}"},
         {"error.printfailed.title", "Error on printing"},
-        
+
         {"printing-export.progressdialog.title", "Printing the report ..."},
         {"printing-export.progressdialog.message", "The report will now be printed ..."},
 

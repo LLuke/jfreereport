@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,7 @@ public final class LevelledExpressionList implements ReportListener,
     this.levels = buildLevels();
   }
 
-  private int[] buildLevels ()
+  private int[] buildLevels()
   {
     // copy all levels from the collections to the cache ...
     // we assume, that the collections do not change anymore!
@@ -111,7 +111,7 @@ public final class LevelledExpressionList implements ReportListener,
       final Integer level = (Integer) it.next();
       al.add(level);
     }
-    int[] levels = new int[al.size()];
+    final int[] levels = new int[al.size()];
     for (int i = 0; i < levels.length; i++)
     {
       final Integer level = (Integer) al.get(i);
@@ -195,7 +195,7 @@ public final class LevelledExpressionList implements ReportListener,
       final Iterator itLevel = expressionList.getElementsForLevel(level);
       while (itLevel.hasNext())
       {
-        Object next = itLevel.next();
+        final Object next = itLevel.next();
         final Expression e = (Expression) next;
         if (e instanceof Function)
         {
@@ -912,7 +912,7 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
 
-  public LevelledExpressionList getPreviewInstance ()
+  public LevelledExpressionList getPreviewInstance()
   {
     final LevelledExpressionList ft = new LevelledExpressionList();
     ft.expressionList = new LevelList(); // dont clone, too expensive ...
@@ -935,7 +935,7 @@ public final class LevelledExpressionList implements ReportListener,
     ft.levels = ft.buildLevels();
     return ft;
   }
-  
+
   /**
    * Sets the level.
    *

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.5 2003/08/18 18:27:58 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.6 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -186,8 +186,8 @@ public class StraightToEverything
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
     final PrinterCommandSet pc = new PrinterCommandSet(fout, report.getDefaultPageFormat(), 6, 10);
-    final PlainTextOutputTarget target = 
-      new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
+    final PlainTextOutputTarget target =
+        new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
     pr.setOutputTarget(target);
     target.open();
     pr.processReport();
@@ -310,7 +310,7 @@ public class StraightToEverything
     // disable PDF target autoinit must be done outside ...
     try
     {
-      //final StraightToEverything demo = 
+      //final StraightToEverything demo =
       new StraightToEverything(System.getProperty("user.home")
           + "/test-everything");
       System.exit(0);

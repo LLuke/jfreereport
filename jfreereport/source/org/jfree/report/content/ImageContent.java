@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
+ * $Id: ImageContent.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -50,10 +50,10 @@ import org.jfree.report.ImageReference;
 public class ImageContent implements Content
 {
   /** The image reference. */
-  private ImageReference reference;
+  private final ImageReference reference;
 
   /** The bounds. */
-  private Rectangle2D bounds;
+  private final Rectangle2D bounds;
 
   /**
    * Creates a new image content.

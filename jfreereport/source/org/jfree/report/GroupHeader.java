@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: GroupHeader.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: GroupHeader.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -42,7 +42,6 @@
  */
 
 package org.jfree.report;
-
 
 
 /**

@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
- * $Id: FontFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: FontFactory.java,v 1.2 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import org.xml.sax.Attributes;
  *
  * @author Thomas Morgner
  */
-public class FontFactory implements ReportDefinitionTags
+public final class FontFactory implements ReportDefinitionTags
 {
   /**
    * The FontInformation class is used to store the font definition, until it
@@ -271,7 +271,7 @@ public class FontFactory implements ReportDefinitionTags
   /**
    * Default constructor.
    */
-  public FontFactory()
+  private FontFactory()
   {
   }
 
@@ -330,7 +330,7 @@ public class FontFactory implements ReportDefinitionTags
    * @param target the font information, that should be used to store the defined values.
    * @return the read font information.
    */
-  private FontInformation readSimpleFontStyle(final Attributes attr, FontInformation target)
+  private static FontInformation readSimpleFontStyle(final Attributes attr, FontInformation target)
   {
     if (target == null)
     {
@@ -409,7 +409,7 @@ public class FontFactory implements ReportDefinitionTags
    * @param target the target element style sheet, that should receive the created font definition.
    * @throws ElementDefinitionException if the font cannot be created.
    */
-  public void createFont(final Attributes attr, final ElementStyleSheet target)
+  public static void createFont(final Attributes attr, final ElementStyleSheet target)
       throws ElementDefinitionException
   {
     // get the font name...
@@ -438,7 +438,7 @@ public class FontFactory implements ReportDefinitionTags
    *
    * @return the int value.
    */
-  protected Integer parseInt(final String val)
+  private static Integer parseInt(final String val)
   {
     if (val == null)
     {
@@ -462,7 +462,7 @@ public class FontFactory implements ReportDefinitionTags
    * @return the created font information.
    * @throws ElementDefinitionException if the font cannot be created.
    */
-  public FontInformation createFont(final Attributes attr)
+  public static FontInformation createFont(final Attributes attr)
       throws ElementDefinitionException
   {
     // get the font name...
@@ -492,7 +492,7 @@ public class FontFactory implements ReportDefinitionTags
    * @param bool the primitive boolean.
    * @return the Boolean object.
    */
-  private Boolean getBoolean (final boolean bool)
+  private static Boolean getBoolean(final boolean bool)
   {
     if (bool == true)
     {

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ActionConcentrator.java,v 1.1 2003/08/24 15:08:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 24.08.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.base.components;
@@ -43,37 +43,37 @@ import javax.swing.Action;
 
 public class ActionConcentrator
 {
-  private ArrayList actions;
+  private final ArrayList actions;
 
   public ActionConcentrator()
   {
     actions = new ArrayList();
   }
 
-  public void addAction (Action a)
+  public void addAction(final Action a)
   {
     actions.add(a);
   }
 
-  public void removeAction (Action a)
+  public void removeAction(final Action a)
   {
     actions.remove(a);
   }
 
-  public void setEnabled (boolean b)
+  public void setEnabled(final boolean b)
   {
     for (int i = 0; i < actions.size(); i++)
     {
-      Action a = (Action) actions.get(i);
+      final Action a = (Action) actions.get(i);
       a.setEnabled(b);
     }
   }
 
-  public boolean isEnabled ()
+  public boolean isEnabled()
   {
     for (int i = 0; i < actions.size(); i++)
     {
-      Action a = (Action) actions.get(i);
+      final Action a = (Action) actions.get(i);
       if (a.isEnabled())
       {
         return true;

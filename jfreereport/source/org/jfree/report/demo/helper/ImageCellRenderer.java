@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ImageCellRenderer.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: ImageCellRenderer.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ public class ImageCellRenderer extends DefaultTableCellRenderer implements Table
 {
 
   /** The icon. */
-  private ImageIcon icon = new ImageIcon();
+  private final ImageIcon icon = new ImageIcon();
 
   /**
    * Constructs a new renderer.
@@ -82,8 +82,8 @@ public class ImageCellRenderer extends DefaultTableCellRenderer implements Table
    * @return The component that can render the contents of the cell.
    */
   public Component getTableCellRendererComponent
-    (final JTable table, final Object value, final boolean isSelected,
-     final boolean hasFocus, final int row, final int column)
+      (final JTable table, final Object value, final boolean isSelected,
+       final boolean hasFocus, final int row, final int column)
   {
 
     setFont(null);

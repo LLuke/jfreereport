@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData1.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: SampleData1.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -49,7 +49,7 @@ public class SampleData1 extends AbstractTableModel
 {
 
   /** Storage for the data. */
-  private Object[][] data;
+  private final Object[][] data;
 
   /**
    * Default constructor - builds the sample data source using incomplete (and possibly

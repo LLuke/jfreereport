@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -54,10 +54,10 @@ public final class ShapeTransform
    * Default constructor.
    *
    */
-  private ShapeTransform ()
+  private ShapeTransform()
   {
   }
-  
+
   /**
    * Translates the given shape. The shape is translated to the origin supplied
    * in <code>point</code>. If scaling is requested, the shape will also be scaled
@@ -70,7 +70,7 @@ public final class ShapeTransform
    * @return the transformed shape
    */
   public static Shape transformShape
-    (Shape s, final boolean scale, final boolean keepAR, final Dimension2D dim)
+      (Shape s, final boolean scale, final boolean keepAR, final Dimension2D dim)
   {
     /**
      * Always scale to the maximum bounds ...

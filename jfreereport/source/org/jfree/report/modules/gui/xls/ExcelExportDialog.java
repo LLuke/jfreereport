@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.4 2003/08/18 18:28:00 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.5 2003/08/24 15:08:19 taqua Exp $
  *
  * Changes
  * --------
@@ -49,10 +49,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
@@ -71,18 +68,17 @@ import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.ActionButton;
-import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.gui.xls.resources.XLSExportResources;
-import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 import org.jfree.report.modules.output.table.base.TableProcessor;
+import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 
 /**
  * A dialog that is used to perform the printing of a report into an Excel file.
  * <p>
- * The main method to call the dialog is 
+ * The main method to call the dialog is
  * {@link org.jfree.report.modules.gui.xls.ExcelExportDialog#performExport}. Given a report
  * and a pageformat, the dialog is shown and if the user approved the dialog, the excel file
  * is saved using the settings made in the dialog.
@@ -453,7 +449,7 @@ public class ExcelExportDialog extends JDialog
     if (fileChooser == null)
     {
       fileChooser = new JFileChooser();
-      final FilesystemFilter filter = new FilesystemFilter(".xls", "Excel Documents" );
+      final FilesystemFilter filter = new FilesystemFilter(".xls", "Excel Documents");
       fileChooser.addChoosableFileFilter(filter);
       fileChooser.setMultiSelectionEnabled(false);
     }
@@ -530,7 +526,7 @@ public class ExcelExportDialog extends JDialog
     return true;
   }
 
-  public boolean performQueryForExport (final JFreeReport report)
+  public boolean performQueryForExport(final JFreeReport report)
   {
     setModal(true);
     initFromConfiguration(report.getReportConfiguration());
@@ -550,20 +546,19 @@ public class ExcelExportDialog extends JDialog
    */
   public void initFromConfiguration(final ReportConfiguration config)
   {
-    String strict = config.getConfigProperty
+    final String strict = config.getConfigProperty
         (ExcelProcessor.CONFIGURATION_PREFIX +
-          ExcelProcessor.STRICT_LAYOUT,
-            config.getConfigProperty (TableProcessor.STRICT_TABLE_LAYOUT,
+        ExcelProcessor.STRICT_LAYOUT,
+            config.getConfigProperty(TableProcessor.STRICT_TABLE_LAYOUT,
                 TableProcessor.STRICT_TABLE_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
   }
 
-  public void storeToConfiguration (final ReportConfiguration config)
+  public void storeToConfiguration(final ReportConfiguration config)
   {
     config.setConfigProperty(ExcelProcessor.CONFIGURATION_PREFIX +
         ExcelProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
   }
-
 
 
   /**

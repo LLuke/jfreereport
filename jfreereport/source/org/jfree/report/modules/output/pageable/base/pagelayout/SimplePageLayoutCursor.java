@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.2 2003/08/24 15:03:59 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -62,7 +62,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
   private float y;
 
   /** The bottom of the page. */
-  private float pageBottom;
+  private final float pageBottom;
 
   /** The reserved space at the bottom of the page. */
   private float reserved;

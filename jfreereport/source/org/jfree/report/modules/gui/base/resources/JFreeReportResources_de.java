@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   Helmut Leininger;
  *
- * $Id: JFreeReportResources_de.java,v 1.5 2003/08/19 13:37:23 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.6 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -119,14 +119,14 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"statusline.repaginate", "Erzeuge Seitenumbr\u00fcche ..."},
 
         {"FileChooser.acceptAllFileFilterText", "Alle Dateien (*.*)"},
-        {"FileChooser.cancelButtonMnemonic", new Integer(KeyEvent.VK_A) },
+        {"FileChooser.cancelButtonMnemonic", new Integer(KeyEvent.VK_A)},
         {"FileChooser.cancelButtonText", "Abbrechen"},
         {"FileChooser.cancelButtonToolTipText", "Bricht die Dateiauswahl ab."},
         {"FileChooser.detailsViewButtonAccessibleName", "Details"},
         {"FileChooser.detailsViewButtonToolTipText", "Details"},
         {"FileChooser.directoryDescriptionText", "Ordner"},
         {"FileChooser.fileDescriptionText", "Datei"},
-        {"FileChooser.fileNameLabelMnemonic", new Integer(KeyEvent.VK_N) },
+        {"FileChooser.fileNameLabelMnemonic", new Integer(KeyEvent.VK_N)},
         {"FileChooser.fileNameLabelText", "Dateiname:"},
         {"FileChooser.filesOfTypeLabelMnemonic", new Integer(KeyEvent.VK_T)},
         {"FileChooser.filesOfTypeLabelText", "Dateityp:"},
@@ -207,11 +207,11 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"SplitPane.rightButtonText", "Rechter Knopf"},
 
         // progress dialog defaults
-        {"progress-dialog.prepare-layout","Bereite das Layout des Berichts vor."},
-        {"progress-dialog.perform-output","Der Export des Berichts wird nun ausgeführt ..."},
-        {"progress-dialog.page-label","Seite: {0}"},
-        {"progress-dialog.rows-label","Zeile: {0} / {1}"},
-        {"progress-dialog.pass-label","Durchlauf: {0} - Berechne die Funktionswerte ..."},
+        {"progress-dialog.prepare-layout", "Bereite das Layout des Berichts vor."},
+        {"progress-dialog.perform-output", "Der Export des Berichts wird nun ausgeführt ..."},
+        {"progress-dialog.page-label", "Seite: {0}"},
+        {"progress-dialog.rows-label", "Zeile: {0} / {1}"},
+        {"progress-dialog.pass-label", "Durchlauf: {0} - Berechne die Funktionswerte ..."},
       };
 
   /**

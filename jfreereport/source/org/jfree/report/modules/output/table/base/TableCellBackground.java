@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -79,7 +79,7 @@ public class TableCellBackground extends TableCellData
   private Color colorRight;
 
   /** The cell background color. */
-  private Color color;
+  private final Color color;
 
   /**
    * Creates a table cell background with the given bounds, no borders and the specified

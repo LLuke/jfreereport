@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleComparator.java,v 1.3 2003/08/19 13:37:23 taqua Exp $
+ * $Id: ModuleComparator.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 09.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules;
@@ -44,7 +44,7 @@ import java.util.Comparator;
  * Compares two modules for order. A module is considered less than an other
  * module if the module is a required module of the compared module. Modules
  * are considered equal if they have no relation.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ModuleComparator implements Comparator
@@ -69,7 +69,7 @@ public class ModuleComparator implements Comparator
    * @throws ClassCastException if the arguments' types prevent them from
    *         being compared by this Comparator.
    */
-  public int compare(Object o1, Object o2)
+  public int compare(final Object o1, final Object o2)
   {
     if (o1 == null && o2 == null)
     {
@@ -84,8 +84,8 @@ public class ModuleComparator implements Comparator
       return +1;
     }
 
-    Module mod1 = (Module) o1;
-    Module mod2 = (Module) o2;
+    final Module mod1 = (Module) o1;
+    final Module mod2 = (Module) o2;
 
     if (isBaseModule(mod1, mod2))
     {
@@ -103,13 +103,13 @@ public class ModuleComparator implements Comparator
 
   /**
    * Checks, whether a module is a base module of an given module.
-   * 
+   *
    * @param mod the module which to check
    * @param mi the module info of the suspected base module.
    * @return true, if the given module info describes a base module of the
-   * given module, false otherwise. 
+   * given module, false otherwise.
    */
-  private boolean isBaseModule (final Module mod, final ModuleInfo mi)
+  private boolean isBaseModule(final Module mod, final ModuleInfo mi)
   {
     ModuleInfo[] info = mod.getRequiredModules();
     for (int i = 0; i < info.length; i++)

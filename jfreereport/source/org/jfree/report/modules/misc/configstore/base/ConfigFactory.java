@@ -28,26 +28,26 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigFactory.java,v 1.4 2003/08/22 20:27:20 taqua Exp $
+ * $Id: ConfigFactory.java,v 1.5 2003/08/24 15:08:20 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 14-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.misc.configstore.base;
 
 /**
- * The config factory is used to access the currently active config storage 
+ * The config factory is used to access the currently active config storage
  * implementation. The implementation itself allows to read or store a set
  * of properties stored under a certain path.
- * 
+ *
  * @author Thomas Morgner
  */
 public final class ConfigFactory
 {
-  /** 
+  /**
    * The selector configuration key that defines the active config storage
    * implementation.
    */
@@ -62,7 +62,7 @@ public final class ConfigFactory
 
   /**
    * Returns the singleton instance of the config factory.
-   * 
+   *
    * @return the config factory
    */
   public static ConfigFactory getInstance()
@@ -79,34 +79,34 @@ public final class ConfigFactory
   /**
    * DefaultConstructor.
    */
-  private ConfigFactory ()
+  private ConfigFactory()
   {
   }
-  
+
   /**
    * Defines the user storage implementation that should be used.
    * This method should only be called by the module initialization
    * methods.
-   * 
+   *
    * @param storage the user settings storage implementation.
    */
-  public void defineUserStorage (ConfigStorage storage)
+  public void defineUserStorage(final ConfigStorage storage)
   {
     if (storage == null)
     {
       throw new NullPointerException();
     }
-    this.userStorage  = storage;
+    this.userStorage = storage;
   }
 
   /**
    * Defines the system storage implementation that should be used.
    * This method should only be called by the module initialization
    * methods.
-   * 
+   *
    * @param storage the system settings storage implementation.
    */
-  public void defineSystemStorage (ConfigStorage storage)
+  public void defineSystemStorage(final ConfigStorage storage)
   {
     if (storage == null)
     {
@@ -117,20 +117,20 @@ public final class ConfigFactory
 
   /**
    * Returns the user settings storage implementation used in the config subsystem.
-   * 
+   *
    * @return the user settingsstorage provider.
    */
-  public ConfigStorage getUserStorage ()
+  public ConfigStorage getUserStorage()
   {
     return systemStorage;
   }
 
   /**
    * Returns the system settings storage implementation used in the config subsystem.
-   * 
+   *
    * @return the system settings storage provider.
    */
-  public ConfigStorage getSystemStorage ()
+  public ConfigStorage getSystemStorage()
   {
     return userStorage;
   }
@@ -138,13 +138,13 @@ public final class ConfigFactory
   /**
    * Checks, whether the given string denotes a valid config storage path.
    * Such an path must not contain whitespaces or non-alphanumeric characters.
-   * 
+   *
    * @param path the path that should be tested.
    * @return true, if the path is valid, false otherwise.
    */
-  public static boolean isValidPath (String path)
+  public static boolean isValidPath(final String path)
   {
-    char[] data = path.toCharArray();
+    final char[] data = path.toCharArray();
     for (int i = 0; i < data.length; i++)
     {
       if (Character.isJavaIdentifierPart(data[i]) == false)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProducer.java,v 1.4 2003/08/20 17:24:34 taqua Exp $
+ * $Id: RTFProducer.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -79,7 +79,7 @@ public class RTFProducer extends TableProducer
   /**
    * Creates a new RTFProducer to create the output based on the given
    * layout information.
-   * 
+   *
    * @param gridBoundsCollection the precomputed layout from the pagination run.
    * @param outputStream the output stream that should receive the content.
    */

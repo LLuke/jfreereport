@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGrid.java,v 1.4 2003/08/20 17:24:34 taqua Exp $
+ * $Id: TableGrid.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -73,18 +73,18 @@ import java.util.TreeSet;
 public class TableGrid
 {
   /** The elements stored in the table grid. */
-  private ArrayList elements; 
+  private final ArrayList elements;
 
   /** The table grid bounds contain the precomputed table cell boundaries. */
-  private TableGridBounds bounds;
+  private final TableGridBounds bounds;
 
   /** The YBounds, all horizontal cell boundaries. */
-  private TreeSet yBounds;
+  private final TreeSet yBounds;
 
 
   /**
-   * Creates a new TableGrid for the pagination process. 
-   * If strict mode is enabled, all cell bounds are used to create the 
+   * Creates a new TableGrid for the pagination process.
+   * If strict mode is enabled, all cell bounds are used to create the
    * table grid, resulting in a more complex layout.
    *
    * @param strict the strict mode for the layout.
@@ -99,7 +99,7 @@ public class TableGrid
   /**
    * Creates a table grid that uses precomputed bounds to generate
    * the table layout.
-   *  
+   *
    * @param bounds the precomputed bounds from the pagination process.
    */
   public TableGrid(final TableGridBounds bounds)

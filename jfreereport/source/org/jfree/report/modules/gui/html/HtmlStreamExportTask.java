@@ -28,35 +28,35 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: HtmlStreamExportTask.java,v 1.1 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 24.08.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.html;
 
-import java.io.OutputStream;
 import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
-import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
-import org.jfree.report.modules.output.table.html.HtmlProcessor;
-import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.gui.base.ExportTask;
+import org.jfree.report.modules.gui.base.ReportProgressDialog;
+import org.jfree.report.modules.output.table.html.HtmlProcessor;
+import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
 
 public class HtmlStreamExportTask extends ExportTask
 {
-  private ReportProgressDialog progressDialog;
-  private String fileName;
-  private JFreeReport report;
+  private final ReportProgressDialog progressDialog;
+  private final String fileName;
+  private final JFreeReport report;
 
-  public HtmlStreamExportTask(String fileName,
-                        ReportProgressDialog dialog, JFreeReport report)
+  public HtmlStreamExportTask(final String fileName,
+                              final ReportProgressDialog dialog, final JFreeReport report)
   {
     this.fileName = fileName;
     this.progressDialog = dialog;

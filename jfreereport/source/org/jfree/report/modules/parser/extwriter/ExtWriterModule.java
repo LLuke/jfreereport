@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtWriterModule.java,v 1.2 2003/08/20 17:24:35 taqua Exp $
+ * $Id: ExtWriterModule.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 23-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.parser.extwriter;
@@ -43,12 +43,12 @@ import org.jfree.report.modules.ModuleInitializeException;
 
 /**
  * The module definition for the extended report description writer module.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ExtWriterModule extends AbstractModule
 {
-  /** 
+  /**
    * DefaultConstructor. Loads the module specification.
    * @throws ModuleInitializeException if an error occured.
    */
@@ -59,9 +59,9 @@ public class ExtWriterModule extends AbstractModule
 
   /**
    * Initalizes the module. This performs the external initialization
-   * and checks that an JAXP1.1 parser is available. 
+   * and checks that an JAXP1.1 parser is available.
    * @see org.jfree.report.modules.Module#initialize()
-   * 
+   *
    * @throws ModuleInitializeException if an error occured.
    */
   public void initialize() throws ModuleInitializeException

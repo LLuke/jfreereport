@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IncludeParserFrontend.java,v 1.3 2003/08/20 18:56:51 taqua Exp $
+ * $Id: IncludeParserFrontend.java,v 1.4 2003/08/24 15:08:20 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 14.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.parser.base;
@@ -48,7 +48,7 @@ import org.jfree.xml.ParserFrontend;
 /**
  * A parser front end implementation to support include statements
  * in a report definition.
- * 
+ *
  * @author Thomas Morgner
  */
 public class IncludeParserFrontend extends ParserFrontend
@@ -56,24 +56,24 @@ public class IncludeParserFrontend extends ParserFrontend
   /**
    * Creates a new include parser frontend using the given
    * parser as configuration source.
-   * 
+   *
    * @param parser the base parser
    */
-  public IncludeParserFrontend(Parser parser)
+  public IncludeParserFrontend(final Parser parser)
   {
     super(new IncludeParser(parser));
   }
 
   /**
    * Starts to parse the given URL.
-   * 
-   * @param file the source from where to parse, must point to a 
+   *
+   * @param file the source from where to parse, must point to a
    * report definition
    * @return the parsed report
    * @throws ElementDefinitionException if an parse error occured.
    * @throws IOException if an IO error occured.
    */
-  public Object parse(URL file)
+  public Object parse(final URL file)
       throws ElementDefinitionException, IOException
   {
     return parse(file, file);

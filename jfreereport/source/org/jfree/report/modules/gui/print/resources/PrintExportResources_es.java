@@ -28,12 +28,12 @@
  * Original Author:  Ramon Juanes;
  * Contributor(s):   -;
  *
- * $Id: PrintExportResources_es.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PrintExportResources_es.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.print.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * Spanish language resource for the printing export GUI.
- * 
+ *
  * @author Ramon Juanes
  */
 public class PrintExportResources_es extends JFreeReportResources
@@ -80,7 +80,7 @@ public class PrintExportResources_es extends JFreeReportResources
 
         {"error.printfailed.message", "Error de impresión: {0}"},
         {"error.printfailed.title", "Error en la impresión"},
-        
+
       };
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportPlugin.java,v 1.2 2003/08/19 13:37:23 taqua Exp $
+ * $Id: HtmlExportPlugin.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,9 +46,9 @@ import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
+import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.html.resources.HtmlExportResources;
 import org.jfree.ui.RefineryUtilities;
 
@@ -63,13 +63,13 @@ public class HtmlExportPlugin extends AbstractExportPlugin
   private HtmlExportDialog exportDialog;
 
   /** Localised resources. */
-  private ResourceBundle resources;
+  private final ResourceBundle resources;
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
       HtmlExportResources.class.getName();
 
-  private ReportProgressDialog progressDialog;
+  private final ReportProgressDialog progressDialog;
 
   /**
    * DefaultConstructor.
@@ -118,14 +118,14 @@ public class HtmlExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport(final JFreeReport report)
   {
-    boolean result = exportDialog.performQueryForExport(report);
+    final boolean result = exportDialog.performQueryForExport(report);
     if (result == false)
     {
       // user canceled the dialog ...
       return handleExportResult(true);
     }
 
-    ExportTask task = null;
+    ExportTask task;
     switch (exportDialog.getSelectedExportMethod())
     {
       case HtmlExportDialog.EXPORT_DIR:

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ public final class BandLayoutManagerUtil
   private BandLayoutManagerUtil()
   {
   }
-  
+
   /**
    * Returns the layout manager for an element in a report.
    *

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.4 2003/08/18 18:27:57 taqua Exp $
+ * $Id: Element.java,v 1.5 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -261,7 +261,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   public boolean isVisible()
   {
     final Boolean b = (Boolean) getStyle().getStyleProperty
-      (ElementStyleSheet.VISIBLE, Boolean.FALSE);
+        (ElementStyleSheet.VISIBLE, Boolean.FALSE);
     return b.booleanValue();
   }
 
@@ -343,7 +343,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-    throws InvalidStyleSheetCollectionException
+      throws InvalidStyleSheetCollectionException
   {
     styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
@@ -359,7 +359,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-    throws InvalidStyleSheetCollectionException
+      throws InvalidStyleSheetCollectionException
   {
     styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
@@ -406,7 +406,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * collection already registered with that element.
    */
   public void updateStyleSheetCollection(final StyleSheetCollection sc)
-    throws InvalidStyleSheetCollectionException
+      throws InvalidStyleSheetCollectionException
   {
     if (sc == null)
     {

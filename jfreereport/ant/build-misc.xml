@@ -53,7 +53,7 @@
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/misc/beanshell/*"/>
       <classpath>
@@ -107,7 +107,7 @@
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/misc/tablemodel/*"/>
       <classpath>
@@ -158,7 +158,7 @@
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/misc/configstore/base/*"/>
       <classpath>
@@ -206,7 +206,7 @@
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/misc/configstore/filesystem/*"/>
       <classpath>
@@ -270,7 +270,7 @@
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/misc/logging/base/*"/>
       <classpath>

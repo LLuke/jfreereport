@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.4 2003/08/18 18:28:02 taqua Exp $
+ * $Id: ReportFactory.java,v 1.5 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -93,7 +93,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
    * @param finishTag the finish tag, that should trigger the deactivation of this parser.
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  public void init (final ReportParser parser, final String finishTag)
+  public void init(final ReportParser parser, final String finishTag)
   {
     super.init(parser, finishTag);
     entityParser = CharacterEntityParser.createXMLEntityParser();
@@ -131,7 +131,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     }
     else if (tagName.equals(CONFIGURATION_TAG))
     {
-      startConfiguration(atts);
+      // do nothing
     }
     else if (tagName.equals(FUNCTIONS_TAG))
     {
@@ -158,13 +158,13 @@ public class ReportFactory extends AbstractReportDefinitionHandler
   /**
    * Performs the include element. This invokes a new parser run and waits until that
    * run is finished.
-   * 
+   *
    * @param atts the attribute set for the include tag.
    * @throws SAXException if there is an error parsing the included fragment.
    */
-  public void handleIncludeParsing (final Attributes atts) throws SAXException
+  private void handleIncludeParsing(final Attributes atts) throws SAXException
   {
-    String file = atts.getValue("src");
+    final String file = atts.getValue("src");
     if (file == null)
     {
       throw new SAXException("Required attribute 'src' is missing.");
@@ -172,8 +172,8 @@ public class ReportFactory extends AbstractReportDefinitionHandler
 
     try
     {
-      URL target = new URL (getContentBase(), file);
-      IncludeParserFrontend parserFrontend = new IncludeParserFrontend(getParser());
+      final URL target = new URL(getContentBase(), file);
+      final IncludeParserFrontend parserFrontend = new IncludeParserFrontend(getParser());
       parserFrontend.parse(target);
     }
     catch (IOException e)
@@ -189,7 +189,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startProperty(final Attributes atts)
+  private void startProperty(final Attributes atts)
       throws SAXException
   {
     currentProperty = atts.getValue(NAME_ATT);
@@ -199,16 +199,6 @@ public class ReportFactory extends AbstractReportDefinitionHandler
       currentEncoding = PROPERTY_ENCODING_TEXT;
     }
     currentText = new StringBuffer();
-  }
-
-  /**
-   * Starts the report-configuration tag. Use this to configure the technical side of JFreeReport
-   *
-   * @param atts the element attributes
-   */
-  private void startConfiguration(final Attributes atts)
-  {
-    // no action is required, configuration properties are read as sub-elements...
   }
 
   /**
@@ -239,16 +229,16 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     final String elementName = qName.toLowerCase().trim();
     if (elementName.equals(REPORT_TAG))
     {
-      endReport();
+      // do nothing
     }
     else if (elementName.equals(CONFIGURATION_TAG))
     {
-      endConfiguration();
+      // do nothing
     }
     else if (elementName.equals("include"))
     {
       // ignored ...
-      // @todo add include ... 
+      // @todo add include ...
     }
     else if (elementName.equals(PROPERTY_TAG))
     {
@@ -272,18 +262,11 @@ public class ReportFactory extends AbstractReportDefinitionHandler
   }
 
   /**
-   * Processes the end of the configuration element.
-   */
-  private void endConfiguration()
-  {
-  }
-
-  /**
    * Ends the definition of a single property entry.
    *
    * @throws SAXException if there is a problem parsing the element.
    */
-  protected void endProperty()
+  private void endProperty()
       throws SAXException
   {
     getReport().getReportConfiguration()
@@ -299,7 +282,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
    *
    * @throws SAXException if there is any problem parsing the XML.
    */
-  public void startReport(final Attributes atts)
+  private void startReport(final Attributes atts)
       throws SAXException
   {
     if (isIncludedParsing())
@@ -346,7 +329,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
             defRightMargin, defTopMargin);
         break;
       default:
-        throw new IllegalStateException ("Unexpected paper orientation.");
+        throw new IllegalStateException("Unexpected paper orientation.");
     }
 
     format.setPaper(p);
@@ -371,7 +354,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
    * @throws SAXException if there is an error parsing the report.
    */
   private PageFormat createPageFormat(final PageFormat format, final Attributes atts)
-    throws SAXException
+      throws SAXException
   {
     final String pageformatName = atts.getValue(PAGEFORMAT_ATT);
 
@@ -435,7 +418,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
    *
    * @throws SAXException if there is a parsing problem.
    */
-  public void startGroups(final Attributes atts)
+  private void startGroups(final Attributes atts)
       throws SAXException
   {
     getParser().pushFactory(new GroupFactory(getReportParser(), GROUPS_TAG));
@@ -449,29 +432,19 @@ public class ReportFactory extends AbstractReportDefinitionHandler
    *
    * @throws SAXException if there is a parsing problem.
    */
-  public void startFunctions(final Attributes atts)
+  private void startFunctions(final Attributes atts)
       throws SAXException
   {
     getParser().pushFactory(new FunctionFactory(getReportParser(), FUNCTIONS_TAG));
   }
 
   /**
-   * Finishes the report generation.
-   *
-   * @throws SAXException if there is a parsing problem.
-   */
-  public void endReport()
-      throws SAXException
-  {
-  }
-
-  /**
    * Returns true, if this is a report definition fragment, which is included from
    * an other report.
-   * 
+   *
    * @return true, if this is an included report definition fragment, false otherwise.
    */
-  public boolean isIncludedParsing ()
+  private boolean isIncludedParsing()
   {
     return getParser().getConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "false").equals("true");
   }

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlLayoutInfo.java,v 1.4 2003/08/20 17:24:34 taqua Exp $
+ * $Id: HtmlLayoutInfo.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 13-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.output.table.html;
@@ -44,7 +44,7 @@ import org.jfree.report.modules.output.table.base.TableLayoutInfo;
 
 /**
  * The HTML Layout info collects grid and cell style information.
- * 
+ *
  * @author Thomas Morgner
  */
 public class HtmlLayoutInfo extends TableLayoutInfo
@@ -55,19 +55,19 @@ public class HtmlLayoutInfo extends TableLayoutInfo
   /**
    * Creates a new HTML Layout info object. This object collects the
    * grid positions and the cell styles during the repagination.
-   * 
+   *
    * @param globalLayout a flag indicating whether to generate a global
    * layout for all pages.
    * @param format the page format used to generate the report.
    */
-  public HtmlLayoutInfo(boolean globalLayout, PageFormat format)
+  public HtmlLayoutInfo(final boolean globalLayout, final PageFormat format)
   {
     super(globalLayout, format);
   }
 
   /**
    * Returns the HtmlStyleCollection assigned with that layout info.
-   * 
+   *
    * @return the HtmlStyleCollection.
    */
   public HtmlStyleCollection getStyleCollection()
@@ -76,12 +76,12 @@ public class HtmlLayoutInfo extends TableLayoutInfo
   }
 
   /**
-   * Defines a HtmlStyleCollection for this layout information. This 
+   * Defines a HtmlStyleCollection for this layout information. This
    * collection is used to collect stylesheet information.
-   * 
+   *
    * @param styleCollection the style collection.
    */
-  public void setStyleCollection(HtmlStyleCollection styleCollection)
+  public void setStyleCollection(final HtmlStyleCollection styleCollection)
   {
     this.styleCollection = styleCollection;
   }

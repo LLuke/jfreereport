@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKey.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
+ * $Id: StyleKey.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -241,7 +241,7 @@ public final class StyleKey implements Serializable, Cloneable
    */
   public String toString()
   {
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     b.append("StyleKey={name='");
     b.append(getName());
     b.append("', valueType='");

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.4 2003/08/18 18:27:57 taqua Exp $
+ * $Id: Band.java,v 1.5 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -124,7 +124,7 @@ public class Band extends Element implements Serializable, Cloneable
 
   /** The prefix for anonymous bands, bands without an userdefined name. */
   public static final String ANONYMOUS_BAND_PREFIX = "anonymousBand@";
-  
+
   /**
    * Constructs a new band (initially empty).
    */
@@ -531,7 +531,7 @@ public class Band extends Element implements Serializable, Cloneable
    * if there is an other stylesheet collection already registered with that element.
    */
   public void updateStyleSheetCollection(final StyleSheetCollection sc)
-    throws InvalidStyleSheetCollectionException
+      throws InvalidStyleSheetCollectionException
   {
     if (sc == null)
     {

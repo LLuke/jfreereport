@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldElementFactory.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: NumberFieldElementFactory.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.elementfactory;
@@ -59,8 +59,8 @@ import org.jfree.ui.FloatDimension;
  * These text elements have special abilities to format numeric values.
  * <p>
  * Once the desired properties are set, the factory can be reused to create
- * similiar text elements. 
- *  
+ * similiar text elements.
+ *
  * @author Thomas Morgner
  */
 public class NumberFieldElementFactory extends TextFieldElementFactory
@@ -76,9 +76,9 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
   }
 
   /**
-   * Returns the number format used for all generated text elements. The 
+   * Returns the number format used for all generated text elements. The
    * number format is shared among all generated elements.
-   * 
+   *
    * @return the number format used in this factory.
    */
   public NumberFormat getFormat()
@@ -87,12 +87,12 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
   }
 
   /**
-   * Defines the number format used for all generated text elements. The 
+   * Defines the number format used for all generated text elements. The
    * number format is shared among all generated elements.
-   * 
+   *
    * @param format the number format used in this factory.
    */
-  public void setFormat(NumberFormat format)
+  public void setFormat(final NumberFormat format)
   {
     this.format = format;
   }
@@ -100,14 +100,14 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
   /**
    * Returns the format string of the used number format. This method will
    * return null, if the current number format is no instance of DecimalFormat.
-   *  
+   *
    * @return the formatstring of the number format instance.
    */
   public String getFormatString()
   {
     if (getFormat() instanceof DecimalFormat)
     {
-      DecimalFormat decFormat = (DecimalFormat) getFormat();
+      final DecimalFormat decFormat = (DecimalFormat) getFormat();
       return decFormat.toPattern();
     }
     return null;
@@ -116,25 +116,25 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
   /**
    * Defines the format string of the used number format. This method will
    * replace the number format instance of this factory.
-   *  
+   *
    * @param formatString the formatstring of the number format instance.
    */
-  public void setFormatString(String formatString)
+  public void setFormatString(final String formatString)
   {
     setFormat(new DecimalFormat(formatString));
   }
-  
+
   /**
    * Creates the number text element based on the defined settings.
    * Undefined properties will not be set in the generated element.
-   *  
+   *
    * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   * 
+   *
    * @return the generated numberic text element
    */
   public Element createElement()
   {
-    DataSource dataSource;
+    final DataSource dataSource;
     if (getFormatString() != null)
     {
       final NumberFieldTemplate template = new NumberFieldTemplate();
@@ -157,7 +157,7 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
       dataSource = filter;
     }
 
-    TextElement element = new TextElement();
+    final TextElement element = new TextElement();
     if (getName() != null)
     {
       element.setName(getName());
@@ -230,7 +230,7 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
                                                 final String field)
   {
 
-    NumberFieldElementFactory factory = new NumberFieldElementFactory();
+    final NumberFieldElementFactory factory = new NumberFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
     factory.setMinimumSize(new FloatDimension
         ((float) bounds.getWidth(), (float) bounds.getHeight()));
@@ -317,7 +317,7 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
                                                 final String field)
   {
 
-    NumberFieldElementFactory factory = new NumberFieldElementFactory();
+    final NumberFieldElementFactory factory = new NumberFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
     factory.setMinimumSize(new FloatDimension
         ((float) bounds.getWidth(), (float) bounds.getHeight()));

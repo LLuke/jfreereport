@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DummyOutputTarget.java,v 1.4 2003/08/18 18:28:00 taqua Exp $
+ * $Id: DummyOutputTarget.java,v 1.5 2003/08/24 15:03:59 taqua Exp $
  *
  * Changes
  * -------
@@ -119,7 +119,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
 
 
   /** The wrapped outputtarget. */
-  private OutputTarget backend;
+  private final OutputTarget backend;
   /** A flag to maintain the open state of this output target. */
   private boolean isOpen;
   /** The current font definition. */
@@ -340,8 +340,8 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @throws SizeCalculatorException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(final FontDefinition font) 
-    throws SizeCalculatorException
+  public SizeCalculator createTextSizeCalculator(final FontDefinition font)
+      throws SizeCalculatorException
   {
     return backend.createTextSizeCalculator(font);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReadOnlyIterator.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: ReadOnlyIterator.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import java.util.Iterator;
 public class ReadOnlyIterator implements Iterator
 {
   /** The base iterator. */
-  private Iterator base;
+  private final Iterator base;
 
   /**
    * Creates a read-only iterator.

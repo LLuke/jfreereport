@@ -35,18 +35,44 @@ A list of changes in recent versions:
           shapes. This reduces the definition code size when creating the common
           shape use-cases.
 
-        * Support for <include> tags for both parsers. This allows to split the
-          definition into several files;  ReportWriter creates slightly cleaner
-          code by removing unnecessary class specifications. More to do!
-	  
+        * ReportWriter creates slightly cleaner code by removing unnecessary
+          class specifications.
+
+	      * SimpleReportParser is now able to create sub bands.
+
         * The writer supports comments and templates now. Comments are only 
           preserved in extended report formats for now.
          
         * The excel export defines the printer setup according to the report 
           configuration or the defined page format of the report.
-           
-        * We have a simple JDK 1.4 printing implementation. 
-       
+
+0.8.3f: (24-Aug-2003)
+        * BugFix: SwingIcons demo definition was invalid.
+
+        * BugFix: The PDF export dialog did not read the predefined
+          security settings from the report configuration.
+
+        * BugFix: Table targets did not use the properties to get
+          configured.
+
+        * BugFix: The Html Output produced garbage when writing image
+          references.
+
+        * BugFix: Expressions were not able to see the next datarow
+          and therefore useless as group arguments
+
+        * BugFix: The tabletargets do no longer have a default sheet
+          name defined. The html target will no print an automatic
+          page header anymore.
+
+        * BugFix: The preview dialog now disables all actions when
+          a long running operation is done. The tool bar floating and
+          the large icons setting can now be configured from within
+          the report properties.
+
+        * The export and pagination progress is now visible in the
+          ReportProgressDialog.
+
 0.8.3e: (16-Jul-2003)
         * BugFix: JFreeReportResources didn't work in a Headless environment.
           This caused weird behaviour in Tomcat. Thanks to jxmoshe for your

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RepaginationState.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: RepaginationState.java,v 1.1 2003/08/24 15:17:25 taqua Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,7 @@ public class RepaginationState extends EventObject
 
   /** Whether the event was generated during the prepare run... */
   private boolean prepare;
+
   /**
    * Creates a new state.
    *
@@ -71,7 +72,7 @@ public class RepaginationState extends EventObject
                            final int page, final int currentRow,
                            final int maxRow, final boolean prepare)
   {
-    super (source);
+    super(source);
     reuse(pass, page, currentRow, maxRow, prepare);
   }
 
@@ -124,8 +125,8 @@ public class RepaginationState extends EventObject
    * @param currentRow
    * @param maxRow
    */
-  public void reuse (final int pass, final int page, final int currentRow,
-                     final int maxRow, final boolean prepare)
+  public void reuse(final int pass, final int page, final int currentRow,
+                    final int maxRow, final boolean prepare)
   {
     this.pass = pass;
     this.page = page;

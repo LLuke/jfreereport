@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.4 2003/08/18 21:36:39 taqua Exp $
+ * $Id: ReportPane.java,v 1.5 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -64,13 +64,13 @@ import javax.swing.UIManager;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.event.RepaginationListener;
+import org.jfree.report.event.RepaginationState;
 import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.base.ReportStateList;
-import org.jfree.report.event.RepaginationListener;
-import org.jfree.report.event.RepaginationState;
 import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
 import org.jfree.report.states.ReportState;
@@ -168,7 +168,7 @@ public class ReportPane extends JComponent
   }
 
   /** The local paginate lock instance. */
-  private PaginateLock paginateLock = new PaginateLock();
+  private final PaginateLock paginateLock = new PaginateLock();
 
   /** The report processor. */
   private PageableReportProcessor processor;
@@ -633,14 +633,14 @@ public class ReportPane extends JComponent
       super.paintComponent(g);
     }
   }
-  
+
   /**
    * Generates the page and draws that page on the given Graphics2D object.
    * @param g2 the target graphics.
    * @throws OutputTargetException if an error occured.
    */
-  private void performGeneratePage (Graphics2D g2) 
-    throws OutputTargetException
+  private void performGeneratePage(final Graphics2D g2)
+      throws OutputTargetException
   {
     final G2OutputTarget target = new G2OutputTarget(g2, getPageFormat());
     target.open();
@@ -778,7 +778,7 @@ public class ReportPane extends JComponent
         catch (OutputTargetException oe)
         {
           // does not happen when using the dummy target, but just in case
-          Log.error ("Unable to repaginate: Error" , oe);
+          Log.error("Unable to repaginate: Error", oe);
         }
         addedOutputTarget = true;
       }
@@ -870,8 +870,8 @@ public class ReportPane extends JComponent
     return processor;
   }
 
-  /** 
-   * Free some of the used memory. 
+  /**
+   * Free some of the used memory.
    */
   public void dispose()
   {
@@ -887,7 +887,7 @@ public class ReportPane extends JComponent
    *
    * @param state  the state.
    */
-  public void repaginationUpdate(RepaginationState state)
+  public void repaginationUpdate(final RepaginationState state)
   {
     if (repaginationListenersCache == null)
     {
@@ -896,12 +896,12 @@ public class ReportPane extends JComponent
 
     for (int i = 0; i < repaginationListenersCache.length; i++)
     {
-      RepaginationListener l = (RepaginationListener) repaginationListenersCache[i];
+      final RepaginationListener l = (RepaginationListener) repaginationListenersCache[i];
       l.repaginationUpdate(state);
     }
   }
 
-  public void addRepaginationListener (RepaginationListener listener)
+  public void addRepaginationListener(final RepaginationListener listener)
   {
     if (listener == null)
     {
@@ -911,7 +911,7 @@ public class ReportPane extends JComponent
     repaginationListeners.add(listener);
   }
 
-  public void removeRepaginationListener (RepaginationListener listener)
+  public void removeRepaginationListener(final RepaginationListener listener)
   {
     if (listener == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.5 2003/08/18 18:28:01 taqua Exp $
+ * $Id: TableProcessor.java,v 1.6 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -39,15 +39,15 @@
 package org.jfree.report.modules.output.table.base;
 
 import java.awt.print.PageFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.ArrayList;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.event.RepaginationState;
 import org.jfree.report.event.RepaginationListener;
+import org.jfree.report.event.RepaginationState;
 import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.states.FinishState;
 import org.jfree.report.states.ReportState;
@@ -230,10 +230,10 @@ public abstract class TableProcessor
       throw new IllegalStateException("No functions defined, invalid implementation.");
     }
 
-    int eventTrigger = state.getNumberOfRows() / MAX_EVENTS_PER_RUN;
+    final int eventTrigger = state.getNumberOfRows() / MAX_EVENTS_PER_RUN;
 
     boolean hasNext;
-    RepaginationState stateEvent = new RepaginationState(this, 0, 0, 0, 0, false);
+    final RepaginationState stateEvent = new RepaginationState(this, 0, 0, 0, 0, false);
     ReportStateProgress progress = null;
     int level = ((Integer) it.next()).intValue();
     // outer loop: process all function levels
@@ -316,7 +316,8 @@ public abstract class TableProcessor
           throw new IllegalStateException("Repaginate did not produce an finish state");
         }
       }
-    } while (hasNext == true);
+    }
+    while (hasNext == true);
 
     // root of evilness here ... pagecount should not be handled specially ...
     // The pagecount should not be added as report property, there are functions to
@@ -355,12 +356,12 @@ public abstract class TableProcessor
       w.getProducer().configure(getProperties());
 
       w.setMaxWidth((float) getReport().getDefaultPageFormat().getImageableWidth());
-      RepaginationState stateEvent = new RepaginationState(this, 0, 0, 0, 0, false);
+      final RepaginationState stateEvent = new RepaginationState(this, 0, 0, 0, 0, false);
 
-      int maxRows = state.getNumberOfRows();
+      final int maxRows = state.getNumberOfRows();
       int lastRow = -1;
       int eventCount = 0;
-      int eventTrigger = maxRows / MAX_EVENTS_PER_RUN;
+      final int eventTrigger = maxRows / MAX_EVENTS_PER_RUN;
 
       final boolean failOnError =
           getReport().getReportConfiguration().isStrictErrorHandling();
@@ -529,7 +530,7 @@ public abstract class TableProcessor
     final ReportConfiguration rc = getReport().getReportConfiguration();
     final Iterator enum = rc.findPropertyKeys(getReportConfigurationPrefix());
 
-    int prefixLength = getReportConfigurationPrefix().length();
+    final int prefixLength = getReportConfigurationPrefix().length();
     while (enum.hasNext())
     {
       final String key = (String) enum.next();

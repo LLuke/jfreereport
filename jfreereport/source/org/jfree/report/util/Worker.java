@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.2 2003/08/22 20:27:21 taqua Exp $
+ * $Id: Worker.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
  *
  *
  * Changes
@@ -54,7 +54,7 @@ public class Worker extends Thread
   private boolean finish = false;
 
   /** the time in milliseconds beween 2 checks for exit or work requests. */
-  private int sleeptime;
+  private final int sleeptime;
 
   /**
    * Creates a new worker.
@@ -89,11 +89,11 @@ public class Worker extends Thread
     {
       throw new IllegalStateException("This worker is not idle.");
     }
-    Log.debug ("Workload set...");
+    Log.debug("Workload set...");
     synchronized (this)
     {
       workload = r;
-      Log.debug ("Workload assigned: Notified " + getName());
+      Log.debug("Workload assigned: Notified " + getName());
       this.notifyAll();
     }
   }

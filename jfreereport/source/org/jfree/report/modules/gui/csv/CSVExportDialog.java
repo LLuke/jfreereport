@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.3 2003/08/19 13:37:23 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * --------
@@ -74,8 +74,8 @@ import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.LengthLimitingDocument;
 import org.jfree.report.modules.gui.csv.resources.CSVExportResources;
 import org.jfree.report.modules.output.csv.CSVProcessor;
-import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
 import org.jfree.report.modules.output.table.base.TableProcessor;
+import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.ExtensionFileFilter;
@@ -91,8 +91,8 @@ public class CSVExportDialog extends JDialog
   public static final String CSV_OUTPUT_ENCODING
       = "org.jfree.report.modules.gui.csv.Encoding";
   /** A default value of the 'CSV encoding' property key. */
-  public static final String CSV_OUTPUT_ENCODING_DEFAULT = 
-    ReportConfiguration.getPlatformDefaultEncoding();
+  public static final String CSV_OUTPUT_ENCODING_DEFAULT =
+      ReportConfiguration.getPlatformDefaultEncoding();
 
 
   /**
@@ -422,8 +422,8 @@ public class CSVExportDialog extends JDialog
     final JPanel exportTypePanel = new JPanel();
     exportTypePanel.setLayout(new GridBagLayout());
 
-    final TitledBorder tb = 
-      new TitledBorder(getResources().getString("csvexportdialog.exporttype"));
+    final TitledBorder tb =
+        new TitledBorder(getResources().getString("csvexportdialog.exporttype"));
     exportTypePanel.setBorder(tb);
 
     rbExportData = new JRadioButton(getResources().getString("csvexportdialog.export.data"));
@@ -466,8 +466,8 @@ public class CSVExportDialog extends JDialog
     final JPanel separatorPanel = new JPanel();
     separatorPanel.setLayout(new GridBagLayout());
 
-    final TitledBorder tb = 
-      new TitledBorder(getResources().getString("csvexportdialog.separatorchar"));
+    final TitledBorder tb =
+        new TitledBorder(getResources().getString("csvexportdialog.separatorchar"));
     separatorPanel.setBorder(tb);
 
     rbSeparatorTab = new JRadioButton(getResources().getString("csvexportdialog.separator.tab"));
@@ -824,7 +824,7 @@ public class CSVExportDialog extends JDialog
       return false;
     }
 
-    storeToConfiguration (report.getReportConfiguration());
+    storeToConfiguration(report.getReportConfiguration());
     return true;
   }
 
@@ -837,18 +837,18 @@ public class CSVExportDialog extends JDialog
   {
     setSeparatorString(config.getConfigProperty(CSVProcessor.CSV_SEPARATOR, ","));
 
-    String strict = config.getConfigProperty
+    final String strict = config.getConfigProperty
         (CSVTableProcessor.CONFIGURATION_PREFIX +
-          CSVTableProcessor.STRICT_LAYOUT,
-            config.getConfigProperty (TableProcessor.STRICT_TABLE_LAYOUT,
+        CSVTableProcessor.STRICT_LAYOUT,
+            config.getConfigProperty(TableProcessor.STRICT_TABLE_LAYOUT,
                 TableProcessor.STRICT_TABLE_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
-    String encoding = getCSVTargetEncoding(config);
+    final String encoding = getCSVTargetEncoding(config);
     encodingModel.ensureEncodingAvailable(encoding);
     setEncoding(encoding);
   }
 
-  public void storeToConfiguration (final ReportConfiguration config)
+  public void storeToConfiguration(final ReportConfiguration config)
   {
     config.setConfigProperty(CSVProcessor.CSV_SEPARATOR, getSeparatorString());
     config.setConfigProperty(CSVTableProcessor.CONFIGURATION_PREFIX +
@@ -917,11 +917,11 @@ public class CSVExportDialog extends JDialog
 
   /**
    * Returns the CSV encoding property value.
-   * 
+   *
    * @param config the report configuration from where to read the values.
    * @return the CSV encoding property value.
    */
-  public String getCSVTargetEncoding(ReportConfiguration config)
+  public String getCSVTargetEncoding(final ReportConfiguration config)
   {
     return config.getConfigProperty(CSV_OUTPUT_ENCODING, CSV_OUTPUT_ENCODING_DEFAULT);
   }
@@ -932,7 +932,7 @@ public class CSVExportDialog extends JDialog
    * @param config the report configuration from where to read the values.
    * @param targetEncoding  the new encoding.
    */
-  public void setCSVTargetEncoding(ReportConfiguration config, final String targetEncoding)
+  public void setCSVTargetEncoding(final ReportConfiguration config, final String targetEncoding)
   {
     config.setConfigProperty(CSV_OUTPUT_ENCODING, targetEncoding);
   }

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontCreateException.java,v 1.2 2003/08/19 21:01:34 taqua Exp $
+ * $Id: BaseFontCreateException.java,v 1.3 2003/08/24 15:06:42 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 14-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.output.support.itext;
@@ -43,13 +43,13 @@ import org.jfree.util.StackableException;
 /**
  * The BaseFontCreateException is thrown if there are problemns while
  * creating iText fonts.
- * 
+ *
  * @author Thomas Morgner
  */
 public class BaseFontCreateException extends StackableException
 {
   /**
-   * Creates a new BaseFontCreateException with no message. 
+   * Creates a new BaseFontCreateException with no message.
    */
   public BaseFontCreateException()
   {
@@ -58,21 +58,21 @@ public class BaseFontCreateException extends StackableException
   /**
    * Creates a new BaseFontCreateException with the given message and
    * base exception.
-   * 
+   *
    * @param s the message for this exception
-   * @param e the exception that caused this exception. 
+   * @param e the exception that caused this exception.
    */
-  public BaseFontCreateException(String s, Exception e)
+  public BaseFontCreateException(final String s, final Exception e)
   {
     super(s, e);
   }
 
   /**
    * Creates a new BaseFontCreateException with the given message.
-   * 
+   *
    * @param s the message for this exception
    */
-  public BaseFontCreateException(String s)
+  public BaseFontCreateException(final String s)
   {
     super(s);
   }

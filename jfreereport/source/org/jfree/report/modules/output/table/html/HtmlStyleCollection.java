@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -60,10 +60,10 @@ public class HtmlStyleCollection
    * the ObjectDescription for color objects is used to translate colors into names or
    * RGB-values.
    */
-  private ColorObjectDescription colorObjectDescription;
+  private final ColorObjectDescription colorObjectDescription;
 
   /** contains all generated style sheets. */
-  private HashMap table;
+  private final HashMap table;
 
   /** the name counter helps to create unique names for the styles. */
   private int nameCounter;

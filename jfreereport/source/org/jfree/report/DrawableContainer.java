@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DrawableContainer.java,v 1.3 2003/08/18 18:27:57 taqua Exp $
+ * $Id: DrawableContainer.java,v 1.4 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -57,13 +57,13 @@ import org.jfree.ui.Drawable;
 public class DrawableContainer
 {
   /** The drawable object. */
-  private Drawable drawable;
+  private final Drawable drawable;
 
   /** The size for drawing. */
-  private Dimension2D drawableSize;
+  private final Dimension2D drawableSize;
 
   /** The clipping bounds. */
-  private Rectangle2D clippingBounds;
+  private final Rectangle2D clippingBounds;
 
   /**
    * Creates a new container.
@@ -84,7 +84,7 @@ public class DrawableContainer
    * @param clippingBounds  the clipping region.
    */
   public DrawableContainer
-    (final Drawable drawable, final Dimension2D drawableSize, final Rectangle2D clippingBounds)
+      (final Drawable drawable, final Dimension2D drawableSize, final Rectangle2D clippingBounds)
   {
     this.drawable = drawable;
     this.drawableSize = drawableSize;

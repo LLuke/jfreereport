@@ -28,32 +28,32 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleInitializer.java,v 1.2 2003/08/19 13:37:23 taqua Exp $
+ * $Id: ModuleInitializer.java,v 1.3 2003/08/24 15:08:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 14-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules;
 
 /**
  * The module initializer is used to separate the initialization process from
- * the module definition. An invalid classpath setup or an missing base module 
+ * the module definition. An invalid classpath setup or an missing base module
  * may throw an ClassCastException if the module class references this missing
  * resource. Separating them is the best way to make sure that the classloader
  * does not interrupt the module loading process.
- * 
+ *
  * @author Thomas Morgner
  */
 public interface ModuleInitializer
 {
   /**
    * Performs the initalization of the module.
-   * 
+   *
    * @throws ModuleInitializeException if an error occurs which prevents the module
    * from being usable.
    */
-  public void performInit () throws ModuleInitializeException;
+  public void performInit() throws ModuleInitializeException;
 }

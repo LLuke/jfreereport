@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.5 2003/08/18 18:28:02 taqua Exp $
+ * $Id: ElementFactory.java,v 1.6 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,10 @@ import org.jfree.report.elementfactory.StaticImageURLElementFactory;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.elementfactory.TextElementFactory;
 import org.jfree.report.elementfactory.TextFieldElementFactory;
+import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.ReportParserUtil;
+import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.FloatDimension;
@@ -88,16 +91,16 @@ import org.xml.sax.SAXException;
 public class ElementFactory extends AbstractReportDefinitionHandler implements ReportDefinitionTags
 {
   /** Storage for the current CDATA. */
-  private StringBuffer currentText;
+  private final StringBuffer currentText;
 
   /** The current band, where created elements are added to. */
-  private Band currentBand;
+  private final Band currentBand;
 
   /** The current text element factory used to produce the next element. */
   private TextElementFactory textElementFactory;
 
   /** The character entity parser. */
-  private CharacterEntityParser entityParser;
+  private final CharacterEntityParser entityParser;
 
   /**
    * Creates a new ElementFactory. The factory queries the current Band of the ReportFactory
@@ -192,6 +195,10 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     else if (elementName.equals(RECTANGLE_TAG))
     {
       startRectangle(atts);
+    }
+    else if (elementName.equals(BAND_TAG))
+    {
+      startBand(atts);
     }
   }
 
@@ -291,10 +298,43 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     {
       endDateField();
     }
+    else if (elementName.equals(BAND_TAG))
+    {
+      endBand();
+    }
     else
     {
       throw new ParseException("Invalid tag: " + qName, getLocator());
     }
+  }
+
+  private void startBand(final Attributes attr) throws SAXException
+  {
+    // create the report header...
+    final Band band = new Band();
+
+    band.getStyle().setStyleProperty
+        (StaticLayoutManager.ABSOLUTE_POS, getElementPosition(attr));
+    band.getStyle().setStyleProperty
+        (ElementStyleSheet.MINIMUMSIZE, getElementDimension(attr));
+
+    final FontFactory.FontInformation fi = FontFactory.createFont(attr);
+    FontFactory.applyFontInformation(band.getBandDefaults(), fi);
+
+    final String valign = attr.getValue(VALIGNMENT_ATT);
+    if (valign != null)
+    {
+      band.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+          ReportParserUtil.parseVerticalElementAlignment(valign));
+    }
+    final String halign = attr.getValue(ALIGNMENT_ATT);
+    if (halign != null)
+    {
+      band.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+          ReportParserUtil.parseHorizontalElementAlignment(halign));
+    }
+
+    getParser().pushFactory(new ElementFactory(getReportParser(), BAND_TAG, band));
   }
 
   /**
@@ -317,7 +357,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     final Boolean elementDynamic = parseBoolean(atts.getValue("dynamic"));
 
     // Log.debug("Loading: " + getContentBase() + " " + elementSource + " as image");
-    StaticImageURLElementFactory factory = new StaticImageURLElementFactory();
+    final StaticImageURLElementFactory factory = new StaticImageURLElementFactory();
     factory.setName(elementName);
     factory.setScale(elementScale);
     factory.setKeepAspectRatio(elementARatio);
@@ -350,7 +390,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     final Dimension2D minSize = getElementDimension(atts);
     final Boolean elementDynamic = parseBoolean(atts.getValue("dynamic"));
 
-    ImageFieldElementFactory factory = new ImageFieldElementFactory();
+    final ImageFieldElementFactory factory = new ImageFieldElementFactory();
     factory.setName(elementName);
     factory.setScale(elementScale);
     factory.setKeepAspectRatio(elementARatio);
@@ -382,7 +422,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     final Dimension2D minSize = getElementDimension(atts);
     final Boolean elementDynamic = parseBoolean(atts.getValue("dynamic"));
 
-    ImageURLFieldElementFactory factory = new ImageURLFieldElementFactory();
+    final ImageURLFieldElementFactory factory = new ImageURLFieldElementFactory();
     factory.setName(elementName);
     factory.setScale(elementScale);
     factory.setKeepAspectRatio(elementARatio);
@@ -407,7 +447,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     final Point2D absPos = getElementPosition(atts);
     final Dimension2D minSize = getElementDimension(atts);
 
-    DrawableFieldElementFactory factory = new DrawableFieldElementFactory();
+    final DrawableFieldElementFactory factory = new DrawableFieldElementFactory();
     factory.setFieldname(elementSource);
     factory.setName(elementName);
     factory.setAbsolutePosition(absPos);
@@ -467,46 +507,46 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
 
   /**
    * Parses the element position.
-   * 
+   *
    * @param atts the attribute set containing the "x" and "y" attributes.
    * @return the parsed element position, never null.
    * @throws SAXException if parsing the element position failed.
    */
-  private Point2D getElementPosition (final Attributes atts) throws SAXException
+  private Point2D getElementPosition(final Attributes atts) throws SAXException
   {
-    float x = ParserUtil.parseRelativeFloat(atts.getValue("x"),
+    final float x = ParserUtil.parseRelativeFloat(atts.getValue("x"),
         "Element x not specified");
-    float y = ParserUtil.parseRelativeFloat(atts.getValue("y"),
+    final float y = ParserUtil.parseRelativeFloat(atts.getValue("y"),
         "Element y not specified");
-    return new Point2D.Float(x,y);
+    return new Point2D.Float(x, y);
   }
 
   /**
    * Parses the element dimension.
-   * 
+   *
    * @param atts the attribute set containing the "width" and "height" attributes.
    * @return the parsed element dimensions, never null.
    * @throws SAXException if parsing the element dimensions failed.
    */
-  private Dimension2D getElementDimension (final Attributes atts) throws SAXException
+  private Dimension2D getElementDimension(final Attributes atts) throws SAXException
   {
-    float w = ParserUtil.parseRelativeFloat(atts.getValue("width"),
+    final float w = ParserUtil.parseRelativeFloat(atts.getValue("width"),
         "Element width not specified");
-    float h = ParserUtil.parseRelativeFloat(atts.getValue("height"),
+    final float h = ParserUtil.parseRelativeFloat(atts.getValue("height"),
         "Element height not specified");
     return new FloatDimension(w, h);
   }
 
   /**
    * Parses a simple font style for text elements. These styles contain "bold", "italic"
-   * and "bold-italic". The style constants are included for compatibility with older 
+   * and "bold-italic". The style constants are included for compatibility with older
    * releases and should no longer be used. Use the boolean flags instead.
-   * 
+   *
    * @param fontStyle the font style string.
    * @param target the text element factory that should receive the parsed values.
    */
-  private void parseSimpleFontStyle 
-    (final String fontStyle, final TextElementFactory target)
+  private void parseSimpleFontStyle
+      (final String fontStyle, final TextElementFactory target)
   {
     if (fontStyle != null)
     {
@@ -534,13 +574,13 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   }
 
   /**
-   * Translates an boolean string ("true" or "false") into the corresponding 
+   * Translates an boolean string ("true" or "false") into the corresponding
    * Boolean object.
-   * 
+   *
    * @param value the string that represents the boolean.
    * @return Boolean.TRUE or Boolean.FALSE
    */
-  private Boolean parseBoolean (String value)
+  private Boolean parseBoolean(final String value)
   {
     if (value == null)
     {
@@ -574,7 +614,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     final Boolean dynamic = parseBoolean(atts.getValue("dynamic"));
     final Stroke stroke = ParserUtil.parseStroke(atts.getValue("weight"));
 
-    ShapeFieldElementFactory factory = new ShapeFieldElementFactory();
+    final ShapeFieldElementFactory factory = new ShapeFieldElementFactory();
     factory.setName(name);
     factory.setAbsolutePosition(absPos);
     factory.setMinimumSize(minSize);
@@ -614,7 +654,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   private void startStringField(final Attributes atts) throws SAXException
   {
-    TextFieldElementFactory factory = new TextFieldElementFactory();
+    final TextFieldElementFactory factory = new TextFieldElementFactory();
     getTextFieldElementAttributes(atts, factory);
     textElementFactory = factory;
   }
@@ -628,7 +668,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   private void startNumberField(final Attributes atts) throws SAXException
   {
-    NumberFieldElementFactory factory = new NumberFieldElementFactory();
+    final NumberFieldElementFactory factory = new NumberFieldElementFactory();
     factory.setFormatString(atts.getValue(FORMAT_ATT));
     getTextFieldElementAttributes(atts, factory);
     textElementFactory = factory;
@@ -643,7 +683,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   private void startDateField(final Attributes atts) throws SAXException
   {
-    DateFieldElementFactory factory = new DateFieldElementFactory();
+    final DateFieldElementFactory factory = new DateFieldElementFactory();
     factory.setFormatString(atts.getValue(FORMAT_ATT));
     getTextFieldElementAttributes(atts, factory);
     textElementFactory = factory;
@@ -655,7 +695,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   private void endLabel()
   {
-    LabelElementFactory factory = (LabelElementFactory) textElementFactory;
+    final LabelElementFactory factory = (LabelElementFactory) textElementFactory;
     factory.setText(getCurrentText());
     clearCurrentText();
     getCurrentBand().addElement(factory.createElement());
@@ -672,7 +712,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   private void startResourceLabel(final Attributes attrs)
       throws SAXException
   {
-    ResourceLabelElementFactory factory = new ResourceLabelElementFactory();
+    final ResourceLabelElementFactory factory = new ResourceLabelElementFactory();
     textElementFactory = factory;
     getTextElementAttributes(attrs, factory);
 
@@ -702,7 +742,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   private void startResourceField(final Attributes attrs)
       throws SAXException
   {
-    ResourceFieldElementFactory factory = new ResourceFieldElementFactory();
+    final ResourceFieldElementFactory factory = new ResourceFieldElementFactory();
     getTextFieldElementAttributes(attrs, factory);
 
     String resourceBase = attrs.getValue(RESOURCEBASE_ATTR);
@@ -726,7 +766,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   private void endResourceLabel()
   {
-    ResourceLabelElementFactory factory = (ResourceLabelElementFactory) textElementFactory;
+    final ResourceLabelElementFactory factory = (ResourceLabelElementFactory) textElementFactory;
     factory.setResourceKey(getCurrentText());
     getCurrentBand().addElement(factory.createElement());
     textElementFactory = null;
@@ -778,7 +818,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * @throws SAXException if there is a SAX problem.
    */
   private void getTextElementAttributes
-      (final Attributes atts, TextElementFactory factory) throws SAXException
+      (final Attributes atts, final TextElementFactory factory) throws SAXException
   {
     factory.setName(atts.getValue(NAME_ATT));
     factory.setAbsolutePosition(getElementPosition(atts));
@@ -813,11 +853,11 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * @throws SAXException if there is a SAX problem.
    */
   private void getTextFieldElementAttributes
-      (final Attributes atts, TextFieldElementFactory factory) throws SAXException
+      (final Attributes atts, final TextFieldElementFactory factory) throws SAXException
   {
     getTextElementAttributes(atts, factory);
     factory.setNullString(atts.getValue(NULLSTRING_ATT));
-    String textElementSourceName = atts.getValue(FIELDNAME_ATT);
+    final String textElementSourceName = atts.getValue(FIELDNAME_ATT);
     if (textElementSourceName == null)
     {
       throw new ParseException("The fieldname-attribute is required.", getLocator());
@@ -825,6 +865,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     factory.setFieldname(textElementSourceName);
 
   }
+
   /**
    * Reads an attribute as int and returns <code>def</code> if that fails.
    *
@@ -907,5 +948,17 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
       }
     }
     return elementAlignment;
+  }
+
+  /**
+   * Handles the end of a band definition.
+   *
+   * @see org.jfree.report.ReportFooter
+   *
+   * @throws SAXException if a parser error occurs.
+   */
+  private void endBand() throws SAXException
+  {
+    getParser().popFactory().endElement(REPORT_FOOTER_TAG);
   }
 }

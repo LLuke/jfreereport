@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExceptionDialog.java,v 1.2 2003/08/18 18:27:59 taqua Exp $
+ * $Id: ExceptionDialog.java,v 1.3 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -124,10 +124,10 @@ public class ExceptionDialog extends JDialog
   }
 
   /** A UI component for displaying the stack trace. */
-  private JTextArea backtraceArea;
+  private final JTextArea backtraceArea;
 
   /** A UI component for displaying the message. */
-  private JLabel messageLabel;
+  private final JLabel messageLabel;
 
   /** The exception. */
   private Exception currentEx;
@@ -139,10 +139,10 @@ public class ExceptionDialog extends JDialog
   private DetailsAction detailsAction;
 
   /** A scroll pane. */
-  private JScrollPane scroller;
+  private final JScrollPane scroller;
 
   /** A filler panel. */
-  private JPanel filler;
+  private final JPanel filler;
 
   /** The default dialog. */
   private static ExceptionDialog defaultDialog;
@@ -233,20 +233,20 @@ public class ExceptionDialog extends JDialog
 
   /**
    * Defines, whether the scroll pane of the exception stack trace area is visible.
-   * 
+   *
    * @param b true, if the scroller should be visible, false otherwise.
    */
-  protected void setScrollerVisible (boolean b)
+  protected void setScrollerVisible(final boolean b)
   {
     scroller.setVisible(b);
   }
-  
+
   /**
    * Checks, whether the scroll pane of the exception stack trace area is visible.
-   * 
+   *
    * @return true, if the scroller is visible, false otherwise.
    */
-  protected boolean isScrollerVisible ()
+  protected boolean isScrollerVisible()
   {
     return scroller.isVisible();
   }
@@ -360,7 +360,7 @@ public class ExceptionDialog extends JDialog
    * @param e  the exception.
    */
   public static void showExceptionDialog
-    (final String title, final String message, final Exception e)
+      (final String title, final String message, final Exception e)
   {
     if (defaultDialog == null)
     {

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintExportResources_de.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PrintExportResources_de.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.print.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * German language resource for the printing export GUI.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PrintExportResources_de extends JFreeReportResources
@@ -80,7 +80,7 @@ public class PrintExportResources_de extends JFreeReportResources
 
         {"error.printfailed.message", "Das Drucken ist fehlgeschlagen: {0}"},
         {"error.printfailed.title", "Druck fehlgeschlagen"},
-        
+
         {"printing-export.progressdialog.title", "Drucke den Bericht ..."},
         {"printing-export.progressdialog.message", "Der Bericht wird nun gedruckt ..."},
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FontDefinition.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
+ * $Id: FontDefinition.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -109,9 +109,9 @@ public class FontDefinition implements Serializable, Cloneable
    * @param encoding the default text encoding that should be used with this font.
    * @param embedded whether this font should be embedded in the target document.
    */
-  public FontDefinition(final String fontName, final int fontSize, 
+  public FontDefinition(final String fontName, final int fontSize,
                         final boolean bold, final boolean italic,
-                        final boolean underline, final boolean strikeThrough, 
+                        final boolean underline, final boolean strikeThrough,
                         final String encoding, final boolean embedded)
   {
     if (fontName == null)
@@ -144,8 +144,8 @@ public class FontDefinition implements Serializable, Cloneable
    * @param strikeThrough  true, if the font should be drawn with strikethrough style,
    *                       false otherwise
    */
-  public FontDefinition(final String fontName, final int fontSize, final boolean bold, 
-                        final boolean italic, final boolean underline, 
+  public FontDefinition(final String fontName, final int fontSize, final boolean bold,
+                        final boolean italic, final boolean underline,
                         final boolean strikeThrough)
   {
     this(fontName, fontSize, bold, italic, underline, strikeThrough, null, false);

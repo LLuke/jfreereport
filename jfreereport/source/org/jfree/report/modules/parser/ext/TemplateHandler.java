@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateHandler.java,v 1.5 2003/08/20 17:24:35 taqua Exp $
+ * $Id: TemplateHandler.java,v 1.6 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -70,12 +70,12 @@ public class TemplateHandler extends AbstractExtReportParserHandler
   /** The template description. */
   private TemplateDescription template;
 
-  /** 
-   * The comment hint path is used to store xml comments in the 
-   * report builder hints collection. 
+  /**
+   * The comment hint path is used to store xml comments in the
+   * report builder hints collection.
    */
   private CommentHintPath commentPath;
-  
+
   /**
    * Creates a new template handler. The handler will be deactivated when the
    * finishTag was reached on endElement.
@@ -89,7 +89,7 @@ public class TemplateHandler extends AbstractExtReportParserHandler
   public TemplateHandler(final ReportParser parser, final String finishTag,
                          final TemplateDescription template, final CommentHintPath path)
   {
-    super(parser,  finishTag);
+    super(parser, finishTag);
     if (template == null)
     {
       throw new NullPointerException("Template is null");
@@ -136,7 +136,7 @@ public class TemplateHandler extends AbstractExtReportParserHandler
         }
       }
 
-      CommentHintPath path = commentPath.getInstance();
+      final CommentHintPath path = commentPath.getInstance();
       path.addName(parameterName);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       basicFactory = new BasicObjectHandler(getReportParser(), tagName, parameter, path);
@@ -168,7 +168,7 @@ public class TemplateHandler extends AbstractExtReportParserHandler
         }
       }
 
-      CommentHintPath path = commentPath.getInstance();
+      final CommentHintPath path = commentPath.getInstance();
       path.addName(parameterName);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       basicFactory = new CompoundObjectHandler(getReportParser(), tagName, parameter, path);
@@ -213,7 +213,7 @@ public class TemplateHandler extends AbstractExtReportParserHandler
         throw new ParseException("Parameter value is null", getParser().getLocator());
       }
       getTemplate().setParameter(parameterName, o);
-      CommentHintPath path = commentPath.getInstance();
+      final CommentHintPath path = commentPath.getInstance();
       path.addName(parameterName);
       addComment(path, CommentHandler.CLOSE_TAG_COMMENT);
       basicFactory = null;

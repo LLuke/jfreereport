@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.3 2003/08/20 17:24:35 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -66,11 +66,11 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
 {
   /** The comment hint path for all functions related parser hints. */
   private static final CommentHintPath FUNCTIONS_PATH = new CommentHintPath
-        (new String[] { ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.FUNCTIONS_TAG});
+      (new String[]{ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.FUNCTIONS_TAG});
 
 
   /** The object factory. */
-  private ClassFactoryCollector cfc;
+  private final ClassFactoryCollector cfc;
 
   /**
    * Creates a new writer.
@@ -112,11 +112,11 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Tests, whether to start a functions section.
-   * 
+   *
    * @return true, if there are functions, marked properties or
    * expressions defined, false otherwise.
    */
-  private boolean shouldWriteFunctions ()
+  private boolean shouldWriteFunctions()
   {
     if (getReport().getProperties().containsMarkedProperties())
     {
@@ -153,8 +153,8 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
         tagName = FunctionsHandler.FUNCTION_TAG;
       }
 
-      CommentHintPath path = FUNCTIONS_PATH.getInstance();
-      path.addName (expression);
+      final CommentHintPath path = FUNCTIONS_PATH.getInstance();
+      path.addName(expression);
       writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
 
       final Properties expressionProperties = expression.getProperties();
@@ -175,7 +175,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
         final Enumeration enum = expressionProperties.keys();
         if (enum.hasMoreElements())
         {
-          CommentHintPath propertiesPath = path.getInstance();
+          final CommentHintPath propertiesPath = path.getInstance();
           propertiesPath.addName(ExpressionHandler.PROPERTIES_TAG);
           writeComment(writer, propertiesPath, CommentHandler.OPEN_TAG_COMMENT);
           writeTag(writer, ExpressionHandler.PROPERTIES_TAG);
@@ -186,7 +186,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
             final String value = expressionProperties.getProperty(key);
             if (value != null)
             {
-              CommentHintPath propertyPath = propertiesPath.getInstance();
+              final CommentHintPath propertyPath = propertiesPath.getInstance();
               propertyPath.addName(key);
               writeComment(writer, propertyPath, CommentHandler.OPEN_TAG_COMMENT);
 
@@ -225,8 +225,8 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
       {
         final Object value = reportProperties.get(name);
 
-        CommentHintPath path = FUNCTIONS_PATH.getInstance();
-        path.addName (name);
+        final CommentHintPath path = FUNCTIONS_PATH.getInstance();
+        path.addName(name);
 
         if (value == null)
         {
@@ -297,8 +297,8 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     }
     else
     {
-      final ObjectWriter objectWriter = 
-        new ObjectWriter(getReportWriter(), o, od, getIndentLevel(), path);
+      final ObjectWriter objectWriter =
+          new ObjectWriter(getReportWriter(), o, od, getIndentLevel(), path);
       objectWriter.write(writer);
     }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.4 2003/07/23 16:02:22 taqua Exp $
+ * $Id: BandFactory.java,v 1.5 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -72,12 +72,6 @@ import org.xml.sax.SAXException;
 public class BandFactory extends AbstractReportDefinitionHandler implements ReportDefinitionTags
 {
   /**
-   * The FontFactory is used to create java.awt.Font instances based on the data given
-   * in the Band and Element definition.
-   */
-  private FontFactory fontFactory;
-
-  /**
    * Initializes this BandFactory based on the data contained in the ReportFactory.
    *
    * @param parser the used parser to coordinate the parsing process.
@@ -87,7 +81,6 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
   public BandFactory(final ReportParser parser, final String finishTag)
   {
     super(parser, finishTag);
-    fontFactory = new FontFactory();
   }
 
   /**
@@ -198,7 +191,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     // create the report header...
     final ReportHeader reportHeader = getReport().getReportHeader();
 
-    String height = attr.getValue("height");
+    final String height = attr.getValue("height");
     if (height != null)
     {
       final float heightValue = ParserUtil.parseFloat(height, 0);
@@ -206,7 +199,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           new FloatDimension(0, heightValue));
     }
 
-    String ownPageAttr = attr.getValue("ownpage");
+    final String ownPageAttr = attr.getValue("ownpage");
     if (ownPageAttr != null)
     {
       final boolean ownPage = ParserUtil.parseBoolean(ownPageAttr, false);
@@ -215,7 +208,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           (BandStyleSheet.PAGEBREAK_AFTER, ownPage);
     }
 
-    final FontFactory.FontInformation fi = fontFactory.createFont(attr);
+    final FontFactory.FontInformation fi = FontFactory.createFont(attr);
     FontFactory.applyFontInformation(reportHeader.getBandDefaults(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
@@ -250,7 +243,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     final ReportFooter reportFooter = getReport().getReportFooter();
 
     // get the height...
-    String height = attr.getValue("height");
+    final String height = attr.getValue("height");
     if (height != null)
     {
       final float heightValue = ParserUtil.parseFloat(height, 0);
@@ -258,7 +251,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           new FloatDimension(0, heightValue));
     }
 
-    String ownPageAttr = attr.getValue("ownpage");
+    final String ownPageAttr = attr.getValue("ownpage");
     if (ownPageAttr != null)
     {
       final boolean ownPage = ParserUtil.parseBoolean(ownPageAttr, false);
@@ -267,7 +260,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           (BandStyleSheet.PAGEBREAK_AFTER, ownPage);
     }
 
-    final FontFactory.FontInformation fi = fontFactory.createFont(attr);
+    final FontFactory.FontInformation fi = FontFactory.createFont(attr);
     FontFactory.applyFontInformation(reportFooter.getBandDefaults(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
@@ -302,7 +295,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     final PageHeader pageHeader = getReport().getPageHeader();
 
     // get the height...
-    String heightAttr = attr.getValue("height");
+    final String heightAttr = attr.getValue("height");
     if (heightAttr != null)
     {
       final float height = ParserUtil.parseFloat(heightAttr, 0);
@@ -310,21 +303,21 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           new FloatDimension(0, height));
     }
 
-    String firstPageAttr = attr.getValue("onfirstpage");
+    final String firstPageAttr = attr.getValue("onfirstpage");
     if (firstPageAttr != null)
     {
       final boolean firstPage = ParserUtil.parseBoolean(firstPageAttr, true);
       pageHeader.setDisplayOnFirstPage(firstPage);
     }
 
-    String lastPageAttr = attr.getValue("onlastpage");
+    final String lastPageAttr = attr.getValue("onlastpage");
     if (lastPageAttr != null)
     {
       final boolean lastPage = ParserUtil.parseBoolean(lastPageAttr, true);
       pageHeader.setDisplayOnLastPage(lastPage);
     }
 
-    final FontFactory.FontInformation fi = fontFactory.createFont(attr);
+    final FontFactory.FontInformation fi = FontFactory.createFont(attr);
     FontFactory.applyFontInformation(pageHeader.getBandDefaults(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
@@ -359,7 +352,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     final PageFooter pageFooter = getReport().getPageFooter();
 
     // get the height...
-    String heightAttr = attr.getValue("height");
+    final String heightAttr = attr.getValue("height");
     if (heightAttr != null)
     {
       final float height = ParserUtil.parseFloat(heightAttr, 0);
@@ -367,21 +360,21 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           new FloatDimension(0, height));
     }
 
-    String firstPageAttr = attr.getValue("onfirstpage");
+    final String firstPageAttr = attr.getValue("onfirstpage");
     if (firstPageAttr != null)
     {
       final boolean firstPage = ParserUtil.parseBoolean(firstPageAttr, true);
       pageFooter.setDisplayOnFirstPage(firstPage);
     }
 
-    String lastPageAttr = attr.getValue("onlastpage");
+    final String lastPageAttr = attr.getValue("onlastpage");
     if (lastPageAttr != null)
     {
       final boolean lastPage = ParserUtil.parseBoolean(lastPageAttr, true);
       pageFooter.setDisplayOnLastPage(lastPage);
     }
 
-    final FontFactory.FontInformation fi = fontFactory.createFont(attr);
+    final FontFactory.FontInformation fi = FontFactory.createFont(attr);
     FontFactory.applyFontInformation(pageFooter.getBandDefaults(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
@@ -414,7 +407,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
       throws SAXException
   {
     final ItemBand items = getReport().getItemBand();
-    String heightAttr = attr.getValue("height");
+    final String heightAttr = attr.getValue("height");
     if (heightAttr != null)
     {
       // get the height...
@@ -424,7 +417,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
     }
 
-    final FontFactory.FontInformation fi = fontFactory.createFont(attr);
+    final FontFactory.FontInformation fi = FontFactory.createFont(attr);
     FontFactory.applyFontInformation(items.getBandDefaults(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.5 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -258,9 +258,9 @@ public class ReportGenerator extends ParserFrontend
    * @param parser the parser implementation that will handle the SAX-Callbacks.
    * @param xmlReader the xml reader that should be configured.
    */
-  protected void configureReader(XMLReader xmlReader, Parser parser)
+  protected void configureReader(final XMLReader xmlReader, final Parser parser)
   {
-    ReportParser rparser = (ReportParser) parser;
+    final ReportParser rparser = (ReportParser) parser;
     try
     {
       xmlReader.setProperty
@@ -268,7 +268,7 @@ public class ReportGenerator extends ParserFrontend
     }
     catch (SAXException se)
     {
-      Log.debug ("Comments are not supported by this SAX implementation.");
+      Log.debug("Comments are not supported by this SAX implementation.");
     }
   }
 }

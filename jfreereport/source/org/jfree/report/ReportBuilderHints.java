@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportBuilderHints.java,v 1.6 2003/08/18 21:36:24 taqua Exp $
+ * $Id: ReportBuilderHints.java,v 1.7 2003/08/24 15:13:21 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 14-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report;
@@ -58,22 +58,22 @@ import org.jfree.report.util.ReportConfiguration;
  * <p>
  * The report builder hints are not copied when a report is cloned and are
  * not available during the report processing.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ReportBuilderHints implements Serializable
 {
-  /** 
-   * Defines whether the report builder should be paranoid when accepting 
-   * objects for storage. 
+  /**
+   * Defines whether the report builder should be paranoid when accepting
+   * objects for storage.
    */
-  private static final boolean PARANOID_CHECKS = 
-    ReportConfiguration.getGlobalConfig().getConfigProperty
+  private static final boolean PARANOID_CHECKS =
+      ReportConfiguration.getGlobalConfig().getConfigProperty
       ("org.jfree.report.ReportBuilderHint.ParanoidChecks", "false").equals("true");
-  
+
   /**
    * The parser hint key is a compound key to combine a string key name
-   * with an arbitary target object. 
+   * with an arbitary target object.
    */
   public static class ParserHintKey implements Serializable
   {
@@ -85,11 +85,11 @@ public class ReportBuilderHints implements Serializable
     /**
      * Creates a new parser hint key for the given primary key and the given
      * key name.
-     * 
-     * @param primaryKey the target object for that a hint should be stored. 
+     *
+     * @param primaryKey the target object for that a hint should be stored.
      * @param hintKey the name of the hint.
      */
-    public ParserHintKey(Serializable primaryKey, String hintKey)
+    public ParserHintKey(final Serializable primaryKey, final String hintKey)
     {
       if (primaryKey == null)
       {
@@ -105,17 +105,17 @@ public class ReportBuilderHints implements Serializable
 
     /**
      * Returns the primary key object for that hint key.
-     * 
+     *
      * @return the key object.
      */
     public Object getPrimaryKey()
     {
       return primaryKey;
     }
-    
+
     /**
      * Returns the hint name.
-     * 
+     *
      * @return the name of the hint.
      */
     public String getHintKey()
@@ -126,31 +126,31 @@ public class ReportBuilderHints implements Serializable
     /**
      * Compares whether this key points to the same object and refers to the
      * same key name.
-     *   
+     *
      * @see java.lang.Object#equals(java.lang.Object)
-     * 
+     *
      * @param o the object to compare
      * @return true, if the given object is equal to this object.
      */
-    public boolean equals(Object o)
+    public boolean equals(final Object o)
     {
       if (this == o)
-      { 
+      {
         return true;
       }
       if (!(o instanceof ParserHintKey))
-      { 
+      {
         return false;
       }
 
       final ParserHintKey parserHintKey = (ParserHintKey) o;
 
       if (!primaryKey.equals(parserHintKey.primaryKey))
-      { 
+      {
         return false;
       }
       if (!hintKey.equals(parserHintKey.hintKey))
-      { 
+      {
         return false;
       }
 
@@ -159,9 +159,9 @@ public class ReportBuilderHints implements Serializable
 
     /**
      * Computes an hashcode for this key.
-     *  
+     *
      * @see java.lang.Object#hashCode()
-     * 
+     *
      * @return the hashcode.
      */
     public int hashCode()
@@ -174,25 +174,25 @@ public class ReportBuilderHints implements Serializable
 
     /**
      * Prints this key as string. This is a debug function, dont depend on it.
-     *  
+     *
      * @see java.lang.Object#toString()
-     * 
+     *
      * @return the string representation of this object.
      */
     public String toString()
     {
-      StringBuffer b = new StringBuffer();
-      b.append ("ParserHintKey={");
-      b.append (primaryKey);
-      b.append ("; ");
-      b.append (hintKey);
-      b.append ("}");
+      final StringBuffer b = new StringBuffer();
+      b.append("ParserHintKey={");
+      b.append(primaryKey);
+      b.append("; ");
+      b.append(hintKey);
+      b.append("}");
       return b.toString();
     }
   }
 
   /** The hashmap which stores the hints. */
-  private HashMap map;
+  private final HashMap map;
 
   /**
    * Creates a new ReportBuilderHints instance.
@@ -204,14 +204,14 @@ public class ReportBuilderHints implements Serializable
 
   /**
    * Stores a new hint, replacing all previously stored hints for that key.
-   * 
+   *
    * @param target the target object, to which the hint is assigned.
    * @param hint the name of the hint.
    * @param hintValue the value of the hint.
    */
-  public void putHint (Serializable target, String hint, Serializable hintValue)
+  public void putHint(final Serializable target, final String hint, final Serializable hintValue)
   {
-    ParserHintKey pHint = new ParserHintKey(target, hint);
+    final ParserHintKey pHint = new ParserHintKey(target, hint);
     if (hintValue == null)
     {
       map.remove(pHint);
@@ -224,12 +224,12 @@ public class ReportBuilderHints implements Serializable
 
   /**
    * Queries the object to get a stored hint from this collcetion.
-   * 
+   *
    * @param target the target object, to which the hint is assigned.
    * @param hint the name of the hint.
    * @return the stored hint or null, if no such hint is stored for that object.
    */
-  public Object getHint (Serializable target, String hint)
+  public Object getHint(final Serializable target, final String hint)
   {
     return map.get(new ParserHintKey(target, hint));
   }
@@ -237,16 +237,16 @@ public class ReportBuilderHints implements Serializable
   /**
    * Queries the object to get a stored hint from this collcetion and checks
    * that the target object has the correct type. This will return null, if the
-   * hintobject is not assignable from the given object type. 
-   * 
+   * hintobject is not assignable from the given object type.
+   *
    * @param target the target object, to which the hint is assigned.
    * @param hint the name of the hint.
-   * @param objectType the expected type of the stored hint. 
+   * @param objectType the expected type of the stored hint.
    * @return the stored hint or null, if no such hint is stored for that object.
    */
-  public Object getHint (Serializable target, String hint, Class objectType)
+  public Object getHint(final Serializable target, final String hint, final Class objectType)
   {
-    Object o = map.get(new ParserHintKey(target, hint));
+    final Object o = map.get(new ParserHintKey(target, hint));
     if (o == null)
     {
       return null;
@@ -259,16 +259,16 @@ public class ReportBuilderHints implements Serializable
   }
 
   /**
-   * Serializes an given object to test whether this object is a valid serializable 
+   * Serializes an given object to test whether this object is a valid serializable
    * implementation.
-   * 
+   *
    * @param o the object that should be tested.
    */
-  private void serialize (Object o)
+  private static void serialize(final Object o)
   {
     try
     {
-      ObjectOutputStream out = new ObjectOutputStream(new NullOutputStream());
+      final ObjectOutputStream out = new ObjectOutputStream(new NullOutputStream());
       out.writeObject(o);
     }
     catch (IOException ipoe)
@@ -288,7 +288,7 @@ public class ReportBuilderHints implements Serializable
    * @param hintValue the hint value (not null)
    * @throws java.lang.IllegalArgumentException if the specified hint is no list type.
    */
-  public void addHintList (Serializable target, String hint, Serializable hintValue)
+  public void addHintList(final Serializable target, final String hint, final Serializable hintValue)
   {
     this.addHintList(target, hint, hintValue, true);
   }
@@ -304,7 +304,7 @@ public class ReportBuilderHints implements Serializable
    * @param unique true, if the value should be unique within the list
    * @throws java.lang.IllegalArgumentException if the specified hint is no list type.
    */
-  public void addHintList (Serializable target, String hint, Serializable hintValue, boolean unique)
+  public void addHintList(final Serializable target, final String hint, final Serializable hintValue, final boolean unique)
   {
     if (hintValue == null)
     {
@@ -317,8 +317,8 @@ public class ReportBuilderHints implements Serializable
       serialize(hintValue);
     }
 
-    Object o = getHint(target, hint);
-    List hintList = null;
+    final Object o = getHint(target, hint);
+    List hintList;
     if (o != null)
     {
       if (o instanceof List == false)

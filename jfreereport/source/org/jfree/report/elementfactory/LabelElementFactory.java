@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LabelElementFactory.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: LabelElementFactory.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.elementfactory;
@@ -51,14 +51,14 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
 /**
- * A factory to define LabelElements. LabelElements are considered immutable and 
+ * A factory to define LabelElements. LabelElements are considered immutable and
  * should not be modified once they are created. The label expects plain text.
- * 
+ *
  * @author Thomas Morgner
  */
 public class LabelElementFactory extends TextElementFactory
 {
-  /** The label text. */ 
+  /** The label text. */
   private String text;
 
   /**
@@ -71,7 +71,7 @@ public class LabelElementFactory extends TextElementFactory
 
   /**
    * Returns the label text.
-   * 
+   *
    * @return the text of the label.
    */
   public String getText()
@@ -81,19 +81,19 @@ public class LabelElementFactory extends TextElementFactory
 
   /**
    * Defines the text of the label.
-   * 
+   *
    * @param text the plain text of the label.
    */
-  public void setText(String text)
+  public void setText(final String text)
   {
     this.text = text;
   }
 
   /**
    * Creates the label element.
-   *  
+   *
    * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   * 
+   *
    * @return the generated label.
    * @throws IllegalStateException if the text is not defined.
    */
@@ -104,9 +104,9 @@ public class LabelElementFactory extends TextElementFactory
       throw new IllegalStateException("Content is not set.");
     }
 
-    LabelTemplate template = new LabelTemplate();
+    final LabelTemplate template = new LabelTemplate();
     template.setContent(getText());
-    TextElement element = new TextElement();
+    final TextElement element = new TextElement();
     element.setDataSource(template);
     if (getName() != null)
     {
@@ -168,7 +168,7 @@ public class LabelElementFactory extends TextElementFactory
                                                final FontDefinition font,
                                                final String labeltext)
   {
-    LabelElementFactory factory = new LabelElementFactory();
+    final LabelElementFactory factory = new LabelElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
     factory.setMinimumSize(new FloatDimension
         ((float) bounds.getWidth(), (float) bounds.getHeight()));

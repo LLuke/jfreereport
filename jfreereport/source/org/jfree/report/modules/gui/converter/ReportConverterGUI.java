@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.5 2003/08/18 18:27:59 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.6 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -75,13 +75,13 @@ import org.jfree.report.util.StringUtil;
 public class ReportConverterGUI extends JFrame
 {
   /** The source field. */
-  private JTextField sourceField;
+  private final JTextField sourceField;
 
   /** The target field. */
-  private JTextField targetField;
+  private final JTextField targetField;
 
   /** A file chooser. */
-  private JFileChooser fileChooser;
+  private final JFileChooser fileChooser;
 
   /** Localised resources. */
   private ResourceBundle resources;
@@ -91,7 +91,7 @@ public class ReportConverterGUI extends JFrame
       ConverterResources.class.getName();
 
   /** The encoding combo box model used to select the target file encoding. */
-  private EncodingComboBoxModel encodingModel;
+  private final EncodingComboBoxModel encodingModel;
 
   /**
    * An action for selecting the target.
@@ -476,7 +476,7 @@ public class ReportConverterGUI extends JFrame
     try
     {
       Log.debug("Converting report ...");
-      String encoding = encodingModel.getSelectedEncoding();
+      final String encoding = encodingModel.getSelectedEncoding();
       converter.convertReport(getSourceFile(), getTargetFile(), encoding);
       return true;
     }

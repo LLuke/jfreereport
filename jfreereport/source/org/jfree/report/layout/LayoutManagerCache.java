@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.3 2003/08/18 18:27:58 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.4 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@ import java.util.WeakHashMap;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
-import org.jfree.report.util.Log;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.util.Log;
 
 /**
  * A cache for a band layout manager. Not very usefull yet, maybe later.
@@ -67,7 +67,7 @@ public class LayoutManagerCache
     /**
      * Default Constructor.
      */
-    public ElementCacheCarrier ()
+    public ElementCacheCarrier()
     {
     }
 
@@ -90,7 +90,7 @@ public class LayoutManagerCache
     /**
      * @param dimension2D
      */
-    public void setMinSize(Dimension2D dimension2D)
+    public void setMinSize(final Dimension2D dimension2D)
     {
       minSize = dimension2D;
     }
@@ -98,7 +98,7 @@ public class LayoutManagerCache
     /**
      * @param dimension2D
      */
-    public void setPrefSize(Dimension2D dimension2D)
+    public void setPrefSize(final Dimension2D dimension2D)
     {
       prefSize = dimension2D;
     }
@@ -112,7 +112,7 @@ public class LayoutManagerCache
   private static int getCount;
 
   /** The element cache. */
-  private WeakHashMap elementCache;
+  private final WeakHashMap elementCache;
 
   /**
    * Default constructor.
@@ -136,7 +136,7 @@ public class LayoutManagerCache
     {
       return null;
     }
-    Dimension2D dim = ec.getMinSize();
+    final Dimension2D dim = ec.getMinSize();
     if (dim != null)
     {
       getCount++;
@@ -158,7 +158,7 @@ public class LayoutManagerCache
     {
       return null;
     }
-    Dimension2D dim = ec.getPrefSize();
+    final Dimension2D dim = ec.getPrefSize();
     if (dim != null)
     {
       getCount++;
@@ -190,7 +190,7 @@ public class LayoutManagerCache
     if (ec == null)
     {
       ec = new ElementCacheCarrier();
-      ec.setMinSize (d);
+      ec.setMinSize(d);
       if (key.isSearchKey())
       {
         elementCache.put(new LayoutCacheKey(element, key.getParentDim()), ec);
@@ -204,7 +204,7 @@ public class LayoutManagerCache
     {
       if (isCachable(element) == true)
       {
-        ec.setMinSize (d);
+        ec.setMinSize(d);
       }
     }
   }
@@ -233,7 +233,7 @@ public class LayoutManagerCache
     if (ec == null)
     {
       ec = new ElementCacheCarrier();
-      ec.setPrefSize (d);
+      ec.setPrefSize(d);
       if (key.isSearchKey())
       {
         elementCache.put(new LayoutCacheKey(element, key.getParentDim()), ec);
@@ -245,7 +245,7 @@ public class LayoutManagerCache
     }
     else
     {
-      ec.setPrefSize (d);
+      ec.setPrefSize(d);
     }
   }
 

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextReportUtil.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
+ * $Id: PlainTextReportUtil.java,v 1.3 2003/08/24 15:05:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.output.pageable.plaintext;
@@ -50,10 +50,10 @@ import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 
 /**
- * An utility class to write an report into a plain text file. If you need more 
+ * An utility class to write an report into a plain text file. If you need more
  * control over the writing process, you will have to implement your own write
  * method.
- * 
+ *
  * @author Thomas Morgner
  */
 public final class PlainTextReportUtil
@@ -65,7 +65,7 @@ public final class PlainTextReportUtil
   private PlainTextReportUtil()
   {
   }
-  
+
   /**
    * Saves a report to plain text format.
    *
@@ -79,13 +79,13 @@ public final class PlainTextReportUtil
    */
   public static void createPlainText(final JFreeReport report, final String filename)
       throws IOException, ReportProcessingException,
-        FunctionInitializeException, OutputTargetException
+      FunctionInitializeException, OutputTargetException
   {
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
     final PrinterCommandSet pc = new PrinterCommandSet(fout, report.getDefaultPageFormat(), 6, 10);
-    final PlainTextOutputTarget target = 
-      new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
+    final PlainTextOutputTarget target =
+        new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
     pr.setOutputTarget(target);
     target.open();
     pr.processReport();

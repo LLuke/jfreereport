@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IncludeParser.java,v 1.2 2003/08/20 18:56:51 taqua Exp $
+ * $Id: IncludeParser.java,v 1.3 2003/08/24 15:08:20 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 14-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.parser.base;
@@ -45,7 +45,7 @@ import org.jfree.xml.Parser;
  * the report definition. It contains a special mark to indicate
  * that this is a included report definition and uses the
  * configuration settings of an parent parser.
- * 
+ *
  * @author Thomas Morgner
  */
 public class IncludeParser extends Parser
@@ -54,23 +54,23 @@ public class IncludeParser extends Parser
   public static final String INCLUDE_PARSING_KEY = "include-parsing";
 
   /** The parser backend that supplies the configuration. */
-  private Parser backend;
+  private final Parser backend;
 
   /**
    * Creates a new include parser with the given parser as backend.
-   * 
+   *
    * @param backend the backend parser that provides the configuration.
    */
-  public IncludeParser(Parser backend)
+  public IncludeParser(final Parser backend)
   {
     this.backend = backend;
     setConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "true");
   }
 
   /**
-   * Returns a new parser instance. 
+   * Returns a new parser instance.
    * @see org.jfree.xml.Parser#getInstance()
-   * 
+   *
    * @return the new include parser instance using the same backend as
    * this instance.
    */
@@ -80,9 +80,9 @@ public class IncludeParser extends Parser
   }
 
   /**
-   * Returns the parser result. Returns the backends result. 
+   * Returns the parser result. Returns the backends result.
    * @see org.jfree.xml.Parser#getResult()
-   * 
+   *
    * @return the backends result.
    */
   public Object getResult()
@@ -92,14 +92,14 @@ public class IncludeParser extends Parser
 
   /**
    * Returns the configuration property stored with the given key.
-   * Uses the backend as provider for the default value. 
-   *  
+   * Uses the backend as provider for the default value.
+   *
    * @see org.jfree.util.Configuration#getConfigProperty(java.lang.String)
-   * 
+   *
    * @param key the property name.
    * @return the stored value
    */
-  public String getConfigProperty(String key)
+  public String getConfigProperty(final String key)
   {
     return super.getConfigProperty(key, backend.getConfigProperty(key));
   }
@@ -108,32 +108,32 @@ public class IncludeParser extends Parser
    * Returns the configuration property stored with the given key using
    * the given default values as final fallback.
    * Uses the backend as provider for the default value. The backends
-   * value will be used before the default value is returned.  
-   *  
+   * value will be used before the default value is returned.
+   *
    * @see org.jfree.util.Configuration#getConfigProperty(java.lang.String)
-   * 
+   *
    * @param key the property name.
    * @param defaultValue the default value that should be returned in case
    * that neither this parser or the backend contains a value for that key.
    * @return the stored value
    */
-  public String getConfigProperty(String key, String defaultValue)
+  public String getConfigProperty(final String key, final String defaultValue)
   {
-    return super.getConfigProperty(key,  backend.getConfigProperty(key, defaultValue));
+    return super.getConfigProperty(key, backend.getConfigProperty(key, defaultValue));
   }
 
   /**
    * Returns a helper object which is stored on the parser. If the helper
    * object is not defined in this object, this method will look for it
-   * in the backend. 
+   * in the backend.
    * @see org.jfree.xml.Parser#getHelperObject(java.lang.String)
-   * 
+   *
    * @param key the helper object key
    * @return the helper object or null if there is no such object stored.
    */
-  public Object getHelperObject(String key)
+  public Object getHelperObject(final String key)
   {
-    Object o = super.getHelperObject(key);
+    final Object o = super.getHelperObject(key);
     if (o == null)
     {
       return backend.getHelperObject(key);

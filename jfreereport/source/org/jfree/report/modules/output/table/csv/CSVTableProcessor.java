@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.4 2003/08/20 14:06:36 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -193,7 +193,7 @@ public class CSVTableProcessor extends TableProcessor
     // csv always uses the global layout. We dont support pages, so why introduce
     // artifical boundaries ...
     return new CSVTableProducer
-      (new TableLayoutInfo(true, getReport().getDefaultPageFormat()), isStrictLayout());
+        (new TableLayoutInfo(true, getReport().getDefaultPageFormat()), isStrictLayout());
   }
 
   /**

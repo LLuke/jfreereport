@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.5 2003/08/18 18:28:00 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.6 2003/08/24 15:03:59 taqua Exp $
  *
  * Changes
  * -------
@@ -60,9 +60,9 @@ import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.Spool;
-import org.jfree.report.states.ReportState;
 import org.jfree.report.states.DataRowConnector;
 import org.jfree.report.states.ReportDefinitionImpl;
+import org.jfree.report.states.ReportState;
 import org.jfree.report.style.BandStyleSheet;
 
 /**
@@ -97,7 +97,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
   protected static class SimpleLayoutManagerState extends PageLayouter.LayoutManagerState
   {
     /** The band. */
-    private Band band;
+    private final Band band;
 
     /**
      * Creates a new state.  The band can be <code>null</code> if there is no band to be printed
@@ -993,10 +993,10 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
       {
         final Band band = (Band) state.getBand().clone();
         // update the dataRow to the current dataRow instance...
-        ReportState state = getCurrentEvent().getState();
+        final ReportState state = getCurrentEvent().getState();
         // todo: How to resolve this update in a clean way. How to change the
         // element connection so that it is smarter and not that weird ...
-        ReportDefinitionImpl impl = (ReportDefinitionImpl) state.getReport();
+        final ReportDefinitionImpl impl = (ReportDefinitionImpl) state.getReport();
         // yes, I hate this code too...
         DataRowConnector.disconnectDataSources(band, impl.getDataRowConnector());
         DataRowConnector.connectDataSources(band, impl.getDataRowConnector());

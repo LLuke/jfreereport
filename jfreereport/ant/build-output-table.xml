@@ -41,7 +41,7 @@
 
     <!-- compile the source -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/output/table/base/*"/>
       <classpath>
@@ -99,7 +99,7 @@
 
     <!-- compile the source -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/output/table/csv/*"/>
       <classpath>
@@ -150,7 +150,7 @@
 
     <!-- compile the source -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/output/table/html/*"/>
       <classpath>
@@ -218,7 +218,7 @@
 
     <!-- compile the source -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/output/table/rtf/*"/>
       <classpath>
@@ -276,7 +276,7 @@
 
     <!-- compile the source -->
     <javac srcdir="source"
-      destdir="build"
+      destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
       <include name="org/jfree/report/modules/output/table/xls/*"/>
       <classpath>

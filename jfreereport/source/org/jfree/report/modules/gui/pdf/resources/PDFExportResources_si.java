@@ -28,12 +28,12 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: PDFExportResources_si.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PDFExportResources_si.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.pdf.resources;
@@ -43,7 +43,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * Slovenian language resource for the PDF export GUI.
- * 
+ *
  * @author Sergey M Mozgovoi
  */
 public class PDFExportResources_si extends JFreeReportResources
@@ -97,7 +97,7 @@ public class PDFExportResources_si extends JFreeReportResources
         {"pdfsavedialog.ownerpasswordNoMatch", "Lastni\u0161ki gesli se ne ujemata."},
         {"pdfsavedialog.ownerpasswordEmpty",
          "Lastni\u0161ko geslo je prazno. Uporabniki lahko spremenijo varnostne omejitve."
-         + " \u017Delite vseeno nadaljevati?"},
+      + " \u017Delite vseeno nadaljevati?"},
 
         {"pdfsavedialog.warningTitle", "Opozorilo"},
         {"pdfsavedialog.errorTitle", "Napaka"},

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFImageCellData.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
+ * $Id: RTFImageCellData.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class RTFImageCellData extends RTFCellData
    * @param image the image content.
    * @param style the assigned cell style.
    */
-  public RTFImageCellData(final Rectangle2D outerBounds, final ImageReference image, 
+  public RTFImageCellData(final Rectangle2D outerBounds, final ImageReference image,
                           final RTFCellStyle style)
   {
     super(outerBounds, style);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceHandler.java,v 1.5 2003/08/20 17:24:35 taqua Exp $
+ * $Id: DataSourceHandler.java,v 1.6 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -130,7 +130,7 @@ public class DataSourceHandler extends CompoundObjectHandler
     {
       throw new ParseException("The datasource type must be specified", getParser().getLocator());
     }
-    CommentHintPath path = createCommentKey(tagName);
+    final CommentHintPath path = createCommentKey(tagName);
     addComment(path, CommentHandler.OPEN_TAG_COMMENT);
     dataSourceHandler = new DataSourceHandler(getReportParser(), tagName, typeName, path);
     getParser().pushFactory(dataSourceHandler);
@@ -159,7 +159,7 @@ public class DataSourceHandler extends CompoundObjectHandler
     {
       final DataSource ds = (DataSource) dataSourceHandler.getValue();
       getTargetObjectDescription().setParameter("dataSource", ds);
-      CommentHintPath path = createCommentKey(tagName);
+      final CommentHintPath path = createCommentKey(tagName);
       addComment(path, CommentHandler.CLOSE_TAG_COMMENT);
       dataSourceHandler = null;
     }

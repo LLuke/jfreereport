@@ -28,12 +28,12 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_fr.java,v 1.4 2003/08/19 13:37:24 taqua Exp $
+ * $Id: HtmlExportResources_fr.java,v 1.5 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.html.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * French language resource for the HTML export GUI.
- * 
+ *
  * @author PR
  */
 public class HtmlExportResources_fr extends JFreeReportResources
@@ -120,7 +120,7 @@ public class HtmlExportResources_fr extends JFreeReportResources
         {"htmlexportdialog.stream-export", "Exportation File stream"},
         {"htmlexportdialog.directory-export", "Exportation répertoire"},
         {"htmlexportdialog.zip-export", "Exportation fichier ZIP"},
-        
+
         {"error.processingfailed.title", "Echec du traitement du Report"},
         {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
         {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},

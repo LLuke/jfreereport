@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: TextParagraph.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ public class TextParagraph extends ContentContainer
   private float lineHeight = 0;
 
   /** The size calculator. */
-  private SizeCalculator sizeCalculator;
+  private final SizeCalculator sizeCalculator;
 
   /**
    * Creates a new text paragraph using the specified size calculator.
@@ -355,7 +355,7 @@ public class TextParagraph extends ContentContainer
    *
    * @return a string with '..' appended.
    */
-  private String appendReserveLit(final String base, final int lineStart, 
+  private String appendReserveLit(final String base, final int lineStart,
                                   final int lastCheckedChar, final float width)
   {
     if (lastCheckedChar < 0)
@@ -379,8 +379,8 @@ public class TextParagraph extends ContentContainer
     }
 
     final String baseLine = base.substring(lineStart, lastCheckedChar);
-    final float filler = width - 
-      (getSizeCalculator().getStringWidth (baseLine, 0, baseLine.length())) - reservedSize;
+    final float filler = width -
+        (getSizeCalculator().getStringWidth(baseLine, 0, baseLine.length())) - reservedSize;
 
     final int maxFillerLength = base.length() - lastCheckedChar;
     for (int i = 1; i < maxFillerLength; i++)
@@ -402,7 +402,7 @@ public class TextParagraph extends ContentContainer
    *
    * @return  a string with all whitespace replaced by space characters.
    */
-  protected String clearWhitespaces(final String text)
+  protected static String clearWhitespaces(final String text)
   {
     final char[] textdata = text.toCharArray();
     for (int i = 0; i < textdata.length; i++)

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleInitializeException.java,v 1.2 2003/08/19 13:37:23 taqua Exp $
+ * $Id: ModuleInitializeException.java,v 1.3 2003/08/24 15:08:18 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules;
@@ -43,7 +43,7 @@ import org.jfree.util.StackableException;
 /**
  * This exception is thrown when the module initialization encountered an
  * unrecoverable error which prevents the module from being used.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ModuleInitializeException extends StackableException
@@ -59,11 +59,11 @@ public class ModuleInitializeException extends StackableException
   /**
    * Creates a ModuleInitializeException with the given message and base
    * exception.
-   * 
+   *
    * @param s the message
-   * @param e the root exception 
+   * @param e the root exception
    */
-  public ModuleInitializeException(String s, Exception e)
+  public ModuleInitializeException(final String s, final Exception e)
   {
     super(s, e);
   }
@@ -71,10 +71,10 @@ public class ModuleInitializeException extends StackableException
   /**
    * Creates a ModuleInitializeException with the given message and no base
    * exception.
-   * 
+   *
    * @param s the exception message
    */
-  public ModuleInitializeException(String s)
+  public ModuleInitializeException(final String s)
   {
     super(s);
   }

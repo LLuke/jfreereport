@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageURLFieldElementFactory.java,v 1.3 2003/08/18 18:27:58 taqua Exp $
+ * $Id: ImageURLFieldElementFactory.java,v 1.4 2003/08/24 15:13:22 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.elementfactory;
@@ -51,7 +51,7 @@ import org.jfree.ui.FloatDimension;
 /**
  * A factory to define ImageURLFieldElements. These elements expect an java.net.URL
  * or an String as content and will display the image content of that URL in the report.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ImageURLFieldElementFactory extends ImageElementFactory
@@ -69,7 +69,7 @@ public class ImageURLFieldElementFactory extends ImageElementFactory
 
   /**
    * Returns the field name from where to read the content of the element.
-   * 
+   *
    * @return the field name.
    */
   public String getFieldname()
@@ -80,19 +80,19 @@ public class ImageURLFieldElementFactory extends ImageElementFactory
   /**
    * Defines the field name from where to read the content of the element.
    * The field name is the name of a datarow column.
-   * 
+   *
    * @param fieldname the field name.
    */
-  public void setFieldname(String fieldname)
+  public void setFieldname(final String fieldname)
   {
     this.fieldname = fieldname;
   }
 
   /**
    * Creates the image URL field element based on the defined properties.
-   *  
+   *
    * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   * 
+   *
    * @return the created element.
    */
   public Element createElement()
@@ -184,7 +184,7 @@ public class ImageURLFieldElementFactory extends ImageElementFactory
                                                    final boolean scale,
                                                    final boolean keepAspectRatio)
   {
-    ImageURLFieldElementFactory factory = new ImageURLFieldElementFactory();
+    final ImageURLFieldElementFactory factory = new ImageURLFieldElementFactory();
     factory.setName(name);
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
     factory.setMinimumSize(new FloatDimension

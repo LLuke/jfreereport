@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PrintExportTask.java,v 1.1 2003/08/24 15:09:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,10 +45,10 @@ import org.jfree.report.modules.gui.base.ReportProgressDialog;
 
 public class PrintExportTask extends ExportTask
 {
-  private PrinterJob printerJob;
-  private ReportProgressDialog progressDialog;
+  private final PrinterJob printerJob;
+  private final ReportProgressDialog progressDialog;
 
-  public PrintExportTask(PrinterJob printJob, ReportProgressDialog progressDialog)
+  public PrintExportTask(final PrinterJob printJob, final ReportProgressDialog progressDialog)
   {
     this.printerJob = printJob;
     this.progressDialog = progressDialog;

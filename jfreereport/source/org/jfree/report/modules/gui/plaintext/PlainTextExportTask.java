@@ -28,38 +28,38 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PlainTextExportTask.java,v 1.1 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 24.08.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.plaintext;
 
-import java.io.OutputStream;
 import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
+import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.gui.base.ExportTask;
+import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
+import org.jfree.report.modules.output.pageable.plaintext.EpsonPrinterCommandSet;
+import org.jfree.report.modules.output.pageable.plaintext.IBMPrinterCommandSet;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
-import org.jfree.report.modules.output.pageable.plaintext.IBMPrinterCommandSet;
-import org.jfree.report.modules.output.pageable.plaintext.EpsonPrinterCommandSet;
-import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.modules.gui.base.ExportTask;
-import org.jfree.report.JFreeReport;
 
 public class PlainTextExportTask extends ExportTask
 {
-  private ReportProgressDialog progressDialog;
-  private String fileName;
-  private JFreeReport report;
-  private int exportType;
-  private int charPerInch;
-  private int linesPerInch;
+  private final ReportProgressDialog progressDialog;
+  private final String fileName;
+  private final JFreeReport report;
+  private final int exportType;
+  private final int charPerInch;
+  private final int linesPerInch;
 
   public PlainTextExportTask
       (final String fileName, final ReportProgressDialog dialog,
@@ -76,7 +76,7 @@ public class PlainTextExportTask extends ExportTask
         (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.LINES_PER_INCH, "6"));
   }
 
-  private int parseInt (String configProperty)
+  private int parseInt(final String configProperty)
   {
     try
     {
@@ -87,6 +87,7 @@ public class PlainTextExportTask extends ExportTask
       throw new IllegalStateException("Report configuration contained an invalid setting.");
     }
   }
+
   /**
    * Returns the printer command set.
    *

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceTableModel.java,v 1.2 2003/08/18 18:28:00 taqua Exp $
+ * $Id: ObjectReferenceTableModel.java,v 1.3 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -61,16 +61,16 @@ public class ObjectReferenceTableModel extends AbstractTableModel
   private class ObjectDescriptionRow
   {
     /** The class factory. */
-    private ClassFactory classFactory;
+    private final ClassFactory classFactory;
 
     /** The object class. */
-    private Class object;
+    private final Class object;
 
     /** The parameter name. */
-    private String paramName;
+    private final String paramName;
 
     /** The parameter type. */
-    private Class paramType;
+    private final Class paramType;
 
     /**
      * Creates a new row.
@@ -80,7 +80,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
      * @param paramName  the parameter name.
      * @param paramType  the parameter type.
      */
-    public ObjectDescriptionRow(final ClassFactory classFactory, final Class object, 
+    public ObjectDescriptionRow(final ClassFactory classFactory, final Class object,
                                 final String paramName, final Class paramType)
     {
       this.classFactory = classFactory;
@@ -167,7 +167,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
       };
 
   /** Storage for the rows. */
-  private ArrayList rows;
+  private final ArrayList rows;
 
   /**
    * Creates a new table model for a set of class factories.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
+ * $Id: ReportWriter.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -102,9 +102,9 @@ public class ReportWriter
    * @param report the report for which to create the writer configuration.
    * @return the generated configuration.
    */
-  public static Configuration createDefaultConfiguration (JFreeReport report)
+  public static Configuration createDefaultConfiguration(final JFreeReport report)
   {
-    ReportConfiguration repConf = new ReportConfiguration(report.getReportConfiguration());
+    final ReportConfiguration repConf = new ReportConfiguration(report.getReportConfiguration());
     repConf.setConfigProperty
         (Parser.CONTENTBASE_KEY,
             (String) report.getProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE));
@@ -141,7 +141,7 @@ public class ReportWriter
     if (config.getConfigProperty(Parser.CONTENTBASE_KEY) == null)
     {
       throw new IllegalStateException
-        ("This report writer configuration does not define a content base.");
+          ("This report writer configuration does not define a content base.");
     }
 
     this.report = report;
@@ -170,15 +170,15 @@ public class ReportWriter
   /**
    * Loads all object factories from the parser hints, if available.
    */
-  private void loadObjectFactories ()
+  private void loadObjectFactories()
   {
-    ReportBuilderHints hints = getReport().getReportBuilderHints();
-    List l = (List) hints.getHint(getReport(), ParserConfigHandler.OBJECT_FACTORY_HINT, List.class);
+    final ReportBuilderHints hints = getReport().getReportBuilderHints();
+    final List l = (List) hints.getHint(getReport(), ParserConfigHandler.OBJECT_FACTORY_HINT, List.class);
     if (l == null)
     {
       return;
     }
-    ClassFactory[] list = (ClassFactory[]) loadParserHintFactories(l, ClassFactory.class);
+    final ClassFactory[] list = (ClassFactory[]) loadParserHintFactories(l, ClassFactory.class);
     for (int i = 0; i < list.length; i++)
     {
       addClassFactoryFactory(list[i]);
@@ -188,37 +188,37 @@ public class ReportWriter
   /**
    * Loads all datasource factories from the parser hints, if available.
    */
-  private void loadDataSourceFactories ()
+  private void loadDataSourceFactories()
   {
-    ReportBuilderHints hints = getReport().getReportBuilderHints();
-    List l = (List) hints.getHint(getReport(), 
-      ParserConfigHandler.DATASOURCE_FACTORY_HINT, List.class);
+    final ReportBuilderHints hints = getReport().getReportBuilderHints();
+    final List l = (List) hints.getHint(getReport(),
+        ParserConfigHandler.DATASOURCE_FACTORY_HINT, List.class);
     if (l == null)
     {
       return;
     }
-    DataSourceFactory[] list = (DataSourceFactory[]) 
-      loadParserHintFactories(l, DataSourceFactory.class);
+    final DataSourceFactory[] list = (DataSourceFactory[])
+        loadParserHintFactories(l, DataSourceFactory.class);
     for (int i = 0; i < list.length; i++)
     {
       addDataSourceFactory(list[i]);
     }
   }
-  
+
   /**
    * Loads all template factories from the parser hints, if available.
    */
-  private void loadTemplateFactories ()
+  private void loadTemplateFactories()
   {
-    ReportBuilderHints hints = getReport().getReportBuilderHints();
-    List l = (List) hints.getHint(getReport(), 
-      ParserConfigHandler.TEMPLATE_FACTORY_HINT, List.class);
+    final ReportBuilderHints hints = getReport().getReportBuilderHints();
+    final List l = (List) hints.getHint(getReport(),
+        ParserConfigHandler.TEMPLATE_FACTORY_HINT, List.class);
     if (l == null)
     {
       return;
     }
-    TemplateCollection[] list = (TemplateCollection[]) 
-      loadParserHintFactories(l, TemplateCollection.class);
+    final TemplateCollection[] list = (TemplateCollection[])
+        loadParserHintFactories(l, TemplateCollection.class);
     for (int i = 0; i < list.length; i++)
     {
       addTemplateCollection(list[i]);
@@ -228,16 +228,16 @@ public class ReportWriter
   /**
    * Loads all element factories from the parser hints, if available.
    */
-  private void loadElementFactories ()
+  private void loadElementFactories()
   {
-    ReportBuilderHints hints = getReport().getReportBuilderHints();
-    List l = (List) hints.getHint(getReport(), 
-      ParserConfigHandler.ELEMENT_FACTORY_HINT, List.class);
+    final ReportBuilderHints hints = getReport().getReportBuilderHints();
+    final List l = (List) hints.getHint(getReport(),
+        ParserConfigHandler.ELEMENT_FACTORY_HINT, List.class);
     if (l == null)
     {
       return;
     }
-    ElementFactory[] list = (ElementFactory[]) loadParserHintFactories(l, ElementFactory.class);
+    final ElementFactory[] list = (ElementFactory[]) loadParserHintFactories(l, ElementFactory.class);
     for (int i = 0; i < list.length; i++)
     {
       addElementFactory(list[i]);
@@ -247,16 +247,16 @@ public class ReportWriter
   /**
    * Loads all style key factories from the parser hints, if available.
    */
-  private void loadStyleKeyFactories ()
+  private void loadStyleKeyFactories()
   {
-    ReportBuilderHints hints = getReport().getReportBuilderHints();
-    List l = (List) hints.getHint(getReport(), 
-      ParserConfigHandler.STYLEKEY_FACTORY_HINT, List.class);
+    final ReportBuilderHints hints = getReport().getReportBuilderHints();
+    final List l = (List) hints.getHint(getReport(),
+        ParserConfigHandler.STYLEKEY_FACTORY_HINT, List.class);
     if (l == null)
     {
       return;
     }
-    StyleKeyFactory[] list = (StyleKeyFactory[]) loadParserHintFactories(l, StyleKeyFactory.class);
+    final StyleKeyFactory[] list = (StyleKeyFactory[]) loadParserHintFactories(l, StyleKeyFactory.class);
     for (int i = 0; i < list.length; i++)
     {
       addStyleKeyFactory(list[i]);
@@ -276,20 +276,20 @@ public class ReportWriter
   /**
    * Loads a set of factories from the given list of class names and checks, whether
    * the referenced classes are assignable from the given factory type.
-   * 
+   *
    * @param hints the list of class names to load
    * @param factoryType the desired factory type.
-   * @return the loaded factories as object array.  
+   * @return the loaded factories as object array.
    */
-  private Object[] loadParserHintFactories (List hints, Class factoryType)
+  private Object[] loadParserHintFactories(final List hints, final Class factoryType)
   {
-    Object[] hintValues = hints.toArray();
-    ArrayList factories = new ArrayList(hintValues.length);
+    final Object[] hintValues = hints.toArray();
+    final ArrayList factories = new ArrayList(hintValues.length);
     for (int i = 0; i < hintValues.length; i++)
     {
       if (hintValues[i] instanceof String == false)
       {
-        Log.warn (new Log.SimpleMessage
+        Log.warn(new Log.SimpleMessage
             ("Invalid parser hint type for factory: ", factoryType,
                 ": Type found: ", hintValues[i]));
         continue;
@@ -297,16 +297,16 @@ public class ReportWriter
 
       try
       {
-        Class c = getClass().getClassLoader().loadClass((String) hintValues[i]);
+        final Class c = getClass().getClassLoader().loadClass((String) hintValues[i]);
         if (factoryType.isAssignableFrom(c) == false)
         {
-          Log.warn (new Log.SimpleMessage
+          Log.warn(new Log.SimpleMessage
               ("Invalid factory type specified: Required ", factoryType,
                   " but found ", c));
           continue;
         }
 
-        Object o = c.newInstance();
+        final Object o = c.newInstance();
         if (factories.contains(o) == false)
         {
           factories.add(o);
@@ -314,7 +314,7 @@ public class ReportWriter
       }
       catch (Exception e)
       {
-        Log.warn ("Error while applying parser hints: ", e);
+        Log.warn("Error while applying parser hints: ", e);
       }
     }
 
@@ -447,7 +447,7 @@ public class ReportWriter
   }
 
   /**
-   * Returns the configuration used to write the report. 
+   * Returns the configuration used to write the report.
    * @return the writer configuration.
    */
   public Configuration getConfiguration()

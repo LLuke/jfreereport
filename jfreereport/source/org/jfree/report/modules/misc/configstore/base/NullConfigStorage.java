@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NullConfigStorage.java,v 1.3 2003/08/22 20:27:20 taqua Exp $
+ * $Id: NullConfigStorage.java,v 1.4 2003/08/24 15:08:20 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 14-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.misc.configstore.base;
@@ -42,9 +42,9 @@ import java.util.Properties;
 
 /**
  * An empty default implementation. This config storare will not store
- * any values and will provide no read access to stored properties by 
+ * any values and will provide no read access to stored properties by
  * denying their existence.
- * 
+ *
  * @author Thomas Morgner
  */
 public class NullConfigStorage implements ConfigStorage
@@ -58,14 +58,14 @@ public class NullConfigStorage implements ConfigStorage
 
   /**
    * This method does nothing.
-   *  
+   *
    * @see org.jfree.report.modules.misc.configstore.base.ConfigStorage#storeProperties
    * (java.lang.String, java.util.Properties)
-   * 
+   *
    * @param configPath this parameter is not used.
-   * @param properties this parameter is not used. 
+   * @param properties this parameter is not used.
    */
-  public void storeProperties(String configPath, Properties properties)
+  public void storeProperties(final String configPath, final Properties properties)
   {
   }
 
@@ -78,13 +78,13 @@ public class NullConfigStorage implements ConfigStorage
    *
    * @param configPath the configuration path from where to read the properties.
    * @param defaults the property set that acts as fallback to provide default
-   * values. 
+   * values.
    * @return the loaded properties
    * @throws ConfigStoreException always throws this exception as the specified
    * resource will be not available.
    */
-  public Properties loadProperties(String configPath, Properties defaults)
-    throws ConfigStoreException
+  public Properties loadProperties(final String configPath, final Properties defaults)
+      throws ConfigStoreException
   {
     throw new ConfigStoreException("This configuration path is not available.");
   }
@@ -93,11 +93,11 @@ public class NullConfigStorage implements ConfigStorage
    * Tests, whether some configuration data exists for the given configuration.
    * <p>
    * This method returns always false and denies the existence of any resource.
-   * 
+   *
    * @param configPath the configuration path to the property storage.
    * @return always false as this implementation does not store anything.
    */
-  public boolean existsProperties(String configPath)
+  public boolean existsProperties(final String configPath)
   {
     return false;
   }

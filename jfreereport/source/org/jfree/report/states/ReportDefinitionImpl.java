@@ -28,28 +28,28 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ReportDefinitionImpl.java,v 1.1 2003/08/24 15:13:23 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 24.08.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.states;
 
-import org.jfree.report.style.StyleSheetCollection;
-import org.jfree.report.ReportHeader;
-import org.jfree.report.ReportFooter;
-import org.jfree.report.PageHeader;
-import org.jfree.report.PageFooter;
-import org.jfree.report.ItemBand;
-import org.jfree.report.GroupList;
-import org.jfree.report.JFreeReport;
-import org.jfree.report.ReportDefinition;
 import org.jfree.report.Group;
-import org.jfree.report.util.ReportProperties;
+import org.jfree.report.GroupList;
+import org.jfree.report.ItemBand;
+import org.jfree.report.JFreeReport;
+import org.jfree.report.PageFooter;
+import org.jfree.report.PageHeader;
+import org.jfree.report.ReportDefinition;
+import org.jfree.report.ReportFooter;
+import org.jfree.report.ReportHeader;
+import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.ReportProperties;
 
 /**
  * A report definition. This the working copy of the JFreeReport object. This object
@@ -85,7 +85,7 @@ public class ReportDefinitionImpl implements ReportDefinition
   private ReportProperties properties;
 
   /** The report configuration. */
-  private ReportConfiguration reportConfiguration;
+  private final ReportConfiguration reportConfiguration;
 
   /** The stylesheet collection of this report definition. */
   private StyleSheetCollection styleSheetCollection;
@@ -118,7 +118,7 @@ public class ReportDefinitionImpl implements ReportDefinition
     pageFooter.updateStyleSheetCollection(styleSheetCollection);
     pageHeader.updateStyleSheetCollection(styleSheetCollection);
     dataRowConnector = new DataRowConnector();
-    DataRowConnector.connectDataSources(this ,dataRowConnector);
+    DataRowConnector.connectDataSources(this, dataRowConnector);
   }
 
   /**

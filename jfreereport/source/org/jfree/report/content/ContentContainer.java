@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentContainer.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
+ * $Id: ContentContainer.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -49,10 +49,10 @@ import java.util.ArrayList;
 public class ContentContainer implements Content
 {
   /** Storage for the content items. */
-  private ArrayList content;
+  private final ArrayList content;
 
   /** The content bounds. */
-  private Rectangle2D bounds;
+  private final Rectangle2D bounds;
 
   /**
    * Creates a new content container.

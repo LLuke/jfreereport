@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: UnmodifiableGroupList.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: UnmodifiableGroupList.java,v 1.1 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -38,8 +38,8 @@
 
 package org.jfree.report.states;
 
-import org.jfree.report.GroupList;
 import org.jfree.report.Group;
+import org.jfree.report.GroupList;
 
 /**
  * An unmodifiable list of groups.
@@ -66,7 +66,7 @@ public class UnmodifiableGroupList extends GroupList
    * @return nothing, as this method always fires a UnsupportedOperation exception.
    * @throws java.lang.UnsupportedOperationException as this GroupList is not modifiable.
    */
-  public boolean remove(final Object o)
+  public boolean remove(final Group o)
   {
     throw new UnsupportedOperationException();
   }

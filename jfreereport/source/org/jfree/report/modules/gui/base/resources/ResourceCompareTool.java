@@ -24,7 +24,7 @@
  * ResourceCompareTool.java
  * ------------------------
  *
- * $Id: ResourceCompareTool.java,v 1.2 2003/08/18 18:27:59 taqua Exp $
+ * $Id: ResourceCompareTool.java,v 1.3 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -52,13 +52,13 @@ import java.util.Hashtable;
  */
 public final class ResourceCompareTool
 {
-  /** 
+  /**
    * Default Constructor.
    */
   private ResourceCompareTool()
   {
   }
-  
+
   /**
    * Loads the resource bundle for the given locale.
    *
@@ -70,7 +70,7 @@ public final class ResourceCompareTool
   {
     try
     {
-      String className;
+      final String className;
       if (s != null)
       {
         className = base + "_" + s;
@@ -92,12 +92,12 @@ public final class ResourceCompareTool
   /**
    * Executes the test for the given localisation. This compares that all defined values
    * are valid and that no extra keys are defined. It also prints some status information
-   * that may be helpfull to verify the integrity of the translation. 
-   * 
+   * that may be helpfull to verify the integrity of the translation.
+   *
    * @param base the base name of the resource bundle.
    * @param locale the locale that should be tested.
    */
-  public static void executeTest (String base, String locale)
+  public static void executeTest(final String base, final String locale)
   {
     final JFreeReportResources resources = loadLocale(base, null);
     final JFreeReportResources compare = loadLocale(base, locale);

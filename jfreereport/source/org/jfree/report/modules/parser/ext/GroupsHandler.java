@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupsHandler.java,v 1.8 2003/08/22 20:27:20 taqua Exp $
+ * $Id: GroupsHandler.java,v 1.9 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -160,18 +160,18 @@ public class GroupsHandler extends AbstractExtReportParserHandler
   /**
    * Adds a comment for the given object and hint key. The object
    * will be the last segment in the standard groups comment path.
-   * 
+   *
    * @param name the object that should be part of the comment path
    * @param hint the hint name for the comment.
    */
-  private void addComment (Object name, String hint)
+  private void addComment(final Object name, final String hint)
   {
-    CommentHintPath path = new CommentHintPath();
+    final CommentHintPath path = new CommentHintPath();
     path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
     path.addName(ExtReportHandler.REPORT_DESCRIPTION_TAG);
     path.addName(ReportDescriptionHandler.GROUPS_TAG);
     path.addName(name);
-    String[] comments = getReportParser().getComments();
+    final String[] comments = getReportParser().getComments();
     getReport().getReportBuilderHints().putHint
         (path, hint, comments);
   }

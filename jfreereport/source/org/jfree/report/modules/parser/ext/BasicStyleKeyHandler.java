@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicStyleKeyHandler.java,v 1.4 2003/08/18 18:28:02 taqua Exp $
+ * $Id: BasicStyleKeyHandler.java,v 1.5 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -60,19 +60,19 @@ import org.xml.sax.SAXException;
 public class BasicStyleKeyHandler extends AbstractExtReportParserHandler
 {
   /** A buffer. */
-  private StringBuffer buffer;
+  private final StringBuffer buffer;
 
   /** The style key factory. */
-  private StyleKeyFactory keyfactory;
+  private final StyleKeyFactory keyfactory;
 
   /** The style key. */
-  private StyleKey key;
+  private final StyleKey key;
 
   /** The key value class. */
   private Class keyValueClass;
 
   /** A character entity parser. */
-  private CharacterEntityParser entityParser;
+  private final CharacterEntityParser entityParser;
 
   /** The ClassFactory used to create the basic key objects. */
   private ClassFactory classFactory;
@@ -87,7 +87,7 @@ public class BasicStyleKeyHandler extends AbstractExtReportParserHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public BasicStyleKeyHandler(final ReportParser parser, final String finishTag, 
+  public BasicStyleKeyHandler(final ReportParser parser, final String finishTag,
                               final String name, final Class c)
       throws SAXException
   {

@@ -28,31 +28,31 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ExcelExportTask.java,v 1.1 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 24.08.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.xls;
 
-import java.io.OutputStream;
 import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
-import org.jfree.report.modules.output.table.xls.ExcelProcessor;
-import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.gui.base.ExportTask;
+import org.jfree.report.modules.gui.base.ReportProgressDialog;
+import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 
 public class ExcelExportTask extends ExportTask
 {
-  private ReportProgressDialog progressDialog;
-  private String fileName;
-  private JFreeReport report;
+  private final ReportProgressDialog progressDialog;
+  private final String fileName;
+  private final JFreeReport report;
 
   public ExcelExportTask
       (final String fileName, final ReportProgressDialog dialog,

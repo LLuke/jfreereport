@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataDefinitionHandler.java,v 1.3 2003/08/18 18:28:02 taqua Exp $
+ * $Id: DataDefinitionHandler.java,v 1.4 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -68,11 +68,11 @@ public class DataDefinitionHandler extends AbstractExtReportParserHandler
    * @param attrs  the attributes.
    * @throws SAXException as this is not defined in the DTD yet.
    */
-  public void startElement(final String tagName, final Attributes attrs) 
-    throws SAXException
+  public void startElement(final String tagName, final Attributes attrs)
+      throws SAXException
   {
     throw new SAXException
-      ("Did not expect child elements here. [this section is not yet defined.]");
+        ("Did not expect child elements here. [this section is not yet defined.]");
   }
 
   /**
@@ -90,7 +90,7 @@ public class DataDefinitionHandler extends AbstractExtReportParserHandler
    * Callback to indicate that an XML element end tag has been read by the parser.
    *
    * @param tagName  the tag name.
-   * @throws SAXException as this not yet defined. 
+   * @throws SAXException as this not yet defined.
    */
   public void endElement(final String tagName) throws SAXException
   {

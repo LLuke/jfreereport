@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigStorage.java,v 1.2 2003/08/19 21:01:17 taqua Exp $
+ * $Id: ConfigStorage.java,v 1.3 2003/08/24 15:08:20 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 14.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.misc.configstore.base;
@@ -47,19 +47,19 @@ import java.util.Properties;
  * A valid configuration path does not contain dots, semicolons or colons.
  * <p>
  * A valid path obeys to the same rules as java identifiers ..
- *   
+ *
  * @author Thomas Morgner
  */
 public interface ConfigStorage
 {
   /**
    * Stores the given properties on the defined path.
-   * 
+   *
    * @param configPath the path on where to store the properties.
    * @param properties the properties which should be stored.
    * @throws ConfigStoreException if an error occured.
    */
-  public void storeProperties (String configPath, Properties properties)
+  public void storeProperties(String configPath, Properties properties)
       throws ConfigStoreException;
 
   /**
@@ -68,18 +68,18 @@ public interface ConfigStorage
    *
    * @param configPath the configuration path from where to read the properties.
    * @param defaults the property set that acts as fallback to provide default
-   * values. 
+   * values.
    * @return the loaded properties
    * @throws ConfigStoreException if an error occured.
    */
-  public Properties loadProperties (String configPath, Properties defaults)
+  public Properties loadProperties(String configPath, Properties defaults)
       throws ConfigStoreException;
 
   /**
    * Tests, whether some configuration data exists for the given configuration.
-   * 
+   *
    * @param configPath the configuration path to the property storage.
    * @return true, if there are properties under this path, false otherwise.
    */
-  public boolean existsProperties (String configPath);
+  public boolean existsProperties(String configPath);
 }

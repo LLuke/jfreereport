@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelList.java,v 1.3 2003/08/18 18:28:02 taqua Exp $
+ * $Id: LevelList.java,v 1.4 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -206,9 +206,9 @@ public class LevelList implements Cloneable
         throw new NullPointerException();
       }
 
-      Object[] rawElements = list.getRawElements();
-      Integer[] rawLevels = list.getRawLevels();
-      
+      final Object[] rawElements = list.getRawElements();
+      final Integer[] rawLevels = list.getRawLevels();
+
       this.datalist = new ArrayList(rawElements.length);
       for (int i = 0; i < rawElements.length; i++)
       {
@@ -459,21 +459,21 @@ public class LevelList implements Cloneable
   }
 
   /**
-   * Returns all stored objects as object array.  
-   * 
-   * @return all elements as object array. 
+   * Returns all stored objects as object array.
+   *
+   * @return all elements as object array.
    */
-  protected Object[] getRawElements ()
+  protected Object[] getRawElements()
   {
     return elements.toArray(new Object[elements.size()]);
   }
 
   /**
-   * Returns all active levels as java.lang.Integer array.  
-   * 
-   * @return all levels as Integer array. 
+   * Returns all active levels as java.lang.Integer array.
+   *
+   * @return all levels as Integer array.
    */
-  protected Integer[] getRawLevels ()
+  protected Integer[] getRawLevels()
   {
     return (Integer[]) levels.toArray(new Integer[levels.size()]);
   }

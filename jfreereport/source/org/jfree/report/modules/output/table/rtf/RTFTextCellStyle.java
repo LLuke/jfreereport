@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFTextCellStyle.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
+ * $Id: RTFTextCellStyle.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -54,13 +54,13 @@ import org.jfree.report.style.FontDefinition;
 public class RTFTextCellStyle extends RTFCellStyle
 {
   /** The used font definition. */
-  private FontDefinition font;
+  private final FontDefinition font;
 
   /** The basefont used in that cell style. */
-  private BaseFont baseFont;
+  private final BaseFont baseFont;
 
   /** The text color. */
-  private Color fontColor;
+  private final Color fontColor;
 
   /**
    * Creates a new RTFTextCellStyle.
@@ -72,8 +72,8 @@ public class RTFTextCellStyle extends RTFCellStyle
    * @param horizontalAlignment the horizontal text alignment.
    * @throws NullPointerException if one of the alignment parameters is null.
    */
-  public RTFTextCellStyle(final FontDefinition font, final BaseFont baseFont, 
-                          final Color fontColor, final ElementAlignment verticalAlignment, 
+  public RTFTextCellStyle(final FontDefinition font, final BaseFont baseFont,
+                          final Color fontColor, final ElementAlignment verticalAlignment,
                           final ElementAlignment horizontalAlignment)
   {
     super(verticalAlignment, horizontalAlignment);

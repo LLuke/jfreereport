@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.3 2003/08/20 17:24:35 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public class DataSourceWriter extends ObjectWriter
                           final ObjectDescription objectDescription,
                           final int indent,
                           final CommentHintPath commentHintPath)
-    throws ReportWriterException
+      throws ReportWriterException
   {
     super(reportWriter, baseObject, objectDescription, indent, commentHintPath);
     if (DataSource.class.isAssignableFrom(objectDescription.getObjectClass()) == false)
@@ -111,7 +111,7 @@ public class DataSourceWriter extends ObjectWriter
             + ds.getClass());
       }
 
-      CommentHintPath path = getCommentHintPath().getInstance();
+      final CommentHintPath path = getCommentHintPath().getInstance();
       path.addName(DataSourceHandler.DATASOURCE_TAG);
       writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(writer, DataSourceHandler.DATASOURCE_TAG, "type", dsname, OPEN);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
+ * $Id: ReportState.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -59,10 +59,10 @@ import java.util.List;
 
 import org.jfree.report.Band;
 import org.jfree.report.DataRow;
+import org.jfree.report.Group;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.Group;
 import org.jfree.report.event.LayoutEvent;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.LevelledExpressionList;
@@ -88,7 +88,7 @@ public abstract class ReportState implements Cloneable
   private ReportDefinitionImpl report;
 
   /** The number of rows in the tablemodel. */
-  private int numberOfRows;
+  private final int numberOfRows;
 
   /** The current item (row in the TableModel). */
   private int currentItem;
@@ -100,7 +100,7 @@ public abstract class ReportState implements Cloneable
   private int currentGroupIndex;
 
   /** The report properties. */
-  private ReportProperties reportProperties;
+  private final ReportProperties reportProperties;
 
   /** The data row. */
   private DataRowBackend dataRow;
@@ -283,7 +283,7 @@ public abstract class ReportState implements Cloneable
     this.report = report;
   }
 
-  protected ReportDefinitionImpl getReportDefinition ()
+  protected ReportDefinitionImpl getReportDefinition()
   {
     return this.report;
   }

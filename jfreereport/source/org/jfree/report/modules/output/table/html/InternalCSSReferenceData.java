@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: InternalCSSReferenceData.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: InternalCSSReferenceData.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ package org.jfree.report.modules.output.table.html;
 public class InternalCSSReferenceData extends HtmlReferenceData
 {
   /** the stylesheet definition. */
-  private String styleData;
+  private final String styleData;
 
   /**
    * Creates an internal style sheet definition.

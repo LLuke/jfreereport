@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WeakReferenceList.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: WeakReferenceList.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -78,7 +78,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   private int size;
 
   /** The maximum number of elements. */
-  private int maxChilds;
+  private final int maxChilds;
 
   /**
    * Creates a new weak reference list. The storage of the list is limited to getMaxChildCount()

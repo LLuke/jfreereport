@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceCollector.java,v 1.3 2003/07/23 16:02:21 taqua Exp $
+ * $Id: DataSourceCollector.java,v 1.4 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -55,9 +55,9 @@ import org.jfree.xml.factory.objects.ObjectDescription;
 public class DataSourceCollector implements DataSourceFactory, Serializable
 {
   /** Storage for the factories. */
-  private ArrayList factories;
+  private final ArrayList factories;
   /** The comparator used to compare class instances. */
-  private ClassComparator comparator;
+  private final ClassComparator comparator;
   /** The parser/report configuration. */
   private Configuration config;
 

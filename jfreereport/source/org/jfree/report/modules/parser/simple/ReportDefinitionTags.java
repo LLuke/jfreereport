@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportDefinitionTags.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ReportDefinitionTags.java,v 1.2 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,8 @@ public interface ReportDefinitionTags
   /** Literal text for an XML report element. */
   public static final String PAGE_FOOTER_TAG = "pagefooter";
 
+  /** Literal text for an XML report element. */
+  public static final String BAND_TAG = "band";
   /**
    * Group definition
    */

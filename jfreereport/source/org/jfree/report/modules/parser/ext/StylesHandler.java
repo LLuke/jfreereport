@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.6 2003/08/20 17:24:35 taqua Exp $
+ * $Id: StylesHandler.java,v 1.7 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public class StylesHandler extends AbstractExtReportParserHandler
   public static final String STYLE_TAG = "style";
 
   /** The style collection. */
-  private StyleSheetCollection styleCollection;
+  private final StyleSheetCollection styleCollection;
 
   /** The style sheet. */
   private ElementStyleSheet styleSheet;
@@ -109,7 +109,7 @@ public class StylesHandler extends AbstractExtReportParserHandler
       }
       styleSheet = new ElementStyleSheet(name);
 
-      CommentHintPath path = createPath(styleSheet);
+      final CommentHintPath path = createPath(styleSheet);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       final StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getReportParser(),
           STYLE_TAG, styleSheet, path);
@@ -163,13 +163,13 @@ public class StylesHandler extends AbstractExtReportParserHandler
   /**
    * Creates a new comment hint path for the given name by appending
    * it to a copy of the current path.
-   * 
+   *
    * @param tdesc the name of the new path segment.
    * @return the new comment path.
    */
-  private CommentHintPath createPath (ElementStyleSheet tdesc)
+  private CommentHintPath createPath(final ElementStyleSheet tdesc)
   {
-    CommentHintPath path = STYLES_PATH.getInstance();
+    final CommentHintPath path = STYLES_PATH.getInstance();
     path.addName(tdesc);
     return path;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionHandler.java,v 1.7 2003/08/20 17:24:35 taqua Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.8 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -111,7 +111,7 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
       {
         band.setName(name);
       }
-      CommentHintPath path = createCommentPath(band);
+      final CommentHintPath path = createCommentPath(band);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       bandFactory = new BandHandler(getReportParser(), tagName, band, ROOT_BAND_PATH);
       getParser().pushFactory(bandFactory);
@@ -124,7 +124,7 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
       {
         band.setName(name);
       }
-      CommentHintPath path = createCommentPath(band);
+      final CommentHintPath path = createCommentPath(band);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       bandFactory = new BandHandler(getReportParser(), tagName, band, ROOT_BAND_PATH);
       getParser().pushFactory(bandFactory);
@@ -137,7 +137,7 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
       {
         band.setName(name);
       }
-      CommentHintPath path = createCommentPath(band);
+      final CommentHintPath path = createCommentPath(band);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       bandFactory = new BandHandler(getReportParser(), tagName, band, ROOT_BAND_PATH);
       getParser().pushFactory(bandFactory);
@@ -150,7 +150,7 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
       {
         band.setName(name);
       }
-      CommentHintPath path = createCommentPath(band);
+      final CommentHintPath path = createCommentPath(band);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       bandFactory = new BandHandler(getReportParser(), tagName, band, ROOT_BAND_PATH);
       getParser().pushFactory(bandFactory);
@@ -163,7 +163,7 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
       {
         band.setName(name);
       }
-      CommentHintPath path = createCommentPath(band);
+      final CommentHintPath path = createCommentPath(band);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       bandFactory = new BandHandler(getReportParser(), tagName, band, ROOT_BAND_PATH);
       getParser().pushFactory(bandFactory);
@@ -249,17 +249,17 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
           + getFinishTag());
     }
   }
-  
+
   /**
    * Creates a new comment hint path for the given name by appending
    * it to a copy of the current path.
-   * 
+   *
    * @param name the name of the new path segment.
    * @return the new comment path.
    */
-  private CommentHintPath createCommentPath (Object name)
+  private CommentHintPath createCommentPath(final Object name)
   {
-    CommentHintPath path = new CommentHintPath();
+    final CommentHintPath path = new CommentHintPath();
     path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
     path.addName(ExtReportHandler.REPORT_DESCRIPTION_TAG);
     path.addName(name);

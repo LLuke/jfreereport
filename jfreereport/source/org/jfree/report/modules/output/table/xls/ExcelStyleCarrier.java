@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelStyleCarrier.java,v 1.2 2003/08/22 20:27:20 taqua Exp $
+ * $Id: ExcelStyleCarrier.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,10 +49,10 @@ import org.jfree.report.modules.output.table.base.TableCellBackground;
 public class ExcelStyleCarrier
 {
   /** The foreground style. */
-  private ExcelDataCellStyle style;
+  private final ExcelDataCellStyle style;
 
   /** the background style. */
-  private TableCellBackground background;
+  private final TableCellBackground background;
 
   /**
    * Creates a new StyleCarrier. The carrier collects background and foreground

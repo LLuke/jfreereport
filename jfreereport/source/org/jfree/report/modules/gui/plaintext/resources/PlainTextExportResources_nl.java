@@ -28,12 +28,12 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: PlainTextExportResources_nl.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PlainTextExportResources_nl.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.plaintext.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * Dutch language resource for the PDF export GUI.
- * 
+ *
  * @author Hendri Smit
  */
 public class PlainTextExportResources_nl extends JFreeReportResources
@@ -100,7 +100,7 @@ public class PlainTextExportResources_nl extends JFreeReportResources
         {"error.processingfailed.message", "Report generatie mislukt: {0}"},
         {"error.savefailed.message", "Opslaan als PDF mislukt: {0}"},
         {"error.savefailed.title", "Fout tijdens opslaan"},
-        
+
       };
 
   /**

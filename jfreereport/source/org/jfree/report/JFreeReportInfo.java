@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.4 2003/08/18 18:27:57 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.5 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes:
  * --------
@@ -42,9 +42,9 @@
 
 package org.jfree.report;
 
-import java.util.Arrays;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 
 import org.jfree.JCommon;
 import org.jfree.ui.about.Contributor;
@@ -98,7 +98,7 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
   /**
    * Tries to read the licence text from jcommon. This method does not reference
    * jcommon directly, as this would increase the size of that class file.
-   *  
+   *
    * @see org.jfree.ui.about.ProjectInfo#getLicenceText()
    * @return the licence text for this project.
    */
@@ -106,7 +106,7 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
   {
     try
     {
-      Field f = Licences.class.getField("LGPL");
+      final Field f = Licences.class.getField("LGPL");
       if (f.getType().equals(String.class) == false)
       {
         return "<unable to read licence text from jcommon>";

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
+ * $Id: ReportConverter.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes
  * -------
@@ -89,7 +89,7 @@ public class ReportConverter
    * @throws ReportWriterException if there were problems while serializing
    * the report definition.
    */
-  public void write(final JFreeReport report, final Writer w, 
+  public void write(final JFreeReport report, final Writer w,
                     final URL contentBase, final String encoding)
       throws IOException, ReportWriterException
   {
@@ -97,7 +97,7 @@ public class ReportConverter
     {
       throw new NullPointerException("ContentBase is null");
     }
-    ReportConfiguration config = new ReportConfiguration(report.getReportConfiguration());
+    final ReportConfiguration config = new ReportConfiguration(report.getReportConfiguration());
     config.setConfigProperty(Parser.CONTENTBASE_KEY, contentBase.toExternalForm());
 
     final ReportWriter writer = new ReportWriter(report, encoding, config);
@@ -174,7 +174,7 @@ public class ReportConverter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void convertReport(final String inName, final String outFile, 
+  public void convertReport(final String inName, final String outFile,
                             final String encoding)
       throws IOException, ReportWriterException
   {
@@ -235,7 +235,7 @@ public class ReportConverter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void convertReport(final URL in, final URL contentBase, 
+  public void convertReport(final URL in, final URL contentBase,
                             final Writer w, final String encoding)
       throws IOException, ReportWriterException
   {

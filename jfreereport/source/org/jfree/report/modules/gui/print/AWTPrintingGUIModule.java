@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AWTPrintingGUIModule.java,v 1.5 2003/08/19 13:37:24 taqua Exp $
+ * $Id: AWTPrintingGUIModule.java,v 1.6 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 06.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.print;
@@ -47,25 +47,25 @@ import org.jfree.report.util.ReportConfiguration;
  * The module definition for the AWT printing export gui module.
  * The module contains 2 export plugins, the page setup plugin
  * and the printing plugin.
- * 
+ *
  * @author Thomas Morgner
  */
 public class AWTPrintingGUIModule extends AbstractModule
 {
-  /** The printing export plugin preference key. */ 
-  private static final String PRINT_ORDER_KEY = 
-    "org.jfree.report.modules.gui.print.Order";
+  /** The printing export plugin preference key. */
+  private static final String PRINT_ORDER_KEY =
+      "org.jfree.report.modules.gui.print.Order";
   /** The printing export plugin enable key. */
-  private static final String PRINT_ENABLE_KEY = 
-    "org.jfree.report.modules.gui.print.Enable";
-  /** The pagesetup export plugin preference key. */ 
-  private static final String PAGESETUP_ORDER_KEY = 
-    "org.jfree.report.modules.gui.print.pagesetup.Order";
+  private static final String PRINT_ENABLE_KEY =
+      "org.jfree.report.modules.gui.print.Enable";
+  /** The pagesetup export plugin preference key. */
+  private static final String PAGESETUP_ORDER_KEY =
+      "org.jfree.report.modules.gui.print.pagesetup.Order";
   /** The pagesetup export plugin enable key. */
-  private static final String PAGESETUP_ENABLE_KEY = 
-    "org.jfree.report.modules.gui.print.pagesetup.Enable";
+  private static final String PAGESETUP_ENABLE_KEY =
+      "org.jfree.report.modules.gui.print.pagesetup.Enable";
 
-  /** 
+  /**
    * DefaultConstructor. Loads the module specification.
    * @throws ModuleInitializeException if an error occured.
    */
@@ -75,20 +75,20 @@ public class AWTPrintingGUIModule extends AbstractModule
   }
 
   /**
-   * Initalizes the module and registes it with the export plugin factory. 
+   * Initalizes the module and registes it with the export plugin factory.
    * @see org.jfree.report.modules.Module#initialize()
-   * 
+   *
    * @throws ModuleInitializeException if an error occured.
    */
   public void initialize() throws ModuleInitializeException
   {
-    String printOrder = ReportConfiguration.getGlobalConfig().getConfigProperty
+    final String printOrder = ReportConfiguration.getGlobalConfig().getConfigProperty
         (PRINT_ORDER_KEY, "0");
 
     ExportPluginFactory.getInstance().registerPlugin
         (PrintingPlugin.class, printOrder, PRINT_ENABLE_KEY);
 
-    String pageSetupOrder = ReportConfiguration.getGlobalConfig().getConfigProperty
+    final String pageSetupOrder = ReportConfiguration.getGlobalConfig().getConfigProperty
         (PAGESETUP_ORDER_KEY, "0");
 
     ExportPluginFactory.getInstance().registerPlugin

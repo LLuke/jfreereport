@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigStoreException.java,v 1.2 2003/08/19 21:01:17 taqua Exp $
+ * $Id: ConfigStoreException.java,v 1.3 2003/08/24 15:08:20 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 14-Jun-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.misc.configstore.base;
@@ -43,7 +43,7 @@ import org.jfree.util.StackableException;
 /**
  * The config store exception is throwns if an error prevents an operation
  * on the current configuration storage provider.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ConfigStoreException extends StackableException
@@ -58,21 +58,21 @@ public class ConfigStoreException extends StackableException
   /**
    * Creates a config store exception with the given message and root
    * exception.
-   *  
+   *
    * @param s the exception message.
    * @param e the exception that caused all the trouble.
    */
-  public ConfigStoreException(String s, Exception e)
+  public ConfigStoreException(final String s, final Exception e)
   {
     super(s, e);
   }
 
   /**
    * Creates a config store exception with the given message.
-   * 
+   *
    * @param s the message.
    */
-  public ConfigStoreException(String s)
+  public ConfigStoreException(final String s)
   {
     super(s);
   }

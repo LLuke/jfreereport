@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCharacterEntities.java,v 1.2 2003/08/20 17:24:34 taqua Exp $
+ * $Id: HtmlCharacterEntities.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -205,7 +205,7 @@ public class HtmlCharacterEntities extends Properties
    * Externalized initialization method to make CheckStyle happy.
    *
    */
-  private void fillMoreEntities ()
+  private void fillMoreEntities()
   {
     setProperty("piv", "\u03d6");
     setProperty("minus", "\u2212");
@@ -312,5 +312,5 @@ public class HtmlCharacterEntities extends Properties
     setProperty("scaron", "\u0161");
     setProperty("szlig", "\u00df");
     setProperty("larr", "\u2190");
-  } 
+  }
 }

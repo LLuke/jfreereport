@@ -28,12 +28,12 @@
  * Original Author:  Demeter F. Tamás;
  * Contributor(s):   -;
  *
- * $Id: PrintExportResources_hu.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
+ * $Id: PrintExportResources_hu.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05-Jul-2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.gui.print.resources;
@@ -45,7 +45,7 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
  * Hungarian language resource for the printing export GUI.
- * 
+ *
  * @author Demeter F. Tamás
  */
 public class PrintExportResources_hu extends JFreeReportResources
@@ -80,7 +80,7 @@ public class PrintExportResources_hu extends JFreeReportResources
 
         {"error.printfailed.message", "Hiba a nyomtatás során: {0}"},
         {"error.printfailed.title", "Hiba a nyomtatáskor"},
-        
+
       };
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlReferenceData.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: HtmlReferenceData.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ package org.jfree.report.modules.output.table.html;
 public abstract class HtmlReferenceData
 {
   /** A flag indicating whether this reference points to external data.  */
-  private boolean external;
+  private final boolean external;
 
   /**
    * A reference: a fragment which could be inserted into the generated HTML-Code.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDemoFrame.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: AbstractDemoFrame.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -129,13 +129,13 @@ public abstract class AbstractDemoFrame extends JFrame
   public static final String RESOURCE_BASE = DemoResources.class.getName();
 
   /** Localised resources. */
-  private ResourceBundle resources;
+  private final ResourceBundle resources;
 
   /** The close action is called when closing the frame. */
-  private Action closeAction;
+  private final Action closeAction;
 
   /** The preview action is called when the user chooses to preview the report. */
-  private Action previewAction;
+  private final Action previewAction;
 
   /**
    * Constructs a new frame that is initially invisible.

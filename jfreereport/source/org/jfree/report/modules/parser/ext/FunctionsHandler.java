@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.7 2003/08/20 17:24:35 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.8 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes
  * -------
@@ -118,7 +118,7 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
       final int depLevel = ParserUtil.parseInt(attrs.getValue("deplevel"), 0);
 
       final Expression e = loadExpression(className, expName, depLevel);
-      CommentHintPath path = createPath(e);
+      final CommentHintPath path = createPath(e);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       expressionHandler = new ExpressionHandler(getReportParser(), tagName, e, path);
       getParser().pushFactory(expressionHandler);
@@ -138,7 +138,7 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
             getParser().getLocator());
       }
       final ObjectDescription od = loadObjectDescription(className);
-      CommentHintPath path = createPath(propertyName);
+      final CommentHintPath path = createPath(propertyName);
       if (isBasicObject(od))
       {
         propertyRefHandler = new BasicObjectHandler(getReportParser(), tagName, od, path);
@@ -202,7 +202,7 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
    * @throws SAXException if a parser error occurs or the validation failed.
    */
   private Expression loadExpression
-    (final String className, final String expName, final int depLevel)
+      (final String className, final String expName, final int depLevel)
       throws SAXException
   {
     try
@@ -256,7 +256,7 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
     {
       try
       {
-        Expression expression = expressionHandler.getExpression();
+        final Expression expression = expressionHandler.getExpression();
         getReport().addExpression(expression);
         addComment(createPath(expression), CommentHandler.CLOSE_TAG_COMMENT);
         expressionHandler = null;
@@ -271,7 +271,7 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
     {
       try
       {
-        Function expression = (Function) expressionHandler.getExpression();
+        final Function expression = (Function) expressionHandler.getExpression();
         getReport().addFunction(expression);
         addComment(createPath(expression.getName()), CommentHandler.CLOSE_TAG_COMMENT);
         expressionHandler = null;
@@ -342,9 +342,9 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
    * the path.
    * @return the created path object.
    */
-  private CommentHintPath createPath (Object target)
+  private CommentHintPath createPath(final Object target)
   {
-    CommentHintPath path = new CommentHintPath();
+    final CommentHintPath path = new CommentHintPath();
     path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
     path.addName(ExtReportHandler.FUNCTIONS_TAG);
     path.addName(target);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GridBLayoutManager.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: GridBLayoutManager.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -114,25 +114,6 @@ public class GridBLayoutManager extends AbstractBandLayoutManager
    * @param container  the container.
    */
   public void invalidateLayout(final Band container)
-  {
-  }
-
-  /**
-   * Adds the specified component to the layout, the specified constraints are stored
-   * in the elements style sheet.
-   *
-   * @param e the element to be added to the layout manager.
-   */
-  public void addLayoutElement(final Element e)
-  {
-  }
-
-  /**
-   * Removed the specified component from the layout.
-   *
-   * @param e the element to be removed from the layout manager.
-   */
-  public void removeLayoutElement(final Element e)
   {
   }
 }

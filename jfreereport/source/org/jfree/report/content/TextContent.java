@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: TextContent.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ import org.jfree.report.util.LineBreakIterator;
 public class TextContent extends ContentContainer
 {
   /** A size calculator. */
-  private SizeCalculator sizeCalculator;
+  private final SizeCalculator sizeCalculator;
 
   /**
    * Creates a new container for text. The line height can be used to extend the height
@@ -66,7 +66,7 @@ public class TextContent extends ContentContainer
    * @param bounds  the bounds.
    * @param ot  the size calculator.
    */
-  public TextContent(final String value, final float lineHeight, 
+  public TextContent(final String value, final float lineHeight,
                      final Rectangle2D bounds, final SizeCalculator ot)
   {
     super((Rectangle2D) bounds.clone());
