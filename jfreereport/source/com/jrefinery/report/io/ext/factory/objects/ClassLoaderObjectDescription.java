@@ -85,7 +85,10 @@ public class ClassLoaderObjectDescription extends AbstractObjectDescription
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {
-    if (o == null) throw new ObjectFactoryException("The Object is invalid");
+    if (o == null) 
+    {
+      throw new ObjectFactoryException("The Object is invalid");
+    }
     try
     {
       Constructor c = o.getClass().getConstructor(new Class[0]);
