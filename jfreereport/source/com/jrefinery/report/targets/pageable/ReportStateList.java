@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.3 2002/12/06 20:34:12 taqua Exp $
+ * $Id: ReportStateList.java,v 1.4 2002/12/07 20:53:13 taqua Exp $
  *
  * Changes
  * -------
@@ -99,7 +99,8 @@ public class ReportStateList
      *
      * @param index  the index.
      *
-     * @return ??
+     * @return the restored ReportState of the given index, or null, if the state
+     * could not be restored.
      */
     protected Object restoreChild (int index)
     {

@@ -24,7 +24,7 @@
  * WeakReferenceList.java
  * ----------------------
  *
- * $Id: WeakReferenceList.java,v 1.9 2002/12/02 17:44:51 taqua Exp $
+ * $Id: WeakReferenceList.java,v 1.10 2002/12/06 20:34:20 taqua Exp $
  *
  * Changes
  * -------
@@ -44,15 +44,15 @@ import java.lang.ref.WeakReference;
  * so that garbage collected elements can be restored when they are accessed.
  * <p>
  * By default this list can contain 25 elements, where the first element is stored using a
- * strong reference, which gets not garbage collected.
+ * strong reference, which is not garbage collected.
  * <p>
  * Restoring the elements is not implemented, concrete implementations will have to override
- * the <code>restoreChild(int)</code> method. The getMaxChildCount defines the maxmimum number
- * of children in the list. When more than maxChildCount elements are contained in this list,
- * add will always return false to indicate that adding the element failed.
+ * the <code>restoreChild(int)</code> method. The <code>getMaxChildCount</code> method defines
+ * the maxmimum number of children in the list. When more than <code>maxChildCount</code> elements
+ * are contained in this list, add will always return false to indicate that adding the element
+ * failed.
  * <p>
- * To customize the list, override createReference to create a different kind of reference or
- * override getMaxChildCount() to define a different list size.
+ * To customize the list, override createReference to create a different kind of reference.
  * <p>
  * This list is able to add or replace elements, but inserting or removing of elements is not
  * possible.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManager.java,v 1.1 2002/12/02 17:56:53 taqua Exp $
+ * $Id: BandLayoutManager.java,v 1.2 2002/12/03 13:49:16 mungady Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,10 @@ import java.awt.geom.Dimension2D;
  */
 public interface BandLayoutManager
 {
-  /** ?? */
+  /**
+   * The LayoutManager styleKey. All bands must define their LayoutManager by using
+   * this key when using the PageableReportProcessor.
+   */
   public static final StyleKey LAYOUTMANAGER = StyleKey.getStyleKey("layoutmanager", 
                                                                     BandLayoutManager.class);
 

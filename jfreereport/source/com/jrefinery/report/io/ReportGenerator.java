@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: ReportGenerator.java,v 1.16 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -227,7 +227,7 @@ public class ReportGenerator
    * @return a SAXParser.
    *
    * @throws ParserConfigurationException if there is a problem configuring the parser.
-   * @throws SAXException ??
+   * @throws SAXException if there is a problem with the parser initialisation
    */
   protected SAXParser getParser () throws ParserConfigurationException, SAXException
   {

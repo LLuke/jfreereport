@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.10 2002/12/05 17:05:10 mungady Exp $
+ * $Id: ReportState.java,v 1.11 2002/12/06 19:28:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -125,11 +125,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * This constructor is protected, it is intended to be used by subclasses only.
    *
    * @param reportPar  the report.
-   *
-   * @throws ReportInitialisationException if there is a problem initialising the report.
    */
   protected ReportState (JFreeReport reportPar)
-    throws ReportInitialisationException
   {
     try
     {

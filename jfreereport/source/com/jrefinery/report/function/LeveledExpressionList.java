@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LeveledExpressionList.java,v 1.5 2002/12/02 18:25:51 taqua Exp $
+ * $Id: LeveledExpressionList.java,v 1.6 2002/12/05 17:00:04 mungady Exp $
  *
  * Changes
  * -------
@@ -39,13 +39,11 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.DataRow;
-import com.jrefinery.report.ReportInitialisationException;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.event.ReportListener;
 import com.jrefinery.report.util.LevelList;
 import com.jrefinery.report.util.Log;
 
-import java.util.Hashtable;
 import java.util.Iterator;
 
 /**
@@ -58,10 +56,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
 {
   /** A list of expressions and associated levels. */
   private LevelList expressionList;
-  
-  /** ??. */
-  private Hashtable nameLookup;
-  
+
   /** The level. */
   private int level;
 
@@ -70,15 +65,10 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    *
    * @param ec  the expressions.
    * @param fc  the functions.
-   *
-   * @throws ReportInitialisationException ??.
    */
   public LeveledExpressionList(ExpressionCollection ec, ExpressionCollection fc)
-      throws ReportInitialisationException 
-
   {
     expressionList = new LevelList();
-    nameLookup = new Hashtable();
     initializeExpressions(ec);
     initializeFunctions(fc);
   }
@@ -521,11 +511,8 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    * Initialises the expressions.
    *
    * @param expressionCollection  the expression collection.
-   *
-   * @throws ReportInitialisationException ??.
    */
   private void initializeExpressions(ExpressionCollection expressionCollection)
-    throws ReportInitialisationException
   {
     int size = expressionCollection.size();
     for (int i = 0; i < size; i++)
@@ -535,7 +522,6 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       {
         expressionList.add(f);
         expressionList.setLevel(f, f.getDepencyLevel());
-        addName(f);
       }
     }
   }
@@ -544,11 +530,8 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    * Initialises the functions.
    *
    * @param functionCollection  the function collection.
-   *
-   * @throws ReportInitialisationException ??.
    */
   private void initializeFunctions(ExpressionCollection functionCollection)
-      throws ReportInitialisationException
   {
     int size = functionCollection.size();
     for (int i = 0; i < size; i++)
@@ -559,26 +542,8 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       {
         expressionList.add(f);
         expressionList.setLevel(f, f.getDepencyLevel());
-        addName(f);
       }
     }
-  }
-
-  /**
-   * Adds a name to the collection.
-   *
-   * @param ex  the expression or function.
-   *
-   * @throws ReportInitialisationException if there is a duplicate function or expression name.
-   */
-  private void addName(Expression ex) throws ReportInitialisationException
-  {
-    String name = ex.getName();
-    if (nameLookup.containsKey(name))
-    {
-      throw new ReportInitialisationException ("Duplicate Name found: " + name);
-    }
-    nameLookup.put(name, ex);
   }
 
   /**
@@ -648,7 +613,6 @@ public class LeveledExpressionList implements ReportListener, Cloneable
   public Object clone() throws CloneNotSupportedException
   {
     LeveledExpressionList ft = (LeveledExpressionList) super.clone();
-    ft.nameLookup = (Hashtable) nameLookup.clone();
     ft.expressionList = (LevelList) expressionList.clone();
     ft.expressionList.clear();
 
@@ -660,7 +624,6 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       {
         Expression exClone = (Expression) ex.clone();
         ft.expressionList.add(exClone, expressionList.getLevel(i));
-        ft.nameLookup.put(ex.getName(), exClone);
       }
       else
       {
@@ -732,29 +695,5 @@ public class LeveledExpressionList implements ReportListener, Cloneable
   public Expression getExpression(int index)
   {
     return ((Expression) expressionList.get(index));
-  }
-
-  /**
-   * Returns the value of a function/expression.
-   *
-   * @param name  the function/expression name.
-   *
-   * @return the value.
-   */
-  public Object getValue(String name)
-  {
-    return ((Expression) nameLookup.get(name)).getValue();
-  }
-
-  /**
-   * Returns a function/expression.
-   *
-   * @param name  the function/expression name.
-   *
-   * @return the function/expression.
-   */
-  public Expression getExpression(String name)
-  {
-    return (Expression) nameLookup.get(name);
   }
 }

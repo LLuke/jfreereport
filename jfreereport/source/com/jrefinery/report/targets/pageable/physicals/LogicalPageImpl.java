@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.7 2002/12/08 20:30:32 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.8 2002/12/08 23:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -260,7 +260,7 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @param bounds the bounds that define where to print the given band on this logical page
    * @param band the band that should be spooled/printed
-   * @return
+   * @return the generated spool for the given band
    * @throws OutputTargetException
    */
   public Spool spoolBand(Rectangle2D bounds, Band band) throws OutputTargetException

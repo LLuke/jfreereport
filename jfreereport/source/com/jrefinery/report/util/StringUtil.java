@@ -25,7 +25,7 @@
  * ---------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: StringUtil.java,v 1.2 2002/11/07 21:45:29 taqua Exp $
+ * $Id: StringUtil.java,v 1.3 2002/11/29 12:07:29 mungady Exp $
  *
  * Changes
  * -------
@@ -41,19 +41,26 @@ package com.jrefinery.report.util;
 public class StringUtil
 {
   /**
-   * Helper functions to query a strings start portion.
+   * Helper functions to query a strings start portion. The comparison is case
+   * insensitive.
    *
    * @see String#startsWith
+   * @return true, if the string starts with the given startposition.
    */
   public static boolean startsWithIgnoreCase(String base, String start)
   {
+    if (base.length() < start.length())
+      return false;
+
     return base.regionMatches(true, 0, start, 0, start.length());
   }
 
   /**
-   * Helper functions to query a strings end portion.
+   * Helper functions to query a strings end portion. The comparison is case
+   * insensitive.
    *
    * @see String#endsWith
+   * @return true, if the string ends with the given endString.
    */
   public static boolean endsWithIgnoreCase(String base, String end)
   {

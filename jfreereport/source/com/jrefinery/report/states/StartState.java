@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.4 2002/12/02 18:25:52 taqua Exp $
+ * $Id: StartState.java,v 1.5 2002/12/05 12:18:46 mungady Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ package com.jrefinery.report.states;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.ReportInitialisationException;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -58,10 +57,8 @@ public class StartState extends ReportState
    * This is the only state constructor to create a state without cloning another.
    *
    * @param report  the report.
-   *
-   * @throws ReportInitialisationException ??.
    */
-  public StartState (JFreeReport report) throws ReportInitialisationException
+  public StartState (JFreeReport report) 
   {
     super (report);
     Iterator it = getLevels();

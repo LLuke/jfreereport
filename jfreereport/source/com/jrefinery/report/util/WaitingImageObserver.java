@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morger
  * Contributor(s):   Stefan Prange;
  *
- * $Id: WaitingImageObserver.java,v 1.10 2002/09/16 16:59:04 mungady Exp $
+ * $Id: WaitingImageObserver.java,v 1.1 2002/12/02 17:46:06 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -49,7 +49,7 @@ import java.io.Serializable;
  * This image observer blocks until the image is completly loaded. AWT
  * deferres the loading of images until they are painted on a graphic.
  *
- * While printing reports it is not very nice not to know whether a image
+ * While printing reports it is not very nice, not to know whether a image
  * was completely loaded, so this observer forces the loading of the image
  * until a final state (either ALLBITS, ABORT or ERROR) is reached.
  *

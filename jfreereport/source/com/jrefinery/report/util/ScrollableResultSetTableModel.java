@@ -25,12 +25,13 @@
  * ----------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: ScrollableResultSetTableModel.java,v 1.11 2002/11/07 21:45:29 taqua Exp $
  *
  * Changes
  * -------
  * 25-Apr-2002 : Initial version
  * 09-Jun-2002 : Implements the CloseableTableModel interface
+ * 09-Dec-2002 : Updated error messages.
  */
 package com.jrefinery.report.util;
 
@@ -177,6 +178,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
     }
     catch (SQLException sqle)
     {
+      Log.debug ("GetRowCount failed, returning 0 rows", sqle);
       return 0;
     }
     return rowCount;
@@ -205,7 +207,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
       }
       catch (SQLException e)
       {
-        e.printStackTrace ();
+        Log.debug ("GetColumnCount failed", e);
       }
     }
     return 0;
@@ -255,7 +257,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
       }
       catch (SQLException e)
       {
-        e.printStackTrace ();
+        Log.debug ("Query failed for [" + row + "," + column + "]", e);
       }
     }
     return null;
@@ -278,7 +280,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
       }
       catch (Exception e)
       {
-        e.printStackTrace ();
+        Log.debug ("GetColumnClass failed for " + column, e);
       }
     }
     return Object.class;
@@ -302,7 +304,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
       }
       catch (SQLException e)
       {
-        e.printStackTrace ();
+        Log.debug ("GetColumnClassName failed for " + column, e);
       }
     }
     return Object.class.getName ();

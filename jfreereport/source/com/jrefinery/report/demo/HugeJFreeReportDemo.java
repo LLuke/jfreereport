@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: HugeJFreeReportDemo.java,v 1.18 2002/11/27 12:20:33 taqua Exp $
+ * $Id: HugeJFreeReportDemo.java,v 1.19 2002/12/02 17:16:51 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -192,7 +192,7 @@ public class HugeJFreeReportDemo extends JFrame
   /** A tabbed pane for displaying the sample data sets. */
   private JTabbedPane tabbedPane;
 
-  /** ?? */
+  /** all ReportDefinitions and their datamodels  */
   private PreviewConf[] previewData =
           {
             new PreviewConf (
@@ -577,7 +577,7 @@ public class HugeJFreeReportDemo extends JFrame
   }
 
   /**
-   * ??
+   * A carrier to keep report definition and data model together.
    */
   private class PreviewConf
   {
@@ -588,7 +588,7 @@ public class HugeJFreeReportDemo extends JFrame
     AbstractTableModel data;
 
     /**
-     * ??
+     * create a new ReportCarrier.
      *
      * @param reportFile  the report template file.
      * @param data  the data.

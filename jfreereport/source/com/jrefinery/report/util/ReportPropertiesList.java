@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportPropertiesList.java,v 1.2 2002/11/07 21:45:29 taqua Exp $
+ * $Id: ReportPropertiesList.java,v 1.3 2002/11/29 12:07:29 mungady Exp $
  *
  * Changes
  * -------
@@ -37,8 +37,10 @@ import java.util.Enumeration;
 
 /**
  * A collection of report properties arranged into columns to provide access for the
- * DataRowBackend class.
+ * DataRowBackend class. All marked properties are added as column to the ReportPropertyList.
  *
+ * @see ReportProperties#setMarked
+ * @see ReportProperties#isMarked
  * @author TM
  */
 public class ReportPropertiesList
@@ -50,7 +52,10 @@ public class ReportPropertiesList
   private ArrayList columns;
 
   /**
-   * Creates a list of report properties.
+   * Creates a list of report properties. Searches all marked properties
+   * and adds them to the ReportPropertyList. The property-values remain
+   * in the original ReportProperties-collection, all queries to this
+   * list are forwarded to that base-object. 
    *
    * @param base  the underlying properties.
    */

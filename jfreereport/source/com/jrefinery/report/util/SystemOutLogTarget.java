@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: SystemOutLogTarget.java,v 1.7 2002/11/27 12:20:34 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.8 2002/12/06 18:22:09 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,9 @@ import java.io.Serializable;
  */
 public class SystemOutLogTarget implements LogTarget, Serializable
 {
+  /**
+   * The default constructor. All LogTargets need a default constructor.
+   */
   public SystemOutLogTarget()
   {
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: OpenSourceProjects.java,v 1.1 2002/11/29 11:54:49 mungady Exp $
  *
  * Changes
  * -------
@@ -178,14 +178,14 @@ public class OpenSourceProjects extends AbstractTableModel {
         this.category[c] = "IDEs";
         this.name[c] = "Eclipse";
         this.description[c] = "\"a kind of universal tool platform - an open extensible IDE for anything and nothing in particular.\"";
-        this.licence[c] = "??";
+        this.licence[c] = "IBM Public Licence (BSD Style, with extra rights granted for IBM)";
         this.url[c] = "http://www.eclipse.org";
 
         c += 1;
         this.category[c] = "IDEs";
         this.name[c] = "NetBeans";
         this.description[c] = "Sun's open source IDE.";
-        this.licence[c] = "??";
+        this.licence[c] = "Sun Public Licence (BSD Style, with extra rights granted for Sun Microsystems)";
         this.url[c] = "http://www.netbeans.org";
 
         c += 1;

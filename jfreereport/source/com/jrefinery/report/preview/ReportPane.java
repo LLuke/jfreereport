@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.31 2002/12/04 19:49:13 taqua Exp $
+ * $Id: ReportPane.java,v 1.32 2002/12/06 19:27:59 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -611,7 +611,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
    * @param pf  the page format.
    * @param pageIndex  the page index.
    *
-   * @return ??
+   * @return PAGE_EXISTS if the page is rendered successfully
+   *         or NO_SUCH_PAGE if <code>pageIndex</code> specifies a
+   *	       non-existent page.
    */
   public int print (Graphics g, PageFormat pf, int pageIndex)
   {

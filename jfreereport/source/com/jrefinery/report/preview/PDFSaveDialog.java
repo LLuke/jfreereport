@@ -24,7 +24,7 @@
  * PDFSaveDialog.java
  * ------------------
  *
- * $Id: PDFSaveDialog.java,v 1.16 2002/12/08 20:30:32 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.17 2002/12/08 23:29:48 taqua Exp $
  *
  * Changes
  * --------
@@ -924,15 +924,16 @@ public class PDFSaveDialog extends JDialog
   /**
    * Defines whether the user is allowed to print the file. If this right is granted, the
    * user is also able to print a degraded version of the file, regardless of the
-   * allowDegradedPrinting property
+   * allowDegradedPrinting property. If you disabled printing but enabled degraded printing,
+   * then the user is able to print a low-quality version of the document.
    *
    * @param allowPrinting set to true, if this files can be printed, false otherwise
    */
   public void setPrintLevel(boolean allowPrinting, boolean degraded)
   {
-    if (allowPrinting == false)
+    if (allowPrinting == true)
     {
-      this.cbAllowPrinting.setSelectedIndex(CBMODEL_NOPRINTING);
+      this.cbAllowPrinting.setSelectedIndex(CBMODEL_FULL);
     }
     else
     {
@@ -942,7 +943,7 @@ public class PDFSaveDialog extends JDialog
       }
       else
       {
-        this.cbAllowPrinting.setSelectedIndex(CBMODEL_FULL);
+        this.cbAllowPrinting.setSelectedIndex(CBMODEL_NOPRINTING);
       }
     }
   }

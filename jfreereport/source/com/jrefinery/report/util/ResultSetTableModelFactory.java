@@ -25,7 +25,7 @@
  * -------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ResultSetTableModelFactory.java,v 1.10 2002/11/07 21:45:29 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.11 2002/11/29 12:07:29 mungady Exp $
  *
  * Changes
  * -------
@@ -60,9 +60,9 @@ public class ResultSetTableModelFactory
   private static ResultSetTableModelFactory defaultInstance;
 
   /**
-   * Default constructor.
+   * Default constructor. This is a Singleton, use getInstance().
    */
-  public ResultSetTableModelFactory()
+  protected ResultSetTableModelFactory()
   {
   }
 
@@ -108,15 +108,19 @@ public class ResultSetTableModelFactory
    */
   private class CloseableDefaultTableModel extends DefaultTableModel implements CloseableTableModel
   {
+    // wait with closing until the close method is called.
+    private ResultSet res;
+
     /**
      * Creates a new closeable table model.
      *
      * @param objects  the table data.
      * @param objects1  the column names.
      */
-    public CloseableDefaultTableModel(Object[][] objects, Object[] objects1)
+    public CloseableDefaultTableModel(Object[][] objects, Object[] objects1, ResultSet res)
     {
       super(objects, objects1);
+      this.res = res;
     }
 
     /**
@@ -126,6 +130,14 @@ public class ResultSetTableModelFactory
     public void close()
     {
       setDataVector(new Object[0][0], new Object[0]);
+      try
+      {
+        res.close();
+      }
+      catch (Exception e)
+      {
+        Log.debug ("Close failed for default table model", e);
+      }
     }
   }
 
@@ -171,7 +183,7 @@ public class ResultSetTableModelFactory
     {
       rowMap[i] = (Object[]) tempRows[i];
     }
-    CloseableDefaultTableModel model = new CloseableDefaultTableModel(rowMap, header.toArray());
+    CloseableDefaultTableModel model = new CloseableDefaultTableModel(rowMap, header.toArray(), rs);
     return model;
   }
 

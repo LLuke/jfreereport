@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.28 2002/12/06 17:52:52 taqua Exp $
+ * $Id: Band.java,v 1.29 2002/12/07 20:53:08 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -123,7 +123,8 @@ public class Band extends Element implements Serializable, Cloneable
     setName("anonymousBand@" + hashCode());
     allElements = new ArrayList();
 
-    // naming ??
+    // band style sheets are not accessed by names. Names are important
+    // for the xml-parser when stacking the stylesheets together.
     bandDefaults = new BandStyleSheet("default");
   }
 
