@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigTreeModuleNode.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
+ * $Id: ConfigTreeModuleNode.java,v 1.2 2003/08/31 19:27:57 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 28.08.2003 : Initial version
+ * 28-Aug-2003 : Initial version
  *  
  */
 
@@ -43,13 +43,34 @@ import java.util.ArrayList;
 import org.jfree.report.modules.Module;
 import org.jfree.report.util.ReportConfiguration;
 
+/**
+ * The config tree module node is used to represent a module in 
+ * the report configuration. Modules collect all task-specific configuration
+ * keys and represent a report module from the package manager.
+ * <p>
+ * It is assumed, that all modules define their keys within the namespace
+ * of their package.
+ *  
+ * @author Thomas Morgner
+ */
 public class ConfigTreeModuleNode extends AbstractConfigTreeNode
 {
+  /** The configuration prefix shared for all keys of the module. */
   private String configurationPrefix;
+  /** The module definition from the package manager. */ 
   private Module module;
+  /** The report configuration. */
   private ReportConfiguration configuration;
+  /** A list of keys from that module. */
   private ArrayList assignedKeys;
 
+  /**
+   * Creates a new module node for the given module object and report 
+   * configuration.
+   * 
+   * @param module the module for which to build a tree node.
+   * @param config the report configuration from where to read the keys.
+   */
   public ConfigTreeModuleNode(Module module, ReportConfiguration config)
   {
     super(module.getName());
@@ -59,28 +80,56 @@ public class ConfigTreeModuleNode extends AbstractConfigTreeNode
     configurationPrefix = ModuleNodeFactory.getPackage(this.module.getClass());
   }
 
+  /**
+   * Returns the module represented by this node.
+   * 
+   * @return the module used in this node.
+   */
   public Module getModule()
   {
     return module;
   }
 
+  /**
+   * Returns the report configuration used to fill the values from this
+   * node.
+   * 
+   * @return the used report configuration instance.
+   */
   public ReportConfiguration getConfiguration()
   {
     return configuration;
   }
 
+  /**
+   * Returns the configuration prefix of this module.
+   * 
+   * @return the configuration prefix.
+   */
   public String getConfigurationPrefix()
   {
     return configurationPrefix;
   }
 
+  /**
+   * Returns a string representation of this object.  
+   * @see java.lang.Object#toString()
+   * 
+   * @return the string representing this object.
+   */
   public String toString ()
   {
-    return getConfigurationPrefix();
+    StringBuffer buffer = new StringBuffer();
+    buffer.append("ConfigTreeModule={");
+    buffer.append(getConfigurationPrefix());
+    buffer.append("}");
+    return buffer.toString();
   }
 
   /**
    * Returns true if the receiver is a leaf.
+   * 
+   * @return true if the receiver is a leaf.
    */
   public boolean isLeaf()
   {
@@ -89,12 +138,20 @@ public class ConfigTreeModuleNode extends AbstractConfigTreeNode
 
   /**
    * Returns true if the receiver allows children.
+   * 
+   * @return true if the receiver allows children.
    */
   public boolean getAllowsChildren()
   {
     return false;
   }
 
+  /**
+   * Adds the given key to the list of assigned keys, if not already added.
+   * 
+   * @param key the new key to be added
+   * @throws NullPointerException if the given key is null.
+   */
   public void addAssignedKey (ConfigDescriptionEntry key)
   {
     if (key == null)
@@ -107,11 +164,26 @@ public class ConfigTreeModuleNode extends AbstractConfigTreeNode
     }
   }
 
+  /**
+   * Removed the given key description from the list of assigned keys.
+   * 
+   * @param key the key that should be removed.
+   * @throws NullPointerException if the given key is null.
+   */
   public void removeAssignedKey (ConfigDescriptionEntry key)
   {
+    if (key == null)
+    {
+      throw new NullPointerException();
+    }
     assignedKeys.remove(key);
   }
 
+  /**
+   * Returns the list of assigned keys as object array.
+   * 
+   * @return the assigned keys as array.
+   */
   public ConfigDescriptionEntry[] getAssignedKeys ()
   {
     return (ConfigDescriptionEntry[]) assignedKeys.toArray

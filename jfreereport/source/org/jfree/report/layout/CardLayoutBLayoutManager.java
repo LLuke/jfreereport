@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardLayoutBLayoutManager.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: CardLayoutBLayoutManager.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -83,11 +83,11 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
 
     final Element[] elements = b.getElementArray();
     final Dimension2D retval = (Dimension2D) eli.getMinimumSize().clone();
-
+    final Dimension2D tmpDim = null;
     for (int i = 0; i < elements.length; i++)
     {
       final Element e = elements[i];
-      unionMax(retval, getMinimumSize(e, containerDims));
+      unionMax(retval, computeMinimumSize(e, containerDims, tmpDim));
     }
     return ElementLayoutInformation.unionMin(eli.getMaximumSize(), retval);
   }
@@ -110,11 +110,12 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
 
     final Element[] elements = b.getElementArray();
     final Dimension2D retval = (Dimension2D) eli.getMinimumSize().clone();
+    final Dimension2D tmpDim = null;
 
     for (int i = 0; i < elements.length; i++)
     {
       final Element e = elements[i];
-      unionMax(retval, getPreferredSize(e, containerDims));
+      unionMax(retval, computePreferredSize(e, containerDims, tmpDim));
     }
     return ElementLayoutInformation.unionMin(eli.getMaximumSize(), retval);
   }

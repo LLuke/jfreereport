@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.5 2003/08/24 15:13:21 taqua Exp $
+ * $Id: Element.java,v 1.6 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -69,6 +69,7 @@ import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.InvalidStyleSheetCollectionException;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.style.StyleSheetCollectionHelper;
+import org.jfree.report.util.InstanceID;
 
 /**
  * Base class for all report elements (display items that can appear within a report band).
@@ -149,6 +150,8 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   /** the parent for the element (the band where the element is contained in). */
   private Band parent;
 
+  private InstanceID treeLock;
+
   /**
    * Constructs an element.
    * <p>
@@ -160,6 +163,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   protected Element()
   {
+    treeLock = new InstanceID();
     setName(ANONYMOUS_ELEMENT_PREFIX + super.hashCode());
     datasource = NULL_DATASOURCE;
     style = new ElementStyleSheet(getName());
@@ -423,4 +427,12 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     registerStyleSheetCollection(sc);
   }
 
+  public final Object getTreeLock ()
+  {
+    if (getParent() != null)
+    {
+      return getParent().getTreeLock();
+    }
+    return treeLock;
+  }
 }

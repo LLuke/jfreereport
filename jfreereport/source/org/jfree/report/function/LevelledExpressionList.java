@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.4 2003/09/08 18:11:48 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.5 2003/09/09 02:29:12 taqua Exp $
  *
  * Changes
  * -------
@@ -857,7 +857,7 @@ public final class LevelledExpressionList implements ReportListener,
       {
         // Explicit cast to Function to test all contained elements to be Functions!
         // this may be just paranoid.
-        // todo next redesign should unify functions and expressions in the
+        // todo 090 next redesign should unify functions and expressions in the
         // report object.
         Function f = (Function) functionCollection.getExpression(i);
         if (f != null)

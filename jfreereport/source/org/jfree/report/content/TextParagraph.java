@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: TextParagraph.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------
@@ -49,14 +49,13 @@ import org.jfree.report.util.WordBreakIterator;
 /**
  * A paragraph of an given text content. A paragraph consists of one or more
  * {@link TextLine}s.
+ * <p>
+ * Todo: Can the content size be cached?
  *
  * @author Thomas Morgner.
  */
 public class TextParagraph extends ContentContainer
 {
-  /** A literal used for lines that get shortened by the linebreak implementation. */
-  public static final String RESERVED_LITERAL = "..";
-
   /** The reserved size. */
   private float reservedSize = 0;
 
@@ -66,18 +65,21 @@ public class TextParagraph extends ContentContainer
   /** The size calculator. */
   private final SizeCalculator sizeCalculator;
 
+  private final String reservedLiteral;
+
   /**
    * Creates a new text paragraph using the specified size calculator.
    *
    * @param calc  the size calculator.
    * @param lineHeight the height of the lines contained in this paragraph.
    */
-  public TextParagraph(final SizeCalculator calc, final float lineHeight)
+  public TextParagraph(final SizeCalculator calc, final float lineHeight, final String reservedLiteral)
   {
     super(new Rectangle2D.Float());
     this.sizeCalculator = calc;
-    this.reservedSize = getSizeCalculator().getStringWidth(RESERVED_LITERAL, 0,
-        RESERVED_LITERAL.length());
+    this.reservedLiteral = reservedLiteral;
+    this.reservedSize = getSizeCalculator().getStringWidth
+        (reservedLiteral, 0, reservedLiteral.length());
     this.lineHeight = lineHeight;
   }
 
@@ -389,10 +391,10 @@ public class TextParagraph extends ContentContainer
           lastCheckedChar + i);
       if (filler < fillerWidth)
       {
-        return base.substring(lineStart, lastCheckedChar + i - 1) + RESERVED_LITERAL;
+        return base.substring(lineStart, lastCheckedChar + i - 1) + reservedLiteral;
       }
     }
-    return baseLine + RESERVED_LITERAL;
+    return baseLine + reservedLiteral;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigTreeModel.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
+ * $Id: ConfigTreeModel.java,v 1.2 2003/08/31 19:27:57 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,14 +48,36 @@ import javax.swing.tree.TreePath;
 
 import org.jfree.report.util.ReportConfiguration;
 
+/**
+ * Provides a tree model view for an report configuration. The configuration
+ * will be separated into a local and a global part. The local nodes are read
+ * from the report's configuration instance, while the global nodes are always
+ * read from the global report configuration instance.
+ * 
+ * @author Thomas Morgner
+ */
 public class ConfigTreeModel implements TreeModel
 {
+  /** The root node for the tree model. */
   private ConfigTreeRootNode root;
+  /** The section containing the global tree nodes. */
   private ConfigTreeSectionNode globalSection;
+  /** The section containing the report-local tree nodes. */
   private ConfigTreeSectionNode localSection;
+  /** The factory used to update the tree model. */
   private ModuleNodeFactory nodeFactory;
+  /** A list of model listeners. */
   private ArrayList listeners;
 
+  /**
+   * Creates a new tree model from the given specifications. These
+   * specifications contain the config description entry definitions
+   * used to describe the report configuration keys.
+   * 
+   * @param specs the specifications.
+   * @throws ConfigTreeModelException if an error occured while reading
+   * the sprecifications and building the model.
+   */
   public ConfigTreeModel(InputStream specs) throws ConfigTreeModelException
   {
     this.root = new ConfigTreeRootNode("<root>");
@@ -76,6 +98,12 @@ public class ConfigTreeModel implements TreeModel
     }
   }
 
+  /**
+   * Initializes the tree from the given report configuration.
+   * 
+   * @param config the report configuration from where to read the values.
+   * @throws ConfigTreeModelException if an error occured while creating the model.
+   */
   public void init (ReportConfiguration config)
     throws ConfigTreeModelException
   {
@@ -96,6 +124,9 @@ public class ConfigTreeModel implements TreeModel
     fireTreeModelChanged();
   }
 
+  /**
+   * Informs all listeners, that the tree's contents have changed.
+   */
   private void fireTreeModelChanged ()
   {
     for (int i = 0; i < listeners.size(); i++)
@@ -126,6 +157,7 @@ public class ConfigTreeModel implements TreeModel
    * index < getChildCount(parent</code>)).
    *
    * @param   parent  a node in the tree, obtained from this data source
+   * @param   index the index from where to read the child.
    * @return  the child of <code>parent</code> at index <code>index</code>
    */
   public Object getChild(Object parent, int index)

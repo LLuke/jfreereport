@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: TextContent.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,8 @@ public class TextContent extends ContentContainer
    * @param ot  the size calculator.
    */
   public TextContent(final String value, final float lineHeight,
-                     final Rectangle2D bounds, final SizeCalculator ot)
+                     final Rectangle2D bounds, final SizeCalculator ot,
+                     final String reservedLiteral)
   {
     super((Rectangle2D) bounds.clone());
     this.sizeCalculator = ot;
@@ -83,7 +84,8 @@ public class TextContent extends ContentContainer
       final List paragraphs = splitContent(value);
       for (int i = 0; i < paragraphs.size(); i++)
       {
-        final TextParagraph p = new TextParagraph(getSizeCalculator(), lineHeight);
+        final TextParagraph p = new TextParagraph
+            (getSizeCalculator(), lineHeight, reservedLiteral);
         p.setContent((String) paragraphs.get(i), x, y + usedHeight, w, h - usedHeight);
         usedHeight += p.getBounds().getHeight();
         addContentPart(p);

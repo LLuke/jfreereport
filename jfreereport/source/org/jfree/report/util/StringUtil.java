@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringUtil.java,v 1.5 2003/08/25 14:29:34 taqua Exp $
+ * $Id: StringUtil.java,v 1.6 2003/08/31 19:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -109,6 +109,28 @@ public final class StringUtil
       return defaultValue;
     }
   }
+
+  /**
+   * Parses the given string into a boolean value. This returns true, if
+   * the string's value is "true".
+   * 
+   * @param attribute the string that should be parsed.
+   * @param defaultValue the default value, in case the string is null.
+   * @return the parsed value.
+   */
+  public static boolean parseBoolean (String attribute, boolean defaultValue)
+  {
+    if (attribute == null)
+    {
+      return defaultValue;
+    }
+    if (attribute.equals("true"))
+    {
+      return true;
+    }
+    return false;
+  }
+
 
 
 }

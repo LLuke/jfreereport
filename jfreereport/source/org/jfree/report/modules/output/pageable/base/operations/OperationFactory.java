@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationFactory.java,v 1.4 2003/08/24 15:03:59 taqua Exp $
+ * $Id: OperationFactory.java,v 1.5 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 
 /**
  * The OperationFactory is used to transform content into OutputTarget operations.
+ * <p>
+ * Todo 090 Support for plggable content handler...
  *
  * @see org.jfree.report.modules.output.pageable.base.OutputTarget
  * @see org.jfree.report.content.Content
@@ -150,7 +152,6 @@ public class OperationFactory
       final OperationModule mod = (OperationModule) modules.get(i);
       if (mod.canHandleContent(contentType))
       {
-        // todo element alignment !
         mod.createOperations(col, e, value, bounds);
         return;
       }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
+ * $Id: TextContentFactoryModule.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -131,8 +131,11 @@ public class TextContentFactoryModule implements ContentFactoryModule
     final Float lh = (Float) e.getStyle().getStyleProperty(ElementStyleSheet.LINEHEIGHT);
     try
     {
+      final String reservedLiteral = (String) e.getStyle().getStyleProperty
+          (ElementStyleSheet.RESERVED_LITERAL, "..");
+
       final TextContent tc = new TextContent(text, lh.floatValue(), tBounds,
-          ot.createTextSizeCalculator(f));
+          ot.createTextSizeCalculator(f), reservedLiteral);
       return tc;
     }
     catch (SizeCalculatorException se)

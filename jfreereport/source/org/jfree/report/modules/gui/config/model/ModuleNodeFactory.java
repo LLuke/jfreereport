@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleNodeFactory.java,v 1.2 2003/09/02 15:05:32 taqua Exp $
+ * $Id: ModuleNodeFactory.java,v 1.3 2003/09/08 18:11:49 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 30.08.2003 : Initial version
+ * 30-Aug-2003 : Initial version
  *  
  */
 
@@ -56,10 +56,28 @@ import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.xml.sax.SAXException;
 
+/**
+ * The module node factory is used to build the lists of modules and their
+ * assigned keys for the ConfigTreeModel.
+ * 
+ * @author Thomas Morgner
+ */
 public class ModuleNodeFactory
 {
+  /**
+   * Sorts the given modules by their class package names.
+   * 
+   * @author Thomas Morgner
+   */
   private static class ModuleSorter implements Comparator
   {
+    /**
+     * DefaultConstructor.
+     */
+    public ModuleSorter ()
+    {
+    }
+    
     /**
      * Compares its two arguments for order.  Returns a negative integer,
      * zero, or a positive integer as the first argument is less than, equal
@@ -88,23 +106,22 @@ public class ModuleNodeFactory
         name1 = o1.getClass().getPackage().getName();
         name2 = o2.getClass().getPackage().getName();
       }
-      if (name1.length() < name2.length())
-      {
-        return -1;
-      }
-      if (name1.length() > name2.length())
-      {
-        return 1;
-      }
-      return 0;
+      return name1.compareTo(name2);
     }
   }
 
+  /** All known modules as known at construction time. */ 
   private Module[] activeModules;
+  /** A list of global module nodes. */
   private ArrayList globalNodes;
+  /** A list of local module nodes. */
   private ArrayList localNodes;
+  /** A hashtable of all defined config description entries. */
   private Hashtable configEntryLookup;
 
+  /**
+   * Create a new and uninitialized module node factory. 
+   */
   private ModuleNodeFactory ()
   {
     Boot.start();
@@ -117,6 +134,14 @@ public class ModuleNodeFactory
 
   }
 
+  /**
+   * Creates a new module node factory and initializes the factory from
+   * the given input stream. The stream will be used to build a ConfigDescription
+   * model and should contain suitable XML content. 
+   * 
+   * @param in the input stream from where to read the model content.
+   * @throws IOException if an error occured while reading the stream.
+   */
   public ModuleNodeFactory (InputStream in) throws IOException
   {
     this();
@@ -144,8 +169,19 @@ public class ModuleNodeFactory
     }
   }
 
+  /**
+   * (Re)Initializes the factory from the given report configuration. This
+   * will assign all keys frmo the report configuration to the model and 
+   * assignes the definition from the configuration description if possible.
+   *  
+   * @param config the report configuration that contains the keys.
+   * @throws ConfigTreeModelException if an error occurs.
+   */
   public void init (ReportConfiguration config) throws ConfigTreeModelException
   {
+    globalNodes.clear();
+    localNodes.clear();
+    
     //Iterator enum = config.findPropertyKeys("");
     Enumeration enum = configEntryLookup.keys();
     while (enum.hasMoreElements())
@@ -155,6 +191,14 @@ public class ModuleNodeFactory
     }
   }
 
+  /**
+   * Processes a single report configuration key and tries to find a definition
+   * for that key.
+   * 
+   * @param key the name of the report configuration key
+   * @param config the report configuration used to build the model
+   * @throws ConfigTreeModelException if an error occurs
+   */
   private void processKey (String key, ReportConfiguration config) throws ConfigTreeModelException
   {
     ConfigDescriptionEntry cde = (ConfigDescriptionEntry) configEntryLookup.get(key);
@@ -163,13 +207,33 @@ public class ModuleNodeFactory
     //Log.debug ("ActiveModule: " + mod.getClass() + " for key " + key);
     if (cde == null)
     {
-      // create an default entry on the fly ...
-      // cde = new TextConfigDescriptionEntry(key);
-
-      // if no definition was found, we have to assume that the config
-      // property is not editable by this editor.
-      // (this filters the System-properties out of the way)
-      Log.debug ("Ignored key: " + key);
+      // check whether the system properties define such an key.
+      // if they do, then we can assume, that it is just a sys-prop
+      // and we ignore the key.
+      //
+      // if this is no system property, then this is a new entry, we'll
+      // assume that it is a local text key.
+      //
+      // Security restrictions are handled as if the key is not defined
+      // in the system properties. It is safer to add too much than to add
+      // less properties ...
+      try
+      {
+        if (System.getProperties().containsKey(key))
+        {
+          Log.debug ("Ignored key from the system properties: " + key);
+        }
+        else
+        {
+          Log.debug ("Undefinited key added on the fly: " + key);
+          cde = new TextConfigDescriptionEntry(key);
+        }
+      }
+      catch (SecurityException se)
+      {
+        Log.debug ("Unsafe key-definition due to security restrictions: " + key);
+        cde = new TextConfigDescriptionEntry(key);
+      }
       return;
     }
     if (cde.isGlobal() == false)
@@ -194,6 +258,13 @@ public class ModuleNodeFactory
     node.addAssignedKey(cde);
   }
 
+  /**
+   * Tries to find a module node for the given module in the given list.
+   * 
+   * @param key the module that is searched.
+   * @param nodeList the list with all known modules.
+   * @return the node containing the given module, or null if not found.
+   */
   private ConfigTreeModuleNode lookupNode (Module key, ArrayList nodeList)
   {
     for (int i = 0; i < nodeList.size(); i++)
@@ -207,12 +278,21 @@ public class ModuleNodeFactory
     return null;
   }
 
+  /**
+   * Returns the name of the package for the given class. This is a
+   * workaround for the classloader behaviour of JDK1.2.2 where no 
+   * package objects are created.
+   * 
+   * @param c the class for which we search the package.
+   * @return the name of the package, never null.
+   */
   public static String getPackage (Class c)
   {
     String className = c.getName();
     int idx = className.lastIndexOf('.');
     if (idx <= 0)
     {
+      // the default package
       return "";
     }
     else
@@ -221,15 +301,30 @@ public class ModuleNodeFactory
     }
   }
 
+  /**
+   * Looks up the module for the given key. If no module is responsible
+   * for the key, then it will be assigned to the core module. 
+   * 
+   * If the core is not defined, then a ConfigTreeModelException is thrown.
+   * The core is the base for all modules, and is always defined in a sane
+   * environment. 
+   * 
+   * @param key the name of the configuration key 
+   * @return the module that most likely defines that key
+   * @throws ConfigTreeModelException if the core module is not available.
+   */
   private Module lookupModule (String key) throws ConfigTreeModelException
   {
     Module fallback = null;
     for (int i = 0; i < activeModules.length; i++)
     {
-      if (activeModules[i].getClass().equals(JFreeReportCoreModule.class) ||
-          activeModules[i].getClass().equals(DefaultLogModule.class))
+      if (activeModules[i].getClass().equals(JFreeReportCoreModule.class))
       {
         fallback = activeModules[i];
+      }
+      else if (activeModules[i].getClass().equals(DefaultLogModule.class))
+      {
+        // just ignore it ..
       }
       else
       {
@@ -248,19 +343,25 @@ public class ModuleNodeFactory
     return fallback;
   }
 
+  /**
+   * Returns all global nodes. You have to initialize the factory before
+   * using this method.
+   * 
+   * @return the list of all global nodes.
+   */
   public ArrayList getGlobalNodes()
   {
     return globalNodes;
   }
 
+  /**
+   * Returns all local nodes. You have to initialize the factory before
+   * using this method.
+   * 
+   * @return the list of all global nodes.
+   */
   public ArrayList getLocalNodes()
   {
     return localNodes;
-  }
-
-  public static void main (String[] args) throws Exception
-  {
-    ModuleNodeFactory factory = new ModuleNodeFactory();
-    factory.init(ReportConfiguration.getGlobalConfig());
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: VerticalBoundsAlignment.java,v 1.2 2003/08/24 15:03:59 taqua Exp $
+ * $Id: VerticalBoundsAlignment.java,v 1.3 2003/09/09 02:29:13 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,6 @@ import java.awt.geom.Rectangle2D;
  */
 public abstract class VerticalBoundsAlignment extends BoundsAlignment
 {
-//  /** The horizontal shift. */
-//  private float horizontalShift;
 
   /**
    * Creates a new horizontal alignment object.
@@ -60,53 +58,17 @@ public abstract class VerticalBoundsAlignment extends BoundsAlignment
     super(bounds);
   }
 
-//  /**
-//   * Returns the horizontal shift.
-//   *
-//   * @return the horizontal shift.
-//   */
-//  public float getHorizontalShift()
-//  {
-//    return horizontalShift;
-//  }
-//
-//  /**
-//   * Calculates the shift.
-//   *
-//   * @param bounds  the bounds.
-//   */
-//  public void calculateShift(final Rectangle2D bounds)
-//  {
-//    final Rectangle2D alignBounds = align(bounds.getBounds2D());
-//    this.horizontalShift = (float) (alignBounds.getY() - bounds.getY());
-//  }
-//
-//  /**
-//   * Applies a vertical shift to the given rectangle. The <code>bounds</code>
-//   * object is modified during this operation.
-//   *
-//   * @param bounds  the bounds.
-//   *
-//   * @return the shifted rectangle.
-//   */
-//  public Rectangle2D applyShift(final Rectangle2D bounds)
-//  {
-//    //Rectangle2D retval = bounds.getBounds2D();
-//    bounds.setRect(bounds.getX(),
-//        bounds.getY() + getHorizontalShift(),
-//        bounds.getWidth(),
-//        bounds.getHeight());
-//    return bounds;
-//  }
-
+  /**
+   * Returns a string representation of the object.
+   *
+   * @return a string representation of the object.
+   */
   public String toString ()
   {
     StringBuffer buffer = new StringBuffer();
     buffer.append(this.getClass().getName());
     buffer.append("={bounds=");
     buffer.append(getReferenceBounds());
-//    buffer.append(", horizontalShift=");
-//    buffer.append(getHorizontalShift());
     buffer.append("}");
     return buffer.toString();
   }

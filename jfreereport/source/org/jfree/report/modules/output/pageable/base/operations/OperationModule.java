@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModule.java,v 1.4 2003/09/09 02:29:13 taqua Exp $
+ * $Id: OperationModule.java,v 1.5 2003/09/09 15:52:52 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import org.jfree.report.style.ElementStyleSheet;
  * While a generic handler may not be as performant as a specialized handler,
  * that handler may be useful for displaying at least some of the content.
  * <p>
- * todo: add support for generic handlers to the operation factory.
+ * todo 090 add support for generic handlers to the operation factory.
  *
  * @author Thomas Morgner
  */
@@ -204,15 +204,12 @@ public abstract class OperationModule
     final ElementAlignment va
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
     final VerticalBoundsAlignment vba = getVerticalLayout(va, bounds);
-    // calculate the horizontal shift ... is applied later
-    // vba.calculateShift(cbounds);
 
     final ElementAlignment ha
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
 
     HorizontalBoundsAlignment hba = getHorizontalLayout(ha, bounds);
 
-    // apply the precomputed shift ...
     final Rectangle2D abounds = vba.align(hba.align(content.getBounds()));
     return abounds;
   }

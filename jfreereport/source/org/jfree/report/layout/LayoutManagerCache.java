@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.6 2003/08/27 20:19:52 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.7 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,8 @@ import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.Log;
 
 /**
- * A cache for a band layout manager. Not very usefull yet, maybe later.
+ * A cache for a band layout manager. This caches element bounds, not
+ * elements.
  * todo: check how to improve performance or how to reuse the cached objects ...
  *
  * @author Thomas Morgner

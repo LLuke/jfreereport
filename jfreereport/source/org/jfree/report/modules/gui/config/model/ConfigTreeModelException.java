@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConfigTreeModelException.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 30.08.2003 : Initial version
+ * 30-Aug-2003 : Initial version
  *  
  */
 
@@ -40,10 +40,16 @@ package org.jfree.report.modules.gui.config.model;
 
 import org.jfree.util.StackableException;
 
+/**
+ * The ConfigTreeModelException is trown whenever an error occured during
+ * an tree model operation.
+ * 
+ * @author Thomas Morgner
+ */
 public class ConfigTreeModelException extends StackableException
 {
   /**
-   * Creates a StackableRuntimeException with no message and no parent.
+   * Creates a ConfigTreeModelException with no message and no parent.
    */
   public ConfigTreeModelException()
   {

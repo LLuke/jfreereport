@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.6 2003/08/31 19:27:59 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.7 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------
@@ -118,6 +118,23 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
   }
 
+  /**
+   * A marker to indicate that none of the parent stylesheets defines this
+   * value.
+   */
+  private static class UndefinedValue
+  {
+    /**
+     * DefaultConstructor.
+     */
+    public UndefinedValue()
+    {
+    }
+  }
+
+  /** A singleton marker for the cache. */
+  private static final UndefinedValue UNDEFINED_VALUE = new UndefinedValue();
+
   /** A key for the 'minimum size' of an element. */
   public static final StyleKey MINIMUMSIZE = StyleKey.getStyleKey("min-size", Dimension2D.class);
 
@@ -194,6 +211,11 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    */
   public static final StyleKey ELEMENT_LAYOUT_CACHEABLE = StyleKey.getStyleKey("layout-cacheable",
       Boolean.class);
+
+  /** The string that is used to end a text if not all text fits into the element. */
+  public static final StyleKey RESERVED_LITERAL = StyleKey.getStyleKey
+      ("reserved-literal", String.class);
+
   /** The instance id of this ElementStyleSheet. This id is shared among all clones. */
   private InstanceID id;
 
@@ -547,6 +569,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       value = styleCache.get(key);
       if (value != null)
       {
+        if (value == UNDEFINED_VALUE)
+        {
+          return defaultValue;
+        }
         return value;
       }
     }
@@ -578,6 +604,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       putInCache(key, value);
       return value;
     }
+    putInCache(key, UNDEFINED_VALUE);
     return defaultValue;
   }
 

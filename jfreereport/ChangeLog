@@ -46,6 +46,24 @@ A list of changes in recent versions:
         * The excel export defines the printer setup according to the report 
           configuration or the defined page format of the report.
 
+        * The reserved-literal (the string that is appended if the text would
+          not fit into the element) can now be customized using stylessheets.
+
+        * Initializing JFreeReport is now done in a controled way using the
+          Boot class.
+
+        * Minor performance improvements to reduce the number of generated
+          objects during the report generation.
+
+        * A graphical configuration editor assists in the process of creating
+          JFreeReport configuration files.
+
+        * The XML Parser reports validation errors when a DTD is available.
+
+        * The ReportConverter got a facelifting and can now also be used to
+          import the extended reports from older versions. Changed class
+          attributes will be translated to the new namespace.
+
 0.8.3f: (24-Aug-2003)
         * BugFix: SwingIcons demo definition was invalid.
 

@@ -28,26 +28,45 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EnumConfigDescriptionEntry.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
+ * $Id: EnumConfigDescriptionEntry.java,v 1.2 2003/09/08 18:11:49 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 26.08.2003 : Initial version
+ * 26-Aug-2003 : Initial version
  *  
  */
 
 package org.jfree.report.modules.gui.config.model;
 
+/**
+ * The enumeration config description entry represents an configuration
+ * key, where users may select a valid value from a predefined list of elements.
+ * Such an key will not allow free-form text. 
+ * 
+ * @author Thomas Morgner
+ */
 public class EnumConfigDescriptionEntry extends ConfigDescriptionEntry
 {
+  /** The list of available options in this entry. */
   private String[] options;
 
+  /**
+   * Creates a new enumeration description entry for the given configuration
+   * key.
+   * 
+   * @param keyName the keyname of this entry.
+   */
   public EnumConfigDescriptionEntry(String keyName)
   {
     super(keyName);
     this.options = new String[0];
   }
 
+  /**
+   * Returns all options from this entry as array.
+   * 
+   * @return the options as array.
+   */
   public synchronized String[] getOptions()
   {
     String[] retval = new String[options.length];
@@ -55,6 +74,11 @@ public class EnumConfigDescriptionEntry extends ConfigDescriptionEntry
     return retval;
   }
 
+  /**
+   * Defines all options for this entry.
+   * 
+   * @param options the selectable values for this entry.
+   */
   public synchronized void setOptions(String[] options)
   {
     this.options = new String[options.length];

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.6 2003/08/24 15:03:59 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.7 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -996,6 +996,9 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
         final ReportState state = getCurrentEvent().getState();
         // todo: How to resolve this update in a clean way. How to change the
         // element connection so that it is smarter and not that weird ...
+
+        // resolving the issue on the element level may work ...
+        // using elements as template stamp instead of content source?
         final ReportDefinitionImpl impl = (ReportDefinitionImpl) state.getReport();
         // yes, I hate this code too...
         DataRowConnector.disconnectDataSources(band, impl.getDataRowConnector());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MiddleAlignment.java,v 1.2 2003/08/24 15:03:59 taqua Exp $
+ * $Id: MiddleAlignment.java,v 1.3 2003/09/09 02:29:13 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,6 @@ public class MiddleAlignment extends VerticalBoundsAlignment
     {
       throw new NullPointerException("MiddleAlignment.align(...): null not permitted.");
     }
-    // r = getReferenceBounds().createIntersection(r);
     final float x = (float) r.getX();
 
     final float h = (float) Math.min (r.getHeight(), getReferenceBounds().getHeight());

@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConfigTreeNode.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 28.08.2003 : Initial version
+ * 28-Aug-2003 : Initial version
  *  
  */
 
@@ -40,8 +40,25 @@ package org.jfree.report.modules.gui.config.model;
 
 import javax.swing.tree.TreeNode;
 
+/**
+ * The config tree is the base class for all nodes in the ConfigTreeModel.
+ * 
+ * @author Thomas Morgner
+ */
 public interface ConfigTreeNode extends TreeNode
 {
+  /**
+   * Returns the name of the node.
+   * 
+   * @return the name of the node.
+   */
   public String getName();
+  
+  /**
+   * Defines the parent of this node; this replaces all previously defined
+   * parents.
+   * 
+   * @param parent the new parent node. 
+   */
   public void setParent (TreeNode parent);
 }
