@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.8 2002/12/12 12:26:57 mungady Exp $
+ * $Id: PageLayouter.java,v 1.9 2002/12/12 20:24:03 taqua Exp $
  *
  * Changes
  * -------
@@ -405,9 +405,10 @@ public abstract class PageLayouter extends AbstractFunction
   }
 
   /**
-   * The depency level defines the level of execution for this function. Higher depency functions
-   * are executed before lower depency functions. The range for depencies is defined to start
-   * from 0 (lowest depency possible) to 2^31 (upper limit of int).
+   * The dependency level defines the level of execution for this function. Higher dependency functions
+   * are executed before lower dependency functions. For ordinary functions and expressions,
+   * the range for dependencies is defined to start from 0 (lowest dependency possible)
+   * to 2^31 (upper limit of int).
    * <p>
    * PageLayouter functions override the default behaviour an place them self at depency level -1,
    * an so before any userdefined function.

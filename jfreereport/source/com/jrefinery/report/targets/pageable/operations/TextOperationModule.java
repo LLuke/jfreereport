@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.6 2002/12/11 23:32:26 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.1 2002/12/12 20:20:28 taqua Exp $
  *
  * Changes
  * -------
@@ -146,7 +146,8 @@ public class TextOperationModule extends OperationModule
   }
 
   /**
-   * ??
+   * Add a single content junk (in most cases a single line or a line fragment) to
+   * the list of PhysicalOperations. This method is called recursivly for all contentparts.
    *
    * @param c  the content.
    * @param list  the list where to collect the generated content
@@ -162,7 +163,6 @@ public class TextOperationModule extends OperationModule
       Rectangle2D abounds = vba.applyShift (bounds.align(c.getBounds()));
       list.add (new PhysicalOperation.SetBoundsOperation (abounds));
       list.add (new PhysicalOperation.PrintTextOperation(value));
-      Log.debug ("Create Content: " + value + " _ " + abounds);
     }
     else
     {

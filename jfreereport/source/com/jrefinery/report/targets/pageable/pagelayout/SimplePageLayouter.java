@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.7 2002/12/11 23:32:26 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.8 2002/12/12 20:24:03 taqua Exp $
  *
  * Changes
  * -------
@@ -539,7 +539,6 @@ public class SimplePageLayouter extends PageLayouter
   protected void doPrint(Rectangle2D bounds, Band band, boolean spool)
     throws ReportProcessingException
   {
-    Log.debug ("Print Band: " + band.getClass() + " @ " + bounds);
     if ((spooledBand != null) && (spool == false))
     {
       getLogicalPage().replaySpool (spooledBand);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.5 2002/12/12 15:36:05 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.6 2002/12/12 20:24:03 taqua Exp $
  *
  * Changes
  * -------
@@ -193,8 +193,8 @@ public class StaticLayoutManager implements BandLayoutManager
       Content content = mod.createContentForElement(e, elementBounds, getOutputTarget());
       //Log.debug ("Calc: Content: " + content);
       Rectangle2D contentBounds = content.getMinimumContentSize();
-      FloatDimension retval = new FloatDimension(Math.min(contentBounds.getWidth(), w),
-                                Math.min (contentBounds.getHeight(), h));
+      FloatDimension retval = new FloatDimension(Math.max(contentBounds.getWidth(), bounds.getWidth()),
+                                Math.max (contentBounds.getHeight(), bounds.getHeight()));
       return retval;
     }
     catch (Exception ex)
@@ -440,6 +440,7 @@ public class StaticLayoutManager implements BandLayoutManager
   public void doLayout(Band b)
   {
     //elementCache.setCurrentBand(b);
+
     Element[] elements = b.getElementArray();
     Rectangle2D parentBounds = BandLayoutManagerUtil.getBounds(b, null);
     if (parentBounds == null)
@@ -449,10 +450,15 @@ public class StaticLayoutManager implements BandLayoutManager
     Dimension2D parentDim = new FloatDimension(parentBounds.getWidth(), parentBounds.getHeight());
     Point2D parentPoint = new Point2D.Double (parentBounds.getX(), parentBounds.getY());
 
+//    Log.debug ("ParentBounds: " + parentBounds);
+
     for (int i = 0; i < elements.length; i++)
     {
       Element e = elements[i];
-      Dimension2D size = correctDimension(getPreferredSize(e, parentDim), parentDim);
+      Dimension2D uncorrectedSize = getPreferredSize(e, parentDim);
+      Dimension2D size = correctDimension(uncorrectedSize, parentDim);
+
+//    Log.debug ("UnCorrectedSize: " + uncorrectedSize);
 
       Point2D absPos
           = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim);
@@ -460,6 +466,12 @@ public class StaticLayoutManager implements BandLayoutManager
       Rectangle2D bounds = new Rectangle2D.Double(absPos.getX(), absPos.getY(),
                                                   size.getWidth(), size.getHeight());
       BandLayoutManagerUtil.setBounds(e, bounds);
+//      Log.debug ("Set Bounds: " + bounds);
+      if (e instanceof Band)
+      {
+        Band band = (Band) e;
+        doLayout(band);
+      }
     }
   }
 
@@ -525,12 +537,14 @@ public class StaticLayoutManager implements BandLayoutManager
   }
 
   /**
-   * ??
+   * Corrects the relative (proportional) values. The values are given
+   * in the range from -100 (= 100%) to 0 (0%) and are resolved to the
+   * base values.
    *
-   * @param dim  ??.
-   * @param base  ??.
+   * @param dim  the dimension that should be corrected.
+   * @param base  the base to define the 100% limit.
    *
-   * @return ??.
+   * @return the corrected dimension.
    */
   private Dimension2D correctDimension (Dimension2D dim, Dimension2D base)
   {
@@ -548,12 +562,14 @@ public class StaticLayoutManager implements BandLayoutManager
   }
 
   /**
-   * ??.
+   * Corrects the relative (proportional) values. The values are given
+   * in the range from -100 (= 100%) to 0 (0%) and are resolved to the
+   * base values.
    *
-   * @param dim  ??.
-   * @param base  ??.
+   * @param dim  the point that should be corrected.
+   * @param base  the base to define the 100% limit.
    *
-   * @return ??.
+   * @return the corrected point.
    */
   private Point2D correctPoint (Point2D dim, Dimension2D base)
   {

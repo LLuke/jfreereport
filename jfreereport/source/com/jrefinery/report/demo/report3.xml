@@ -36,9 +36,9 @@
     <label x="0" y="0" width="450" height="12" alignment="right">Salingers Bookstore - you'll get what you deserve</label>
     <line  x1="0" y1="15" x2="0" y2="15" weight="0.5"/>
   </pageheader>
- -->
   <pageheader height="40"/>
   <pagefooter height="0"/>
+ -->
   <groups>
     <group name="Customer">
       <groupheader height="355" fontname="SansSerif" fontstyle="plain" fontsize="11" pagebreak="false">
@@ -64,7 +64,6 @@
         <label x="400" y="340" width="50" height="12" alignment="left">Total</label>
         <line x1="0" y1="353" x2="0" y2="353" weight="0.5"/>
       </groupheader>
-
       <groupfooter height="0" fontname="SansSerif" fontstyle="plain" fontsize="11" pagebreak="false">
         <rectangle x="0" y="0" width="100%" height="100%" color="#0000FF" draw="true" fill="false"/>
         <line x1="0" y1="10" x2="0" y2="10" weight="0.5"/>
@@ -83,7 +82,6 @@ Yours sincerely, (Unicode Test 2: &#x6e96;&#x53d7;&#x4fdd;&#x4eba;)
 
 John W. Who, Salesman</label>
        </groupfooter>
-
       <fields>
         <field>name</field>
         <field>street</field>
@@ -99,8 +97,7 @@ John W. Who, Salesman</label>
     <number-field x="350" y="0" width="50" height="12" alignment="left" format="'$' #,##0.00" fieldname="price"/>
     <number-field x="400" y="0" width="70" height="12" alignment="left" format="'$' #,##0.00" fieldname="total"/>
   </items>
-
-<functions>
+  <functions>
     <expression name="dateexpression" class="com.jrefinery.report.function.TextFormatExpression">
       <properties>
         <property name="pattern">Invoice for your order from mmmmmmmm {0, date,EEE, MMM d, yyyy}</property>

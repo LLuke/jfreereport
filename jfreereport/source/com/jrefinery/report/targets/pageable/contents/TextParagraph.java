@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.2 2002/12/02 18:55:35 taqua Exp $
+ * $Id: TextParagraph.java,v 1.3 2002/12/03 16:29:24 mungady Exp $
  *
  * Changes
  * -------
@@ -284,7 +284,7 @@ public class TextParagraph extends ContentContainer
     }
 
     float toTheEnd = getSizeCalculator().getStringWidth(base, lineStart, base.length());
-    if (toTheEnd < width)
+    if (toTheEnd <= width)
     {
       return base.substring(lineStart);
     }

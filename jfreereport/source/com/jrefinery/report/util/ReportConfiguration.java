@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.17 2002/12/11 00:41:42 mungady Exp $
+ * $Id: ReportConfiguration.java,v 1.18 2002/12/12 12:26:57 mungady Exp $
  *
  * Changes
  * -------
@@ -244,6 +244,16 @@ import java.util.Properties;
  */
 public class ReportConfiguration
 {
+  /** The text aliasing configuration key */
+  public static final String G2TARGET_USEALIASING = "com.jrefinery.report.targets.G2OutputTarget.useAliasing";
+  /** The text aliasing configuration default value. Is "false" */
+  public static final String G2TARGET_USEALIASING_DEFAULT = "false";
+
+  /** The G2 fontrenderer bug override configuration key */
+  public static final String G2TARGET_ISBUGGY_FRC = "com.jrefinery.report.targets.G2OutputTarget.isBuggyFRC";
+  /** The G2 fontrenderer bug override. Is "false" */
+  public static final String G2TARGET_ISBUGGY_FRC_DEFAULT = "false";
+
   /** The preferred width key. */
   public static final String PREVIEW_PREFERRED_WIDTH
                              = "com.jrefinery.report.preview.PreferredWidth";
@@ -253,6 +263,7 @@ public class ReportConfiguration
                              = "com.jrefinery.report.preview.PreferredHeight";
 
   /** The maximum width key. */
+
   public static final String PREVIEW_MAXIMUM_WIDTH = "com.jrefinery.report.preview.MaximumWidth";
 
   /** The maximum height key. */
@@ -325,10 +336,10 @@ public class ReportConfiguration
      */
     public PropertyFileReportConfiguration()
     {
-      getConfiguration().put (DISABLE_LOGGING, DISABLE_LOGGING_DEFAULT);
-      getConfiguration().put (LOGLEVEL, LOGLEVEL_DEFAULT);
-      getConfiguration().put (PDFTARGET_AUTOINIT, PDFTARGET_AUTOINIT_DEFAULT);
-      getConfiguration().put (PDFTARGET_ENCODING, PDFTARGET_ENCODING_DEFAULT);
+      this.getConfiguration().put (DISABLE_LOGGING, DISABLE_LOGGING_DEFAULT);
+      this.getConfiguration().put (LOGLEVEL, LOGLEVEL_DEFAULT);
+      this.getConfiguration().put (PDFTARGET_AUTOINIT, PDFTARGET_AUTOINIT_DEFAULT);
+      this.getConfiguration().put (PDFTARGET_ENCODING, PDFTARGET_ENCODING_DEFAULT);
 
       InputStream in = this.getClass().getResourceAsStream("/jfreereport.properties");
       if (in == null)
@@ -339,7 +350,7 @@ public class ReportConfiguration
       {
         try
         {
-          getConfiguration().load(in);
+          this.getConfiguration().load(in);
         }
         catch (IOException ioe)
         {
@@ -360,7 +371,7 @@ public class ReportConfiguration
     public SystemPropertyConfiguration()
     {
       super(new PropertyFileReportConfiguration());
-      getConfiguration().putAll (System.getProperties());
+      this.getConfiguration().putAll (System.getProperties());
     }
   }
 
@@ -632,5 +643,53 @@ public class ReportConfiguration
   public void setPrintOperationComment(boolean print)
   {
     setConfigProperty(PRINT_OPERATION_COMMENT, String.valueOf(print));
+  }
+
+  /**
+   * Returns true, if the Graphics2D should use aliasing to render text. Defaults to false.
+   *
+   * @return true, if aliasing is enabled.
+   */
+  public boolean isG2TargetUseAliasing()
+  {
+    return getConfigProperty(G2TARGET_USEALIASING,
+        G2TARGET_USEALIASING_DEFAULT).equalsIgnoreCase("true");
+  }
+
+  /**
+   * set to true, if the Graphics2D should use aliasing to render text. Defaults to false.
+   *
+   * @param alias set to true, if the Graphics2D should use aliasing.
+   */
+  public void setG2TargetUseAliasing(boolean alias)
+  {
+    setConfigProperty(G2TARGET_USEALIASING, String.valueOf(alias));
+  }
+
+  /**
+   * Returns true, if the Graphics2D implementation is buggy and is not really able
+   * to place/calculate the fontsizes correctly. Defaults to false. (SunJDK on Windows
+   * is detected and corrected, Linux SunJDK 1.3 is buggy, but not detectable).
+   *
+   * @return true, if the Graphics2D implementation does not calculate the string
+   * positions correctly and an alternative implementation should be used.
+   */
+  public boolean isG2BuggyFRC()
+  {
+    return getConfigProperty(G2TARGET_ISBUGGY_FRC,
+        G2TARGET_ISBUGGY_FRC_DEFAULT).equalsIgnoreCase("true");
+  }
+
+  /**
+   * set to true, if the Graphics2D implementation is buggy and is not really able
+   * to place/calculate the fontsizes correctly. Defaults to false. (SunJDK on Windows
+   * is detected and corrected, Linux SunJDK 1.3 is buggy, but not detectable).
+   *
+   * @param buggy set to true, if the Graphics2D implementation does not calculate the string
+   * positions correctly and an alternative implementation should be used.
+   */
+  public void setG2BuggyFRC(boolean buggy)
+  {
+    setConfigProperty(G2TARGET_ISBUGGY_FRC, String.valueOf(buggy));
   }
 }
