@@ -1,3 +1,4 @@
+package gnu.bhresearch;
 
 import gnu.bhresearch.JImagePanel;
 import gnu.bhresearch.pixie.wmf.WmfFile;
@@ -49,9 +50,7 @@ public class TestRect
 //    g.setPaint (brush.getPaint());
     //g.setStroke (pen.getStroke ());
     //g.draw (new Line2D.Double (scaleX(20000),scaleY(20000),scaleX(40000),scaleY(40000)));
-    //g.draw (new Rectangle (18908,16778,1177,1209));
-    //g.drawImage (bim, 0,0, new JButton());
-    //g.fill (new Rectangle (18,16,177,209));
+    //g.draw (new Rectangle (18908,16778,1177,1209));    //g.drawImage (bim, 0,0, new JButton());    //g.fill (new Rectangle (18,16,177,209));
 
 //    WmfFile wmf = new WmfFile ("./pixie/res/anim0002.wmf", 1024, 768);
     WmfFile wmf = new WmfFile ("./pixie/res/test.wmf");
@@ -79,31 +78,4 @@ public class TestRect
     frame.setSize (1024, 768);
     frame.setVisible (true);
   }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
