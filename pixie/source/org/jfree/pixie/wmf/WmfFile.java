@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfLogBrush.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: WmfFile.java,v 1.1 2003/03/09 20:38:20 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ import org.jfree.pixie.wmf.records.MfCmd;
 import org.jfree.pixie.wmf.records.MfCmdSetWindowExt;
 import org.jfree.pixie.wmf.records.MfCmdSetWindowOrg;
 import org.jfree.pixie.wmf.records.CommandFactory;
-import com.jrefinery.ui.Drawable;
+import org.jfree.ui.Drawable;
 
 /**
  * Parses and replays the WmfFile.

@@ -2,7 +2,7 @@
  * Date: Mar 9, 2003
  * Time: 1:43:29 PM
  *
- * $Id$
+ * $Id: G2OpStore.java,v 1.1 2003/03/09 20:38:11 taqua Exp $
  */
 package org.jfree.pixie.g2recorder;
 
@@ -11,7 +11,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-import com.jrefinery.ui.Drawable;
+import org.jfree.ui.Drawable;
 
 public class G2OpStore implements Drawable
 {
