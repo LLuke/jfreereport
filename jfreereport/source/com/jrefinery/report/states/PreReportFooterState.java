@@ -9,7 +9,6 @@
 package com.jrefinery.report.states;
 
 import com.jrefinery.report.ReportProcessor;
-import com.jrefinery.report.function.FunctionCollection;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportFooter;
 import com.jrefinery.report.event.ReportEvent;

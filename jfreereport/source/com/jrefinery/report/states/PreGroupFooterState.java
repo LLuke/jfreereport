@@ -10,7 +10,6 @@ package com.jrefinery.report.states;
 
 import com.jrefinery.report.ReportProcessor;
 import com.jrefinery.report.Group;
-import com.jrefinery.report.function.FunctionCollection;
 import com.jrefinery.report.GroupFooter;
 import com.jrefinery.report.event.ReportEvent;
 
