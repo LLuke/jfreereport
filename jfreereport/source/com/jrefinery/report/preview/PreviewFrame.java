@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.17 2002/05/31 19:28:17 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.18 2002/06/08 16:28:59 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -956,7 +956,6 @@ public class PreviewFrame
    */
   protected JButton createButton (Action action)
   {
-    FloatingButtonEnabler fle = new FloatingButtonEnabler ();
     JButton button = new JButton (action);
     if (isLargeIconsEnabled ())
     {
@@ -968,7 +967,7 @@ public class PreviewFrame
     }
     button.setMargin (new Insets (0, 0, 0, 0));
     button.setText (null);
-    fle.addButton (button);
+    FloatingButtonEnabler.getInstance().addButton (button);
     return button;
   }
 

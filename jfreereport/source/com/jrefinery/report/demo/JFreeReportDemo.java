@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.16 2002/05/31 19:15:13 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.17 2002/06/05 21:20:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -206,18 +206,17 @@ public class JFreeReportDemo extends JFrame
 
     L1R2ButtonPanel buttons = new L1R2ButtonPanel ("Help", "Preview", "Close");
 
-    FloatingButtonEnabler fle = new FloatingButtonEnabler ();
     JButton helpButton = buttons.getLeftButton ();
     helpButton.setAction (aboutAction);
-    fle.addButton (helpButton);
+    FloatingButtonEnabler.getInstance().addButton (helpButton);
 
     JButton previewButton = buttons.getRightButton1 ();
     previewButton.setAction (previewAction);
-    fle.addButton (previewButton);
+    FloatingButtonEnabler.getInstance().addButton (previewButton);
 
     JButton closeButton = buttons.getRightButton2 ();
     closeButton.setAction (closeAction);
-    fle.addButton (closeButton);
+    FloatingButtonEnabler.getInstance().addButton (closeButton);
 
     buttons.setBorder (BorderFactory.createEmptyBorder (0, 4, 4, 4));
     content.add (buttons, BorderLayout.SOUTH);
@@ -410,11 +409,10 @@ public class JFreeReportDemo extends JFrame
    */
   protected JButton createButton (Action action)
   {
-    FloatingButtonEnabler fle = new FloatingButtonEnabler ();
     JButton button = new JButton (action);
     button.setMargin (new Insets (0, 0, 0, 0));
     button.setText (null);
-    fle.addButton (button);
+    FloatingButtonEnabler.getInstance().addButton (button);
     return button;
   }
 

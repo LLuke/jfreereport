@@ -25,13 +25,17 @@ import java.awt.event.ActionEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+/**
+ * The exception dialog is used to display an exception and the exceptions stacktrace to
+ * the user.
+ */
 public class ExceptionDialog extends JDialog
 {
   private class OKAction extends AbstractAction
   {
     public OKAction ()
     {
-      putValue (NAME, UIManager.getDefaults().getString("OptionPane.okButtonText"));
+      putValue (NAME, UIManager.getDefaults ().getString ("OptionPane.okButtonText"));
     }
 
     public void actionPerformed (ActionEvent event)
@@ -44,7 +48,7 @@ public class ExceptionDialog extends JDialog
   {
     public DetailsAction ()
     {
-      putValue (NAME, UIManager.getDefaults().getString("Details"));
+      putValue (NAME, UIManager.getDefaults ().getString ("Details"));
     }
 
     public void actionPerformed (ActionEvent event)
@@ -63,6 +67,9 @@ public class ExceptionDialog extends JDialog
   private JPanel filler;
   private static ExceptionDialog defaultDialog;
 
+  /**
+   * creates a new ExceptionDialog.
+   */
   public ExceptionDialog ()
   {
     setModal (true);
@@ -131,6 +138,9 @@ public class ExceptionDialog extends JDialog
     setContentPane (detailPane);
   }
 
+  /**
+   * Adjusts the size of the dialog to fit the with of the contained message and stacktrace.
+   */
   public void adjustSize ()
   {
     Dimension scSize = scroller.getPreferredSize ();
@@ -142,6 +152,9 @@ public class ExceptionDialog extends JDialog
 
   }
 
+  /**
+   * Initializes the buttonpane.
+   */
   private JPanel createButtonPane ()
   {
     JPanel buttonPane = new JPanel ();
@@ -155,16 +168,26 @@ public class ExceptionDialog extends JDialog
     return buttonPane;
   }
 
+  /**
+   * sets the message for this exception dialog. The message is displayed on the main page.
+   */
   public void setMessage (String mesg)
   {
     messageLabel.setText (mesg);
   }
 
+  /**
+   * @returns the message for this exception dialog. The message is displayed on the main page.
+   */
   public String getMessage ()
   {
     return messageLabel.getText ();
   }
 
+  /**
+   * sets the exception for this dialog. If no exception is set, the "Detail" button is disabled
+   * and the stacktrace text cleared. Else the stacktraces text is read into the detail message area.
+   */
   public void setException (Exception e)
   {
     currentEx = e;
@@ -179,6 +202,9 @@ public class ExceptionDialog extends JDialog
     }
   }
 
+  /**
+   * read the stacktrace text from the exception.
+   */
   private String readFromException (Exception e)
   {
     String text = "No backtrace available";
@@ -196,34 +222,28 @@ public class ExceptionDialog extends JDialog
     return text;
   }
 
+  /**
+   * returns the exception that was the reason for this dialog to show up
+   */
   public Exception getException ()
   {
     return currentEx;
   }
 
+  /**
+   * Shows an default dialog with the given message and title and the exceptions stacktrace
+   * in the detail area.
+   */
   public static void showExceptionDialog (String title, String message, Exception e)
   {
     if (defaultDialog == null)
     {
       defaultDialog = new ExceptionDialog ();
     }
-    defaultDialog.setTitle(title);
+    defaultDialog.setTitle (title);
     defaultDialog.setMessage (message);
     defaultDialog.setException (e);
     defaultDialog.adjustSize ();
     defaultDialog.setVisible (true);
-  }
-
-  public static void main (String[] args)
-  {
-    try
-    {
-      showExceptionDialog ("Exception", "Message", new NullPointerException());
-    }
-    catch (Exception e)
-    {
-      e.printStackTrace ();
-    }
-    System.exit (0);
   }
 }

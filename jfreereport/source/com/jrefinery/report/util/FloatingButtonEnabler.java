@@ -32,14 +32,42 @@ import javax.swing.AbstractButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Enables a button to have a simple floating effect. The border of the button is only visible,
+ * when the mouse pointer is floating over the button.
+ */
 public class FloatingButtonEnabler extends MouseAdapter
 {
+  private static FloatingButtonEnabler singleton;
+
+  protected FloatingButtonEnabler ()
+  {
+  }
+
+  /**
+   * returns a default instance of this enabler
+   */
+  public static FloatingButtonEnabler getInstance ()
+  {
+    if (singleton == null)
+    {
+      singleton = new FloatingButtonEnabler();
+    }
+    return singleton;
+  }
+
+  /**
+   * Adds a button to this enabler.
+   */
   public void addButton (AbstractButton button)
   {
     button.addMouseListener(this);
     button.setBorderPainted(false);
   }
 
+  /**
+   * removes a button from the enabler
+   */
   public void removeButton (AbstractButton button)
   {
     button.addMouseListener(this);

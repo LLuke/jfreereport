@@ -33,7 +33,7 @@ import java.util.LinkedList;
 import java.util.Hashtable;
 
 /**
- * A keyed queue is a hashtable like structure which will only store a certain number of
+ * A keyed queue is a hashtable like structure which will store a certain number of
  * elements. If the defined element size is exceed, the firstly stored element gets removed.
  */
 public class KeyedQueue
@@ -42,11 +42,17 @@ public class KeyedQueue
   private Hashtable table;
   private int limit;
 
+  /**
+   * creates a KeyedQueue with an initial limit of 10
+   */
   public KeyedQueue ()
   {
     this(10);
   }
 
+  /**
+   * creates a KeyedQueue with an initial limit if <code>limit</code>
+   */
   public KeyedQueue (int limit)
   {
     table = new Hashtable();
@@ -54,17 +60,27 @@ public class KeyedQueue
     setLimit(limit);
   }
 
+  /**
+   * defines the maximal number of elements in the list.
+   */
   public void setLimit (int limit)
   {
     if (limit < 1) throw new IllegalArgumentException();
     this.limit = limit;
   }
 
+  /**
+   * @returns the maximal number of elements in the queue
+   */
   public int getLimit ()
   {
     return limit;
   }
 
+  /**
+   * adds a new key/value pair to the queue. If the pair is already contained in the
+   * list, it is moved to the first position so that is gets removed last.
+   */
   public void put (Object key, Object ob)
   {
     if (key == null) throw new NullPointerException("Key must not be null");
@@ -78,6 +94,9 @@ public class KeyedQueue
         removeLast ();
   }
 
+  /**
+   * queries the queue for the value stored under the given key.
+   */
   public Object get (Object key)
   {
     if (key == null) throw new NullPointerException("Key must not be null");
@@ -85,6 +104,9 @@ public class KeyedQueue
     return table.get (key);
   }
 
+  /**
+   * removes the entry stored under the given key.
+   */
   public void remove (Object key)
   {
     if (key == null) throw new NullPointerException();
@@ -92,6 +114,9 @@ public class KeyedQueue
     list.remove(key);
   }
 
+  /**
+   * removes the last element in the queue
+   */
   public void removeLast ()
   {
     Object o = list.getLast();
@@ -99,6 +124,9 @@ public class KeyedQueue
     list.remove(o);
   }
 
+  /**
+   * removes all elements in the queue
+   */
   public void clear ()
   {
     table.clear();

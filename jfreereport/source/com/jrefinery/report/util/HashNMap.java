@@ -44,19 +44,30 @@ import java.util.Iterator;
 public class HashNMap
 {
 	private Hashtable table = null;
-	
+
+  /**
+   * Default Constructor
+   */
 	public HashNMap ()
 	{
 		table = new Hashtable ();
 	}
-	
+
+  /**
+   * Inserts a new key/value pair into the map. If such a pair already exists, it gets replaced
+   * with the given values.
+   */
 	public void put (Object key, Object val)
 	{
 		List v = new ArrayList ();
 		v.add (val);
 		table.put (key, v);
 	}
-	
+
+  /**
+   * Adds a new key/value pair into this map. If the key is not yet in the map, it gets added
+   * to the map and the call is equal to put(Object,Object).
+   */
 	public void add (Object key, Object val)
 	{
 		List v = (List) table.get (key);
@@ -69,17 +80,34 @@ public class HashNMap
 			v.add (val);
 		}
 	}
-	
+
+  /**
+   * retrieves the first value registered for an key or null if there was no such key
+   * in the list.
+   */
 	public Object get (Object key)
 	{
-		List v = (List) table.get (key);
+    return get (key, 0);
+	}
+
+  /**
+   * retrieves the n-th value registered for an key or null if there was no such key
+   * in the list. An index out of bounds exception is thrown if there are less than
+   * n elements registered to this key.
+   */
+  public Object get (Object key, int i)
+  {
+    List v = (List) table.get (key);
 		if (v == null)
 		{
 			return null;
 		}
-		return v.get(0);
-	}
-	
+		return v.get(i);
+  }
+
+  /**
+   * returns an iterator over all elements registered to the given key.
+   */
 	public Iterator getAll (Object key)
 	{
 		List v = (List) table.get (key);
@@ -89,17 +117,27 @@ public class HashNMap
 		}
 		return v.iterator ();
 	}
-	
+
+  /**
+   * returns all registered keys as enumeration.
+   */
 	public Enumeration keys ()
 	{
 		return table.keys ();
 	}
-	
+
+  /**
+   * returns all registered keys as set.
+   */
 	public Set keySet ()
 	{
 		return table.keySet ();
 	}
-	
+
+  /**
+   * removes the key/value pair from the map. If the removed entry was the last entry
+   * for this key, the key gets also removed.
+   */
 	public void remove (Object key, Object value)
 	{
 		List v = (List) table.get (key);
@@ -114,22 +152,38 @@ public class HashNMap
 			table.remove (key);
 		}
 	}
-	
+
+  /**
+   * removes all elements for the given key.
+   */
 	public void removeAll (Object key)
 	{
 		table.remove (key);
 	}
-	
+
+  /**
+   * clears all keys and values of this map
+   */
 	public void clear ()
 	{
 		table.clear ();
 	}
-	
+
+  /**
+   * tests whether this map contains the given key.
+   *
+   * @returns true if the key is contained in the map
+   */
 	public boolean containsKey (Object key)
 	{
 		return table.containsKey (key);
 	}
 	
+  /**
+   * tests whether this map contains the given value.
+   *
+   * @returns true if the value is registered in the map for an key
+   */
 	public boolean containsValue (Object value)
 	{
 		Enumeration e = keys ();
@@ -142,6 +196,11 @@ public class HashNMap
 		return found;
 	}
 	
+  /**
+   * tests whether this map contains the given key or value.
+   *
+   * @returns true if the key or value is contained in the map
+   */
 	public boolean contains (Object value)
 	{
 		if (containsKey (value) == true)
