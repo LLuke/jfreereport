@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPage.java,v 1.4 2002/12/07 14:58:33 taqua Exp $
+ * $Id: LogicalPage.java,v 1.5 2003/02/09 18:43:05 taqua Exp $
  *
  * Changes
  * -------
@@ -57,14 +57,14 @@ public interface LogicalPage
    *
    * @return the page width.
    */
-  public double getWidth();
+  public float getWidth();
   
   /**
    * Returns the page height.
    *
    * @return the page height.
    */
-  public double getHeight();
+  public float getHeight();
   
   /**
    * Returns true if the page is open, and false otherwise.

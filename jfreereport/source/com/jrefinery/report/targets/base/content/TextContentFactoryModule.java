@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.1 2003/02/07 22:40:39 taqua Exp $
+ * $Id: TextContentFactoryModule.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
  *
  * Changes
  * -------
@@ -97,14 +97,14 @@ public class TextContentFactoryModule implements ContentFactoryModule
                                                            bounds.getPreferredSize());
     Dimension2D hDim = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
                                                            bounds.getPreferredSize());
-    Dimension2D dim = new FloatDimension(wDim.getWidth(), hDim.getHeight());
+    Dimension2D dim = new FloatDimension((float) wDim.getWidth(), (float) hDim.getHeight());
 
     String text = (String) e.getValue();
     FontDefinition f = e.getStyle().getFontDefinitionProperty();
-    Rectangle2D tBounds = new Rectangle2D.Double(point.getX(),
-                                                  point.getY(),
-                                                  dim.getWidth(),
-                                                  dim.getHeight());
+    Rectangle2D tBounds = new Rectangle2D.Float((float) point.getX(),
+                                                  (float) point.getY(),
+                                                  (float) dim.getWidth(),
+                                                  (float) dim.getHeight());
 
     Float lh = (Float) e.getStyle().getStyleProperty(ElementStyleSheet.LINEHEIGHT);
     try

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.12 2003/02/16 23:23:46 taqua Exp $
+ * $Id: TableProducer.java,v 1.13 2003/02/17 22:01:09 taqua Exp $
  *
  * Changes
  * -------
@@ -242,11 +242,11 @@ public abstract class TableProducer
   {
 
 
-    double w = Math.min (outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
-    double h = Math.min (outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
-    Rectangle2D rc = new Rectangle2D.Double(
-        outer.getX() + inner.getX(),
-        outer.getY() + inner.getY(),
+    float w = (float) Math.min (outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
+    float h = (float) Math.min (outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
+    Rectangle2D rc = new Rectangle2D.Float(
+        (float) (outer.getX() + inner.getX()),
+        (float) (outer.getY() + inner.getY()),
         Math.max(0, w),
         Math.max(0, h));
 

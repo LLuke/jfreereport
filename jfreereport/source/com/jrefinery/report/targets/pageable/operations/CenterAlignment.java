@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CenterAlignment.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: CenterAlignment.java,v 1.6 2003/02/07 22:40:41 taqua Exp $
  *
  * Changes
  * -------
@@ -72,10 +72,10 @@ public class CenterAlignment extends HorizontalBoundsAlignment
       throw new NullPointerException("Inner Bound must not be null");
     }
     inner = referenceBounds.createIntersection(inner);
-    double x = referenceBounds.getX() + ((referenceBounds.getWidth() - inner.getWidth()) / 2);
-    double y = inner.getY();
-    double w = inner.getWidth();
-    double h = inner.getHeight();
-    return new Rectangle2D.Double(x, y, w, h);
+    float x = (float) (referenceBounds.getX() + ((referenceBounds.getWidth() - inner.getWidth()) / 2));
+    float y = (float) inner.getY();
+    float w = (float) inner.getWidth();
+    float h = (float) inner.getHeight();
+    return new Rectangle2D.Float(x, y, w, h);
   }
 }

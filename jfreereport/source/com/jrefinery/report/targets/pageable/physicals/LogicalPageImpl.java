@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.22 2003/02/09 22:49:40 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.23 2003/02/10 19:33:51 taqua Exp $
  *
  * Changes
  * -------
@@ -142,9 +142,9 @@ public class LogicalPageImpl implements LogicalPage
     for (int i = 0; i < physicalPage.length; i++)
     {
       physicalPage[i] = new PhysicalPage(phys,
-                                         new Rectangle2D.Double(0, 0,
-                                                                phys.getImageableWidth(),
-                                                                phys.getImageableHeight()));
+                                         new Rectangle2D.Float(0, 0,
+                                                                (float) phys.getImageableWidth(),
+                                                                (float) phys.getImageableHeight()));
     }
   }
 
@@ -322,8 +322,9 @@ public class LogicalPageImpl implements LogicalPage
     }
 
     PageFormat pf = getPageFormat();
-    Rectangle2D logicalPageBounds = new Rectangle2D.Double(0, 0, pf.getImageableWidth(),
-                                                           pf.getImageableHeight());
+    Rectangle2D logicalPageBounds = new Rectangle2D.Float(0, 0,
+                                                          (float) pf.getImageableWidth(),
+                                                          (float) pf.getImageableHeight());
     Rectangle2D ibounds = logicalPageBounds.createIntersection(bounds);
 
     if (addOperationComments)
@@ -360,11 +361,11 @@ public class LogicalPageImpl implements LogicalPage
    */
   private Rectangle2D translateSubRect(Rectangle2D outer, Rectangle2D inner)
   {
-    double w = Math.min (outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
-    double h = Math.min (outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
-    Rectangle2D rc = new Rectangle2D.Double(
-        outer.getX() + inner.getX(),
-        outer.getY() + inner.getY(),
+    float w = (float) Math.min (outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
+    float h = (float) Math.min (outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
+    Rectangle2D rc = new Rectangle2D.Float(
+        (float) (outer.getX() + inner.getX()),
+        (float) (outer.getY() + inner.getY()),
         Math.max(0, w),
         Math.max(0, h));
 
@@ -409,7 +410,6 @@ public class LogicalPageImpl implements LogicalPage
                               + " -> " + e.getName()));
       operations.addOperation(new PhysicalOperation.AddComment (" ...  Element: " + drawBounds));
     }
-
 
     ElementLayoutInformation eli = new ElementLayoutInformation(drawBounds);
 
@@ -497,9 +497,9 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @return the defined width of this logical page.
    */
-  public double getWidth ()
+  public float getWidth ()
   {
-    return getPageFormat().getImageableWidth();
+    return (float) getPageFormat().getImageableWidth();
   }
 
 
@@ -509,9 +509,9 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @return the defined height of this logical page.
    */
-  public double getHeight ()
+  public float getHeight ()
   {
-    return getPageFormat().getImageableHeight();
+    return (float) getPageFormat().getImageableHeight();
   }
 
   /**

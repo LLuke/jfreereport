@@ -2,7 +2,7 @@
  * Date: Jan 25, 2003
  * Time: 5:53:06 AM
  *
- * $Id: RTFImageCellData.java,v 1.2 2003/02/02 23:43:53 taqua Exp $
+ * $Id: RTFImageCellData.java,v 1.3 2003/02/10 19:33:52 taqua Exp $
  */
 package com.jrefinery.report.targets.table.rtf;
 
@@ -73,7 +73,7 @@ public class RTFImageCellData extends RTFCellData
 
     try
     {
-      Rectangle2D drawArea = new Rectangle2D.Double (0, 0, bounds.getWidth(), bounds.getHeight());
+      Rectangle2D drawArea = new Rectangle2D.Float (0, 0, (float) bounds.getWidth(), (float) bounds.getHeight());
       if ((imageRef.getSourceURL() != null) &&
           (drawArea.contains(imageBounds)) &&
           isSupportedImageFormat(imageRef.getSourceURL()))

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.31 2003/02/04 17:56:06 taqua Exp $
+ * $Id: ItemFactory.java,v 1.32 2003/02/05 15:38:12 taqua Exp $
  *
  * Changes
  * -------
@@ -828,7 +828,7 @@ public class ItemFactory
     {
       // scale the line, is horizontal
       shape.setLine(0, shape.getY1(), 100, shape.getY2());
-      Rectangle2D bounds = new Rectangle2D.Double (0, shape.getY1(), -100, 0);
+      Rectangle2D bounds = new Rectangle2D.Float (0, (float)shape.getY1(), -100, 0);
       return createShapeElement(name, bounds, paint, stroke, shape, true, false, true);
     }
     else
@@ -1685,7 +1685,7 @@ public class ItemFactory
   public static void setElementBounds (Element e, Rectangle2D bounds)
   {
     e.getStyle().setStyleProperty(StaticLayoutManager.ABSOLUTE_POS,
-                                  new Point2D.Double(bounds.getX(), bounds.getY()));
+                                  new Point2D.Float((float) bounds.getX(), (float) bounds.getY()));
     e.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
                                   new FloatDimension((float) bounds.getWidth(),
                                                      (float) bounds.getHeight()));

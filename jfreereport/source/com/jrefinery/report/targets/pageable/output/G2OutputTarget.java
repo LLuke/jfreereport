@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.18 2003/02/07 22:40:43 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.19 2003/02/10 19:33:51 taqua Exp $
  *
  * Changes
  * -------
@@ -313,10 +313,10 @@ public class G2OutputTarget extends AbstractOutputTarget
     this.currentPage = page;
     Rectangle2D pageBounds = currentPage.getBounds();
     PageFormat currentPageFormat = page.getPageFormat();
-    Rectangle2D bounds = new Rectangle2D.Double (currentPageFormat.getImageableX(),
-                                                 currentPageFormat.getImageableY(),
-                                                 currentPageFormat.getImageableWidth() + 1,
-                                                 currentPageFormat.getImageableHeight() + 1);
+    Rectangle2D bounds = new Rectangle2D.Float ((float) currentPageFormat.getImageableX(),
+                                                 (float) currentPageFormat.getImageableY(),
+                                                 (float) currentPageFormat.getImageableWidth() + 1,
+                                                 (float) currentPageFormat.getImageableHeight() + 1);
     g2.clip(bounds);
     g2.transform(AffineTransform.getTranslateInstance(currentPageFormat.getImageableX()
                                                       + pageBounds.getX(),
@@ -448,9 +448,9 @@ public class G2OutputTarget extends AbstractOutputTarget
       AffineTransform transform = g2.getTransform();
       try
       {
-        g2.clip(new Rectangle2D.Double (0, 0,
-                    (Math.min (bounds.getWidth(), myBounds.getWidth())),
-                    (Math.min (bounds.getHeight(), myBounds.getHeight()))));
+        g2.clip(new Rectangle2D.Float (0, 0,
+                    (float) (Math.min (bounds.getWidth(), myBounds.getWidth())),
+                    (float) (Math.min (bounds.getHeight(), myBounds.getHeight()))));
         g2.transform(AffineTransform.getScaleInstance(image.getScaleX(), image.getScaleY()));
         g2.drawImage(image.getImage(), (int) -myBounds.getX(), (int) -myBounds.getY(), null);
       }
@@ -483,21 +483,21 @@ public class G2OutputTarget extends AbstractOutputTarget
     // perfect enough for printing ...
     FontMetrics fm = g2.getFontMetrics();
     float baseline = (float) fm.getAscent();
-    double cFact = getFont().getFont().getSize2D() / fm.getHeight();
+    float cFact = getFont().getFont().getSize2D() / fm.getHeight();
 
-    float correctedBaseline = (float) (baseline * cFact);
+    float correctedBaseline = baseline * cFact;
     g2.drawString(text, 0.0f, correctedBaseline);
 
     if (getFont().isUnderline())
     {
       float l = (getFont().getFont().getSize2D() + correctedBaseline) / 2.0f;
-      Line2D line = new Line2D.Double(0, l, getOperationBounds().getWidth(), l);
+      Line2D line = new Line2D.Float(0, l, (float) getOperationBounds().getWidth(), l);
       g2.draw(line);
     }
     if (getFont().isStrikeThrough())
     {
       float l = getFont().getFont().getSize2D();
-      Line2D line = new Line2D.Double(0, l/2, getOperationBounds().getWidth(), l/2);
+      Line2D line = new Line2D.Float(0, l/2, (float) getOperationBounds().getWidth(), l/2);
       g2.draw(line);
     }
   }

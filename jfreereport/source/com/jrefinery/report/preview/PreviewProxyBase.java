@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 6:50:48 PM
  *
- * $Id: PreviewProxyBase.java,v 1.6 2003/02/08 19:32:06 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.7 2003/02/16 19:02:38 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -685,7 +685,7 @@ public class PreviewProxyBase extends JComponent
   private WrapperAction gotoAction;
 
   /** The available zoom factors. */
-  private static final double[] ZOOM_FACTORS = {0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 4.0};
+  private static final float[] ZOOM_FACTORS = {0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 2.0f, 3.0f, 4.0f};
 
   /** The default zoom index (corresponds to a zoomFactor of 1.0. */
   private static final int DEFAULT_ZOOM_INDEX = 3;
@@ -993,7 +993,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @return The current zoom factor.
    */
-  public double getZoomFactor()
+  public float getZoomFactor()
   {
     return ZOOM_FACTORS[zoomIndex];
   }

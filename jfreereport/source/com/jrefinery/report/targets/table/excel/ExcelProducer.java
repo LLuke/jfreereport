@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.7 2003/02/04 17:56:31 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.8 2003/02/17 22:01:44 taqua Exp $
  *
  * Changes
  * -------
@@ -174,7 +174,7 @@ public class ExcelProducer extends TableProducer
   {
     for (int i = 0; i < layout.getWidth(); i++)
     {
-      double width = (layout.getColumnEnd(i) - layout.getColumnStart(i));
+      float width = (layout.getColumnEnd(i) - layout.getColumnStart(i));
       sheet.setColumnWidth((short) (i), (short) (width * XFACTOR));
     }
 
@@ -182,7 +182,7 @@ public class ExcelProducer extends TableProducer
     {
       HSSFRow row = sheet.createRow((short) y);
 
-      double lastRowHeight = (layout.getRowEnd(y) - layout.getRowStart(y));
+      float lastRowHeight = (layout.getRowEnd(y) - layout.getRowStart(y));
       row.setHeight((short) (lastRowHeight * YFACTOR));
 
       for (int x = 0; x < layout.getWidth(); x++)

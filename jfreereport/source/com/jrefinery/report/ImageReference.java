@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.23 2003/02/04 17:56:06 taqua Exp $
+ * $Id: ImageReference.java,v 1.24 2003/02/05 15:38:12 taqua Exp $
  *
  * Changes:
  * --------
@@ -74,7 +74,7 @@ public class ImageReference implements Serializable, Cloneable
   private URL url;
 
   /** The area of the unscaled image that hould be displayed. */
-  private Rectangle2D bounds = new Rectangle2D.Double();
+  private Rectangle2D bounds = new Rectangle2D.Float();
   
   /** The width scale factor. */
   private float scaleX = 1.0f; 
@@ -135,7 +135,7 @@ public class ImageReference implements Serializable, Cloneable
       }
     }
 
-    setBounds (new Rectangle2D.Double(0, 0, image.getWidth(null), image.getHeight(null)));
+    setBounds (new Rectangle2D.Float(0, 0, image.getWidth(null), image.getHeight(null)));
     this.width = image.getWidth(null);
     this.height = image.getHeight(null);
   }
@@ -155,7 +155,7 @@ public class ImageReference implements Serializable, Cloneable
     this.image = img;
     WaitingImageObserver obs = new WaitingImageObserver(image);
     obs.waitImageLoaded();
-    setBounds (new Rectangle2D.Double(0, 0, image.getWidth(null), image.getHeight(null)));
+    setBounds (new Rectangle2D.Float(0, 0, image.getWidth(null), image.getHeight(null)));
     this.width = image.getWidth(null);
     this.height = image.getHeight(null);
   }

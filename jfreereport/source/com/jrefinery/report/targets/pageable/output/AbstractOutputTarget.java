@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.8 2003/02/07 22:40:43 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.9 2003/02/10 19:33:50 taqua Exp $
  *
  * Changes
  * -------
@@ -118,7 +118,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     properties = new Hashtable();
     this.logicalPage = new AlignedLogicalPageWrapper(logicalPage.newInstance(), this);
     this.logicalPage.setOutputTarget(this);
-    operationBounds = new Rectangle2D.Double();
+    operationBounds = new Rectangle2D.Float();
 
     contentFactory = createContentFactory();
   }

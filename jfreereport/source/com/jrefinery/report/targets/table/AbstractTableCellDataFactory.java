@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTableCellDataFactory.java,v 1.4 2003/02/10 21:23:40 taqua Exp $
+ * $Id: AbstractTableCellDataFactory.java,v 1.5 2003/02/11 20:20:15 taqua Exp $
  *
  * Changes
  * -------
@@ -95,8 +95,8 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
     TableCellBackground bg = null;
 
     Color color = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
-    Point2D point = new Point2D.Double(bounds.getX(), bounds.getY());
-    Dimension2D dim = new FloatDimension(bounds.getWidth(), bounds.getHeight());
+    Point2D point = new Point2D.Float((float) bounds.getX(), (float) bounds.getY());
+    Dimension2D dim = new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight());
 
     Shape s = ShapeTransform.transformShape(shape,
                                             e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),

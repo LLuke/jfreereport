@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BottomAlignment.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: BottomAlignment.java,v 1.5 2003/02/07 22:40:41 taqua Exp $
  *
  * Changes
  * -------
@@ -72,10 +72,10 @@ public class BottomAlignment extends VerticalBoundsAlignment
       throw new NullPointerException("BottomAlignment.align(...): null not permitted.");
     }
     r = referenceBounds.createIntersection(r);
-    double x = r.getX();
-    double y = referenceBounds.getY() + referenceBounds.getHeight() - r.getHeight();
-    double w = r.getWidth();
-    double h = r.getHeight();
-    return new Rectangle2D.Double(x, y, w, h);
+    float x = (float) r.getX();
+    float y = (float) (referenceBounds.getY() + referenceBounds.getHeight() - r.getHeight());
+    float w = (float) r.getWidth();
+    float h = (float) r.getHeight();
+    return new Rectangle2D.Float(x, y, w, h);
   }
 }

@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.3 2003/02/02 23:43:50 taqua Exp $
+ * $Id: ReportFactory.java,v 1.4 2003/02/04 17:56:14 taqua Exp $
  *
  * Changes
  * -------
@@ -256,19 +256,19 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
     report.setName(name);
 
     PageFormat format = report.getDefaultPageFormat();
-    double defTopMargin = format.getImageableY();
-    double defBottomMargin = format.getHeight() - format.getImageableHeight()
-                                                - format.getImageableY();
-    double defLeftMargin = format.getImageableX();
-    double defRightMargin = format.getWidth() - format.getImageableWidth()
-                                              - format.getImageableX();
+    float defTopMargin = (float) format.getImageableY();
+    float defBottomMargin = (float) (format.getHeight() - format.getImageableHeight()
+                                                - format.getImageableY());
+    float defLeftMargin = (float) format.getImageableX();
+    float defRightMargin = (float) (format.getWidth() - format.getImageableWidth()
+                                              - format.getImageableX());
 
     format = createPageFormat(format, atts);
 
-    defTopMargin = ParserUtil.parseDouble(atts.getValue(TOPMARGIN_ATT), defTopMargin);
-    defBottomMargin = ParserUtil.parseDouble(atts.getValue(BOTTOMMARGIN_ATT), defBottomMargin);
-    defLeftMargin = ParserUtil.parseDouble(atts.getValue(LEFTMARGIN_ATT), defLeftMargin);
-    defRightMargin = ParserUtil.parseDouble(atts.getValue(RIGHTMARGIN_ATT), defRightMargin);
+    defTopMargin = ParserUtil.parseFloat(atts.getValue(TOPMARGIN_ATT), defTopMargin);
+    defBottomMargin = ParserUtil.parseFloat(atts.getValue(BOTTOMMARGIN_ATT), defBottomMargin);
+    defLeftMargin = ParserUtil.parseFloat(atts.getValue(LEFTMARGIN_ATT), defLeftMargin);
+    defRightMargin = ParserUtil.parseFloat(atts.getValue(RIGHTMARGIN_ATT), defRightMargin);
 
     Paper p = format.getPaper();
     switch (format.getOrientation())

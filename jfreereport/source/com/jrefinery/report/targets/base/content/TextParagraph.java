@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.5 2003/02/07 22:35:23 taqua Exp $
+ * $Id: TextParagraph.java,v 1.6 2003/02/08 20:43:45 taqua Exp $
  *
  * Changes
  * -------
@@ -117,9 +117,9 @@ public class TextParagraph extends ContentContainer
     }
 
 
-    double x = maxBounds.getX();
-    double y = maxBounds.getY();
-    double usedHeight = 0;
+    float x = (float) maxBounds.getX();
+    float y = (float) maxBounds.getY();
+    float usedHeight = 0;
 
     int maxLines = (int) Math.floor(maxBounds.getHeight() / getSizeCalculator().getLineHeight());
     if (maxLines > 0)
@@ -130,9 +130,9 @@ public class TextParagraph extends ContentContainer
         // create Lines
         String lineText = (String) l.get(i);
         TextLine line = new TextLine(getSizeCalculator(), lineHeight);
-        double height = maxBounds.getHeight();
-        line.setContent(lineText, new Rectangle2D.Double(x, y + usedHeight,
-                                                         maxBounds.getWidth(), height - usedHeight));
+        float height = (float) maxBounds.getHeight();
+        line.setContent(lineText, new Rectangle2D.Float(x, y + usedHeight,
+                                                         (float) maxBounds.getWidth(), height - usedHeight));
         usedHeight += line.getBounds().getHeight();
         if (line.getBounds().getHeight() > 0)
         {
@@ -140,8 +140,8 @@ public class TextParagraph extends ContentContainer
         }
       }
     }
-    setBounds(new Rectangle2D.Double(maxBounds.getX(), maxBounds.getY(),
-                                     maxBounds.getWidth(), usedHeight));
+    setBounds(new Rectangle2D.Float((float) maxBounds.getX(), (float) maxBounds.getY(),
+                                     (float) maxBounds.getWidth(), usedHeight));
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.28 2003/02/17 16:07:21 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.29 2003/02/17 16:14:17 taqua Exp $
  *
  * Changes
  * -------
@@ -741,6 +741,7 @@ public class SimplePageLayouter extends PageLayouter
           getLogicalPage().replaySpool(spooledBand);
           spooledBand = null;
         }
+        Log.debug ("Printing on : " + bounds);
         getLogicalPage().addBand(bounds, band);
         cursor.advance(height);
         return true;

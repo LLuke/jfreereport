@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.22 2003/02/10 19:33:51 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.23 2003/02/12 13:34:46 taqua Exp $
  *
  * Changes
  * -------
@@ -433,7 +433,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     try
     {
-      Rectangle2D drawArea = new Rectangle2D.Double (0, 0, bounds.getWidth(), bounds.getHeight());
+      Rectangle2D drawArea = new Rectangle2D.Float (0, 0, (float) bounds.getWidth(), (float) bounds.getHeight());
       if ((imageRef.getSourceURL() != null) && (drawArea.contains(imageBounds)))
       {
         return Image.getInstance(imageRef.getSourceURL());
@@ -1197,9 +1197,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   {
     super.setOperationBounds(bounds);
     internalOperationBounds
-        = new Rectangle2D.Double (bounds.getX() + currentPageFormat.getImageableX(),
-                                  bounds.getY() + currentPageFormat.getImageableY(),
-                                  bounds.getWidth(), bounds.getHeight());
+        = new Rectangle2D.Float ((float) (bounds.getX() + currentPageFormat.getImageableX()),
+                                  (float) (bounds.getY() + currentPageFormat.getImageableY()),
+                                  (float) bounds.getWidth(), (float) bounds.getHeight());
   }
 
   /**

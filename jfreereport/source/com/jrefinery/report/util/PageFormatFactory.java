@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.16 2003/02/05 17:56:03 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.17 2003/02/08 19:32:06 taqua Exp $
  *
  * Changes
  * -------
@@ -784,9 +784,11 @@ public class PageFormatFactory
   {
     Integer orientation = new Integer (format.getOrientation());
     Paper p = format.getPaper();
-    FloatDimension fdim = new FloatDimension(p.getWidth(), p.getHeight());
-    Rectangle2D rect = new Rectangle2D.Double(p.getImageableX(), p.getImageableY(),
-                                              p.getImageableWidth(), p.getImageableHeight());
+    FloatDimension fdim = new FloatDimension((float) p.getWidth(), (float) p.getHeight());
+    Rectangle2D rect = new Rectangle2D.Float((float) p.getImageableX(),
+                                             (float) p.getImageableY(),
+                                             (float) p.getImageableWidth(),
+                                             (float) p.getImageableHeight());
     return new Object[] { orientation, fdim, rect };
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContentFactoryModule.java,v 1.1 2003/02/07 22:40:39 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
  *
  * Changes
  * -------
@@ -113,10 +113,10 @@ public class ImageContentFactoryModule implements ContentFactoryModule
         }
       }
     }
-    Rectangle2D irBounds = new Rectangle2D.Double(point.getX(),
-                                                  point.getY(),
-                                                  ir.getBoundsScaled().getWidth(),
-                                                  ir.getBoundsScaled().getHeight());
+    Rectangle2D irBounds = new Rectangle2D.Float((float) point.getX(),
+                                                  (float) point.getY(),
+                                                  (float) ir.getBoundsScaled().getWidth(),
+                                                  (float) ir.getBoundsScaled().getHeight());
     return new ImageContent(ir, irBounds);
   }
 }

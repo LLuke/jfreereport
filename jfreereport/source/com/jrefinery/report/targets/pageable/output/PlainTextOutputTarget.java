@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PlainTextOutputTarget.java,v 1.8 2003/02/07 22:40:43 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.9 2003/02/10 21:22:59 taqua Exp $
  *
  * Changes
  * -------
@@ -90,19 +90,6 @@ import java.io.IOException;
  */
 public class PlainTextOutputTarget extends AbstractOutputTarget
 {
-
-  /** The characters per inch used for this text  (usually 10, 12, 15, 17 or 20 ) */
-  public static final String CPI_PROPERTY =
-      "com.jrefinery.report.target.pageable.output.PlainTextOutputTarget.CPI";
-  /** The default character spacing is 10 CPI */
-  public static final Integer CPI_PROPERTY_DEFAULT = new Integer(10);
-
-  /** The lines per inch used for this text (usually 6 or 8) */
-  public static final String LPI_PROPERTY =
-      "com.jrefinery.report.target.pageable.output.PlainTextOutputTarget.LPI";
-  /** The default linespacing is 6 LPI */
-  public static final Integer LPI_PROPERTY_DEFAULT = new Integer(6);
-
   /**
    * A state of a Graphics2D object. This does not store clipping regions or advanced
    * properties.
@@ -193,7 +180,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
       if (endPos < lineStartPos) throw new IllegalArgumentException("LineEnd < LineStart");
       if (endPos > text.length()) throw new IllegalArgumentException("EndPos > TextLength");
 
-      return characterWidth * (endPos - lineStartPos);
+      return characterWidth * ((float)(endPos - lineStartPos));
     }
 
     /**
@@ -300,11 +287,11 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     try
     {
-      Integer lpi = (Integer) getProperty(LPI_PROPERTY, LPI_PROPERTY_DEFAULT);
-      Integer cpi = (Integer) getProperty(CPI_PROPERTY, CPI_PROPERTY_DEFAULT);
       // 1 inch = 72 point
-      characterWidth = (72f / cpi.floatValue());
-      characterHeight = (72f / lpi.floatValue());
+      characterWidth = (72f / (float)commandSet.getDefaultCPI());
+      characterHeight = (72f / (float) commandSet.getDefaultLPI());
+      Log.debug ("CharacterWidth:  " + characterWidth);
+      Log.debug ("CharacterHeight: " + characterHeight);
     }
     catch (Exception e)
     {
@@ -345,6 +332,13 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     currentPageHeight = (int) (page.getPageFormat().getImageableHeight() / characterHeight);
     currentPageWidth = (int) (page.getPageFormat().getImageableWidth() / characterWidth);
+
+    /*
+    if ((currentPageHeight * characterHeight) != page.getPageFormat().getImageableHeight() )
+      throw new IllegalStateException("Vertical Alignment is not valid");
+    if ((currentPageWidth * characterWidth) != page.getPageFormat().getImageableWidth() )
+      throw new IllegalStateException("Horizontal Alignment is not valid");
+    */
 
     this.pageBuffer = new PlainTextPage(currentPageWidth, currentPageHeight, getCommandSet());
     savedState = new PlainTextState(this);
@@ -454,10 +448,10 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     Rectangle2D bounds = getOperationBounds();
 
-    int x = (int) Math.floor(bounds.getX() / characterWidth);
-    int y = (int) Math.floor(bounds.getY() / characterHeight);
-    int w = (int) Math.floor(bounds.getWidth() / characterWidth);
-
+    int x = (int) Math.floor((float) bounds.getX() / characterWidth);
+    int y = (int) Math.floor((float) bounds.getY() / characterHeight);
+    int w = (int) Math.floor((float) bounds.getWidth() / characterWidth);
+    
     pageBuffer.addTextChunk(x, y, w, text, getFont());
   }
 
@@ -508,38 +502,14 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Configures the output target. Valid configuration keys are CPI_PROPERTY and
-   * LPI_PROPERTY defining the font of the output.
+   * Does nothing, the OutputTarget is configured by supplying a valid
+   * PrinterCommand set.
    *
    * @param config  the configuration.
    */
   public void configure(ReportConfiguration config)
   {
-    updateIntProperty(CPI_PROPERTY, config);
-    updateIntProperty(LPI_PROPERTY, config);
   }
-
-  /**
-   * Updates a property.
-   *
-   * @param key  the key.
-   * @param config  the config.
-   */
-  private void updateIntProperty(String key, ReportConfiguration config)
-  {
-    String configString = config.getConfigProperty(key);
-    try
-    {
-      Integer configValue = new Integer(configString);
-      String propertyValue = (String) getProperty(key, configValue);
-      setProperty(key, propertyValue);
-    }
-    catch (NumberFormatException nfe)
-    {
-      Log.warn(new Log.SimpleMessage("ReportConfiguration value ", key, " is no valid integer"));
-    }
-  }
-
 
   /**
    * Creates a size calculator for the current state of the output target.  The calculator

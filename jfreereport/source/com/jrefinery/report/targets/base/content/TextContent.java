@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.5 2003/02/07 22:35:23 taqua Exp $
+ * $Id: TextContent.java,v 1.6 2003/02/08 20:43:45 taqua Exp $
  *
  * Changes
  * -------
@@ -74,11 +74,11 @@ public class TextContent extends ContentContainer
     super (bounds);
     this.sizeCalculator = ot;
 
-    double x = bounds.getX();
-    double y = bounds.getY();
-    double w = bounds.getWidth();
-    double h = bounds.getHeight();
-    double usedHeight = 0;
+    float x = (float) bounds.getX();
+    float y = (float) bounds.getY();
+    float w = (float) bounds.getWidth();
+    float h = (float) bounds.getHeight();
+    float usedHeight = 0;
 
     if (w != 0)
     {
@@ -87,7 +87,7 @@ public class TextContent extends ContentContainer
       {
         TextParagraph p = new TextParagraph(getSizeCalculator(), lineHeight);
         p.setContent((String) paragraphs.get(i),
-                      new Rectangle2D.Double(x, y + usedHeight, w, h - usedHeight));
+                      new Rectangle2D.Float(x, y + usedHeight, w, h - usedHeight));
         usedHeight += p.getBounds().getHeight();
         addContentPart(p);
       }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AlignedLogicalPageWrapper.java,v 1.3 2003/02/07 22:40:40 taqua Exp $
+ * $Id: AlignedLogicalPageWrapper.java,v 1.4 2003/02/09 18:43:05 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ import com.jrefinery.report.targets.base.layout.LayoutSupport;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
+import java.awt.print.Paper;
 
 /**
  * The AlignedLogicalPageWrapper corrects all values of the wrapped LogicalPage
@@ -82,12 +83,12 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    * @param boundry the alignment boundry
    * @return the aligned value
    */
-  private double alignDown (double value, double boundry)
+  private float alignDown (float value, float boundry)
   {
     if (boundry == 0)
       return value;
 
-    return Math.floor(value / boundry) * boundry;
+    return (float) Math.floor(value / boundry) * boundry;
   }
 
   /**
@@ -95,7 +96,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    *
    * @return the page width.
    */
-  public double getWidth()
+  public float getWidth()
   {
     return alignDown(logicalPage.getWidth(), layoutSupport.getHorizontalAlignmentBorder());
   }
@@ -105,7 +106,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    *
    * @return the page height.
    */
-  public double getHeight()
+  public float getHeight()
   {
     return alignDown(logicalPage.getHeight(), layoutSupport.getVerticalAlignmentBorder());
   }
@@ -190,13 +191,18 @@ public class AlignedLogicalPageWrapper implements LogicalPage
   }
 
   /**
-   * Returns the physical page format.
+   * Returns the aligned physical page format.
    *
    * @return the physical page format.
    */
   public PageFormat getPhysicalPageFormat()
   {
-    return logicalPage.getPhysicalPageFormat();
+    PageFormat pf = (PageFormat) logicalPage.getPhysicalPageFormat().clone();
+    Paper p = pf.getPaper();
+    p.setSize(alignDown((float) p.getWidth(), layoutSupport.getHorizontalAlignmentBorder()),
+              alignDown((float) p.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
+    pf.setPaper(p);
+    return pf;
   }
 
   /**

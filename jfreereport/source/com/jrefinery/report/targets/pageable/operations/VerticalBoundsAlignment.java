@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: VerticalBoundsAlignment.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
+ * $Id: VerticalBoundsAlignment.java,v 1.5 2003/02/07 22:40:43 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import java.awt.geom.Rectangle2D;
 public abstract class VerticalBoundsAlignment extends BoundsAlignment
 {
   /** The horizontal shift. */
-  private double horizontalShift;
+  private float horizontalShift;
 
   /**
    * Creates a new horizontal alignment object.
@@ -67,7 +67,7 @@ public abstract class VerticalBoundsAlignment extends BoundsAlignment
    *
    * @return the horizontal shift.
    */
-  public double getHorizontalShift()
+  public float getHorizontalShift()
   {
     return horizontalShift;
   }
@@ -80,7 +80,7 @@ public abstract class VerticalBoundsAlignment extends BoundsAlignment
   public void calculateShift (Rectangle2D bounds)
   {
     Rectangle2D alignBounds = align(bounds);
-    this.horizontalShift = alignBounds.getY() - bounds.getY();
+    this.horizontalShift = (float) (alignBounds.getY() - bounds.getY());
   }
 
   /**

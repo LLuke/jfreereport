@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.39 2003/02/04 17:56:19 taqua Exp $
+ * $Id: ReportPane.java,v 1.40 2003/02/09 18:43:05 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -103,7 +103,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
   public static final String BORDER_PROPERTY = "borderPainted";
 
   /** The size of the paper border. */
-  private static final double PAPERBORDER_PIXEL = 6;
+  private static final float PAPERBORDER_PIXEL = 6f;
 
   /**
    * For performance reasons, I buffer the rendered image and
@@ -115,7 +115,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
   private int pageNumber;
 
   /** The current zoom-factor. */
-  private double zoomFactor;
+  private float zoomFactor;
 
   /** The number of pages required for the report given the current page format. */
   private int pageCount;
@@ -189,7 +189,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
     borderPainted = false;
     pageNumber = 1;
-    setZoomFactor (1.0);
+    setZoomFactor (1.0f);
   }
 
   public boolean isHandleInterruptedState()
@@ -400,7 +400,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
    * @param factor The new factor;
    *
    */
-  public void setZoomFactor (double factor)
+  public void setZoomFactor (float factor)
   {
     double oldzoom = zoomFactor;
     zoomFactor = factor;
@@ -411,6 +411,16 @@ public class ReportPane extends JComponent implements Printable, Pageable
     int h = (int) ((pageFormat.getHeight () + PAPERBORDER_PIXEL) * zoomFactor);
     super.setSize (w, h);
     firePropertyChange (ZOOMFACTOR_PROPERTY, new Double (oldzoom), new Double (factor));
+  }
+
+  /**
+   * Gets the currently set zoom factor.
+   *
+   * @return the zoom factor.
+   */
+  public float getZoomFactory ()
+  {
+    return zoomFactor;
   }
 
   /**
@@ -451,14 +461,14 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
         Dimension size = getSize ();
 
-        double outerX = 0;
-        double outerY = 0;
+        float outerX = 0;
+        float outerY = 0;
 
-        double realouterW = size.getWidth () - 1;
-        double realouterH = size.getHeight () - 1;
+        float realouterW = (float) size.getWidth () - 1;
+        float realouterH = (float) size.getHeight () - 1;
 
-        double outerW = pageFormat.getWidth ();
-        double outerH = pageFormat.getHeight ();
+        float outerW = (float) pageFormat.getWidth ();
+        float outerH = (float) pageFormat.getHeight ();
 
         float innerX = (float) pageFormat.getImageableX ();
         float innerY = (float) pageFormat.getImageableY ();
@@ -488,13 +498,13 @@ public class ReportPane extends JComponent implements Printable, Pageable
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         /** Prepare background **/
-        Rectangle2D pageArea = new Rectangle2D.Double (outerX, outerY, realouterW, realouterH);
+        Rectangle2D pageArea = new Rectangle2D.Float (outerX, outerY, realouterW, realouterH);
         g2.setPaint (getBackground ());
         g2.fill (pageArea);
         g2.transform (AffineTransform.getScaleInstance (zoomFactor, zoomFactor));
 
         /** Prepare background **/
-        pageArea = new Rectangle2D.Double (outerX, outerY, outerW - 2, outerH - 2);
+        pageArea = new Rectangle2D.Float (outerX, outerY, outerW - 2, outerH - 2);
 
         g2.setPaint (Color.white);
         g2.fill (pageArea);
@@ -545,7 +555,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
         /** Paint Page Shadow */
         Rectangle2D southborder =
-                new Rectangle2D.Double (
+                new Rectangle2D.Float (
                         outerX + PAPERBORDER_PIXEL - 2,
                         outerY + outerH - 2,
                         outerW,
@@ -555,7 +565,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
         g2.fill (southborder);
         Rectangle2D eastborder =
-                new Rectangle2D.Double (
+                new Rectangle2D.Float(
                         outerW - 2,
                         outerY - 2 + PAPERBORDER_PIXEL,
                         PAPERBORDER_PIXEL,
@@ -593,11 +603,11 @@ public class ReportPane extends JComponent implements Printable, Pageable
         Rectangle2D transPageArea;
         if (zoomFactor > 1.49)
         {
-          transPageArea = new Rectangle2D.Double (outerX, outerY, outerW - 1, outerH - 1);
+          transPageArea = new Rectangle2D.Float (outerX, outerY, outerW - 1, outerH - 1);
         }
         else
         {
-          transPageArea = new Rectangle2D.Double (outerX, outerY, outerW - 2, outerH - 2);
+          transPageArea = new Rectangle2D.Float (outerX, outerY, outerW - 2, outerH - 2);
         }
 
         g2.setPaint (Color.black);

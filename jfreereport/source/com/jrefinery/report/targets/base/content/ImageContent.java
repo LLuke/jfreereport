@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
+ * $Id: ImageContent.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
  *
  * Changes
  * -------
@@ -127,11 +127,11 @@ public class ImageContent implements Content
     try
     {
       ImageReference ref = (ImageReference) reference.clone();
-      double x = bounds.getX() - this.bounds.getX();
-      double y = bounds.getY() - this.bounds.getY();
-      double w = myBounds.getWidth();
-      double h = myBounds.getHeight();
-      Rectangle2D imageArea = new Rectangle2D.Double(x, y, w, h);
+      float x = (float) (bounds.getX() - this.bounds.getX());
+      float y = (float) (bounds.getY() - this.bounds.getY());
+      float w = (float) myBounds.getWidth();
+      float h = (float) myBounds.getHeight();
+      Rectangle2D imageArea = new Rectangle2D.Float(x, y, w, h);
       ref.setBoundsScaled(imageArea.createIntersection(ref.getBoundsScaled()));
       return new ImageContent(ref, myBounds);
     }

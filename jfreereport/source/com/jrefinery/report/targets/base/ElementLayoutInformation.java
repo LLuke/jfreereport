@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 2:22:18 PM
  *
- * $Id: ElementLayoutInformation.java,v 1.3 2003/02/08 19:32:06 taqua Exp $
+ * $Id: ElementLayoutInformation.java,v 1.4 2003/02/12 13:34:34 taqua Exp $
  */
 package com.jrefinery.report.targets.base;
 
@@ -41,10 +41,10 @@ public class ElementLayoutInformation
     if (rect == null)
       throw new NullPointerException();
 
-    absolutePosition = new Point2D.Double(rect.getX(), rect.getY());
-    maximumSize= new FloatDimension(rect.getWidth(), rect.getHeight());
-    minimumSize= new FloatDimension(rect.getWidth(), rect.getHeight());
-    preferredSize = new FloatDimension(rect.getWidth(), rect.getHeight());
+    absolutePosition = new Point2D.Float((float) rect.getX(), (float) rect.getY());
+    maximumSize= new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
+    minimumSize= new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
+    preferredSize = new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
   }
   /**
    * Creates an ElementLayoutInformation by using the given Rectangle. The preferred
@@ -148,8 +148,8 @@ public class ElementLayoutInformation
     if (pref == null)
       return max;
 
-    return new FloatDimension(Math.min(pref.getWidth(), max.getWidth()),
-                              Math.min(pref.getHeight(), max.getHeight()));
+    return new FloatDimension((float) Math.min(pref.getWidth(), max.getWidth()),
+                              (float) Math.min(pref.getHeight(), max.getHeight()));
   }
 
   /**
@@ -165,8 +165,8 @@ public class ElementLayoutInformation
     if (pref == null)
       return min;
 
-    return new FloatDimension(Math.max(pref.getWidth(), min.getWidth()),
-                              Math.max(pref.getHeight(), min.getHeight()));
+    return new FloatDimension((float) Math.max(pref.getWidth(), min.getWidth()),
+                              (float) Math.max(pref.getHeight(), min.getHeight()));
   }
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandDefaultStyleSheet.java,v 1.8 2003/02/02 23:43:52 taqua Exp $
+ * $Id: BandDefaultStyleSheet.java,v 1.9 2003/02/10 19:33:51 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class BandDefaultStyleSheet extends BandStyleSheet
     super("GlobalBand");
     setStyleProperty(MINIMUMSIZE, new FloatDimension(0, 0));
     setStyleProperty(MAXIMUMSIZE, new FloatDimension(Short.MAX_VALUE, Short.MAX_VALUE));
-    setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, new Point2D.Double(0, 0));
+    setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, new Point2D.Float(0, 0));
     setStyleProperty(BOUNDS, new Rectangle2D.Float());
     setStyleProperty(PAGEBREAK_AFTER, Boolean.FALSE);
     setStyleProperty(PAGEBREAK_BEFORE, Boolean.FALSE);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationFactory.java,v 1.7 2003/02/07 22:40:42 taqua Exp $
+ * $Id: OperationFactory.java,v 1.8 2003/02/09 23:09:15 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ package com.jrefinery.report.targets.pageable.operations;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.Element;
+import com.jrefinery.report.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,6 +133,7 @@ public class OperationFactory
       OperationModule mod = (OperationModule) modules.get (i);
       if (mod.canHandleContent(contentType))
       {
+        // todo element alignment !
         return mod.createOperations(e, value, bounds);
       }
     }

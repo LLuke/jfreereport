@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PrinterCommandSet.java,v 1.6 2003/02/02 23:43:52 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.4 2003/02/10 21:22:59 taqua Exp $
  *
  * Changes
  * -------
@@ -541,7 +541,6 @@ public class PrinterCommandSet
     // CR = (ASCII #13) reset the print position to the start of the line
     // LF = (ASCII #10) scroll down a new line (? Auto-LF feature ?)
     out.write(CARRIAGE_RETURN);
-    Log.debug ("AutoLF == " + isAutoLf());
     if (isAutoLf() == false)
     {
       out.write(LINE_FEED);

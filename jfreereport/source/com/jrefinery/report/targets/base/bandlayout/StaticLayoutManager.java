@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.10 2003/02/16 23:23:43 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.11 2003/02/17 16:07:20 taqua Exp $
  *
  * Changes
  * -------
@@ -234,7 +234,8 @@ public class StaticLayoutManager implements BandLayoutManager
       return bounds;
     }
 
-    Dimension2D parentDim = new FloatDimension(conBounds.getWidth(), conBounds.getHeight());
+    Dimension2D parentDim = new FloatDimension((float) conBounds.getWidth(),
+                                               (float) conBounds.getHeight());
     bounds = correctDimension(bounds, parentDim);
 
     Point2D absPos = correctPoint(
@@ -263,14 +264,14 @@ public class StaticLayoutManager implements BandLayoutManager
       {
         return new FloatDimension();
       }
-      return new FloatDimension(Math.max (minSize.getWidth(), contentBounds.getWidth()),
-                                Math.max (minSize.getHeight(), contentBounds.getHeight()));
+      return new FloatDimension((float) Math.max (minSize.getWidth(), contentBounds.getWidth()),
+                                (float) Math.max (minSize.getHeight(), contentBounds.getHeight()));
     }
     catch (Exception ex)
     {
 //      Log.warn ("Error while calculating the content bounds: ", ex);
-      return new FloatDimension(Math.max (minSize.getWidth(), bounds.getWidth()),
-                                Math.max (minSize.getHeight(), bounds.getHeight()));
+      return new FloatDimension((float) Math.max (minSize.getWidth(), bounds.getWidth()),
+                                (float) Math.max (minSize.getHeight(), bounds.getHeight()));
     }
   }
 
@@ -295,8 +296,8 @@ public class StaticLayoutManager implements BandLayoutManager
       return new FloatDimension(0, 0);
     }
 
-    double height = 0;
-    double width = 0;
+    float height = 0;
+    float width = 0;
 
     // the preferred size of an band can be a relative value. Then this value is
     // relative to the container bounds
@@ -307,22 +308,22 @@ public class StaticLayoutManager implements BandLayoutManager
     if (prefSize != null)
     {
       prefSize = correctDimension(prefSize, containerDims);
-      height = Math.max(height, prefSize.getHeight());
-      width = Math.max(width, prefSize.getWidth());
+      height = (float) Math.max(height, prefSize.getHeight());
+      width = (float) Math.max(width, prefSize.getWidth());
     }
 
     Dimension2D minSize
         = (Dimension2D) b.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
 
     // check for an minimum size and take that into account
-    height = Math.max(height, minSize.getHeight());
-    width = Math.max(width, minSize.getWidth());
+    height = (float) Math.max(height, minSize.getHeight());
+    width = (float) Math.max(width, minSize.getWidth());
 
     // now take the maximum limit defined for that band into account.
     Dimension2D maxSize
         = (Dimension2D) b.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
-    double maxW = Math.min (maxSize.getWidth(), containerDims.getWidth());
-    double maxH = Math.min (maxSize.getHeight(), containerDims.getHeight());
+    float maxW = (float) Math.min (maxSize.getWidth(), containerDims.getWidth());
+    float maxH = (float) Math.min (maxSize.getHeight(), containerDims.getHeight());
 
     // the bounds inherited from the parent, cut down to the maximum size defined
     // for this elements.
@@ -344,19 +345,19 @@ public class StaticLayoutManager implements BandLayoutManager
 
         if (staticWidth)
         {
-          width = Math.max(size.getWidth() + absPos.getX(), width);
+          width = (float)Math.max(size.getWidth() + absPos.getX(), width);
         }
         if (staticHeight)
         {
-          height = Math.max(size.getHeight() + absPos.getY(), height);
+          height =(float) Math.max(size.getHeight() + absPos.getY(), height);
         }
       }
     }
 
     // now apply the minimum limit defined for that band in case the calculated height
     // is lower than the given minimum height.
-    height = Math.max(height, minSize.getHeight());
-    width = Math.max(width, minSize.getWidth());
+    height = Math.max(height, (float) minSize.getHeight());
+    width = Math.max(width, (float) minSize.getWidth());
 
     // now apply the maximum limit defined for that band in case the calculated height
     // is higher than the given max height.
@@ -376,24 +377,24 @@ public class StaticLayoutManager implements BandLayoutManager
 
         if (staticWidth == false)
         {
-          width = Math.max(size.getWidth() + absPos.getX(), width);
+          width = Math.max((float) (size.getWidth() + absPos.getX()), width);
         }
         if (staticHeight == false)
         {
-          height = Math.max(size.getHeight() + absPos.getY(), height);
+          height = Math.max((float) (size.getHeight() + absPos.getY()), height);
         }
       }
     }
 
     // now apply the minimum limit defined for that band in case the calculated height
     // is lower than the given minimum height.
-    height = Math.max(height, minSize.getHeight());
-    width = Math.max(width, minSize.getWidth());
+    height = (float)Math.max(height, minSize.getHeight());
+    width = (float)Math.max(width, minSize.getWidth());
 
     // now take the maximum limit defined for that band into account for a last time.
     // or specifying -140 would be a nice way to kill the layout ...
-    height = Math.min(height, maxSize.getHeight());
-    width = Math.min(width, maxSize.getWidth());
+    height = (float)Math.min(height, maxSize.getHeight());
+    width = (float)Math.min(width, maxSize.getWidth());
 
     // now align the calculated data ...
     FloatDimension fdim =  new FloatDimension(align(width, layoutSupport.getHorizontalAlignmentBorder()),
@@ -401,14 +402,14 @@ public class StaticLayoutManager implements BandLayoutManager
     return fdim;
   }
 
-  private double align (double value, double boundry)
+  private float align (float value, float boundry)
   {
     if (boundry == 0)
     {
       return value;
     }
 
-    return Math.ceil(value / boundry) * boundry;
+    return (float) Math.floor(value / boundry) * boundry;
   }
 
   /**
@@ -432,16 +433,16 @@ public class StaticLayoutManager implements BandLayoutManager
         = correctDimension((Dimension2D) b.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE),
                            containerBounds);
 
-    double height = Math.max(0, minSize.getHeight());
-    double width = Math.max(0, minSize.getWidth());
+    float height = (float)Math.max(0, minSize.getHeight());
+    float width = (float)Math.max(0, minSize.getWidth());
 
   //  Log.debug ("MinimumLayoutSize: " + b.getName() + " > " + minSize);
 
     // now take the maximum limit defined for that band into account.
     Dimension2D maxSize
         = (Dimension2D) b.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
-    double maxW = Math.min (maxSize.getWidth(), containerBounds.getWidth());
-    double maxH = Math.min (maxSize.getHeight(), containerBounds.getHeight());
+    float maxW = (float) Math.min (maxSize.getWidth(), containerBounds.getWidth());
+    float maxH = (float) Math.min (maxSize.getHeight(), containerBounds.getHeight());
 
     // the bounds inherited from the parent, cut down to the maximum size defined
     // for this elements.
@@ -464,24 +465,24 @@ public class StaticLayoutManager implements BandLayoutManager
 
         if (staticWidth)
         {
-          width = Math.max(size.getWidth() + absPos.getX(), width);
+          width = (float)Math.max(size.getWidth() + absPos.getX(), width);
         }
         if (staticHeight)
         {
-          height = Math.max(size.getHeight() + absPos.getY(), height);
+          height = (float)Math.max(size.getHeight() + absPos.getY(), height);
         }
       }
     }
 
     // now apply the minimum limit defined for that band in case the calculated height
     // is lower than the given minimum height.
-    height = Math.max(height, minSize.getHeight());
-    width = Math.max(width, minSize.getWidth());
+    height = (float)Math.max(height, minSize.getHeight());
+    width = (float)Math.max(width, minSize.getWidth());
 
     // now apply the maximum limit defined for that band in case the calculated height
     // is higher than the given max height.
-    height = Math.min(height, maxSize.getHeight());
-    width = Math.min(width, maxSize.getWidth());
+    height = (float)Math.min(height, maxSize.getHeight());
+    width = (float)Math.min(width, maxSize.getWidth());
 
     FloatDimension base = new FloatDimension(width, height);
 
@@ -498,22 +499,22 @@ public class StaticLayoutManager implements BandLayoutManager
 
         if (staticWidth == false)
         {
-          width = Math.max(size.getWidth() + absPos.getX(), width);
+          width = (float)Math.max(size.getWidth() + absPos.getX(), width);
         }
         if (staticHeight == false)
         {
-          height = Math.max(size.getHeight() + absPos.getY(), height);
+          height = (float)Math.max(size.getHeight() + absPos.getY(), height);
         }
       }
     }
     // now apply the minimum limit defined for that band in case the calculated height
     // is lower than the given minimum height.
-    height = Math.max(height, minSize.getHeight());
-    width = Math.max(width, minSize.getWidth());
+    height =(float) Math.max(height, minSize.getHeight());
+    width = (float)Math.max(width, minSize.getWidth());
 
     // now take the maximum limit defined for that band into account for a last time.
-    height = Math.min(height, maxSize.getHeight());
-    width = Math.min(width, maxSize.getWidth());
+    height = (float)Math.min(height, maxSize.getHeight());
+    width = (float)Math.min(width, maxSize.getWidth());
 
     // now align the calculated data ...
     FloatDimension fdim =  new FloatDimension(align(width, layoutSupport.getHorizontalAlignmentBorder()),
@@ -544,8 +545,9 @@ public class StaticLayoutManager implements BandLayoutManager
     }
  //   Log.warn("ParentBounds: " + parentBounds + " > " + b.getName());
 
-    Dimension2D parentDim = new FloatDimension(parentBounds.getWidth(), parentBounds.getHeight());
-    Point2D parentPoint = new Point2D.Double (parentBounds.getX(), parentBounds.getY());
+    Dimension2D parentDim = new FloatDimension((float) parentBounds.getWidth(),
+                                               (float) parentBounds.getHeight());
+    //Point2D parentPoint = new Point2D.Double (parentBounds.getX(), parentBounds.getY());
 
     for (int i = 0; i < elements.length; i++)
     {
@@ -558,10 +560,10 @@ public class StaticLayoutManager implements BandLayoutManager
       //absPos.setLocation(absPos.getX() + parentPoint.getX(), absPos.getY() + parentPoint.getY());
 
       // here apply the maximum bounds ...
-      Rectangle2D bounds = new Rectangle2D.Double(align(absPos.getX(), layoutSupport.getHorizontalAlignmentBorder()),
-                                                  align(absPos.getY(), layoutSupport.getVerticalAlignmentBorder()),
-                                                  align(size.getWidth(), layoutSupport.getHorizontalAlignmentBorder()),
-                                                  align(size.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
+      Rectangle2D bounds = new Rectangle2D.Float(align((float)absPos.getX(), layoutSupport.getHorizontalAlignmentBorder()),
+                                                  align((float)absPos.getY(), layoutSupport.getVerticalAlignmentBorder()),
+                                                  align((float)size.getWidth(), layoutSupport.getHorizontalAlignmentBorder()),
+                                                  align((float)size.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
       BandLayoutManagerUtil.setBounds(e, bounds);
 //      Log.debug ("Bounds Defined: " + e.getName() + " > " + bounds);
 //      Log.debug ("       Points : " + e.getName() + " > " + absPos + " -> "+ parentPoint);
@@ -662,15 +664,15 @@ public class StaticLayoutManager implements BandLayoutManager
    */
   private Dimension2D correctDimension (Dimension2D dim, Dimension2D base)
   {
-    double newWidth = dim.getWidth();
+    float newWidth = (float) dim.getWidth();
     if (dim.getWidth() < 0)
     {
-      newWidth = (dim.getWidth() * base.getWidth() / -100);
+      newWidth = (float)(dim.getWidth() * base.getWidth() / -100);
     }
-    double newHeight = dim.getHeight();
+    float newHeight = (float) dim.getHeight();
     if (dim.getHeight() < 0)
     {
-      newHeight = (dim.getHeight() * base.getHeight() / -100);
+      newHeight = (float) (dim.getHeight() * base.getHeight() / -100);
     }
     return new FloatDimension(newWidth, newHeight);
   }
@@ -697,7 +699,7 @@ public class StaticLayoutManager implements BandLayoutManager
     {
       y = (dim.getY() * base.getHeight() / -100);
     }
-    return new Point2D.Double(x, y);
+    return new Point2D.Float((float) x, (float) y);
   }
 
 }
