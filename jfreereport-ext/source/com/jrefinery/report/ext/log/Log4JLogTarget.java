@@ -17,7 +17,7 @@ public class Log4JLogTarget implements LogTarget
 
   public Log4JLogTarget ()
   {
-    this (Category.getInstance("JFreeReport");
+    this (Category.getInstance("JFreeReport"));
   }
 
   public Log4JLogTarget (Category cat)
