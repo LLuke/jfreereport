@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageSorter.java,v 1.1 2003/09/02 15:06:25 taqua Exp $
+ * $Id: PackageSorter.java,v 1.2 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -71,7 +71,7 @@ public final class PackageSorter
     /** stores the relative position of the module in the global list. */ 
     private int position;
     /** The package state of the to be matched module. */
-    private PackageState state;
+    private final PackageState state;
     /** A list of all directly dependent subsystems. */
     private ArrayList dependSubsystems;
     // direct dependencies, indirect ones are handled by the

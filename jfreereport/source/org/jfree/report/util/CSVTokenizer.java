@@ -30,7 +30,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTokenizer.java,v 1.1 2003/09/02 15:06:25 taqua Exp $
+ * $Id: CSVTokenizer.java,v 1.2 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -131,7 +131,7 @@ public class CSVTokenizer implements Enumeration
    * @param theQuate the quate
    *        (CSVTokenizer.SINGLE_QUATE, CSVTokenizer.DOUBLE_QUATE, etc.).
    */
-  public CSVTokenizer(String aString, String theSeparator, String theQuate)
+  public CSVTokenizer(final String aString, final String theSeparator, final String theQuate)
   {
     if (aString == null)
     {
@@ -161,7 +161,7 @@ public class CSVTokenizer implements Enumeration
    * @param theSeparator the separator
    *        (CSVTokenizer.SEPARATOR_COMMA, CSVTokenizer.TAB, CSVTokenizer.SPACE, etc.).
    */
-  public CSVTokenizer(String aString, String theSeparator)
+  public CSVTokenizer(final String aString, final String theSeparator)
   {
     this(aString, theSeparator, CSVTokenizer.DOUBLE_QUATE);
   }
@@ -175,7 +175,7 @@ public class CSVTokenizer implements Enumeration
    * @param aString a string to be parsed.
    *
    */
-  public CSVTokenizer(String aString)
+  public CSVTokenizer(final String aString)
   {
     this(aString, CSVTokenizer.SEPARATOR_COMMA);
   }
@@ -206,7 +206,7 @@ public class CSVTokenizer implements Enumeration
       throws NoSuchElementException, IllegalArgumentException
   {
     String token;
-    int start;
+    final int start;
     int end;
 
     if (!this.hasMoreTokens())
@@ -272,7 +272,7 @@ public class CSVTokenizer implements Enumeration
    * @exception  java.util.NoSuchElementException  if there are no more tokens in this
    *               tokenizer's string.
    */
-  public String nextToken(String theSeparator)
+  public String nextToken(final String theSeparator)
   {
     separator = theSeparator;
     return nextToken();
@@ -323,7 +323,7 @@ public class CSVTokenizer implements Enumeration
   {
     int count = 0;
 
-    int preserve = this.currentIndex;
+    final int preserve = this.currentIndex;
     while (this.hasMoreTokens())
     {
       this.nextToken();
@@ -347,7 +347,7 @@ public class CSVTokenizer implements Enumeration
    * Sets the quate.
    * @param quate The quate to set
    */
-  public void setQuate(String quate)
+  public void setQuate(final String quate)
   {
     this.quate = quate;
   }

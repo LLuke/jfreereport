@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -105,7 +105,7 @@ public final strictfp class ShapeTransform
 
         if (keepAR)
         {
-          final double scaleFact = StrictMath.min(scaleX, scaleY);
+          final double scaleFact = Math.min(scaleX, scaleY);
           af = AffineTransform.getScaleInstance(scaleFact, scaleFact);
         }
         else

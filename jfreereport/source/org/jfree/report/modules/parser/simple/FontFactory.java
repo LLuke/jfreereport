@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
- * $Id: FontFactory.java,v 1.3 2003/08/25 14:29:33 taqua Exp $
+ * $Id: FontFactory.java,v 1.4 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,6 @@
 package org.jfree.report.modules.parser.simple;
 
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.ParserUtil;
 import org.xml.sax.Attributes;
 
@@ -407,10 +406,8 @@ public final class FontFactory implements ReportDefinitionTags
    *
    * @param attr  the element attributes.
    * @param target the target element style sheet, that should receive the created font definition.
-   * @throws ElementDefinitionException if the font cannot be created.
    */
   public static void createFont(final Attributes attr, final ElementStyleSheet target)
-      throws ElementDefinitionException
   {
     // get the font name...
     final String elementFontName = attr.getValue(FONT_NAME_ATT);
@@ -460,10 +457,8 @@ public final class FontFactory implements ReportDefinitionTags
    *
    * @param attr  the element attributes.
    * @return the created font information.
-   * @throws ElementDefinitionException if the font cannot be created.
    */
   public static FontInformation createFont(final Attributes attr)
-      throws ElementDefinitionException
   {
     // get the font name...
     final FontInformation fi = new FontInformation();

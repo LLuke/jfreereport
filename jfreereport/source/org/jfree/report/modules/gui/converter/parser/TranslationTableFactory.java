@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TranslationTableFactory.java,v 1.3 2003/09/02 15:05:32 taqua Exp $
+ * $Id: TranslationTableFactory.java,v 1.4 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -173,9 +173,9 @@ public final class TranslationTableFactory
   }
 
   /** A collection of all known contexts. */
-  private Hashtable contexts;
+  private final Hashtable contexts;
   /** A collection of all known translations. */
-  private Properties translations;
+  private final Properties translations;
 
   /**
    * Creates a new translation factory and loads the required property files.

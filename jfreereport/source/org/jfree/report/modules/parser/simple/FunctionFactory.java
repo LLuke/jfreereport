@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -210,11 +210,8 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    * Starts the Properties tag to create a new property bundle for a function.
    *
    * @param atts  the element attributes.
-   *
-   * @throws SAXException if there is an error parsing the XML.
    */
   protected void startProperties(final Attributes atts)
-      throws SAXException
   {
     setProperties(new Properties());
   }
@@ -223,11 +220,8 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    * Starts a new property entry for the current function.
    *
    * @param atts  the element attributes.
-   *
-   * @throws SAXException if there is an error parsing the XML.
    */
   protected void startProperty(final Attributes atts)
-      throws SAXException
   {
     currentProperty = atts.getValue(NAME_ATT);
     currentEncoding = atts.getValue(PROPERTY_ENCODING_ATT);
@@ -286,11 +280,8 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    * Starts processing an expression element.
    *
    * @param attr  the element attributes.
-   *
-   * @throws SAXException if there is an error parsing the XML.
    */
   protected void startPropertyRef(final Attributes attr)
-      throws SAXException
   {
     currentProperty = getNameGenerator().generateName(attr.getValue("name"));
     currentEncoding = attr.getValue(PROPERTY_ENCODING_ATT);
@@ -497,11 +488,8 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
 
   /**
    * Ends the definition of a single property entry.
-   *
-   * @throws SAXException if there is a problem parsing the element.
    */
   protected void endPropertyRef()
-      throws SAXException
   {
     getReport().getProperties().setMarked(currentProperty, true);
     if (currentText.length() != 0)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementAlignment.java,v 1.6 2003/08/26 17:35:43 taqua Exp $
+ * $Id: ElementAlignment.java,v 1.7 2003/08/31 19:27:40 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public final class ElementAlignment implements Serializable
   /** The alignment name. */
   private final String myName; // for debug only
   /** A cached hashcode. */
-  private int hashCode;
+  private final int hashCode;
   /**
    * Creates a new alignment object.  Since this constructor is private, you cannot create new
    * alignment objects, you can only use the predefined constants.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionModel.java,v 1.4 2003/09/11 22:17:09 taqua Exp $
+ * $Id: ConfigDescriptionModel.java,v 1.5 2003/09/14 19:24:07 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -115,7 +115,7 @@ public class ConfigDescriptionModel extends AbstractListModel
   }
 
   /** The content of this list; all config description entries. */
-  private ArrayList content;
+  private final ArrayList content;
 
   /**
    * Creates a new, initially empty ConfigDescriptionModel.

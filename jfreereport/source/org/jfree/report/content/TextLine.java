@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: TextLine.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -138,10 +138,10 @@ public strictfp class TextLine implements Content
     }
 
     this.content = content;
-    width = StrictMath.min(width, getSizeCalculator().getStringWidth(content, 0, content.length()));
-    height = StrictMath.min(height, getSizeCalculator().getLineHeight());
+    width = Math.min(width, getSizeCalculator().getStringWidth(content, 0, content.length()));
+    height = Math.min(height, getSizeCalculator().getLineHeight());
     // apply custom lineheight if greater than the current height ...
-    height = StrictMath.max(height, lineHeight);
+    height = Math.max(height, lineHeight);
     bounds.setRect(x, y, width, height);
   }
 

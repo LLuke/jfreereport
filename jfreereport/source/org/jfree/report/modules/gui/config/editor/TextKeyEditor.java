@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextKeyEditor.java,v 1.2 2003/09/08 18:11:48 taqua Exp $
+ * $Id: TextKeyEditor.java,v 1.3 2003/09/12 21:06:42 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -106,11 +106,11 @@ public class TextKeyEditor extends AbstractKeyEditor
   }
 
   /** The editor component for the key content. */
-  private JTextField content;
+  private final JTextField content;
   /** the label that names the content. */
-  private JLabel entryLabel;
+  private final JLabel entryLabel;
   /** a carrier component that acts as content pane. */
-  private JPanel entryLabelCarrier;
+  private final JPanel entryLabelCarrier;
 
   /**
    * Creates a new text key editor for the given configuration and description

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.3 2003/09/07 15:27:07 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.4 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -122,7 +122,7 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
       {
         if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO))
         {
-          final float scale = (float) StrictMath.min(scaleX, scaleY);
+          final float scale = (float) Math.min(scaleX, scaleY);
           ir.setScaleX(scale);
           ir.setScaleY(scale);
         }

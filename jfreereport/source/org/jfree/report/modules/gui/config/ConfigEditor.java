@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigEditor.java,v 1.5 2003/09/14 19:24:07 taqua Exp $
+ * $Id: ConfigEditor.java,v 1.6 2003/09/15 15:31:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -258,13 +258,13 @@ public class ConfigEditor extends JFrame
    */
   public ConfigEditor() throws ConfigTreeModelException
   {
-    this.resources = ResourceBundle.getBundle(RESOURCE_BUNDLE);
+    resources = ResourceBundle.getBundle(RESOURCE_BUNDLE);
     currentReportConfiguration = new ReportConfiguration
         (ReportConfiguration.getGlobalConfig());
+    detailEditorPane = new ConfigEditorPanel();
 
     setTitle(resources.getString("config-editor.title"));
 
-    detailEditorPane = new ConfigEditorPanel();
 
     JSplitPane splitPane = new JSplitPane
         (JSplitPane.HORIZONTAL_SPLIT, createEntryTree(),

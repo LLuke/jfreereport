@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardLayoutBLayoutManager.java,v 1.3 2003/09/11 22:17:09 taqua Exp $
+ * $Id: CardLayoutBLayoutManager.java,v 1.4 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -129,8 +129,8 @@ public strictfp class CardLayoutBLayoutManager extends AbstractBandLayoutManager
    */
   private void unionMax(final Dimension2D retval, final Dimension2D elementDim)
   {
-    retval.setSize(StrictMath.max(elementDim.getWidth(), retval.getWidth()),
-        StrictMath.max(elementDim.getHeight(), retval.getHeight()));
+    retval.setSize(Math.max(elementDim.getWidth(), retval.getWidth()),
+        Math.max(elementDim.getHeight(), retval.getHeight()));
   }
 
   /**

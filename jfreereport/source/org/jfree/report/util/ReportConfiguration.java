@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.9 2003/09/02 15:05:34 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.10 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------
@@ -363,6 +363,7 @@ public class ReportConfiguration implements Configuration, Serializable
 
       final SystemPropertyConfiguration systemConfig = new SystemPropertyConfiguration();
       globalConfig.insertConfiguration(systemConfig);
+      // just in case it is not already started ...
 
       Boot.start();
     }
@@ -660,7 +661,7 @@ public class ReportConfiguration implements Configuration, Serializable
    * @param key the key that should be checked.
    * @return true, if the key is defined locally, false otherwise.
    */
-  public boolean isLocallyDefined (String key)
+  public boolean isLocallyDefined (final String key)
   {
     return configuration.containsKey(key);
   }

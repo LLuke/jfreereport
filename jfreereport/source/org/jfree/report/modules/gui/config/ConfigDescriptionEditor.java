@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEditor.java,v 1.6 2003/09/09 15:52:52 taqua Exp $
+ * $Id: ConfigDescriptionEditor.java,v 1.7 2003/09/14 19:24:07 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -329,7 +329,7 @@ public class ConfigDescriptionEditor extends JFrame
   private class SelectTypeAction extends AbstractActionDowngrade
   {
     /** the selected type. */
-    private int type;
+    private final int type;
 
     /**
      * Creates a new select type action for the given name and type.

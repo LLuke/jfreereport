@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleNodeFactory.java,v 1.5 2003/09/14 19:24:07 taqua Exp $
+ * $Id: ModuleNodeFactory.java,v 1.6 2003/09/15 15:31:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -111,13 +111,13 @@ public class ModuleNodeFactory
   }
 
   /** All known modules as known at construction time. */ 
-  private Module[] activeModules;
+  private final Module[] activeModules;
   /** A list of global module nodes. */
-  private ArrayList globalNodes;
+  private final ArrayList globalNodes;
   /** A list of local module nodes. */
-  private ArrayList localNodes;
+  private final ArrayList localNodes;
   /** A hashtable of all defined config description entries. */
-  private Hashtable configEntryLookup;
+  private final Hashtable configEntryLookup;
 
   /**
    * Create a new and uninitialized module node factory. 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.8 2003/08/27 20:19:54 taqua Exp $
+ * $Id: Log.java,v 1.9 2003/09/14 19:24:07 taqua Exp $
  *
  * Changes
  * -------
@@ -93,9 +93,9 @@ public final class Log extends org.jfree.util.Log
   public static class PadMessage
   {
     /** The message. */
-    private Object text;
+    private final Object text;
     /** The padding size. */
-    private int length;
+    private final int length;
 
     /**
      * Creates a new message.
@@ -103,7 +103,7 @@ public final class Log extends org.jfree.util.Log
      * @param message  the message.
      * @param length the padding size.
      */
-    public PadMessage(Object message, int length)
+    public PadMessage(final Object message, final int length)
     {
       this.text = message;
       this.length = length;
@@ -116,11 +116,11 @@ public final class Log extends org.jfree.util.Log
      */
     public String toString ()
     {
-      StringBuffer b = new StringBuffer();
+      final StringBuffer b = new StringBuffer();
       b.append(text);
       if (b.length() < length)
       {
-        char[] pad = new char[length - b.length()];
+        final char[] pad = new char[length - b.length()];
         Arrays.fill(pad, ' ');
         b.append(pad);
       }
@@ -158,7 +158,21 @@ public final class Log extends org.jfree.util.Log
     JFREEREPORTLOG = new Log();
     org.jfree.util.Log.defineLog(JFREEREPORTLOG);
     JFREEREPORTLOG.addTarget(Log.DEFAULT_LOG_TARGET);
-    JFREEREPORTLOG.setDebuglevel(DEBUG);
+    try
+    {
+      if (Boolean.getBoolean("org.jfree.report.DebugDefault"))
+      {
+        JFREEREPORTLOG.setDebuglevel(DEBUG);
+      }
+      else
+      {
+        JFREEREPORTLOG.setDebuglevel(WARN);
+      }
+    }
+    catch (SecurityException se)
+    {
+      JFREEREPORTLOG.setDebuglevel(WARN);
+    }
   }
 
   /**

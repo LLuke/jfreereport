@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.4 2003/09/02 15:05:34 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.5 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    * <p>
    * @param printStream the print stream that is used to write the content.
    */
-  public SystemOutLogTarget(PrintStream printStream)
+  public SystemOutLogTarget(final PrintStream printStream)
   {
     if (printStream == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.7 2003/09/09 15:52:53 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.8 2003/09/13 15:14:41 taqua Exp $
  *
  * Changes
  * -------
@@ -504,8 +504,8 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   private int correctedDivisionFloor(float c, float d)
   {
-    c = StrictMath.round(c * 100f);
-    d = StrictMath.round(d * 100f);
+    c = Math.round(c * 100f);
+    d = Math.round(d * 100f);
     return (int) Math.floor(c / d);
   }
 

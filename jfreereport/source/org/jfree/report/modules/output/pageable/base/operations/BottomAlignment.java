@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BottomAlignment.java,v 1.4 2003/09/11 22:17:09 taqua Exp $
+ * $Id: BottomAlignment.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,7 @@ public strictfp class BottomAlignment extends VerticalBoundsAlignment
     {
       throw new NullPointerException("BottomAlignment.align(...): null not permitted.");
     }
-    final float h = (float) StrictMath.min (r.getHeight(), getReferenceBounds().getHeight());
+    final float h = (float) Math.min (r.getHeight(), getReferenceBounds().getHeight());
     final float y = (float) (getReferenceBounds().getY() +
         getReferenceBounds().getHeight() - h);
     final float x = (float) r.getX();

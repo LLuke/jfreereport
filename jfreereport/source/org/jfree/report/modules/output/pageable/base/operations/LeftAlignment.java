@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LeftAlignment.java,v 1.3 2003/09/09 02:29:13 taqua Exp $
+ * $Id: LeftAlignment.java,v 1.4 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public strictfp class LeftAlignment extends HorizontalBoundsAlignment
 
     final float x = (float) getReferenceBounds().getX();
     final float y = (float) inner.getY();
-    final float w = (float) StrictMath.min(inner.getWidth(), getReferenceBounds().getWidth());
+    final float w = (float) Math.min(inner.getWidth(), getReferenceBounds().getWidth());
     final float h = (float) inner.getHeight();
 
     inner.setRect(x, y, w, h);

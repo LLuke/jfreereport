@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultModuleEditor.java,v 1.3 2003/09/12 21:06:42 taqua Exp $
+ * $Id: DefaultModuleEditor.java,v 1.4 2003/09/14 19:24:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,6 +43,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.StringWriter;
+import java.lang.reflect.Method;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
@@ -75,9 +76,9 @@ public class DefaultModuleEditor implements ModuleEditor
   private static class EnableAction implements ActionListener
   {
     /** The key editor that is assigned to the checkbox. */
-    private KeyEditor editor;
+    private final KeyEditor editor;
     /** The source checkbox, to which this action is assigned. */
-    private JCheckBox source;
+    private final JCheckBox source;
 
     /**
      * Creates a new enable action for the given checkbox.
@@ -109,9 +110,9 @@ public class DefaultModuleEditor implements ModuleEditor
   private static class EditorCarrier
   {
     /** The editor component. */
-    private KeyEditor editor;
+    private final KeyEditor editor;
     /** The checkbox that enabled the editor. */
-    private JCheckBox enableBox;
+    private final JCheckBox enableBox;
   
     /**
      * Creates a new carrier for the given editor and checkbox. 
@@ -150,7 +151,7 @@ public class DefaultModuleEditor implements ModuleEditor
   /** The list of keynames used in the editor. */
   private ConfigDescriptionEntry[] keyNames;
   /** The contentpane that holds all other components. */
-  private JPanel contentpane;
+  private final JPanel contentpane;
   /** all active key editors as array. */
   private EditorCarrier[] activeEditors;
   /** The module which we edit. */
@@ -158,9 +159,9 @@ public class DefaultModuleEditor implements ModuleEditor
   /** The package of the module implementation. */
   private String modulePackage;
   /** The rootpane holds the editor and the help area. */
-  private JSplitPane rootpane;
+  private final JSplitPane rootpane;
   /** The rootpane holds the editor and the help area. */
-  private JEditorPane helpPane;
+  private final JEditorPane helpPane;
 
   /**
    * Creates a new, uninitialized module editor.
@@ -179,7 +180,18 @@ public class DefaultModuleEditor implements ModuleEditor
     toolbar.setMinimumSize(new Dimension (100, 150));
 
     rootpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    rootpane.setResizeWeight(1);
+    try
+    {
+      // An ugly way of calling
+      //   rootpane.setResizeWeight(1);
+      Method m = rootpane.getClass().getMethod
+          ("setResizeWeight", new Class[]{ Double.TYPE });
+      m.invoke(rootpane, new Object[]{new Double(1)});
+    }
+    catch (Exception e)
+    {
+      // ignored ...
+    }
     rootpane.setBottomComponent(toolbar);
     rootpane.setTopComponent(new JScrollPane(contentpane));
   }

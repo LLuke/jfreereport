@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractConfigTreeNode.java,v 1.3 2003/09/08 18:11:49 taqua Exp $
+ * $Id: AbstractConfigTreeNode.java,v 1.4 2003/09/10 18:19:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -53,9 +53,9 @@ import javax.swing.tree.TreeNode;
 public abstract class AbstractConfigTreeNode implements ConfigTreeNode
 {
   /** The list of tree nodes that act as childs. */
-  private ArrayList childs;
+  private final ArrayList childs;
   /** The name of this node. */
-  private String name;
+  private final String name;
   /** The parent of this node or null, if this is the root node. */
   private TreeNode parent;
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.6 2003/09/12 17:47:03 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.7 2003/09/13 15:14:41 taqua Exp $
  *
  * Changes
  * -------
@@ -450,8 +450,8 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
       {
         g2.clip(
             new Rectangle2D.Float(0, 0,
-                (float) (StrictMath.min(bounds.getWidth(), myBounds.getWidth())),
-                (float) (StrictMath.min(bounds.getHeight(), myBounds.getHeight())))
+                (float) (Math.min(bounds.getWidth(), myBounds.getWidth())),
+                (float) (Math.min(bounds.getHeight(), myBounds.getHeight())))
         );
         g2.transform(AffineTransform.getScaleInstance(image.getScaleX(), image.getScaleY()));
         while (g2.drawImage(image.getImage(),

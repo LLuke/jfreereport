@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.7 2003/09/11 22:17:09 taqua Exp $
+ * $Id: Element.java,v 1.8 2003/09/12 18:46:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -151,7 +151,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   private Band parent;
 
   /** the tree lock to synchronize the element. */
-  private InstanceID treeLock;
+  private final InstanceID treeLock;
 
   /**
    * Constructs an element.

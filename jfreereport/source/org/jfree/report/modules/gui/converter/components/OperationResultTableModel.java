@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationResultTableModel.java,v 1.2 2003/08/27 20:19:53 taqua Exp $
+ * $Id: OperationResultTableModel.java,v 1.3 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -64,7 +64,7 @@ public class OperationResultTableModel extends AbstractTableModel
   /** The operation results are read from the parser. */
   private OperationResult[] data;
   /** The resource bundle used to translate the column names. */
-  private ResourceBundle resources;
+  private final ResourceBundle resources;
 
   /** The column name keys for the resource bundle. */
   private static final String[] COLUMN_NAMES =

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BugFixProxyGraphics2D.java,v 1.2 2003/09/08 18:11:48 taqua Exp $
+ * $Id: BugFixProxyGraphics2D.java,v 1.3 2003/09/14 19:24:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -85,7 +85,7 @@ import java.util.Map;
 public class BugFixProxyGraphics2D extends Graphics2D
 {
   /** The proxy parent. */
-  private Graphics2D parent;
+  private final Graphics2D parent;
 
   /**
    * Creates a new proxy to fix some of the Swing bugs.

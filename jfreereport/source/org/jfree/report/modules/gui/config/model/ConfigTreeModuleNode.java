@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigTreeModuleNode.java,v 1.2 2003/08/31 19:27:57 taqua Exp $
+ * $Id: ConfigTreeModuleNode.java,v 1.3 2003/09/11 22:17:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -56,13 +56,13 @@ import org.jfree.report.util.ReportConfiguration;
 public class ConfigTreeModuleNode extends AbstractConfigTreeNode
 {
   /** The configuration prefix shared for all keys of the module. */
-  private String configurationPrefix;
+  private final String configurationPrefix;
   /** The module definition from the package manager. */ 
-  private Module module;
+  private final Module module;
   /** The report configuration. */
-  private ReportConfiguration configuration;
+  private final ReportConfiguration configuration;
   /** A list of keys from that module. */
-  private ArrayList assignedKeys;
+  private final ArrayList assignedKeys;
 
   /**
    * Creates a new module node for the given module object and report 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -75,6 +75,10 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
 
   /** The color object descripion. */
   private transient ColorObjectDescription cod;
+  
+  private static final String VALUE_PARAMETER = "value";
+  public static final String COLOR_TRUE_PROPERTY = "colorTrue";
+  public static final String COLOR_FALSE_PROPERTY = "colorFalse";
 
   /**
    * Default constructor.
@@ -146,9 +150,9 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
     super.initialize();
     try
     {
-      cod.setParameter("value", getProperty("colorTrue", "black"));
+      cod.setParameter(VALUE_PARAMETER, getProperty(COLOR_TRUE_PROPERTY, "black"));
       elementColorTrue = (Color) cod.createObject();
-      cod.setParameter("vaule", getProperty("colorFalse", "black"));
+      cod.setParameter(VALUE_PARAMETER, getProperty(COLOR_FALSE_PROPERTY, "black"));
       elementColorFalse = (Color) cod.createObject();
     }
     catch (Exception e)
@@ -171,7 +175,7 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
     try
     {
       cod.setParameterFromObject(elementColorTrue);
-      setProperty("colorTrue", (String) cod.getParameter("value"));
+      setProperty(COLOR_TRUE_PROPERTY, (String) cod.getParameter(VALUE_PARAMETER));
     }
     catch (Exception e)
     {
@@ -194,7 +198,7 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
     try
     {
       cod.setParameterFromObject(elementColorTrue);
-      setProperty("colorFalse", (String) cod.getParameter("value"));
+      setProperty(COLOR_FALSE_PROPERTY, (String) cod.getParameter(VALUE_PARAMETER));
     }
     catch (Exception e)
     {

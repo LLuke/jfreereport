@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigEditorPanel.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
+ * $Id: ConfigEditorPanel.java,v 1.2 2003/09/12 21:06:42 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -65,16 +65,16 @@ public class ConfigEditorPanel extends JPanel
   private ReportConfiguration config;
   
   /** A component holding the module description. */
-  private JTextArea descriptionArea;
+  private final JTextArea descriptionArea;
   /** A component holding the name of the module. */
-  private JTextArea moduleNameField;
+  private final JTextArea moduleNameField;
   /** A component holding the producer of the current module. */
-  private JTextArea producerField;
+  private final JTextArea producerField;
 
   /** The message format used to create the module name and version. */
-  private MessageFormat moduleNameFormat;
+  private final MessageFormat moduleNameFormat;
   /** The container to hold the editor. */
-  private JPanel editorArea;
+  private final JPanel editorArea;
 
   /** The current module editor (may be null). */
   private ModuleEditor moduleEditor;

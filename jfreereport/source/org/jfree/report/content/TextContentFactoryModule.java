@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.3 2003/09/11 22:17:09 taqua Exp $
+ * $Id: TextContentFactoryModule.java,v 1.4 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -112,8 +112,8 @@ public class TextContentFactoryModule implements ContentFactoryModule
     double height = bounds.getMaximumSize().getHeight();
     if (prefSize != null)
     {
-      width = StrictMath.max(prefSize.getWidth(), width);
-      height = StrictMath.min(prefSize.getHeight(), height);
+      width = Math.max(prefSize.getWidth(), width);
+      height = Math.min(prefSize.getHeight(), height);
     }
     final Dimension2D dim = new FloatDimension((float) width, (float) height);
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MiddleAlignment.java,v 1.4 2003/09/11 22:17:10 taqua Exp $
+ * $Id: MiddleAlignment.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public strictfp class MiddleAlignment extends VerticalBoundsAlignment
     }
     final float x = (float) r.getX();
 
-    final float h = (float) StrictMath.min (r.getHeight(), getReferenceBounds().getHeight());
+    final float h = (float) Math.min (r.getHeight(), getReferenceBounds().getHeight());
     final float y = (float) (getReferenceBounds().getY()
         + ((getReferenceBounds().getHeight() - h) / 2));
     final float w = (float) r.getWidth();

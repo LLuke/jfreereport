@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.8 2003/08/26 17:35:50 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.9 2003/09/10 18:20:24 taqua Exp $
  *
  * Changes
  * -------
@@ -200,7 +200,7 @@ public class ReportConverterGUI extends JFrame
   private final EncodingComboBoxModel encodingModel;
 
   /** The table model that displays all messages from the conversion. */
-  private OperationResultTableModel resultTableModel;
+  private final OperationResultTableModel resultTableModel;
 
   /** A primitive status bar. */
   private JLabel statusHolder;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringUtil.java,v 1.6 2003/08/31 19:27:59 taqua Exp $
+ * $Id: StringUtil.java,v 1.7 2003/09/11 22:17:10 taqua Exp $
  *
  * Changes
  * -------
@@ -94,7 +94,7 @@ public final class StringUtil
    * @param defaultValue the default value
    * @return the parsed string.
    */
-  public static int parseInt (String value, int defaultValue)
+  public static int parseInt (final String value, final int defaultValue)
   {
     if (value == null)
     {
@@ -118,7 +118,7 @@ public final class StringUtil
    * @param defaultValue the default value, in case the string is null.
    * @return the parsed value.
    */
-  public static boolean parseBoolean (String attribute, boolean defaultValue)
+  public static boolean parseBoolean (final String attribute, final boolean defaultValue)
   {
     if (attribute == null)
     {

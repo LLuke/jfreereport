@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementLayoutInformation.java,v 1.5 2003/09/11 22:17:10 taqua Exp $
+ * $Id: ElementLayoutInformation.java,v 1.6 2003/09/13 15:14:42 taqua Exp $
  *
  * Changes
  * -------
@@ -206,8 +206,8 @@ public strictfp class ElementLayoutInformation
     {
       return max;
     }
-    return new FloatDimension((float) StrictMath.min(pref.getWidth(), max.getWidth()),
-        (float) StrictMath.min(pref.getHeight(), max.getHeight()));
+    return new FloatDimension((float) Math.min(pref.getWidth(), max.getWidth()),
+        (float) Math.min(pref.getHeight(), max.getHeight()));
   }
 
   /**

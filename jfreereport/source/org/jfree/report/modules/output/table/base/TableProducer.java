@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.9 2003/09/09 15:52:53 taqua Exp $
+ * $Id: TableProducer.java,v 1.10 2003/09/13 15:14:42 taqua Exp $
  *
  * Changes
  * -------
@@ -360,14 +360,14 @@ public strictfp abstract class TableProducer
   private Rectangle2D translateSubRect(final Rectangle2D outer, final Rectangle2D inner)
   {
     final float w =
-        (float) StrictMath.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
+        (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
     final float h =
-        (float) StrictMath.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
+        (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
     final Rectangle2D rc = new Rectangle2D.Float(
         (float) (outer.getX() + inner.getX()),
         (float) (outer.getY() + inner.getY()),
-        StrictMath.max(0, w),
-        StrictMath.max(0, h));
+        Math.max(0, w),
+        Math.max(0, h));
 
     return rc;
   }

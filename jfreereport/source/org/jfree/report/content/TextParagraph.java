@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.6 2003/09/12 18:46:18 taqua Exp $
+ * $Id: TextParagraph.java,v 1.7 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -132,7 +132,7 @@ public strictfp class TextParagraph extends ContentContainer
 
     float usedHeight = 0;
 
-    final int maxLines = (int) StrictMath.floor(height / getSizeCalculator().getLineHeight());
+    final int maxLines = (int) Math.floor(height / getSizeCalculator().getLineHeight());
 
     if (maxLines > 0)
     {

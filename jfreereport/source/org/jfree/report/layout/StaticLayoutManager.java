@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.6 2003/09/12 18:46:18 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.7 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -161,16 +161,16 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
     final Dimension2D maxSize = correctDimension((Dimension2D)
         e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), containerBounds, null);
 
-    maxSize.setSize(StrictMath.min(containerBounds.getWidth() - absPosX, maxSize.getWidth()),
-        StrictMath.min(containerBounds.getHeight() - absPosY, maxSize.getHeight()));
+    maxSize.setSize(Math.min(containerBounds.getWidth() - absPosX, maxSize.getWidth()),
+        Math.min(containerBounds.getHeight() - absPosY, maxSize.getHeight()));
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
       retval = getElementContentBounds(retval, e, maxSize);
     }
 
-    retval.setSize(StrictMath.min(retval.getWidth(), maxSize.getWidth()),
-        StrictMath.min(retval.getHeight(), maxSize.getHeight()));
+    retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
+        Math.min(retval.getHeight(), maxSize.getHeight()));
 
     //Log.debug ("-- calculate MinimumSize: " + retval);
     // layouting has failed, if negative values are returned ... !
@@ -259,16 +259,16 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
     final Dimension2D maxSize = correctDimension(
         (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE),
         containerBounds, null);
-    maxSize.setSize(StrictMath.min(containerBounds.getWidth() - absPosX, maxSize.getWidth()),
-        StrictMath.min(containerBounds.getHeight() - absPosY, maxSize.getHeight()));
+    maxSize.setSize(Math.min(containerBounds.getWidth() - absPosX, maxSize.getWidth()),
+        Math.min(containerBounds.getHeight() - absPosY, maxSize.getHeight()));
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
       retval = getElementContentBounds(retval, e, maxSize);
     }
 
-    retval.setSize(StrictMath.min(retval.getWidth(), maxSize.getWidth()),
-        StrictMath.min(retval.getHeight(), maxSize.getHeight()));
+    retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
+        Math.min(retval.getHeight(), maxSize.getHeight()));
 
     // layouting has failed, if negative values are returned ... !
     if (retval.getWidth() < 0 || retval.getHeight() < 0)
@@ -339,24 +339,24 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
 
           if (staticWidth)
           {
-            width = (float) StrictMath.max(absDim.getWidth() + absPos.getX(), width);
+            width = (float) Math.max(absDim.getWidth() + absPos.getX(), width);
           }
           if (staticHeight)
           {
-            height = (float) StrictMath.max(absDim.getHeight() + absPos.getY(), height);
+            height = (float) Math.max(absDim.getHeight() + absPos.getY(), height);
           }
         }
       }
 
       // now apply the minimum limit defined for that band in case the calculated height
       // is lower than the given minimum height.
-      height = StrictMath.max(height, (float) minSize.getHeight());
-      width = StrictMath.max(width, (float) minSize.getWidth());
+      height = Math.max(height, (float) minSize.getHeight());
+      width = Math.max(width, (float) minSize.getWidth());
 
       // now apply the maximum limit defined for that band in case the calculated height
       // is higher than the given max height.
-      height = (float)StrictMath.min(height, maxSize.getHeight());
-      width = (float) StrictMath.min(width, maxSize.getWidth());
+      height = (float)Math.min(height, maxSize.getHeight());
+      width = (float) Math.min(width, maxSize.getWidth());
 
       //Log.debug ("Dimension after static correction [PREF]: " + width + " -> " + height);
       final FloatDimension base = new FloatDimension(width, height);
@@ -390,24 +390,24 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
 
           if (staticWidth == false)
           {
-            width = StrictMath.max((float) (absDim.getWidth() + absPos.getX()), width);
+            width = Math.max((float) (absDim.getWidth() + absPos.getX()), width);
           }
           if (staticHeight == false)
           {
-            height = StrictMath.max((float) (absDim.getHeight() + absPos.getY()), height);
+            height = Math.max((float) (absDim.getHeight() + absPos.getY()), height);
           }
         }
       }
 
       // now apply the minimum limit defined for that band in case the calculated height
       // is lower than the given minimum height.
-      height = (float) StrictMath.max(height, minSize.getHeight());
-      width = (float) StrictMath.max(width, minSize.getWidth());
+      height = (float) Math.max(height, minSize.getHeight());
+      width = (float) Math.max(width, minSize.getWidth());
 
       // now take the maximum limit defined for that band into account for a last time.
       // or specifying -140 would be a nice way to kill the layout ...
-      height = (float) StrictMath.min(height, maxSize.getHeight());
-      width = (float) StrictMath.min(width, maxSize.getWidth());
+      height = (float) Math.min(height, maxSize.getHeight());
+      width = (float) Math.min(width, maxSize.getWidth());
 
       // now align the calculated data ...
       base.setSize(align(width, getLayoutSupport().getHorizontalAlignmentBorder()),
@@ -472,11 +472,11 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
 
           if (staticWidth)
           {
-            width = (float) StrictMath.max(size.getWidth() + absPos.getX(), width);
+            width = (float) Math.max(size.getWidth() + absPos.getX(), width);
           }
           if (staticHeight)
           {
-            height = (float) StrictMath.max(size.getHeight() + absPos.getY(), height);
+            height = (float) Math.max(size.getHeight() + absPos.getY(), height);
           }
         }
       }
@@ -484,13 +484,13 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       //Log.debug ("Dimension after static part: " + width + " -> " + height);
       // now apply the minimum limit defined for that band in case the calculated height
       // is lower than the given minimum height.
-      height = (float) StrictMath.max(height, minSize.getHeight());
-      width = (float) StrictMath.max(width, minSize.getWidth());
+      height = (float) Math.max(height, minSize.getHeight());
+      width = (float) Math.max(width, minSize.getWidth());
 
       // now apply the maximum limit defined for that band in case the calculated height
       // is higher than the given max height.
-      height = (float) StrictMath.min(height, maxSize.getHeight());
-      width = (float) StrictMath.min(width, maxSize.getWidth());
+      height = (float) Math.min(height, maxSize.getHeight());
+      width = (float) Math.min(width, maxSize.getWidth());
 
       //Log.debug ("Dimension after static correction [MIN]: " + width + " -> " + height);
       final FloatDimension base = new FloatDimension(width, height);
@@ -523,11 +523,11 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
 
           if (staticWidth == false)
           {
-            width = (float) StrictMath.max(absDim.getWidth() + absPos.getX(), width);
+            width = (float) Math.max(absDim.getWidth() + absPos.getX(), width);
           }
           if (staticHeight == false)
           {
-            height = (float) StrictMath.max(absDim.getHeight() + absPos.getY(), height);
+            height = (float) Math.max(absDim.getHeight() + absPos.getY(), height);
           }
           //Log.debug ("Element " + e + " -> " + size);
         }
@@ -536,12 +536,12 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       //Log.debug ("Dimension after dynamic part: " + width + " -> " + height);
       // now apply the minimum limit defined for that band in case the calculated height
       // is lower than the given minimum height.
-      height = (float) StrictMath.max(height, minSize.getHeight());
-      width = (float) StrictMath.max(width, minSize.getWidth());
+      height = (float) Math.max(height, minSize.getHeight());
+      width = (float) Math.max(width, minSize.getWidth());
 
       // now take the maximum limit defined for that band into account for a last time.
-      height = (float) StrictMath.min(height, maxSize.getHeight());
-      width = (float) StrictMath.min(width, maxSize.getWidth());
+      height = (float) Math.min(height, maxSize.getHeight());
+      width = (float) Math.min(width, maxSize.getWidth());
 
       //Log.debug ("Dimension after dynamic correction: " + maxSize);
       //Log.debug ("Dimension after dynamic correction: " + width + " -> " + height);

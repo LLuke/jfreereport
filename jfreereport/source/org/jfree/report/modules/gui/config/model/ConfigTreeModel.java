@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigTreeModel.java,v 1.3 2003/09/11 22:17:09 taqua Exp $
+ * $Id: ConfigTreeModel.java,v 1.4 2003/09/15 15:31:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -59,15 +59,15 @@ import org.jfree.report.util.ReportConfiguration;
 public class ConfigTreeModel implements TreeModel
 {
   /** The root node for the tree model. */
-  private ConfigTreeRootNode root;
+  private final ConfigTreeRootNode root;
   /** The section containing the global tree nodes. */
-  private ConfigTreeSectionNode globalSection;
+  private final ConfigTreeSectionNode globalSection;
   /** The section containing the report-local tree nodes. */
-  private ConfigTreeSectionNode localSection;
+  private final ConfigTreeSectionNode localSection;
   /** The factory used to update the tree model. */
   private ModuleNodeFactory nodeFactory;
   /** A list of model listeners. */
-  private ArrayList listeners;
+  private final ArrayList listeners;
 
   /**
    * Creates a new tree model from the given specifications. These

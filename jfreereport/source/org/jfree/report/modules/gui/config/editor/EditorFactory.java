@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EditorFactory.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
+ * $Id: EditorFactory.java,v 1.2 2003/09/12 21:06:42 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -57,7 +57,7 @@ public final class EditorFactory
   /** The singleton instance of the factory. */
   private static EditorFactory factory;
   /** A collection containing all defined modules and their priorities. */
-  private Hashtable priorities;
+  private final Hashtable priorities;
 
   /**
    * Creates a new editor factory, which has the default module editor

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractKeyEditor.java,v 1.2 2003/09/12 18:46:18 taqua Exp $
+ * $Id: AbstractKeyEditor.java,v 1.3 2003/09/12 21:06:41 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -70,15 +70,15 @@ public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
   private static Icon emptyIcon;
 
   /** The report configuration that provides the values for this editor. */
-  private ReportConfiguration config;
+  private final ReportConfiguration config;
   /** The config description entry that provides the definition for this key. */
-  private ConfigDescriptionEntry entry;
+  private final ConfigDescriptionEntry entry;
   /** A flag indicating whether the input is valid. */
   private boolean validInput;
   /** A label that holds the error indicator icons. */
-  private JLabel stateLabel;
+  private final JLabel stateLabel;
   /** the resource bundle instance used to translate the text. */
-  private ResourceBundle resources;
+  private final ResourceBundle resources;
 
   /**
    * Creates a new key editor for the given report configuration and key

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morger
  * Contributor(s):   Stefan Prange;
  *
- * $Id: SystemPropertyConfiguration.java,v 1.3 2003/08/31 19:27:59 taqua Exp $
+ * $Id: SystemPropertyConfiguration.java,v 1.4 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -104,7 +104,7 @@ public class SystemPropertyConfiguration extends ReportConfiguration
    * @param key the key that should be checked.
    * @return true, if the key is defined in the system properties, false otherwise.
    */
-  public boolean isLocallyDefined(String key)
+  public boolean isLocallyDefined(final String key)
   {
     try
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TranslationTable.java,v 1.2 2003/08/27 20:19:53 taqua Exp $
+ * $Id: TranslationTable.java,v 1.3 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -53,9 +53,9 @@ import java.util.Properties;
 public class TranslationTable
 {
   /** The translation map contains all keys and their values. */
-  private Properties translationMap;
+  private final Properties translationMap;
   /** the current context, where the map will be valid. */
-  private String context;
+  private final String context;
 
   /**
    * Creates a new translation table which will contain the given translations

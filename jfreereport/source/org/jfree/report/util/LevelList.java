@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelList.java,v 1.6 2003/09/09 02:29:13 taqua Exp $
+ * $Id: LevelList.java,v 1.7 2003/09/12 18:46:18 taqua Exp $
  *
  * Changes
  * -------
@@ -160,7 +160,7 @@ public class LevelList implements Cloneable
      * @param target object array that should receive the contents  
      * @return the data for this level as object array.
      */
-    protected Object[] getData (Object[] target)
+    protected Object[] getData (final Object[] target)
     {
       return datalist.toArray(target);
     }
@@ -262,7 +262,7 @@ public class LevelList implements Cloneable
    * @param target the target array that should receive the contentes
    * @return the data for the level as object array.
    */
-  public Object[] getElementArrayForLevel(final int level, Object[] target)
+  public Object[] getElementArrayForLevel(final int level, final Object[] target)
   {
     ElementLevelList it = (ElementLevelList) iteratorCache.get(new Integer(level));
     if (it == null)

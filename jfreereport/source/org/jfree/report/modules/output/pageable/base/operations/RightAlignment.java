@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RightAlignment.java,v 1.4 2003/09/11 22:17:10 taqua Exp $
+ * $Id: RightAlignment.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,7 @@ public strictfp class RightAlignment extends HorizontalBoundsAlignment
       throw new NullPointerException("Rect must not be null");
     }
 
-    final float w = (float) StrictMath.min (rect.getWidth(), getReferenceBounds().getWidth());
+    final float w = (float) Math.min (rect.getWidth(), getReferenceBounds().getWidth());
     final float x = (float) (getReferenceBounds().getX() +
         getReferenceBounds().getWidth() - w);
     final float y = (float) rect.getY();

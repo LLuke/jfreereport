@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EnumKeyEditor.java,v 1.3 2003/09/12 18:46:18 taqua Exp $
+ * $Id: EnumKeyEditor.java,v 1.4 2003/09/12 21:06:42 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -80,13 +80,13 @@ public class EnumKeyEditor extends AbstractKeyEditor
   }
 
   /** The editor component. */
-  private JComboBox content;
+  private final JComboBox content;
   /** The label to name the editor component. */
-  private JLabel entryLabel;
+  private final JLabel entryLabel;
   /** A list of selectable options. */
-  private List options;
+  private final List options;
   /** the content pane. */
-  private JPanel entryLabelCarrier;
+  private final JPanel entryLabelCarrier;
 
   /**
    * Creates a new enumeration key editor for the given configuration

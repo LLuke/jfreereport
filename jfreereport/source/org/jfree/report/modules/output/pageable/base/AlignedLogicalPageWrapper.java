@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AlignedLogicalPageWrapper.java,v 1.3 2003/08/24 15:03:52 taqua Exp $
+ * $Id: AlignedLogicalPageWrapper.java,v 1.4 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -93,7 +93,7 @@ public strictfp class AlignedLogicalPageWrapper implements LogicalPage
     {
       return value;
     }
-    return (float) StrictMath.floor(value / boundary) * boundary;
+    return (float) Math.floor(value / boundary) * boundary;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConverterParser.java,v 1.3 2003/08/31 21:06:09 taqua Exp $
+ * $Id: ConverterParser.java,v 1.4 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -58,9 +58,9 @@ import org.xml.sax.SAXParseException;
 public class ConverterParser extends Parser
 {
   /** The backend parser. */
-  private Parser base;
+  private final Parser base;
   /** the context collection used to create the correct mappings. */
-  private Stack currentContext;
+  private final Stack currentContext;
 
   /**
    * Creates a new ConverterParser using the given parser as backend.

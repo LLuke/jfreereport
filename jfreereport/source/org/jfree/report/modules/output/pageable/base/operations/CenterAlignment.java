@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CenterAlignment.java,v 1.4 2003/09/11 22:17:10 taqua Exp $
+ * $Id: CenterAlignment.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public strictfp class CenterAlignment extends HorizontalBoundsAlignment
     }
 
     final float y = (float) inner.getY();
-    final float w = (float) StrictMath.min (inner.getWidth(), getReferenceBounds().getWidth());
+    final float w = (float) Math.min (inner.getWidth(), getReferenceBounds().getWidth());
     final float x = (float) (getReferenceBounds().getX()
         + ((getReferenceBounds().getWidth() - w) / 2));
     final float h = (float) inner.getHeight();
