@@ -20,47 +20,104 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------------
- * DefaultClassFactory.java
- * ------------------------
+ * ------------------------------
+ * PathIteratorSegment.java
+ * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultClassFactory.java,v 1.9 2003/04/24 18:08:50 taqua Exp $
+ * $Id: ObjectReferenceTableModel.java,v 1.6 2003/05/02 12:40:10 taqua Exp $
  *
- * Changes (from 19-Feb-2003)
+ * Changes
  * -------------------------
- * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ * 09-May-2003 : Initial version
+ *
  */
-
 package com.jrefinery.report.io.ext.factory.objects;
 
-import java.awt.Shape;
-import java.awt.geom.GeneralPath;
-
-import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.targets.FontDefinition;
-import org.jfree.xml.factory.objects.JavaBaseClassFactory;
-
-/**
- * A default implementation of the {@link org.jfree.xml.factory.objects.ClassFactory} interface.
- * 
- * @author Thomas Morgner
- */
-public class DefaultClassFactory extends JavaBaseClassFactory
+public class PathIteratorSegment
 {
-  /**
-   * Creates a new factory.
-   */
-  public DefaultClassFactory()
+  private int segmentType;
+  private float x1;
+  private float y1;
+  private float x2;
+  private float y2;
+  private float x3;
+  private float y3;
+
+  public PathIteratorSegment()
   {
-    registerClass(ElementAlignment.class, new AlignmentObjectDescription());
-    registerClass(FontDefinition.class, new FontDefinitionObjectDescription());
-    registerClass(PathIteratorSegment.class, new PathIteratorSegmentObjectDescription());
-    registerClass(Shape.class, new GeneralPathObjectDescription(Shape.class));
-    registerClass(GeneralPath.class, new GeneralPathObjectDescription());
+  }
+
+  public int getSegmentType()
+  {
+    return segmentType;
+  }
+
+  public void setSegmentType(int segmentType)
+  {
+    this.segmentType = segmentType;
+  }
+
+  public float getX1()
+  {
+    return x1;
+  }
+
+  public void setX1(float x1)
+  {
+    this.x1 = x1;
+  }
+
+  public float getY1()
+  {
+    return y1;
+  }
+
+  public void setY1(float y1)
+  {
+    this.y1 = y1;
+  }
+
+  public float getX2()
+  {
+    return x2;
+  }
+
+  public void setX2(float x2)
+  {
+    this.x2 = x2;
+  }
+
+  public float getY2()
+  {
+    return y2;
+  }
+
+  public void setY2(float y2)
+  {
+    this.y2 = y2;
+  }
+
+  public float getX3()
+  {
+    return x3;
+  }
+
+  public void setX3(float x3)
+  {
+    this.x3 = x3;
+  }
+
+  public float getY3()
+  {
+    return y3;
+  }
+
+  public void setY3(float y3)
+  {
+    this.y3 = y3;
   }
 }

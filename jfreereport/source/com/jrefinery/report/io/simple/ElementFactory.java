@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.21 2003/04/23 13:43:05 taqua Exp $
+ * $Id: ElementFactory.java,v 1.22 2003/04/24 18:08:54 taqua Exp $
  *
  * Changes
  * -------
@@ -60,6 +60,7 @@ import com.jrefinery.report.filter.DrawableFilter;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.CharacterEntityParser;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.Log;
 import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
 import org.xml.sax.Attributes;
@@ -406,7 +407,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   {
     String elementName = getNameGenerator().generateName(atts.getValue("name"));
     String elementSource = atts.getValue("src");
-    //Log.debug("Loading: " + getContentBase() + " " + elementSource + " as image");
+    Log.debug("Loading: " + getContentBase() + " " + elementSource + " as image");
     try
     {
       boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);

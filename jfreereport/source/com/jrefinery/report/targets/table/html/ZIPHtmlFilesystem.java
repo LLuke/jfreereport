@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.16 2003/04/24 18:08:58 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.17 2003/05/02 12:40:42 taqua Exp $
  *
  * Changes
  * -------
@@ -264,7 +264,8 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
       WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
       obs.waitImageLoaded();
 
-      PngEncoder encoder = new PngEncoder (reference.getImage(), true, 0, 9);
+      PngEncoder encoder = new PngEncoder (reference.getImage(),
+          PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 9);
       byte[] data = encoder.pngEncode();
 
       Object object = comparator.createCompareData(data);
@@ -294,7 +295,8 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
         WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
         obs.waitImageLoaded();
 
-        PngEncoder encoder = new PngEncoder (reference.getImage(), true, 0, 9);
+        PngEncoder encoder = new PngEncoder (reference.getImage(),
+            PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 9);
         byte[] data = encoder.pngEncode();
 
         IOUtils iou = IOUtils.getInstance();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.28 2003/04/08 13:53:12 mungady Exp $
+ * $Id: ImageReference.java,v 1.29 2003/05/02 12:39:02 taqua Exp $
  *
  * Changes:
  * --------
@@ -113,6 +113,7 @@ public class ImageReference implements Serializable, Cloneable
       {
         WmfFile wmfFile = new WmfFile(url);
         image = wmfFile.replay();
+        System.out.println ("Image successfully replayed!");
         //image = Toolkit.getDefaultToolkit ().createImage (new WmfImageProducer (url));
       }
       else

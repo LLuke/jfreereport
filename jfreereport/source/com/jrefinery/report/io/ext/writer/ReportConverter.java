@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.11 2003/05/02 12:40:16 taqua Exp $
+ * $Id: ReportConverter.java,v 1.12 2003/05/02 16:35:01 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,7 @@ import com.jrefinery.report.io.ext.factory.stylekey.PageableLayoutStyleKeyFactor
 import com.jrefinery.report.io.ext.factory.templates.DefaultTemplateCollection;
 import com.jrefinery.report.util.Log;
 import org.jfree.xml.factory.objects.URLClassFactory;
+import org.jfree.xml.factory.objects.ArrayClassFactory;
 
 /**
  * A utility class for converting XML report definitions from the old format to the 
@@ -92,6 +93,8 @@ public class ReportConverter
     writer.addClassFactoryFactory(new URLClassFactory ());
     writer.addClassFactoryFactory(new DefaultClassFactory());
     writer.addClassFactoryFactory(new BandLayoutClassFactory());
+    writer.addClassFactoryFactory(new ArrayClassFactory());
+    
     writer.addStyleKeyFactory(new DefaultStyleKeyFactory());
     writer.addStyleKeyFactory(new PageableLayoutStyleKeyFactory());
     writer.addTemplateCollection(new DefaultTemplateCollection());

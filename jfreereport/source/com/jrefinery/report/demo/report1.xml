@@ -50,7 +50,7 @@
         <line x1="0" y1="10" x2="0" y2="10" weight="0.5"/>
       </groupheader>
       <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
-        <label x="0" y="0" width="450" height="12" alignment="left">Population:</label>
+        <label x="0" y="0" width="220" height="12" alignment="left">Population:</label>
         <number-field x="220" y="0" width="116" height="12" alignment="right" format="#,##0" fieldname="sum"/>
       </groupfooter>
       <fields>

@@ -30,7 +30,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * 
  *
- * $Id: ExcelDataCellStyle.java,v 1.4 2003/02/25 15:42:36 taqua Exp $
+ * $Id: ExcelDataCellStyle.java,v 1.5 2003/02/26 13:58:03 mungady Exp $
  *
  * Changes
  * -------
@@ -69,6 +69,9 @@ public class ExcelDataCellStyle
 
   /** the text color */
   private Color textColor;
+
+  /** the data style */
+  private String dataStyle;
 
   /**
    * DefaultConstructor.
@@ -178,6 +181,26 @@ public class ExcelDataCellStyle
   }
 
   /**
+   * Returns the defined cell data style.
+   *
+   * @return the cell data style.
+   */
+  public String getDataStyle()
+  {
+    return dataStyle;
+  }
+
+  /**
+   * Defines the cell data style.
+   *
+   * @param dataStyle the cell data style.
+   */
+  public void setDataStyle(String dataStyle)
+  {
+    this.dataStyle = dataStyle;
+  }
+
+  /**
    * Indicates whether some other object is "equal to" this one.
    *
    * @param   o   the reference object with which to compare.
@@ -220,6 +243,11 @@ public class ExcelDataCellStyle
     {
       return false;
     }
+    if (dataStyle != null ? !dataStyle.equals(style.dataStyle)
+                                  : style.dataStyle!= null)
+    {
+      return false;
+    }
 
     return true;
   }
@@ -239,6 +267,7 @@ public class ExcelDataCellStyle
     result = 29 * result + (verticalAlignment != null ? verticalAlignment.hashCode() : 0);
     result = 29 * result + (fontDefinition != null ? fontDefinition.hashCode() : 0);
     result = 29 * result + (textColor != null ? textColor.hashCode() : 0);
+    result = 29 * result + (dataStyle != null ? dataStyle.hashCode() : 0);
     return result;
   }
 }

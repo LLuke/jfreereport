@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.43 2003/05/07 20:27:26 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.44 2003/05/07 20:31:31 taqua Exp $
  *
  * Changes
  * -------
@@ -944,9 +944,17 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     // if there was a pagebreak_after_print, there is no band to print for now
     if (state.getBand() != null)
     {
-      // update the dataRow to the current dataRow instance...
-      getCurrentEvent().getState().updateDataRow(state.getBand());
-      print(state.getBand(), false);
+      try
+      {
+        Band band = (Band) state.getBand().clone();
+        // update the dataRow to the current dataRow instance...
+        getCurrentEvent().getState().updateDataRow(band);
+        print(band, false);
+      }
+      catch (CloneNotSupportedException cne)
+      {
+        throw new ReportProcessingException("Unable to initialize the new page. Clone failed.", cne);
+      }
     }
     clearSaveState();
     setRestartingPage(false);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.34 2003/04/09 15:53:23 mungady Exp $
+ * $Id: PDFOutputTarget.java,v 1.35 2003/05/02 12:40:35 taqua Exp $
  *
  * Changes
  * -------
@@ -405,11 +405,11 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     if (imageRef.getImage() != null)
     {
-      // use best compression but iText does not support the Alpha-Channel ...
+      // since version 0.99 iText supports Alpha-PNGs 
       WaitingImageObserver obs = new WaitingImageObserver(imageRef.getImage());
       obs.waitImageLoaded();
 
-      PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.NO_ALPHA,
+      PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.ENCODE_ALPHA,
                                           PngEncoder.FILTER_NONE, 9);
       byte[] data = encoder.pngEncode();
       return Image.getInstance(data);

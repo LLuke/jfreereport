@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.14 2003/02/25 14:07:20 taqua Exp $
+ * $Id: ImageLoadFilter.java,v 1.15 2003/05/02 12:39:43 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -41,6 +41,7 @@ import java.net.URL;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.util.KeyedQueue;
+import com.jrefinery.report.util.Log;
 
 /**
  * The image load filter is used to load images during the report generation process.
@@ -129,6 +130,7 @@ public class ImageLoadFilter implements DataFilter
       }
       catch (IOException ioe)
       {
+        Log.debug ("Error while loading the image from " + url, ioe);
         return null;
       }
     }

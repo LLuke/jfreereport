@@ -1,5 +1,0 @@
-This is an extended version of jcommon 0.8.0; it contains 
-several new classes which will be part of later releases of
-jcommon (in fact: when the interfaces are stable enough to
-make them really public ... dont depend on the org.jfree.xml package
-yet ...)

@@ -29,7 +29,7 @@
  *                   JRXlsExporter.java of JasperReports;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellStyleFactory.java,v 1.11 2003/04/09 16:07:10 mungady Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.12 2003/05/02 12:40:39 taqua Exp $
  *
  * Changes
  * -------
@@ -200,6 +200,7 @@ public class ExcelCellStyleFactory
     this.workbook = workbook;
     this.styleCache = new HashMap();
     this.fontFactory = new ExcelFontFactory(workbook);
+    this.dataFormat = workbook.createDataFormat();
   }
 
   /**
@@ -282,6 +283,18 @@ public class ExcelCellStyleFactory
    */
   public ExcelDataCellStyle getExcelDataCellStyle (Element element)
   {
+    return getExcelDataCellStyle(element, "TEXT");
+  }
+
+  /**
+   * Converts the given element and the assigned style into an excel style.
+   *
+   * @param element the element that should be converted into the excel style.
+   * @param format the format string for the cell.
+   * @return the generated excel style, never null.
+   */
+  public ExcelDataCellStyle getExcelDataCellStyle (Element element, String format)
+  {
     ElementAlignment horizontalAlignment = (ElementAlignment)
         element.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.LEFT);
     ElementAlignment verticalAlignment = (ElementAlignment)
@@ -294,6 +307,7 @@ public class ExcelCellStyleFactory
     style.setVerticalAlignment(verticalAlignment);
     style.setFontDefinition(awtFont);
     style.setTextColor(color);
+    style.setDataStyle(format);
     return style;
   }
 
@@ -311,23 +325,6 @@ public class ExcelCellStyleFactory
       emptyCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
     }
     return emptyCellStyle;
-  }
-
-  /**
-   * Gets the data format implementation of HSSF.
-   * <p>
-   * This needs at least POI 1.9, the version 1.5.1 is not able to set
-   * userdefined data formats
-   *
-   * @return the data format implementation.
-   */
-  public HSSFDataFormat getDataFormat ()
-  {
-    if (dataFormat == null)
-    {
-      dataFormat = new HSSFDataFormat();
-    }
-    return dataFormat;
   }
 
   /**
@@ -360,6 +357,7 @@ public class ExcelCellStyleFactory
       hssfCellStyle.setVerticalAlignment(convertAlignment(style.getVerticalAlignment()));
       hssfCellStyle.setFont(fontFactory.getExcelFont(style.getFontDefinition(), 
                                                      style.getTextColor()));
+      hssfCellStyle.setDataFormat(dataFormat.getFormat(style.getDataStyle()));
     }
 
     if (bg != null)

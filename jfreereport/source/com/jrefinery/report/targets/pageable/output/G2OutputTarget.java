@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.35 2003/04/06 18:11:31 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.36 2003/04/09 15:53:22 mungady Exp $
  *
  * Changes
  * -------
@@ -448,6 +448,7 @@ public class G2OutputTarget extends AbstractOutputTarget
 
     if (image.getImage() != null)
     {
+      Log.debug ("Drawing image from Reference!");
       Shape s = g2.getClip();
       AffineTransform transform = g2.getTransform();
       try
@@ -458,7 +459,7 @@ public class G2OutputTarget extends AbstractOutputTarget
                                 (float) (Math.min(bounds.getHeight(), myBounds.getHeight())))
         );
         g2.transform(AffineTransform.getScaleInstance(image.getScaleX(), image.getScaleY()));
-        while (g2.drawImage(image.getImage(), 
+        while (g2.drawImage(image.getImage(),
                             (int) -myBounds.getX(), (int) -myBounds.getY(), null) == false)
         {
           WaitingImageObserver obs = new WaitingImageObserver(image.getImage());
@@ -478,6 +479,10 @@ public class G2OutputTarget extends AbstractOutputTarget
       }
       g2.setTransform(transform);
       g2.setClip(s);
+    }
+    else
+    {
+      Log.warn ("The image-reference contained no content!");
     }
   }
 

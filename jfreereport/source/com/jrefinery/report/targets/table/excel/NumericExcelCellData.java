@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: NumericExcelCellData.java,v 1.7 2003/02/26 13:58:03 mungady Exp $
+ * $Id: NumericExcelCellData.java,v 1.8 2003/02/26 16:42:25 mungady Exp $
  *
  * Changes
  * -------
@@ -49,9 +49,6 @@ public class NumericExcelCellData extends ExcelCellData
 {
   /** the number stored in this cell. */
   private Number number;
-  
-  /** the number format string. */
-  private String format;
 
   /**
    * Creates a new NumericExcelCellData.
@@ -59,15 +56,13 @@ public class NumericExcelCellData extends ExcelCellData
    * @param elementBounds the bounds of the cell.
    * @param style the cell style.
    * @param value the number value.
-   * @param format the date format string.
    */
   public NumericExcelCellData(Rectangle2D elementBounds,
                               ExcelDataCellStyle style,
-                           Number value, String format)
+                              Number value)
   {
     super(elementBounds, style);
     this.number = value;
-    this.format = format;
   }
 
   /**

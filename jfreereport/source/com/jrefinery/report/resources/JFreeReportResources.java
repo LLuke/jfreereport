@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.52 2003/04/09 00:12:30 mungady Exp $
+ * $Id: JFreeReportResources.java,v 1.53 2003/05/02 12:40:27 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -162,7 +162,7 @@ public class JFreeReportResources extends ListResourceBundle
   private static final Object[][] CONTENTS =
           {
             {"project.name", "JFreeReport"},
-            {"project.version", "0.8.2"},
+            {"project.version", "0.8.3"},
             {"project.info", "http://www.object-refinery.com/jfreereport/index.html"},
             {"project.copyright",
                 "(C)opyright 2000-2003, by Simba Management Limited and Contributors"},
