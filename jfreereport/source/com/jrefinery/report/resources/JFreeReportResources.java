@@ -1,31 +1,28 @@
 package com.jrefinery.report.resources;
 
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.targets.G2OutputTarget;
+
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+import java.util.Hashtable;
+import java.util.ListResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
-import java.awt.event.KeyEvent;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.util.ListResourceBundle;
-import java.util.ResourceBundle;
-import java.util.Hashtable;
-import java.util.Enumeration;
-import java.util.MissingResourceException;
-import java.net.URL;
 
 public class JFreeReportResources extends ListResourceBundle
 {
-  public JFreeReportResources ()
+  public JFreeReportResources()
   {
   }
 
   /**
    * Used to test the resourcebundle for null values
    */
-  public static void main (String [] args)
+  public static void main(String[] args)
   {
     Object lastKey = null;
     try
@@ -34,9 +31,9 @@ public class JFreeReportResources extends ListResourceBundle
       for (int i = 0; i < contents.length; i++)
       {
         Object[] row = contents[i];
-        System.out.println (row[0] + " " + row[1]);
+        System.out.println(row[0] + " " + row[1]);
         lastKey = row[0];
-        elements.put (row[0], row[1]);
+        elements.put(row[0], row[1]);
       }
       Object o = getIcon("com/jrefinery/report/resources/SaveAs16.gif");
     }
@@ -54,7 +51,6 @@ public class JFreeReportResources extends ListResourceBundle
   {
     return contents;
   }
-
 
   /** The resources to be localised. */
   private static final Object[][] contents = 
@@ -95,6 +91,13 @@ public class JFreeReportResources extends ListResourceBundle
       { "action.about.small-icon", getIcon("com/jrefinery/report/resources/About16.gif")},
       { "action.about.icon", getIcon("com/jrefinery/report/resources/About24.gif")},
 
+      { "action.firstpage.name", "Home"},
+      { "action.firstpage.mnemonic", new Integer (KeyEvent.VK_HOME)},
+      { "action.firstpage.description", "Switch to the first page"},
+      { "action.firstpage.small-icon", getIcon("com/jrefinery/report/resources/FirstPage16.gif") },
+      { "action.firstpage.icon", getIcon("com/jrefinery/report/resources/FirstPage24.gif") },
+      { "action.firstpage.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0) },
+
       { "action.back.name", "Back"},
       { "action.back.mnemonic", new Integer (KeyEvent.VK_PAGE_UP)},
       { "action.back.description", "Switch to the previous page"},
@@ -108,6 +111,13 @@ public class JFreeReportResources extends ListResourceBundle
       { "action.forward.small-icon", getIcon("com/jrefinery/report/resources/Forward16.gif") },
       { "action.forward.icon", getIcon("com/jrefinery/report/resources/Forward24.gif") },
       { "action.forward.accelerator", KeyStroke.getKeyStroke("PAGE_DOWN") },
+
+      { "action.lastpage.name", "End"},
+      { "action.lastpage.mnemonic", new Integer (KeyEvent.VK_END)},
+      { "action.lastpage.description", "Switch to the last page"},
+      { "action.lastpage.small-icon", getIcon("com/jrefinery/report/resources/LastPage16.gif") },
+      { "action.lastpage.icon", getIcon("com/jrefinery/report/resources/LastPage24.gif") },
+      { "action.lastpage.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_END, 0) },
 
       { "action.zoomIn.name", "Zoom In"},
       { "action.zoomIn.description", "Increase zoom"},
