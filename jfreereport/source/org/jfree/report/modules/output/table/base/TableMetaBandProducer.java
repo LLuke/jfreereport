@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableMetaBandProducer.java,v 1.1 2004/03/16 15:43:41 taqua Exp $
+ * $Id: TableMetaBandProducer.java,v 1.2.2.1 2004/12/13 19:27:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,18 +44,18 @@ import java.awt.Shape;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
-import org.jfree.report.Element;
-import org.jfree.report.ShapeElement;
 import org.jfree.report.Band;
 import org.jfree.report.DrawableElement;
+import org.jfree.report.Element;
 import org.jfree.report.ImageElement;
+import org.jfree.report.ShapeElement;
 import org.jfree.report.TextElement;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.ContentType;
-import org.jfree.report.content.ShapeContent;
 import org.jfree.report.content.EmptyContent;
+import org.jfree.report.content.ShapeContent;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.modules.output.meta.MetaElement;
@@ -169,7 +169,7 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
       {
         if ((shapeBounds.getWidth() == 0) && (shapeBounds.getHeight() == 0))
         {
-          // this shape has no content ...
+          // this shape has no convertable content ...
           return null;
         }
         else if (shapeBounds.getHeight() == 0)
@@ -209,6 +209,7 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
       }
     }
 
+    Log.debug ("Background is : " + bg);
     return bg;
   }
 
@@ -246,10 +247,13 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
     return null;
   }
 
-  protected abstract MetaElement createTextCell (Element e, float x, float y);
+  protected abstract MetaElement createTextCell (Element e, float x, float y)
+          throws ContentCreationException;
 
-  protected abstract MetaElement createImageCell (Element e, float x, float y);
+  protected abstract MetaElement createImageCell (Element e, float x, float y)
+          throws ContentCreationException;
 
-  protected abstract MetaElement createDrawableCell (Element e, float x, float y);
+  protected abstract MetaElement createDrawableCell (Element e, float x, float y)
+          throws ContentCreationException;
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaBandProducer.java,v 1.3 2004/04/19 17:03:21 taqua Exp $
+ * $Id: MetaBandProducer.java,v 1.4 2004/05/07 14:29:20 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -47,9 +47,9 @@ import org.jfree.report.Element;
 import org.jfree.report.ImageElement;
 import org.jfree.report.ShapeElement;
 import org.jfree.report.TextElement;
+import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.content.EmptyContent;
-import org.jfree.report.content.Content;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ElementLayoutInformation;

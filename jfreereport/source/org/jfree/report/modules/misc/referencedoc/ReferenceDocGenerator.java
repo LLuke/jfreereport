@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReferenceDocGenerator.java,v 1.3 2003/09/16 11:45:06 taqua Exp $
+ * $Id: ReferenceDocGenerator.java,v 1.4 2004/05/07 14:29:24 mungady Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
 
 package org.jfree.report.modules.misc.referencedoc;
 
-import org.jfree.report.Boot;
+import org.jfree.report.JFreeReportBoot;
 
 
 /**
@@ -63,7 +63,7 @@ public class ReferenceDocGenerator
    */
   public static void main(final String[] args)
   {
-    Boot.start();
+    JFreeReportBoot.getInstance().start();
     StyleKeyReferenceGenerator.main(args);
     ObjectReferenceGenerator.main(args);
     DataSourceReferenceGenerator.main(args);

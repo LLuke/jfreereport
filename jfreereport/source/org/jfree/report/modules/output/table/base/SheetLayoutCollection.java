@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayoutCollection.java,v 1.1 2004/03/16 15:43:41 taqua Exp $
+ * $Id: SheetLayoutCollection.java,v 1.2.2.1 2004/12/13 19:27:05 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,6 +39,8 @@
 package org.jfree.report.modules.output.table.base;
 
 import java.util.ArrayList;
+
+import org.jfree.report.util.Log;
 
 /**
  * The tablelayout info class is used to store the layout that was generated
@@ -72,6 +74,7 @@ public class SheetLayoutCollection
    */
   public void addLayout(final SheetLayout bounds)
   {
+    Log.debug ("Added Sheet: " + isGlobalLayout() + ": " + bounds);
     if (isGlobalLayout())
     {
       globalLayout = bounds;
@@ -102,13 +105,23 @@ public class SheetLayoutCollection
    */
   public SheetLayout getLayoutForPage(final int page)
   {
+    Log.debug("Query Layout [" + isGlobalLayout() + "] for page " + page);
     if (isGlobalLayout())
     {
+      if (globalLayout == null)
+      {
+        throw new IllegalStateException("No global layout defined.");
+      }
       return globalLayout;
     }
     else
     {
-      return (SheetLayout) pageLayouts.get(page);
+      final SheetLayout layout = (SheetLayout) pageLayouts.get(page);
+      if (layout == null)
+      {
+        throw new IllegalStateException("No sheet layout for page " + page);
+      }
+      return layout;
     }
   }
 

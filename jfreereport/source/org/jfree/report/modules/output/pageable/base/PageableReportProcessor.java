@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.15 2004/04/15 15:14:20 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.16 2004/05/07 12:53:08 mungady Exp $
  *
  * Changes
  * -------
@@ -130,6 +130,10 @@ public class PageableReportProcessor
     catch (CloneNotSupportedException cne)
     {
       throw new ReportProcessingException("Initial Clone of Report failed");
+    }
+    catch (FunctionInitializeException e)
+    {
+      throw new ReportProcessingException("Setup of the output function failed.");
     }
 
   }
@@ -427,10 +431,6 @@ public class PageableReportProcessor
       // finally return the saved page states.
       return pageStates;
     }
-    catch (FunctionInitializeException fne)
-    {
-      throw new ReportProcessingException("Unable to initialize the functions/expressions.", fne);
-    }
     catch (CloneNotSupportedException cne)
     {
       throw new ReportProcessingException("Unable to initialize the report, clone error", cne);
@@ -692,7 +692,10 @@ public class PageableReportProcessor
     final OutputTarget output = getOutputTarget();
     try
     {
-      output.printPage(mp, physPage, page);
+      for (int i = 0; i < physPage.getPageCount(); i++)
+      {
+        output.printPage(mp, physPage, i);
+      }
     }
     catch (OutputTargetException e)
     {

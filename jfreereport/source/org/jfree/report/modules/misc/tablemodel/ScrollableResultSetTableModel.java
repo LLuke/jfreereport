@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2002, 2003, by Thomas Morgner.
  *
- * $Id: ScrollableResultSetTableModel.java,v 1.4 2003/11/07 18:33:54 taqua Exp $
+ * $Id: ScrollableResultSetTableModel.java,v 1.4.4.1 2004/04/05 16:49:35 taqua Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,8 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   private int rowCount;
   /** Defines the column naming mode. */
   private final boolean labelMapMode;
+  /** The column types as read from the result set. */
+  private Class[] types;
 
   /**
    * Constructs the model.
@@ -298,11 +300,16 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    */
   public Class getColumnClass(final int column)
   {
+    if (types != null)
+    {
+      return types[column];
+    }
     if (dbmd != null)
     {
       try
       {
-        return getClass().getClassLoader().loadClass(getColumnClassName(column));
+        types = TypeMapper.mapTypes(dbmd);
+        return types[column];
       }
       catch (Exception e)
       {
@@ -324,14 +331,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   {
     if (dbmd != null)
     {
-      try
-      {
-        return mckoiDBFixClassName(dbmd.getColumnClassName(column + 1));
-      }
-      catch (SQLException e)
-      {
-        //Log.debug ("GetColumnClassName failed for " + column, e);
-      }
+      return mckoiDBFixClassName(getColumnClass(column).getName());
     }
     return Object.class.getName();
   }

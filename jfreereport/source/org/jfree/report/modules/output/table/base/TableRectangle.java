@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableRectangle.java,v 1.1 2004/03/16 15:43:41 taqua Exp $
+ * $Id: TableRectangle.java,v 1.2.2.1 2004/12/13 19:27:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -106,5 +106,16 @@ public class TableRectangle
   public int getColumnSpan ()
   {
     return x2 - x1;
+  }
+
+
+  public String toString ()
+  {
+    return "org.jfree.report.modules.output.table.base.TableRectangle{" +
+            "x1=" + x1 +
+            ", y1=" + y1 +
+            ", x2=" + x2 +
+            ", y2=" + y2 +
+            "}";
   }
 }

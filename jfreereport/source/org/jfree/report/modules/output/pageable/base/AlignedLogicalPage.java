@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AlignedLogicalPage.java,v 1.1 2004/03/16 15:38:48 taqua Exp $
+ * $Id: AlignedLogicalPage.java,v 1.2 2004/05/07 12:53:08 mungady Exp $
  *
  * Changes
  * -------
@@ -37,8 +37,8 @@
  */
 package org.jfree.report.modules.output.pageable.base;
 
-import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.PageDefinition;
+import org.jfree.report.layout.LayoutSupport;
 
 /**
  * The AlignedLogicalPage corrects all values of the page format

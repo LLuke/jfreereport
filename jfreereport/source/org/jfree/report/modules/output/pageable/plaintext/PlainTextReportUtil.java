@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextReportUtil.java,v 1.5 2004/03/16 15:09:52 taqua Exp $
+ * $Id: PlainTextReportUtil.java,v 1.6 2004/05/07 12:53:09 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -45,7 +45,6 @@ import java.io.OutputStream;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 
@@ -73,17 +72,15 @@ public final class PlainTextReportUtil
    * @param filename target file name.
    *
    * @throws ReportProcessingException if the report processing failed.
-   * @throws FunctionInitializeException if the initialisation of the report processor failed.
    * @throws IOException if there was an IOerror while processing the report.
    * @throws OutputTargetException if there is a problem with the output target.
    */
   public static void createPlainText(final JFreeReport report, final String filename)
-      throws IOException, ReportProcessingException,
-      FunctionInitializeException, OutputTargetException
+      throws IOException, ReportProcessingException, OutputTargetException
   {
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
-    final PrinterCommandSet pc = new PrinterCommandSet(fout, 6, 10);
+    final TextFilePrinterDriver pc = new TextFilePrinterDriver(fout, 6, 10);
     final PlainTextOutputTarget target =
         new PlainTextOutputTarget(pc);
     pr.setOutputTarget(target);
@@ -93,5 +90,31 @@ public final class PlainTextReportUtil
     fout.close();
   }
 
+  public static byte[] getInitSequence (final JFreeReport report)
+          throws IOException
+  {
+    final String encoding = report.getReportConfiguration().getConfigProperty
+            ("org.jfree.report.modules.output.pageable.plaintext.RawEncoding", "Raw");
+    final String sequence = report.getReportConfiguration().getConfigProperty
+            ("org.jfree.report.modules.output.pageable.plaintext.RawInitSequence");
+    if (sequence == null)
+    {
+      return null;
+    }
+    if (encoding.equalsIgnoreCase("Raw"))
+    {
+      final char[] rawChars = sequence.toCharArray();
+      final byte[] rawBytes = new byte[rawChars.length];
+      for (int i = 0; i < rawBytes.length; i++)
+      {
+        rawBytes[i] = (byte) rawChars[i];
+      }
+      return rawBytes;
+    }
+    else
+    {
+      return sequence.getBytes(encoding);
+    }
+  }
 
 }

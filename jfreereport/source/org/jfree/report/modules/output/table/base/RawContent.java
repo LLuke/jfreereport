@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RawContent.java,v 1.1 2004/03/16 15:43:41 taqua Exp $
+ * $Id: RawContent.java,v 1.2.2.1 2004/12/13 19:27:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,9 +38,10 @@
 
 package org.jfree.report.modules.output.table.base;
 
+import java.awt.geom.Rectangle2D;
+
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentType;
-import java.awt.geom.Rectangle2D;
 
 public class RawContent implements Content
 {
@@ -128,5 +129,14 @@ public class RawContent implements Content
   public Object getContent ()
   {
     return content;
+  }
+
+
+  public String toString ()
+  {
+    return "org.jfree.report.modules.output.table.base.RawContent{" +
+            "content=" + content +
+            ", bounds=" + bounds +
+            "}";
   }
 }

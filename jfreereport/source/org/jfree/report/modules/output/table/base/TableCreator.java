@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableCreator.java,v 1.1 2004/03/16 15:43:41 taqua Exp $
+ * $Id: TableCreator.java,v 1.2.2.1 2004/12/13 19:27:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,9 +38,9 @@
 
 package org.jfree.report.modules.output.table.base;
 
-import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.modules.output.meta.MetaBand;
 
 /**
  * The table creator is a streaming interface for the table producers.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.18 2004/04/19 17:03:23 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.19 2004/05/07 12:53:09 mungady Exp $
  *
  * Changes
  * -------
@@ -52,15 +52,14 @@ import org.jfree.report.Band;
 import org.jfree.report.Group;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
-//import org.jfree.report.util.Log;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.layout.BandLayoutManagerUtil;
-import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.modules.output.meta.MetaBand;
+import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelegate;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
@@ -134,6 +133,10 @@ public strictfp class SimplePageLayouter extends PageLayouter
     }
   }
 
+  public static final String WATERMARK_PRINTED_KEY =
+  	           "org.jfree.report.modules.pageable.base.WatermarkPrinted";
+
+  private static final float POSITION_UNDEFINED = -1;
   /**
    * A flag value indicating that the current page should be finished,
    * regardless of the current state or fill level.
@@ -183,8 +186,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
   }
 
   /**
-   * Returns the current position of the cursor. 
-   * 
+   * Returns the current position of the cursor.
+   *
    * @return the cursor position.
    */
   public float getCursorPosition()
@@ -197,8 +200,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
   }
 
   /**
-   * Defines the reserved space on the current page. 
-   *  
+   * Defines the reserved space on the current page.
+   *
    * @param reserved the reserved space.
    */
   public void setReservedSpace(final float reserved)
@@ -211,8 +214,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
   }
 
   /**
-   * Returns the reserved space on the current page. 
-   *  
+   * Returns the reserved space on the current page.
+   *
    * @return the reserved space.
    */
   public float getReservedSpace()
@@ -256,7 +259,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
   }
 
   /**
-   * Checks, whether the current page is empty. 
+   * Checks, whether the current page is empty.
    * todo reimplement it with the new metabands
    * @return true, if the current page is empty, false otherwise.
    */
@@ -575,7 +578,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
    *
    * @param b  the band.
    * @param spool  a flag that controls whether or not to spool.
-   * @param handlePagebreak a flag that controls whether to handle the 
+   * @param handlePagebreak a flag that controls whether to handle the
    * 'pagebreak-before constraint.
    * @return true, if the band was printed, and false if the printing is delayed
    * until a new page gets started.
@@ -594,8 +597,25 @@ public strictfp class SimplePageLayouter extends PageLayouter
       return false;
     }
 
-    if (handlePagebreak &&
-        b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
+    final Float f = (Float)
+            b.getStyle().getStyleProperty(BandStyleSheet.FIXED_POSITION);
+    final float position;
+    if (f == null)
+    {
+      position = POSITION_UNDEFINED;
+    }
+    else
+    {
+      position = f.floatValue();
+      if ((position >= getCursor().getPageBottom()) || (position < 0))
+      {
+        throw new IndexOutOfBoundsException("Given fixed position is invalid");
+      }
+    }
+
+    if ((handlePagebreak &&
+        b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true) ||
+        ((position != -1) && (position < getCursorPosition())))
     {
       // don't save the state if the current page is currently being finished
       // or restarted; PageHeader and PageFooter are printed out of order and
@@ -613,14 +633,22 @@ public strictfp class SimplePageLayouter extends PageLayouter
       }
     }
 
-    final float y = getCursor().getY();
+    final float y;
+    if (position == POSITION_UNDEFINED)
+    {
+      y = getCursor().getY();
+    }
+    else
+    {
+      y = position;
+    }
     // don't save the state if the current page is currently being finished
     // or restarted; PageHeader and PageFooter are printed out of order and
     // do not influence the reporting state
 
     final Rectangle2D bounds = doLayout(b, true);
     bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
-    final boolean retval = doPrint(bounds, b, spool, false);
+    final boolean retval = doPrint(bounds, b, spool, false, position);
     return retval;
   }
 
@@ -641,12 +669,12 @@ public strictfp class SimplePageLayouter extends PageLayouter
     // do not influence the reporting state
 
     // if there is nothing printed, then ignore everything ...
-    // the spooling is now slightly different ... 
+    // the spooling is now slightly different ...
     final boolean spool = true;
     final Rectangle2D bounds = doLayout(b, true);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
         bounds.getWidth(), bounds.getHeight());
-    return doPrint(bounds, b, spool, false);
+    return doPrint(bounds, b, spool, false, -1);
   }
 
   /**
@@ -690,7 +718,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
    * while printing the band
    */
   protected boolean doPrint(final Rectangle2D bounds, final Band band,
-                            final boolean spool, final boolean watermark)
+                            final boolean spool, final boolean watermark,
+                            final float position)
       throws ReportProcessingException
   {
       try
@@ -699,6 +728,11 @@ public strictfp class SimplePageLayouter extends PageLayouter
         // handle the end of the page
         if (isFinishingPage())
         {
+          final ReportEvent event = getCurrentEvent();
+          clearCurrentEvent();
+          event.getState().fireOutputCompleteEvent(band, event.getType());
+          setCurrentEvent(event);
+
           final MetaBandProducer producer = new MetaBandProducer(getLogicalPage().getLayoutSupport());
           final MetaBand rootBand = producer.createBand(band, spool);
           if (rootBand != null)
@@ -712,6 +746,11 @@ public strictfp class SimplePageLayouter extends PageLayouter
         // handle a automatic pagebreak in case there is not enough space here ...
         else if ((watermark == false) && (isPageEnded() == false) && (isSpaceFor(height) == false))
         {
+          // todo ... how about spooling the band?
+          if (position != -1)
+  	      {
+  	         throw new ReportProcessingException("Band does not fit into given position!");
+  	      }
           createSaveState(band);
           endPage(ENDPAGE_FORCED);
           return false;
@@ -719,12 +758,16 @@ public strictfp class SimplePageLayouter extends PageLayouter
         else if (isPageEnded())
         {
           // page has ended before, that band should be printed on the next page
-          // todo make sure that this can never happen ..
           createSaveState(band);
           return false;
         }
         else
         {
+          final ReportEvent event = getCurrentEvent();
+          clearCurrentEvent();
+          event.getState().fireOutputCompleteEvent(band, event.getType());
+          setCurrentEvent(event);
+
           final MetaBandProducer producer = new MetaBandProducer(getLogicalPage().getLayoutSupport());
           final MetaBand metaBand = producer.createBand(band, spool);
           if (metaBand != null)
@@ -875,16 +918,30 @@ public strictfp class SimplePageLayouter extends PageLayouter
     }
 
     setRestartingPage(true);
+    boolean pagebreakAfter = false;
     // if there was a pagebreak_after_print, there is no band to print for now
     if (state.getBandID() != null)
     {
       final ReportState reportstate = getCurrentEvent().getState();
       final ReportDefinition impl = reportstate.getReport();
       final Band band = getBandForID(impl, state.getBandID());
-      print(band, BAND_PRINTED, PAGEBREAK_BEFORE_IGNORED);
+      pagebreakAfter = band.getStyle().getBooleanStyleProperty
+              (BandStyleSheet.PAGEBREAK_AFTER);
+      band.getStyle().setBooleanStyleProperty
+              (BandStyleSheet.PAGEBREAK_AFTER, false);
+      print(band, pagebreakAfter, PAGEBREAK_BEFORE_IGNORED);
+      band.getStyle().setBooleanStyleProperty
+              (BandStyleSheet.PAGEBREAK_AFTER, pagebreakAfter);
     }
     clearSaveState();
     setRestartingPage(false);
+
+    // ugly fix for the reportd-problem ..
+    if (pagebreakAfter)
+    {
+      createSaveState(null);
+      endPage(false);
+    }
   }
 
   private Band getBandForID (final ReportDefinition def,
@@ -959,13 +1016,6 @@ public strictfp class SimplePageLayouter extends PageLayouter
   {
     if (isGeneratedPageEmpty() == false || force)
     {
-// Todo Spooling ...
-//      if (spooledBand != null)
-//      {
-//        // getLogicalPage().replaySpool(spooledBand);
-//        // Log.warn ("Spool contained data, this data is lost now ...!");
-//        spooledBand = null;
-//      }
       super.endPage();
       return true;
     }
@@ -1024,11 +1074,6 @@ public strictfp class SimplePageLayouter extends PageLayouter
   public Object clone() throws CloneNotSupportedException
   {
     final SimplePageLayouter sl = (SimplePageLayouter) super.clone();
-// Todo spooling     
-//    if (spooledBand != null)
-//    {
-//      sl.spooledBand = (Spool) spooledBand.clone();
-//    }
     sl.delegate = (SimplePageLayoutDelegate) delegate.clone();
     sl.delegate.setWorker(sl);
     return sl;
@@ -1041,9 +1086,9 @@ public strictfp class SimplePageLayouter extends PageLayouter
    */
   public void prepareEvent(final ReportEvent event)
   {
+    setCurrentEvent(event);
     try
     {
-      setCurrentEvent(event);
       restartPage();
     }
     catch (Exception e)
@@ -1058,7 +1103,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
 
   public boolean isWatermarkSupported()
   {
-    return true;
+    return getReport().getReportConfiguration().getConfigProperty
+            (WATERMARK_PRINTED_KEY, "true").equals("true");
   }
 
   public boolean printWatermark(final Band watermark) throws ReportProcessingException
@@ -1066,7 +1112,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
     final LogicalPage logPage = getLogicalPage();
     final Rectangle2D bounds  = BandLayoutManagerUtil.doFixedLayout
         (watermark, logPage.getLayoutSupport(), logPage.getWidth(), logPage.getHeight());
-    final boolean retval = doPrint(bounds, watermark, true, true);
+    final boolean retval = doPrint(bounds, watermark, true, true, -1);
     return retval;
   }
 

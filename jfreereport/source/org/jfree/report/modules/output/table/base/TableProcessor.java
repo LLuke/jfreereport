@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableProcessor.java,v 1.13 2004/03/16 15:09:53 taqua Exp $
+ * $Id: TableProcessor.java,v 1.11.2.1.2.3 2004/12/13 19:27:06 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.output.table.base;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
@@ -71,7 +72,7 @@ public abstract class TableProcessor
   private static final int MAX_EVENTS_PER_RUN = 400;
 
   /** Disable strict layout by default. */
-  public static final String STRICT_TABLE_LAYOUT_DEFAULT = "false";
+  public static final String STRICT_LAYOUT_DEFAULT = "false";
 
   /** The local property name for strict layout. */
   public static final String STRICT_LAYOUT = "StrictLayout";
@@ -104,6 +105,9 @@ public abstract class TableProcessor
 
   private transient LayoutCreator layoutCreator;
 
+  public static final String GLOBAL_LAYOUT = "GlobalLayout";
+  public static final String GLOBAL_LAYOUT_DEFAULT = "false";
+
   /**
    * Creates a new TableProcessor. The TableProcessor creates a private copy
    * of the supplied report.
@@ -130,7 +134,14 @@ public abstract class TableProcessor
     }
     tableWriter = new TableWriter(createMetaBandProducer());
     tableWriter.setName(TABLE_WRITER);
-    this.report.addExpression(tableWriter);
+    try
+    {
+      this.report.addExpression(tableWriter);
+    }
+    catch (FunctionInitializeException e)
+    {
+      throw new ReportProcessingException("Unable to add output function to the report.");
+    }
 
     // initialize with the report default.
   }
@@ -343,10 +354,10 @@ public abstract class TableProcessor
       sretval.resetState();
       return sretval;
     }
-    catch (FunctionInitializeException fne)
-    {
-      throw new ReportProcessingException("Unable to initialize the functions/expressions.", fne);
-    }
+//    catch (FunctionInitializeException fne)
+//    {
+//      throw new ReportProcessingException("Unable to initialize the functions/expressions.", fne);
+//    }
     catch (CloneNotSupportedException cne)
     {
       throw new ReportProcessingException("Unable to initialize the report, clone error", cne);

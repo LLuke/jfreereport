@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AbstractTableCreator.java,v 1.1 2004/03/16 15:43:41 taqua Exp $
+ * $Id: AbstractTableCreator.java,v 1.2.2.1 2004/12/13 19:27:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,8 +40,8 @@ package org.jfree.report.modules.output.table.base;
 
 import java.awt.geom.Rectangle2D;
 
-import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.meta.MetaBand;
+import org.jfree.report.modules.output.meta.MetaElement;
 
 public abstract class AbstractTableCreator implements TableCreator
 {
@@ -49,9 +49,10 @@ public abstract class AbstractTableCreator implements TableCreator
 
   public AbstractTableCreator()
   {
+    empty = true;
   }
 
-  protected void setEmpty (boolean b)
+  protected void setEmpty (final boolean b)
   {
     empty = b;
   }
@@ -113,7 +114,11 @@ public abstract class AbstractTableCreator implements TableCreator
     }
 
     // handle the band itself, the band's bounds are already translated.
-    processBandDefinition(band);
+    if (processBandDefinition(band) == true)
+    {
+      // band indicated that no further processing should be done
+      return;
+    }
 
     // process all elements
     final MetaElement[] l = band.toArray();

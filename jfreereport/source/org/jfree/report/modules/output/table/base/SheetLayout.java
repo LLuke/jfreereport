@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.1 2004/03/16 15:43:41 taqua Exp $
+ * $Id: SheetLayout.java,v 1.2.2.1 2004/12/13 19:27:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,10 +40,14 @@ package org.jfree.report.modules.output.table.base;
 
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.jfree.report.modules.output.meta.MetaElement;
+import org.jfree.report.util.Log;
+
 
 /**
  * The sheet layout is used to build the background map and to collect
@@ -53,6 +57,46 @@ public class SheetLayout
 {
   private static final boolean UPPER_BOUNDS = true;
   private static final boolean LOWER_BOUNDS = false;
+
+  /**
+   * Encapsulates X- or Y-Cuts. An auxilary CutObject can be removed
+   * on non-strict sets.
+   */
+  private static class BoundsCut
+  {
+    private int position;
+    private boolean auxilary;
+
+    public BoundsCut (final int position, final boolean auxilary)
+    {
+      this.position = position;
+      this.auxilary = auxilary;
+    }
+
+    public boolean isAuxilary ()
+    {
+      return auxilary;
+    }
+
+    public int getPosition ()
+    {
+      return position;
+    }
+
+
+    public String toString ()
+    {
+      return "org.jfree.report.modules.output.table.base.SheetLayout.BoundsCut{" +
+              "auxilary=" + auxilary +
+              ", position=" + position +
+              "}";
+    }
+
+    public void makePermanent ()
+    {
+      auxilary = false;
+    }
+  }
 
   /** A flag, defining whether to use strict layout mode. */
   private final boolean strict;
@@ -74,8 +118,8 @@ public class SheetLayout
   private int rowCount;
   private int colCount;
 
-  private transient Integer[] yKeysArray;
-  private transient Integer[] xKeysArray;
+  private Integer[] yKeysArray;
+  private Integer[] xKeysArray;
 
   /**
    * Creates a new TableGrid-object. If strict mode is enabled, all cell bounds are
@@ -109,17 +153,19 @@ public class SheetLayout
 
     // collect the bounds and add them to the xBounds and yBounds collection
     // if necessary...
-    ensureXMapping((int) bounds.getX());
-    ensureYMapping((int) bounds.getY());
+    ensureXMapping((int) bounds.getX(), false);
+    ensureYMapping((int) bounds.getY(), false);
+
     final int elementWidth = (int) (bounds.getWidth() + bounds.getX());
     final int elementHeight = (int) (bounds.getHeight() + bounds.getY());
-    if (isStrict())
-    {
-      ensureXMapping(elementWidth);
-      ensureYMapping(elementHeight);
-    }
+    final boolean isBackground = (element instanceof TableCellBackground);
 
-    if (element instanceof TableCellBackground)
+    // an end cut is auxilary, if it is not a background and the layout is not strict
+    final boolean aux = (isBackground == false) && (isStrict() == false);
+    ensureXMapping(elementWidth, aux);
+    ensureYMapping(elementHeight, aux);
+
+    if (isBackground)
     {
       final TableCellBackground background = (TableCellBackground) element;
       // now add the new element to the table ...
@@ -134,22 +180,24 @@ public class SheetLayout
       TableCellBackground savedNewBackground = null;
 
       // we iterate over all rows ..
-      for (int y = 0; y < yKeys.length; y++)
+      // the yCuts also contains the End-Bounds (y+height);
+      // the EB's for the last element do not hold any content.
+      for (int y = 0; y < yKeys.length - 1; y++)
       {
         // get the index of the current row in the backend-table ...
-        final Integer currentRowValue = (Integer) yBounds.get (yKeys[y]);
-        final int currentRowIndex = currentRowValue.intValue();
+        final BoundsCut currentRowValue = (BoundsCut) yBounds.get (yKeys[y]);
+        final int currentRowIndex = currentRowValue.getPosition();
 
         // for every row we iterate over all columns ...
-        for (int x = 0; x < xKeys.length; x++)
+        for (int x = 0; x < xKeys.length - 1; x++)
         {
           // again get the column index for the backend table ...
-          final Integer currentColumnValue = (Integer) xBounds.get (xKeys[x]);
-          final int currentColumnIndex = currentColumnValue.intValue();
+          final BoundsCut currentColumnValue = (BoundsCut) xBounds.get (xKeys[x]);
+          final int currentColumnIndex = currentColumnValue.getPosition();
 
           // get the old background ... we will merge this one with the new ..
           final TableCellBackground oldBackground =
-              (TableCellBackground) backend.getObject(currentRowIndex, currentColumnValue.intValue());
+              (TableCellBackground) backend.getObject(currentRowIndex, currentColumnIndex);
           if (oldBackground == null)
           {
             // hey, we have no old background, so no merging is necessary ...
@@ -170,7 +218,7 @@ public class SheetLayout
               backend.setObject(currentRowIndex, currentColumnIndex, savedNewBackground);
             }
           }
-          // the current background goes on .. replace all occurences of the
+          // the current 'old' background continues .. replace all occurences of the
           // old background with the newly created one ..
           else if (oldBackground != savedNewBackground)
           {
@@ -191,25 +239,85 @@ public class SheetLayout
     }
   }
 
-  private void ensureXMapping (final int coordinate)
+  private void ensureXMapping (final int coordinate, final boolean aux)
   {
     final Integer key = new Integer (coordinate);
-    if (xBounds.containsKey(key) == false)
+    final BoundsCut cut = (BoundsCut) xBounds.get(key);
+    if (cut == null)
     {
       final int result = colCount;
-      xBounds.put(key, new Integer(result));
+      xBounds.put(key, new BoundsCut(result, aux));
       colCount += 1;
+      xKeysArray = null;
+      // backend copy ...
+      final int oldColumn = getPreviousColumn(coordinate);
+      columnInserted(coordinate, oldColumn, result);
+    }
+    else if (cut.isAuxilary() && aux == false)
+    {
+      cut.makePermanent();
     }
   }
 
-  private void ensureYMapping (final int y)
+  protected void columnInserted (final int coordinate, final int oldColumn, final int newColumn)
+  {
+    if (oldColumn != -1)
+    {
+      // now copy all entries from old column to new column
+      backend.copyColumn (oldColumn, newColumn);
+    }
+  }
+
+  private int getPreviousColumn (final int coordinate)
+  {
+    // first, find the column preceding this coordinate
+    final SortedMap map = xBounds.headMap(new Integer (coordinate));
+    if (map.isEmpty())
+    {
+      return -1;
+    }
+    final Object lastKey = map.lastKey();
+    final BoundsCut cuts = (BoundsCut) map.get(lastKey);
+    final int oldColumn = cuts.getPosition();
+    return oldColumn;
+  }
+
+  protected void rowInserted (final int coordinate, final int oldRow, final int newRow)
+  {
+    // now copy all entries from old column to new column
+    backend.copyRow (oldRow, newRow);
+  }
+
+  private int getPreviousRow (final int coordinate)
+  {
+    // first, find the column preceding this coordinate
+    final SortedMap map = yBounds.headMap(new Integer (coordinate));
+    if (map.isEmpty())
+    {
+      return -1;
+    }
+    final Object lastKey = map.lastKey();
+    final BoundsCut cuts = (BoundsCut) map.get(lastKey);
+    final int oldRow = cuts.getPosition();
+    return oldRow;
+  }
+
+  private void ensureYMapping (final int y, final boolean aux)
   {
     final Integer key = new Integer (y);
-    if (yBounds.containsKey(key) == false)
+    final BoundsCut cut = (BoundsCut) yBounds.get(key);
+    if (cut == null)
     {
       final int result = rowCount;
-      yBounds.put(key, new Integer(result));
+      yBounds.put(key, new BoundsCut(result, aux));
+      yKeysArray = null;
       rowCount += 1;
+      final int oldRow = getPreviousRow(y);
+      rowInserted(y, oldRow, result);
+    }
+    else if (cut.isAuxilary() && aux == false)
+    {
+      cut.makePermanent();
     }
   }
 
@@ -230,9 +338,20 @@ public class SheetLayout
 
   public boolean isEmpty()
   {
-    return ((backend.getColumnCount() == 0) && (backend.getRowCount() == 0));
+    return ((backend.getColumnCount() == 0) &&
+            (backend.getRowCount() == 0) &&
+             xMaxBounds == 0 &&
+             yMaxBounds == 0);
   }
 
+  /**
+   * Returns the position of the given element within the table. The TableRectangle
+   * contains row and cell indices, no layout coordinates.
+   *
+   * @param e the element for which the table bounds should be found.
+   * @param rect the returned rectangle or null, if a new instance should be created
+   * @return the filled table rectangle.
+   */
   public TableRectangle getTableBounds (final MetaElement e, TableRectangle rect)
   {
     if (rect == null)
@@ -248,6 +367,19 @@ public class SheetLayout
     return rect;
   }
 
+  protected int mapColumn (final int xCutIndex)
+  {
+    final Integer[] xcuts = getXCuts();
+    final BoundsCut boundsCut = (BoundsCut) xBounds.get(xcuts[xCutIndex]);
+    return boundsCut.getPosition();
+  }
+
+  protected int mapRow (final int yCutIndex)
+  {
+    final Integer[] ycuts = getYCuts();
+    final BoundsCut boundsCut = (BoundsCut) yBounds.get(ycuts[yCutIndex]);
+    return boundsCut.getPosition();
+  }
 
   /**
    * Tries to find the cell position of the value <code>value</code>. If the position
@@ -263,22 +395,36 @@ public class SheetLayout
   private int findXValue(final int value, final boolean upperLimit)
   {
     final Integer[] cuts = getXCuts();
-    final int pos = Arrays.binarySearch(cuts, new Integer(value));
-    if (pos == cuts.length)
+    try
     {
-      return xMaxBounds;
+      final int pos = Arrays.binarySearch(cuts, new Integer(value));
+      if (pos == cuts.length)
+      {
+        //return xMaxBounds;
+        // warning: This might be stupid
+        return cuts.length - 1;
+      }
+      if (pos >= 0)
+      {
+        return pos;
+      }
+      else if (upperLimit)
+      {
+        return (-pos - 1);
+      }
+      else
+      {
+        return (-pos - 2);
+      }
     }
-    if (pos >= 0)
+    catch (NullPointerException npe)
     {
-      return cuts[pos].intValue();
-    }
-    else if (upperLimit)
-    {
-      return cuts[-pos - 1].intValue();
-    }
-    else
-    {
-      return cuts[-pos - 2].intValue();
+      for (int i = 0; i < cuts.length; i++)
+      {
+        Log.debug ("i = " + i + " ; " + cuts[i]);
+      }
+      npe.printStackTrace();
+      throw npe;
     }
   }
 
@@ -299,19 +445,19 @@ public class SheetLayout
     final int pos = Arrays.binarySearch(cuts, new Integer(value));
     if (pos == cuts.length)
     {
-      return yMaxBounds;
+      return cuts.length - 1;
     }
     if (pos >= 0)
     {
-      return cuts[pos].intValue();
+      return pos;
     }
     else if (upperLimit)
     {
-      return cuts[-pos - 1].intValue();
+      return (-pos - 1);
     }
     else
     {
-      return cuts[-pos - 2].intValue();
+      return (-pos - 2);
     }
   }
 
@@ -340,10 +486,12 @@ public class SheetLayout
     else
     {
       yKeysArray = new Integer[yBounds.size() + 1];
-      yKeysArray[yKeysArray.length - 1] = yMaxKey;
     }
 
     yKeysArray = (Integer[]) yBounds.keySet().toArray(yKeysArray);
+    if (!isEndContained) {
+        yKeysArray[yKeysArray.length - 1] = yMaxKey;
+    }
     return yKeysArray;
   }
 
@@ -378,6 +526,10 @@ public class SheetLayout
     }
 
     xKeysArray = (Integer[]) xBounds.keySet().toArray(xKeysArray);
+    if (!isEndContained)
+    {
+      xKeysArray[xKeysArray.length - 1] = xMaxKey;
+    }
     return xKeysArray;
   }
 
@@ -387,6 +539,27 @@ public class SheetLayout
    */
   public void pageCompleted ()
   {
+    final Iterator itX = xBounds.entrySet().iterator();
+    while (itX.hasNext())
+    {
+      final Map.Entry entry = (Map.Entry) itX.next();
+      final BoundsCut cut = (BoundsCut) entry.getValue();
+      if (cut.isAuxilary())
+      {
+        itX.remove();
+      }
+    }
+
+    final Iterator itY = yBounds.entrySet().iterator();
+    while (itY.hasNext())
+    {
+      final Map.Entry entry = (Map.Entry) itY.next();
+      final BoundsCut cut = (BoundsCut) entry.getValue();
+      if (cut.isAuxilary())
+      {
+        itY.remove();
+      }
+    }
   }
 
   /**
@@ -400,11 +573,7 @@ public class SheetLayout
    */
   public TableCellBackground getElementAt (final int row, final int column)
   {
-    final Integer[] xCuts = getXCuts();
-    final Integer[] yCuts = getYCuts();
-
-    return (TableCellBackground) backend.getObject
-            (yCuts[row].intValue(), xCuts[column].intValue());
+    return (TableCellBackground) backend.getObject(mapRow(row), mapColumn(column));
   }
 
   /**
@@ -414,10 +583,29 @@ public class SheetLayout
    * @return the height of the row.
    * @throws IndexOutOfBoundsException if the row is invalid.
    */
-  public float getRowHeight (final int row)
+  public int getRowHeight (final int row)
   {
+    if (row >= rowCount)
+    {
+      throw new IndexOutOfBoundsException
+              ("Row " + row + " is invalid. Max rows is " + rowCount);
+    }
     final Integer[] yCuts = getYCuts();
-    return yCuts[row+1].floatValue() - yCuts[row].floatValue();
+    if (row + 1 < yCuts.length)
+    {
+      return yCuts[row+1].intValue() - yCuts[row].intValue();
+    }
+
+    final Integer lastElement = yCuts[yCuts.length - 1];
+    if (lastElement.intValue() < yMaxBounds)
+    {
+      // yMaxBounds is not contained in the treeset, therefore we
+      // can compute a valid height
+      final int retval = yMaxBounds - yCuts[row].intValue();
+      return retval;
+    }
+
+    throw new IndexOutOfBoundsException("RowHeight: " + (row + 1) + " >= " + yCuts.length);
   }
 
   /**
@@ -428,9 +616,37 @@ public class SheetLayout
    * @return the height of the row.
    * @throws IndexOutOfBoundsException if the row is invalid.
    */
-  public float getCellWidth (final int startCell, final int endCell)
+  public int getCellWidth (final int startCell, final int endCell)
+  {
+    final Integer[] xCuts = getXCuts();
+    return xCuts[endCell].intValue() - xCuts[startCell].intValue();
+  }
+
+  /**
+   * The current number of columns. Of course, this value begins to be
+   * reliable, once the number of columns is known (that is at the end
+   * of the layouting process).
+   *
+   * @return the number columns.
+   */
+  public int getColumnCount ()
+  {
+    final Integer[] xCuts = getXCuts();
+    // do not include the EndOfTable marker
+    return xCuts.length - 1;
+  }
+
+  /**
+   * The current number of rows. Of course, this value begins to be
+   * reliable, once the number of rows is known (that is at the end
+   * of the layouting process).
+   *
+   * @return the number columns.
+   */
+  public int getRowCount ()
   {
     final Integer[] yCuts = getYCuts();
-    return yCuts[startCell].floatValue() - yCuts[endCell].floatValue();
+    // do not include the EndOfTable marker
+    return yCuts.length - 1;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.10 2004/04/19 17:03:23 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.11 2004/05/07 12:53:09 mungady Exp $
  *
  * Changes
  * -------
@@ -60,9 +60,10 @@ import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 
 import org.jfree.report.DrawableContainer;
-import org.jfree.report.PageDefinition;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.LocalImageContainer;
+import org.jfree.report.PageDefinition;
+import org.jfree.report.content.ImageContent;
 import org.jfree.report.layout.DefaultSizeCalculator;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
@@ -279,7 +280,6 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   protected void beginPage(final PageDefinition page, final int index)
   {
     final Rectangle2D pageBounds = page.getPagePosition(index);
-    setPageBounds(pageBounds);
     currentPageFormat = page.getPageFormat(index);
     final Rectangle2D bounds = new Rectangle2D.Float(
         (float) (currentPageFormat.getImageableX()),
@@ -403,11 +403,12 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   /**
    * Draws the image contained in the given ImageReference.
    *
-   * @param image the image reference used to contain the image.
+   * @param content the image content.
    */
-  protected void drawImage(final ImageContainer image)
+  protected void drawImage(final ImageContent content)
   {
-    final Rectangle2D myBounds = image.getBoundsScaled();
+    final ImageContainer image = content.getContent();
+    final Rectangle2D myBounds = content.getImageArea();
     final Rectangle2D bounds = getOperationBounds();
 
     if (image instanceof LocalImageContainer)
@@ -415,17 +416,19 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
       final LocalImageContainer loImage = (LocalImageContainer) image;
       if (loImage.getImage() != null)
       {
-        //Log.debug ("Drawing image from Reference!");
         final Shape s = g2.getClip();
         final AffineTransform transform = g2.getTransform();
         try
         {
-          g2.clip(
-              new Rectangle2D.Float(0, 0,
-                  (float) (Math.min(bounds.getWidth(), myBounds.getWidth())),
-                  (float) (Math.min(bounds.getHeight(), myBounds.getHeight())))
-          );
-          g2.transform(AffineTransform.getScaleInstance(image.getScaleX(), image.getScaleY()));
+          final Rectangle2D.Float newClipArea =
+                  new Rectangle2D.Float(0, 0,
+                          (float) (bounds.getWidth()), (float) (bounds.getHeight()));
+          g2.clip(newClipArea);
+
+          final float scaleX = (float) (bounds.getWidth() / myBounds.getWidth());
+          final float scaleY = (float) (bounds.getHeight() / myBounds.getHeight());
+
+          g2.transform(AffineTransform.getScaleInstance(scaleX, scaleY));
           while (g2.drawImage(loImage.getImage(),
               (int) -myBounds.getX(), (int) -myBounds.getY(), null) == false)
           {
@@ -564,7 +567,6 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   protected void setOperationBounds(final Rectangle2D bounds)
   {
     final Rectangle2D oldBounds = super.getOperationBounds();
-    Log.debug ("Operation Bounds set to " + bounds + " ; old Bounds = " + oldBounds);
     // undo the last bounds operation
     g2.transform(AffineTransform.getTranslateInstance(0 - oldBounds.getX(), 0 - oldBounds.getY()));
     super.setOperationBounds(bounds);

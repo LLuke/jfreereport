@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriterCursor.java,v 1.3 2003/09/13 15:14:42 taqua Exp $
+ * $Id: TableWriterCursor.java,v 1.3.4.1 2004/12/13 19:27:06 taqua Exp $
  *
  * Changes
  * -------

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaBand.java,v 1.3 2004/04/15 15:14:20 taqua Exp $
+ * $Id: MetaBand.java,v 1.4 2004/05/07 14:29:20 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -39,6 +39,7 @@
 package org.jfree.report.modules.output.meta;
 
 import java.util.Arrays;
+
 import org.jfree.report.content.Content;
 import org.jfree.report.style.ElementStyleSheet;
 

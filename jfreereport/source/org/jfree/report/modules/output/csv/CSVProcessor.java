@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.9 2004/03/16 15:09:49 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.7.2.1.2.2 2004/12/30 14:46:12 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@
 
 package org.jfree.report.modules.output.csv;
 
-import java.awt.print.PageFormat;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Iterator;
@@ -126,7 +125,7 @@ public class CSVProcessor
    * @throws ReportProcessingException if the report initialisation failed.
    */
   public CSVProcessor(final JFreeReport report, final String separator)
-      throws ReportProcessingException
+      throws ReportProcessingException, FunctionInitializeException
   {
     this(report, separator,
         report.getReportConfiguration().getConfigProperty
@@ -148,7 +147,7 @@ public class CSVProcessor
    */
   public CSVProcessor(final JFreeReport report, final String separator,
                       final boolean writeDataRowNames)
-      throws ReportProcessingException
+      throws ReportProcessingException, FunctionInitializeException
   {
     if (report == null)
     {
@@ -226,10 +225,6 @@ public class CSVProcessor
     {
       throw new ReportProcessingException("Unable to clone the start state.", e);
     }
-    catch (FunctionInitializeException e)
-    {
-      throw new ReportProcessingException("Unable to initialize the expressions/functions.", e);
-    }
     ReportState state = startState;
     ReportState retval = null;
 
@@ -243,15 +238,6 @@ public class CSVProcessor
 
     // during a prepare run the REPORT_PREPARERUN_PROPERTY is set to true.
     state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
-
-    // the pageformat is added to the report properties, PageFormat is not serializable,
-    // so a repaginated report is no longer serializable.
-    //
-    // The pageformat will cause trouble in later versions, when printing over
-    // multiple pages gets implemented. This property will be replaced by a more
-    // suitable alternative.
-//    final PageFormat p = getReport().getDefaultPageFormat();
-//    state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
     // now change the writer function to be a dummy writer. We don't want any
     // output in the prepare runs.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultLayoutCreator.java,v 1.1 2004/03/16 15:43:41 taqua Exp $
+ * $Id: DefaultLayoutCreator.java,v 1.2.2.1 2004/12/13 19:27:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -70,7 +70,8 @@ public class DefaultLayoutCreator extends AbstractTableCreator
   {
     open = true;
     final boolean globalLayout =  (report.getReportConfiguration().getConfigProperty
-        (configurationPrefix + ".GlobalLayout", "false").equals("true"));
+        (configurationPrefix + "." + TableProcessor.GLOBAL_LAYOUT,
+                TableProcessor.GLOBAL_LAYOUT_DEFAULT).equals("true"));
     sheetLayoutCollection = new SheetLayoutCollection(globalLayout);
   }
 
@@ -84,7 +85,8 @@ public class DefaultLayoutCreator extends AbstractTableCreator
   public void beginTable(final ReportDefinition report)
   {
     final boolean strictLayout =  (report.getReportConfiguration().getConfigProperty
-        (configurationPrefix + ".StrictLayout", "false").equals("true"));
+        (configurationPrefix + "." + TableProcessor.STRICT_LAYOUT,
+                TableProcessor.STRICT_LAYOUT_DEFAULT).equals("true"));
     setSheetLayout(createSheetLayout(strictLayout));
   }
 

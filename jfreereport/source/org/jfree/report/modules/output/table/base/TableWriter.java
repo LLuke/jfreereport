@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.12 2004/03/16 15:09:53 taqua Exp $
+ * $Id: TableWriter.java,v 1.10.2.1.2.2 2004/12/13 19:27:06 taqua Exp $
  *
  * Changes
  * -------
@@ -52,12 +52,13 @@ import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.layout.LayoutSupport;
+import org.jfree.report.modules.output.meta.MetaBand;
+import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelegate;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
-import org.jfree.report.modules.output.meta.MetaBandProducer;
-import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.style.BandStyleSheet;
+import org.jfree.report.util.Log;
 
 /**
  * The TableWriter is the content creation function used to collect the cell data. After
@@ -287,11 +288,18 @@ public strictfp class TableWriter
                         final boolean handlePagebreakBefore)
           throws ReportProcessingException
   {
-    if (!isInEndPage() && (isPageEmpty() == false)
-            && band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
+    if (!isInEndPage() && handlePagebreakBefore
+        && band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
     {
-      endPage();
-      startPage();
+      if (isPageEmpty() == false)
+      {
+        endPage();
+        startPage();
+      }
+      else
+      {
+        Log.debug ("Page is empty; so no break");
+      }
     }
 
     final float y = getCursor().getY();
@@ -310,11 +318,18 @@ public strictfp class TableWriter
       throw new ReportProcessingException("Failed to create content", e);
     }
 
-    if (!isInEndPage() && (isPageEmpty() == false)
-            && band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
+    if (!isInEndPage() &&
+        band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
     {
-      endPage();
-      startPage();
+      if (isPageEmpty() == false)
+      {
+        endPage();
+        startPage();
+      }
+      else
+      {
+        Log.debug ("Empty Page, ignore!");
+      }
     }
     return true;
   }
@@ -433,6 +448,8 @@ public strictfp class TableWriter
     tableCreator.processBand(metaBand);
     getCursor().advance((float) bounds.getHeight());
     // fine grained flushing ... change that?
+    getCurrentEvent().getState().fireOutputCompleteEvent
+            (band, getCurrentEvent().getType());
     tableCreator.flush();
   }
 
@@ -440,6 +457,7 @@ public strictfp class TableWriter
    * Ends the current page. Fires the PageFinished event.
    */
   private void endPage ()
+          throws ReportProcessingException
   {
     if (inEndPage == true)
     {
@@ -450,6 +468,11 @@ public strictfp class TableWriter
     final ReportEvent currentEvent = getCurrentEvent();
     final ReportState cEventState = getCurrentEvent().getState();
     cEventState.firePageFinishedEvent();
+    if (cEventState.isErrorOccured())
+    {
+      throw new ReportProcessingException
+              ("An error occured while processing the page start - aborting");
+    }
     cEventState.nextPage();
     setCurrentEvent(currentEvent);
     inEndPage = false;
@@ -459,6 +482,7 @@ public strictfp class TableWriter
    * Starts a new page. Fires the PageStarted event.
    */
   private void startPage ()
+          throws ReportProcessingException
   {
     if (inEndPage == true)
     {
@@ -469,6 +493,11 @@ public strictfp class TableWriter
     final ReportEvent currentEvent = getCurrentEvent();
     final ReportState cEventState = currentEvent.getState();
     cEventState.firePageStartedEvent(currentEvent.getType());
+    if (cEventState.isErrorOccured())
+    {
+      throw new ReportProcessingException
+              ("An error occured while processing the page start - aborting");
+    }
     setCurrentEvent(currentEvent);
     inEndPage = false;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextPage.java,v 1.7 2004/03/16 15:09:52 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.8 2004/05/07 12:53:09 mungady Exp $
  *
  * Changes
  * -------
@@ -37,8 +37,9 @@
  */
 package org.jfree.report.modules.output.pageable.plaintext;
 
-import java.io.IOException;
+import java.awt.print.PageFormat;
 import java.awt.print.Paper;
+import java.io.IOException;
 
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;
@@ -51,121 +52,12 @@ import org.jfree.report.util.Log;
  */
 public class PlainTextPage
 {
-  /**
-   * A data carrier to collect and store text data for the output.
-   */
-  public static class TextDataChunk
-  {
-    /** The text that should be printed. */
-    private final String text;
-
-    /** The font definition stores the font style. */
-    private final FontDefinition font;
-
-    /** the column where the text starts. */
-    private final int x;
-
-    /** the row of the text. */
-    private final int y;
-
-    /** the text width. */
-    private final int width;
-
-    /**
-     * Creates a new text data chunk.
-     *
-     * @param text the text that should be printed
-     * @param font the font style for the text
-     * @param x the column where the text starts
-     * @param y the row of the text
-     * @param w the number of characters of the text that should be printed.
-     */
-    protected TextDataChunk(final String text, final FontDefinition font,
-                            final int x, final int y, final int w)
-    {
-      this.text = text;
-      this.font = font;
-      if (x < 0)
-      {
-        throw new IllegalArgumentException();
-      }
-
-      if (y < 0)
-      {
-        throw new IllegalArgumentException();
-      }
-
-      if (w < 0)
-      {
-        throw new IllegalArgumentException();
-      }
-
-      if (w > text.length())
-      {
-        Log.debug ("X=" + x + " y=" + y + " w=" + w + " text=" + text);
-        throw new IllegalArgumentException("Size limit: " + w + " vs. " + text.length());
-      }
-      this.x = x;
-      this.y = y;
-      this.width = w;
-    }
-
-    /**
-     * Gets the text stored in this chunk.
-     *
-     * @return the text
-     */
-    public String getText()
-    {
-      return text;
-    }
-
-    /**
-     * Gets the font definition used to define the text style.
-     *
-     * @return the font definition.
-     */
-    public FontDefinition getFont()
-    {
-      return font;
-    }
-
-    /**
-     * The column of the text start.
-     *
-     * @return the column of the first character.
-     */
-    public int getX()
-    {
-      return x;
-    }
-
-    /**
-     * Gets the row where to print the text.
-     *
-     * @return the row.
-     */
-    public int getY()
-    {
-      return y;
-    }
-
-    /**
-     * Gets the width of the text, the number of character which should be printed.
-     *
-     * @return the number of printable characters.
-     */
-    public int getWidth()
-    {
-      return width;
-    }
-  }
 
   /** the page buffer is used to store all TextDataChunks. */
-  private TextDataChunk[][] pageBuffer;
+  private PlaintextDataChunk[][] pageBuffer;
 
   /** The commandset that is used to finally print the content. */
-  private PrinterCommandSet commandSet;
+  private PrinterDriver driver;
 
   /** The width of the page in characters. */
   private int width;
@@ -173,50 +65,48 @@ public class PlainTextPage
   /** the height of the page in lines. */
   private int height;
 
-  /** The encoding of the printed text. */
-  private String pageEncoding;
-
   private Paper paper;
+
+  private String defaultEncoding;
 
   /**
    * Creates a new PlainTextPage with the given dimensions and the specified
    * PrinterCommandSet.
    *
-   * @param w the number of columns on the page
-   * @param h the number of rows on the page
-   * @param encoding the document encoding for this page.
-   * @param commandSet the commandset for printing and formating the text.
+   * @param driver the commandset for printing and formating the text.
    */
-  public PlainTextPage(final int w, final int h, final Paper paper,
-                       final PrinterCommandSet commandSet, final String encoding)
+  public PlainTextPage(final PageFormat pageFormat, 
+                       final PrinterDriver driver,
+                       final String defaultEncoding)
   {
-    if (w <= 0)
-    {
-      throw new IllegalArgumentException("Width <= 0");
-    }
-    if (h <= 0)
-    {
-      throw new IllegalArgumentException("Height <= 0");
-    }
-    if (commandSet == null)
+    if (driver == null)
     {
       throw new NullPointerException("PrinterCommandSet must be defined.");
     }
-    if (paper == null)
+    if (pageFormat == null)
     {
-      throw new NullPointerException("Paper must be defined.");
+      throw new NullPointerException("PageFormat must be defined.");
     }
-    if (encoding == null)
+    if (defaultEncoding == null)
     {
-      throw new NullPointerException("Encoding must be defined.");
+      throw new NullPointerException("DefaultEncoding must be defined.");
     }
-    Log.debug ("Created page with " + w + ", " + h);
-    pageBuffer = new TextDataChunk[w][h];
-    width = w;
-    height = h;
-    this.commandSet = commandSet;
-    pageEncoding = encoding;
-    this.paper = paper;
+
+    final float characterWidthInPoint  = (72f / driver.getCharactersPerInch());
+    final float characterHeightInPoint = (72f / driver.getLinesPerInch());
+
+    final int currentPageHeight = PlainTextOutputTarget.correctedDivisionFloor
+        ((float) (pageFormat.getImageableHeight()), characterHeightInPoint);
+    final int currentPageWidth = PlainTextOutputTarget.correctedDivisionFloor
+        ((float) (pageFormat.getImageableWidth()), characterWidthInPoint);
+
+    Log.debug ("Created page with " + currentPageWidth + ", " + currentPageHeight);
+    pageBuffer = new PlaintextDataChunk[currentPageWidth][currentPageHeight];
+    width = currentPageWidth;
+    height = currentPageHeight;
+    paper = pageFormat.getPaper();
+    this.driver = driver;
+    this.defaultEncoding = defaultEncoding;
   }
 
   /**
@@ -248,8 +138,13 @@ public class PlainTextPage
    * @param format the fontdefinition used to format the text.
    */
   public void addTextChunk(final int x, final int y,
-                           final int w, final String text, final FontDefinition format)
+                           final int w, final String text, 
+                           final FontDefinition format)
   {
+    if (text.length() == 0)
+    {
+      return;
+    }
     if (x < 0)
     {
       throw new IllegalArgumentException("X < 0");
@@ -270,7 +165,8 @@ public class PlainTextPage
     {
       throw new IllegalArgumentException("Y > bufferHeight: " + text + " y=" + y + " h=" + height);
     }
-    final TextDataChunk chunk = new TextDataChunk(text, format, x, y, w);
+    final PlaintextDataChunk chunk =
+            new PlaintextDataChunk(text, format, defaultEncoding, x, y, w);
     for (int i = 0; i < w; i++)
     {
       if (pageBuffer[x + i][y] == null)
@@ -288,7 +184,7 @@ public class PlainTextPage
    * @param y the line
    * @return the text chunk or null.
    */
-  private TextDataChunk getChunk(final int x, final int y)
+  private PlaintextDataChunk getChunk(final int x, final int y)
   {
     return pageBuffer[x][y];
   }
@@ -301,38 +197,49 @@ public class PlainTextPage
   public void writePage()
       throws IOException
   {
-    commandSet.resetPrinter();
-    commandSet.setCodePage(getPageEncoding());
-    commandSet.startPage(paper);
+    driver.startPage(paper, defaultEncoding);
     for (int y = 0; y < height; y++)
     {
-      commandSet.startLine();
+      driver.startLine();
+      int emptyChunkCount = 0;
+      boolean overflow = false;
+
       for (int x = 0; x < width; x++)
       {
-        final TextDataChunk chunk = getChunk(x, y);
+        final PlaintextDataChunk chunk = getChunk(x, y);
         if (chunk == null)
         {
-          commandSet.printEmptyChunk();
+          emptyChunkCount += 1;
         }
-        else
+        else if (chunk.getX() == x)
         {
+          if (emptyChunkCount != 0)
+          {
+            driver.printEmptyChunk(emptyChunkCount);
+            emptyChunkCount = 0;
+          }
+
           //Log.debug ("Print Chunk At " + x);
-          commandSet.printChunk(chunk, x);
+          driver.printChunk(chunk);
+          x += (chunk.getWidth() - 1);
+          // we reached the end of the line ...
+          if (x == (width - 1))
+          {
+            overflow = true;
+          }
         }
       }
-      commandSet.endLine();
-    }
-    commandSet.endPage();
-    commandSet.flush();
-  }
 
-  /**
-   * Returns the text encoding for this page.
-   *
-   * @return the page encoding for the page.
-   */
-  public String getPageEncoding()
-  {
-    return pageEncoding;
+      // end the page on the last line.
+      if (y == (height - 1))
+      {
+        driver.endPage(overflow);
+      }
+      else
+      {
+        driver.endLine(overflow);
+      }
+    }
+    driver.flush();
   }
 }

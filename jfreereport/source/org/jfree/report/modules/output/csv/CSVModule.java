@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVModule.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
+ * $Id: CSVModule.java,v 1.5 2004/05/07 12:53:10 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -38,8 +38,10 @@
 
 package org.jfree.report.modules.output.csv;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
+
 
 /**
  * The module definition for the raw csv export module.
@@ -58,13 +60,17 @@ public class CSVModule extends AbstractModule
   }
 
   /**
-   * Initalizes the module. This method is empty.
-   * @see org.jfree.report.modules.Module#initialize()
+   * Initializes the module. Use this method to perform all initial setup operations. This
+   * method is called only once in a modules lifetime. If the initializing cannot be
+   * completed, throw a ModuleInitializeException to indicate the error,. The module will
+   * not be available to the system.
    *
-   * @throws ModuleInitializeException if an error occured.
+   * @param subSystem the subSystem.
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if an error ocurred while initializing the module.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize (SubSystem subSystem)
+          throws ModuleInitializeException
   {
-    // nothing required ...
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.17 2004/03/16 15:09:51 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.18 2004/04/19 17:03:24 taqua Exp $
  *
  * Changes
  * -------
@@ -51,11 +51,11 @@ package org.jfree.report.modules.output.pageable.pdf;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.GradientPaint;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
@@ -64,7 +64,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 
-import com.keypoint.PngEncoder;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocWriter;
 import com.lowagie.text.Document;
@@ -75,12 +74,13 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
 import org.jfree.report.DrawableContainer;
+import org.jfree.report.ImageContainer;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.LocalImageContainer;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.ShapeElement;
-import org.jfree.report.ImageContainer;
 import org.jfree.report.URLImageContainer;
-import org.jfree.report.LocalImageContainer;
+import org.jfree.report.content.ImageContent;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
@@ -375,24 +375,23 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    * Draws an image from this {@link ImageContainer}. The image is directly
    * embedded into the pdf file to provide the best scaling support.
    *
-   * @param imageRef  the image reference.
+   * @param content  the image reference.
    *
    * @throws OutputTargetException if there was a problem drawing the image to the target.
    */
-  protected void drawImage(final ImageContainer imageRef) throws OutputTargetException
+  protected void drawImage(final ImageContent content) throws OutputTargetException
   {
     try
     {
       final Rectangle2D bounds = getInternalOperationBounds();
-      final Rectangle2D imageBounds = imageRef.getBoundsScaled();
+      final Rectangle2D imageBounds = content.getBounds();
 
       final float x = (float) (bounds.getX());
       final float y = (float) (bounds.getY());
 
-      final Image image = getImage(imageRef);
+      final Image image = getImage(content.getContent());
       image.setAbsolutePosition(x, (float) (getPageHeight() - y - bounds.getHeight()));
-      image.scaleAbsolute((float) imageBounds.getWidth(),
-          (float) imageBounds.getHeight());
+      image.scaleAbsolute((float) imageBounds.getWidth(), (float) imageBounds.getHeight());
 
       final PdfContentByte cb = this.writer.getDirectContent();
 
@@ -440,7 +439,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   private Image getImage(final ImageContainer imageRef) throws DocumentException, IOException
   {
     final Rectangle2D bounds = getInternalOperationBounds();
-    final Rectangle2D imageBounds = imageRef.getBoundsScaled();
+    final Rectangle2D imageBounds = null;
+            //imageRef.getBoundsScaled();
 
     if (imageRef instanceof URLImageContainer)
     {
@@ -450,7 +450,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       {
         final Rectangle2D drawArea = new Rectangle2D.Float(0, 0, (float) bounds.getWidth(),
             (float) bounds.getHeight());
-        if ((urlImageContainer.getSourceURL() != null) && (drawArea.contains(imageBounds)))
+        if ((urlImageContainer.getSourceURL() != null) &&
+            (drawArea.contains(imageBounds)))
         {
           return Image.getInstance(urlImageContainer.getSourceURL());
         }
@@ -475,10 +476,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
         final WaitingImageObserver obs = new WaitingImageObserver(localImageContainer.getImage());
         obs.waitImageLoaded();
 
-        final PngEncoder encoder = new PngEncoder(localImageContainer.getImage(), PngEncoder.ENCODE_ALPHA,
-            PngEncoder.FILTER_NONE, 5);
-        final byte[] data = encoder.pngEncode();
-        return Image.getInstance(data);
+        // iText is able to handle image conversion by itself ...
+        return Image.getInstance(localImageContainer.getImage(), null, false);
       }
     }
 
@@ -804,7 +803,9 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     }
     catch (OutputTargetException oe)
     {
-      Log.error("Should not happen", oe);
+      // should not happen in a sane environment ...
+      Log.error("Exception while defining defaults.", oe);
+      throw new IllegalStateException("Exception while defining defaults.");
     }
 
     this.writer.getDirectContent().saveState();

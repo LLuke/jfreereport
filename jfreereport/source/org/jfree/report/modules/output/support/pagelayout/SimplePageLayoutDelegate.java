@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.9 2004/03/16 15:09:52 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.6.2.1.2.1 2004/04/03 19:53:49 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -88,7 +88,7 @@ public class SimplePageLayoutDelegate implements
      * Defines the maximum page number.
      * @param pages the maximum page.
      */
-    public void setMaxPages (int pages)
+    public void setMaxPages (final int pages)
     {
       maxPages = pages;
     } 
@@ -102,6 +102,8 @@ public class SimplePageLayoutDelegate implements
   /** The current group index (used to select the correct group header and footer).*/
   private int currentEffectiveGroupIndex;
   private boolean groupFinishPending;
+  public static final String HANDLE_PENDING_GROUP_FOOTER_KEY =
+          "org.jfree.report.modules.output.support.pagelayout.HandlePendingGroupFooter";
 
   /**
    * DefaultConstructor. A worker needs to be assigned to use this delegate.
@@ -320,6 +322,8 @@ public class SimplePageLayoutDelegate implements
       {
         // now as the group footer should get printed soon, we correct the
         // active groups ..
+        // that group footer is stored as pending band and gets printed during
+        // the page restart process..
         setCurrentEffectiveGroupIndex(getCurrentEffectiveGroupIndex()- 1);
         setGroupFinishPending(false);
       }
@@ -420,7 +424,7 @@ public class SimplePageLayoutDelegate implements
     {
       setCurrentEffectiveGroupIndex(-1);
       worker.print(event.getReport().getReportHeader(), 
-        SimplePageLayoutWorker.BAND_PRINTED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
+        SimplePageLayoutWorker.BAND_PRINTED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
     }
     catch (FunctionProcessingException fe)
     {
@@ -548,6 +552,12 @@ public class SimplePageLayoutDelegate implements
         setGroupFinishPending(false);
         setCurrentEffectiveGroupIndex(getCurrentEffectiveGroupIndex() - 1);
       }
+      else if (event.getReport().getReportConfiguration().getConfigProperty
+              (HANDLE_PENDING_GROUP_FOOTER_KEY, "true").equals("true") == false)
+      {
+        setGroupFinishPending(false);
+        setCurrentEffectiveGroupIndex(getCurrentEffectiveGroupIndex() - 1);
+      }
     }
     catch (FunctionProcessingException fe)
     {
@@ -645,7 +655,7 @@ public class SimplePageLayoutDelegate implements
    *
    * @param groupFinishPending true or false
    */
-  protected void setGroupFinishPending(boolean groupFinishPending)
+  protected void setGroupFinishPending(final boolean groupFinishPending)
   {
     this.groupFinishPending = groupFinishPending;
   }

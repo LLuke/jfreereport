@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaPage.java,v 1.3 2004/04/19 17:03:22 taqua Exp $
+ * $Id: MetaPage.java,v 1.4 2004/05/07 14:29:20 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -38,7 +38,7 @@
 
 package org.jfree.report.modules.output.meta;
 
-import org.jfree.report.util.Log;
+
 
 public class MetaPage
 {

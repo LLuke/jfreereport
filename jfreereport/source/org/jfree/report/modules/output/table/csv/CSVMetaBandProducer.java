@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVMetaBandProducer.java,v 1.1 2004/03/16 18:32:52 taqua Exp $
+ * $Id: CSVMetaBandProducer.java,v 1.2.2.1 2004/12/13 19:27:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -80,7 +80,8 @@ public class CSVMetaBandProducer extends TableMetaBandProducer
 
     final Content content = new RawContent (bounds, e.getValue());
     final ElementStyleSheet style = new ElementStyleSheet("meta-" + e.getName());
-    style.setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
+    style.setStyleProperty(ElementStyleSheet.BOUNDS,
+            createElementBounds(e.getStyle(), x, y));
     final MetaElement element = new MetaElement(content, style);
     return element;
   }

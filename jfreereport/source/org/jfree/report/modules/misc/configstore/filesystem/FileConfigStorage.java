@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FileConfigStorage.java,v 1.9 2004/03/16 15:09:48 taqua Exp $
+ * $Id: FileConfigStorage.java,v 1.8.4.3 2004/10/13 18:42:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,7 +50,6 @@ import java.util.Properties;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
-import org.jfree.report.util.Log;
 
 /**
  * The FileConfigStorage is a storage provider that stores its content on
@@ -101,7 +100,6 @@ public class FileConfigStorage implements ConfigStorage
     final File target = new File(baseDirectory, configPath);
     if (target.exists() == true && target.canWrite() == false)
     {
-      Log.info ("The configuration file is not writeable. Ignoring " + target);
       return;
     }
     try

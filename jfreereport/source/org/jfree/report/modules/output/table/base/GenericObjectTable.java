@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: GenericObjectTable.java,v 1.1 2004/03/16 15:43:41 taqua Exp $
+ * $Id: GenericObjectTable.java,v 1.2.2.1 2004/12/13 19:27:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -55,6 +55,22 @@ public class GenericObjectTable
   public void setObject (final int row, final int column, final Object object)
   {
     super.setObject(row, column, object);
+  }
+
+  public void copyColumn (final int oldColumn, final int newColumn)
+  {
+    for (int i = 0; i < getRowCount(); i++)
+    {
+      setObject(i, newColumn, getObject(i, oldColumn));
+    }
+  }
+
+  public void copyRow (final int oldRow, final int newRow)
+  {
+    for (int i = 0; i < getColumnCount(); i++)
+    {
+      setObject(newRow, i, getObject(oldRow, i));
+    }
   }
 }
 

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.14 2003/11/07 18:33:55 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.14.4.3 2004/10/13 17:18:57 taqua Exp $
  *
  * Changes
  * -------
@@ -132,10 +132,6 @@ public final class BaseFontFactory extends DefaultFontMapper
       }
       final String name = pathname.getName();
       if (StringUtil.endsWithIgnoreCase(name, ".afm"))
-      {
-        return true;
-      }
-      if (StringUtil.endsWithIgnoreCase(name, ".pfb"))
       {
         return true;
       }
@@ -337,7 +333,7 @@ public final class BaseFontFactory extends DefaultFontMapper
       {
         final String token = strtok.nextToken();
 
-        if (token.endsWith("System32"))
+        if (StringUtil.endsWithIgnoreCase(token, "System32"))
         {
           // found windows folder ;-)
           final int lastBackslash = token.lastIndexOf(fs);
@@ -434,8 +430,9 @@ public final class BaseFontFactory extends DefaultFontMapper
   public synchronized void registerFontFile(final String filename, final String encoding)
   {
     if (!filename.toLowerCase().endsWith(".ttf") &&
+        !filename.toLowerCase().endsWith(".ttc") &&
         !filename.toLowerCase().endsWith(".afm") &&
-        !filename.toLowerCase().endsWith(".pfb"))
+        !filename.toLowerCase().endsWith(".otf"))
     {
       return;
     }
@@ -447,7 +444,18 @@ public final class BaseFontFactory extends DefaultFontMapper
       confirmedFiles.put(filename, newAccessTime);
       try
       {
-        addFont(filename, encoding);
+        if (filename.toLowerCase().endsWith(".ttc"))
+        {
+          final String[] fontNames = BaseFont.enumerateTTCNames(filename);
+          for (int i = 0; i < fontNames.length; i++)
+          {
+            addFont(filename + "," + i, encoding);
+          }
+        }
+        else
+        {
+          addFont(filename, encoding);
+        }
       }
       catch (Exception e)
       {
@@ -462,7 +470,7 @@ public final class BaseFontFactory extends DefaultFontMapper
    * load the fonts as embeddable fonts, if this fails, it repeats the loading
    * with the embedded-flag set to false.
    *
-   * @param font  the font name.
+   * @param font  the font file name.
    * @param encoding  the encoding.
    *
    * @throws DocumentException if the base font could not be created
@@ -477,7 +485,7 @@ public final class BaseFontFactory extends DefaultFontMapper
     }
 
     BaseFont bfont;
-    String embedded;
+    String embedded = "false";
     try
     {
       bfont = BaseFont.createFont(font, encoding, true, false, null, null);
@@ -490,7 +498,6 @@ public final class BaseFontFactory extends DefaultFontMapper
       Log.info (new Log.SimpleMessage
         ("Font ", font, "  cannot be used as embedded font " +
           "due to licensing restrictions."));
-      embedded = "false";
     }
 
     final String[][] fi = bfont.getFullFontName();
@@ -509,7 +516,7 @@ public final class BaseFontFactory extends DefaultFontMapper
       {
         fontsByName.setProperty(logicalFontname, font);
         Log.debug(new Log.SimpleMessage
-          ("Registered truetype font ", logicalFontname, "; Embedded=", 
+          ("Registered truetype font ", logicalFontname, "; Embedded=",
             embedded, new Log.SimpleMessage("File=", font)));
       }
     }
@@ -632,7 +639,7 @@ public final class BaseFontFactory extends DefaultFontMapper
    *
    * @return the font factory.
    */
-  public static BaseFontFactory getFontFactory()
+  public synchronized static BaseFontFactory getFontFactory()
   {
     if (fontFactory == null)
     {

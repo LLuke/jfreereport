@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.8 2003/11/07 18:33:54 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.8.4.1 2004/04/05 16:49:35 taqua Exp $
  *
  * Changes
  * -------
@@ -278,6 +278,9 @@ public final class ResultSetTableModelFactory
     }
     final CloseableDefaultTableModel model =
         new CloseableDefaultTableModel(rowMap, header.toArray(), rs);
+    for (int i = 0; i < colcount; i++)
+    {
+    }
     return model;
   }
 
@@ -286,7 +289,7 @@ public final class ResultSetTableModelFactory
    *
    * @return an instance of this factory.
    */
-  public static ResultSetTableModelFactory getInstance()
+  public synchronized static ResultSetTableModelFactory getInstance()
   {
     if (defaultInstance == null)
     {

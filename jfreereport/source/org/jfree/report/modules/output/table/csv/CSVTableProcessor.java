@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.7 2004/03/16 15:09:53 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.6.4.1 2004/12/13 19:27:07 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@
 package org.jfree.report.modules.output.table.csv;
 
 import java.io.Writer;
+
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.layout.DefaultLayoutSupport;
@@ -156,7 +157,7 @@ public class CSVTableProcessor extends TableProcessor
       throw new IllegalStateException("There is no writer defined for the export.");
     }
     final LayoutCreator lc = getLayoutCreator();
-    return new CSVTableCreator(lc.getSheetLayoutCollection(), getWriter());
+    return new CSVContentCreator(lc.getSheetLayoutCollection(), getWriter());
   }
 
   /**

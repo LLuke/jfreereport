@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageLayoutModule.java,v 1.2 2003/11/01 19:52:29 taqua Exp $
+ * $Id: PageLayoutModule.java,v 1.3 2004/05/07 12:53:08 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -38,8 +38,10 @@
 
 package org.jfree.report.modules.output.support.pagelayout;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
+
 
 /**
  * The module definition for the pagelayout support module.
@@ -57,15 +59,19 @@ public class PageLayoutModule extends AbstractModule
     loadModuleInfo();
   }
 
+
   /**
-   * Initializes the module. Use this method to perform all initial setup operations.
-   * This method is called only once in a modules lifetime. If the initializing cannot
-   * be completed, throw a ModuleInitializeException to indicate the error,. The module
-   * will not be available to the system.
+   * Initializes the module. Use this method to perform all initial setup operations. This
+   * method is called only once in a modules lifetime. If the initializing cannot be
+   * completed, throw a ModuleInitializeException to indicate the error,. The module will
+   * not be available to the system.
    *
-   * @throws ModuleInitializeException if an error ocurred while initializing the module.
+   * @param subSystem the subSystem.
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if an error ocurred while initializing the module.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize (SubSystem subSystem)
+          throws ModuleInitializeException
   {
   }
 }

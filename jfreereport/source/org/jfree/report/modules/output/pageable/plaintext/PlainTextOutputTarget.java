@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.13 2004/03/16 15:09:52 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.14 2004/05/07 12:53:10 mungady Exp $
  *
  * Changes
  * -------
@@ -41,15 +41,15 @@ import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
-import java.awt.print.PageFormat;
 import java.io.IOException;
 
 import org.jfree.report.DrawableContainer;
-import org.jfree.report.PageDefinition;
 import org.jfree.report.ImageContainer;
+import org.jfree.report.PageDefinition;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.DefaultContentFactory;
 import org.jfree.report.content.TextContentFactoryModule;
+import org.jfree.report.content.ImageContent;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
@@ -82,9 +82,10 @@ import org.jfree.report.util.ReportConfiguration;
  * written without any printer control sequences.
  * </ul>
  *
- * @see org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet
- * @see org.jfree.report.modules.output.pageable.plaintext.IBMPrinterCommandSet
- * @see org.jfree.report.modules.output.pageable.plaintext.EpsonPrinterCommandSet
+ * @see org.jfree.report.modules.output.pageable.plaintext.PrinterDriver
+ * @see org.jfree.report.modules.output.pageable.plaintext.IBMCompatiblePrinterDriver
+ * @see org.jfree.report.modules.output.pageable.plaintext.Epson9PinPrinterDriver
+ * @see org.jfree.report.modules.output.pageable.plaintext.Epson24PinPrinterDriver
  * @see org.jfree.report.modules.output.pageable.plaintext.PlainTextPage
  *
  * @author Thomas Morgner
@@ -102,10 +103,10 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
   /** The property to define the characters per inch of the text. */
   public static final String CHARS_PER_INCH = "CharsPerInch";
 
-  /** The 'XML encoding' property key. */
+  /** The 'text encoding' property key. */
   public static final String TEXT_OUTPUT_ENCODING
       = CONFIGURATION_PREFIX + ENCODING_PROPERTY;
-  /** A default value of the 'XML encoding' property key. */
+  /** A default value of the 'text encoding' property key. */
   public static final String TEXT_OUTPUT_ENCODING_DEFAULT =
       ReportConfiguration.getPlatformDefaultEncoding();
 
@@ -233,18 +234,6 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
   /** the current font definition. */
   private FontDefinition font;
 
-  /** the current paint, is not used. */
-  private Paint paint;
-
-  /** the current stroke, is not used. */
-  private Stroke stroke;
-
-  /** the character width in points. */
-  private float characterWidth;
-
-  /** the character height in points. */
-  private float characterHeight;
-
   /** the current save state of this output target. */
   private PlainTextState savedState;
 
@@ -252,7 +241,8 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
   private PlainTextPage pageBuffer;
 
   /** the current printer command set used to write and format the page. */
-  private PrinterCommandSet commandSet;
+  private PrinterDriver driver;
+  private String encoding;
 
   /**
    * Creates a new PlainTextOutputTarget which uses the given command set to write
@@ -261,22 +251,24 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    * @param commandSet the printer commandset used to write the generated content.
    * @throws java.lang.NullPointerException if the printer command set is null
    */
-  public PlainTextOutputTarget(final PrinterCommandSet commandSet)
+  public PlainTextOutputTarget(final PrinterDriver commandSet)
   {
     if (commandSet == null)
     {
       throw new NullPointerException();
     }
-    this.commandSet = commandSet;
+    this.driver = commandSet;
   }
 
   /**
-   * Gets the printercommandset used to format the text.
-   * @return the printer command set.
+   * Returns the printer driver. The driver is responsible to perform the output
+   * and to add the correct control codes to the output stream.
+   *
+   * @return the printer driver.
    */
-  public PrinterCommandSet getCommandSet()
+  public PrinterDriver getDriver()
   {
-    return commandSet;
+    return driver;
   }
 
   /**
@@ -286,16 +278,6 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   public void open() throws OutputTargetException
   {
-    try
-    {
-      // 1 inch = 72 point
-      characterWidth = (72f / (float) commandSet.getDefaultCPI());
-      characterHeight = (72f / (float) commandSet.getDefaultLPI());
-    }
-    catch (Exception e)
-    {
-      throw new OutputTargetException("Failed to parse page format", e);
-    }
     open = true;
   }
 
@@ -323,18 +305,12 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param page  the physical page.
    */
-  public void beginPage(final PageDefinition page, int index)
+  public void beginPage(final PageDefinition page, final int index)
   {
-    final PageFormat pf = page.getPageFormat(index);
     // the page must contain the space for the border, or it is invalid
     // the left and top border is always included when performing the layout
-    final int currentPageHeight = correctedDivisionFloor
-        ((float) (pf.getImageableHeight()), characterHeight);
-    final int currentPageWidth = correctedDivisionFloor
-        ((float) (pf.getImageableWidth()), characterWidth);
 
-    this.pageBuffer = new PlainTextPage(currentPageWidth, currentPageHeight,
-        pf.getPaper(), getCommandSet(), getDocumentEncoding());
+    pageBuffer = new PlainTextPage(page.getPageFormat(index), driver, encoding);
     savedState = new PlainTextState(this);
   }
 
@@ -396,7 +372,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   protected Stroke getStroke()
   {
-    return stroke;
+    return null;
   }
 
   /**
@@ -408,7 +384,6 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   protected void setStroke(final Stroke stroke) throws OutputTargetException
   {
-    this.stroke = stroke;
   }
 
   /**
@@ -418,7 +393,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   protected Paint getPaint()
   {
-    return paint;
+    return null;
   }
 
   /**
@@ -428,10 +403,9 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   protected void setPaint(final Paint paint)
   {
-    this.paint = paint;
   }
 
-  protected boolean isPaintSupported(Paint p)
+  protected boolean isPaintSupported(final Paint p)
   {
     return false;
   }
@@ -445,14 +419,13 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
   {
     final Rectangle2D bounds = getOperationBounds();
 
-    final int x = correctedDivisionFloor((float) bounds.getX(), characterWidth);
-    final int y = correctedDivisionFloor((float) bounds.getY(), characterHeight);
-    final int w = correctedDivisionFloor((float) bounds.getWidth(), characterWidth);
-/*
-    Log.debug ("Bounds: " + bounds);
-    Log.debug ("CW: " + characterWidth);
-    Log.debug ("CH: " + characterHeight);
-*/
+    final float characterWidthInPoint  = (72f / driver.getCharactersPerInch());
+    final float characterHeightInPoint = (72f * driver.getLinesPerInch());
+
+    final int x = correctedDivisionFloor((float) bounds.getX(), characterWidthInPoint);
+    final int y = correctedDivisionFloor((float) bounds.getY(), characterHeightInPoint);
+    final int w = correctedDivisionFloor((float) bounds.getWidth(), characterWidthInPoint);
+
     pageBuffer.addTextChunk(x, y, w, text, getFont());
   }
 
@@ -463,7 +436,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    * @param d the divident
    * @return the corrected division result.
    */
-  private int correctedDivisionFloor(float c, float d)
+  public static int correctedDivisionFloor(float c, float d)
   {
     c = Math.round(c * 100f);
     d = Math.round(d * 100f);
@@ -500,23 +473,31 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the paint.
    */
-  protected void drawImage(final ImageContainer image) throws OutputTargetException
+  protected void drawImage(final ImageContent image) throws OutputTargetException
   {
   }
 
   /**
-   * Configures the encoding of the plain text output, if not already set.
-   * The OutputTarget is also configured by supplying a valid
-   * PrinterCommand set.
+   * Configures the output target.
    *
-   * @param config  the configuration.
+   * @param config the configuration.
    */
-  public void configure(final ReportConfiguration config)
+  public void configure (final ReportConfiguration config)
   {
-    if (getDocumentEncoding() == null)
+    if (encoding == null)
     {
-      setDocumentEncoding(getTextTargetEncoding(config));
+      encoding = getTextTargetEncoding(config);
     }
+  }
+
+  public String getEncoding ()
+  {
+    return encoding;
+  }
+
+  public void setEncoding (final String encoding)
+  {
+    this.encoding = encoding;
   }
 
   /**
@@ -548,7 +529,10 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
   public SizeCalculator createTextSizeCalculator(final FontDefinition font)
       throws OutputTargetException
   {
-    return new PlainTextSizeCalculator(characterWidth, characterHeight);
+    final float characterWidthInPoint  = (72f / driver.getCharactersPerInch());
+    final float characterHeightInPoint = (72f * driver.getLinesPerInch());
+
+    return new PlainTextSizeCalculator(characterWidthInPoint, characterHeightInPoint);
   }
 
   /**
@@ -560,7 +544,8 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   public float getHorizontalAlignmentBorder()
   {
-    return characterWidth;
+    final float characterWidthInPoint  = (72f / driver.getCharactersPerInch());
+    return characterWidthInPoint;
   }
 
   /**
@@ -572,7 +557,8 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   public float getVerticalAlignmentBorder()
   {
-    return characterHeight;
+    final float characterHeightInPoint = (72f * driver.getLinesPerInch());
+    return characterHeightInPoint;
   }
 
   /**
@@ -595,38 +581,5 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   protected void drawDrawable(final DrawableContainer drawable)
   {
-  }
-
-  /**
-   * Returns the current document encoding.
-   *
-   * @return the document encoding.
-   */
-  public String getDocumentEncoding()
-  {
-    return getProperty(ENCODING_PROPERTY);
-  }
-
-  /**
-   * Defines the document encoding for the plain text output.
-   * The specified encoding must be supported by the assigned PrinterCommandSet.
-   *
-   * @param documentEncoding the character encoding of the target text.
-   */
-  public void setDocumentEncoding(final String documentEncoding)
-  {
-    if (documentEncoding == null)
-    {
-      throw new NullPointerException("DocumentEncoding must not be null.");
-    }
-    if (getCommandSet().isEncodingSupported(documentEncoding))
-    {
-      setProperty(ENCODING_PROPERTY, documentEncoding);
-    }
-    else
-    {
-      throw new IllegalArgumentException
-          ("This encoding is not supported by the printer. : " + documentEncoding);
-    }
   }
 }

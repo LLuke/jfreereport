@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageProcess.java,v 1.2 2004/04/19 17:03:22 taqua Exp $
+ * $Id: PageProcess.java,v 1.3 2004/05/07 12:53:08 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -41,13 +41,13 @@ package org.jfree.report.modules.output.pageable.base;
 import java.lang.ref.WeakReference;
 
 import org.jfree.report.PageDefinition;
+import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.ReportEventException;
-import org.jfree.report.util.Log;
-import org.jfree.report.modules.output.pageable.base.pagelayout.PageLayouter;
 import org.jfree.report.modules.output.meta.MetaPage;
+import org.jfree.report.modules.output.pageable.base.pagelayout.PageLayouter;
 import org.jfree.report.states.ReportState;
+import org.jfree.report.util.Log;
 
 public class PageProcess
 {

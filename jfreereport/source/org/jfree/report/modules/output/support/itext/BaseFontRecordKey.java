@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecordKey.java,v 1.5 2003/09/09 15:52:53 taqua Exp $
+ * $Id: BaseFontRecordKey.java,v 1.5.4.2 2004/10/13 18:42:21 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  */
 
 package org.jfree.report.modules.output.support.itext;
+
+
 
 /**
  * A PDF font record key. This class is immutable.
@@ -53,6 +55,8 @@ public final class BaseFontRecordKey
   /** The encoding. */
   private final String encoding;
 
+  private boolean embedded;
+
   /** The cached hashcode for this object. */
   private int hashCode;
   
@@ -62,7 +66,8 @@ public final class BaseFontRecordKey
    * @param logicalName  the logical name.
    * @param encoding  the encoding.
    */
-  public BaseFontRecordKey(final String logicalName, final String encoding)
+  public BaseFontRecordKey(final String logicalName,
+                           final String encoding, final boolean embedded)
   {
     if (logicalName == null)
     {
@@ -74,6 +79,7 @@ public final class BaseFontRecordKey
     }
     this.logicalName = logicalName;
     this.encoding = encoding;
+    this.embedded = embedded;
   }
 
   /**
@@ -95,7 +101,10 @@ public final class BaseFontRecordKey
     }
 
     final BaseFontRecordKey key = (BaseFontRecordKey) o;
-
+    if (embedded != key.embedded)
+    {
+      return false;
+    }
     if (!logicalName.equals(key.logicalName))
     {
       return false;
@@ -117,10 +126,35 @@ public final class BaseFontRecordKey
     if (hashCode == 0)
     {
       int result;
-      result = logicalName.hashCode();
+      result = embedded ? 0 : 1;
+      result = 29 * result + logicalName.hashCode();
       result = 29 * result + encoding.hashCode();
       hashCode = result;
     }
     return hashCode;
+  }
+
+  /**
+   * Returns a string representation of the object. In general, the <code>toString</code>
+   * method returns a string that "textually represents" this object. The result should be
+   * a concise but informative representation that is easy for a person to read. It is
+   * recommended that all subclasses override this method.
+   * <p/>
+   * The <code>toString</code> method for class <code>Object</code> returns a string
+   * consisting of the name of the class of which the object is an instance, the at-sign
+   * character `<code>@</code>', and the unsigned hexadecimal representation of the hash
+   * code of the object. In other words, this method returns a string equal to the value
+   * of: <blockquote>
+   * <pre>
+   * getClass().getName() + '@' + Integer.toHexString(hashCode())
+   * </pre></blockquote>
+   *
+   * @return a string representation of the object.
+   */
+  public String toString ()
+  {
+    return ("FontKey={name="  + logicalName + "; encoding=" +
+            encoding + "; embedded=" + embedded + "}");
+
   }
 }

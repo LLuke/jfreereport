@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaElement.java,v 1.2 2004/03/27 20:21:14 taqua Exp $
+ * $Id: MetaElement.java,v 1.3 2004/05/07 14:29:20 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -42,8 +42,8 @@ import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.content.Content;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.style.StyleKey;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.report.style.StyleKey;
 
 /**
  * Lightweight structures to carry layout information.

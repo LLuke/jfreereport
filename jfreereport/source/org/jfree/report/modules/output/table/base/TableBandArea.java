@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableBandArea.java,v 1.7 2004/03/16 15:09:53 taqua Exp $
+ * $Id: TableBandArea.java,v 1.6.4.2 2004/12/13 19:27:05 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import org.jfree.report.style.ElementStyleSheet;
 public class TableBandArea extends TableCellBackground
 {
   public TableBandArea
-      (Content elementContent, ElementStyleSheet style, Color color)
+      (final Content elementContent, final ElementStyleSheet style, final Color color)
   {
     super(elementContent, style, color);
   }

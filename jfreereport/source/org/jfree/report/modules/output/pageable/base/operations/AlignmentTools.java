@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AlignmentTools.java,v 1.1 2004/03/16 15:38:50 taqua Exp $
+ * $Id: AlignmentTools.java,v 1.2 2004/05/07 12:53:06 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -41,9 +41,9 @@ package org.jfree.report.modules.output.pageable.base.operations;
 import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.ElementAlignment;
-import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.content.Content;
 import org.jfree.report.modules.output.meta.MetaElement;
+import org.jfree.report.style.ElementStyleSheet;
 
 public final class AlignmentTools
 {
@@ -118,7 +118,8 @@ public final class AlignmentTools
 
     final HorizontalBoundsAlignment hba = getHorizontalLayout(ha, bounds);
 
-    final Rectangle2D abounds = vba.align(hba.align(content.getBounds()));
+    final Rectangle2D halignedBounds = hba.align(content.getBounds());
+    final Rectangle2D abounds = vba.align(halignedBounds);
     return abounds;
   }
 }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecord.java,v 1.5 2003/11/07 18:33:55 taqua Exp $
+ * $Id: BaseFontRecord.java,v 1.5.4.1 2004/03/20 18:56:21 taqua Exp $
  *
  * Changes
  * -------
@@ -62,6 +62,8 @@ public final class BaseFontRecord
 
   /** A flag indicating whether this font record describes an embedded PDF font. */
   private boolean embedded;
+
+  private transient BaseFontRecordKey key;
 
   /**
    * Creates a new font record.
@@ -100,7 +102,11 @@ public final class BaseFontRecord
    */
   public BaseFontRecordKey createKey()
   {
-    return new BaseFontRecordKey(getLogicalName(), getEncoding());
+    if (key == null)
+    {
+      key = new BaseFontRecordKey(getLogicalName(), getEncoding(), isEmbedded());
+    }
+    return key;
   }
 
   /**

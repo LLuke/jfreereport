@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableContentCreator.java,v 1.1 2004/03/16 15:43:41 taqua Exp $
+ * $Id: TableContentCreator.java,v 1.2.2.1 2004/12/13 19:27:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,6 +42,7 @@ import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.modules.output.meta.MetaElement;
+import org.jfree.util.Log;
 
 /**
  * Collects the generated MetaElements and produces the layout.
@@ -57,12 +58,17 @@ public abstract class TableContentCreator extends AbstractTableCreator
   public static final String SHEET_NAME_FUNCTION_PROPERTY =
       "org.jfree.report.targets.table.TableWriter.SheetNameFunction";
 
+  public static final String DEBUG_REPORT_LAYOUT =
+      "org.jfree.report.targets.table.TableWriter.DebugReportLayout";
+
   private GenericObjectTable backend;
   private SheetLayoutCollection sheetLayoutCollection;
   private SheetLayout currentLayout;
   private int tableCounter;
   private TableRectangle lookupRectangle;
   private String sheetNameFunction;
+  private int layoutOffset;
+  private boolean debugReportLayout;
 
   public TableContentCreator(final SheetLayoutCollection sheetLayoutCollection)
   {
@@ -88,6 +94,8 @@ public abstract class TableContentCreator extends AbstractTableCreator
     tableCounter = -1;
     sheetNameFunction = report.getReportConfiguration()
         .getConfigProperty(SHEET_NAME_FUNCTION_PROPERTY);
+    debugReportLayout = report.getReportConfiguration()
+        .getConfigProperty(DEBUG_REPORT_LAYOUT, "true").equals("true");
     handleOpen(report);
   }
 
@@ -104,8 +112,10 @@ public abstract class TableContentCreator extends AbstractTableCreator
   public final void beginTable(final ReportDefinition report)
     throws ReportProcessingException
   {
+    setEmpty(true);
     backend.clear();
     tableCounter += 1;
+    layoutOffset = 0;
     currentLayout = sheetLayoutCollection.getLayoutForPage(tableCounter);
     handleBeginTable(report);
   }
@@ -120,7 +130,31 @@ public abstract class TableContentCreator extends AbstractTableCreator
   {
     handleEndTable();
     backend.clear();
+    setEmpty(true);
     currentLayout = null;
+  }
+
+  /**
+   * Commits all bands. See the class description for details on the flushing process.
+   *
+   * @return true, if the content was flushed, false otherwise.
+   */
+  public final boolean flush ()
+          throws ReportProcessingException
+  {
+    Log.debug ("Begin Flush! " + layoutOffset);
+    if (handleFlush())
+    {
+      layoutOffset += backend.getRowCount();
+      backend.clear();
+      return true;
+    }
+    return false;
+  }
+
+  protected boolean handleFlush () throws ReportProcessingException
+  {
+    return false;
   }
 
   protected abstract void handleEndTable () throws ReportProcessingException;
@@ -161,19 +195,60 @@ public abstract class TableContentCreator extends AbstractTableCreator
       // during the first pass
       return;
     }
+    if (currentLayout == null)
+    {
+      throw new IllegalStateException("No current layout");
+    }
     final TableRectangle rect = currentLayout.getTableBounds(e, getLookupRectangle());
+
+    if (isCellSpaceOccupied(rect) == false)
+    {
+      final int x2 = rect.getX2();
+      final int y2 = rect.getY2() - layoutOffset;
+      backend.ensureCapacity(x2, y2);
+
+      for (int r = rect.getY1() - layoutOffset; r < y2; r++)
+      {
+        for (int c = rect.getX1(); c < x2; c++)
+        {
+          backend.setObject(r, c, e);
+        }
+      }
+      setEmpty(false);
+    }
+    else
+    {
+      Log.debug ("Offending Content: " + e);
+    }
+  }
+
+  private boolean isCellSpaceOccupied (final TableRectangle rect)
+  {
     final int x2 = rect.getX2();
-    final int y2 = rect.getY2();
+    final int y2 = rect.getY2() - layoutOffset;
 
-    backend.ensureCapacity(x2, y2);
-
-    for (int r = rect.getY1(); r < y2; r++)
+    for (int r = rect.getY1() - layoutOffset; r < y2; r++)
     {
       for (int c = rect.getX1(); c < x2; c++)
       {
-        backend.setObject(r, c, e);
+        final MetaElement object = (MetaElement) backend.getObject(r, c);
+        if (object != null)
+        {
+          if (debugReportLayout)
+          {
+            Log.debug ("Cell (" + c +", " + r + ") already filled: " +
+                       "Content in cell: " + object);
+          }
+          return true;
+        }
       }
     }
+    return false;
+  }
+
+  protected boolean isDebugReportLayout ()
+  {
+    return debugReportLayout;
   }
 
   protected final TableRectangle getLookupRectangle ()
@@ -195,7 +270,8 @@ public abstract class TableContentCreator extends AbstractTableCreator
     return tableCounter;
   }
 
-  protected abstract void handleClose () throws ReportProcessingException;
+  protected abstract void handleClose ()
+          throws ReportProcessingException;
 
   protected GenericObjectTable getBackend()
   {
@@ -218,5 +294,8 @@ public abstract class TableContentCreator extends AbstractTableCreator
     return sheetNameFunction;
   }
 
-
+  public int getLayoutOffset ()
+  {
+    return layoutOffset;
+  }
 }

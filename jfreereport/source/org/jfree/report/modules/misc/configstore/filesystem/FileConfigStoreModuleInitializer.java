@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FileConfigStoreModuleInitializer.java,v 1.7 2004/03/16 15:09:48 taqua Exp $
+ * $Id: FileConfigStoreModuleInitializer.java,v 1.6.4.2 2004/10/11 21:00:41 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,10 +40,10 @@ package org.jfree.report.modules.misc.configstore.filesystem;
 
 import java.io.File;
 
-import org.jfree.report.modules.ModuleInitializeException;
-import org.jfree.report.modules.ModuleInitializer;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.base.modules.ModuleInitializer;
+import org.jfree.base.modules.ModuleInitializeException;
 
 /**
  * The initializer is used to setup the file system storage provider
@@ -82,8 +82,6 @@ public class FileConfigStoreModuleInitializer implements ModuleInitializer
    * Performs the module initialization and registers the storage providers
    * at the config factory.
    *
-   * @see org.jfree.report.modules.ModuleInitializer#performInit()
-   *
    * @throws ModuleInitializeException if an error occures
    */
   public void performInit() throws ModuleInitializeException
@@ -108,7 +106,7 @@ public class FileConfigStoreModuleInitializer implements ModuleInitializer
    *
    * @param baseDirectory the base directory as specified in the configuration.
    * @return the file object pointing to that directory.
-   * @throws ModuleInitializeException if an error occured or the directory could
+   * @throws org.jfree.base.modules.ModuleInitializeException if an error occured or the directory could
    * not be created.
    */
   private File getStoragePath(String baseDirectory) throws ModuleInitializeException
@@ -151,7 +149,8 @@ public class FileConfigStoreModuleInitializer implements ModuleInitializer
     }
     else
     {
-      if ((baseDirectoryFile.canRead() && baseDirectoryFile.canWrite()) == false)
+      if (baseDirectoryFile.canRead() == false ||
+          baseDirectoryFile.canWrite() == false)
       {
         throw new ModuleInitializeException
             ("Unable to access the specified directory.");

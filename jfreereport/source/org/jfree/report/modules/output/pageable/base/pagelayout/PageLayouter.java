@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageLayouter.java,v 1.13 2004/04/19 17:03:23 taqua Exp $
+ * $Id: PageLayouter.java,v 1.14 2004/05/07 12:53:09 mungady Exp $
  *
  * Changes
  * -------
@@ -42,15 +42,15 @@ import java.util.ArrayList;
 
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.util.Log;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
-import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.modules.output.meta.MetaBand;
-import org.jfree.report.modules.output.meta.MetaPage;
 import org.jfree.report.modules.output.meta.MetaElement;
+import org.jfree.report.modules.output.meta.MetaPage;
+import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.states.ReportState;
+import org.jfree.report.util.Log;
 
 /**
  * The baseclass for all PageLayouter. A page layouter is the layoutmanager of
@@ -76,6 +76,7 @@ import org.jfree.report.states.ReportState;
 public abstract strictfp class PageLayouter extends AbstractFunction
     implements PageEventListener
 {
+
   /**
    * Represents the state of the page layouter. Subclasses must override this
    * class to create an internal state which can be saved and restored when
@@ -92,6 +93,13 @@ public abstract strictfp class PageLayouter extends AbstractFunction
     public LayoutManagerState()
     {
     }
+
+    public Object clone ()
+            throws CloneNotSupportedException
+    {
+      // todo implement me
+      return super.clone();
+    }
   }
 
   /**
@@ -106,6 +114,8 @@ public abstract strictfp class PageLayouter extends AbstractFunction
 
   /** The latest report event. */
   private ReportEvent currentEvent;
+
+  private boolean pageEnded;
 
   /**
    * The depency level. Should be set to -1 or lower to ensure that this function
@@ -308,7 +318,7 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   {
     if (currentEvent == null)
     {
-      throw new NullPointerException();
+      throw new NullPointerException("Event must not be null.");
     }
     this.currentEvent = currentEvent;
   }
@@ -409,10 +419,8 @@ public abstract strictfp class PageLayouter extends AbstractFunction
    */
   public boolean isPageEnded()
   {
-    return pageEnded;//getLogicalPage().isOpen() == false;
+    return pageEnded;
   }
-
-  private boolean pageEnded;
 
   /**
    * Returns true, if the PageLayouter has successfully started a new page. The
@@ -534,9 +542,10 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   {
     final Object state = getLayoutManagerState();
     // reset the report finished flag...
-    //setStartNewPage(false);
-    //setGeneratedPageEmpty(true);
+    pageEnded = false;
+
     setPageRestartDone(false);
+
     bands.clear();
 
     if (state == null)

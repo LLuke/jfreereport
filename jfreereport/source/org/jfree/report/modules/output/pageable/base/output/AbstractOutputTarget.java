@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.8 2004/04/19 17:03:23 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.9 2004/05/07 12:53:09 mungady Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,6 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.ShapeElement;
-import org.jfree.report.util.Log;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.ContentType;
@@ -71,11 +70,12 @@ import org.jfree.report.content.DrawableContent;
 import org.jfree.report.content.DrawableContentFactoryModule;
 import org.jfree.report.content.ImageContent;
 import org.jfree.report.content.ImageContentFactoryModule;
+import org.jfree.report.content.MultipartContent;
 import org.jfree.report.content.ShapeContent;
 import org.jfree.report.content.ShapeContentFactoryModule;
 import org.jfree.report.content.TextContentFactoryModule;
 import org.jfree.report.content.TextLine;
-import org.jfree.report.content.MultipartContent;
+import org.jfree.report.content.EmptyContent;
 import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.meta.MetaPage;
@@ -86,6 +86,8 @@ import org.jfree.report.modules.output.pageable.base.operations.HorizontalBounds
 import org.jfree.report.modules.output.pageable.base.operations.VerticalBoundsAlignment;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.report.util.Log;
+import org.jfree.util.ShapeUtilities;
 
 /**
  * The abstract OutputTarget implements base code for all pageable OutputTargets.
@@ -247,8 +249,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
   public void printPage(final MetaPage content, final PageDefinition page, final int index)
    throws OutputTargetException
   {
+    setPageBounds(page.getPagePosition(index));
     beginPage(page, index);
-    Log.debug ("Print Page " + index + "; " + getPageBounds());
     final Rectangle2D pageBounds = getPageBounds();
 
     // for all stored bands
@@ -258,20 +260,18 @@ public abstract class AbstractOutputTarget implements OutputTarget
       final MetaBand b = bands[i];
       final Rectangle2D bounds = b.getBounds();
       // check if bounds are within the specified page bounds
-      if (bounds.intersects(pageBounds))
+      if (ShapeUtilities.intersects(bounds, pageBounds))
       {
         // if so, then print
-        Log.debug ("Printing .." + pageBounds + " vs . " + bounds);
         printBand(b, pageBounds.createIntersection(bounds));
       }
       else
       {
       // else ignore
-       // Log.debug ("Ignoring .." + pageBounds + " vs . " + bounds);
+        Log.debug ("Ignoring: PageBounds:" + pageBounds + " vs . BandBounds: " + bounds);
       }
     }
     endPage();
-    Log.debug ("Done Printing Page " + index + "; " + getPageBounds());
   }
 
 
@@ -293,47 +293,54 @@ public abstract class AbstractOutputTarget implements OutputTarget
       final MetaElement e = elements[i];
       final Rectangle2D elementBounds = e.getBounds();
       // check if bounds are within the specified page bounds
-      if (bounds.intersects(elementBounds))
+      if (ShapeUtilities.intersects(bounds, elementBounds))
       {
-        Log.debug ("Prnt2: " + bounds + " vs. " + elementBounds);
         if (e instanceof MetaBand)
         {
-          Log.debug ("Band: ");
           printBand((MetaBand) e, bounds.createIntersection(elementBounds));
         }
         else
         {
-          Log.debug ("Element: ");
           printElement(e, bounds.createIntersection(elementBounds));
         }
-      }
-      else
-      {
-        Log.debug ("Igno2: " + bounds + " vs. " + elementBounds);
       }
     }
   }
 
-  // todo Change the content processing.
-  // dig into the containers and extract the root elements ..
-  // print these content objects ...
   protected void printElement (final MetaElement element, final Rectangle2D bounds)
     throws OutputTargetException
   {
     final Content content = element.getContent().getContentForBounds(bounds);
-    if (content != null)
+    if (content instanceof EmptyContent)
     {
-      printContent(element, content);
+      return;
+    }
+
+    final ElementAlignment va
+        = (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
+    if (va != null)
+    {
+      final VerticalBoundsAlignment vba = AlignmentTools.getVerticalLayout(va, bounds);
+      // calculate the horizontal shift ... is applied later
+
+      final Rectangle2D cBounds = content.getMinimumContentSize();
+      final float vbaShift =
+              (float) (vba.align(cBounds).getY() - cBounds.getY());
+      printContent(element, content, vbaShift);
+    }
+    else
+    {
+      printContent(element, content, 0);
     }
   }
 
-  protected void printContent (final MetaElement element, final Content content)
+  protected void printContent
+          (final MetaElement element, final Content content, final float vbaShift)
           throws OutputTargetException
   {
-    Log.debug ("CType: " + content.getContentType());
     if (content.getContentType().equals(ContentType.TEXT))
     {
-      printTextContent(element, content);
+      printTextContent(element, content, vbaShift);
     }
     else if (element.getContent().getContentType().equals(ContentType.SHAPE))
     {
@@ -356,33 +363,33 @@ public abstract class AbstractOutputTarget implements OutputTarget
       Log.warn ("Unknown content");
     }
 
+    // Warning: Cheap Hack: Only working with text content, everything else will fail!
     if (content instanceof MultipartContent)
     {
       final MultipartContent mc = (MultipartContent) content;
       for (int i = 0; i < mc.getContentPartCount(); i++)
       {
-        printContent (element, mc.getContentPart(i));
+        printContent (element, mc.getContentPart(i), vbaShift);
       }
 
     }
   }
 
   protected void printTextContent
-          (final MetaElement element, final Content content)
+          (final MetaElement element, final Content content,
+           final float vbaShift)
     throws OutputTargetException
   {
     if (element == null)
     {
       throw new NullPointerException("element is null");
     }
-    Log.debug("Print Text Content");
-    // todo
+
     // we assume here, that the content bounds are also defined for the global
     // range, or we have to 'adjust' them now.
     //final Rectangle2D bounds = element.getBounds();
     if (content instanceof TextLine == false)
     {
-      Log.debug ("No Text Line ... ignoring ..");
       return;
     }
     // Font
@@ -401,21 +408,12 @@ public abstract class AbstractOutputTarget implements OutputTarget
       updatePaint(paint);
     }
 
-    final Rectangle2D bounds = content.getBounds();
-    final ElementAlignment va
-        = (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
-    final VerticalBoundsAlignment vba = AlignmentTools.getVerticalLayout(va, bounds);
-    // calculate the horizontal shift ... is applied later
-
-    final Rectangle2D cBounds = content.getMinimumContentSize();
-    float vbaShift = (float) cBounds.getY();
-    vbaShift = (float) vba.align(cBounds).getY() - vbaShift;
 
     final ElementAlignment ha
         = (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
 
-    final HorizontalBoundsAlignment hba = AlignmentTools.getHorizontalLayout(ha, bounds);
-    Log.debug ("Printing Text Line ... ");
+    final HorizontalBoundsAlignment hba =
+            AlignmentTools.getHorizontalLayout(ha, element.getBounds());
     printTextLine((TextLine) content, hba, vbaShift);
   }
 
@@ -474,7 +472,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     }
     final ImageContent ic = (ImageContent) content;
     setOperationBounds(AlignmentTools.computeAlignmentBounds(element));
-    drawImage(ic.getContent());
+    drawImage(ic);
   }
 
 
@@ -538,7 +536,6 @@ public abstract class AbstractOutputTarget implements OutputTarget
     abounds.setRect(abounds.getX(), abounds.getY() + vbaShift,
         abounds.getWidth(), abounds.getHeight());
     setOperationBounds(abounds);
-    Log.debug ("Value = " + value + "; Operation Bounds: " + abounds);
     printText(value);
   }
 
@@ -594,6 +591,6 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
   protected abstract void drawDrawable (DrawableContainer d)
       throws OutputTargetException;
-  protected abstract void drawImage(ImageContainer content)
+  protected abstract void drawImage(ImageContent content)
       throws OutputTargetException;
 }
