@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdEllipse.java,v 1.2 2003/03/14 20:06:06 taqua Exp $
+ * $Id: MfCmdExtTextOut.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -115,22 +115,22 @@ public class MfCmdExtTextOut extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    Graphics2D graphics = file.getGraphics2D ();
-    MfDcState state = file.getCurrentState ();
-    MfLogFont lFont = state.getLogFont ();
+    final Graphics2D graphics = file.getGraphics2D ();
+    final MfDcState state = file.getCurrentState ();
+    final MfLogFont lFont = state.getLogFont ();
 
     state.prepareDrawText ();
-    FontMetrics metrics = graphics.getFontMetrics ();
-    int textWidth = metrics.stringWidth (text);
-    Point p = getScaledOrigin ();
-    int x = p.x + calcDeltaX (state.getVerticalTextAlignment (), textWidth);
+    final FontMetrics metrics = graphics.getFontMetrics ();
+    final int textWidth = metrics.stringWidth (text);
+    final Point p = getScaledOrigin ();
+    final int x = p.x + calcDeltaX (state.getVerticalTextAlignment (), textWidth);
     int y = p.y + calcDeltaY (state.getHorizontalTextAlignment (), metrics);
 
     if (isOpaque () || state.getBkMode () != BrushConstants.TRANSPARENT)
     {
-      Rectangle background = new Rectangle (x, y - metrics.getAscent (), textWidth, metrics.getHeight ());
+      final Rectangle background = new Rectangle (x, y - metrics.getAscent (), textWidth, metrics.getHeight ());
       graphics.setColor (state.getBkColor ());
       graphics.fill (background);
       graphics.setColor (state.getTextColor ());
@@ -154,7 +154,7 @@ public class MfCmdExtTextOut extends MfCmd
     }
   }
 
-  protected int calcDeltaX (int valign, int textWidth)
+  protected int calcDeltaX (final int valign, final int textWidth)
   {
     if (valign == TextConstants.TA_LEFT)
     {
@@ -170,7 +170,7 @@ public class MfCmdExtTextOut extends MfCmd
     }
   }
 
-  protected int calcDeltaY (int halign, FontMetrics fm)
+  protected int calcDeltaY (final int halign, final FontMetrics fm)
   {
     if (halign == TextConstants.TA_TOP)
       return (fm.getAscent () * -1);
@@ -210,12 +210,12 @@ public class MfCmdExtTextOut extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int y = record.getParam (POS_Y);
-    int x = record.getParam (POS_X);
-    int count = record.getParam (POS_CHAR_COUNT);
-    int flag = record.getParam (POS_FLAGS);
+    final int y = record.getParam (POS_Y);
+    final int x = record.getParam (POS_X);
+    final int count = record.getParam (POS_CHAR_COUNT);
+    final int flag = record.getParam (POS_FLAGS);
     int stringOffset = 0;
 
     int cx = 0;
@@ -234,7 +234,7 @@ public class MfCmdExtTextOut extends MfCmd
     {
       stringOffset = RECORD_BASE_SIZE_STANDARD;
     }
-    String text = record.getStringParam(stringOffset, count);
+    final String text = record.getStringParam(stringOffset, count);
 
     setOrigin (x, y);
     setText (text);
@@ -250,9 +250,9 @@ public class MfCmdExtTextOut extends MfCmd
    */
   public MfRecord getRecord ()
   {
-    String text = getText();
-    int flag = getFlags();
-    int parcnt;
+    final String text = getText();
+    final int flag = getFlags();
+    final int parcnt;
     if ((flag & ETO_CLIPPED) == ETO_CLIPPED)
     {
       parcnt = RECORD_BASE_SIZE_CLIPPED;
@@ -262,17 +262,17 @@ public class MfCmdExtTextOut extends MfCmd
       parcnt =  RECORD_BASE_SIZE_STANDARD;
     }
 
-    int recordLength = (int) (Math.ceil(text.length() / 2) * 2) + parcnt;
-    MfRecord record = new MfRecord(recordLength);
+    final int recordLength = (int) (Math.ceil(text.length() / 2) * 2) + parcnt;
+    final MfRecord record = new MfRecord(recordLength);
 
-    Point origin = getOrigin();
+    final Point origin = getOrigin();
     record.setParam(POS_Y, (int)origin.getY());
     record.setParam(POS_X, (int)origin.getX());
     record.setParam(POS_CHAR_COUNT, text.length());
     record.setParam(POS_FLAGS, flag);
     if ((flag & ETO_CLIPPED) == ETO_CLIPPED)
     {
-      Rectangle rect = getClippingRect();
+      final Rectangle rect = getClippingRect();
       record.setParam(POS_CLIP_X, rect.x);
       record.setParam(POS_CLIP_Y, rect.y);
       record.setParam(POS_CLIP_W, rect.width);
@@ -284,7 +284,7 @@ public class MfCmdExtTextOut extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[EXT_TEXT_OUT] text=");
     b.append (getText ());
     b.append (" origin=");
@@ -296,7 +296,7 @@ public class MfCmdExtTextOut extends MfCmd
     return b.toString ();
   }
 
-  public void setOrigin (int x, int y)
+  public void setOrigin (final int x, final int y)
   {
     this.x = x;
     this.y = y;
@@ -329,12 +329,12 @@ public class MfCmdExtTextOut extends MfCmd
     return flags;
   }
 
-  public void setFlags (int flags)
+  public void setFlags (final int flags)
   {
     this.flags = flags;
   }
 
-  public void setClippingRect (int cx, int cy, int cw, int ch)
+  public void setClippingRect (final int cx, final int cy, final int cw, final int ch)
   {
     this.cx = cx;
     this.cy = cy;
@@ -354,7 +354,7 @@ public class MfCmdExtTextOut extends MfCmd
     return new Rectangle (scaled_cx, scaled_cy, scaled_cw, scaled_ch);
   }
 
-  public void setText (String text)
+  public void setText (final String text)
   {
     this.text = text;
   }

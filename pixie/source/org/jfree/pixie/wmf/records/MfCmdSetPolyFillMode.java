@@ -25,9 +25,9 @@ public class MfCmdSetPolyFillMode extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
     state.setPolyFillMode (fillmode);
   }
 
@@ -50,9 +50,9 @@ public class MfCmdSetPolyFillMode extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int id = record.getParam (0);
+    final int id = record.getParam (0);
     setFillMode (id);
   }
 
@@ -63,7 +63,7 @@ public class MfCmdSetPolyFillMode extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_POLYFILLMODE, getFillMode());
     return record;
   }
@@ -84,14 +84,14 @@ public class MfCmdSetPolyFillMode extends MfCmd
     return fillmode;
   }
 
-  public void setFillMode (int id)
+  public void setFillMode (final int id)
   {
     this.fillmode = id;
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[SET_POLY_FILL_MODE] fillmode=");
     b.append (getFillMode ());
     return b.toString ();

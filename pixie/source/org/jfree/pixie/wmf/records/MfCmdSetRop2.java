@@ -22,9 +22,9 @@ public class MfCmdSetRop2 extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
     state.setROP (drawmode);
   }
 
@@ -47,9 +47,9 @@ public class MfCmdSetRop2 extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int id = record.getParam (POS_ROP2);
+    final int id = record.getParam (POS_ROP2);
     setDrawMode (id);
   }
 
@@ -60,7 +60,7 @@ public class MfCmdSetRop2 extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_ROP2, getDrawMode());
     return record;
   }
@@ -81,14 +81,14 @@ public class MfCmdSetRop2 extends MfCmd
     return drawmode;
   }
 
-  public void setDrawMode (int id)
+  public void setDrawMode (final int id)
   {
     this.drawmode = id;
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[SET_ROP2] drawmode=");
     b.append (getDrawMode ());
     return b.toString ();

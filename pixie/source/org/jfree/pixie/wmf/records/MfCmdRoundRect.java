@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdEllipse.java,v 1.2 2003/03/14 20:06:06 taqua Exp $
+ * $Id: MfCmdRoundRect.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -83,14 +83,14 @@ public class MfCmdRoundRect extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    Graphics2D graph = file.getGraphics2D ();
-    Rectangle rec = getScaledBounds ();
-    Dimension dim = getScaledRoundingDim ();
-    RoundRectangle2D shape = new RoundRectangle2D.Double ();
+    final Graphics2D graph = file.getGraphics2D ();
+    final Rectangle rec = getScaledBounds ();
+    final Dimension dim = getScaledRoundingDim ();
+    final RoundRectangle2D shape = new RoundRectangle2D.Double ();
     shape.setRoundRect (rec.x, rec.y, rec.width, rec.height, dim.width, dim.height);
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
 
     if (state.getLogBrush ().isVisible ())
     {
@@ -118,7 +118,7 @@ public class MfCmdRoundRect extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[ROUND_RECTANGLE] bounds=");
     b.append (getBounds ());
     b.append (" roundingDim=");
@@ -135,14 +135,14 @@ public class MfCmdRoundRect extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int rHeight = record.getParam (POS_ROUND_HEIGHT);
-    int rWidth = record.getParam (POS_ROUND_WIDTH);
-    int bottom = record.getParam (POS_BOTTOM);
-    int right = record.getParam (POS_RIGHT);
-    int top = record.getParam (POS_TOP);
-    int left = record.getParam (POS_LEFT);
+    final int rHeight = record.getParam (POS_ROUND_HEIGHT);
+    final int rWidth = record.getParam (POS_ROUND_WIDTH);
+    final int bottom = record.getParam (POS_BOTTOM);
+    final int right = record.getParam (POS_RIGHT);
+    final int top = record.getParam (POS_TOP);
+    final int left = record.getParam (POS_LEFT);
     setBounds (left, top, right - left, bottom - top);
     setRoundingDim (rWidth, rHeight);
   }
@@ -154,11 +154,11 @@ public class MfCmdRoundRect extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
-    Dimension rDim = getRoundingDim();
+    final MfRecord record = new MfRecord(RECORD_SIZE);
+    final Dimension rDim = getRoundingDim();
     record.setParam(POS_ROUND_HEIGHT, rDim.height);
     record.setParam(POS_ROUND_WIDTH, rDim.width);
-    Rectangle bounds = getBounds();
+    final Rectangle bounds = getBounds();
     record.setParam(POS_BOTTOM, bounds.height + bounds.y);
     record.setParam(POS_RIGHT, bounds.width + bounds.x);
     record.setParam(POS_TOP, bounds.y);
@@ -176,7 +176,7 @@ public class MfCmdRoundRect extends MfCmd
     return new Rectangle (scaled_x, scaled_y, scaled_width, scaled_height);
   }
 
-  public void setBounds (int x, int y, int width, int height)
+  public void setBounds (final int x, final int y, final int width, final int height)
   {
     this.x = x;
     this.y = y;
@@ -187,7 +187,7 @@ public class MfCmdRoundRect extends MfCmd
 
   }
 
-  public void setRoundingDim (int w, int h)
+  public void setRoundingDim (final int w, final int h)
   {
     this.roundWidth = w;
     this.roundHeight = h;

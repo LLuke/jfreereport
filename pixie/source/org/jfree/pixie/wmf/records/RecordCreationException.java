@@ -2,7 +2,7 @@
  * Date: Mar 9, 2003
  * Time: 5:11:57 PM
  *
- * $Id$
+ * $Id: RecordCreationException.java,v 1.1 2003/03/09 20:38:26 taqua Exp $
  */
 package org.jfree.pixie.wmf.records;
 
@@ -20,7 +20,7 @@ public class RecordCreationException extends Exception
    *
    * @param   s   the detail message.
    */
-  public RecordCreationException(String s)
+  public RecordCreationException(final String s)
   {
     super(s);
   }

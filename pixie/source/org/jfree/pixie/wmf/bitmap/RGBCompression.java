@@ -5,10 +5,10 @@ import java.io.InputStream;
 
 public class RGBCompression extends BitmapCompression
 {
-  public int[] decompress (InputStream in, GDIPalette palette)
+  public int[] decompress (final InputStream in, final GDIPalette palette)
   throws IOException
   {
-    int[] target = new int[getWidth () * getHeight ()];
+    final int[] target = new int[getWidth () * getHeight ()];
     
     switch (getBpp ())
     {
@@ -29,12 +29,12 @@ public class RGBCompression extends BitmapCompression
    * @param padChar char to use for padding (must be of length()==1!)
    * @return the string with correct lenght, padded with pad if necessary
    */
-  public static String forceToSizeLeft(String str, int size, char padChar)
+  public static String forceToSizeLeft(final String str, final int size, final char padChar)
   {
     if (str != null && str.length() == size)
       return str;
 
-    StringBuffer tmp;
+    final StringBuffer tmp;
     if (str == null)
     {
       tmp = new StringBuffer(size);
@@ -51,10 +51,10 @@ public class RGBCompression extends BitmapCompression
     }
     else 
     {
-      StringBuffer t2 = new StringBuffer (size);
+      final StringBuffer t2 = new StringBuffer (size);
       
-      int arsize = size - tmp.length();
-      char[] ar = new char[arsize];
+      final int arsize = size - tmp.length();
+      final char[] ar = new char[arsize];
       for (int i = 0; i < arsize; i++)
       {
         ar[i] = padChar;
@@ -65,22 +65,22 @@ public class RGBCompression extends BitmapCompression
     }
   }
 
-  public void fillMono (int[] target, InputStream in, GDIPalette pal)
+  public void fillMono (final int[] target, final InputStream in, final GDIPalette pal)
     throws IOException
   {
-    int noOfBytes = (int) Math.ceil (target.length / 8);
+    final int noOfBytes = (int) Math.ceil (target.length / 8);
     if (isTopDown () == false)
     {
       for (int i = noOfBytes - 1; i >= 0; i--)
       {
-        int iByte = readInt (in);
+        final int iByte = readInt (in);
         if (iByte == -1)
            return;
            
            
-        int[] data = expandMonocrome (iByte, pal);
-        int left = (target.length - i*8); 
-        int size = Math.min (8, left);
+        final int[] data = expandMonocrome (iByte, pal);
+        final int left = (target.length - i*8);
+        final int size = Math.min (8, left);
       
         for (int ij = size - 1; ij >= 0; ij--)
         {
@@ -92,14 +92,14 @@ public class RGBCompression extends BitmapCompression
     {
       for (int i = 0; i < noOfBytes; i++)
       {
-        int iByte = readInt (in);
+        final int iByte = readInt (in);
         if (iByte == -1)
            return;
            
            
-        int[] data = expandMonocrome (iByte, pal);
-        int left = (target.length - i*8); 
-        int size = Math.min (8, left);
+        final int[] data = expandMonocrome (iByte, pal);
+        final int left = (target.length - i*8);
+        final int size = Math.min (8, left);
     
         for (int ij = 0; ij < 8; ij++)
         {
@@ -109,20 +109,20 @@ public class RGBCompression extends BitmapCompression
     }
   }
 
-  public void fill4Bit (int[] target, InputStream in, GDIPalette pal)
+  public void fill4Bit (final int[] target, final InputStream in, final GDIPalette pal)
   throws IOException
   {
-    int noOfBytes = (int) Math.ceil (target.length / 2);
+    final int noOfBytes = (int) Math.ceil (target.length / 2);
 
     if (isTopDown () == false)
     {
       for (int i = noOfBytes - 1; i >= 0; i--)
       {
-        int iByte = in.read ();
+        final int iByte = in.read ();
         if (iByte == -1)
            return;
       
-        int[] data = expand4BitTuple(iByte, pal);
+        final int[] data = expand4BitTuple(iByte, pal);
         target[i * 2] = data[1];
         target[i * 2 + 1] = data[0];
       }
@@ -131,26 +131,26 @@ public class RGBCompression extends BitmapCompression
     {
       for (int i = 0; i < noOfBytes; i++)
       {
-        int iByte = in.read ();
+        final int iByte = in.read ();
         if (iByte == -1)
            return;
     
-        int[] data = expand4BitTuple(iByte, pal);
+        final int[] data = expand4BitTuple(iByte, pal);
         target[i * 2] = data[0];
         target[i * 2 + 1] = data[1];
       }
     }
   }
 
-  public void fill8Bit (int[] target, InputStream in, GDIPalette pal)
+  public void fill8Bit (final int[] target, final InputStream in, final GDIPalette pal)
   throws IOException
   {
-    int noOfBytes = target.length;
+    final int noOfBytes = target.length;
     if (isTopDown () == false)
     {
       for (int i = noOfBytes - 1; i >= 0; i--)
       {
-        int iByte = in.read ();
+        final int iByte = in.read ();
         if (iByte == -1)
            return;
            
@@ -161,7 +161,7 @@ public class RGBCompression extends BitmapCompression
     {
       for (int i = 0; i < noOfBytes; i++)
       {
-        int iByte = in.read ();
+        final int iByte = in.read ();
         if (iByte == -1)
            return;
            
@@ -170,17 +170,17 @@ public class RGBCompression extends BitmapCompression
     }
   }
 
-  public void fill16Bit (int[] target, InputStream in, GDIPalette pal)
+  public void fill16Bit (final int[] target, final InputStream in, final GDIPalette pal)
   throws IOException
   {
-    int noOfBytes = target.length * 2;
+    final int noOfBytes = target.length * 2;
     if (isTopDown () == false)
     {
       for (int i = noOfBytes - 1; i >= 0; i--)
       {
-        int iByte = in.read ();
+        final int iByte = in.read ();
         if (iByte == -1) return;
-        int iByte2 = in.read ();
+        final int iByte2 = in.read ();
         if (iByte2 == -1) return;
       
         target[i] = pal.lookupColor ((iByte2 << 8) + iByte);
@@ -190,9 +190,9 @@ public class RGBCompression extends BitmapCompression
     {
       for (int i = 0; i < noOfBytes; i++)
       {
-        int iByte = in.read ();
+        final int iByte = in.read ();
         if (iByte == -1) return;
-        int iByte2 = in.read ();
+        final int iByte2 = in.read ();
         if (iByte2 == -1) return;
       
         target[i] = pal.lookupColor ((iByte2 << 8) + iByte);
@@ -200,10 +200,10 @@ public class RGBCompression extends BitmapCompression
     }
   }
 
-  public void fill24Bit (int[] target, InputStream in, GDIPalette pal)
+  public void fill24Bit (final int[] target, final InputStream in, final GDIPalette pal)
   throws IOException
   {
-    int noOfBytes = target.length * 4;
+    final int noOfBytes = target.length * 4;
     if (isTopDown () == false)
     {
       for (int i = noOfBytes - 1; i >= 0; i--)
@@ -220,10 +220,10 @@ public class RGBCompression extends BitmapCompression
     }
   }
 
-  public void fill32Bit (int[] target, InputStream in, GDIPalette pal)
+  public void fill32Bit (final int[] target, final InputStream in, final GDIPalette pal)
   throws IOException
   {
-    int noOfBytes = target.length * 4;
+    final int noOfBytes = target.length * 4;
     if (isTopDown () == false)
     {
       for (int i = noOfBytes - 1; i >= 0; i--)
@@ -240,19 +240,19 @@ public class RGBCompression extends BitmapCompression
     }
   }
   
-  protected int readInt (InputStream in) throws IOException
+  protected int readInt (final InputStream in) throws IOException
   {
-    int iByte = in.read ();
+    final int iByte = in.read ();
     if (iByte == -1) return -1;
-    int iByte2 = in.read ();
+    final int iByte2 = in.read ();
     if (iByte2 == -1) return - 1;
-    int iByte3 = in.read ();
+    final int iByte3 = in.read ();
     if (iByte3 == -1) return - 1;
-    int iByte4 = in.read ();
+    final int iByte4 = in.read ();
     if (iByte4 == -1) return -1;
 
       
-    int retval = ((iByte4 << 24) + (iByte3 << 16) + (iByte2 << 8) + (iByte));
+    final int retval = ((iByte4 << 24) + (iByte3 << 16) + (iByte2 << 8) + (iByte));
     return retval;
   }
 }

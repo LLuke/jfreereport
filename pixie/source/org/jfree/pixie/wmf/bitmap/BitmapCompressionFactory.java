@@ -6,7 +6,7 @@ import org.jfree.pixie.wmf.bitmap.BitmapCompression;
 
 public class BitmapCompressionFactory
 {
-  public static BitmapCompression getHandler (int comp)
+  public static BitmapCompression getHandler (final int comp)
   {
     switch (comp)
     {

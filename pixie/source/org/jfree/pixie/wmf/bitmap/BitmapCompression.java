@@ -10,7 +10,7 @@ public abstract class BitmapCompression
   private int bpp;
   private boolean topDown;
 
-  public void setDimension (int width, int height)
+  public void setDimension (final int width, final int height)
   {
     this.width = width;
     this.height = height;
@@ -31,12 +31,12 @@ public abstract class BitmapCompression
     return bpp;
   }
 
-  public void setBpp (int bpp)
+  public void setBpp (final int bpp)
   {
     this.bpp = bpp;
   }
 
-  public void setTopDown (boolean b)
+  public void setTopDown (final boolean b)
   {
     this.topDown = b;
   }
@@ -49,12 +49,12 @@ public abstract class BitmapCompression
   public abstract int[] decompress (InputStream in, GDIPalette palette)
           throws IOException;
 
-  public static int[] expandMonocrome (int b, GDIPalette pal)
+  public static int[] expandMonocrome (final int b, final GDIPalette pal)
   {
-    int tColor = pal.lookupColor (1);
-    int fColor = pal.lookupColor (0);
+    final int tColor = pal.lookupColor (1);
+    final int fColor = pal.lookupColor (0);
 
-    int[] retval = new int[8];
+    final int[] retval = new int[8];
     if ((b & 0x01) == 0x01) retval[0] = tColor; else retval[0] = fColor;
     if ((b & 0x02) == 0x02) retval[1] = tColor; else retval[1] = fColor;
     if ((b & 0x04) == 0x04) retval[2] = tColor; else retval[2] = fColor;
@@ -66,9 +66,9 @@ public abstract class BitmapCompression
     return retval;
   }
 
-  public static int[] expand4BitTuple (int b, GDIPalette pal)
+  public static int[] expand4BitTuple (final int b, final GDIPalette pal)
   {
-    int[] retval = new int[2];
+    final int[] retval = new int[2];
     retval[0] = pal.lookupColor ((b & 0xF0) >> 4);
     retval[1] = pal.lookupColor (b & 0x0F);
     return retval;

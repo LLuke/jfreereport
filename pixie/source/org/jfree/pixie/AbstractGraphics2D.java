@@ -2,7 +2,7 @@
  * Date: Mar 9, 2003
  * Time: 1:33:05 PM
  *
- * $Id$
+ * $Id: AbstractGraphics2D.java,v 1.1 2003/03/09 20:38:09 taqua Exp $
  */
 package org.jfree.pixie;
 
@@ -55,10 +55,10 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see #clip
    * @see #setClip
    */
-  public void drawImage(BufferedImage img,
-                        BufferedImageOp op,
-                        int x,
-                        int y)
+  public void drawImage(final BufferedImage img,
+                        final BufferedImageOp op,
+                        final int x,
+                        final int y)
   {
     BufferedImage result = op.createCompatibleDestImage(img, img.getColorModel());
     result = op.filter(img, result);
@@ -89,7 +89,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see         java.awt.Graphics#drawChars
    * @since       JDK1.0
    */
-  public void drawString(String str, int x, int y)
+  public void drawString(final String str, final int x, final int y)
   {
     drawString(str, (float)x, (float)y);
   }
@@ -119,8 +119,8 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see #setComposite
    * @see #setClip
    */
-  public void drawString(AttributedCharacterIterator iterator,
-                         int x, int y)
+  public void drawString(final AttributedCharacterIterator iterator,
+                         final int x, final int y)
   {
     drawString(iterator, (float)x, (float)y);
   }
@@ -150,10 +150,10 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see #setComposite
    * @see #setClip
    */
-  public void drawString(AttributedCharacterIterator iterator,
-                         float x, float y)
+  public void drawString(final AttributedCharacterIterator iterator,
+                         final float x, final float y)
   {
-    StringBuffer sb = new StringBuffer();
+    final StringBuffer sb = new StringBuffer();
     char c = iterator.first();
     while( c != AttributedCharacterIterator.DONE)
     {
@@ -186,7 +186,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see #setComposite
    * @see #setClip
    */
-  public void drawGlyphVector(GlyphVector g, float x, float y)
+  public void drawGlyphVector(final GlyphVector g, final float x, final float y)
   {
     fill(g.getOutline(x,y));
   }
@@ -220,16 +220,16 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see #clip
    * @see #setClip
    */
-  public boolean hit(Rectangle rect,
+  public boolean hit(final Rectangle rect,
                      Shape s,
-                     boolean onStroke)
+                     final boolean onStroke)
   {
     if (onStroke)
     {
         s = getStroke().createStrokedShape(s);
     }
     s = getTransform().createTransformedShape(s);
-    Area area = new Area(s);
+    final Area area = new Area(s);
     if (getClip() != null)
     {
         area.intersect(new Area (getClip()));
@@ -247,7 +247,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * context are relative to this new origin.
    * @since   JDK1.0
    */
-  public void translate(int x, int y)
+  public void translate(final int x, final int y)
   {
     translate((double)x, (double)y);
   }
@@ -268,7 +268,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @param tx the distance to translate along the x-axis
    * @param ty the distance to translate along the y-axis
    */
-  public void translate(double tx, double ty)
+  public void translate(final double tx, final double ty)
   {
     transform(AffineTransform.getTranslateInstance(tx,ty));
   }
@@ -289,7 +289,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * x axis toward the positive y axis.
    * @param theta the angle of rotation in radians
    */
-  public void rotate(double theta)
+  public void rotate(final double theta)
   {
     transform(AffineTransform.getRotateInstance(theta));
   }
@@ -311,7 +311,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * x axis toward the positive y axis.
    * @param theta the angle of rotation in radians
    */
-  public void rotate(double theta, double x, double y)
+  public void rotate(final double theta, final double x, final double y)
   {
     transform(AffineTransform.getRotateInstance(theta, x, y));
   }
@@ -335,7 +335,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * rendering operations are multiplied relative to previous
    * rendering operations.
    */
-  public void scale(double sx, double sy)
+  public void scale(final double sx, final double sy)
   {
     transform(AffineTransform.getScaleInstance(sx, sy));
   }
@@ -358,7 +358,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @param shy the multiplier by which coordinates are shifted in
    * the positive Y axis direction as a function of their X coordinate
    */
-  public void shear(double shx, double shy)
+  public void shear(final double shx, final double shy)
   {
     transform(AffineTransform.getShearInstance(shx, shy));
   }
@@ -380,9 +380,9 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see #setTransform
    * @see java.awt.geom.AffineTransform
    */
-  public void transform(AffineTransform Tx)
+  public void transform(final AffineTransform Tx)
   {
-    AffineTransform transform = new AffineTransform(getTransform());
+    final AffineTransform transform = new AffineTransform(getTransform());
     transform.concatenate(Tx);
     setTransform(transform);
   }
@@ -395,7 +395,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    */
   public Color getColor()
   {
-    Paint p = getPaint();
+    final Paint p = getPaint();
     if (p instanceof Color)
       return (Color) p;
 
@@ -410,7 +410,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see       java.awt.Color
    * @see       java.awt.Graphics#getColor
    */
-  public void setColor(Color c)
+  public void setColor(final Color c)
   {
     setPaint(c);
   }
@@ -460,7 +460,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see #setClip(int, int, int, int)
    * @see #setClip(Shape)
    */
-  public void clipRect(int x, int y, int width, int height)
+  public void clipRect(final int x, final int y, final int width, final int height)
   {
     clip (new Rectangle2D.Float(x,y,width,height));
   }
@@ -479,7 +479,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see         java.awt.Graphics#setClip(Shape)
    * @since       JDK1.1
    */
-  public void setClip(int x, int y, int width, int height)
+  public void setClip(final int x, final int y, final int width, final int height)
   {
     setClip(new Rectangle2D.Float(x,y,width, height));
   }
@@ -493,7 +493,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @param   x2  the second point's <i>x</i> coordinate.
    * @param   y2  the second point's <i>y</i> coordinate.
    */
-  public void drawLine(int x1, int y1, int x2, int y2)
+  public void drawLine(final int x1, final int y1, final int x2, final int y2)
   {
     draw (new Line2D.Float(x1,y1,x2,y2));
   }
@@ -517,7 +517,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see           java.awt.Graphics#clearRect
    * @see           java.awt.Graphics#drawRect
    */
-  public void fillRect(int x, int y, int width, int height)
+  public void fillRect(final int x, final int y, final int width, final int height)
   {
     fill (new Rectangle2D.Float(x,y,width, height));
   }
@@ -541,9 +541,9 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see         java.awt.Graphics#setPaintMode
    * @see         java.awt.Graphics#setXORMode(Color)
    */
-  public void clearRect(int x, int y, int width, int height)
+  public void clearRect(final int x, final int y, final int width, final int height)
   {
-    Paint oldPaint = getPaint();
+    final Paint oldPaint = getPaint();
     setPaint(getBackground());
     fillRect(x,y,width,height);
     setPaint(oldPaint);
@@ -565,8 +565,8 @@ public abstract class AbstractGraphics2D extends Graphics2D
    *                    at the four corners.
    * @see        java.awt.Graphics#fillRoundRect
    */
-  public void drawRoundRect(int x, int y, int width, int height,
-                            int arcWidth, int arcHeight)
+  public void drawRoundRect(final int x, final int y, final int width, final int height,
+                            final int arcWidth, final int arcHeight)
   {
     draw(new RoundRectangle2D.Float (x,y,width,height,arcWidth, arcHeight));
   }
@@ -587,8 +587,8 @@ public abstract class AbstractGraphics2D extends Graphics2D
    *                     of the arc at the four corners.
    * @see         java.awt.Graphics#drawRoundRect
    */
-  public void fillRoundRect(int x, int y, int width, int height,
-                            int arcWidth, int arcHeight)
+  public void fillRoundRect(final int x, final int y, final int width, final int height,
+                            final int arcWidth, final int arcHeight)
   {
     fill(new RoundRectangle2D.Float (x,y,width,height,arcWidth, arcHeight));
   }
@@ -610,7 +610,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @param       height the height of the oval to be drawn.
    * @see         java.awt.Graphics#fillOval
    */
-  public void drawOval(int x, int y, int width, int height)
+  public void drawOval(final int x, final int y, final int width, final int height)
   {
     draw (new Ellipse2D.Float(x,y,width,height));
   }
@@ -626,7 +626,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @param       height the height of the oval to be filled.
    * @see         java.awt.Graphics#drawOval
    */
-  public void fillOval(int x, int y, int width, int height)
+  public void fillOval(final int x, final int y, final int width, final int height)
   {
     fill(new Ellipse2D.Float(x,y,width,height));
   }
@@ -668,8 +668,8 @@ public abstract class AbstractGraphics2D extends Graphics2D
    *                    relative to the start angle.
    * @see         java.awt.Graphics#fillArc
    */
-  public void drawArc(int x, int y, int width, int height,
-                      int startAngle, int arcAngle)
+  public void drawArc(final int x, final int y, final int width, final int height,
+                      final int startAngle, final int arcAngle)
   {
     draw (new Arc2D.Float (x,y,width,height,startAngle,arcAngle,Arc2D.OPEN));
   }
@@ -710,8 +710,8 @@ public abstract class AbstractGraphics2D extends Graphics2D
    *                    relative to the start angle.
    * @see         java.awt.Graphics#drawArc
    */
-  public void fillArc(int x, int y, int width, int height,
-                      int startAngle, int arcAngle)
+  public void fillArc(final int x, final int y, final int width, final int height,
+                      final int startAngle, final int arcAngle)
   {
     fill(new Arc2D.Float (x,y,width,height,startAngle,arcAngle,Arc2D.OPEN));
   }
@@ -728,10 +728,10 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see         java.awt.Graphics#drawPolygon(int[], int[], int)
    * @since       JDK1.1
    */
-  public void drawPolyline(int xPoints[], int yPoints[],
-                           int nPoints)
+  public void drawPolyline(final int[] xPoints, final int[] yPoints,
+                           final int nPoints)
   {
-    Line2D line = new Line2D.Double(xPoints[0],yPoints[0],xPoints[0],yPoints[0]);
+    final Line2D line = new Line2D.Double(xPoints[0],yPoints[0],xPoints[0],yPoints[0]);
     for (int i = 1; i < nPoints; i++) {
         line.setLine(line.getX2(), line.getY2(), xPoints[i], yPoints[i]);
         draw(line);
@@ -757,10 +757,10 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see          java.awt.Graphics#fillPolygon
    * @see          java.awt.Graphics#drawPolyline
    */
-  public void drawPolygon(int xPoints[], int yPoints[],
-                          int nPoints)
+  public void drawPolygon(final int[] xPoints, final int[] yPoints,
+                          final int nPoints)
   {
-    Polygon poly = new Polygon();
+    final Polygon poly = new Polygon();
     for (int i = 0; i < nPoints; i++) {
         poly.addPoint(xPoints[i], yPoints[i]);
     }
@@ -787,10 +787,10 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @param        nPoints   a the total number of points.
    * @see          java.awt.Graphics#drawPolygon(int[], int[], int)
    */
-  public void fillPolygon(int xPoints[], int yPoints[],
-                          int nPoints)
+  public void fillPolygon(final int[] xPoints, final int[] yPoints,
+                          final int nPoints)
   {
-    Polygon poly = new Polygon();
+    final Polygon poly = new Polygon();
     for (int i = 0; i < nPoints; i++) {
         poly.addPoint(xPoints[i], yPoints[i]);
     }
@@ -821,8 +821,8 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see      java.awt.image.ImageObserver
    * @see      java.awt.image.ImageObserver#imageUpdate(java.awt.Image, int, int, int, int, int)
    */
-  public boolean drawImage(Image img, int x, int y,
-                           ImageObserver observer)
+  public boolean drawImage(final Image img, final int x, final int y,
+                           final ImageObserver observer)
   {
     return drawImage(img, x, y, null, observer);
   }
@@ -860,9 +860,9 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see      java.awt.image.ImageObserver
    * @see      java.awt.image.ImageObserver#imageUpdate(java.awt.Image, int, int, int, int, int)
    */
-  public boolean drawImage(Image img, int x, int y,
-                           int width, int height,
-                           ImageObserver observer)
+  public boolean drawImage(final Image img, final int x, final int y,
+                           final int width, final int height,
+                           final ImageObserver observer)
   {
     return drawImage(img, x, y, width, height, null, observer);
   }
@@ -897,9 +897,9 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see      java.awt.image.ImageObserver
    * @see      java.awt.image.ImageObserver#imageUpdate(java.awt.Image, int, int, int, int, int)
    */
-  public boolean drawImage(Image img, int x, int y,
-                           Color bgcolor,
-                           ImageObserver observer)
+  public boolean drawImage(final Image img, final int x, final int y,
+                           final Color bgcolor,
+                           final ImageObserver observer)
   {
     return drawImage(img, x, y, img.getWidth(observer), img.getHeight(observer), bgcolor, observer);
   }
@@ -942,20 +942,20 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see      java.awt.image.ImageObserver
    * @see      java.awt.image.ImageObserver#imageUpdate(java.awt.Image, int, int, int, int, int)
    */
-  public boolean drawImage(Image img, int x, int y,
-                           int width, int height,
-                           Color bgcolor,
-                           ImageObserver observer)
+  public boolean drawImage(final Image img, final int x, final int y,
+                           final int width, final int height,
+                           final Color bgcolor,
+                           final ImageObserver observer)
   {
-    double scalex = width/(double)img.getWidth(observer);
-    double scaley = height/(double)img.getHeight(observer);
-    AffineTransform tx = AffineTransform.getTranslateInstance(x,y);
+    final double scalex = width/(double)img.getWidth(observer);
+    final double scaley = height/(double)img.getHeight(observer);
+    final AffineTransform tx = AffineTransform.getTranslateInstance(x,y);
     tx.scale(scalex,scaley);
 
     // draw the background ...
-    Paint bgPaint = getPaint();
+    final Paint bgPaint = getPaint();
     setPaint(bgcolor);
-    Rectangle2D bg = new Rectangle2D.Float(x, y, width, height);
+    final Rectangle2D bg = new Rectangle2D.Float(x, y, width, height);
     fill(bg);
     // restore the orinal paint ...
     setPaint(bgPaint);
@@ -1010,10 +1010,10 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see         java.awt.image.ImageObserver#imageUpdate(java.awt.Image, int, int, int, int, int)
    * @since       JDK1.1
    */
-  public boolean drawImage(Image img,
-                           int dx1, int dy1, int dx2, int dy2,
-                           int sx1, int sy1, int sx2, int sy2,
-                           ImageObserver observer)
+  public boolean drawImage(final Image img,
+                           final int dx1, final int dy1, final int dx2, final int dy2,
+                           final int sx1, final int sy1, final int sx2, final int sy2,
+                           final ImageObserver observer)
   {
     return drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null, observer);
   }
@@ -1071,32 +1071,32 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see         java.awt.image.ImageObserver#imageUpdate(java.awt.Image, int, int, int, int, int)
    * @since       JDK1.1
    */
-  public boolean drawImage(Image img,
-                           int dx1, int dy1, int dx2, int dy2,
-                           int sx1, int sy1, int sx2, int sy2,
-                           Color bgcolor,
-                           ImageObserver observer)
+  public boolean drawImage(final Image img,
+                           final int dx1, final int dy1, final int dx2, final int dy2,
+                           final int sx1, final int sy1, final int sx2, final int sy2,
+                           final Color bgcolor,
+                           final ImageObserver observer)
   {
-    double dwidth = (double)dx2-dx1;
-    double dheight = (double)dy2-dy1;
-    double swidth = (double)sx2-sx1;
-    double sheight = (double)sy2-sy1;
+    final double dwidth = (double)dx2-dx1;
+    final double dheight = (double)dy2-dy1;
+    final double swidth = (double)sx2-sx1;
+    final double sheight = (double)sy2-sy1;
 
     //if either width or height is 0, then there is nothing to draw
     if (dwidth == 0 || dheight == 0 || swidth == 0 || sheight == 0) return true;
 
-    double scalex = dwidth/swidth;
-    double scaley = dheight/sheight;
+    final double scalex = dwidth/swidth;
+    final double scaley = dheight/sheight;
 
-    double transx = sx1*scalex;
-    double transy = sy1*scaley;
-    AffineTransform tx = AffineTransform.getTranslateInstance(dx1-transx,dy1-transy);
+    final double transx = sx1*scalex;
+    final double transy = sy1*scaley;
+    final AffineTransform tx = AffineTransform.getTranslateInstance(dx1-transx,dy1-transy);
     tx.scale(scalex,scaley);
 
     // draw the background ...
-    Paint bgPaint = getPaint();
+    final Paint bgPaint = getPaint();
     setPaint(bgcolor);
-    Rectangle2D bg = new Rectangle2D.Double(dx1, dy1, dwidth, dheight);
+    final Rectangle2D bg = new Rectangle2D.Double(dx1, dy1, dwidth, dheight);
     fill(bg);
     // restore the orinal paint ...
     setPaint(bgPaint);
@@ -1136,8 +1136,8 @@ public abstract class AbstractGraphics2D extends Graphics2D
    * @see #setClip
    * @see #drawRenderedImage
    */
-  public void drawRenderableImage(RenderableImage img,
-                                  AffineTransform xform)
+  public void drawRenderableImage(final RenderableImage img,
+                                  final AffineTransform xform)
   {
     drawRenderedImage(img.createDefaultRendering(), xform);
   }

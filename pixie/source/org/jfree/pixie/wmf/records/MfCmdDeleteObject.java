@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmd.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
+ * $Id: MfCmdDeleteObject.java,v 1.2 2003/03/14 20:06:06 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ public class MfCmdDeleteObject extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
     file.deleteObject (objectId);
   }
@@ -74,7 +74,7 @@ public class MfCmdDeleteObject extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[DELETE_OBJECT] object=");
     b.append (getObjectId ());
     return b.toString ();
@@ -89,9 +89,9 @@ public class MfCmdDeleteObject extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int id = record.getParam (0);
+    final int id = record.getParam (0);
     setObjectId (id);
   }
 
@@ -102,7 +102,7 @@ public class MfCmdDeleteObject extends MfCmd
    */
   public MfRecord getRecord ()
   {
-    MfRecord record = new MfRecord(1);
+    final MfRecord record = new MfRecord(1);
     record.setParam(0, getObjectId());
     return record;
   }
@@ -123,7 +123,7 @@ public class MfCmdDeleteObject extends MfCmd
     return objectId;
   }
 
-  public void setObjectId (int id)
+  public void setObjectId (final int id)
   {
     this.objectId = id;
   }

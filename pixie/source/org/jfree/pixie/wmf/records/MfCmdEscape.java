@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdEllipse.java,v 1.2 2003/03/14 20:06:06 taqua Exp $
+ * $Id: MfCmdEscape.java,v 1.3 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -61,13 +61,13 @@ public class MfCmdEscape extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[ESCAPE] is not used and will not be implemented");
     return b.toString ();
   }
@@ -91,7 +91,7 @@ public class MfCmdEscape extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
     System.out.println ("Escape is not implemented.");
   }

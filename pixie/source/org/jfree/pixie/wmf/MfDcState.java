@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfDcState.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: MfDcState.java,v 1.1 2003/03/09 20:38:17 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ public class MfDcState implements Cloneable
     private int yDenom;
     private int xDenom;
 
-    public MfScale (int xNum, int xDenom, int yNum, int yDenom)
+    public MfScale (final int xNum, final int xDenom, final int yNum, final int yDenom)
     {
       if (xNum == 0 || yNum == 0 || xDenom == 0 || yDenom == 0)
         throw new IllegalArgumentException ("Illegal Scaling");
@@ -62,12 +62,12 @@ public class MfDcState implements Cloneable
       this.yDenom = yDenom;
     }
 
-    public int scaleX (int coord)
+    public int scaleX (final int coord)
     {
       return ((coord * xNum) / xDenom);
     }
 
-    public int scaleY (int coord)
+    public int scaleY (final int coord)
     {
       return ((coord * yNum) / yDenom);
     }
@@ -114,7 +114,7 @@ public class MfDcState implements Cloneable
   private Rectangle clipRegion;
   private WmfFile parent;
 
-  public MfDcState (WmfFile parent)
+  public MfDcState (final WmfFile parent)
   {
     fgColor = Color.black;
     bkColor = Color.white;
@@ -125,7 +125,7 @@ public class MfDcState implements Cloneable
     this.parent = parent;
   }
 
-  public MfDcState (MfDcState copy)
+  public MfDcState (final MfDcState copy)
   {
     this.parent = copy.parent;
     this.windowExtX = copy.windowExtX;
@@ -170,7 +170,7 @@ public class MfDcState implements Cloneable
 
   public void restoredState ()
   {
-    Graphics2D graphic = parent.getGraphics2D ();
+    final Graphics2D graphic = parent.getGraphics2D ();
     if (logBrush != null)
     {
       updateBrushBackground ();
@@ -197,7 +197,7 @@ public class MfDcState implements Cloneable
     return clipRegion;
   }
 
-  public void setClipRegion (Rectangle clipRegion)
+  public void setClipRegion (final Rectangle clipRegion)
   {
     this.clipRegion = clipRegion;
   }
@@ -207,7 +207,7 @@ public class MfDcState implements Cloneable
     return bkmode;
   }
 
-  public void setBkMode (int bkmode)
+  public void setBkMode (final int bkmode)
   {
     if (this.bkmode != bkmode)
     {
@@ -238,7 +238,7 @@ public class MfDcState implements Cloneable
     return extraSpaceLength;
   }
 
-  public void setTextJustification (int breakCount, int extraSpaceLength)
+  public void setTextJustification (final int breakCount, final int extraSpaceLength)
   {
     this.breakCount = breakCount;
     this.extraSpaceLength = extraSpaceLength;
@@ -249,7 +249,7 @@ public class MfDcState implements Cloneable
     return stretchBltMode;
   }
 
-  public void setStretchBltMode (int stretchBltMode)
+  public void setStretchBltMode (final int stretchBltMode)
   {
     this.stretchBltMode = stretchBltMode;
   }
@@ -259,7 +259,7 @@ public class MfDcState implements Cloneable
     return textColor;
   }
 
-  public void setTextColor (Color textColor)
+  public void setTextColor (final Color textColor)
   {
     this.textColor = textColor;
   }
@@ -269,7 +269,7 @@ public class MfDcState implements Cloneable
     return textCharExtra;
   }
 
-  public void setTextCharExtra (int textCharExtra)
+  public void setTextCharExtra (final int textCharExtra)
   {
     this.textCharExtra = textCharExtra;
   }
@@ -280,7 +280,7 @@ public class MfDcState implements Cloneable
     return mapMode;
   }
 
-  public void setMapMode (int mapMode)
+  public void setMapMode (final int mapMode)
   {
     this.mapMode = mapMode;
   }
@@ -290,7 +290,7 @@ public class MfDcState implements Cloneable
     return mapperFlag;
   }
 
-  public void setMapperFlag (int mapperFlag)
+  public void setMapperFlag (final int mapperFlag)
   {
     this.mapperFlag = mapperFlag;
   }
@@ -301,7 +301,7 @@ public class MfDcState implements Cloneable
     return rop;
   }
 
-  public void setROP (int rop)
+  public void setROP (final int rop)
   {
     this.rop = rop;
   }
@@ -311,12 +311,12 @@ public class MfDcState implements Cloneable
     return polyFillMode;
   }
 
-  public void setPolyFillMode (int mode)
+  public void setPolyFillMode (final int mode)
   {
     this.polyFillMode = mode;
   }
 
-  public void setWindowOrg (int windowOrgX, int windowOrgY)
+  public void setWindowOrg (final int windowOrgX, final int windowOrgY)
   {
     this.viewportOrgY = -windowOrgY;
     this.viewportOrgX = -windowOrgX;
@@ -332,7 +332,7 @@ public class MfDcState implements Cloneable
     return viewportOrgY;
   }
 
-  public void setWindowExt (int windowExtX, int windowExtY)
+  public void setWindowExt (final int windowExtX, final int windowExtY)
   {
     this.windowExtY = windowExtY;
     this.windowExtX = windowExtX;
@@ -348,7 +348,7 @@ public class MfDcState implements Cloneable
     return windowExtY;
   }
 
-  public void setViewportOrg (int viewportOrgX, int viewportOrgY)
+  public void setViewportOrg (final int viewportOrgX, final int viewportOrgY)
   {
     this.viewportOrgX = viewportOrgX;
     this.viewportOrgY = viewportOrgY;
@@ -364,7 +364,7 @@ public class MfDcState implements Cloneable
     return viewportOrgY;
   }
 
-  public void setViewportExt (int viewportExtX, int viewportExtY)
+  public void setViewportExt (final int viewportExtX, final int viewportExtY)
   {
     this.viewportExtY = viewportExtY;
     this.viewportExtX = viewportExtX;
@@ -380,7 +380,7 @@ public class MfDcState implements Cloneable
     return viewportExtY;
   }
 
-  public void setCurPos (int _curPosX, int _curPosY)
+  public void setCurPos (final int _curPosX, final int _curPosY)
   {
     this.curPosY = _curPosY;
     this.curPosX = _curPosX;
@@ -401,12 +401,12 @@ public class MfDcState implements Cloneable
     return textAlign;
   }
 
-  public void setTextAlign (int textAlign)
+  public void setTextAlign (final int textAlign)
   {
     this.textAlign = textAlign;
   }
 
-  public void setFgColor (Color fgColor)
+  public void setFgColor (final Color fgColor)
   {
     if (fgColor == null)
       throw new NullPointerException ();
@@ -416,7 +416,7 @@ public class MfDcState implements Cloneable
     logPen.setColor (fgColor);
   }
 
-  public void setBkColor (Color bkColor)
+  public void setBkColor (final Color bkColor)
   {
     if (bkColor == null)
       throw new NullPointerException ();
@@ -450,7 +450,7 @@ public class MfDcState implements Cloneable
     return logPen;
   }
 
-  public void setLogFont (MfLogFont logFont)
+  public void setLogFont (final MfLogFont logFont)
   {
     if (logFont == null)
       throw new NullPointerException ();
@@ -458,7 +458,7 @@ public class MfDcState implements Cloneable
     this.logFont = logFont;
   }
 
-  public void setLogBrush (MfLogBrush logBrush)
+  public void setLogBrush (final MfLogBrush logBrush)
   {
     if (logBrush == null)
       throw new NullPointerException ();
@@ -468,7 +468,7 @@ public class MfDcState implements Cloneable
     parent.getGraphics2D ().setPaint (logBrush.getPaint ());
   }
 
-  public void setLogPen (MfLogPen logPen)
+  public void setLogPen (final MfLogPen logPen)
   {
     if (logPen == null)
       throw new NullPointerException ();
@@ -477,7 +477,7 @@ public class MfDcState implements Cloneable
     parent.getGraphics2D ().setStroke (logPen.getStroke ());
   }
 
-  public void setLogPalette (MfLogPalette logPalette)
+  public void setLogPalette (final MfLogPalette logPalette)
   {
     if (logPalette == null)
       throw new NullPointerException ();
@@ -485,7 +485,7 @@ public class MfDcState implements Cloneable
     this.logPalette = logPalette;
   }
 
-  public void setLogRegion (MfLogRegion logRegion)
+  public void setLogRegion (final MfLogRegion logRegion)
   {
     if (logRegion == null)
       throw new NullPointerException ();
@@ -494,13 +494,13 @@ public class MfDcState implements Cloneable
   }
 
   // No scaling yet?
-  public int getPhysicalX (int logPointX)
+  public int getPhysicalX (final int logPointX)
   {
     return logPointX + viewportOrgX;
   }
 
   // No scaling yet?
-  public int getPhysicalY (int logPointY)
+  public int getPhysicalY (final int logPointY)
   {
     return logPointY + viewportOrgY;
   }

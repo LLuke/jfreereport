@@ -36,7 +36,7 @@ public class BitmapHeader
   private int noImportantColors; // is <= noColors
   private boolean isTopDown;
 
-  public void setRecord (MfRecord record, int offset)
+  public void setRecord (final MfRecord record, final int offset)
   {
     dataOffset = record.getInt (offset + BMPH_DATA_OFFSET);
     headerSize = record.getInt (offset + BMPH_HEADERSIZE);

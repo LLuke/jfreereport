@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdArc.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
+ * $Id: MfCmdCreateBrush.java,v 1.2 2003/03/14 20:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,7 @@ public class MfCmdCreateBrush extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[CREATE_BRUSH] style=");
     b.append (getStyle ());
     b.append (" color=");
@@ -86,9 +86,9 @@ public class MfCmdCreateBrush extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfLogBrush lbrush = new MfLogBrush ();
+    final MfLogBrush lbrush = new MfLogBrush ();
     lbrush.setStyle (getStyle ());
     lbrush.setColor (getColor ());
     lbrush.setHatchedStyle (getHatch ());
@@ -107,7 +107,7 @@ public class MfCmdCreateBrush extends MfCmd
     return new MfCmdCreateBrush ();
   }
 
-  public void setStyle (int style)
+  public void setStyle (final int style)
   {
     this.style = style;
   }
@@ -117,7 +117,7 @@ public class MfCmdCreateBrush extends MfCmd
     return style;
   }
 
-  public void setHatch (int hatch)
+  public void setHatch (final int hatch)
   {
     if (hatch != BrushConstants.BS_DIBPATTERN &&
         hatch != BrushConstants.BS_DIBPATTERN8X8 &&
@@ -142,7 +142,7 @@ public class MfCmdCreateBrush extends MfCmd
     return hatch;
   }
 
-  public void setColor (Color c)
+  public void setColor (final Color c)
   {
     this.color = c;
   }
@@ -172,11 +172,11 @@ public class MfCmdCreateBrush extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int style = record.getParam (PARAM_STYLE);
-    int color = record.getLongParam (PARAM_COLOR);
-    int hatch = record.getParam (PARAM_HATCH);
+    final int style = record.getParam (PARAM_STYLE);
+    final int color = record.getLongParam (PARAM_COLOR);
+    final int hatch = record.getParam (PARAM_HATCH);
     setStyle (style);
     setColor (new GDIColor (color));
     setHatch (hatch);
@@ -189,7 +189,7 @@ public class MfCmdCreateBrush extends MfCmd
    */
   public MfRecord getRecord ()
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(PARAM_STYLE, getStyle());
     record.setLongParam(PARAM_COLOR, GDIColor.translateColor(getColor()));
     record.setParam(PARAM_HATCH, getHatch());

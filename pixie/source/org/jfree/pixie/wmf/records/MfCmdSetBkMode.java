@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdEscape.java,v 1.3 2003/03/15 17:16:57 taqua Exp $
+ * $Id: MfCmdSetBkMode.java,v 1.2 2003/03/21 21:31:55 taqua Exp $
  *
  * Changes
  * -------
@@ -57,9 +57,9 @@ public class MfCmdSetBkMode extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
     state.setBkMode (bkmode);
   }
 
@@ -82,9 +82,9 @@ public class MfCmdSetBkMode extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int id = record.getParam (POS_BKMODE);
+    final int id = record.getParam (POS_BKMODE);
     setBkMode (id);
   }
 
@@ -95,7 +95,7 @@ public class MfCmdSetBkMode extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setLongParam(POS_BKMODE, getBkMode());
     return record;
   }
@@ -116,14 +116,14 @@ public class MfCmdSetBkMode extends MfCmd
     return bkmode;
   }
 
-  public void setBkMode (int id)
+  public void setBkMode (final int id)
   {
     this.bkmode = id;
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[SET_BK_MODE] bkmode=");
     b.append (getBkMode ());
     return b.toString ();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdCreatePalette.java,v 1.2 2003/03/14 20:06:05 taqua Exp $
+ * $Id: MfCmdResizePalette.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ public class MfCmdResizePalette extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
     // Not implemented!
   }
@@ -79,7 +79,7 @@ public class MfCmdResizePalette extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
     System.out.println ("ResizePalette is not yet implemented.");
   }
@@ -107,7 +107,7 @@ public class MfCmdResizePalette extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[RESIZE_PALETTE] is not implemented");
     return b.toString ();
   }

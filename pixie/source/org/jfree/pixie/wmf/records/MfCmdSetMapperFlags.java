@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdSetDibitsToDevice.java,v 1.2 2003/03/21 21:31:56 taqua Exp $
+ * $Id: MfCmdSetMapperFlags.java,v 1.2 2003/03/22 16:02:57 taqua Exp $
  *
  * Changes
  * -------
@@ -64,9 +64,9 @@ public class MfCmdSetMapperFlags extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
     state.setMapperFlag (mapperflags);
   }
 
@@ -89,9 +89,9 @@ public class MfCmdSetMapperFlags extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int id = record.getLongParam (POS_MAPFLAGS);
+    final int id = record.getLongParam (POS_MAPFLAGS);
     setMapperFlags (id);
   }
 
@@ -102,7 +102,7 @@ public class MfCmdSetMapperFlags extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setLongParam(POS_MAPFLAGS, getMapperFlags());
     return record;
   }
@@ -123,14 +123,14 @@ public class MfCmdSetMapperFlags extends MfCmd
     return mapperflags;
   }
 
-  public void setMapperFlags (int id)
+  public void setMapperFlags (final int id)
   {
     this.mapperflags = id;
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[MAPPERFLAGS] mapperflags=");
     b.append (getMapperFlags ());
     return b.toString ();

@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfLogBrush.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: WmfImageProducer.java,v 1.1 2003/03/09 20:38:20 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ public class WmfImageProducer implements ImageProducer
   private WmfFile metafile;
   private ArrayList consumers;
 
-  public WmfImageProducer(String inName, int width, int height)
+  public WmfImageProducer(final String inName, final int width, final int height)
       throws IOException
   {
     consumers = new ArrayList();
@@ -59,7 +59,7 @@ public class WmfImageProducer implements ImageProducer
 //    metafile.replay ();
   }
 
-  public WmfImageProducer(URL inName, int width, int height)
+  public WmfImageProducer(final URL inName, final int width, final int height)
       throws IOException
   {
     consumers = new ArrayList();
@@ -67,7 +67,7 @@ public class WmfImageProducer implements ImageProducer
 //    metafile.replay ();
   }
 
-  public WmfImageProducer(URL inName)
+  public WmfImageProducer(final URL inName)
       throws IOException
   {
     consumers = new ArrayList();
@@ -75,7 +75,7 @@ public class WmfImageProducer implements ImageProducer
 //    metafile.replay ();
   }
 
-  public synchronized void addConsumer(ImageConsumer ic)
+  public synchronized void addConsumer(final ImageConsumer ic)
   {
     if (isConsumer(ic)) return;
 
@@ -83,41 +83,41 @@ public class WmfImageProducer implements ImageProducer
   }
 
 
-  public synchronized boolean isConsumer(ImageConsumer ic)
+  public synchronized boolean isConsumer(final ImageConsumer ic)
   {
     return consumers.contains(ic);
   }
 
 
-  public synchronized void removeConsumer(ImageConsumer ic)
+  public synchronized void removeConsumer(final ImageConsumer ic)
   {
     consumers.remove(ic);
   }
 
 
-  public synchronized void requestTopDownLeftRightResend(ImageConsumer ic)
+  public synchronized void requestTopDownLeftRightResend(final ImageConsumer ic)
   {
     startProduction(ic);
   }
 
 
-  public synchronized void startProduction(ImageConsumer pic)
+  public synchronized void startProduction(final ImageConsumer pic)
   {
     if (pic != null)
     {
       addConsumer(pic);
     }
 
-    ImageConsumer[] cons = (ImageConsumer[]) consumers.toArray(new ImageConsumer[consumers.size()]);
-    BufferedImage image = metafile.replay();
+    final ImageConsumer[] cons = (ImageConsumer[]) consumers.toArray(new ImageConsumer[consumers.size()]);
+    final BufferedImage image = metafile.replay();
 
-    int w = image.getWidth();
-    int h = image.getHeight();
-    ColorModel model = image.getColorModel();
+    final int w = image.getWidth();
+    final int h = image.getHeight();
+    final ColorModel model = image.getColorModel();
 
     for (int i = 0; i < cons.length; i++)
     {
-      ImageConsumer ic = cons[i];
+      final ImageConsumer ic = cons[i];
       ic.setHints(ImageConsumer.TOPDOWNLEFTRIGHT);
       ic.setHints(ImageConsumer.SINGLEFRAME);
       ic.setHints(ImageConsumer.SINGLEPASS);
@@ -140,15 +140,15 @@ public class WmfImageProducer implements ImageProducer
       pixels = image.getRGB(0, i, w, rows, pixels, 0, w);
       for (int j = 0; j < cons.length; j++)
       {
-        ImageConsumer ic = cons[j];
+        final ImageConsumer ic = cons[j];
         ic.setPixels(0, i, w, rows, model, pixels, 0, w);
       }
     }
 
     for (int i = 0; i < cons.length; i++)
     {
-      ImageConsumer ic = cons[i];
-      ic.imageComplete(ic.STATICIMAGEDONE);
+      final ImageConsumer ic = cons[i];
+      ic.imageComplete(ImageConsumer.STATICIMAGEDONE);
     }
 
     if (pic != null)

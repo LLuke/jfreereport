@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: GDIColor.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: GDIColor.java,v 1.1 2003/03/09 20:38:16 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ public class GDIColor extends Color
    *
    * @param colorref the integer color reference.
    */
-  public GDIColor (int colorref)
+  public GDIColor (final int colorref)
   {
     this (getR (colorref), getG (colorref), getB (colorref), getFlags (colorref));
   }
@@ -69,7 +69,7 @@ public class GDIColor extends Color
    * @param b the blue channel.
    * @param flags the Windows Color flags.
    */
-  public GDIColor (int r, int g, int b, int flags)
+  public GDIColor (final int r, final int g, final int b, final int flags)
   {
     super (r, g, b);
     this.flags = flags;
@@ -81,7 +81,7 @@ public class GDIColor extends Color
    * @param ref the color reference.
    * @return the red channel.
    */
-  private static final int getR (int ref)
+  private static final int getR (final int ref)
   {
     int retval = (ref & 0x000000ff);
     if (retval < 0)
@@ -97,9 +97,9 @@ public class GDIColor extends Color
    * @param ref the color reference.
    * @return the green channel.
    */
-  private static final int getG (int ref)
+  private static final int getG (final int ref)
   {
-    int retval = (ref & 0x0000ff00) >> 8;
+    final int retval = (ref & 0x0000ff00) >> 8;
     return retval;
   }
 
@@ -109,9 +109,9 @@ public class GDIColor extends Color
    * @param ref the color reference.
    * @return the blue channel.
    */
-  private static final int getB (int ref)
+  private static final int getB (final int ref)
   {
-    int retval = (ref & 0x00ff0000) >> 16;
+    final int retval = (ref & 0x00ff0000) >> 16;
     return retval;
   }
 
@@ -121,7 +121,7 @@ public class GDIColor extends Color
    * @param ref the color reference.
    * @return the color flags.
    */
-  private static final int getFlags (int ref)
+  private static final int getFlags (final int ref)
   {
     return (ref & 0xff000000) >> 24;
   }
@@ -172,16 +172,16 @@ public class GDIColor extends Color
    * @param c the color that should be translated.
    * @return the created color reference.
    */
-  public static int translateColor (Color c)
+  public static int translateColor (final Color c)
   {
-    int red = c.getRed();
-    int green = c.getGreen();
-    int blue = c.getBlue();
+    final int red = c.getRed();
+    final int green = c.getGreen();
+    final int blue = c.getBlue();
     int flags = 0;
 
     if (c instanceof GDIColor)
     {
-      GDIColor gc = (GDIColor) c;
+      final GDIColor gc = (GDIColor) c;
       flags = gc.getFlags();
     }
 

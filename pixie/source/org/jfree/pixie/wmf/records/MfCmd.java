@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmd.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
+ * $Id: MfCmd.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
  *
  * Changes
  * -------
@@ -106,10 +106,10 @@ public abstract class MfCmd
    * @param scaleX the horizontal scale
    * @param scaleY the vertical scale
    */
-  public void setScale (float scaleX, float scaleY)
+  public void setScale (final float scaleX, final float scaleY)
   {
-    float oldScaleX = this.scaleX;
-    float oldScaleY = this.scaleY;
+    final float oldScaleX = this.scaleX;
+    final float oldScaleY = this.scaleY;
     this.scaleX = scaleX;
     this.scaleY = scaleY;
     if (oldScaleX != scaleX)
@@ -140,9 +140,9 @@ public abstract class MfCmd
    * @param r the source rectangle.
    * @return a new rectangle containing the scaled values.
    */
-  protected Rectangle scaleRect (Rectangle r)
+  protected Rectangle scaleRect (final Rectangle r)
   {
-    Rectangle retval = new Rectangle ();
+    final Rectangle retval = new Rectangle ();
     retval.x = getScaledX (r.x);
     retval.y = getScaledY (r.y);
 
@@ -192,7 +192,7 @@ public abstract class MfCmd
    * @param dest the array to store the scaled values
    * @return dest.
    */
-  protected int[] applyScaleX (int[] n, int[] dest)
+  protected int[] applyScaleX (final int[] n, int[] dest)
   {
     if (dest == null)
       dest = new int[n.length];
@@ -215,7 +215,7 @@ public abstract class MfCmd
    * @param dest the array to store the scaled values
    * @return dest.
    */
-  protected int[] applyScaleY (int[] n, int[] dest)
+  protected int[] applyScaleY (final int[] n, int[] dest)
   {
     if (dest == null)
       dest = new int[n.length];
@@ -235,7 +235,7 @@ public abstract class MfCmd
    * @param y the unscaled y
    * @return the scaled y value
    */
-  public int getScaledY (int y)
+  public int getScaledY (final int y)
   {
     return (int) (y * scaleY + 0.5f);
   }
@@ -246,7 +246,7 @@ public abstract class MfCmd
    * @param x the unscaled x
    * @return the scaled x value
    */
-  public int getScaledX (int x)
+  public int getScaledX (final int x)
   {
     return (int) (x * scaleX + 0.5f);
   }

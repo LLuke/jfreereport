@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmd.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
+ * $Id: MfCmdIntersectClipRect.java,v 1.3 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -76,11 +76,11 @@ public class MfCmdIntersectClipRect extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfDcState state = file.getCurrentState ();
-    Rectangle rect = state.getClipRegion ();
-    Rectangle2D rec2 = rect.createIntersection (getScaledIntersectClipRect ());
+    final MfDcState state = file.getCurrentState ();
+    final Rectangle rect = state.getClipRegion ();
+    final Rectangle2D rec2 = rect.createIntersection (getScaledIntersectClipRect ());
     state.setClipRegion (
             new Rectangle (
                     (int) rec2.getX (),
@@ -122,13 +122,13 @@ public class MfCmdIntersectClipRect extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[INTERSECT_CLIP_RECT] bounds=");
     b.append (getIntersectClipRect ());
     return b.toString ();
   }
 
-  public void setIntersectClipRect (int x, int y, int width, int height)
+  public void setIntersectClipRect (final int x, final int y, final int width, final int height)
   {
     this.x = x;
     this.y = y;
@@ -147,12 +147,12 @@ public class MfCmdIntersectClipRect extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int bottom = record.getParam (POS_BOTTOM);
-    int right = record.getParam (POS_RIGHT);
-    int top = record.getParam (POS_TOP);
-    int left = record.getParam (POS_LEFT);
+    final int bottom = record.getParam (POS_BOTTOM);
+    final int right = record.getParam (POS_RIGHT);
+    final int top = record.getParam (POS_TOP);
+    final int left = record.getParam (POS_LEFT);
     setIntersectClipRect (left, top, right - left, bottom - top);
   }
 
@@ -163,8 +163,8 @@ public class MfCmdIntersectClipRect extends MfCmd
    */
   public MfRecord getRecord ()
   {
-    Rectangle rc = getIntersectClipRect();
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final Rectangle rc = getIntersectClipRect();
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_BOTTOM, (int)(rc.getY() + rc.getHeight()));
     record.setParam(POS_RIGHT, (int)(rc.getX() + rc.getWidth()));
     record.setParam(POS_TOP, (int)(rc.getY()));

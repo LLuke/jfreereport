@@ -22,9 +22,9 @@ public class MfCmdSetStretchBltMode extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
     state.setStretchBltMode (stretchmode);
   }
 
@@ -47,9 +47,9 @@ public class MfCmdSetStretchBltMode extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int id = record.getParam (POS_STRETCHMODE);
+    final int id = record.getParam (POS_STRETCHMODE);
     setStretchMode (id);
   }
 
@@ -60,7 +60,7 @@ public class MfCmdSetStretchBltMode extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_STRETCHMODE, getStretchMode());
     return record;
   }
@@ -81,14 +81,14 @@ public class MfCmdSetStretchBltMode extends MfCmd
     return stretchmode;
   }
 
-  public void setStretchMode (int id)
+  public void setStretchMode (final int id)
   {
     this.stretchmode = id;
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[SET_STRECH_BLT_MODE] stretchmode=");
     b.append (getStretchMode ());
     return b.toString ();

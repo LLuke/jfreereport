@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdEscape.java,v 1.3 2003/03/15 17:16:57 taqua Exp $
+ * $Id: MfCmdSelectObject.java,v 1.2 2003/03/21 21:31:55 taqua Exp $
  *
  * Changes
  * -------
@@ -66,9 +66,9 @@ public class MfCmdSelectObject extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    WmfObject object = file.getObject (objectId);
+    final WmfObject object = file.getObject (objectId);
     if (object == null)
     {
       throw new NullPointerException ("Object " + objectId + " is not defined");
@@ -112,9 +112,9 @@ public class MfCmdSelectObject extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int id = record.getParam (POS_OBJECT_ID);
+    final int id = record.getParam (POS_OBJECT_ID);
     setObjectId (id);
   }
 
@@ -125,7 +125,7 @@ public class MfCmdSelectObject extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_OBJECT_ID, getObjectId());
     return record;
   }
@@ -146,14 +146,14 @@ public class MfCmdSelectObject extends MfCmd
     return objectId;
   }
 
-  public void setObjectId (int id)
+  public void setObjectId (final int id)
   {
     this.objectId = id;
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[SELECT_OBJECT] object=");
     b.append (getObjectId ());
     return b.toString ();

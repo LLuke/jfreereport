@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdEllipse.java,v 1.2 2003/03/14 20:06:06 taqua Exp $
+ * $Id: MfCmdRectangle.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -74,12 +74,12 @@ public class MfCmdRectangle extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    Graphics2D graph = file.getGraphics2D ();
-    Rectangle rec = getScaledBounds ();
+    final Graphics2D graph = file.getGraphics2D ();
+    final Rectangle rec = getScaledBounds ();
 
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
 
     if (state.getLogBrush ().isVisible ())
     {
@@ -108,7 +108,7 @@ public class MfCmdRectangle extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[RECTANGLE] bounds=");
     b.append (getBounds ());
     return b.toString ();
@@ -124,12 +124,12 @@ public class MfCmdRectangle extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int bottom = record.getParam (POS_BOTTOM);
-    int right = record.getParam (POS_RIGHT);
-    int top = record.getParam (POS_TOP);
-    int left = record.getParam (POS_LEFT);
+    final int bottom = record.getParam (POS_BOTTOM);
+    final int right = record.getParam (POS_RIGHT);
+    final int top = record.getParam (POS_TOP);
+    final int left = record.getParam (POS_LEFT);
     setBounds (left, top, right - left, bottom - top);
   }
 
@@ -140,8 +140,8 @@ public class MfCmdRectangle extends MfCmd
    */
   public MfRecord getRecord ()
   {
-    Rectangle rc = getBounds();
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final Rectangle rc = getBounds();
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_BOTTOM, (int)(rc.getY() + rc.getHeight()));
     record.setParam(POS_RIGHT, (int)(rc.getX() + rc.getWidth()));
     record.setParam(POS_TOP, (int)(rc.getY()));
@@ -159,7 +159,7 @@ public class MfCmdRectangle extends MfCmd
     return new Rectangle (scaled_x, scaled_y, scaled_width, scaled_height);
   }
 
-  public void setBounds (int x, int y, int width, int height)
+  public void setBounds (final int x, final int y, final int width, final int height)
   {
     this.x = x;
     this.y = y;

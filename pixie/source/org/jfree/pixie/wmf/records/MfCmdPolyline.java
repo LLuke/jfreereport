@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdArc.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
+ * $Id: MfCmdPolyline.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -69,14 +69,14 @@ public class MfCmdPolyline extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    Graphics2D graph = file.getGraphics2D ();
-    MfDcState state = file.getCurrentState ();
+    final Graphics2D graph = file.getGraphics2D ();
+    final MfDcState state = file.getCurrentState ();
     int cx = state.getCurPosX ();
     int cy = state.getCurPosY ();
-    int[] points_x = getScaledPointsX ();
-    int[] points_y = getScaledPointsY ();
+    final int[] points_x = getScaledPointsX ();
+    final int[] points_y = getScaledPointsY ();
 
     if (state.getLogPen ().isVisible ())
     {
@@ -85,8 +85,8 @@ public class MfCmdPolyline extends MfCmd
       cy = points_y[0];
       for (int i = 1; i < count; i++)
       {
-        int destX = points_x[i];
-        int destY = points_y[i];
+        final int destX = points_x[i];
+        final int destY = points_y[i];
         graph.draw (new Line2D.Double (cx, cy, destX, destY));
         cx = destX;
         cy = destY;
@@ -119,12 +119,12 @@ public class MfCmdPolyline extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[POLYLINE] count=");
     b.append (getPointCount ());
-    int l = getPointCount ();
-    int[] points_x = getPointsX ();
-    int[] points_y = getPointsY ();
+    final int l = getPointCount ();
+    final int[] points_x = getPointsX ();
+    final int[] points_y = getPointsY ();
 
     for (int i = 0; i < l; i++)
     {
@@ -148,11 +148,11 @@ public class MfCmdPolyline extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int count = record.getParam (0);
-    int[] points_x = new int[count];
-    int[] points_y = new int[count];
+    final int count = record.getParam (0);
+    final int[] points_x = new int[count];
+    final int[] points_y = new int[count];
 
     for (int i = 0; i < count; i++)
     {
@@ -170,10 +170,10 @@ public class MfCmdPolyline extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(getPointCount()* 2 + 1);
-    int count = getPointCount();
-    int[] points_x = getPointsX();
-    int[] points_y = getPointsY();
+    final MfRecord record = new MfRecord(getPointCount()* 2 + 1);
+    final int count = getPointCount();
+    final int[] points_x = getPointsX();
+    final int[] points_y = getPointsY();
 
     record.setParam(0, count);
 
@@ -185,12 +185,12 @@ public class MfCmdPolyline extends MfCmd
     return record;
   }
 
-  public void setPointCount (int count)
+  public void setPointCount (final int count)
   {
     this.count = count;
   }
 
-  public void setPoints (int[] points_x, int[] points_y)
+  public void setPoints (final int[] points_x, final int[] points_y)
   {
     this.points_x = points_x;
     this.points_y = points_y;

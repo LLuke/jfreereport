@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdEllipse.java,v 1.2 2003/03/14 20:06:06 taqua Exp $
+ * $Id: MfCmdFillRegion.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -67,19 +67,19 @@ public class MfCmdFillRegion extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfLogBrush brush = file.getBrushObject (brushObjectNr);
-    MfLogRegion regio = file.getRegionObject (regionObjectNr);
+    final MfLogBrush brush = file.getBrushObject (brushObjectNr);
+    final MfLogRegion regio = file.getRegionObject (regionObjectNr);
 
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
     state.setLogRegion (regio);
     state.setLogBrush (brush);
 
-    Graphics2D graph = file.getGraphics2D ();
-    Rectangle rec = scaleRect (regio.getBounds ());
+    final Graphics2D graph = file.getGraphics2D ();
+    final Rectangle rec = scaleRect (regio.getBounds ());
 
-    Rectangle2D rect = new Rectangle2D.Double ();
+    final Rectangle2D rect = new Rectangle2D.Double ();
     rect.setFrame (rec.x, rec.y, rec.width, rec.height);
 
     if (brush.isVisible ())
@@ -109,10 +109,10 @@ public class MfCmdFillRegion extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int regio = record.getParam (POS_REGION);
-    int brush = record.getParam (POS_BRUSH);
+    final int regio = record.getParam (POS_REGION);
+    final int brush = record.getParam (POS_BRUSH);
     setBrush (brush);
     setRegion (regio);
   }
@@ -124,7 +124,7 @@ public class MfCmdFillRegion extends MfCmd
    */
   public MfRecord getRecord ()
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_REGION, getRegion());
     record.setParam(POS_BRUSH, getBrush());
     return record;
@@ -132,7 +132,7 @@ public class MfCmdFillRegion extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[FILL_REGION] brush=");
     b.append (getBrush ());
     b.append (" region=");
@@ -145,7 +145,7 @@ public class MfCmdFillRegion extends MfCmd
     return brushObjectNr;
   }
 
-  public void setBrush (int brush)
+  public void setBrush (final int brush)
   {
     this.brushObjectNr = brush;
   }
@@ -155,7 +155,7 @@ public class MfCmdFillRegion extends MfCmd
     return regionObjectNr;
   }
 
-  public void setRegion (int region)
+  public void setRegion (final int region)
   {
     regionObjectNr = region;
   }

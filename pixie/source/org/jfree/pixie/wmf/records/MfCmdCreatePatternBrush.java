@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmd.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
+ * $Id: MfCmdCreatePatternBrush.java,v 1.2 2003/03/14 20:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -68,11 +68,11 @@ public class MfCmdCreatePatternBrush extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
     try
     {
-      DIBReader reader = new DIBReader ();
+      final DIBReader reader = new DIBReader ();
       setImage(reader.setRecord (record));
     }
     catch (Exception e)
@@ -86,7 +86,7 @@ public class MfCmdCreatePatternBrush extends MfCmd
     return image;
   }
 
-  public void setImage (BufferedImage image)
+  public void setImage (final BufferedImage image)
   {
     if (image == null) throw new NullPointerException();
     this.image = image;
@@ -105,7 +105,7 @@ public class MfCmdCreatePatternBrush extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[CREATE_PATTERN_BRUSH] ");
     b.append (" no internals known (not seen in the wild)");
     return b.toString ();
@@ -116,9 +116,9 @@ public class MfCmdCreatePatternBrush extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfLogBrush lbrush = new MfLogBrush ();
+    final MfLogBrush lbrush = new MfLogBrush ();
     lbrush.setStyle (MfLogBrush.BS_DIBPATTERN);
     lbrush.setBitmap (image);
 

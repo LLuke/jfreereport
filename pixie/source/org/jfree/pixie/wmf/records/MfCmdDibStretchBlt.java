@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdDibStretchBlt.java,v 1.1 2003/03/15 17:17:53 taqua Exp $
+ * $Id: MfCmdDibStretchBlt.java,v 1.2 2003/03/22 16:02:56 taqua Exp $
  *
  * Changes
  * -------
@@ -94,7 +94,7 @@ public class MfCmdDibStretchBlt extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
     file.getGraphics2D().drawImage(image, srcX, srcY, srcW, srcH,
                                    scaled_destX, scaled_destY, scaled_destW, scaled_destH, null);
@@ -126,7 +126,7 @@ public class MfCmdDibStretchBlt extends MfCmd
     return rop;
   }
 
-  public void setROP (int rop)
+  public void setROP (final int rop)
   {
     this.rop = rop;
   }
@@ -140,21 +140,21 @@ public class MfCmdDibStretchBlt extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int rop = record.getLongParam (POS_OPERATION);
-    int ySrc = record.getParam (POS_SRC_Y);
-    int xSrc = record.getParam (POS_SRC_X);
-    int srcH = record.getParam (POS_SRC_HEIGHT);
-    int srcW = record.getParam (POS_SRC_WIDTH);
-    int destH = record.getParam (POS_DST_HEIGHT);
-    int destW = record.getParam (POS_DST_WIDTH);
-    int yDest = record.getParam (POS_DST_Y);
-    int xDest = record.getParam (POS_DST_X);
+    final int rop = record.getLongParam (POS_OPERATION);
+    final int ySrc = record.getParam (POS_SRC_Y);
+    final int xSrc = record.getParam (POS_SRC_X);
+    final int srcH = record.getParam (POS_SRC_HEIGHT);
+    final int srcW = record.getParam (POS_SRC_WIDTH);
+    final int destH = record.getParam (POS_DST_HEIGHT);
+    final int destW = record.getParam (POS_DST_WIDTH);
+    final int yDest = record.getParam (POS_DST_Y);
+    final int xDest = record.getParam (POS_DST_X);
 
     try
     {
-      DIBReader reader = new DIBReader ();
+      final DIBReader reader = new DIBReader ();
       setImage(reader.setRecord (record, POS_DIB));
     }
     catch (IOException ioe)
@@ -182,14 +182,14 @@ public class MfCmdDibStretchBlt extends MfCmd
     return image;
   }
 
-  public void setImage(BufferedImage image)
+  public void setImage(final BufferedImage image)
   {
     this.image = image;
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[STRETCH_BLT] rop=");
     b.append (getROP ());
     b.append (" srcRect=");
@@ -200,7 +200,7 @@ public class MfCmdDibStretchBlt extends MfCmd
   }
 
 
-  public void setSrcRect (int x, int y, int w, int h)
+  public void setSrcRect (final int x, final int y, final int w, final int h)
   {
     this.srcX = x;
     this.srcY = y;
@@ -210,7 +210,7 @@ public class MfCmdDibStretchBlt extends MfCmd
     scaleYChanged ();
   }
 
-  public void setDestRect (int x, int y, int w, int h)
+  public void setDestRect (final int x, final int y, final int w, final int h)
   {
     this.destX = x;
     this.destY = y;

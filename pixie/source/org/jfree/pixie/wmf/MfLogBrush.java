@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfLogBrush.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: MfLogBrush.java,v 1.1 2003/03/09 20:38:17 taqua Exp $
  *
  * Changes
  * -------
@@ -172,7 +172,7 @@ public class MfLogBrush implements WmfObject
     return style;
   }
 
-  public void setStyle (int style)
+  public void setStyle (final int style)
   {
     this.style = style;
   }
@@ -183,7 +183,7 @@ public class MfLogBrush implements WmfObject
     return color;
   }
 
-  public void setColor (Color color)
+  public void setColor (final Color color)
   {
     this.color = color;
     lastPaint = null;
@@ -195,7 +195,7 @@ public class MfLogBrush implements WmfObject
     return hatch;
   }
 
-  public void setHatchedStyle (int hstyle)
+  public void setHatchedStyle (final int hstyle)
   {
     this.hatch = hstyle;
     lastPaint = null;
@@ -215,7 +215,7 @@ public class MfLogBrush implements WmfObject
         lastPaint = new GDIColor (COLOR_FULL_ALPHA);
       case BS_HATCHED:
         {
-          BufferedImage image = createHatchStyle ();
+          final BufferedImage image = createHatchStyle ();
           lastPaint = new TexturePaint (image, new Rectangle (0, 0, image.getWidth (), image.getHeight ()));
           break;
         }
@@ -242,9 +242,9 @@ public class MfLogBrush implements WmfObject
 
   private BufferedImage createHatchStyle ()
   {
-    int style = getHatchedStyle ();
+    final int style = getHatchedStyle ();
 
-    BufferedImage image = new BufferedImage (8, 8, BufferedImage.TYPE_INT_ARGB);
+    final BufferedImage image = new BufferedImage (8, 8, BufferedImage.TYPE_INT_ARGB);
     switch (style)
     {
       case HS_HORIZONTAL:
@@ -271,12 +271,12 @@ public class MfLogBrush implements WmfObject
     return image;
   }
 
-  public int[] transform (boolean[] data)
+  public int[] transform (final boolean[] data)
   {
-    int color = getColor ().getRGB ();
-    int bgColor = getBackgroundColor ().getRGB ();
+    final int color = getColor ().getRGB ();
+    final int bgColor = getBackgroundColor ().getRGB ();
 
-    int[] retval = new int[data.length];
+    final int[] retval = new int[data.length];
     for (int i = 0; i < retval.length; i++)
     {
       if (data[i] == true)
@@ -291,7 +291,7 @@ public class MfLogBrush implements WmfObject
     return retval;
   }
 
-  public void setBackgroundColor (Color bg)
+  public void setBackgroundColor (final Color bg)
   {
     this.bgColor = bg;
     lastPaint = null;
@@ -302,7 +302,7 @@ public class MfLogBrush implements WmfObject
     return bgColor;
   }
 
-  public void setBitmap (BufferedImage bitmap)
+  public void setBitmap (final BufferedImage bitmap)
   {
     this.bitmap = bitmap;
   }

@@ -29,9 +29,9 @@ public class MfCmdSetTextColor extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
     state.setTextColor (color);
   }
 
@@ -54,9 +54,9 @@ public class MfCmdSetTextColor extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int colref = record.getLongParam (POS_COLOR);
+    final int colref = record.getLongParam (POS_COLOR);
     setColor (new GDIColor (colref));
   }
 
@@ -67,7 +67,7 @@ public class MfCmdSetTextColor extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setLongParam(POS_COLOR, GDIColor.translateColor(getColor()));
     return record;
   }
@@ -88,14 +88,14 @@ public class MfCmdSetTextColor extends MfCmd
     return color;
   }
 
-  public void setColor (Color color)
+  public void setColor (final Color color)
   {
     this.color = color;
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[SET_TEXT_COLOR] textColor=");
     b.append (getColor ());
     return b.toString ();

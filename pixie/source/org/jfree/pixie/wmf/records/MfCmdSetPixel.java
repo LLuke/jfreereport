@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdSetDibitsToDevice.java,v 1.2 2003/03/21 21:31:56 taqua Exp $
+ * $Id: MfCmdSetPixel.java,v 1.2 2003/03/22 16:02:57 taqua Exp $
  *
  * Changes
  * -------
@@ -71,11 +71,11 @@ public class MfCmdSetPixel extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    Point p = getScaledTarget ();
-    Graphics2D g = file.getGraphics2D ();
-    MfDcState state = file.getCurrentState ();
+    final Point p = getScaledTarget ();
+    final Graphics2D g = file.getGraphics2D ();
+    final MfDcState state = file.getCurrentState ();
 
     state.prepareDraw ();
     g.drawLine (p.x, p.y, p.x, p.y);
@@ -99,9 +99,9 @@ public class MfCmdSetPixel extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setLongParam(POS_COLOR, GDIColor.translateColor(getColor()));
-    Point p = getTarget();
+    final Point p = getTarget();
     record.setParam(POS_X, p.x);
     record.setParam(POS_Y, p.y);
     return record;
@@ -116,12 +116,12 @@ public class MfCmdSetPixel extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int c = record.getLongParam (POS_COLOR);
-    Color color = new GDIColor (c);
-    int y = record.getParam (POS_Y);
-    int x = record.getParam (POS_X);
+    final int c = record.getLongParam (POS_COLOR);
+    final Color color = new GDIColor (c);
+    final int y = record.getParam (POS_Y);
+    final int x = record.getParam (POS_X);
     setTarget (x, y);
     setColor (color);
   }
@@ -136,7 +136,7 @@ public class MfCmdSetPixel extends MfCmd
     return new Point (scaled_x, scaled_y);
   }
 
-  public void setTarget (int x, int y)
+  public void setTarget (final int x, final int y)
   {
     this.x = x;
     this.y = y;
@@ -144,13 +144,13 @@ public class MfCmdSetPixel extends MfCmd
     scaleYChanged ();
   }
 
-  public void setTarget (Point point)
+  public void setTarget (final Point point)
   {
     this.x = point.x;
     this.y = point.y;
   }
 
-  public void setColor (Color c)
+  public void setColor (final Color c)
   {
     this.color = c;
   }
@@ -173,7 +173,7 @@ public class MfCmdSetPixel extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[SET_PIXEL] target=");
     b.append (getTarget ());
     b.append (" color=");

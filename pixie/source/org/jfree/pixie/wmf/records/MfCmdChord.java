@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdArc.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
+ * $Id: MfCmdChord.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
  *
  * Changes
  * -------
@@ -137,19 +137,19 @@ public class MfCmdChord extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    Graphics2D graph = file.getGraphics2D ();
-    Rectangle rec = getBounds ();
-    Point start = getStartingIntersection ();
-    Point end = getEndingIntersection ();
+    final Graphics2D graph = file.getGraphics2D ();
+    final Rectangle rec = getBounds ();
+    final Point start = getStartingIntersection ();
+    final Point end = getEndingIntersection ();
 
-    Arc2D arc = new Arc2D.Double ();
+    final Arc2D arc = new Arc2D.Double ();
     arc.setArcType (Arc2D.CHORD);
     arc.setFrame (rec.x, rec.y, rec.width, rec.height);
     arc.setAngles (start.x, start.y, end.x, end.y);
 
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
 
     if (state.getLogBrush ().isVisible ())
     {
@@ -186,7 +186,7 @@ public class MfCmdChord extends MfCmd
     return new Rectangle (scaled_x, scaled_y, scaled_width, scaled_height);
   }
 
-  public void setBounds (int x, int y, int width, int height)
+  public void setBounds (final int x, final int y, final int width, final int height)
   {
     this.x = x;
     this.y = y;
@@ -197,7 +197,7 @@ public class MfCmdChord extends MfCmd
 
   }
 
-  public void setStartingIntersection (int x, int y)
+  public void setStartingIntersection (final int x, final int y)
   {
     xstart = x;
     ystart = y;
@@ -215,7 +215,7 @@ public class MfCmdChord extends MfCmd
     return new Point (scaled_xstart, scaled_ystart);
   }
 
-  public void setEndingIntersection (int x, int y)
+  public void setEndingIntersection (final int x, final int y)
   {
     xend = x;
     yend = y;
@@ -242,16 +242,16 @@ public class MfCmdChord extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int xend = record.getParam (PARAM_X_END_POS);
-    int yend = record.getParam (PARAM_Y_END_POS);
-    int xstart = record.getParam (PARAM_X_START_POS);
-    int ystart = record.getParam (PARAM_Y_START_POS);
-    int bottom = record.getParam (PARAM_BOTTOM_POS);
-    int right = record.getParam (PARAM_RIGHT_POS);
-    int top = record.getParam (PARAM_TOP_POS);
-    int left = record.getParam (PARAM_LEFT_POS);
+    final int xend = record.getParam (PARAM_X_END_POS);
+    final int yend = record.getParam (PARAM_Y_END_POS);
+    final int xstart = record.getParam (PARAM_X_START_POS);
+    final int ystart = record.getParam (PARAM_Y_START_POS);
+    final int bottom = record.getParam (PARAM_BOTTOM_POS);
+    final int right = record.getParam (PARAM_RIGHT_POS);
+    final int top = record.getParam (PARAM_TOP_POS);
+    final int left = record.getParam (PARAM_LEFT_POS);
     setBounds (left, top, right - left, bottom - top);
     setStartingIntersection (xstart, ystart);
     setEndingIntersection (xend, yend);
@@ -264,10 +264,10 @@ public class MfCmdChord extends MfCmd
    */
   public MfRecord getRecord ()
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
-    Rectangle bounds = getBounds();
-    Point start = getStartingIntersection();
-    Point end = getEndingIntersection();
+    final MfRecord record = new MfRecord(RECORD_SIZE);
+    final Rectangle bounds = getBounds();
+    final Point start = getStartingIntersection();
+    final Point end = getEndingIntersection();
 
     record.setParam(PARAM_LEFT_POS, (int) bounds.getX());
     record.setParam(PARAM_TOP_POS, (int) bounds.getY());
@@ -282,7 +282,7 @@ public class MfCmdChord extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[CHORD] bounds=");
     b.append (getBounds ());
     b.append (" startIntersection=");

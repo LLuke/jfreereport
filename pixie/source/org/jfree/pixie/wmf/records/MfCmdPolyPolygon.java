@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdArc.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
+ * $Id: MfCmdPolyPolygon.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -68,17 +68,17 @@ public class MfCmdPolyPolygon extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    Graphics2D graph = file.getGraphics2D ();
+    final Graphics2D graph = file.getGraphics2D ();
 
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
 
     for (int i = 0; i < polycount; i++)
     {
-      int[] pointsX = getScaledPointsX (i);
-      int[] pointsY = getScaledPointsY (i);
-      Polygon polygon = new Polygon (pointsX, pointsY, pointsX.length);
+      final int[] pointsX = getScaledPointsX (i);
+      final int[] pointsY = getScaledPointsY (i);
+      final Polygon polygon = new Polygon (pointsX, pointsY, pointsX.length);
       if (state.getLogBrush ().isVisible ())
       {
         state.preparePaint ();
@@ -117,7 +117,7 @@ public class MfCmdPolyPolygon extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[POLYPOLYGON] polycount=");
     b.append (getPolygonCount ());
     b.append ("\n");
@@ -126,9 +126,9 @@ public class MfCmdPolyPolygon extends MfCmd
       b.append ("  Polygon ");
       b.append (p);
 
-      int[] points_x = getPointsX (p);
-      int[] points_y = getPointsY (p);
-      int l = points_x.length;
+      final int[] points_x = getPointsX (p);
+      final int[] points_y = getPointsY (p);
+      final int l = points_x.length;
 
       for (int i = 0; i < l; i++)
       {
@@ -154,26 +154,26 @@ public class MfCmdPolyPolygon extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int numberOfPolygons = record.getParam (0);
-    int[] count = new int[numberOfPolygons];
-    Object[] poly_points_x = new Object[numberOfPolygons];
-    Object[] poly_points_y = new Object[numberOfPolygons];
+    final int numberOfPolygons = record.getParam (0);
+    final int[] count = new int[numberOfPolygons];
+    final Object[] poly_points_x = new Object[numberOfPolygons];
+    final Object[] poly_points_y = new Object[numberOfPolygons];
 
     int numberOfPointsRead = 0;
     // read the length of each polygon
     for (int i = 0; i < numberOfPolygons; i++)
     {
-      int numberOfPointsInPolygon = record.getParam (1 + i);
+      final int numberOfPointsInPolygon = record.getParam (1 + i);
       count[i] = numberOfPointsInPolygon;
 
       // Position of the points depends on the number of points
       // of the previous polygons
-      int[] points_x = new int[numberOfPointsInPolygon];
-      int[] points_y = new int[numberOfPointsInPolygon];
+      final int[] points_x = new int[numberOfPointsInPolygon];
+      final int[] points_y = new int[numberOfPointsInPolygon];
       // read position is after numPolygonPointsRead + noOfPolygons + 1 (for the first parameter)
-      int readPos = numberOfPointsRead * 2 + numberOfPolygons + 1;
+      final int readPos = numberOfPointsRead * 2 + numberOfPolygons + 1;
       for (int j = 0; j < numberOfPointsInPolygon; j++)
       {
         points_x[j] = record.getParam ((readPos + 1) + j * 2);
@@ -194,24 +194,24 @@ public class MfCmdPolyPolygon extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    int numberOfPolygons = getPolygonCount();
+    final int numberOfPolygons = getPolygonCount();
     int pointsTotal = 0;
     for (int i = 0; i < numberOfPolygons; i++)
     {
       pointsTotal += getPointsX(i).length;
     }
-    MfRecord record = new MfRecord(1 + numberOfPolygons + pointsTotal * 2);
+    final MfRecord record = new MfRecord(1 + numberOfPolygons + pointsTotal * 2);
     record.setParam(0, numberOfPolygons);
 
     int numberOfPointsRead = 0;
     for (int i = 0; i < numberOfPolygons; i++)
     {
-      int[] x_points = getPointsX(i);
-      int[] y_points = getPointsY(i);
-      int numberOfPointsInPolygon = x_points.length;
+      final int[] x_points = getPointsX(i);
+      final int[] y_points = getPointsY(i);
+      final int numberOfPointsInPolygon = x_points.length;
       record.setParam(1 + i, numberOfPointsInPolygon);
 
-      int readPos = numberOfPointsRead * 2 + numberOfPolygons + 1;
+      final int readPos = numberOfPointsRead * 2 + numberOfPolygons + 1;
       for (int j = 0; j < numberOfPointsInPolygon; j++)
       {
         record.setParam ((readPos + 1) + j * 2, x_points[i]);
@@ -222,7 +222,7 @@ public class MfCmdPolyPolygon extends MfCmd
     return record;
   }
 
-  public void setPoints (Object[] points_x, Object[] points_y)
+  public void setPoints (final Object[] points_x, final Object[] points_y)
   {
     this.points_x = points_x;
     this.points_y = points_y;
@@ -230,27 +230,27 @@ public class MfCmdPolyPolygon extends MfCmd
     scaleYChanged ();
   }
 
-  public int[] getPointsX (int polygon)
+  public int[] getPointsX (final int polygon)
   {
     return (int[]) points_x[polygon];
   }
 
-  public int[] getPointsY (int polygon)
+  public int[] getPointsY (final int polygon)
   {
     return (int[]) points_y[polygon];
   }
 
-  public int[] getScaledPointsX (int polygon)
+  public int[] getScaledPointsX (final int polygon)
   {
     return (int[]) scaled_points_x[polygon];
   }
 
-  public int[] getScaledPointsY (int polygon)
+  public int[] getScaledPointsY (final int polygon)
   {
     return (int[]) scaled_points_y[polygon];
   }
 
-  public void setPolygonCount (int count)
+  public void setPolygonCount (final int count)
   {
     this.polycount = count;
   }

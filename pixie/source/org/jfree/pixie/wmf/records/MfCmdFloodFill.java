@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdEllipse.java,v 1.2 2003/03/14 20:06:06 taqua Exp $
+ * $Id: MfCmdFloodFill.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,7 @@ public class MfCmdFloodFill extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
     // there is no way of implementing a flood fill operation for Graphics2D.
   }
@@ -95,12 +95,12 @@ public class MfCmdFloodFill extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int c = record.getLongParam (POS_COLOR);
-    Color color = new GDIColor (c);
-    int y = record.getParam (POS_Y);
-    int x = record.getParam (POS_X);
+    final int c = record.getLongParam (POS_COLOR);
+    final Color color = new GDIColor (c);
+    final int y = record.getParam (POS_Y);
+    final int x = record.getParam (POS_X);
     setTarget (x, y);
     setColor (color);
   }
@@ -112,9 +112,9 @@ public class MfCmdFloodFill extends MfCmd
    */
   public MfRecord getRecord ()
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setLongParam(POS_COLOR, GDIColor.translateColor(getColor()));
-    Point target = getTarget();
+    final Point target = getTarget();
     record.setParam(POS_Y, (int) target.getY());
     record.setParam(POS_X, (int) target.getX());
     return record;
@@ -122,7 +122,7 @@ public class MfCmdFloodFill extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[FLOOD_FILL] color=");
     b.append (getColor ());
     b.append (" target=");
@@ -140,12 +140,12 @@ public class MfCmdFloodFill extends MfCmd
     return new Point (scaled_x, scaled_y);
   }
 
-  public void setTarget (Point point)
+  public void setTarget (final Point point)
   {
     setTarget(point.x, point.y);
   }
 
-  public void setTarget (int x, int y)
+  public void setTarget (final int x, final int y)
   {
     this.x = x;
     this.y = y;
@@ -153,7 +153,7 @@ public class MfCmdFloodFill extends MfCmd
     scaleYChanged ();
   }
 
-  public void setColor (Color c)
+  public void setColor (final Color c)
   {
     this.color = c;
   }

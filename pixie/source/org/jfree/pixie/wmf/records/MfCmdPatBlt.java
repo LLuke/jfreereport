@@ -27,15 +27,15 @@ public class MfCmdPatBlt extends MfCmd
   {
   }
 
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
     switch (rop)
     {
       case ROPConstants.PATCOPY:
         {
-          MfDcState state = file.getCurrentState ();
+          final MfDcState state = file.getCurrentState ();
           state.preparePaint();
-          Graphics2D g2 = (Graphics2D) file.getGraphics2D().create();
+          final Graphics2D g2 = (Graphics2D) file.getGraphics2D().create();
           g2.setPaintMode();
           g2.fill(getScaledBounds());
           state.postPaint();
@@ -43,9 +43,9 @@ public class MfCmdPatBlt extends MfCmd
         }
       case ROPConstants.PATINVERT:
         {
-          MfDcState state = file.getCurrentState ();
+          final MfDcState state = file.getCurrentState ();
           state.preparePaint();
-          Graphics2D g2 = (Graphics2D) file.getGraphics2D().create();
+          final Graphics2D g2 = (Graphics2D) file.getGraphics2D().create();
           g2.setXORMode(g2.getColor());
           g2.fill(getScaledBounds());
           state.postPaint();
@@ -53,7 +53,7 @@ public class MfCmdPatBlt extends MfCmd
         }
       case ROPConstants.DSTINVERT:
         {
-          Graphics2D g2 = (Graphics2D) file.getGraphics2D().create();
+          final Graphics2D g2 = (Graphics2D) file.getGraphics2D().create();
           g2.setXORMode(Color.white);
           g2.fill(getScaledBounds());
           break;
@@ -86,7 +86,7 @@ public class MfCmdPatBlt extends MfCmd
     return rop;
   }
 
-  public void setROP (int rop)
+  public void setROP (final int rop)
   {
     this.rop = rop;
   }
@@ -107,13 +107,13 @@ public class MfCmdPatBlt extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int rop = record.getLongParam (POS_ROP);
-    int height = record.getParam (POS_HEIGHT);
-    int width = record.getParam (POS_WIDTH);
-    int top = record.getParam (POS_X);
-    int left = record.getParam (POS_Y);
+    final int rop = record.getLongParam (POS_ROP);
+    final int height = record.getParam (POS_HEIGHT);
+    final int width = record.getParam (POS_WIDTH);
+    final int top = record.getParam (POS_X);
+    final int left = record.getParam (POS_Y);
     setBounds (left, top, width, height);
     setROP (rop);
   }
@@ -125,9 +125,9 @@ public class MfCmdPatBlt extends MfCmd
    */
   public MfRecord getRecord ()
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_ROP, getROP());
-    Rectangle bounds = getBounds();
+    final Rectangle bounds = getBounds();
     record.setParam(POS_HEIGHT, bounds.height);
     record.setParam(POS_WIDTH, bounds.width);
     record.setParam(POS_Y, bounds.y);
@@ -137,7 +137,7 @@ public class MfCmdPatBlt extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[PAT_BLT] rop=");
     b.append (getROP ());
     b.append (" bounds=");
@@ -155,7 +155,7 @@ public class MfCmdPatBlt extends MfCmd
     return new Rectangle (scaled_x, scaled_y, scaled_width, scaled_height);
   }
 
-  public void setBounds (int x, int y, int width, int height)
+  public void setBounds (final int x, final int y, final int width, final int height)
   {
     this.x = x;
     this.y = y;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdEllipse.java,v 1.2 2003/03/14 20:06:06 taqua Exp $
+ * $Id: MfCmdExtFloodFill.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -61,14 +61,14 @@ public class MfCmdExtFloodFill extends MfCmd
   {
   }
 
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
     // there is no way to implement flood fill for G2Objects ...
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[EXT_FLOOD_FILL] filltype=");
     b.append (getFillType ());
     b.append (" color=");
@@ -89,13 +89,13 @@ public class MfCmdExtFloodFill extends MfCmd
   private static final int POS_Y = 3;
   private static final int POS_X = 4;
 
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int filltype = record.getParam (POS_FILLTYPE);
-    int c = record.getLongParam (POS_COLOR);
-    Color color = new GDIColor (c);
-    int y = record.getParam (POS_Y);
-    int x = record.getParam (POS_X);
+    final int filltype = record.getParam (POS_FILLTYPE);
+    final int c = record.getLongParam (POS_COLOR);
+    final Color color = new GDIColor (c);
+    final int y = record.getParam (POS_Y);
+    final int x = record.getParam (POS_X);
     setTarget (x, y);
     setColor (color);
     setFillType (filltype);
@@ -104,16 +104,16 @@ public class MfCmdExtFloodFill extends MfCmd
   /** Writer function */
   public MfRecord getRecord ()
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_FILLTYPE, getFillType());
     record.setLongParam(POS_COLOR, GDIColor.translateColor(getColor()));
-    Point target = getTarget();
+    final Point target = getTarget();
     record.setParam(POS_Y, (int) target.getY());
     record.setParam(POS_X, (int) target.getX());
     return record;
   }
 
-  public void setFillType (int filltype)
+  public void setFillType (final int filltype)
   {
     this.filltype = filltype;
   }
@@ -138,7 +138,7 @@ public class MfCmdExtFloodFill extends MfCmd
     return new Point (scaled_x, scaled_y);
   }
 
-  public void setTarget (int x, int y)
+  public void setTarget (final int x, final int y)
   {
     this.x = x;
     this.y = y;
@@ -146,7 +146,7 @@ public class MfCmdExtFloodFill extends MfCmd
     scaleYChanged ();
   }
 
-  public void setColor (Color c)
+  public void setColor (final Color c)
   {
     this.color = c;
   }

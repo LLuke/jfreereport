@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdEllipse.java,v 1.2 2003/03/14 20:06:06 taqua Exp $
+ * $Id: MfCmdPaintRgn.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -64,16 +64,16 @@ public class MfCmdPaintRgn extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfLogRegion regio = file.getRegionObject (region);
+    final MfLogRegion regio = file.getRegionObject (region);
 
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
     state.setLogRegion (regio);
-    MfLogBrush brush = state.getLogBrush ();
+    final MfLogBrush brush = state.getLogBrush ();
 
-    Graphics2D graph = file.getGraphics2D ();
-    Rectangle rec = scaleRect (regio.getBounds ());
+    final Graphics2D graph = file.getGraphics2D ();
+    final Rectangle rec = scaleRect (regio.getBounds ());
 
     if (brush.isVisible ())
     {
@@ -102,7 +102,7 @@ public class MfCmdPaintRgn extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
     region = record.getParam (POS_REGION);
   }
@@ -114,12 +114,12 @@ public class MfCmdPaintRgn extends MfCmd
    */
   public MfRecord getRecord ()
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_REGION, getRegion());
     return record;
   }
 
-  public void setRegion (int region)
+  public void setRegion (final int region)
   {
     this.region = region;
   }
@@ -142,7 +142,7 @@ public class MfCmdPaintRgn extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[PAINT_REGION] region=");
     b.append (getRegion ());
     return b.toString ();

@@ -2,7 +2,7 @@
  * Date: Mar 9, 2003
  * Time: 12:01:58 AM
  *
- * $Id$
+ * $Id: BitmapReader.java,v 1.1 2003/03/09 20:38:22 taqua Exp $
  */
 package org.jfree.pixie.wmf.bitmap;
 
@@ -16,7 +16,7 @@ import java.io.IOException;
 public class BitmapReader
 {
   // build an int from a byte array - convert little to big endian
-  public static int constructInt(byte[] in, int offset)
+  public static int constructInt(final byte[] in, final int offset)
   {
     int ret = ((int) in[offset + 3] & 0xff);
     ret = (ret << 8) | ((int) in[offset + 2] & 0xff);
@@ -27,7 +27,7 @@ public class BitmapReader
 
   // build an int from a byte array - convert little to big endian
   // set high order bytes to 0xfff
-  public static int constructInt3(byte[] in, int offset)
+  public static int constructInt3(final byte[] in, final int offset)
   {
     int ret = 0xff;
     ret = (ret << 8) | ((int) in[offset + 2] & 0xff);
@@ -37,7 +37,7 @@ public class BitmapReader
   }
 
   // build an int from a byte array - convert little to big endian
-  public static long constructLong(byte[] in, int offset)
+  public static long constructLong(final byte[] in, final int offset)
   {
     long ret = ((long) in[offset + 7] & 0xff);
     ret |= (ret << 8) | ((long) in[offset + 6] & 0xff);
@@ -51,14 +51,14 @@ public class BitmapReader
   }
 
   // build an double from a byte array - convert little to big endian
-  public static double constructDouble(byte[] in, int offset)
+  public static double constructDouble(final byte[] in, final int offset)
   {
-    long ret = constructLong(in, offset);
+    final long ret = constructLong(in, offset);
     return (Double.longBitsToDouble(ret));
   }
 
   // build an short from a byte array - convert little to big endian
-  public static short constructShort(byte[] in, int offset)
+  public static short constructShort(final byte[] in, final int offset)
   {
     short ret = (short) ((short) in[offset + 1] & 0xff);
     ret = (short) ((ret << 8) | (short) ((short) in[offset + 0] & 0xff));
@@ -84,13 +84,13 @@ public class BitmapReader
     public int nclrimp;
 
     // read in the bitmap header
-    public void read(FileInputStream fs) throws IOException
+    public void read(final FileInputStream fs) throws IOException
     {
       final int bflen = 14;  // 14 byte BITMAPFILEHEADER
-      byte bf[] = new byte[bflen];
+      final byte[] bf = new byte[bflen];
       fs.read(bf, 0, bflen);
       final int bilen = 40; // 40-byte BITMAPINFOHEADER
-      byte bi[] = new byte[bilen];
+      final byte[] bi = new byte[bilen];
       fs.read(bi, 0, bilen);
 
       // Interperet data.
@@ -134,11 +134,11 @@ public class BitmapReader
     }
   }
 
-  public static Image read(FileInputStream fs)
+  public static Image read(final FileInputStream fs)
   {
     try
     {
-      BitmapHeader bh = new BitmapHeader();
+      final BitmapHeader bh = new BitmapHeader();
       bh.read(fs);
 
       if (bh.nbitcount == 24)
@@ -166,14 +166,14 @@ public class BitmapReader
    * @param bh header struct
    * @return Image Object, be sure to check for (Image)null !!!!
    */
-  protected static Image readMap32(FileInputStream fs, BitmapHeader bh) throws IOException
+  protected static Image readMap32(final FileInputStream fs, final BitmapHeader bh) throws IOException
   {
-    Image image;
+    final Image image;
     // No Palatte data for 24-bit format but scan lines are
     // padded out to even 4-byte boundaries.
-    int xwidth = bh.nsizeimage / bh.nheight;
-    int ndata[] = new int[bh.nheight * bh.nwidth];
-    byte brgb[] = new byte[bh.nwidth * 4 * bh.nheight];
+    final int xwidth = bh.nsizeimage / bh.nheight;
+    final int[] ndata = new int[bh.nheight * bh.nwidth];
+    final byte[] brgb = new byte[bh.nwidth * 4 * bh.nheight];
     fs.read(brgb, 0, bh.nwidth * 4 * bh.nheight);
     int nindex = 0;
 
@@ -201,15 +201,15 @@ public class BitmapReader
    * @param bh header struct
    * @return Image Object, be sure to check for (Image)null !!!!
    */
-  protected static Image readMap24(FileInputStream fs, BitmapHeader bh) throws IOException
+  protected static Image readMap24(final FileInputStream fs, final BitmapHeader bh) throws IOException
   {
-    Image image;
+    final Image image;
 
     // No Palatte data for 24-bit format but scan lines are
     // padded out to even 4-byte boundaries.
-    int npad = (bh.nsizeimage / bh.nheight) - bh.nwidth * 3;
-    int ndata[] = new int[bh.nheight * bh.nwidth];
-    byte brgb[] = new byte[(bh.nwidth + npad) * 3 * bh.nheight];
+    final int npad = (bh.nsizeimage / bh.nheight) - bh.nwidth * 3;
+    final int[] ndata = new int[bh.nheight * bh.nwidth];
+    final byte[] brgb = new byte[(bh.nwidth + npad) * 3 * bh.nheight];
     fs.read(brgb, 0, (bh.nwidth + npad) * 3 * bh.nheight);
 
     int nindex = 0;
@@ -239,9 +239,9 @@ public class BitmapReader
    * @param bh header struct
    * @return Image Object, be sure to check for (Image)null !!!!
    */
-  protected static Image readMap8(FileInputStream fs, BitmapHeader bh) throws IOException
+  protected static Image readMap8(final FileInputStream fs, final BitmapHeader bh) throws IOException
   {
-    Image image;
+    final Image image;
 
     // Have to determine the number of colors, the clrsused
     // parameter is dominant if it is greater than zero.  If
@@ -267,8 +267,8 @@ public class BitmapReader
     }
 
     // Read the palatte colors.
-    int npalette[] = new int[nNumColors];
-    byte bpalette[] = new byte[nNumColors * 4];
+    final int[] npalette = new int[nNumColors];
+    final byte[] bpalette = new byte[nNumColors * 4];
     fs.read(bpalette, 0, nNumColors * 4);
     int nindex8 = 0;
 
@@ -282,11 +282,11 @@ public class BitmapReader
     // Scan lines are still padded out to even 4-byte
     // boundaries.
 
-    int npad8 = (bh.nsizeimage / bh.nheight) - bh.nwidth;
+    final int npad8 = (bh.nsizeimage / bh.nheight) - bh.nwidth;
     //    System.out.println("nPad is:"+npad8);
 
-    int ndata8[] = new int[bh.nwidth * bh.nheight];
-    byte bdata[] = new byte[(bh.nwidth + npad8) * bh.nheight];
+    final int[] ndata8 = new int[bh.nwidth * bh.nheight];
+    final byte[] bdata = new byte[(bh.nwidth + npad8) * bh.nheight];
     fs.read(bdata, 0, (bh.nwidth + npad8) * bh.nheight);
     nindex8 = 0;
 
@@ -315,11 +315,11 @@ public class BitmapReader
    * @param sdir full path name
    * @return Image Object, be sure to check for (Image)null !!!!
    */
-  public static Image load(String sdir)
+  public static Image load(final String sdir)
   {
     try
     {
-      FileInputStream fs = new FileInputStream(sdir);
+      final FileInputStream fs = new FileInputStream(sdir);
       return (read(fs));
     }
     catch (IOException ex)

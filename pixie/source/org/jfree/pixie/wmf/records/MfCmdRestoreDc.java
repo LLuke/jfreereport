@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdCreatePalette.java,v 1.2 2003/03/14 20:06:05 taqua Exp $
+ * $Id: MfCmdRestoreDc.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,7 @@ public class MfCmdRestoreDc extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
     if (dcId == 0)
       return;
@@ -106,9 +106,9 @@ public class MfCmdRestoreDc extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int id = record.getParam (0);
+    final int id = record.getParam (0);
     setNSavedDC (id);
   }
 
@@ -119,7 +119,7 @@ public class MfCmdRestoreDc extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(1);
+    final MfRecord record = new MfRecord(1);
     record.setParam(0, getNSavedDC());
     return record;
   }
@@ -140,14 +140,14 @@ public class MfCmdRestoreDc extends MfCmd
     return dcId;
   }
 
-  public void setNSavedDC (int id)
+  public void setNSavedDC (final int id)
   {
     this.dcId = id;
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[RESTORE_DC] nSavedDC=");
     b.append (getNSavedDC ());
     return b.toString ();

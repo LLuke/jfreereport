@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdAnimatePalette.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
+ * $Id: MfCmdAnimatePalette.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
  *
  * Changes
  * -------
@@ -94,19 +94,19 @@ public class MfCmdAnimatePalette extends MfCmd
    */
   public MfRecord getRecord () throws RecordCreationException
   {
-    int cEntries = getEntriesCount();
+    final int cEntries = getEntriesCount();
     if (cEntries == 0)
       throw new RecordCreationException("Empty AnimatePaletteRecord is not valid");
 
-    MfRecord record = new MfRecord(2 + cEntries * 2);
+    final MfRecord record = new MfRecord(2 + cEntries * 2);
     record.setParam(POS_HPALETTE, getHPalette());
     record.setParam(POS_CENTRIES, cEntries);
 
-    Color[] colors = new Color[cEntries];
+    final Color[] colors = new Color[cEntries];
 
     for (int i = 0; i < cEntries; i++)
     {
-      Color c = colors[i];
+      final Color c = colors[i];
       // a long parameter is 2 words long
       record.setLongParam(i * 2 + POS_START_ENTRIES, GDIColor.translateColor(c));
     }
@@ -121,19 +121,19 @@ public class MfCmdAnimatePalette extends MfCmd
    *
    * @param record the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
     // the handle to the palette object
-    int hPalette = record.getParam (POS_HPALETTE);
+    final int hPalette = record.getParam (POS_HPALETTE);
     setHPalette(hPalette);
     // the number of defined entries ...
-    int cEntries = record.getParam (POS_CENTRIES);
-    Color[] colors = new Color[cEntries];
+    final int cEntries = record.getParam (POS_CENTRIES);
+    final Color[] colors = new Color[cEntries];
 
     for (int i = 0; i < cEntries; i++)
     {
-      int cr = record.getLongParam(i * 2 + POS_START_ENTRIES);
-      GDIColor color = new GDIColor (cr);
+      final int cr = record.getLongParam(i * 2 + POS_START_ENTRIES);
+      final GDIColor color = new GDIColor (cr);
       colors[i] = color;
     }
     setEntries (colors);
@@ -155,7 +155,7 @@ public class MfCmdAnimatePalette extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
     // do nothing
     System.out.println ("Animate Palette is not implemented");
@@ -168,7 +168,7 @@ public class MfCmdAnimatePalette extends MfCmd
    */
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[ANIMATE_PALETTE] hPalette=");
     b.append (getHPalette ());
     b.append (" entriesCount=");
@@ -191,7 +191,7 @@ public class MfCmdAnimatePalette extends MfCmd
     return hPalette;
   }
 
-  public void setHPalette (int hPalette)
+  public void setHPalette (final int hPalette)
   {
     this.hPalette = hPalette;
   }
@@ -201,7 +201,7 @@ public class MfCmdAnimatePalette extends MfCmd
     return colors;
   }
 
-  public void setEntries (Color[] colors)
+  public void setEntries (final Color[] colors)
   {
     this.colors = colors;
   }

@@ -16,7 +16,7 @@ public class MfCmdBitBlt extends MfCmd
   {
   }
 
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
   }
 
@@ -25,14 +25,14 @@ public class MfCmdBitBlt extends MfCmd
     return new MfCmdBitBlt ();
   }
 
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
     System.out.println ("Old BitBlit is not yet implemented.");
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[OLD_BIT_BLT] is not implemented");
     return b.toString ();
   }

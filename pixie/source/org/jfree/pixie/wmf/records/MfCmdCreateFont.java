@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmd.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
+ * $Id: MfCmdCreateFont.java,v 1.2 2003/03/14 20:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -109,9 +109,9 @@ public class MfCmdCreateFont extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfLogFont lfont = new MfLogFont ();
+    final MfLogFont lfont = new MfLogFont ();
     lfont.setFace (getFontFace ());
     lfont.setSize (getScaledHeight ());
     int style = 0;
@@ -158,7 +158,7 @@ public class MfCmdCreateFont extends MfCmd
     {
       fontFace = fontFace.substring(0, FONT_FACE_MAX);
     }
-    MfRecord record = new MfRecord(FIXED_RECORD_SIZE + fontFace.length());
+    final MfRecord record = new MfRecord(FIXED_RECORD_SIZE + fontFace.length());
     record.setParam(POS_HEIGHT, getHeight());
     record.setParam(POS_WIDTH, getWidth());
     record.setParam(POS_ESCAPEMENT, getEscapement());
@@ -173,7 +173,7 @@ public class MfCmdCreateFont extends MfCmd
     return record;
   }
 
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
     int height = record.getParam (POS_HEIGHT);
     if (height == 0)
@@ -187,22 +187,22 @@ public class MfCmdCreateFont extends MfCmd
       height *= -1;
     }
 
-    int width = record.getParam (POS_WIDTH);
-    int escape = record.getParam (POS_ESCAPEMENT);
-    int orientation = record.getParam (POS_ORIENTATION);
-    int weight = record.getParam (POS_WEIGHT);
+    final int width = record.getParam (POS_WIDTH);
+    final int escape = record.getParam (POS_ESCAPEMENT);
+    final int orientation = record.getParam (POS_ORIENTATION);
+    final int weight = record.getParam (POS_WEIGHT);
     // todo check whether this is correct ...
-    int italic = record.getParam (POS_FLAGS1) & 0xFF00;
-    int underline = record.getParam (POS_FLAGS1) & 0x00FF;
+    final int italic = record.getParam (POS_FLAGS1) & 0xFF00;
+    final int underline = record.getParam (POS_FLAGS1) & 0x00FF;
     // todo check whether this is correct ..
-    int strikeout = record.getParam (POS_FLAGS2) & 0xFF00;
-    int charset = record.getParam (POS_FLAGS2) & 0x00FF;
-    int outprec = record.getParam (POS_PRECISION) & 0xFF00;
-    int clipprec = record.getParam (POS_PRECISION) & 0x00FF;
-    int quality = record.getParam (POS_QUALITY) & 0xFF00;
-    int pitch = record.getParam (POS_QUALITY) & 0x00FF;
+    final int strikeout = record.getParam (POS_FLAGS2) & 0xFF00;
+    final int charset = record.getParam (POS_FLAGS2) & 0x00FF;
+    final int outprec = record.getParam (POS_PRECISION) & 0xFF00;
+    final int clipprec = record.getParam (POS_PRECISION) & 0x00FF;
+    final int quality = record.getParam (POS_QUALITY) & 0xFF00;
+    final int pitch = record.getParam (POS_QUALITY) & 0x00FF;
     // A fontname must not exceed the length of 32 including the null-terminator
-    String facename = record.getStringParam (POS_FONTFACE, 32);
+    final String facename = record.getStringParam (POS_FONTFACE, 32);
 
     setCharset (charset);
     setClipPrecision (clipprec);
@@ -220,7 +220,7 @@ public class MfCmdCreateFont extends MfCmd
     setWidth (width);
   }
 
-  private int formFlags (boolean f1, boolean f2)
+  private int formFlags (final boolean f1, final boolean f2)
   {
     int retval = 0;
     if (f1) retval += 0x0100;
@@ -239,7 +239,7 @@ public class MfCmdCreateFont extends MfCmd
     return MfType.CREATE_FONT_INDIRECT;
   }
 
-  public void setFontFace (String facename)
+  public void setFontFace (final String facename)
   {
     this.facename = facename;
   }
@@ -249,7 +249,7 @@ public class MfCmdCreateFont extends MfCmd
     return facename;
   }
 
-  public void setPitchAndFamily (int pitchAndFamily)
+  public void setPitchAndFamily (final int pitchAndFamily)
   {
     this.pitchAndFamily = pitchAndFamily;
   }
@@ -259,7 +259,7 @@ public class MfCmdCreateFont extends MfCmd
     return pitchAndFamily;
   }
 
-  public void setQuality (int quality)
+  public void setQuality (final int quality)
   {
     this.quality = quality;
   }
@@ -269,7 +269,7 @@ public class MfCmdCreateFont extends MfCmd
     return quality;
   }
 
-  public void setClipPrecision (int clipprecision)
+  public void setClipPrecision (final int clipprecision)
   {
     this.clipprecision = clipprecision;
   }
@@ -279,7 +279,7 @@ public class MfCmdCreateFont extends MfCmd
     return clipprecision;
   }
 
-  public void setOutputPrecision (int outprecision)
+  public void setOutputPrecision (final int outprecision)
   {
     this.outprecision = outprecision;
   }
@@ -289,7 +289,7 @@ public class MfCmdCreateFont extends MfCmd
     return outprecision;
   }
 
-  public void setCharset (int charset)
+  public void setCharset (final int charset)
   {
     this.charset = charset;
   }
@@ -299,7 +299,7 @@ public class MfCmdCreateFont extends MfCmd
     return charset;
   }
 
-  public void setHeight (int height)
+  public void setHeight (final int height)
   {
     this.height = height;
     scaleYChanged ();
@@ -315,7 +315,7 @@ public class MfCmdCreateFont extends MfCmd
     return scaled_height;
   }
 
-  public void setWidth (int width)
+  public void setWidth (final int width)
   {
     this.width = width;
     scaleXChanged ();
@@ -350,7 +350,7 @@ public class MfCmdCreateFont extends MfCmd
   }
 
   // in 1/10 degrees
-  public void setEscapement (int escapement)
+  public void setEscapement (final int escapement)
   {
     this.escapement = escapement;
   }
@@ -361,7 +361,7 @@ public class MfCmdCreateFont extends MfCmd
   }
 
   // in 1/10 degrees
-  public void setOrientation (int orientation)
+  public void setOrientation (final int orientation)
   {
     this.orientation = orientation;
   }
@@ -374,7 +374,7 @@ public class MfCmdCreateFont extends MfCmd
   // 200 = narrow
   // 400 = normal
   // 700 = bold
-  public void setWeight (int weight)
+  public void setWeight (final int weight)
   {
     this.weight = weight;
   }
@@ -384,7 +384,7 @@ public class MfCmdCreateFont extends MfCmd
     return weight;
   }
 
-  public void setItalic (boolean italic)
+  public void setItalic (final boolean italic)
   {
     this.italic = italic;
   }
@@ -394,7 +394,7 @@ public class MfCmdCreateFont extends MfCmd
     return this.italic;
   }
 
-  public void setUnderline (boolean ul)
+  public void setUnderline (final boolean ul)
   {
     this.underline = ul;
   }
@@ -404,7 +404,7 @@ public class MfCmdCreateFont extends MfCmd
     return this.underline;
   }
 
-  public void setStrikeout (boolean so)
+  public void setStrikeout (final boolean so)
   {
     this.strikeout = so;
   }
@@ -416,7 +416,7 @@ public class MfCmdCreateFont extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[CREATE_FONT] face=");
     b.append (getFontFace ());
     b.append (" height=");

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdDibBitBlt.java,v 1.1 2003/03/15 17:17:53 taqua Exp $
+ * $Id: MfCmdDibBitBlt.java,v 1.2 2003/03/22 16:02:56 taqua Exp $
  *
  * Changes
  * -------
@@ -106,7 +106,7 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
     return image;
   }
 
-  public void setImage(BufferedImage image)
+  public void setImage(final BufferedImage image)
   {
     this.image = image;
   }
@@ -116,14 +116,14 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
     // is not implemented, as we don't have access to the raster data.
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[BIT_BLT] records=");
     b.append (getOperation ());
     b.append (" source=");
@@ -177,7 +177,7 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
     return MfType.BIT_BLT;
   }
 
-  public void setOrigin (int x, int y)
+  public void setOrigin (final int x, final int y)
   {
     sourceX = x;
     sourceY = y;
@@ -205,7 +205,7 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
     return new Rectangle (scaled_sourceX, scaled_sourceY, scaled_destWidth, scaled_destHeight);
   }
 
-  public void setDestination (int x, int y, int w, int h)
+  public void setDestination (final int x, final int y, final int w, final int h)
   {
     destX = x;
     destY = y;
@@ -225,7 +225,7 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
     return new Rectangle (scaled_destX, scaled_destY, scaled_destWidth, scaled_destHeight);
   }
 
-  public void setOperation (int op)
+  public void setOperation (final int op)
   {
     operation = op;
   }
@@ -245,14 +245,14 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
     if (image == null)
     {
       // the simple form, the complex form would need a DIB implementation.
-      MfRecord record = new MfRecord(RECORD_SIZE_SIMPLE);
+      final MfRecord record = new MfRecord(RECORD_SIZE_SIMPLE);
       record.setLongParam(POS_OPERATION, getOperation());
-      Rectangle source = getSource();
+      final Rectangle source = getSource();
       record.setParam(POS_SRC_Y, (int) source.getY());
       record.setParam(POS_SRC_X, (int) source.getX());
 
       // Ignore the handle to the device context
-      Rectangle dest = getDestination();
+      final Rectangle dest = getDestination();
       record.setParam(4, 0); // the handle to the device context ... a stored DIB?.
       record.setParam(SIMPLE_POS_HEIGHT, (int) dest.getHeight());
       record.setParam(SIMPLE_POS_WIDTH, (int) dest.getWidth());
@@ -274,36 +274,36 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int rop = record.getLongParam (POS_OPERATION);
-    int sy = record.getParam (POS_SRC_Y);
-    int sx = record.getParam (POS_SRC_X);
+    final int rop = record.getLongParam (POS_OPERATION);
+    final int sy = record.getParam (POS_SRC_Y);
+    final int sx = record.getParam (POS_SRC_X);
     setOperation (rop);
     setOrigin (sx, sy);
 
-    if (record.getLength () == (record.RECORD_HEADER_SIZE + 8 * 2))
+    if (record.getLength () == (MfRecord.RECORD_HEADER_SIZE + 8 * 2))
     {
       // Simple form
-      int dh = record.getParam (SIMPLE_POS_HEIGHT);
-      int dw = record.getParam (SIMPLE_POS_WIDTH);
-      int dy = record.getParam (SIMPLE_POS_DST_Y);
-      int dx = record.getParam (SIMPLE_POS_DST_X);
+      final int dh = record.getParam (SIMPLE_POS_HEIGHT);
+      final int dw = record.getParam (SIMPLE_POS_WIDTH);
+      final int dy = record.getParam (SIMPLE_POS_DST_Y);
+      final int dx = record.getParam (SIMPLE_POS_DST_X);
       setDestination (dx, dy, dw, dh);
     }
     else
     {
       // Complex form
-      int dh = record.getParam (EXT_POS_HEIGHT);
-      int dw = record.getParam (EXT_POS_WIDTH);
-      int dy = record.getParam (EXT_POS_DST_Y);
-      int dx = record.getParam (EXT_POS_DST_X);
+      final int dh = record.getParam (EXT_POS_HEIGHT);
+      final int dw = record.getParam (EXT_POS_WIDTH);
+      final int dy = record.getParam (EXT_POS_DST_Y);
+      final int dx = record.getParam (EXT_POS_DST_X);
       setDestination (dx, dy, dw, dh);
       try
       {
         // The sourceDib follows on Position 8 til the end if this is not the simple
         // form.
-        DIBReader reader = new DIBReader ();
+        final DIBReader reader = new DIBReader ();
         setImage(reader.setRecord (record, RECORD_BASE_SIZE_EXT));
       }
       catch (IOException ioe)

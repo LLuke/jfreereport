@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfRecord.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: MfRecord.java,v 1.1 2003/03/09 20:38:19 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public class MfRecord extends Buffer
    *
    * @param parcount the number of 16-Bit words stored as bulk in the record.
    */
-  public MfRecord (int parcount)
+  public MfRecord (final int parcount)
   {
     super (parcount * 2 + RECORD_HEADER_SIZE);
   }
@@ -69,17 +69,17 @@ public class MfRecord extends Buffer
    * @param in the source inputstream
    * @throws IOException if an IOError occurs.
    */
-  public MfRecord (InputStream in) throws IOException
+  public MfRecord (final InputStream in) throws IOException
   {
     read(in);
   }
 
   /** Read a record from an input stream. */
-  protected void read (InputStream in)
+  protected void read (final InputStream in)
           throws IOException
   {
     super.read (in, 0, RECORD_HEADER_SIZE);
-    int remaining = getInt (0) * 2 - RECORD_HEADER_SIZE;
+    final int remaining = getInt (0) * 2 - RECORD_HEADER_SIZE;
     if (remaining > 0)
     {
       super.read (in, RECORD_HEADER_SIZE, remaining);
@@ -102,7 +102,7 @@ public class MfRecord extends Buffer
    *
    * @param type the RecordType
    */
-  public void setType (int type)
+  public void setType (final int type)
   {
     setShort(RECORD_TYPE_POS, type);
   }
@@ -114,7 +114,7 @@ public class MfRecord extends Buffer
    * @param p the parameter position in words.
    * @return the parameter value.
    */
-  public int getParam (int p)
+  public int getParam (final int p)
   {
     return getShort (p * 2 + RECORD_HEADER_SIZE);
   }
@@ -126,7 +126,7 @@ public class MfRecord extends Buffer
    * @param p the parameter position in words.
    * @param value the parameter value.
    */
-  public void setParam (int p, int value)
+  public void setParam (final int p, final int value)
   {
     setShort(p * 2 + RECORD_HEADER_SIZE, value);
   }
@@ -138,7 +138,7 @@ public class MfRecord extends Buffer
    * @param p the parameter position in words.
    * @return the parameter value.
    */
-  public int getLongParam (int p)
+  public int getLongParam (final int p)
   {  // Offset is in 16-bit words.
     return getInt (p * 2 + RECORD_HEADER_SIZE);
   }
@@ -150,7 +150,7 @@ public class MfRecord extends Buffer
    * @param p the parameter position in words.
    * @param value the parameter value.
    */
-  public void setLongParam (int p, int value)
+  public void setLongParam (final int p, final int value)
   {
     setInt(p * 2 + RECORD_HEADER_SIZE, value);
   }
@@ -162,7 +162,7 @@ public class MfRecord extends Buffer
    * @param p the parameter position in words.
    * @return the parameter value.
    */
-  public String getStringParam (int p, int len)
+  public String getStringParam (final int p, final int len)
   {
     return getString (p * 2 + RECORD_HEADER_SIZE, len);
   }
@@ -174,7 +174,7 @@ public class MfRecord extends Buffer
    * @param p the parameter position in words.
    * @param s the parameter value.
    */
-  public void setStringParam (int p, String s)
+  public void setStringParam (final int p, final String s)
   {
     setString(p * 2 + RECORD_HEADER_SIZE, s);
   }
@@ -190,15 +190,15 @@ public class MfRecord extends Buffer
   /** Return debug info. */
   public String toString ()
   {
-    StringBuffer result = new StringBuffer ();
+    final StringBuffer result = new StringBuffer ();
     result.append (type);
     result.append (" ");
     result.append (getName ());
     result.append (": ");
 
-    StringBuffer str = new StringBuffer ();
+    final StringBuffer str = new StringBuffer ();
 
-    int len = (getInt (0) - 3) * 2;
+    final int len = (getInt (0) - 3) * 2;
     for (int i = 0; i < len; i++)
     {
       if ((i % 16) == 0)
@@ -211,7 +211,7 @@ public class MfRecord extends Buffer
         result.append (" ");
       }
 
-      int by = getByte (i + RECORD_HEADER_SIZE);
+      final int by = getByte (i + RECORD_HEADER_SIZE);
 
       if (by < 16)
       {

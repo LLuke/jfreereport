@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmd.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
+ * $Id: MfCmdInvertRegion.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -59,12 +59,12 @@ public class MfCmdInvertRegion extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
     // by filling with XOR?
-    Graphics2D g2 = (Graphics2D) file.getGraphics2D().create();
+    final Graphics2D g2 = (Graphics2D) file.getGraphics2D().create();
     g2.setXORMode(Color.white);
-    MfLogRegion reg = file.getRegionObject(getRegion());
+    final MfLogRegion reg = file.getRegionObject(getRegion());
     g2.fill(reg.getBounds());
   }
 
@@ -90,7 +90,7 @@ public class MfCmdInvertRegion extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
     region = record.getParam (POS_REGION);
   }
@@ -102,12 +102,12 @@ public class MfCmdInvertRegion extends MfCmd
    */
   public MfRecord getRecord ()
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_REGION, getRegion());
     return record;
   }
 
-  public void setRegion (int region)
+  public void setRegion (final int region)
   {
     this.region = region;
   }
@@ -119,7 +119,7 @@ public class MfCmdInvertRegion extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[INVERT_REGION] region=");
     b.append (getRegion ());
     return b.toString ();

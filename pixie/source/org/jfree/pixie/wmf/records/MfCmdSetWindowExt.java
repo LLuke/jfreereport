@@ -32,10 +32,10 @@ public class MfCmdSetWindowExt extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfDcState state = file.getCurrentState ();
-    Dimension dim = getScaledDimension ();
+    final MfDcState state = file.getCurrentState ();
+    final Dimension dim = getScaledDimension ();
     state.setWindowExt (dim.width, dim.height);
   }
 
@@ -58,10 +58,10 @@ public class MfCmdSetWindowExt extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int height = record.getParam (POS_HEIGHT);
-    int width = record.getParam (POS_WIDTH);
+    final int height = record.getParam (POS_HEIGHT);
+    final int width = record.getParam (POS_WIDTH);
     setDimension (width, height);
   }
 
@@ -72,8 +72,8 @@ public class MfCmdSetWindowExt extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
-    Dimension dim = getDimension();
+    final MfRecord record = new MfRecord(RECORD_SIZE);
+    final Dimension dim = getDimension();
     record.setParam(POS_HEIGHT, dim.height);
     record.setParam(POS_WIDTH, dim.width);
     return record;
@@ -81,7 +81,7 @@ public class MfCmdSetWindowExt extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[SET_WINDOW_EXT] dimension=");
     b.append (getDimension ());
     return b.toString ();
@@ -97,7 +97,7 @@ public class MfCmdSetWindowExt extends MfCmd
     return new Dimension (scaled_width, scaled_height);
   }
 
-  public void setDimension (int w, int h)
+  public void setDimension (final int w, final int h)
   {
     this.width = w;
     this.height = h;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmd.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
+ * $Id: MfCmdOffsetViewportOrg.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -68,10 +68,10 @@ public class MfCmdOffsetViewportOrg extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfDcState state = file.getCurrentState ();
-    Point p = getScaledDestination ();
+    final MfDcState state = file.getCurrentState ();
+    final Point p = getScaledDestination ();
     state.setViewportOrg (state.getViewportOrgX () + p.x, state.getViewportOrgY () + p.y);
   }
 
@@ -92,13 +92,13 @@ public class MfCmdOffsetViewportOrg extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[OFFSET_VIEWPORT] destination=");
     b.append (getDestination ());
     return b.toString ();
   }
 
-  public void setDestination (int x, int y)
+  public void setDestination (final int x, final int y)
   {
     this.x = x;
     this.y = y;
@@ -107,7 +107,7 @@ public class MfCmdOffsetViewportOrg extends MfCmd
 
   }
 
-  public void setDestination (Point p)
+  public void setDestination (final Point p)
   {
     setDestination(p.x, p.y);
   }
@@ -132,10 +132,10 @@ public class MfCmdOffsetViewportOrg extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int y = record.getParam (POS_Y);
-    int x = record.getParam (POS_X);
+    final int y = record.getParam (POS_Y);
+    final int x = record.getParam (POS_X);
     setDestination (x, y);
   }
 
@@ -146,8 +146,8 @@ public class MfCmdOffsetViewportOrg extends MfCmd
    */
   public MfRecord getRecord ()
   {
-    Point dest = getDestination();
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final Point dest = getDestination();
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_Y, dest.y);
     record.setParam(POS_X, dest.x);
     return record;

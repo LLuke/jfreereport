@@ -27,14 +27,14 @@ public class MfCmdTextOut extends MfCmd
    *
    * @param metafile the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    Point p = getScaledDestination ();
-    int x = p.x;
-    int y = p.y;
+    final Point p = getScaledDestination ();
+    final int x = p.x;
+    final int y = p.y;
 
-    Graphics2D graphics = file.getGraphics2D ();
-    MfDcState state = file.getCurrentState ();
+    final Graphics2D graphics = file.getGraphics2D ();
+    final MfDcState state = file.getCurrentState ();
 
     state.prepareDrawText ();
     graphics.drawString (text, x, y);
@@ -71,17 +71,17 @@ public class MfCmdTextOut extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int count = record.getParam (0);
-    byte[] text = new byte[count];
+    final int count = record.getParam (0);
+    final byte[] text = new byte[count];
     for (int i = 0; i < count; i++)
     {
-      text[i] = (byte) record.getByte (record.RECORD_HEADER_SIZE + 2 + i);
+      text[i] = (byte) record.getByte (MfRecord.RECORD_HEADER_SIZE + 2 + i);
     }
-    String sText = new String (text);
-    int y = record.getParam ((int) (Math.ceil (count / 2) + 1));
-    int x = record.getParam ((int) (Math.ceil (count / 2) + 2));
+    final String sText = new String (text);
+    final int y = record.getParam ((int) (Math.ceil (count / 2) + 1));
+    final int x = record.getParam ((int) (Math.ceil (count / 2) + 2));
 
     setCount (count);
     setDestination (x, y);
@@ -95,18 +95,18 @@ public class MfCmdTextOut extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    String text = getText();
-    int parCntText = (int) Math.ceil(text.length()/2);
-    MfRecord record = new MfRecord(parCntText + 3);
+    final String text = getText();
+    final int parCntText = (int) Math.ceil(text.length()/2);
+    final MfRecord record = new MfRecord(parCntText + 3);
     record.setParam(0, text.length());
 
-    byte[] textRaw = text.getBytes();
+    final byte[] textRaw = text.getBytes();
     for (int i = 0; i < count; i++)
     {
-      record.setByte (record.RECORD_HEADER_SIZE + 2 + i, textRaw[i]);
+      record.setByte (MfRecord.RECORD_HEADER_SIZE + 2 + i, textRaw[i]);
     }
 
-    Point dest = getDestination();
+    final Point dest = getDestination();
     record.setParam ((int) (Math.ceil (count / 2) + 1), dest.y);
     record.setParam ((int) (Math.ceil (count / 2) + 2), dest.x);
     return record;
@@ -114,7 +114,7 @@ public class MfCmdTextOut extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[TEXT_OUT] text=");
     b.append (getText ());
     b.append (" destination=");
@@ -124,7 +124,7 @@ public class MfCmdTextOut extends MfCmd
     return b.toString ();
   }
 
-  public void setDestination (int x, int y)
+  public void setDestination (final int x, final int y)
   {
     this.x = x;
     this.y = y;
@@ -138,7 +138,7 @@ public class MfCmdTextOut extends MfCmd
     return new Point (x, y);
   }
 
-  public void setText (String text)
+  public void setText (final String text)
   {
     this.text = text;
   }
@@ -153,7 +153,7 @@ public class MfCmdTextOut extends MfCmd
     return count;
   }
 
-  public void setCount (int count)
+  public void setCount (final int count)
   {
     this.count = count;
   }

@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfLogFont.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: MfLogFont.java,v 1.1 2003/03/09 20:38:17 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ public class MfLogFont implements WmfObject
   {
   }
 
-  public void setFace (String face)
+  public void setFace (final String face)
   {
     this.face = face;
   }
@@ -66,7 +66,7 @@ public class MfLogFont implements WmfObject
     return face;
   }
 
-  public void setSize (int size)
+  public void setSize (final int size)
   {
     this.size = size;
   }
@@ -84,7 +84,7 @@ public class MfLogFont implements WmfObject
     return style;
   }
 
-  public void setStyle (int style)
+  public void setStyle (final int style)
   {
     this.style = style;
   }
@@ -95,7 +95,7 @@ public class MfLogFont implements WmfObject
     return underline;
   }
   
-  public void setUnderline (boolean underline)
+  public void setUnderline (final boolean underline)
   {
     this.underline = underline;
   }
@@ -105,15 +105,15 @@ public class MfLogFont implements WmfObject
     return strikeout;
   }
   
-  public void setStrikeOut (boolean b)
+  public void setStrikeOut (final boolean b)
   {
     this.strikeout = b;
   }
   
   public Font createFont ()
   {
-    Font retfont = new Font (getFace(), getStyle(), getSize());
-    double rot = Math.sin (Math.toRadians(-rotation));
+    final Font retfont = new Font (getFace(), getStyle(), getSize());
+    final double rot = Math.sin (Math.toRadians(-rotation));
     return retfont.deriveFont (AffineTransform.getRotateInstance(rot));
   }
 
@@ -127,7 +127,7 @@ public class MfLogFont implements WmfObject
     return rotation;
   }
   
-  public void setRotation (double d)
+  public void setRotation (final double d)
   {
     this.rotation = d;
   }

@@ -65,7 +65,7 @@ public class MfCmdStretchDibits extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
     // not implemented ...
   }
@@ -96,7 +96,7 @@ public class MfCmdStretchDibits extends MfCmd
     return rop;
   }
 
-  public void setROP (int rop)
+  public void setROP (final int rop)
   {
     this.rop = rop;
   }
@@ -106,7 +106,7 @@ public class MfCmdStretchDibits extends MfCmd
     return image;
   }
 
-  public void setImage(BufferedImage image)
+  public void setImage(final BufferedImage image)
   {
     this.image = image;
   }
@@ -116,7 +116,7 @@ public class MfCmdStretchDibits extends MfCmd
     return usage;
   }
 
-  public void setUsage (int usage)
+  public void setUsage (final int usage)
   {
     this.usage = usage;
   }
@@ -130,22 +130,22 @@ public class MfCmdStretchDibits extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int rop = record.getLongParam (POS_ROP);
-    int usage = record.getParam (POS_USAGE); // This is the only parameter left, so I assume this
-    int srcH = record.getParam (POS_SRC_H);
-    int srcW = record.getParam (POS_SRC_W);
-    int ySrc = record.getParam (POS_SRC_Y);
-    int xSrc = record.getParam (POS_SRC_X);
-    int destH = record.getParam (POS_DST_H);
-    int destW = record.getParam (POS_DST_W);
-    int yDest = record.getParam (POS_DST_Y);
-    int xDest = record.getParam (POS_DST_X);
+    final int rop = record.getLongParam (POS_ROP);
+    final int usage = record.getParam (POS_USAGE); // This is the only parameter left, so I assume this
+    final int srcH = record.getParam (POS_SRC_H);
+    final int srcW = record.getParam (POS_SRC_W);
+    final int ySrc = record.getParam (POS_SRC_Y);
+    final int xSrc = record.getParam (POS_SRC_X);
+    final int destH = record.getParam (POS_DST_H);
+    final int destW = record.getParam (POS_DST_W);
+    final int yDest = record.getParam (POS_DST_Y);
+    final int xDest = record.getParam (POS_DST_X);
 
     try
     {
-      DIBReader reader = new DIBReader ();
+      final DIBReader reader = new DIBReader ();
       setImage(reader.setRecord (record, POS_DIB));
     }
     catch (IOException ioe)
@@ -172,7 +172,7 @@ public class MfCmdStretchDibits extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[STRETCH_DIBITS] rop=");
     b.append (getROP ());
     b.append (" srcRect=");
@@ -184,7 +184,7 @@ public class MfCmdStretchDibits extends MfCmd
     return b.toString ();
   }
 
-  public void setSrcRect (int x, int y, int w, int h)
+  public void setSrcRect (final int x, final int y, final int w, final int h)
   {
     this.srcX = x;
     this.srcY = y;
@@ -194,7 +194,7 @@ public class MfCmdStretchDibits extends MfCmd
     scaleYChanged ();
   }
 
-  public void setDestRect (int x, int y, int w, int h)
+  public void setDestRect (final int x, final int y, final int w, final int h)
   {
     this.destX = x;
     this.destY = y;

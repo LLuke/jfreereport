@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfType.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: MfType.java,v 1.1 2003/03/09 20:38:20 taqua Exp $
  *
  * Changes
  * -------
@@ -198,7 +198,7 @@ public class MfType
           };
 
   /** Map a 16-bit type id onto an object. */
-  public static MfType get (int id)
+  public static MfType get (final int id)
   {
     for (int i = 0; i < ntab.length; i++)
     {
@@ -244,7 +244,7 @@ public class MfType
     return (type & MAPPING_MODE) != 0;
   }
 
-  private MfType (int id, String name, int type)
+  private MfType (final int id, final String name, final int type)
   {
     this.id = id;
     this.name = name;

@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfLogRegion.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: MfLogRegion.java,v 1.1 2003/03/09 20:38:18 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ public class MfLogRegion implements WmfObject
   {
   }
 
-  public void setBounds (int x, int y, int w, int h)
+  public void setBounds (final int x, final int y, final int w, final int h)
   {
     this.x = x;
     this.y = y;

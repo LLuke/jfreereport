@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdSetDibitsToDevice.java,v 1.2 2003/03/21 21:31:56 taqua Exp $
+ * $Id: MfCmdSetMapMode.java,v 1.3 2003/03/22 16:02:57 taqua Exp $
  *
  * Changes
  * -------
@@ -65,9 +65,9 @@ public class MfCmdSetMapMode extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
     state.setMapMode (mapmode);
   }
 
@@ -90,9 +90,9 @@ public class MfCmdSetMapMode extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int id = record.getParam (0);
+    final int id = record.getParam (0);
     setMapMode (id);
   }
 
@@ -103,7 +103,7 @@ public class MfCmdSetMapMode extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_MAPMODE, getMapMode());
     return record;
   }
@@ -126,13 +126,13 @@ public class MfCmdSetMapMode extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[MAPMODE] mapmode=");
     b.append (getMapMode ());
     return b.toString ();
   }
 
-  public void setMapMode (int id)
+  public void setMapMode (final int id)
   {
     this.mapmode = id;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdEscape.java,v 1.3 2003/03/15 17:16:57 taqua Exp $
+ * $Id: MfCmdSaveDc.java,v 1.3 2003/03/21 21:31:54 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ public class MfCmdSaveDc extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
     file.saveDCState ();
   }
@@ -81,7 +81,7 @@ public class MfCmdSaveDc extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
   }
 
@@ -108,7 +108,7 @@ public class MfCmdSaveDc extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[SAVE_DC]");
     return b.toString ();
   }

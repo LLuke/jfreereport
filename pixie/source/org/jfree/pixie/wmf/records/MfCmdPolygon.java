@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdArc.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
+ * $Id: MfCmdPolygon.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -66,12 +66,12 @@ public class MfCmdPolygon extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    Graphics2D graph = file.getGraphics2D ();
+    final Graphics2D graph = file.getGraphics2D ();
 
-    Polygon polygon = new Polygon (getScaledPointsX (), getScaledPointsY (), getPointCount ());
-    MfDcState state = file.getCurrentState ();
+    final Polygon polygon = new Polygon (getScaledPointsX (), getScaledPointsY (), getPointCount ());
+    final MfDcState state = file.getCurrentState ();
 
     if (state.getLogBrush ().isVisible ())
     {
@@ -110,12 +110,12 @@ public class MfCmdPolygon extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[POLYGON] count=");
     b.append (getPointCount ());
-    int l = getPointCount ();
-    int[] points_x = getPointsX ();
-    int[] points_y = getPointsY ();
+    final int l = getPointCount ();
+    final int[] points_x = getPointsX ();
+    final int[] points_y = getPointsY ();
 
     for (int i = 0; i < l; i++)
     {
@@ -139,11 +139,11 @@ public class MfCmdPolygon extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int count = record.getParam (0);
-    int[] points_x = new int[count];
-    int[] points_y = new int[count];
+    final int count = record.getParam (0);
+    final int[] points_x = new int[count];
+    final int[] points_y = new int[count];
 
     for (int i = 0; i < count; i++)
     {
@@ -161,10 +161,10 @@ public class MfCmdPolygon extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(getPointCount()* 2 + 1);
-    int count = getPointCount();
-    int[] points_x = getPointsX();
-    int[] points_y = getPointsY();
+    final MfRecord record = new MfRecord(getPointCount()* 2 + 1);
+    final int count = getPointCount();
+    final int[] points_x = getPointsX();
+    final int[] points_y = getPointsY();
 
     record.setParam(0, count);
 
@@ -176,12 +176,12 @@ public class MfCmdPolygon extends MfCmd
     return record;
   }
 
-  public void setPointCount (int count)
+  public void setPointCount (final int count)
   {
     this.count = count;
   }
 
-  public void setPoints (int[] points_x, int[] points_y)
+  public void setPoints (final int[] points_x, final int[] points_y)
   {
     this.points_x = points_x;
     this.points_y = points_y;

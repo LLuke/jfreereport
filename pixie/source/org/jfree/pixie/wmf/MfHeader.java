@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfHeader.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: MfHeader.java,v 1.1 2003/03/09 20:38:17 taqua Exp $
  *
  * Changes
  * -------
@@ -87,7 +87,7 @@ public class MfHeader extends Buffer
    *
    * @return either QUALITY_NO, QUALITY_MAYBE or QUALITY_YES.
    */
-  public static int isMetafile (String inName, InputStream in)
+  public static int isMetafile (final String inName, final InputStream in)
   {
     if (in != null)
     {
@@ -136,9 +136,9 @@ public class MfHeader extends Buffer
    * @param in the input stream
    * @throws IOException if an error occured.
    */
-  public void read (InputStream in) throws IOException
+  public void read (final InputStream in) throws IOException
   {
-    int total = PLACEABLE_HEADER_SIZE + STANDARD_HEADER_SIZE;
+    final int total = PLACEABLE_HEADER_SIZE + STANDARD_HEADER_SIZE;
     setCapacity (total);
 
     read (in, 0, 4);
@@ -179,7 +179,7 @@ public class MfHeader extends Buffer
    */
   public boolean isValid ()
   {
-    int type = getShort (WMF_FILE_TYPE);  // Memory or disk.
+    final int type = getShort (WMF_FILE_TYPE);  // Memory or disk.
     if (type == WMF_TYPE_MEM)
     {
       // type == null means this is a wmf from memory. we don't want that
@@ -201,10 +201,10 @@ public class MfHeader extends Buffer
    */
   public Rectangle getBBox ()
   {
-    int left = getShort (ALDUS_POS_LEFT);
-    int top = getShort (ALDUS_POS_TOP);
-    int right = getShort (ALDUS_POS_RIGHT);
-    int bottom = getShort (ALDUS_POS_BOTTOM);
+    final int left = getShort (ALDUS_POS_LEFT);
+    final int top = getShort (ALDUS_POS_TOP);
+    final int right = getShort (ALDUS_POS_RIGHT);
+    final int bottom = getShort (ALDUS_POS_BOTTOM);
     return new Rectangle (left, top, right - left, bottom - top);
   }
 

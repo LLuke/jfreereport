@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdEscape.java,v 1.3 2003/03/15 17:16:57 taqua Exp $
+ * $Id: MfCmdScaleWindowExt.java,v 1.2 2003/03/21 21:31:55 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public class MfCmdScaleWindowExt extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
     // ToDo Not yet implemented
   }
@@ -74,7 +74,7 @@ public class MfCmdScaleWindowExt extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_X_DENOM, getXDenom());
     record.setParam(POS_X_NUM, getXNum());
     record.setParam(POS_Y_DENOM, getYDenom());
@@ -105,7 +105,7 @@ public class MfCmdScaleWindowExt extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[SCALE_WINDOW] scaleX=");
     b.append (getXNum ());
     b.append ("/");
@@ -126,23 +126,23 @@ public class MfCmdScaleWindowExt extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int yD = record.getParam (0);
-    int yN = record.getParam (1);
-    int xD = record.getParam (2);
-    int xN = record.getParam (3);
+    final int yD = record.getParam (0);
+    final int yN = record.getParam (1);
+    final int xD = record.getParam (2);
+    final int xN = record.getParam (3);
     setXScale (xN, xD);
     setYScale (yN, yD);
   }
 
-  public void setXScale (int xNum, int xDenom)
+  public void setXScale (final int xNum, final int xDenom)
   {
     this.xNum = xNum;
     this.xDenom = xDenom;
   }
 
-  public void setYScale (int yNum, int yDenom)
+  public void setYScale (final int yNum, final int yDenom)
   {
     this.yNum = yNum;
     this.yDenom = yDenom;

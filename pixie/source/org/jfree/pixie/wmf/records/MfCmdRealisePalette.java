@@ -22,7 +22,7 @@ public class MfCmdRealisePalette extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
   }
 
@@ -45,7 +45,7 @@ public class MfCmdRealisePalette extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
   }
 
@@ -61,7 +61,7 @@ public class MfCmdRealisePalette extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[REALISE_PALETTE] is not implemented");
     return b.toString ();
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdSetDibitsToDevice.java,v 1.2 2003/03/21 21:31:56 taqua Exp $
+ * $Id: MfCmdSetPaletteEntries.java,v 1.2 2003/03/22 16:02:57 taqua Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,7 @@ public class MfCmdSetPaletteEntries extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
     // not yet
   }
@@ -89,7 +89,7 @@ public class MfCmdSetPaletteEntries extends MfCmd
     return colors;
   }
 
-  public void setEntries (Color[] colors)
+  public void setEntries (final Color[] colors)
   {
     this.colors = colors;
   }
@@ -103,17 +103,17 @@ public class MfCmdSetPaletteEntries extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int hPalette = record.getParam (POS_H_PALETTE);
-    int cStart = record.getParam (POS_CSTART);
-    int cEntries = record.getParam (POS_CENTRIES);
-    Color[] colors = new Color[cEntries];
+    final int hPalette = record.getParam (POS_H_PALETTE);
+    final int cStart = record.getParam (POS_CSTART);
+    final int cEntries = record.getParam (POS_CENTRIES);
+    final Color[] colors = new Color[cEntries];
 
     for (int i = 0; i < cEntries; i++)
     {
-      int colorRef = record.getLongParam (2*i + BASE_RECORD_SIZE);
-      GDIColor color = new GDIColor (colorRef);
+      final int colorRef = record.getLongParam (2*i + BASE_RECORD_SIZE);
+      final GDIColor color = new GDIColor (colorRef);
       colors[i] = color;
     }
     setStartPos(cStart);
@@ -128,11 +128,11 @@ public class MfCmdSetPaletteEntries extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    Color[] cEntries = getEntries();
+    final Color[] cEntries = getEntries();
     if (cEntries == null)
       throw new NullPointerException("No CEntries set");
 
-    MfRecord record = new MfRecord(2 * cEntries.length + BASE_RECORD_SIZE);
+    final MfRecord record = new MfRecord(2 * cEntries.length + BASE_RECORD_SIZE);
     record.setParam(POS_H_PALETTE, getHPalette());
     record.setParam(POS_CSTART, getStartPos());
     record.setParam(POS_CENTRIES, cEntries.length);
@@ -149,7 +149,7 @@ public class MfCmdSetPaletteEntries extends MfCmd
     return startPos;
   }
 
-  public void setStartPos(int startPos)
+  public void setStartPos(final int startPos)
   {
     this.startPos = startPos;
   }
@@ -170,14 +170,14 @@ public class MfCmdSetPaletteEntries extends MfCmd
     return hPalette;
   }
 
-  public void setHPalette (int hPalette)
+  public void setHPalette (final int hPalette)
   {
     this.hPalette = hPalette;
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[SET_PALETTE_ENTRIES] entriesCount=");
     if (getEntries() == null)
     {

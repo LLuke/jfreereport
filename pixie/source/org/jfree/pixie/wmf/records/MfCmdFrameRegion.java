@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmd.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
+ * $Id: MfCmdFrameRegion.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -70,23 +70,23 @@ public class MfCmdFrameRegion extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfLogBrush brush = file.getBrushObject (brushObjectNr);
-    MfLogRegion regio = file.getRegionObject (regionObjectNr);
+    final MfLogBrush brush = file.getBrushObject (brushObjectNr);
+    final MfLogRegion regio = file.getRegionObject (regionObjectNr);
 
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
     state.setLogRegion (regio);
     state.setLogBrush (brush);
 
-    Graphics2D graph = file.getGraphics2D ();
-    Rectangle rec = scaleRect (regio.getBounds ());
+    final Graphics2D graph = file.getGraphics2D ();
+    final Rectangle rec = scaleRect (regio.getBounds ());
 
     if (brush.isVisible ())
     {
-      Dimension dim = getScaledDimension ();
+      final Dimension dim = getScaledDimension ();
       // upper side
-      Rectangle2D rect = new Rectangle2D.Double ();
+      final Rectangle2D rect = new Rectangle2D.Double ();
       rect.setFrame (rec.x, rec.y, rec.width, dim.height);
       state.preparePaint ();
       graph.fill (rect);
@@ -136,12 +136,12 @@ public class MfCmdFrameRegion extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int height = record.getParam (0);
-    int width = record.getParam (1);
-    int regio = record.getParam (2);
-    int brush = record.getParam (3);
+    final int height = record.getParam (0);
+    final int width = record.getParam (1);
+    final int regio = record.getParam (2);
+    final int brush = record.getParam (3);
     setBrush (brush);
     setRegion (regio);
     setDimension (width, height);
@@ -154,8 +154,8 @@ public class MfCmdFrameRegion extends MfCmd
    */
   public MfRecord getRecord ()
   {
-    MfRecord record = new MfRecord(4);
-    Dimension dim = getDimension();
+    final MfRecord record = new MfRecord(4);
+    final Dimension dim = getDimension();
     record.setParam(0, dim.height);
     record.setParam(1, dim.width);
     record.setParam(2, getRegion());
@@ -165,7 +165,7 @@ public class MfCmdFrameRegion extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[FRAME_REGION] region=");
     b.append (getRegion ());
     b.append (" brush=");
@@ -175,7 +175,7 @@ public class MfCmdFrameRegion extends MfCmd
     return b.toString ();
   }
 
-  public void setDimension (int width, int height)
+  public void setDimension (final int width, final int height)
   {
     this.width = width;
     this.height = height;
@@ -183,7 +183,7 @@ public class MfCmdFrameRegion extends MfCmd
     scaleYChanged ();
   }
 
-  public void setDimension (Dimension dim)
+  public void setDimension (final Dimension dim)
   {
     setDimension(dim.width, dim.height);
   }
@@ -221,7 +221,7 @@ public class MfCmdFrameRegion extends MfCmd
     return brushObjectNr;
   }
 
-  public void setBrush (int brush)
+  public void setBrush (final int brush)
   {
     this.brushObjectNr = brush;
   }
@@ -231,7 +231,7 @@ public class MfCmdFrameRegion extends MfCmd
     return regionObjectNr;
   }
 
-  public void setRegion (int region)
+  public void setRegion (final int region)
   {
     regionObjectNr = region;
   }

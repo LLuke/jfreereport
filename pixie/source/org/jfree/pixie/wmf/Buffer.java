@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: Buffer.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: Buffer.java,v 1.1 2003/03/09 20:38:16 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ public class Buffer
    *
    * @param length the length of the buffer in bytes.
    */
-  protected Buffer (int length)
+  protected Buffer (final int length)
   {
     setCapacity(length);
   }
@@ -84,7 +84,7 @@ public class Buffer
    * @throws IllegalArgumentException if the length is shorter than the used
    * storage in memory.
    */
-  protected void setLength (int len)
+  protected void setLength (final int len)
   {
     if (len > bytes.length)
       throw new IllegalArgumentException();
@@ -98,7 +98,7 @@ public class Buffer
    * @param capacity the new capacity that should be ensured.
    * @throws IllegalArgumentException if the capacity is smaller than the buffers length.
    */
-  protected void setCapacity (int capacity)
+  protected void setCapacity (final int capacity)
   {
     if (capacity < getLength())
       throw new IllegalArgumentException();
@@ -109,7 +109,7 @@ public class Buffer
     }
     else if (capacity != bytes.length)
     {
-      byte[] old = bytes;
+      final byte[] old = bytes;
       bytes = new byte[capacity];
       System.arraycopy (old, 0, bytes, 0, Math.min (old.length, capacity));
     }
@@ -123,7 +123,7 @@ public class Buffer
    * @param offset the offset
    * @param len the number bytes that should be read.
    */
-  public void read (InputStream in, int offset, int len)
+  public void read (final InputStream in, int offset, int len)
           throws IOException
   {
     // make sure, that all bytes can be read and create the buffer if needed.
@@ -135,7 +135,7 @@ public class Buffer
     //in.readFully( bytes, offset, len );
     while (len > 0)
     {
-      int blockSize = in.read (bytes, offset, len);
+      final int blockSize = in.read (bytes, offset, len);
       if (blockSize <= 0)
       {
         throw new EOFException ();
@@ -152,7 +152,7 @@ public class Buffer
    * @param offset the offset where to set the int value.
    * @param value the integer value that should be set.
    */
-  public void setInt (int offset, int value)
+  public void setInt (final int offset, final int value)
   {
     if (offset > (getLength() - 4))
       throw new IndexOutOfBoundsException();
@@ -167,7 +167,7 @@ public class Buffer
    * @param offset the offset where the integer value is stored in the memory
    * @return the integer.
    */
-  public int getInt (int offset)
+  public int getInt (final int offset)
   {
     if (offset > (getLength() - 4))
       throw new IndexOutOfBoundsException();
@@ -181,7 +181,7 @@ public class Buffer
    * @param offset the offset.
    * @param shortval the shortvalue.
    */
-  public void setShort (int offset, int shortval)
+  public void setShort (final int offset, final int shortval)
   {
     if (offset > (getLength() - 2))
       throw new IndexOutOfBoundsException();
@@ -196,7 +196,7 @@ public class Buffer
    * @param offset the offset from where to read the short.
    * @return the short.
    */
-  public int getShort (int offset)
+  public int getShort (final int offset)
   {
     if (offset > (getLength() - 2))
       throw new IndexOutOfBoundsException();
@@ -210,7 +210,7 @@ public class Buffer
    * @param offset the offset.
    * @param value the byte that should be set.
    */
-  public void setByte (int offset, int value)
+  public void setByte (final int offset, final int value)
   {
     if (offset > (getLength() - 1))
       throw new IndexOutOfBoundsException();
@@ -224,7 +224,7 @@ public class Buffer
    * @param offset the offset from where to read the byte
    * @return the byte read.
    */
-  public int getByte (int offset)
+  public int getByte (final int offset)
   {
     if (offset > (getLength() - 1))
       throw new IndexOutOfBoundsException();
@@ -239,14 +239,14 @@ public class Buffer
    * @param offset the offset, where to store the string.
    * @param str the string that should be stored in the Wmf.
    */
-  public void setString (int offset, String str)
+  public void setString (final int offset, final String str)
   {
     if ((offset + str.length()) > (getLength() - 1))
       throw new IndexOutOfBoundsException();
     
-    byte[] b = str.getBytes();
+    final byte[] b = str.getBytes();
 
-    int len = getLength() - offset;
+    final int len = getLength() - offset;
 
     for (int i = 0; i < len; i++)
     {
@@ -266,7 +266,7 @@ public class Buffer
    * @param len the maximum length of the string
    * @return the null-terminated string read.
    */
-  public String getString (int offset, int len)
+  public String getString (final int offset, final int len)
   {
     int i;
     for (i = 0; i < len; i++)
@@ -282,7 +282,7 @@ public class Buffer
    * @param offset the offse, from where to read.
    * @return the InputStream.
    */
-  public InputStream getInputStream (int offset)
+  public InputStream getInputStream (final int offset)
   {
     return new ByteArrayInputStream (bytes, offset, bytes.length - offset);
   }

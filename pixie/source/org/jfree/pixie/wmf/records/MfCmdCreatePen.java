@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmd.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
+ * $Id: MfCmdCreatePen.java,v 1.2 2003/03/14 20:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -77,9 +77,9 @@ public class MfCmdCreatePen extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfLogPen lpen = new MfLogPen ();
+    final MfLogPen lpen = new MfLogPen ();
     lpen.setStyle (getStyle ());
     lpen.setColor (getColor ());
     lpen.setWidth (getScaledWidth ());
@@ -116,7 +116,7 @@ public class MfCmdCreatePen extends MfCmd
    */
   public MfRecord getRecord ()
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_STYLE, getStyle());
     record.setParam(POS_WIDTH, getWidth());
     record.setLongParam(POS_COLOR, GDIColor.translateColor(getColor()));
@@ -132,11 +132,11 @@ public class MfCmdCreatePen extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int style = record.getParam (POS_STYLE);
-    int width = record.getParam (POS_WIDTH);
-    int color = record.getLongParam (POS_COLOR);
+    final int style = record.getParam (POS_STYLE);
+    final int width = record.getParam (POS_WIDTH);
+    final int color = record.getLongParam (POS_COLOR);
 
     setStyle (style);
     setWidth (width);
@@ -145,7 +145,7 @@ public class MfCmdCreatePen extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[CREATE_PEN] style=");
     b.append (getStyle ());
     b.append (" width=");
@@ -161,7 +161,7 @@ public class MfCmdCreatePen extends MfCmd
     return style;
   }
 
-  public void setStyle (int style)
+  public void setStyle (final int style)
   {
     this.style = style;
   }
@@ -176,7 +176,7 @@ public class MfCmdCreatePen extends MfCmd
     return width;
   }
 
-  public void setWidth (int width)
+  public void setWidth (final int width)
   {
     this.width = width;
     scaleXChanged ();
@@ -187,7 +187,7 @@ public class MfCmdCreatePen extends MfCmd
     return color;
   }
 
-  public void setColor (Color c)
+  public void setColor (final Color c)
   {
     this.color = c;
   }

@@ -2,7 +2,7 @@
  * Date: Mar 9, 2003
  * Time: 3:03:51 PM
  *
- * $Id: WmfGraphics2D.java,v 1.1 2003/03/09 20:38:20 taqua Exp $
+ * $Id: WmfGraphics2D.java,v 1.2 2003/05/09 10:25:08 taqua Exp $
  */
 package org.jfree.pixie.wmf;
 
@@ -50,7 +50,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @see #setClip
    * @see #setComposite
    */
-  public void draw(Shape s)
+  public void draw(final Shape s)
   {
   }
 
@@ -79,9 +79,9 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @see #clip
    * @see #setClip
    */
-  public boolean drawImage(Image img,
-                           AffineTransform xform,
-                           ImageObserver obs)
+  public boolean drawImage(final Image img,
+                           final AffineTransform xform,
+                           final ImageObserver obs)
   {
     return false;
   }
@@ -106,8 +106,8 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @see #clip
    * @see #setClip
    */
-  public void drawRenderedImage(RenderedImage img,
-                                AffineTransform xform)
+  public void drawRenderedImage(final RenderedImage img,
+                                final AffineTransform xform)
   {
   }
 
@@ -137,7 +137,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @see #setComposite
    * @see #setClip
    */
-  public void drawString(String s, float x, float y)
+  public void drawString(final String s, final float x, final float y)
   {
   }
 
@@ -155,7 +155,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @see #clip
    * @see #setClip
    */
-  public void fill(Shape s)
+  public void fill(final Shape s)
   {
   }
 
@@ -194,7 +194,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @see SecurityManager#checkPermission
    * @see AWTPermission
    */
-  public void setComposite(Composite comp)
+  public void setComposite(final Composite comp)
   {
   }
 
@@ -210,7 +210,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @see GradientPaint
    * @see TexturePaint
    */
-  public void setPaint(Paint paint)
+  public void setPaint(final Paint paint)
   {
   }
 
@@ -220,7 +220,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * <code>Shape</code> during the rendering process
    * @see BasicStroke
    */
-  public void setStroke(Stroke s)
+  public void setStroke(final Stroke s)
   {
   }
 
@@ -235,7 +235,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * hint category.
    * @see RenderingHints
    */
-  public void setRenderingHint(RenderingHints.Key hintKey, Object hintValue)
+  public void setRenderingHint(final RenderingHints.Key hintKey, final Object hintValue)
   {
   }
 
@@ -251,7 +251,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * <code>RenderingHints</code> class.
    * @see RenderingHints
    */
-  public Object getRenderingHint(RenderingHints.Key hintKey)
+  public Object getRenderingHint(final RenderingHints.Key hintKey)
   {
     return null;
   }
@@ -269,7 +269,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @param hints the rendering hints to be set
    * @see RenderingHints
    */
-  public void setRenderingHints(Map hints)
+  public void setRenderingHints(final Map hints)
   {
   }
 
@@ -287,7 +287,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @param hints the rendering hints to be set
    * @see RenderingHints
    */
-  public void addRenderingHints(Map hints)
+  public void addRenderingHints(final Map hints)
   {
   }
 
@@ -316,7 +316,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @see #transform
    * @see AffineTransform
    */
-  public void setTransform(AffineTransform Tx)
+  public void setTransform(final AffineTransform Tx)
   {
   }
 
@@ -374,7 +374,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @see #getBackground
    * @see Graphics#clearRect
    */
-  public void setBackground(Color color)
+  public void setBackground(final Color color)
   {
   }
 
@@ -420,7 +420,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    *          <code>Clip</code>.  If <code>s</code> is <code>null</code>,
    *          this method clears the current <code>Clip</code>.
    */
-  public void clip(Shape s)
+  public void clip(final Shape s)
   {
   }
 
@@ -488,7 +488,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * drawn twice, then all pixels are restored to their original values.
    * @param     c1 the XOR alternation color
    */
-  public void setXORMode(Color c1)
+  public void setXORMode(final Color c1)
   {
   }
 
@@ -513,7 +513,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @see     Graphics#drawBytes(byte[], int, int, int, int)
    * @see     Graphics#drawChars(char[], int, int, int, int)
    */
-  public void setFont(Font font)
+  public void setFont(final Font font)
   {
   }
 
@@ -525,7 +525,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @see       FontMetrics
    * @see       Graphics#getFontMetrics()
    */
-  public FontMetrics getFontMetrics(Font f)
+  public FontMetrics getFontMetrics(final Font f)
   {
     return null;
   }
@@ -567,7 +567,7 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @see         Graphics#setClip(int, int, int, int)
    * @since       JDK1.1
    */
-  public void setClip(Shape clip)
+  public void setClip(final Shape clip)
   {
   }
 
@@ -590,8 +590,8 @@ public class WmfGraphics2D extends AbstractGraphics2D
    * @param       dx the horizontal distance to copy the pixels.
    * @param       dy the vertical distance to copy the pixels.
    */
-  public void copyArea(int x, int y, int width, int height,
-                       int dx, int dy)
+  public void copyArea(final int x, final int y, final int width, final int height,
+                       final int dx, final int dy)
   {
   }
 

@@ -96,7 +96,7 @@ public class MfCmdCreateRegion extends MfCmd
   {
   }
 
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
     System.out.println ("Create Region is not implemented.");
 
@@ -105,10 +105,10 @@ public class MfCmdCreateRegion extends MfCmd
   /** Writer function */
   public MfRecord getRecord ()
   {
-    int len = 0;
-    int bands = 0; int maxBands = 0;
+    final int len = 0;
+    final int bands = 0; final int maxBands = 0;
 
-    MfRecord record = new MfRecord(0);
+    final MfRecord record = new MfRecord(0);
     record.setParam(0,0);
     record.setParam(1,6);
     record.setParam(2,0x1234);
@@ -129,7 +129,7 @@ public class MfCmdCreateRegion extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[CREATE_REGION] ");
     b.append (" no internals known (see WINE for details)");
     return b.toString ();
@@ -141,7 +141,7 @@ public class MfCmdCreateRegion extends MfCmd
     return MfType.CREATE_REGION;
   }
 
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
   }
 
@@ -163,7 +163,7 @@ public class MfCmdCreateRegion extends MfCmd
     return regionX;
   }
 
-  public void setRegionX(int regionX)
+  public void setRegionX(final int regionX)
   {
     this.regionX = regionX;
   }
@@ -173,7 +173,7 @@ public class MfCmdCreateRegion extends MfCmd
     return regionY;
   }
 
-  public void setRegionY(int regionY)
+  public void setRegionY(final int regionY)
   {
     this.regionY = regionY;
   }
@@ -183,7 +183,7 @@ public class MfCmdCreateRegion extends MfCmd
     return regionWidth;
   }
 
-  public void setRegionWidth(int regionWidth)
+  public void setRegionWidth(final int regionWidth)
   {
     this.regionWidth = regionWidth;
   }
@@ -193,7 +193,7 @@ public class MfCmdCreateRegion extends MfCmd
     return regionHeight;
   }
 
-  public void setRegionHeight(int regionHeight)
+  public void setRegionHeight(final int regionHeight)
   {
     this.regionHeight = regionHeight;
   }
@@ -203,7 +203,7 @@ public class MfCmdCreateRegion extends MfCmd
     return rects;
   }
 
-  public void setRects(Rectangle[] rects)
+  public void setRects(final Rectangle[] rects)
   {
     this.rects = rects;
   }

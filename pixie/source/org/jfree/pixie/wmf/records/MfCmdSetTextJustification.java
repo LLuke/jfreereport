@@ -30,9 +30,9 @@ public class MfCmdSetTextJustification extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState ();
     state.setTextJustification (extraSpaceLength, breakCount);
   }
 
@@ -48,7 +48,7 @@ public class MfCmdSetTextJustification extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[SET_TEXT_JUSTIFICATION] breakCount=");
     b.append (getBreakCount ());
     b.append (" extraSpaceLength=");
@@ -65,10 +65,10 @@ public class MfCmdSetTextJustification extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int spaceLength = record.getParam (POS_SPACELENGTH);
-    int breakCount = record.getParam (POS_BREAKCOUNT);
+    final int spaceLength = record.getParam (POS_SPACELENGTH);
+    final int breakCount = record.getParam (POS_BREAKCOUNT);
     setExtraSpaceLength (spaceLength);
     setBreakCount (breakCount);
   }
@@ -80,7 +80,7 @@ public class MfCmdSetTextJustification extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
+    final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_BREAKCOUNT, getBreakCount());
     record.setParam(POS_SPACELENGTH, getExtraSpaceLength());
     return record;
@@ -102,7 +102,7 @@ public class MfCmdSetTextJustification extends MfCmd
     return breakCount;
   }
 
-  public void setBreakCount (int count)
+  public void setBreakCount (final int count)
   {
     this.breakCount = count;
   }
@@ -112,7 +112,7 @@ public class MfCmdSetTextJustification extends MfCmd
     return extraSpaceLength;
   }
 
-  public void setExtraSpaceLength (int count)
+  public void setExtraSpaceLength (final int count)
   {
     this.extraSpaceLength = count;
   }

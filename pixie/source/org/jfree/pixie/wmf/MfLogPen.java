@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfLogPen.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: MfLogPen.java,v 1.1 2003/03/09 20:38:18 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public class MfLogPen implements WmfObject, PenConstants
     return style;
   }
 
-  public void setStyle (int style)
+  public void setStyle (final int style)
   {
     this.style = style & 0x000000FF;
     this.endCap = style & 0x00000F00;
@@ -79,7 +79,7 @@ public class MfLogPen implements WmfObject, PenConstants
     return width;
   }
 
-  public void setWidth (int width)
+  public void setWidth (final int width)
   {
     this.width = width;
   }
@@ -90,7 +90,7 @@ public class MfLogPen implements WmfObject, PenConstants
     return color;
   }
 
-  public void setColor (Color color)
+  public void setColor (final Color color)
   {
     this.color = color;
   }
@@ -177,7 +177,7 @@ public class MfLogPen implements WmfObject, PenConstants
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("MfLogPen:=");
     b.append (" width=");
     b.append (getWidth ());

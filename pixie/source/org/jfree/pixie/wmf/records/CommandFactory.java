@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CommandFactory.java,v 1.2 2003/03/14 20:06:03 taqua Exp $
+ * $Id: CommandFactory.java,v 1.3 2003/03/15 17:16:57 taqua Exp $
  *
  * Changes
  * -------
@@ -142,7 +142,7 @@ public class CommandFactory
     registerCommand (new MfCmdTextOut ());
   }
 
-  private void registerCommand (MfCmd command)
+  private void registerCommand (final MfCmd command)
   {
     if (recordTypes.get (new Integer (command.getFunction ())) != null)
     {
@@ -152,17 +152,17 @@ public class CommandFactory
     recordTypes.put (new Integer (command.getFunction ()), command);
   }
 
-  public MfCmd getCommand (int function)
+  public MfCmd getCommand (final int function)
   {
     if (recordTypes == null)
     {
       registerAllKnownTypes();
     }
 
-    MfCmd cmd = (MfCmd) recordTypes.get (new Integer (function));
+    final MfCmd cmd = (MfCmd) recordTypes.get (new Integer (function));
     if (cmd == null)
     {
-      MfCmdUnknownCommand ucmd = new MfCmdUnknownCommand ();
+      final MfCmdUnknownCommand ucmd = new MfCmdUnknownCommand ();
       ucmd.setFunction (function);
       return ucmd;
     }

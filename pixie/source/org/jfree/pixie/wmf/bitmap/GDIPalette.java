@@ -8,18 +8,18 @@ public class GDIPalette
   private int noColors = 0;
   private int[] colors = null;
 
-  public void setNoOfColors (int colors)
+  public void setNoOfColors (final int colors)
   {
     this.noColors = colors;
   }
 
-  public void setNoOfImportantColors (int colors)
+  public void setNoOfImportantColors (final int colors)
   {
     if (colors > noColors)
       throw new IllegalArgumentException ("There may be not more important colors than colors defined in the palette.");
   }
 
-  public void readPalette (InputStream in)
+  public void readPalette (final InputStream in)
           throws IOException
   {
     colors = new int[noColors];
@@ -29,24 +29,24 @@ public class GDIPalette
     }
   }
 
-  private int readNextColor (InputStream in)
+  private int readNextColor (final InputStream in)
           throws IOException
   {
-    int b = in.read ();
-    int g = in.read ();
-    int r = in.read ();
-    int filler = in.read ();
+    final int b = in.read ();
+    final int g = in.read ();
+    final int r = in.read ();
+    final int filler = in.read ();
     return b + (g << 8) + (r << 16);
   }
 
-  public int lookupColor (int color)
+  public int lookupColor (final int color)
   {
     if (noColors == 0)
     {
       // Convert from BGR (windows) format to RGB (java) format
-      int b = (color & 0x00ff0000) >> 16;
-      int g = (color & 0x0000ff00);
-      int r = (color & 0x000000ff);
+      final int b = (color & 0x00ff0000) >> 16;
+      final int g = (color & 0x0000ff00);
+      final int r = (color & 0x000000ff);
       return b + g + (r << 16);
     }
 

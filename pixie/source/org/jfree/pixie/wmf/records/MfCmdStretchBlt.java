@@ -26,7 +26,7 @@ public class MfCmdStretchBlt extends MfCmd
    *
    * @param metafile the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
   }
 
@@ -49,14 +49,14 @@ public class MfCmdStretchBlt extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
     System.out.println ("Old StretchBlt is not yet implemented.");
   }
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[OLD_STRECH_BLT] is not implemented");
     return b.toString ();
   }

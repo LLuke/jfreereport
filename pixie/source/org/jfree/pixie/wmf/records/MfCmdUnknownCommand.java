@@ -16,7 +16,7 @@ public class MfCmdUnknownCommand extends MfCmd
   {
   }
 
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
   }
 
@@ -25,7 +25,7 @@ public class MfCmdUnknownCommand extends MfCmd
     return new MfCmdUnknownCommand ();
   }
 
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
   }
 
@@ -41,12 +41,12 @@ public class MfCmdUnknownCommand extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[UNKNOWN COMMAND] " + Integer.toHexString (getFunction ()));
     return b.toString ();
   }
 
-  public void setFunction (int function)
+  public void setFunction (final int function)
   {
     this.function = function;
   }

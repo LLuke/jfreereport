@@ -36,10 +36,10 @@ public class MfCmdSetViewPortOrg extends MfCmd
    *
    * @param file the meta file.
    */
-  public void replay (WmfFile file)
+  public void replay (final WmfFile file)
   {
-    MfDcState state = file.getCurrentState ();
-    Point p = getScaledTarget ();
+    final MfDcState state = file.getCurrentState ();
+    final Point p = getScaledTarget ();
     state.setViewportOrg (p.x, p.y);
   }
 
@@ -55,7 +55,7 @@ public class MfCmdSetViewPortOrg extends MfCmd
 
   public String toString ()
   {
-    StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer ();
     b.append ("[SET_VIEWPORT_ORG] target=");
     b.append (getTarget ());
     return b.toString ();
@@ -70,10 +70,10 @@ public class MfCmdSetViewPortOrg extends MfCmd
    *
    * @param record the raw data that makes up the record.
    */
-  public void setRecord (MfRecord record)
+  public void setRecord (final MfRecord record)
   {
-    int y = record.getParam (POS_Y);
-    int x = record.getParam (POS_X);
+    final int y = record.getParam (POS_Y);
+    final int x = record.getParam (POS_X);
     setTarget (x, y);
   }
 
@@ -84,8 +84,8 @@ public class MfCmdSetViewPortOrg extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    MfRecord record = new MfRecord(RECORD_SIZE);
-    Point p = getTarget();
+    final MfRecord record = new MfRecord(RECORD_SIZE);
+    final Point p = getTarget();
     record.setParam(POS_X, p.x);
     record.setParam(POS_Y, p.y);
     return record;
@@ -96,7 +96,7 @@ public class MfCmdSetViewPortOrg extends MfCmd
     return new Point (x, y);
   }
 
-  public void setTarget (int x, int y)
+  public void setTarget (final int x, final int y)
   {
     this.x = x;
     this.y = y;

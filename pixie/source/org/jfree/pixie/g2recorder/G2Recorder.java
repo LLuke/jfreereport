@@ -2,7 +2,7 @@
  * Date: Mar 9, 2003
  * Time: 1:46:07 AM
  *
- * $Id$
+ * $Id: G2Recorder.java,v 1.1 2003/03/09 20:38:12 taqua Exp $
  */
 package org.jfree.pixie.g2recorder;
 
@@ -61,7 +61,7 @@ public class G2Recorder extends AbstractGraphics2D
     dg2 = bimg.createGraphics();
   }
 
-  public G2Recorder(G2Recorder recorder)
+  public G2Recorder(final G2Recorder recorder)
   {
     this.store = recorder.getStore();
     this.bimg = recorder.bimg;
@@ -79,7 +79,7 @@ public class G2Recorder extends AbstractGraphics2D
     return store;
   }
 
-  protected void addOperation(G2Operation operation)
+  protected void addOperation(final G2Operation operation)
   {
     store.addOperation(this, operation);
   }
@@ -100,7 +100,7 @@ public class G2Recorder extends AbstractGraphics2D
    * @see #setClip
    * @see #setComposite
    */
-  public void draw(Shape s)
+  public void draw(final Shape s)
   {
     addOperation(new DrawShapeOperation(s));
   }
@@ -130,9 +130,9 @@ public class G2Recorder extends AbstractGraphics2D
    * @see #clip
    * @see #setClip
    */
-  public boolean drawImage(Image img,
-                           AffineTransform xform,
-                           ImageObserver obs)
+  public boolean drawImage(final Image img,
+                           final AffineTransform xform,
+                           final ImageObserver obs)
   {
     addOperation(new DrawImageOperation(img, xform, obs));
     return true;
@@ -158,8 +158,8 @@ public class G2Recorder extends AbstractGraphics2D
    * @see #clip
    * @see #setClip
    */
-  public void drawRenderedImage(RenderedImage img,
-                                AffineTransform xform)
+  public void drawRenderedImage(final RenderedImage img,
+                                final AffineTransform xform)
   {
     if (xform.getDeterminant() == 0)
     {
@@ -195,7 +195,7 @@ public class G2Recorder extends AbstractGraphics2D
    * @see #setComposite
    * @see #setClip
    */
-  public void drawString(String s, float x, float y)
+  public void drawString(final String s, final float x, final float y)
   {
     addOperation(new DrawStringOperation(s, x, y));
   }
@@ -214,7 +214,7 @@ public class G2Recorder extends AbstractGraphics2D
    * @see #clip
    * @see #setClip
    */
-  public void fill(Shape s)
+  public void fill(final Shape s)
   {
     addOperation(new FillShapeOperation(s));
   }
@@ -255,7 +255,7 @@ public class G2Recorder extends AbstractGraphics2D
    * @see SecurityManager#checkPermission
    * @see AWTPermission
    */
-  public void setComposite(Composite comp)
+  public void setComposite(final Composite comp)
   {
     addOperation(new SetCompositeOperation(comp));
     this.composite = comp;
@@ -273,7 +273,7 @@ public class G2Recorder extends AbstractGraphics2D
    * @see GradientPaint
    * @see TexturePaint
    */
-  public void setPaint(Paint paint)
+  public void setPaint(final Paint paint)
   {
     addOperation(new SetPaintOperation(paint));
     this.paint = paint;
@@ -285,7 +285,7 @@ public class G2Recorder extends AbstractGraphics2D
    * <code>Shape</code> during the rendering process
    * @see BasicStroke
    */
-  public void setStroke(Stroke s)
+  public void setStroke(final Stroke s)
   {
     addOperation(new SetStrokeOperation(s));
     this.stroke = s;
@@ -302,7 +302,7 @@ public class G2Recorder extends AbstractGraphics2D
    * hint category.
    * @see RenderingHints
    */
-  public void setRenderingHint(RenderingHints.Key hintKey, Object hintValue)
+  public void setRenderingHint(final RenderingHints.Key hintKey, final Object hintValue)
   {
 
   }
@@ -319,7 +319,7 @@ public class G2Recorder extends AbstractGraphics2D
    * <code>RenderingHints</code> class.
    * @see RenderingHints
    */
-  public Object getRenderingHint(RenderingHints.Key hintKey)
+  public Object getRenderingHint(final RenderingHints.Key hintKey)
   {
     return dg2.getRenderingHint(hintKey);
   }
@@ -337,9 +337,9 @@ public class G2Recorder extends AbstractGraphics2D
    * @param hints the rendering hints to be set
    * @see RenderingHints
    */
-  public void setRenderingHints(Map hints)
+  public void setRenderingHints(final Map hints)
   {
-    RenderingHints rh = new RenderingHints(hints);
+    final RenderingHints rh = new RenderingHints(hints);
     addOperation(new SetRenderingHintsOperation(rh));
     dg2.setRenderingHints(rh);
   }
@@ -358,9 +358,9 @@ public class G2Recorder extends AbstractGraphics2D
    * @param hints the rendering hints to be set
    * @see RenderingHints
    */
-  public void addRenderingHints(Map hints)
+  public void addRenderingHints(final Map hints)
   {
-    RenderingHints rh = new RenderingHints(hints);
+    final RenderingHints rh = new RenderingHints(hints);
     addOperation(new AddRenderingHintsOperation(rh));
     dg2.addRenderingHints(rh);
   }
@@ -390,7 +390,7 @@ public class G2Recorder extends AbstractGraphics2D
    * @see #transform
    * @see AffineTransform
    */
-  public void setTransform(AffineTransform Tx)
+  public void setTransform(final AffineTransform Tx)
   {
     addOperation(new SetTransformOperation(Tx));
     this.transform = Tx;
@@ -450,7 +450,7 @@ public class G2Recorder extends AbstractGraphics2D
    * @see #getBackground
    * @see Graphics#clearRect
    */
-  public void setBackground(Color color)
+  public void setBackground(final Color color)
   {
     addOperation(new SetBackgroundOperation(color));
     this.background = color;
@@ -544,7 +544,7 @@ public class G2Recorder extends AbstractGraphics2D
    * drawn twice, then all pixels are restored to their original values.
    * @param     c1 the XOR alternation color
    */
-  public void setXORMode(Color c1)
+  public void setXORMode(final Color c1)
   {
     addOperation(new SetXORModeOperation(c1));
   }
@@ -570,7 +570,7 @@ public class G2Recorder extends AbstractGraphics2D
    * @see     Graphics#drawBytes(byte[], int, int, int, int)
    * @see     Graphics#drawChars(char[], int, int, int, int)
    */
-  public void setFont(Font font)
+  public void setFont(final Font font)
   {
     addOperation(new SetFontOperation(font));
     this.font = font;
@@ -584,7 +584,7 @@ public class G2Recorder extends AbstractGraphics2D
    * @see       FontMetrics
    * @see       Graphics#getFontMetrics()
    */
-  public FontMetrics getFontMetrics(Font f)
+  public FontMetrics getFontMetrics(final Font f)
   {
     return dg2.getFontMetrics(f);
   }
@@ -623,7 +623,7 @@ public class G2Recorder extends AbstractGraphics2D
     }
     else
     {
-      Area newClip = (Area) clip.clone();
+      final Area newClip = (Area) clip.clone();
       newClip.intersect(new Area(s));
       setClip(newClip);
     }
@@ -666,7 +666,7 @@ public class G2Recorder extends AbstractGraphics2D
    * @see         Graphics#setClip(int, int, int, int)
    * @since       JDK1.1
    */
-  public void setClip(Shape clip)
+  public void setClip(final Shape clip)
   {
     addOperation(new SetClipOperation(clip));
     this.clip = new Area (clip);
@@ -691,8 +691,8 @@ public class G2Recorder extends AbstractGraphics2D
    * @param       dx the horizontal distance to copy the pixels.
    * @param       dy the vertical distance to copy the pixels.
    */
-  public void copyArea(int x, int y, int width, int height,
-                       int dx, int dy)
+  public void copyArea(final int x, final int y, final int width, final int height,
+                       final int dx, final int dy)
   {
     addOperation(new CopyAreaOperation(x,y,width,height,dx,dy));
   }
