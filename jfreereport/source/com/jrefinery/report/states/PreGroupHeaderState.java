@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: PreGroupHeaderState.java,v 1.4 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -72,15 +72,16 @@ public class PreGroupHeaderState extends ReportState
   {
     this.enterGroup ();
 
-    Group group = (Group) this.getReport ().getGroup (this.getCurrentGroupIndex ());
+    Group group = this.getReport ().getGroup (this.getCurrentGroupIndex ());
 
     // if there is no header, fire the event and proceed to PostGroupHeaderState
 
     GroupHeader header = group.getHeader ();
 
     if (handledPagebreak == false && header.hasPageBreakBeforePrint ()
-                                  && ((this.getCurrentGroupIndex() != 1 || this.getCurrentDataItem() != -1)))
+                                  && ((this.getCurrentGroupIndex() != -1 && this.getCurrentDataItem() != -1)))
     {
+      Log.debug ("PreGroupHeader: PageBreak");
       handledPagebreak = true;
       rpc.setPageDone ();
     }

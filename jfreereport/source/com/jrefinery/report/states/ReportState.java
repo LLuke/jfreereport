@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.2 2002/10/21 14:41:59 taqua Exp $
+ * $Id: ReportState.java,v 1.3 2002/10/23 21:10:24 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -511,6 +511,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       return true;
     }
     Log.debug ("State did not proceed: In Group: " + getCurrentGroupIndex() + ", DataItem: " + getCurrentDataItem() + ",Page: " + getCurrentPage() + " Class: " + getClass());
+    Log.debug ("Old State: " + oldstate.getClass());
     return false;
   }
 
