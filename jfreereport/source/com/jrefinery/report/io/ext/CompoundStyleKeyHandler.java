@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 7:43:07 PM
  *
- * $Id$
+ * $Id: CompoundStyleKeyHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -18,20 +18,20 @@ import com.jrefinery.report.io.Parser;
 
 public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
 {
-  public static final String COMPOUND_OBJECT_TAG = "compound-object";
-  public static final String BASIC_OBJECT_TAG = "basic-object";
+  public static final String COMPOUND_OBJECT_TAG = CompoundObjectHandler.COMPOUND_OBJECT_TAG;
+  public static final String BASIC_OBJECT_TAG = CompoundObjectHandler.BASIC_OBJECT_TAG;
 
   private BasicObjectHandler basicFactory;
   private ObjectDescription keyObjectDescription;
   private String parameterName;
 
-  public CompoundStyleKeyHandler(Parser parser, String finishTag, String name)
+  public CompoundStyleKeyHandler(Parser parser, String finishTag, String name, Class c)
     throws SAXException
   {
-    super (parser, finishTag, name);
+    super (parser, finishTag, name, c);
     ClassFactory fact = (ClassFactory) getParser().getConfigurationValue(
         ParserConfigHandler.OBJECT_FACTORY_TAG);
-    keyObjectDescription = fact.getDescriptionForClass(getStyleKey().getValueType());
+    keyObjectDescription = fact.getDescriptionForClass(getKeyValueClass());
     if (keyObjectDescription == null)
     {
       throw new SAXException("No object definition for class " + getStyleKey().getValueType());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.2 2003/01/17 14:47:43 taqua Exp $
+ * $Id: ElementFactory.java,v 1.3 2003/01/21 17:11:37 taqua Exp $
  *
  * Changes
  * -------
@@ -51,13 +51,11 @@ import com.jrefinery.report.TextElement;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import java.awt.Color;
-import java.awt.Paint;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
@@ -98,7 +96,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   private int textElementVerticalAlignment;
 
   /** The text element color. */
-  private Paint textElementColor;
+  private Color textElementColor;
 
   /** The text element null string. */
   private String textElementNullString;
@@ -517,7 +515,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   protected void startLine(Attributes atts) throws SAXException
   {
     String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
-    Paint c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
+    Color c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
     float x1 = ParserUtil.parseFloat(atts.getValue("x1"), "Element x1 not specified");
     float y1 = ParserUtil.parseFloat(atts.getValue("y1"), "Element y1 not specified");
     float x2 = ParserUtil.parseFloat(atts.getValue("x2"), "Element x2 not specified");
@@ -542,7 +540,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   protected void startRectangle(Attributes atts) throws SAXException
   {
     String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
-    Paint c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
+    Color c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
     Rectangle2D bounds = ParserUtil.getElementPosition(atts);
     boolean shouldDraw = ParserUtil.parseBoolean(atts.getValue("draw"), false);
     boolean shouldFill = ParserUtil.parseBoolean(atts.getValue("fill"), true);

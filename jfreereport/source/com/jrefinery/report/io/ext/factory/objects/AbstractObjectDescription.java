@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 7:58:07 PM
  *
- * $Id$
+ * $Id: AbstractObjectDescription.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -80,7 +80,7 @@ public abstract class AbstractObjectDescription implements ObjectDescription, Cl
     Class parameterClass = convertPrimitiveClass(getParameterDefinition(name));
     if (parameterClass.isAssignableFrom(value.getClass()) == false)
     {
-      throw new ClassCastException ("Value is not assignable: " + value.getClass()
+      throw new ClassCastException ("In Object " + getObjectClass() + ": Value is not assignable: " + value.getClass()
                                     + " is not assignable from " + parameterClass);
     }
     parameters.put (name, value);

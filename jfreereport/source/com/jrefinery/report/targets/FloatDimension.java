@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FloatDimension.java,v 1.2 2002/12/05 16:55:43 mungady Exp $
+ * $Id: FloatDimension.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
  *
  * Changes
  * -------
@@ -109,9 +109,9 @@ public class FloatDimension extends Dimension2D implements Cloneable, Serializab
    *
    * @param width  the width.
    */
-  public void setWidth(float width)
+  public void setWidth(double width)
   {
-    this.width = width;
+    this.width = (float) width;
   }
 
   /**
@@ -119,9 +119,9 @@ public class FloatDimension extends Dimension2D implements Cloneable, Serializab
    *
    * @param height  the height.
    */
-  public void setHeight(float height)
+  public void setHeight(double height)
   {
-    this.height = height;
+    this.height = (float) height;
   }
 
   /**

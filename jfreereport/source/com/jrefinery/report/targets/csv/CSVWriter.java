@@ -2,23 +2,20 @@
  * Date: Jan 7, 2003
  * Time: 5:15:08 PM
  *
- * $Id: XMLWriter.java,v 1.1 2003/01/07 17:34:29 taqua Exp $
+ * $Id: CSVWriter.java,v 1.1 2003/01/18 20:47:35 taqua Exp $
  */
 package com.jrefinery.report.targets.csv;
 
-import com.jrefinery.report.Band;
-import com.jrefinery.report.Element;
+import com.jrefinery.report.DataRow;
 import com.jrefinery.report.Group;
-import com.jrefinery.report.TextElement;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.util.Log;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class CSVWriter extends AbstractFunction
 {
@@ -26,11 +23,13 @@ public class CSVWriter extends AbstractFunction
   {
     private ArrayList data;
     private CSVQuoter quoter;
+    private String lineSeparator;
 
-    public CSVRow()
+    public CSVRow(CSVQuoter quoter)
     {
       data = new ArrayList();
-      quoter = new CSVQuoter();
+      this.quoter = quoter;
+      lineSeparator = System.getProperty("line.separator", "\n");
     }
 
     public void append (int d)
@@ -52,15 +51,18 @@ public class CSVWriter extends AbstractFunction
         if (it.hasNext())
           w.write(",");
       }
+      w.write(lineSeparator);
     }
   }
 
   private Writer w;
   private int depLevel;
+  private CSVQuoter quoter;
 
   public CSVWriter()
   {
     setDependencyLevel(-1);
+    quoter = new CSVQuoter();
   }
 
   public Writer getWriter()
@@ -73,24 +75,22 @@ public class CSVWriter extends AbstractFunction
     this.w = w;
   }
 
-  private void writeBand (Band b,CSVRow row)
-    throws IOException
+  public void setSeparator(String separator)
   {
-    List l = b.getElements();
-    Iterator it = l.iterator();
-    while (it.hasNext())
+    if (separator == null) throw new NullPointerException();
+    this.quoter.setSeparator(separator);
+  }
+
+  public String getSeparator()
+  {
+    return quoter.getSeparator();
+  }
+
+  private void writeDataRow (DataRow dr,CSVRow row)
+  {
+    for (int i = 0; i < dr.getColumnCount(); i++)
     {
-      Element e = (Element) it.next();
-      if (e instanceof Band)
-      {
-        writeBand((Band) e, row);
-        continue;
-      }
-
-      if (e.getContentType().equals(TextElement.CONTENT_TYPE) == false)
-        continue;
-
-      row.append(e.getValue());
+      row.append(dr.get(i));
     }
   }
 
@@ -103,10 +103,10 @@ public class CSVWriter extends AbstractFunction
   {
     try
     {
-      CSVRow row = new CSVRow();
+      CSVRow row = new CSVRow(quoter);
       row.append(-1);
       row.append("reportheader");
-      writeBand(event.getReport().getReportHeader(), row);
+      writeDataRow(event.getDataRow(), row);
       row.write(getWriter());
     }
     catch (IOException ioe)
@@ -124,10 +124,10 @@ public class CSVWriter extends AbstractFunction
   {
     try
     {
-      CSVRow row = new CSVRow();
+      CSVRow row = new CSVRow(quoter);
       row.append(-1);
       row.append("reportfooter");
-      writeBand(event.getReport().getReportFooter(), row);
+      writeDataRow(event.getDataRow(), row);
       row.write(getWriter());
     }
     catch (IOException ioe)
@@ -147,13 +147,13 @@ public class CSVWriter extends AbstractFunction
     {
       int currentIndex = event.getState().getCurrentGroupIndex();
 
-      CSVRow row = new CSVRow();
+      CSVRow row = new CSVRow(quoter);
       row.append(currentIndex);
 
       Group g = event.getReport().getGroup(currentIndex);
       String bandInfo = "groupheader name=\"" + g.getName()+ "\"";
       row.append(bandInfo);
-      writeBand(g.getHeader(), row);
+      writeDataRow(event.getDataRow(), row);
       row.write(getWriter());
     }
     catch (IOException ioe)
@@ -173,13 +173,13 @@ public class CSVWriter extends AbstractFunction
     {
       int currentIndex = event.getState().getCurrentGroupIndex();
 
-      CSVRow row = new CSVRow();
+      CSVRow row = new CSVRow(quoter);
       row.append(currentIndex);
 
       Group g = event.getReport().getGroup(currentIndex);
       String bandInfo = "groupfooter name=\"" + g.getName()+ "\"";
       row.append(bandInfo);
-      writeBand(g.getFooter(), row);
+      writeDataRow(event.getDataRow(), row);
       row.write(getWriter());
     }
     catch (IOException ioe)
@@ -197,10 +197,10 @@ public class CSVWriter extends AbstractFunction
   {
     try
     {
-      CSVRow row = new CSVRow();
+      CSVRow row = new CSVRow(quoter);
       row.append(event.getState().getCurrentGroupIndex());
       row.append("itemband");
-      writeBand(event.getReport().getItemBand(), row);
+      writeDataRow(event.getDataRow(), row);
       row.write(getWriter());
     }
     catch (IOException ioe)

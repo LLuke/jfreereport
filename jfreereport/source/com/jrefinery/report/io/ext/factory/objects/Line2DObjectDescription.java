@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 9:07:48 PM
  *
- * $Id: Line2DObjectDescription.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: Line2DObjectDescription.java,v 1.2 2003/01/13 19:00:55 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -51,9 +51,9 @@ public class Line2DObjectDescription extends AbstractObjectDescription
     float y1 = (float) line.getY1();
     float y2 = (float) line.getY2();
 
-    setParameter("x1", String.valueOf(x1));
-    setParameter("x2", String.valueOf(x2));
-    setParameter("y1", String.valueOf(y1));
-    setParameter("y2", String.valueOf(y2));
+    setParameter("x1", new Float(x1));
+    setParameter("x2", new Float(x2));
+    setParameter("y1", new Float(y1));
+    setParameter("y2", new Float(y2));
   }
 }

@@ -104,11 +104,13 @@
 <!ELEMENT compound-key (basic-object|compound-object)*>
 <!ATTLIST compound-key
   name           CDATA           #IMPLIED
+  class          CDATA           #IMPLIED
 >
 
 <!ELEMENT basic-key    (#PCDATA)>
 <!ATTLIST basic-key
   name           CDATA           #IMPLIED
+  class          CDATA           #IMPLIED
 >
 
 

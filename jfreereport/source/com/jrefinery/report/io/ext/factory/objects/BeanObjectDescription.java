@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 8:17:01 PM
  *
- * $Id: BeanObjectDescription.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: BeanObjectDescription.java,v 1.2 2003/01/13 19:00:50 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -42,8 +42,17 @@ public class BeanObjectDescription extends AbstractObjectDescription
 
       if (m.getName().startsWith("set"))
       {
-        setParameterDefinition(getPropertyName(m.getName()),
-                               m.getParameterTypes()[0]);
+        try
+        {
+          String propertyName = getPropertyName(m.getName());
+          findGetMethod(propertyName);
+          setParameterDefinition(propertyName,
+                                 m.getParameterTypes()[0]);
+        }
+        catch (NoSuchMethodException nsme)
+        {
+          // ignore property if this is a read only property ...
+        }
       }
       else
       {
@@ -153,10 +162,13 @@ public class BeanObjectDescription extends AbstractObjectDescription
   public void setParameterFromObject(Object o)
       throws ObjectFactoryException
   {
+    if (o == null)
+      throw new NullPointerException("Given object is null");
+
     Class c = getObjectClass();
     if (c.isInstance(o) == false)
     {
-      throw new ObjectFactoryException("Object is no instance of " + c);
+      throw new ObjectFactoryException("Object is no instance of " + c + "(" + o.getClass() + ")");
     }
 
     Iterator it = getParameterNames();

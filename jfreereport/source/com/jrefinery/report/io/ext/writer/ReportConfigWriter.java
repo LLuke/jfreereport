@@ -2,7 +2,7 @@
  * Date: Jan 13, 2003
  * Time: 1:34:28 PM
  *
- * $Id$
+ * $Id: ReportConfigWriter.java,v 1.1 2003/01/13 21:39:10 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -42,7 +42,7 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
       if (value != null)
       {
         writeTag(writer, "property", "name", key, OPEN);
-        writer.write(value);
+        writer.write(normalize(value));
         writeCloseTag(writer, "property");
       }
     }

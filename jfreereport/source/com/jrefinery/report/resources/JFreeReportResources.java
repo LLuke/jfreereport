@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.35 2003/01/14 21:12:11 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.36 2003/01/18 20:47:35 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -169,11 +169,19 @@ public class JFreeReportResources extends ListResourceBundle
 
             {"action.export-to-html.name", "Export to html..."},
             {"action.export-to-html.description", "Save to HTML format"},
-            {"action.export-to-html.mnemonic", new Integer (KeyEvent.VK_E)},
+            {"action.export-to-html.mnemonic", new Integer (KeyEvent.VK_H)},
             {"action.export-to-html.accelerator", KeyStroke.getKeyStroke ("control H")},
             // temporarily using the same icon as "Save to PDF", till we have a better one
             {"action.export-to-html.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
             {"action.export-to-html.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
+
+            {"action.export-to-csv.name", "Export to CSV..."},
+            {"action.export-to-csv.description", "Save to CSV format"},
+            {"action.export-to-csv.mnemonic", new Integer (KeyEvent.VK_C)},
+            {"action.export-to-csv.accelerator", KeyStroke.getKeyStroke ("control C")},
+            // temporarily using the same icon as "Save to PDF", till we have a better one
+            {"action.export-to-csv.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
+            {"action.export-to-csv.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
             {"action.page-setup.name", "Page Setup"},
             {"action.page-setup.description", "Page Setup"},
@@ -360,6 +368,33 @@ public class JFreeReportResources extends ListResourceBundle
 
             {"htmlexportdialog.cancel", "Cancel"},
             {"htmlexportdialog.confirm", "Confirm"},
+
+            {"csvexportdialog.dialogtitle", "Export Report into an CSV-File ..."},
+            {"csvexportdialog.filename", "Filename"},
+            {"csvexportdialog.encoding", "Encoding"},
+            {"csvexportdialog.separatorchar", "Separator Character"},
+            {"csvexportdialog.selectFile", "Select File"},
+
+            {"csvexportdialog.warningTitle", "Warning"},
+            {"csvexportdialog.errorTitle", "Error"},
+            {"csvexportdialog.targetIsEmpty", "Please specify a filename for the CSV file."},
+            {"csvexportdialog.targetIsNoFile", "The selected target is no ordinary file."},
+            {"csvexportdialog.targetIsNotWritable", "The selected file is not writable."},
+            {"csvexportdialog.targetOverwriteConfirmation",
+                "The file ''{0}'' exists. Overwrite it?"},
+            {"csvexportdialog.targetOverwriteTitle", "Overwrite file?"},
+
+            {"csvexportdialog.cancel", "Cancel"},
+            {"csvexportdialog.confirm", "Confirm"},
+
+            {"csvexportdialog.separator.tab", "Tabulator"},
+            {"csvexportdialog.separator.colon", "Colon (,)"},
+            {"csvexportdialog.separator.semicolon", "Semicolon (;)"},
+            {"csvexportdialog.separator.other", "Other"},
+
+            {"csvexportdialog.exporttype", "Select Export engine"},
+            {"csvexportdialog.export.data", "Export the DataRow (Raw Data)"},
+            {"csvexportdialog.export.printed_elements", "Printed Elements  (Layouted Data)"},
           };
 
 }

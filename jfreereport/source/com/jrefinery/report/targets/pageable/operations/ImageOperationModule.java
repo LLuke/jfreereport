@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageOperationModule.java,v 1.1 2002/12/12 20:20:27 taqua Exp $
+ * $Id: ImageOperationModule.java,v 1.2 2003/01/21 17:11:39 taqua Exp $
  *
  * Changes
  * -------
@@ -37,19 +37,17 @@ package com.jrefinery.report.targets.pageable.operations;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.ElementLayoutInformation;
+import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.contents.Content;
 import com.jrefinery.report.targets.pageable.contents.ImageContent;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
-import java.awt.Paint;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Point2D;
+import java.awt.Color;
 import java.awt.geom.Dimension2D;
-import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,7 +77,7 @@ public class ImageOperationModule extends OperationModule
    */
   public List createOperations (Element e, Content value, Rectangle2D bounds)
   {
-    Paint paint = (Paint) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
+    Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
     ImageContent ic = (ImageContent) value.getContentForBounds(bounds);
 
     ArrayList ops = new ArrayList();

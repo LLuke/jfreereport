@@ -2,7 +2,7 @@
  * Date: Jan 13, 2003
  * Time: 12:39:06 PM
  *
- * $Id: ReportWriter.java,v 1.1 2003/01/13 21:39:20 taqua Exp $
+ * $Id: ReportWriter.java,v 1.2 2003/01/14 21:10:01 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -35,6 +35,7 @@ public class ReportWriter
     dataSourceCollector = new DataSourceCollector();
     elementFactoryCollector = new ElementFactoryCollector();
     classFactoryCollector = new ClassFactoryCollector();
+    classFactoryCollector.addFactory(dataSourceCollector);
     styleKeyFactoryCollector = new StyleKeyFactoryCollector();
     templateCollector = new TemplateCollector();
     this.report = report;

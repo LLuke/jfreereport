@@ -2,7 +2,7 @@
  * Date: Jan 13, 2003
  * Time: 6:40:10 PM
  *
- * $Id$
+ * $Id: StyleWriter.java,v 1.1 2003/01/13 21:39:22 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -20,29 +20,20 @@ import java.util.List;
 import java.util.Enumeration;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Properties;
 
 public class StyleWriter extends AbstractXMLDefinitionWriter
 {
-  private boolean ignoreName;
   private ElementStyleSheet elementStyleSheet;
 
-  public StyleWriter(ReportWriter reportWriter, boolean ignoreName, ElementStyleSheet elementStyleSheet)
+  public StyleWriter(ReportWriter reportWriter, ElementStyleSheet elementStyleSheet)
   {
     super(reportWriter);
-    this.ignoreName = ignoreName;
     this.elementStyleSheet = elementStyleSheet;
   }
 
   public void write(Writer writer) throws IOException, ReportWriterException
   {
-    if (ignoreName)
-    {
-      writeTag(writer, StylesHandler.STYLE_TAG);
-    }
-    else
-    {
-      writeTag(writer, StylesHandler.STYLE_TAG, "name", elementStyleSheet.getName(), OPEN);
-    }
     List parents = elementStyleSheet.getParents();
     for (int p = 0; p < parents.size(); p++)
     {
@@ -60,7 +51,6 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
         writeKeyValue(writer, key, value);
       }
     }
-    writeCloseTag(writer, StylesHandler.STYLE_TAG);
   }
 
   private void writeKeyValue (Writer w, StyleKey key, Object o)
@@ -70,7 +60,11 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     ObjectDescription od = cc.getDescriptionForClass(key.getValueType());
     if (od == null)
     {
-      throw new ReportWriterException("Unable to find object description for key: "+ od);
+      od = cc.getDescriptionForClass(o.getClass());
+      if (od == null)
+      {
+        throw new ReportWriterException("Unable to find object description for key: "+ key.getName());
+      }
     }
 
     try
@@ -82,13 +76,19 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
       throw new ReportWriterException ("Unable to fill the parameters.", e);
     }
 
+    Properties p = new Properties();
+    p.setProperty("name", key.getName());
+    if ((key.getValueType().equals(o.getClass())) == false)
+    {
+      p.setProperty("class", o.getClass().getName());
+    }
+
     List parameterNames = getParameterNames(od);
     if (isBasicKey(parameterNames, od))
     {
-      writeTag(w, StyleSheetHandler.BASIC_KEY_TAG, "name", key.getName(), OPEN);
-      w.write((String) od.getParameter("value"));
+      writeTag(w, StyleSheetHandler.BASIC_KEY_TAG, p, OPEN);
+      w.write(normalize((String) od.getParameter("value")));
       writeCloseTag(w, StyleSheetHandler.BASIC_KEY_TAG);
-
     }
     else
     {
@@ -96,12 +96,16 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
       {
         String parameterName = (String) parameterNames.get(i);
         Object object = od.getParameter(parameterName);
+        if (object == null)
+        {
+          throw new NullPointerException("ParameterObject for " + parameterName + " is null");
+        }
         ObjectDescription subObjectDesc =
             cc.getDescriptionForClass(od.getParameterDefinition(parameterName));
-        if (od == null)
+        if (subObjectDesc == null)
           throw new ReportWriterException("No object description");
 
-        writeTag(w, StyleSheetHandler.COMPOUND_KEY_TAG, "name", key.getName(), OPEN);
+        writeTag(w, StyleSheetHandler.COMPOUND_KEY_TAG, p, OPEN);
         ObjectWriter objWriter =
             new ObjectWriter(getReportWriter(), object, subObjectDesc );
 

@@ -30,7 +30,7 @@
  * Contributor(s):   -;
  * based on ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelCellStyleFactory.java,v 1.2 2003/01/15 16:54:10 taqua Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,6 @@ import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import java.util.ArrayList;
 import java.awt.Font;
 import java.awt.Color;
-import java.awt.Paint;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ElementAlignment;
@@ -94,12 +93,7 @@ public class ExcelCellStyleFactory
     ElementAlignment verticalAlignment = (ElementAlignment)
         element.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
     Font awtFont = element.getStyle().getFontStyleProperty();
-    Paint paint = (Paint) element.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
-    Color color = Color.black;
-    if (paint instanceof Color)
-    {
-      color = (Color) paint;
-    }
+    Color color = (Color) element.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
 
     HSSFFont font = fontFactory.getExcelFont(awtFont, color);
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserUtil.java,v 1.15 2002/12/12 12:26:56 mungady Exp $
+ * $Id: ParserUtil.java,v 1.16 2003/01/12 21:33:52 taqua Exp $
  *
  * Changes
  * -------
@@ -38,14 +38,13 @@
  */
 package com.jrefinery.report.io;
 
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Paint;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Field;
@@ -237,7 +236,7 @@ public class ParserUtil
    *
    * @return the paint.
    */
-  public static Paint parseColor(String color)
+  public static Color parseColor(String color)
   {
     if (color == null)
     {

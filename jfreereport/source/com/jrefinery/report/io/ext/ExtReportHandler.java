@@ -2,7 +2,7 @@
  * Date: Jan 9, 2003
  * Time: 8:49:58 PM
  *
- * $Id$
+ * $Id: ExtReportHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -144,6 +144,10 @@ public class ExtReportHandler implements ReportDefinitionHandler
     {
       fc = new DataSourceCollector();
       getParser().setConfigurationValue(ParserConfigHandler.DATASOURCE_FACTORY_TAG, fc);
+
+      ClassFactoryCollector cfc =
+          (ClassFactoryCollector) getParser().getConfigurationValue(ParserConfigHandler.OBJECT_FACTORY_TAG);
+      cfc.addFactory(fc);
     }
   }
 

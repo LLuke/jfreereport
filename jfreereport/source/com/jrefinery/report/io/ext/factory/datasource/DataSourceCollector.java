@@ -2,7 +2,7 @@
  * Date: Jan 12, 2003
  * Time: 4:31:10 PM
  *
- * $Id: DataSourceCollector.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: DataSourceCollector.java,v 1.2 2003/01/13 19:00:47 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.datasource;
 
@@ -36,6 +36,28 @@ public class DataSourceCollector implements DataSourceFactory
     {
       DataSourceFactory fact = (DataSourceFactory) factories.get(i);
       ObjectDescription o = fact.getDataSourceDescription(name);
+      if (o != null) return o;
+    }
+    return null;
+  }
+
+  public String getDataSourceName(ObjectDescription od)
+  {
+    for (int i = 0; i < factories.size(); i++)
+    {
+      DataSourceFactory fact = (DataSourceFactory) factories.get(i);
+      String o = fact.getDataSourceName(od);
+      if (o != null) return o;
+    }
+    return null;
+  }
+
+  public ObjectDescription getDescriptionForClass(Class c)
+  {
+    for (int i = 0; i < factories.size(); i++)
+    {
+      DataSourceFactory fact = (DataSourceFactory) factories.get(i);
+      ObjectDescription o = fact.getDescriptionForClass(c);
       if (o != null) return o;
     }
     return null;

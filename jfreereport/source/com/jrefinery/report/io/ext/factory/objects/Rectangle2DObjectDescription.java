@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 9:07:48 PM
  *
- * $Id: Rectangle2DObjectDescription.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: Rectangle2DObjectDescription.java,v 1.2 2003/01/13 19:00:57 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -52,10 +52,10 @@ public class Rectangle2DObjectDescription extends AbstractObjectDescription
     float w = (float) rect.getWidth();
     float h = (float) rect.getHeight();
 
-    setParameter("x", String.valueOf(x));
-    setParameter("y", String.valueOf(y));
-    setParameter("width", String.valueOf(w));
-    setParameter("height", String.valueOf(h));
+    setParameter("x", new Float(x));
+    setParameter("y", new Float(y));
+    setParameter("width", new Float(w));
+    setParameter("height", new Float(h));
   }
 
 }

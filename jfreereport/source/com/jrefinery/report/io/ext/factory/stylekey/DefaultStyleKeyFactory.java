@@ -2,13 +2,11 @@
  * Date: Jan 9, 2003
  * Time: 9:00:14 PM
  *
- * $Id$
+ * $Id: DefaultStyleKeyFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.stylekey;
 
 import com.jrefinery.report.ShapeElement;
-import com.jrefinery.report.io.ext.factory.stylekey.AbstractStyleKeyFactory;
-import com.jrefinery.report.io.ext.factory.objects.ClassFactory;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 

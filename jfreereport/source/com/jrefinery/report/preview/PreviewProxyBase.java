@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 6:50:48 PM
  *
- * $Id: PreviewProxyBase.java,v 1.1 2003/01/14 21:11:25 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.2 2003/01/18 20:47:35 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -22,6 +22,7 @@ import com.jrefinery.report.action.PrintAction;
 import com.jrefinery.report.action.SaveAsAction;
 import com.jrefinery.report.action.ZoomInAction;
 import com.jrefinery.report.action.ZoomOutAction;
+import com.jrefinery.report.action.ExportToCSVAction;
 import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionButton;
@@ -146,6 +147,38 @@ public class PreviewProxyBase extends JComponent
     public void run()
     {
       attemptExportToHtml();
+    }
+  }
+
+  /**
+   * Default 'Export to Excel' action for the frame.
+   */
+  protected class DefaultExportToCSVAction extends ExportToCSVAction implements Runnable
+  {
+    /**
+     * Creates a 'save as' action.
+     */
+    public DefaultExportToCSVAction()
+    {
+      super(getResources());
+    }
+
+    /**
+     * Closes the preview frame.
+     *
+     * @param e The action event.
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+      SwingUtilities.invokeLater(this);
+    }
+
+    /**
+     * Passes control to the frame which will present a dialog to save the report in PDF format.
+     */
+    public void run()
+    {
+      attemptExportToCSV();
     }
   }
 
@@ -753,6 +786,7 @@ public class PreviewProxyBase extends JComponent
 
   private WrapperAction exportToExcelAction;
   private WrapperAction exportToHtmlAction;
+  private WrapperAction exportToCSVAction;
 
   /** The available zoom factors. */
   private static final double[] ZOOM_FACTORS = {0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 4.0};
@@ -797,6 +831,9 @@ public class PreviewProxyBase extends JComponent
 
   /** A dialog for specifying Excel file properties. */
   private HtmlExportDialog htmlExportDialog;
+
+  /** A dialog for specifying Excel file properties. */
+  private CSVExportDialog csvExportDialog;
 
   /**
    * Creates a preview dialog.
@@ -876,22 +913,26 @@ public class PreviewProxyBase extends JComponent
       pdfSaveDialog = new PDFSaveDialog((Frame) proxy);
       excelExportDialog = new ExcelExportDialog((Frame) proxy);
       htmlExportDialog = new HtmlExportDialog((Frame) proxy);
+      csvExportDialog = new CSVExportDialog((Frame) proxy);
     }
     else if (proxy instanceof Dialog)
     {
       pdfSaveDialog = new PDFSaveDialog((Dialog) proxy);
       excelExportDialog = new ExcelExportDialog((Dialog) proxy);
       htmlExportDialog = new HtmlExportDialog((Dialog) proxy);
+      csvExportDialog = new CSVExportDialog((Dialog) proxy);
     }
     else
     {
       pdfSaveDialog = new PDFSaveDialog();
       excelExportDialog = new ExcelExportDialog();
       htmlExportDialog = new HtmlExportDialog();
+      csvExportDialog = new CSVExportDialog();
     }
     pdfSaveDialog.pack();
     excelExportDialog.pack();
     htmlExportDialog.pack();
+    csvExportDialog.pack();
   }
 
   /**
@@ -1292,6 +1333,7 @@ public class PreviewProxyBase extends JComponent
     zoomOutAction = new WrapperAction(createDefaultZoomOutAction());
     exportToExcelAction = new WrapperAction(createDefaultExportToExcelAction());
     exportToHtmlAction = new WrapperAction(createDefaultExportToHtmlAction());
+    exportToCSVAction = new WrapperAction(createDefaultExportToCSVAction());
   }
 
   /**
@@ -1365,6 +1407,16 @@ public class PreviewProxyBase extends JComponent
   protected Action createDefaultExportToHtmlAction()
   {
     return new DefaultExportToHtmlAction();
+  }
+
+  /**
+   * Creates the ExportToExcel Action used in this previewframe.
+   *
+   * @return the 'export to Excel' action.
+   */
+  protected Action createDefaultExportToCSVAction()
+  {
+    return new DefaultExportToCSVAction();
   }
 
   /**
@@ -1488,6 +1540,7 @@ public class PreviewProxyBase extends JComponent
     fileMenu.addSeparator();
     fileMenu.add(createMenuItem(exportToExcelAction));
     fileMenu.add(createMenuItem(exportToHtmlAction));
+    fileMenu.add(createMenuItem(exportToCSVAction));
     fileMenu.addSeparator();
     fileMenu.add(createMenuItem(pageSetupAction));
     fileMenu.add(createMenuItem(printAction));
@@ -1759,6 +1812,26 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
+   * Returns the 'Export to CSV' action.
+   *
+   * @return the 'Export to CSV' action.
+   */
+  public Action getExportToCSVAction()
+  {
+    return exportToCSVAction.getParent();
+  }
+
+  /**
+   * Sets the 'Export to CSV' action.
+   *
+   * @param saveAsAction  the 'Export to CSV' action.
+   */
+  public void setExportToCSVAction(Action saveAsAction)
+  {
+    this.exportToCSVAction.setParent(saveAsAction);
+  }
+
+  /**
    * Returns the 'Export to Excel' action.
    *
    * @return the 'Export to Excel' action.
@@ -1995,6 +2068,14 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
+   * Presents a "Export to Excel" dialog to the user, enabling him/her to save the report in MS Excel format.
+   */
+  protected void attemptExportToCSV()
+  {
+    getCSVExportDialog().exportToCSV(reportPane.getReport());
+  }
+
+  /**
    * Returns the Excel export dialog.
    *
    * @return the Excel export dialog.
@@ -2012,5 +2093,15 @@ public class PreviewProxyBase extends JComponent
   public HtmlExportDialog getHtmlExportDialog()
   {
     return htmlExportDialog;
+  }
+
+  /**
+   * Returns the Excel export dialog.
+   *
+   * @return the Excel export dialog.
+   */
+  public CSVExportDialog getCSVExportDialog()
+  {
+    return csvExportDialog;
   }
 }

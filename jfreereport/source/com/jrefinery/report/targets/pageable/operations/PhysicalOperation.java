@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.4 2002/12/06 20:34:14 taqua Exp $
+ * $Id: PhysicalOperation.java,v 1.5 2002/12/16 17:31:05 mungady Exp $
  *
  * Changes
  * -------
@@ -39,18 +39,17 @@
 package com.jrefinery.report.targets.pageable.operations;
 
 import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.pageable.Spool;
+import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
+import com.jrefinery.report.util.Log;
 
+import java.awt.Color;
 import java.awt.Font;
-import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.geom.Rectangle2D;
-
-import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;  // for Javadoc link
-import com.jrefinery.report.targets.pageable.Spool;  // for Javadoc link
+import java.awt.geom.Rectangle2D;  // for Javadoc link
 
 /**
  * The base class for an operation that can be applied to an {@link OutputTarget}.
@@ -144,14 +143,14 @@ public abstract class PhysicalOperation
   public static class SetPaintOperation extends PhysicalOperation
   {
     /** The paint. */
-    private Paint paint;
+    private Color paint;
 
     /**
      * Creates a new 'set paint' operation.
      *
      * @param paint  the paint.
      */
-    public SetPaintOperation(Paint paint)
+    public SetPaintOperation(Color paint)
     {
       if (paint == null)
       {

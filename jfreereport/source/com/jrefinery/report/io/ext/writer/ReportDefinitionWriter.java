@@ -2,7 +2,7 @@
  * Date: Jan 13, 2003
  * Time: 12:53:49 PM
  *
- * $Id$
+ * $Id: ReportDefinitionWriter.java,v 1.1 2003/01/13 21:39:17 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -29,6 +29,15 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
 
     StylesWriter stylesWriter = new StylesWriter(getReportWriter());
     stylesWriter.write(w);
+
+    TemplatesWriter templatesWriter = new TemplatesWriter(getReportWriter());
+    templatesWriter.write(w);
+
+    ReportDescriptionWriter reportDescriptionWriter = new ReportDescriptionWriter(getReportWriter());
+    reportDescriptionWriter.write(w);
+
+    FunctionsWriter functionsWriter = new FunctionsWriter(getReportWriter());
+    functionsWriter.write(w);
 
     w.write ("</report-definition>");
     w.write (getLineSeparator());

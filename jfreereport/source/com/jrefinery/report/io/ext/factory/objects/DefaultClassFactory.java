@@ -2,26 +2,22 @@
  * Date: Jan 10, 2003
  * Time: 9:04:41 PM
  *
- * $Id$
+ * $Id: DefaultClassFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
+import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FloatDimension;
-import com.jrefinery.report.io.ext.factory.objects.BeanObjectDescription;
-import com.jrefinery.report.io.ext.factory.objects.BooleanObjectDescription;
-import com.jrefinery.report.io.ext.factory.objects.ByteObjectDescription;
-import com.jrefinery.report.io.ext.factory.objects.CharacterObjectDescription;
-import com.jrefinery.report.io.ext.factory.objects.ClassFactory;
-import com.jrefinery.report.io.ext.factory.objects.DateObjectDescription;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Date;
-import java.net.URL;
 
-public class DefaultClassFactory extends ClassFactory
+public class DefaultClassFactory extends ClassFactoryImpl
 {
   public DefaultClassFactory()
   {
@@ -47,5 +43,8 @@ public class DefaultClassFactory extends ClassFactory
     registerClass(Point2D.class, new Point2DObjectDescription());
     registerClass(Rectangle2D.class, new Rectangle2DObjectDescription());
     registerClass(String.class, new StringObjectDescription());
+    registerClass(ElementAlignment.class, new AlignmentObjectDescription());
+    registerClass(Color.class, new ColorObjectDescription());
+    registerClass(BasicStroke.class, new BasicStrokeObjectDescription());
   }
 }

@@ -2,24 +2,24 @@
  * Date: Jan 9, 2003
  * Time: 9:08:15 PM
  *
- * $Id$
+ * $Id: FunctionsHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.function.Expression;
+import com.jrefinery.report.function.Function;
+import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.io.InitialReportHandler;
+import com.jrefinery.report.io.Parser;
+import com.jrefinery.report.io.ParserUtil;
+import com.jrefinery.report.io.ReportDefinitionHandler;
+import com.jrefinery.report.io.ext.factory.objects.ClassFactoryCollector;
+import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import com.jrefinery.report.function.Expression;
-import com.jrefinery.report.function.FunctionInitializeException;
-import com.jrefinery.report.function.Function;
-import com.jrefinery.report.io.ParserUtil;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
-import com.jrefinery.report.io.InitialReportHandler;
-import com.jrefinery.report.io.ext.CompoundObjectHandler;
-import com.jrefinery.report.io.ext.ExpressionHandler;
-import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
-import com.jrefinery.report.io.ext.factory.objects.ClassFactoryCollector;
-import com.jrefinery.report.JFreeReport;
+
+import java.util.Iterator;
 
 public class FunctionsHandler implements ReportDefinitionHandler
 {
@@ -31,7 +31,7 @@ public class FunctionsHandler implements ReportDefinitionHandler
   private String finishTag;
   private String propertyName;
   private ExpressionHandler expressionHandler;
-  private CompoundObjectHandler propertyRefHandler;
+  private BasicObjectHandler propertyRefHandler;
 
   public FunctionsHandler(Parser parser, String finishTag)
   {
@@ -87,7 +87,14 @@ public class FunctionsHandler implements ReportDefinitionHandler
         throw new SAXException("The attribute 'name' is missing for the property-ref");
 
       ObjectDescription od = loadObjectDescription(className);
-      propertyRefHandler  = new CompoundObjectHandler(getParser(), tagName, od);
+      if (isBasicObject(od))
+      {
+        propertyRefHandler = new BasicObjectHandler(getParser(), tagName, od);
+      }
+      else
+      {
+        propertyRefHandler  = new CompoundObjectHandler(getParser(), tagName, od);
+      }
       getParser().pushFactory(propertyRefHandler);
 
     }
@@ -209,5 +216,26 @@ public class FunctionsHandler implements ReportDefinitionHandler
   {
     return (JFreeReport) getParser().getConfigurationValue(InitialReportHandler.REPORT_DEFINITION_TAG);
   }
+
+ private boolean isBasicObject(ObjectDescription od)
+  {
+    Iterator odNames = od.getParameterNames();
+    if (odNames.hasNext() == false)
+      return false;
+
+    String param = (String) odNames.next();
+    if (odNames.hasNext() == true)
+      return false;
+
+    if (param.equals("value"))
+    {
+      if (od.getParameterDefinition("value").equals(String.class))
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }
 

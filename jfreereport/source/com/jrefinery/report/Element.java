@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.17 2002/12/13 15:43:12 taqua Exp $
+ * $Id: Element.java,v 1.18 2002/12/18 10:12:59 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -61,6 +61,7 @@ import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 import java.awt.Paint;
+import java.awt.Color;
 import java.io.Serializable;
 
 /**
@@ -340,6 +341,9 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   public void setPaint(Paint p)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.PAINT, p);
+    if (p instanceof Color)
+      getStyle().setStyleProperty(ElementStyleSheet.PAINT, p);
+    else
+      throw new IllegalArgumentException("This style-key requires a Color object");
   }
 }

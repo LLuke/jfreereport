@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.19 2003/01/14 21:12:33 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.20 2003/01/18 20:47:35 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -62,11 +62,15 @@ public class JFreeReportResources_de extends JFreeReportResources
 
             {"action.export-to-excel.name", "Export nach Excel..."},
             {"action.export-to-excel.description", "Speichert den Bericht im MS-Excel format"},
-            {"action.export-to-excel.mnemonic", new Integer (KeyEvent.VK_E)},
+            {"action.export-to-excel.mnemonic", new Integer (KeyEvent.VK_X)},
 
             {"action.export-to-html.name", "Export nach HTML..."},
             {"action.export-to-html.description", "Speichert den Bericht im HTML format"},
-            {"action.export-to-html.mnemonic", new Integer (KeyEvent.VK_E)},
+            {"action.export-to-html.mnemonic", new Integer (KeyEvent.VK_H)},
+
+            {"action.export-to-csv.name", "Export nach CSV..."},
+            {"action.export-to-csv.description", "Speichert den Bericht im CSV format"},
+            {"action.export-to-csv.mnemonic", new Integer (KeyEvent.VK_C)},
 
             {"action.print.name", "Drucken..."},
             {"action.print.description", "Druckt den Bericht"},
@@ -215,5 +219,36 @@ public class JFreeReportResources_de extends JFreeReportResources
 
             {"htmlexportdialog.cancel", "Abbrechen"},
             {"htmlexportdialog.confirm", "OK"},
+
+            {"csvexportdialog.dialogtitle", "Bericht als CSV-Datei speichern ..."},
+            {"csvexportdialog.filename", "Dateiname"},
+            {"csvexportdialog.encoding", "Zeichensatz"},
+            {"csvexportdialog.separatorchar", "Trennzeichen"},
+            {"csvexportdialog.selectFile", "Auswählen"},
+
+            {"csvexportdialog.warningTitle", "Warnung"},
+            {"csvexportdialog.errorTitle", "Fehler"},
+            {"csvexportdialog.targetIsEmpty", "Bitte geben Sie einen Dateinamen für die CSV-Datei an."},
+            {"csvexportdialog.targetIsNoFile", "Der Dateiname zeigt auf keine gewöhnliche Datei."},
+            {"csvexportdialog.targetIsNotWritable",
+                "Sie besitzen keine ausreichenden Rechte um die ausgewählte Datei zu "
+              + "überschreiben."},
+
+            {"csvexportdialog.targetOverwriteConfirmation",
+               "Die Datei ''{0}'' existiert bereits. Soll diese Datei überschrieben werden?"},
+            {"csvexportdialog.targetOverwriteTitle", "Datei überschreiben?"},
+
+            {"csvexportdialog.cancel", "Abbrechen"},
+            {"csvexportdialog.confirm", "OK"},
+
+            {"csvexportdialog.separator.tab", "Tabulator"},
+            {"csvexportdialog.separator.colon", "Komma (,)"},
+            {"csvexportdialog.separator.semicolon", "Semikolon (;)"},
+            {"csvexportdialog.separator.other", "Anderes"},
+
+            {"csvexportdialog.exporttype", "Bitte Export-Methode auswählen"},
+            {"csvexportdialog.export.data", "Exportiere die Datenquelle (Rohdaten)"},
+            {"csvexportdialog.export.printed_elements", "Exportiere die gedruckten Daten (Bearbeitete Daten)"},
+
           };
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.3 2002/12/16 17:31:05 mungady Exp $
+ * $Id: TextOperationModule.java,v 1.4 2003/01/21 17:11:39 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import com.jrefinery.report.targets.FloatDimension;
 
 import java.awt.Font;
 import java.awt.Paint;
+import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Dimension2D;
@@ -101,7 +102,7 @@ public class TextOperationModule extends OperationModule
     Font font = e.getStyle().getFontStyleProperty();
 
     // Paint
-    Paint paint = (Paint) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
+    Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
 
     ArrayList list = new ArrayList();
     list.add (new PhysicalOperation.SetFontOperation (font));

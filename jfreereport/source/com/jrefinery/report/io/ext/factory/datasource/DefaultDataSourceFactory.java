@@ -2,7 +2,7 @@
  * Date: Jan 12, 2003
  * Time: 4:36:42 PM
  *
- * $Id$
+ * $Id: DefaultDataSourceFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.datasource;
 
@@ -48,4 +48,6 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
     registerDataSources("StringFilter", new BeanObjectDescription(StringFilter.class));
     registerDataSources("URLFilter", new BeanObjectDescription(URLFilter.class));
   }
+  
+
 }

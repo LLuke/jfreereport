@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 8:06:54 PM
  *
- * $Id: HtmlProducer.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.2 2003/01/21 17:11:41 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -16,22 +16,22 @@ import com.jrefinery.report.util.Log;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.Writer;
 
 public class HtmlProducer extends TableProducer
 {
   private ColorObjectDescription colorObjectDescription;
-  private PrintStream pout;
+  private PrintWriter pout;
   private JFreeReport report;
   private HtmlCellDataFactory cellDataFactory;
   private CharacterEntityParser entityParser;
 
   private boolean isOpen;
 
-  public HtmlProducer(OutputStream out,JFreeReport report)
+  public HtmlProducer(Writer w,JFreeReport report)
   {
-    this.pout = new PrintStream(out);
+    this.pout = new PrintWriter(w);
     this.report = report;
     this.cellDataFactory = new HtmlCellDataFactory();
     this.colorObjectDescription = new ColorObjectDescription();

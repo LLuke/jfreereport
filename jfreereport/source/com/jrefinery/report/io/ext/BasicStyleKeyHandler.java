@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 6:53:26 PM
  *
- * $Id$
+ * $Id: BasicStyleKeyHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -20,8 +20,9 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
   private StringBuffer buffer;
   private StyleKeyFactory keyfactory;
   private StyleKey key;
+  private Class keyValueClass;
 
-  public BasicStyleKeyHandler(Parser parser, String finishTag, String name)
+  public BasicStyleKeyHandler(Parser parser, String finishTag, String name, Class c)
     throws SAXException
   {
     this.parser = parser;
@@ -30,8 +31,17 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
     keyfactory = (StyleKeyFactory)
         getParser().getConfigurationValue(ParserConfigHandler.STYLEKEY_FACTORY_TAG);
     key = keyfactory.getStyleKey(name);
-    if (key == null) throw new SAXException("The defined StyleKey is invalid: " + name);
+    if (key == null)
+      throw new SAXException("The defined StyleKey is invalid: " + name);
 
+    if (c == null)
+    {
+      this.keyValueClass = key.getValueType();
+    }
+    else
+    {
+      this.keyValueClass = c;
+    }
   }
 
   public void startElement(String tagName, Attributes attrs) throws SAXException
@@ -65,7 +75,7 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
 
   public Object getValue () throws SAXException
   {
-    return keyfactory.createBasicObject(key, buffer.toString());
+    return keyfactory.createBasicObject(key, buffer.toString(), keyValueClass);
   }
 
   public Parser getParser()
@@ -76,5 +86,10 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
   protected String getFinishTag()
   {
     return finishTag;
+  }
+
+  public Class getKeyValueClass()
+  {
+    return keyValueClass;
   }
 }

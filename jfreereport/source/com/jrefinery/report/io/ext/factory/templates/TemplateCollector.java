@@ -2,9 +2,11 @@
  * Date: Jan 11, 2003
  * Time: 3:33:07 PM
  *
- * $Id: TemplateCollector.java,v 1.2 2003/01/13 19:01:12 taqua Exp $
+ * $Id: TemplateCollector.java,v 1.3 2003/01/14 21:09:33 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.templates;
+
+import com.jrefinery.report.filter.templates.Template;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,5 +39,16 @@ public class TemplateCollector extends TemplateCollection
       if (o != null) return o;
     }
     return super.getTemplate(name);
+  }
+
+  public TemplateDescription getDescription(Template template)
+  {
+    for (int i = 0; i < factories.size(); i++)
+    {
+      TemplateCollection fact = (TemplateCollection) factories.get(i);
+      TemplateDescription o = fact.getDescription(template);
+      if (o != null) return o;
+    }
+    return super.getDescription(template);
   }
 }

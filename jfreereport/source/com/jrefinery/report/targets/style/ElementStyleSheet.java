@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.10 2003/01/12 21:33:53 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.11 2003/01/13 19:01:13 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import com.jrefinery.report.ElementAlignment;
 import java.awt.Font;
 import java.awt.Paint;
 import java.awt.Stroke;
+import java.awt.Color;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
@@ -89,7 +90,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   public static final StyleKey VISIBLE       = StyleKey.getStyleKey("visible", Boolean.class);
 
   /** A key for the 'paint' used to color an element. */
-  public static final StyleKey PAINT         = StyleKey.getStyleKey("paint", Paint.class);
+  public static final StyleKey PAINT         = StyleKey.getStyleKey("paint", Color.class);
 
   /** A key for the 'stroke' used to draw an element. */
   public static final StyleKey STROKE        = StyleKey.getStyleKey("stroke", Stroke.class);

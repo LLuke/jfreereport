@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 9:04:24 PM
  *
- * $Id$
+ * $Id: CSVQuoter.java,v 1.1 2003/01/18 20:47:35 taqua Exp $
  */
 package com.jrefinery.report.targets.csv;
 
@@ -103,5 +103,10 @@ public class CSVQuoter
   public String getSeparator()
   {
     return separator;
+  }
+
+  public void setSeparator(String separator)
+  {
+    this.separator = separator;
   }
 }

@@ -30,7 +30,7 @@
                      based on PDFSaveDialog by Thomas Morgner, David Gilbert (for Simba Management Limited) and contributors
  * Contributor(s):
  *
- * $Id: ExcelExportDialog.java,v 1.1 2003/01/14 21:10:08 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.1 2003/01/18 20:50:12 taqua Exp $
  *
  * Changes
  * --------
@@ -40,8 +40,6 @@
 package com.jrefinery.report.preview;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.targets.pageable.PageableReportProcessor;
-import com.jrefinery.report.targets.table.excel.ExcelProcessor;
 import com.jrefinery.report.targets.table.html.HtmlProcessor;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
@@ -69,12 +67,10 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.FileWriter;
+import java.io.Writer;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
@@ -601,13 +597,13 @@ public class HtmlExportDialog extends JDialog
    */
   public boolean writeHtml(JFreeReport report)
   {
-    OutputStream out = null;
+    Writer out = null;
     try
     {
 
-      out = new BufferedOutputStream(new FileOutputStream(new File(getFilename())));
+      out = new BufferedWriter(new FileWriter(new File(getFilename())));
       HtmlProcessor target = new HtmlProcessor(report);
-      target.setOutputStream(out);
+      target.setWriter(out);
       target.processReport();
       out.close();
       return true;

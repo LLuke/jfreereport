@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.2 2002/12/16 17:31:05 mungady Exp $
+ * $Id: ShapeOperationModule.java,v 1.3 2003/01/21 17:11:39 taqua Exp $
  *
  * Changes
  * -------
@@ -40,20 +40,20 @@ package com.jrefinery.report.targets.pageable.operations;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ShapeElement;
+import com.jrefinery.report.targets.pageable.ElementLayoutInformation;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
-import com.jrefinery.report.targets.pageable.ElementLayoutInformation;
 import com.jrefinery.report.targets.pageable.contents.Content;
 import com.jrefinery.report.targets.pageable.contents.ShapeContent;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +84,7 @@ public class ShapeOperationModule extends OperationModule
   public List createOperations (Element e, Content value, Rectangle2D bounds)
   {
     Stroke stroke = (Stroke) e.getStyle().getStyleProperty(ElementStyleSheet.STROKE);
-    Paint paint = (Paint) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
+    Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
 
     boolean shouldDraw = e.getStyle().getBooleanStyleProperty(ShapeElement.DRAW_SHAPE);
     boolean shouldFill = e.getStyle().getBooleanStyleProperty(ShapeElement.FILL_SHAPE);

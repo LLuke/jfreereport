@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 4:55:41 PM
  *
- * $Id$
+ * $Id: AbstractStyleKeyFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.stylekey;
 
@@ -47,7 +47,7 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
     return (StyleKey) knownKeys.get (name);
   }
 
-  public Object createBasicObject(StyleKey k, String value)
+  public Object createBasicObject(StyleKey k, String value, Class c)
   {
     if (k == null)
     {
@@ -55,10 +55,13 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
       return null;
     }
 
+    if (c == null)
+      throw new NullPointerException();
+
     if (classFactory == null)
       throw new NullPointerException("Class "+ getClass());
 
-    ObjectDescription od = classFactory.getDescriptionForClass(k.getValueType());
+    ObjectDescription od = classFactory.getDescriptionForClass(c);
     if (od == null) return null;
 
     od.setParameter("value", value);

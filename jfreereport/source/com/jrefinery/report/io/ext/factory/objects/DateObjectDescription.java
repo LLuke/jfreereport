@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 9:07:48 PM
  *
- * $Id: DateObjectDescription.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: DateObjectDescription.java,v 1.2 2003/01/13 19:00:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -48,9 +48,9 @@ public class DateObjectDescription extends AbstractObjectDescription
       int month = gc.get(GregorianCalendar.MONTH);
       int day = gc.get(GregorianCalendar.DAY_OF_MONTH);
 
-      setParameter("year", String.valueOf(year));
-      setParameter("month", String.valueOf(month));
-      setParameter("day", String.valueOf(day));
+      setParameter("year", new Integer(year));
+      setParameter("month", new Integer(month));
+      setParameter("day", new Integer(day));
     }
     else
     {

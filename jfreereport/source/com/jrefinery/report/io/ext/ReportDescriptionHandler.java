@@ -2,7 +2,7 @@
  * Date: Jan 9, 2003
  * Time: 9:08:15 PM
  *
- * $Id$
+ * $Id: ReportDescriptionHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -99,6 +99,8 @@ public class ReportDescriptionHandler implements ReportDefinitionHandler
     }
     else if (tagName.equals(GROUPS_TAG))
     {
+      GroupsHandler groupFactory = new GroupsHandler(getParser(), tagName);
+      getParser().pushFactory(groupFactory);
     }
     else
     {
@@ -148,6 +150,7 @@ public class ReportDescriptionHandler implements ReportDefinitionHandler
     }
     else if (tagName.equals(GROUPS_TAG))
     {
+      // groups finished, nothing to do here
     }
     else if (tagName.equals(finishTag))
     {

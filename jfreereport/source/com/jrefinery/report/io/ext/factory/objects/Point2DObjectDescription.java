@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 9:07:48 PM
  *
- * $Id: Point2DObjectDescription.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: Point2DObjectDescription.java,v 1.2 2003/01/13 19:00:56 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -46,7 +46,7 @@ public class Point2DObjectDescription extends AbstractObjectDescription
     float x = (float) point.getX();
     float y = (float) point.getY();
 
-    setParameter("x", String.valueOf(x));
-    setParameter("y", String.valueOf(y));
+    setParameter("x", new Float(x));
+    setParameter("y", new Float(y));
   }
 }

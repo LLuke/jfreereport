@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 8:59:32 PM
  *
- * $Id$
+ * $Id: CSVTableProcessor.java,v 1.1 2003/01/18 20:47:35 taqua Exp $
  */
 package com.jrefinery.report.targets.csv;
 
@@ -23,12 +23,19 @@ import java.util.Iterator;
 
 public class CSVProcessor
 {
+  public static final String CSV_SEPARATOR = "com.jrefinery.report.targets.csv.separator";
   private static final String CSV_WRITER = "csv-writer";
 
   private Writer writer;
   private JFreeReport report;
 
   public CSVProcessor(JFreeReport report)
+      throws ReportProcessingException, FunctionInitializeException
+  {
+    this (report, report.getReportConfiguration().getConfigProperty(CSV_SEPARATOR, ","));
+  }
+
+  public CSVProcessor(JFreeReport report, String separator)
       throws ReportProcessingException, FunctionInitializeException
   {
     if (report == null) throw new NullPointerException();
@@ -43,6 +50,7 @@ public class CSVProcessor
 
     CSVWriter lm = new CSVWriter();
     lm.setName(CSV_WRITER);
+    lm.setSeparator(separator);
     this.report.addFunction(lm);
   }
 

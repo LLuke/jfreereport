@@ -2,7 +2,7 @@
  * Date: Jan 9, 2003
  * Time: 9:08:15 PM
  *
- * $Id: StyleSheetHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.2 2003/01/13 19:00:44 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -52,7 +52,18 @@ public class StyleSheetHandler implements ReportDefinitionHandler
       if (name == null)
         throw new SAXException ("Attribute 'name' is missing.");
 
-      basicFactory = new BasicStyleKeyHandler(getParser(), tagName, name);
+      String className = attrs.getValue("class");
+      Class c = null;
+      try
+      {
+        c = Class.forName(className);
+      }
+      catch (Exception e)
+      {
+        // ignore me ...
+      }
+
+      basicFactory = new BasicStyleKeyHandler(getParser(), tagName, name, c);
       getParser().pushFactory(basicFactory);
     }
     else if (tagName.equals(COMPOUND_KEY_TAG))
@@ -61,7 +72,18 @@ public class StyleSheetHandler implements ReportDefinitionHandler
       if (name == null)
         throw new SAXException ("Attribute 'name' is missing.");
 
-      basicFactory = new CompoundStyleKeyHandler(getParser(), tagName, name);
+      String className = attrs.getValue("class");
+      Class c = null;
+      try
+      {
+        c = Class.forName(className);
+      }
+      catch (Exception e)
+      {
+        // ignore me ...
+      }
+
+      basicFactory = new CompoundStyleKeyHandler(getParser(), tagName, name, c);
       getParser().pushFactory(basicFactory);
     }
     else if (tagName.equals(EXTENDS_TAG))

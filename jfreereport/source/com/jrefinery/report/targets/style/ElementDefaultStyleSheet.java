@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.4 2003/01/03 16:18:19 mungady Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ import com.jrefinery.report.targets.FloatDimension;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -55,7 +54,7 @@ import java.awt.geom.Rectangle2D;
 public class ElementDefaultStyleSheet extends ElementStyleSheet
 {
   /** The default paint. */
-  public static final Paint DEFAULT_PAINT = Color.black;
+  public static final Color DEFAULT_PAINT = Color.black;
   
   /** The default font. */
   public static final Font DEFAULT_FONT = new Font ("Serif", Font.PLAIN, 10);

@@ -2,16 +2,14 @@
  * Date: Jan 10, 2003
  * Time: 10:09:07 PM
  *
- * $Id: ClassFactoryCollector.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: ClassFactoryCollector.java,v 1.2 2003/01/13 19:00:51 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
-
-import com.jrefinery.report.io.ext.factory.objects.ClassFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class ClassFactoryCollector extends ClassFactory
+public class ClassFactoryCollector extends ClassFactoryImpl
 {
   private ArrayList factories;
 
