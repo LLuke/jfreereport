@@ -28,21 +28,18 @@ public class GDIColor extends Color
     {
       retval = (retval + 256);
     }
-//    System.out.println ("red: " + retval);
     return retval;
   }
 
   private static final int getG (int ref)
   {
     int retval = (ref & 0x0000ff00) >> 8;
-//    System.out.println ("Green: " + retval);
     return retval;
   }
 
   private static final int getB (int ref)
   {
     int retval = (ref & 0x00ff0000) >> 16;
-//    System.out.println ("Blue: " + retval);
     return retval;
   }
 

@@ -174,7 +174,6 @@ public class PxiCommandGenerator extends PxiGenerator
   {
     // Ensure correct nesting.
     Assert.assert (currentObject != null);
-    System.out.println ("End Frame: " + getDefineObjectLevel ());
     Assert.assert (getDefineObjectLevel () == 1);
 
     defineObjectStack.pop ();
@@ -248,7 +247,6 @@ public class PxiCommandGenerator extends PxiGenerator
     }
     if (curColor.getColor () == null)
       throw new NullPointerException ();
-    System.out.println ("Color changed to " + curColor.getColor ());
     currentObject.addCommand (curColor);
     pendingColor = curColor;
   }
@@ -296,7 +294,6 @@ public class PxiCommandGenerator extends PxiGenerator
    */
   public void generateFilledCurve (FilledCurve curve)
   {
-    System.out.println (curve);
     currentObject.addCommand (curve);
   }
 

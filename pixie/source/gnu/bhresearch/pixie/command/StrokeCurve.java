@@ -95,10 +95,8 @@ public class StrokeCurve extends PixieImageCommand
   public void paint (Graphics graphics)
   {
     // Awt 1.0.2 does not support drawPolyline
-    System.out.println ("Line: Graphics.color " + graphics.getColor ());
     for (int i = 0, j = 1; j < cleanCnt; i++, j++)
     {
-      System.out.println ("Line: " + scaled_x[i] + ";" + scaled_y[i] + " to " + scaled_x[j] + ";" + scaled_y[j]);
       graphics.drawLine (scaled_x[i], scaled_y[i], scaled_x[j], scaled_y[j]);
     }
   }

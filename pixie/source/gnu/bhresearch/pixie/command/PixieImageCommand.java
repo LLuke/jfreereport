@@ -15,7 +15,6 @@ public abstract class PixieImageCommand
 {
   public PixieImageCommand ()
   {
-//    System.out.println (this.getClass().getName());
     scaleX = 1;
     scaleY = 1;
   }

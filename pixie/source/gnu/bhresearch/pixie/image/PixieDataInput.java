@@ -77,18 +77,10 @@ public class PixieDataInput implements DataInput
 
   public void setImageSize (int w, int h)
   {
-    System.out.println ("Reader: Size: " + w + " " + h);
     this.pixieWidth = w;
     this.pixieHeight = h;
   }
 
-//  public void setScale (float scaleX, float scaleY)
-//  {
-//    System.out.println ("Reader: Scale: " + scaleX  + " " + scaleY);
-//    this.scaleX = scaleX;
-//    this.scaleY = scaleY;
-//  }
-//
   public int readWidth () throws IOException
   {
     int length = readUnsignedVInt ();

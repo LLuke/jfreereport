@@ -114,14 +114,12 @@ public class PixieObject extends PixieImageCommand
 
   public void addCommand (PixieImageCommand cmd)
   {
-    System.out.println ("AddedCommand: " + cmd.getClass ().getName ());
     commands.add (cmd);
   }
 
   public void paint (Graphics g)
   {
     int l = commands.size ();
-//    System.out.println ("Painting for : " + l + " commands");
     for (int i = 0; i < l; i++)
     {
       PixieImageCommand cmd = (PixieImageCommand) commands.elementAt (i);

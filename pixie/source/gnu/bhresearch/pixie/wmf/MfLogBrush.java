@@ -205,8 +205,7 @@ public class MfLogBrush implements WmfObject
         }
       default:
         {
-
-          System.out.println ("Unknown Paint Mode:" + getStyle ());
+          // Unknown Paint Mode
           lastPaint = new GDIColor (COLOR_FULL_ALPHA);
         }
     }

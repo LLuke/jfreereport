@@ -105,7 +105,6 @@ public final class Curve
 
   public int[] getAllY ()
   {
-    System.out.println ("PointSize: " + p.length);
     int[] retval = new int[size];
     for (int i = 0; i < size; i++)
     {

@@ -53,9 +53,6 @@ public class StrokeRectangle extends PixieImageCommand
 
   public void paint (Graphics graphics)
   {
-//    System.out.println ("Rec: " + false + " " + true);
-//    System.out.println ("Rect: " + x + " " + y + " " + width + " " + height);
-//
     graphics.drawRect (scaled_x, scaled_y, scaled_width, scaled_height);
   }
 

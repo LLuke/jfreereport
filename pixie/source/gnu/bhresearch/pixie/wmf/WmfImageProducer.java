@@ -57,8 +57,9 @@ public class WmfImageProducer implements ImageProducer
 
   public synchronized void addConsumer(ImageConsumer ic)
   {
-    if (isConsumer(ic) == false)
-      consumers.add(ic);
+    if (isConsumer(ic)) return;
+
+    consumers.add(ic);
   }
 
 
@@ -82,11 +83,14 @@ public class WmfImageProducer implements ImageProducer
 
   public synchronized void startProduction(ImageConsumer pic)
   {
-    addConsumer(pic);
+    if (pic != null)
+    {
+      addConsumer(pic);
+    }
 
     ImageConsumer[] cons = (ImageConsumer[]) consumers.toArray(new ImageConsumer[consumers.size()]);
-
     BufferedImage image = metafile.replay();
+
     int w = image.getWidth();
     int h = image.getHeight();
     ColorModel model = image.getColorModel();
@@ -94,10 +98,11 @@ public class WmfImageProducer implements ImageProducer
     for (int i = 0; i < cons.length; i++)
     {
       ImageConsumer ic = cons[i];
-      ic.setDimensions(w, h);
       ic.setHints(ImageConsumer.TOPDOWNLEFTRIGHT);
+      ic.setHints(ImageConsumer.SINGLEFRAME);
       ic.setHints(ImageConsumer.SINGLEPASS);
       ic.setHints(ImageConsumer.COMPLETESCANLINES);
+      ic.setDimensions(w, h);
       ic.setColorModel(model);
     }
 
@@ -124,6 +129,11 @@ public class WmfImageProducer implements ImageProducer
     {
       ImageConsumer ic = cons[i];
       ic.imageComplete(ic.STATICIMAGEDONE);
+    }
+
+    if (pic != null)
+    {
+      removeConsumer(pic);
     }
   }
 

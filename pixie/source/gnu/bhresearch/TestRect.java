@@ -2,11 +2,15 @@ package gnu.bhresearch;
 
 import gnu.bhresearch.JImagePanel;
 import gnu.bhresearch.pixie.wmf.WmfFile;
+import gnu.bhresearch.pixie.wmf.WmfImageProducer;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 import javax.swing.border.EtchedBorder;
 import java.awt.BorderLayout;
+import java.awt.Toolkit;
+import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -31,33 +35,19 @@ public class TestRect
 
   public static void main (String[] args) throws Exception
   {
-//    BufferedImage image = new BufferedImage (400,400, BufferedImage.TYPE_INT_ARGB);
-//    Graphics2D g = image.createGraphics ();
-//    Rectangle2D rect = new Rectangle2D.Double (10,10,50,50);
-//    rect.add (new Rectangle2D.Double (40,40,90,90));
-//    MfLogPen pen = new MfLogPen ();
-//    pen.setWidth (1);
-//    pen.setStyle (4);
-//
-//    MfLogBrush brush = new MfLogBrush ();
-//    brush.setHatchedStyle (2);
-//    brush.setStyle (2);
-//    brush.setColor (Color.black);
-//    BufferedImage bim = brush.createHatchStyle (2,Color.black.getRGB());
-//
-//    g = image.createGraphics ();
-//    g.setColor (Color.black);
-//    g.setPaint (brush.getPaint());
-    //g.setStroke (pen.getStroke ());
-    //g.draw (new Line2D.Double (scaleX(20000),scaleY(20000),scaleX(40000),scaleY(40000)));
-    //g.draw (new Rectangle (18908,16778,1177,1209));    //g.drawImage (bim, 0,0, new JButton());    //g.fill (new Rectangle (18,16,177,209));
-
-//    WmfFile wmf = new WmfFile ("./pixie/res/anim0002.wmf", 1024, 768);
-    WmfFile wmf = new WmfFile ("./pixie/res/test.wmf");
+/*
+    WmfFile wmf = new WmfFile ("./pixie/res/anim0002.wmf", 1024, 768);
     wmf.scaleToFit (1024, 768);
     wmf.replay ();
-
-    BufferedImage image = wmf.getImage ();
+*/
+    Image image = null;
+    for (int i = 0; i < 10; i++)
+    {
+      WmfImageProducer prod = new WmfImageProducer("./pixie/res/anim0002.wmf", 9000, 9000);
+      image = Toolkit.getDefaultToolkit().createImage(prod);
+      BufferedImage bi = new BufferedImage (100, 100, BufferedImage.TYPE_INT_ARGB);
+      bi.createGraphics().drawImage(image, 0,0, new JButton());
+    }
 
     JFrame frame = new JFrame ();
     frame.addWindowListener (new WindowAdapter ()

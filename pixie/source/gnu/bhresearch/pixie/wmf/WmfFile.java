@@ -16,9 +16,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Stack;
-import java.util.Vector;
 
 /**
  * Everyting the parser did before.
@@ -29,15 +29,14 @@ public class WmfFile
   public static final int QUALITY_MAYBE = 1; // Might be able to convert.
   public static final int QUALITY_YES = 2;   // Can convert.
 
-  // Maximal picture size is 1600x1600. A average wmf file scales easily
+  // Maximal picture size is 1200x1200. A average wmf file scales easily
   // to 20000 and more, so we have to limit the pixel image's size.
 
-  private static final int MAX_PICTURE_SIZE = getMaxPictureSize ();
+  private static final int MAX_PICTURE_SIZE = getMaxPictureSize();
 
-  private static int getMaxPictureSize ()
+  private static int getMaxPictureSize()
   {
-    System.out.println ("Total Mem: " + Runtime.getRuntime().totalMemory());
-    return 1600;
+    return 1200;
   }
 
   private WmfObject[] objects;
@@ -50,7 +49,7 @@ public class WmfFile
   private int fileSize;
   private int filePos;
 
-  private Vector records;
+  private ArrayList records;
   private BufferedImage image;
   private Graphics2D graphics;
 
@@ -59,58 +58,58 @@ public class WmfFile
   private int imageX = 0;
   private int imageY = 0;
 
-  public WmfFile (URL input)
-          throws IOException
+  public WmfFile(URL input)
+      throws IOException
   {
-    this (input, -1, -1);
+    this(input, -1, -1);
   }
 
-  public WmfFile (String input)
-          throws IOException
+  public WmfFile(String input)
+      throws IOException
   {
-    this (input, -1, -1);
+    this(input, -1, -1);
   }
 
-  public WmfFile (URL input, int imageX, int imageY)
-          throws IOException
+  public WmfFile(URL input, int imageX, int imageY)
+      throws IOException
   {
-    this (new BufferedInputStream (input.openStream ()), input.toString (), imageX, imageY);
-  }
-
-  /**
-   * Initialize metafile for reading from filename.
-   */
-  public WmfFile (String inName, int imageX, int imageY)
-          throws FileNotFoundException, IOException
-  {
-    this (new BufferedInputStream (new FileInputStream (inName)), inName, imageX, imageY);
+    this(new BufferedInputStream(input.openStream()), input.toString(), imageX, imageY);
   }
 
   /**
    * Initialize metafile for reading from filename.
    */
-  public WmfFile (InputStream in, String inName, int imageX, int imageY)
-          throws FileNotFoundException, IOException
+  public WmfFile(String inName, int imageX, int imageY)
+      throws FileNotFoundException, IOException
+  {
+    this(new BufferedInputStream(new FileInputStream(inName)), inName, imageX, imageY);
+  }
+
+  /**
+   * Initialize metafile for reading from filename.
+   */
+  public WmfFile(InputStream in, String inName, int imageX, int imageY)
+      throws FileNotFoundException, IOException
   {
     this.inName = inName;
     this.in = in;
     this.imageX = imageX;
     this.imageY = imageY;
-    records = new Vector ();
-    dcStack = new Stack ();
-    palette = new MfPalette ();
-    resetStates ();
-    readHeader ();
-    parseRecords ();
+    records = new ArrayList();
+    dcStack = new Stack();
+    palette = new MfPalette();
+    resetStates();
+    readHeader();
+    parseRecords();
   }
 
-  public void resetStates ()
+  public void resetStates()
   {
-    dcStack.clear ();
-    dcStack.push (new MfDcState (this));
+    dcStack.clear();
+    dcStack.push(new MfDcState(this));
   }
 
-  public MfPalette getPalette ()
+  public MfPalette getPalette()
   {
     return palette;
   }
@@ -118,25 +117,25 @@ public class WmfFile
   /**
    * Return true if the input is a metafile
    */
-  public static int isMetafile (String inName, InputStream in)
+  public static int isMetafile(String inName, InputStream in)
   {
-    return MfHeader.isMetafile (inName, in);
+    return MfHeader.isMetafile(inName, in);
   }
 
   /**
    * Return Placeable and Windows headers that were read earlier.
    */
-  public MfHeader getHeader ()
+  public MfHeader getHeader()
   {
     return header;
   }
 
-  public BufferedImage getImage ()
+  public BufferedImage getImage()
   {
     return image;
   }
 
-  public Graphics2D getGraphics2D ()
+  public Graphics2D getGraphics2D()
   {
     return graphics;
   }
@@ -144,28 +143,28 @@ public class WmfFile
   /**
    * Check class invariant.
    */
-  public void assertValid ()
+  public void assertValid()
   {
-    Assert.assert (filePos >= 0 && filePos <= fileSize, "FilePos=" + filePos + "; FileSize=" + fileSize);
+    Assert.assert(filePos >= 0 && filePos <= fileSize, "FilePos=" + filePos + "; FileSize=" + fileSize);
   }
 
   /**
    * Read Placeable and Windows headers.
    */
-  public MfHeader readHeader () throws IOException
+  public MfHeader readHeader() throws IOException
   {
-    header = new MfHeader ();
-    header.read (in, inName);
-    if (header.isValid ())
+    header = new MfHeader();
+    header.read(in, inName);
+    if (header.isValid())
     {
-      fileSize = header.getFileSize ();
-      objects = new WmfObject[header.getObjectsSize ()];
-      filePos = header.getHeaderSize ();
+      fileSize = header.getFileSize();
+      objects = new WmfObject[header.getObjectsSize()];
+      filePos = header.getHeaderSize();
       return header;
     }
     else
     {
-      throw new IOException (inName + "is not a real metafile");
+      throw new IOException(inName + "is not a real metafile");
     }
   }
 
@@ -174,73 +173,73 @@ public class WmfFile
   /**
    * Fetch a record.
    */
-  public MfRecord readNextRecord () throws IOException
+  public MfRecord readNextRecord() throws IOException
   {
     if (filePos >= fileSize)
       return null;
 
-    assertValid ();
+    assertValid();
 
-    MfRecord record = new MfRecord ();
-    record.read (in, inName);
-    filePos += record.getLength ();
+    MfRecord record = new MfRecord();
+    record.read(in, inName);
+    filePos += record.getLength();
     return record;
   }
 
   /**
    * Read and interpret the body of the metafile.
    */
-  protected void parseRecords () throws IOException
+  protected void parseRecords() throws IOException
   {
-    MfCmd.registerAllKnownTypes ();
+    MfCmd.registerAllKnownTypes();
     int curX = 0;
     int curY = 0;
 
     MfRecord mf = null;
-    while ((mf = readNextRecord ()) != null)
+    while ((mf = readNextRecord()) != null)
     {
-      MfCmd cmd = MfCmd.getCommand (mf.getType ());
+      MfCmd cmd = MfCmd.getCommand(mf.getType());
       if (cmd == null)
       {
-        System.out.println ("Failed to parse record " + mf.getType ());
+        System.out.println("Failed to parse record " + mf.getType());
       }
       else
       {
-        cmd.setRecord (mf);
+        cmd.setRecord(mf);
 
-        if (cmd.getFunction () == MfType.SET_WINDOW_ORG)
+        if (cmd.getFunction() == MfType.SET_WINDOW_ORG)
         {
           MfCmdSetWindowOrg worg = (MfCmdSetWindowOrg) cmd;
-          Point p = worg.getTarget ();
+          Point p = worg.getTarget();
           curX = p.x;
           curY = p.y;
         }
-        else if (cmd.getFunction () == MfType.SET_WINDOW_EXT)
+        else if (cmd.getFunction() == MfType.SET_WINDOW_EXT)
         {
           MfCmdSetWindowExt worg = (MfCmdSetWindowExt) cmd;
-          Dimension d = worg.getDimension ();
-          maxX = Math.max (maxX, curX + d.width);
-          maxY = Math.max (maxY, curY + d.height);
+          Dimension d = worg.getDimension();
+          maxX = Math.max(maxX, curX + d.width);
+          maxY = Math.max(maxY, curY + d.height);
         }
-        records.addElement (cmd);
+        records.add(cmd);
       }
     }
-    in.close ();
+    in.close();
     in = null;
 
-    System.out.println (records.size () + " records read");
-    System.out.println ("Image Extends: " + maxX + " " + maxY);
-    scaleToFit (MAX_PICTURE_SIZE, MAX_PICTURE_SIZE);
+    //System.out.println(records.size() + " records read");
+    //System.out.println("Image Extends: " + maxX + " " + maxY);
+    scaleToFit(MAX_PICTURE_SIZE, MAX_PICTURE_SIZE);
   }
 
   /**
    * <!-- Yes, this is from iText lib -->
    */
-  public void scaleToFit (float fitWidth, float fitHeight)
+  public void scaleToFit(float fitWidth, float fitHeight)
   {
     float percentX = (fitWidth * 100) / maxX;
     float percentY = (fitHeight * 100) / maxY;
-    scalePercent (percentX < percentY ? percentX : percentY);
+    scalePercent(percentX < percentY ? percentX : percentY);
   }
 
   /**
@@ -249,9 +248,9 @@ public class WmfFile
    * @param		percent		the scaling percentage
    * <!-- Yes, this is from iText lib -->
    */
-  public void scalePercent (float percent)
+  public void scalePercent(float percent)
   {
-    scalePercent (percent, percent);
+    scalePercent(percent, percent);
   }
 
   /**
@@ -261,90 +260,91 @@ public class WmfFile
    * @param		percentY	the scaling percentage of the height
    * <!-- Yes, this is from iText lib -->
    */
-  public void scalePercent (float percentX, float percentY)
+  public void scalePercent(float percentX, float percentY)
   {
     imageX = (int) ((maxX * percentX) / 100f);
     imageY = (int) ((maxY * percentY) / 100f);
   }
 
-  public synchronized BufferedImage replay ()
+  public synchronized BufferedImage replay()
   {
 
-    image = new BufferedImage (imageX, imageY, BufferedImage.TYPE_INT_ARGB);
-    graphics = image.createGraphics ();
-    graphics.fill (new Rectangle (0, 0, imageX, imageY));
+    image = new BufferedImage(imageX, imageY, BufferedImage.TYPE_INT_ARGB);
+    graphics = image.createGraphics();
+    graphics.fill(new Rectangle(0, 0, imageX, imageY));
 
-    for (int i = 0; i < records.size (); i++)
+    for (int i = 0; i < records.size(); i++)
     {
       if (i > maxRec) break;
       try
       {
-        MfCmd command = (MfCmd) records.elementAt (i);
-        command.setScale ((float) imageX / (float) maxX, (float) imageY / (float) maxY);
-        command.replay (this);
+        MfCmd command = (MfCmd) records.get(i);
+        command.setScale((float) imageX / (float) maxX, (float) imageY / (float) maxY);
+        command.replay(this);
       }
       catch (Exception e)
       {
-        System.out.println ("i = " + i);
-        e.printStackTrace ();
+        System.out.println("Error on command i = " + i);
+        e.printStackTrace();
       }
     }
     BufferedImage retval = image;
 
     image = null;
+    graphics.dispose();
     graphics = null;
-    resetStates ();
+    resetStates();
 
     return retval;
   }
 
-  public static void main (String[] args) throws Exception
+  public static void main(String[] args) throws Exception
   {
-    WmfFile wmf = new WmfFile ("./pixie/res/test.wmf", 800, 600);
-    wmf.replay ();
+    WmfFile wmf = new WmfFile("./pixie/res/test.wmf", 800, 600);
+    wmf.replay();
   }
 
-  public MfDcState getCurrentState ()
+  public MfDcState getCurrentState()
   {
-    return (MfDcState) dcStack.peek ();
+    return (MfDcState) dcStack.peek();
   }
 
 
   // pushes a state on the stack
-  public void saveDCState ()
+  public void saveDCState()
   {
-    MfDcState currentState = getCurrentState ();
-    dcStack.push (new MfDcState (currentState));
+    MfDcState currentState = getCurrentState();
+    dcStack.push(new MfDcState(currentState));
 
   }
 
-  public int getStateCount ()
+  public int getStateCount()
   {
-    return dcStack.size ();
+    return dcStack.size();
   }
 
   // Pops a state out
-  public void restoreDCState (int state)
+  public void restoreDCState(int state)
   {
-    Assert.assert (state > 0);
+    Assert.assert(state > 0);
 
-    if (dcStack.size () > 1 + state)
+    if (dcStack.size() > 1 + state)
     {
       for (int i = 0; i < state; i++)
-        dcStack.pop ();
+        dcStack.pop();
 
-      getCurrentState ().restoredState ();
+      getCurrentState().restoredState();
     }
     else
     {
-      throw new EmptyStackException ();
+      throw new EmptyStackException();
     }
   }
 
   /**
    * Return the next free slot from the objects table.
    */
-  protected int findFreeSlot ()
+  protected int findFreeSlot()
   {
     for (int slot = 0; slot < objects.length; slot++)
     {
@@ -354,50 +354,50 @@ public class WmfFile
       }
     }
 
-    Assert.failed ();
+    Assert.failed();
     return -1; // Shouldn't happen for valid files.
   }
 
 
-  public void storeObject (WmfObject o)
+  public void storeObject(WmfObject o)
   {
-    int idx = findFreeSlot ();
+    int idx = findFreeSlot();
     objects[idx] = o;
   }
 
-  public void deleteObject (int slot)
+  public void deleteObject(int slot)
   {
-    Assert.assert ((slot >= 0) && (slot < objects.length), "Range violation");
+    Assert.assert((slot >= 0) && (slot < objects.length), "Range violation");
     objects[slot] = null;
   }
 
-  public WmfObject getObject (int slot)
+  public WmfObject getObject(int slot)
   {
-    Assert.assert ((slot >= 0) && (slot < objects.length), "Range violation");
+    Assert.assert((slot >= 0) && (slot < objects.length), "Range violation");
     return objects[slot];
   }
 
-  public MfLogBrush getBrushObject (int slot)
+  public MfLogBrush getBrushObject(int slot)
   {
-    WmfObject obj = getObject (slot);
-    if (obj.getType () == WmfObject.OBJ_BRUSH)
+    WmfObject obj = getObject(slot);
+    if (obj.getType() == WmfObject.OBJ_BRUSH)
       return (MfLogBrush) obj;
-    throw new IllegalStateException ("Object " + slot + " was no brush");
+    throw new IllegalStateException("Object " + slot + " was no brush");
   }
 
-  public MfLogPen getPenObject (int slot)
+  public MfLogPen getPenObject(int slot)
   {
-    WmfObject obj = getObject (slot);
-    if (obj.getType () == WmfObject.OBJ_PEN)
+    WmfObject obj = getObject(slot);
+    if (obj.getType() == WmfObject.OBJ_PEN)
       return (MfLogPen) obj;
-    throw new IllegalStateException ("Object " + slot + " was no pen");
+    throw new IllegalStateException("Object " + slot + " was no pen");
   }
 
-  public MfLogRegion getRegionObject (int slot)
+  public MfLogRegion getRegionObject(int slot)
   {
-    WmfObject obj = getObject (slot);
-    if (obj.getType () == WmfObject.OBJ_REGION)
+    WmfObject obj = getObject(slot);
+    if (obj.getType() == WmfObject.OBJ_REGION)
       return (MfLogRegion) obj;
-    throw new IllegalStateException ("Object " + slot + " was no region");
+    throw new IllegalStateException("Object " + slot + " was no region");
   }
 }

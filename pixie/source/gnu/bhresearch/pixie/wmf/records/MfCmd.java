@@ -213,7 +213,6 @@ public abstract class MfCmd
 
     if (recordTypes.get (new Integer (command.getFunction ())) != null)
     {
-      System.out.println (recordTypes.get (new Integer (command.getFunction ())).getClass ().getName ());
       throw new IllegalArgumentException ("Already registered");
     }
 
