@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * -----------------------
  * StyleChangeSupport.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleChangeSupport.java,v 1.2 2003/03/30 21:23:38 taqua Exp $
+ * $Id: StyleChangeSupport.java,v 1.3 2003/04/05 18:57:19 taqua Exp $
  *
  * Changes
  * -------
@@ -39,16 +39,34 @@ package com.jrefinery.report.targets.style;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
+/**
+ * A utility class for managing a collection of {@link StyleChangeListener} objects.
+ * 
+ * @author Thomas Morgner.
+ */
 public class StyleChangeSupport
 {
+  /** Storage for the listeners. */
   private ArrayList listeners;
+  
+  /** The source. */
   private ElementStyleSheet source;
 
+  /**
+   * Creates a new support object.
+   * 
+   * @param source  the source of change events.
+   */
   public StyleChangeSupport(ElementStyleSheet source)
   {
     this.source = source;
   }
 
+  /**
+   * Adds a listener.
+   * 
+   * @param l  the listener.
+   */
   public void addListener (StyleChangeListener l)
   {
     if (l == null)
@@ -62,6 +80,11 @@ public class StyleChangeSupport
     listeners.add(new WeakReference (l));
   }
 
+  /**
+   * Removes a listener.
+   * 
+   * @param l  the listener.
+   */
   public void removeListener (StyleChangeListener l)
   {
     if (l == null)
@@ -69,16 +92,24 @@ public class StyleChangeSupport
       throw new NullPointerException("Listener == null");
     }
     if (listeners == null)
+    {
       return;
-
+    }
     listeners.remove(l);
   }
 
+  /**
+   * Notifies all listeners that a style has changed.
+   * 
+   * @param key  the style key.
+   * @param value  the new style value.
+   */
   public void fireStyleChanged (StyleKey key, Object value)
   {
     if (listeners == null)
+    {
       return;
-
+    }
     ArrayList removeList = null;
 
     for (int i = 0; i < listeners.size(); i++)
@@ -104,11 +135,17 @@ public class StyleChangeSupport
     }
   }
 
+  /**
+   * Notifies all listeners that a style has been removed.
+   * 
+   * @param key  the style key.
+   */
   public void fireStyleRemoved (StyleKey key)
   {
     if (listeners == null)
+    {
       return;
-
+    }
     ArrayList removeList = null;
 
     for (int i = 0; i < listeners.size(); i++)

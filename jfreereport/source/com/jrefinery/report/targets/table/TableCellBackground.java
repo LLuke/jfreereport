@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.4 2003/02/25 15:42:30 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.5 2003/04/07 18:08:10 taqua Exp $
  *
  * Changes
  * -------
@@ -375,26 +375,75 @@ public class TableCellBackground extends TableCellData
     return b.toString();
   }
 
+  /**
+   * Tests this object for equality with another object.
+   * 
+   * @param o  the other object.
+   * 
+   * @return A boolean.
+   */
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof TableCellBackground)) return false;
+    if (this == o) 
+    {
+      return true;
+    }
+    if (!(o instanceof TableCellBackground)) 
+    {
+      return false;
+    }
 
     final TableCellBackground tableCellBackground = (TableCellBackground) o;
 
-    if (borderSizeBottom != tableCellBackground.borderSizeBottom) return false;
-    if (borderSizeLeft != tableCellBackground.borderSizeLeft) return false;
-    if (borderSizeRight != tableCellBackground.borderSizeRight) return false;
-    if (borderSizeTop != tableCellBackground.borderSizeTop) return false;
-    if (color != null ? !color.equals(tableCellBackground.color) : tableCellBackground.color != null) return false;
-    if (colorBottom != null ? !colorBottom.equals(tableCellBackground.colorBottom) : tableCellBackground.colorBottom != null) return false;
-    if (colorLeft != null ? !colorLeft.equals(tableCellBackground.colorLeft) : tableCellBackground.colorLeft != null) return false;
-    if (colorRight != null ? !colorRight.equals(tableCellBackground.colorRight) : tableCellBackground.colorRight != null) return false;
-    if (colorTop != null ? !colorTop.equals(tableCellBackground.colorTop) : tableCellBackground.colorTop != null) return false;
-
+    if (borderSizeBottom != tableCellBackground.borderSizeBottom)
+    { 
+      return false;
+    }
+    if (borderSizeLeft != tableCellBackground.borderSizeLeft) 
+    {
+      return false;
+    }
+    if (borderSizeRight != tableCellBackground.borderSizeRight) 
+    {
+      return false;
+    }
+    if (borderSizeTop != tableCellBackground.borderSizeTop) 
+    {
+      return false;
+    }
+    if (color != null ? !color.equals(tableCellBackground.color) 
+                      : tableCellBackground.color != null) 
+    {
+      return false;
+    }
+    if (colorBottom != null ? !colorBottom.equals(tableCellBackground.colorBottom) 
+                            : tableCellBackground.colorBottom != null) 
+    {
+      return false;
+    }
+    if (colorLeft != null ? !colorLeft.equals(tableCellBackground.colorLeft) 
+                          : tableCellBackground.colorLeft != null) 
+    {
+      return false;
+    }
+    if (colorRight != null ? !colorRight.equals(tableCellBackground.colorRight) 
+                           : tableCellBackground.colorRight != null) 
+    {
+      return false;
+    }
+    if (colorTop != null ? !colorTop.equals(tableCellBackground.colorTop) 
+                         : tableCellBackground.colorTop != null) 
+    {
+      return false;
+    }
     return true;
   }
 
+  /**
+   * Returns a hash code for this object.
+   * 
+   * @return A hash code.
+   */
   public int hashCode()
   {
     int result;

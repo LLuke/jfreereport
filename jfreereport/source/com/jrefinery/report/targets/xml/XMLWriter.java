@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLWriter.java,v 1.7 2003/02/26 13:58:04 mungady Exp $
+ * $Id: XMLWriter.java,v 1.8 2003/03/18 22:35:27 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,6 @@ package com.jrefinery.report.targets.xml;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.List;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;

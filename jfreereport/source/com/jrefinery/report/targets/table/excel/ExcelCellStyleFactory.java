@@ -29,7 +29,7 @@
  *                   JRXlsExporter.java of JasperReports;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellStyleFactory.java,v 1.9 2003/03/18 18:28:45 taqua Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.10 2003/04/07 18:08:11 taqua Exp $
  *
  * Changes
  * -------
@@ -40,16 +40,17 @@ package com.jrefinery.report.targets.table.excel;
 import java.awt.Color;
 import java.util.HashMap;
 
-import com.jrefinery.report.Element;
-import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.targets.table.TableCellBackground;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+
+import com.jrefinery.report.Element;
+import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.table.TableCellBackground;
+import com.jrefinery.report.util.Log;
 
 /**
  * The CellStyle factory is used to convert JFreeReport style information
@@ -62,9 +63,15 @@ import org.apache.poi.hssf.util.HSSFColor;
  */
 public class ExcelCellStyleFactory
 {
+  /** An instance counter. */
   private static int instanceCounter = 0;
+  
+  /** A usage counter. */
   private static int usageCounter = 0;
 
+  /**
+   * Prints the instance and usage counters.
+   */
   public static void print ()
   {
     Log.debug ("InstanceCount: " + instanceCounter + " Usage: " + usageCounter);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.12 2003/04/06 20:43:00 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.13 2003/04/08 14:15:28 mungady Exp $
  *
  * Changes
  * -------
@@ -199,8 +199,8 @@ public class XMLProcessor
       // inner loop: process the complete report, calculate the function values
       // for the current level. Higher level functions are not available in the
       // dataRow.
-      boolean failOnError = (level == -1) &&
-          getReport().getReportConfiguration().isStrictErrorHandling();
+      boolean failOnError = (level == -1) 
+          && getReport().getReportConfiguration().isStrictErrorHandling();
       while (!state.isFinish())
       {
         progress = state.createStateProgress(progress);
