@@ -27,7 +27,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id$
+ * $Id: JFreeReport.java,v 1.1.1.1 2002/04/25 17:02:17 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -35,6 +35,8 @@
  * 04-Mar-2002 : Major changes to report engine to incorporate functions and different output
  *               targets (DG);
  * 24-Apr-2002 : ItemBand and Groups are Optional Elements, default Elements are created as needed
+ * 07-May-2002 : Fixed bug where last row of data is left off the report if it is alone in a
+ *               group, reported by Steven Feinstein (DG);
  *
  */
 
@@ -51,7 +53,13 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Iterator;
+import java.util.ResourceBundle;
+import com.jrefinery.JCommon;
 import com.jrefinery.report.function.Function;
+import com.jrefinery.ui.about.Licences;
+import com.jrefinery.ui.about.Library;
+import com.jrefinery.ui.about.Contributor;
+import com.jrefinery.ui.about.ProjectInfo;
 
 /**
  * This class co-ordinates the process of generating a report from a TableModel.  The report is
@@ -59,6 +67,8 @@ import com.jrefinery.report.function.Function;
  * report.
  */
 public class JFreeReport implements JFreeReportConstants {
+
+    public static ProjectInfo INFO = new JFreeReportInfo();
 
     /** The report name. */
     protected String name;
@@ -113,6 +123,12 @@ public class JFreeReport implements JFreeReportConstants {
              null, // item band
              null  // groups
         );
+    }
+
+    public JFreeReport(String name, TableModel data) {
+
+        this(name, null, null, null, null, null, null, null, data, null);
+
     }
 
     /**
@@ -239,7 +255,7 @@ public class JFreeReport implements JFreeReportConstants {
      * @param key The key.
      * @result The property value.
      */
-    public Object getProperty(String key) 
+    public Object getProperty(String key)
     {
       if (key == null)
          throw new NullPointerException ();
@@ -507,7 +523,7 @@ public class JFreeReport implements JFreeReportConstants {
     public boolean advanceState(OutputTarget target, ReportState rs, Cursor cursor, boolean draw) {
 
         int state = rs.getState();
-        
+
         Group group = (Group)groups.get(rs.getCurrentGroupIndex());
 
         // *** START ***
@@ -729,7 +745,7 @@ public class JFreeReport implements JFreeReportConstants {
             int g = rs.getCurrentGroupIndex();
             if (g>0) {
 
-                if (rs.getCurrentItem()<(data.getRowCount()-1)) {
+                if (rs.getCurrentItem()<(data.getRowCount())) {
 
                     //Group group2 = (Group)groups.get(g-1);
                     //if (group2.lastItemInGroup(data, rs.getCurrentItem()-1)) {
@@ -753,7 +769,7 @@ public class JFreeReport implements JFreeReportConstants {
 
             else {  // group finished, if there is more data start a new group...
 
-                if (rs.getCurrentItem()<(data.getRowCount()-1)) {
+                if (rs.getCurrentItem()<(data.getRowCount())) {
                     rs.setState(ReportState.PRE_ITEM_GROUP_HEADER);
                     return PAGE_NOT_FULL;
                 }
@@ -901,5 +917,46 @@ public class JFreeReport implements JFreeReportConstants {
 
     }
 
+}
+
+/**
+ * Details about the JFreeReport project.
+ */
+class JFreeReportInfo extends ProjectInfo {
+
+    /**
+     * Constructs an object containing information about the JFreeReport project.
+     * <p>
+     * Uses a resource bundle to localise some of the information.
+     */
+    public JFreeReportInfo() {
+
+        // get a locale-specific resource bundle...
+        String baseResourceClass = "com.jrefinery.report.resources.JFreeReportResources";
+        ResourceBundle resources = ResourceBundle.getBundle(baseResourceClass);
+
+        this.name = resources.getString("project.name");
+        this.version = resources.getString("project.version");
+        this.info = resources.getString("project.info");
+        this.copyright = resources.getString("project.copyright");
+        this.licenceText = Licences.LGPL;
+
+        this.contributors = Arrays.asList(
+            new Contributor[] {
+                new Contributor("David Gilbert", "david.gilbert@object-refinery.com"),
+                new Contributor("Thomas Morgner", "-")
+            }
+        );
+
+        this.libraries = Arrays.asList(
+            new Library[] {
+                new Library(JCommon.INFO),
+                new Library("iText", "0.92", "LGPL", "http://www.lowagie.com/iText/index.html"),
+                new Library("GNU JAXP", "1.0beta1", "GPL with library exception",
+                            "http://www.gnu.org/software/classpathx/jaxp/")
+            }
+        );
+
+    }
 
 }
