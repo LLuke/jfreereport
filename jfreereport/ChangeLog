@@ -3,6 +3,10 @@
 ---------------
 A list of changes in recent versions:
 
+0.8.0-1 : (16-Dec-2002): 
+        * BugFix: fix for a PageHeader bug in the layoutmanagement. The fix caused the pageheader to
+          drive crazy and print strange values in the elements.
+
 0.8.0 : (13-Dec-2002):
         * Many, many ... (repeat it several times: many) ... many lines of JavaDoc documentation.
 
