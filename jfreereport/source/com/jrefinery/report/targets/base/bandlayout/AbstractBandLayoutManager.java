@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractBandLayoutManager.java,v 1.1 2003/03/29 20:18:49 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ import java.awt.Point;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.Band;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
@@ -101,6 +100,13 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     retval.setSize(Math.min (retval.getWidth(), maxSize.getWidth()),
                    Math.min (retval.getHeight(), maxSize.getHeight()));
     //Log.debug ("-- calculate MinimumSize: " + retval);
+    // layouting has failed, if negative values are returned ... !
+    if (retval.getWidth() < 0 || retval.getHeight() < 0)
+    {
+      throw new IllegalStateException("Layouting failed, getMinimumSize returned negative values.");
+    }
+
+
     return retval;
   }
 
@@ -157,6 +163,12 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     retval.setSize(Math.min (retval.getWidth(), maxSize.getWidth()),
                    Math.min (retval.getHeight(), maxSize.getHeight()));
     //Log.debug ("-- calculate PreferredSize: " + retval);
+    // layouting has failed, if negative values are returned ... !
+    if (retval.getWidth() < 0 || retval.getHeight() < 0)
+    {
+      throw new IllegalStateException("Layouting failed, getPreferredSize returned negative values.");
+    }
+
     return retval;
   }
 

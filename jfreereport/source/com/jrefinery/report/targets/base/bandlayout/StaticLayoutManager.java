@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.23 2003/03/29 20:17:26 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.24 2003/03/30 16:32:00 taqua Exp $
  *
  * Changes
  * -------
@@ -143,6 +143,12 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     retval.setSize(Math.min (retval.getWidth(), maxSize.getWidth()),
                    Math.min (retval.getHeight(), maxSize.getHeight()));
     //Log.debug ("-- calculate MinimumSize: " + retval);
+    // layouting has failed, if negative values are returned ... !
+    if (retval.getWidth() < 0 || retval.getHeight() < 0)
+    {
+      throw new IllegalStateException("Layouting failed, getMinimumSize returned negative values.");
+    }
+
     return retval;
   }
 
@@ -157,8 +163,6 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
   protected Dimension2D getPreferredSize(Element e, Dimension2D containerBounds)
   {
     Dimension2D retval;
-    //Log.debug (">> calculate PreferredSize: " + e);
-    //Log.debug (">> calculate PreferredSize: " + containerBounds);
 
     // the absolute position of the element within its parent is used
     // to calculate the maximum available space for the element.
@@ -195,7 +199,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     // now apply the maximum bounds to the retval.
     // the maximum bounds are defined by the element and the elements container.
     Dimension2D maxSize = correctDimension(
-        (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), 
+        (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE),
                                                     containerBounds);
     maxSize.setSize(Math.min (containerBounds.getWidth() - absPos.getX(), maxSize.getWidth()),
                     Math.min (containerBounds.getHeight() - absPos.getY(), maxSize.getHeight()));
@@ -203,6 +207,13 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
 
     retval.setSize(Math.min (retval.getWidth(), maxSize.getWidth()),
                    Math.min (retval.getHeight(), maxSize.getHeight()));
+
+    // layouting has failed, if negative values are returned ... !
+    if (retval.getWidth() < 0 || retval.getHeight() < 0)
+    {
+      throw new IllegalStateException("Layouting failed, getPreferredSize returned negative values.");
+    }
+
     return retval;
   }
 
@@ -226,8 +237,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     Dimension2D minSize = eli.getMinimumSize();
 
     float height = (float) eli.getMinimumSize().getHeight();
-    float width = (float) eli.getMinimumSize().getWidth();
-
+//    float width = (float) eli.getMinimumSize().getWidth();
+    float width = (float) maxSize.getWidth();
 
     // Now adjust the defined sizes by using the elements stored in the band.
     Element[] elements = b.getElementArray();
@@ -314,7 +325,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     width = (float) Math.min(width, maxSize.getWidth());
 
     // now align the calculated data ...
-    FloatDimension fdim 
+    FloatDimension fdim
         = new FloatDimension(align(width, getLayoutSupport().getHorizontalAlignmentBorder()),
                              align(height, getLayoutSupport().getVerticalAlignmentBorder()));
     return fdim;
@@ -459,7 +470,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     Dimension2D parentDim = new FloatDimension((float) parentBounds.getWidth(),
                                                (float) parentBounds.getHeight());
 
-    Log.debug ("My LayoutSize: " + parentDim);
+    Log.debug ("My LayoutSize: " + b.getName() + " " + parentDim);
 
     LayoutSupport layoutSupport = getLayoutSupport();
     for (int i = 0; i < elements.length; i++)
