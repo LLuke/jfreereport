@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PageFooter.java,v 1.1.1.1 2002/04/25 17:02:24 taqua Exp $
+ * $Id: PageFooter.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -39,7 +39,6 @@
  */
 
 package com.jrefinery.report;
-
 
 /**
  * A report band that appears at the bottom of every page.  There is an option to suppress the
@@ -59,7 +58,7 @@ public class PageFooter extends Band
    *
    * @param height The band height (in points).
    */
-  public PageFooter ()
+  public PageFooter()
   {
   }
 
@@ -67,7 +66,7 @@ public class PageFooter extends Band
    * Returns true if the footer should be shown on page 1, and false otherwise.
    * @return A flag indicating whether or not the footer is shown on the first page.
    */
-  public boolean isDisplayOnFirstPage ()
+  public boolean isDisplayOnFirstPage()
   {
     return this.displayOnFirstPage;
   }
@@ -77,7 +76,7 @@ public class PageFooter extends Band
    * true.
    * @param b A flag indicating whether or not the footer is shown on the first page.
    */
-  public void setDisplayOnFirstPage (boolean b)
+  public void setDisplayOnFirstPage(boolean b)
   {
     this.displayOnFirstPage = b;
   }
@@ -86,7 +85,7 @@ public class PageFooter extends Band
    * Returns true if the footer should be shown on the last page, and false otherwise.
    * @return A flag indicating whether or not the footer is shown on the last page.
    */
-  public boolean isDisplayOnLastPage ()
+  public boolean isDisplayOnLastPage()
   {
     return this.displayOnLastPage;
   }
@@ -96,7 +95,7 @@ public class PageFooter extends Band
    * true.
    * @param b A flag indicating whether or not the footer is shown on the first page.
    */
-  public void setDisplayOnLastPage (boolean b)
+  public void setDisplayOnLastPage(boolean b)
   {
     this.displayOnLastPage = b;
   }

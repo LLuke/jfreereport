@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Cursor.java,v 1.1.1.1 2002/04/25 17:02:14 taqua Exp $
+ * $Id: Cursor.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -38,7 +38,6 @@
  */
 
 package com.jrefinery.report;
-
 
 /**
  * A utility class for keeping track of the current position on a report page.
@@ -60,17 +59,17 @@ public class Cursor
   /**
    * Constructs a new cursor.
    */
-  public Cursor (OutputTarget target)
+  public Cursor(OutputTarget target)
   {
-    pageLeft = target.getUsableX ();
-    pageBottom = target.getUsableY () + target.getUsableHeight ();
-    y = target.getUsableY ();
+    pageLeft = target.getUsableX();
+    y = target.getUsableY();
+    pageBottom = y + target.getUsableHeight();
   }
 
-  public void reserveSpace (float reserve)
+  public void reserveSpace(float reserve)
   {
     if (reserve < 0)
-      throw new IllegalArgumentException ("Cannot free reserved space");
+      throw new IllegalArgumentException("Cannot free reserved space");
 
     pageBottom -= reserve;
   }
@@ -79,10 +78,10 @@ public class Cursor
    * Adds the specified amount to the y-coordinate.
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advance (float amount)
+  public void advance(float amount)
   {
     if (amount < 0)
-      throw new IllegalArgumentException ("Cannot advance negative");
+      throw new IllegalArgumentException("Cannot advance negative");
     y += amount;
   }
 
@@ -91,15 +90,15 @@ public class Cursor
    * @param height The height of the proposed band.
    * @return A flag indicating whether or not there is room to print the band.
    */
-  public boolean isSpaceFor (float height)
+  public boolean isSpaceFor(float height)
   {
-    return (getY() + height < getPageBottom());
+    return (y + height < pageBottom);
   }
 
   /**
    * returns the current y-position of this cursor.
    */
-  public float getY ()
+  public float getY()
   {
     return y;
   }
@@ -107,7 +106,7 @@ public class Cursor
   /**
    * returns the left border of the printable area.
    */
-  public float getPageLeft ()
+  public float getPageLeft()
   {
     return pageLeft;
   }
@@ -115,7 +114,7 @@ public class Cursor
   /**
    * returns the bottom border of the printable area.
    */
-  public float getPageBottom ()
+  public float getPageBottom()
   {
     return pageBottom;
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.3 2002/05/14 21:35:02 taqua Exp $
+ * $Id: JFreeReport.java,v 1.4 2002/05/16 13:26:04 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -565,8 +565,7 @@ public class JFreeReport implements JFreeReportConstants
     // Do some real work.  The report header and footer, and the page headers and footers are
     // just decorations, as far as the report state is concerned.  The state only changes in
     // the following code...
-
-    while (prc.isPageDone() == false)
+    while (!prc.isPageDone())
     {
       state = state.advance(prc);
     }
@@ -589,7 +588,6 @@ public class JFreeReport implements JFreeReportConstants
     }
 
     // return the state at the end of the page...
-
     state.nextPage();
     return state;
   }

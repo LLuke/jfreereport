@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportHeader.java,v 1.1.1.1 2002/04/25 17:02:20 taqua Exp $
+ * $Id: ReportHeader.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -38,7 +38,6 @@
  */
 
 package com.jrefinery.report;
-
 
 /**
  * A report band that is printed once-only at the beginning of the report.  A report header is
@@ -59,14 +58,14 @@ public class ReportHeader extends Band
    *
    * @param height The band height.
    */
-  public ReportHeader ()
+  public ReportHeader()
   {
   }
 
   /**
    * defines whether the report header appears on its own page.
    */
-  public void setOwnPage (boolean b)
+  public void setOwnPage(boolean b)
   {
     this.ownPage = b;
 
@@ -76,9 +75,8 @@ public class ReportHeader extends Band
    * Returns true if the report header appears on its own page, and false otherwise.
    * @return A flag indicating whether or not the header appears on its own page.
    */
-  public boolean isOwnPage ()
+  public boolean isOwnPage()
   {
     return this.ownPage;
   }
-
 }

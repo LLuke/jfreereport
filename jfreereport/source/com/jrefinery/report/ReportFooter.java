@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportFooter.java,v 1.1.1.1 2002/04/25 17:02:26 taqua Exp $
+ * $Id: ReportFooter.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -38,7 +38,6 @@
  */
 
 package com.jrefinery.report;
-
 
 /**
  * A report band that appears as the very last band on the report.
@@ -54,14 +53,14 @@ public class ReportFooter extends Band
    *
    * @param height The band height (in points).
    */
-  public ReportFooter ()
+  public ReportFooter()
   {
   }
 
   /**
    * Returns true if the report footer should be shown on its own page.
    */
-  public boolean isOwnPage ()
+  public boolean isOwnPage()
   {
     return this.ownPage;
   }
@@ -69,7 +68,7 @@ public class ReportFooter extends Band
   /**
    * defines whether the report header appears on its own page.
    */
-  public void setOwnPage (boolean b)
+  public void setOwnPage(boolean b)
   {
     this.ownPage = b;
   }
