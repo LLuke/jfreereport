@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.44 2003/01/03 10:02:25 mungady Exp $
+ * $Id: JFreeReport.java,v 1.45 2003/01/03 16:19:52 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -640,7 +640,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Sets the data for the report.
    * <P>
-   * Reports are generated from a {@link TableModel} (as used by Swing's {@link JTable}). If you 
+   * Reports are generated from a {@link TableModel} (as used by Swing's {@link javax.swing.JTable}). If you 
    * don't want to give data to the report, use an empty {@link TableModel} instead of 
    * <code>null</code>.
    *
@@ -684,7 +684,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     report.properties = (ReportProperties) properties.clone ();
     report.reportFooter = (ReportFooter) reportFooter.clone ();
     report.reportHeader = (ReportHeader) reportHeader.clone ();
-    report.functions = (ExpressionCollection) this.functions.clone ();
+    report.functions = (ExpressionCollection) functions.clone ();
     report.expressions = (ExpressionCollection) expressions.clone();
     return report;
   }

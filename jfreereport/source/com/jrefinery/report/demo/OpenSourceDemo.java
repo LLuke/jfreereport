@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.4 2002/12/11 01:03:13 mungady Exp $
+ * $Id: OpenSourceDemo.java,v 1.5 2002/12/11 23:32:26 taqua Exp $
  *
  * Changes
  * -------
@@ -163,7 +163,7 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
         if (this.report != null)
         {
             PreviewFrame frame = new PreviewFrame(this.report);
-            frame.setToolbarFloatable(true);
+            frame.getBase().setToolbarFloatable(true);
             frame.pack ();
             RefineryUtilities.positionFrameRandomly(frame);
             frame.setVisible(true);

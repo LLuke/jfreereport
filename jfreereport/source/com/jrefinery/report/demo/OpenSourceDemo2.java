@@ -172,7 +172,7 @@ public class OpenSourceDemo2 extends ApplicationFrame implements ActionListener
         if (this.report != null)
         {
             PreviewFrame frame = new PreviewFrame(this.report);
-            frame.setToolbarFloatable(true);
+            frame.getBase().setToolbarFloatable(true);
             frame.pack ();
             RefineryUtilities.positionFrameRandomly(frame);
             frame.setVisible(true);
