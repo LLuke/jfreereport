@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionCollection.java,v 1.5 2002/05/21 23:06:18 taqua Exp $
+ * $Id: FunctionCollection.java,v 1.6 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes
  * -------
@@ -44,11 +44,12 @@ import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.util.Log;
 
-import javax.swing.table.TableModel;
 import java.util.Collection;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.Enumeration;
+import java.util.ArrayList;
 
 /**
  * A function collection contains all function elements of a particular report.
@@ -60,23 +61,62 @@ import java.util.TreeMap;
  */
 public class FunctionCollection extends ReportListenerAdapter implements Cloneable
 {
+  private static class ReadOnlyFunctionCollection extends FunctionCollection
+  {
+    public ReadOnlyFunctionCollection (FunctionCollection copy)
+    {
+      functionPositions = copy.functionPositions;
+      functionList = new ArrayList(copy.functionList.size());
+
+      for (int i = 0; i < copy.functionList.size(); i++)
+      {
+        Function f = (Function) copy.functionList.get(i);
+        try
+        {
+          functionList.add(f.clone ());
+        }
+        catch (Exception e)
+        {
+          Log.warn ("Function " + f.getName () + " failed while cloning", e);
+        }
+      }
+    }
+
+    /**
+     * Adds a new function to the collection.
+     * The function is initialized before it is added to this collection.
+     * @param f the new function instance.
+     * @throws FunctionInitializeException if the function could not be initialized correctly
+     */
+    public void add (Function f)
+            throws FunctionInitializeException
+    {
+      throw new IllegalStateException("This is a readonly collection");
+    }
+
+    protected void removeFunction (Function f)
+    {
+      throw new IllegalStateException("This is a readonly collection");
+    }
+  }
 
   /** Storage for the functions in the collection. */
-  private Map functions;
-
+  protected Hashtable functionPositions;
+  protected ArrayList functionList;
   /**
    * Creates a new empty function collection.
    */
   public FunctionCollection ()
   {
-    this.functions = new TreeMap ();
+    functionPositions = new Hashtable ();
+    functionList = new ArrayList();
   }
 
   /**
    * Constructs a new function collection, populated with the supplied functions.
    */
   public FunctionCollection (Collection functions)
-    throws FunctionInitializeException
+          throws FunctionInitializeException
   {
     this ();
     if (functions != null)
@@ -85,10 +125,19 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
       while (iterator.hasNext ())
       {
         Function f = (Function) iterator.next ();
-        add  (f);
+        add (f);
       }
     }
 
+  }
+
+  /**
+   * Returns a copy of the function collection.
+   * Not a cloning, a fully functional collection is made readonly.
+   */
+  public FunctionCollection getCopy ()
+  {
+    return new ReadOnlyFunctionCollection(this);
   }
 
   /**
@@ -96,11 +145,10 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public Function get (String name)
   {
+    Integer result = (Integer) functionPositions.get (name);
+    if (result == null) return null;
 
-    Function result = (Function) functions.get (name);
-
-    return result;
-
+    return (Function) functionList.get(result.intValue());
   }
 
   /**
@@ -110,12 +158,17 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    * @throws FunctionInitializeException if the function could not be initialized correctly
    */
   public void add (Function f)
-    throws FunctionInitializeException
+          throws FunctionInitializeException
   {
     if (f == null)
       throw new NullPointerException ("Function is null");
 
-    f.initialize();
+    if (functionPositions.containsKey(f.getName()))
+    {
+      removeFunction (f);
+    }
+
+    f.initialize ();
     privateAdd (f);
   }
 
@@ -125,7 +178,19 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   protected void privateAdd (Function f)
   {
-    functions.put (f.getName (), f);
+    functionPositions.put (f.getName (), new Integer(functionList.size()));
+    functionList.add (f);
+  }
+
+  protected void removeFunction (Function f)
+  {
+    Integer val = (Integer) functionPositions.get (f.getName());
+    if (val == null)
+    {
+      return;
+    }
+    functionPositions.remove(f.getName());
+    functionList.remove(val.intValue());
   }
 
   /**
@@ -136,20 +201,18 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void reportStarted (ReportEvent event)
   {
-    Iterator iterator = this.functions.values ().iterator ();
-    while (iterator.hasNext ())
+    for (int i = 0; i < functionList.size(); i++)
     {
-      Function f = (Function) iterator.next ();
+      Function f = (Function) functionList.get(i);
       try
       {
         f.reportStarted (event);
       }
       catch (Exception e)
       {
-        Log.warn ("Function " + f.getName() + " failed while processing 'reportStarted'", e);
+        Log.warn ("Function " + f.getName () + " failed while processing 'reportStarted'", e);
       }
     }
-
   }
 
   /**
@@ -159,17 +222,16 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void reportFinished (ReportEvent event)
   {
-    Iterator iterator = this.functions.values ().iterator ();
-    while (iterator.hasNext ())
+    for (int i = 0; i < functionList.size(); i++)
     {
-      Function f = (Function) iterator.next ();
+      Function f = (Function) functionList.get(i);
       try
       {
-        f.reportFinished(event);
+        f.reportFinished (event);
       }
       catch (Exception e)
       {
-        Log.warn ("Function " + f.getName() + " failed while processing 'reportFinished'", e);
+        Log.warn ("Function " + f.getName () + " failed while processing 'reportFinished'", e);
       }
     }
 
@@ -180,17 +242,16 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void pageStarted (ReportEvent event)
   {
-    Iterator iterator = this.functions.values ().iterator ();
-    while (iterator.hasNext ())
+    for (int i = 0; i < functionList.size(); i++)
     {
-      Function f = (Function) iterator.next ();
+      Function f = (Function) functionList.get(i);
       try
       {
-        f.pageStarted(event);
+        f.pageStarted (event);
       }
       catch (Exception e)
       {
-        Log.warn ("Function " + f.getName() + " failed while processing 'pageStarted'", e);
+        Log.warn ("Function " + f.getName () + " failed while processing 'pageStarted'", e);
       }
 
     }
@@ -205,17 +266,16 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void pageFinished (ReportEvent event)
   {
-    Iterator iterator = this.functions.values ().iterator ();
-    while (iterator.hasNext ())
+    for (int i = 0; i < functionList.size(); i++)
     {
-      Function f = (Function) iterator.next ();
+      Function f = (Function) functionList.get(i);
       try
       {
-        f.pageFinished(event);
+        f.pageFinished (event);
       }
       catch (Exception e)
       {
-        Log.warn ("Function " + f.getName() + " failed while processing 'pageFinished'", e);
+        Log.warn ("Function " + f.getName () + " failed while processing 'pageFinished'", e);
       }
     }
 
@@ -229,17 +289,16 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void groupStarted (ReportEvent event)
   {
-    Iterator iterator = this.functions.values ().iterator ();
-    while (iterator.hasNext ())
+    for (int i = 0; i < functionList.size(); i++)
     {
-      Function f = (Function) iterator.next ();
+      Function f = (Function) functionList.get(i);
       try
       {
-        f.groupStarted(event);
+        f.groupStarted (event);
       }
       catch (Exception e)
       {
-        Log.warn ("Function " + f.getName() + " failed while processing 'groupStarted'", e);
+        Log.warn ("Function " + f.getName () + " failed while processing 'groupStarted'", e);
       }
 
     }
@@ -253,17 +312,16 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void groupFinished (ReportEvent event)
   {
-    Iterator iterator = this.functions.values ().iterator ();
-    while (iterator.hasNext ())
+    for (int i = 0; i < functionList.size(); i++)
     {
-      Function f = (Function) iterator.next ();
+      Function f = (Function) functionList.get(i);
       try
       {
-        f.groupFinished(event);
+        f.groupFinished (event);
       }
       catch (Exception e)
       {
-        Log.warn ("Function " + f.getName() + " failed while processing 'groupFinished'", e);
+        Log.warn ("Function " + f.getName () + " failed while processing 'groupFinished'", e);
       }
     }
 
@@ -275,17 +333,16 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void itemsAdvanced (ReportEvent event)
   {
-    Iterator iterator = this.functions.values ().iterator ();
-    while (iterator.hasNext ())
+    for (int i = 0; i < functionList.size(); i++)
     {
-      Function f = (Function) iterator.next ();
+      Function f = (Function) functionList.get(i);
       try
       {
-        f.itemsAdvanced(event);
+        f.itemsAdvanced (event);
       }
       catch (Exception e)
       {
-        Log.warn ("Function " + f.getName() + " failed while processing 'itemsAdvanced'", e);
+        Log.warn ("Function " + f.getName () + " failed while processing 'itemsAdvanced'", e);
       }
     }
   }
@@ -296,17 +353,16 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void itemsStarted (ReportEvent event)
   {
-    Iterator iterator = this.functions.values ().iterator ();
-    while (iterator.hasNext ())
+    for (int i = 0; i < functionList.size(); i++)
     {
-      Function f = (Function) iterator.next ();
+      Function f = (Function) functionList.get(i);
       try
       {
-        f.itemsStarted(event);
+        f.itemsStarted (event);
       }
       catch (Exception e)
       {
-        Log.warn ("Function " + f.getName() + " failed while processing 'itemsStarted'", e);
+        Log.warn ("Function " + f.getName () + " failed while processing 'itemsStarted'", e);
       }
 
     }
@@ -318,17 +374,16 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void itemsFinished (ReportEvent event)
   {
-    Iterator iterator = this.functions.values ().iterator ();
-    while (iterator.hasNext ())
+    for (int i = 0; i < functionList.size(); i++)
     {
-      Function f = (Function) iterator.next ();
+      Function f = (Function) functionList.get(i);
       try
       {
-        f.itemsFinished(event);
+        f.itemsFinished (event);
       }
       catch (Exception e)
       {
-        Log.warn ("Function " + f.getName() + " failed while processing 'itemsFinished'", e);
+        Log.warn ("Function " + f.getName () + " failed while processing 'itemsFinished'", e);
       }
     }
   }
@@ -336,80 +391,35 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
   /**
    * Returns a string representation of the function collection.  Used in debugging only.
    *
-  public String toString ()
-  {
+   public String toString ()
+   {
 
-    StringBuffer result = new StringBuffer ();
-    result.append ("Function Collection:\n");
+   StringBuffer result = new StringBuffer ();
+   result.append ("Function Collection:\n");
 
-    Iterator iterator = this.functions.values ().iterator ();
-    while (iterator.hasNext ())
-    {
-      Function f = (Function) iterator.next ();
-      result.append (f.getName ());
-      result.append (" = ");
-      result.append (f.getValue ());
-      result.append ("\n");
-    }
+   Iterator iterator = this.functions.values ().iterator ();
+   while (iterator.hasNext ())
+   {
+   Function f = (Function) iterator.next ();
+   result.append (f.getName ());
+   result.append (" = ");
+   result.append (f.getValue ());
+   result.append ("\n");
+   }
 
-    return result.toString();
+   return result.toString();
 
-  }
-*/
-  /**
-   * Returns a copy of the function collection.
+   }
    */
-  public Object clone ()
-  {
-
-    FunctionCollection result = new FunctionCollection ();
-
-    Iterator iterator = this.functions.values ().iterator ();
-    while (iterator.hasNext ())
-    {
-      Function f = (Function) iterator.next ();
-      try
-      {
-        Function copy = (Function) f.clone ();
-        result.privateAdd(copy);
-      }
-      catch (CloneNotSupportedException e)
-      {
-        Log.error ("FunctionCollection: problem cloning function.", e);
-      }
-    }
-
-    return result;
-
-  }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
-
-  /**
-   * Returns the value of the current clone of the keying function.
-   *
-   * @param key the function element which was created by the parser.
-   */
-  public Object getValue (Function key)
-  {
-
-    Function fn = (Function) functions.get (key);
-
-    if (fn == null)
-    {
-      Log.warn ("No Function " + fn + " found, using key " + key + " as function");
-      fn = key;
-    }
-    return fn.getValue ();
-
-  }
 
   /**
    * Returns the number of active functions in this collection
    */
   public int size ()
   {
-    return functions.size ();
+    return functionList.size ();
   }
 
 }

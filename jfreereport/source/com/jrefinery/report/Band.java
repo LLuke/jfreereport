@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.5 2002/05/27 21:42:46 taqua Exp $
+ * $Id: Band.java,v 1.6 2002/05/28 19:28:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -71,6 +71,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  * A report band contains a list of elements to be displayed, and represents one section of a
@@ -116,7 +117,7 @@ public abstract class Band
   {
     setDefaultFont(DEFAULT_FONT);
     setDefaultPaint(DEFAULT_PAINT);
-    allElements = new LinkedList();
+    allElements = new ArrayList();
     dataElements = new HashNMap ();
     functionElements = new HashNMap ();
   }
@@ -230,17 +231,18 @@ public abstract class Band
   public void populateElements (ReportState state)
   {
     TableModel data = state.getReport ().getData ();
-    int row = state.getCurrentDisplayItem ();
 
     if (data.getRowCount () < 1)
       return;
 
+    int row = state.getCurrentDisplayItem ();
     row = Math.min (row, data.getRowCount () - 1);
+
     for (int column = 0; column < data.getColumnCount (); column++)
     {
       Object value = data.getValueAt (row, column);
       String name = data.getColumnName (column);
-      Enumeration elements = dataElements.getAll (name);
+      Iterator elements = dataElements.getAll (name);
       if (elements == null)
       {
         // No data elements for this column in this band
@@ -248,9 +250,9 @@ public abstract class Band
       }
 
       // Fill the value into all elements
-      while (elements.hasMoreElements())
+      while (elements.hasNext())
       {
-        ReportDataSource element = (ReportDataSource) elements.nextElement();
+        ReportDataSource element = (ReportDataSource) elements.next();
         element.setValue (value);
       }
     }
@@ -260,18 +262,20 @@ public abstract class Band
     Enumeration enum = this.functionElements.keys ();
     while (enum.hasMoreElements ())
     {
-
+      // elements are keyed by function name
       String name = (String) enum.nextElement ();
       Function f = functions.get (name);
       if (f == null) continue;
 
-      Enumeration functionsources = functionElements.getAll(name);
+      // get all functionElements for this function
+      Iterator functionsources = functionElements.getAll(name);
       if (functionsources == null) continue;
 
-      while (functionsources.hasMoreElements())
+      Object functionValue = f.getValue ();
+      while (functionsources.hasNext())
       {
-        FunctionDataSource fds = (FunctionDataSource) functionsources.nextElement();
-        fds.setValue (f.getValue ());
+        FunctionDataSource fds = (FunctionDataSource) functionsources.next();
+        fds.setValue (functionValue);
       }
     }
 
@@ -320,7 +324,8 @@ public abstract class Band
     float y = fixValue(bounds.getY(), getHeight());
     float w = fixValue(bounds.getWidth(), target.getUsableWidth());
     float h = fixValue(bounds.getHeight(), getHeight());
-    return new Rectangle2D.Float (x,y,w,h);
+    bounds.setRect(x,y,w,h);
+    return bounds;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportConstants.java,v 1.6 2002/05/28 19:28:22 taqua Exp $
+ * $Id: JFreeReportConstants.java,v 1.7 2002/05/29 09:07:56 jaosch Exp $
  *
  * Changes
  * -------
@@ -64,6 +64,7 @@ public interface JFreeReportConstants
   public static final String PREVPAGE_COMMAND = "NEXTPAGE";
   public static final String ZOOMIN_COMMAND = "ZOOMIN";
   public static final String ZOOMOUT_COMMAND = "ZOOMOUT";
+  public static final String GOTO_COMMAND = "GOTO";
 
   /** A useful constant that signals that a page is full. */
   public static final boolean PAGE_FULL = true;

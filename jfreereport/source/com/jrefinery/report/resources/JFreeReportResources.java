@@ -85,6 +85,11 @@ public class JFreeReportResources extends ListResourceBundle
       { "action.close.mnemonic", new Integer(KeyEvent.VK_C) },
       { "action.close.accelerator", KeyStroke.getKeyStroke("control X") },
 
+      { "action.gotopage.name", "Go to page ..."},
+      { "action.gotopage.description", "View a page directly"},
+      { "action.gotopage.mnemonic", new Integer(KeyEvent.VK_G) },
+      { "action.gotopage.accelerator", KeyStroke.getKeyStroke("control G") },
+
       { "action.about.name", "About..."},
       { "action.about.description", "Information about the application"},
       { "action.about.mnemonic", new Integer (KeyEvent.VK_A)},

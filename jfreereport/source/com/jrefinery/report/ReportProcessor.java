@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportProcessor.java,v 1.3 2002/05/21 23:06:18 taqua Exp $
+ * $Id: ReportProcessor.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
  * Changes
  * -------------------------
  * 10-May-2002 : Initial version
@@ -47,7 +47,6 @@ public class ReportProcessor implements JFreeReportConstants
   private OutputTarget target;
   private boolean draw;
   private boolean pageDone;
-  private JFreeReport report;
 
   /**
    * Creates a new ReportProcessor. The ReportProcessor will use the given output target

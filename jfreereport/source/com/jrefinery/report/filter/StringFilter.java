@@ -53,6 +53,7 @@ public class StringFilter implements DataFilter
     }
     Object o = ds.getValue();
     if (o == null) return getNullValue();
+    if (o instanceof String) return (String) o;
     return String.valueOf(o);
   }
 

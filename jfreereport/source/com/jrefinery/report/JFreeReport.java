@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.12 2002/05/27 21:42:46 taqua Exp $
+ * $Id: JFreeReport.java,v 1.13 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -114,8 +114,6 @@ public class JFreeReport implements JFreeReportConstants
    * The page format used for the report (determines the page size, and therefore the report
    * width). */
   private PageFormat defaultPageFormat;
-
-  private Group defaultGroup;
 
   /**
    * The default constructor. Creates an empty but fully initialized report.
@@ -515,7 +513,8 @@ public class JFreeReport implements JFreeReportConstants
     ReportProcessor prc = new ReportProcessor(target, true, getPageFooter());
 
     // To a repagination
-    repaginate(target, rs);
+    ReportStateList rl = repaginate(target, rs);
+    rl.clear();
     rs = rs.advance(prc);
 
     rs = processPage(target, rs, true);
@@ -533,11 +532,12 @@ public class JFreeReport implements JFreeReportConstants
   }
 
   /** Processes the entire report and records the state at the end of every page. */
-  public List repaginate (OutputTarget output, ReportState state)
+  public ReportStateList repaginate (OutputTarget output, ReportState state)
       throws ReportProcessingException
   {
     if (state.isStart() != true) throw new ReportProcessingException("Need a start state for repagination");
-    List pageStates = new LinkedList ();
+    ReportStateList pageStates = new ReportStateList(this, output);
+
     ReportProcessor prc = new ReportProcessor (output, false, getPageFooter ());
     state = state.advance (prc);
 

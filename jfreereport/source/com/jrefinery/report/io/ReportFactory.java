@@ -81,8 +81,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     }
     else
     {
-      System.err.println ("Expected one of <report>, <groups>, <items>, <functions>");
-      throw new SAXException ("Expected report, groups, items, functions");
+      throw new SAXException ("Expected one of <report>, <groups>, <items>, <functions>");
     }
   }
 

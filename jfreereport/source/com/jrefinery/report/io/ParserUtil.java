@@ -125,7 +125,7 @@ public class ParserUtil
       }
       catch (Exception ce)
       {
-        System.out.println ("No such Color : " + color);
+        Log.debug ("No such Color : " + color);
         // if we can't get any color return black
         return Color.black;
       }

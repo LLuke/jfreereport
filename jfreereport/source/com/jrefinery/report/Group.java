@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Group.java,v 1.3 2002/05/27 21:42:46 taqua Exp $
+ * $Id: Group.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -212,7 +212,6 @@ public class Group
         int column = fieldNameToColumnIndex (data, field);
         if (column == -1)
         {
-          System.err.println ("Field " + field + " is not defined");
           continue;
         }
 

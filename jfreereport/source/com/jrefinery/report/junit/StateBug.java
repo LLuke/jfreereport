@@ -33,6 +33,7 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.ReportState;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.ReportStateList;
 import com.jrefinery.report.preview.ReportPane;
 import com.jrefinery.report.demo.SampleData1;
 import com.jrefinery.report.function.Function;
@@ -58,9 +59,9 @@ public class StateBug extends TestCase
 
   public class TestPane extends ReportPane
   {
-    public List getPageStates ()
+    public ReportStateList getPageStates ()
     {
-      return pageStates;
+      return getPageStateList ();
     }
 
     public TestPane (JFreeReport report, G2OutputTarget target)
@@ -70,7 +71,7 @@ public class StateBug extends TestCase
 
     public void repaginate (Graphics2D g) throws ReportProcessingException
     {
-      super.repaginate(g);
+      super.repaginate(getOutputTarget());
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.10 2002/05/27 21:42:46 taqua Exp $
+ * $Id: ReportState.java,v 1.11 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -118,6 +118,19 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     {
       return getCurrentDataItem() + 1;
     }
+
+    /**
+     * Sets the function collection. The functions get cloned before they
+     * are assigned to this state.
+     */
+    public void setFunctions(FunctionCollection pfunctions)
+    {
+      if (pfunctions == null)
+      {
+        throw new NullPointerException("Empty function collection?");
+      }
+      super.setFunctions(pfunctions.getCopy());
+    }
   }
 
   /**
@@ -162,7 +175,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   /**
    * The report header has been printed. Proceed to the first group.
    */
-  protected class PostReportHeader extends ReportState
+  protected static class PostReportHeader extends ReportState
   {
     public PostReportHeader(ReportState reportstate)
     {
@@ -196,7 +209,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * Before the group is printed, the group is activated and the currentGroup state
    * is adjusted using the enterGroup() function.
    */
-  protected class PreGroupHeader extends ReportState
+  protected static class PreGroupHeader extends ReportState
   {
     private boolean handledPagebreak;
 
@@ -209,7 +222,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     {
       enterGroup();
 
-      Group group = (Group) report.getGroup(getCurrentGroupIndex());
+      Group group = (Group) getReport().getGroup(getCurrentGroupIndex());
 
       // if there is no header, fire the event and proceed to PostGroupHeader
 
@@ -228,7 +241,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         {
           // enough space, fire the events and proceed to PostGroupHeader
           header.populateElements(this);
-          ReportEvent event = new ReportEvent(report, this);
+          ReportEvent event = new ReportEvent(getReport(), this);
           fireGroupStartedEvent(event);
           rpc.printGroupHeader(header);
           return new PostGroupHeader(this);
@@ -258,7 +271,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * (this thing changes the currentGroup, but the other behaviour is
    * like StartGroup)
    */
-  protected class PostGroupHeader extends ReportState
+  protected static class PostGroupHeader extends ReportState
   {
     public PostGroupHeader(ReportState reportstate)
     {
@@ -308,7 +321,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * Prepare to print the items. This state fires the itemStarted-Event and advances to
    * the InItemGroup state.
    */
-  protected class PreItemGroup extends ReportState
+  protected static class PreItemGroup extends ReportState
   {
     public PreItemGroup(ReportState reportstate)
     {
@@ -319,7 +332,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     {
       // Inform everybody, that now items will be processed.
 
-      ReportEvent event = new ReportEvent(report, this);
+      ReportEvent event = new ReportEvent(getReport(), this);
       fireItemsStartedEvent(event);
       return new InItemGroup(this);
     }
@@ -344,7 +357,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * If the activated Item is the last item in its group, the next state will be an PostItemGroupHeader.
    * In the other case, the current state remains this ItemsAdvanced state.
    */
-  protected class InItemGroup extends ReportState
+  protected static class InItemGroup extends ReportState
   {
     public InItemGroup(ReportState reportstate)
     {
@@ -385,7 +398,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * The only purpose for this state is to fire the itemsFinished event. After that task is done,
    * a PreGroupFooter-State gets active.
    */
-  protected class PostItemGroup extends ReportState
+  protected static class PostItemGroup extends ReportState
   {
     public PostItemGroup(ReportState reportstate)
     {
@@ -398,7 +411,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      */
     public ReportState advance(ReportProcessor rpc)
     {
-      ReportEvent event = new ReportEvent(report, this);
+      ReportEvent event = new ReportEvent(getReport(), this);
       fireItemsFinishedEvent(event);
       return new PreGroupFooter(this);
     }
@@ -409,7 +422,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * wait for the pageBreak. After the groupFinished Event has been fired and the footer
    * is printed, the PostGroupFooter gets active.
    */
-  protected class PreGroupFooter extends ReportState
+  protected static class PreGroupFooter extends ReportState
   {
     public PreGroupFooter(ReportState reportstate)
     {
@@ -418,7 +431,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
     public ReportState advance(ReportProcessor rpc)
     {
-      Group group = (Group) report.getGroup(getCurrentGroupIndex());
+      Group group = (Group) getReport().getGroup(getCurrentGroupIndex());
       FunctionCollection functions = getFunctions();
 
       GroupFooter footer = group.getFooter();
@@ -427,7 +440,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         // There is a header and enough space to print it. The finishGroup event is
         // fired and PostGroupFooter activated after all work is done.
         footer.populateElements(this);
-        ReportEvent event = new ReportEvent(report, this);
+        ReportEvent event = new ReportEvent(getReport(), this);
         fireGroupFinishedEvent(event);
 
         rpc.printGroupFooter(footer);
@@ -454,7 +467,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * If there is a parent group and this parent is finished, close the parent by activating
    * the PreGroupFooter state.
    */
-  protected class PostGroupFooter extends ReportState
+  protected static class PostGroupFooter extends ReportState
   {
     public PostGroupFooter(ReportState reportstate)
     {
@@ -500,8 +513,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         {
           // we have more data to work on
           // If the group is done, print the GroupFooter of the parent
-          Group group = report.getGroup(getCurrentGroupIndex());
-          if (group.isLastItemInGroup(report.getData(), getCurrentDataItem()))
+          Group group = getReport().getGroup(getCurrentGroupIndex());
+          if (group.isLastItemInGroup(getReport().getData(), getCurrentDataItem()))
           {
             // Parent is finished, print the footer
             return new PreGroupFooter(this);
@@ -526,7 +539,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * the reportHeader and advance to the state Finish. Before printing the header fire the
    * reportFinished event.
    */
-  protected class PreReportFooter extends ReportState
+  protected static class PreReportFooter extends ReportState
   {
     public PreReportFooter(ReportState reportstate)
     {
@@ -558,7 +571,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * The report is done. No advance will be done, every call to advance will return this
    * Finish-State.
    */
-  protected class Finish extends ReportState
+  protected static class Finish extends ReportState
   {
     public Finish(ReportState reportstate)
     {
@@ -595,9 +608,6 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   /** The functions. */
   private FunctionCollection _functions;
-
-  /** Band with an pending page break */
-  private Band pband;
 
   /** The report properties */
   private ReportProperties reportProperties;
@@ -743,7 +753,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Sets the function collection. The functions get cloned before they
+   * Sets the function collection. The functions no longer get cloned before they
    * are assigned to this state.
    */
   public void setFunctions(FunctionCollection pfunctions)
@@ -752,7 +762,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     {
       throw new NullPointerException("Empty function collection?");
     }
-    _functions = (FunctionCollection) pfunctions.clone();
+    _functions = pfunctions;
   }
 
   public Object getProperty (String key)
@@ -793,7 +803,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     try
     {
       ReportState  result = (ReportState) super.clone();
-      result.setFunctions(getFunctions());
+      result.setFunctions(getFunctions().getCopy());
       return result;
     }
     catch (CloneNotSupportedException cne)
@@ -813,34 +823,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     if ((getCurrentGroupIndex() != oldstate.getCurrentGroupIndex())
       || (getCurrentDataItem() >= oldstate.getCurrentDataItem())
       || (getCurrentPage() != oldstate.getCurrentPage())
-      || (pband != oldstate.pband)
       || (oldstate.getClass().equals(getClass())))
     {
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * Activate an pagebreak on next printing for this Band. This is
-   * a helper function used to detect infinite loops on report processing.
-   */
-  public void setPendingPageBreak(Band band)
-  {
-    pband = band;
-  }
-
-  /**
-   * This is a helper function used to detect infinite loops on report
-   * processing. Returns true, if the report will do a page break on the
-   * next band processing. This is
-   * a helper function used to detect infinite loops on report processing.
-   */
-  public boolean isPendingPageBreak(Band band)
-  {
-    if (pband == band)
-    {
-      pband = null;
       return true;
     }
     return false;
