@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupCountTest.java,v 1.2 2003/11/01 19:57:03 taqua Exp $
+ * $Id: TotalGroupCountTest.java,v 1.3 2003/11/07 20:38:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,8 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.GroupList;
+import org.jfree.report.Group;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.function.TotalGroupCountFunction;
@@ -97,9 +99,10 @@ public class TotalGroupCountTest extends TestCase
       Number n = (Number) event.getDataRow().get("continent-total-gc");
       assertEquals("continent-total-gc", 6, n.intValue());
 
-      // the number of continents in the report1 + default group start
+      // the number of continents in the report1
+      // we don't have the default group, so it should return the same as above
       Number n2 = (Number) event.getDataRow().get("total-gc");
-      assertEquals("total-gc", 7, n2.intValue());
+      assertEquals("total-gc", 6, n2.intValue());
     }
 
     public Object getValue()
@@ -130,18 +133,26 @@ public class TotalGroupCountTest extends TestCase
     {
       report = ReportGenerator.getInstance().parseReport(url);
       report.setData(REPORT2.getReportTableModel());
-      report.addFunction(new TotalGroupCountVerifyFunction());
+      GroupList list = report.getGroups();
+      // make sure that there is no default group ...
+      Group g = list.getGroupByName("default");
+      if (g != null)
+      {
+        list.remove(g);
+      }
+      report.setGroups(list);
+      report.addExpression(new TotalGroupCountVerifyFunction());
 
       TotalGroupCountFunction f = new TotalGroupCountFunction();
       f.setName("continent-total-gc");
       f.setGroup("Continent Group");
       f.setDependencyLevel(1);
-      report.addFunction(f);
+      report.addExpression(f);
 
       TotalGroupCountFunction f2 = new TotalGroupCountFunction();
       f2.setName("total-gc");
       f2.setDependencyLevel(1);
-      report.addFunction(f2);
+      report.addExpression(f2);
     }
     catch (Exception e)
     {

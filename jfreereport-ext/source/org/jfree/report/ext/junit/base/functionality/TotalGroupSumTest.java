@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
+ * $Id: TotalGroupSumTest.java,v 1.4 2003/11/07 20:38:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,6 +42,8 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.GroupList;
+import org.jfree.report.Group;
 import org.jfree.report.demo.SampleData1;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
@@ -158,20 +160,28 @@ public class TotalGroupSumTest extends TestCase
     {
       report = ReportGenerator.getInstance().parseReport(url);
       report.setData(REPORT2.getReportTableModel());
-      report.addFunction(new TotalGroupCountVerifyFunction());
+      report.addExpression(new TotalGroupCountVerifyFunction());
+      GroupList list = report.getGroups();
+      // make sure that there is no default group ...
+      Group g = list.getGroupByName("default");
+      if (g != null)
+      {
+        list.remove(g);
+      }
+      report.setGroups(list);
 
       TotalGroupSumFunction f = new TotalGroupSumFunction();
       f.setName("continent-total-gc");
       f.setGroup("Continent Group");
       f.setField("Population");
       f.setDependencyLevel(1);
-      report.addFunction(f);
+      report.addExpression(f);
 
       TotalGroupSumFunction f2 = new TotalGroupSumFunction();
       f2.setName("total-gc");
       f2.setField("Population");
       f2.setDependencyLevel(1);
-      report.addFunction(f2);
+      report.addExpression(f2);
     }
     catch (Exception e)
     {

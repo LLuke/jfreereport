@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventOrderTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
+ * $Id: EventOrderTest.java,v 1.4 2003/11/01 19:57:03 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -360,8 +360,8 @@ public class EventOrderTest extends TestCase
         (null, new Rectangle2D.Float(0, 0, 150, 20), null,
             ElementAlignment.LEFT, null, "Text"));
 
-    report.addFunction(new EventOrderFunction("event-order"));
-    report.addFunction(new EventMonitorFunction("event-monitor"));
+    report.addExpression(new EventOrderFunction("event-order"));
+    report.addExpression(new EventMonitorFunction("event-monitor"));
     return report;
   }
 
@@ -402,8 +402,8 @@ public class EventOrderTest extends TestCase
     report.setData(FunctionalityTestLib.REPORTS[2].getReportTableModel());
     final PageFunction pf = new PageFunction("JUnit-Page");
     pf.setDependencyLevel(2);
-    report.addFunction(pf);
-    report.addFunction(new PageVerifyFunction("pf-verify"));
+    report.addExpression(pf);
+    report.addExpression(new PageVerifyFunction("pf-verify"));
 
     assertTrue(FunctionalityTestLib.execGraphics2D(report));
   }

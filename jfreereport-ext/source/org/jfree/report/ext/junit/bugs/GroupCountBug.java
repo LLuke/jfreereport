@@ -108,7 +108,7 @@ public class GroupCountBug extends TestCase
     function.setGroup("Letter Group");
     try
     {
-      this.report.addFunction(function);
+      this.report.addExpression(function);
     }
     catch (Exception e)
     {

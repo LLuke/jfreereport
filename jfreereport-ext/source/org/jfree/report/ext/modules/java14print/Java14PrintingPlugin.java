@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14PrintingPlugin.java,v 1.8 2003/11/01 19:57:04 taqua Exp $
+ * $Id: Java14PrintingPlugin.java,v 1.9 2003/11/07 16:29:45 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -126,7 +126,7 @@ public class Java14PrintingPlugin extends PrintingPlugin
       ReportProgressDialog progressDialog = createProgressDialog();
       getBase().addRepaginationListener(progressDialog);
       Java14PrintExportTask task = new Java14PrintExportTask
-          (progressDialog, service, getBase().getPageable(), attributes);
+          (progressDialog, service, getBase().getReportPane(), attributes);
       task.addExportTaskListener(new DefaultExportTaskListener());
       delegateTask(task);
       return handleExportResult(task);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14PrintExportTask.java,v 1.1 2003/09/21 10:50:42 taqua Exp $
+ * $Id: Java14PrintExportTask.java,v 1.2 2003/10/19 11:29:56 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,7 +38,6 @@
 
 package org.jfree.report.ext.modules.java14print;
 
-import java.awt.print.Pageable;
 import javax.print.DocFlavor;
 import javax.print.DocPrintJob;
 import javax.print.PrintException;
@@ -47,17 +46,18 @@ import javax.print.SimpleDoc;
 import javax.print.attribute.PrintRequestAttributeSet;
 
 import org.jfree.report.modules.gui.base.ExportTask;
+import org.jfree.report.modules.gui.base.ReportPane;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 
 public class Java14PrintExportTask extends ExportTask
 {
   private PrintService service;
-  private Pageable pageable;
+  private ReportPane pageable;
   private PrintRequestAttributeSet attributes;
   private ReportProgressDialog progressDialog;
 
   public Java14PrintExportTask(ReportProgressDialog progressDialog,
-                               PrintService service, Pageable pageable,
+                               PrintService service, ReportPane pageable,
                                PrintRequestAttributeSet attributes)
   {
     this.service = service;
@@ -78,7 +78,12 @@ public class Java14PrintExportTask extends ExportTask
       DocPrintJob job = service.createPrintJob();
       SimpleDoc document = new SimpleDoc
         (pageable, DocFlavor.SERVICE_FORMATTED.PAGEABLE, null);
-      job.print(document, attributes);
+      synchronized (pageable.getReportLock())
+      {
+        pageable.setPrinting(true);
+        job.print(document, attributes);
+        pageable.setPrinting(false);
+      }
       setTaskDone();
     }
     catch (PrintException pe)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupCountTest.java,v 1.2 2003/11/01 19:57:03 taqua Exp $
+ * $Id: TotalItemCountTest.java,v 1.1 2003/11/07 20:39:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,8 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.GroupList;
+import org.jfree.report.Group;
 import org.jfree.report.demo.SampleData1;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
@@ -154,18 +156,26 @@ public class TotalItemCountTest extends TestCase
     {
       report = ReportGenerator.getInstance().parseReport(url);
       report.setData(REPORT2.getReportTableModel());
-      report.addFunction(new TotalItemCountVerifyFunction());
+      report.addExpression(new TotalItemCountVerifyFunction());
+      GroupList list = report.getGroups();
+      // make sure that there is no default group ...
+      Group g = list.getGroupByName("default");
+      if (g != null)
+      {
+        list.remove(g);
+      }
+      report.setGroups(list);
 
       TotalItemCountFunction f = new TotalItemCountFunction();
       f.setName("continent-total-gc");
       f.setGroup("Continent Group");
       f.setDependencyLevel(1);
-      report.addFunction(f);
+      report.addExpression(f);
 
       TotalItemCountFunction f2 = new TotalItemCountFunction();
       f2.setName("total-gc");
       f2.setDependencyLevel(1);
-      report.addFunction(f2);
+      report.addExpression(f2);
     }
     catch (Exception e)
     {
