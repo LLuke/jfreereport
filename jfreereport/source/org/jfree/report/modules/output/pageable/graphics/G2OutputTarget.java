@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.20 2005/03/03 23:00:01 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.21 2005/03/04 16:02:29 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.BasicStroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -538,7 +539,11 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
     final float cFact = getFont().getFont().getSize2D() / fm.getHeight();
 
     final float correctedBaseline = baseline * cFact;
+    final Stroke stroke = getStroke();
+    g2.setStroke(new BasicStroke(1));
     g2.drawString(text, 0.0f, correctedBaseline);
+    g2.setStroke(stroke);
+
     if (getFont().isUnderline())
     {
       final float l = (getFont().getFont().getSize2D() + correctedBaseline) / 2.0f;

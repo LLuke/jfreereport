@@ -130,7 +130,7 @@
  * Original Author: &lt;name and email of the initial author of the class&gt;
  * Contributor(s): &lt;list of all contributors&gt;
  *
- * $Id: chapter1-styleguide.xml,v 1.1 2005/03/08 17:42:01 taqua Exp $
+ * $Id: chapter1-styleguide.xml,v 1.3 2005/03/09 18:48:23 taqua Exp $
  *
  * Changes (from &lt;date of the first appearance in the project&gt;)
  * -------------------------
@@ -875,29 +875,138 @@ d = a + r;</programlisting></para>
         <title>Always check parameter values</title>
 
         <para>When ever a public or protected method accepts parameters, these
-        parameters should be checked for validity. </para>
+        parameters should be checked for validity.</para>
 
         <para>Most of the hard to trace bugs in a program are caused by an
         invalid object state. The only way, a valid object implementation can
-        get into a </para>
+        get into an invalid state, is by accepting invalid parameter in
+        methods, which alter the state of the object. That mean, if methods do
+        never accept invalid parameters and the instance variables cannot
+        changed directly, the object cannot get into an invalid state.</para>
+
+        <para>Be paranoid.</para>
+
+        <para>Designing stable programs begins at the very basic level of the
+        program. Checking parameters and failing fast is a very safe strategy
+        to ensure that the contract between the object designer and the object
+        user is not violated. Do hope, that the caller will only provide valid
+        values, as there will be at least one time in your life, where he will
+        not.</para>
+
+        <para>Common tests for parameters include range checks or checks,
+        whether a value is null.</para>
+
+        <para>Don't repair invalid input.</para>
+
+        <para>Never assume, that you can read the original programmers mind in
+        a safe way, so that you will be able to fix invalid parameters. You
+        won't. If a caller provides invalid values, fail. Often the caller is
+        not even aware that the given values are invalid and as long as the
+        program does not crash (or at least an exception is thrown), he might
+        not notice his fault. If you want to provide self-repairing abilities
+        for your code, provide it in a safe and separate way, so that a caller
+        has to validate (and possibly repair) the input in a separate step.
+        This way, the programmer will be aware, that the input got possibly
+        modified before it is acceptable for the object.</para>
       </section>
 
       <section>
-        <title>Avoid overly long methods</title>
+        <title>Avoid overly long or complex methods</title>
 
-        <para></para>
+        <para>A method should not be longer than 150 lines of code.</para>
+
+        <para>Long methods are usually a clear indication, that the code of
+        this method should be split into separate sub methods. A common
+        example for such long methods can be found in the various GUI builders
+        out there. The JBuilder, for instance puts all GUI initialization code
+        into a single method, called jbinit(). Once the GUI is more complex
+        than a HelloWorld example, the code in there becomes confusing and
+        hard to read and understand. Splitting the method into several sub
+        methods helps to make the code easier to read. Staying with the GUI
+        example, one could, for instance, separate the initialization of the
+        tool bars, panels and menus into their own methods. Developers, who
+        want to work with Menu-code won't have to cope with panels or tool
+        bars anymore.<programlisting>public class ExampleGUI extends JFrame
+{
+
+  ..
+
+  public ExampleGUI ()
+  {
+    init();
+  }
+ 
+  private void init()
+  {
+    initalizeMenu();
+    initalizeToolbar();
+    initalizePanel();
+  }
+
+  private void initializeMenu() 
+  {
+    ..
+  }
+
+  ..
+
+}</programlisting></para>
       </section>
 
       <section>
         <title>Prefer simple structures</title>
 
-        <para></para>
+        <para>"Complex structures contain complex bugs. Simple structures
+        contain simple bugs."</para>
+
+        <para>Complex, deeply nested functions are very hard to read and most
+        programmers will not understand their purpose, effects and error
+        conditions, unless they spent hours and hours to study them.
+        Functions, which are not fully understandable by the very first look
+        at it, should be redesigned. Complex nested loop bodies should be
+        moved into own methods, so that readers of the code don't have to care
+        about the details, unless they are really interested in them.</para>
+
+        <para>Expressions with many, many parentheses or numerous inline
+        parameter computations are also hard to read and harder to understand.
+        Simplify them. The structure of Java allows almost self-documenting
+        code. Use these options. Write small and simple methods, possibly by
+        outsourcing code to other methods.</para>
+
+        <para>The main aim for all programmers should always be to write
+        maintainable and understandable code.</para>
+
+        <para>References: <ulink
+        url="???">http://c2.com/cgi/wiki?KeepItSimple</ulink></para>
       </section>
 
       <section>
         <title>Error handling</title>
 
-        <para></para>
+        <para>Java, as most other modern languages, uses the Exception-model
+        as preferred way to handle unexpected error conditions. Once
+        Exceptions are thrown, they interrupt the current method and transfer
+        the control to a registered error handling code in one of the calling
+        methods. If no error handler was found, the current thread will be
+        finished.</para>
+
+        <para>Error state variables should be avoided. As by definition all
+        programmers are lazy, error states often remain unchecked. Exceptions
+        should always be used to signal, that something unexpected happened.
+        Error return values should be used in case the error was expected. For
+        instance, trying to add an element to a list containing only unique
+        values, which does already contain that element, should not trigger an
+        exception. It is fully sufficient to indicate success or failure by
+        using a certain return value. But, adding an element to a list, which
+        does not expect this kind of element (adding a string to a list of
+        numbers), might throw an exception. Trying to add an invalid type
+        might in this case indicates a programming error and is
+        prevented.</para>
+
+        <para>As a thumb rule: If the error is expected and no invalid state
+        is caused by it, use return values. If the error is unexpected or
+        would cause an invalid program state if it would be ignored, then
+        throw an exception.</para>
       </section>
     </section>
   </section>
@@ -905,6 +1014,14 @@ d = a + r;</programlisting></para>
   <section>
     <title>Design decisions</title>
 
-    <para></para>
+    <para>This sections covers general JFreeReport specific design decisions.
+    It does not document features and should serve as guide to the philosophy
+    behind the JFreeReport code base.</para>
+
+    <section>
+      <title></title>
+
+      <para></para>
+    </section>
   </section>
 </chapter>

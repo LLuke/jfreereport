@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.13 2005/03/01 10:09:20 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.14 2005/03/03 21:50:41 taqua Exp $
  *
  * Changes
  * --------
@@ -132,7 +132,7 @@ public class CSVExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionSelectFile (ResourceBundle resources)
+    public ActionSelectFile (final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("csvexportdialog.selectFile"));
     }
@@ -167,7 +167,7 @@ public class CSVExportDialog extends AbstractExportDialog
 
   private class CancelAction extends AbstractCancelAction
   {
-    public CancelAction (ResourceBundle resources)
+    public CancelAction (final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("csvexportdialog.cancel"));
     }
@@ -175,7 +175,7 @@ public class CSVExportDialog extends AbstractExportDialog
 
   private class ConfirmAction extends AbstractConfirmAction
   {
-    public ConfirmAction (ResourceBundle resources)
+    public ConfirmAction (final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("csvexportdialog.confirm"));
     }
@@ -813,8 +813,7 @@ public class CSVExportDialog extends AbstractExportDialog
       final String message = MessageFormat.format(getResources().getString
               ("csvexportdialog.targetExistsWarning"),
               new Object[]{filename});
-      getStatusBar().setStatus(JStatusBar.TYPE_WARNING,
-              getResources().getString(message));
+      getStatusBar().setStatus(JStatusBar.TYPE_WARNING, message);
 
     }
     return true;
@@ -822,16 +821,20 @@ public class CSVExportDialog extends AbstractExportDialog
 
   protected boolean performConfirm ()
   {
-    final String key1 = "csvexportdialog.targetOverwriteConfirmation";
-    final String key2 = "csvexportdialog.targetOverwriteTitle";
-    if (JOptionPane.showConfirmDialog(this,
-            MessageFormat.format(getResources().getString(key1),
-                    new Object[]{getFilename()}),
-            getResources().getString(key2),
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-            == JOptionPane.NO_OPTION)
+    final File f = new File(getFilename());
+    if (f.exists())
     {
-      return false;
+      final String key1 = "csvexportdialog.targetOverwriteConfirmation";
+      final String key2 = "csvexportdialog.targetOverwriteTitle";
+      if (JOptionPane.showConfirmDialog(this,
+              MessageFormat.format(getResources().getString(key1),
+                      new Object[]{getFilename()}),
+              getResources().getString(key2),
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+              == JOptionPane.NO_OPTION)
+      {
+        return false;
+      }
     }
     return true;
   }

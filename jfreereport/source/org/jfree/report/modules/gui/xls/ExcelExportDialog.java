@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.14 2005/03/01 10:09:39 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.15 2005/03/03 21:50:44 taqua Exp $
  *
  * Changes
  * --------
@@ -95,7 +95,7 @@ public class ExcelExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ConfirmAction (ResourceBundle resources)
+    public ConfirmAction (final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("excelexportdialog.confirm"));
     }
@@ -109,7 +109,7 @@ public class ExcelExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public CancelAction (ResourceBundle resources)
+    public CancelAction (final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("excelexportdialog.cancel"));
     }
@@ -123,7 +123,7 @@ public class ExcelExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionSelectFile (ResourceBundle resources)
+    public ActionSelectFile (final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("excelexportdialog.selectFile"));
     }
@@ -438,24 +438,28 @@ public class ExcelExportDialog extends AbstractExportDialog
       final String message = MessageFormat.format(getResources().getString
               ("excelexportdialog.targetExistsWarning"),
               new Object[]{filename});
-      getStatusBar().setStatus(JStatusBar.TYPE_WARNING,
-              getResources().getString(message));
+      getStatusBar().setStatus(JStatusBar.TYPE_WARNING, message);
     }
     return true;
   }
 
   protected boolean performConfirm ()
   {
-    final String key1 = "excelexportdialog.targetOverwriteConfirmation";
-    final String key2 = "excelexportdialog.targetOverwriteTitle";
-    if (JOptionPane.showConfirmDialog(this,
-            MessageFormat.format(getResources().getString(key1),
-                    new Object[]{getFilename()}),
-            getResources().getString(key2),
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-            == JOptionPane.NO_OPTION)
+    final String filename = getFilename();
+    final File f = new File(filename);
+    if (f.exists())
     {
-      return false;
+      final String key1 = "excelexportdialog.targetOverwriteConfirmation";
+      final String key2 = "excelexportdialog.targetOverwriteTitle";
+      if (JOptionPane.showConfirmDialog(this,
+              MessageFormat.format(getResources().getString(key1),
+                      new Object[]{getFilename()}),
+              getResources().getString(key2),
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+              == JOptionPane.NO_OPTION)
+      {
+        return false;
+      }
     }
     return true;
   }

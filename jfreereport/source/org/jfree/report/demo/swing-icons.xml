@@ -308,6 +308,19 @@
         <template references="rectangle"/>
       </element>
 
+      <element type="shape/generic">
+        <style>
+          <extends name="medium-line"/>
+          <basic-key name="stroke" class="java.awt.BasicStroke">2.0</basic-key>
+          <compound-key name="absolute_pos">
+            <basic-object name="x">0.0</basic-object>
+            <basic-object name="y">16.0</basic-object>
+          </compound-key>
+          <basic-key name="paint">#cfcfcf</basic-key>
+        </style>
+        <template references="horizontal-line"/>
+      </element>
+
       <element type="text/plain">
         <style>
           <compound-key name="absolute_pos">
@@ -344,18 +357,6 @@
         </template>
       </element>
 
-      <element type="shape/generic">
-        <style>
-          <extends name="medium-line"/>
-          <basic-key name="stroke" class="java.awt.BasicStroke">2.0</basic-key>
-          <compound-key name="absolute_pos">
-            <basic-object name="x">0.0</basic-object>
-            <basic-object name="y">16.0</basic-object>
-          </compound-key>
-          <basic-key name="paint">#cfcfcf</basic-key>
-        </style>
-        <template references="horizontal-line"/>
-      </element>
     </page-header>
 
     <!-- =============== -->

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.19 2005/03/01 10:09:21 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.20 2005/03/03 21:50:42 taqua Exp $
  *
  * Changes
  * --------
@@ -56,7 +56,6 @@ import java.io.File;
 import java.text.MessageFormat;
 import java.util.Properties;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -146,7 +145,7 @@ public class PDFSaveDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionConfirm (ResourceBundle resources)
+    public ActionConfirm (final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("pdfsavedialog.confirm"));
     }
@@ -160,7 +159,7 @@ public class PDFSaveDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionCancel (ResourceBundle resources)
+    public ActionCancel (final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("pdfsavedialog.cancel"));
     }
@@ -174,7 +173,7 @@ public class PDFSaveDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionSelectFile (ResourceBundle resources)
+    public ActionSelectFile (final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("pdfsavedialog.selectFile"));
     }
@@ -1300,8 +1299,7 @@ public class PDFSaveDialog extends AbstractExportDialog
       final String message = MessageFormat.format(getResources().getString
               ("pdfsavedialog.targetOverwriteWarning"),
               new Object[]{filename});
-      getStatusBar().setStatus(JStatusBar.TYPE_WARNING,
-              getResources().getString(message));
+      getStatusBar().setStatus(JStatusBar.TYPE_WARNING, message);
     }
 
     if (getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_128BIT)
@@ -1327,16 +1325,21 @@ public class PDFSaveDialog extends AbstractExportDialog
 
   protected boolean performConfirm ()
   {
-    final String key1 = "pdfsavedialog.targetOverwriteConfirmation";
-    final String key2 = "pdfsavedialog.targetOverwriteTitle";
-    if (JOptionPane.showConfirmDialog(this,
-            MessageFormat.format(getResources().getString(key1),
-                    new Object[]{getFilename()}),
-            getResources().getString(key2),
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-            == JOptionPane.NO_OPTION)
+    final String filename = getFilename();
+    final File f = new File(filename);
+    if (f.exists())
     {
-      return false;
+      final String key1 = "pdfsavedialog.targetOverwriteConfirmation";
+      final String key2 = "pdfsavedialog.targetOverwriteTitle";
+      if (JOptionPane.showConfirmDialog(this,
+              MessageFormat.format(getResources().getString(key1),
+                      new Object[]{getFilename()}),
+              getResources().getString(key2),
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+              == JOptionPane.NO_OPTION)
+      {
+        return false;
+      }
     }
 
     if (getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_128BIT)

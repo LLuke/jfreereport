@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.14 2005/03/01 10:09:20 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.15 2005/03/03 21:50:42 taqua Exp $
  *
  * Changes
  * -------
@@ -110,7 +110,7 @@ public class HtmlExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ConfirmAction (ResourceBundle resources)
+    public ConfirmAction (final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("htmlexportdialog.confirm"));
     }
@@ -124,7 +124,7 @@ public class HtmlExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public CancelAction (ResourceBundle resources)
+    public CancelAction (final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("htmlexportdialog.cancel"));
     }
@@ -138,7 +138,7 @@ public class HtmlExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionSelectDirFile (ResourceBundle resources)
+    public ActionSelectDirFile (final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("htmlexportdialog.selectDirFile"));
     }
@@ -881,8 +881,7 @@ public class HtmlExportDialog extends AbstractExportDialog
       final String message = MessageFormat.format(getResources().getString
               ("htmlexportdialog.targetExistsWarning"),
               new Object[]{filename});
-      getStatusBar().setStatus(JStatusBar.TYPE_WARNING,
-              getResources().getString(message));
+      getStatusBar().setStatus(JStatusBar.TYPE_WARNING, message);
     }
 
     if (rbExportToZIPFile.isSelected())
@@ -931,29 +930,40 @@ public class HtmlExportDialog extends AbstractExportDialog
 
   protected boolean performConfirm ()
   {
-
-    final String key1 = "htmlexportdialog.targetOverwriteConfirmation";
-    final String key2 = "htmlexportdialog.targetOverwriteTitle";
-    if (JOptionPane.showConfirmDialog(this,
-            MessageFormat.format(getResources().getString(key1),
-                    new Object[]{getFilename()}),
-            getResources().getString(key2),
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-            == JOptionPane.NO_OPTION)
+    final String filename = getFilename();
+    final File f = new File(filename);
+    if (f.exists())
     {
-      return false;
+      final String key1 = "htmlexportdialog.targetOverwriteConfirmation";
+      final String key2 = "htmlexportdialog.targetOverwriteTitle";
+      if (JOptionPane.showConfirmDialog(this,
+              MessageFormat.format(getResources().getString(key1),
+                      new Object[]{getFilename()}),
+              getResources().getString(key2),
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+              == JOptionPane.NO_OPTION)
+      {
+        return false;
+      }
     }
 
-    final String dataDirKey1 = "htmlexportdialog.targetCreateDataDirConfirmation";
-    final String dataDirKey2 = "htmlexportdialog.targetCreateDataDirTitle";
-    if (JOptionPane.showConfirmDialog(this,
-            MessageFormat.format(getResources().getString(dataDirKey1),
-                    new Object[]{getDataFilename()}),
-            getResources().getString(dataDirKey2),
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-            == JOptionPane.NO_OPTION)
+    if (rbExportToDirectory.isSelected())
     {
-      return false;
+      final File dataDir = new File(getDataFilename());
+      if (dataDir.exists() == false)
+      {
+        final String dataDirKey1 = "htmlexportdialog.targetCreateDataDirConfirmation";
+        final String dataDirKey2 = "htmlexportdialog.targetCreateDataDirTitle";
+        if (JOptionPane.showConfirmDialog(this,
+                MessageFormat.format(getResources().getString(dataDirKey1),
+                        new Object[]{getDataFilename()}),
+                getResources().getString(dataDirKey2),
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+                == JOptionPane.NO_OPTION)
+        {
+          return false;
+        }
+      }
     }
     return true;
   }

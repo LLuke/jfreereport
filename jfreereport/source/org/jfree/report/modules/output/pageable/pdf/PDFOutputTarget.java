@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.27 2005/03/03 21:50:44 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.28 2005/03/04 16:02:30 taqua Exp $
  *
  * Changes
  * -------
@@ -362,6 +362,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
   private ITextImageCache cachedImages;
 
+  private boolean awaitOpenDocument;
+
   /**
    * A bytearray containing an empty password. iText replaces the owner password with
    * random values, but Adobe allows to have encryption without an owner password set.
@@ -375,7 +377,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     (byte) 0x2F, (byte) 0x0C, (byte) 0xA9, (byte) 0xFE, (byte) 0x64, (byte) 0x53,
     (byte) 0x69, (byte) 0x7A};
 
-  private Graphics2D pdfGraphics;
+  private VolatilePdfState pdfGraphics;
 
   /**
    * Creates a new PDFOutputTarget.
@@ -473,36 +475,33 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     {
 
       final StrictBounds bounds = getInternalPDFOperationBounds();
-      final StrictBounds imageBounds = content.getBounds();
+      //final StrictBounds imageBounds = content.getBounds();
 
       final float imageX = (float) StrictGeomUtility.toExternalValue(bounds.getX());
       final float imageY = (float) (getPageHeight() -
-              StrictGeomUtility.toExternalValue(bounds.getY()) + bounds.getHeight());
+              StrictGeomUtility.toExternalValue(bounds.getY() + bounds.getHeight()));
 
       final ImageContainer imageContent = content.getContent();
       final Image image = cachedImages.getImage(imageContent);
       image.setAbsolutePosition(imageX, imageY);
 
       final StrictBounds imageArea = content.getImageArea();
-      final double imageWidth = StrictGeomUtility.toExternalValue(bounds.getWidth());
-      final double imageHeight = StrictGeomUtility.toExternalValue(bounds.getHeight());
-
-      final float scaleX = (float) (bounds.getWidth() / imageArea.getWidth());
-      final float scaleY = (float) (bounds.getHeight() / imageArea.getHeight());
+      final float scaleX = bounds.getWidth() / (float) imageArea.getWidth();
+      final float scaleY = bounds.getHeight() / (float) imageArea.getHeight();
       // and apply the layouters scaling ..
-      image.scalePercent(scaleX * imageContent.getScaleX(), scaleY * imageContent.getScaleY());
+      image.scalePercent(100 * scaleX * imageContent.getScaleX(),
+                         100 * scaleY * imageContent.getScaleY());
 
       final PdfContentByte cb = this.writer.getDirectContent();
       cb.saveState();
 
       final float clipX = (float) StrictGeomUtility.toExternalValue
-              (imageBounds.getX() + imageArea.getX() + bounds.getX());
+              (imageArea.getX() + bounds.getX());
       final float clipY = (float) (getPageHeight() -
-              StrictGeomUtility.toExternalValue
-              (imageBounds.getY() + imageArea.getY() + bounds.getHeight()));
+              StrictGeomUtility.toExternalValue (bounds.getY() + imageArea.getHeight()));
       cb.rectangle(clipX, clipY,
-              (float) StrictGeomUtility.toExternalValue(imageBounds.getWidth()),
-              (float) StrictGeomUtility.toExternalValue(imageBounds.getHeight()));
+              (float) StrictGeomUtility.toExternalValue(imageArea.getWidth()),
+              (float) StrictGeomUtility.toExternalValue(imageArea.getHeight()));
       cb.clip();
       cb.newPath();
       cb.addImage(image);
@@ -541,7 +540,12 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     final float ycorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getY());
     final float xcorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getX());
 
-    final Graphics2D g2 = (Graphics2D) pdfGraphics.create();
+    final float urx = (float) currentPageFormat.getWidth();
+    final float ury = (float) currentPageFormat.getHeight();
+
+    final Graphics2D g2 = writer.getDirectContent().createGraphics(urx, ury, fontSupport);
+    g2.setPaint(getPaint());
+    g2.setStroke(getStroke());
     g2.translate(xcorr, ycorr);
     g2.draw(shape);
     g2.dispose();
@@ -561,7 +565,12 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     final float ycorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getY());
     final float xcorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getX());
 
-    final Graphics2D g2 = (Graphics2D) pdfGraphics.create();
+    final float urx = (float) currentPageFormat.getWidth();
+    final float ury = (float) currentPageFormat.getHeight();
+
+    final Graphics2D g2 = writer.getDirectContent().createGraphics(urx, ury, fontSupport);
+    g2.setPaint(getPaint());
+    g2.setStroke(getStroke());
     g2.translate(xcorr, ycorr);
     g2.fill(shape);
     g2.dispose();
@@ -577,8 +586,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   {
     try
     {
-      this.pdfGraphics.dispose();
-      this.pdfGraphics = null;
+//      this.pdfGraphics.dispose();
+//      this.pdfGraphics = null;
 //      this.writer.getDirectContent().restoreState();
       this.getDocument().newPage();
     }
@@ -672,7 +681,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       getDocument().addCreator(CREATOR);
       getDocument().addCreationDate();
 
-      getDocument().open();
+      //getDocument().open();
+      awaitOpenDocument = true;
 
       //writer.getDirectContent().beginTransaction();
     }
@@ -715,7 +725,15 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     getDocument().setPageSize(pageSize);
     getDocument().setMargins(marginLeft, marginRight, marginTop, marginBottom);
 
-    this.pdfGraphics = writer.getDirectContent().createGraphics(urx, ury, fontSupport);
+    // Bug: Document open expects that the first page is fully configured.
+    //      we have to delay the open operation until we got the first page.
+    if (awaitOpenDocument)
+    {
+      getDocument().open();
+      awaitOpenDocument = false;
+    }
+
+    this.pdfGraphics = new VolatilePdfState(writer.getDirectContent(), ury);
 
     try
     {
@@ -730,7 +748,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       throw new IllegalStateException("Exception while defining defaults.");
     }
 
-    this.currentPageFormat = format.getPageFormat(i);
+    this.currentPageFormat = pageFormat;
   }
 
   /**
@@ -834,6 +852,10 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     final float fontSize = getFont().getFontSize();
 
     final PdfContentByte cb = this.writer.getDirectContent();
+
+    pdfGraphics.setPaint(getPaint(), true);
+    pdfGraphics.setStroke(getStroke());
+
     cb.beginText();
     cb.setFontAndSize(this.baseFont, fontSize);
 
@@ -845,6 +867,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     cb.showTextAligned(PdfContentByte.ALIGN_LEFT,
             text, x1, this.getPageHeight() - y2, 0);
     cb.endText();
+
+    pdfGraphics.setPaint(getPaint(), false);
 
     if (getFont().isUnderline())
     {
@@ -886,7 +910,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     }
 
     this.awtStroke = stroke;
-    pdfGraphics.setStroke(awtStroke);
+//    pdfGraphics.setStroke(awtStroke);
   }
 
   /**
@@ -926,7 +950,6 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     }
 
     this.awtPaint = paint;
-    pdfGraphics.setPaint(awtPaint);
   }
 
   /**
@@ -1098,7 +1121,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       //Log.debug ("Document is null, assuming that the document is closed ...");
       return false;
     }
-    return getDocument().isOpen();
+    return (awaitOpenDocument || getDocument().isOpen());
   }
 
   /**
@@ -1173,7 +1196,11 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     // the graphics object has a width and a height, but no
     // x,y position; so we have to assume (x = 0; y = 0) and
     // make sure that the graphics is large enough to draw everything
-    final Graphics2D g2 = (Graphics2D) pdfGraphics.create();
+    final float urx = (float) currentPageFormat.getWidth();
+    final float ury = (float) currentPageFormat.getHeight();
+    final Graphics2D g2 = writer.getDirectContent().createGraphics(urx, ury, fontSupport);
+    g2.setPaint(getPaint());
+    g2.setStroke(getStroke());
     // make sure, that the operation bounds are met ..
     g2.translate(x, y);
 
@@ -1278,7 +1305,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
             StrictGeomUtility.toExternalValue(elementBounds.getY());
     final PdfContentByte cb = this.writer.getDirectContent();
 
-    Log.debug("Added HREF " + href + " Bounds: " + elementBounds);
+    //Log.debug("Added HREF " + href + " Bounds: " + elementBounds);
     cb.setAction(action, leftX, lowerY, rightX, upperY);
   }
 

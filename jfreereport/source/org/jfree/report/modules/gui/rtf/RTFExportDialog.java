@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.15 2005/03/03 21:50:44 taqua Exp $
+ * $Id: RTFExportDialog.java,v 1.1 2005/03/04 13:17:22 taqua Exp $
  *
  * Changes
  * --------
@@ -438,24 +438,28 @@ public class RTFExportDialog extends AbstractExportDialog
       final String message = MessageFormat.format(getResources().getString
               ("rtf-exportdialog.targetExistsWarning"),
               new Object[]{filename});
-      getStatusBar().setStatus(JStatusBar.TYPE_WARNING,
-              getResources().getString(message));
+      getStatusBar().setStatus(JStatusBar.TYPE_WARNING, message);
     }
     return true;
   }
 
   protected boolean performConfirm ()
   {
-    final String key1 = "rtf-exportdialog.targetOverwriteConfirmation";
-    final String key2 = "rtf-exportdialog.targetOverwriteTitle";
-    if (JOptionPane.showConfirmDialog(this,
-            MessageFormat.format(getResources().getString(key1),
-                    new Object[]{getFilename()}),
-            getResources().getString(key2),
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-            == JOptionPane.NO_OPTION)
+    final String filename = getFilename();
+    final File f = new File(filename);
+    if (f.exists())
     {
-      return false;
+      final String key1 = "rtf-exportdialog.targetOverwriteConfirmation";
+      final String key2 = "rtf-exportdialog.targetOverwriteTitle";
+      if (JOptionPane.showConfirmDialog(this,
+              MessageFormat.format(getResources().getString(key1),
+                      new Object[]{getFilename()}),
+              getResources().getString(key2),
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+              == JOptionPane.NO_OPTION)
+      {
+        return false;
+      }
     }
     return true;
   }

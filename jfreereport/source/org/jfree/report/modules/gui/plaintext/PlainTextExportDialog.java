@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.17 2005/03/03 14:42:34 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.18 2005/03/03 21:50:43 taqua Exp $
  *
  * Changes
  * --------
@@ -1054,16 +1054,21 @@ public class PlainTextExportDialog extends AbstractExportDialog
 
   protected boolean performConfirm ()
   {
-    final String key1 = "plain-text-exportdialog.targetOverwriteConfirmation";
-    final String key2 = "plain-text-exportdialog.targetOverwriteTitle";
-    if (JOptionPane.showConfirmDialog(this,
-            MessageFormat.format(getResources().getString(key1),
-                    new Object[]{getFilename()}),
-            getResources().getString(key2),
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-            == JOptionPane.NO_OPTION)
+    final String filename = getFilename();
+    final File f = new File(filename);
+    if (f.exists())
     {
-      return false;
+      final String key1 = "plain-text-exportdialog.targetOverwriteConfirmation";
+      final String key2 = "plain-text-exportdialog.targetOverwriteTitle";
+      if (JOptionPane.showConfirmDialog(this,
+              MessageFormat.format(getResources().getString(key1),
+                      new Object[]{getFilename()}),
+              getResources().getString(key2),
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+              == JOptionPane.NO_OPTION)
+      {
+        return false;
+      }
     }
     return true;
   }

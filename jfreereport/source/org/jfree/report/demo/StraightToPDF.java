@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.12 2005/02/23 21:04:39 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.13 2005/03/03 22:59:58 taqua Exp $
  *
  * Changes
  * -------
@@ -74,18 +74,15 @@ public class StraightToPDF
   public StraightToPDF (final String filename)
           throws ParseException
   {
-    final URL in = getClass().getResource("/org/jfree/report/demo/OpenSourceDemo.xml");
+//    final URL in = getClass().getResource("/org/jfree/report/demo/OpenSourceDemo.xml");
+    final URL in = getClass().getResource("/org/jfree/report/demo/swing-icons.xml");
     final JFreeReport report = parseReport(in);
-    final TableModel data = new OpenSourceProjects();
+//    final TableModel data = new OpenSourceProjects();
+    final TableModel data = new SwingIconsDemoTableModel();
     report.setData(data);
     final long startTime = System.currentTimeMillis();
-    Log.debug("Start: " + startTime);
-    for (int i = 0; i < 10; i++)
-    {
-      Log.debug("Start: -----------------------------------------------");
-      savePDF(report, filename);
-    }
-    Log.debug("Start: " + (System.currentTimeMillis() - startTime));
+    savePDF(report, filename);
+    Log.debug("Time: " + (System.currentTimeMillis() - startTime));
   }
 
   /**
