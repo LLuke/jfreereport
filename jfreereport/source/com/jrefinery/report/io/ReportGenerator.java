@@ -30,6 +30,7 @@
 package com.jrefinery.report.io;
 
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.util.ReportConfiguration;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -104,7 +105,7 @@ public class ReportGenerator
    */
   public void initFromSystem ()
   {
-    String reportDtd = System.getProperty ("com.jrefinery.report.dtd");
+    String reportDtd = ReportConfiguration.getGlobalConfig().getConfigProperty(ReportConfiguration.PARSER_DTD);
     if (reportDtd == null)
     {
       return;

@@ -165,31 +165,4 @@ public class SystemOutLogTarget implements LogTarget, Serializable
   {
     log (ERROR, message, e);
   }
-
-  /** The default target. */
-  private static SystemOutLogTarget defaultTarget;
-
-  /**
-   * Activates the default target.
-   */
-  public static void activate ()
-  {
-    if (defaultTarget == null)
-    {
-      defaultTarget = new SystemOutLogTarget ();
-      Log.addTarget (defaultTarget);
-    }
-  }
-
-  /**
-   * Deactivates the default target.
-   */
-  public static void deactivate ()
-  {
-    if (defaultTarget != null)
-    {
-      Log.removeTarget (defaultTarget);
-      defaultTarget = null;
-    }
-  }
 }

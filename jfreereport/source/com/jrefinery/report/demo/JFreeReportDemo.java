@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.39 2002/11/05 16:58:27 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.40 2002/11/05 18:56:40 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -635,9 +635,6 @@ public class JFreeReportDemo extends JFrame
       {
         System.out.println("Look and feel problem.");
       }
-
-      PDFOutputTarget.getFontFactory().registerDefaultFontPath();
-
 
       String baseName = "com.jrefinery.report.demo.resources.DemoResources";
       ResourceBundle resources = ResourceBundle.getBundle(baseName);

@@ -31,6 +31,8 @@
  */
 package com.jrefinery.report.util;
 
+import com.jrefinery.report.JFreeReport;
+
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -81,8 +83,8 @@ public class ResultSetTableModelFactory
       throws SQLException
   {
     // Allow for override, some jdbc drivers are buggy :(
-    String key = "com.jrefinery.report.TableFactoryMode";
-    if (System.getProperty(key, "").equalsIgnoreCase("simple"))
+    String prop = ReportConfiguration.getGlobalConfig().getConfigProperty(ReportConfiguration.RESULTSET_FACTORY_MODE, "");
+    if (prop.equalsIgnoreCase("simple"))
     {
       return generateDefaultTableModel(rs);
     }

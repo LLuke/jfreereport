@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.30 2002/11/04 17:07:57 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.31 2002/11/05 18:56:44 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,7 @@ import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.NullOutputStream;
 import com.jrefinery.report.util.StringUtil;
+import com.jrefinery.report.util.ReportConfiguration;
 import com.keypoint.PngEncoder;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocWriter;
@@ -404,8 +405,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
         }
         catch (Exception e)
         {
-          Log.warn("Font " + filename + " is invalid. Message:" + e.toString());
-          e.printStackTrace();
+          Log.warn("Font " + filename + " is invalid. Message:",  e);
         }
       }
     }
@@ -486,9 +486,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   static
   {
-    String prop = System.getProperty("com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT",
-        "false");
-    if (prop.equalsIgnoreCase("true"))
+    if (ReportConfiguration.getGlobalConfig().isPDFTargetAutoInit())
     {
       getFontFactory().registerDefaultFontPath();
     }
@@ -518,8 +516,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public static final String getDefaultFontEncoding()
   {
-    return System.getProperty("com.jrefinery.report.targets.PDFOutputTarget.ENCODING",
-        BaseFont.WINANSI);
+    return ReportConfiguration.getGlobalConfig().getPdfTargetEncoding();
   }
 
   /**
@@ -1278,7 +1275,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public void close()
   {
-    Log.debug ("CLOSE THE DOCUMENT ! ------------------------------------------------------------");
     this.getDocument().close();
   }
 

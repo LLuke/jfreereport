@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.33 2002/11/05 16:58:18 taqua Exp $
+ * $Id: JFreeReport.java,v 1.34 2002/11/05 18:56:24 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -68,6 +68,7 @@ import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportProperties;
+import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
 import com.jrefinery.report.states.FinishState;
@@ -150,11 +151,14 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /** The item band - used once for each row of data. */
   private ItemBand itemBand;
 
+  private ReportConfiguration reportConfiguration;
+
   /**
    * The default constructor. Creates an empty but fully initialized report.
    */
   public JFreeReport ()
   {
+    this.reportConfiguration = new ReportConfiguration(ReportConfiguration.getGlobalConfig());
     this.properties = new ReportProperties ();
     this.groups = new GroupList ();
 
@@ -970,4 +974,8 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     this.expressions = expressions;
   }
 
+  public ReportConfiguration getReportConfiguration()
+  {
+    return reportConfiguration;
+  }
 }

@@ -29,7 +29,9 @@
  */
 package com.jrefinery.report.util;
 
-import java.util.Vector;
+import com.jrefinery.report.JFreeReport;
+
+import java.util.ArrayList;
 
 /**
  * A simple logging facility. Create a class implementing the LogTarget interface to use
@@ -75,7 +77,7 @@ public final class Log
   private static int debuglevel = 100;
 
   /** Storage for the log targets. */
-  private static Vector logTargets = new Vector ();
+  private static ArrayList logTargets = new ArrayList ();
 
   /**
    * Private to prevent creating instances.
@@ -86,9 +88,40 @@ public final class Log
 
   static
   {
-    if (Boolean.getBoolean ("com.jrefinery.report.NoDefaultDebug") == false)
+    if (ReportConfiguration.getGlobalConfig().isDisableLogging() == false)
     {
-      SystemOutLogTarget.activate ();
+      String className = ReportConfiguration.getGlobalConfig().getLogTarget();
+      try
+      {
+        Class c = Class.forName(className);
+        LogTarget lt = (LogTarget) c.newInstance();
+        addTarget(lt);
+      }
+      catch (Exception e)
+      {
+        // unable to handle that case, log it anyway.
+        e.printStackTrace();
+      }
+    }
+    String logLevel = ReportConfiguration.getGlobalConfig().getLogLevel();
+    if (logLevel.equalsIgnoreCase("error"))
+    {
+      debuglevel = ERROR;
+    }
+    else
+    if (logLevel.equalsIgnoreCase("warn"))
+    {
+      debuglevel = WARN;
+    }
+    else
+    if (logLevel.equalsIgnoreCase("info"))
+    {
+      debuglevel = INFO;
+    }
+    else
+    if (logLevel.equalsIgnoreCase("debug"))
+    {
+      debuglevel = DEBUG;
     }
   }
 
@@ -131,7 +164,7 @@ public final class Log
     {
       for (int i = 0; i < logTargets.size (); i++)
       {
-        LogTarget t = (LogTarget) logTargets.elementAt (i);
+        LogTarget t = (LogTarget) logTargets.get (i);
         t.log (level, message);
       }
     }
@@ -158,7 +191,7 @@ public final class Log
     {
       for (int i = 0; i < logTargets.size (); i++)
       {
-        LogTarget t = (LogTarget) logTargets.elementAt (i);
+        LogTarget t = (LogTarget) logTargets.get (i);
         t.log (level, message, e);
       }
     }
@@ -173,7 +206,7 @@ public final class Log
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      LogTarget t = (LogTarget) logTargets.get (i);
       t.debug (message);
     }
   }
@@ -188,7 +221,7 @@ public final class Log
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      LogTarget t = (LogTarget) logTargets.get (i);
       t.debug (message, e);
     }
   }
@@ -202,7 +235,7 @@ public final class Log
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      LogTarget t = (LogTarget) logTargets.get (i);
       t.info (message);
     }
   }
@@ -217,7 +250,7 @@ public final class Log
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      LogTarget t = (LogTarget) logTargets.get (i);
       t.info (message, e);
     }
   }
@@ -231,7 +264,7 @@ public final class Log
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      LogTarget t = (LogTarget) logTargets.get (i);
       t.warn (message);
     }
   }
@@ -246,7 +279,7 @@ public final class Log
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      LogTarget t = (LogTarget) logTargets.get (i);
       t.warn (message, e);
     }
   }
@@ -260,7 +293,7 @@ public final class Log
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      LogTarget t = (LogTarget) logTargets.get (i);
       t.error (message);
     }
   }
@@ -275,7 +308,7 @@ public final class Log
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
-      LogTarget t = (LogTarget) logTargets.elementAt (i);
+      LogTarget t = (LogTarget) logTargets.get (i);
       t.error (message, e);
     }
   }
