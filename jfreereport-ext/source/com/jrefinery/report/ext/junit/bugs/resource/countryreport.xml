@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!--
+<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
+
+-->
+<report name="Country Report" width="468" height="648">
+
+<!-- REPORT HEADER -->
+<reportheader height="90" fontname="SansSerif" fontstyle="bold" fontsize="18">
+<label name="label Title" x="0" y="0" width="100%" height="20" alignment="center">List of Countries</label>
+<label name="label SubTitle" x="0" y="24" width="100%" height="10" fontsize="10" alignment="center">Belmarine Confidential</label>
+<imageref x="10" y="10" width="75" height="13" src="logo.gif" name="logo"/>
+</reportheader>
+
+<!-- REPORT FOOTER -->
+<reportfooter height="24" fontname="SansSerif" fontstyle="bold" fontsize="10">
+<label name="label Footer" x="0" y="0" width="100%" height="20" alignment="center">END OF REPORT</label>
+</reportfooter>
+
+<!-- PAGE HEADER -->
+<pageheader height="18" fontname="Serif" fontstyle="bold" fontsize="9" alignment="left" onfirstpage="false">
+<label name="Label Id" x="0" y="0" width="20" height="9" fontstyle="italic">Id</label>
+<label name="Label Name" x="25" y="0" width="150" height="9" fontstyle="italic">Name</label>
+<label name="Label Rank" x="180" y="0" width="20" height="9" fontstyle="italic" alignment="right">Balance Rank</label>
+<line name="line1" x1="0" y1="12" x2="0" y2="12" weight="0.5"/>
+</pageheader>
+
+<!-- PAGE FOOTER -->
+<pagefooter height="24" onfirstpage="true" onlastpage="true" fontname="Serif" fontstyle="italic" fontsize="8">
+<line name="line2" x1="0" y1="4" x2="0" y2="4" weight="0.5"></line>
+<label name="label copyright" x="0" y="4" width="100" height="18" alignment="left">© Insurance Data S.A.</label>
+<number-function name="pagenum1" function="PageNumber" format="Page 0" x="0" y="4" width="100%" height="18" alignment="center"></number-function>
+<date-function name="date1" function="report_date" format="d-MMM-yyyy" x="0" y="4" width="100%" height="18" alignment="right"></date-function>
+</pagefooter>
+
+<!-- GROUPS -->
+<groups>
+<group name="AccDate Group">
+<groupheader height="18" fontname="Serif" fontstyle="bold" fontsize="9" alignment="left" pagebreak="false">
+<label name="Label Id" x="0" y="0" width="20" height="9" fontstyle="italic">Id</label>
+<label name="Label Name" x="25" y="0" width="150" height="9" fontstyle="italic">Name</label>
+<label name="Label Rank" x="180" y="0" width="20" height="9" fontstyle="italic" alignment="right">Balance Rank</label>
+<line name="line1" x1="0" y1="12" x2="0" y2="12" weight="0.5"/>
+</groupheader>
+<fields>
+<field></field>
+</fields>
+</group>
+</groups>
+
+<!-- ITEMS -->
+<items height="10" fontname="Monospaced" fontstyle="plain" fontsize="8">
+<rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
+<line name="top" x1="0" y1="0" x2="0" y2="0" color="#DFDFDF" weight="0.1"/>
+<line name="bottom" x1="0" y1="10" x2="0" y2="10" color="#DFDFDF" weight="0.1"/>
+<string-field name="Id Element" x="0" y="0" width="20" height="8" alignment="left" fieldname="Country Id" />
+<string-field name="Name Element" x="25" y="0" width="150" height="8" alignment="left" fieldname="Name"/>
+<number-field name="Rank Element" x="180" y="0" width="20" height="8" alignment="right" format="# ###" fieldname="Balance Rank"/>
+</items>
+
+<!-- FUNCTIONS -->
+<functions>
+<function name="PageNumber" class="com.jrefinery.report.function.PageFunction"/>
+<function name="report_date" class="com.jrefinery.report.function.ReportPropertyFunction">
+<properties>
+<property name="reportProperty">report.date</property>
+</properties>
+</function>
+<function name="backgroundTrigger" class="com.jrefinery.report.function.ElementVisibilitySwitchFunction">
+<properties>
+<property name="element">background</property>
+</properties>
+</function>
+</functions>
+</report>
