@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelList.java,v 1.4 2003/08/24 15:13:23 taqua Exp $
+ * $Id: LevelList.java,v 1.5 2003/08/25 14:29:34 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,11 @@
 package org.jfree.report.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 /**
@@ -107,84 +108,6 @@ public class LevelList implements Cloneable
   }
 
   /**
-   * An iterator.
-   */
-  private static class ElementLevelListIterator implements Iterator
-  {
-    /** The list. */
-    private ArrayList list;
-
-    /** The current index. */
-    private int index;
-
-    /**
-     * Creates an iterator for a list.
-     *
-     * @param list  the list.
-     */
-    public ElementLevelListIterator(final ArrayList list)
-    {
-      if (list == null)
-      {
-        throw new NullPointerException();
-      }
-      this.list = list;
-      index = 0;
-    }
-
-    /**
-     * Returns <tt>true</tt> if the iteration has more elements. (In other
-     * words, returns <tt>true</tt> if <tt>next</tt> would return an element
-     * rather than throwing an exception.)
-     *
-     * @return <tt>true</tt> if the iterator has more elements.
-     */
-    public boolean hasNext()
-    {
-      return (index < list.size());
-    }
-
-    /**
-     * Returns the next element in the iteration.
-     *
-     * @return the next element in the iteration.
-     * @exception NoSuchElementException iteration has no more elements.
-     */
-    public Object next()
-    {
-      if (index >= list.size())
-      {
-        throw new NoSuchElementException();
-      }
-
-      final Object o = list.get(index);
-      index++;
-      return o;
-    }
-
-    /**
-     *
-     * Removes from the underlying collection the last element returned by the
-     * iterator (optional operation).  This method can be called only once per
-     * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
-     * the underlying collection is modified while the iteration is in
-     * progress in any way other than by calling this method.
-     *
-     * @exception UnsupportedOperationException if the <tt>remove</tt>
-     *            operation is not supported by this Iterator.
-
-     * @exception IllegalStateException if the <tt>next</tt> method has not
-     *            yet been called, or the <tt>remove</tt> method has already
-     *            been called after the last call to the <tt>next</tt> method.
-     */
-    public void remove()
-    {
-      throw new UnsupportedOperationException();
-    }
-
-  }
-
-  /**
    * An list that caches all elements for a certain level.
    */
   private static final class ElementLevelList
@@ -209,7 +132,7 @@ public class LevelList implements Cloneable
       final Object[] rawElements = list.getRawElements();
       final Integer[] rawLevels = list.getRawLevels();
 
-      this.datalist = new ArrayList(rawElements.length);
+      datalist = new ArrayList(rawElements.length);
       for (int i = 0; i < rawElements.length; i++)
       {
         final Object iNext = rawElements[i];
@@ -222,13 +145,28 @@ public class LevelList implements Cloneable
     }
 
     /**
-     * Creates an iterator for the elements in the list.
+     * Returns the data for this level as object array.
      *
-     * @return An iterator.
+     * @return the data for this level as object array.
      */
-    protected Iterator createIterator()
+    protected Object[] getData ()
     {
-      return new ElementLevelListIterator(datalist);
+      return datalist.toArray();
+    }
+
+    /**
+     * Returns the data for this level as object array.
+     *
+     * @return the data for this level as object array.
+     */
+    protected Object[] getData (Object[] target)
+    {
+      return datalist.toArray(target);
+    }
+
+    public int size()
+    {
+      return datalist.size();
     }
   }
 
@@ -317,9 +255,9 @@ public class LevelList implements Cloneable
    *
    * @param level  the level.
    *
-   * @return the iterator.
+   * @return the data for the level as object array.
    */
-  public Iterator getElementsForLevel(final int level)
+  public Object[] getElementArrayForLevel(final int level, Object[] target)
   {
     ElementLevelList it = (ElementLevelList) iteratorCache.get(new Integer(level));
     if (it == null)
@@ -327,8 +265,51 @@ public class LevelList implements Cloneable
       it = new ElementLevelList(this, level);
       iteratorCache.put(new Integer(level), it);
     }
-    return it.createIterator();
+    if (target == null)
+    {
+      return it.getData();
+    }
+    else
+    {
+      return it.getData(target);
+    }
   }
+
+  /**
+   * Returns an iterator for all the elements at a given level.
+   *
+   * @param level  the level.
+   *
+   * @return the data for the level as object array.
+   */
+  public Object[] getElementArrayForLevel(final int level)
+  {
+    return getElementArrayForLevel(level, null);
+  }
+
+  public int getElementCountForLevel (final int level)
+  {
+    ElementLevelList it = (ElementLevelList) iteratorCache.get(new Integer(level));
+    if (it == null)
+    {
+      it = new ElementLevelList(this, level);
+      iteratorCache.put(new Integer(level), it);
+    }
+    return it.size();
+  }
+
+  /**
+   * Creates an iterator for the elements in the list at the given level.
+   *
+   * @param level  the level.
+   * @return An iterator.
+   * @deprecated use the array methods for best performance.
+   */
+  protected Iterator getElementsForLevel(final int level)
+  {
+    return Collections.unmodifiableList(Arrays.asList(getElementArrayForLevel(level))).iterator();
+  }
+
 
   /**
    * Returns the element with the given index.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
+ * $Id: ShapeOperationModule.java,v 1.5 2003/09/07 15:27:08 taqua Exp $
  *
  * Changes
  * -------
@@ -97,6 +97,8 @@ public class ShapeOperationModule extends OperationModule
 
     col.addOperation(new PhysicalOperation.SetBoundsOperation
         (computeAlignmentBounds(e, value, bounds)));
+    //col.addOperation(new PhysicalOperation.SetBoundsOperation(bounds));
+    //Log.debug ("Alignment: " + computeAlignmentBounds(e, value, bounds));
     col.addOperation(new PhysicalOperation.SetStrokeOperation(stroke));
     col.addOperation(new PhysicalOperation.SetPaintOperation(paint));
 

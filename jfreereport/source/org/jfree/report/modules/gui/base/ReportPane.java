@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.5 2003/08/24 15:08:18 taqua Exp $
+ * $Id: ReportPane.java,v 1.6 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -871,10 +871,12 @@ public class ReportPane extends JComponent
   }
 
   /**
-   * Free some of the used memory.
+   * Free some of the used memory. It is the duty of the caller to
+   * interrupt a possible pagination process. 
    */
   public void dispose()
   {
+    Log.debug ("Dispose the report pane ...");
     // clean up a little bit
     // this is safe, the report is repaginated if needed
     setPageStateList(null);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.13 2003/09/02 15:05:32 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.14 2003/09/06 18:09:16 taqua Exp $
  *
  * Changes
  * -------
@@ -1650,6 +1650,21 @@ public class PreviewProxyBase extends JComponent
    */
   public void dispose()
   {
+    try
+    {
+      // make sure that the pagination worker does no longer waste our time.
+      // this won't kill the export worker ...
+      paginationWorker.interrupt();
+    }
+    catch (SecurityException se)
+    {
+      // ignore
+    }
+    if (progressDialog.isVisible())
+    {
+      progressDialog.setVisible(false);
+      progressDialog.dispose();
+    }
     // cleanup the report pane, removes some cached resources ...
     reportPane.dispose();
 

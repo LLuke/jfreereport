@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BoundsAlignment.java,v 1.2 2003/07/20 19:31:15 taqua Exp $
+ * $Id: BoundsAlignment.java,v 1.3 2003/08/24 15:03:59 taqua Exp $
  *
  * Changes
  * -------
@@ -60,6 +60,12 @@ public abstract class BoundsAlignment
     if (bounds == null)
     {
       throw new NullPointerException("Bounds are null");
+    }
+    if (bounds.getX() < 0 || bounds.getY() < 0 ||
+        bounds.getWidth() < 0 || bounds.getHeight() < 0)
+    {
+      throw new IllegalArgumentException
+          ("Bounds must not contain negative values.");
     }
     this.referenceBounds = bounds;
   }

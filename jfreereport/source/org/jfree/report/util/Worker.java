@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.5 2003/08/31 19:27:59 taqua Exp $
+ * $Id: Worker.java,v 1.6 2003/09/08 18:11:49 taqua Exp $
  *
  *
  * Changes
@@ -106,6 +106,7 @@ public class Worker extends Thread
   {
     finish = true;
     // we are evil ..
+    Log.debug ("Finished " + getName());
     try
     {
       this.interrupt();

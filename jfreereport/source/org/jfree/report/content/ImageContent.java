@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: ImageContent.java,v 1.3 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------
@@ -107,7 +107,7 @@ public class ImageContent implements Content
    */
   public Rectangle2D getBounds()
   {
-    return bounds;
+    return bounds.getBounds2D();
   }
 
   /**
@@ -119,12 +119,12 @@ public class ImageContent implements Content
    */
   public Content getContentForBounds(final Rectangle2D bounds)
   {
-    if (bounds.intersects(getBounds()) == false)
+    if (bounds.intersects(this.bounds) == false)
     {
       return null;
     }
 
-    final Rectangle2D myBounds = bounds.createIntersection(getBounds());
+    final Rectangle2D myBounds = bounds.createIntersection(this.bounds);
     try
     {
       final ImageReference ref = (ImageReference) reference.clone();

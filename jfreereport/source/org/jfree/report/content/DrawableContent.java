@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableContent.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
+ * $Id: DrawableContent.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -98,10 +98,11 @@ public class DrawableContent implements Content
   public Rectangle2D getBounds()
   {
     final Rectangle2D clippBounds = drawable.getClippingBounds();
-    return new Rectangle2D.Float((float) contentOrigin.getX(),
-        (float) contentOrigin.getY(),
-        (float) clippBounds.getWidth(),
-        (float) clippBounds.getHeight());
+    clippBounds.setRect(contentOrigin.getX(),
+        contentOrigin.getY(),
+        clippBounds.getWidth(),
+        clippBounds.getHeight());
+    return clippBounds;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.5 2003/09/07 15:27:08 taqua Exp $
  *
  * Changes
  * -------
@@ -114,7 +114,7 @@ public class TextOperationModule extends OperationModule
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
     final VerticalBoundsAlignment vba = getVerticalLayout(va, bounds);
     // calculate the horizontal shift ... is applied later
-    vba.calculateShift(cbounds);
+    // vba.calculateShift(cbounds);
 
     final ElementAlignment ha
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
@@ -139,7 +139,7 @@ public class TextOperationModule extends OperationModule
     if (c instanceof TextLine)
     {
       final String value = ((TextLine) c).getContent();
-      final Rectangle2D abounds = vba.applyShift(hba.align(c.getBounds()));
+      final Rectangle2D abounds = vba.align(hba.align(c.getBounds()));
       col.addOperation(new PhysicalOperation.SetBoundsOperation(abounds));
       col.addOperation(new PhysicalOperation.PrintTextOperation(value));
     }

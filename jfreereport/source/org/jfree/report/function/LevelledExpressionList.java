@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.3 2003/08/25 14:29:29 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.4 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Arrays;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.event.LayoutEvent;
@@ -61,27 +62,29 @@ import org.jfree.report.util.LevelList;
 public final class LevelledExpressionList implements ReportListener,
     Cloneable, LayoutListener, PageEventListener
 {
-  /** A list of expressions and associated levels. */
-  private LevelList expressionList;
-
   /** error list stores the errors that occur during the event dispatching. */
   private ArrayList errorList;
 
-  /** The level. */
+  /** The current processing level. */
   private int level;
 
-  /** The levels. */
+  /** The levels (in descending order) */
   private int[] levels;
 
   /** The dataRow for all functions. */
   private DataRow dataRow;
+
+  private Expression[][] levelData;
+  private Expression[] flatData;
+
+  /** The number of functions and expressions in this list. */
+  private int size;
 
   /**
    * DefaultConstructor.
    */
   protected LevelledExpressionList()
   {
-    expressionList = new LevelList();
     errorList = new ArrayList();
     levels = new int[0];
   }
@@ -95,9 +98,7 @@ public final class LevelledExpressionList implements ReportListener,
   public LevelledExpressionList(final ExpressionCollection ec, final ExpressionCollection fc)
   {
     this();
-    initializeExpressions(ec);
-    initializeFunctions(fc);
-    this.levels = buildLevels();
+    initialize(ec, fc);
   }
 
   /**
@@ -107,7 +108,7 @@ public final class LevelledExpressionList implements ReportListener,
    * 
    * @return the function levels.
    */
-  private int[] buildLevels()
+  private int[] buildLevels(LevelList expressionList)
   {
     // copy all levels from the collections to the cache ...
     // we assume, that the collections do not change anymore!
@@ -146,10 +147,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Expression e = (Expression) itLevel.next();
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof Function)
         {
           final Function f = (Function) e;
@@ -199,11 +200,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Object next = itLevel.next();
-        final Expression e = (Expression) next;
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof Function)
         {
           final Function f = (Function) e;
@@ -251,10 +251,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Expression e = (Expression) itLevel.next();
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof Function)
         {
           final Function f = (Function) e;
@@ -300,10 +300,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Expression e = (Expression) itLevel.next();
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof Function)
         {
           if (e instanceof PageEventListener)
@@ -352,10 +352,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Expression e = (Expression) itLevel.next();
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof PageEventListener)
         {
           final PageEventListener f = (PageEventListener) e;
@@ -388,10 +388,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Expression e = (Expression) itLevel.next();
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof Function)
         {
           if (e instanceof PageEventListener)
@@ -443,10 +443,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Expression e = (Expression) itLevel.next();
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof Function)
         {
           final Function f = (Function) e;
@@ -495,10 +495,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Expression e = (Expression) itLevel.next();
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof Function)
         {
           final Function f = (Function) e;
@@ -547,10 +547,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Expression e = (Expression) itLevel.next();
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof Function)
         {
           final Function f = (Function) e;
@@ -599,10 +599,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Expression e = (Expression) itLevel.next();
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof Function)
         {
           final Function f = (Function) e;
@@ -651,10 +651,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Expression e = (Expression) itLevel.next();
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof Function)
         {
           final Function f = (Function) e;
@@ -705,10 +705,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Expression e = (Expression) itLevel.next();
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof LayoutListener && e instanceof Function)
         {
           final LayoutListener f = (LayoutListener) e;
@@ -742,10 +742,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Expression e = (Expression) itLevel.next();
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof Function)
         {
           final Function f = (Function) e;
@@ -809,10 +809,13 @@ public final class LevelledExpressionList implements ReportListener,
   public void updateDataRow(final DataRow dr)
   {
     dataRow = dr;
-    for (int i = 0; i < expressionList.size(); i++)
+    for (int i = 0; i < levelData.length; i++)
     {
-      final Expression f = (Expression) expressionList.get(i);
-      f.setDataRow(dr);
+      for (int j = 0; j < levelData[i].length; j++)
+      {
+        final Expression f = levelData[i][j];
+        f.setDataRow(dr);
+      }
     }
   }
 
@@ -831,9 +834,12 @@ public final class LevelledExpressionList implements ReportListener,
    *
    * @param expressionCollection  the expression collection.
    */
-  private void initializeExpressions(final ExpressionCollection expressionCollection)
+  private void initialize(final ExpressionCollection expressionCollection,
+                          final ExpressionCollection functionCollection)
   {
-    final int size = expressionCollection.size();
+    LevelList expressionList = new LevelList();
+
+    int size = expressionCollection.size();
     for (int i = 0; i < size; i++)
     {
       Expression f = expressionCollection.getExpression(i);
@@ -844,26 +850,44 @@ public final class LevelledExpressionList implements ReportListener,
         expressionList.setLevel(f, f.getDependencyLevel());
       }
     }
+    if (functionCollection != null)
+    {
+      size = functionCollection.size();
+      for (int i = 0; i < size; i++)
+      {
+        // Explicit cast to Function to test all contained elements to be Functions!
+        // this may be just paranoid.
+        // todo next redesign should unify functions and expressions in the
+        // report object.
+        Function f = (Function) functionCollection.getExpression(i);
+        if (f != null)
+        {
+          f = (Function) f.getInstance();
+          expressionList.add(f);
+          expressionList.setLevel(f, f.getDependencyLevel());
+        }
+      }
+    }
+    initializeFromLevelList(expressionList);
   }
 
-  /**
-   * Initialises the functions.
-   *
-   * @param functionCollection  the function collection.
-   */
-  private void initializeFunctions(final ExpressionCollection functionCollection)
+  private void initializeFromLevelList (LevelList expressionList)
   {
-    final int size = functionCollection.size();
-    for (int i = 0; i < size; i++)
+    this.size = 0;
+    this.levels = buildLevels(expressionList);
+    this.levelData = new Expression[levels.length][];
+    this.flatData = new Expression[expressionList.size()];
+
+    for (int i = 0; i < levels.length; i++)
     {
-      // Explicit cast to Function to test all contained elements to be Functions!
-      Function f = (Function) functionCollection.getExpression(i);
-      if (f != null)
-      {
-        f = (Function) f.getInstance();
-        expressionList.add(f);
-        expressionList.setLevel(f, f.getDependencyLevel());
-      }
+      final int currentLevel = levels[i];
+      Expression[] data = (Expression[])
+          expressionList.getElementArrayForLevel(currentLevel,
+          new Expression[expressionList.getElementCountForLevel(currentLevel)]);
+
+      this.levelData[i] = data;
+      System.arraycopy(data, 0, this.flatData, this.size, data.length);
+      this.size += data.length;
     }
   }
 
@@ -874,7 +898,7 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public int size()
   {
-    return expressionList.size();
+    return size;
   }
 
   /**
@@ -893,26 +917,35 @@ public final class LevelledExpressionList implements ReportListener,
   public Object clone() throws CloneNotSupportedException
   {
     final LevelledExpressionList ft = (LevelledExpressionList) super.clone();
-    ft.expressionList = new LevelList(); // dont clone, too expensive ...
-    ft.levels = levels;
+    // ft.levels = levels; // no need to clone them ...
+    // ft.size = size;     // already copied during cloning ...
     ft.dataRow = null;
     ft.errorList = (ArrayList) errorList.clone();
+    ft.levelData = new Expression[levelData.length][];
+    ft.flatData = new Expression[flatData.length];
 
-    final int size = expressionList.size();
-    for (int i = 0; i < size; i++)
+    int flatDataPos = 0;
+    for (int level = 0; level < levelData.length; level++)
     {
-      final Expression ex = (Expression) expressionList.get(i);
-      if (ex instanceof Function)
+      ft.levelData[level] = new Expression[levelData[level].length];
+      for (int i = 0; i < levelData[level].length; i++)
       {
-        final Expression exClone = (Expression) ex.clone();
-        exClone.setDataRow(null);
-        ft.expressionList.add(exClone, expressionList.getLevel(i));
-      }
-      else
-      {
-        final Expression exClone = ex.getInstance();
-        exClone.setDataRow(null);
-        ft.expressionList.add(exClone, expressionList.getLevel(i));
+        final Expression ex = levelData[level][i];
+        if (ex instanceof Function)
+        {
+          final Expression exClone = (Expression) ex.clone();
+          exClone.setDataRow(null);
+          ft.levelData[level][i] = exClone;
+          ft.flatData[flatDataPos] = exClone;
+        }
+        else
+        {
+          final Expression exClone = ex.getInstance();
+          exClone.setDataRow(null);
+          ft.levelData[level][i] = exClone;
+          ft.flatData[flatDataPos] = exClone;
+        }
+        flatDataPos++;
       }
     }
     return ft;
@@ -927,24 +960,26 @@ public final class LevelledExpressionList implements ReportListener,
   public LevelledExpressionList getPreviewInstance()
   {
     final LevelledExpressionList ft = new LevelledExpressionList();
-    ft.expressionList = new LevelList(); // dont clone, too expensive ...
     ft.errorList = new ArrayList();
+    final LevelList expressionList = new LevelList();
 
-    final int size = expressionList.size();
-    for (int i = 0; i < size; i++)
+    for (int level = 0; level < levelData.length; level++)
     {
-      final Expression ex = (Expression) expressionList.get(i);
-      if (ex instanceof Function)
+      for (int i = 0; i < levelData[level].length; i++)
       {
-        // ignore it, functions are state dependent and cannot be used
-        // to compute group changes ...
-      }
-      else
-      {
-        ft.expressionList.add(ex.getInstance(), expressionList.getLevel(i));
+        final Expression ex = levelData[level][i];
+        if (ex instanceof Function)
+        {
+          // ignore it, functions are state dependent and cannot be used
+          // to compute group changes ...
+        }
+        else
+        {
+          expressionList.add(ex.getInstance(), level);
+        }
       }
     }
-    ft.levels = ft.buildLevels();
+    ft.initializeFromLevelList(expressionList);
     return ft;
   }
 
@@ -975,7 +1010,12 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public Iterator getLevelsDescending()
   {
-    return expressionList.getLevelsDescending();
+    Integer[] levelIntegers = new Integer[levels.length];
+    for (int i = 0; i < levels.length; i++)
+    {
+      levelIntegers[i] = new Integer(levels[i]);
+    }
+    return Collections.unmodifiableList(Arrays.asList(levelIntegers)).iterator();
   }
 
   /**
@@ -985,7 +1025,12 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public Iterator getLevelsAscending()
   {
-    return expressionList.getLevelsAscending();
+    Integer[] levelIntegers = new Integer[levels.length];
+    for (int i = 0; i < levels.length; i++)
+    {
+      levelIntegers[levels.length - i - 1] = new Integer(levels[i]);
+    }
+    return Collections.unmodifiableList(Arrays.asList(levelIntegers)).iterator();
   }
 
   /**
@@ -997,7 +1042,7 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public Object getValue(final int index)
   {
-    return ((Expression) expressionList.get(index)).getValue();
+    return flatData[index].getValue();
   }
 
   /**
@@ -1009,7 +1054,7 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public Expression getExpression(final int index)
   {
-    return ((Expression) expressionList.get(index));
+    return flatData[index];
   }
 
   /**
@@ -1066,10 +1111,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Expression e = (Expression) itLevel.next();
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof Function && e instanceof PrepareEventListener)
         {
           final PrepareEventListener f = (PrepareEventListener) e;
@@ -1101,10 +1146,10 @@ public final class LevelledExpressionList implements ReportListener,
       {
         break;
       }
-      final Iterator itLevel = expressionList.getElementsForLevel(level);
-      while (itLevel.hasNext())
+      final Object[] itLevel = levelData[i];
+      for (int l = 0; l < itLevel.length; l++)
       {
-        final Expression e = (Expression) itLevel.next();
+        final Expression e = (Expression) itLevel[l];
         if (e instanceof Function && e instanceof PrepareEventListener
             && e instanceof LayoutListener)
         {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModule.java,v 1.2 2003/08/24 15:03:59 taqua Exp $
+ * $Id: OperationModule.java,v 1.3 2003/09/07 15:27:08 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@ import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Element;
 import org.jfree.report.ElementAlignment;
-import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.content.Content;
+import org.jfree.report.style.ElementStyleSheet;
 
 /**
  * The base class for an operation module. Operation modules can be either
@@ -183,7 +183,7 @@ public abstract class OperationModule
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
     final VerticalBoundsAlignment vba = getVerticalLayout(va, bounds);
     // calculate the horizontal shift ... is applied later
-    vba.calculateShift(cbounds);
+    // vba.calculateShift(cbounds);
 
     final ElementAlignment ha
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
@@ -191,7 +191,7 @@ public abstract class OperationModule
     HorizontalBoundsAlignment hba = getHorizontalLayout(ha, bounds);
 
     // apply the precomputed shift ...
-    final Rectangle2D abounds = vba.applyShift(hba.align(content.getBounds()));
+    final Rectangle2D abounds = vba.align(hba.align(content.getBounds()));
     return abounds;
   }
 }
