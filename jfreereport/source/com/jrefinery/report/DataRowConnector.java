@@ -28,13 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowConnector.java,v 1.8 2002/12/05 16:55:15 mungady Exp $
+ * $Id: DataRowConnector.java,v 1.9 2002/12/06 17:17:13 mungady Exp $
  *
  * Changes
  * -------
  * 27-Jul-2002 : Initial version
+ * 02-Dec-2002 : Updated connection/disconnection to support band composites.
  * 05-Dec-2002 : Updated Javadocs (DG);
- *
+ * 06-Dec-2002 : Added more exceptions when there is no backend connected.
  */
 
 package com.jrefinery.report;
@@ -96,9 +97,11 @@ public class DataRowConnector implements DataRow
    * @param col  the column, function or expression index.
    *
    * @return The column, function or expression value.
+   * @throws IllegalStateException if there is no backend connected
    */
   public Object get (int col)
   {
+    if (dataRow == null) throw new IllegalStateException("Not connected");
     return dataRow.get (col);
   }
 
@@ -108,6 +111,7 @@ public class DataRowConnector implements DataRow
    * @param col  the column, function or expression index.
    *
    * @return The column, function or expression value.
+   * @throws IllegalStateException if there is no backend connected
    */
   public Object get (String col)
   {
@@ -124,9 +128,11 @@ public class DataRowConnector implements DataRow
    * @param col  the column, function or expression index.
    *
    * @return The column, function or expression name.
+   * @throws IllegalStateException if there is no backend connected
    */
   public String getColumnName (int col)
   {
+    if (dataRow == null) throw new IllegalStateException("Not connected");
     return dataRow.getColumnName (col);
   }
 
@@ -138,9 +144,11 @@ public class DataRowConnector implements DataRow
    *
    * @return the column position of the column, expression or function with the given name or
    * -1 if the given name does not exist in this DataRow.
+   * @throws IllegalStateException if there is no backend connected
    */
   public int findColumn (String name)
   {
+    if (dataRow == null) throw new IllegalStateException("Not connected");
     return getDataRowBackend ().findColumn (name);
   }
 
@@ -149,9 +157,11 @@ public class DataRowConnector implements DataRow
    * DataSource columns, all functions and all expressions.
    *
    * @return the number of accessible columns in this datarow
+   * @throws IllegalStateException if there is no backend connected
    */
   public int getColumnCount ()
   {
+    if (dataRow == null) throw new IllegalStateException("Not connected");
     return getDataRowBackend ().getColumnCount ();
   }
 

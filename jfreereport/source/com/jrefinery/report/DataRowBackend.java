@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.22 2002/12/02 18:23:58 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.23 2002/12/05 16:55:15 mungady Exp $
  *
  * Changes
  * -------
@@ -37,15 +37,20 @@
  *               happen on expression evaluation), a IllegalStateException is thrown
  * 02-Sep-2002 : Deadlock detection was no implemented correctly, fixed.
  * 05-Dec-2002 : Updated Javadocs (DG);
- *
+ * 13-Sep-2002 : Ran Checkstyle agains the sources
+ * 15-Oct-2002 : Functions and Expressions are now contained in an LeveledExpressionList
+ * 23-Oct-2002 : Added support for ReportProperty-Queries to the datarow.
+ * 06-Dec-2002 : Added configurable Invalid-Column-Warning
  */
 
 package com.jrefinery.report;
 
 import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.LeveledExpressionList;
+import com.jrefinery.report.function.Function;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportPropertiesList;
+import com.jrefinery.report.util.ReportConfiguration;
 
 import javax.swing.table.TableModel;
 import java.util.Hashtable;
@@ -61,7 +66,11 @@ import java.util.Hashtable;
 public class DataRowBackend implements Cloneable
 {
   /** 
-   * A 'preview' data row backend. 
+   * A 'preview' data row backend. Shows how the next row would look like if there
+   * were no events thrown. This class is used to calculate the differences between
+   * two states. As function columns as ReportEventListeners are dependent on an
+   * valid state, these columns cannot be queried using this class. A query on such
+   * an column will throw an InvalidStateException.
    */
   private static class DataRowPreview extends DataRowBackend
   {
@@ -231,6 +240,9 @@ public class DataRowBackend implements Cloneable
   /** Column locks. */
   private boolean[] columnlocks;
 
+  /** if true, invalid columns get printed to the logs */
+  private boolean warnInvalidColumns;
+
   /**
    * Creates a new DataRowBackend
    */
@@ -238,6 +250,7 @@ public class DataRowBackend implements Cloneable
   {
     columnlocks = new boolean[0];
     colcache = new Hashtable();
+    warnInvalidColumns = ReportConfiguration.getGlobalConfig().isWarnInvalidColumns();
   }
 
   /**
@@ -360,16 +373,22 @@ public class DataRowBackend implements Cloneable
       {
         col -= getTableEndIndex();
 
-        if (isPreviewMode() == false)
+        /** if this is a preview state, forbit the query of functions or be doomed */
+        if (isPreviewMode() && getFunctions().getExpression(col) instanceof Function)
         {
-          returnValue = getFunctions().getValue(col);
+          throw new IllegalStateException("Cannot query a function from a preview state");
         }
+        returnValue = getFunctions().getValue(col);
       }
       else if (col < getPropertiesEndIndex())
       {
         col -= getFunctionEndIndex();
         return getReportProperties().get(col);
       }
+    }
+    catch (IllegalStateException ise)
+    {
+      throw ise;
     }
     catch (Exception e)
     {
@@ -452,7 +471,11 @@ public class DataRowBackend implements Cloneable
         return i;
       }
     }
-    //Log.warn("No Such Column: " + name);
+    if (warnInvalidColumns)
+    {
+      // print an warning for the logs.
+      Log.warn("Invalid column name specified on query: " + name);
+    }
     return -1;
   }
 

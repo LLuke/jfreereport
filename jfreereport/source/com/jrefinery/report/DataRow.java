@@ -28,21 +28,32 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRow.java,v 1.4 2002/11/07 21:45:19 taqua Exp $
+ * $Id: DataRow.java,v 1.5 2002/12/06 17:17:08 mungady Exp $
  *
  * Changes
  * -------
  * 27-Jul-2002 : Initial version
+<<<<<<< DataRow.java
+ * 05-Sep-2002 : Documentation
+ * 13-Sep-2002 : Ran checkstyle and fixed reported issues
+ * 07-Nov-2002 : Included an ID-tag into the header for better bug-tracking.
+ * 06-Dec-2002 : Completed ChangeLog
+=======
  * 05-Dec-2002 : Updated Javadocs (DG);
  *
+>>>>>>> 1.5
  */
 
 package com.jrefinery.report;
 
 /**
- * The datarow is used to access the current row in the <code>TableModel</code> as well as 
- * expressions and functions using a generic interface.
+ * The datarow is used to access the current row in the <code>TableModel</code>,
+ * <code>Expression</code>s and <code>Function</code>s using a generic interface.
+ * The DataRow is able to detect deadlocks and to check function depencies.
  *
+ * @see com.jrefinery.report.function.Expression
+ * @see com.jrefinery.report.function.Function
+ * @see javax.swing.table.TableModel
  * @author Thomas Morgner
  */
 public interface DataRow
@@ -63,8 +74,9 @@ public interface DataRow
    * @param col  the item index.
    *
    * @return the value.
+   * @throws IllegalStateException if the datarow detected a deadlock.
    */
-  public Object get (String col);
+  public Object get (String col) throws IllegalStateException;
 
   /**
    * Returns the name of the column, expression or function.

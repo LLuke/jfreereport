@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.14 2002/12/02 18:23:58 taqua Exp $
+ * $Id: Element.java,v 1.15 2002/12/06 17:17:18 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -48,7 +48,8 @@
  * 04-Jul-2002 : Serializable and Cloneable
  * 05-Sep-2002 : Documentation
  * 06-Dec-2002 : Updated Javadocs (DG);
- *
+ * 06-Dec-2002 : Also updated the docs, declared setPaint(),getPaint deprecated, removed
+ *               setStyleSheet
  */
 
 package com.jrefinery.report;
@@ -58,13 +59,16 @@ import com.jrefinery.report.filter.DataTarget;
 import com.jrefinery.report.filter.EmptyDataSource;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.targets.style.StyleSheet;
 
 import java.awt.Paint;
 import java.io.Serializable;
 
 /**
  * Base class for all report elements (display items that can appear within a report band).
+ * <p>
+ * All elements have a non-null name and have a StyleSheet defined. The stylesheet is
+ * used to store and access all element properties that can be used to layout the
+ * element or affect the elements appeareance in an ReportProcessor.
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -83,43 +87,58 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   /** The stylesheet defines global appearance for elements */
   private ElementStyleSheet style;
 
-  /** Represents left alignment. */
+  /**
+   * ElementStyle constant for horizontal left alignment.
+   * For StyleSheet definition use the ElementAlignment-Objects.
+   */
   public static final int LEFT = 1;
-  
-  /** Represents right alignment. */
+  /**
+   * ElementStyle constant for horizontal right alignment.
+   * For StyleSheet definition use the ElementAlignment-Objects.
+   */
   public static final int RIGHT = 2;
-  
-  /** Represents center (horizontal) alignment. */
+  /**
+   * ElementStyle constant for horizontal center alignment.
+   * For StyleSheet definition use the ElementAlignment-Objects.
+   */
   public static final int CENTER = 3;
 
-  /** Represents top alignment. */
+  /**
+   * ElementStyle constant for vertical top alignment.
+   * For StyleSheet definition use the ElementAlignment-Objects.
+   */
   public static final int TOP = 14;
-  
-  /** Represents middle (vertical) alignment. */
+  /**
+   * ElementStyle constant for vertical middle alignment.
+   * For StyleSheet definition use the ElementAlignment-Objects.
+   */
   public static final int MIDDLE = 15;
-  
-  /** Represents bottom alignment. */
+  /**
+   * ElementStyle constant for vertical bottom alignment.
+   * For StyleSheet definition use the ElementAlignment-Objects.
+   */
   public static final int BOTTOM = 16;
 
   /**
    * Constructs an element.
    * <p>
-   * The element is set to have no paint (the bands paint is used),
-   * the element is visible and has the bounds of (0,0,0,0). The name of the
-   * element is set to an anonymous construct ("anonymous@" + hashCode()) and the
-   * datasource assigned with this element is set to a default source, which always
-   * returns null.
+   * The element inherits the DefaultElementStyleSheet. When the element is added
+   * to the band, the bands default stylesheet is also added to the elements style.
+   * <p>
+   * A datasource is assigned with this element is set to a default source,
+   * which always returns null.
    */
   protected Element()
   {
     setName("anonymousElement@" + hashCode());
     datasource = NULL_DATASOURCE;
-    setStyle(new ElementStyleSheet(getName()));
-    getStyle().addParent(ElementDefaultStyleSheet.getDefaultStyle());
+    style = new ElementStyleSheet(getName());
+    style.addParent(ElementDefaultStyleSheet.getDefaultStyle());
   }
 
   /**
-   * Sets the name for this element.
+   * Defines the name for this element. The name must not be empty,
+   * or a NullPointerException is thrown.
    *
    * @param name  the name of this element (null not permitted)
    */
@@ -140,56 +159,6 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   public String getName()
   {
     return this.name;
-  }
-
-  /**
-   * Returns the paint used to draw this element.
-   *
-   * @return the paint.
-   */
-  public Paint getPaint()
-  {
-    Paint retval = (Paint) getStyle().getStyleProperty(ElementStyleSheet.PAINT);
-    if (retval == null)
-    {
-      throw new IllegalStateException("Element.getPaint(): no Paint defined.");
-    }
-    return retval;
-  }
-
-  /**
-   * Returns the paint for this element.
-   * <p>
-   * If a paint has been explicitly set for the element,
-   * then it is used.  If nothing at all has been
-   * specified, the band's default paint is used.
-   * <p>
-   * If no band is specified, this function may return null.
-   * If a band is defined, the function will never return null.
-   * If neither the band and the element have defined a paint, a
-   * NullPointerException is thrown instead.
-   *
-   * @param band  the band that the element belongs to (used to obtain default settings).
-   *
-   * @return the paint for this element.
-   *
-   * @deprecated StyleSheets cascade by default, this method is no longer needed.
-   */
-  public Paint getPaint(StyleSheet band)
-  {
-    return getPaint();
-  }
-
-  /**
-   * Sets the paint for this element. The paint can be null, in this case the
-   * default paint of the band used to draw this element is used.
-   *
-   * @param p  the paint for this element (null permitted).
-   *
-   */
-  public void setPaint(Paint p)
-  {
-    getStyle().setStyleProperty(ElementStyleSheet.PAINT, p);
   }
 
   /**
@@ -251,8 +220,8 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Defines whether this element will be painted. Regardless of the state of this property,
-   * a band will reserve space for this element.
+   * Defines whether this element should be painted. The detailed implementation is
+   * up to the outputtarget.
    *
    * @return the current visiblity state.
    */
@@ -263,7 +232,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Defines, whether this element will be drawn.
+   * Defines, whether this element should be drawn.
    *
    * @param b the new visibility state
    */
@@ -273,7 +242,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Clones this Element.
+   * Clones this Element, the datasource and the private stylesheet of this element.
    *
    * @return a clone of this element.
    *
@@ -288,9 +257,10 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Returns the style-sheet for this element.
+   * Returns this elements private stylesheet. This sheet can be used to override
+   * the default values set in one of the parent-stylesheets.
    *
-   * @return the style-sheet.
+   * @return the element's stylesheet
    */
   public ElementStyleSheet getStyle()
   {
@@ -298,20 +268,51 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Sets the style-sheet for this element.
+   * Defines the content-type for this element. The content-type is used as a hint
+   * how to process the contents of this element. An element implementation should
+   * restrict itself to the content-type set here, or the reportprocessing may fail
+   * or the element may not be printed.
+   * <p>
+   * An element is not allowed to change its content-type after ther report processing
+   * has started.
+   * <p>
+   * If an content-type is unknown to the output-target, the processor should ignore
+   * the content or clearly document its internal reprocessing. Ignoring is preferred.
    *
-   * @param style  the new style-sheet.
-   */
-  public void setStyle(ElementStyleSheet style)
-  {
-    this.style = style;
-  }
-
-  /**
-   * Returns the element's content type.
-   *
-   * @return the content type.
+   * @return the content-type as string.
    */
   public abstract String getContentType ();
 
+  /// DEPRECATED METHODS //////////////////////////////////////////////////////////////////////////
+
+
+  /**
+   * Returns the paint used to draw this element. There is alway a paint defined
+   * for an element.
+   *
+   * @deprecated don't store and access the paint directly, use the stylesheet.
+   * @return The paint.
+   */
+  public Paint getPaint()
+  {
+    Paint retval = (Paint) getStyle().getStyleProperty(ElementStyleSheet.PAINT);
+    if (retval == null)
+    {
+      // assertation
+      throw new IllegalStateException("Element.getPaint(): no Paint defined.");
+    }
+    return retval;
+  }
+
+  /**
+   * Sets the paint for this element. The paint can be null, in this case the
+   * default paint of the band used to draw this element is used.
+   *
+   * @param p  the paint for this element (null permitted).
+   * @deprecated use a stylesheet to define the paint.
+   */
+  public void setPaint(Paint p)
+  {
+    getStyle().setStyleProperty(ElementStyleSheet.PAINT, p);
+  }
 }
