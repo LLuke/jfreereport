@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupsHandler.java,v 1.9 2003/06/29 16:59:25 taqua Exp $
+ * $Id: GroupsHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -65,8 +65,8 @@ public class GroupsHandler implements ElementDefinitionHandler
   /** The parser. */
   private Parser parser;
 
-  /** The group list. */
-  private GroupList groupList;
+  /** Contains the reference to the new group. Contains null if the group is redefined. */
+  private Group newGroup;
 
   /**
    * Creates a new handler.
@@ -78,7 +78,6 @@ public class GroupsHandler implements ElementDefinitionHandler
   {
     this.parser = parser;
     this.finishTag = finishTag;
-    this.groupList = new GroupList();
   }
 
   /**
@@ -103,14 +102,23 @@ public class GroupsHandler implements ElementDefinitionHandler
   {
     if (tagName.equals(GROUP_TAG))
     {
-      final Group group = new Group();
+      Group group = null;
       final String name = attrs.getValue("name");
       if (name != null)
       {
-        group.setName(name);
+        group = getReport().getGroupByName(name);
+      }
+      if (group == null)
+      {
+        group = new Group();
+        if (name != null)
+        {
+          group.setName(name);
+        }
+        newGroup = group;
+        // the new group must be added after the group fields are defined.
       }
       final GroupHandler handler = new GroupHandler(getParser(), tagName, group);
-      groupList.add(group);
       getParser().pushFactory(handler);
     }
     else
@@ -145,18 +153,31 @@ public class GroupsHandler implements ElementDefinitionHandler
   {
     if (tagName.equals(finishTag))
     {
-      final JFreeReport report = (JFreeReport) getParser().getResult();
-      report.setGroups(groupList);
       getParser().popFactory().endElement(tagName);
     }
     else if (tagName.equals(GROUP_TAG))
     {
-      // ignore ...
+      if (newGroup != null)
+      {
+        getReport().addGroup(newGroup);
+        newGroup = null;
+      }
     }
     else
     {
       throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
           + GROUP_TAG + ", " + finishTag);
     }
+  }
+
+  /**
+   * Returns the report (the result from the parser).
+   *
+   * @return the report.
+   */
+  public JFreeReport getReport ()
+  {
+    final JFreeReport report = (JFreeReport) getParser().getResult();
+    return report;
   }
 }

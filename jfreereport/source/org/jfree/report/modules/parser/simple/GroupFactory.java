@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.18 2003/06/29 16:59:27 taqua Exp $
+ * $Id: GroupFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -163,8 +163,14 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
   protected void startGroup(final Attributes atts)
       throws SAXException
   {
-    final Group group = new Group();
-    group.setName(getNameGenerator().generateName(atts.getValue("name")));
+    String groupName = getNameGenerator().generateName(atts.getValue("name"));
+
+    Group group = getReport().getGroupByName(groupName);
+    if (group == null)
+    {
+      group = new Group();
+      group.setName(groupName);
+    }
     setCurrentGroup(group);
   }
 
@@ -179,27 +185,47 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
       throws SAXException
 
   {
-    // get the height...
-    final float height = ParserUtil.parseFloat(atts.getValue("height"), 0);
-    final boolean pageBreak = ParserUtil.parseBoolean
-        (atts.getValue("pagebreak"),
-            ParserUtil.parseBoolean(atts.getValue("pagebreak-before-print"), false));
-    final boolean pageBreakAfter = ParserUtil.parseBoolean
-        (atts.getValue("pagebreak-after-print"), false);
-    final boolean repeat = ParserUtil.parseBoolean(atts.getValue(REPEAT_HEADER), false);
     // create the group header...
-    final GroupHeader groupHeader = new GroupHeader();
-    groupHeader.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-        new FloatDimension(0, height));
-    groupHeader.getStyle().setBooleanStyleProperty
-        (BandStyleSheet.PAGEBREAK_BEFORE, pageBreak);
-    groupHeader.getStyle().setBooleanStyleProperty
-        (BandStyleSheet.PAGEBREAK_AFTER, pageBreakAfter);
-    groupHeader.getStyle().setBooleanStyleProperty
-        (BandStyleSheet.REPEAT_HEADER, repeat);
+    final GroupHeader groupHeader = currentGroup.getHeader();
+
+    // get the height...
+    String heightAttr = atts.getValue("height");
+    if (heightAttr != null)
+    {
+      final float height = ParserUtil.parseFloat(heightAttr, 0);
+      groupHeader.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
+          new FloatDimension(0, height));
+    }
+
+    String pagebreakBeforeAttr = atts.getValue("pagebreak");
+    if (pagebreakBeforeAttr == null)
+    {
+      pagebreakBeforeAttr = atts.getValue("pagebreak-before-print");
+    }
+    if (pagebreakBeforeAttr != null)
+    {
+      final boolean pageBreak = ParserUtil.parseBoolean (pagebreakBeforeAttr, false);
+      groupHeader.getStyle().setBooleanStyleProperty
+          (BandStyleSheet.PAGEBREAK_BEFORE, pageBreak);
+    }
+
+    String pagebreakAfterAttr = atts.getValue("pagebreak-after-print");
+    if (pagebreakAfterAttr != null)
+    {
+      final boolean pageBreakAfter = ParserUtil.parseBoolean(pagebreakAfterAttr, false);
+      groupHeader.getStyle().setBooleanStyleProperty
+          (BandStyleSheet.PAGEBREAK_AFTER, pageBreakAfter);
+    }
+
+    String repeatAttr = atts.getValue(REPEAT_HEADER);
+    if (repeatAttr != null)
+    {
+      final boolean repeat = ParserUtil.parseBoolean(repeatAttr, false);
+      groupHeader.getStyle().setBooleanStyleProperty
+          (BandStyleSheet.REPEAT_HEADER, repeat);
+    }
 
     final FontFactory.FontInformation fi = fontFactory.createFont(atts);
-    FontFactory.applyFontInformation(groupHeader.getStyle(), fi);
     FontFactory.applyFontInformation(groupHeader.getBandDefaults(), fi);
 
     final String valign = atts.getValue(VALIGNMENT_ATT);
@@ -215,7 +241,6 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
-    currentGroup.setHeader(groupHeader);
     getParser().pushFactory(new ElementFactory(getParser(), GROUP_HEADER_TAG, groupHeader));
   }
 
@@ -228,26 +253,40 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    */
   protected void startGroupFooter(final Attributes atts) throws SAXException
   {
-    final boolean pageBreak = ParserUtil.parseBoolean(atts.getValue("pagebreak"),
-        ParserUtil.parseBoolean(atts.getValue("pagebreak-before-print"), false));
-    final boolean pageBreakAfter = ParserUtil.parseBoolean
-        (atts.getValue("pagebreak-after-print"), false);
+    final GroupFooter groupFooter = currentGroup.getFooter();
 
     // get the height...
-    final float height = ParserUtil.parseFloat(atts.getValue("height"), 0);
+    String heightAttr = atts.getValue("height");
+    if (heightAttr != null)
+    {
+      final float height = ParserUtil.parseFloat(heightAttr, 0);
+      groupFooter.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
+          new FloatDimension(0, height));
+    }
 
-    // get the default font...
+    String pagebreakBeforeAttr = atts.getValue("pagebreak");
+    if (pagebreakBeforeAttr == null)
+    {
+      pagebreakBeforeAttr = atts.getValue("pagebreak-before-print");
+    }
+    if (pagebreakBeforeAttr != null)
+    {
+      final boolean pageBreak = ParserUtil.parseBoolean (pagebreakBeforeAttr, false);
+      groupFooter.getStyle().setBooleanStyleProperty
+          (BandStyleSheet.PAGEBREAK_BEFORE, pageBreak);
+    }
+
+    String pagebreakAfterAttr = atts.getValue("pagebreak-after-print");
+    if (pagebreakAfterAttr != null)
+    {
+      final boolean pageBreakAfter = ParserUtil.parseBoolean(pagebreakAfterAttr, false);
+      groupFooter.getStyle().setBooleanStyleProperty
+          (BandStyleSheet.PAGEBREAK_AFTER, pageBreakAfter);
+    }
+
     // create the group footer...
-    final GroupFooter groupFooter = new GroupFooter();
-    groupFooter.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-        new FloatDimension(0, height));
-    groupFooter.getStyle().setBooleanStyleProperty
-        (BandStyleSheet.PAGEBREAK_BEFORE, pageBreak);
-    groupFooter.getStyle().setBooleanStyleProperty
-        (BandStyleSheet.PAGEBREAK_AFTER, pageBreakAfter);
 
     final FontFactory.FontInformation fi = fontFactory.createFont(atts);
-    FontFactory.applyFontInformation(groupFooter.getStyle(), fi);
     FontFactory.applyFontInformation(groupFooter.getBandDefaults(), fi);
 
     final String valign = atts.getValue(VALIGNMENT_ATT);
@@ -262,8 +301,6 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
       groupFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
-
-    currentGroup.setFooter(groupFooter);
     getParser().pushFactory(new ElementFactory(getParser(), GROUP_FOOTER_TAG, groupFooter));
   }
 

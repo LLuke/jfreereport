@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigWriter.java,v 1.10 2003/06/29 16:59:27 taqua Exp $
+ * $Id: ParserConfigWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
  * 21-Feb-2003 : Added standard header and Javadocs (DG);
- *
+ * 12-Jul-2003 : Internal collectors should not be declared as parser factories.
  */
 package org.jfree.report.modules.parser.ext.writer;
 
@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
+import java.util.ArrayList;
 
 import org.jfree.report.modules.parser.ext.ExtReportHandler;
 import org.jfree.report.modules.parser.ext.ParserConfigHandler;
@@ -77,19 +78,51 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
     writer.write(getLineSeparator());
 
     writeFactory(writer, ParserConfigHandler.OBJECT_FACTORY_TAG,
-        getReportWriter().getClassFactoryCollector().getFactories());
+        filterFactories(getReportWriter().getClassFactoryCollector().getFactories()));
     writeFactory(writer, ParserConfigHandler.ELEMENT_FACTORY_TAG,
-        getReportWriter().getElementFactoryCollector().getFactories());
+        filterFactories(getReportWriter().getElementFactoryCollector().getFactories()));
     writeFactory(writer, ParserConfigHandler.STYLEKEY_FACTORY_TAG,
-        getReportWriter().getStyleKeyFactoryCollector().getFactories());
+        filterFactories(getReportWriter().getStyleKeyFactoryCollector().getFactories()));
     writeFactory(writer, ParserConfigHandler.TEMPLATE_FACTORY_TAG,
-        getReportWriter().getTemplateCollector().getFactories());
+        filterFactories(getReportWriter().getTemplateCollector().getFactories()));
     writeFactory(writer, ParserConfigHandler.DATASOURCE_FACTORY_TAG,
-        getReportWriter().getDataSourceCollector().getFactories());
+        filterFactories(getReportWriter().getDataSourceCollector().getFactories()));
     // datadefinition not yet implemented ...
 
     writeCloseTag(writer, ExtReportHandler.PARSER_CONFIG_TAG);
     writer.write(getLineSeparator());
+  }
+
+  private Iterator filterFactories (final Iterator it)
+  {
+    ReportWriter writer = getReportWriter();
+    ArrayList factories = new ArrayList();
+    while (it.hasNext())
+    {
+      Object o = it.next();
+      if (o.equals(writer.getClassFactoryCollector()))
+      {
+        continue;
+      }
+      if (o.equals(writer.getDataSourceCollector()))
+      {
+        continue;
+      }
+      if (o.equals(writer.getElementFactoryCollector()))
+      {
+        continue;
+      }
+      if (o.equals(writer.getStyleKeyFactoryCollector()))
+      {
+        continue;
+      }
+      if (o.equals(writer.getTemplateCollector()))
+      {
+        continue;
+      }
+      factories.add(o);
+    }
+    return factories.iterator();
   }
 
   /**

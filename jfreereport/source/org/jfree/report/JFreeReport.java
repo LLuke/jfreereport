@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.1 2003/07/07 22:43:59 taqua Exp $
+ * $Id: JFreeReport.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -596,6 +596,19 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     }
 
     return groups.get(count);
+  }
+
+  /**
+   * Searches a group by its defined name. This method returns null, if the
+   * group was not found.
+   *
+   * @param name the name of the group.
+   * @return the group or null if not found.
+   * @see GroupList#getGroupByName
+   */
+  public Group getGroupByName (final String name)
+  {
+    return groups.getGroupByName(name);
   }
 
   /**

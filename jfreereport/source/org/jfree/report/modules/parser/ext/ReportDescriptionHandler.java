@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionHandler.java,v 1.12 2003/06/29 16:59:25 taqua Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -39,12 +39,7 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.Band;
-import org.jfree.report.ItemBand;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.PageFooter;
-import org.jfree.report.PageHeader;
-import org.jfree.report.ReportFooter;
-import org.jfree.report.ReportHeader;
 import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
@@ -119,7 +114,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
   {
     if (tagName.equals(REPORT_HEADER_TAG))
     {
-      final Band band = new ReportHeader();
+      final Band band = getReport().getReportHeader();
       final String name = attrs.getValue("name");
       if (name != null)
       {
@@ -130,7 +125,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(REPORT_FOOTER_TAG))
     {
-      final Band band = new ReportFooter();
+      final Band band = getReport().getReportFooter();
       final String name = attrs.getValue("name");
       if (name != null)
       {
@@ -141,7 +136,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(PAGE_HEADER_TAG))
     {
-      final Band band = new PageHeader();
+      final Band band = getReport().getPageHeader();
       final String name = attrs.getValue("name");
       if (name != null)
       {
@@ -152,7 +147,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(PAGE_FOOTER_TAG))
     {
-      final Band band = new PageFooter();
+      final Band band = getReport().getPageFooter();
       final String name = attrs.getValue("name");
       if (name != null)
       {
@@ -163,7 +158,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(ITEMBAND_TAG))
     {
-      final Band band = new ItemBand();
+      final Band band = getReport().getItemBand();
       final String name = attrs.getValue("name");
       if (name != null)
       {
@@ -225,23 +220,18 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
   {
     if (tagName.equals(REPORT_HEADER_TAG))
     {
-      getReport().setReportHeader((ReportHeader) bandFactory.getElement());
     }
     else if (tagName.equals(REPORT_FOOTER_TAG))
     {
-      getReport().setReportFooter((ReportFooter) bandFactory.getElement());
     }
     else if (tagName.equals(PAGE_HEADER_TAG))
     {
-      getReport().setPageHeader((PageHeader) bandFactory.getElement());
     }
     else if (tagName.equals(PAGE_FOOTER_TAG))
     {
-      getReport().setPageFooter((PageFooter) bandFactory.getElement());
     }
     else if (tagName.equals(ITEMBAND_TAG))
     {
-      getReport().setItemBand((ItemBand) bandFactory.getElement());
     }
     else if (tagName.equals(GROUPS_TAG))
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.19 2003/06/29 16:59:25 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,10 @@
 
 package org.jfree.report.modules.parser.ext;
 
-import java.util.HashMap;
-
+import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.Parser;
@@ -78,7 +79,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
   private BasicStyleKeyHandler basicFactory;
 
   /** The style collection. */
-  private HashMap styleCollection;
+  private StyleSheetCollection styleCollection;
 
   /**
    * Creates a new handler.
@@ -105,12 +106,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
     this.parser = parser;
     this.finishTag = finishTag;
     this.sheet = styleSheet;
-    styleCollection = (HashMap) getParser().getHelperObject(
-        StylesHandler.STYLES_COLLECTION);
-    if (styleCollection == null)
-    {
-      throw new IllegalStateException("No styles collection found in the configuration");
-    }
+    styleCollection = getReport().getStyleSheetCollection();
   }
 
   /**
@@ -173,7 +169,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
       final String extend = attrs.getValue("name");
       if (extend != null)
       {
-        final ElementStyleSheet exSheet = (ElementStyleSheet) styleCollection.get(extend);
+        final ElementStyleSheet exSheet = styleCollection.getFirst(extend);
         if (exSheet == null)
         {
           throw new ParseException("Invalid parent styleSheet, StyleSheet not defined: " + extend,
@@ -250,5 +246,16 @@ public class StyleSheetHandler implements ElementDefinitionHandler
   public Parser getParser()
   {
     return parser;
+  }
+
+  /**
+   * Returns the report.
+   *
+   * @return The report.
+   */
+  private JFreeReport getReport()
+  {
+    return (JFreeReport) getParser().getHelperObject(
+        InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.15 2003/06/29 16:59:27 taqua Exp $
+ * $Id: BandFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -195,18 +195,27 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
   public void startReportHeader(final Attributes attr)
       throws SAXException
   {
-    final float height = ParserUtil.parseFloat(attr.getValue("height"), 0);
-    final boolean ownPage = ParserUtil.parseBoolean(attr.getValue("ownpage"), false);
-
     // create the report header...
-    final ReportHeader reportHeader = new ReportHeader();
-    reportHeader.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-        new FloatDimension(0, height));
-    reportHeader.getStyle().setBooleanStyleProperty
-        (BandStyleSheet.PAGEBREAK_AFTER, ownPage);
+    final ReportHeader reportHeader = getReport().getReportHeader();
+
+    String height = attr.getValue("height");
+    if (height != null)
+    {
+      final float heightValue = ParserUtil.parseFloat(height, 0);
+      reportHeader.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
+          new FloatDimension(0, heightValue));
+    }
+
+    String ownPageAttr = attr.getValue("ownpage");
+    if (ownPageAttr != null)
+    {
+      final boolean ownPage = ParserUtil.parseBoolean(ownPageAttr, false);
+
+      reportHeader.getStyle().setBooleanStyleProperty
+          (BandStyleSheet.PAGEBREAK_AFTER, ownPage);
+    }
 
     final FontFactory.FontInformation fi = fontFactory.createFont(attr);
-    FontFactory.applyFontInformation(reportHeader.getStyle(), fi);
     FontFactory.applyFontInformation(reportHeader.getBandDefaults(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
@@ -222,7 +231,6 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
-    getReport().setReportHeader(reportHeader);
     getParser().pushFactory(new ElementFactory(getParser(), REPORT_HEADER_TAG, reportHeader));
   }
 
@@ -238,18 +246,28 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
   public void startReportFooter(final Attributes attr)
       throws SAXException
   {
-    // get the height...
-    final float height = ParserUtil.parseFloat(attr.getValue("height"), 0);
-    final boolean ownPage = ParserUtil.parseBoolean(attr.getValue("ownpage"), false);
-
     // create the report footer...
-    final ReportFooter reportFooter = new ReportFooter();
-    reportFooter.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-        new FloatDimension(0, height));
-    reportFooter.getStyle().setBooleanStyleProperty
-        (BandStyleSheet.PAGEBREAK_BEFORE, ownPage);
+    final ReportFooter reportFooter = getReport().getReportFooter();
+
+    // get the height...
+    String height = attr.getValue("height");
+    if (height != null)
+    {
+      final float heightValue = ParserUtil.parseFloat(height, 0);
+      reportFooter.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
+          new FloatDimension(0, heightValue));
+    }
+
+    String ownPageAttr = attr.getValue("ownpage");
+    if (ownPageAttr != null)
+    {
+      final boolean ownPage = ParserUtil.parseBoolean(ownPageAttr, false);
+
+      reportFooter.getStyle().setBooleanStyleProperty
+          (BandStyleSheet.PAGEBREAK_AFTER, ownPage);
+    }
+
     final FontFactory.FontInformation fi = fontFactory.createFont(attr);
-    FontFactory.applyFontInformation(reportFooter.getStyle(), fi);
     FontFactory.applyFontInformation(reportFooter.getBandDefaults(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
@@ -265,7 +283,6 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
-    getReport().setReportFooter(reportFooter);
     getParser().pushFactory(new ElementFactory(getParser(), REPORT_FOOTER_TAG, reportFooter));
   }
 
@@ -281,20 +298,33 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
   public void startPageHeader(final Attributes attr)
       throws SAXException
   {
-    // get the height...
-    final float height = ParserUtil.parseFloat(attr.getValue("height"), 0);
-    final boolean firstPage = ParserUtil.parseBoolean(attr.getValue("onfirstpage"), true);
-    final boolean lastPage = ParserUtil.parseBoolean(attr.getValue("onlastpage"), true);
-
     // create the page header...
-    final PageHeader pageHeader = new PageHeader();
-    pageHeader.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-        new FloatDimension(0, height));
-    pageHeader.setDisplayOnFirstPage(firstPage);
-    pageHeader.setDisplayOnLastPage(lastPage);
+    final PageHeader pageHeader = getReport().getPageHeader();
+
+    // get the height...
+    String heightAttr = attr.getValue("height");
+    if (heightAttr != null)
+    {
+      final float height = ParserUtil.parseFloat(heightAttr, 0);
+      pageHeader.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
+          new FloatDimension(0, height));
+    }
+
+    String firstPageAttr = attr.getValue("onfirstpage");
+    if (firstPageAttr != null)
+    {
+      final boolean firstPage = ParserUtil.parseBoolean(firstPageAttr, true);
+      pageHeader.setDisplayOnFirstPage(firstPage);
+    }
+
+    String lastPageAttr = attr.getValue("onlastpage");
+    if (lastPageAttr != null)
+    {
+      final boolean lastPage = ParserUtil.parseBoolean(lastPageAttr, true);
+      pageHeader.setDisplayOnLastPage(lastPage);
+    }
 
     final FontFactory.FontInformation fi = fontFactory.createFont(attr);
-    FontFactory.applyFontInformation(pageHeader.getStyle(), fi);
     FontFactory.applyFontInformation(pageHeader.getBandDefaults(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
@@ -310,7 +340,6 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
-    getReport().setPageHeader(pageHeader);
     getParser().pushFactory(new ElementFactory(getParser(), PAGE_HEADER_TAG, pageHeader));
   }
 
@@ -326,20 +355,33 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
   public void startPageFooter(final Attributes attr)
       throws SAXException
   {
-    // get the height...
-    final float height = ParserUtil.parseFloat(attr.getValue("height"), 0);
-    final boolean firstPage = ParserUtil.parseBoolean(attr.getValue("onfirstpage"), true);
-    final boolean lastPage = ParserUtil.parseBoolean(attr.getValue("onlastpage"), true);
+    // create the page header...
+    final PageFooter pageFooter = getReport().getPageFooter();
 
-    // create the page footer...
-    final PageFooter pageFooter = new PageFooter();
-    pageFooter.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-        new FloatDimension(0, height));
-    pageFooter.setDisplayOnFirstPage(firstPage);
-    pageFooter.setDisplayOnLastPage(lastPage);
+    // get the height...
+    String heightAttr = attr.getValue("height");
+    if (heightAttr != null)
+    {
+      final float height = ParserUtil.parseFloat(heightAttr, 0);
+      pageFooter.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
+          new FloatDimension(0, height));
+    }
+
+    String firstPageAttr = attr.getValue("onfirstpage");
+    if (firstPageAttr != null)
+    {
+      final boolean firstPage = ParserUtil.parseBoolean(firstPageAttr, true);
+      pageFooter.setDisplayOnFirstPage(firstPage);
+    }
+
+    String lastPageAttr = attr.getValue("onlastpage");
+    if (lastPageAttr != null)
+    {
+      final boolean lastPage = ParserUtil.parseBoolean(lastPageAttr, true);
+      pageFooter.setDisplayOnLastPage(lastPage);
+    }
 
     final FontFactory.FontInformation fi = fontFactory.createFont(attr);
-    FontFactory.applyFontInformation(pageFooter.getStyle(), fi);
     FontFactory.applyFontInformation(pageFooter.getBandDefaults(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
@@ -371,13 +413,18 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
   public void startItems(final Attributes attr)
       throws SAXException
   {
-    // get the height...
-    final float height = ParserUtil.parseFloat(attr.getValue("height"), 0);
-    final ItemBand items = new ItemBand();
-    items.getStyle().setStyleProperty
-        (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
+    final ItemBand items = getReport().getItemBand();
+    String heightAttr = attr.getValue("height");
+    if (heightAttr != null)
+    {
+      // get the height...
+      final float height = ParserUtil.parseFloat(heightAttr, 0);
+
+      items.getStyle().setStyleProperty
+          (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
+    }
+
     final FontFactory.FontInformation fi = fontFactory.createFont(attr);
-    FontFactory.applyFontInformation(items.getStyle(), fi);
     FontFactory.applyFontInformation(items.getBandDefaults(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
@@ -392,8 +439,6 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
       items.getBandDefaults().setStyleProperty
           (ElementStyleSheet.ALIGNMENT, ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
-
-    getReport().setItemBand(items);
     getParser().pushFactory(new ElementFactory(getParser(), ITEMS_TAG, items));
   }
 

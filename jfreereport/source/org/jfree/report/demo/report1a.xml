@@ -23,13 +23,13 @@
 
   <styles>
     <style name="background_rectangle">
-      <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-        <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
-        <basic-object name="height" class="java.lang.Double">-100.0</basic-object>
+      <compound-key name="min-size">
+        <basic-object name="width">-100.0</basic-object>
+        <basic-object name="height">-100.0</basic-object>
       </compound-key>
       <basic-key name="scale">true</basic-key>
       <basic-key name="stroke" class="java.awt.BasicStroke">0.0</basic-key>
-      <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+      <compound-key name="absolute_pos">
         <basic-object name="x">0.0</basic-object>
         <basic-object name="y">0.0</basic-object>
       </compound-key>
@@ -40,9 +40,9 @@
     </style>
 
     <style name="horizontal_line">
-      <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-        <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
-        <basic-object name="height" class="java.lang.Double">0.0</basic-object>
+      <compound-key name="min-size">
+        <basic-object name="width">-100.0</basic-object>
+        <basic-object name="height">0.0</basic-object>
       </compound-key>
       <basic-key name="draw-shape">true</basic-key>
       <basic-key name="fill-shape">false</basic-key>
@@ -80,9 +80,9 @@
      -->
     <report-header>
       <style>
-        <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-          <basic-object name="width" class="java.lang.Double">0.0</basic-object>
-          <basic-object name="height" class="java.lang.Double">50.0</basic-object>
+        <compound-key name="min-size">
+          <basic-object name="width">0.0</basic-object>
+          <basic-object name="height">50.0</basic-object>
         </compound-key>
         <basic-key name="pagebreak-after">false</basic-key>
       </style>
@@ -111,11 +111,11 @@
       <element type="text/plain">
         <style>
           <basic-key name="valignment">top</basic-key>
-          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
-            <basic-object name="height" class="java.lang.Double">20.0</basic-object>
+          <compound-key name="min-size">
+            <basic-object name="width">-100.0</basic-object>
+            <basic-object name="height">20.0</basic-object>
           </compound-key>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+          <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">0.0</basic-object>
           </compound-key>
@@ -141,11 +141,11 @@
       <element type="text/plain">
         <style>
           <basic-key name="valignment">bottom</basic-key>
-          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
-            <basic-object name="height" class="java.lang.Double">30.0</basic-object>
+          <compound-key name="min-size">
+            <basic-object name="width">-100.0</basic-object>
+            <basic-object name="height">30.0</basic-object>
           </compound-key>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+          <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">20.0</basic-object>
           </compound-key>
@@ -159,9 +159,9 @@
 
     <report-footer>
       <style>
-        <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-          <basic-object name="width" class="java.lang.Double">0.0</basic-object>
-          <basic-object name="height" class="java.lang.Double">48.0</basic-object>
+        <compound-key name="min-size">
+          <basic-object name="width">0.0</basic-object>
+          <basic-object name="height">48.0</basic-object>
         </compound-key>
       </style>
       <default-style>
@@ -177,11 +177,11 @@
       <element type="text/plain">
         <style>
           <basic-key name="valignment">bottom</basic-key>
-          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
-            <basic-object name="height" class="java.lang.Double">24.0</basic-object>
+          <compound-key name="min-size">
+            <basic-object name="width">-100.0</basic-object>
+            <basic-object name="height">24.0</basic-object>
           </compound-key>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+          <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">0.0</basic-object>
           </compound-key>
@@ -196,9 +196,9 @@
     <page-header>
       <style>
         <basic-key name="display-on-firstpage">true</basic-key>
-        <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-          <basic-object name="width" class="java.lang.Double">0.0</basic-object>
-          <basic-object name="height" class="java.lang.Double">18.0</basic-object>
+        <compound-key name="min-size">
+          <basic-object name="width">0.0</basic-object>
+          <basic-object name="height">18.0</basic-object>
         </compound-key>
         <basic-key name="display-on-lastpage">true</basic-key>
       </style>
@@ -214,25 +214,18 @@
         <style>
           <extends name="background_rectangle"/>
         </style>
-        <datasource type="StaticDataSource">
-          <compound-object name="value" class="java.awt.geom.Rectangle2D$Float">
-            <basic-object name="x">0.0</basic-object>
-            <basic-object name="y">0.0</basic-object>
-            <basic-object name="width">100.0</basic-object>
-            <basic-object name="height">100.0</basic-object>
-          </compound-object>
-        </datasource>
+        <template references="rectangle"/>
       </element>
 
       <!-- The date field print the current date -->
       <element type="text/plain">
         <style>
           <basic-key name="valignment">bottom</basic-key>
-          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
-            <basic-object name="height" class="java.lang.Double">14.0</basic-object>
+          <compound-key name="min-size">
+            <basic-object name="width">-100.0</basic-object>
+            <basic-object name="height">14.0</basic-object>
           </compound-key>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+          <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">0.0</basic-object>
           </compound-key>
@@ -248,29 +241,22 @@
       <element type="shape/generic">
         <style>
           <extends name="thick_horizontal_line"/>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+          <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">18.0</basic-object>
           </compound-key>
           <basic-key name="paint">#cfcfcf</basic-key>
         </style>
-        <datasource type="StaticDataSource">
-          <compound-object name="value" class="java.awt.geom.Line2D$Float">
-            <basic-object name="x1">0.0</basic-object>
-            <basic-object name="x2">100.0</basic-object>
-            <basic-object name="y1">0.0</basic-object>
-            <basic-object name="y2">0.0</basic-object>
-          </compound-object>
-        </datasource>
+        <template references="horizontal-line"/>
       </element>
     </page-header>
 
     <page-footer>
       <style>
         <basic-key name="display-on-firstpage">true</basic-key>
-        <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-          <basic-object name="width" class="java.lang.Double">0.0</basic-object>
-          <basic-object name="height" class="java.lang.Double">18.0</basic-object>
+        <compound-key name="min-size">
+          <basic-object name="width">0.0</basic-object>
+          <basic-object name="height">18.0</basic-object>
         </compound-key>
         <basic-key name="display-on-lastpage">true</basic-key>
       </style>
@@ -279,14 +265,7 @@
         <style>
           <extends name="background_rectangle"/>
         </style>
-        <datasource type="StaticDataSource">
-          <compound-object name="value" class="java.awt.geom.Rectangle2D$Float">
-            <basic-object name="x">0.0</basic-object>
-            <basic-object name="y">0.0</basic-object>
-            <basic-object name="width">100.0</basic-object>
-            <basic-object name="height">100.0</basic-object>
-          </compound-object>
-        </datasource>
+        <template references="rectangle"/>
       </element>
     </page-footer>
 
@@ -298,9 +277,9 @@
 
         <group-header>
           <style>
-            <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-              <basic-object name="width" class="java.lang.Double">0.0</basic-object>
-              <basic-object name="height" class="java.lang.Double">18.0</basic-object>
+            <compound-key name="min-size">
+              <basic-object name="width">0.0</basic-object>
+              <basic-object name="height">18.0</basic-object>
             </compound-key>
             <basic-key name="pagebreak-before">false</basic-key>
             <basic-key name="repeat-header">false</basic-key>
@@ -319,11 +298,11 @@
 
           <element type="text/plain">
             <style>
-              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-                <basic-object name="width" class="java.lang.Double">100.0</basic-object>
-                <basic-object name="height" class="java.lang.Double">9.0</basic-object>
+              <compound-key name="min-size">
+                <basic-object name="width">100.0</basic-object>
+                <basic-object name="height">9.0</basic-object>
               </compound-key>
-              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+              <compound-key name="absolute_pos">
                 <basic-object name="x">0.0</basic-object>
                 <basic-object name="y">1.0</basic-object>
               </compound-key>
@@ -336,11 +315,11 @@
 
           <element type="text/plain">
             <style>
-              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-                <basic-object name="height" class="java.lang.Double">9.0</basic-object>
-                <basic-object name="width" class="java.lang.Double">250.0</basic-object>
+              <compound-key name="min-size">
+                <basic-object name="height">9.0</basic-object>
+                <basic-object name="width">250.0</basic-object>
               </compound-key>
-              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+              <compound-key name="absolute_pos">
                 <basic-object name="x">100.0</basic-object>
                 <basic-object name="y">1.0</basic-object>
               </compound-key>
@@ -350,31 +329,25 @@
               <basic-object name="field">Continent</basic-object>
             </template>
           </element>
+
           <element type="shape/generic">
             <style>
               <extends name="thin_horizontal_line"/>
-              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+              <compound-key name="absolute_pos">
                 <basic-object name="x">0.0</basic-object>
                 <basic-object name="y">10.0</basic-object>
               </compound-key>
               <basic-key name="paint">black</basic-key>
             </style>
-            <datasource type="StaticDataSource">
-              <compound-object name="value" class="java.awt.geom.Line2D$Float">
-                <basic-object name="x2">100.0</basic-object>
-                <basic-object name="x1">0.0</basic-object>
-                <basic-object name="y2">10.0</basic-object>
-                <basic-object name="y1">10.0</basic-object>
-              </compound-object>
-            </datasource>
+            <template references="horizontal-line"/>
           </element>
         </group-header>
 
         <group-footer>
           <style>
-            <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-              <basic-object name="height" class="java.lang.Double">18.0</basic-object>
-              <basic-object name="width" class="java.lang.Double">0.0</basic-object>
+            <compound-key name="min-size">
+              <basic-object name="height">18.0</basic-object>
+              <basic-object name="width">0.0</basic-object>
             </compound-key>
             <basic-key name="pagebreak-before">false</basic-key>
           </style>
@@ -392,12 +365,12 @@
 
           <element type="text/plain">
             <style>
-              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-                <basic-object name="width" class="java.lang.Double">220.0</basic-object>
-                <basic-object name="height" class="java.lang.Double">12.0</basic-object>
+              <compound-key name="min-size">
+                <basic-object name="width">220.0</basic-object>
+                <basic-object name="height">12.0</basic-object>
               </compound-key>
 
-              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+              <compound-key name="absolute_pos">
                 <basic-object name="x">0.0</basic-object>
                 <basic-object name="y">0.0</basic-object>
               </compound-key>
@@ -410,11 +383,11 @@
 
           <element name="@anonymousc" type="text/plain">
             <style>
-              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-                <basic-object name="width" class="java.lang.Double">116.0</basic-object>
-                <basic-object name="height" class="java.lang.Double">12.0</basic-object>
+              <compound-key name="min-size">
+                <basic-object name="width">116.0</basic-object>
+                <basic-object name="height">12.0</basic-object>
               </compound-key>
-              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+              <compound-key name="absolute_pos">
                 <basic-object name="x">220.0</basic-object>
                 <basic-object name="y">0.0</basic-object>
               </compound-key>
@@ -430,9 +403,9 @@
 
     <itemband>
       <style>
-        <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-          <basic-object name="width" class="java.lang.Double">0.0</basic-object>
-          <basic-object name="height" class="java.lang.Double">10.0</basic-object>
+        <compound-key name="min-size">
+          <basic-object name="width">0.0</basic-object>
+          <basic-object name="height">10.0</basic-object>
         </compound-key>
       </style>
       <default-style>
@@ -450,60 +423,41 @@
           <extends name="background_rectangle"/>
           <basic-key name="paint">#dfdfdf</basic-key>
         </style>
-        <datasource type="StaticDataSource">
-          <compound-object name="value" class="java.awt.geom.Rectangle2D$Float">
-            <basic-object name="x">0.0</basic-object>
-            <basic-object name="y">0.0</basic-object>
-            <basic-object name="width">100.0</basic-object>
-            <basic-object name="height">100.0</basic-object>
-          </compound-object>
-        </datasource>
-      </element>
-      <element type="shape/generic">
-        <style>
-          <extends name="thin_horizontal_line"/>
-          <basic-key name="stroke" class="java.awt.BasicStroke">0.1</basic-key>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
-            <basic-object name="x">0.0</basic-object>
-            <basic-object name="y">0.0</basic-object>
-          </compound-key>
-          <basic-key name="paint">#ff0fff</basic-key>
-        </style>
-        <datasource type="StaticDataSource">
-          <compound-object name="value" class="java.awt.geom.Line2D$Float">
-            <basic-object name="x1">0.0</basic-object>
-            <basic-object name="x2">100.0</basic-object>
-            <basic-object name="y1">0.0</basic-object>
-            <basic-object name="y2">0.0</basic-object>
-          </compound-object>
-        </datasource>
+        <template references="rectangle"/>
       </element>
 
       <element type="shape/generic">
         <style>
           <extends name="thin_horizontal_line"/>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+          <basic-key name="stroke" class="java.awt.BasicStroke">0.1</basic-key>
+          <compound-key name="absolute_pos">
+            <basic-object name="x">0.0</basic-object>
+            <basic-object name="y">0.0</basic-object>
+          </compound-key>
+          <basic-key name="paint">#ff0fff</basic-key>
+        </style>
+        <template references="horizontal-line"/>
+      </element>
+
+      <element type="shape/generic">
+        <style>
+          <extends name="thin_horizontal_line"/>
+          <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">10.0</basic-object>
           </compound-key>
           <basic-key name="paint">#0fdfdf</basic-key>
         </style>
-        <datasource type="StaticDataSource">
-          <compound-object name="value" class="java.awt.geom.Line2D$Float">
-            <basic-object name="x1">0.0</basic-object>
-            <basic-object name="x2">100.0</basic-object>
-            <basic-object name="y1">0.0</basic-object>
-            <basic-object name="y2">0.0</basic-object>
-          </compound-object>
-        </datasource>
+        <template references="horizontal-line"/>
       </element>
+
       <element name="first" type="text/plain">
         <style>
-          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="height" class="java.lang.Double">10.0</basic-object>
-            <basic-object name="width" class="java.lang.Double">-25.0</basic-object>
+          <compound-key name="min-size">
+            <basic-object name="height">10.0</basic-object>
+            <basic-object name="width">-25.0</basic-object>
           </compound-key>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+          <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">0.0</basic-object>
           </compound-key>
@@ -513,13 +467,14 @@
           <basic-object name="field">Country</basic-object>
         </template>
       </element>
+
       <element name="sF" type="text/plain">
         <style>
-          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="height" class="java.lang.Double">10.0</basic-object>
-            <basic-object name="width" class="java.lang.Double">-5.0</basic-object>
+          <compound-key name="min-size">
+            <basic-object name="height">10.0</basic-object>
+            <basic-object name="width">-5.0</basic-object>
           </compound-key>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+          <compound-key name="absolute_pos">
             <basic-object name="x">-25.0</basic-object>
             <basic-object name="y">0.0</basic-object>
           </compound-key>
@@ -529,13 +484,14 @@
           <basic-object name="field">ISO Code</basic-object>
         </template>
       </element>
+
       <element type="text/plain">
         <style>
-          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="height" class="java.lang.Double">10.0</basic-object>
-            <basic-object name="width" class="java.lang.Double">-20.0</basic-object>
+          <compound-key name="min-size">
+            <basic-object name="height">10.0</basic-object>
+            <basic-object name="width">-20.0</basic-object>
           </compound-key>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+          <compound-key name="absolute_pos">
             <basic-object name="x">-30.0</basic-object>
             <basic-object name="y">0.0</basic-object>
           </compound-key>
@@ -545,13 +501,14 @@
           <basic-object name="field">Population</basic-object>
         </template>
       </element>
+
       <element type="text/plain">
         <style>
-          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="height" class="java.lang.Double">10.0</basic-object>
-            <basic-object name="width" class="java.lang.Double">-25.0</basic-object>
+          <compound-key name="min-size">
+            <basic-object name="height">10.0</basic-object>
+            <basic-object name="width">-25.0</basic-object>
           </compound-key>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+          <compound-key name="absolute_pos">
             <basic-object name="x">-50.0</basic-object>
             <basic-object name="y">0.0</basic-object>
           </compound-key>
@@ -562,13 +519,14 @@
           <basic-object name="field">expression</basic-object>
         </template>
       </element>
+
       <element name="numF" type="text/plain">
         <style>
-          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="height" class="java.lang.Double">10.0</basic-object>
-            <basic-object name="width" class="java.lang.Double">-25.0</basic-object>
+          <compound-key name="min-size">
+            <basic-object name="height">10.0</basic-object>
+            <basic-object name="width">-25.0</basic-object>
           </compound-key>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+          <compound-key name="absolute_pos">
             <basic-object name="x">-75.0</basic-object>
             <basic-object name="y">0.0</basic-object>
           </compound-key>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupHandler.java,v 1.10 2003/06/29 16:59:25 taqua Exp $
+ * $Id: GroupHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ import org.jfree.report.Band;
 import org.jfree.report.Group;
 import org.jfree.report.GroupFooter;
 import org.jfree.report.GroupHeader;
+import org.jfree.report.JFreeReport;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
@@ -112,7 +113,7 @@ public class GroupHandler implements ElementDefinitionHandler
   {
     if (tagName.equals(GROUP_HEADER_TAG))
     {
-      final Band band = new GroupHeader();
+      final Band band = group.getHeader();
       final String name = attrs.getValue("name");
       if (name != null)
       {
@@ -123,7 +124,7 @@ public class GroupHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(GROUP_FOOTER_TAG))
     {
-      final Band band = new GroupFooter();
+      final Band band = group.getFooter();
       final String name = attrs.getValue("name");
       if (name != null)
       {

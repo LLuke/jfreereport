@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.15 2003/06/29 16:59:25 taqua Exp $
+ * $Id: StylesHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,10 @@
 
 package org.jfree.report.modules.parser.ext;
 
-import java.util.HashMap;
-
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.style.StyleSheetCollection;
+import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.Parser;
@@ -71,7 +72,7 @@ public class StylesHandler implements ElementDefinitionHandler
   private String finishTag;
 
   /** The style collection. */
-  private HashMap styleCollection;
+  private StyleSheetCollection styleCollection;
 
   /** The style sheet. */
   private ElementStyleSheet styleSheet;
@@ -94,11 +95,7 @@ public class StylesHandler implements ElementDefinitionHandler
     }
     this.parser = parser;
     this.finishTag = finishTag;
-    styleCollection = (HashMap) getParser().getHelperObject(STYLES_COLLECTION);
-    if (styleCollection == null)
-    {
-      throw new IllegalStateException("No styles collection found in the configuration");
-    }
+    styleCollection = getReport().getStyleSheetCollection();
   }
 
   /**
@@ -155,7 +152,7 @@ public class StylesHandler implements ElementDefinitionHandler
   {
     if (tagName.equals(STYLE_TAG))
     {
-      styleCollection.put(styleSheet.getName(), styleSheet);
+      styleCollection.addStyleSheet(styleSheet);
     }
     else if (tagName.equals(finishTag))
     {
@@ -176,5 +173,16 @@ public class StylesHandler implements ElementDefinitionHandler
   public Parser getParser()
   {
     return parser;
+  }
+
+  /**
+   * Returns the report.
+   *
+   * @return The report.
+   */
+  private JFreeReport getReport()
+  {
+    return (JFreeReport) getParser().getHelperObject(
+        InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 }

@@ -4,7 +4,6 @@
          "http://jfreereport.sourceforge.net/extreport.dtd">
 <report-definition name="Business-cards">
   <parser-config>
-    <object-factory class="org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector"/>
     <object-factory class="org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory"/>
     <element-factory class="org.jfree.report.modules.parser.ext.factory.elements.DefaultElementFactory"/>
     <stylekey-factory class="org.jfree.report.modules.parser.ext.factory.stylekey.DefaultStyleKeyFactory"/>
@@ -300,14 +299,7 @@
             </compound-key>
             <!-- <basic-key name="paint">green</basic-key> -->
           </style>
-          <datasource type="StaticDataSource">
-            <compound-object name="value" class="java.awt.geom.Rectangle2D">
-              <basic-object name="x">0</basic-object>
-              <basic-object name="y">0</basic-object>
-              <basic-object name="width">100</basic-object>
-              <basic-object name="height">100</basic-object>
-            </compound-object>
-          </datasource>
+          <template references="rectangle" />
         </element>
 
         <!-- Company name -->
@@ -357,14 +349,7 @@
           <style>
             <extends name="expire-background"/>
           </style>
-          <datasource type="StaticDataSource">
-            <compound-object name="value" class="java.awt.geom.Rectangle2D">
-              <basic-object name="x">0</basic-object>
-              <basic-object name="y">0</basic-object>
-              <basic-object name="width">100</basic-object>
-              <basic-object name="height">100</basic-object>
-            </compound-object>
-          </datasource>
+          <template references="rectangle" />
         </element>
 
         <!--
@@ -599,14 +584,7 @@
             </compound-key>
             <!-- <basic-key name="paint">green</basic-key> -->
           </style>
-          <datasource type="StaticDataSource">
-            <compound-object name="value" class="java.awt.geom.Rectangle2D">
-              <basic-object name="x">0</basic-object>
-              <basic-object name="y">0</basic-object>
-              <basic-object name="width">100</basic-object>
-              <basic-object name="height">100</basic-object>
-            </compound-object>
-          </datasource>
+          <template references="rectangle" />
         </element>
 
         <!-- Company name -->
@@ -656,14 +634,7 @@
           <style>
             <extends name="expire-background"/>
           </style>
-          <datasource type="StaticDataSource">
-            <compound-object name="value" class="java.awt.geom.Rectangle2D">
-              <basic-object name="x">0</basic-object>
-              <basic-object name="y">0</basic-object>
-              <basic-object name="width">100</basic-object>
-              <basic-object name="height">100</basic-object>
-            </compound-object>
-          </datasource>
+          <template references="rectangle" />
         </element>
 
         <!--

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewBaseModule.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: PreviewBaseModule.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,10 +45,13 @@ import javax.swing.UIManager;
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
+import org.jfree.report.util.ReportConfiguration;
 
 public class PreviewBaseModule extends AbstractModule
 {
   private ResourceBundle resources;
+  public static final String SWING_TRANSLATE_KEY =
+      "org.jfree.report.modules.gui.base.SwingDialogTranslation";
 
   public PreviewBaseModule() throws ModuleInitializeException
   {
@@ -96,6 +99,11 @@ public class PreviewBaseModule extends AbstractModule
       putTranslation("FileChooser.updateButtonToolTipText");
       putTranslation("FileChooser.upFolderAccessibleName");
       putTranslation("FileChooser.upFolderToolTipText");
+      putTranslation("OptionPane.yesButtonText");
+      putTranslation("OptionPane.noButtonText");
+      putTranslation("OptionPane.okButtonText");
+      putTranslation("OptionPane.cancelButtonText");
+
     }
   }
 
@@ -108,6 +116,7 @@ public class PreviewBaseModule extends AbstractModule
 
   private boolean isTranslateSwingDialogs()
   {
-    return false;
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        (SWING_TRANSLATE_KEY, "false").equals("true");
   }
 }

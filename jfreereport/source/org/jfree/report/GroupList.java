@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: GroupList.java,v 1.1 2003/07/07 22:43:59 taqua Exp $
+ * $Id: GroupList.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
  *
  * Changes:
  * --------
@@ -406,6 +406,26 @@ public class GroupList implements Cloneable, Serializable
       cache = (Group[]) backend.toArray(new Group[backend.size()]);
     }
     return cache;
-  } 
-  
+  }
+
+  /**
+   * Searches a group by its defined name. This method returns null, if the
+   * group was not found.
+   *
+   * @param name the name of the group.
+   * @return the group or null if not found.
+   */
+  public Group getGroupByName (String name)
+  {
+    Group[] cache = getGroupCache();
+    for (int i = 0; i < cache.length; i++)
+    {
+      if (cache[i].getName().equals(name))
+      {
+        return cache[i];
+      }
+    }
+    return null;
+  }
+
 }
