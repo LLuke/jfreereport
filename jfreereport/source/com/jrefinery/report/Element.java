@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.24 2003/02/23 20:39:10 taqua Exp $
+ * $Id: Element.java,v 1.25 2003/02/26 16:41:42 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -154,7 +154,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     setName("anonymousElement@" + hashCode());
     datasource = NULL_DATASOURCE;
     style = new ElementStyleSheet(getName());
-    style.addParent(ElementDefaultStyleSheet.getDefaultStyle());
+    style.addDefaultParent(ElementDefaultStyleSheet.getDefaultStyle());
   }
 
   /**

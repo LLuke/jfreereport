@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StyleChangeSupport.java,v 1.1 2003/03/18 22:36:13 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@ package com.jrefinery.report.targets.style;
 
 import java.util.ArrayList;
 
-public class StyleChangeSupport
+public class StyleChangeSupport implements Cloneable
 {
   private StyleChangeListener[] listeners_cached;
   private ArrayList listeners;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.24 2003/03/30 16:32:00 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.25 2003/03/30 17:05:13 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,6 @@ import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
@@ -282,7 +281,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     height = (float) Math.min(height, maxSize.getHeight());
     width = (float) Math.min(width, maxSize.getWidth());
 
-    Log.debug ("Dimension after static correction [PREF]: " + width + " -> " + height);
+    //Log.debug ("Dimension after static correction [PREF]: " + width + " -> " + height);
     FloatDimension base = new FloatDimension(width, height);
 
     // calculate relative widths
@@ -394,7 +393,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     height = (float) Math.min(height, maxSize.getHeight());
     width = (float) Math.min(width, maxSize.getWidth());
 
-    Log.debug ("Dimension after static correction [MIN]: " + width + " -> " + height);
+    //Log.debug ("Dimension after static correction [MIN]: " + width + " -> " + height);
     FloatDimension base = new FloatDimension(width, height);
 
     // calculate relative widths
@@ -470,7 +469,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     Dimension2D parentDim = new FloatDimension((float) parentBounds.getWidth(),
                                                (float) parentBounds.getHeight());
 
-    Log.debug ("My LayoutSize: " + b.getName() + " " + parentDim);
+    //Log.debug ("My LayoutSize: " + b.getName() + " " + parentDim);
 
     LayoutSupport layoutSupport = getLayoutSupport();
     for (int i = 0; i < elements.length; i++)
@@ -482,9 +481,9 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
         continue;
       }
       Dimension2D uncorrectedSize = getPreferredSize(e, parentDim);
-      Log.debug ("UBounds: Element: " + e.getName() + " Bounds: " + uncorrectedSize);
+      //Log.debug ("UBounds: Element: " + e.getName() + " Bounds: " + uncorrectedSize);
       Dimension2D size = correctDimension(uncorrectedSize, parentDim);
-      Log.debug ("CBounds: Element: " + e.getName() + " Bounds: " + size);
+      //Log.debug ("CBounds: Element: " + e.getName() + " Bounds: " + size);
 
       Point2D absPos
           = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim);
@@ -496,7 +495,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
           align((float) size.getWidth(), layoutSupport.getHorizontalAlignmentBorder()),
           align((float) size.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
       BandLayoutManagerUtil.setBounds(e, bounds);
-      Log.debug ("Bounds: Element: " + e.getName() + " Bounds: " + bounds);
+      //Log.debug ("Bounds: Element: " + e.getName() + " Bounds: " + bounds);
       if (e instanceof Band)
       {
         Band band = (Band) e;

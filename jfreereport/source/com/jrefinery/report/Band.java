@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.46 2003/03/26 10:48:54 taqua Exp $
+ * $Id: Band.java,v 1.47 2003/03/29 20:16:30 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -125,7 +125,7 @@ public class Band extends Element implements Serializable, Cloneable
    */
   public Band()
   {
-    getStyle().addParent(BandDefaultStyleSheet.getBandDefaultStyle());
+    getStyle().addDefaultParent(BandDefaultStyleSheet.getBandDefaultStyle());
 
     BandLayoutManager layout = new StaticLayoutManager();
     getStyle().setStyleProperty(BandLayoutManager.LAYOUTMANAGER, layout);
@@ -228,7 +228,7 @@ public class Band extends Element implements Serializable, Cloneable
     // add the element, update the childs Parent and the childs stylesheet.
     allElements.add(position, element);
     allElements_cached = null;
-    element.getStyle().addParent(getBandDefaults());
+    element.getStyle().addDefaultParent(getBandDefaults());
     element.setParent(this);
   }
 
@@ -306,7 +306,7 @@ public class Band extends Element implements Serializable, Cloneable
       // this is none of my childs, ignore the request ...
       return;
     }
-    e.getStyle().removeParent(getBandDefaults());
+    e.getStyle().removeDefaultParent(getBandDefaults());
     e.setParent(null);
     allElements.remove(e);
     allElements_cached = null;
@@ -400,8 +400,8 @@ public class Band extends Element implements Serializable, Cloneable
       Element eC = (Element) e.clone();
       b.allElements.add (eC);
       eC.setParent(b);
-      eC.getStyle().removeParent(getBandDefaults());
-      eC.getStyle().addParent(b.getBandDefaults());
+      eC.getStyle().removeDefaultParent(getBandDefaults());
+      eC.getStyle().addDefaultParent(b.getBandDefaults());
     }
 
     return b;

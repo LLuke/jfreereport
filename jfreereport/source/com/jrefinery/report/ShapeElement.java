@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ShapeElement.java,v 1.20 2002/12/10 21:04:20 taqua Exp $
+ * $Id: ShapeElement.java,v 1.21 2003/02/23 20:39:11 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -114,7 +114,7 @@ public class ShapeElement extends Element
    */
   public ShapeElement ()
   {
-    getStyle().addParent(getDefaultStyle());
+    getStyle().addDefaultParent(getDefaultStyle());
   }
 
   /**

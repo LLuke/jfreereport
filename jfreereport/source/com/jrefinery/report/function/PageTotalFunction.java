@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.13 2003/01/30 00:04:52 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.14 2003/03/18 18:28:16 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -40,13 +40,12 @@
 
 package com.jrefinery.report.function;
 
+import java.util.HashMap;
+
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.util.Log;
-
-import java.util.Hashtable;
-import java.util.HashMap;
 
 /**
  * This function will only work as expected in group mode if the named group has pagebreak set to
@@ -132,22 +131,6 @@ public class PageTotalFunction extends PageFunction
   }
 
   /**
-   * Clones the function.
-   * <P>
-   * Be aware, this does not create a deep copy. If you have complex
-   * strucures contained in objects, you have to override this function.
-   *
-   * @return a clone of this function.
-   *
-   * @throws CloneNotSupportedException this should never happen.
-   */
-  public Object clone() throws CloneNotSupportedException
-  {
-    PageTotalFunction ptf = (PageTotalFunction) super.clone();
-    return ptf;
-  }
-
-  /**
    * Receives notification from the report engine that a new page is starting.  Grabs the page
    * number from the report state and stores it.
    * <p>
@@ -179,7 +162,7 @@ public class PageTotalFunction extends PageFunction
             groupPages.get(new Integer(event.getState().getCurrentDisplayItem()));
         if (pageStorage == null)
         {
-          Log.error (groupPages);
+          Log.error ("Current DataItem: " + event.getState().getCurrentDataItem() + " " + groupPages);
           throw new IllegalStateException("No page-storage for the current state: "
                                           + event.getState().getCurrentDataItem());
 
@@ -236,6 +219,7 @@ public class PageTotalFunction extends PageFunction
    */
   public void reportStarted(ReportEvent event)
   {
+    // report started is no longer the first event. PageStarted is called first!
     if (pageStorage == null)
     {
       pageStorage = new PageStorage(getStartPage() - 1);

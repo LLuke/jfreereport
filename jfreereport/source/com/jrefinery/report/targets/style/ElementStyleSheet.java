@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.19 2003/03/18 22:35:26 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.20 2003/03/26 10:49:24 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.FontDefinition;
 
 /**
@@ -151,8 +152,11 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
 
   /** Storage for the parent style sheets (if any). */
   private ArrayList parents;
+  /** Storage for readonly style sheets. */
+  private ArrayList defaultSheets;
 
   private ElementStyleSheet[] parents_cached;
+  private ElementStyleSheet[] default_cached;
 
   private StyleChangeSupport styleChangeSupport;
   private HashMap styleCache;
@@ -172,6 +176,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     this.name = name;
     this.properties = new HashMap();
     this.parents = new ArrayList(5);
+    this.defaultSheets = new ArrayList(5);
     this.styleChangeSupport = new StyleChangeSupport(this);
     this.styleCache = new HashMap();
   }
@@ -187,14 +192,28 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
   }
 
   /**
-   * Adds a parent style-sheet. Parents are queried in reverse order of addition,
-   * so the last added parent is queried first.
+   * Adds a parent style-sheet. This method adds the parent to the beginning of the
+   * list, and guarantees, that this parent is queried first.
    *
    * @param parent  the parent (<code>null</code> not permitted).
    */
-  public void addParent(ElementStyleSheet parent)
+  public synchronized void addParent(ElementStyleSheet parent)
   {
     addParent(0, parent);
+  }
+
+  /**
+   * Adds a parent style-sheet. This method adds the parent to the beginning of the
+   * list, and guarantees, that this parent is queried first.
+   * <p>
+   * The default parents operations are reserved for the system internal stylesheet
+   * operations. If you want to add own stylesheets, use the addParent methods.
+   *
+   * @param parent  the parent (<code>null</code> not permitted).
+   */
+  public synchronized void addDefaultParent(ElementStyleSheet parent)
+  {
+    addDefaultParent(0, parent);
   }
 
   /**
@@ -207,7 +226,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
    * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos &gt;=
    *         numberOfParents)
    */
-  public void addParent (int position, ElementStyleSheet parent)
+  public synchronized void addParent (int position, ElementStyleSheet parent)
   {
     if (parent == null)
     {
@@ -217,6 +236,37 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     {
       parents.add (position, parent);
       parents_cached = null;
+      parent.addListener(this);
+    }
+    else
+    {
+      throw new IllegalArgumentException("Cannot add parent as child.");
+    }
+  }
+
+  /**
+   * Adds a parent style-sheet. Parents on a lower position are queried before any
+   * parent with an higher position in the list.
+   * <p>
+   * The default parents operations are reserved for the system internal stylesheet
+   * operations. If you want to add own stylesheets, use the addParent methods.
+   *
+   * @param position the position where to insert the parent style sheet
+   * @param parent  the parent (<code>null</code> not permitted).
+   *
+   * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos &gt;=
+   *         numberOfParents)
+   */
+  public synchronized void addDefaultParent (int position, ElementStyleSheet parent)
+  {
+    if (parent == null)
+    {
+      throw new NullPointerException("ElementStyleSheet.addParent(...): parent is null.");
+    }
+    if (parent.isSubStyleSheet(this) == false)
+    {
+      defaultSheets.add (position, parent);
+      default_cached = null;
       parent.addListener(this);
     }
     else
@@ -248,6 +298,19 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
         return true;
       }
     }
+    for (int i = 0; i < defaultSheets.size(); i++)
+    {
+      ElementStyleSheet es = (ElementStyleSheet) defaultSheets.get(i);
+      if (es == parent)
+      {
+        return true;
+      }
+
+      if (es.isSubStyleSheet(parent) == true)
+      {
+        return true;
+      }
+    }
     return false;
   }
 
@@ -256,7 +319,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
    *
    * @param parent  the style-sheet to remove (<code>null</code> not permitted).
    */
-  public void removeParent(ElementStyleSheet parent)
+  public synchronized void removeParent(ElementStyleSheet parent)
   {
     if (parent == null)
     {
@@ -265,6 +328,22 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     parents.remove (parent);
     parent.removeListener(this);
     parents_cached = null;
+  }
+
+  /**
+   * Removes a parent style-sheet.
+   *
+   * @param parent  the style-sheet to remove (<code>null</code> not permitted).
+   */
+  public synchronized void removeDefaultParent(ElementStyleSheet parent)
+  {
+    if (parent == null)
+    {
+      throw new NullPointerException("ElementStyleSheet.removeParent(...): parent is null.");
+    }
+    defaultSheets.remove (parent);
+    parent.removeListener(this);
+    default_cached = null;
   }
 
   /**
@@ -277,6 +356,18 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
   public List getParents ()
   {
     return Collections.unmodifiableList(parents);
+  }
+
+  /**
+   * Returns a list of the default style-sheets.
+   * <p>
+   * The list is unmodifiable.
+   *
+   * @return the list.
+   */
+  public List getDefaultParents ()
+  {
+    return Collections.unmodifiableList(defaultSheets);
   }
 
   /**
@@ -307,11 +398,15 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
   {
     Object value = properties.get (key);
     if (value != null)
+    {
       return value;
+    }
 
     value = styleCache.get(key);
     if (value != null)
+    {
       return value;
+    }
 
     if (parents_cached == null)
     {
@@ -322,6 +417,23 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     for (int i = 0; i < parents_cached.length; i++)
     {
       ElementStyleSheet st = parents_cached[i];
+      value = st.getStyleProperty(key, null);
+      if (value != null)
+      {
+        styleCache.put(key, value);
+        return value;
+      }
+    }
+
+    if (default_cached == null)
+    {
+      default_cached = (ElementStyleSheet[])
+          defaultSheets.toArray(new ElementStyleSheet[defaultSheets.size()]);
+    }
+
+    for (int i = 0; i < default_cached.length; i++)
+    {
+      ElementStyleSheet st = default_cached[i];
       value = st.getStyleProperty(key, null);
       if (value != null)
       {
@@ -375,7 +487,10 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
   {
     ElementStyleSheet sc = (ElementStyleSheet) super.clone();
     sc.parents = (ArrayList) parents.clone();
+    sc.defaultSheets = (ArrayList) defaultSheets.clone();
     sc.properties = (HashMap) properties.clone();
+    sc.styleCache = (HashMap) styleCache.clone();
+    sc.styleChangeSupport = new StyleChangeSupport(sc);
     return sc;
   }
 
