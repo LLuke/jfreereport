@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractTableReportServletWorker.java,v 1.5 2003/07/03 16:06:17 taqua Exp $
+ * $Id: AbstractTableReportServletWorker.java,v 1.1 2003/07/08 14:21:48 taqua Exp $
  *
  * Changes
  * -------

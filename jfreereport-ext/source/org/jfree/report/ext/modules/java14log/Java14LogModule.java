@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14LogModule.java,v 1.1 2003/07/11 20:05:37 taqua Exp $
+ * $Id: Java14LogModule.java,v 1.2 2003/08/20 19:24:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -76,6 +76,7 @@ public class Java14LogModule extends AbstractModule
         (Java14LogTarget.class.getName()))
     {
       Log.getJFreeReportLog().addTarget(new Java14LogTarget());
+      Log.getJFreeReportLog().init();
       Log.info ("Java 1.4 log target started ... previous log messages could have been ignored.");
     }
   }

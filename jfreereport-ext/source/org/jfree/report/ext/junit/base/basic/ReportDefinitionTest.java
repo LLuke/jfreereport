@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionTest.java,v 1.4 2003/07/03 16:06:17 taqua Exp $
+ * $Id: ReportDefinitionTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,6 +41,7 @@ package org.jfree.report.ext.junit.base.basic;
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDefinition;
+import org.jfree.report.states.ReportDefinitionImpl;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleKey;
 
@@ -62,7 +63,7 @@ public class ReportDefinitionTest extends TestCase
     report.getReportHeader().getStyle().addParent(es);
     assertEquals(report.getReportHeader().getStyle().getStyleProperty(testKey), "Hello World!");
 
-    final ReportDefinition rd = new ReportDefinition(report);
+    final ReportDefinition rd = new ReportDefinitionImpl(report);
     assertEquals(rd.getReportHeader().getStyle().getStyleProperty(testKey), "Hello World!");
 
     es.setStyleProperty(testKey, "Hello Little Green Man!");

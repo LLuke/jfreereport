@@ -75,7 +75,7 @@
     <property name="servlet-jar" value="servlet.jar"/>
 
     <property name="jfreereport-ext.name" value="jfreereport-ext"/>
-    <property name="jfreereport-ext.version" value="0.8.3e"/>
+    <property name="jfreereport-ext.version" value="0.8.3f"/>
   </target>
 
   <!-- rebuild the base distribution if necessary -->
@@ -112,8 +112,8 @@
     <property name="JCommon-jar" value="jcommon-0.8.4-cvs.jar" />
     <property name="Pixie-jar" value="pixie-0.8.0.jar" />
     <property name="POI-jar" value="jakarta-poi-1.10.0-dev-20030222.jar" />
-    <property name="JFreeReport-jar" value="jfreereport-0.8.3e.jar"/>
-    <property name="JFreeReport-demo-jar" value="jfreereport-0.8.3e-demo.jar"/>
+    <property name="JFreeReport-jar" value="jfreereport-0.8.3f.jar"/>
+    <property name="JFreeReport-demo-jar" value="jfreereport-0.8.3f-demo.jar"/>
 
     <available file="${jfreereport-dir}/${JFreeReport-demo-jar}" property="jfreereport.present"/>
     <available file="${jfreereport-dir}/source/com/jrefinery/report/JFreeReportInfo.java" property="jfreereport.valid"/>

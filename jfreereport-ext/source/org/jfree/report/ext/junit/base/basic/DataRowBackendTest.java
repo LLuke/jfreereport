@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackendTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
+ * $Id: DataRowBackendTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,7 +41,7 @@ package org.jfree.report.ext.junit.base.basic;
 import javax.swing.table.DefaultTableModel;
 
 import junit.framework.TestCase;
-import org.jfree.report.DataRowBackend;
+import org.jfree.report.states.DataRowBackend;
 
 public class DataRowBackendTest extends TestCase
 {

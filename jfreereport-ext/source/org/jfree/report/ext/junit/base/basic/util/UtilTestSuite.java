@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: UtilTestSuite.java,v 1.2 2003/07/03 16:06:19 taqua Exp $
+ * $Id: UtilTestSuite.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes 
  * -------------------------

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackendPreviewTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
+ * $Id: DataRowBackendPreviewTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,8 +41,8 @@ package org.jfree.report.ext.junit.base.basic;
 import javax.swing.table.DefaultTableModel;
 
 import junit.framework.TestCase;
-import org.jfree.report.DataRowBackend;
-import org.jfree.report.DataRowPreview;
+import org.jfree.report.states.DataRowBackend;
+import org.jfree.report.states.DataRowPreview;
 
 public class DataRowBackendPreviewTest extends TestCase
 {
@@ -110,10 +110,12 @@ public class DataRowBackendPreviewTest extends TestCase
     model.setDataVector(data, columns);
     db.setTablemodel(model);
 
+    final DataRowPreview dbv = new DataRowPreview(db);
+
     for (int i = 0; i < data.length; i++)
     {
       db.setCurrentRow(i - 1);
-      final DataRowBackend dbv = db.previewNextRow();
+      dbv.update(db);
       assertEquals(dbv.get(0), data[i][0]);
       assertEquals(dbv.get("Number"), data[i][0]);
       assertEquals(dbv.get(1), data[i][1]);
@@ -121,8 +123,5 @@ public class DataRowBackendPreviewTest extends TestCase
     }
 
     db.setCurrentRow(data.length - 1);
-    // there is no preview for the last row ...
-    final DataRowBackend dbv = db.previewNextRow();
-    assertNull(dbv);
   }
 }

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Java14ConfigModule.java,v 1.1 2003/07/23 16:08:10 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 23.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.ext.modules.java14config;
@@ -44,6 +44,11 @@ import org.jfree.report.util.ReportConfiguration;
 
 public class Java14ConfigModule extends AbstractModule
 {
+  private static final String JAVA14_CONFIG_STORE_CLASS =
+      "org.jfree.report.ext.modules.java14config.Java14ConfigStorage";
+  private static final String JAVA14_CONFIG_STORE_INITIALIZER =
+      "org.jfree.report.ext.modules.java14config.Java14ConfigModuleInitializer";
+
   public Java14ConfigModule() throws ModuleInitializeException
   {
     loadModuleInfo();
@@ -53,9 +58,9 @@ public class Java14ConfigModule extends AbstractModule
   {
     String value = ReportConfiguration.getGlobalConfig().getConfigProperty
         ("org.jfree.report.ConfigStore", "<not defined>");
-    if (value.equals(Java14ConfigStorage.class.getName()))
+    if (value.equals(JAVA14_CONFIG_STORE_CLASS))
     {
-      performExternalInitialize(Java14ConfigModuleInitializer.class.getName());
+      performExternalInitialize(JAVA14_CONFIG_STORE_INITIALIZER);
     }
   }
 }

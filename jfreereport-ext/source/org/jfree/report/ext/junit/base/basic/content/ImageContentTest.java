@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
+ * $Id: ImageContentTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,6 +39,8 @@
 package org.jfree.report.ext.junit.base.basic.content;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 
 import junit.framework.TestCase;
@@ -46,9 +48,11 @@ import org.jfree.report.ImageElement;
 import org.jfree.report.ImageReference;
 import org.jfree.report.content.DefaultContentFactory;
 import org.jfree.report.content.ImageContentFactoryModule;
+import org.jfree.report.content.Content;
 import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.util.ElementLayoutInformation;
+import org.jfree.ui.FloatDimension;
 
 public class ImageContentTest extends TestCase
 {
@@ -88,6 +92,25 @@ public class ImageContentTest extends TestCase
 
     eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 0, 0));
     assertNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+  }
+
+  public void testSizedContent() throws Exception
+  {
+    final ImageElement se = new ImageElement();
+    se.setDataSource(new StaticDataSource
+        (new ImageReference(new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB))));
+
+    final DefaultContentFactory df = new DefaultContentFactory();
+    df.addModule(new ImageContentFactoryModule());
+    assertTrue(df.canHandleContent(se.getContentType()));
+    Point2D absPos = new Point2D.Float(0,0);
+    Dimension2D minSize = new FloatDimension(0,0);
+    Dimension2D prefSize = new FloatDimension(10,10);
+    Dimension2D maxSize = new FloatDimension(100,1000);
+    ElementLayoutInformation eli = new ElementLayoutInformation(absPos, minSize, maxSize, prefSize);
+    Content c = df.createContentForElement(se, eli, new DefaultLayoutSupport());
+    assertEquals(new Rectangle2D.Float(0,0, 10, 10), c.getBounds());
+
   }
 
 }
