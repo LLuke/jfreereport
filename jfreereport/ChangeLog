@@ -3,11 +3,67 @@
 ---------------
 A list of changes in recent versions:
 0.8.3    : (26-May-2003)
-        * DTD updated.
+        * BugFix: The report states where unclean when a pagebreak was issued,
+          causing the printing and several computation functions to fail or to
+          return invalid values.
+
+          The event oder was redefined to resolve that issue. Please read
+          "migration.txt" for details on the new event order.
+
+        * BugFix: URL handling was buggy, the base URL was never set in the
+          templates.
+
+        * BugFix: NewLine characters were not handled correctly in the last
+          version. After the linebreak was done, an undisplayable newline character
+          remained in the text-line instances.
+
+        * BugFix: The repeating group header feature now repeats all marked group
+          headers, and not just the last one.
+
+        * BugFix: Wordbreaking was buggy.
+        
+        * Most of the parser code moved into JCommon. We are using JCommon version
+          0.8.1; all classes of JCommon moved into the package tree under
+          org.jfree.*
+
+        * Upgraded to pixie-0.8.0. All pixie classes moved into the package tree
+          under org.jfree.*
+
+        * DTD bugs fixed.
+
+        * Modified the BuggyFontRenderer messages as these messages seemed to
+          cause confusion.
+
+        * All table output targets (CSV, HTML, Excel, RTF) have now a generic
+          configuration interface; the targets can be configured using the
+          ReportConfiguration.
 
         * Drawable elements are officially supported now. There are no
           drawable implementations yet (except JFreeChart :)), more support
           is included in later versions ...
+
+        * ItemColumnQuotientFunction changed into ItemColumnQuotientExpression.
+
+        * New Translations: Slovenian, Russian, Hungarian and Dutch. Adjusted
+          the mnemonics of some translations to fit the displayed text.
+
+        * The Excel export now uses the extended data cell style capabilities
+          of POI 1.10. Numeric and Date/Time cells are no longer formatted as
+          texts, the cells contain numeric values so that you can use them in
+          formulas. In case this causes trouble, the cell format strings can
+          be redefined or this feature can be completly disabled. Please see
+          migration.txt for details.
+
+        * The licence now has an exception for using function and expression
+          implementations in non-free programms.
+
+        * Due to several iText improvements, the PDF target is now able to use
+          transparent PNG pictures and iText is now able to use all GIF files.
+
+        * The extended XML-Parser and the writer are now able to write and
+          parse generic shapes.
+
+        * The report converter GUI now displays exceptions to the user.
 
 0.8.2    : (12-Apr-2003):
         * Important: There were fixes in the shape handling and the order of the
@@ -175,7 +231,7 @@ A list of changes in recent versions:
 
         * Refactoring: The BandLayout stuff moved into a separate package as these
           classes are used by allmost all output targets.
-          
+
         * Info: The First demo has been renamed to SwingIconsDemo.
 
         * Added a main method in the JFreeReport info, so that everybody is able to
@@ -233,11 +289,11 @@ A list of changes in recent versions:
         * Added support for Underlined and StrikeThrough font style.
 
         * Several new report functions added by Heiko Evermann.
-        
+
         * A PaintComponentFunction can be used to create Images from AWT-Components.
 
         * Added PaintComponentFunction to create images from AWT or Swing components.
-          The generated images can be used in ImageElements. 
+          The generated images can be used in ImageElements.
 
         * Added a new Demo: OpenSourceDemo2.java
 
@@ -299,21 +355,21 @@ A list of changes in recent versions:
           to create a global configuration without having to repack the jfreereport.jar file.
 
         * The FileEncodings are now selectable from the PDF- and HTML dialogs.
-	
+
         * Patrice Rolland contributed a french translation
 
-0.8.0-3 : (07-Jan-2003): 
+0.8.0-3 : (07-Jan-2003):
         * BugFix: Fixed the ReportStateList. Element were added at the wrong position, causing
           NullPointerExceptions. Also fixed the dynamic element, if the element contained too much
           data which would not fit on a single page, the report generation failed. Now the data
           is cut down to the size of a single page. The LGPL-Demo shows the new behaviour.
 
-0.8.0-2 : (19-Dec-2002): 
+0.8.0-2 : (19-Dec-2002):
         * BugFix: fix for a ReportFooter bug in the layoutmanagement. Printing the ReportFooter on
           its own page caused the report generation to fail.
 
-0.8.0-1 : (16-Dec-2002): 
-        * BugFix: fix for a PageHeader bug in the layoutmanagement. The bug 
+0.8.0-1 : (16-Dec-2002):
+        * BugFix: fix for a PageHeader bug in the layoutmanagement. The bug
           caused the pageheader to drive crazy and print strange values in the elements.
 
 0.8.0 : (13-Dec-2002):

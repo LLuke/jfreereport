@@ -2,7 +2,7 @@
 * JFREEREPORT 0.8.3 *
 *********************
 
-?? May 2003
+26 May 2003
 
 1. INTRODUCTION
 ---------------
@@ -178,8 +178,8 @@ A message like this one appears in the logs:
 This is a debug message, so (as with every debug message) it may have
 no meaning at all. But this one has .. :)
 
-DEBUG: This is a buggy version of the font-renderer context: true
-DEBUG: The G2OutputTarget uses Antialiasing.
+  DEBUG: This is a buggy version of the font-renderer context: true
+  DEBUG: The G2OutputTarget uses Antialiasing.
 
 means, that your AWT implementation behaves different when
 fonts are rendered with aliasing enabled than it would do

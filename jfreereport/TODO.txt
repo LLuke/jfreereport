@@ -6,7 +6,6 @@
   - ContentDistribution over multiple physical pages
 * External style definitions for the ext-parser
 * Watermarks for Pages ...
-
 * more BandLayoutManagers for smarter layouting
   - FlowLayout
   - BoxLayout
@@ -15,9 +14,5 @@
   - parse TTF-Files for supported Charsets/Unicode-Ranges
   - automaticly adjust encoding if nessesary
 * Formated Text support for printing (RTF, HTML)
-* Create a report configuration interface for the TableTargets
-* Add Drawable Support
 * Implement JFreeChart adapter and Barcode stuff
 
-* Writer Support for GeneralPath and Shapes
-* BugFix: HugeReport printing speedup and MemoryLeak
