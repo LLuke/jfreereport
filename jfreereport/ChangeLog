@@ -21,6 +21,8 @@ A list of changes in recent versions:
         * BugFix: The export did not show the correct result in the dialogs status
           bar. The synchronisation/locking schema was invalid for all exports. 
 
+        * BugFix: Serialization issues fixed for various functions.
+        
         * The element color function does now work with all bands of an report.
         
         * The TotalItemSumFunction can be used to precompute group results.

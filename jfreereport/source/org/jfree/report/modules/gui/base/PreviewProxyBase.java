@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.21 2003/09/30 19:47:29 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.22 2003/10/08 19:32:27 taqua Exp $
  *
  * Changes
  * -------
@@ -96,6 +96,7 @@ import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.Worker;
 import org.jfree.report.util.ImageUtils;
+import org.jfree.report.util.WorkerPool;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.xml.ParserUtil;
 
@@ -645,7 +646,7 @@ public class PreviewProxyBase extends JComponent
   private Worker paginationWorker;
 
   /** The worker thread which is used to perform the repagination. */
-  private Worker exportWorker;
+  private WorkerPool exportWorkerPool;
 
   /** The 'about' action. */
   private WrapperAction aboutAction;
@@ -748,7 +749,7 @@ public class PreviewProxyBase extends JComponent
   {
     final ExportPluginFactory factory = ExportPluginFactory.getInstance();
     exportPlugIns = factory.createExportPlugIns
-      (proxy, report.getReportConfiguration(), exportWorker);
+      (proxy, report.getReportConfiguration(), exportWorkerPool);
     pluginActions = new HashMap(exportPlugIns.size());
     final Iterator it = exportPlugIns.iterator();
     while (it.hasNext())
@@ -787,9 +788,9 @@ public class PreviewProxyBase extends JComponent
    *
    * @return the worker.
    */
-  protected Worker getExportWorker ()
+  protected WorkerPool getExportWorkerPool ()
   {
-    return exportWorker;
+    return exportWorkerPool;
   }
 
   /**
@@ -812,8 +813,7 @@ public class PreviewProxyBase extends JComponent
   public void init(final JFreeReport report) throws ReportProcessingException
   {
     this.zoomActionConcentrator = new ActionConcentrator();
-    this.exportWorker = new Worker();
-    this.exportWorker.setName("preview-dialog-export-worker: report: " + report.getName());
+    this.exportWorkerPool = new WorkerPool(10, "preview-dialog-export-worker [" + report.getName() + "]");
 
     final boolean largeIconsProperty =
         report.getReportConfiguration().getConfigProperty
@@ -1780,7 +1780,7 @@ public class PreviewProxyBase extends JComponent
   public void close()
   {
     closed = true;
-    exportWorker.finish();
+    exportWorkerPool.finishAll();
     paginationWorker.finish();
     if (progressDialog.isVisible())
     {
@@ -1805,7 +1805,7 @@ public class PreviewProxyBase extends JComponent
       close();
     }
     super.finalize();
-    exportWorker.finish();
+    exportWorkerPool.finishAll();
     paginationWorker.finish();
   }
 

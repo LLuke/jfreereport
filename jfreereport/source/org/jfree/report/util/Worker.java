@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.6 2003/09/08 18:11:49 taqua Exp $
+ * $Id: Worker.java,v 1.7 2003/09/09 02:29:13 taqua Exp $
  *
  *
  * Changes
@@ -37,6 +37,8 @@
  */
 
 package org.jfree.report.util;
+
+
 
 /**
  * A simple worker implementation.
@@ -55,6 +57,8 @@ public class Worker extends Thread
 
   /** the time in milliseconds beween 2 checks for exit or work requests. */
   private final int sleeptime;
+
+  private WorkerPool workerPool;
 
   /**
    * Creates a new worker.
@@ -115,6 +119,10 @@ public class Worker extends Thread
     {
       // ignored 
     }
+    if (workerPool != null)
+    {
+      workerPool.workerFinished(this);
+    }
   }
 
   /**
@@ -147,6 +155,10 @@ public class Worker extends Thread
           Log.error("Worker caught exception on run: ", e);
         }
         workload = null;
+        if (workerPool != null)
+        {
+          workerPool.workerAvailable(this);
+        }
       }
 //      else
 //      {
@@ -233,4 +245,18 @@ public class Worker extends Thread
 //    System.out.flush();
 //  }
 
+  public boolean isFinish()
+  {
+    return finish;
+  }
+
+  public WorkerPool getWorkerPool()
+  {
+    return workerPool;
+  }
+
+  public void setWorkerPool(WorkerPool workerPool)
+  {
+    this.workerPool = workerPool;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.5 2003/09/06 18:09:16 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.6 2003/10/18 19:22:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,7 +38,7 @@
 
 package org.jfree.report.modules.gui.base;
 
-import org.jfree.report.util.Worker;
+import org.jfree.report.util.WorkerPool;
 
 /**
  * The AbstractExportPlugin provides a basic implementation of the ExportPlugin
@@ -55,7 +55,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
   private PreviewProxy proxy;
 
   /** The worker instance from the main dialog. */
-  private Worker worker;
+  private WorkerPool worker;
 
   /**
    * DefaultConstructor.
@@ -224,7 +224,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
    *
    * @param worker the worker.
    */
-  public void defineWorker(final Worker worker)
+  public void defineWorkerPool(final WorkerPool worker)
   {
     this.worker = worker;
   }
@@ -241,20 +241,13 @@ public abstract class AbstractExportPlugin implements ExportPlugin
     {
       synchronized (worker)
       {
-        // more than one request should be already made impossible by the
-        // application, but we want to be sure ...
-        while (worker.isAvailable() == false)
+        // check, whether a worker is available. 
+        if (worker.isWorkerAvailable() == false)
         {
-          try
-          {
-            worker.wait();
-          }
-          catch (InterruptedException ie)
-          {
-            // ignored.
-          }
+          // maybe we want to warn the user, so that he can abort the export?
         }
-        worker.setWorkload(runnable);
+        // this may block, until a worker becomes available...
+        worker.getWorkerForWorkload(runnable);
       }
     }
     else

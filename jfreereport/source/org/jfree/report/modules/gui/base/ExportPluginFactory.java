@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.11 2003/09/02 15:05:32 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.12 2003/09/09 21:31:36 taqua Exp $
  *
  * Changes
  * --------
@@ -42,7 +42,7 @@ import java.util.Arrays;
 
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
-import org.jfree.report.util.Worker;
+import org.jfree.report.util.WorkerPool;
 
 /**
  * An export plug-in factory. This factory is used to collect all available
@@ -289,7 +289,7 @@ public final class ExportPluginFactory
    * @return  The list of export plugins.
    */
   public ArrayList createExportPlugIns
-      (final PreviewProxy proxy, final ReportConfiguration config, final Worker worker)
+      (final PreviewProxy proxy, final ReportConfiguration config, final WorkerPool worker)
   {
     final PluginDefinition[] def = (PluginDefinition[])
         exportPlugins.toArray(new PluginDefinition[exportPlugins.size()]);
@@ -305,7 +305,7 @@ public final class ExportPluginFactory
         final ExportPlugin ep = createPlugIn(proxy, definition.getPluginClass());
         if (ep != null)
         {
-          ep.defineWorker(worker);
+          ep.defineWorkerPool(worker);
           retval.add(ep);
         }
         else
