@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineShapeCreateTest.java,v 1.4 2003/09/09 10:27:58 taqua Exp $
+ * $Id: LineShapeCreateTest.java,v 1.5 2003/11/01 19:57:03 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,6 +51,7 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportHeader;
 import org.jfree.report.ShapeElement;
+import org.jfree.report.SimplePageDefinition;
 import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.layout.BandLayoutManagerUtil;
@@ -65,9 +66,8 @@ public class LineShapeCreateTest extends TestCase
 {
   private class LSDebugOutputTarget extends DebugOutputTarget
   {
-    public LSDebugOutputTarget(final PageFormat format)
+    public LSDebugOutputTarget()
     {
-      super(format);
     }
 
     private int shapeCount;
@@ -104,6 +104,11 @@ public class LineShapeCreateTest extends TestCase
     }
   }
 
+  public LineShapeCreateTest (final String s)
+  {
+    super(s);
+  }
+
   public JFreeReport getReport()
   {
     final JFreeReport report = new JFreeReport();
@@ -122,26 +127,28 @@ public class LineShapeCreateTest extends TestCase
           )
       );
       header.addElement(
-          StaticShapeElementFactory.createLineShapeElement(
+          StaticShapeElementFactory.createShapeElement(
               "tick" + Integer.toString(i),
               c,
               new BasicStroke(0.25f),
-              new Line2D.Float(350 + i * 4, 52, 350 + i * 4, 49)
+              new Line2D.Float(350 + i * 4, 52, 350 + i * 4, 49),
+              true, false
           )
       );
     }
 
     header.addElement(
-        StaticShapeElementFactory.createLineShapeElement(
+        StaticShapeElementFactory.createShapeElement(
             "linea",
             null,
             new BasicStroke(0.25f),
-            new Line2D.Float(390, 52, 710, 52)
+            new Line2D.Float(390, 52, 710, 52),
+            true, false
         )
     );
 
     return report;
-  };
+  }
 
   public void testDoReport() throws Exception
   {
@@ -151,9 +158,8 @@ public class LineShapeCreateTest extends TestCase
     final PageFormat pf = pff.createPageFormat(paper, PageFormat.PORTRAIT);
     assertEquals((int) pf.getHeight(), PageFormatFactory.A0[1]);
     assertEquals((int) pf.getWidth(), PageFormatFactory.A0[0]);
-    report.setDefaultPageFormat(pf);
-    assertEquals(report.getDefaultPageFormat(), pf);
-    final LSDebugOutputTarget lsd = new LSDebugOutputTarget(report.getDefaultPageFormat());
+    report.setPageDefinition(new SimplePageDefinition(pf));
+    final LSDebugOutputTarget lsd = new LSDebugOutputTarget();
     final PageableReportProcessor prp = new PageableReportProcessor(report);
     prp.setOutputTarget(lsd);
     lsd.open();
@@ -165,26 +171,24 @@ public class LineShapeCreateTest extends TestCase
   {
     final JFreeReport report = new JFreeReport();
     final Line2D line = new Line2D.Float(40, 70, 140, 70);
-    final ShapeElement element = StaticShapeElementFactory.createLineShapeElement(
+    final ShapeElement element = StaticShapeElementFactory.createShapeElement(
         null,
         Color.black,
         ParserUtil.parseStroke("1"),
-        line);
+        line, true, false);
     report.getReportHeader().addElement(element);
-    
-    BandLayoutManagerUtil.doLayout(report.getReportHeader(), new DefaultLayoutSupport(), 500, 200);
-    assertEquals(new Rectangle2D.Float(0, 0, 500, 70), 
-        BandLayoutManagerUtil.getBounds(report.getReportHeader(), null));
 
+    BandLayoutManagerUtil.doLayout(report.getReportHeader(), new DefaultLayoutSupport(), 500, 200);
+    assertEquals(new Rectangle2D.Float(0, 0, 500, 70),
+        BandLayoutManagerUtil.getBounds(report.getReportHeader(), null));
 
     final PageFormatFactory pff = PageFormatFactory.getInstance();
     final Paper paper = pff.createPaper("A0");
     final PageFormat pf = pff.createPageFormat(paper, PageFormat.PORTRAIT);
     assertEquals((int) pf.getHeight(), PageFormatFactory.A0[1]);
     assertEquals((int) pf.getWidth(), PageFormatFactory.A0[0]);
-    report.setDefaultPageFormat(pf);
-    assertEquals(report.getDefaultPageFormat(), pf);
-    final LSDebugOutputTarget lsd = new LSDebugOutputTarget(report.getDefaultPageFormat());
+    report.setPageDefinition(new SimplePageDefinition(pf));
+    final LSDebugOutputTarget lsd = new LSDebugOutputTarget();
     final PageableReportProcessor prp = new PageableReportProcessor(report);
     prp.setOutputTarget(lsd);
     lsd.open();

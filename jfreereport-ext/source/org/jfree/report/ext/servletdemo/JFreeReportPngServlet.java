@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportPngServlet.java,v 1.3 2003/08/20 19:24:58 taqua Exp $
+ * $Id: JFreeReportPngServlet.java,v 1.4 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ package org.jfree.report.ext.servletdemo;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.net.URL;
 import javax.servlet.ServletException;
@@ -51,6 +50,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.keypoint.PngEncoder;
+import org.jfree.report.PageDefinition;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
 import org.jfree.report.util.Log;
 
@@ -71,6 +71,10 @@ import org.jfree.report.util.Log;
  */
 public class JFreeReportPngServlet extends HttpServlet implements SingleThreadModel
 {
+  public JFreeReportPngServlet ()
+  {
+  }
+
   /**
    * Handles the GET method for the servlet. The GET method is mapped to
    * the POST method, both commands are handled equal.
@@ -107,7 +111,7 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
       throws ServletException, IOException
   {
 
-    BufferedImage image = null;
+    final BufferedImage image;
     try
     {
       final URL in = getClass().getResource("/org/jfree/report/demo/swing-icons.xml");
@@ -130,7 +134,7 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
         return;
       }
 
-      int page = 0;
+      final int page;
       try
       {
         page = Integer.parseInt(param);
@@ -142,13 +146,13 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
         return;
       }
 
-      final PageFormat pageFormat = worker.getReportPageFormat();
+      final PageDefinition pageFormat = worker.getReportPageFormat();
       image = createImage(pageFormat);
       final Graphics2D g2 = image.createGraphics();
       g2.setPaint(Color.white);
       g2.fillRect(0,0, (int) pageFormat.getWidth(), (int) pageFormat.getHeight());
 
-      final G2OutputTarget target = new G2OutputTarget(g2, pageFormat);
+      final G2OutputTarget target = new G2OutputTarget(g2);
       worker.setOutputTarget(target);
 
       if (page >= worker.getNumberOfPages() || page < 0)
@@ -184,7 +188,7 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
    * @param pf the page format that defines the image bounds.
    * @return the generated image.
    */
-  private BufferedImage createImage(final PageFormat pf)
+  private BufferedImage createImage(final PageDefinition pf)
   {
     final double width = pf.getWidth();
     final double height = pf.getHeight();

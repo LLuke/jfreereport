@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PackageStateSortTest.java,v 1.1 2003/09/12 17:51:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,22 +41,26 @@ package org.jfree.report.ext.junit.base.basic.modules;
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
-import org.jfree.report.Boot;
-import org.jfree.report.modules.Module;
-import org.jfree.report.modules.PackageManager;
-import org.jfree.report.modules.PackageSorter;
-import org.jfree.report.modules.PackageState;
+import org.jfree.base.modules.Module;
+import org.jfree.base.modules.PackageSorter;
+import org.jfree.base.modules.PackageState;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.misc.configstore.filesystem.FileConfigStoreModule;
 import org.jfree.report.modules.output.support.itext.BaseFontModule;
 import org.jfree.report.util.Log;
 
 public class PackageStateSortTest extends TestCase
 {
+  public PackageStateSortTest (final String s)
+  {
+    super(s);
+  }
+
   public void testAll () throws Exception
   {
-    ArrayList states = new ArrayList();
-    Boot.start();
-    Module[] mods = PackageManager.getInstance().getAllModules();
+    final ArrayList states = new ArrayList();
+    JFreeReportBoot.getInstance().start();
+    final Module[] mods = JFreeReportBoot.getInstance().getPackageManager().getAllModules();
     int basefontPos = 0;
     int fileConfigPos = 0;
 
@@ -69,7 +73,7 @@ public class PackageStateSortTest extends TestCase
 
     for (int i = 0; i < states.size(); i++)
     {
-      PackageState state = (PackageState) states.get(i);
+      final PackageState state = (PackageState) states.get(i);
 
       if (state.getModule().getClass().equals(BaseFontModule.class))
       {

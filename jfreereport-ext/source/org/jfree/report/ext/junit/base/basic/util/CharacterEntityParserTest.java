@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParserTest.java,v 1.3 2003/08/20 19:24:57 taqua Exp $
+ * $Id: CharacterEntityParserTest.java,v 1.4 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,14 +40,19 @@ package org.jfree.report.ext.junit.base.basic.util;
 
 import junit.framework.TestCase;
 import org.jfree.report.util.CharacterEntityParser;
-import org.jfree.report.modules.output.table.html.HtmlCharacterEntities;
+import org.jfree.report.modules.output.table.html.util.HtmlCharacterEntities;
 
 public class CharacterEntityParserTest extends TestCase
 {
+  public CharacterEntityParserTest (String s)
+  {
+    super(s);
+  }
+
   public void testEncode () throws Exception
   {
-    final String testNative = "Test is a הצü<&> test";
-    final String testEncoded = "Test is a &auml;&ouml;&uuml;&lt;&amp;&gt; test";
+    final String testNative = "Test is a הצü<&> && test";
+    final String testEncoded = "Test is a &auml;&ouml;&uuml;&lt;&amp;&gt; &amp;&amp; test";
     final CharacterEntityParser ep = new CharacterEntityParser (new HtmlCharacterEntities());
     //Log.debug (ep.decodeEntities(testEncoded));
     assertEquals(testNative, ep.decodeEntities(testEncoded));

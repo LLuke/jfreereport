@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutTest.java,v 1.5 2003/10/11 21:34:10 taqua Exp $
+ * $Id: BandLayoutTest.java,v 1.6 2003/11/01 19:57:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,7 +47,7 @@ import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ShapeElement;
-import org.jfree.report.Boot;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.DefaultLayoutSupport;
@@ -69,7 +69,7 @@ public class BandLayoutTest extends TestCase
 
   public void testBasicLayout()
   {
-    Boot.start();
+    JFreeReportBoot.getInstance().start();
     final Band band = new Band();
     BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500, 200);
     // width is preserved  ...
@@ -91,8 +91,8 @@ public class BandLayoutTest extends TestCase
     // width is preserved  ...
     assertEquals(new Rectangle2D.Float(0, 0, 500, 0), BandLayoutManagerUtil.getBounds(band, null));
 
-    final Element e = StaticShapeElementFactory.createLineShapeElement(null, null, null,
-        new Line2D.Float(10, 10, 10, 10));
+    final Element e = StaticShapeElementFactory.createHorizontalLine
+        (null, null, null, 10);
     band.addElement(e);
     BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500, 200);
     // width is preserved  ... height is the one given in the element
@@ -105,11 +105,12 @@ public class BandLayoutTest extends TestCase
     final JFreeReport report = new JFreeReport();
     final Line2D line = new Line2D.Float(40, 70, 140, 70);
     Log.debug ("Line: " + line.getBounds2D());
-    final ShapeElement element = StaticShapeElementFactory.createLineShapeElement(
+    final ShapeElement element =
+        StaticShapeElementFactory.createShapeElement(
         null,
         Color.black,
         ParserUtil.parseStroke("1"),
-        line);
+        line, true, false);
     report.getReportHeader().addElement(element);
 
     Log.debug (element.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE));
@@ -117,7 +118,7 @@ public class BandLayoutTest extends TestCase
     Log.debug (BandLayoutManagerUtil.getBounds(element, null));
 
     BandLayoutManagerUtil.doLayout(report.getReportHeader(), new DefaultLayoutSupport(), 500, 200);
-    assertEquals(new Rectangle2D.Float(0, 0, 500, 70), 
+    assertEquals(new Rectangle2D.Float(0, 0, 500, 70),
               BandLayoutManagerUtil.getBounds(report.getReportHeader(), null));
   }
 }

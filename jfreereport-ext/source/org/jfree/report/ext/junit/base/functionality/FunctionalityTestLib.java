@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestLib.java,v 1.5 2003/10/11 21:34:10 taqua Exp $
+ * $Id: FunctionalityTestLib.java,v 1.6 2003/11/01 19:57:03 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,7 +38,6 @@
 
 package org.jfree.report.ext.junit.base.functionality;
 
-import java.awt.print.PageFormat;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.OutputStream;
@@ -65,7 +64,8 @@ import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
-import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
+import org.jfree.report.modules.output.pageable.plaintext.PrinterDriver;
+import org.jfree.report.modules.output.pageable.plaintext.TextFilePrinterDriver;
 import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
@@ -112,10 +112,10 @@ public class FunctionalityTestLib
     {
       final PageableReportProcessor pr = new PageableReportProcessor(report);
       final OutputStream fout = new BufferedOutputStream(new NullOutputStream());
-      final PrinterCommandSet pc = 
-          new PrinterCommandSet(fout, report.getDefaultPageFormat(), 10, 15);
+      final PrinterDriver pc =
+          new TextFilePrinterDriver(fout, 10, 15);
       final PlainTextOutputTarget target = 
-          new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
+          new PlainTextOutputTarget(pc);
 
       pr.setOutputTarget(target);
       target.open();
@@ -195,7 +195,7 @@ public class FunctionalityTestLib
     try
     {
       final G2OutputTarget target =
-          new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), report.getDefaultPageFormat());
+          new G2OutputTarget(G2OutputTarget.createEmptyGraphics());
       target.configure(report.getReportConfiguration());
       target.open();
 
@@ -230,8 +230,7 @@ public class FunctionalityTestLib
     try
     {
       out = new BufferedOutputStream(new NullOutputStream());
-      final PageFormat pf = report.getDefaultPageFormat();
-      final PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
+      final PDFOutputTarget target = new PDFOutputTarget(out);
       target.configure(report.getReportConfiguration());
       target.open();
 

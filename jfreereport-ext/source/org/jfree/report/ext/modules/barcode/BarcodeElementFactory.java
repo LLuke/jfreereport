@@ -1,17 +1,17 @@
 package org.jfree.report.ext.modules.barcode;
 
+import java.awt.Color;
+import java.awt.Insets;
+import java.awt.Stroke;
+
 import org.jfree.report.DrawableElement;
 import org.jfree.report.Element;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.elementfactory.ElementFactory;
-import org.jfree.report.ext.modules.barcode.filters.Barcode39Filter;
 import org.jfree.report.filter.DataFilter;
-import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
-
-import java.awt.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -125,8 +125,8 @@ public class BarcodeElementFactory extends ElementFactory{
 
         switch (this.currentType) {
             case CODE39:
-                filter = new Barcode39Filter();
-                filter.setDataSource(new DataRowDataSource(this.getFieldname()));
+                //filter = new Barcode39Filter();
+                //filter.setDataSource(new DataRowDataSource(this.getFieldname()));
 
                 dataSource = filter;
                 break;

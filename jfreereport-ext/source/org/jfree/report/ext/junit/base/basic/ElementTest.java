@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
+ * $Id: ElementTest.java,v 1.4 2003/11/01 19:57:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,6 +45,8 @@ import java.io.ObjectOutputStream;
 
 import junit.framework.TestCase;
 import org.jfree.report.Element;
+import org.jfree.report.Band;
+import org.jfree.report.style.ElementStyleSheet;
 
 public class ElementTest extends TestCase
 {
@@ -77,6 +79,45 @@ public class ElementTest extends TestCase
     assertNotNull(e.getName());
     assertTrue(e.isVisible());
     assertNull(e.getParent());
+  }
+
+  public void testElementClone()
+          throws CloneNotSupportedException
+  {
+    final Band band = new Band();
+    final Element e = new ElementImpl();
+    band.addElement(e);
+    assertNotNull(e.getParent());
+    assertNotNull(e.getDataSource());
+    assertNotNull(e.getStyle());
+    assertNotNull(e.getName());
+    assertTrue(e.isVisible());
+
+    final Element clone = (Element) e.clone();
+    assertNull(clone.getParent());
+    assertNotNull(clone.getDataSource());
+    assertNotNull(clone.getStyle());
+    assertNotNull(clone.getName());
+    assertTrue(clone.isVisible());
+
+    final Band clonedBand = (Band) band.clone();
+    assertNull(clonedBand.getParent());
+    assertNotNull(clonedBand.getDataSource());
+    assertNotNull(clonedBand.getStyle());
+    assertNotNull(clonedBand.getName());
+    assertTrue(clonedBand.isVisible());
+
+    final Element clientElement = clonedBand.getElement(0);
+    assertNotNull(clientElement.getParent());
+    assertNotNull(clientElement.getDataSource());
+    assertNotNull(clientElement.getStyle());
+    assertNotNull(clientElement.getName());
+    assertTrue(clientElement.isVisible());
+
+
+    clonedBand.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT, Boolean.TRUE);
+    assertTrue(clientElement.isDynamicContent());
+    assertFalse(e.isDynamicContent());
   }
 
   public void testElementMethods()

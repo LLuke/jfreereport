@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveBug.java,v 1.1 2003/09/12 17:51:05 taqua Exp $
+ * $Id: PDFSaveBug.java,v 1.1 2003/11/01 19:58:06 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -90,8 +90,7 @@ public class PDFSaveBug extends TestCase
     try
     {
       out = new BufferedOutputStream(bout);
-      final PageFormat pf = report.getDefaultPageFormat();
-      final PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
+      final PDFOutputTarget target = new PDFOutputTarget(out);
       target.configure(report.getReportConfiguration());
       target.open();
 

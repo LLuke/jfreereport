@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventOrderFunction.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
+ * $Id: EventOrderFunction.java,v 1.4 2003/11/01 19:57:03 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -157,6 +157,25 @@ public class EventOrderFunction extends AbstractFunction implements PageEventLis
     if (pageOpen)
     {
       throw new IllegalStateException("Unexpected Event: PageCanceled: " + lastEventType);
+    }
+  }
+
+  /**
+   * This event is fired, whenever an automatic pagebreak has been detected and the report
+   * state had been reverted to the previous state.
+   *
+   * @param event
+   */
+  public void pageRolledBack (ReportEvent event)
+  {
+    if ((event.getType() & ReportEvent.PAGE_ROLLEDBACK) != ReportEvent.PAGE_ROLLEDBACK)
+    {
+      throw new IllegalArgumentException("ReportEvent was expected to be of type PAGE_CANCELED");
+    }
+
+    if (pageOpen == false)
+    {
+      throw new IllegalStateException("Unexpected Event: PageRolledBack: " + lastEventType);
     }
   }
 

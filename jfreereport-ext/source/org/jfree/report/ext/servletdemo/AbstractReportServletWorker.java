@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractReportServletWorker.java,v 1.3 2003/08/20 19:24:58 taqua Exp $
+ * $Id: AbstractReportServletWorker.java,v 1.4 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -37,10 +37,10 @@
  */
 package org.jfree.report.ext.servletdemo;
 
-import java.awt.print.PageFormat;
 import javax.servlet.http.HttpSession;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.PageDefinition;
 import org.jfree.report.ReportInitialisationException;
 import org.jfree.report.ReportProcessingException;
 
@@ -163,10 +163,10 @@ public abstract class AbstractReportServletWorker
    * @throws ReportInitialisationException if the report could not be initialized,
    * so that no page format could be read.
    */
-  public PageFormat getReportPageFormat ()
+  public PageDefinition getReportPageFormat ()
     throws ReportInitialisationException
   {
-    return getReport().getDefaultPageFormat();
+    return getReport().getPageDefinition();
   }
 
   /**

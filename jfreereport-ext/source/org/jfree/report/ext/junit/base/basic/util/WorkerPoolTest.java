@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WorkerPoolTest.java,v 1.1 2003/10/19 11:30:49 taqua Exp $
+ * $Id: WorkerPoolTest.java,v 1.2 2003/11/01 19:57:03 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,7 +42,7 @@ import junit.framework.TestCase;
 import org.jfree.report.util.WorkerHandle;
 import org.jfree.report.util.WorkerPool;
 import org.jfree.report.util.Log;
-import org.jfree.report.Boot;
+import org.jfree.report.JFreeReportBoot;
 
 public class WorkerPoolTest extends TestCase
 {
@@ -50,7 +50,7 @@ public class WorkerPoolTest extends TestCase
   {
     private Object[] content;
 
-    public TestRunner(Object[] content)
+    public TestRunner(final Object[] content)
     {
       if (content.length != 1)
       {
@@ -80,7 +80,7 @@ public class WorkerPoolTest extends TestCase
   {
     private WorkerPool pool;
 
-    public GetWorker(WorkerPool pool)
+    public GetWorker(final WorkerPool pool)
     {
       this.pool = pool;
     }
@@ -98,7 +98,7 @@ public class WorkerPoolTest extends TestCase
      */
     public void run()
     {
-      Object[] content = new Object[1];
+      final Object[] content = new Object[1];
       Log.debug ("Try to get next worker");
       assertNotNull(pool.getWorkerForWorkload(new TestRunner(content)));
       content[0] = Boolean.FALSE;
@@ -110,18 +110,18 @@ public class WorkerPoolTest extends TestCase
   {
   }
 
-  public WorkerPoolTest(String s)
+  public WorkerPoolTest(final String s)
   {
     super(s);
   }
 
   public void testBasicPool ()
   {
-    WorkerPool pool = new WorkerPool(1);
+    final WorkerPool pool = new WorkerPool(1);
     assertTrue(pool.isWorkerAvailable());
-    Object[] content = new Object[1];
+    final Object[] content = new Object[1];
 
-    WorkerHandle handle = pool.getWorkerForWorkload(new TestRunner(content));
+    final WorkerHandle handle = pool.getWorkerForWorkload(new TestRunner(content));
     assertNotNull(handle);
     assertFalse(pool.isWorkerAvailable());
     try
@@ -146,15 +146,15 @@ public class WorkerPoolTest extends TestCase
 
   public void testBasicPool2 ()
   {
-    Boot.start();
-    WorkerPool pool = new WorkerPool(1);
+    JFreeReportBoot.getInstance().start();
+    final WorkerPool pool = new WorkerPool(1);
     assertTrue(pool.isWorkerAvailable());
-    Object[] content = new Object[1];
+    final Object[] content = new Object[1];
 
-    WorkerHandle handle = pool.getWorkerForWorkload(new TestRunner(content));
+    final WorkerHandle handle = pool.getWorkerForWorkload(new TestRunner(content));
     assertNotNull(handle);
     assertFalse(pool.isWorkerAvailable());
-    Thread t = new Thread(new GetWorker(pool));
+    final Thread t = new Thread(new GetWorker(pool));
     t.start();
 
     try

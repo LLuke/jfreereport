@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ReportFooterLostBug.java,v 1.1 2003/11/05 17:30:55 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,7 @@ import javax.swing.table.DefaultTableModel;
 
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.SimplePageDefinition;
 import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.ext.junit.TestSystem;
 import org.jfree.report.ext.junit.base.functionality.DebugOutputTarget;
@@ -70,8 +71,9 @@ public class ReportFooterLostBug extends TestCase
     JFreeReport report = new JFreeReport();
 
     Paper p = PageFormatFactory.getInstance().createPaper(100, 100);
-    report.setDefaultPageFormat(PageFormatFactory.getInstance().createPageFormat
-        (p, PageFormat.LANDSCAPE));
+    report.setPageDefinition(new SimplePageDefinition
+            (PageFormatFactory.getInstance().createPageFormat
+                (p, PageFormat.LANDSCAPE)));
 
     report.getReportFooter().addElement(LabelElementFactory.createLabelElement
         (null, new Rectangle2D.Float(0,0,90, 100), null, null, null, "Test RF"));
@@ -85,7 +87,7 @@ public class ReportFooterLostBug extends TestCase
   public void testBandLayout () throws Exception
   {
     JFreeReport report = createReport();
-    OutputTarget ot = new DebugOutputTarget(report.getDefaultPageFormat());
+    OutputTarget ot = new DebugOutputTarget();
     assertEquals("BandLayout", new Rectangle2D.Float(0,0, 100, 100),
         BandLayoutManagerUtil.doLayout(report.getReportFooter(), ot, 100, 100));
   }
@@ -94,9 +96,9 @@ public class ReportFooterLostBug extends TestCase
   {
     JFreeReport report = createReport();
     PageableReportProcessor p = new PageableReportProcessor(report);
-    p.setOutputTarget(new DebugOutputTarget(report.getDefaultPageFormat()));
-    ReportStateList list = p.repaginate();
-    assertEquals("ReportStateList.Size", 2, list.size());
+    p.setOutputTarget(new DebugOutputTarget());
+    p.repaginate();
+    assertEquals("ReportStateList.Size", 2, p.getPageCount());
   }
 
   public static void main (String[] args) throws Exception

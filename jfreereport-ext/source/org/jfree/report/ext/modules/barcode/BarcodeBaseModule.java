@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BarcodeBaseModule.java,v 1.1 2003/07/11 20:05:37 taqua Exp $
+ * $Id: BarcodeBaseModule.java,v 1.1 2004/06/26 16:09:26 mimil Exp $
  *
  * Changes 
  * -------------------------
@@ -38,14 +38,31 @@
 
 package org.jfree.report.ext.modules.barcode;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
 
-public class BarcodeBaseModule extends AbstractModule {
-    public BarcodeBaseModule() throws ModuleInitializeException {
-        loadModuleInfo();
-    }
 
-    public void initialize() throws ModuleInitializeException {
-    }
+public class BarcodeBaseModule extends AbstractModule
+{
+  public BarcodeBaseModule ()
+          throws ModuleInitializeException
+  {
+    loadModuleInfo();
+  }
+
+  /**
+   * Initializes the module. Use this method to perform all initial setup operations. This
+   * method is called only once in a modules lifetime. If the initializing cannot be
+   * completed, throw a ModuleInitializeException to indicate the error,. The module will
+   * not be available to the system.
+   *
+   * @param subSystem the subSystem.
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if an error ocurred while initializing the module.
+   */
+  public void initialize (SubSystem subSystem)
+          throws ModuleInitializeException
+  {
+  }
 }

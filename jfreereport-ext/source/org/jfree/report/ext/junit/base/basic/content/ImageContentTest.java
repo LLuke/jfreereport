@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
+ * $Id: ImageContentTest.java,v 1.4 2003/11/01 19:57:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,7 +45,7 @@ import java.awt.image.BufferedImage;
 
 import junit.framework.TestCase;
 import org.jfree.report.ImageElement;
-import org.jfree.report.ImageReference;
+import org.jfree.report.DefaultImageReference;
 import org.jfree.report.content.DefaultContentFactory;
 import org.jfree.report.content.ImageContentFactoryModule;
 import org.jfree.report.content.Content;
@@ -71,7 +71,7 @@ public class ImageContentTest extends TestCase
     final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new ImageContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
-    ElementLayoutInformation eli = 
+    ElementLayoutInformation eli =
       new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
     assertNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
 
@@ -83,12 +83,12 @@ public class ImageContentTest extends TestCase
   {
     final ImageElement se = new ImageElement();
     se.setDataSource(new StaticDataSource
-        (new ImageReference(new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB))));
+        (new DefaultImageReference(new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB))));
 
     final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new ImageContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
-    ElementLayoutInformation eli = 
+    ElementLayoutInformation eli =
       new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
     assertNotNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
 
@@ -100,17 +100,17 @@ public class ImageContentTest extends TestCase
   {
     final ImageElement se = new ImageElement();
     se.setDataSource(new StaticDataSource
-        (new ImageReference(new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB))));
+        (new DefaultImageReference(new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB))));
 
     final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new ImageContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
-    Point2D absPos = new Point2D.Float(0,0);
-    Dimension2D minSize = new FloatDimension(0,0);
-    Dimension2D prefSize = new FloatDimension(10,10);
-    Dimension2D maxSize = new FloatDimension(100,1000);
-    ElementLayoutInformation eli = new ElementLayoutInformation(absPos, minSize, maxSize, prefSize);
-    Content c = df.createContentForElement(se, eli, new DefaultLayoutSupport());
+    final Point2D absPos = new Point2D.Float(0,0);
+    final Dimension2D minSize = new FloatDimension(0,0);
+    final Dimension2D prefSize = new FloatDimension(10,10);
+    final Dimension2D maxSize = new FloatDimension(100,1000);
+    final ElementLayoutInformation eli = new ElementLayoutInformation(absPos, minSize, maxSize, prefSize);
+    final Content c = df.createContentForElement(se, eli, new DefaultLayoutSupport());
     assertEquals(new Rectangle2D.Float(0,0, 10, 10), c.getBounds());
 
   }

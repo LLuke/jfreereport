@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractPageableReportServletWorker.java,v 1.2 2003/07/23 16:06:25 taqua Exp $
+ * $Id: AbstractPageableReportServletWorker.java,v 1.3 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,6 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
-import org.jfree.report.modules.output.pageable.base.ReportStateList;
-import org.jfree.report.states.ReportState;
 
 /**
  * The report servlet worker provides the infrastructure needed to process the
@@ -59,8 +57,6 @@ public abstract class AbstractPageableReportServletWorker
 {
   /** the report processor that should be used to process the report. */
   private PageableReportProcessor processor;
-  /** the cached page state list, which is created during the repagination. */
-  private ReportStateList pageStateList;
   /** a flag to indicated, whether the pagination is already done. */
   private boolean isPaginated;
   /** the used output target for repagination and report processing. */
@@ -119,18 +115,15 @@ public abstract class AbstractPageableReportServletWorker
 
     if (isSessionRequired())
     {
+      // todo: Store the report processor in the session?
       final HttpSession session = getSession();
       processor = new PageableReportProcessor(getReport());
       // set a dummy target for the repagination
       processor.setOutputTarget(getOutputTarget());
 
-      pageStateList = (ReportStateList) session.getAttribute(getPropertyPrefix() + "PageStateList");
-      if (pageStateList == null)
+      if (processor.isPaginated() == false)
       {
-        pageStateList = processor.repaginate();
-        // a new report has been created, now store the attribute in the session for a
-        // later use
-        session.setAttribute(getPropertyPrefix() + "PageStateList", pageStateList);
+        processor.repaginate();
       }
     }
     else
@@ -138,7 +131,7 @@ public abstract class AbstractPageableReportServletWorker
       processor = new PageableReportProcessor(getReport());
       // set a dummy target for the repagination
       processor.setOutputTarget(getOutputTarget());
-      pageStateList = processor.repaginate();
+      processor.repaginate();
     }
 
     isPaginated = true;
@@ -161,11 +154,7 @@ public abstract class AbstractPageableReportServletWorker
       repaginateReport();
     }
 
-    if (pageStateList == null)
-    {
-      return 0;
-    }
-    return pageStateList.size();
+    return processor.getPageCount();
   }
 
   /**
@@ -187,8 +176,8 @@ public abstract class AbstractPageableReportServletWorker
         repaginateReport();
       }
 
-      final ReportState state = pageStateList.get(page);
-      processor.processPage(state, getOutputTarget());
+
+      processor.processPage(processor.createPageProcess(), page, true);
       getOutputTarget().close();
     }
     catch (Exception e)

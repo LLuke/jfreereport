@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log4JLogModule.java,v 1.2 2003/08/20 19:24:58 taqua Exp $
+ * $Id: Log4JLogModule.java,v 1.3 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,10 +38,11 @@
 
 package org.jfree.report.ext.modules.log4jlog;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
 
 /**
  * The module definition for the Log4J log target support module.
@@ -61,11 +62,10 @@ public class Log4JLogModule extends AbstractModule
 
   /**
    * Initalizes the module. This method is empty. 
-   * @see org.jfree.report.modules.Module#initialize()
-   * 
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize(SubSystem subsys) throws ModuleInitializeException
   {
     if (ReportConfiguration.getGlobalConfig().isDisableLogging())
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupListTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
+ * $Id: GroupListTest.java,v 1.4 2003/11/01 19:57:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,6 +50,7 @@ public class GroupListTest extends TestCase
   }
 
   public void testCreate()
+          throws CloneNotSupportedException
   {
     final GroupList gl = new GroupList();
     gl.clear();

@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportServlet.java,v 1.2 2003/07/23 16:06:25 taqua Exp $
+ * $Id: JFreeReportServlet.java,v 1.3 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,10 @@ import org.jfree.report.util.Log;
  */
 public class JFreeReportServlet extends HttpServlet
 {
+  public JFreeReportServlet ()
+  {
+  }
+
   /**
    * Handles the GET method for the servlet. The GET method is mapped to
    * the POST method, both commands are handled equal.
@@ -124,9 +128,7 @@ public class JFreeReportServlet extends HttpServlet
 
     try
     {
-      final PDFOutputTarget target = new PDFOutputTarget(response.getOutputStream(),
-                                                   worker.getReport().getDefaultPageFormat(),
-                                                   true);
+      final PDFOutputTarget target = new PDFOutputTarget(response.getOutputStream());
       target.setProperty(PDFOutputTarget.TITLE, "Title");
       target.setProperty(PDFOutputTarget.AUTHOR, "Author");
       worker.setOutputTarget(target);

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationsTest.java,v 1.1 2003/09/12 17:51:05 taqua Exp $
+ * $Id: TextOperationsTest.java,v 1.2 2003/11/01 19:57:03 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 12.09.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.ext.junit.base.basic.modules.output;
@@ -41,16 +41,13 @@ package org.jfree.report.ext.junit.base.basic.modules.output;
 import java.awt.geom.Rectangle2D;
 
 import junit.framework.TestCase;
-import org.jfree.report.content.TextParagraph;
-import org.jfree.report.content.TextLine;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.TextContent;
+import org.jfree.report.content.TextLine;
+import org.jfree.report.content.TextParagraph;
 import org.jfree.report.ext.junit.base.basic.content.TextContentTest;
-import org.jfree.report.modules.output.pageable.base.operations.TextOperationModule;
-import org.jfree.report.modules.output.pageable.base.operations.PhysicalOperation;
-import org.jfree.report.modules.output.pageable.base.Spool;
-import org.jfree.report.TextElement;
 
+// todo Alignment is not working ..
 public class TextOperationsTest extends TestCase
 {
   public TextOperationsTest(String s)
@@ -93,26 +90,6 @@ public class TextOperationsTest extends TestCase
       assertEquals(results[i], tl.getContent());
     }
 
-    Spool spool = new Spool();
-    TextOperationModule tmod = new TextOperationModule();
-    tmod.createOperations(spool, new TextElement(), tp, new Rectangle2D.Float(0,0, 330, 100));
-
-    PhysicalOperation[] pops = spool.getOperations();
-    int lineCount = -1;
-    for (int i = 0; i < pops.length; i++)
-    {
-      PhysicalOperation plin = pops[i];
-      System.out.println(pops[i]);
-      if (plin instanceof PhysicalOperation.SetBoundsOperation)
-      {
-        lineCount++;
-        PhysicalOperation.SetBoundsOperation tl = (PhysicalOperation.SetBoundsOperation)
-          plin;
-        assertTrue(tl.getBounds().getWidth() < 345);
-        assertEquals(10d, tl.getBounds().getHeight(), 0);
-        assertEquals((lineCount * 10d), tl.getBounds().getY(), 0);
-      }
-    }
   }
 
   public static void testLineBreaking3() throws Exception
@@ -129,51 +106,20 @@ public class TextOperationsTest extends TestCase
       "middle and some of them will be missing all ",
       "together."
     };
+
     Content tc = new TextContent
         (content, 10, new Rectangle2D.Float(0, 0, 500, 5000),
             new TextContentTest.DebugSizeCalculator(10, 10), "..", false);
     tc = tc.getContentForBounds(tc.getMinimumContentSize());
-    final Content tp = tc.getContentPart(0);
-    for (int i = 0; i < tp.getContentPartCount(); i++)
-    {
-      final TextLine tl = (TextLine) tp.getContentPart(i);
-      assertTrue(tl.getBounds().getWidth() <= 500);
-      assertTrue(tl.getBounds().getY() == (i * 10));
-      assertTrue(tl.getBounds().getHeight() == (10));
-      assertEquals(results[i], tl.getContent());
-    }
 
-    assertEquals(tc.getContentForBounds(tc.getMinimumContentSize()).getBounds(),
-        tc.getMinimumContentSize());
-
-
-    Spool spool = new Spool();
-    TextOperationModule tmod = new TextOperationModule();
-    tmod.createOperations(spool, new TextElement(), tc, new Rectangle2D.Float(0,0, 330, 100));
-
-    PhysicalOperation[] pops = spool.getOperations();
-    int lineCount = -1;
-    for (int i = 0; i < pops.length; i++)
-    {
-      PhysicalOperation plin = pops[i];
-      System.out.println(pops[i]);
-      if (plin instanceof PhysicalOperation.SetBoundsOperation)
-      {
-        lineCount++;
-        PhysicalOperation.SetBoundsOperation tl = (PhysicalOperation.SetBoundsOperation)
-          plin;
-        assertTrue(tl.getBounds().getWidth() < 345);
-        assertEquals(10d, tl.getBounds().getHeight(), 0);
-        assertEquals((lineCount * 10d), tl.getBounds().getY(), 0);
-      }
-    }
   }
 
 
   public void testLineBreaking2()
   {
-    final String content = 
-      "Thisisareallylongword, noone thought thatawordcanbethatlong, " +      "itwontfitonaline, but these words do, so heres the test!";
+    final String content =
+      "Thisisareallylongword, noone thought thatawordcanbethatlong, " +
+      "itwontfitonaline, but these words do, so heres the test!";
     Content tc = new TextContent(content, 10, new Rectangle2D.Float(0, 0, 200, 5000),
         new TextContentTest.DebugSizeCalculator(10, 10),"..", false);
 
@@ -187,38 +133,6 @@ public class TextOperationsTest extends TestCase
       "so heres the test!"
     };
     tc = tc.getContentForBounds(tc.getMinimumContentSize());
-    final Content tp = tc.getContentPart(0);
-    for (int i = 0; i < tp.getContentPartCount(); i++)
-    {
-      final TextLine tl = (TextLine) tp.getContentPart(i);
-      assertTrue(tl.getBounds().getWidth() <= 500);
-      assertTrue(tl.getBounds().getY() == (i * 10));
-      assertTrue(tl.getBounds().getHeight() == (10));
-      assertEquals(results[i], tl.getContent());
-    }
-    assertEquals(new Rectangle2D.Float(0,0, 200, 70), tp.getMinimumContentSize());
-
-
-    Spool spool = new Spool();
-    TextOperationModule tmod = new TextOperationModule();
-    tmod.createOperations(spool, new TextElement(), tc, new Rectangle2D.Float(0,0, 330, 100));
-
-    PhysicalOperation[] pops = spool.getOperations();
-    int lineCount = -1;
-    for (int i = 0; i < pops.length; i++)
-    {
-      PhysicalOperation plin = pops[i];
-      System.out.println(pops[i]);
-      if (plin instanceof PhysicalOperation.SetBoundsOperation)
-      {
-        lineCount++;
-        PhysicalOperation.SetBoundsOperation tl = (PhysicalOperation.SetBoundsOperation)
-          plin;
-        assertTrue(tl.getBounds().getWidth() < 345);
-        assertEquals(10d, tl.getBounds().getHeight(), 0);
-        assertEquals((lineCount * 10d), tl.getBounds().getY(), 0);
-      }
-    }
   }
 
   public void testAlignment()
@@ -233,25 +147,5 @@ public class TextOperationsTest extends TestCase
     Content tc = new TextContent(content, 10, new Rectangle2D.Float(0, 110, 200, 5000),
         new TextContentTest.DebugSizeCalculator(10, 10),"..", false);
 
-    Spool spool = new Spool();
-    TextOperationModule tmod = new TextOperationModule();
-    tmod.createOperations(spool, new TextElement(), tc, new Rectangle2D.Float(0,ESHIFT, 330, 100));
-
-    PhysicalOperation[] pops = spool.getOperations();
-    int lineCount = -1;
-    for (int i = 0; i < pops.length; i++)
-    {
-      PhysicalOperation plin = pops[i];
-      System.out.println(pops[i]);
-      if (plin instanceof PhysicalOperation.SetBoundsOperation)
-      {
-        lineCount++;
-        PhysicalOperation.SetBoundsOperation tl = (PhysicalOperation.SetBoundsOperation)
-          plin;
-        assertTrue(tl.getBounds().getWidth() < 345);
-        assertEquals(10d, tl.getBounds().getHeight(), 0);
-        assertEquals(ESHIFT + (lineCount * 10d), tl.getBounds().getY(), 0);
-      }
-    }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeChartModule.java,v 1.2 2003/08/20 19:24:58 taqua Exp $
+ * $Id: JFreeChartModule.java,v 1.3 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,8 +38,9 @@
 
 package org.jfree.report.ext.modules.jfreechart;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
 
 /**
  * The module definition for the JFreeChart support module.
@@ -59,12 +60,17 @@ public class JFreeChartModule extends AbstractModule
   }
 
   /**
-   * Initalizes the module. This method is empty. 
-   * @see org.jfree.report.modules.Module#initialize()
-   * 
-   * @throws ModuleInitializeException if an error occured.
+   * Initializes the module. Use this method to perform all initial setup operations. This
+   * method is called only once in a modules lifetime. If the initializing cannot be
+   * completed, throw a ModuleInitializeException to indicate the error,. The module will
+   * not be available to the system.
+   *
+   * @param subSystem the subSystem.
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if an error ocurred while initializing the module.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize (SubSystem subSystem)
+          throws ModuleInitializeException
   {
   }
 }

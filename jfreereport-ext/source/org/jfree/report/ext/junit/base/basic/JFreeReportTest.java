@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
+ * $Id: JFreeReportTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,9 +56,8 @@ public class JFreeReportTest extends TestCase
   public void testCreate() throws Exception
   {
     final JFreeReport report = new JFreeReport();
-    assertNotNull(report.getDefaultPageFormat());
+    assertNotNull(report.getPageDefinition());
     assertNotNull(report.getExpressions());
-    assertNotNull(report.getFunctions());
     assertNotNull(report.getGroups());
     assertEquals(report.getGroupCount(), 1);
     assertNotNull(report.getItemBand());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableContentTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
+ * $Id: DrawableContentTest.java,v 1.4 2003/11/01 19:57:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,7 +41,6 @@ package org.jfree.report.ext.junit.base.basic.content;
 import java.awt.geom.Rectangle2D;
 
 import junit.framework.TestCase;
-import org.jfree.report.DrawableContainer;
 import org.jfree.report.DrawableElement;
 import org.jfree.report.content.DefaultContentFactory;
 import org.jfree.report.content.DrawableContentFactoryModule;
@@ -79,9 +78,7 @@ public class DrawableContentTest extends TestCase
   public void testInvisibleContent() throws Exception
   {
     final DrawableElement se = new DrawableElement();
-    se.setDataSource(new StaticDataSource
-        (new DrawableContainer(new TestDrawable(), new FloatDimension(10, 10),
-            new Rectangle2D.Float(0, 0, 0, 0))));
+    se.setDataSource(new StaticDataSource (new TestDrawable()));
 
     final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new DrawableContentFactoryModule());

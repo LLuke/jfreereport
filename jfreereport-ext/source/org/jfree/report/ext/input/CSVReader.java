@@ -27,9 +27,12 @@
  *
  * Original Author:  Mimil;
  *
- * $Id: CSVReader.java,v 1.1 2004/08/07 14:35:14 mimil Exp $
+ * $Id: CSVReader.java,v 1.2 2004/08/07 17:45:47 mimil Exp $
  *
  * $Log: CSVReader.java,v $
+ * Revision 1.2  2004/08/07 17:45:47  mimil
+ * Some JavaDocs
+ *
  * Revision 1.1  2004/08/07 14:35:14  mimil
  * Initial version
  *
@@ -37,218 +40,161 @@
 
 package org.jfree.report.ext.input;
 
-import javax.swing.table.AbstractTableModel;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import javax.swing.table.TableModel;
+
+import org.jfree.report.util.CSVTokenizer;
 
 /**
- * Creates a <code>TableModel</code> using a file formated in CSV for input.
- * The separation can be what ever you want (as it is an understandable regexp).
- * The default separator is a <code>;</code>.
+ * Creates a <code>TableModel</code> using a file formated in CSV for input. The
+ * separation can be what ever you want (as it is an understandable regexp). The default
+ * separator is a <code>;</code>.
  *
  * @author Mimil
  */
-public class CSVReader {
-    private BufferedReader reader;
-    private String separator = ";";
-    private CSVTableModel tableModel;
-    private boolean columnNameFirst = false;
+public class CSVReader
+{
+  private BufferedReader reader;
+  private String separator = ";";
+  private CSVTableModel tableModel;
+  private boolean columnNameFirst = false;
 
-    public CSVReader(InputStream in) {
-        if (in != null) {
-            this.reader = new BufferedReader(new InputStreamReader(in));
-            this.tableModel = new CSVTableModel();
+  public CSVReader (final InputStream in)
+  {
+    if (in == null)
+    {
+      throw new NullPointerException("The input stream must not be null");
+    }
+    this.reader = new BufferedReader(new InputStreamReader(in));
+  }
 
-        } else {
-            throw new NullPointerException("The input stream must not be null");
-        }
+  public CSVReader (final String filename)
+    throws FileNotFoundException
+  {
+    this.reader = new BufferedReader(new FileReader(filename));
+  }
+
+  public CSVReader (final BufferedReader r)
+  {
+    if (r == null)
+    {
+      throw new NullPointerException("The input stream must not be null");
+    }
+    this.reader = r;
+  }
+
+  /**
+   * Parses the input and stores data in a TableModel.
+   *
+   * @see this.getTableModel()
+   */
+  public synchronized TableModel parse () throws IOException
+  {
+    if (tableModel != null)
+    {
+      return tableModel;
     }
 
-    public CSVReader(String filename) {
-        try {
-            this.reader = new BufferedReader(new FileReader(filename));
-            this.tableModel = new CSVTableModel();
+    this.tableModel = new CSVTableModel();
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+    if (this.columnNameFirst == true)
+    {   //read the fisrt line
+      final String first = this.reader.readLine();
 
-    public CSVReader(BufferedReader r) {
-        if (r != null) {
-            this.reader = r;
-            this.tableModel = new CSVTableModel();
-
-        } else {
-            throw new NullPointerException("The input stream must not be null");
-        }
-    }
-
-    /**
-     * Parses the input and stores data in a TableModel.
-     *
-     * @see this.getTableModel()
-     */
-    public void parse() {
-
-        try {
-            if (this.columnNameFirst == true) {   //read the fisrt line
-                String first = this.reader.readLine();
-
-                if (first != null) {
-                    this.tableModel.columnNames = first.split(this.separator);
-                }
-            }
-
-            String line;
-            while ((line = this.reader.readLine()) != null) {
-
-                String[] tbl = line.split(this.separator);
-
-                this.tableModel.rowCount++;
-                this.tableModel.setMaxColumnCount(tbl.length);
-                this.tableModel.array.add(tbl);
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    /**
-     * Returns the current separator used to parse the input.
-     *
-     * @return a regexp
-     */
-    public String getSeparator() {
-        return separator;
-    }
-
-    /**
-     * Sets the separator for parsing the input.
-     * It can be a regexp as we use the function <code>String.split()</code>.
-     * The default separator is a <code>;</code>.
-     *
-     * @param separator a regexp
-     */
-    public void setSeparator(String separator) {
-        this.separator = separator;
-    }
-
-    /**
-     * Creates the corrspondant TableModel of the input.
-     *
-     * @return the new TableModel
-     */
-    public AbstractTableModel getTableModel() {
-        this.parse();
+      if (first == null)
+      {
+        // after the end of the file it makes no sense to read anything.
+        // so we can safely return ..
         return tableModel;
+      }
+      this.tableModel.setColumnNames(splitLine(first));
     }
 
-    /**
-     * Tells if the first line of the input was column names.
-     *
-     * @return boolean
-     */
-    public boolean isColumnNameFirstLine() {
-        return columnNameFirst;
+    final ArrayList data = new ArrayList();
+    String line;
+    int maxLength = 0;
+    while ((line = this.reader.readLine()) != null)
+    {
+      final String[] o = splitLine(line);
+      if (o.length > maxLength)
+      {
+        maxLength = o.length;
+      }
+      data.add(o);
     }
 
-    /**
-     * Set if the first line of the input is column names or not.
-     *
-     * @param columnNameFirst   boolean
-     */
-    public void setColumnNameFirstLine(boolean columnNameFirst) {
-        this.columnNameFirst = columnNameFirst;
+    final Object[][] array = new Object[data.size()][];
+    data.toArray(array);
+    this.tableModel.setData(array);
+    return tableModel;
+  }
+
+  private String[] splitLine (final String line)
+  {
+    final ArrayList row = new ArrayList();
+    final CSVTokenizer tokenizer = new CSVTokenizer(line, getSeparator());
+    while (tokenizer.hasMoreElements())
+    {
+      row.add(tokenizer.nextElement());
     }
+    return (String[]) row.toArray(new String[row.size()]);
+  }
 
-    /**
-     * <code>TableModel</code> used by the <code>CSVReader</code> class.
-     * It has a feature which generates the column name if it is not know.
-     *
-     * @see this.getColumnName()
-     *
-     * @author Mimil
-     */
-    public class CSVTableModel extends AbstractTableModel {
+  /**
+   * Returns the current separator used to parse the input.
+   *
+   * @return a regexp
+   */
+  public String getSeparator ()
+  {
+    return separator;
+  }
 
-        protected String[] columnNames = null;
-        protected int rowCount = 0;
-        private int maxColumnCount = 0;
-        protected ArrayList array;
+  /**
+   * Sets the separator for parsing the input. It can be a regexp as we use the function
+   * <code>String.split()</code>. The default separator is a <code>;</code>.
+   *
+   * @param separator a regexp
+   */
+  public void setSeparator (final String separator)
+  {
+    this.separator = separator;
+  }
 
-        public CSVTableModel() {
-            this.array = new ArrayList();
-        }
+  /**
+   * Creates the corrspondant TableModel of the input.
+   *
+   * @return the new TableModel
+   */
+  public TableModel getTableModel () throws IOException
+  {
+    return this.parse();
+  }
 
-        /**
-         * Counts columns of this <code>TableModel</code>.
-         *
-         * @return the column count
-         */
-        public int getColumnCount() {
-            if (this.columnNames != null) {
-                return columnNames.length;
-            }
+  /**
+   * Tells if the first line of the input was column names.
+   *
+   * @return boolean
+   */
+  public boolean isColumnNameFirstLine ()
+  {
+    return columnNameFirst;
+  }
 
-            return this.maxColumnCount;
-        }
+  /**
+   * Set if the first line of the input is column names or not.
+   *
+   * @param columnNameFirst boolean
+   */
+  public void setColumnNameFirstLine (final boolean columnNameFirst)
+  {
+    this.columnNameFirst = columnNameFirst;
+  }
 
-        /**
-         * Counts rows of this <code>TableModel</code>.
-         *
-         * @return the row count
-         */
-        public int getRowCount() {
-            return this.rowCount;
-        }
-
-        /**
-         * Gets the Object at specified row and column positions.
-         *
-         * @param rowIndex row index
-         * @param columnIndex column index
-         * @return The requested Object
-         */
-        public Object getValueAt(int rowIndex, int columnIndex) {
-            Object[] line = (Object[]) this.array.get(rowIndex);
-
-            if (line.length < columnIndex) {
-                return null;
-            } else {
-                return line[columnIndex];
-            }
-        }
-
-        /**
-         * Sets the maximum column count if it is bigger than the current one.
-         *
-         * @param maxColumnCount
-         */
-        public void setMaxColumnCount(int maxColumnCount) {
-            if (this.maxColumnCount < maxColumnCount) {
-                this.maxColumnCount = maxColumnCount;
-            }
-        }
-
-        /**
-         * Return the column name at a specified position.
-         *
-         * @param column column index
-         * @return the column name
-         */
-        public String getColumnName(int column) {
-            if (this.columnNames != null) {
-                return this.columnNames[column];
-            } else {
-                if(column >= this.maxColumnCount) {
-                    throw new IllegalArgumentException("Column ("+column+") does not exist");
-                } else {
-                    return "COLUMN_" + column;
-                }
-            }
-        }
-    }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestSystem.java,v 1.4 2003/09/09 10:27:57 taqua Exp $
+ * $Id: TestSystem.java,v 1.5 2003/11/01 19:57:02 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public final class TestSystem
       return null;
     }
     final ReportGenerator gen = ReportGenerator.getInstance();
-    JFreeReport report1 = null;
+    final JFreeReport report1;
     try
     {
       report1 = gen.parseReport(in, in);

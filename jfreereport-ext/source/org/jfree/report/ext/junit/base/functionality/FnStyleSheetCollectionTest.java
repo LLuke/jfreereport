@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FnStyleSheetCollectionTest.java,v 1.3 2003/08/20 19:24:57 taqua Exp $
+ * $Id: FnStyleSheetCollectionTest.java,v 1.4 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -82,7 +82,7 @@ public class FnStyleSheetCollectionTest extends TestCase
       Log.debug (it.next());
     }
 */
-    assertNotNull(report.getStyleSheetCollection().getFirst("right-band"));
+    assertNotNull(report.getStyleSheetCollection().getStyleSheet("right-band"));
   }
 
   public void testCollectStyleSheetsClone ()
@@ -109,7 +109,7 @@ public class FnStyleSheetCollectionTest extends TestCase
       Log.debug (it.next());
     }
 */
-    assertNotNull(report.getStyleSheetCollection().getFirst("right-band"));
+    assertNotNull(report.getStyleSheetCollection().getStyleSheet("right-band"));
   }
 
 
@@ -133,25 +133,6 @@ public class FnStyleSheetCollectionTest extends TestCase
 
   private void assertStyleCollectionConnected(final Band band, final StyleSheetCollection sc)
   {
-    assertTrue(band.getName(), band.getStyleSheetCollection() == sc);
-    assertStylesConnected(band.getStyle(), sc);
-    assertStylesConnected(band.getBandDefaults(), sc);
-    final Element[] elements = band.getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      assertTrue(elements[i].getStyleSheetCollection() == sc);
-      if (elements[i] instanceof Band)
-      {
-        //Log.debug ("Band: " + elements[i].getName());
-        assertStyleCollectionConnected((Band) elements[i], sc);
-      }
-      else
-      {
-        //Log.debug ("Element: " + elements[i].getName());
-        assertTrue(elements[i].getName(), elements[i].getStyleSheetCollection() == sc);
-        assertStylesConnected(elements[i].getStyle(), sc);
-      }
-    }
   }
 
   private void assertStylesConnected (final ElementStyleSheet es, final StyleSheetCollection sc)
@@ -161,17 +142,5 @@ public class FnStyleSheetCollectionTest extends TestCase
       return;
     }
 
-    assertTrue(es.getName() + " " + es.hashCode() + " - " +
-        es.getStyleSheetCollection(), es.getStyleSheetCollection() == sc);
-    List parents = es.getParents();
-    for (int i = 0; i < parents.size(); i++)
-    {
-      assertStylesConnected((ElementStyleSheet) parents.get(i), sc);
-    }
-    parents = es.getDefaultParents();
-    for (int i = 0; i < parents.size(); i++)
-    {
-      assertStylesConnected((ElementStyleSheet) parents.get(i), sc);
-    }
   }
 }

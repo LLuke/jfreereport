@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventOrderTest.java,v 1.4 2003/11/01 19:57:03 taqua Exp $
+ * $Id: EventOrderTest.java,v 1.5 2003/12/21 23:49:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -118,6 +118,16 @@ public class EventOrderTest extends TestCase
      * @param event The event.
      */
     public void pageCanceled(ReportEvent event)
+    {
+    }
+
+    /**
+     * This event is fired, whenever an automatic pagebreak has been detected and the report
+     * state had been reverted to the previous state.
+     *
+     * @param event
+     */
+    public void pageRolledBack (ReportEvent event)
     {
     }
 

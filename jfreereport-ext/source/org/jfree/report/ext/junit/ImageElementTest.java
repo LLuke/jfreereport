@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElementTest.java,v 1.2 2003/08/20 19:24:51 taqua Exp $
+ * $Id: ImageElementTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,10 @@ import org.jfree.report.util.WaitingImageObserver;
 
 public class ImageElementTest
 {
+  public ImageElementTest ()
+  {
+  }
+
   private static Image createImage(final Image source)
   {
     final double scale = 0.2;
@@ -91,7 +95,7 @@ public class ImageElementTest
 
     report.setProperty("GraphImage", image);
     report.getProperties().setMarked("GraphImage", true);
-    TestSystem.showPreviewFrame(report);
+    TestSystem.showPreview(report);
   }
 
 }

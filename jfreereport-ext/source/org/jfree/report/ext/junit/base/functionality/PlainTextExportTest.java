@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
+ * $Id: PlainTextExportTest.java,v 1.4 2003/11/01 19:57:03 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,7 +48,8 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.demo.SampleData1;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
-import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
+import org.jfree.report.modules.output.pageable.plaintext.PrinterDriver;
+import org.jfree.report.modules.output.pageable.plaintext.TextFilePrinterDriver;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 
@@ -72,11 +73,10 @@ public class PlainTextExportTest extends TestCase
     final ByteArrayOutputStream bo = new ByteArrayOutputStream();
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(bo);
-    final PrinterCommandSet pc = new PrinterCommandSet(fout, report.getDefaultPageFormat(), 10, 15);
+    final PrinterDriver pc = new TextFilePrinterDriver(fout, 10, 15);
     final PlainTextOutputTarget target = 
-      new PlainTextOutputTarget (report.getDefaultPageFormat(), pc);
-    target.setDocumentEncoding(encoding);
-
+      new PlainTextOutputTarget (pc);
+    target.setEncoding(encoding);
     pr.setOutputTarget(target);
     target.open();
     pr.processReport();

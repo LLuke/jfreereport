@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ChineseTextTest.java,v 1.3 2003/07/23 16:06:25 taqua Exp $
+ * $Id: ChineseTextTest.java,v 1.4 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -153,7 +153,7 @@ public class ChineseTextTest
         Log.debug ("ES: " + it.next());
       }
 
-      es = e[i].getParent().getBandDefaults();
+      es = e[i].getParent().getStyle();
       it = es.getDefinedPropertyNames();
       while (it.hasNext())
       {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DebugOutputTarget.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
+ * $Id: DebugOutputTarget.java,v 1.4 2003/11/01 19:57:03 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,18 +41,16 @@ package org.jfree.report.ext.junit.base.functionality;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.print.PageFormat;
 
-import org.jfree.report.DrawableContainer;
-import org.jfree.report.ImageReference;
+import org.jfree.report.ImageContainer;
+import org.jfree.report.PageDefinition;
+import org.jfree.report.content.ImageContent;
+import org.jfree.report.content.DrawableContent;
 import org.jfree.report.layout.DefaultSizeCalculator;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.layout.SizeCalculatorException;
-import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
-import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
-import org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.ReportConfiguration;
 
@@ -66,13 +64,9 @@ public class DebugOutputTarget extends AbstractOutputTarget
   /**
    * Creates a new output target.  Both the logical page size and the physical page size will be
    * the same.
-   *
-   * @param format  the page format.
    */
-  public DebugOutputTarget(final PageFormat format)
+  public DebugOutputTarget()
   {
-    super(format);
-    open = false;
   }
 
   /**
@@ -103,15 +97,6 @@ public class DebugOutputTarget extends AbstractOutputTarget
     open = false;
   }
 
-  /**
-   * Signals that a page is being started.  Stores the state of the target to
-   * make it possible to restore the complete output target.
-   *
-   * @param page  the physical page.
-   */
-  public void beginPage(final PhysicalPage page)
-  {
-  }
 
   /**
    * Signals that the current page is ended.  Some targets need to know when a page is finished,
@@ -183,10 +168,8 @@ public class DebugOutputTarget extends AbstractOutputTarget
    * Sets the paint.
    *
    * @param paint The paint.
-   *
-   * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void setPaint(final Paint paint) throws OutputTargetException
+  public void setPaint(final Paint paint)
   {
     this.paint = paint;
   }
@@ -223,7 +206,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @param drawable the drawable to draw.
    */
-  public void drawDrawable(final DrawableContainer drawable)
+  public void drawDrawable(final DrawableContent drawable)
   {
   }
 
@@ -234,20 +217,8 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void drawImage(final ImageReference image) throws OutputTargetException
+  public void drawImage(final ImageContent image) throws OutputTargetException
   {
-  }
-
-  /**
-   * Creates an output target that mimics a real output target, but produces no output.
-   * This is used by the reporting engine when it makes its first pass through the report,
-   * calculating page boundaries etc.  The second pass will use a real output target.
-   *
-   * @return a dummy output target.
-   */
-  public OutputTarget createDummyWriter()
-  {
-    return new DummyOutputTarget(this);
   }
 
   /**
@@ -273,5 +244,23 @@ public class DebugOutputTarget extends AbstractOutputTarget
       throws SizeCalculatorException
   {
     return new DefaultSizeCalculator(font);
+  }
+
+  protected void beginPage (final PageDefinition page, final int index)
+          throws OutputTargetException
+  {
+    // todo implement me
+
+  }
+
+  protected boolean isPaintSupported (Paint p)
+  {
+    return true;
+  }
+
+  protected void printText (String text)
+  {
+    // todo implement me
+
   }
 }

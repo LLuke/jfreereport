@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14ConfigModuleInitializer.java,v 1.2 2003/09/09 10:27:59 taqua Exp $
+ * $Id: Java14ConfigModuleInitializer.java,v 1.3 2003/09/12 22:05:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,9 +41,9 @@ package org.jfree.report.ext.modules.java14config;
 import java.util.prefs.Preferences;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.ModuleInitializeException;
-import org.jfree.report.modules.ModuleInitializer;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
+import org.jfree.base.modules.ModuleInitializer;
+import org.jfree.base.modules.ModuleInitializeException;
 
 /**
  * An initializer for the Java 1.4 configuration provider.
@@ -60,13 +60,12 @@ public class Java14ConfigModuleInitializer implements ModuleInitializer
 
   /**
    * Initializes the module and defines the storage implementation. 
-   * @see org.jfree.report.modules.ModuleInitializer#performInit()
-   * 
+   *
    * @throws ModuleInitializeException if an error ocurred.
    */
   public void performInit() throws ModuleInitializeException
   {
-    ConfigFactory factory = ConfigFactory.getInstance();
+    final ConfigFactory factory = ConfigFactory.getInstance();
     factory.defineUserStorage
         (new Java14ConfigStorage(Preferences.userNodeForPackage(JFreeReport.class)));
     factory.defineUserStorage

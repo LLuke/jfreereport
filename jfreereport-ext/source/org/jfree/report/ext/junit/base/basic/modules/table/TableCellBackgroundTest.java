@@ -28,22 +28,25 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackgroundTest.java,v 1.1 2003/10/11 21:36:07 taqua Exp $
+ * $Id: TableCellBackgroundTest.java,v 1.2.2.1 2004/04/06 16:52:36 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 11.10.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.ext.junit.base.basic.modules.table;
 
-import java.awt.geom.Rectangle2D;
 import java.awt.Color;
+import java.awt.geom.Rectangle2D;
 
 import junit.framework.TestCase;
+import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.content.EmptyContent;
+import org.jfree.report.ext.junit.base.basic.style.DebugStyleSheet;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
-import org.jfree.report.Boot;
+import org.jfree.report.style.ElementStyleSheet;
 
 public class TableCellBackgroundTest extends TestCase
 {
@@ -51,47 +54,46 @@ public class TableCellBackgroundTest extends TestCase
   {
   }
 
-  public TableCellBackgroundTest(String s)
+  public TableCellBackgroundTest(final String s)
   {
     super(s);
   }
 
   public void testMerge ()
   {
-    Boot.start();
+    JFreeReportBoot.getInstance().start();
 
-    TableCellBackground bg1 = new TableCellBackground
+    final TableCellBackground bg1 = createBackground
       (new Rectangle2D.Float(0,0, 500, 20), Color.black);
-    TableCellBackground bgBottom = new TableCellBackground
+    final TableCellBackground bgBottom = createBackground
       (new Rectangle2D.Float(0,20, 500, 0), Color.black);
-    TableCellBackground bgRight = new TableCellBackground
+    final TableCellBackground bgRight = createBackground
       (new Rectangle2D.Float(500, 0, 0, 20), Color.black);
 
     bgRight.setBorderLeft(Color.black, 10);
     bgBottom.setBorderTop(Color.black, 10);
 
-    TableCellBackground merge = bg1.merge(bgBottom, new Rectangle2D.Float(0,0, 500, 20));
+    TableCellBackground merge = bg1.merge(bgBottom);
     assertEquals(Color.black, merge.getColorBottom());
     assertEquals(10f, merge.getBorderSizeBottom(), 0);
 
-    merge = bg1.merge(bgRight, new Rectangle2D.Float(0,0, 500, 20));
+    merge = bg1.merge(bgRight);
     assertEquals(Color.black, merge.getColorRight());
     assertEquals(10f, merge.getBorderSizeRight(), 0);
   }
 
   public void testMergeReport1 ()
   {
-    Boot.start();
+    JFreeReportBoot.getInstance().start();
 
-    TableCellBackground bgLineBottom = 
-      new TableCellBackground(new Rectangle2D.Float(0, 536, 592, 0), Color.black);
-    TableCellBackground bgBackground = 
-      new TableCellBackground(new Rectangle2D.Float(0, 526, 592, 10), Color.black);
+    final TableCellBackground bgLineBottom =
+      createBackground(new Rectangle2D.Float(0, 536, 592, 0), Color.black);
+    final TableCellBackground bgBackground =
+      createBackground(new Rectangle2D.Float(0, 526, 592, 10), Color.black);
 
     bgLineBottom.setBorderTop(Color.black, 10);
 
-    TableCellBackground merge = bgBackground.merge
-      (bgLineBottom, new Rectangle2D.Float(0, 526, 592, 10));
+    final TableCellBackground merge = bgBackground.merge(bgLineBottom);
     assertEquals(Color.black, merge.getColorBottom());
     assertEquals(10f, merge.getBorderSizeBottom(), 0);
 
@@ -99,24 +101,81 @@ public class TableCellBackgroundTest extends TestCase
 
   public void testMergeLines ()
   {
-    Boot.start();
+    JFreeReportBoot.getInstance().start();
 
-    TableCellBackground bgLineTop = 
-      new TableCellBackground(new Rectangle2D.Float(0, 126, 592, 0), Color.black);
-    TableCellBackground bgLineBottom = 
-      new TableCellBackground(new Rectangle2D.Float(0, 136, 592, 0), Color.black);
+    final TableCellBackground bgUnion =
+      createBackground(new Rectangle2D.Float(0, 126, 592, 10), Color.green);
+
+    final TableCellBackground bgLineTop =
+      createBackground(new Rectangle2D.Float(0, 126, 592, 0), Color.red);
+    final TableCellBackground bgLineBottom =
+      createBackground(new Rectangle2D.Float(0, 136, 592, 0), Color.black);
 
     bgLineTop.setBorderTop(Color.red, 10);
     bgLineBottom.setBorderTop(Color.black, 10);
 
-    TableCellBackground merge = bgLineTop.merge
-      (bgLineBottom, new Rectangle2D.Float(0, 126, 592, 10));
+    final TableCellBackground immed = bgUnion.merge(bgLineTop);
+    assertEquals(Color.red, immed.getColorTop());
+    assertEquals(10f, immed.getBorderSizeTop(), 0);
+
+    final TableCellBackground merge = immed.merge(bgLineBottom);
     assertEquals(Color.red, merge.getColorTop());
     assertEquals(Color.black, merge.getColorBottom());
     assertEquals(10f, merge.getBorderSizeBottom(), 0);
     assertEquals(10f, merge.getBorderSizeTop(), 0);
 
   }
+
+  private TableCellBackground createBackground
+          (final Rectangle2D bounds, final Color color)
+  {
+
+    final ElementStyleSheet es = new DebugStyleSheet("Name");
+    es.setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
+    es.setStyleProperty(ElementStyleSheet.PAINT, color);
+
+    return new TableCellBackground
+            (EmptyContent.getDefaultEmptyContent(), es, color);
+  }
+
+  public void testJoin ()
+  {
+    JFreeReportBoot.getInstance().start();
+
+    final TableCellBackground bg1 = createBackground
+      (new Rectangle2D.Float(0,0, 500, 20), Color.black);
+    bg1.setBorderLeft(Color.green, 11);
+    bg1.setBorderTop(Color.red, 9);
+
+    // join bg1 with a bottom cell (row + 1)
+    final TableCellBackground bgBottom = createBackground
+      (new Rectangle2D.Float(0,20, 500, 0), Color.black);
+    bgBottom.setBorderLeft(Color.green, 11);
+    bgBottom.setBorderBottom(Color.black, 10);
+
+//    final TableCellBackground joined = bg1.joinBottom(bgBottom);
+//    assertEquals(Color.black, joined.getColorBottom());
+//    assertEquals(10f, joined.getBorderSizeBottom(), 0);
+//    assertEquals(Color.green, joined.getColorLeft());
+//    assertEquals(11f, joined.getBorderSizeLeft(), 0);
+//    assertEquals(Color.red, joined.getColorTop());
+//    assertEquals(9f, joined.getBorderSizeTop(), 0);
+//
+//    final TableCellBackground bgRight = new TableCellBackground
+//      (new Rectangle2D.Float(500, 0, 0, 20), Color.black);
+//    bgRight.setBorderRight(Color.black, 10);
+//    bgRight.setBorderTop(Color.red, 9);
+//
+//    final TableCellBackground joined2 = bg1.joinRight(bgRight);
+//    assertEquals(Color.black, joined2.getColorRight());
+//    assertEquals(10f, joined2.getBorderSizeRight(), 0);
+//    assertEquals(Color.green, joined2.getColorLeft());
+//    assertEquals(11f, joined2.getBorderSizeLeft(), 0);
+//    assertEquals(Color.red, joined2.getColorTop());
+//    assertEquals(9f, joined.getBorderSizeTop(), 0);
+  }
+
+
 }
 
 

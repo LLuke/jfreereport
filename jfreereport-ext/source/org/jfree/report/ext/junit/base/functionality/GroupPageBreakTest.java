@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupPageBreakTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
+ * $Id: GroupPageBreakTest.java,v 1.4 2003/10/05 21:53:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,9 +51,8 @@ import org.jfree.report.ReportHeader;
 import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.modules.gui.base.PreviewDialog;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
-import org.jfree.report.modules.output.pageable.base.ReportStateList;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
-import org.jfree.report.style.BandStyleSheet;
+import org.jfree.report.style.BandStyleKeys;
 
 public class GroupPageBreakTest extends TestCase
 {
@@ -98,9 +97,9 @@ public class GroupPageBreakTest extends TestCase
             ElementAlignment.LEFT, null, "Text"));
 
     report.getGroup(0).getHeader().getStyle().
-        setBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, true);
+        setBooleanStyleProperty(BandStyleKeys.PAGEBREAK_BEFORE, true);
     report.getGroup(0).getFooter().getStyle().
-        setBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER, true);
+        setBooleanStyleProperty(BandStyleKeys.PAGEBREAK_AFTER, true);
 
     return report;
   }
@@ -110,14 +109,14 @@ public class GroupPageBreakTest extends TestCase
     final JFreeReport report = getReport();
 
     final G2OutputTarget target =
-        new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), report.getDefaultPageFormat());
+        new G2OutputTarget(G2OutputTarget.createEmptyGraphics());
     target.configure(report.getReportConfiguration());
     target.open();
 
     final PageableReportProcessor proc = new PageableReportProcessor(report);
     proc.setOutputTarget(target);
-    final ReportStateList rsl = proc.repaginate();
-    assertEquals(rsl.size(), 3);
+    proc.repaginate();
+    assertEquals(proc.getPageCount(), 3);
     target.close();
   }
 
@@ -129,14 +128,14 @@ public class GroupPageBreakTest extends TestCase
     report.setReportHeader(new ReportHeader());
 
     final G2OutputTarget target =
-        new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), report.getDefaultPageFormat());
+        new G2OutputTarget(G2OutputTarget.createEmptyGraphics());
     target.configure(report.getReportConfiguration());
     target.open();
 
     final PageableReportProcessor proc = new PageableReportProcessor(report);
     proc.setOutputTarget(target);
-    final ReportStateList rsl = proc.repaginate();
-    assertEquals(1, rsl.size());
+    proc.repaginate();
+    assertEquals(1, proc.getPageCount());
     target.close();
   }
 
@@ -186,12 +185,12 @@ public class GroupPageBreakTest extends TestCase
     oc.getHeader().addElement(LabelElementFactory.createLabelElement
         (null, new Rectangle2D.Float(0, 0, 150, 20), null,
             ElementAlignment.LEFT, null, "CMR-OC header"));
-    oc.getHeader().getStyle().setBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER, true);
+    oc.getHeader().getStyle().setBooleanStyleProperty(BandStyleKeys.REPEAT_HEADER, true);
 
     oc.getFooter().addElement(LabelElementFactory.createLabelElement
         (null, new Rectangle2D.Float(0, 0, 150, 20), null,
             ElementAlignment.LEFT, null, "CMR-OC footer"));
-    oc.getFooter().getStyle().setBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER, true);
+    oc.getFooter().getStyle().setBooleanStyleProperty(BandStyleKeys.PAGEBREAK_AFTER, true);
     report.addGroup(oc);
 
     report.getItemBand().addElement(LabelElementFactory.createLabelElement
@@ -224,18 +223,18 @@ public class GroupPageBreakTest extends TestCase
     report.setReportHeader(new ReportHeader());
 
     final G2OutputTarget target =
-        new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), report.getDefaultPageFormat());
+        new G2OutputTarget(G2OutputTarget.createEmptyGraphics());
     target.configure(report.getReportConfiguration());
     target.open();
 
     final PageableReportProcessor proc = new PageableReportProcessor(report);
     proc.setOutputTarget(target);
-    final ReportStateList rsl = proc.repaginate();
-    assertEquals(4, rsl.size());
+    proc.repaginate();
+    assertEquals(4, proc.getPageCount());
     target.close();
   }
 
-  public static void main(String[] args) throws Exception
+  public static void main(final String[] args) throws Exception
   {
     final JFreeReport report = new GroupPageBreakTest().getReportTest2();
     report.setReportFooter(new ReportFooter());
