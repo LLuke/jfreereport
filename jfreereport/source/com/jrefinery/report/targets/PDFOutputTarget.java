@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.29 2002/11/04 16:02:27 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.30 2002/11/04 17:07:57 taqua Exp $
  *
  * Changes
  * -------
@@ -146,6 +146,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
   private static final String CREATOR = JFreeReport.getInfo().getName() + " version "
       + JFreeReport.getInfo().getVersion();
 
+  public static final String ENCODING = "encoding";
+
   /** The output stream. */
   private OutputStream out;
 
@@ -175,9 +177,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /** The current Paint as used in the AWT */
   private Paint awtPaint;
-
-  /** The current encoding */
-  private String encoding;
 
   /**
    * A bytearray containing an empty password. iText replaces the owner password with random
@@ -319,6 +318,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
       String fs = System.getProperty("file.separator");
 
       Log.debug("Running on operating system: " + osname);
+      Log.debug("Character encoding used as default: " + encoding);
+
       if (!StringUtil.startsWithIgnoreCase(osname, "windows"))
       {
         Log.debug("Assuming unix like file structures");
@@ -1277,6 +1278,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public void close()
   {
+    Log.debug ("CLOSE THE DOCUMENT ! ------------------------------------------------------------");
     this.getDocument().close();
   }
 
@@ -1484,7 +1486,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public String getFontEncoding()
   {
-    return encoding;
+    return (String) getProperty(ENCODING, getDefaultFontEncoding());
   }
 
   /**
@@ -1507,7 +1509,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     {
       throw new NullPointerException();
     }
-    this.encoding = encoding;
+    setProperty(ENCODING, encoding);
   }
 
   protected boolean isEmbedFonts()
@@ -1546,5 +1548,4 @@ public class PDFOutputTarget extends AbstractOutputTarget
   {
     this.document = document;
   }
-
 }

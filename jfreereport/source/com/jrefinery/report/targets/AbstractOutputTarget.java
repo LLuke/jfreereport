@@ -470,6 +470,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
   private String appendReserveLit(String base, int lineStart, int start, float width)
   {
+    if (start < 0) throw new IllegalArgumentException("Start must not be negative");
+    if (width < 0) throw new IllegalArgumentException("Width must not be negative");
+    if (lineStart < 0) throw new IllegalArgumentException("LineStart must not be negative");
+
     float reserved = getStringBounds(RESERVED_LITERAL, 0, RESERVED_LITERAL.length());
     String baseLine = base.substring(lineStart, start);
     float filler = width - (getStringBounds(baseLine, 0, baseLine.length())) - reserved;
@@ -477,8 +481,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
     int maxFillerLength = base.length() - start;
     for (int i = 0; i < maxFillerLength; i++)
     {
-      String fillString = base.substring(start, i);
-      float fillerWidth = getStringBounds(fillString, start, start + i);
+      String fillString = base.substring(start, i + start);
+      float fillerWidth = getStringBounds(fillString, 0, i);
       if (filler < fillerWidth)
       {
         return baseLine + fillString + RESERVED_LITERAL;

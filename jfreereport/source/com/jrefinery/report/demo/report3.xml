@@ -70,13 +70,13 @@
         <line x1="200" y1="37" x2="450" y2="37" weight="0.5"/>
         <label x="0" y="84" width="100%" height="36" alignment="left" fontname="Arial Unicode MS"
 >We thank you for your order and hope to see you soon again. Please pay your invoice within the next 10 days.
-. (is not yet working, marked as bug)
+(is not yet working, marked as bug)
 (2 blank lines)
-.
-.
+
+
 Yours sincerely, (Unicode Test 2: &#x6e96;&#x53d7;&#x4fdd;&#x4eba;)
-.
-.
+
+
 John W. Who, Salesman</label>
        </groupfooter>
       <fields>

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.22 2002/09/06 17:02:29 taqua Exp $
+ * $Id: Band.java,v 1.23 2002/09/13 15:38:03 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -261,7 +261,7 @@ public abstract class Band implements Serializable, Cloneable
     {
       return 0;
     }
-    float maxheight = 0;
+    float maxheight = getHeight();
 
     Rectangle2D bounds = new Rectangle2D.Float();
     bounds.setRect(x, y, target.getUsableWidth(), getHeight());

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.25 2002/10/15 20:37:26 taqua Exp $
+ * $Id: ReportPane.java,v 1.26 2002/10/23 21:10:24 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -497,6 +497,8 @@ public class ReportPane extends JComponent implements Printable, Pageable
         if (pageNumber > 0)
         {
           ReportState state = (ReportState) getPageStateList ().get (pageNumber - 1);
+          Log.debug ("PageStateList: Size = " + getPageStateList().size());
+          Log.debug ("State: class = " + state.getClass());
           try
           {
             ReportState s2 = state.getReport().processPage (target, state, true);

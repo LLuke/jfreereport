@@ -440,7 +440,7 @@ public class DataRowBackend implements Cloneable
         return i;
       }
     }
-    Log.warn ("No Such Column: " + name );
+    //Log.warn ("No Such Column: " + name );
     return -1;
   }
 

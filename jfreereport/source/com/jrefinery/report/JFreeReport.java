@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.32 2002/10/23 21:10:22 taqua Exp $
+ * $Id: JFreeReport.java,v 1.33 2002/11/05 16:58:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -741,7 +741,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
         state = new StartState((FinishState) state, level);
       }
 
-      dummyOutput.close();
       Log.debug ("DummyMode done " +
                  "Free: " + Runtime.getRuntime().freeMemory() + "; " +
                  "Total: " + Runtime.getRuntime().totalMemory());
@@ -761,6 +760,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
         }
       }
 
+      dummyOutput.close();
       Log.debug ("DummyWriting Done " +
                  "Free: " + Runtime.getRuntime().freeMemory() + "; " +
                  "Total: " + Runtime.getRuntime().totalMemory());
@@ -804,7 +804,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     // just crash to make sure that FinishStates are caught outside, we cannot handle them here
     if (currPage.isFinish ())
     {
-      throw new IllegalArgumentException ("No finish state for processpage allowed");
+      throw new IllegalArgumentException ("No finish state for processpage allowed: ");
     }
 
     ReportState state = null;

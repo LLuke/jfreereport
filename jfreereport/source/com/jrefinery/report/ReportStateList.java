@@ -33,6 +33,7 @@
 package com.jrefinery.report;
 
 import com.jrefinery.report.targets.OutputTarget;
+import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.WeakReferenceList;
 import com.jrefinery.report.states.ReportState;
@@ -99,7 +100,7 @@ public class ReportStateList
         return null;
       }
       int max = getChildPos (index);
-      Log.debug ("Position " + index + "(" + max + ") was lost, restoring it");
+      Log.debug ("Position " + index + "(" + max + ") was lost, restoring it.");
       try
       {
         return this.restoreState (max, master);
@@ -141,21 +142,34 @@ public class ReportStateList
       }
       ReportState state = rootstate;
 
-      for (int i = 0; i <= count; i++)
+      OutputTarget ot = master.target.createDummyWriter();
+      try
       {
-        ReportState oldState = state;
-        state = master.report.processPage (master.target, state, false);
-        set (state, i + 1);
-        if (state.isFinish ())
+        ot.open();
+
+        for (int i = 0; i <= count; i++)
         {
-          return state;
+          ReportState oldState = state;
+          Log.debug("o-State: " + state.getClass());
+          state = master.report.processPage (ot, state, true);
+          set (state, i + 1);
+          Log.debug("n-State: " + state.getClass());
+          if (state.isFinish ())
+          {
+            return state;
+          }
+          if (state.isProceeding (oldState) == false)
+          {
+            return null;
+          }
         }
-        if (state.isProceeding (oldState) == false)
-        {
-          return null;
-        }
+        return state;
       }
-      return state;
+      catch (OutputTargetException ote)
+      {
+        Log.debug ("OTE :" + ote);
+        throw new ReportProcessingException(ote.getMessage());
+      }
     }
   }
 
@@ -237,6 +251,11 @@ public class ReportStateList
     {
       throw new NullPointerException ();
     }
+
+    if (state.isFinish())
+      throw new IllegalArgumentException();
+
+    Log.error ("Added State: " + state.getClass());
 
     MasterList master = null;
     if (getMasterPos (size ()) >= masterStates.size ())
