@@ -32,7 +32,7 @@
  * --------------------------
  *
  * 10-May-2002 : Created the EventInterface for JFreeReport
- *
+ * 05-Jun-2002 : cleared the interface.
  */
 package com.jrefinery.report.event;
 
@@ -41,23 +41,43 @@ import com.jrefinery.report.ReportState;
 
 import java.util.EventObject;
 
+/**
+ * The ReportEvent carries the information which reportstate generated the event.
+ */
 public class ReportEvent extends EventObject
 {
   private ReportState state;
 
-  public ReportEvent (JFreeReport source, ReportState state)
+  /**
+   * Creates a new ReportEvent. Neither report or state are allowed to be null.
+   *
+   * @param state the current state of the processed report.
+   */
+  public ReportEvent (ReportState state)
   {
-    super (source);
-    this.state = state;
+    super (state);
+    if (state == null) throw new NullPointerException ();
   }
 
+  /**
+   * Convience method to extract the report which was processed when the ReportEvent
+   * was fired. This function will never return null
+   *
+   * @returns the report being processed.
+   */
   public JFreeReport getReport ()
   {
-    return (JFreeReport) getSource();
+    return getState ().getReport ();
   }
 
+  /**
+   * returns the ReportState, which is the source of the event. This function will never
+   * return null.
+   *
+   * @return the current state of the report processing.
+   */
   public ReportState getState ()
   {
-    return state;
+    return (ReportState) getSource ();
   }
 }

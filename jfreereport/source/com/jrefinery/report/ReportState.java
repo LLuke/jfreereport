@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.11 2002/05/28 19:28:22 taqua Exp $
+ * $Id: ReportState.java,v 1.12 2002/05/31 19:31:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -94,7 +94,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
       // Initialize the report before any band (and especially before the pageheader)
       // is printed.
-      ReportEvent event = new ReportEvent(report, this);
+      ReportEvent event = new ReportEvent(this);
       fireReportStartedEvent(event);
 
       return new PreReportHeader(this);
@@ -241,7 +241,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         {
           // enough space, fire the events and proceed to PostGroupHeader
           header.populateElements(this);
-          ReportEvent event = new ReportEvent(getReport(), this);
+          ReportEvent event = new ReportEvent(this);
           fireGroupStartedEvent(event);
           rpc.printGroupHeader(header);
           return new PostGroupHeader(this);
@@ -332,7 +332,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     {
       // Inform everybody, that now items will be processed.
 
-      ReportEvent event = new ReportEvent(getReport(), this);
+      ReportEvent event = new ReportEvent(this);
       fireItemsStartedEvent(event);
       return new InItemGroup(this);
     }
@@ -380,7 +380,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         int currGroup = getCurrentGroupIndex();
 
         itemBand.populateElements(this);
-        ReportEvent event = new ReportEvent(report, this);
+        ReportEvent event = new ReportEvent(this);
         fireItemsAdvancedEvent(event);
 
         rpc.printItemBand(itemBand);
@@ -411,7 +411,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      */
     public ReportState advance(ReportProcessor rpc)
     {
-      ReportEvent event = new ReportEvent(getReport(), this);
+      ReportEvent event = new ReportEvent(this);
       fireItemsFinishedEvent(event);
       return new PreGroupFooter(this);
     }
@@ -440,7 +440,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         // There is a header and enough space to print it. The finishGroup event is
         // fired and PostGroupFooter activated after all work is done.
         footer.populateElements(this);
-        ReportEvent event = new ReportEvent(getReport(), this);
+        ReportEvent event = new ReportEvent(this);
         fireGroupFinishedEvent(event);
 
         rpc.printGroupFooter(footer);
@@ -555,7 +555,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       if (rpc.isSpaceFor(reportFooter))
       {
         reportFooter.populateElements(this);
-        ReportEvent event = new ReportEvent(report, this);
+        ReportEvent event = new ReportEvent(this);
         fireReportFinishedEvent(event);
         rpc.printReportFooter(reportFooter);
         return new Finish(this);

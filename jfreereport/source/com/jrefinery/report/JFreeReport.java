@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.13 2002/05/28 19:28:22 taqua Exp $
+ * $Id: JFreeReport.java,v 1.14 2002/05/31 19:31:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -605,7 +605,7 @@ public class JFreeReport implements JFreeReportConstants
     ReportProcessor prc = new ReportProcessor(target, draw, getPageFooter());
 
     // Print the pageHeader before any other item.
-    ReportEvent event = new ReportEvent(this, state);
+    ReportEvent event = new ReportEvent(state);
     state.firePageStartedEvent(event);
     getPageHeader().populateElements(state);
     if (page == 1)
@@ -629,7 +629,7 @@ public class JFreeReport implements JFreeReportConstants
     }
 
     // All work is done for this page. Just print the pageFooter and then return.
-    event = new ReportEvent(this, state);
+    event = new ReportEvent(state);
     state.firePageFinishedEvent(event);
 
     getPageFooter().populateElements(state);

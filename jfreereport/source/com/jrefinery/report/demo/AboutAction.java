@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.5 2002/05/31 19:15:13 taqua Exp $
+ * $Id: AboutAction.java,v 1.6 2002/06/05 21:20:47 taqua Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,5 @@ public abstract class AboutAction extends AbstractAction
     this.putValue (Action.MNEMONIC_KEY, resources.getObject ("action.about.mnemonic"));
     this.putValue (Action.SMALL_ICON, resources.getObject ("action.about.small-icon"));
     this.putValue ("ICON24", resources.getObject ("action.about.icon"));
-    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportDemo.ABOUT_COMMAND);
   }
 }
