@@ -1,3 +1,9 @@
+0.8.5: (04-Mar-2005)
+  * Experimental barcode classes.
+
+  * The servlet demo has been update to demonstrate the use of URLImageReferences.
+
+  * The chart demo now uses the latest JFreeChart jar.
 
 0.8.4-5: (1-Nov-2003):
 	* The JDK1.4-Printing is more configurable now. The appearance in the menus of the
