@@ -15,6 +15,7 @@
 <!-- in the JFreeReport forum. -->
 
 <project name="jfreereport" default="build-jfreereport" basedir="..">
+
     <!-- General initialisation. -->
     <target name="init-general" description="Initialise general parameters.">
         <tstamp />
@@ -24,15 +25,16 @@
         <property name="iText-jar" value="${basedir}/lib/iText-0.95.jar" />
         <property name="JCommon-jar" value="${basedir}/lib/jcommon-0.7.1.jar" />
         <property name="Pixie-jar" value="${basedir}/lib/pixie.jar" />
-    </target>
 
-    <path id="build.classpath">
-        <pathelement location="${BeanShell-jar}" />
-        <pathelement location="${GnuJAXP-jar}" />
-        <pathelement location="${iText-jar}" />
-        <pathelement location="${JCommon-jar}" />
-        <pathelement location="${Pixie-jar}" />
-    </path>
+        <path id="build.classpath">
+            <pathelement location="${BeanShell-jar}" />
+            <pathelement location="${GnuJAXP-jar}" />
+            <pathelement location="${iText-jar}" />
+            <pathelement location="${JCommon-jar}" />
+            <pathelement location="${Pixie-jar}" />
+        </path>
+
+    </target>
 
     <!-- JFreeReport initialisation. -->
     <target name="init-jfreereport" depends="init-general"
@@ -51,8 +53,8 @@
         <!-- compile the source -->
         <javac srcdir="${basedir}/source" 
                destdir="${basedir}/build"
-               classpathref="build.classpath"
                excludes="com/jrefinery/report/demo/**">
+            <classpath refid="build.classpath" />
         </javac>
 
         <!-- copy across the BeanShell header file -->
@@ -84,8 +86,8 @@
         <!-- compile the demo source -->
         <javac srcdir="${basedir}/source" 
                destdir="${basedir}/build"
-               classpathref="build.classpath"
                includes="com/jrefinery/report/demo/**">
+            <classpath refid="build.classpath" />
         </javac>
 
         <!-- include the report definition files -->
@@ -112,8 +114,8 @@
         <delete dir="${basedir}/javadoc" />
         <mkdir dir="${basedir}/javadoc" />
         <javadoc destdir="${basedir}/javadoc" 
-                 windowtitle="JFreeReport Class Library"
-                 classpathref="build.classpath">
+                 windowtitle="JFreeReport Class Library">
+            <classpath refid="build.classpath" />
             <packageset dir="${basedir}/source" defaultexcludes="yes">
                 <include name="com/jrefinery/report/**" />
                 <exclude name="com/jrefinery/report/demo/**" />  
