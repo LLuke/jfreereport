@@ -10,6 +10,8 @@
   2002-06-30: ImageField, ImageFunction
   2002-07-10: ImageURLField, ImageURLFunction
   2002-07-17: Updated missing attributes in Image* tags
+  2002-09-16: Removed BASELINE attribute from font definition, fixed Orientation-attribute declaration,
+              Bands can have a default font declaration
  -->
 
 <!ENTITY % boolean
@@ -22,6 +24,10 @@
 
 <!ENTITY % alignmentEnum
    "left | center | right"
+>
+
+<!ENTITY % orientations
+  "portrait | landscape"
 >
 
 <!--
@@ -71,8 +77,7 @@
   fsitalic       (%boolean;)        #IMPLIED
   fsunderline    (%boolean;)        #IMPLIED
   fsstrikethr    (%boolean;)        #IMPLIED
-  alignment      (%alignmentEnum;)  #IMPLIED
-  baseline       CDATA              #IMPLIED"
+  alignment      (%alignmentEnum;)  #IMPLIED"
  >
 
 <!--
@@ -83,6 +88,7 @@
   "(label | general-field | string-field | string-function |
   number-field | number-function | date-field | date-function |
 	multiline-field | imageref | image-field | image-function | rectangle | line)*">
+
 
 <!--
 
@@ -160,11 +166,11 @@
   height         CDATA           #IMPLIED
   name           CDATA           #IMPLIED
   pageformat     %pageFormats;   #IMPLIED
+  orientation    (%orientations;) "portrait"
   leftmargin     CDATA           #IMPLIED
   rightmargin    CDATA           #IMPLIED
   topmargin      CDATA           #IMPLIED
   bottommargin   CDATA           #IMPLIED
-  orientation    ("landscape" | "portrait") #IMPLIED
 >
 
 
@@ -182,12 +188,14 @@
 <!ATTLIST reportheader
   ownpage        (%boolean;)    #IMPLIED
   %basicform;
+  %fontdef;
 >
 
 <!ELEMENT reportfooter ( %itemelements; )>
 <!ATTLIST reportfooter
   ownpage        (%boolean;)    #IMPLIED
   %basicform;
+  %fontdef;
 >
 
 
@@ -204,6 +212,7 @@
 <!ATTLIST pageheader
   onfirstpage    (%boolean;)   #IMPLIED
   %basicform;
+  %fontdef;
 >
 
 
@@ -212,6 +221,7 @@
   onfirstpage    (%boolean;)   #IMPLIED
   onlastpage     (%boolean;)   #IMPLIED
   %basicform;
+  %fontdef;
 >
 
 <!--
@@ -242,11 +252,13 @@
 <!ATTLIST groupheader
   pagebreak     (%boolean;)   #IMPLIED
   %basicform;
+  %fontdef;
 >
 
 <!ELEMENT groupfooter ( %itemelements; )>
 <!ATTLIST groupfooter
   %basicform;
+  %fontdef;
 >
 
 <!--
@@ -266,6 +278,7 @@
 <!ELEMENT items   ( %itemelements; )>
 <!ATTLIST items
   %basicform;
+  %fontdef;
 >
 
 <!--
@@ -512,11 +525,14 @@
   editing, function must obey to the java-beans rules (use get*/set*
   methods, perhaps provide beaninfo and so on)
 
+  The deplevel attribute can be used to priorize the functions. Functions with an higher depencylevel
+  are executed before any function with lower depency levels. Depencylevels lower than 0 are not allowed.
   -->
 <!ELEMENT function   (properties?)>
 <!ATTLIST function
-  class      CDATA    #REQUIRED
+ class      CDATA    #REQUIRED
 	name       CDATA    #REQUIRED
+ deplevel   CDATA    #IMPLIED
 >
 
 
@@ -530,11 +546,14 @@
   editing, Expressions must obey to the java-beans rules (use get*/set*
   methods, perhaps provide beaninfo and so on)
 
+  The deplevel attribute can be used to priorize the functions. Functions with an higher depencylevel
+  are executed before any function with lower depency levels. Depencylevels lower than 0 are not allowed.
   -->
 <!ELEMENT expression   (properties?)>
 <!ATTLIST expression
   class      CDATA    #REQUIRED
 	name       CDATA    #REQUIRED
+ deplevel   CDATA    #IMPLIED
 >
 
 <!ELEMENT properties  (property*)>
