@@ -1,9 +1,41 @@
 /**
- * Date: Jan 22, 2003
- * Time: 5:33:53 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: FunctionsWriter.java,v 1.3 2003/02/02 23:43:50 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * --------------------
+ * FunctionsWriter.java
+ * --------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 20-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.io.ext.writer;
 
 import com.jrefinery.report.function.Expression;
@@ -22,16 +54,35 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 
+/**
+ * An XML definition writer that outputs the functions.
+ * 
+ * @author Thomas Morgner.
+ */
 public class FunctionsWriter extends AbstractXMLDefinitionWriter
 {
+  /** The object factory. */
   private ClassFactoryCollector cfc;
 
+  /**
+   * Creates a new writer.
+   * 
+   * @param reportWriter  the report writer.
+   */
   public FunctionsWriter(ReportWriter reportWriter)
   {
     super(reportWriter);
     cfc = getReportWriter().getClassFactoryCollector();
   }
 
+  /**
+   * Writes the functions to XML.
+   * 
+   * @param writer  the writer.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException ??
+   */
   public void write(Writer writer)
       throws IOException, ReportWriterException
   {
@@ -44,7 +95,14 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     writeCloseTag(writer, ExtReportHandler.FUNCTIONS_TAG);
   }
 
-
+  /**
+   * Writes a collection of functions/expressions to XML.
+   * 
+   * @param writer  the writer.
+   * @param exp  the collection.
+   * 
+   * @throws IOException if there is an I/O problem.
+    */
   public void writeExpressions (Writer writer, ExpressionCollection exp)
       throws IOException
   {
@@ -85,6 +143,14 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     }
   }
 
+  /**
+   * Writes the property references to XML.
+   * 
+   * @param writer  the writer.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException ??
+   */
   private void writePropertyRefs (Writer writer)
       throws IOException, ReportWriterException
   {
@@ -114,6 +180,16 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     }
   }
 
+  /**
+   * Writes an object description to XML.
+   * 
+   * @param writer  the writer.
+   * @param od  the object description.
+   * @param o  the object.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException ??
+   */
   private void writeObjectDescription (Writer writer, ObjectDescription od, Object o)
     throws IOException, ReportWriterException
   {
@@ -142,16 +218,28 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
 
   }
 
+  /**
+   * Returns <code>true</code> if the object description is for a basic object, and 
+   * <code>false</code> otherwise.
+   * 
+   * @param od  the object description.
+   * 
+   * @return <code>true</code> or <code>false</code>.
+   */
   private boolean isBasicObject(ObjectDescription od)
   {
     Iterator odNames = od.getParameterNames();
     if (odNames.hasNext() == false)
+    {
       return false;
-
+    }
+    
     String param = (String) odNames.next();
     if (odNames.hasNext() == true)
+    {
       return false;
-
+    }
+    
     if (param.equals("value"))
     {
       if (od.getParameterDefinition("value").equals(String.class))

@@ -1,8 +1,39 @@
 /**
- * Date: Jan 13, 2003
- * Time: 1:20:24 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: ParserConfigWriter.java,v 1.2 2003/01/23 18:07:46 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -----------------------
+ * ParserConfigWriter.java
+ * -----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 21-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -15,13 +46,30 @@ import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
 
+/**
+ * A parser configuration writer.
+ * 
+ * @author Thomas Morgner
+ */
 public class ParserConfigWriter extends AbstractXMLDefinitionWriter
 {
+  /**
+   * Creates a new writer.
+   * 
+   * @param reportWriter  the report writer.
+   */
   public ParserConfigWriter(ReportWriter reportWriter)
   {
     super(reportWriter);
   }
 
+  /**
+   * Writes the XML.
+   * 
+   * @param writer  the writer.
+   * 
+   * @throws IOException if there is an I/O problem.
+   */
   public void write(Writer writer) throws IOException
   {
     writeTag(writer, ExtReportHandler.PARSER_CONFIG_TAG);
@@ -43,6 +91,15 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
     writer.write(getLineSeparator());
   }
 
+  /**
+   * Writes a factory element.
+   * 
+   * @param w  the writer.
+   * @param tagName  the tag name.
+   * @param it  ??
+   * 
+   * @throws IOException if there is an I/O problem.
+   */
   public void writeFactory (Writer w, String tagName, Iterator it)
     throws IOException
   {
@@ -54,12 +111,14 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
         Class itClass = itObject.getClass();
         Constructor c = itClass.getConstructor(new Class[0]);
         if (c == null)
+        {
           continue;
+        }
       }
       catch (Exception e)
       {
-        Log.warn ("FactoryClass " + itObject.getClass() +
-                  " has no default constructor. This class will be ignored"); 
+        Log.warn ("FactoryClass " + itObject.getClass() 
+                  + " has no default constructor. This class will be ignored"); 
         continue;
       }
 
@@ -67,4 +126,5 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
       writeTag(w, tagName, ParserConfigHandler.CLASS_ATTRIBUTE, className, CLOSE);
     }
   }
+
 }

@@ -1,8 +1,39 @@
 /**
- * Date: Jan 30, 2003
- * Time: 9:44:28 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: ReportConverterGUI.java,v 1.2 2003/02/02 23:43:50 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -----------------------
+ * ReportConverterGUI.java
+ * -----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 21-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -20,7 +51,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -31,10 +61,21 @@ import java.io.File;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
+/**
+ * A utility application for reporting XML report files from the old format to the 
+ * new format.
+ * 
+ * @author Thomas Morgner.
+ */
 public class ReportConverterGUI extends JFrame
 {
+  /** The source field. */
   private JTextField sourceField;
+  
+  /** The target field. */
   private JTextField targetField;
+  
+  /** A file chooser. */  
   private JFileChooser fileChooser;
 
   /** Localised resources. */
@@ -44,6 +85,9 @@ public class ReportConverterGUI extends JFrame
   public static final String BASE_RESOURCE_CLASS =
       "com.jrefinery.report.resources.JFreeReportResources";
 
+  /**
+   * An action for selecting the target. 
+   */
   private class SelectTargetAction extends AbstractAction
   {
     /**
@@ -53,11 +97,14 @@ public class ReportConverterGUI extends JFrame
     public SelectTargetAction()
     {
       putValue(Action.NAME, getResources().getString("convertdialog.action.selectTarget.name"));
-      putValue(Action.SHORT_DESCRIPTION, getResources().getString("convertdialog.action.selectTarget.description"));
+      putValue(Action.SHORT_DESCRIPTION, 
+               getResources().getString("convertdialog.action.selectTarget.description"));
     }
 
     /**
      * Invoked when an action occurs.
+     * 
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -65,6 +112,9 @@ public class ReportConverterGUI extends JFrame
     }
   }
 
+  /**
+   * An action for selecting the source file.
+   */
   private class SelectSourceAction extends AbstractAction
   {
     /**
@@ -74,11 +124,14 @@ public class ReportConverterGUI extends JFrame
     public SelectSourceAction()
     {
       putValue(Action.NAME, getResources().getString("convertdialog.action.selectSource.name"));
-      putValue(Action.SHORT_DESCRIPTION, getResources().getString("convertdialog.action.selectSource.description"));
+      putValue(Action.SHORT_DESCRIPTION, 
+               getResources().getString("convertdialog.action.selectSource.description"));
     }
 
     /**
      * Invoked when an action occurs.
+     * 
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -86,6 +139,9 @@ public class ReportConverterGUI extends JFrame
     }
   }
 
+  /**
+   * An action for converting an XML report definition from the old format to the new.
+   */
   private class ConvertAction extends AbstractAction
   {
     /**
@@ -95,11 +151,14 @@ public class ReportConverterGUI extends JFrame
     public ConvertAction()
     {
       putValue(Action.NAME, getResources().getString("convertdialog.action.convert.name"));
-      putValue(Action.SHORT_DESCRIPTION, getResources().getString("convertdialog.action.convert.description"));
+      putValue(Action.SHORT_DESCRIPTION, 
+               getResources().getString("convertdialog.action.convert.description"));
     }
 
     /**
      * Invoked when an action occurs.
+     * 
+     * @param e  the action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -108,13 +167,7 @@ public class ReportConverterGUI extends JFrame
   }
 
   /**
-   * Constructs a new frame that is initially invisible.
-   * <p>
-   * This constructor sets the component's locale property to the value
-   * returned by <code>JComponent.getDefaultLocale</code>.
-   *
-   * @see Component#setSize
-   * @see Component#setVisible
+   * Default constructor.
    */
   public ReportConverterGUI()
   {
@@ -188,20 +241,22 @@ public class ReportConverterGUI extends JFrame
     setContentPane(contentPane);
 
     fileChooser = new JFileChooser();
-    fileChooser.addChoosableFileFilter(new FilesystemFilter(new String[]{".xml"}, "XML-Report definitions", true));
+    fileChooser.addChoosableFileFilter(new FilesystemFilter(new String[]{".xml"}, 
+                                       "XML-Report definitions", true));
     fileChooser.setMultiSelectionEnabled(false);
 
     setTitle(getResources().getString("convertdialog.title"));
   }
 
+  /**
+   * Starting point for the utility application
+   * 
+   * @param args  ignored.
+   */
   public static void main (String [] args)
   {
     ReportConverterGUI gui = new ReportConverterGUI();
     gui.addWindowListener(new WindowAdapter(){
-      /**
-       * Invoked when a window is in the process of being closed.
-       * The close operation can be overridden at this point.
-       */
       public void windowClosing(WindowEvent e)
       {
         System.exit(0);
@@ -215,6 +270,8 @@ public class ReportConverterGUI extends JFrame
    * Validates the contents of the dialogs input fields. If the selected file exists, it is also
    * checked for validity.
    *
+   * @param filename  the file name.
+   * 
    * @return true, if the input is valid, false otherwise
    */
   public boolean performTargetValidate(String filename)
@@ -267,6 +324,8 @@ public class ReportConverterGUI extends JFrame
    * Validates the contents of the dialogs input fields. If the selected file exists, it is also
    * checked for validity.
    *
+   * @param filename  the file name.
+   * 
    * @return true, if the input is valid, false otherwise
    */
   public boolean performSourceValidate(String filename)
@@ -305,10 +364,10 @@ public class ReportConverterGUI extends JFrame
   }
 
   /**
-   * Retrieves the resources for this PreviewFrame. If the resources are not initialized,
+   * Retrieves the resources for the frame. If the resources are not initialized,
    * they get loaded on the first call to this method.
    *
-   * @return this frames ResourceBundle.
+   * @return The resources.
    */
   private ResourceBundle getResources()
   {
@@ -319,30 +378,56 @@ public class ReportConverterGUI extends JFrame
     return resources;
   }
 
+  /**
+   * Sets the source file.
+   * 
+   * @param file  the file name.
+   */
   private void setSourceFile (String file)
   {
     sourceField.setText(file);
   }
 
+  /**
+   * Sets the target file.
+   * 
+   * @param file  the file name.
+   */
   private void setTargetFile (String file)
   {
     targetField.setText(file);
   }
 
+  /**
+   * Returns the source file name.
+   * 
+   * @return The name.
+   */
   private String getSourceFile ()
   {
     return sourceField.getText();
   }
 
+  /** 
+   * Returns the name of the target file.
+   * 
+   * @return The name.
+   */
   private String getTargetFile ()
   {
     return targetField.getText();
   }
 
+  /**
+   * Performs the conversion, returning <code>true</code> if the conversion is successful, and
+   * <code>false</code> otherwise.
+   * 
+   * @return A boolean.
+   */
   public boolean convert ()
   {
-    if (performSourceValidate(getSourceFile()) &&
-        performTargetValidate(getTargetFile()))
+    if (performSourceValidate(getSourceFile()) 
+        && performTargetValidate(getTargetFile()))
     {
       ReportConverter converter = new ReportConverter();
       try
@@ -359,9 +444,13 @@ public class ReportConverterGUI extends JFrame
     return false;
   }
 
-
   /**
-   * selects a file to use as target for the report processing.
+   * Selects a file to use.
+   * 
+   * @param filename  the current selection.
+   * @param appendExt  append an extension?
+   * 
+   * @return The file name.
    */
   protected String performSelectFile(String filename, boolean appendExt)
   {
@@ -376,7 +465,7 @@ public class ReportConverterGUI extends JFrame
 
       if (appendExt)
       {
-        if ((StringUtil.endsWithIgnoreCase(selFileName,".xml") == false))
+        if ((StringUtil.endsWithIgnoreCase(selFileName, ".xml") == false))
         {
           selFileName = selFileName + ".xml";
         }

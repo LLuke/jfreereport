@@ -1,8 +1,39 @@
 /**
- * Date: Jan 13, 2003
- * Time: 7:06:26 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: ReportDescriptionWriter.java,v 1.3 2003/01/23 18:07:46 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------------------
+ * ReportDescriptionWriter.java
+ * ----------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 21-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -30,18 +61,40 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * A report description writer.  The {@link ReportDefinitionWriter} class is responsible for
+ * writing the complete XML report definition file, but it delegates one large section (the
+ * report description) to this class.
+ * 
+ * @author Thomas Morgner.
+ */
 public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 {
+  /**
+   * Creates a new report description writer.
+   * 
+   * @param reportWriter  the report writer.
+   */
   public ReportDescriptionWriter(ReportWriter reportWriter)
   {
     super(reportWriter);
   }
 
+  /**
+   * Writes a report description element to a character stream writer.
+   * 
+   * @param writer  the character stream writer.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
+   */
   public void write(Writer writer) throws IOException, ReportWriterException
   {
     writeTag(writer, ExtReportHandler.REPORT_DESCRIPTION_TAG);
-    writeBand(writer, ReportDescriptionHandler.REPORT_HEADER_TAG, getReport().getReportHeader(), null);
-    writeBand(writer, ReportDescriptionHandler.REPORT_FOOTER_TAG, getReport().getReportFooter(), null);
+    writeBand(writer, ReportDescriptionHandler.REPORT_HEADER_TAG, 
+              getReport().getReportHeader(), null);
+    writeBand(writer, ReportDescriptionHandler.REPORT_FOOTER_TAG, 
+              getReport().getReportFooter(), null);
     writeBand(writer, ReportDescriptionHandler.PAGE_HEADER_TAG, getReport().getPageHeader(), null);
     writeBand(writer, ReportDescriptionHandler.PAGE_FOOTER_TAG, getReport().getPageFooter(), null);
     writeGroups(writer);
@@ -49,6 +102,17 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     writeCloseTag(writer, ExtReportHandler.REPORT_DESCRIPTION_TAG);
   }
 
+  /**
+   * Writes an element for a report band.
+   * 
+   * @param writer  a character stream writer.
+   * @param tagName  the tag name (for the band).
+   * @param band  the band.
+   * @param parent  the parent band.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
+   */
   private void writeBand (Writer writer, String tagName, Band band, Band parent)
     throws IOException, ReportWriterException
   {
@@ -66,7 +130,8 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     writeCloseTag(writer, ElementHandler.STYLE_TAG);
 
     writeTag(writer, BandHandler.DEFAULT_STYLE_TAG);
-    StyleWriter defaultStyleWriter = new StyleWriter(getReportWriter(), band.getBandDefaults(), null);
+    StyleWriter defaultStyleWriter = new StyleWriter(getReportWriter(), band.getBandDefaults(), 
+                                                     null);
     defaultStyleWriter.write(writer);
     writeCloseTag(writer, BandHandler.DEFAULT_STYLE_TAG);
 
@@ -98,12 +163,24 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     writeCloseTag(writer, tagName);
   }
 
+  /**
+   * Writes an element to a character stream writer.
+   * 
+   * @param writer  the character stream writer.
+   * @param element  the element.
+   * @param parent  the band.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
+   */
   private void writeElement (Writer writer, Element element, Band parent)
     throws IOException, ReportWriterException
   {
     if (parent.getElements().indexOf(element) == -1)
+    {
       throw new IllegalArgumentException("The given Element is no child of the band");
-
+    }
+    
     Properties p = new Properties();
     p.setProperty ("name", element.getName());
     p.setProperty ("type", element.getContentType());
@@ -111,7 +188,8 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
     writeTag(writer, ElementHandler.STYLE_TAG);
 
-    StyleWriter styleWriter = new StyleWriter(getReportWriter(), element.getStyle(), parent.getBandDefaults());
+    StyleWriter styleWriter = new StyleWriter(getReportWriter(), element.getStyle(), 
+                                              parent.getBandDefaults());
     styleWriter.write(writer);
     writeCloseTag(writer, ElementHandler.STYLE_TAG);
 
@@ -130,6 +208,15 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     writeCloseTag(writer, BandHandler.ELEMENT_TAG);
   }
 
+  /**
+   * Writes a template to a character stream writer.
+   * 
+   * @param writer  the character stream writer.
+   * @param template  the template.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
+   */
   private void writeTemplate (Writer writer, Template template)
     throws IOException, ReportWriterException
   {
@@ -154,6 +241,15 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     writeCloseTag(writer, ElementHandler.TEMPLATE_TAG);
   }
 
+  /**
+   * Writes a data source to a character stream writer.
+   * 
+   * @param writer  the character stream writer.
+   * @param datasource  the datasource.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
+   */
   private void writeDataSource (Writer writer, DataSource datasource)
     throws IOException, ReportWriterException
   {
@@ -168,14 +264,23 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     DataSourceCollector dataSourceCollector = getReportWriter().getDataSourceCollector();
     String dsname = dataSourceCollector.getDataSourceName(od);
     if (dsname == null)
+    {
       throw new ReportWriterException("No name for DataSource " + datasource);
-
+    }
 
     writeTag(writer, DataSourceHandler.DATASOURCE_TAG, "type", dsname, OPEN);
     dsWriter.write(writer);
     writeCloseTag(writer, DataSourceHandler.DATASOURCE_TAG);
   }
 
+  /**
+   * Writes groups to a character stream writer.
+   * 
+   * @param writer  the character stream writer.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
+   */
   private void writeGroups (Writer writer)
       throws IOException, ReportWriterException
   {

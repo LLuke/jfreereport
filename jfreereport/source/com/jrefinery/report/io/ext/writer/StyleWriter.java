@@ -1,8 +1,39 @@
 /**
- * Date: Jan 13, 2003
- * Time: 6:40:10 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: StyleWriter.java,v 1.2 2003/01/22 19:38:28 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------
+ * StyleWriter.java
+ * ----------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 21-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -24,11 +55,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * A style writer.
+ * 
+ * @author Thomas Morgner.
+ */
 public class StyleWriter extends AbstractXMLDefinitionWriter
 {
+  /** The element style sheet. */
   private ElementStyleSheet elementStyleSheet;
+  
+  /** The default style sheet. */
   private ElementStyleSheet defaultStyleSheet;
 
+  /**
+   * Creates a new writer.
+   * 
+   * @param reportWriter  the report writer.
+   * @param elementStyleSheet  the element style sheet.
+   * @param defaultStyleSheet  the default style sheet.
+   */
   public StyleWriter(ReportWriter reportWriter,
                      ElementStyleSheet elementStyleSheet,
                      ElementStyleSheet defaultStyleSheet)
@@ -38,6 +84,14 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     this.defaultStyleSheet = defaultStyleSheet;
   }
 
+  /**
+   * Writes the style.
+   * 
+   * @param writer  the character stream writer.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
+   */
   public void write(Writer writer) throws IOException, ReportWriterException
   {
     List parents = elementStyleSheet.getParents();
@@ -62,6 +116,16 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     }
   }
 
+  /**
+   * ??
+   * 
+   * @param w  the character stream writer.
+   * @param key  the key.
+   * @param o  the object.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
+   */
   private void writeKeyValue (Writer w, StyleKey key, Object o)
     throws IOException, ReportWriterException
   {
@@ -72,7 +136,8 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
       od = cc.getDescriptionForClass(o.getClass());
       if (od == null)
       {
-        throw new ReportWriterException("Unable to find object description for key: "+ key.getName());
+        throw new ReportWriterException("Unable to find object description for key: "
+                                        + key.getName());
       }
     }
 
@@ -108,6 +173,14 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     }
   }
 
+  /**
+   * Returns <code>true</code> if this is a basic key, and <code>false</code> otherwise.
+   * 
+   * @param parameters  the parameters.
+   * @param od  the object description.
+   * 
+   * @return A boolean.
+   */
   private boolean isBasicKey(List parameters, ObjectDescription od)
   {
     if (parameters.size() == 1)
@@ -124,6 +197,13 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     return false;
   }
 
+  /**
+   * Returns a list of parameter names.
+   * 
+   * @param d  the object description.
+   * 
+   * @return The list.
+   */
   private ArrayList getParameterNames (ObjectDescription d)
   {
     ArrayList list = new ArrayList();
@@ -136,20 +216,31 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     return list;
   }
 
+  /**
+   * Returns <code>true</code> if the style sheet is the default, and <code>false</code> otherwise.
+   * 
+   * @param es  the style sheet.
+   * 
+   * @return A boolean.
+   */
   private boolean isDefaultStyleSheet (ElementStyleSheet es)
   {
     if (es == BandDefaultStyleSheet.getBandDefaultStyle())
+    {
       return true;
-
+    }
     if (es == ElementDefaultStyleSheet.getDefaultStyle())
+    {
       return true;
-
+    }
     if (es == ShapeElement.getDefaultStyle())
+    {
       return true;
-
+    }
     if (es == defaultStyleSheet)
+    {
       return true;
-
+    }
     return false;
   }
 }

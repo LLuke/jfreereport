@@ -1,9 +1,41 @@
 /**
- * Date: Jan 13, 2003
- * Time: 1:01:18 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.5 2003/01/30 22:52:39 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * --------------------------------
+ * AbstractXMLDefinitionWriter.java
+ * --------------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 20-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.io.ext.writer;
 
 import com.jrefinery.report.JFreeReport;
@@ -28,15 +60,33 @@ import java.io.Writer;
 import java.util.Enumeration;
 import java.util.Properties;
 
+/**
+ * A base class for writer classes for the JFreeReport XML report files.
+ * 
+ * @author Thomas Morgner
+ */
 public abstract class AbstractXMLDefinitionWriter
 {
+  /** A constant for close. */
   public static final boolean CLOSE = true;
+  
+  /** A constant for open. */
   public static final boolean OPEN = false;
 
+  /** A report writer. */
   private ReportWriter reportWriter;
+
+  /** The line separator. */
   private static String lineSeparator;
+  
+  /** A list of safe tags. */
   private static SafeTagList safeTags;
 
+  /**
+   * Returns the tags that can safely extend over several lines in the XML definition. 
+   * 
+   * @return The safe tags.
+   */
   public static SafeTagList getSafeTags()
   {
     if (safeTags == null)
@@ -102,6 +152,11 @@ public abstract class AbstractXMLDefinitionWriter
     return safeTags;
   }
 
+  /**
+   * Returns the line separator.
+   * 
+   * @return The line separator.
+   */
   public static String getLineSeparator ()
   {
     if (lineSeparator == null)
@@ -111,21 +166,44 @@ public abstract class AbstractXMLDefinitionWriter
     return lineSeparator;
   }
 
+  /**
+   * Creates a new writer.
+   * 
+   * @param reportWriter  the report writer.
+   */
   public AbstractXMLDefinitionWriter(ReportWriter reportWriter)
   {
     this.reportWriter = reportWriter;
   }
 
+  /**
+   * Returns the report writer.
+   * 
+   * @return The report writer.
+   */
   public ReportWriter getReportWriter()
   {
     return reportWriter;
   }
 
+  /**
+   * Returns the report.
+   * 
+   * @return The report.
+   */
   public JFreeReport getReport ()
   {
     return getReportWriter().getReport();
   }
 
+  /**
+   * Writes an opening XML tag that has no attributes.
+   * 
+   * @param w  the writer.
+   * @param name  the tag name.
+   * 
+   * @throws IOException if there is an I/O problem.
+   */
   public void writeTag (Writer w, String name) throws IOException
   {
     w.write("<");
@@ -137,7 +215,14 @@ public abstract class AbstractXMLDefinitionWriter
     }
   }
 
-
+  /**
+   * Writes a closing XML tag.
+   * 
+   * @param w  the writer.
+   * @param tag  the tag name.
+   * 
+   * @throws IOException if there is an I/O problem.
+   */
   public void writeCloseTag(Writer w, String tag) throws IOException
   {
     w.write("</");
@@ -149,14 +234,35 @@ public abstract class AbstractXMLDefinitionWriter
     }
   }
 
-  public void writeTag (Writer w, String name, String attributeName, String attributeValue, boolean close)
-    throws IOException
+  /**
+   * Writes an opening XML tag with an attribute/value pair.
+   * 
+   * @param w  the writer.
+   * @param name  the tag name.
+   * @param attributeName  the attribute name.
+   * @param attributeValue  the attribute value.
+   * @param close  controls whether the tag is closed.
+   * 
+   * @throws IOException if there is an I/O problem.
+   */
+  public void writeTag (Writer w, String name, String attributeName, String attributeValue, 
+                        boolean close) throws IOException
   {
     Properties attr = new Properties();
     attr.setProperty(attributeName, attributeValue);
     writeTag(w, name, attr, close);
   }
 
+  /**
+   * Writes an opening XML tag along with a list of attribute/value pairs.
+   * 
+   * @param w  the writer.
+   * @param name  the tag name.
+   * @param attributes  the attributes.
+   * @param close  controls whether the tag is closed.
+   * 
+   * @throws IOException if there is an I/O problem.
+   */
   public void writeTag (Writer w, String name, Properties attributes, boolean close)
     throws IOException
   {
@@ -191,6 +297,14 @@ public abstract class AbstractXMLDefinitionWriter
     }
   }
 
+  /**
+   * Normalises a string, replacing certain characters with their escape sequences so that
+   * the XML text is not corrupted.
+   * 
+   * @param s  the string.
+   * 
+   * @return The normalised string.
+   */
   public static String normalize(String s)
   {
     StringBuffer str = new StringBuffer();
@@ -253,5 +367,14 @@ public abstract class AbstractXMLDefinitionWriter
     return (str.toString());
   }
 
+  /**
+   * ??
+   *  
+   * @param writer  the writer.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException ??
+   */
   public abstract void write (Writer writer) throws IOException, ReportWriterException;
+
 }

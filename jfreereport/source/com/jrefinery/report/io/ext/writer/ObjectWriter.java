@@ -1,9 +1,41 @@
 /**
- * Date: Jan 13, 2003
- * Time: 6:32:21 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: ObjectWriter.java,v 1.3 2003/01/23 18:07:46 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -----------------
+ * ObjectWriter.java
+ * -----------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 20-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.io.ext.writer;
 
 import com.jrefinery.report.io.ext.CompoundObjectHandler;
@@ -19,40 +51,85 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * A writer.
+ * 
+ * @author Thomas Morgner.
+ */
 public class ObjectWriter extends AbstractXMLDefinitionWriter
 {
+  /** The base object. */
   private Object baseObject;
+  
+  /** The object description. */
   private ObjectDescription objectDescription;
+  
+  /** The object factory. */
   private ClassFactoryCollector cc;
 
-  public ObjectWriter(ReportWriter reportWriter, Object baseObject, ObjectDescription objectDescription)
+  /**
+   * Creates a new writer.
+   * 
+   * @param reportWriter  the report writer.
+   * @param baseObject  the base object.
+   * @param objectDescription  the object description.
+   */
+  public ObjectWriter(ReportWriter reportWriter, Object baseObject, 
+                      ObjectDescription objectDescription)
   {
     super(reportWriter);
     if (baseObject == null)
+    {
       throw new NullPointerException("BaseObject is null");
+    }
     if (objectDescription == null)
+    {
       throw new NullPointerException("ObjectDescription is null");
-
+    }
+    
     this.baseObject = baseObject;
     this.objectDescription = objectDescription;
     cc = getReportWriter().getClassFactoryCollector();
   }
 
+  /**
+   * Returns the object description.
+   * 
+   * @return The object description.
+   */
   public ObjectDescription getObjectDescription()
   {
     return objectDescription;
   }
 
+  /**
+   * Returns the base object.
+   * 
+   * @return The base object.
+   */
   public Object getBaseObject()
   {
     return baseObject;
   }
 
+  /**
+   * Returns the object factory.
+   * 
+   * @return The object factory.
+   */
   public ClassFactoryCollector getClassFactoryCollector ()
   {
     return cc;
   }
 
+  /**
+   * Writes the description.
+   * 
+   * @param writer  the writer.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException ??.
+   */
   public void write(Writer writer) throws IOException, ReportWriterException
   {
     writer.flush();
@@ -74,6 +151,13 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     }
   }
 
+  /**
+   * Returns a description of a parameter.
+   * 
+   * @param name  the parameter name.
+   * 
+   * @return The description.
+   */
   protected ObjectDescription getParameterDescription (String name)
   {
     Class parameterClass = objectDescription.getParameterDefinition(name);
@@ -84,8 +168,10 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     {
       Object o = objectDescription.getParameter(name);
       if (o == null)
+      {
         return null;
-
+      }
+      
       parameterDescription = cc.getDescriptionForClass(o.getClass());
       if (parameterDescription == null)
       {
@@ -95,7 +181,15 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     return parameterDescription;
   }
 
-
+  /**
+   * Writes a parameter to XML.
+   * 
+   * @param writer  the writer.
+   * @param parameterName  the parameter name.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException ??.
+   */
   protected void writeParameter (Writer writer, String parameterName)
     throws IOException, ReportWriterException
   {
@@ -110,9 +204,10 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     ObjectDescription parameterDescription = getParameterDescription(parameterName);
     if (parameterDescription == null)
     {
-      Log.debug("Parameter:" + parameterName + " Value: " + objectDescription.getParameter(parameterName));
-      throw new ReportWriterException("Unable to get Parameter description for " +
-                                      getBaseObject() + " Parameter: " + parameterName);
+      Log.debug("Parameter:" + parameterName + " Value: " 
+                + objectDescription.getParameter(parameterName));
+      throw new ReportWriterException("Unable to get Parameter description for " 
+                                      + getBaseObject() + " Parameter: " + parameterName);
     }
 
     try
@@ -135,8 +230,10 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     if (isBasicObject(parameterNames, parameterDescription))
     {
       writeTag(writer, CompoundObjectHandler.BASIC_OBJECT_TAG, p, OPEN);
-      Log.debug ("Write BasicObject: " + parameterName + " -> " + parameterDescription.getParameter("value"));
-      Log.debug ("Write BasicObject: " + parameterName + " -> " + parameterDescription.getObjectClass());
+      Log.debug ("Write BasicObject: " + parameterName + " -> " 
+                 + parameterDescription.getParameter("value"));
+      Log.debug ("Write BasicObject: " + parameterName + " -> " 
+                 + parameterDescription.getObjectClass());
       writer.write(normalize((String) parameterDescription.getParameter("value")));
       writeCloseTag(writer, CompoundObjectHandler.BASIC_OBJECT_TAG);
     }
@@ -144,7 +241,8 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     {
       writeTag(writer, CompoundObjectHandler.COMPOUND_OBJECT_TAG, p, OPEN);
 
-      ObjectWriter objWriter = new ObjectWriter(getReportWriter(), parameterValue, parameterDescription);
+      ObjectWriter objWriter = new ObjectWriter(getReportWriter(), parameterValue, 
+                                                parameterDescription);
       objWriter.write(writer);
 
       writeCloseTag(writer, CompoundObjectHandler.COMPOUND_OBJECT_TAG);
@@ -152,11 +250,21 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
   }
 
+  /**
+   * Returns <code>true</code> if this is a basic object, and <code>false</code> otherwise.
+   * 
+   * @param parameters  the parameter.
+   * @param od  the descriptions.
+   *
+   * @return A boolean.
+   */
   protected static boolean isBasicObject(List parameters, ObjectDescription od)
   {
     if (od == null)
+    {
       throw new NullPointerException();
-
+    }
+    
     if (parameters.size() == 1)
     {
       String param = (String) parameters.get(0);
@@ -171,6 +279,13 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     return false;
   }
 
+  /**
+   * Returns a list of parameter names.
+   * 
+   * @param d  the description.
+   * 
+   * @return The list.
+   */
   protected static ArrayList getParameterNames (ObjectDescription d)
   {
     ArrayList list = new ArrayList();
@@ -183,6 +298,5 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     }
     return list;
   }
-
 
 }

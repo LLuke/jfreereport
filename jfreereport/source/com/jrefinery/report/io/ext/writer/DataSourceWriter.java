@@ -1,9 +1,41 @@
 /**
- * Date: Jan 22, 2003
- * Time: 5:02:13 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: DataSourceWriter.java,v 1.2 2003/01/23 18:07:46 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ---------------------
+ * DataSourceWriter.java
+ * ---------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 20-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.io.ext.writer;
 
 import com.jrefinery.report.filter.DataSource;
@@ -14,16 +46,39 @@ import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
 import java.io.IOException;
 import java.io.Writer;
 
+/**
+ * A data-source writer.
+ * 
+ * @author Thomas Morgner.
+ */
 public class DataSourceWriter extends ObjectWriter
 {
+  /** The data-source. */
   private DataSourceCollector dataSourceCollector;
 
-  public DataSourceWriter(ReportWriter reportWriter, Object baseObject, ObjectDescription objectDescription)
+  /**
+   * Creates a new writer.
+   * 
+   * @param reportWriter  the report writer.
+   * @param baseObject  the base object.
+   * @param objectDescription the object description.
+   */
+  public DataSourceWriter(ReportWriter reportWriter, Object baseObject, 
+                          ObjectDescription objectDescription)
   {
     super(reportWriter, baseObject, objectDescription);
     dataSourceCollector = getReportWriter().getDataSourceCollector();
   }
 
+  /**
+   * Writes a parameter.
+   * 
+   * @param writer  the writer.
+   * @param name  the name.
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException ??
+   */
   protected void writeParameter(Writer writer, String name)
       throws IOException, ReportWriterException
   {
@@ -35,8 +90,8 @@ public class DataSourceWriter extends ObjectWriter
 
       if (dsname == null)
       {
-        throw new ReportWriterException("The datasource type is not registered: " +
-                                        ds.getClass());
+        throw new ReportWriterException("The datasource type is not registered: " 
+                                        + ds.getClass());
       }
 
       writeTag(writer, DataSourceHandler.DATASOURCE_TAG, "type", dsname, OPEN);
