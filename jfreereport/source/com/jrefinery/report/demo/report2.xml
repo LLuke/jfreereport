@@ -52,7 +52,7 @@
             <!-- GROUP FOOTER -->
             <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
                 <label name="Label 6" x="0" y="0" width="468" height="12" alignment="left">Total for letter:</label>
-                <number-function name="total1" function="Sum2" format="#,##0.00" x="376" y="0" width="76" height="12" alignment="right"></number-function>
+                <number-function name="total1" function="Sum2" format="#,##0.00" x="276" y="0" width="176" height="12" alignment="right"></number-function>
             </groupfooter>
 
 	    <!-- GROUP FIELDS -->
@@ -76,7 +76,7 @@
             <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
                 <line name="line1" x1="0" y1="1" x2="0" y2="1" weight="0.25"></line>
                 <label name="Label 8" x="0" y="0" width="100" height="12" alignment="left">Subtotal for color:</label>
-                <number-function name="total1" function="Sum1" format="#,##0.00" x="376" y="0" width="76" height="12" alignment="right"></number-function>
+                <number-function name="total1" function="Sum1" format="#,##0.00" x="276" y="0" width="176" height="12" alignment="right"></number-function>
             </groupfooter>
 
             <!-- GROUP FIELDS -->

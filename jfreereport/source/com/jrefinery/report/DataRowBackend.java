@@ -217,7 +217,7 @@ public class DataRowBackend implements Cloneable
 
   public int getColumnCount ()
   {
-    return (getTableEndIndex() + getFunctionEndIndex() + getExpressions().size());
+    return (getFunctionEndIndex() + getExpressions().size());
   }
 
   /**
@@ -245,7 +245,7 @@ public class DataRowBackend implements Cloneable
 
   public String getColumnName (int col)
   {
-    if (col > getColumnCount ())
+    if (col >= getColumnCount ())
       throw new IndexOutOfBoundsException ("requested " + col + " , have " + getColumnCount ());
 
 
