@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------
  * NoPrintCard.java
  * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: NoPrintCard.java,v 1.1 2003/04/02 21:24:00 taqua Exp $
  *
  * Changes
  * -------
@@ -36,14 +36,27 @@
  */
 package com.jrefinery.report.demo.cards;
 
+/**
+ * An empty card.
+ * 
+ * @author Thomas Morgner.
+ */
 public class NoPrintCard extends Card
 {
+  /**
+   * Creates an empty card.
+   */
   public NoPrintCard()
   {
   }
 
+  /**
+   * Returns the card type.
+   * 
+   * @return The card type.
+   */
   public CardType getType()
   {
-    return CardType.Empty;
+    return CardType.EMPTY;
   }
 }

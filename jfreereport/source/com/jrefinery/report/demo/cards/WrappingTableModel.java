@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * -----------------------
  * WrappingTableModel.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: WrappingTableModel.java,v 1.1 2003/04/02 21:24:01 taqua Exp $
  *
  * Changes
  * -------
@@ -37,13 +37,19 @@
 package com.jrefinery.report.demo.cards;
 
 import java.util.ArrayList;
-import javax.swing.table.TableModel;
-import javax.swing.event.TableModelListener;
+
 import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 
 import com.jrefinery.report.tablemodel.TableModelInfo;
 import com.jrefinery.report.util.Log;
 
+/**
+ * A wrapping table model.
+ * 
+ * @author Thomas Morgner
+ */
 public class WrappingTableModel implements TableModel
 {
   /**
@@ -114,16 +120,35 @@ public class WrappingTableModel implements TableModel
     }
   }
 
+  /** A table event translator. */
   private TableEventTranslator translator;
+  
+  /** The column prefix 1. */
   private String columnPrefix1;
+  
+  /** The column prefix 2. */
   private String columnPrefix2;
+  
+  /** The table model. */
   private TableModel model;
 
+  /**
+   * Creates a new wrapping table model.
+   * 
+   * @param model  the underlying table model.
+   */
   public WrappingTableModel (TableModel model)
   {
     this (model, "Column1_", "Column2_");
   }
 
+  /**
+   * Creates a new wrapping table model.
+   * 
+   * @param model  the underlying table model.
+   * @param prefix1  the first column prefix.
+   * @param prefix2  the second column prefix.
+   */
   public WrappingTableModel (TableModel model, String prefix1, String prefix2)
   {
     if (prefix1 == null)
@@ -144,11 +169,21 @@ public class WrappingTableModel implements TableModel
     this.translator = new TableEventTranslator();
   }
 
+  /**
+   * Returns column prefix 1.
+   * 
+   * @return Column prefix 1.
+   */
   public String getColumnPrefix1()
   {
     return columnPrefix1;
   }
 
+  /**
+   * Returns column prefix 2.
+   * 
+   * @return Column prefix 2.
+   */
   public String getColumnPrefix2()
   {
     return columnPrefix2;
@@ -187,8 +222,9 @@ public class WrappingTableModel implements TableModel
    * to initialize the table's column header name.  Note: this name does
    * not need to be unique; two columns in a table can have the same name.
    *
-   * @param	columnIndex	the index of the column
-   * @return  the name of the column
+   * @param columnIndex  the index of the column
+   * 
+   * @return the name of the column
    */
   public String getColumnName(int columnIndex)
   {
@@ -223,9 +259,10 @@ public class WrappingTableModel implements TableModel
    * is editable.  Otherwise, <code>setValueAt</code> on the cell will not
    * change the value of that cell.
    *
-   * @param	rowIndex	the row whose value to be queried
-   * @param	columnIndex	the column whose value to be queried
-   * @return	true if the cell is editable
+   * @param rowIndex  the row whose value to be queried
+   * @param columnIndex  the column whose value to be queried
+   * 
+   * @return true if the cell is editable
    * @see #setValueAt
    */
   public boolean isCellEditable(int rowIndex, int columnIndex)
@@ -233,11 +270,20 @@ public class WrappingTableModel implements TableModel
     int _columnIndex = (columnIndex % model.getColumnCount());
     int _rowIndex = calculateRow(rowIndex, columnIndex);
     if (_rowIndex >= model.getRowCount())
+    {
       return false;
-
+    }
     return model.isCellEditable(_rowIndex, _columnIndex);
   }
 
+  /**
+   * Calculates the physical row.
+   * 
+   * @param row  the (logical) row index.
+   * @param column  the column index.
+   *
+   * @return The physical row.
+   */
   private int calculateRow (int row, int column)
   {
     if (column < model.getColumnCount())
@@ -255,17 +301,19 @@ public class WrappingTableModel implements TableModel
    * Returns the value for the cell at <code>columnIndex</code> and
    * <code>rowIndex</code>.
    *
-   * @param	rowIndex	the row whose value is to be queried
-   * @param	columnIndex 	the column whose value is to be queried
-   * @return	the value Object at the specified cell
+   * @param rowIndex  the row whose value is to be queried
+   * @param columnIndex  the column whose value is to be queried
+   * 
+   * @return the value Object at the specified cell
    */
   public Object getValueAt(int rowIndex, int columnIndex)
   {
     int _columnIndex = (columnIndex % model.getColumnCount());
     int _rowIndex = calculateRow(rowIndex, columnIndex);
     if (_rowIndex >= model.getRowCount())
+    {
       return null;
-
+    }
     return model.getValueAt(_rowIndex, _columnIndex);
   }
 
@@ -273,9 +321,9 @@ public class WrappingTableModel implements TableModel
    * Sets the value in the cell at <code>columnIndex</code> and
    * <code>rowIndex</code> to <code>aValue</code>.
    *
-   * @param	aValue		 the new value
-   * @param	rowIndex	 the row whose value is to be changed
-   * @param	columnIndex 	 the column whose value is to be changed
+   * @param aValue  the new value
+   * @param rowIndex  the row whose value is to be changed
+   * @param columnIndex  the column whose value is to be changed
    * @see #getValueAt
    * @see #isCellEditable
    */
@@ -284,8 +332,9 @@ public class WrappingTableModel implements TableModel
     int _columnIndex = (columnIndex % model.getColumnCount());
     int _rowIndex = calculateRow(rowIndex, columnIndex);
     if (_rowIndex >= model.getRowCount())
+    {
       return;
-
+    }
     model.setValueAt(aValue, _rowIndex, _columnIndex);
   }
 
@@ -311,9 +360,13 @@ public class WrappingTableModel implements TableModel
     translator.removeTableModelListener(l);
   }
 
+  /**
+   * Test code - please ignore.
+   * 
+   * @param args  ignored.
+   */
   public static void main (String [] args)
   {
     TableModelInfo.printTableModel(new WrappingTableModel(new CardTableModel()));
-
   }
 }

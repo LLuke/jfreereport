@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * -------------------
  * CardTableModel.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: CardTableModel.java,v 1.1 2003/04/02 21:24:00 taqua Exp $
  *
  * Changes
  * -------
@@ -38,35 +38,65 @@ package com.jrefinery.report.demo.cards;
 
 import java.util.ArrayList;
 import java.util.Date;
+
 import javax.swing.table.AbstractTableModel;
 
+/**
+ * A card table model.
+ * 
+ * @author Thomas Morgner.
+ */
 public class CardTableModel extends AbstractTableModel
 {
+  /** Storage for the cards. */
   private ArrayList cards;
 
+  /** The type index. */
   private static final int POS_TYPE = 0;
+  
+  /** The name index. */
   private static final int POS_NAME = 1;
+  
+  /** The first name index. */
   private static final int POS_FIRSTNAME = 2;
+  
+  /** The card number index. */
   private static final int POS_CARDNR = 3;
+  
+  /** The login index. */
   private static final int POS_LOGIN = 4;
+  
+  /** The password index. */
   private static final int POS_PASSWORD = 5;
+  
+  /** The expiry date index. */
   private static final int POS_EXPIRES = 6;
 
+  /** The column names. */
   private static final String[] COL_NAMES =
-      {
-        "type", "name", "firstName", "cardNr", "login", "password", "expires"
-      };
+    {
+      "type", "name", "firstName", "cardNr", "login", "password", "expires"
+    };
 
+  /**
+   * Default constructor.
+   */
   public CardTableModel ()
   {
     cards = new ArrayList();
   }
 
+  /**
+   * Adds a card.
+   * 
+   * @param c  the card.
+   */
   public void addCard (Card c)
   {
     if (c == null)
+    {
       throw new NullPointerException();
-    
+    }
     cards.add(c);
   }
 
@@ -133,9 +163,10 @@ public class CardTableModel extends AbstractTableModel
    * Returns the value for the cell at <code>columnIndex</code> and
    * <code>rowIndex</code>.
    *
-   * @param	rowIndex	the row whose value is to be queried
-   * @param	columnIndex 	the column whose value is to be queried
-   * @return	the value Object at the specified cell
+   * @param rowIndex  the row whose value is to be queried
+   * @param columnIndex  the column whose value is to be queried
+   * 
+   * @return the value Object at the specified cell
    */
   public Object getValueAt(int rowIndex, int columnIndex)
   {
@@ -144,7 +175,7 @@ public class CardTableModel extends AbstractTableModel
     {
       return c.getType();
     }
-    if (c.getType() == CardType.Account)
+    if (c.getType() == CardType.ACCOUNT)
     {
       AccountCard ac = (AccountCard) c;
       if (columnIndex == POS_NAME)
@@ -164,8 +195,7 @@ public class CardTableModel extends AbstractTableModel
         return ac.getPassword();
       }
     }
-    else if ((c.getType() == CardType.Admin) ||
-             (c.getType() == CardType.User))
+    else if ((c.getType() == CardType.ADMIN) || (c.getType() == CardType.USER))
     {
       UserCard ac = (UserCard) c;
       if (columnIndex == POS_NAME)
@@ -193,7 +223,7 @@ public class CardTableModel extends AbstractTableModel
         return ac.getExpires();
       }
     }
-    else if (c.getType() == CardType.Free)
+    else if (c.getType() == CardType.FREE)
     {
       FreeCard ac = (FreeCard) c;
       if (columnIndex == POS_CARDNR)
@@ -205,7 +235,7 @@ public class CardTableModel extends AbstractTableModel
         return ac.getExpires();
       }
     }
-    else if (c.getType() == CardType.Prepaid)
+    else if (c.getType() == CardType.PREPAID)
     {
       PrepaidCard ac = (PrepaidCard) c;
       if (columnIndex == POS_NAME)

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * --------------
  * AdminCard.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * --------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AdminCard.java,v 1.1 2003/04/02 21:23:59 taqua Exp $
  *
  * Changes
  * -------
@@ -38,15 +38,37 @@ package com.jrefinery.report.demo.cards;
 
 import java.util.Date;
 
+/**
+ * An administrator's account card.
+ * 
+ * @author Thomas Morgner.
+ */
 public class AdminCard extends UserCard
 {
-  public AdminCard(String firstName, String lastName, String cardNr, String login, String password, Date expires)
+    
+  /**
+   * Creates a new administrator account card.
+   * 
+   * @param firstName  the first name.
+   * @param lastName  the last name.
+   * @param cardNr  the card number.
+   * @param login  the login id.
+   * @param password  the password.
+   * @param expires  the card expiry date.
+   */
+  public AdminCard(String firstName, String lastName, String cardNr, 
+                   String login, String password, Date expires)
   {
     super(firstName, lastName, cardNr, login, password, expires);
   }
 
+  /**
+   * Returns the account type (<code>CardType.ADMIN</code>).
+   * 
+   * @return The account type.
+   */
   public CardType getType()
   {
-    return CardType.Admin;
+    return CardType.ADMIN;
   }
 }

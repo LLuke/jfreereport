@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------
  * AccountCard.java
  * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AccountCard.java,v 1.1 2003/04/02 21:23:59 taqua Exp $
  *
  * Changes
  * -------
@@ -36,33 +36,72 @@
  */
 package com.jrefinery.report.demo.cards;
 
+/**
+ * A user account card.
+ * 
+ * @author Thomas Morgner.
+ */
 public class AccountCard extends PersonBoundCard
 {
+  /** The login id. */
   private String login;
+  
+  /** The password. */
   private String password;
 
-  public AccountCard(String firstName, String lastName, String cardNr, String login, String password)
+  /**
+   * Creates a new user account card.
+   * 
+   * @param firstName  the first name.
+   * @param lastName  the last name.
+   * @param cardNr  the card number.
+   * @param login  the login id.
+   * @param password  the password.
+   */
+  public AccountCard(String firstName, String lastName, String cardNr, 
+                     String login, String password)
   {
     super(firstName, lastName, cardNr);
-    if (login == null) throw new NullPointerException();
-    if (password == null) throw new NullPointerException();
+    if (login == null) 
+    {
+      throw new NullPointerException();
+    }
+    if (password == null) 
+    {
+      throw new NullPointerException();
+    }
 
     this.login = login;
     this.password = password;
   }
 
+  /**
+   * Returns the login id.
+   * 
+   * @return The login id.
+   */
   public String getLogin()
   {
     return login;
   }
 
+  /**
+   * Returns the password.
+   * 
+   * @return The password.
+   */
   public String getPassword()
   {
     return password;
   }
 
+  /**
+   * Returns the account type (<code>CardType.ACCOUNT</code>).
+   * 
+   * @return The account type.
+   */
   public CardType getType()
   {
-    return CardType.Account;
+    return CardType.ACCOUNT;
   }
 }

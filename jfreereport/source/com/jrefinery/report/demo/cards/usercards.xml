@@ -461,6 +461,7 @@
           This card never expires.
         -->
         <band name="Prepaid_card">
+
           <element type="text/plain" name="Name_Label">
             <template references="name-label-template"/>
             <style>
@@ -887,10 +888,9 @@
     <function class="com.jrefinery.report.function.EventMonitorFunction" name="monitor"/>
     <property-ref name="c_name">The Phone Company</property-ref>
     <property-ref name="c_address">11 Graham Bell Ave.
-      12312 San Francisco
-      Phone: 213123123123
-    </property-ref>
-    <function class="com.jrefinery.report.demo.cards.SelectCardFunction" name="select-right">
+12312 San Francisco 
+Phone: 213123123123</property-ref>
+    <function class="com.jrefinery.report.demo.cards.SelectCardFunction" name="select-left">
       <properties>
         <property name="field">C1_type</property>
         <property name="baseCard">C1_Root_design</property>
@@ -901,7 +901,7 @@
         <property name="Prepaid">Prepaid_card</property>
       </properties>
     </function>
-    <function class="com.jrefinery.report.demo.cards.SelectCardFunction" name="select-left">
+    <function class="com.jrefinery.report.demo.cards.SelectCardFunction" name="select-right">
       <properties>
         <property name="field">C2_type</property>
         <property name="baseCard">C2_Root_design</property>
