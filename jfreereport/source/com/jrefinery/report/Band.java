@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.8 2002/06/04 19:20:36 taqua Exp $
+ * $Id: Band.java,v 1.9 2002/07/03 18:49:45 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -58,7 +58,6 @@ import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.report.util.HashNMap;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.ReadOnlyList;
 
 import javax.swing.table.TableModel;
 import java.awt.Color;
@@ -70,6 +69,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Collections;
 import java.io.Serializable;
 
 /**
@@ -389,7 +389,7 @@ public abstract class Band implements Serializable, Cloneable
    */
   public List getElements ()
   {
-    return new ReadOnlyList (allElements);
+    return Collections.unmodifiableList(allElements);
   }
 
   /**

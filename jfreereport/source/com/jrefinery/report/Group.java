@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Group.java,v 1.6 2002/06/09 14:46:04 taqua Exp $
+ * $Id: Group.java,v 1.7 2002/07/03 18:49:45 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -41,14 +41,13 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.util.ReadOnlyList;
-
 import javax.swing.table.TableModel;
 import javax.swing.table.AbstractTableModel;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.io.Serializable;
 
 /**
@@ -186,7 +185,7 @@ public class Group implements Serializable, Cloneable
    */
   public List getFields ()
   {
-    return new ReadOnlyList (fields);
+    return Collections.unmodifiableList(fields);
   }
 
   /**
