@@ -30,7 +30,7 @@
  */
 package com.jrefinery.report.ext.demo;
 
-import com.jrefinery.report.demo.FirstDemoTableModel;
+import com.jrefinery.report.demo.SwingIconsDemoTableModel;
 import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
 import com.jrefinery.report.util.Log;
 
@@ -70,7 +70,7 @@ public class JFreeReportServlet extends HttpServlet
     AbstractPageableReportServletWorker worker =
         new DefaultPageableReportServletWorker(null,
                                                in,
-                                               new FirstDemoTableModel());
+                                               new SwingIconsDemoTableModel());
 
     try
     {

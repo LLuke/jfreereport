@@ -30,7 +30,7 @@
  */
 package com.jrefinery.report.ext.demo;
 
-import com.jrefinery.report.demo.FirstDemoTableModel;
+import com.jrefinery.report.demo.SwingIconsDemoTableModel;
 import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.util.Log;
 import com.keypoint.PngEncoder;
@@ -92,7 +92,7 @@ public class JFreeReportPngServlet extends HttpServlet
       AbstractPageableReportServletWorker worker =
           new DefaultPageableReportServletWorker(request.getSession(true),
                                                  in,
-                                                 new FirstDemoTableModel());
+                                                 new SwingIconsDemoTableModel());
       worker.getReport();
 
       String param = request.getParameter("page");

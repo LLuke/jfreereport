@@ -2,11 +2,11 @@
  * Date: Jan 24, 2003
  * Time: 11:36:44 PM
  *
- * $Id: JFreeReportHtmlServlet.java,v 1.1 2003/01/25 02:56:17 taqua Exp $
+ * $Id: JFreeReportHtmlServlet.java,v 1.2 2003/01/27 03:21:44 taqua Exp $
  */
 package com.jrefinery.report.ext.demo;
 
-import com.jrefinery.report.demo.FirstDemoTableModel;
+import com.jrefinery.report.demo.SwingIconsDemoTableModel;
 import com.jrefinery.report.targets.table.html.HtmlProcessor;
 import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
 import com.jrefinery.report.util.Log;
@@ -36,7 +36,7 @@ public class JFreeReportHtmlServlet extends HttpServlet
       throw new NullPointerException();
 
     AbstractTableReportServletWorker worker =
-        new DefaultTableReportServletWorker(in, new FirstDemoTableModel());
+        new DefaultTableReportServletWorker(in, new SwingIconsDemoTableModel());
 
     // display the content in the browser window (see RFC2183)
     response.setHeader("Content-Disposition", "inline; filename=\"" + "unknown.html" + "\"");
