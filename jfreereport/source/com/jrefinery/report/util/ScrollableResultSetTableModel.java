@@ -165,7 +165,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel
    * Returns the number of columns in the ResultSet. Returns 0 if no result set is set
    * or the column count could not be retrieved.
    *
-   * @see ResultSetMetaData.getColumnCount
+   * @see ResultSetMetaData#getColumnCount()
    */
   public int getColumnCount()
   {
@@ -189,7 +189,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel
   /**
    * Returns the columnLabel for the given column.
    *
-   * @see ResultSetMetaData.getColumnLabel
+   * @see ResultSetMetaData#getColumnLabel(int)
    */
   public String getColumnName(int column)
   {
