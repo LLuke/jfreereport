@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.38 2002/11/20 22:30:39 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.39 2002/11/27 12:20:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -57,6 +57,7 @@ package com.jrefinery.report.preview;
 import com.jrefinery.layout.CenterLayout;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
+import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.action.AboutAction;
 import com.jrefinery.report.action.CloseAction;
 import com.jrefinery.report.action.FirstPageAction;
@@ -76,6 +77,7 @@ import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.Log;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -94,25 +96,23 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.RepaintManager;
-import javax.swing.AbstractAction;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.print.PageFormat;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 import java.awt.print.Pageable;
 import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.MessageFormat;
@@ -133,6 +133,109 @@ public class PreviewFrame
     extends JFrame
     implements JFreeReportConstants
 {
+  private class WrapperAction implements Action
+  {
+    private Action parent;
+
+    public WrapperAction(Action parent)
+    {
+      setParent(parent);
+    }
+
+    public Action getParent()
+    {
+      return parent;
+    }
+
+    public void setParent(Action parent)
+    {
+      if (parent == null) throw new NullPointerException();
+      this.parent = parent;
+      registerAction(parent);
+    }
+
+    /**
+     * Gets one of this object's properties
+     * using the associated key.
+     * @see #putValue
+     */
+    public Object getValue(String key)
+    {
+      return parent.getValue(key);
+    }
+
+    /**
+     * Invoked when an action occurs.
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+      parent.actionPerformed(e);
+    }
+
+    /**
+     * Sets one of this object's properties
+     * using the associated key. If the value has
+     * changed, a <code>PropertyChangeEvent</code> is sent
+     * to listeners.
+     *
+     * @param key    a <code>String</code> containing the key
+     * @param value  an <code>Object</code> value
+     */
+    public void putValue(String key, Object value)
+    {
+      parent.putValue(key, value);
+    }
+
+    /**
+     * Sets the enabled state of the <code>Action</code>.  When enabled,
+     * any component associated with this object is active and
+     * able to fire this object's <code>actionPerformed</code> method.
+     * If the value has changed, a <code>PropertyChangeEvent</code> is sent
+     * to listeners.
+     *
+     * @param  b true to enable this <code>Action</code>, false to disable it
+     */
+    public void setEnabled(boolean b)
+    {
+      parent.setEnabled(b);
+    }
+
+    /**
+     * Returns the enabled state of the <code>Action</code>. When enabled,
+     * any component associated with this object is active and
+     * able to fire this object's <code>actionPerformed</code> method.
+     *
+     * @return true if this <code>Action</code> is enabled
+     */
+    public boolean isEnabled()
+    {
+      return parent.isEnabled();
+    }
+
+    /**
+     * Adds a <code>PropertyChange</code> listener. Containers and attached
+     * components use these methods to register interest in this
+     * <code>Action</code> object. When its enabled state or other property
+     * changes, the registered listeners are informed of the change.
+     *
+     * @param listener  a <code>PropertyChangeListener</code> object
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener)
+    {
+      parent.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * Removes a <code>PropertyChange</code> listener.
+     *
+     * @param listener  a <code>PropertyChangeListener</code> object
+     * @see #addPropertyChangeListener
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener)
+    {
+      parent.removePropertyChangeListener(listener);
+    }
+  }
 
   private class ReportPanePropertyChangeListener implements PropertyChangeListener
   {
@@ -183,7 +286,7 @@ public class PreviewFrame
       }
       else if (property.equals(ReportPane.ZOOMFACTOR_PROPERTY))
       {
-        Log.debug ("ZoomFactor changed!");
+        Log.debug("ZoomFactor changed!");
         validateButtons();
         validate();
       }
@@ -240,7 +343,7 @@ public class PreviewFrame
      *
      * @param e The action event.
      *
-     * @see ActionListener#actionPerformed(ActionEvent)
+     * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -312,7 +415,7 @@ public class PreviewFrame
      * jump to the last page of the report.
      *
      * @param e The action event.
-     * @see ActionListener#actionPerformed(ActionEvent)
+     * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -523,6 +626,8 @@ public class PreviewFrame
       try
       {
         int page = Integer.parseInt(result);
+
+        // thanks to anonymous
         if (page > 0 && page <= reportPane.getNumberOfPages())
         {
           reportPane.setPageNumber(page);
@@ -555,40 +660,40 @@ public class PreviewFrame
       "com.jrefinery.report.resources.JFreeReportResources";
 
   /** The 'about' action. */
-  private Action aboutAction;
+  private WrapperAction aboutAction;
 
   /** The 'save as' action. */
-  private Action saveAsAction;
+  private WrapperAction saveAsAction;
 
   /** The 'page setup' action. */
-  private Action pageSetupAction;
+  private WrapperAction pageSetupAction;
 
   /** The 'print' action. */
-  private Action printAction;
+  private WrapperAction printAction;
 
   /** The 'close' action. */
-  private Action closeAction;
+  private WrapperAction closeAction;
 
   /** The 'first page' action. */
-  private Action firstPageAction;
+  private WrapperAction firstPageAction;
 
   /** The 'last page' action. */
-  private Action lastPageAction;
+  private WrapperAction lastPageAction;
 
   /** The 'next page' action. */
-  private Action nextPageAction;
+  private WrapperAction nextPageAction;
 
   /** The 'previous page' action. */
-  private Action previousPageAction;
+  private WrapperAction previousPageAction;
 
   /** The 'zoom in' action. */
-  private Action zoomInAction;
+  private WrapperAction zoomInAction;
 
   /** The 'zoom out' action. */
-  private Action zoomOutAction;
+  private WrapperAction zoomOutAction;
 
   /** The 'goto' action. */
-  private Action gotoAction;
+  private WrapperAction gotoAction;
 
   /** The available zoom factors. */
   private static final double[] ZOOM_FACTORS = {0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 4.0};
@@ -626,7 +731,7 @@ public class PreviewFrame
    *
    * @param report The report to be displayed.
    */
-  public PreviewFrame(JFreeReport report)
+  public PreviewFrame(JFreeReport report) throws ReportProcessingException
   {
     // get a locale-specific resource bundle...
     setLargeIconsEnabled(true);
@@ -707,7 +812,7 @@ public class PreviewFrame
    *
    * @return the report pane.
    */
-  protected ReportPane createReportPane(JFreeReport report)
+  protected ReportPane createReportPane(JFreeReport report) throws ReportProcessingException
   {
     ReportPane reportPane = new ReportPane(report);
     return reportPane;
@@ -918,20 +1023,7 @@ public class PreviewFrame
    */
   protected void registerDefaultActions()
   {
-    registerAction(gotoAction);
-    registerAction(saveAsAction);
-    registerAction(pageSetupAction);
-    registerAction(printAction);
-    registerAction(aboutAction);
-    registerAction(closeAction);
-    registerAction(firstPageAction);
-    registerAction(lastPageAction);
-    registerAction(nextPageAction);
-    registerAction(previousPageAction);
-    registerAction(zoomInAction);
-    registerAction(zoomOutAction);
-
-    addWindowListener(new WindowAdapter ()
+    addWindowListener(new WindowAdapter()
     {
       /**
        * Invoked when a window is in the process of being closed.
@@ -939,7 +1031,7 @@ public class PreviewFrame
        */
       public void windowClosing(WindowEvent e)
       {
-        closeAction.actionPerformed (new ActionEvent (this, ActionEvent.ACTION_PERFORMED, "CloseFrame"));
+        getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "CloseFrame"));
       }
     }
     );
@@ -950,20 +1042,20 @@ public class PreviewFrame
    * creates all actions by calling the createXXXAction functions and assigning them to
    * the local variables.
    */
-  protected void createDefaultActions()
+  private void createDefaultActions()
   {
-    gotoAction = createDefaultGotoAction();
-    saveAsAction = createDefaultSaveAsAction();
-    pageSetupAction = createDefaultPageSetupAction();
-    printAction = createDefaultPrintAction();
-    aboutAction = createDefaultAboutAction();
-    closeAction = createDefaultCloseAction();
-    firstPageAction = createDefaultFirstPageAction();
-    lastPageAction = createDefaultLastPageAction();
-    nextPageAction = createDefaultNextPageAction();
-    previousPageAction = createDefaultPreviousPageAction();
-    zoomInAction = createDefaultZoomInAction();
-    zoomOutAction = createDefaultZoomOutAction();
+    gotoAction = new WrapperAction(createDefaultGotoAction());
+    saveAsAction = new WrapperAction(createDefaultSaveAsAction());
+    pageSetupAction = new WrapperAction(createDefaultPageSetupAction());
+    printAction = new WrapperAction(createDefaultPrintAction());
+    aboutAction = new WrapperAction(createDefaultAboutAction());
+    closeAction = new WrapperAction(createDefaultCloseAction());
+    firstPageAction = new WrapperAction(createDefaultFirstPageAction());
+    lastPageAction = new WrapperAction(createDefaultLastPageAction());
+    nextPageAction = new WrapperAction(createDefaultNextPageAction());
+    previousPageAction = new WrapperAction(createDefaultPreviousPageAction());
+    zoomInAction = new WrapperAction(createDefaultZoomInAction());
+    zoomOutAction = new WrapperAction(createDefaultZoomOutAction());
   }
 
   /**
@@ -1019,7 +1111,7 @@ public class PreviewFrame
     return new DefaultAboutAction();
   }
 
-  protected Action createZoomSelectAction ()
+  protected Action createZoomSelectAction()
   {
     return new ZoomSelectAction();
   }
@@ -1143,7 +1235,7 @@ public class PreviewFrame
     fileMenu.setMnemonic(mnemonic.charValue());
 
     JMenuItem gotoItem = new ActionMenuItem(gotoAction);
-    KeyStroke accelerator = (KeyStroke) gotoAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
+    KeyStroke accelerator = (KeyStroke) getGotoAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
     {
       gotoItem.setAccelerator(accelerator);
@@ -1153,7 +1245,7 @@ public class PreviewFrame
     fileMenu.addSeparator();
 
     JMenuItem saveAsItem = new ActionMenuItem(saveAsAction);
-    accelerator = (KeyStroke) saveAsAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
+    accelerator = (KeyStroke) getSaveAsAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
     {
       saveAsItem.setAccelerator(accelerator);
@@ -1163,7 +1255,7 @@ public class PreviewFrame
     fileMenu.addSeparator();
 
     JMenuItem setupItem = new ActionMenuItem(pageSetupAction);
-    accelerator = (KeyStroke) pageSetupAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
+    accelerator = (KeyStroke) getPageSetupAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
     {
       setupItem.setAccelerator(accelerator);
@@ -1171,7 +1263,7 @@ public class PreviewFrame
     fileMenu.add(setupItem);
 
     JMenuItem printItem = new ActionMenuItem(printAction);
-    accelerator = (KeyStroke) printAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
+    accelerator = (KeyStroke) getPrintAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
     {
       printItem.setAccelerator(accelerator);
@@ -1181,7 +1273,7 @@ public class PreviewFrame
     fileMenu.add(new JSeparator());
 
     JMenuItem closeItem = new ActionMenuItem(closeAction);
-    accelerator = (KeyStroke) closeAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
+    accelerator = (KeyStroke) getCloseAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
     {
       closeItem.setAccelerator(accelerator);
@@ -1299,6 +1391,7 @@ public class PreviewFrame
 
     return zoomPane;
   }
+
   /**
    * Updates the states of all buttons to reflect the state of the assigned ReportPane.
    */
@@ -1307,13 +1400,13 @@ public class PreviewFrame
     int pn = reportPane.getPageNumber();
     int mp = reportPane.getNumberOfPages();
 
-    lastPageAction.setEnabled(pn < mp);
-    nextPageAction.setEnabled(pn < mp);
-    previousPageAction.setEnabled(pn != 1);
-    firstPageAction.setEnabled(pn != 1);
+    getLastPageAction().setEnabled(pn < mp);
+    getNextPageAction().setEnabled(pn < mp);
+    getPreviousPageAction().setEnabled(pn != 1);
+    getFirstPageAction().setEnabled(pn != 1);
 
-    zoomOutAction.setEnabled(zoomSelect.getSelectedIndex() != 0);
-    zoomInAction.setEnabled(zoomSelect.getSelectedIndex() != (ZOOM_FACTORS.length - 1));
+    getZoomOutAction().setEnabled(zoomSelect.getSelectedIndex() != 0);
+    getZoomInAction().setEnabled(zoomSelect.getSelectedIndex() != (ZOOM_FACTORS.length - 1));
   }
 
   /**
@@ -1339,12 +1432,132 @@ public class PreviewFrame
   /**
    * Disposes the preview frame.
    */
-  public void dispose ()
+  public void dispose()
   {
     super.dispose();
 
     // Silly Swing keeps at least one reference in the RepaintManager to support DoubleBuffering
     // I dont want this here, as PreviewFrames are evil and resource expensive ...
     RepaintManager.setCurrentManager(null);
+  }
+
+  public Action getAboutAction()
+  {
+    return aboutAction.getParent();
+  }
+
+  public void setAboutAction(Action aboutAction)
+  {
+    this.aboutAction.setParent(aboutAction);
+  }
+
+  public Action getSaveAsAction()
+  {
+    return saveAsAction.getParent();
+  }
+
+  public void setSaveAsAction(Action saveAsAction)
+  {
+    this.saveAsAction.setParent(saveAsAction);
+  }
+
+  public Action getPageSetupAction()
+  {
+    return pageSetupAction.getParent();
+  }
+
+  public void setPageSetupAction(Action pageSetupAction)
+  {
+    this.pageSetupAction.setParent(pageSetupAction);
+  }
+
+  public Action getPrintAction()
+  {
+    return printAction.getParent();
+  }
+
+  public void setPrintAction(Action printAction)
+  {
+    this.printAction.setParent(printAction);
+  }
+
+  public Action getCloseAction()
+  {
+    return closeAction.getParent();
+  }
+
+  public void setCloseAction(Action closeAction)
+  {
+    this.closeAction.setParent(closeAction);
+  }
+
+  public Action getFirstPageAction()
+  {
+    return firstPageAction.getParent();
+  }
+
+  public void setFirstPageAction(Action firstPageAction)
+  {
+    this.firstPageAction.setParent(firstPageAction);
+  }
+
+  public Action getLastPageAction()
+  {
+    return lastPageAction.getParent();
+  }
+
+  public void setLastPageAction(Action lastPageAction)
+  {
+    this.lastPageAction.setParent(lastPageAction);
+  }
+
+  public Action getNextPageAction()
+  {
+    return nextPageAction.getParent();
+  }
+
+  public void setNextPageAction(Action nextPageAction)
+  {
+    this.nextPageAction.setParent(nextPageAction);
+  }
+
+  public Action getPreviousPageAction()
+  {
+    return previousPageAction.getParent();
+  }
+
+  public void setPreviousPageAction(Action previousPageAction)
+  {
+    this.previousPageAction.setParent(previousPageAction);
+  }
+
+  public Action getZoomInAction()
+  {
+    return zoomInAction.getParent();
+  }
+
+  public void setZoomInAction(Action zoomInAction)
+  {
+    this.zoomInAction.setParent(zoomInAction);
+  }
+
+  public Action getZoomOutAction()
+  {
+    return zoomOutAction.getParent();
+  }
+
+  public void setZoomOutAction(Action zoomOutAction)
+  {
+    this.zoomOutAction.setParent(zoomOutAction);
+  }
+
+  public Action getGotoAction()
+  {
+    return gotoAction.getParent();
+  }
+
+  public void setGotoAction(Action gotoAction)
+  {
+    this.gotoAction.setParent(gotoAction);
   }
 }

@@ -24,7 +24,7 @@
  * PDFSaveDialog.java
  * ------------------
  *
- * $Id: PDFSaveDialog.java,v 1.12 2002/11/07 21:45:28 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.13 2002/11/27 12:20:33 taqua Exp $
  *
  * Changes
  * --------
@@ -37,7 +37,8 @@
 package com.jrefinery.report.preview;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.targets.PDFOutputTarget;
+import com.jrefinery.report.targets.pageable.PageableReportProcessor;
+import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.ReportConfiguration;
@@ -327,7 +328,7 @@ public class PDFSaveDialog extends JDialog
   /**
    * Initialisation.
    */
-  private void initConstructor ()
+  private void initConstructor()
   {
     setModal(true);
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -348,7 +349,7 @@ public class PDFSaveDialog extends JDialog
   /**
    * @return the combobox model containing the different values for the allowPrinting option.
    */
-  private DefaultComboBoxModel getPrintingComboBoxModel ()
+  private DefaultComboBoxModel getPrintingComboBoxModel()
   {
     if (printingModel == null)
     {
@@ -1126,13 +1127,13 @@ public class PDFSaveDialog extends JDialog
       if (txUserPassword.getText().equals(txConfUserPassword.getText()) == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString("pdfsavedialog.userpasswordNoMatch"));
+                                      getResources().getString("pdfsavedialog.userpasswordNoMatch"));
         return false;
       }
       if (txOwnerPassword.getText().equals(txConfOwnerPassword.getText()) == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString("pdfsavedialog.ownerpasswordNoMatch"));
+                                      getResources().getString("pdfsavedialog.ownerpasswordNoMatch"));
         return false;
       }
     }
@@ -1141,34 +1142,34 @@ public class PDFSaveDialog extends JDialog
     if (filename.trim().length() == 0)
     {
       JOptionPane.showMessageDialog(this,
-          getResources().getString("pdfsavedialog.targetIsEmpty"),
-          getResources().getString("pdfsavedialog.errorTitle"), JOptionPane.ERROR_MESSAGE);
+                                    getResources().getString("pdfsavedialog.targetIsEmpty"),
+                                    getResources().getString("pdfsavedialog.errorTitle"), JOptionPane.ERROR_MESSAGE);
       return false;
     }
-    File f = new File (filename);
+    File f = new File(filename);
     if (f.exists())
     {
       if (f.isFile() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString("pdfsavedialog.targetIsNoFile"),
-            getResources().getString("pdfsavedialog.errorTitle"), JOptionPane.ERROR_MESSAGE);
+                                      getResources().getString("pdfsavedialog.targetIsNoFile"),
+                                      getResources().getString("pdfsavedialog.errorTitle"), JOptionPane.ERROR_MESSAGE);
         return false;
       }
       if (f.canWrite() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString("pdfsavedialog.targetIsNotWritable"),
-            getResources().getString("pdfsavedialog.errorTitle"), JOptionPane.ERROR_MESSAGE);
+                                      getResources().getString("pdfsavedialog.targetIsNotWritable"),
+                                      getResources().getString("pdfsavedialog.errorTitle"), JOptionPane.ERROR_MESSAGE);
         return false;
       }
       if (JOptionPane.showConfirmDialog(this,
-          MessageFormat.format(
-              getResources().getString("pdfsavedialog.targetOverwriteConfirmation"),
-              new Object[]{getFilename()}
-          ),
-          getResources().getString("pdfsavedialog.targetOverwriteTitle"),
-          JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.NO_OPTION)
+                                        MessageFormat.format(
+                                            getResources().getString("pdfsavedialog.targetOverwriteConfirmation"),
+                                            new Object[]{getFilename()}
+                                        ),
+                                        getResources().getString("pdfsavedialog.targetOverwriteTitle"),
+                                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.NO_OPTION)
       {
         return false;
       }
@@ -1178,9 +1179,9 @@ public class PDFSaveDialog extends JDialog
       if (txOwnerPassword.getText().trim().length() == 0)
       {
         if (JOptionPane.showConfirmDialog(this,
-            getResources().getString("pdfsavedialog.ownerpasswordEmpty"),
-            getResources().getString("pdfsavedialog.warningTitle"),
-        JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.NO_OPTION)
+                                          getResources().getString("pdfsavedialog.ownerpasswordEmpty"),
+                                          getResources().getString("pdfsavedialog.warningTitle"),
+                                          JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.NO_OPTION)
         {
           return false;
         }
@@ -1234,7 +1235,11 @@ public class PDFSaveDialog extends JDialog
                          new Boolean(isAllowScreenreaders()));
 
       target.open();
-      report.processReport(target);
+
+      PageableReportProcessor proc = new PageableReportProcessor(report);
+      proc.setOutputTarget(target);
+      proc.processReport();
+
       target.close();
       return true;
     }
@@ -1276,7 +1281,7 @@ public class PDFSaveDialog extends JDialog
         e);
   }
 
-  public void initFromConfiguration (ReportConfiguration config)
+  public void initFromConfiguration(ReportConfiguration config)
   {
     setAuthor(config.getConfigProperty(PDFOutputTarget.AUTHOR, getAuthor()));
     setAllowAssembly(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY, config, isAllowAssembly()));
@@ -1291,7 +1296,7 @@ public class PDFSaveDialog extends JDialog
     setOwnerPassword(config.getConfigProperty(PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword()));
   }
 
-  private boolean parseBoolean (String key, ReportConfiguration config, boolean orgVal)
+  private boolean parseBoolean(String key, ReportConfiguration config, boolean orgVal)
   {
     String val = config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + key, String.valueOf(orgVal));
     return (val.equalsIgnoreCase("true"));
