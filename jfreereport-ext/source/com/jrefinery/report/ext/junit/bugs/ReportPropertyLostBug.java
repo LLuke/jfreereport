@@ -42,6 +42,7 @@ import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.targets.pageable.PageableReportProcessor;
 import com.jrefinery.report.targets.pageable.ReportStateList;
+import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.util.Log;
 import junit.framework.Test;
@@ -94,7 +95,9 @@ public class ReportPropertyLostBug extends TestCase
     BufferedImage buffer = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
     Graphics2D g2 = (Graphics2D) buffer.getGraphics();
     PageableReportProcessor proc = new PageableReportProcessor(report);
-    proc.setOutputTarget(new G2OutputTarget(g2, report.getDefaultPageFormat()));
+    OutputTarget ot = new G2OutputTarget(g2, report.getDefaultPageFormat());
+    ot.open();
+    proc.setOutputTarget(ot);
 
     ReportStateList list = proc.repaginate();
 

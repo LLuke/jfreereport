@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
+ * $Id: ReportDefinitionTest.java,v 1.2 2003/06/10 18:17:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,13 +39,35 @@
 package com.jrefinery.report.ext.junit.base.basic;
 
 import junit.framework.TestCase;
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportDefinition;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.style.StyleKey;
 
 public class ReportDefinitionTest extends TestCase
 {
+  private StyleKey testKey =
+      StyleKey.getStyleKey("ReportDefinitionTest", String.class);
+
   public ReportDefinitionTest(String s)
   {
     super(s);
   }
 
+  public void testReport () throws Exception
+  {
+    JFreeReport report = new JFreeReport();
+    ElementStyleSheet es = new ElementStyleSheet("test");
+    es.setStyleProperty(testKey, "Hello World!");
+    report.getReportHeader().getStyle().addParent(es);
+    assertEquals(report.getReportHeader().getStyle().getStyleProperty(testKey), "Hello World!");
+
+    ReportDefinition rd = new ReportDefinition(report);
+    assertEquals(rd.getReportHeader().getStyle().getStyleProperty(testKey), "Hello World!");
+
+    es.setStyleProperty(testKey, "Hello Little Green Man!");
+    assertNotSame(rd.getReportHeader().getStyle().getStyleProperty(testKey), "Hello World!");
+
+  }
 
 }

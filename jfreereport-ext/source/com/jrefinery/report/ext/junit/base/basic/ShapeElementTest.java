@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ShapeElementTest.java,v 1.1 2003/06/11 20:44:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -66,6 +66,16 @@ public class ShapeElementTest extends TestCase
 
     //  e = ItemFactory.createShapeElement(null, null, null, line2);
 //    s = (Shape) e.getValue();
+
+    try
+    {
+      ItemFactory.createLineShapeElement(null, null, null,
+          new Line2D.Double(26.0, 8.0, 26.0, -5.0));
+      fail();
+    }
+    catch (IllegalArgumentException iae)
+    {
+    }
 
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicTestSuite.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
+ * $Id: BasicTestSuite.java,v 1.2 2003/06/10 18:17:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,6 +39,8 @@
 package com.jrefinery.report.ext.junit.base.basic;
 
 import com.jrefinery.report.ext.junit.base.basic.content.ContentTestSuite;
+import com.jrefinery.report.ext.junit.base.basic.layout.LayoutTestSuite;
+import com.jrefinery.report.ext.junit.base.basic.util.UtilTestSuite;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -55,6 +57,8 @@ public class BasicTestSuite extends TestSuite
     addTestSuite(GroupListTest.class);
     addTestSuite(JFreeReportTest.class);
     addTest(new ContentTestSuite(ContentTestSuite.class.getName()));
+    addTest(new LayoutTestSuite(LayoutTestSuite.class.getName()));
+    addTest(new UtilTestSuite(UtilTestSuite.class.getName()));
   }
 
 

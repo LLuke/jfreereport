@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParseTest.java,v 1.2 2003/06/10 18:17:27 taqua Exp $
+ * $Id: ParseTest.java,v 1.3 2003/06/13 22:55:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,22 +43,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.demo.OpenSourceProjects;
-import com.jrefinery.report.demo.PercentageDemo;
-import com.jrefinery.report.demo.SampleData1;
-import com.jrefinery.report.demo.SampleData2;
-import com.jrefinery.report.demo.SampleData3;
-import com.jrefinery.report.demo.SampleData4;
-import com.jrefinery.report.demo.SwingIconsDemoTableModel;
-import com.jrefinery.report.demo.cards.CardDemo;
 import com.jrefinery.report.io.ReportGenerator;
-import com.jrefinery.report.io.ext.factory.datasource.DataSourceReferenceGenerator;
-import com.jrefinery.report.io.ext.factory.objects.ObjectReferenceGenerator;
-import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyReferenceGenerator;
 import com.jrefinery.report.util.Log;
 import junit.framework.TestCase;
 
