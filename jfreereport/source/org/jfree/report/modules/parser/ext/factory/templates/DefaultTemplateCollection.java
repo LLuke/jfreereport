@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultTemplateCollection.java,v 1.4 2003/11/05 17:31:53 taqua Exp $
+ * $Id: DefaultTemplateCollection.java,v 1.5 2004/05/07 14:29:23 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -64,5 +64,8 @@ public class DefaultTemplateCollection extends TemplateCollection
     addTemplate(new HorizontalLineTemplateDescription("horizontal-line"));
     addTemplate(new VerticalLineTemplateDescription("vertical-line"));
     addTemplate(new DrawableFieldTemplateDescription("drawable-field"));
+    addTemplate(new DrawableURLElementTemplateDescription("drawable-url-field"));
+    addTemplate(new DrawableURLFieldTemplateDescription("drawable-url-element"));
+
   }
 }

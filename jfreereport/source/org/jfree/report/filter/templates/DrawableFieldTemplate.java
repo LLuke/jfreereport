@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableFieldTemplate.java,v 1.6 2004/05/07 08:24:41 mungady Exp $
+ * $Id: DrawableFieldTemplate.java,v 1.7 2005/01/24 23:59:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,7 +40,6 @@ package org.jfree.report.filter.templates;
 
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.DataRowDataSource;
-import org.jfree.report.filter.DrawableFilter;
 import org.jfree.report.filter.ReportConnectable;
 
 /**
@@ -55,17 +54,12 @@ public class DrawableFieldTemplate extends AbstractTemplate
   /** The data row reader. */
   private DataRowDataSource dataRowDataSource;
 
-  /** An image reference filter. */
-  private DrawableFilter drawableFilter;
-
   /**
    * Creates a new image field template.
    */
   public DrawableFieldTemplate()
   {
     dataRowDataSource = new DataRowDataSource();
-    drawableFilter = new DrawableFilter();
-    drawableFilter.setDataSource(dataRowDataSource);
   }
 
   /**
@@ -95,7 +89,7 @@ public class DrawableFieldTemplate extends AbstractTemplate
    */
   public Object getValue()
   {
-    return drawableFilter.getValue();
+    return dataRowDataSource.getValue();
   }
 
   /**
@@ -108,8 +102,7 @@ public class DrawableFieldTemplate extends AbstractTemplate
   public Object clone() throws CloneNotSupportedException
   {
     final DrawableFieldTemplate template = (DrawableFieldTemplate) super.clone();
-    template.drawableFilter = (DrawableFilter) drawableFilter.clone();
-    template.dataRowDataSource = (DataRowDataSource) template.drawableFilter.getDataSource();
+    template.dataRowDataSource = (DataRowDataSource) template.dataRowDataSource.clone();
     return template;
   }
 

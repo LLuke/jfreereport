@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LevelList.java,v 1.9 2003/11/07 18:33:57 taqua Exp $
+ * $Id: LevelList.java,v 1.10 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -221,6 +221,23 @@ public class LevelList implements Cloneable
       }
     }
     return iteratorSetAsc.iterator();
+  }
+
+  public synchronized Integer[] getLevelsDescendingArray()
+  {
+    if (iteratorSetDesc == null)
+    {
+      iteratorSetDesc = new TreeSet(new DescendingComparator());
+      final Integer[] ilevels = (Integer[]) levels.toArray(new Integer[levels.size()]);
+      for (int i = 0; i < ilevels.length; i++)
+      {
+        if (iteratorSetDesc.contains(ilevels[i]) == false)
+        {
+          iteratorSetDesc.add(ilevels[i]);
+        }
+      }
+    }
+    return (Integer[]) iteratorSetDesc.toArray(new Integer[iteratorSetDesc.size()]);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.14 2004/05/07 12:53:10 mungady Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.15 2005/01/25 00:11:17 taqua Exp $
  *
  * Changes
  * -------
@@ -43,13 +43,12 @@ import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
-import org.jfree.report.DrawableContainer;
-import org.jfree.report.ImageContainer;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.DefaultContentFactory;
-import org.jfree.report.content.TextContentFactoryModule;
+import org.jfree.report.content.DrawableContent;
 import org.jfree.report.content.ImageContent;
+import org.jfree.report.content.TextContentFactoryModule;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
@@ -579,7 +578,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param drawable the drawable to draw.
    */
-  protected void drawDrawable(final DrawableContainer drawable)
+  protected void drawDrawable(final DrawableContent drawable)
   {
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaBandProducer.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
+ * $Id: HtmlMetaBandProducer.java,v 1.3 2005/01/25 00:13:26 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,7 +43,6 @@ import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.DefaultImageReference;
-import org.jfree.report.DrawableContainer;
 import org.jfree.report.Element;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.content.ImageContent;
@@ -100,19 +99,12 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
           (final Element e, final float x, final float y)
   {
     final Object o = e.getValue();
-    if (o instanceof DrawableContainer == false)
+    if (o instanceof Drawable == false)
     {
       return null;
     }
 
-    // todo: This is not a really valid implementation.
-    // In fact, none of the code
-    // below is valid, as it does not care about the various content transformations
-    // possibly required to display the content correctly.
-    //
-    // we have to rework that .. all of that!
-    final DrawableContainer container = (DrawableContainer) o;
-    final Drawable drawable = container.getDrawable();
+    final Drawable drawable = (Drawable) o;
     final Rectangle2D rect = (Rectangle2D)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
     final Image image = ImageUtils.createTransparentImage

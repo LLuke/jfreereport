@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableContent.java,v 1.6 2004/05/07 08:02:48 mungady Exp $
+ * $Id: DrawableContent.java,v 1.7 2005/01/24 23:58:14 taqua Exp $
  *
  * Changes
  * -------
@@ -37,10 +37,10 @@
  */
 package org.jfree.report.content;
 
-import java.awt.geom.Point2D;
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 
-import org.jfree.report.DrawableContainer;
+import org.jfree.ui.Drawable;
 import org.jfree.util.ShapeUtilities;
 
 /**
@@ -55,30 +55,48 @@ public strictfp class DrawableContent implements Content
    * The drawable content. The content will be drawn using the drawable bounds,
    * but only the rectangle contentBounds will be visible.
    */
-  private DrawableContainer drawable;
+  private Drawable drawable;
+
+
+  /** The bounds. */
+  private final Rectangle2D bounds;
+
+  /** The bounds of the displayed area of the image (unscaled). */
+  private final Rectangle2D imageArea;
 
   /**
-   * The content bounds define the position of this content in the global
-   * coordinate space (where to print on the page).
-   */
-  private Point2D contentOrigin;
-
-  /**
-   * Creates a new instance.
+   * Creates a new image content.
    *
-   * @param drawable  the drawable object.
-   * @param contentOrigin  the origin.
+   * @param ref  the image reference.
+   * @param bounds  the content bounds.
    */
-  public DrawableContent(final DrawableContainer drawable, final Point2D contentOrigin)
+  public DrawableContent(final Drawable ref,
+                         final Rectangle2D bounds)
   {
-    if (drawable == null)
-    {
-      throw new NullPointerException();
-    }
-
-    this.drawable = drawable;
-    this.contentOrigin = contentOrigin;
+    this (ref, bounds, new Rectangle2D.Float
+            (0, 0, (float) bounds.getWidth(), (float) bounds.getHeight()));
   }
+
+  /**
+   * Creates a new image content.
+   *
+   * @param ref  the image reference.
+   * @param bounds  the content bounds.
+   */
+  protected DrawableContent(final Drawable ref,
+                         final Rectangle2D bounds,
+                         final Rectangle2D imageArea)
+  {
+    if (ref == null)
+    {
+      throw new NullPointerException("ImageContainer must not be null for ImageContent.");
+    }
+    this.drawable = ref;
+    this.bounds = bounds;
+    this.imageArea = imageArea;
+
+  }
+
 
   /**
    * Returns the content type (the types include <code>TEXT</code>, <code>IMAGE</code>,
@@ -92,18 +110,51 @@ public strictfp class DrawableContent implements Content
   }
 
   /**
-   * Returns the bounds for the content.
+   * Returns the content bounds.
    *
-   * @return the bounds.
+   * @return the content bounds.
    */
   public Rectangle2D getBounds()
   {
-    final Rectangle2D clippBounds = drawable.getClippingBounds();
-    clippBounds.setRect(contentOrigin.getX(),
-        contentOrigin.getY(),
-        clippBounds.getWidth(),
-        clippBounds.getHeight());
-    return clippBounds;
+    return bounds.getBounds2D();
+  }
+
+  /**
+   * Returns content that falls within the specified bounds.
+   *
+   * @param bounds  the bounds.
+   *
+   * @return the content.
+   */
+  public Content getContentForBounds(final Rectangle2D bounds)
+  {
+    if (ShapeUtilities.intersects(bounds, this.bounds) == false)
+    {
+      return new EmptyContent();
+    }
+
+    final Rectangle2D myBounds = bounds.createIntersection(this.bounds);
+    return new DrawableContent(drawable, myBounds,
+            new Rectangle2D.Float
+                    (mapHorizontalPointToImage(myBounds.getX() - this.bounds.getX()),
+                     mapVerticalPointToImage(myBounds.getY() - this.bounds.getY()),
+                     mapHorizontalPointToImage(myBounds.getWidth()),
+                     mapVerticalPointToImage(myBounds.getHeight())));
+  }
+
+  private float mapHorizontalPointToImage (final double px)
+  {
+    return (float) (px * imageArea.getWidth() / bounds.getWidth());
+  }
+
+  private float mapVerticalPointToImage (final double px)
+  {
+    return (float) (px * imageArea.getHeight() / bounds.getHeight());
+  }
+
+  public Rectangle2D getImageArea ()
+  {
+    return imageArea.getBounds2D();
   }
 
   /**
@@ -117,44 +168,17 @@ public strictfp class DrawableContent implements Content
   }
 
   /**
-   * Returns the content for the given bounds. The extracted content is the content
-   * that would be displayed in the specific bounds if the content would be printed
-   * with clipping enabled at the given boundary.
-   * <p>
-   * This method returns <code>null</code> if there is no content in these bounds.
-   *
-   * @param bounds  the bounds.
-   *
-   * @return the content (possibly <code>null</code>).
-   */
-  public Content getContentForBounds(final Rectangle2D bounds)
-  {
-    final Rectangle2D myBounds = getBounds();
-
-    if (ShapeUtilities.intersects(bounds, myBounds) == false)
-    {
-      return new EmptyContent();
-    }
-    final Rectangle2D newBounds = bounds.createIntersection(myBounds);
-    final Rectangle2D clipBounds
-        = new Rectangle2D.Float((float) (newBounds.getX() - contentOrigin.getX()),
-            (float) (newBounds.getY() - contentOrigin.getY()),
-            (float) newBounds.getWidth(),
-            (float) newBounds.getHeight());
-    final DrawableContainer newContainer = new DrawableContainer(drawable,
-        clipBounds);
-
-    return new DrawableContent(newContainer, new Point2D.Float((float) newBounds.getX(),
-        (float) newBounds.getY()));
-  }
-
-  /**
    * Returns the content.
    *
    * @return The content.
    */
-  public DrawableContainer getContent()
+  public Drawable getContent()
   {
     return drawable;
+  }
+
+  public Dimension2D getDrawableSize ()
+  {
+    return null;
   }
 }

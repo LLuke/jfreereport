@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);Stefan Prange
  *
- * $Id: DefaultImageReference.java,v 1.1 2004/03/16 15:34:26 taqua Exp $
+ * $Id: DefaultImageReference.java,v 1.2 2005/01/24 23:57:44 taqua Exp $
  *
  * Changes:
  * --------
@@ -44,13 +44,11 @@
 package org.jfree.report;
 
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 
-import org.jfree.pixie.wmf.WmfFile;
+import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.report.util.WaitingImageObserver;
 
 /**
@@ -97,40 +95,7 @@ public class DefaultImageReference
       throw new NullPointerException("URL must not be null.");
     }
     this.url = url;
-    InputStream is = null;
-
-    try
-    {
-      is = url.openStream();
-      final int c1 = is.read();
-      final int c2 = is.read();
-      is.close();
-      is = null;
-
-      if (c1 == 0xD7 && c2 == 0xCD)
-      {
-        final WmfFile wmfFile = new WmfFile(url);
-        image = wmfFile.replay();
-      }
-      else
-      {
-        this.url = url;
-        image = Toolkit.getDefaultToolkit().createImage(url);
-        if (image == null)
-        {
-          throw new IOException("Image could not be instantiated.");
-        }
-        final WaitingImageObserver obs = new WaitingImageObserver(image);
-        obs.waitImageLoaded();
-      }
-    }
-    finally
-    {
-      if (is != null)
-      {
-        is.close();
-      }
-    }
+    this.image = ImageFactory.getInstance().createImage(url);
     this.width = image.getWidth(null);
     this.height = image.getHeight(null);
   }

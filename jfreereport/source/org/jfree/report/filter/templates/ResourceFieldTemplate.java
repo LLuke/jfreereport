@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ResourceFieldTemplate.java,v 1.4 2004/05/07 08:24:41 mungady Exp $
+ * $Id: ResourceFieldTemplate.java,v 1.5 2005/01/24 23:59:49 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -39,7 +39,6 @@
 package org.jfree.report.filter.templates;
 
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.DataRowDataSource;
@@ -63,9 +62,6 @@ public class ResourceFieldTemplate extends AbstractTemplate
 
   /** A resource file filter. */
   private ResourceFileFilter resourceFilter;
-
-  /** The resource class name. */
-  private String resourceClassName;
 
   /**
    * Creates a new template.
@@ -104,9 +100,9 @@ public class ResourceFieldTemplate extends AbstractTemplate
    *
    * @return The resource class name.
    */
-  public String getResourceClassName()
+  public String getResourceIdentifier()
   {
-    return resourceClassName;
+    return resourceFilter.getResourceIdentifier();
   }
 
   /**
@@ -116,11 +112,10 @@ public class ResourceFieldTemplate extends AbstractTemplate
    *
    * @throws MissingResourceException if the resource is missing.
    */
-  public void setResourceClassName(final String resourceClassName)
+  public void setResourceIdentifier(final String resourceClassName)
       throws MissingResourceException
   {
-    resourceFilter.setResources(ResourceBundle.getBundle(resourceClassName));
-    this.resourceClassName = resourceClassName;
+    resourceFilter.setResourceIdentifier(resourceClassName);
   }
 
   /**
@@ -169,13 +164,13 @@ public class ResourceFieldTemplate extends AbstractTemplate
     return template;
   }
 
-  public void registerReportDefinition(ReportDefinition reportDefinition)
+  public void registerReportDefinition(final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
     resourceFilter.registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
     resourceFilter.unregisterReportDefinition(reportDefinition);

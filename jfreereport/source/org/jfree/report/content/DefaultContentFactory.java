@@ -28,15 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultContentFactory.java,v 1.5 2004/05/07 08:02:48 mungady Exp $
+ * $Id: DefaultContentFactory.java,v 1.6 2005/01/24 23:58:14 taqua Exp $
  *
  * Changes
  * -------
  * 07-Feb-2003 : Initial version
  */
 package org.jfree.report.content;
-
-import java.util.ArrayList;
 
 import org.jfree.report.Element;
 import org.jfree.report.layout.LayoutSupport;
@@ -53,15 +51,16 @@ import org.jfree.report.util.ElementLayoutInformation;
  */
 public class DefaultContentFactory implements ContentFactory
 {
-  /** a list of all registered modules. */
-  private final ArrayList modules;
+  private ContentFactoryModule[] modules;
+  private int size;
 
   /**
    * Creates an empty DefaultContentFactory.
    */
   public DefaultContentFactory()
   {
-    modules = new ArrayList();
+    modules = new ContentFactoryModule[10];
+    size = 0;
   }
 
   /**
@@ -70,28 +69,27 @@ public class DefaultContentFactory implements ContentFactory
    * @param module the ContentFactoryModule that should be added to the list of
    * available modules.
    */
-  public void addModule(final ContentFactoryModule module)
+  public synchronized void addModule(final ContentFactoryModule module)
   {
     if (module == null)
     {
       throw new NullPointerException();
     }
-    modules.add(0, module);
+
+    ensureCapacity(size);
+    modules[size] = module;
+    size += 1;
   }
 
-  /**
-   * Removes a content factory module from this factory.
-   *
-   * @param module removes a ContentFactoryModules from the list of available
-   * modules.
-   */
-  public void removeModule(final ContentFactoryModule module)
+  private void ensureCapacity (final int size)
   {
-    if (module == null)
+    if (modules.length <= size)
     {
-      throw new NullPointerException();
+      final ContentFactoryModule[] newData =
+              new ContentFactoryModule[Math.max (modules.length + 10, size + 1)];
+      System.arraycopy(modules, 0, newData, 0, size);
+      modules = newData;
     }
-    modules.remove(module);
   }
 
   /**
@@ -125,9 +123,9 @@ public class DefaultContentFactory implements ContentFactory
       throw new NullPointerException("Element is null.");
     }
     final String contentType = e.getContentType();
-    for (int i = 0; i < modules.size(); i++)
+    for (int i = 0; i < modules.length; i++)
     {
-      final ContentFactoryModule cfm = (ContentFactoryModule) modules.get(i);
+      final ContentFactoryModule cfm = modules[i];
       if (cfm.canHandleContent(contentType))
       {
         final Content c = cfm.createContentForElement(e, bounds, ot);
@@ -152,9 +150,9 @@ public class DefaultContentFactory implements ContentFactory
    */
   public boolean canHandleContent(final String contentType)
   {
-    for (int i = 0; i < modules.size(); i++)
+    for (int i = 0; i < modules.length; i++)
     {
-      final ContentFactoryModule cfm = (ContentFactoryModule) modules.get(i);
+      final ContentFactoryModule cfm = modules[i];
       if (cfm.canHandleContent(contentType))
       {
         return true;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.7.2.1.2.1 2004/12/30 14:46:09 taqua Exp $
+ * $Id: JFreeReport.java,v 1.15 2005/01/24 23:57:46 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -66,6 +66,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.ResourceBundle;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -178,6 +179,8 @@ public class JFreeReport implements Cloneable, Serializable
    */
   private ReportBuilderHints reportBuilderHints;
 
+  private ResourceBundleFactory resourceBundleFactory;
+
   /**
    * The default constructor. Creates an empty but fully initialized report.
    */
@@ -207,6 +210,7 @@ public class JFreeReport implements Cloneable, Serializable
 
     this.data = new DefaultTableModel();
     this.expressions = new ExpressionCollection();
+    this.resourceBundleFactory = new DefaultResourceBundleFactory();
     setPageDefinition(null);
   }
 
@@ -771,5 +775,24 @@ public class JFreeReport implements Cloneable, Serializable
   public ReportBuilderHints getReportBuilderHints()
   {
     return reportBuilderHints;
+  }
+
+  public ResourceBundleFactory getResourceBundleFactory ()
+  {
+    return resourceBundleFactory;
+  }
+
+  public void setResourceBundleFactory (final ResourceBundleFactory resourceBundleFactory)
+  {
+    if (resourceBundleFactory == null)
+    {
+      throw new NullPointerException("ResourceBundleFactory must not be null");
+    }
+    this.resourceBundleFactory = resourceBundleFactory;
+  }
+
+  public ResourceBundle getResourceBundle (final String key)
+  {
+    return resourceBundleFactory.getResourceBundle(key);
   }
 }

@@ -5,8 +5,12 @@ import java.io.OutputStream;
 
 public class Epson24PinPrinterDriver extends AbstractEpsonPrinterDriver
 {
+  private static final String SPECIFICATION_RESOURCE =
+          "epson-24pin-printer-specifications.properties";
+
   private static final String N_360TH_LINE_SPACING = "Epson24pin.n360inch-linespacing";
   private static final String SELECT_LINE_SCORE = "Epson24pin.select-line-score";
+  private static PrinterSpecificationManager printerSpecificationManager;
 
   public Epson24PinPrinterDriver (final OutputStream out,
                                   final float charsPerInch, final float linesPerInch,
@@ -151,5 +155,20 @@ public class Epson24PinPrinterDriver extends AbstractEpsonPrinterDriver
     {
       driverState.setStrikethrough(false);
     }
+  }
+
+  protected PrinterSpecificationManager getPrinterSpecificationManager ()
+  {
+    return loadSpecificationManager();
+  }
+
+  public static synchronized PrinterSpecificationManager loadSpecificationManager()
+  {
+    if (printerSpecificationManager == null)
+    {
+      printerSpecificationManager = new PrinterSpecificationManager();
+      printerSpecificationManager.load(SPECIFICATION_RESOURCE);
+    }
+    return printerSpecificationManager;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.11 2004/05/07 12:53:09 mungady Exp $
+ * $Id: G2OutputTarget.java,v 1.12 2005/01/25 00:10:46 taqua Exp $
  *
  * Changes
  * -------
@@ -53,16 +53,15 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Dimension2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 
-import org.jfree.report.DrawableContainer;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.LocalImageContainer;
 import org.jfree.report.PageDefinition;
+import org.jfree.report.content.DrawableContent;
 import org.jfree.report.content.ImageContent;
 import org.jfree.report.layout.DefaultSizeCalculator;
 import org.jfree.report.layout.SizeCalculator;
@@ -72,6 +71,7 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.WaitingImageObserver;
+import org.jfree.ui.Drawable;
 
 /**
  * A report output target that uses a Graphics2D object to draw the report.  This allows reports
@@ -577,9 +577,9 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   /**
    * Draws a drawable relative to the current position.
    *
-   * @param drawable the drawable to draw.
+   * @param content the drawable to draw.
    */
-  protected void drawDrawable(final DrawableContainer drawable)
+  protected void drawDrawable(final DrawableContent content)
   {
 
     // only the drawable clippingbounds region will be drawn.
@@ -587,20 +587,33 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
 
     // the clipping bounds are relative to the drawable dimension,
     // they are not influenced by the drawables position on the page
+    final Drawable drawable = content.getContent();
+    final Rectangle2D myBounds = content.getImageArea();
+    final Rectangle2D bounds = getOperationBounds();
 
-    final Rectangle2D clipBounds = drawable.getClippingBounds();
+    final Shape s = g2.getClip();
+    final AffineTransform transform = g2.getTransform();
+    try
+    {
+      final Rectangle2D.Float newClipArea =
+              new Rectangle2D.Float(0, 0,
+                      (float) (bounds.getWidth()), (float) (bounds.getHeight()));
+      g2.clip(newClipArea);
 
-    final Graphics2D target = (Graphics2D) g2.create();
-    target.translate(-clipBounds.getX(), -clipBounds.getY());
-    target.clip(new Rectangle2D.Float(0, 0,
-        (float) clipBounds.getWidth(),
-        (float) clipBounds.getHeight()));
+      final float scaleX = (float) (bounds.getWidth() / myBounds.getWidth());
+      final float scaleY = (float) (bounds.getHeight() / myBounds.getHeight());
 
-    final Dimension2D drawableSize = drawable.getDrawableSize();
-    final Rectangle2D drawBounds = new Rectangle2D.Float(0, 0,
-        (float) drawableSize.getWidth(),
-        (float) drawableSize.getHeight());
-    drawable.getDrawable().draw(target, drawBounds);
-    target.dispose();
+      g2.transform(AffineTransform.getScaleInstance(scaleX, scaleY));
+      g2.translate(-myBounds.getX(), -myBounds.getY());
+      drawable.draw(g2, myBounds);
+    }
+    catch (Throwable th)
+    {
+      // just in case the image drawing caused trouble ..
+      Log.warn(new Log.MemoryUsageMessage("Failure at drawImage"));
+      Log.warn(th);
+    }
+    g2.setTransform(transform);
+    g2.setClip(s);
   }
 }

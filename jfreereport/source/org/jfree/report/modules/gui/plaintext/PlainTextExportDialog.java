@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.8.4.9 2004/12/13 20:23:54 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.11 2005/01/25 00:06:32 taqua Exp $
  *
  * Changes
  * --------
@@ -82,6 +82,8 @@ import org.jfree.report.modules.output.pageable.plaintext.IBMCompatiblePrinterDr
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterSpecification;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterSpecificationManager;
+import org.jfree.report.modules.output.pageable.plaintext.Epson24PinPrinterDriver;
+import org.jfree.report.modules.output.pageable.plaintext.Epson9PinPrinterDriver;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
@@ -315,6 +317,29 @@ public class PlainTextExportDialog extends JDialog
 
   private KeyedComboBoxModel epsonPrinters;
 
+  private class PrinterSpecificationStorage
+  {
+    private boolean ninePinPrinter;
+    private PrinterSpecification specification;
+
+    public PrinterSpecificationStorage (final PrinterSpecification specification,
+                                        final boolean ninePinPrinter)
+    {
+      this.specification = specification;
+      this.ninePinPrinter = ninePinPrinter;
+    }
+
+    public boolean isNinePinPrinter ()
+    {
+      return ninePinPrinter;
+    }
+
+    public PrinterSpecification getSpecification ()
+    {
+      return specification;
+    }
+  }
+
   /**
    * Creates a non-modal dialog without a title and without
    * a specified Frame owner.  A shared, hidden frame will be
@@ -412,15 +437,30 @@ public class PlainTextExportDialog extends JDialog
   private KeyedComboBoxModel loadEpsonPrinters ()
   {
     final KeyedComboBoxModel epsonPrinters = new KeyedComboBoxModel();
-    final PrinterSpecificationManager specManager =
-            AbstractEpsonPrinterDriver.getPrinterSpecificationManager();
-    final String[] printerNames =
-            specManager.getPrinterNames();
-    Arrays.sort(printerNames);
-    for (int i = 0; i < printerNames.length; i++)
+    final PrinterSpecificationManager spec24Manager =
+            Epson24PinPrinterDriver.loadSpecificationManager();
+    final String[] printer24Names =
+            spec24Manager.getPrinterNames();
+    Arrays.sort(printer24Names);
+    for (int i = 0; i < printer24Names.length; i++)
     {
-      final PrinterSpecification pspec = specManager.getPrinter(printerNames[i]);
-      epsonPrinters.add(pspec, pspec.getDisplayName());
+      final PrinterSpecification pspec = spec24Manager.getPrinter(printer24Names[i]);
+      final PrinterSpecificationStorage storage =
+              new PrinterSpecificationStorage(pspec, false);
+      epsonPrinters.add(storage, pspec.getDisplayName() + " (24 Pin)");
+    }
+
+    final PrinterSpecificationManager spec9Manager =
+            Epson9PinPrinterDriver.loadSpecificationManager();
+    final String[] printer9Names =
+            spec9Manager.getPrinterNames();
+    Arrays.sort(printer9Names);
+    for (int i = 0; i < printer9Names.length; i++)
+    {
+      final PrinterSpecification pspec = spec9Manager.getPrinter(printer9Names[i]);
+      final PrinterSpecificationStorage storage =
+              new PrinterSpecificationStorage(pspec, false);
+      epsonPrinters.add(storage, pspec.getDisplayName() + " (9 Pin)");
     }
     return epsonPrinters;
   }
@@ -603,18 +643,16 @@ public class PlainTextExportDialog extends JDialog
 
   private void updateEpsonEncoding ()
   {
-    final PrinterSpecification spec = (PrinterSpecification)
+    final PrinterSpecificationStorage specStorage = (PrinterSpecificationStorage)
             epsonPrinters.getSelectedKey();
-    if (spec == null)
+    if (specStorage == null)
     {
-      Log.debug ("Invalid selection: " + spec);
       encodingSelector.setEncodings
-              (AbstractEpsonPrinterDriver.getPrinterSpecificationManager().
-              getGenericPrinter());
+              (PrinterSpecificationManager.getGenericPrinter());
     }
     else
     {
-      encodingSelector.setEncodings(spec);
+      encodingSelector.setEncodings(specStorage.getSpecification());
     }
   }
 
@@ -1028,27 +1066,28 @@ public class PlainTextExportDialog extends JDialog
     return true;
   }
 
+  /**
+   * Warning: Might return null!
+   * @return
+   */
   public String getSelectedPrinterModel ()
   {
-    final String model = (String) cbEpsonPrinterType.getSelectedItem();
-    if (model == null)
-    {
-      return AbstractEpsonPrinterDriver.getPrinterSpecificationManager().getGenericPrinter().getName();
-    }
-    return model;
+    return (String) cbEpsonPrinterType.getSelectedItem();
   }
 
   public void setSelectedPrinterModel (final String selectedPrinterModel)
   {
-    final PrinterSpecificationManager mgr = AbstractEpsonPrinterDriver.getPrinterSpecificationManager();
-    final PrinterSpecification spec = mgr.getPrinter(selectedPrinterModel);
-    if (spec != null)
+    final int size = epsonPrinters.getSize();
+    for (int i = 0; i < size; i++)
     {
-      epsonPrinters.setSelectedKey(spec);
+      final PrinterSpecificationStorage stor =
+              (PrinterSpecificationStorage) epsonPrinters.getKeyAt(i);
+      if (stor.getSpecification().getClass().equals(selectedPrinterModel))
+      {
+        epsonPrinters.setSelectedKey(stor);
+        return;
+      }
     }
-    else
-    {
-      epsonPrinters.setSelectedKey(mgr.getGenericPrinter());
-    }
+    epsonPrinters.setSelectedKey(null);
   }
 }

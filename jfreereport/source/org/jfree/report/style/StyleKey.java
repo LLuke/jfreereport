@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StyleKey.java,v 1.6 2004/03/16 15:09:56 taqua Exp $
+ * $Id: StyleKey.java,v 1.7 2004/05/07 08:14:24 mungady Exp $
  *
  * Changes
  * -------
@@ -260,7 +260,7 @@ public final class StyleKey implements Serializable, Cloneable
     return trans;
   }
 
-  private void setTransient(boolean trans)
+  private void setTransient(final boolean trans)
   {
     this.trans = trans;
   }
@@ -279,5 +279,11 @@ public final class StyleKey implements Serializable, Cloneable
     b.append(getValueType());
     b.append("'}");
     return b.toString();
+  }
+
+  public Object clone ()
+          throws CloneNotSupportedException
+  {
+    return super.clone();
   }
 }

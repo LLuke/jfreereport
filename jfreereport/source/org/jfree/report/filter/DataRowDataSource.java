@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowDataSource.java,v 1.5 2004/05/07 08:24:42 mungady Exp $
+ * $Id: DataRowDataSource.java,v 1.6 2005/01/24 23:59:39 taqua Exp $
  *
  * Changes
  * -------
@@ -139,35 +139,6 @@ public class DataRowDataSource
     final DataRowDataSource drs = (DataRowDataSource) super.clone();
     drs.reportDefinition = null;
     return drs;
-  }
-
-  /**
-   * Connects a data-row to the data source.
-   *
-   * @param row  the data-row (null not permitted).
-   *
-   * @throws NullPointerException if the given row is null
-   * @throws IllegalStateException if there is a datarow already connected.
-   */
-  public void connectDataRow(final DataRow row) throws IllegalStateException
-  {
-    throw new UnsupportedOperationException("connectDataRow is deprecated.");
-  }
-
-  /**
-   * Releases the connection to the data-row.
-   * <p>
-   * If no datarow is connected, an <code>IllegalStateException</code> is thrown to indicate the
-   * programming error.
-   *
-   * @param row the datarow to be disconnected.
-   *
-   * @throws NullPointerException if the given row is null
-   * @throws IllegalStateException if there is currently no datarow connected.
-   */
-  public void disconnectDataRow(final DataRow row) throws IllegalStateException
-  {
-    throw new UnsupportedOperationException("disconnectDataRow is deprecated.");
   }
 
   /**

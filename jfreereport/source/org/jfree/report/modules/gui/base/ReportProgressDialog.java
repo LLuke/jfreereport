@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProgressDialog.java,v 1.5.4.3 2004/04/03 19:53:48 taqua Exp $
+ * $Id: ReportProgressDialog.java,v 1.8 2005/01/25 00:01:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -513,19 +513,4 @@ public class ReportProgressDialog extends JDialog
     }
     this.layoutText = layoutText;
   }
-
-//  public static void main(String[] args)
-//  {
-//    RepaginationState state = new RepaginationState("", 0, 0, 0, 0, false);
-//
-//    ReportProgressDialog dialog = new ReportProgressDialog();
-//    dialog.setModal(true);
-//    dialog.setSize(300, 100);
-//    dialog.repaginationUpdate(state);
-//    dialog.setTitle("Printing...");
-//    dialog.setMessage("Printing report ... please wait.");
-//    dialog.pack();
-//    dialog.setVisible(true);
-//    System.exit(0);
-//  }
 }

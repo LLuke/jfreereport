@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ResourceLabelTemplate.java,v 1.4 2003/12/06 16:47:25 taqua Exp $
+ * $Id: ResourceLabelTemplate.java,v 1.5 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -64,9 +64,6 @@ public class ResourceLabelTemplate extends AbstractTemplate
   /** A resource file filter. */
   private ResourceFileFilter resourceFilter;
 
-  /** The resource class name. */
-  private String resourceClassName;
-
   /**
    * Creates a new template.
    */
@@ -84,9 +81,9 @@ public class ResourceLabelTemplate extends AbstractTemplate
    *
    * @return The resource class name.
    */
-  public String getResourceClassName()
+  public String getResourceIdentifier()
   {
-    return resourceClassName;
+    return resourceFilter.getResourceIdentifier();
   }
 
   /**
@@ -97,11 +94,10 @@ public class ResourceLabelTemplate extends AbstractTemplate
    * @throws MissingResourceException if the resource is missing.
    * @throws NullPointerException if the resource class name is null.
    */
-  public void setResourceClassName(final String resourceClassName)
+  public void setResourceIdentifier(final String resourceClassName)
       throws MissingResourceException
   {
-    resourceFilter.setResources(ResourceBundle.getBundle(resourceClassName));
-    this.resourceClassName = resourceClassName;
+    resourceFilter.setResourceIdentifier(resourceClassName);
   }
 
   /**

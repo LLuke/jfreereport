@@ -98,7 +98,6 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
   public static final String FONT_15_CPI = "Epson.Font-15CPI-available";
   public static final String EPSON_PRINTER_TYPE =
           "org.jfree.report.modules.output.pageable.plaintext.epson.PrinterType";
-  private static PrinterSpecificationManager printerSpecificationManager;
 
   private PrinterSpecification printerSpecification;
   private FontMapper fontMapper;
@@ -507,16 +506,7 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
     return encodingUtilities;
   }
 
-  public synchronized static PrinterSpecificationManager
-          getPrinterSpecificationManager ()
-  {
-    if (printerSpecificationManager == null)
-    {
-      printerSpecificationManager = new PrinterSpecificationManager();
-      printerSpecificationManager.load("epson-printerspecs.properties");
-    }
-    return printerSpecificationManager;
-  }
+  protected abstract PrinterSpecificationManager getPrinterSpecificationManager ();
 
   public static String getDefaultPrinter ()
   {
@@ -524,15 +514,17 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
             (EPSON_PRINTER_TYPE, "Generic");
   }
 
-  private static PrinterSpecification lookupPrinterSpecification (final String model)
+  private PrinterSpecification lookupPrinterSpecification (final String model)
   {
+    final PrinterSpecificationManager printerSpecificationManager =
+            getPrinterSpecificationManager();
     if (model == null)
     {
-      return getPrinterSpecificationManager().getGenericPrinter();
+      return PrinterSpecificationManager.getGenericPrinter();
     }
 
     final PrinterSpecification printerModel =
-            getPrinterSpecificationManager().getPrinter(model);
+            printerSpecificationManager.getPrinter(model);
     if (printerModel == null)
     {
       throw new IllegalArgumentException("The printer model is not supported.");

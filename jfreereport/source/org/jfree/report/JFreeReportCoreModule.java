@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: JFreeReportCoreModule.java,v 1.4 2004/05/07 07:43:53 mungady Exp $
+ * $Id: JFreeReportCoreModule.java,v 1.5 2005/01/24 23:57:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,6 +43,12 @@ import java.io.InputStream;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
+import org.jfree.report.resourceloader.ImageFactory;
+import org.jfree.report.resourceloader.PNGImageFactoryModule;
+import org.jfree.report.resourceloader.GIFImageFactoryModule;
+import org.jfree.report.resourceloader.JPEGImageFactoryModule;
+import org.jfree.report.resourceloader.DrawableFactory;
+import org.jfree.report.util.Log;
 
 
 /**
@@ -85,5 +91,18 @@ public class JFreeReportCoreModule extends AbstractModule
   public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
+    final ImageFactory factory = ImageFactory.getInstance();
+
+    factory.registerModule(new PNGImageFactoryModule());
+    factory.registerModule(new GIFImageFactoryModule());
+    factory.registerModule(new JPEGImageFactoryModule());
+    if (JFreeReportInfo.isPixieAvailable())
+    {
+      Log.info ("Pixie library found. WMF file support will be available.");
+      factory.registerModule("org.jfree.report.resourceloader.WmfImageFactoryModule");
+      final DrawableFactory drawableFactory = DrawableFactory.getInstance();
+      drawableFactory.registerModule("org.jfree.report.resourceloader.WmfImageFactoryModule");
+    }
   }
+
 }

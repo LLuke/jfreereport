@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.9 2004/05/07 12:53:09 mungady Exp $
+ * $Id: AbstractOutputTarget.java,v 1.10 2005/01/25 00:10:14 taqua Exp $
  *
  * Changes
  * -------
@@ -57,9 +57,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.jfree.report.DrawableContainer;
 import org.jfree.report.ElementAlignment;
-import org.jfree.report.ImageContainer;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.ShapeElement;
 import org.jfree.report.content.Content;
@@ -68,6 +66,7 @@ import org.jfree.report.content.ContentType;
 import org.jfree.report.content.DefaultContentFactory;
 import org.jfree.report.content.DrawableContent;
 import org.jfree.report.content.DrawableContentFactoryModule;
+import org.jfree.report.content.EmptyContent;
 import org.jfree.report.content.ImageContent;
 import org.jfree.report.content.ImageContentFactoryModule;
 import org.jfree.report.content.MultipartContent;
@@ -75,7 +74,6 @@ import org.jfree.report.content.ShapeContent;
 import org.jfree.report.content.ShapeContentFactoryModule;
 import org.jfree.report.content.TextContentFactoryModule;
 import org.jfree.report.content.TextLine;
-import org.jfree.report.content.EmptyContent;
 import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.meta.MetaPage;
@@ -485,7 +483,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     }
     final DrawableContent drawableContent = (DrawableContent) content;
     setOperationBounds(content.getBounds());
-    drawDrawable (drawableContent.getContent());
+    drawDrawable (drawableContent);
   }
 
   protected void printContainerContent
@@ -589,7 +587,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
   protected abstract void drawShape (Shape s);
   protected abstract void fillShape (Shape s);
 
-  protected abstract void drawDrawable (DrawableContainer d)
+  protected abstract void drawDrawable (DrawableContent d)
       throws OutputTargetException;
   protected abstract void drawImage(ImageContent content)
       throws OutputTargetException;

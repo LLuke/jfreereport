@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.18 2004/04/19 17:03:24 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.19 2005/01/25 00:10:51 taqua Exp $
  *
  * Changes
  * -------
@@ -63,6 +63,7 @@ import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocWriter;
@@ -73,13 +74,13 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
-import org.jfree.report.DrawableContainer;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.LocalImageContainer;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.ShapeElement;
 import org.jfree.report.URLImageContainer;
+import org.jfree.report.content.DrawableContent;
 import org.jfree.report.content.ImageContent;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
@@ -90,6 +91,7 @@ import org.jfree.report.modules.output.support.itext.BaseFontRecord;
 import org.jfree.report.modules.output.support.itext.BaseFontSupport;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.report.util.KeyedQueue;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.WaitingImageObserver;
@@ -279,6 +281,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   /** The internal operation bounds. */
   private Rectangle2D internalOperationBounds;
 
+  private KeyedQueue cachedImages;
+
   /**
    * A bytearray containing an empty password. iText replaces the owner password with random
    * values, but Adobe allows to have encryption without an owner password set.
@@ -302,6 +306,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     this.out = out;
     this.fontSupport = new BaseFontSupport();
     this.internalOperationBounds = new Rectangle2D.Float();
+    this.cachedImages = new KeyedQueue(20);
   }
 
   /**
@@ -450,10 +455,17 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       {
         final Rectangle2D drawArea = new Rectangle2D.Float(0, 0, (float) bounds.getWidth(),
             (float) bounds.getHeight());
-        if ((urlImageContainer.getSourceURL() != null) &&
+        final URL sourceURL = urlImageContainer.getSourceURL();
+        if ((sourceURL != null) &&
             (drawArea.contains(imageBounds)))
         {
-          return Image.getInstance(urlImageContainer.getSourceURL());
+          Image image = (Image) cachedImages.get(sourceURL);
+          if (image == null)
+          {
+            image = Image.getInstance(sourceURL);
+            cachedImages.put(sourceURL, image);
+          }
+          return image;
         }
       }
       catch (BadElementException be)
@@ -476,6 +488,18 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
         final WaitingImageObserver obs = new WaitingImageObserver(localImageContainer.getImage());
         obs.waitImageLoaded();
 
+        // check, if the content was cached ...
+        final Object identity = localImageContainer.getIdentity();
+        if (identity != null)
+        {
+          Image image = (Image) cachedImages.get(identity);
+          if (image == null)
+          {
+            image = Image.getInstance(localImageContainer.getImage(), null, false);
+            cachedImages.put(identity, image);
+          }
+          return image;
+        }
         // iText is able to handle image conversion by itself ...
         return Image.getInstance(localImageContainer.getImage(), null, false);
       }
@@ -1194,9 +1218,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     try
     {
       final BaseFontRecord record = fontSupport.createBaseFont(font,
-          font.getFontEncoding(getFontEncoding()),
-          false);
-      return new PDFSizeCalculator(record.getBaseFont(), font.getFont().getSize2D());
+          font.getFontEncoding(getFontEncoding()), isEmbedFonts() || font.isEmbeddedFont());
+      return new PDFSizeCalculator(record.getBaseFont(), record.getFontHeight());
     }
     catch (BaseFontCreateException bfce)
     {
@@ -1234,7 +1257,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param drawable the drawable to draw.
    */
-  protected void drawDrawable(final DrawableContainer drawable)
+  protected void drawDrawable(final DrawableContent drawable)
   {
     // only the drawable clippingbounds region will be drawn.
     // the clipping is set to the clipping bounds of the drawable
@@ -1242,11 +1265,12 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     // the clipping bounds are relative to the drawable dimension,
     // they are not influenced by the drawables position on the page
 
+    // todo ...
     final Rectangle2D bounds = getInternalOperationBounds();
     final float x = (float) (bounds.getX());
     final float y = (float) (bounds.getY());
 
-    final Rectangle2D clipBounds = drawable.getClippingBounds();
+    final Rectangle2D clipBounds = drawable.getBounds();
 
     final Graphics2D target = writer.getDirectContent().createGraphics
         ((float) clipBounds.getWidth() + x, (getPageHeight() - y), fontSupport);
@@ -1257,7 +1281,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     final Rectangle2D drawBounds = new Rectangle2D.Float(0, 0,
         (float) drawableSize.getWidth(),
         (float) drawableSize.getHeight());
-    drawable.getDrawable().draw(target, drawBounds);
+    drawable.getContent().draw(target, drawBounds);
     target.dispose();
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.5 2004/05/07 08:14:22 mungady Exp $
+ * $Id: StartState.java,v 1.6 2005/01/25 00:22:36 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.util.Iterator;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.PageDefinition;
-import org.jfree.util.Log;
 
 /**
  * The first state in the JFreeReport state transition diagram.
@@ -108,7 +107,6 @@ public final class StartState extends ReportState
     // a PropertyHandler should set the properties.
     setProperty(JFreeReport.REPORT_DATE_PROPERTY, new Date());
 
-    Log.debug ("Date: " + getDataRow().get("report.date"));
     // the pageformat is added to the report properties, PageFormat is not serializable,
     // so a repaginated report is no longer serializable.
     //
@@ -117,7 +115,7 @@ public final class StartState extends ReportState
     // suitable alternative.
     final PageDefinition p = getReport().getPageDefinition();
     final PageFormat pf = p.getPageFormat(0);
-    setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, pf.clone());
+    setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, pf);
 
     fireReportInitializedEvent();
     return new PostReportInitializedState(this);

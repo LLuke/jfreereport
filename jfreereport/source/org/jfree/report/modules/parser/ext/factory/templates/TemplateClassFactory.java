@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TemplateClassFactory.java,v 1.3 2003/08/26 17:35:51 taqua Exp $
+ * $Id: TemplateClassFactory.java,v 1.4 2004/05/07 14:29:23 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -65,6 +65,7 @@ public class TemplateClassFactory extends ClassFactoryImpl
     addTemplate(new RectangleTemplateDescription("rectangle"));
     addTemplate(new HorizontalLineTemplateDescription("horizontal-line"));
     addTemplate(new VerticalLineTemplateDescription("vertical-line"));
+    addTemplate(new DrawableFieldTemplateDescription("drawable-field"));
   }
 
   /**

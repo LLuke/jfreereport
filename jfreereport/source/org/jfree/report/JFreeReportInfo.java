@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.16 2004/12/30 14:50:38 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.17 2005/01/24 23:57:48 taqua Exp $
  *
  * Changes:
  * --------
@@ -84,7 +84,29 @@ public class JFreeReportInfo extends ProjectInfo
     ));
 
     this.addLibrary(JCommon.INFO);
-    this.addLibrary(new Library("Pixie", "0.8.1", "LGPL", "http://sourceforge.net/projects/jfreereport/"));
+
+    final Library pixieLibraryInfo = tryLoadPixieInfo();
+    if (pixieLibraryInfo != null)
+    {
+      addLibrary(pixieLibraryInfo);
+    }
+  }
+
+  private static Library tryLoadPixieInfo()
+  {
+    try
+    {
+      return (Library) Class.forName("org.jfree.pixie.PixieInfo").newInstance();
+    }
+    catch(Exception e)
+    {
+      return null;
+    }
+  }
+
+  public static boolean isPixieAvailable ()
+  {
+    return tryLoadPixieInfo() != null;
   }
 
   /**

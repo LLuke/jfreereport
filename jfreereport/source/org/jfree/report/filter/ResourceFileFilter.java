@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2003, by Thomas Morgner.
  *
- * $Id: ResourceFileFilter.java,v 1.4 2004/05/07 08:24:42 mungady Exp $
+ * $Id: ResourceFileFilter.java,v 1.5 2005/01/24 23:59:41 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -52,7 +52,7 @@ public class ResourceFileFilter
     implements DataFilter, Serializable, ReportConnectable
 {
   /** the used resource bundle. */
-  private ResourceBundle resources;
+  private String resourceIdentifier;
 
   /** the filtered data source. */
   private DataSource dataSource;
@@ -66,24 +66,14 @@ public class ResourceFileFilter
   {
   }
 
-  /**
-   * Gets the assigned resource bundle, or null, if no resource bundle is defined.
-   *
-   * @return the defined ResourceBundle or null.
-   */
-  public ResourceBundle getResources()
+  public String getResourceIdentifier ()
   {
-    return resources;
+    return resourceIdentifier;
   }
 
-  /**
-   * Defines a resource bundle for this filter.
-   *
-   * @param resources the resource bundle used to lookup the value.
-   */
-  public void setResources(final ResourceBundle resources)
+  public void setResourceIdentifier (final String resourceIdentifier)
   {
-    this.resources = resources;
+    this.resourceIdentifier = resourceIdentifier;
   }
 
   /**
@@ -103,7 +93,11 @@ public class ResourceFileFilter
     {
       return null;
     }
-    if (resources == null)
+    if (resourceIdentifier == null)
+    {
+      return null;
+    }
+    if (reportDefinition == null)
     {
       return null;
     }
@@ -116,7 +110,11 @@ public class ResourceFileFilter
 
     try
     {
-      return resources.getObject(svalue);
+      final ResourceBundle bundle = reportDefinition.getResourceBundle(resourceIdentifier);
+      if (bundle != null)
+      {
+        return bundle.getObject(svalue);
+      }
     }
     catch (Exception e)
     {
@@ -161,7 +159,7 @@ public class ResourceFileFilter
     this.dataSource = ds;
   }
 
-  public void registerReportDefinition(ReportDefinition reportDefinition)
+  public void registerReportDefinition(final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != null)
     {
@@ -174,7 +172,7 @@ public class ResourceFileFilter
     this.reportDefinition = reportDefinition;
   }
 
-  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != reportDefinition)
     {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.7.4.1 2004/10/13 17:18:55 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.10 2005/01/24 23:58:42 taqua Exp $
  *
  * Changes
  * -------
@@ -38,13 +38,13 @@
 
 package org.jfree.report.demo;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.awt.Image;
-import java.awt.Toolkit;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
@@ -77,7 +77,14 @@ public class StraightToPDF
     final JFreeReport report = parseReport(in);
     final TableModel data = new OpenSourceProjects();
     report.setData(data);
-    savePDF(report, filename);
+    final long startTime = System.currentTimeMillis();
+    Log.debug ("Start: " + startTime);
+    for (int i = 0; i < 10; i++)
+    {
+      Log.debug ("Start: -----------------------------------------------");
+      savePDF(report, filename);
+    }
+    Log.debug ("Start: " + (System.currentTimeMillis() - startTime));
   }
 
   /**
@@ -131,13 +138,14 @@ public class StraightToPDF
       proc.setOutputTarget(target);
       proc.processReport();
 
+
       target.close();
       return true;
     }
     catch (Exception e)
     {
       System.err.println("Writing PDF failed.");
-      System.err.println(e.toString());
+      e.printStackTrace();
       return false;
     }
     finally
@@ -152,7 +160,7 @@ public class StraightToPDF
       catch (Exception e)
       {
         System.err.println("Saving PDF failed.");
-        System.err.println(e.toString());
+        e.printStackTrace();
       }
     }
   }

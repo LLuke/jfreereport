@@ -69,6 +69,10 @@ What changed:
 * TextElements bind the encoding; so multiple encodings can be used
   within a single PDF document
 * The ImageReference class has been replaced by an interface
+* Resourcebundles are no longer loaded directly. The ResourceBundleFactory
+  from the JFreeReport object is used as source now.
+* Horizontal lines no longer use the x1==x2; y1==y2 form of definition.
+  They now use the relative coordinates like all other elements (width="100%")
 
 To be implemented: 
   Simple parser: Support for the new features

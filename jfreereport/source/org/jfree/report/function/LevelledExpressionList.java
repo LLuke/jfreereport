@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.8.4.3 2005/01/19 21:52:03 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.13 2005/01/25 00:00:15 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.event.ReportListener;
 import org.jfree.report.util.LevelList;
+import org.jfree.report.util.IntList;
 
 /**
  * A list of expressions/functions and associated levels.  This class listens for report events,
@@ -62,33 +63,58 @@ import org.jfree.report.util.LevelList;
 public final class LevelledExpressionList implements ReportListener,
     Cloneable, LayoutListener, PageEventListener
 {
+  private static class LevelStorage
+  {
+    private int levelNumber;
+    private int[] activeExpressions;
+    private int[] functions;
+    private int[] pageEventListeners;
+    private int[] prepareEventListeners;
+    private int[] layoutListeners;
+    private int[] prepareEventLayoutListeners;
+    private int[] expressions;
+
+    public LevelStorage (final int levelNumber,
+                         final int[] expressions,
+                         final int[] activeExpressions,
+                         final int[] functions,
+                         final int[] pageEventListeners,
+                         final int[] prepareEventListeners,
+                         final int[] prepareEventLayoutListeners,
+                         final int[] layoutListeners)
+    {
+      this.levelNumber = levelNumber;
+      this.activeExpressions = activeExpressions;
+      this.functions = functions;
+      this.pageEventListeners = pageEventListeners;
+      this.prepareEventListeners = prepareEventListeners;
+      this.layoutListeners = layoutListeners;
+      this.expressions = expressions;
+      this.prepareEventLayoutListeners = prepareEventLayoutListeners;
+    }
+  }
+
   /** error list stores the errors that occur during the event dispatching. */
   private ArrayList errorList;
 
   /** The current processing level. */
   private int level;
 
-  /** The levels (in descending order). */
-  private int[] levels;
-
   /** The dataRow for all functions. */
   private DataRow dataRow;
 
   /** The expressions sorted by levels. */
-  private Expression[][] levelData;
+  private LevelStorage[] levelData;
+
   /** all data as flat list. */
   private Expression[] flatData;
 
   /** The number of functions and expressions in this list. */
   private int size;
 
-  /**
-   * DefaultConstructor.
-   */
-  protected LevelledExpressionList()
+  protected LevelledExpressionList ()
   {
     errorList = new ArrayList();
-    levels = new int[0];
   }
 
   /**
@@ -98,36 +124,8 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public LevelledExpressionList(final ExpressionCollection ec)
   {
-    this();
+    errorList = new ArrayList();
     initialize(ec);
-  }
-
-  /**
-   * Builds the list of all levels. This is done once after the initialisation,
-   * as the functions level is not expected to change after the function was
-   * initialized.
-   * 
-   * @param expressionList the level list from where to build the data.
-   * @return the function levels.
-   */
-  private int[] buildLevels(final LevelList expressionList)
-  {
-    // copy all levels from the collections to the cache ...
-    // we assume, that the collections do not change anymore!
-    final ArrayList al = new ArrayList();
-    final Iterator it = expressionList.getLevelsDescending();
-    while (it.hasNext())
-    {
-      final Integer level = (Integer) it.next();
-      al.add(level);
-    }
-    final int[] levels = new int[al.size()];
-    for (int i = 0; i < levels.length; i++)
-    {
-      final Integer level = (Integer) al.get(i);
-      levels[i] = level.intValue();
-    }
-    return levels;
   }
 
   /**
@@ -140,48 +138,41 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public void reportStarted(final ReportEvent event)
   {
-//    clearError(); is done in the prepare event ...
-
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].functions;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof Function)
+        final Function e = (Function) flatData[functions[l]];
+        try
         {
-          final Function f = (Function) e;
-          try
-          {
-            f.reportStarted(event);
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          e.reportStarted(event);
         }
-        else
+        catch (Exception ex)
         {
-          try
-          {
-            if (e.isActive())
-            {
-              e.getValue();
-            }
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          addError(ex);
+        }
+      }
+
+      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      for (int l = 0; l < activeExpressions.length; l++)
+      {
+        final Expression e = flatData[activeExpressions[l]];
+        try
+        {
+          e.getValue();
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
-
   }
 
   /**
@@ -194,43 +185,38 @@ public final class LevelledExpressionList implements ReportListener,
   public void reportInitialized(final ReportEvent event)
   {
     clearError(); // has no prepare event ...
-
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIndex = 0; levelIndex < levelData.length; levelIndex++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIndex].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIndex].functions;
+      for (int expressionIdx = 0; expressionIdx < functions.length; expressionIdx++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof Function)
+        final Function e = (Function) flatData[functions[expressionIdx]];
+        try
         {
-          final Function f = (Function) e;
-          try
-          {
-            f.reportInitialized(event);
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          e.reportInitialized(event);
         }
-        else
+        catch (Exception ex)
         {
-          try
-          {
-            if (e.isActive())
-            {
-              e.getValue();
-            }
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          addError(ex);
+        }
+      }
+
+      final int[] activeExpressions = levelData[levelIndex].activeExpressions;
+      for (int exprIdx = 0; exprIdx < activeExpressions.length; exprIdx++)
+      {
+        final Expression e = flatData[activeExpressions[exprIdx]];
+        try
+        {
+          e.getValue();
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
@@ -244,44 +230,38 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public void reportFinished(final ReportEvent event)
   {
-    // clearError(); done in the prepare event ...
-
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].functions;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof Function)
+        final Function e = (Function) flatData[functions[l]];
+        try
         {
-          final Function f = (Function) e;
-          try
-          {
-            f.reportFinished(event);
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          e.reportFinished(event);
         }
-        else
+        catch (Exception ex)
         {
-          try
-          {
-            if (e.isActive())
-            {
-              e.getValue();
-            }
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          addError(ex);
+        }
+      }
+
+      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      for (int l = 0; l < activeExpressions.length; l++)
+      {
+        final Expression e = flatData[activeExpressions[l]];
+        try
+        {
+          e.getValue();
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
@@ -294,46 +274,38 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public void pageStarted(final ReportEvent event)
   {
-    // this is an internal event, don't fire prepare or clear the errors.
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].pageEventListeners;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof Function)
+        final PageEventListener e = (PageEventListener) flatData[functions[l]];
+        try
         {
-          if (e instanceof PageEventListener)
-          {
-            final PageEventListener f = (PageEventListener) e;
-            try
-            {
-              f.pageStarted(event);
-            }
-            catch (Exception ex)
-            {
-              addError(ex);
-            }
-          }
+          e.pageStarted(event);
         }
-        else
+        catch (Exception ex)
         {
-          try
-          {
-            if (e.isActive())
-            {
-              e.getValue();
-            }
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          addError(ex);
+        }
+      }
+
+      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      for (int l = 0; l < activeExpressions.length; l++)
+      {
+        final Expression e = flatData[activeExpressions[l]];
+        try
+        {
+          e.getValue();
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
@@ -346,29 +318,24 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public void pageCanceled(final ReportEvent event)
   {
-    // this is an internal event, don't fire prepare or clear the errors.
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].pageEventListeners;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof PageEventListener)
+        final PageEventListener e = (PageEventListener) flatData[functions[l]];
+        try
         {
-          final PageEventListener f = (PageEventListener) e;
-          try
-          {
-            f.pageCanceled(event);
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          e.pageCanceled(event);
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
@@ -382,46 +349,38 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public void pageFinished(final ReportEvent event)
   {
-    // this is an internal event, don't fire prepare or clear the errors.
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].pageEventListeners;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof Function)
+        final PageEventListener e = (PageEventListener) flatData[functions[l]];
+        try
         {
-          if (e instanceof PageEventListener)
-          {
-            final PageEventListener f = (PageEventListener) e;
-            try
-            {
-              f.pageFinished(event);
-            }
-            catch (Exception ex)
-            {
-              addError(ex);
-            }
-          }
+          e.pageFinished(event);
         }
-        else
+        catch (Exception ex)
         {
-          try
-          {
-            if (e.isActive())
-            {
-              e.getValue();
-            }
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          addError(ex);
+        }
+      }
+
+      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      for (int l = 0; l < activeExpressions.length; l++)
+      {
+        final Expression e = flatData[activeExpressions[l]];
+        try
+        {
+          e.getValue();
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
@@ -436,47 +395,42 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public void groupStarted(final ReportEvent event)
   {
-    // clearError(); done in the prepare event ...
-
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].functions;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof Function)
+        final Function e = (Function) flatData[functions[l]];
+        try
         {
-          final Function f = (Function) e;
-          try
-          {
-            f.groupStarted(event);
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          e.groupStarted(event);
         }
-        else
+        catch (Exception ex)
         {
-          try
-          {
-            if (e.isActive())
-            {
-              e.getValue();
-            }
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          addError(ex);
+        }
+      }
+
+      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      for (int l = 0; l < activeExpressions.length; l++)
+      {
+        final Expression e = flatData[activeExpressions[l]];
+        try
+        {
+          e.getValue();
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
+
   }
 
   /**
@@ -488,44 +442,38 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public void groupFinished(final ReportEvent event)
   {
-    // clearError(); done in the prepare event ...
-
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].functions;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof Function)
+        final Function e = (Function) flatData[functions[l]];
+        try
         {
-          final Function f = (Function) e;
-          try
-          {
-            f.groupFinished(event);
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          e.groupFinished(event);
         }
-        else
+        catch (Exception ex)
         {
-          try
-          {
-            if (e.isActive())
-            {
-              e.getValue();
-            }
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          addError(ex);
+        }
+      }
+
+      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      for (int l = 0; l < activeExpressions.length; l++)
+      {
+        final Expression e = flatData[activeExpressions[l]];
+        try
+        {
+          e.getValue();
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
@@ -540,44 +488,38 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public void itemsStarted(final ReportEvent event)
   {
-    // clearError(); done in the prepare event ...
-
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].functions;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof Function)
+        final Function e = (Function) flatData[functions[l]];
+        try
         {
-          final Function f = (Function) e;
-          try
-          {
-            f.itemsStarted(event);
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          e.itemsStarted(event);
         }
-        else
+        catch (Exception ex)
         {
-          try
-          {
-            if (e.isActive())
-            {
-              e.getValue();
-            }
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          addError(ex);
+        }
+      }
+
+      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      for (int l = 0; l < activeExpressions.length; l++)
+      {
+        final Expression e = flatData[activeExpressions[l]];
+        try
+        {
+          e.getValue();
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
@@ -592,44 +534,38 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public void itemsFinished(final ReportEvent event)
   {
-    // clearError(); done in the prepare event ...
-
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].functions;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof Function)
+        final Function e = (Function) flatData[functions[l]];
+        try
         {
-          final Function f = (Function) e;
-          try
-          {
-            f.itemsFinished(event);
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          e.itemsFinished(event);
         }
-        else
+        catch (Exception ex)
         {
-          try
-          {
-            if (e.isActive())
-            {
-              e.getValue();
-            }
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          addError(ex);
+        }
+      }
+
+      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      for (int l = 0; l < activeExpressions.length; l++)
+      {
+        final Expression e = flatData[activeExpressions[l]];
+        try
+        {
+          e.getValue();
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
@@ -644,44 +580,38 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public void itemsAdvanced(final ReportEvent event)
   {
-    // clearError(); done in the prepare event ...
-
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].functions;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof Function)
+        final Function e = (Function) flatData[functions[l]];
+        try
         {
-          final Function f = (Function) e;
-          try
-          {
-            f.itemsAdvanced(event);
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          e.itemsAdvanced(event);
         }
-        else
+        catch (Exception ex)
         {
-          try
-          {
-            if (e.isActive())
-            {
-              e.getValue();
-            }
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          addError(ex);
+        }
+      }
+
+      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      for (int l = 0; l < activeExpressions.length; l++)
+      {
+        final Expression e = flatData[activeExpressions[l]];
+        try
+        {
+          e.getValue();
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
@@ -696,32 +626,40 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public void layoutComplete(final LayoutEvent event)
   {
-    // this is an internal event, no need to handle prepare outside ..
-    // clearError();
     firePrepareEventLayoutListener(event);
 
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].layoutListeners;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof LayoutListener && e instanceof Function)
+        final LayoutListener e = (LayoutListener) flatData[functions[l]];
+        try
         {
-          final LayoutListener f = (LayoutListener) e;
-          try
-          {
-            f.layoutComplete(event);
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          e.layoutComplete(event);
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
+        }
+      }
+
+      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      for (int l = 0; l < activeExpressions.length; l++)
+      {
+        final Expression e = flatData[activeExpressions[l]];
+        try
+        {
+          e.getValue();
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
@@ -736,32 +674,24 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public void outputComplete(final LayoutEvent event)
   {
-    // this is an internal event, no need to handle prepare outside ..
-    // clearError();
-    firePrepareEventLayoutListener(event);
-
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].layoutListeners;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof LayoutListener && e instanceof Function)
+        final LayoutListener e = (LayoutListener) flatData[functions[l]];
+        try
         {
-          final LayoutListener f = (LayoutListener) e;
-          try
-          {
-            f.outputComplete(event);
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          e.layoutComplete(event);
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
@@ -775,44 +705,38 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public void reportDone(final ReportEvent event)
   {
-    // clearError(); done in the prepare event ...
-
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].functions;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof Function)
+        final Function e = (Function) flatData[functions[l]];
+        try
         {
-          final Function f = (Function) e;
-          try
-          {
-            f.reportDone(event);
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          e.reportDone(event);
         }
-        else
+        catch (Exception ex)
         {
-          try
-          {
-            if (e.isActive())
-            {
-              e.getValue();
-            }
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          addError(ex);
+        }
+      }
+
+      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      for (int l = 0; l < activeExpressions.length; l++)
+      {
+        final Expression e = flatData[activeExpressions[l]];
+        try
+        {
+          e.getValue();
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
@@ -851,13 +775,10 @@ public final class LevelledExpressionList implements ReportListener,
   public void updateDataRow(final DataRow dr)
   {
     dataRow = dr;
-    for (int i = 0; i < levelData.length; i++)
+    for (int i = 0; i < flatData.length; i++)
     {
-      for (int j = 0; j < levelData[i].length; j++)
-      {
-        final Expression f = levelData[i][j];
-        f.setDataRow(dr);
-      }
+      final Expression f = flatData[i];
+      f.setDataRow(dr);
     }
   }
 
@@ -903,19 +824,71 @@ public final class LevelledExpressionList implements ReportListener,
   private void initializeFromLevelList (final LevelList expressionList)
   {
     this.size = 0;
-    this.levels = buildLevels(expressionList);
-    this.levelData = new Expression[levels.length][];
+    final Integer[] levels = expressionList.getLevelsDescendingArray();
+    this.levelData = new LevelStorage[levels.length];
     this.flatData = new Expression[expressionList.size()];
+
+    final IntList expressions = new IntList(20);
+    final IntList activeExpressions = new IntList(20);
+    final IntList functions = new IntList(20);
+    final IntList layoutListeners = new IntList(20);
+    final IntList pageEventListeners = new IntList(20);
+    final IntList prepareEventListeners = new IntList(20);
+    final IntList prepareLayoutEventListeners = new IntList(20);
 
     for (int i = 0; i < levels.length; i++)
     {
-      final int currentLevel = levels[i];
+      final int currentLevel = levels[i].intValue();
       final Expression[] data = (Expression[])
           expressionList.getElementArrayForLevel(currentLevel,
           new Expression[expressionList.getElementCountForLevel(currentLevel)]);
-
-      this.levelData[i] = data;
       System.arraycopy(data, 0, this.flatData, this.size, data.length);
+      for (int x = 0; x < data.length; x++)
+      {
+        final Expression ex = data[x];
+        final int globalPosition = this.size + x;
+
+        expressions.add(globalPosition);
+        if (ex.isActive())
+        {
+          activeExpressions.add(globalPosition);
+        }
+        if (ex instanceof Function == false)
+        {
+          continue;
+        }
+        functions.add (globalPosition);
+        if (ex instanceof PageEventListener)
+        {
+          pageEventListeners.add(globalPosition);
+        }
+        if (ex instanceof LayoutListener)
+        {
+          layoutListeners.add(globalPosition);
+          if (ex instanceof PrepareEventListener)
+          {
+            prepareEventListeners.add(globalPosition);
+            prepareLayoutEventListeners.add(globalPosition);
+          }
+        }
+        else if (ex instanceof PrepareEventListener)
+        {
+          prepareEventListeners.add(globalPosition);
+        }
+        final LevelStorage storage = new LevelStorage(currentLevel,
+                expressions.toArray(), activeExpressions.toArray(),
+                functions.toArray(), pageEventListeners.toArray(),
+                prepareEventListeners.toArray(), prepareLayoutEventListeners.toArray(),
+                layoutListeners.toArray());
+        levelData[i] = storage;
+      }
+      expressions.clear();
+      activeExpressions.clear();
+      functions.clear();
+      pageEventListeners.clear();
+      prepareEventListeners.clear();
+      prepareLayoutEventListeners.clear();
+      layoutListeners.clear();
       this.size += data.length;
     }
   }
@@ -950,32 +923,11 @@ public final class LevelledExpressionList implements ReportListener,
     // ft.size = size;     // already copied during cloning ...
     ft.dataRow = null;
     ft.errorList = (ArrayList) errorList.clone();
-    ft.levelData = new Expression[levelData.length][];
-    ft.flatData = new Expression[flatData.length];
 
-    int flatDataPos = 0;
-    for (int level = 0; level < levelData.length; level++)
+    for (int expression = 0; expression< flatData.length; expression++)
     {
-      ft.levelData[level] = new Expression[levelData[level].length];
-      for (int i = 0; i < levelData[level].length; i++)
-      {
-        final Expression ex = levelData[level][i];
-        if (ex instanceof Function)
-        {
-          final Expression exClone = (Expression) ex.clone();
-          exClone.setDataRow(null);
-          ft.levelData[level][i] = exClone;
-          ft.flatData[flatDataPos] = exClone;
-        }
-        else
-        {
-          final Expression exClone = ex.getInstance();
-          exClone.setDataRow(null);
-          ft.levelData[level][i] = exClone;
-          ft.flatData[flatDataPos] = exClone;
-        }
-        flatDataPos++;
-      }
+      ft.flatData[expression] = (Expression) flatData[expression].clone();
+      ft.flatData[expression].setDataRow(null);
     }
     return ft;
   }
@@ -988,15 +940,15 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public LevelledExpressionList getPreviewInstance()
   {
-    final LevelledExpressionList ft = new LevelledExpressionList();
-    ft.errorList = new ArrayList();
     final LevelList expressionList = new LevelList();
 
     for (int level = 0; level < levelData.length; level++)
     {
-      for (int i = 0; i < levelData[level].length; i++)
+      final LevelStorage levelStorage = levelData[level];
+      for (int i = 0; i < levelStorage.expressions.length; i++)
       {
-        final Expression ex = levelData[level][i];
+        final int idx = levelStorage.expressions[i];
+        final Expression ex = flatData[idx];
         if (ex instanceof Function)
         {
           // ignore it, functions are state dependent and cannot be used
@@ -1008,6 +960,7 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
     }
+    final LevelledExpressionList ft = new LevelledExpressionList();
     ft.initializeFromLevelList(expressionList);
     return ft;
   }
@@ -1039,10 +992,10 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public Iterator getLevelsDescending()
   {
-    final Integer[] levelIntegers = new Integer[levels.length];
-    for (int i = 0; i < levels.length; i++)
+    final Integer[] levelIntegers = new Integer[levelData.length];
+    for (int i = 0; i < levelData.length; i++)
     {
-      levelIntegers[i] = new Integer(levels[i]);
+      levelIntegers[i] = new Integer(levelData[i].levelNumber);
     }
     return Collections.unmodifiableList(Arrays.asList(levelIntegers)).iterator();
   }
@@ -1054,10 +1007,10 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public Iterator getLevelsAscending()
   {
-    final Integer[] levelIntegers = new Integer[levels.length];
-    for (int i = 0; i < levels.length; i++)
+    final Integer[] levelIntegers = new Integer[levelData.length];
+    for (int i = 0; i < levelData.length; i++)
     {
-      levelIntegers[levels.length - i - 1] = new Integer(levels[i]);
+      levelIntegers[levelData.length - i - 1] = new Integer(levelData[i].levelNumber);
     }
     return Collections.unmodifiableList(Arrays.asList(levelIntegers)).iterator();
   }
@@ -1132,32 +1085,28 @@ public final class LevelledExpressionList implements ReportListener,
   public void firePrepareEvent(final ReportEvent event)
   {
     clearError();
-
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].prepareEventListeners;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof Function && e instanceof PrepareEventListener)
+        final PrepareEventListener e = (PrepareEventListener) flatData[functions[l]];
+        try
         {
-          final PrepareEventListener f = (PrepareEventListener) e;
-          try
-          {
-            f.prepareEvent(event);
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          e.prepareEvent(event);
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
+
   }
 
   /**
@@ -1167,32 +1116,41 @@ public final class LevelledExpressionList implements ReportListener,
    */
   protected void firePrepareEventLayoutListener(final ReportEvent event)
   {
-    // no clear error here ...
-    for (int i = 0; i < levels.length; i++)
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levels[i];
+      final int level = levelData[levelIdx].levelNumber;
       if (level < getLevel())
       {
         break;
       }
-      final Object[] itLevel = levelData[i];
-      for (int l = 0; l < itLevel.length; l++)
+      final int[] functions = levelData[levelIdx].prepareEventLayoutListeners;
+      for (int l = 0; l < functions.length; l++)
       {
-        final Expression e = (Expression) itLevel[l];
-        if (e instanceof Function && e instanceof PrepareEventListener
-            && e instanceof LayoutListener)
+        final PrepareEventListener e = (PrepareEventListener) flatData[functions[l]];
+        try
         {
-          final PrepareEventListener f = (PrepareEventListener) e;
-          try
-          {
-            f.prepareEvent(event);
-          }
-          catch (Exception ex)
-          {
-            addError(ex);
-          }
+          e.prepareEvent(event);
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
+        }
+      }
+
+      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      for (int l = 0; l < activeExpressions.length; l++)
+      {
+        final Expression e = flatData[activeExpressions[l]];
+        try
+        {
+          e.getValue();
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
         }
       }
     }
+
   }
 }

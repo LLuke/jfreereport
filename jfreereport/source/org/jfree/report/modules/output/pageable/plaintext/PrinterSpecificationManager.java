@@ -11,7 +11,7 @@ public class PrinterSpecificationManager
         extends AbstractPrinterSpecificationLoader
 
 {
-  private class GenericPrinterSpecification
+  private static class GenericPrinterSpecification
           implements PrinterSpecification
   {
     private PrinterEncoding genericEncoding;
@@ -76,12 +76,11 @@ public class PrinterSpecificationManager
   }
 
   private HashMap printerModels;
-  private PrinterSpecification generic;
+  private static PrinterSpecification generic;
 
   protected PrinterSpecificationManager ()
   {
-    // Maps all encodings to ASCII
-    generic = new GenericPrinterSpecification();
+    final PrinterSpecification generic = getGenericPrinter();
     printerModels = new HashMap();
     printerModels.put(generic.getName(), generic);
   }
@@ -134,8 +133,12 @@ public class PrinterSpecificationManager
     return (PrinterSpecification) printerModels.get (name);
   }
 
-  public PrinterSpecification getGenericPrinter ()
+  public static synchronized PrinterSpecification getGenericPrinter ()
   {
+    if (generic == null)
+    {
+      generic = new GenericPrinterSpecification();
+    }
     return generic;
   }
 }

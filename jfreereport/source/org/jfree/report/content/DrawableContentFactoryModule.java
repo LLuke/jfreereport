@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableContentFactoryModule.java,v 1.6 2004/05/07 08:02:48 mungady Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.7 2005/01/24 23:58:15 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,10 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import org.jfree.report.DrawableContainer;
 import org.jfree.report.Element;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.util.ElementLayoutInformation;
+import org.jfree.ui.Drawable;
 
 /**
  * A factory module for drawable content.
@@ -85,7 +85,7 @@ public strictfp class DrawableContentFactoryModule implements ContentFactoryModu
                                          final LayoutSupport ot)
       throws ContentCreationException
   {
-    final DrawableContainer drawable = (DrawableContainer) e.getValue();
+    final Drawable drawable = (Drawable) e.getValue();
     if (drawable == null)
     {
       return EmptyContent.getDefaultEmptyContent();
@@ -104,11 +104,10 @@ public strictfp class DrawableContentFactoryModule implements ContentFactoryModu
     // this could be a show-stopper for WMF-Drawables, so we'll start subclassing
     // the drawable stuff soon ...
 
-    final Rectangle2D drawableBounds = new Rectangle2D.Float(0, 0,
+    final Rectangle2D drawableBounds = new Rectangle2D.Float
+        ((float) point.getX(), (float) point.getY(),
         (float) iBounds.getWidth(),
         (float) iBounds.getHeight());
-    final DrawableContainer con = new DrawableContainer
-        (drawable.getDrawable(), iBounds, drawableBounds);
-    return new DrawableContent(con, point);
+    return new DrawableContent(drawable, drawableBounds);
   }
 }

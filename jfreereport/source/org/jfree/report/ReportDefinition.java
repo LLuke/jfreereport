@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinition.java,v 1.4.2.1.2.1 2004/12/13 19:25:18 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.9 2005/01/24 23:57:48 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  */
 
 package org.jfree.report;
+
+import java.util.ResourceBundle;
 
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.util.ReportConfiguration;
@@ -149,4 +151,8 @@ public interface ReportDefinition extends Cloneable
   public DataRow getDataRow ();
 
   public PageDefinition getPageDefinition();
+
+  public ResourceBundle getResourceBundle (String identifier);
+
+  public ResourceBundleFactory getResourceBundleFactory ();
 }

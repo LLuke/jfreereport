@@ -5,6 +5,10 @@ import java.io.OutputStream;
 
 public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
 {
+  private static PrinterSpecificationManager printerSpecificationManager;
+  private static final String SPECIFICATION_RESOURCE =
+          "epson-9pin-printer-specifications.properties";
+
   public Epson9PinPrinterDriver (final OutputStream out, final int charsPerInch, final int linesPerInch,
                   final String printerModel)
   {
@@ -93,4 +97,21 @@ public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
     driverState.setUnderline(underline);
     driverState.setStrikethrough(false);
   }
+
+
+  protected PrinterSpecificationManager getPrinterSpecificationManager ()
+  {
+    return loadSpecificationManager();
+  }
+
+  public static synchronized PrinterSpecificationManager loadSpecificationManager()
+  {
+    if (printerSpecificationManager == null)
+    {
+      printerSpecificationManager = new PrinterSpecificationManager();
+      printerSpecificationManager.load(SPECIFICATION_RESOURCE);
+    }
+    return printerSpecificationManager;
+  }
+
 }

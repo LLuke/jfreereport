@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.19 2004/05/07 12:53:09 mungady Exp $
+ * $Id: SimplePageLayouter.java,v 1.20 2005/01/25 00:10:44 taqua Exp $
  *
  * Changes
  * -------
@@ -182,7 +182,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
    */
   public void resetCursor()
   {
-    setCursor(new SimplePageLayoutCursor(getLogicalPage().getHeight()));
+    LogicalPage lp = getLogicalPage();
+    setCursor(new SimplePageLayoutCursor(lp.getHeight()));
   }
 
   /**

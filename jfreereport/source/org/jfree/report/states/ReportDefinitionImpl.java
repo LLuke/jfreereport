@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinitionImpl.java,v 1.9 2004/05/07 08:14:21 mungady Exp $
+ * $Id: ReportDefinitionImpl.java,v 1.10 2005/01/25 00:22:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,6 +37,8 @@
  */
 
 package org.jfree.report.states;
+
+import java.util.ResourceBundle;
 
 import org.jfree.report.Band;
 import org.jfree.report.DataRow;
@@ -52,6 +54,7 @@ import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
 import org.jfree.report.Watermark;
+import org.jfree.report.ResourceBundleFactory;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.DataTarget;
 import org.jfree.report.filter.ReportConnectable;
@@ -105,6 +108,8 @@ public class ReportDefinitionImpl implements ReportDefinition
 
   private PageDefinition pageDefinition;
 
+  private ResourceBundleFactory resourceBundleFactory;
+
   /**
    * Creates a report definition from a report object.
    *
@@ -132,6 +137,7 @@ public class ReportDefinitionImpl implements ReportDefinition
     pageFooter.updateStyleSheetCollection(styleSheetCollection);
     pageHeader.updateStyleSheetCollection(styleSheetCollection);
     watermark.updateStyleSheetCollection(styleSheetCollection);
+    resourceBundleFactory = report.getResourceBundleFactory();
     dataRowConnector = new DataRowConnector();
     connect();
   }
@@ -163,6 +169,7 @@ public class ReportDefinitionImpl implements ReportDefinition
     pageFooter.updateStyleSheetCollection(styleSheetCollection);
     pageHeader.updateStyleSheetCollection(styleSheetCollection);
     watermark.updateStyleSheetCollection(styleSheetCollection);
+    resourceBundleFactory = report.getResourceBundleFactory();
     dataRowConnector = new DataRowConnector();
     connect();
   }
@@ -450,5 +457,15 @@ public class ReportDefinitionImpl implements ReportDefinition
   public PageDefinition getPageDefinition()
   {
     return pageDefinition;
+  }
+
+  public ResourceBundleFactory getResourceBundleFactory ()
+  {
+    return resourceBundleFactory;
+  }
+
+  public ResourceBundle getResourceBundle (final String identifier)
+  {
+    return getResourceBundleFactory().getResourceBundle(identifier);
   }
 }

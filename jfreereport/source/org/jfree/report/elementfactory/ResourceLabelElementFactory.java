@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ResourceLabelElementFactory.java,v 1.6 2003/11/01 19:52:27 taqua Exp $
+ * $Id: ResourceLabelElementFactory.java,v 1.7 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -152,7 +152,7 @@ public class ResourceLabelElementFactory extends TextElementFactory
     }
 
     final ResourceLabelTemplate template = new ResourceLabelTemplate();
-    template.setResourceClassName(getResourceBase());
+    template.setResourceIdentifier(getResourceBase());
     template.setContent(getResourceKey());
     template.setNullValue(getNullString());
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.14 2004/05/07 08:14:24 mungady Exp $
+ * $Id: ElementStyleSheet.java,v 1.15 2005/01/25 00:22:39 taqua Exp $
  *
  * Changes
  * -------
@@ -291,7 +291,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
     this.id = new InstanceID();
     this.name = name;
-    this.properties = new HashMap();
+    this.properties = new HashMap(40);
     this.parents = new ArrayList(5);
     this.defaultSheets = new ArrayList(5);
     this.styleChangeSupport = new StyleChangeSupport(this);
@@ -313,7 +313,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @param key the key to test
    * @return true, if the key is local, false otherwise.
    */
-  public boolean isLocalKey(StyleKey key)
+  public boolean isLocalKey(final StyleKey key)
   {
     return properties.containsKey(key);
   }
@@ -709,14 +709,14 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
   }
 
+
   /**
-   * Clones the style-sheet. The assigned parent style sheets are not cloned.
-   * The stylesheets are not assigned to the contained stylesheet collection,
-   * you have to reassign them manually ...
+   * Creates and returns a copy of this object. This method calls getCopy().
    *
-   * @return the clone.
+   * @return     a clone of this instance.
+   * @see Cloneable
    */
-  public ElementStyleSheet getCopy()
+  public Object clone()
   {
     try
     {
@@ -727,38 +727,45 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
         sc.styleCache = new HashMap(styleCache);
       }
       sc.styleChangeSupport = new StyleChangeSupport(sc);
-      sc.parents = new ArrayList();// parents.clone();
-      final ElementStyleSheet[] cloneParentsCached = new ElementStyleSheet[parents.size()];
-      final ElementStyleSheet[] cloneDefaultCached = new ElementStyleSheet[defaultSheets.size()];
-      sc.parentsListCached = null;
-      sc.defaultParentsListCached = null;
       sc.collectionHelper = new ElementStyleSheetCollectionHelper(sc);
 
       // Clone all parents ...
       parentsToCache();
+      sc.parents = new ArrayList();// parents.clone();
       for (int i = parentsCached.length - 1; i >= 0; i--)
       {
         sc.addParent(parentsCached[i]);
-        cloneParentsCached[i] = parentsCached[i];
       }
 
       // Clone all default parents ...
       defaultToCache();
       sc.defaultSheets = new ArrayList();// defaultSheets.clone();
-
       for (int i = defaultCached.length - 1; i >= 0; i--)
       {
         sc.addDefaultParent(defaultCached[i]);
-        cloneDefaultCached[i] = defaultCached[i];
       }
-      sc.parentsCached = cloneParentsCached;
-      sc.defaultCached = cloneDefaultCached;
+
+      sc.parentsCached = parentsCached;
+      sc.defaultCached = defaultCached;
+
       return sc;
     }
     catch (CloneNotSupportedException cne)
     {
       throw new IllegalStateException("Clone failed.");
     }
+  }
+
+  /**
+   * Clones the style-sheet. The assigned parent style sheets are not cloned.
+   * The stylesheets are not assigned to the contained stylesheet collection,
+   * you have to reassign them manually ...
+   *
+   * @return the clone.
+   */
+  public ElementStyleSheet getCopy()
+  {
+    return (ElementStyleSheet) clone();
   }
 
   /**
@@ -839,35 +846,35 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    */
   private boolean isFontDefinitionProperty (final StyleKey key)
   {
-    if (key.equals(FONT))
+    if (key == FONT)
     {
       return true;
     }
-    if (key.equals(FONTSIZE))
+    if (key == FONTSIZE)
     {
       return true;
     }
-    if (key.equals(BOLD))
+    if (key == BOLD)
     {
       return true;
     }
-    if (key.equals(ITALIC))
+    if (key == ITALIC)
     {
       return true;
     }
-    if (key.equals(UNDERLINED))
+    if (key == UNDERLINED)
     {
       return true;
     }
-    if (key.equals(STRIKETHROUGH))
+    if (key == STRIKETHROUGH)
     {
       return true;
     }
-    if (key.equals(EMBEDDED_FONT))
+    if (key == EMBEDDED_FONT)
     {
       return true;
     }
-    if (key.equals(FONTENCODING))
+    if (key == FONTENCODING)
     {
       return true;
     }
@@ -1039,17 +1046,6 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       final Object value = SerializerHelper.getInstance().readObject(in);
       properties.put(key, value);
     }
-  }
-
-  /**
-   * Creates and returns a copy of this object. This method calls getCopy().
-   *
-   * @return     a clone of this instance.
-   * @see Cloneable
-   */
-  public Object clone()
-  {
-    return getCopy();
   }
 
   /**
