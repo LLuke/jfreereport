@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -23,26 +23,46 @@
  * -----------------------
  * ElementVisiblitySwitchFunction.java
  * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: AbstractFunction.java,v 1.5 2002/05/28 19:36:41 taqua Exp $
+ *
+ * Changes (since 5-Jun-2002)
+ * --------------------------
+ * 05-Jun-2002 : Changed name from ElementVisiblity --> ElementVisibility.  Updated Javadoc
+ *               comments (DG);
  */
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.Element;
 
-
+/**
+ * A function that alternates between true and false for each item within a group.
+ */
 public class ElementVisiblitySwitchFunction extends AbstractFunction
 {
+
+  /** The function value. */
   private boolean trigger;
 
+  /**
+   * Default constructor.
+   */
   public ElementVisiblitySwitchFunction ()
   {
   }
 
   /**
-   * The ItemsSection is beeing processed. The next events will be itemsAdvanced events until the
-   * itemsFinished event is raised.
+   * Receives notification that the items are being processed.  Sets the function value to false.
+   * <P>
+   * Following this event, there will be a sequence of itemsAdvanced events until the itemsFinished
+   * event is raised.
+   *
+   * @param event Information about the event.
    */
   public void itemsStarted (ReportEvent event)
   {
@@ -65,7 +85,8 @@ public class ElementVisiblitySwitchFunction extends AbstractFunction
   }
 
   /**
-   *
+   * Checks that the function has been correctly initialized.  If there is a problem, this method
+   * throws a FunctionInitializeException.
    */
   public void initialize () throws FunctionInitializeException
   {
@@ -74,11 +95,21 @@ public class ElementVisiblitySwitchFunction extends AbstractFunction
       throw new FunctionInitializeException("Element name must be specified");
   }
 
+  /**
+   * Sets the element name.
+   *
+   * @param name The element name.
+   */
   public void setElement (String name)
   {
     setProperty("element", name);
   }
 
+  /**
+   * Returns the element name.
+   *
+   * @return The element name.
+   */
   public String getElement ()
   {
     return getProperty("element", "");

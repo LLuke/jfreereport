@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.4 2002/05/26 20:05:12 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.5 2002/05/28 19:36:41 taqua Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,7 @@
  * 10-May-2002 : Support for ReportListenerInterface added. All old eventFunctions are
  *               marked deprecated. The name-attribute must not be null, or the validity check
  *               will fail.
+ * 05-Jun-2002 : Updated Javadoc comments (DG);
  */
 
 package com.jrefinery.report.function;
@@ -53,15 +54,17 @@ import java.util.Properties;
 
 /**
  * Base class for implementing new report functions.  Provides empty implementations of all the
- * methods in the ReportFunction interface.
+ * methods in the Function interface.
  * <p>
  * All parameters are checked by the parser using the isInitialized () function.
- * If the function returns false, one or more properties are missing and the
- * report parsing will be aborted. Make sure, that you fully implement all validity
- * checks using this function.
+ * If the function returns false (??? return type is void, but it throws an exception), one or
+ * more properties are missing and the report parsing will be aborted. Make sure, that you fully
+ * implement all validity checks using this function.
  */
 public abstract class AbstractFunction extends ReportListenerAdapter implements Function
 {
+
+  /** Storage for the function properties. */
   private Properties properties;
 
   /** The function name. */
@@ -69,8 +72,8 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
 
   /**
    * Constructs a new function.
-   *
-   * @param name The function name.
+   * <P>
+   * Initially the function has no name...be sure to assign one before using the function.
    */
   protected AbstractFunction ()
   {
@@ -79,6 +82,8 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
 
   /**
    * Returns the function name.
+   *
+   * @return The function name.
    */
   public String getName ()
   {
@@ -87,15 +92,25 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
 
   /**
    * Sets the function name.
+   *
+   * @param name The function name (null not permitted).
    */
   public void setName (String name)
   {
     if (name == null)
-      throw new NullPointerException ("Name must not be null");
+      throw new NullPointerException ("AbstractFunction.setName():  null not permitted.");
 
     this.name = name;
   }
 
+  /**
+   * Checks that the function has been correctly initialized.  If there is a problem, this method
+   * throws a FunctionInitializeException.
+   * <P>
+   * The default implementation checks that the function name is not null, and calls the
+   * isInitialized() method (now deprecated).
+   *
+   */
   public void initialize () throws FunctionInitializeException
   {
     if (name == null) throw new FunctionInitializeException("FunctionName is null");
@@ -103,7 +118,11 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   }
 
   /**
+   * Receives notification that the report has started.
+   * <P>
    * Maps the reportStarted-method to the legacy function startReport ().
+   *
+   * @param event Information about the event.
    */
   public void reportStarted (ReportEvent event)
   {
@@ -122,7 +141,11 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   }
 
   /**
+   * Receives notification that the report has finished.
+   * <P>
    * Maps the reportFinished-method to the legacy function endReport ().
+   *
+   * @param event Information about the event.
    */
   public void reportFinished (ReportEvent event)
   {
@@ -141,21 +164,16 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   }
 
   /**
+   * Receives notification that a page has started.
+   * <P>
    * Maps the pageStarted-method to the legacy function startPage (int).
+   *
+   * @param event Information about the event.
    */
   public void pageStarted (ReportEvent event)
   {
     ReportState state = event.getState ();
     startPage (state.getCurrentPage());
-  }
-
-  /**
-   * Maps the pageFinished-method to the legacy function endPage (int).
-   */
-  public void pageFinished (ReportEvent event)
-  {
-    ReportState state = event.getState ();
-    endPage (state.getCurrentPage());
   }
 
   /**
@@ -169,6 +187,19 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   }
 
   /**
+   * Receives notification that a page has ended.
+   * <P>
+   * Maps the pageFinished-method to the legacy function endPage (int).
+   *
+   * @param event Information about the event.
+   */
+  public void pageFinished (ReportEvent event)
+  {
+    ReportState state = event.getState ();
+    endPage (state.getCurrentPage());
+  }
+
+  /**
    * Receives notification that a page is ending.
    *
    * @deprecated Use the ReportListener interface instead.
@@ -179,23 +210,17 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   }
 
   /**
-   * Maps the pageStarted-method to the legacy function startPage (int).
+   * Receives notification that a group has started.
+   * <P>
+   * Maps the groupStarted-method to the legacy function startGroup (int).
+   *
+   * @param event Information about the event.
    */
   public void groupStarted (ReportEvent event)
   {
     JFreeReport report = event.getReport ();
     ReportState state = event.getState ();
     startGroup (report.getGroup (state.getCurrentGroupIndex()));
-  }
-
-  /**
-   * Maps the pageFinished-method to the legacy function endPage (int).
-   */
-  public void groupFinished (ReportEvent event)
-  {
-    JFreeReport report = event.getReport ();
-    ReportState state = event.getState ();
-    endGroup (report.getGroup (state.getCurrentGroupIndex()));
   }
 
   /**
@@ -209,6 +234,20 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   }
 
   /**
+   * Receives notification that a group has finished.
+   * <P>
+   * Maps the groupFinished-method to the legacy function endGroup (int).
+   *
+   * @param event Information about the event.
+   */
+  public void groupFinished (ReportEvent event)
+  {
+    JFreeReport report = event.getReport ();
+    ReportState state = event.getState ();
+    endGroup (report.getGroup (state.getCurrentGroupIndex()));
+  }
+
+  /**
    * Receives notification that a group is ending.
    *
    * @deprecated Use the ReportListener interface instead.
@@ -219,7 +258,11 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   }
 
   /**
-   * Maps the pageStarted-method to the legacy function startPage (int).
+   * Receives notification that a row of data is being processed.
+   * <P>
+   * Maps the itemsAdvanced-method to the legacy function advanceItems (int).
+   *
+   * @param event Information about the event.
    */
   public void itemsAdvanced (ReportEvent event)
   {
@@ -240,9 +283,11 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
 
   /**
    * Returns a clone of the function.
-   *
+   * <P>
    * Be aware, this does not create a deep copy. If you have complex
    * strucures contained in objects, you have to overwrite this function.
+   *
+   * @return A clone of the function.
    */
   public Object clone () throws CloneNotSupportedException
   {
@@ -260,6 +305,8 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
    * The properties in <code>p</code> are added to the functions properties,
    * eventually overwriting existing properties with the same name.
    *
+   * @param p The properties.
+   *
    * @todo create a property query interface. Maybe the same as used in
    * JDBC (@see java.sql.PropertyInfo)?
    */
@@ -270,7 +317,13 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   }
 
   /**
-   * Queries a property and returns null if no such property was found.
+   * Returns the value of a property.
+   * <P>
+   * Returns null if no such property was found.
+   *
+   * @param name The property name.
+   *
+   * @return The property value.
    */
   public String getProperty (String name)
   {
@@ -278,14 +331,26 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   }
 
   /**
-   * Queries a property and returns the String contained in defaultVal if
-   * no property with that name was defined.
+   * Returns the value of a property.
+   * <P>
+   * If there is no property with the specified name, then the defaultVal is returned.
+   *
+   * @param name The property name.
+   * @param defaultVal The default property value.
+   *
+   * @return The property value.
    */
   public String getProperty (String name, String defaultVal)
   {
     return properties.getProperty (name, defaultVal);
   }
 
+  /**
+   * Sets a property for the function.
+   *
+   * @param name The property name.
+   * @param value The property value.
+   */
   public void setProperty (String name, String value)
   {
     if (value == null)
@@ -293,6 +358,7 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
     else
       properties.setProperty(name, value);
   }
+
   /**
    * @deprecated initialize() is used to initialize a function.
    */
@@ -300,4 +366,5 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   {
     return true;
   }
+
 }

@@ -28,13 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.2 2002/05/14 21:35:04 taqua Exp $
+ * $Id: Function.java,v 1.3 2002/05/28 19:36:41 taqua Exp $
  *
  * Changes
  * -------
  * 15-Feb-2002 : Version 1, contributed by Thomas Morgner and modified by DG (DG);
  * 10-May-2002 : Functions now extend the ReportListener interface. Initialize is replaced
  *               by reportStarted ()
+ * 05-Jun-2002 : Updated Javadoc comments (DG);
  */
 
 package com.jrefinery.report.function;
@@ -63,40 +64,55 @@ public interface Function extends ReportListener, Cloneable
 {
 
   /**
-   * Returns the name of the function (every function is required to have a unique name).
+   * Returns the name of the function.
+   * <P>
+   * Every function within a report is required to have a unique name.
+   *
+   * @return The function name.
    */
   public String getName ();
 
   /**
-   * Sets the name of the function. The name must not be null and must be unique within
-   * the function group.
+   * Sets the name of the function.
+   * <P>
+   * The name must not be null and must be unique within the function group.
    *
    * @param name The name.
    */
   public void setName (String name);
 
   /**
-   * Return the current function value. The value depends on the
-   * function. A page counting function for instance will return the
-   * current page number.
+   * Return the current function value.
+   * <P>
+   * The value depends (obviously) on the function implementation.   For example, a page counting
+   * function will return the current page number.
+   *
+   * @return The value of the function.
    */
   public Object getValue ();
 
   /**
-   * Clones the function in its current state.  This is used for recording the report state at
-   * page boundaries.
+   * Clones the function in its current state.
+   * <P>
+   * This is used for recording the report state at page boundaries.
+   *
+   * @return A clone of this function.
    */
   public Object clone () throws CloneNotSupportedException;
 
   /**
-   * Set the function properties. This is the only way to feed
-   * parameters to an function
+   * Set the function properties.
+   * <P>
+   * Function parameters are recorded as properties.
+   *
+   * @param p The properties.
    */
   public void setProperties (Properties p);
 
   /**
-   * return false, if not all parameters are set, or some other
-   * error occures during initialisation. A valid function has an valid (not null) name.
+   * Checks that the function has been correctly initialized.  If there is a problem, this method
+   * throws a FunctionInitializeException.
    */
   public void initialize () throws FunctionInitializeException;
+
 }

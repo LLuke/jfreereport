@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.3 2002/05/18 16:23:51 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.4 2002/05/28 19:36:41 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,7 @@
  * 24-Apr-2002 : Changed the implementation to reflect the changes in Function and
  *               AbstractFunction
  * 10-May-2002 : Applied the ReportEvent interface.
+ * 05-Jun-2002 : Updated Javadoc comments (DG);
  */
 
 package com.jrefinery.report.function;
@@ -46,19 +47,22 @@ import com.jrefinery.report.ReportState;
 import com.jrefinery.report.event.ReportEvent;
 
 /**
- * A report function that counts items in a report. If the group-property is set,
- * only items in a particular group are counted.
+ * A report function that counts items in a report.  If the "group" property is set, the item
+ * count is reset to zero whenever the group changes.
  */
 public class ItemCountFunction extends AbstractFunction implements Cloneable
 {
 
+  /** The group (null permitted). */
   private String group;
 
-  /** The number of items. */
+  /** The item count. */
   private int count;
 
   /**
-   * Default constructor.
+   * Constructs an unnamed function.
+   * <P>
+   * This constructor is intended for use by the SAX handler class only.
    */
   public ItemCountFunction ()
   {
@@ -67,7 +71,8 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
   /**
    * Constructs an item count report function.
    *
-   * @param name the name of the function
+   * @param name The name of the function.
+   *
    * @throws NullPointerException if the name is null
    */
   public ItemCountFunction (String name)
@@ -76,7 +81,9 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
   }
 
   /**
-   * Receives notification that a new report is about to start.
+   * Receives notification that a new report is about to start.  The item count is set to zero.
+   *
+   * @param event Information about the event.
    */
   public void reportStarted (ReportEvent event)
   {
@@ -84,7 +91,10 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
   }
 
   /**
-   * Returns the name of the group to be counted.
+   * Returns the name of the group (possibly null) for this function.  The item count is reset
+   * to zero at the start of each instance of this group.
+   *
+   * @return The group name.
    */
   public String getGroup ()
   {
@@ -92,8 +102,10 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
   }
 
   /**
-   * defines the name of the group to be counted.
-   * If the name is null, all groups are counted.
+   * Setss the name of the group for this function.  The item count is reset to zero at the start
+   * of each instance of this group.  If the name is null, all items in the report are counted.
+   *
+   * @param group The group name.
    */
   public void setGroup (String group)
   {
@@ -102,7 +114,11 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
   }
 
   /**
-   * Receives notification that a new group is about to start.
+   * Receives notification that a new group is about to start.  Checks to see if the group that
+   * is starting is the same as the group defined for this function...if so, the item count is
+   * reset to zero.
+   *
+   * @param event Information about the event.
    */
   public void groupStarted (ReportEvent event)
   {
@@ -119,7 +135,9 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
   }
 
   /**
-   * Move to the next row of data.
+   * Received notification of a move to the next row of data.  Increments the item count.
+   *
+   * @param event Information about the event.
    */
   public void itemsAdvanced (ReportEvent event)
   {
@@ -127,17 +145,24 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
   }
 
   /**
-   * Returns the number of items (so far) in the function's group.
+   * Returns the number of items counted (so far) by the function.  This is either the number
+   * of items in the report, or the group (if a group has been defined for the function).
+   *
+   * @return The item count.
    */
   public Object getValue ()
   {
     return new Integer (count);
   }
 
+  /**
+   * ???
+   */
   public void initialize ()
     throws FunctionInitializeException
   {
     super.initialize ();
     setGroup (getProperty ("group"));
   }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.2 2002/05/14 21:35:04 taqua Exp $
+ * $Id: PageFunction.java,v 1.3 2002/05/28 19:36:41 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,7 @@
  * 24-Apr-2002 : Changed the implementation to reflect the changes in Function and
  *               AbstractFunction
  * 10-May-2002 : Applied the ReportEvent interface
+ * 05-Jun-2002 : Updated Javadoc comments (DG);
  */
 
 package com.jrefinery.report.function;
@@ -52,7 +53,9 @@ public class PageFunction extends AbstractFunction
   private int page;
 
   /**
-   * Default constructor.
+   * Constructs an unnamed function.
+   * <P>
+   * This constructor is intended for use by the SAX handler class only.
    */
   public PageFunction ()
   {
@@ -60,6 +63,8 @@ public class PageFunction extends AbstractFunction
 
   /**
    * Constructs a named function.
+   *
+   * @param The function name.
    */
   public PageFunction (String name)
   {
@@ -67,7 +72,10 @@ public class PageFunction extends AbstractFunction
   }
 
   /**
-   * Receives notification from the report engine that a new page is starting.
+   * Receives notification from the report engine that a new page is starting.  Grabs the page
+   * number from the report state and stores it.
+   *
+   * @param event Information about the event.
    */
   public void pageStarted (ReportEvent event)
   {
@@ -76,9 +84,12 @@ public class PageFunction extends AbstractFunction
 
   /**
    * Returns the function value.
+   *
+   * @return The page number.
    */
   public Object getValue ()
   {
     return new Integer (page);
   }
+
 }

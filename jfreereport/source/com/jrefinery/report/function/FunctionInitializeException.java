@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -30,14 +30,27 @@
  *
  * Changes
  * -------
- * 10-May-2002 : Initial version.
+ * 10-May-2002 : Version 1 (TM);
+ * 05-Jun-2002 : Updated Javadoc comments (DG);
+ *
  */
+
 package com.jrefinery.report.function;
 
+/**
+ * An exception that indicates that a function has not been correctly initialised.
+ */
 public class FunctionInitializeException extends Exception
 {
+
+  /**
+   * Constructs a new exception.
+   *
+   * @param message The exception message.
+   */
   public FunctionInitializeException (String message)
   {
     super (message);
   }
+
 }

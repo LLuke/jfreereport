@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.5 2002/05/18 16:23:51 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.6 2002/05/28 19:36:41 taqua Exp $
  *
  * Changes
  * -------
@@ -50,15 +50,23 @@ import javax.swing.table.TableModel;
 import java.math.BigDecimal;
 
 /**
- * A report function that calculates the sum of a field within a group.
+ * A report function that calculates the sum of one field (column) from the TableModel.  The
+ * function can be used in two ways:
+ * <ul>
+ * <li>to calculate a sum for the entire report;</li>
+ * <li>to calculate a sum within a particular group;</li>
+ * </ul>
  */
 public class ItemSumFunction extends AbstractFunction
 {
 
+  /** The group name. */
   private String group;
+
+  /** The field name. */
   private String field;
 
-  /** Initial value. */
+  /** Zero. */
   private static final BigDecimal ZERO = new BigDecimal (0.0);
 
   /** The sum. */
@@ -75,12 +83,11 @@ public class ItemSumFunction extends AbstractFunction
   }
 
   /**
-   * Constructs a named function that sums the values of a field.  The sum resets to zero at
-   * the beginning of each instance of a specific group.
+   * Constructs a named function.
+   * <P>
+   * The field must be defined before using the function.
    *
    * @param name The function name.
-   * @param group The report group.
-   * @param field The field.
    */
   public ItemSumFunction (String name)
   {
@@ -90,6 +97,11 @@ public class ItemSumFunction extends AbstractFunction
 
   /**
    * Receives notification that a new report is about to start.
+   * <P>
+   * Does nothing.
+   *
+   * @param event Information about the event.
+   *
    */
   public void reportStarted (ReportEvent event)
   {
@@ -97,7 +109,10 @@ public class ItemSumFunction extends AbstractFunction
   }
 
   /**
-   * Receives notification that a new group is about to start.
+   * Receives notification that a new group is about to start.  If this is the group defined for
+   * the function, then the running total is reset to zero.
+   *
+   * @param event Information about the event.
    */
   public void groupStarted (ReportEvent event)
   {
@@ -113,22 +128,49 @@ public class ItemSumFunction extends AbstractFunction
     }
   }
 
+  /**
+   * Returns the group name.
+   *
+   * @return The group name.
+   */
   public String getGroup ()
   {
     return group;
   }
 
+  /**
+   * Sets the group name.
+   * <P>
+   * If a group is defined, the running total is reset to zero at the start of every instance of
+   * this group.
+   *
+   * @param _group The group name (null permitted).
+   */
   public void setGroup (String _group)
   {
     this.group = _group;
     setProperty ("group", _group);
   }
 
+  /**
+   * Returns the field used by the function.
+   * <P>
+   * The field name corresponds to a column name in the report's TableModel.
+   *
+   * @return The field name.
+   */
   public String getField ()
   {
     return field;
   }
 
+  /**
+   * Sets the field name for the function.
+   * <P>
+   * The field name corresponds to a column name in the report's TableModel.
+   *
+   * @param The field name (null not permitted).
+   */
   public void setField (String field)
   {
     if (field == null)
@@ -138,6 +180,15 @@ public class ItemSumFunction extends AbstractFunction
     setProperty ("field", field);
   }
 
+  /**
+   * Receives notification that a row of data is being processed.  Reads the data from the field
+   * defined for this function and adds it to the running total.
+   * <P>
+   * This function assumes that it will find an instance of the Number class in the column of the
+   * TableModel specified by the field name.
+   *
+   * @param event Information about the event.
+   */
   public void itemsAdvanced (ReportEvent event)
   {
     TableModel data = event.getReport().getData ();
@@ -171,13 +222,19 @@ public class ItemSumFunction extends AbstractFunction
   }
 
   /**
-   * Returns the function value.
+   * Returns the function value, in this case the running total of a specific column in the
+   * report's TableModel.
+   *
+   * @return The function value.
    */
   public Object getValue ()
   {
     return sum;
   }
 
+  /**
+   * ???
+   */
   public void initialize ()
     throws FunctionInitializeException
   {
