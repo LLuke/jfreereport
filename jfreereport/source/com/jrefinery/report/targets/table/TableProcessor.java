@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 7:47:41 PM
  *
- * $Id: TableProcessor.java,v 1.3 2003/01/29 18:37:13 taqua Exp $
+ * $Id: TableProcessor.java,v 1.4 2003/02/04 17:56:29 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -97,7 +97,6 @@ public abstract class TableProcessor
 
     do
     {
-      Log.debug (new Log.SimpleMessage("Processing Level " , new Integer(level)));
       if (level == -1)
       {
         retval = state;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.24 2003/02/10 19:33:51 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.25 2003/02/12 10:00:01 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.JFreeReportConstants;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.function.Expression;
@@ -207,6 +208,10 @@ public class SimplePageLayouter extends PageLayouter
    */
   public void reportStarted(ReportEvent event)
   {
+    // activating this state after the page has ended is invalid.
+    if (isPageEnded())
+      throw new IllegalStateException();
+
     isInItemGroup = false;
     setCurrentEvent(event);
     try
@@ -233,6 +238,10 @@ public class SimplePageLayouter extends PageLayouter
    */
   public void itemsFinished(ReportEvent event)
   {
+    // activating this state after the page has ended is invalid.
+    if (isPageEnded())
+      throw new IllegalStateException();
+
     isInItemGroup = false;
   }
 
@@ -245,6 +254,10 @@ public class SimplePageLayouter extends PageLayouter
    */
   public void itemsStarted(ReportEvent event)
   {
+    // activating this state after the page has ended is invalid.
+    if (isPageEnded())
+      throw new IllegalStateException();
+
     isInItemGroup = true;
   }
 
@@ -269,6 +282,10 @@ public class SimplePageLayouter extends PageLayouter
    */
   public void pageStarted(ReportEvent event)
   {
+    // activating this state after the page has ended is invalid.
+    if (isPageEnded())
+      throw new IllegalStateException();
+
     setCurrentEvent(event);
     try
     {
@@ -405,6 +422,10 @@ public class SimplePageLayouter extends PageLayouter
    */
   public void reportFinished(ReportEvent event)
   {
+    // activating this state after the page has ended is invalid.
+    if (isPageEnded())
+      throw new IllegalStateException();
+
     try
     {
       setCurrentEvent(event);
@@ -448,6 +469,10 @@ public class SimplePageLayouter extends PageLayouter
    */
   public void groupStarted(ReportEvent event)
   {
+    // activating this state after the page has ended is invalid.
+    if (isPageEnded())
+      throw new IllegalStateException();
+
     try
     {
       setCurrentEvent(event);
@@ -475,6 +500,10 @@ public class SimplePageLayouter extends PageLayouter
    */
   public void groupFinished(ReportEvent event)
   {
+    // activating this state after the page has ended is invalid.
+    if (isPageEnded())
+      throw new IllegalStateException();
+
     try
     {
       setCurrentEvent(event);
@@ -503,6 +532,10 @@ public class SimplePageLayouter extends PageLayouter
    */
   public void itemsAdvanced(ReportEvent event)
   {
+    // activating this state after the page has ended is invalid.
+    if (isPageEnded())
+      throw new IllegalStateException();
+
     try
     {
       setCurrentEvent(event);
@@ -532,6 +565,7 @@ public class SimplePageLayouter extends PageLayouter
     {
       createSaveState(b);
       setStartNewPage(true);
+      Log.debug ("Page Ended");
       return false;
     }
     if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
@@ -545,6 +579,7 @@ public class SimplePageLayouter extends PageLayouter
       }
       // a pagebreak was requested, printing is delayed
       setStartNewPage(true);
+      Log.debug ("PageBreak Before");
       return false;
     }
     else

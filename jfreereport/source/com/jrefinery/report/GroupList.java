@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.14 2003/02/05 15:38:12 taqua Exp $
+ * $Id: GroupList.java,v 1.15 2003/02/11 23:07:13 taqua Exp $
  *
  * Changes:
  * --------
@@ -46,11 +46,9 @@ package com.jrefinery.report;
 import com.jrefinery.report.util.Log;
 
 import java.io.Serializable;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.TreeSet;
 
 /**
  * The group list is used to store groups in a ordered way. The less specific groups are
@@ -84,17 +82,38 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
      *
      * @return an integer indicating the relative ordering of the two groups.
      */
-    public int compare (Object o1, Object o2)
+    public int compare(Object o1, Object o2)
     {
       Group g1 = (Group) o1;
       Group g2 = (Group) o2;
 
-      ArrayList c1 = new ArrayList (g1.getFields ());
-      ArrayList c2 = new ArrayList (g2.getFields ());
+      ArrayList c1 = new ArrayList(g1.getFields());
+      ArrayList c2 = new ArrayList(g2.getFields());
 
-      Collections.sort(c1);
-      Collections.sort(c2);
+      /** Remove all element, which are in both lists, they are equal */
 
+      if (c1.size() == c2.size())
+      {
+        // both lists contain the same elements.
+        if (c1.containsAll(c2))
+          return 0;
+      }
+
+      if (c1.containsAll(c2))
+      {
+        // c2 contains all elements of c1, so c1 is subgroup of c2
+        return 1;
+      }
+      if (c2.containsAll(c1))
+      {
+        // c1 contains all elements of c2, so c2 is subgroup of c1
+        return -1;
+      }
+      // not compareable, invalid groups
+      // return 0;
+      throw new IllegalArgumentException("These groups are not compareable, they don't have any subgroup releation");
+
+/*
       int maxIdx = Math.min (c1.size (), c2.size ());
       for (int i = 0; i < maxIdx; i++)
       {
@@ -116,6 +135,7 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
         return -1;
       }
       return 1;
+      */
     }
 
     /**
@@ -125,7 +145,7 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
      *
      * @return a boolean indicating equality or otherwise.
      */
-    public boolean equals (Object obj)
+    public boolean equals(Object obj)
     {
       return (obj instanceof GroupComparator);
     }
@@ -135,7 +155,7 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
      *
      * @return
      */
-    public int hashCode ()
+    public int hashCode()
     {
       return getClass().hashCode();
     }
@@ -144,9 +164,9 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
   /**
    * Constructs a new empty group list.
    */
-  public GroupList ()
+  public GroupList()
   {
-    super (new GroupComparator ());
+    super(new GroupComparator());
   }
 
   /**
@@ -156,11 +176,11 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
    *
    * @return the report group.
    */
-  public Group get (int i)
+  public Group get(int i)
   {
     if (cache == null)
     {
-      cache = toArray ();
+      cache = toArray();
     }
     return (Group) cache[i];
   }
@@ -172,18 +192,18 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
    *
    * @return a boolean indicating whether or not the object was removed.
    */
-  public boolean remove (Object o)
+  public boolean remove(Object o)
   {
     cache = null;
-    return super.remove (o);
+    return super.remove(o);
   }
 
   /**
    * Clears the list.
    */
-  public void clear ()
+  public void clear()
   {
-    super.clear ();
+    super.clear();
     cache = null;
   }
 
@@ -195,25 +215,25 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
    * @return true if the list did not already contain the specified element.
    * Returns always true, as the old value is removed if needed.
    */
-  public boolean add (Object o)
+  public boolean add(Object o)
   {
     if (o == null)
     {
-      throw new NullPointerException ("Try to add null");
+      throw new NullPointerException("Try to add null");
     }
     if (o instanceof Group)
     {
       cache = null;
-      if (super.add (o) == false)
+      if (super.add(o) == false)
       {
-        super.remove (o);
-        return super.add (o);
+        super.remove(o);
+        return super.add(o);
       }
       return true;
     }
     else
     {
-      throw new ClassCastException ("Group required, was " + o.getClass ().getName ());
+      throw new ClassCastException("Group required, was " + o.getClass().getName());
     }
   }
 
@@ -225,7 +245,7 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
    *
    * @return a clone.
    */
-  public Object clone ()
+  public Object clone()
   {
     GroupList l = new GroupList();
     l.clear();
@@ -233,11 +253,11 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
     {
       try
       {
-        l.add (get (i).clone());
+        l.add(get(i).clone());
       }
       catch (CloneNotSupportedException ce)
       {
-        Log.debug ("Clone error ", ce);
+        Log.debug("Clone error ", ce);
         return null;
       }
     }
@@ -251,7 +271,7 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
    *
    * @return true, if the group list is valid, false otherwise.
    */
-  public boolean isValid ()
+  public boolean isValid()
   {
     if (size() == 0)
     {

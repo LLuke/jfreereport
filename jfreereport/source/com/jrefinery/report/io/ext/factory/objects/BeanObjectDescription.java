@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 8:17:01 PM
  *
- * $Id: BeanObjectDescription.java,v 1.5 2003/02/01 18:27:03 taqua Exp $
+ * $Id: BeanObjectDescription.java,v 1.6 2003/02/06 17:38:18 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -196,7 +196,7 @@ public class BeanObjectDescription extends AbstractObjectDescription
       }
       catch (Exception e)
       {
-        Log.debug("Exception on method invokation.", e);
+        Log.info("Exception on method invokation.", e);
       }
 
     }

@@ -2,7 +2,7 @@
  * Date: Jan 30, 2003
  * Time: 9:44:28 PM
  *
- * $Id: ReportConverterGUI.java,v 1.1 2003/01/30 22:58:28 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.2 2003/02/02 23:43:50 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -368,7 +368,6 @@ public class ReportConverterGUI extends JFrame
     File file = new File(filename);
     fileChooser.setCurrentDirectory(file);
     fileChooser.setSelectedFile(file);
-    Log.debug ("JFileChooser: " + fileChooser.getCurrentDirectory());
     int option = fileChooser.showSaveDialog(this);
     if (option == JFileChooser.APPROVE_OPTION)
     {

@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 5:01:31 PM
  *
- * $Id: StyleKeyFactoryCollector.java,v 1.3 2003/01/22 19:38:27 taqua Exp $
+ * $Id: StyleKeyFactoryCollector.java,v 1.4 2003/02/02 23:43:50 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.stylekey;
 
@@ -57,5 +57,20 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
 
   public void init(Parser parser)
   {
+  }
+
+  public Iterator getRegisteredKeys()
+  {
+    ArrayList list = new ArrayList();
+    for (int i = 0; i < factories.size(); i++)
+    {
+      StyleKeyFactory f = (StyleKeyFactory) factories.get(i);
+      Iterator enum = f.getRegisteredKeys();
+      while (enum.hasNext())
+      {
+        list.add(enum.next());
+      }
+    }
+    return list.iterator();
   }
 }

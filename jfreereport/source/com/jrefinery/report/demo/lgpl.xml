@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!--
- This DOCType declaration is valid, uncomment it to validate the report
- -->
-<!--
-<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
--->
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
+                        "http://jfreereport.sourceforge.net/report.dtd">
 <report name="LGPL" orientation="portrait" pageformat="LETTER" topmargin="72" leftmargin="72" bottommargin="72" rightmargin="72">
 <!-- REPORT FOOTER -->
 <!--

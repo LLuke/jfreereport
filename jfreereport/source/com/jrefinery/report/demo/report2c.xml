@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!--
- This DOCType declaration is valid, uncomment it to validate the report
- -->
-<!--
-<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
--->
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
+                        "http://jfreereport.sourceforge.net/report.dtd">
 <report name="Sample Report 2"  pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
 
     <!-- REPORT HEADER -->

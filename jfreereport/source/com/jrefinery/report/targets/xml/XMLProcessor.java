@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.4 2003/02/04 17:56:33 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.5 2003/02/07 20:26:26 taqua Exp $
  *
  * Changes
  * -------
@@ -156,7 +156,6 @@ public class XMLProcessor
 
     do
     {
-      Log.debug (new Log.SimpleMessage("Processing Level " , new Integer(level)));
       if (level == -1)
       {
         retval = state.copyState();

@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 4:55:41 PM
  *
- * $Id: AbstractStyleKeyFactory.java,v 1.2 2003/01/22 19:38:26 taqua Exp $
+ * $Id: AbstractStyleKeyFactory.java,v 1.3 2003/02/02 23:43:50 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.stylekey;
 
@@ -13,6 +13,7 @@ import com.jrefinery.report.targets.style.StyleKey;
 import com.jrefinery.report.util.Log;
 
 import java.util.Hashtable;
+import java.util.Iterator;
 
 public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
 {
@@ -70,11 +71,15 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
 
   public void init(Parser parser)
   {
-    Log.debug ("Init for class : "+ getClass());
     ClassFactory f = (ClassFactory) parser.getConfigurationValue(OBJECT_FACTORY_TAG);
     if (f == null)
       throw new NullPointerException();
 
     setClassFactory(f);
+  }
+
+  public Iterator getRegisteredKeys()
+  {
+    return knownKeys.keySet().iterator();
   }
 }

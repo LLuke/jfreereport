@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToEverything.java,v 1.1 2003/02/05 13:26:24 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.2 2003/02/06 17:38:01 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,8 @@ import java.net.URL;
 
 /**
  * A demonstration that shows how to generate a report and save it to PDF without displaying
- * the print preview or the PDF save-as dialog.
+ * the print preview or the PDF save-as dialog. The methods to save the report to the various
+ * file formats are also implemented in {@link com.jrefinery.report.targets.support.ReportProcessorUtil}.
  *
  * @author David Gilbert
  */
@@ -296,7 +297,7 @@ public class StraightToEverything
   {
     ReportConfiguration.getGlobalConfig().setLogLevel("Warn");
     ReportConfiguration.getGlobalConfig().setPDFTargetAutoInit(false);
-    StraightToEverything demo = new StraightToEverything(System.getProperty("user.home") + "/test99.pdf");
+    StraightToEverything demo = new StraightToEverything(System.getProperty("user.home") + "/test-everything");
     System.exit(0);
   }
 

@@ -2,7 +2,7 @@
  * Date: Jan 12, 2003
  * Time: 5:21:13 PM
  *
- * $Id: DataSourceHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: DataSourceHandler.java,v 1.2 2003/02/02 23:43:49 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -53,7 +53,6 @@ public class DataSourceHandler extends CompoundObjectHandler
     }
     else
     {
-      Log.debug ("DataSource ended " + hashCode());
       DataSource ds = (DataSource) dataSourceHandler.getValue();
       getTargetObjectDescription().setParameter("dataSource", ds);
       dataSourceHandler = null;
@@ -71,8 +70,6 @@ public class DataSourceHandler extends CompoundObjectHandler
     String typeName = attrs.getValue("type");
     if (typeName == null)
       throw new SAXException("The datasource type must be specified");
-
-    Log.debug ("DataSource started: " + hashCode());
 
     dataSourceHandler = new DataSourceHandler(getParser(), tagName, typeName);
     getParser().pushFactory(dataSourceHandler);

@@ -28,13 +28,15 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.20 2003/02/04 17:56:27 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.21 2003/02/09 18:43:05 taqua Exp $
  *
  * Changes
  * -------
  * 03-Dec-2002 : Added Javadocs (DG);
  * 02-Feb-2003 : added Interrupt handling and removed log messages.
  * 04-Feb-2003 : Code-Optimizations
+ * 12-Feb-2003 : BugFix: Page is ended when isPageEndedIsTrue(), dont wait for the next page.
+ *               This caused lost rows.
  */
 
 package com.jrefinery.report.targets.pageable;
@@ -412,7 +414,7 @@ public class PageableReportProcessor
       // the following code...
 
       // this loop advances the report state until the next end-of-page is reached.
-      while ((lm.isStartNewPage() == false) && (state.isFinish() == false))
+      while ((lm.isPageEnded() == false) && (state.isFinish() == false))
       {
         PageLayouter org = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
         state = state.advance();
