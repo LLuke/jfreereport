@@ -23,12 +23,12 @@
  * ------------------
  * StraightToXML.java
  * ------------------
- * (C)opyright 2003, by Thomas Morgner.
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToXML.java,v 1.5 2003/02/26 16:42:14 mungady Exp $
+ * $Id: StraightToXML.java,v 1.6 2003/03/18 17:14:20 taqua Exp $
  *
  * Changes
  * -------
@@ -52,10 +52,10 @@ import com.jrefinery.report.targets.xml.XMLProcessor;
 import com.jrefinery.report.util.Log;
 
 /**
- * A demonstration that shows how to generate a report and save it to PDF without displaying
- * the print preview or the PDF save-as dialog.
+ * A demonstration that shows how to generate a report and save it to XML without displaying
+ * any print preview first.
  *
- * @author David Gilbert
+ * @author Thomas Morgner
  */
 public class StraightToXML
 {
@@ -97,12 +97,12 @@ public class StraightToXML
   }
 
   /**
-   * Saves a report to PDF format.
+   * Saves a report to XML format.
    *
    * @param report  the report.
-   * @param fileName target file name.
+   * @param fileName  target file name.
    *
-   * @return true or false.
+   * @return <code>true</code> if the export succeeded, and <code>false</code> otherwise.
    */
   public boolean saveXML(JFreeReport report, String fileName)
   {
@@ -133,7 +133,7 @@ public class StraightToXML
       }
       catch (Exception e)
       {
-        System.err.println("Saving PDF failed.");
+        System.err.println("Saving XML failed.");
         System.err.println(e.toString());
       }
     }
