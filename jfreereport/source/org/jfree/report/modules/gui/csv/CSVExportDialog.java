@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.2 2003/08/18 18:27:59 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.3 2003/08/19 13:37:23 taqua Exp $
  *
  * Changes
  * --------
@@ -47,11 +47,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
@@ -75,11 +71,11 @@ import javax.swing.border.TitledBorder;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
-import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.LengthLimitingDocument;
 import org.jfree.report.modules.gui.csv.resources.CSVExportResources;
 import org.jfree.report.modules.output.csv.CSVProcessor;
 import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
+import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.ExtensionFileFilter;
@@ -439,7 +435,7 @@ public class CSVExportDialog extends JDialog
     btg.add(rbExportPrintedElements);
 
     GridBagConstraints gbc = new GridBagConstraints();
-    gbc.anchor = GridBagConstraints.WEST;
+    gbc.anchor = GridBagConstraints.NORTHWEST;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 1;
     gbc.gridx = 0;
@@ -448,7 +444,7 @@ public class CSVExportDialog extends JDialog
     exportTypePanel.add(rbExportData, gbc);
 
     gbc = new GridBagConstraints();
-    gbc.anchor = GridBagConstraints.WEST;
+    gbc.anchor = GridBagConstraints.NORTHWEST;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 1;
     gbc.gridx = 0;
@@ -818,130 +814,18 @@ public class CSVExportDialog extends JDialog
    *
    * @return true or false.
    */
-  public boolean performExport(final JFreeReport report)
+  public boolean performQueryForExport(final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
     setModal(true);
     setVisible(true);
     if (isConfirmed() == false)
     {
-      return true;
-    }
-    if (isExportRawData())
-    {
-      return writeRawCSV(report);
-    }
-    else
-    {
-      return writeLayoutedCSV(report);
-    }
-  }
-
-  /**
-   * Saves a report to CSV format.
-   *
-   * @param report  the report.
-   *
-   * @return true or false.
-   */
-  public boolean writeLayoutedCSV(final JFreeReport report)
-  {
-    Writer out = null;
-    try
-    {
-
-      out = new BufferedWriter(
-          new OutputStreamWriter(
-              new FileOutputStream(
-                  new File(getFilename())), getEncoding()));
-      final CSVTableProcessor target = new CSVTableProcessor(report, getSeparatorString());
-      target.setWriter(out);
-      target.setStrictLayout(isStrictLayout());
-      target.processReport();
-      return true;
-    }
-    catch (Exception re)
-    {
-      showExceptionDialog("error.processingfailed", re);
       return false;
     }
-    finally
-    {
-      try
-      {
-        if (out != null)
-        {
-          out.close();
-        }
-      }
-      catch (Exception e)
-      {
-        showExceptionDialog("error.savefailed", e);
-      }
-    }
-  }
 
-  /**
-   * Saves a report to CSV format.
-   *
-   * @param report  the report.
-   *
-   * @return true or false.
-   */
-  public boolean writeRawCSV(final JFreeReport report)
-  {
-    Writer out = null;
-    try
-    {
-
-      out = new BufferedWriter(
-          new OutputStreamWriter(
-              new FileOutputStream(
-                  new File(getFilename())), getEncoding()));
-      final CSVProcessor target = new CSVProcessor(report, getSeparatorString());
-      target.setWriter(out);
-      target.processReport();
-      out.close();
-      return true;
-    }
-    catch (Exception re)
-    {
-      showExceptionDialog("error.processingfailed", re);
-      return false;
-    }
-    finally
-    {
-      try
-      {
-        if (out != null)
-        {
-          out.close();
-        }
-      }
-      catch (Exception e)
-      {
-        showExceptionDialog("error.savefailed", e);
-      }
-    }
-  }
-
-  /**
-   * Shows the exception dialog by using localized messages. The message base is
-   * used to construct the localisation key by appending ".title" and ".message" to the
-   * base name.
-   *
-   * @param localisationBase  the resource key prefix.
-   * @param e  the exception.
-   */
-  private void showExceptionDialog(final String localisationBase, final Exception e)
-  {
-    ExceptionDialog.showExceptionDialog(
-        getResources().getString(localisationBase + ".title"),
-        MessageFormat.format(
-            getResources().getString(localisationBase + ".message"),
-            new Object[]{e.getLocalizedMessage()}
-        ),
-        e);
+    storeToConfiguration (report.getReportConfiguration());
+    return true;
   }
 
   /**
@@ -952,9 +836,26 @@ public class CSVExportDialog extends JDialog
   public void initFromConfiguration(final ReportConfiguration config)
   {
     setSeparatorString(config.getConfigProperty(CSVProcessor.CSV_SEPARATOR, ","));
-    encodingModel.ensureEncodingAvailable(getCSVTargetEncoding(config));
-    setEncoding(getCSVTargetEncoding(config));
+
+    String strict = config.getConfigProperty
+        (CSVTableProcessor.CONFIGURATION_PREFIX +
+          CSVTableProcessor.STRICT_LAYOUT,
+            config.getConfigProperty (TableProcessor.STRICT_TABLE_LAYOUT,
+                TableProcessor.STRICT_TABLE_LAYOUT_DEFAULT));
+    setStrictLayout(strict.equals("true"));
+    String encoding = getCSVTargetEncoding(config);
+    encodingModel.ensureEncodingAvailable(encoding);
+    setEncoding(encoding);
   }
+
+  public void storeToConfiguration (final ReportConfiguration config)
+  {
+    config.setConfigProperty(CSVProcessor.CSV_SEPARATOR, getSeparatorString());
+    config.setConfigProperty(CSVTableProcessor.CONFIGURATION_PREFIX +
+        CSVTableProcessor.SEPARATOR_KEY, getSeparatorString());
+    config.setConfigProperty(CSVTableProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
+  }
+
 
   /**
    * Enables or disables the 'other' separator text field.

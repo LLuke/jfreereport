@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: TableWriter.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------
@@ -67,6 +67,8 @@ import org.jfree.report.style.BandStyleSheet;
  */
 public class TableWriter extends AbstractFunction implements PageEventListener
 {
+  public static final int OUTPUT_LEVEL = -1;
+
   /**
    * The SheetName-function property, defines the name of an StringFunction
    * that creates the sheet names.
@@ -107,7 +109,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    */
   public TableWriter()
   {
-    setDependencyLevel(-1);
+    setDependencyLevel(OUTPUT_LEVEL);
     currentEffectiveGroupIndex = -1;
   }
 

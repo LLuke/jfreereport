@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Thomas Morgner, Object Refinery Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.7 2003/08/18 18:28:01 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.8 2003/08/22 20:27:20 taqua Exp $
  *
  * Changes
  * -------

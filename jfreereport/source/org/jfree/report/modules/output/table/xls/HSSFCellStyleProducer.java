@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HSSFCellStyleProducer.java,v 1.2 2003/07/23 16:02:21 taqua Exp $
+ * $Id: HSSFCellStyleProducer.java,v 1.3 2003/08/20 17:24:35 taqua Exp $
  *
  * Changes 
  * -------------------------

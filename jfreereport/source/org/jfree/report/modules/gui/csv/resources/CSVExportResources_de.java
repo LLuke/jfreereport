@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportResources_de.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: CSVExportResources_de.java,v 1.2 2003/08/19 13:37:23 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -114,6 +114,8 @@ public class CSVExportResources_de extends JFreeReportResources
 
         {"csvexportdialog.csv-file-description", "Text-Dateien mit komma getrennten Werten."},
 
+        {"cvs-export.progressdialog.title", "Exportiere in eine CSV-Datei ..."},
+        {"cvs-export.progressdialog.message", "Der Bericht wird nun in eine CSV Datei exportiert ..."},
       };
 
   /**

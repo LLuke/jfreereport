@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.3 2003/08/19 21:01:34 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.4 2003/08/20 14:06:36 taqua Exp $
  *
  * Changes
  * -------
@@ -70,6 +70,9 @@ public class ExcelProcessor extends TableProcessor
 
   /** The output stream that is used to write the excel file. */
   private OutputStream outputStream;
+  
+  public static final String CONFIGURATION_PREFIX =
+      "org.jfree.report.modules.output.table.xls.";
 
   /**
    * Creates a new ExcelProcessor for the given report.
@@ -134,6 +137,6 @@ public class ExcelProcessor extends TableProcessor
    */
   protected String getReportConfigurationPrefix()
   {
-    return "org.jfree.report.modules.output.table.xls.";
+    return CONFIGURATION_PREFIX;
   }
 }

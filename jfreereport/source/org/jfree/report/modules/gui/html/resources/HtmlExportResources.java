@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportResources.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: HtmlExportResources.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -131,6 +131,10 @@ public class HtmlExportResources extends JFreeReportResources
         {"error.savefailed.title", "Error on save"},
         {"error.validationfailed.message", "Error while validating the user input."},
         {"error.validationfailed.title", "Error on validation"},
+
+        {"html-export.progressdialog.title", "Exporting to an HTML format ..."},
+        {"html-export.progressdialog.message", "The report is now exported into a Html file ..."},
+
       };
 
 

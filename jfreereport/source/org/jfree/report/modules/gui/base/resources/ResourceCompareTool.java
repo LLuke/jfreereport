@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -24,7 +24,7 @@
  * ResourceCompareTool.java
  * ------------------------
  *
- * $Id: ResourceCompareTool.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: ResourceCompareTool.java,v 1.2 2003/08/18 18:27:59 taqua Exp $
  *
  * Changes
  * -------

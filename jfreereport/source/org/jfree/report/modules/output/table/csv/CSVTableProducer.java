@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProducer.java,v 1.3 2003/08/20 14:06:36 taqua Exp $
+ * $Id: CSVTableProducer.java,v 1.4 2003/08/20 17:24:34 taqua Exp $
  *
  * Changes
  * -------
@@ -228,8 +228,12 @@ public class CSVTableProducer extends TableProducer
   public void configure(final Properties configuration)
   {
     super.configure(configuration);
-    final String separator = configuration.getProperty(CSVTableProcessor.SEPARATOR_KEY, ",");
-    this.quoter = new CSVQuoter(separator);
+    this.quoter = new CSVQuoter(getSeparator());
+  }
+
+  protected String getSeparator ()
+  {
+    return getProperty(CSVTableProcessor.SEPARATOR_KEY, ",");
   }
 
   /**

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportPlugin.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: CSVExportPlugin.java,v 1.2 2003/08/19 13:37:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,7 +47,10 @@ import javax.swing.KeyStroke;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
+import org.jfree.report.modules.gui.base.ReportProgressDialog;
+import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.csv.resources.CSVExportResources;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * Encapsulates the CSVExportDialog into a separate plugin.
@@ -66,6 +69,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
   public static final String BASE_RESOURCE_CLASS =
       CSVExportResources.class.getName();
 
+  private ReportProgressDialog progressDialog;
 
   /**
    * DefaultConstructor.
@@ -73,6 +77,12 @@ public class CSVExportPlugin extends AbstractExportPlugin
   public CSVExportPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    progressDialog = new ReportProgressDialog();
+    progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
+    progressDialog.setTitle(resources.getString("cvs-export.progressdialog.title"));
+    progressDialog.setMessage(resources.getString("cvs-export.progressdialog.message"));
+    progressDialog.pack();
+    RefineryUtilities.positionFrameRandomly(progressDialog);
   }
 
   /**
@@ -85,7 +95,37 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport(final JFreeReport report)
   {
-    return handleExportResult(exportDialog.performExport(report));
+    boolean result = exportDialog.performQueryForExport(report);
+    if (result == false)
+    {
+      // user canceled the dialog ...
+      return handleExportResult(true);
+    }
+
+    ExportTask task = null;
+    if (exportDialog.isExportRawData())
+    {
+      task = new CSVRawExportTask
+        (exportDialog.getFilename(), exportDialog.getEncoding(), progressDialog, report);
+    }
+    else
+    {
+      task = new CSVTableExportTask
+        (exportDialog.getFilename(), exportDialog.getEncoding(), progressDialog, report);
+    }
+    delegateTask(task);
+    synchronized (task)
+    {
+      if (task.isTaskDone() == false)
+      {
+        progressDialog.setVisible(true);
+      }
+    }
+    if (task.getReturnValue() != ExportTask.RETURN_SUCCESS)
+    {
+      return handleExportResult(false);
+    }
+    return handleExportResult(true);
   }
 
   /**

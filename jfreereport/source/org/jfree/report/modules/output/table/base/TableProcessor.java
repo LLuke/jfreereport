@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.4 2003/07/23 13:56:42 taqua Exp $
+ * $Id: TableProcessor.java,v 1.5 2003/08/18 18:28:01 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,13 @@ package org.jfree.report.modules.output.table.base;
 import java.awt.print.PageFormat;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.ArrayList;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.event.RepaginationState;
+import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.states.FinishState;
 import org.jfree.report.states.ReportState;
@@ -66,6 +69,8 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public abstract class TableProcessor
 {
+  private static final int MAX_EVENTS_PER_RUN = 400;
+
   /** Enable stricter table layouting for all TableProcessors. */
   public static final String STRICT_TABLE_LAYOUT
       = "org.jfree.report.modules.output.table.base.StrictLayout";
@@ -73,6 +78,8 @@ public abstract class TableProcessor
   /** Disable strict layout by default. */
   public static final String STRICT_TABLE_LAYOUT_DEFAULT = "false";
 
+  /** The local property name for strict layout. */
+  public static final String STRICT_LAYOUT = "StrictLayout";
 
   /** the function name used for the created tablewriter. */
   private static final String TABLE_WRITER = TableProcessor.class.getName() + "$table-writer";
@@ -85,6 +92,10 @@ public abstract class TableProcessor
 
   /** The tablewriter function. */
   private TableWriter tableWriter;
+
+  /** Storage for listener references. */
+  private ArrayList listeners;
+  private Object[] listenersCache;
 
   /**
    * Creates a new TableProcessor. The TableProcessor creates a private copy
@@ -111,7 +122,6 @@ public abstract class TableProcessor
     {
       throw new ReportProcessingException("Initial Clone of Report failed");
     }
-
     properties = new Properties();
 
     tableWriter = new TableWriter();
@@ -132,22 +142,20 @@ public abstract class TableProcessor
    */
   public boolean isStrictLayout()
   {
-    return report.getReportConfiguration().getConfigProperty(STRICT_TABLE_LAYOUT,
-        STRICT_TABLE_LAYOUT_DEFAULT).equalsIgnoreCase("true");
+    return getProperty(STRICT_LAYOUT, "false").equals("true");
   }
 
   /**
    * Defines whether strict layouting rules should be used for the TableLayouter.
    *
-   * @param strict set to true, to use strict layouting rules, false otherwise.
+   * @param strictLayout set to true, to use strict layouting rules, false otherwise.
    *
    * @see TableProcessor#isStrictLayout
    */
-  public void setStrictLayout(final boolean strict)
+  public void setStrictLayout(final boolean strictLayout)
   {
-    report.getReportConfiguration().setConfigProperty(STRICT_TABLE_LAYOUT, String.valueOf(strict));
+    setProperty(STRICT_LAYOUT, String.valueOf(strictLayout));
   }
-
 
   /**
    * Returns the tablewriter function used in to create the report contents.
@@ -222,7 +230,10 @@ public abstract class TableProcessor
       throw new IllegalStateException("No functions defined, invalid implementation.");
     }
 
+    int eventTrigger = state.getNumberOfRows() / MAX_EVENTS_PER_RUN;
+
     boolean hasNext;
+    RepaginationState stateEvent = new RepaginationState(this, 0, 0, 0, 0, false);
     ReportStateProgress progress = null;
     int level = ((Integer) it.next()).intValue();
     // outer loop: process all function levels
@@ -238,10 +249,36 @@ public abstract class TableProcessor
       // inner loop: process the complete report, calculate the function values
       // for the current level. Higher level functions are not available in the
       // dataRow.
+      int lastRow = -1;
+      int eventCount = 0;
       final boolean failOnError
           = (level == -1) && getReport().getReportConfiguration().isStrictErrorHandling();
       while (!state.isFinish())
       {
+
+        if (lastRow != state.getCurrentDisplayItem())
+        {
+          lastRow = state.getCurrentDisplayItem();
+          if (eventCount == 0)
+          {
+            stateEvent.reuse(level, state.getCurrentPage(), state.getCurrentDataItem(),
+                state.getNumberOfRows(), true);
+            fireStateUpdate(stateEvent);
+            eventCount += 1;
+          }
+          else
+          {
+            if (eventCount == eventTrigger)
+            {
+              eventCount = 0;
+            }
+            else
+            {
+              eventCount += 1;
+            }
+          }
+        }
+
         progress = state.createStateProgress(progress);
         state = state.advance();
         if (failOnError)
@@ -318,12 +355,41 @@ public abstract class TableProcessor
       w.getProducer().configure(getProperties());
 
       w.setMaxWidth((float) getReport().getDefaultPageFormat().getImageableWidth());
+      RepaginationState stateEvent = new RepaginationState(this, 0, 0, 0, 0, false);
+
+      int maxRows = state.getNumberOfRows();
+      int lastRow = -1;
+      int eventCount = 0;
+      int eventTrigger = maxRows / MAX_EVENTS_PER_RUN;
 
       final boolean failOnError =
           getReport().getReportConfiguration().isStrictErrorHandling();
       ReportStateProgress progress = null;
       while (!state.isFinish())
       {
+        if (lastRow != state.getCurrentDisplayItem())
+        {
+          lastRow = state.getCurrentDisplayItem();
+          if (eventCount == 0)
+          {
+            stateEvent.reuse(TableWriter.OUTPUT_LEVEL, state.getCurrentPage(),
+                state.getCurrentDataItem(), state.getNumberOfRows(), true);
+            fireStateUpdate(stateEvent);
+            eventCount += 1;
+          }
+          else
+          {
+            if (eventCount == eventTrigger)
+            {
+              eventCount = 0;
+            }
+            else
+            {
+              eventCount += 1;
+            }
+          }
+        }
+
         progress = state.createStateProgress(progress);
         state = state.advance();
         if (failOnError && state.isErrorOccured() == true)
@@ -478,4 +544,66 @@ public abstract class TableProcessor
 
     getTableWriter().setMaxWidth((float) getReport().getDefaultPageFormat().getImageableWidth());
   }
+
+  /**
+   * Adds a repagination listener. This listener will be informed of
+   * pagination events.
+   *
+   * @param l  the listener.
+   */
+  public void addRepaginationListener(final RepaginationListener l)
+  {
+    if (l == null)
+    {
+      throw new NullPointerException("Listener == null");
+    }
+    if (listeners == null)
+    {
+      listeners = new ArrayList(5);
+    }
+    listenersCache = null;
+    listeners.add(l);
+  }
+
+  /**
+   * Removes a repagination listener.
+   *
+   * @param l  the listener.
+   */
+  public void removeRepaginationListener(final RepaginationListener l)
+  {
+    if (l == null)
+    {
+      throw new NullPointerException("Listener == null");
+    }
+    if (listeners == null)
+    {
+      return;
+    }
+    listenersCache = null;
+    listeners.remove(l);
+  }
+
+  /**
+   * Sends a repagination update to all registered listeners.
+   *
+   * @param state  the state.
+   */
+  protected void fireStateUpdate(final RepaginationState state)
+  {
+    if (listeners == null)
+    {
+      return;
+    }
+    if (listenersCache == null)
+    {
+      listenersCache = listeners.toArray();
+    }
+    for (int i = 0; i < listenersCache.length; i++)
+    {
+      final RepaginationListener l = (RepaginationListener) listenersCache[i];
+      l.repaginationUpdate(state);
+    }
+  }
+
 }

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FilesystemFilter.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: FilesystemFilter.java,v 1.1 2003/07/25 01:06:49 taqua Exp $
  *
  * Changes
  * -------

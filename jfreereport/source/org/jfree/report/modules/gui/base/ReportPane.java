@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.3 2003/07/23 16:02:19 taqua Exp $
+ * $Id: ReportPane.java,v 1.4 2003/08/18 21:36:39 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -58,6 +58,7 @@ import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Pageable;
 import java.awt.print.Printable;
+import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.UIManager;
 
@@ -68,6 +69,8 @@ import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.base.ReportStateList;
+import org.jfree.report.event.RepaginationListener;
+import org.jfree.report.event.RepaginationState;
 import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
 import org.jfree.report.states.ReportState;
@@ -83,25 +86,26 @@ import org.jfree.report.util.PageFormatFactory;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class ReportPane extends JComponent implements Printable, Pageable
+public class ReportPane extends JComponent
+    implements Printable, Pageable, RepaginationListener
 {
   /** Literal text for the 'paginated' property. */
-  public static final String PAGINATED_PROPERTY = "paginated";
+  public static final String PAGINATED_PROPERTY = "Paginated";
 
   /** Literal text for the 'NumberOfPages' property. */
   public static final String NUMBER_OF_PAGES_PROPERTY = "NumberOfPages";
 
   /** Literal text for the 'pagenumber' property. */
-  public static final String PAGENUMBER_PROPERTY = "pagenumber";
+  public static final String PAGENUMBER_PROPERTY = "PageNumber";
 
   /** Literal text for the 'zoomfactor' property. */
-  public static final String ZOOMFACTOR_PROPERTY = "zoomfactor";
+  public static final String ZOOMFACTOR_PROPERTY = "ZoomFactor";
 
   /** Literal text for the 'error' property. */
-  public static final String ERROR_PROPERTY = "error";
+  public static final String ERROR_PROPERTY = "Error";
 
   /** Literal text for the 'borderPainted' property. */
-  public static final String BORDER_PROPERTY = "borderPainted";
+  public static final String BORDER_PROPERTY = "BorderPainted";
 
   /** The size of the paper border. */
   private static final float PAPERBORDER_PIXEL = 6f;
@@ -169,6 +173,10 @@ public class ReportPane extends JComponent implements Printable, Pageable
   /** The report processor. */
   private PageableReportProcessor processor;
 
+  /** The repagination listeners. */
+  private ArrayList repaginationListeners;
+  private Object[] repaginationListenersCache;
+
   /**
    * Creates a report pane to display the specified report.
    *
@@ -178,6 +186,11 @@ public class ReportPane extends JComponent implements Printable, Pageable
    */
   public ReportPane(final JFreeReport report) throws ReportProcessingException
   {
+    if (report == null)
+    {
+      throw new NullPointerException("Report is null.");
+    }
+    this.repaginationListeners = new ArrayList();
     this.report = report;
     setDoubleBuffered(true);
     try
@@ -188,6 +201,8 @@ public class ReportPane extends JComponent implements Printable, Pageable
     {
       throw new ReportProcessingException("Unable to create the PageableReportProcessor", fe);
     }
+
+    processor.addRepaginationListener(this);
 
     borderPainted = false;
     pageNumber = 1;
@@ -237,14 +252,17 @@ public class ReportPane extends JComponent implements Printable, Pageable
    */
   protected void setPageStateList(final ReportStateList list)
   {
-    final ReportStateList oldList = pageStateList;
-    if (oldList != null)
+    synchronized (paginateLock)
     {
-      oldList.clear();
-    }
+      final ReportStateList oldList = pageStateList;
+      if (oldList != null)
+      {
+        oldList.clear();
+      }
 
-    this.pageStateList = list;
-    firePropertyChange(PAGINATED_PROPERTY, oldList == null, list == null);
+      this.pageStateList = list;
+      firePropertyChange(PAGINATED_PROPERTY, oldList == null, list == null);
+    }
   }
 
   /**
@@ -478,6 +496,10 @@ public class ReportPane extends JComponent implements Printable, Pageable
    */
   public void paintComponent(final Graphics g)
   {
+    if (paginateLock.isPaginating())
+    {
+      return;
+    }
     try
     {
       final Graphics2D g2org = (Graphics2D) g;
@@ -738,10 +760,12 @@ public class ReportPane extends JComponent implements Printable, Pageable
       throw new IllegalStateException("Already paginating");
     }
 
-    boolean addedOutputTarget = false;
-
     synchronized (paginateLock)
     {
+      setPageStateList(null);
+      paginateLock.setPaginating(true);
+
+      boolean addedOutputTarget = false;
       if (getProcessor().getOutputTarget() == null)
       {
         try
@@ -753,13 +777,11 @@ public class ReportPane extends JComponent implements Printable, Pageable
         }
         catch (OutputTargetException oe)
         {
-          // does not happen when using the dummy target
+          // does not happen when using the dummy target, but just in case
+          Log.error ("Unable to repaginate: Error" , oe);
         }
         addedOutputTarget = true;
       }
-
-      paginateLock.setPaginating(true);
-      setPageStateList(null);
 
       try
       {
@@ -843,7 +865,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
    *
    * @return the report processor.
    */
-  public PageableReportProcessor getProcessor()
+  protected PageableReportProcessor getProcessor()
   {
     return processor;
   }
@@ -858,5 +880,44 @@ public class ReportPane extends JComponent implements Printable, Pageable
     setPageStateList(null);
     // is regenerated on next repaint
     graphCache = null;
+  }
+
+  /**
+   * Receives notification of a repagination update.
+   *
+   * @param state  the state.
+   */
+  public void repaginationUpdate(RepaginationState state)
+  {
+    if (repaginationListenersCache == null)
+    {
+      repaginationListenersCache = repaginationListeners.toArray();
+    }
+
+    for (int i = 0; i < repaginationListenersCache.length; i++)
+    {
+      RepaginationListener l = (RepaginationListener) repaginationListenersCache[i];
+      l.repaginationUpdate(state);
+    }
+  }
+
+  public void addRepaginationListener (RepaginationListener listener)
+  {
+    if (listener == null)
+    {
+      throw new NullPointerException("Listener must not be null.");
+    }
+    repaginationListenersCache = null;
+    repaginationListeners.add(listener);
+  }
+
+  public void removeRepaginationListener (RepaginationListener listener)
+  {
+    if (listener == null)
+    {
+      throw new NullPointerException("Listener must not be null.");
+    }
+    repaginationListenersCache = null;
+    repaginationListeners.remove(listener);
   }
 }

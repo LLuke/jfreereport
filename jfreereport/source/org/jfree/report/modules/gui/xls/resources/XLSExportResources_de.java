@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XLSExportResources_de.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: XLSExportResources_de.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -102,6 +102,9 @@ public class XLSExportResources_de extends JFreeReportResources
 
         {"excelexportdialog.cancel", "Abbrechen"},
         {"excelexportdialog.confirm", "OK"},
+
+        {"excel-export.progressdialog.title", "Exportiere in eine Excel-Datei ..."},
+        {"excel-export.progressdialog.message", "Der Bericht wird nun in eine Excel-Arbeitsmappe gespeichert..."},
 
       };
 

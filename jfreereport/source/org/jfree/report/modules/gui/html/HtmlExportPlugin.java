@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportPlugin.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: HtmlExportPlugin.java,v 1.2 2003/08/19 13:37:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,7 +47,10 @@ import javax.swing.KeyStroke;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
+import org.jfree.report.modules.gui.base.ReportProgressDialog;
+import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.html.resources.HtmlExportResources;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * Encapsulates the HtmlExportDialog into a separate plugin.
@@ -66,12 +69,20 @@ public class HtmlExportPlugin extends AbstractExportPlugin
   public static final String BASE_RESOURCE_CLASS =
       HtmlExportResources.class.getName();
 
+  private ReportProgressDialog progressDialog;
+
   /**
    * DefaultConstructor.
    */
   public HtmlExportPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    progressDialog = new ReportProgressDialog();
+    progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
+    progressDialog.setTitle(resources.getString("html-export.progressdialog.title"));
+    progressDialog.setMessage(resources.getString("html-export.progressdialog.message"));
+    progressDialog.pack();
+    RefineryUtilities.positionFrameRandomly(progressDialog);
   }
 
   /**
@@ -107,7 +118,52 @@ public class HtmlExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport(final JFreeReport report)
   {
-    return handleExportResult(exportDialog.performExport(report));
+    boolean result = exportDialog.performQueryForExport(report);
+    if (result == false)
+    {
+      // user canceled the dialog ...
+      return handleExportResult(true);
+    }
+
+    ExportTask task = null;
+    switch (exportDialog.getSelectedExportMethod())
+    {
+      case HtmlExportDialog.EXPORT_DIR:
+        {
+          task = new HtmlDirExportTask
+              (exportDialog.getDirFilename(), exportDialog.getDirDataFilename(),
+                  progressDialog, report);
+          break;
+        }
+      case HtmlExportDialog.EXPORT_STREAM:
+        {
+          task = new HtmlStreamExportTask
+              (exportDialog.getStreamFilename(), progressDialog, report);
+          break;
+        }
+      case HtmlExportDialog.EXPORT_ZIP:
+        {
+          task = new HtmlZipExportTask
+              (exportDialog.getZipFilename(), exportDialog.getZipDataFilename(),
+                  progressDialog, report);
+          break;
+        }
+      default:
+        throw new IllegalArgumentException("Unexpected export method found.");
+    }
+    delegateTask(task);
+    synchronized (task)
+    {
+      if (task.isTaskDone() == false)
+      {
+        progressDialog.setVisible(true);
+      }
+    }
+    if (task.getReturnValue() != ExportTask.RETURN_SUCCESS)
+    {
+      return handleExportResult(false);
+    }
+    return handleExportResult(true);
   }
 
   /**

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Thomas Morgner, Object Refinery Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.4 2003/07/21 20:46:55 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.5 2003/08/18 18:27:59 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -358,7 +358,14 @@ public class JFreeReportResources extends ListResourceBundle
         {"ProgressMonitor.progressText", "Progress..."},
 
         {"SplitPane.leftButtonText", "left button"},
-        {"SplitPane.rightButtonText", "right button"}
+        {"SplitPane.rightButtonText", "right button"},
+
+        // progress dialog defaults ...
+        {"progress-dialog.prepare-layout","Preparing the layout for the output."},
+        {"progress-dialog.perform-output","Performing the requested report output ..."},
+        {"progress-dialog.page-label","Page: {0}"},
+        {"progress-dialog.rows-label","Row: {0} / {1}"},
+        {"progress-dialog.pass-label","Pass: {0} - Computing function values ..."},
       };
 
 }

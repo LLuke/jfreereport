@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProcessor.java,v 1.3 2003/08/19 21:01:34 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.4 2003/08/20 14:06:36 taqua Exp $
  *
  * Changes
  * -------
@@ -72,8 +72,7 @@ public class HtmlProcessor extends TableProcessor
   /** the filesystem implementation used for writing the generated content. */
   private HtmlFilesystem filesystem;
 
-  /** a flag indicating whether to generate XHTML output instead of HTML4 code. */
-  private boolean useXHTML;
+  public static final String CONFIGURATION_PREFIX = "org.jfree.report.modules.ouput.table.html.";
 
   /**
    * Creates a new HtmlProcessor, which generates HTML4 output and uses the
@@ -86,7 +85,7 @@ public class HtmlProcessor extends TableProcessor
   public HtmlProcessor(final JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
-    this(report, false);
+    super(report);
   }
 
   /**
@@ -102,7 +101,7 @@ public class HtmlProcessor extends TableProcessor
       throws ReportProcessingException, FunctionInitializeException
   {
     super(report);
-    this.useXHTML = useXHTML;
+    setGenerateXHTML(useXHTML);
   }
 
   /**
@@ -112,7 +111,7 @@ public class HtmlProcessor extends TableProcessor
    */
   public boolean isGenerateXHTML()
   {
-    return useXHTML;
+    return getProperty(HtmlProducer.GENERATE_XHTML, "false").equals("true");
   }
 
   /**
@@ -123,7 +122,7 @@ public class HtmlProcessor extends TableProcessor
    */
   public void setGenerateXHTML(final boolean useXHTML)
   {
-    this.useXHTML = useXHTML;
+    setProperty(HtmlProducer.GENERATE_XHTML, String.valueOf(useXHTML));
   }
 
   /**
@@ -166,7 +165,7 @@ public class HtmlProcessor extends TableProcessor
    */
   protected TableProducer createProducer(TableLayoutInfo gridLayoutBounds)
   {
-    return new HtmlProducer(getFilesystem(), (HtmlLayoutInfo) gridLayoutBounds, isStrictLayout());
+    return new HtmlProducer(getFilesystem(), (HtmlLayoutInfo) gridLayoutBounds);
   }
 
   /**
@@ -177,6 +176,6 @@ public class HtmlProcessor extends TableProcessor
    */
   protected String getReportConfigurationPrefix()
   {
-    return "org.jfree.report.modules.ouput.table.html.";
+    return CONFIGURATION_PREFIX;
   }
 }

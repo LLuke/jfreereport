@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   Helmut Leininger;
  *
- * $Id: JFreeReportResources_de.java,v 1.4 2003/07/21 20:46:56 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.5 2003/08/19 13:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -204,7 +204,14 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"ProgressMonitor.progressText", "Fortschritt..."},
 
         {"SplitPane.leftButtonText", "Linker Knopf"},
-        {"SplitPane.rightButtonText", "Rechter Knopf"}
+        {"SplitPane.rightButtonText", "Rechter Knopf"},
+
+        // progress dialog defaults
+        {"progress-dialog.prepare-layout","Bereite das Layout des Berichts vor."},
+        {"progress-dialog.perform-output","Der Export des Berichts wird nun ausgeführt ..."},
+        {"progress-dialog.page-label","Seite: {0}"},
+        {"progress-dialog.rows-label","Zeile: {0} / {1}"},
+        {"progress-dialog.pass-label","Durchlauf: {0} - Berechne die Funktionswerte ..."},
       };
 
   /**

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -29,7 +29,7 @@
  *                   JRXlsExporter.java of JasperReports;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellStyleFactory.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.3 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------

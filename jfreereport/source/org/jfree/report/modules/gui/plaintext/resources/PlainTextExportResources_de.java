@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportResources_de.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: PlainTextExportResources_de.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -103,6 +103,9 @@ public class PlainTextExportResources_de extends JFreeReportResources
         {"error.savefailed.message", "Der Bericht konnte nicht gespeichert werden: {0}"},
         {"error.savefailed.title", "Speichern fehlgeschlagen"},
         
+        {"plaintext-export.progressdialog.title", "Exportiere in eine Text Datei ..."},
+        {"plaintext-export.progressdialog.message", "Der Bericht wird nun in eine Text Datei exportiert ..."},
+
       };
 
   /**

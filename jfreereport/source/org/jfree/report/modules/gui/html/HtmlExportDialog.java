@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.4 2003/08/18 18:27:59 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.5 2003/08/19 13:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -50,11 +50,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
@@ -82,11 +78,9 @@ import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.gui.html.resources.HtmlExportResources;
-import org.jfree.report.modules.output.table.html.DirectoryHtmlFilesystem;
+import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.modules.output.table.html.HtmlProducer;
-import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
-import org.jfree.report.modules.output.table.html.ZIPHtmlFilesystem;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 
@@ -1263,36 +1257,17 @@ public class HtmlExportDialog extends JDialog
     return true;
   }
 
-  /**
-   * Shows this dialog and (if the dialog is confirmed) saves the complete report into an
-   * HTML file.
-   *
-   * @param report  the report being processed.
-   *
-   * @return A boolean.
-   */
-  public boolean performExport(final JFreeReport report)
+  public boolean performQueryForExport (final JFreeReport report)
   {
     setModal(true);
     initFromConfiguration(report.getReportConfiguration());
     setVisible(true);
     if (isConfirmed() == false)
     {
-      return true;
+      return false;
     }
-    if (getSelectedExportMethod() == EXPORT_STREAM)
-    {
-      return writeHtmlStream(report);
-    }
-    else if (getSelectedExportMethod() == EXPORT_DIR)
-    {
-      return writeHtmlDir(report);
-    }
-    else if (getSelectedExportMethod() == EXPORT_ZIP)
-    {
-      return writeHtmlZip(report);
-    }
-    return false;
+    storeToConfiguration(report.getReportConfiguration());
+    return true;
   }
 
   /**
@@ -1405,139 +1380,6 @@ public class HtmlExportDialog extends JDialog
   }
 
   /**
-   * Writes an HTML stream.
-   *
-   * @param report  the report.
-   *
-   * @return A boolean.
-   */
-  public boolean writeHtmlStream(final JFreeReport report)
-  {
-    OutputStream out = null;
-    try
-    {
-      out = new BufferedOutputStream(new FileOutputStream(new File(getStreamFilename())));
-      final HtmlProcessor target = new HtmlProcessor(report);
-      target.setFilesystem(new StreamHtmlFilesystem(out));
-      target.setStrictLayout(isStrictLayout());
-      target.setProperty(HtmlProducer.ENCODING, getEncoding());
-      target.setProperty(HtmlProducer.AUTHOR, getAuthor());
-      target.setProperty(HtmlProducer.TITLE, getHTMLTitle());
-      target.setGenerateXHTML(isGenerateXHTML());
-      target.processReport();
-      out.close();
-      return true;
-    }
-    catch (Exception re)
-    {
-      showExceptionDialog("error.processingfailed", re);
-      return false;
-    }
-    finally
-    {
-      try
-      {
-        if (out != null)
-        {
-          out.close();
-        }
-      }
-      catch (Exception e)
-      {
-        showExceptionDialog("error.savefailed", e);
-      }
-    }
-  }
-
-  /**
-   * Writers the report to HTML inside a ZIP file.
-   *
-   * @param report  the report.
-   *
-   * @return A boolean.
-   */
-  public boolean writeHtmlZip(final JFreeReport report)
-  {
-    OutputStream out = null;
-    try
-    {
-
-      out = new BufferedOutputStream(new FileOutputStream(new File(getZipFilename())));
-      final HtmlProcessor target = new HtmlProcessor(report);
-      target.setFilesystem(new ZIPHtmlFilesystem(out, getZipDataFilename()));
-      target.setStrictLayout(isStrictLayout());
-      target.setProperty(HtmlProducer.ENCODING, getEncoding());
-      target.setProperty(HtmlProducer.AUTHOR, getAuthor());
-      target.setProperty(HtmlProducer.TITLE, getHTMLTitle());
-      target.setGenerateXHTML(isGenerateXHTML());
-      target.processReport();
-      out.close();
-      return true;
-    }
-    catch (Exception re)
-    {
-      showExceptionDialog("error.processingfailed", re);
-      return false;
-    }
-    finally
-    {
-      try
-      {
-        if (out != null)
-        {
-          out.close();
-        }
-      }
-      catch (Exception e)
-      {
-        showExceptionDialog("error.savefailed", e);
-      }
-    }
-  }
-
-  /**
-   * Writes the report to HTML in a directory.
-   *
-   * @param report  the report.
-   *
-   * @return A boolean.
-   */
-  public boolean writeHtmlDir(final JFreeReport report)
-  {
-    try
-    {
-      final File targetFile = new File(getDirFilename());
-      File targetDataFile = new File(getDirDataFilename());
-      if (targetDataFile.isAbsolute() == false)
-      {
-        targetDataFile = new File(targetFile.getParentFile(), targetDataFile.getPath());
-      }
-      if (targetDataFile.mkdirs() == false)
-      {
-        if ((targetDataFile.exists() && targetDataFile.isDirectory()) == false)
-        {
-          throw new IOException("Unable to create the mssing directories.");
-        }
-      }
-      final DirectoryHtmlFilesystem fs = new DirectoryHtmlFilesystem(targetFile, targetDataFile);
-      final HtmlProcessor target = new HtmlProcessor(report);
-      target.setProperty(HtmlProducer.ENCODING, getEncoding());
-      target.setProperty(HtmlProducer.AUTHOR, getAuthor());
-      target.setProperty(HtmlProducer.TITLE, getHTMLTitle());
-      target.setStrictLayout(isStrictLayout());
-      target.setGenerateXHTML(isGenerateXHTML());
-      target.setFilesystem(fs);
-      target.processReport();
-      return true;
-    }
-    catch (Exception re)
-    {
-      showExceptionDialog("error.processingfailed", re);
-      return false;
-    }
-  }
-
-  /**
    * Shows the exception dialog by using localized messages. The message base is
    * used to construct the localisation key by appending ".title" and ".message" to the
    * base name.
@@ -1563,8 +1405,35 @@ public class HtmlExportDialog extends JDialog
    */
   public void initFromConfiguration(final ReportConfiguration config)
   {
-    encodingModel.ensureEncodingAvailable(getHTMLTargetEncoding(config));
-    setEncoding(getHTMLTargetEncoding(config));
+    String strict = config.getConfigProperty
+        (HtmlProcessor.CONFIGURATION_PREFIX +
+          HtmlProcessor.STRICT_LAYOUT,
+            config.getConfigProperty (TableProcessor.STRICT_TABLE_LAYOUT,
+                TableProcessor.STRICT_TABLE_LAYOUT_DEFAULT));
+    setStrictLayout(strict.equals("true"));
+    String encoding = config.getConfigProperty
+        (HtmlProcessor.CONFIGURATION_PREFIX +
+          HtmlProducer.ENCODING, HtmlProducer.ENCODING_DEFAULT);
+    setAuthor
+        (config.getConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
+          HtmlProducer.AUTHOR, getAuthor()));
+    setHTMLTitle
+        (config.getConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
+          HtmlProducer.TITLE, getHTMLTitle()));
+    encodingModel.ensureEncodingAvailable(encoding);
+    setEncoding(encoding);
+  }
+
+  public void storeToConfiguration (final ReportConfiguration config)
+  {
+    config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
+        HtmlProducer.ENCODING, getEncoding());
+    config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
+        HtmlProducer.AUTHOR, getAuthor());
+    config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
+        HtmlProducer.TITLE, getHTMLTitle());
+    config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
+        HtmlProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
   }
 
   /**
@@ -1588,31 +1457,5 @@ public class HtmlExportDialog extends JDialog
     });
     dialog.pack();
     dialog.setVisible(true);
-  }
-
-  /**
-   * Returns the HTML encoding property value for the given report
-   * configuration instance.
-   *
-   * @param config the report configuration from where to read the property.
-   * @return the HTML encoding property value.
-   */
-  public String getHTMLTargetEncoding(final ReportConfiguration config)
-  {
-    return config.getConfigProperty
-        (HTML_OUTPUT_ENCODING, HTML_OUTPUT_ENCODING_DEFAULT);
-  }
-
-  /**
-   * Sets the HTML encoding property value in the given report configuration
-   * instance.
-   *
-   * @param config the report configuration from where to read the property.
-   * @param targetEncoding  the new encoding.
-   */
-  public static void setHTMLTargetEncoding
-      (final ReportConfiguration config, final String targetEncoding)
-  {
-    config.setConfigProperty (HTML_OUTPUT_ENCODING, targetEncoding);
   }
 }

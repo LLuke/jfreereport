@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.4 2003/08/18 18:28:01 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.5 2003/08/20 14:06:36 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
@@ -80,8 +81,7 @@ public class HtmlProducer extends TableProducer
   /** the Filesystem is used to store the main html file and any external content. */
   private HtmlFilesystem filesystem;
 
-  /** a flag indicating whether to use XHTML output. */
-  private boolean useXHTML;
+  public static final String GENERATE_XHTML = "GenerateXHTML";
 
   /** the fileencoding for the main html file. */
   public static final String ENCODING = "Encoding";
@@ -124,7 +124,6 @@ public class HtmlProducer extends TableProducer
     super(layoutInfo, strict);
     this.styleCollection = new HtmlStyleCollection();
     getHtmlLayoutInfo().setStyleCollection(this.styleCollection);
-    this.cellDataFactory = new HtmlCellDataFactory(styleCollection, useXHTML);
   }
 
   /**
@@ -132,12 +131,10 @@ public class HtmlProducer extends TableProducer
    * but will not produce any output.
    *
    * @param filesystem the filesystem used to store the generated content.
-   * @param useXHTML a flag whether to generate XHTML content.
    * @param layoutInfo the layout info used to store the generated layoutinformation.
    */
   public HtmlProducer(final HtmlFilesystem filesystem,
-                      final HtmlLayoutInfo layoutInfo,
-                      final boolean useXHTML)
+                      final HtmlLayoutInfo layoutInfo)
   {
     super(layoutInfo);
     if (filesystem == null)
@@ -148,8 +145,6 @@ public class HtmlProducer extends TableProducer
     this.filesystem = filesystem;
     this.pout = null;
     this.styleCollection = getHtmlLayoutInfo().getStyleCollection();
-    this.cellDataFactory = new HtmlCellDataFactory(styleCollection, useXHTML);
-    this.useXHTML = useXHTML;
   }
 
   /**
@@ -200,7 +195,7 @@ public class HtmlProducer extends TableProducer
         this.pout = new PrintWriter(new OutputStreamWriter
             (filesystem.getRootStream(), getEncoding()), false);
         // write the standard headers
-        if (useXHTML)
+        if (isGenerateXHTML())
         {
           pout.print("<?xml version=\"1.0\" encoding=\"");
           pout.print(getEncoding());
@@ -224,7 +219,7 @@ public class HtmlProducer extends TableProducer
         // the style sheet definition will be inserted right before the content is written ...
         pout.print("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=");
         pout.print(getEncoding());
-        if (useXHTML)
+        if (isGenerateXHTML())
         {
           pout.println("\" />");
         }
@@ -247,7 +242,7 @@ public class HtmlProducer extends TableProducer
         {
           pout.print("<link rel=\"stylesheet\" type=\"text/css\" ");
           pout.print(cssRef.getReference());
-          if (useXHTML)
+          if (isGenerateXHTML())
           {
             pout.println(" />");
           }
@@ -371,11 +366,11 @@ public class HtmlProducer extends TableProducer
 
       if (name != null)
       {
-        pout.println(useXHTML ? "<hr />" : "<hr>");
+        pout.println(isGenerateXHTML() ? "<hr />" : "<hr>");
         pout.println("<h3>");
         pout.println(name);
         pout.println("</h3>");
-        pout.println(useXHTML ? "<hr />" : "<hr>");
+        pout.println(isGenerateXHTML() ? "<hr />" : "<hr>");
       }
       pout.println("<p>");
       pout.println("<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
@@ -561,5 +556,22 @@ public class HtmlProducer extends TableProducer
   public void setCreateBodyFragment(boolean createBodyFragment)
   {
     setProperty(BODY_FRAGMENT, String.valueOf(createBodyFragment));
+  }
+
+  /**
+   * Configures the table producer by reading the configuration settings from
+   * the given map.
+   *
+   * @param configuration the configuration supplied by the table processor.
+   */
+  public void configure(final Properties configuration)
+  {
+    super.configure(configuration);
+    this.cellDataFactory = new HtmlCellDataFactory(styleCollection, isGenerateXHTML());
+  }
+
+  protected boolean isGenerateXHTML ()
+  {
+    return getProperty(GENERATE_XHTML, "false").equals("true");
   }
 }

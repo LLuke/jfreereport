@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.6 2003/08/19 13:37:23 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.7 2003/08/22 20:27:20 taqua Exp $
  *
  * Changes
  * --------
@@ -285,14 +285,14 @@ public class ExportPluginFactory
    *
    * @return  The list of export plugins.
    */
-  public ArrayList createExportPlugIns(final PreviewProxy proxy, final ReportConfiguration config)
+  public ArrayList createExportPlugIns
+      (final PreviewProxy proxy, final ReportConfiguration config, final Worker worker)
   {
     PluginDefinition[] def = (PluginDefinition[])
         exportPlugins.toArray(new PluginDefinition[exportPlugins.size()]);
 
     Arrays.sort(def);
     ArrayList retval = new ArrayList();
-    Worker worker = new Worker();
 
     for (int i = 0; i < def.length; i++)
     {

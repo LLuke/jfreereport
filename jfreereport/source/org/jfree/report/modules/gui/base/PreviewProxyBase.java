@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.6 2003/07/25 01:06:00 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.7 2003/08/18 18:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -88,10 +88,13 @@ import org.jfree.report.modules.gui.base.components.ActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionMenuItem;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.FloatingButtonEnabler;
+import org.jfree.report.modules.gui.base.components.ActionConcentrator;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
+import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.Worker;
 import org.jfree.xml.ParserUtil;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * A preview proxy.
@@ -100,9 +103,6 @@ import org.jfree.xml.ParserUtil;
  */
 public class PreviewProxyBase extends JComponent
 {
-  /** The worker thread which is used to perform the repagination. */
-  private Worker paginationWorker;
-
   /** The default width of the report pane. */
   public static final int DEFAULT_REPORT_PANE_WIDTH = 640;
 
@@ -124,6 +124,12 @@ public class PreviewProxyBase extends JComponent
   /** The maximum height key. */
   public static final String PREVIEW_MAXIMUM_HEIGHT
       = "org.jfree.report.modules.gui.base.MaximumHeight";
+
+  public static final String LARGE_ICONS_ENABLED_PROPERTY
+      = "org.jfree.report.modules.gui.base.PreviewBase.LargeIcons";
+
+  public static final String TOOLBAR_FLOATABLE_PROPERTY
+      = "org.jfree.report.modules.gui.base.PreviewBase.ToolbarFloatable";
 
   /**
    * A wrapper action.
@@ -628,6 +634,12 @@ public class PreviewProxyBase extends JComponent
   public static final String BASE_RESOURCE_CLASS =
       JFreeReportResources.class.getName();
 
+  /** The worker thread which is used to perform the repagination. */
+  private Worker paginationWorker;
+
+  /** The worker thread which is used to perform the repagination. */
+  private Worker exportWorker;
+
   /** The 'about' action. */
   private WrapperAction aboutAction;
 
@@ -698,6 +710,11 @@ public class PreviewProxyBase extends JComponent
   /** A collection of actions, keyed by the export plugin. */
   private HashMap pluginActions;
 
+  private ReportProgressDialog progressDialog;
+
+  private boolean lockInterface;
+  private ActionConcentrator zoomActionConcentrator;
+
   /**
    * Creates a preview proxy.
    *
@@ -706,6 +723,8 @@ public class PreviewProxyBase extends JComponent
   public PreviewProxyBase(final PreviewProxy proxy)
   {
     this.proxy = proxy;
+    progressDialog = new ReportProgressDialog();
+    progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
   }
 
   /**
@@ -717,10 +736,17 @@ public class PreviewProxyBase extends JComponent
    */
   public void init(final JFreeReport report) throws ReportProcessingException
   {
-    setLargeIconsEnabled(true);
+    this.zoomActionConcentrator = new ActionConcentrator();
+    this.exportWorker = new Worker();
+    this.exportWorker.setName("preview-dialog-export-worker: report: " + report.getName());
 
-    final ExportPluginFactory factory = ExportPluginFactory.getInstance();
-    exportPlugIns = factory.createExportPlugIns(proxy, report.getReportConfiguration());
+    boolean largeIconsProperty =
+        report.getReportConfiguration().getConfigProperty
+        (LARGE_ICONS_ENABLED_PROPERTY, "true").equals("true");
+    setLargeIconsEnabled(largeIconsProperty);
+
+    final ExportPluginFactory factory = new ExportPluginFactory();
+    exportPlugIns = factory.createExportPlugIns(proxy, report.getReportConfiguration(), exportWorker);
     pluginActions = new HashMap(exportPlugIns.size());
     final Iterator it = exportPlugIns.iterator();
     while (it.hasNext())
@@ -769,7 +795,11 @@ public class PreviewProxyBase extends JComponent
     // set up the content with a toolbar and a report pane
     setLayout(new BorderLayout());
     setDoubleBuffered(false);
-    toolbar = createToolBar();
+
+    boolean toolbarFloatableProperty =
+        report.getReportConfiguration().getConfigProperty
+        (TOOLBAR_FLOATABLE_PROPERTY, "true").equals("true");
+    toolbar = createToolBar(toolbarFloatableProperty);
     add(toolbar, BorderLayout.NORTH);
 
     reportPane = createReportPane(report);
@@ -795,8 +825,8 @@ public class PreviewProxyBase extends JComponent
 
     applyDefinedDimension(report);
 
-    performPagination();
-    Log.info("Pagination started");
+    performPagination(report.getDefaultPageFormat());
+    Log.info("Dialog started pagination ...");
   }
 
   /**
@@ -1151,6 +1181,8 @@ public class PreviewProxyBase extends JComponent
     previousPageAction = new WrapperAction(createDefaultPreviousPageAction());
     zoomInAction = new WrapperAction(createDefaultZoomInAction());
     zoomOutAction = new WrapperAction(createDefaultZoomOutAction());
+    zoomActionConcentrator.addAction(zoomInAction);
+    zoomActionConcentrator.addAction(zoomOutAction);
   }
 
   /**
@@ -1341,7 +1373,9 @@ public class PreviewProxyBase extends JComponent
     zoomMenu.add(new JSeparator());
     for (int i = 0; i < ZOOM_FACTORS.length; i++)
     {
-      zoomMenu.add(createMenuItem(new ZoomSetAction(i)));
+      Action action = new ZoomSetAction(i);
+      zoomActionConcentrator.addAction(action);
+      zoomMenu.add(createMenuItem(action));
     }
 
     // then the help menu
@@ -1406,11 +1440,13 @@ public class PreviewProxyBase extends JComponent
    * Creates and returns a toolbar containing controls for print, page forward and backward, zoom
    * in and out, and an about box.
    *
+   * @param floatable defines, whether the toolbar will be initially floatable.
    * @return A completely initialized JToolBar.
    */
-  protected JToolBar createToolBar()
+  protected JToolBar createToolBar(boolean floatable)
   {
     final JToolBar toolbar = new JToolBar();
+    toolbar.setFloatable(floatable);
 
     final Iterator it = exportPlugIns.iterator();
     final boolean addedItem = it.hasNext();
@@ -1498,6 +1534,14 @@ public class PreviewProxyBase extends JComponent
    */
   protected void validateButtons()
   {
+    if (lockInterface == true)
+    {
+      // do not reenable any buttons.
+      // but make sure they remain locked.
+      disableButtons();
+      return;
+    }
+
     final int pn = reportPane.getPageNumber();
     final int mp = reportPane.getNumberOfPages();
 
@@ -1525,8 +1569,20 @@ public class PreviewProxyBase extends JComponent
       }
     }
 
+    zoomSelect.setEnabled(true);
+    zoomActionConcentrator.setEnabled(true);
     getZoomOutAction().setEnabled(zoomSelect.getSelectedIndex() != 0);
     getZoomInAction().setEnabled(zoomSelect.getSelectedIndex() != (ZOOM_FACTORS.length - 1));
+  }
+
+  /**
+   * Returns the zoom selection combobox. Use this to enable or diable
+   * it, but dont modify it, or be doomed.
+   * @return the zoom selection combobox.
+   */
+  protected JComboBox getZoomSelect()
+  {
+    return zoomSelect;
   }
 
   /**
@@ -1534,12 +1590,13 @@ public class PreviewProxyBase extends JComponent
    */
   protected void disableButtons()
   {
+    getGotoAction().setEnabled(false);
     getLastPageAction().setEnabled(false);
     getNextPageAction().setEnabled(false);
     getPreviousPageAction().setEnabled(false);
     getFirstPageAction().setEnabled(false);
-    getZoomOutAction().setEnabled(false);
-    getZoomInAction().setEnabled(false);
+    zoomActionConcentrator.setEnabled(false);
+    zoomSelect.setEnabled(false);
 
     final Iterator it = pluginActions.values().iterator();
     while (it.hasNext())
@@ -1547,6 +1604,26 @@ public class PreviewProxyBase extends JComponent
       final ExportAction ea = (ExportAction) it.next();
       ea.setEnabled(false);
     }
+  }
+
+  /**
+   * Returns the action concentrator used to collect all zoom-related
+   * actions.
+   *
+   * @return the zoom action concentrator.
+   */
+  protected ActionConcentrator getZoomActionConcentrator()
+  {
+    return zoomActionConcentrator;
+  }
+
+  /**
+   * Returns the repagination report progress dialog.
+   * @return the repaginiation progress dialog.
+   */
+  protected ReportProgressDialog getProgressDialog()
+  {
+    return progressDialog;
   }
 
   /**
@@ -1580,6 +1657,28 @@ public class PreviewProxyBase extends JComponent
     // Silly Swing keeps at least one reference in the RepaintManager to support DoubleBuffering
     // I dont want this here, as PreviewFrames are evil and resource expensive ...
     RepaintManager.setCurrentManager(null);
+  }
+
+  public void close ()
+  {
+    dispose();
+    exportWorker.finish();
+    paginationWorker.finish();
+  }
+
+  /**
+   * Called by the garbage collector on an object when garbage collection
+   * determines that there are no more references to the object.
+   * A subclass overrides the <code>finalize</code> method to dispose of
+   * system resources or to perform other cleanup.
+   *
+   * @throws Throwable the <code>Exception</code> raised by this method
+   */
+  public void finalize() throws Throwable
+  {
+    super.finalize();
+    exportWorker.finish();
+    paginationWorker.finish();
   }
 
   /**
@@ -1769,17 +1868,20 @@ public class PreviewProxyBase extends JComponent
    */
   public void updatePageFormat(final PageFormat pf)
   {
-    reportPane.setPageFormat(pf);
-    performPagination();
+    reportPane.setVisible(false);
+    performPagination(pf);
   }
 
   /**
    * Paginates the report.
    */
-  public void performPagination()
+  protected void performPagination(final PageFormat format)
   {
-    disableButtons();
+    setLockInterface(true);
     setStatusText(getResources().getString("statusline.repaginate"));
+    progressDialog.setTitle(getResources().getString("statusline.repaginate"));
+    progressDialog.setMessage(getResources().getString("statusline.repaginate"));
+    progressDialog.pack();
 
     final Worker worker = getWorker();
     synchronized (worker)
@@ -1787,27 +1889,69 @@ public class PreviewProxyBase extends JComponent
       while (worker.isAvailable() == false)
       {
         // wait until the worker is done with his current job
-      }
-    }
-    getWorker().setWorkload(new Runnable()
-    {
-      public void run()
-      {
-        final ReportPane reportPane = getReportPane();
         try
         {
-          reportPane.setHandleInterruptedState(true);
-          reportPane.setVisible(false);
-          reportPane.repaginate();
-          reportPane.setVisible(true);
-          reportPane.setHandleInterruptedState(false);
+          worker.wait();
         }
-        catch (Exception e)
+        catch (InterruptedException ie)
         {
-          Log.warn("Failed to repaginate", e);
-          reportPane.setError(e);
         }
       }
-    });
+      getWorker().setWorkload(new Runnable()
+      {
+        public void run()
+        {
+          final ReportPane reportPane = getReportPane();
+          try
+          {
+            reportPane.addRepaginationListener(progressDialog);
+            RefineryUtilities.positionFrameRandomly(progressDialog);
+            progressDialog.setVisible(true);
+            reportPane.setHandleInterruptedState(true);
+            reportPane.setVisible(false);
+            reportPane.setPageFormat(format);
+            reportPane.repaginate();
+            reportPane.setVisible(true);
+            reportPane.setHandleInterruptedState(false);
+            progressDialog.setVisible(false);
+            reportPane.removeRepaginationListener(progressDialog);
+            setLockInterface(false);
+          }
+          catch (Exception e)
+          {
+            Log.warn("Failed to repaginate", e);
+            reportPane.setError(e);
+          }
+        }
+      });
+    }
+  }
+
+  public boolean isLockInterface()
+  {
+    return lockInterface;
+  }
+
+  public void setLockInterface(boolean lockInterface)
+  {
+    this.lockInterface = lockInterface;
+    if (lockInterface == true)
+    {
+      disableButtons();
+    }
+    else
+    {
+      validateButtons();
+    }
+  }
+
+  public void addRepaginationListener (RepaginationListener listener)
+  {
+    reportPane.addRepaginationListener(listener);
+  }
+
+  public void removeRepaginationListener (RepaginationListener listener)
+  {
+    reportPane.removeRepaginationListener(listener);
   }
 }

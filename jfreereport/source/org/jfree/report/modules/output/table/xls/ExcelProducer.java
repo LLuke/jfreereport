@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.6 2003/08/19 21:01:34 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.7 2003/08/20 14:06:36 taqua Exp $
  *
  * Changes
  * -------
@@ -143,7 +143,7 @@ public class ExcelProducer extends TableProducer
   {
     final ExcelCellStyleFactory cellStyleFactory = new ExcelCellStyleFactory();
     cellDataFactory = new ExcelCellDataFactory(cellStyleFactory);
-    cellDataFactory.setDefineDataFormats(isMapData());
+    cellDataFactory.setDefineDataFormats(isMapDataFormats());
 
     if (isDummy() == false)
     {
@@ -348,7 +348,7 @@ public class ExcelProducer extends TableProducer
    * 
    * @return true, if enhanced mapping is enabled, false otherwise.
    */
-  private boolean isMapData ()
+  private boolean isMapDataFormats ()
   {
     final String mapData = getProperty
         (ExcelProcessor.ENHANCED_DATA_FORMAT_PROPERTY, "true");

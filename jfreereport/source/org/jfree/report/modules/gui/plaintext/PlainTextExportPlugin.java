@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportPlugin.java,v 1.5 2003/06/29 16:59:27 taqua Exp $
+ * $Id: PlainTextExportPlugin.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,8 +46,11 @@ import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
+import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.PreviewProxy;
+import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.plaintext.resources.PlainTextExportResources;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * Encapsulates the PlainTextExportDialog into a separate plugin.
@@ -66,12 +69,20 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
   public static final String BASE_RESOURCE_CLASS =
       PlainTextExportResources.class.getName();
 
+  private ReportProgressDialog progressDialog;
+
   /**
    * DefaultConstructor.
    */
   public PlainTextExportPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    progressDialog = new ReportProgressDialog();
+    progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
+    progressDialog.setTitle(resources.getString("plaintext-export.progressdialog.title"));
+    progressDialog.setMessage(resources.getString("plaintext-export.progressdialog.message"));
+    progressDialog.pack();
+    RefineryUtilities.positionFrameRandomly(progressDialog);
   }
 
   /**
@@ -107,7 +118,29 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport(final JFreeReport report)
   {
-    return handleExportResult(exportDialog.performExport(report));
+    boolean result = exportDialog.performQueryForExport(report);
+    if (result == false)
+    {
+      // user canceled the dialog ...
+      return handleExportResult(true);
+    }
+
+    PlainTextExportTask task = new PlainTextExportTask
+        (exportDialog.getFilename(), progressDialog,
+            exportDialog.getSelectedPrinter(), report);
+    delegateTask(task);
+    synchronized (task)
+    {
+      if (task.isTaskDone() == false)
+      {
+        progressDialog.setVisible(true);
+      }
+    }
+    if (task.getReturnValue() != ExportTask.RETURN_SUCCESS)
+    {
+      return handleExportResult(false);
+    }
+    return handleExportResult(true);
   }
 
   /**

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.3 2003/08/19 21:01:34 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.4 2003/08/20 14:06:36 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,8 @@ public class CSVTableProcessor extends TableProcessor
   private Writer writer;
 
   /** the configuration prefix for the csv table producer. */
-  private static final String CONFIGURATION_PREFIX = "org.jfree.report.modules.output.table.csv.";
+  public static final String CONFIGURATION_PREFIX =
+      "org.jfree.report.modules.output.table.csv.";
 
   /** the key for the separator string. */
   public static final String SEPARATOR_KEY = "Separator";

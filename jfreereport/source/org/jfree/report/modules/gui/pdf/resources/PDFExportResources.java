@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFExportResources.java,v 1.3 2003/08/18 18:27:59 taqua Exp $
+ * $Id: PDFExportResources.java,v 1.4 2003/08/19 13:37:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -131,6 +131,9 @@ public class PDFExportResources extends JFreeReportResources
 
         {"pdfsavedialog.cancel", "Cancel"},
         {"pdfsavedialog.confirm", "Confirm"},
+
+        {"pdf-export.progressdialog.title", "Exporting to a PDF file ..."},
+        {"pdf-export.progressdialog.message", "The report is now exported into a PDF document ..."},
 
       };
 

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.2 2003/07/23 16:02:20 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.3 2003/08/19 13:37:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,7 +47,10 @@ import javax.swing.KeyStroke;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
+import org.jfree.report.modules.gui.base.ReportProgressDialog;
+import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.xls.resources.XLSExportResources;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * Encapsulates the ExcelExportDialog into a separate plugin.
@@ -66,12 +69,20 @@ public class ExcelExportPlugin extends AbstractExportPlugin
   public static final String BASE_RESOURCE_CLASS =
       XLSExportResources.class.getName();
 
+  private ReportProgressDialog progressDialog;
+
   /**
    * DefaultConstructor.
    */
   public ExcelExportPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    progressDialog = new ReportProgressDialog();
+    progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
+    progressDialog.setTitle(resources.getString("excel-export.progressdialog.title"));
+    progressDialog.setMessage(resources.getString("excel-export.progressdialog.message"));
+    progressDialog.pack();
+    RefineryUtilities.positionFrameRandomly(progressDialog);
   }
 
   /**
@@ -107,7 +118,27 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport(final JFreeReport report)
   {
-    return handleExportResult(exportDialog.performExport(report));
+    boolean result = exportDialog.performQueryForExport(report);
+    if (result == false)
+    {
+      // user canceled the dialog ...
+      return handleExportResult(true);
+    }
+
+    ExcelExportTask task = new ExcelExportTask(exportDialog.getFilename(), progressDialog, report);
+    delegateTask(task);
+    synchronized (task)
+    {
+      if (task.isTaskDone() == false)
+      {
+        progressDialog.setVisible(true);
+      }
+    }
+    if (task.getReturnValue() != ExportTask.RETURN_SUCCESS)
+    {
+      return handleExportResult(false);
+    }
+    return handleExportResult(true);
   }
 
   /**

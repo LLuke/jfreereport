@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.7 2003/08/18 21:36:39 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.8 2003/08/22 20:27:20 taqua Exp $
  *
  * Changes
  * --------
@@ -1346,111 +1346,68 @@ public class PDFSaveDialog extends JDialog
     return true;
   }
 
-  /**
-   * Shows this dialog and (if the dialog is confirmed) saves the complete report into a PDF-File.
-   *
-   * @param report  the report being processed.
-   *
-   * @return true, if the export was performed without errors or the user canceled the dialog,
-   * or false on errors during the export.
-   */
-  public boolean performExport(final JFreeReport report)
+  public boolean performQueryForExport (final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
     setModal(true);
     setVisible(true);
     if (isConfirmed() == false)
     {
-      return true;
-    }
-    return writePDF(report, report.getDefaultPageFormat());
-  }
-
-  /**
-   * Saves a report to PDF format.
-   *
-   * @param report  the report.
-   * @param pf  the page format.
-   *
-   * @return true or false.
-   */
-  public boolean writePDF(final JFreeReport report, final PageFormat pf)
-  {
-    OutputStream out = null;
-    try
-    {
-      out = new BufferedOutputStream(new FileOutputStream(new File(getFilename())));
-      final PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
-      target.configure(report.getReportConfiguration());
-      target.setProperty(PDFOutputTarget.AUTHOR, getAuthor());
-      target.setProperty(PDFOutputTarget.TITLE, getPDFTitle());
-      target.setProperty(PDFOutputTarget.SECURITY_ENCRYPTION, getEncryptionValue());
-      target.setProperty(PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword());
-      target.setProperty(PDFOutputTarget.SECURITY_USERPASSWORD, getUserPassword());
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY,
-          String.valueOf(isAllowAssembly()));
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_COPY,
-          String.valueOf(isAllowCopy()));
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_DEGRADED_PRINTING,
-          String.valueOf(isAllowDegradedPrinting()));
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_FILLIN,
-          String.valueOf(isAllowFillIn()));
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_MODIFY_ANNOTATIONS,
-          String.valueOf(isAllowModifyAnnotations()));
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_MODIFY_CONTENTS,
-          String.valueOf(isAllowModifyContents()));
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_PRINTING,
-          String.valueOf(isAllowPrinting()));
-      target.setProperty(PDFOutputTarget.SECURITY_ALLOW_SCREENREADERS,
-          String.valueOf(isAllowScreenreaders()));
-      target.setProperty(PDFOutputTarget.ENCODING, getEncoding());
-      target.open();
-
-      final PageableReportProcessor proc = new PageableReportProcessor(report);
-      proc.setOutputTarget(target);
-      proc.processReport();
-
-      target.close();
-      return true;
-    }
-    catch (Exception re)
-    {
-      showExceptionDialog("error.processingfailed", re);
       return false;
     }
-    finally
-    {
-      try
-      {
-        if (out != null)
-        {
-          out.close();
-        }
-      }
-      catch (Exception e)
-      {
-        showExceptionDialog("error.savefailed", e);
-      }
-    }
+    storeToConfiguration(report.getReportConfiguration());
+    return true;
   }
 
   /**
-   * Shows the exception dialog by using localized messages. The message base is
-   * used to construct the localisation key by appending ".title" and ".message" to the
-   * base name.
+   * Stores the settings from the dialog in the report configuration.
    *
-   * @param localisationBase  the resource key prefix.
-   * @param e  the exception.
+   * @param config the report configuration.
    */
-  private void showExceptionDialog(final String localisationBase, final Exception e)
+  public void storeToConfiguration (final ReportConfiguration config)
   {
-    ExceptionDialog.showExceptionDialog(
-        getResources().getString(localisationBase + ".title"),
-        MessageFormat.format(
-            getResources().getString(localisationBase + ".message"),
-            new Object[]{e.getLocalizedMessage()}
-        ),
-        e);
+    config.setConfigProperty
+        (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.AUTHOR,
+            getAuthor());
+    config.setConfigProperty
+        (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.TITLE,
+            getPDFTitle());
+    config.setConfigProperty
+        (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_ENCRYPTION,
+            getEncryptionValue());
+    config.setConfigProperty
+        (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_OWNERPASSWORD,
+            getOwnerPassword());
+    config.setConfigProperty
+        (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_USERPASSWORD,
+            getUserPassword());
+    config.setConfigProperty
+        (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY,
+            String.valueOf(isAllowAssembly()));
+    config.setConfigProperty
+        (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_ALLOW_COPY,
+            String.valueOf(isAllowCopy()));
+    config.setConfigProperty
+        (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_ALLOW_DEGRADED_PRINTING,
+            String.valueOf(isAllowDegradedPrinting()));
+    config.setConfigProperty
+        (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_ALLOW_FILLIN,
+            String.valueOf(isAllowFillIn()));
+    config.setConfigProperty
+        (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_ALLOW_MODIFY_ANNOTATIONS,
+            String.valueOf(isAllowModifyAnnotations()));
+    config.setConfigProperty
+        (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_ALLOW_MODIFY_CONTENTS,
+            String.valueOf(isAllowModifyContents()));
+    config.setConfigProperty
+        (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_ALLOW_PRINTING,
+            String.valueOf(isAllowPrinting()));
+    config.setConfigProperty
+        (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.SECURITY_ALLOW_SCREENREADERS,
+            String.valueOf(isAllowScreenreaders()));
+    config.setConfigProperty
+        (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.ENCODING,
+            getEncoding());
   }
 
   /**
@@ -1490,6 +1447,8 @@ public class PDFSaveDialog extends JDialog
         (PDFOutputTarget.PDFTARGET_ENCODING));
     setEncoding(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX
         + PDFOutputTarget.ENCODING, getEncoding()));
+    setPDFTitle(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX +
+        PDFOutputTarget.TITLE, getPDFTitle()));
   }
 
   /**

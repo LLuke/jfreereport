@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.3 2003/08/10 12:18:51 hevermann Exp $
+ * $Id: ExcelExportDialog.java,v 1.4 2003/08/18 18:28:00 taqua Exp $
  *
  * Changes
  * --------
@@ -75,6 +75,7 @@ import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.gui.xls.resources.XLSExportResources;
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
+import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 
@@ -529,86 +530,17 @@ public class ExcelExportDialog extends JDialog
     return true;
   }
 
-  /**
-   * Shows this dialog and (if the dialog is confirmed) saves the complete report into an
-   * Excel file.
-   *
-   * @param report  the report being processed.
-   *
-   * @return true or false.
-   */
-  public boolean performExport(final JFreeReport report)
+  public boolean performQueryForExport (final JFreeReport report)
   {
-    initFromConfiguration(report.getReportConfiguration());
     setModal(true);
+    initFromConfiguration(report.getReportConfiguration());
     setVisible(true);
     if (isConfirmed() == false)
     {
-      return true;
-    }
-    return writeExcel(report);
-  }
-
-  /**
-   * Saves a report to Excel format.
-   *
-   * @param report  the report.
-   *
-   * @return true or false.
-   */
-  public boolean writeExcel(final JFreeReport report)
-  {
-    OutputStream out = null;
-    try
-    {
-
-      out = new BufferedOutputStream(new FileOutputStream(new File(getFilename())));
-      final ExcelProcessor target = new ExcelProcessor(report);
-      target.setStrictLayout(isStrictLayout());
-      target.setOutputStream(out);
-      target.processReport();
-      out.close();
-      return true;
-    }
-    catch (Exception re)
-    {
-      showExceptionDialog("error.processingfailed", re);
       return false;
     }
-    finally
-    {
-      try
-      {
-        if (out != null)
-        {
-          out.close();
-        }
-      }
-      catch (Exception e)
-      {
-        showExceptionDialog("error.savefailed", e);
-      }
-    }
-  }
-
-
-  /**
-   * Shows the exception dialog by using localized messages. The message base is
-   * used to construct the localisation key by appending ".title" and ".message" to the
-   * base name.
-   *
-   * @param localisationBase  the resource key prefix.
-   * @param e  the exception.
-   */
-  private void showExceptionDialog(final String localisationBase, final Exception e)
-  {
-    ExceptionDialog.showExceptionDialog(
-        getResources().getString(localisationBase + ".title"),
-        MessageFormat.format(
-            getResources().getString(localisationBase + ".message"),
-            new Object[]{e.getLocalizedMessage()}
-        ),
-        e);
+    storeToConfiguration(report.getReportConfiguration());
+    return true;
   }
 
   /**
@@ -618,8 +550,20 @@ public class ExcelExportDialog extends JDialog
    */
   public void initFromConfiguration(final ReportConfiguration config)
   {
-    // nothing to initialize so far. We have much less options than in "save to PDF"
+    String strict = config.getConfigProperty
+        (ExcelProcessor.CONFIGURATION_PREFIX +
+          ExcelProcessor.STRICT_LAYOUT,
+            config.getConfigProperty (TableProcessor.STRICT_TABLE_LAYOUT,
+                TableProcessor.STRICT_TABLE_LAYOUT_DEFAULT));
+    setStrictLayout(strict.equals("true"));
   }
+
+  public void storeToConfiguration (final ReportConfiguration config)
+  {
+    config.setConfigProperty(ExcelProcessor.CONFIGURATION_PREFIX +
+        ExcelProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
+  }
+
 
 
   /**

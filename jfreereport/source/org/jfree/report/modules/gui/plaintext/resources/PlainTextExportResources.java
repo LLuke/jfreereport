@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportResources.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
+ * $Id: PlainTextExportResources.java,v 1.3 2003/08/19 13:37:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -110,6 +110,9 @@ public class PlainTextExportResources extends JFreeReportResources
         {"plain-text-exportdialog.chars-per-inch", "cpi (Characters per inch)"},
         {"plain-text-exportdialog.lines-per-inch", "lpi (Lines per inch)"},
         {"plain-text-exportdialog.font-settings", "Font settings"},
+
+        {"plaintext-export.progressdialog.title", "Exporting to a text file ..."},
+        {"plaintext-export.progressdialog.message", "The report is now exported into a text file ..."},
 
       };
 

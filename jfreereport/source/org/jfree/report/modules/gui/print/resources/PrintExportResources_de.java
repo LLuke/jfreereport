@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintExportResources_de.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: PrintExportResources_de.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -81,6 +81,9 @@ public class PrintExportResources_de extends JFreeReportResources
         {"error.printfailed.message", "Das Drucken ist fehlgeschlagen: {0}"},
         {"error.printfailed.title", "Druck fehlgeschlagen"},
         
+        {"printing-export.progressdialog.title", "Drucke den Bericht ..."},
+        {"printing-export.progressdialog.message", "Der Bericht wird nun gedruckt ..."},
+
       };
 
   /**

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.3 2003/07/23 16:02:21 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.4 2003/08/18 18:28:01 taqua Exp $
  *
  * Changes
  * -------
@@ -94,13 +94,22 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public class PlainTextOutputTarget extends AbstractOutputTarget
 {
+  /** The configuration prefix for all properties. */
+  public static final String CONFIGURATION_PREFIX =
+    "org.jfree.report.modules.output.pageable.plaintext.";
+
+  /** The property to define the encoding of the text. */
+  public static final String ENCODING_PROPERTY = "Encoding";
+
+  public static final String LINES_PER_INCH = "LinesPerInch";
+  public static final String CHARS_PER_INCH = "CharsPerInch";
+
   /** The 'XML encoding' property key. */
   public static final String TEXT_OUTPUT_ENCODING
-      = "org.jfree.report.modules.output.pageable.plaintext.Encoding";
+      = CONFIGURATION_PREFIX + ENCODING_PROPERTY;
   /** A default value of the 'XML encoding' property key. */
   public static final String TEXT_OUTPUT_ENCODING_DEFAULT =
       ReportConfiguration.getPlatformDefaultEncoding();
-
 
   /**
    * A state of a Graphics2D object. This does not store clipping regions or advanced
@@ -215,9 +224,6 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
       return characterHeight;
     }
   }
-
-  /** The property to define the encoding of the text. */
-  public static final String ENCODING_PROPERTY = "Encoding";
 
   /** a flag indicating whether this OutputTarget is open. */
   private boolean open;

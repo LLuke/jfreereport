@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.3 2003/07/23 16:02:20 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.4 2003/08/18 18:27:59 taqua Exp $
  *
  * Changes
  * --------
@@ -49,10 +49,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.print.PageFormat;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
@@ -60,7 +57,6 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -77,9 +73,7 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.ActionRadioButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
-import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.plaintext.resources.PlainTextExportResources;
-import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.plaintext.EpsonPrinterCommandSet;
 import org.jfree.report.modules.output.pageable.plaintext.IBMPrinterCommandSet;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
@@ -870,217 +864,67 @@ public class PlainTextExportDialog extends JDialog
 
   }
 
-  /**
-   * Initialises the CSV export dialog from the settings in the report configuration.
-   *
-   * @param config  the report configuration.
-   */
   public void initFromConfiguration(final ReportConfiguration config)
   {
-    setEncoding(PlainTextOutputTarget.getTextTargetEncoding(config));
+    setEncoding(config.getConfigProperty
+        (PlainTextOutputTarget.TEXT_OUTPUT_ENCODING,
+            PlainTextOutputTarget.TEXT_OUTPUT_ENCODING_DEFAULT));
+    try
+    {
+      setLinesPerInch(parseInt(config.getConfigProperty
+          (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.LINES_PER_INCH, "6"),
+          getLinesPerInch()));
+    }
+    catch (IllegalArgumentException e)
+    {
+      // ignore
+    }
+    try
+    {
+      setCharsPerInch(parseInt(config.getConfigProperty
+          (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.CHARS_PER_INCH, "10"),
+          getCharsPerInch()));
+    }
+    catch (IllegalArgumentException e)
+    {
+      // ignore
+    }
   }
 
-  /**
-   * Exports a report to a text file.
-   *
-   * @param report  the report.
-   *
-   * @return A boolean.
-   */
-  public boolean performExport(final JFreeReport report)
+  private int parseInt (String configProperty, int defaultValue)
+  {
+    try
+    {
+      return Integer.parseInt(configProperty);
+    }
+    catch (Exception e)
+    {
+      return defaultValue;
+    }
+  }
+
+  public void storeToConfiguration(final ReportConfiguration config)
+  {
+    config.setConfigProperty(PlainTextOutputTarget.TEXT_OUTPUT_ENCODING,
+        getEncoding());
+    config.setConfigProperty(PlainTextOutputTarget.CONFIGURATION_PREFIX +
+        PlainTextOutputTarget.CHARS_PER_INCH, String.valueOf(getCharsPerInch()));
+    config.setConfigProperty(PlainTextOutputTarget.CONFIGURATION_PREFIX +
+        PlainTextOutputTarget.LINES_PER_INCH, String.valueOf(getLinesPerInch()));
+
+  }
+
+  public boolean performQueryForExport (final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
     setModal(true);
     setVisible(true);
     if (isConfirmed() == false)
     {
-      return true;
-    }
-    return writeReport(report);
-  }
-
-  /**
-   * Returns the printer command set.
-   *
-   * @param out  the output stream.
-   * @param report  the report.
-   *
-   * @return The printer command set.
-   */
-  private PrinterCommandSet getPrinterCommandSet(final OutputStream out, final JFreeReport report)
-  {
-    switch (getSelectedPrinter())
-    {
-      case TYPE_PLAIN_OUTPUT:
-        {
-          return new PrinterCommandSet(out, report.getDefaultPageFormat(), getCharsPerInch(),
-              getLinesPerInch());
-        }
-      case TYPE_IBM_OUTPUT:
-        {
-          return new IBMPrinterCommandSet(out, report.getDefaultPageFormat(), getCharsPerInch(),
-              getLinesPerInch());
-        }
-      case TYPE_EPSON_OUTPUT:
-        {
-          return new EpsonPrinterCommandSet(out, report.getDefaultPageFormat(), getCharsPerInch(),
-              getLinesPerInch());
-        }
-      default:
-        throw new IllegalArgumentException();
-    }
-  }
-
-  /**
-   * Writes a report.
-   *
-   * @param report  the report.
-   *
-   * @return true, if the report was successfully written, false otherwise.
-   */
-  public boolean writeReport(final JFreeReport report)
-  {
-    OutputStream out = null;
-    try
-    {
-
-      out = new BufferedOutputStream(
-          new FileOutputStream(
-              new File(getFilename())));
-      final PrinterCommandSet pc = getPrinterCommandSet(out, report);
-      final PlainTextOutputTarget target = 
-        new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
-      target.configure(report.getReportConfiguration());
-      target.setProperty(PlainTextOutputTarget.ENCODING_PROPERTY, getEncoding());
-
-      final PageableReportProcessor proc = new PageableReportProcessor(report);
-      proc.setHandleInterruptedState(false);
-      proc.setOutputTarget(target);
-
-      target.open();
-      proc.processReport();
-      target.close();
-      return true;
-    }
-    catch (Exception re)
-    {
-      showExceptionDialog("error.processingfailed", re);
       return false;
     }
-    finally
-    {
-      try
-      {
-        if (out != null)
-        {
-          out.close();
-        }
-      }
-      catch (Exception e)
-      {
-        showExceptionDialog("error.savefailed", e);
-      }
-    }
-  }
-
-
-  /**
-   * Shows the exception dialog by using localized messages. The message base is
-   * used to construct the localisation key by appending ".title" and ".message" to the
-   * base name.
-   *
-   * @param localisationBase  the resource key prefix.
-   * @param e  the exception.
-   */
-  private void showExceptionDialog(final String localisationBase, final Exception e)
-  {
-    ExceptionDialog.showExceptionDialog(
-        getResources().getString(localisationBase + ".title"),
-        MessageFormat.format(
-            getResources().getString(localisationBase + ".message"),
-            new Object[]{e.getLocalizedMessage()}
-        ),
-        e);
-  }
-
-  /**
-   * Returns the display name for the action.
-   *
-   * @return The display name.
-   */
-  public String getDisplayName()
-  {
-    return resources.getString("action.export-to-plaintext.name");
-  }
-
-  /**
-   * Returns the short description for the action.
-   *
-   * @return The short description.
-   */
-  public String getShortDescription()
-  {
-    return resources.getString("action.export-to-plaintext.description");
-  }
-
-  /**
-   * Returns the small icon for the action.
-   *
-   * @return The icon.
-   */
-  public Icon getSmallIcon()
-  {
-    return (Icon) resources.getObject("action.export-to-plaintext.small-icon");
-  }
-
-  /**
-   * Returns the large icon for an action.
-   *
-   * @return The icon.
-   */
-  public Icon getLargeIcon()
-  {
-    return (Icon) resources.getObject("action.export-to-plaintext.icon");
-  }
-
-  /**
-   * Returns the accelerator key.
-   *
-   * @return The accelerator key.
-   */
-  public KeyStroke getAcceleratorKey()
-  {
-    return (KeyStroke) resources.getObject("action.export-to-plaintext.accelerator");
-  }
-
-  /**
-   * Returns the mnemonic key.
-   *
-   * @return The key code.
-   */
-  public Integer getMnemonicKey()
-  {
-    return (Integer) resources.getObject("action.export-to-plaintext.mnemonic");
-  }
-
-  /**
-   * Returns <code>false</code>.
-   *
-   * @return A boolean.
-   */
-  public boolean isSeparated()
-  {
-    return false;
-  }
-
-  /**
-   * Returns <code>false</code>.
-   *
-   * @return A boolean.
-   */
-  public boolean isAddToToolbar()
-  {
-    return false;
+    storeToConfiguration(report.getReportConfiguration());
+    return true;
   }
 
   /**
