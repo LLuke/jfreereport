@@ -1,76 +1,93 @@
-***********************************************
-* JFREEREPORT 0.7.6 INSTALLATION INSTRUCTIONS *
-***********************************************
+*********************
+* JFREEREPORT 0.8.0 *
+*********************
 
-Written by David Gilbert, 08 Sep 2002.
+?? December 2002
 
 1. INTRODUCTION
 ---------------
-This document describes how to download and install the latest version
-of JFreeReport (0.7.6).  The procedure has changed from the previous
-version, as the release is now being packaged up by Thomas Morgner,
-the new Project Leader for JFreeReport.
+JFreeReport is a free Java report library, distributed under the terms
+of the GNU Lesser General Public License (see license-LGPL.txt for
+details).  JFreeReport is developed by Thomas Morgner, David Gilbert
+and others.
 
-2. DOWNLOAD
------------
-You can download the latest version of JFreeReport from the
-JFreeReport project page on SourceForge:
+For the latest news and information about JFreeReport, please refer to:
 
-http://sourceforge.net/projects/jfreereport
+    http://www.object-refinery.com/jfreereport/index.html
 
-You need to download all of the following files (I'd recommend saving
-them to a new directory called jfreereport-0.7.6):
 
-- jfreereport-0.7.6.jar     : the JFreeReport runtime jar file;
-- jfreereport-src-0.7.6.jar : source code files;
-- pixie.jar                 : the Pixie runtime jar file;
-- pixie-res.jar             : resources for Pixie;
-- pixie-src.jar             : Pixie source code;
-- start-demo.jar            : A jar to start the demo application
-- start-first.jar           : A jar to start the "first" example used
-                              in the documentation
-- libs.zip                  : collection file for the libraries used
-                              by JFreeReport. Contains all libraries
-                              needed to run the demo.
+2. INSTALLATION
+---------------
+Detailed instructions for installing JFreeReport are provided in the
+jfreechart-install.pdf file.  You can download this file from the
+JFreeReport home page. 
 
-3. UNPACKING
-------------
-You need to unpack some of the jar files in order to run the
-demonstration application.
 
-Unzip the libs.zip file in the jfreereport-0.7.6 directory:
+3. JAVADOC HTML PAGES
+---------------------
+The Javadoc HTML pages for JFreeReport are available on-line at the
+JFreeReport home page.  You can also regenerate the Javadocs directly
+from the source code.  There is a task in the Ant script (see below)
+that makes this relatively simple.
 
-unzip libs.zip
 
-This extracts the following jar files:
+4. SUPPORT
+----------
+Free support is available via the JFreeReport forum, follow the link
+from the JFreeReport home page.  Please note that questions are
+answered by volunteers, so there is no guaranteed response time or
+level of service.
 
-gnujaxp.jar
-itext-0.94.jar
-jcommon-0.7.0.jar
-junit.jar
-pixie.jar
-bsh-1.2b6.jar
+Please avoid e-mailing the developers directly for support questions.
+If you post a message in the forum, then everyone can see the
+question, and everyone can see the answer.
 
-As an optional last step, create a subdirectory called source within
-the jfreereport-0.7.6 directory.  Move the jfreereport-src-0.7.6.jar
-and pixie-src.jar files to this new subdirectory, then run the jar
-utility to unpack the files:
 
-jar -xvf jfreereport-src-0.7.6.jar
-jar -xvf pixie-src.jar
+5. REPORTING BUGS
+-----------------
+If you find bugs in JFreeReport, we'd like to hear about it so that we
+can improve future releases of JFreeReport.  Please post a bug report
+at the JFreeReport project page on SourceForge:
 
-This extracts all the source code files.
+    http://sourceforge.net/projects/jfreereport
 
-4. RUNNING THE DEMONSTRATION APPLICATION
-----------------------------------------
-To run the demonstration application, type the following command from
-the jfreereport-0.7.6 directory:
+Please be sure to provide as much information as you can.  We need to
+know the version of JFreeReport that you are using, the JDK version,
+and the steps required to replicate the bug.  Include any other
+information that you think is relevant.
 
-java -jar start-demo.jar
 
-5. FEEDBACK
------------
-Please post your feedback in the JFreeReport forum at:
+6. ANT
+------
+We use an open source build tool called Ant to build JFreeReport.  An
+Ant script is included in the distribution:
 
-http://www.object-refinery.com/jfreereport/index.html
+    <jfreereport-directory>/ant/build.xml
 
+You can find out more about Ant at:
+
+    http://jakarta.apache.org/ant
+
+Ant is licensed under the terms of the Apache Software License (a
+popular open source software license).
+
+
+7. CHECKSTYLE
+-------------
+We use a free utility called Checkstyle to apply a consistent coding
+style to the JFreeReport source code.  You will find the Checkstyle
+property settings in the following file:
+
+    <jfreereport-directory>/checkstyle/properties.txt
+
+You can find out more about Checkstyle at:
+
+    http://checkstyle.sourceforge.net/
+
+Checkstyle is licensed under the terms of the GNU LGPL.
+
+
+8. OTHER FEEDBACK
+-----------------
+For other feedback and comments, please post a message on the
+JFreeReport forum.
