@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.27 2003/04/05 18:57:14 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.28 2003/04/06 18:11:30 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,8 @@ import java.awt.geom.Rectangle2D;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.FloatDimension;
-import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
+import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleKey;
 
@@ -87,7 +87,10 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
    */
   public static final StyleKey DYNAMIC_HEIGHT = ElementStyleSheet.DYNAMIC_HEIGHT;
 
+  /** A cache. */
   private LayoutManagerCache cache;
+  
+  /** A cache key. */
   private LayoutSearchKey cacheKey;
 
   /**
@@ -240,7 +243,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     // layouting has failed, if negative values are returned ... !
     if (retval.getWidth() < 0 || retval.getHeight() < 0)
     {
-      throw new IllegalStateException("Layouting failed, getPreferredSize returned negative values.");
+      throw new IllegalStateException(
+          "Layouting failed, getPreferredSize returned negative values.");
     }
 
     if (isCachable)
@@ -520,7 +524,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       absDim = correctDimension(uncorrectedSize, parentDim, absDim);
       //Log.debug ("CBounds: Element: " + e.getName() + " Bounds: " + size);
 
-      absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim, absPos);
+      absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim, 
+                            absPos);
 
       // here apply the maximum bounds ...
       Rectangle2D bounds = new Rectangle2D.Float(
@@ -584,6 +589,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
 
   /**
    * Clears any cached items used by the layout manager.
+   * 
+   * @param container  the container band.
    */
   public synchronized void invalidateLayout(Band container)
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.13 2002/12/12 12:26:56 mungady Exp $
+ * $Id: FunctionUtilities.java,v 1.3 2003/04/09 00:12:30 mungady Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,9 @@ public class FunctionUtilities
   /**
    * Try to find the defined element in the last active root-band.
    *
-   * @param band the band that is suspected to contain the element.
+   * @param band  the band that is suspected to contain the element.
+   * @param element  the element name.
+   * 
    * @return the found element or null, if no element could be found.
    */
   public static Element findElement (Band band, String element)
@@ -83,6 +85,8 @@ public class FunctionUtilities
    * 
    * @param groupName  the group name.
    * @param event  the report event.
+   * 
+   * @return A boolean.
    */
   public static boolean isGroupInGroup (String groupName, ReportEvent event)
   {
@@ -106,8 +110,8 @@ public class FunctionUtilities
    * Returns true, if the current run level is defined for the given function and
    * this is a prepare run.
    *  
-   * @param f
-   * @param event
+   * @param f  the function.
+   * @param event  the event.
    * 
    * @return A boolean.
    */
@@ -134,6 +138,8 @@ public class FunctionUtilities
    * Returns true or false.
    * 
    * @param event  the report event.
+   * 
+   * @return A boolean.
    */
   public static boolean isLayoutLevel(ReportEvent event)
   {

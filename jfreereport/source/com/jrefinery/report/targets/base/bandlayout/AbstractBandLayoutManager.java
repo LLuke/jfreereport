@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * ------------------------------
  * AbstractBandLayoutManager.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ------------------------------
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.3 2003/04/05 18:57:14 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.4 2003/04/06 18:11:30 taqua Exp $
  *
  * Changes
  * -------
@@ -40,19 +40,28 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import com.jrefinery.report.Element;
 import com.jrefinery.report.Band;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.FloatDimension;
-import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
-import com.jrefinery.report.targets.base.content.ContentFactory;
 import com.jrefinery.report.targets.base.content.Content;
+import com.jrefinery.report.targets.base.content.ContentFactory;
+import com.jrefinery.report.targets.base.layout.LayoutSupport;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 
+/**
+ * An abstract band layout manager.
+ * 
+ * @author Thomas Morgner.
+ */
 public abstract class AbstractBandLayoutManager implements BandLayoutManager
 {
+  /** Layout support. */
   private LayoutSupport support;
 
+  /**
+   * Default constructor.
+   */
   public AbstractBandLayoutManager()
   {
   }
@@ -165,7 +174,9 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     // layouting has failed, if negative values are returned ... !
     if (retval.getWidth() < 0 || retval.getHeight() < 0)
     {
-      throw new IllegalStateException("Layouting failed, getPreferredSize returned negative values.");
+      throw new IllegalStateException(
+          "Layouting failed, getPreferredSize returned negative values."
+      );
     }
 
     return retval;
@@ -186,7 +197,9 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return the new elements dimension.
    */
-  protected Dimension2D getElementContentBounds (Dimension2D bounds, Element e, Dimension2D conBounds)
+  protected Dimension2D getElementContentBounds (Dimension2D bounds, 
+                                                 Element e, 
+                                                 Dimension2D conBounds)
   {
     // check if we can handle the content before doing anything...
     // ...
@@ -229,9 +242,11 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
   protected ElementLayoutInformation createLayoutInfoForDynamics (Element e, Dimension2D parentDim)
   {
     Dimension2D maxSize = correctDimension(
-        (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), parentDim, null);
+        (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), parentDim, null
+    );
     Dimension2D minSize = correctDimension(
-        (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE), parentDim, null);
+        (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE), parentDim, null
+    );
 
     Dimension2D prefSize
         = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
@@ -249,7 +264,16 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     return eli;
   }
 
-  protected ElementLayoutInformation createLayoutInformationForMinimumSize (Element e, Dimension2D containerBounds)
+  /**
+   * Creates layout information for the minimum size.
+   * 
+   * @param e  the element.
+   * @param containerBounds  the bounds of the container.
+   * 
+   * @return layout information.
+   */
+  protected ElementLayoutInformation 
+      createLayoutInformationForMinimumSize (Element e, Dimension2D containerBounds)
   {
     // the preferred size of an band can be a relative value. Then this value is
     // relative to the container bounds
@@ -268,7 +292,16 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     return new ElementLayoutInformation(new Point2D.Float(), minSize, maxSize);
   }
 
-  protected ElementLayoutInformation createLayoutInformationForPreferredSize (Element e, Dimension2D containerDims)
+  /**
+   * Creates layout information for the preferred size.
+   * 
+   * @param e  the element.
+   * @param containerDims  the dimensions of the container.
+   * 
+   * @return layout information.
+   */
+  protected ElementLayoutInformation 
+      createLayoutInformationForPreferredSize (Element e, Dimension2D containerDims)
   {
     float height = 0;
     float width = 0;
@@ -401,6 +434,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @param dim  the dimension that should be corrected.
    * @param base  the base to define the 100% limit.
+   * @param retval  the return value.
    *
    * @return the corrected dimension.
    */
@@ -434,6 +468,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @param dim  the point that should be corrected.
    * @param base  the base to define the 100% limit.
+   * @param retval  the return value.
    *
    * @return the corrected point.
    */

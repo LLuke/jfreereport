@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------------
  * ItemCountFunction.java
  * ----------------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2000-2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.15 2002/12/13 10:42:15 mungady Exp $
+ * $Id: ItemCountFunction.java,v 1.16 2003/04/05 18:57:11 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,6 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
-import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.states.ReportState;
 

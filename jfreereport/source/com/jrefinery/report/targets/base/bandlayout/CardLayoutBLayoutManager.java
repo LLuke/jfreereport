@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * -----------------------------
  * CardLayoutBLayoutManager.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -----------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardLayoutBLayoutManager.java,v 1.2 2003/04/05 18:57:14 taqua Exp $
+ * $Id: CardLayoutBLayoutManager.java,v 1.3 2003/04/06 18:11:30 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@ import java.awt.geom.Rectangle2D;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.FloatDimension;
-import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
+import com.jrefinery.report.targets.base.layout.LayoutSupport;
 
 /**
  * A CardLayout object is a layout manager for a container. It treats each
@@ -58,9 +58,14 @@ import com.jrefinery.report.targets.base.ElementLayoutInformation;
  * to show a specified card. The CardLayout.addLayoutComponent method can be
  * used to associate a string identifier with a given card for fast random
  * access.
+ * 
+ * @author Thomas Morgner
  */
 public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
 {
+  /**
+   * Default constructor.
+   */
   public CardLayoutBLayoutManager()
   {
   }
@@ -100,7 +105,9 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
   {
     ElementLayoutInformation eli = createLayoutInformationForPreferredSize(b, containerDims);
     if (eli.getPreferredSize() != null)
+    {
       return eli.getPreferredSize();
+    }
 
     Element[] elements = b.getElementArray();
     Dimension2D retval = (Dimension2D) eli.getMinimumSize().clone();
@@ -113,6 +120,13 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
     return ElementLayoutInformation.unionMin(eli.getMaximumSize(), retval);
   }
 
+  /**
+   * Sets the size of <code>retval</code> to have the maximum width and height from the two
+   * dimensions.
+   * 
+   * @param retval  the first dimension (and return value carrier).
+   * @param elementDim  the second dimension.
+   */
   private void unionMax (Dimension2D retval, Dimension2D elementDim)
   {
     retval.setSize(Math.max(elementDim.getWidth(), retval.getWidth()),
@@ -150,7 +164,8 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
       }
 
       // here apply the bounds ...
-      Rectangle2D bounds = new Rectangle2D.Float(0, 0, (float) dim.getWidth(), (float) dim.getHeight());
+      Rectangle2D bounds 
+          = new Rectangle2D.Float(0, 0, (float) dim.getWidth(), (float) dim.getHeight());
       BandLayoutManagerUtil.setBounds(e, bounds);
       if (e instanceof Band)
       {
@@ -162,6 +177,8 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
 
   /**
    * Clears any cached items used by the layout manager. Invalidates the layout.
+   * 
+   * @param container  the container band.
    */
   public void invalidateLayout(Band container)
   {

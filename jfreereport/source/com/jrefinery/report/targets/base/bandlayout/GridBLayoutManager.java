@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * -----------------------
  * GridBLayoutManager.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: GridBLayoutManager.java,v 1.1 2003/03/29 20:18:49 taqua Exp $
  *
  * Changes
  * -------
@@ -40,15 +40,18 @@ import java.awt.geom.Dimension2D;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 
 /**
- *
+ * A layout manager.
+ * 
+ * @author Thomas Morgner.
  */
 public class GridBLayoutManager extends AbstractBandLayoutManager
 {
+  /**
+   * Default constructor.
+   */
   public GridBLayoutManager()
   {
   }
@@ -65,8 +68,10 @@ public class GridBLayoutManager extends AbstractBandLayoutManager
   {
     ElementLayoutInformation eli = createLayoutInformationForPreferredSize(b, containerDims);
     if (eli.getPreferredSize() != null)
+    {
       return eli.getPreferredSize();
-
+    }
+    
     // Now adjust the defined sizes by using the elements stored in the band.
     Element[] elements = b.getElementArray();
 
@@ -104,6 +109,8 @@ public class GridBLayoutManager extends AbstractBandLayoutManager
 
   /**
    * Clears any cached items used by the layout manager. Invalidates the layout.
+   * 
+   * @param container  the container.
    */
   public void invalidateLayout(Band container)
   {

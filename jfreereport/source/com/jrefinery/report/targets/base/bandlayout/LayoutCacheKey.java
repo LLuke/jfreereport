@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * -------------------
  * LayoutCacheKey.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutCacheKey.java,v 1.1 2003/04/06 20:43:00 taqua Exp $
+ * $Id: LayoutCacheKey.java,v 1.2 2003/04/07 18:08:09 taqua Exp $
  *
  * Changes
  * -------
@@ -42,32 +42,68 @@ import java.awt.geom.Point2D;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
+/**
+ * A layout cache key.
+ * 
+ * @author Thomas Morgner
+ */
 public class LayoutCacheKey
 {
+  /** The parent dimensions. */
   private Dimension2D parentDim;
+  
+  /** The minimum size. */
   private Dimension2D minSize;
+
+  /** The maximum size. */
   private Dimension2D maxSize;
+
+  /** The preferred size. */
   private Dimension2D prefSize;
+  
+  /** The absolute position. */
   private Point2D absPos;
 
+  /**
+   * Default constructor.
+   */
   protected LayoutCacheKey()
   {
   }
 
+  /**
+   * Creates a new key.
+   * 
+   * @param e  the element.
+   * @param parentDim  the parent dimensions.
+   */
   public LayoutCacheKey(Element e, Dimension2D parentDim)
   {
     setElement(e);
     setParentDim(parentDim);
   }
 
+  /**
+   * Returns true if this is a search key, and false otherwise.
+   * 
+   * @return A boolean.
+   */
   public boolean isSearchKey ()
   {
     return false;
   }
 
+  /**
+   * Sets the element.
+   * 
+   * @param e  the element.
+   */
   protected void setElement(Element e)
   {
-    if (e == null) throw new NullPointerException();
+    if (e == null) 
+    {
+      throw new NullPointerException();
+    }
     minSize = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
     minSize = (Dimension2D) minSize.clone();
     maxSize = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
@@ -84,21 +120,47 @@ public class LayoutCacheKey
     }
   }
 
+  /**
+   * Sets the parent dimensions.
+   * 
+   * @param parentDim  the parent dimensions.
+   */
   protected void setParentDim(Dimension2D parentDim)
   {
-    if (parentDim == null) throw new NullPointerException();
+    if (parentDim == null) 
+    {
+      throw new NullPointerException();
+    }
     this.parentDim = parentDim;
   }
 
+  /**
+   * Returns the parent dimensions.
+   * 
+   * @return The parent dimensions.
+   */
   public Dimension2D getParentDim()
   {
     return parentDim;
   }
 
+  /**
+   * Tests this object for equality with another object.
+   * 
+   * @param o  the other object.
+   * 
+   * @return A boolean.
+   */
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof LayoutCacheKey)) return false;
+    if (this == o) 
+    {
+      return true;
+    }
+    if (!(o instanceof LayoutCacheKey)) 
+    {
+      return false;
+    }
 
     final LayoutCacheKey layoutCacheKey = (LayoutCacheKey) o;
 /*
@@ -124,15 +186,37 @@ public class LayoutCacheKey
       Log.debug ("prefSize: " + prefSize + "  " + layoutCacheKey.prefSize);
     }
 */
-    if (absPos != null ? !absPos.equals(layoutCacheKey.absPos) : layoutCacheKey.absPos != null) return false;
-    if (maxSize != null ? !maxSize.equals(layoutCacheKey.maxSize) : layoutCacheKey.maxSize != null) return false;
-    if (minSize != null ? !minSize.equals(layoutCacheKey.minSize) : layoutCacheKey.minSize != null) return false;
-    if (parentDim != null ? !parentDim.equals(layoutCacheKey.parentDim) : layoutCacheKey.parentDim != null) return false;
-    if (prefSize != null ? !prefSize.equals(layoutCacheKey.prefSize) : layoutCacheKey.prefSize != null) return false;
+    if (absPos != null ? !absPos.equals(layoutCacheKey.absPos) : layoutCacheKey.absPos != null) 
+    {
+      return false;
+    }
+    if (maxSize != null ? !maxSize.equals(layoutCacheKey.maxSize) : layoutCacheKey.maxSize != null) 
+    {
+      return false;
+    }
+    if (minSize != null ? !minSize.equals(layoutCacheKey.minSize) : layoutCacheKey.minSize != null) 
+    {
+      return false;
+    }
+    if (parentDim != null ? !parentDim.equals(layoutCacheKey.parentDim) 
+                          : layoutCacheKey.parentDim != null) 
+    {
+      return false;
+    }
+    if (prefSize != null ? !prefSize.equals(layoutCacheKey.prefSize) 
+                         : layoutCacheKey.prefSize != null) 
+    {
+      return false;
+    }
 
     return true;
   }
 
+  /**
+   * Returns a hash code.
+   * 
+   * @return A hash code.
+   */
   public int hashCode()
   {
     int result;

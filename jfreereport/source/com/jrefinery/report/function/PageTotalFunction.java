@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.18 2003/04/05 18:57:11 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.19 2003/04/08 14:41:48 mungady Exp $
  *
  * ChangeLog
  * ---------
@@ -43,10 +43,8 @@ package com.jrefinery.report.function;
 import java.util.HashMap;
 
 import com.jrefinery.report.Group;
-import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportDefinition;
 import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.util.Log;
 
 /**
  * This function will only work as expected in group mode if the named group has pagebreak set to
@@ -74,7 +72,9 @@ import com.jrefinery.report.util.Log;
  */
 public class PageTotalFunction extends PageFunction
 {
+  /** ???. */
   private static Object o;
+
   /**
    * The current number is a shared secret over multiple report states and is shared
    * among all states of a report (if global) or all states which belong to a group.
@@ -173,7 +173,8 @@ public class PageTotalFunction extends PageFunction
             groupPages.get(new Integer(event.getState().getCurrentDisplayItem()));
         if (pageStorage == null)
         {
-//          Log.error ("Current DataItem: " + event.getState().getCurrentDisplayItem() + " " + groupPages);
+//          Log.error ("Current DataItem: " + event.getState().getCurrentDisplayItem() 
+//                     + " " + groupPages);
           throw new IllegalStateException("No page-storage for the current state: "
                                           + event.getState().getCurrentDataItem());
 
@@ -262,7 +263,8 @@ public class PageTotalFunction extends PageFunction
   {
     if (this.pageStorage == null)
     {
-//      Log.warn ("CurrentPage is null, no repagination done?: " + this.hashCode() + " -> " + (o == this));
+//      Log.warn ("CurrentPage is null, no repagination done?: " + this.hashCode() + " -> " 
+//                + (o == this));
       return 0;
     }
 

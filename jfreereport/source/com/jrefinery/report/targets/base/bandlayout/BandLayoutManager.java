@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,24 +23,26 @@
  * ----------------------
  * BandLayoutManager.java
  * ----------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManager.java,v 1.6 2003/03/29 20:17:26 taqua Exp $
+ * $Id: BandLayoutManager.java,v 1.7 2003/04/06 18:11:30 taqua Exp $
  *
  * Changes
  * -------
+ * 09-Apr-2003 : Checkstyle fixes (DG);
+ *  
  */
+
 package com.jrefinery.report.targets.base.bandlayout;
 
+import java.awt.geom.Dimension2D;
+
 import com.jrefinery.report.Band;
-import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.StyleKey;
-
-import java.awt.geom.Dimension2D;
 
 /**
  * An interface that defines the methods to be supported by a band layout manager.  
@@ -103,6 +105,8 @@ public interface BandLayoutManager
 
   /**
    * Clears any cached items used by the layout manager. Invalidates the layout.
+   * 
+   * @param container  the container.
    */  
   public void invalidateLayout(Band container);
 }

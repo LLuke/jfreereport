@@ -23,12 +23,12 @@
  * -------------------------------
  * ItemColumnQuotientFunction.java
  * -------------------------------
- * (C)opyright 2002, by Heiko Evermann and Contributors.
+ * (C)opyright 2002, 2003, by Heiko Evermann and Contributors.
  *
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
- * Contributor(s):
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemColumnQuotientFunction.java,v 1.1 2003/02/27 22:59:48 taqua Exp $
+ * $Id: ItemColumnQuotientFunction.java,v 1.2 2003/04/08 14:41:48 mungady Exp $
  *
  * Changes
  * -------
@@ -108,8 +108,8 @@ public class ItemColumnQuotientFunction extends AbstractFunction
   /**
    * Return the current function value.
    * <P>
-   * The value is calculated as the quotient of two columns: the dividend column and the divisor column.
-   * If the divisor is zero, the return value is "n/a";
+   * The value is calculated as the quotient of two columns: the dividend column and the divisor 
+   * column.  If the divisor is zero, the return value is "n/a";
    *
    * @return The quotient
    */

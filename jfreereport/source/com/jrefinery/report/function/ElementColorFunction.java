@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.1 2003/04/07 19:32:10 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.2 2003/04/09 00:12:30 mungady Exp $
  *
  * Changes
  * -------
@@ -160,8 +160,9 @@ public class ElementColorFunction extends AbstractFunction
   public void setElementColorTrue(Color elementColorTrue)
   {
     if (elementColorTrue == null)
+    {
       throw new NullPointerException();
-
+    }
     try
     {
       cod.setParameterFromObject(elementColorTrue);
@@ -182,8 +183,9 @@ public class ElementColorFunction extends AbstractFunction
   public void setElementColorFalse(Color elementColorFalse)
   {
     if (elementColorFalse == null)
+    {
       throw new NullPointerException();
-
+    }
     try
     {
       cod.setParameterFromObject(elementColorTrue);

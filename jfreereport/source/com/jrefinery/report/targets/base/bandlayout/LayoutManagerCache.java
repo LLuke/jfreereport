@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------------
  * LayoutManagerCache.java
  * -----------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.2 2003/04/06 18:11:30 taqua Exp $
  *
  * Changes
  * -------
@@ -64,17 +64,30 @@ public class LayoutManagerCache
     public Dimension2D prefSize;
   }
 
+  /** The put count. */
   private static int putCount;
+  
+  /** The get count. */
   private static int getCount;
 
   /** The element cache. */
   private WeakHashMap elementCache;
 
+  /**
+   * Default constructor.
+   */
   public LayoutManagerCache ()
   {
     elementCache = new WeakHashMap();
   }
 
+  /**
+   * Returns the minimum size of ???.
+   * 
+   * @param e  the layout cache key.
+   * 
+   * @return The minimum size.
+   */
   public Dimension2D getMinSize(LayoutCacheKey e)
   {
     ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
@@ -82,10 +95,20 @@ public class LayoutManagerCache
     {
       return null;
     }
-    if (ec.minSize != null) getCount++;
+    if (ec.minSize != null) 
+    {
+      getCount++;
+    }
     return ec.minSize;
   }
 
+  /**
+   * Returns the preferred size of ???.
+   * 
+   * @param e  the layout cache key.
+   * 
+   * @return The preferred size.
+   */
   public Dimension2D getPrefSize(LayoutCacheKey e)
   {
     ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
@@ -93,10 +116,20 @@ public class LayoutManagerCache
     {
       return null;
     }
-    if (ec.prefSize != null) getCount++;
+    if (ec.prefSize != null)
+    {
+      getCount++;
+    }
     return ec.prefSize;
   }
 
+  /**
+   * Sets the minimum size of ???.
+   * 
+   * @param key  the key.
+   * @param element  the element.
+   * @param d  the minimum size.
+   */
   public void setMinSize(LayoutCacheKey key, Element element, Dimension2D d)
   {
     if (element == null)
@@ -133,6 +166,13 @@ public class LayoutManagerCache
     }
   }
 
+  /**
+   * Sets the preferred size of ???.
+   * 
+   * @param key  the key.
+   * @param element  the element.
+   * @param d  the minimum size.
+   */
   public void setPrefSize(LayoutCacheKey key, Element element, Dimension2D d)
   {
     if (element == null)
@@ -166,6 +206,13 @@ public class LayoutManagerCache
     }
   }
 
+  /**
+   * Returns true if the specified element is cachable, and false otherwise.
+   * 
+   * @param e  the element.
+   * 
+   * @return A boolean.
+   */
   public boolean isCachable(Element e)
   {
     // if the element is dynamic, then it is not cachable ...
@@ -193,11 +240,17 @@ public class LayoutManagerCache
     }
   }
 
+  /**
+   * Flushes the cache.
+   */
   public void flush()
   {
     elementCache.clear();
   }
 
+  /**
+   * Prints debugging information.
+   */
   public static void printResults()
   {
     Log.debug ("CacheResults: " + getCount + ":" + putCount);
