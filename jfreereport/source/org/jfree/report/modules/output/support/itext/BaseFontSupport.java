@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BaseFontSupport.java,v 1.12 2004/05/07 12:53:10 mungady Exp $
+ * $Id: BaseFontSupport.java,v 1.13 2005/01/25 00:12:03 taqua Exp $
  *
  * Changes
  * -------
@@ -190,7 +190,7 @@ public class BaseFontSupport implements FontMapper
 
         if (f != null)
         {
-          fontRecord = new BaseFontRecord(font, fontKey, embedded, f);
+          fontRecord = new BaseFontRecord(fontKey, embedded, f);
           putToCache(fontRecord);
           return fontRecord;
         }
@@ -219,7 +219,7 @@ public class BaseFontSupport implements FontMapper
           false, null, null);
       if (f != null)
       {
-        fontRecord = new BaseFontRecord(font, BaseFont.HELVETICA, embedded, f);
+        fontRecord = new BaseFontRecord(BaseFont.HELVETICA, embedded, f);
         putToCache(fontRecord);
         putToCache(new BaseFontRecordKey(fontKey, encoding, embedded), fontRecord);
         return fontRecord;
@@ -295,7 +295,7 @@ public class BaseFontSupport implements FontMapper
     }
 
     // no, we have to create a new instance
-    final BaseFontRecord record = new BaseFontRecord(font, fontKey, embedded, f);
+    final BaseFontRecord record = new BaseFontRecord(fontKey, embedded, f);
     putToCache(record);
     return record;
   }

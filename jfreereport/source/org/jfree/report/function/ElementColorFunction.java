@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.8 2005/01/25 00:00:10 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.9 2005/01/28 19:26:49 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,6 @@ import java.io.Serializable;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
-import org.jfree.report.event.PageEventListener;
-import org.jfree.report.event.ReportEvent;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.SerializerHelper;
 
@@ -59,14 +57,13 @@ import org.jfree.report.util.SerializerHelper;
  *
  * @author Thomas Morgner
  */
-public class ElementColorFunction extends AbstractFunction
-    implements Serializable, PageEventListener
+public class ElementColorFunction
+        extends AbstractElementFormatFunction implements Serializable
 {
   /** the color if the field is TRUE. */
   private transient Color colorTrue;
   private transient Color colorFalse;
 
-  private String element;
   private String field;
 
   /**
@@ -74,28 +71,6 @@ public class ElementColorFunction extends AbstractFunction
    */
   public ElementColorFunction()
   {
-  }
-
-  /**
-   * Sets the element name. The name denotes an element within the item band. The element
-   * will be retrieved using the getElement(String) function.
-   *
-   * @param name The element name.
-   * @see org.jfree.report.Band#getElement(String)
-   */
-  public void setElement(final String name)
-  {
-    this.element = name;
-  }
-
-  /**
-   * Returns the element name.
-   *
-   * @return The element name.
-   */
-  public String getElement()
-  {
-    return element;
   }
 
   /**
@@ -167,150 +142,15 @@ public class ElementColorFunction extends AbstractFunction
   }
 
   /**
-   * Receives notification that a row of data is being processed.
-   *
-   * @param event  the event.
-   */
-  public void itemsAdvanced(final ReportEvent event)
-  {
-    if (event.getState().isPrepareRun())
-    {
-      // dont do anything if there is no printing done ...
-      return;
-    }
-    final Band b = event.getReport().getItemBand();
-    processRootBand(b);
-  }
-
-  /**
-   * Receives notification that the report has finished.
-   *
-   * @param event  the event.
-   */
-  public void reportFinished(final ReportEvent event)
-  {
-    if (event.getState().isPrepareRun())
-    {
-      // dont do anything if there is no printing done ...
-      return;
-    }
-    final Band b = event.getReport().getReportFooter();
-    processRootBand(b);
-  }
-
-  /**
-   * Receives notification that the report has started.
-   *
-   * @param event  the event.
-   */
-  public void reportStarted(final ReportEvent event)
-  {
-    if (event.getState().isPrepareRun())
-    {
-      // dont do anything if there is no printing done ...
-      return;
-    }
-    final Band b = event.getReport().getReportHeader();
-    processRootBand(b);
-  }
-
-  /**
-   * Receives notification that a group has started.
-   *
-   * @param event  the event.
-   */
-  public void groupStarted(final ReportEvent event)
-  {
-    if (event.getState().isPrepareRun())
-    {
-      // dont do anything if there is no printing done ...
-      return;
-    }
-    final Band b = FunctionUtilities.getCurrentGroup(event).getHeader();
-    processRootBand(b);
-  }
-
-  /**
-   * Receives notification that a group has finished.
-   *
-   * @param event  the event.
-   */
-  public void groupFinished(final ReportEvent event)
-  {
-    if (event.getState().isPrepareRun())
-    {
-      // dont do anything if there is no printing done ...
-      return;
-    }
-    final Band b = FunctionUtilities.getCurrentGroup(event).getFooter();
-    processRootBand(b);
-  }
-
-  /**
-   * Receives notification that a page was canceled by the ReportProcessor.
-   * This method is called, when a page was removed from the report after
-   * it was generated.
-   *
-   * @param event The event.
-   */
-  public void pageCanceled(final ReportEvent event)
-  {
-    // this can be ignored, as nothing is printed here...
-  }
-
-  /**
-   * Receives notification that a page is completed.
-   *
-   * @param event The event.
-   */
-  public void pageFinished(final ReportEvent event)
-  {
-    if (event.getState().isPrepareRun())
-    {
-      // dont do anything if there is no printing done ...
-      return;
-    }
-    final Band b = event.getReport().getPageFooter();
-    processRootBand(b);
-  }
-
-  /**
-   * Receives notification that a new page is being started.
-   *
-   * @param event The event.
-   */
-  public void pageStarted(final ReportEvent event)
-  {
-    if (event.getState().isPrepareRun())
-    {
-      // dont do anything if there is no printing done ...
-      return;
-    }
-    final Band b = event.getReport().getPageFooter();
-    processRootBand(b);
-  }
-
-  /**
-   * This event is fired, whenever an automatic pagebreak has been detected and the report
-   * state had been reverted to the previous state.
-   *
-   * @param event
-   */
-  public void pageRolledBack (final ReportEvent event)
-  {
-    // don't have to care, page finished is the next event ..
-  }
-
-  /**
    * Process the given band and color the named element of that band
    * if it exists.
    *
    * @param b the band that should be colored.
    */
-  private void processRootBand (final Band b)
+  protected void processRootBand (final Band b)
   {
-    final Element e = FunctionUtilities.findElement(b, getElement());
-    if (e == null)
+    final Element[] elements = FunctionUtilities.findAllElements(b, getElement());
+    if (elements.length == 0)
     {
       // there is no such element ! (we searched it by its name)
       return;
@@ -326,13 +166,19 @@ public class ElementColorFunction extends AbstractFunction
     {
       value = o.equals(Boolean.TRUE);
     }
+    final Color color;
     if (value)
     {
-      e.getStyle().setStyleProperty(ElementStyleSheet.PAINT, colorTrue);
+      color = getColorTrue();
     }
     else
     {
-      e.getStyle().setStyleProperty(ElementStyleSheet.PAINT, colorFalse);
+      color = getColorFalse();
+    }
+
+    for (int i = 0; i < elements.length; i++)
+    {
+      elements[i].getStyle().setStyleProperty(ElementStyleSheet.PAINT, color);
     }
   }
 

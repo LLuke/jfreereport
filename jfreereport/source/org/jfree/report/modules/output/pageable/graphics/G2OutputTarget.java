@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.13 2005/01/25 21:40:20 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.14 2005/02/19 13:29:58 taqua Exp $
  *
  * Changes
  * -------
@@ -52,15 +52,20 @@ import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
+import java.net.URL;
+import java.io.IOException;
 
 import org.jfree.report.ImageContainer;
 import org.jfree.report.LocalImageContainer;
 import org.jfree.report.PageDefinition;
+import org.jfree.report.URLImageContainer;
+import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.report.content.DrawableContent;
 import org.jfree.report.content.ImageContent;
 import org.jfree.report.layout.DefaultSizeCalculator;
@@ -409,53 +414,85 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    */
   protected void drawImage(final ImageContent content)
   {
-    final ImageContainer image = content.getContent();
-    final StrictBounds myBounds = content.getImageArea();
-    final StrictBounds bounds = getInternalOperationBounds();
+    Image image = null;
+    final ImageContainer imageContainer = content.getContent();
 
-    if (image instanceof LocalImageContainer)
+    if (imageContainer instanceof LocalImageContainer)
     {
-      final LocalImageContainer loImage = (LocalImageContainer) image;
-      if (loImage.getImage() != null)
+      final LocalImageContainer loImage = (LocalImageContainer) imageContainer;
+      image = loImage.getImage();
+    }
+    if (image == null && imageContainer instanceof URLImageContainer)
+    {
+      final URLImageContainer urlImageContainer = (URLImageContainer) imageContainer;
+      if (urlImageContainer.isLoadable() == false)
       {
-        final Shape s = g2.getClip();
-        final AffineTransform transform = g2.getTransform();
-        try
-        {
-          final double imageWidth = StrictGeomUtility.toExternalValue(bounds.getWidth());
-          final double imageHeight = StrictGeomUtility.toExternalValue(bounds.getHeight());
-          final Rectangle2D newClipArea =
-                  new Rectangle2D.Double(0, 0, imageWidth, imageHeight);
-          g2.clip(newClipArea);
-          g2.scale(loImage.getScaleX(), loImage.getScaleY());
-
-          final int imageX = (int) StrictGeomUtility.toExternalValue(myBounds.getX());
-          final int imageY = (int) StrictGeomUtility.toExternalValue(myBounds.getY());
-          while (g2.drawImage(loImage.getImage(), -imageX, -imageY, null) == false)
-          {
-            final WaitingImageObserver obs = new WaitingImageObserver(loImage.getImage());
-            obs.waitImageLoaded();
-            if (obs.isError())
-            {
-              Log.warn("The image observer detected an error while loading the Image");
-              break;
-            }
-          }
-        }
-        catch (Throwable th)
-        {
-          // just in case the image drawing caused trouble ..
-          Log.warn(new Log.MemoryUsageMessage("Failure at drawImage"));
-          Log.warn(th);
-        }
-        g2.setTransform(transform);
-        g2.setClip(s);
+        return;
       }
-      else
+      final URL url = urlImageContainer.getSourceURL();
+      if (url == null)
       {
-        Log.warn("The image-reference contained no content!");
+        return;
+      }
+      try
+      {
+        image = ImageFactory.getInstance().createImage(url);
+      }
+      catch (IOException e)
+      {
+        Log.warn ("Unable to load image from " + url);
+        return;
       }
     }
+    if (image == null)
+    {
+      return;
+    }
+
+    //final ImageContainer image = content.getContent();
+    final StrictBounds imageArea = content.getImageArea();
+    final StrictBounds bounds = getInternalOperationBounds();
+
+    final Shape s = g2.getClip();
+    final AffineTransform transform = g2.getTransform();
+    try
+    {
+      final double imageWidth = StrictGeomUtility.toExternalValue(bounds.getWidth());
+      final double imageHeight = StrictGeomUtility.toExternalValue(bounds.getHeight());
+      final Rectangle2D newClipArea =
+              new Rectangle2D.Double(0, 0, imageWidth, imageHeight);
+      g2.clip(newClipArea);
+      g2.setColor(Color.green);
+      g2.fill(newClipArea);
+      // normalize the image to 72 DPI
+      g2.scale(imageContainer.getScaleX(), imageContainer.getScaleY());
+
+      final double scaleX = imageWidth / imageArea.getWidth();
+      final double scaleY = imageHeight / imageArea.getHeight();
+      // and apply the layouters scaling ..
+      g2.scale(scaleX, scaleY);
+
+      final int imageX = (int) StrictGeomUtility.toExternalValue(imageArea.getX());
+      final int imageY = (int) StrictGeomUtility.toExternalValue(imageArea.getY());
+      while (g2.drawImage(image, -imageX, -imageY, null) == false)
+      {
+        final WaitingImageObserver obs = new WaitingImageObserver(image);
+        obs.waitImageLoaded();
+        if (obs.isError())
+        {
+          Log.warn("The image observer detected an error while loading the Image");
+          break;
+        }
+      }
+    }
+    catch (Throwable th)
+    {
+      // just in case the image drawing caused trouble ..
+      Log.warn(new Log.MemoryUsageMessage("Failure at drawImage"));
+      Log.warn(th);
+    }
+    g2.setTransform(transform);
+    g2.setClip(s);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageContainer.java,v 1.2 2004/05/07 07:43:53 mungady Exp $
+ * $Id: ImageContainer.java,v 1.3 2005/01/24 23:57:45 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,28 @@ public interface ImageContainer extends Cloneable
 {
   public int getImageWidth();
   public int getImageHeight();
+
+  /**
+   * Defines the image's horizontal scale. This is the factor to
+   * convert the image from it's original resolution to the java
+   * resolution of 72dpi.
+   * <p>
+   * This is not the scale that is computed by the layouter; that one
+   * is derived from the ImageContent.
+   *
+   * @return the horizontal scale.
+   */
   public float getScaleX();
+
+  /**
+   * Defines the image's vertical scale. This is the factor to
+   * convert the image from it's original resolution to the java
+   * resolution of 72dpi.
+   * <p>
+   * This is not the scale that is computed by the layouter; that one
+   * is derived from the ImageContent.
+   *
+   * @return the vertical scale.
+   */
   public float getScaleY();
 }

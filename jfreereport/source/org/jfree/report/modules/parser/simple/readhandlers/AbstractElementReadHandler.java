@@ -3,12 +3,11 @@ package org.jfree.report.modules.parser.simple.readhandlers;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
+import org.jfree.report.Element;
 import org.jfree.report.elementfactory.ElementFactory;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.Element;
-import org.jfree.report.util.geom.StrictDimension;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.ui.FloatDimension;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.parser.XmlReaderException;
@@ -71,6 +70,7 @@ public abstract class AbstractElementReadHandler
   private static final String DYNAMIC_ATT = "dynamic";
   private static final String LAYOUT_CACHABLE_ATT = "layout-cachable";
   private static final String VISIBLE_ATT = "visible";
+  private static final String HREF_ATT = "href";
 
   private Element element;
 
@@ -110,6 +110,12 @@ public abstract class AbstractElementReadHandler
     if (visibleValue != null)
     {
       factory.setVisible(new Boolean(ParserUtil.parseBoolean(visibleValue, true)));
+    }
+
+    final String href = atts.getValue(HREF_ATT);
+    if (href != null)
+    {
+      factory.setHRefTarget(href);
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.22 2005/02/05 18:35:18 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.23 2005/02/19 13:29:59 taqua Exp $
  *
  * Changes
  * -------
@@ -94,7 +94,6 @@ import org.jfree.report.modules.output.support.itext.BaseFontFactory;
 import org.jfree.report.modules.output.support.itext.BaseFontRecord;
 import org.jfree.report.modules.output.support.itext.BaseFontSupport;
 import org.jfree.report.style.ElementDefaultStyleSheet;
-import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.KeyedQueue;
 import org.jfree.report.util.Log;
@@ -406,11 +405,18 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       final ImageContainer imageContent = content.getContent();
       final Image image = getImage(imageContent);
       image.setAbsolutePosition(imageX, imageY);
-      image.scalePercent(imageContent.getScaleX(), imageContent.getScaleY());
+
+      final StrictBounds imageArea = content.getImageArea();
+      final double imageWidth = StrictGeomUtility.toExternalValue(bounds.getWidth());
+      final double imageHeight = StrictGeomUtility.toExternalValue(bounds.getHeight());
+
+      final float scaleX = (float) (imageWidth / imageArea.getWidth());
+      final float scaleY = (float) (imageHeight / imageArea.getHeight());
+      // and apply the layouters scaling ..
+      image.scalePercent(scaleX * imageContent.getScaleX(), scaleY * imageContent.getScaleY());
 
       final PdfContentByte cb = this.writer.getDirectContent();
 
-      final StrictBounds imageArea = content.getImageArea();
       final float clipX = (float) StrictGeomUtility.toExternalValue
               (imageBounds.getX() + imageArea.getX() + bounds.getX());
       final float clipY = (float) (getPageHeight() -
@@ -461,28 +467,30 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     if (imageRef instanceof URLImageContainer)
     {
       final URLImageContainer urlImageContainer = (URLImageContainer) imageRef;
-
-      try
+      if (urlImageContainer.isLoadable())
       {
-        final URL sourceURL = urlImageContainer.getSourceURL();
-        if (sourceURL != null)
+        try
         {
-          Image image = (Image) cachedImages.get(sourceURL);
-          if (image == null)
+          final URL sourceURL = urlImageContainer.getSourceURL();
+          if (sourceURL != null)
           {
-            image = Image.getInstance(sourceURL);
-            cachedImages.put(sourceURL, image);
+            Image image = (Image) cachedImages.get(sourceURL);
+            if (image == null)
+            {
+              image = Image.getInstance(sourceURL);
+              cachedImages.put(sourceURL, image);
+            }
+            return image;
           }
-          return image;
         }
-      }
-      catch (BadElementException be)
-      {
-        Log.info("Caught illegal Image, will recode to PNG instead", be);
-      }
-      catch (IOException ioe)
-      {
-        Log.info("Unable to read the raw-data, will try to recode image-data.", ioe);
+        catch (BadElementException be)
+        {
+          Log.info("Caught illegal Image, will recode to PNG instead", be);
+        }
+        catch (IOException ioe)
+        {
+          Log.info("Unable to read the raw-data, will try to recode image-data.", ioe);
+        }
       }
     }
     if (imageRef instanceof LocalImageContainer)
@@ -536,7 +544,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    */
   protected void drawShape(final Shape shape)
   {
-    final StrictBounds internalBounds = getInternalOperationBounds();
+    final StrictBounds internalBounds = getInternalPDFOperationBounds();
 
     final float ycorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getY());
     final float xcorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getX());
@@ -609,7 +617,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    */
   protected void fillShape(final Shape shape)
   {
-    final StrictBounds internalBounds = getInternalOperationBounds();
+    final StrictBounds internalBounds = getInternalPDFOperationBounds();
 
     final float ycorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getY());
     final float xcorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getX());
@@ -941,7 +949,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    */
   protected void printText(final String text)
   {
-    final StrictBounds bounds = getInternalOperationBounds();
+    final StrictBounds bounds = getInternalPDFOperationBounds();
     final int fontSize = getFont().getFontSize();
 
     final PdfContentByte cb = this.writer.getDirectContent();
@@ -1223,7 +1231,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     {
       final BaseFontRecord record = fontSupport.createBaseFont(font,
           font.getFontEncoding(getFontEncoding()), isEmbedFonts() || font.isEmbeddedFont());
-      return new PDFSizeCalculator(record.getBaseFont(), record.getFontHeight());
+      return new PDFSizeCalculator(record.getBaseFont(), font.getFontSize());
     }
     catch (BaseFontCreateException bfce)
     {
@@ -1271,7 +1279,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     // the clipping bounds are relative to the drawable dimension,
     // they are not influenced by the drawables position on the page
 
-    final StrictBounds bounds = getInternalOperationBounds();
+    final StrictBounds bounds = getInternalPDFOperationBounds();
     final float x = (float) StrictGeomUtility.toExternalValue(bounds.getX());
     final float y = (float) StrictGeomUtility.toExternalValue(bounds.getY());
     final float width = (float) StrictGeomUtility.toExternalValue
@@ -1366,34 +1374,22 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     }
   }
 
-  protected void printHRefTarget (final MetaElement element,
-                                  final String target)
+  protected void printHRefForCurrentContent (final String href)
   {
-    if (element.getBooleanProperty(ElementStyleSheet.HREF_INHERITED) == false)
-    {
-      return;
-    }
-    final PdfAction action = new PdfAction(target);
-    final StrictBounds elementBounds = element.getBounds();
-    final Rectangle2D bounds = StrictGeomUtility.createAWTRectangle
-            (elementBounds.getX(), elementBounds.getY(),
-                    elementBounds.getWidth(), elementBounds.getHeight());
+    final PdfAction action = new PdfAction(href);
+    final StrictBounds elementBounds = getInternalPDFOperationBounds();
+
+    final float leftX = (float) StrictGeomUtility.toExternalValue(elementBounds.getX());
+    final float rightX = (float) StrictGeomUtility.toExternalValue
+            (elementBounds.getX() + elementBounds.getWidth());
+    final float lowerY = getPageHeight() - (float)
+            StrictGeomUtility.toExternalValue(elementBounds.getY() + elementBounds.getHeight());
+    final float upperY = getPageHeight() - (float)
+            StrictGeomUtility.toExternalValue(elementBounds.getY());
     final PdfContentByte cb = this.writer.getDirectContent();
 
-    final Rectangle2D pageBounds = getPageBounds();
-    final float lowerLeftX =
-       (float) (-pageBounds.getX() + bounds.getX() +
-                currentPageFormat.getImageableX());
-    final float upperRightX =
-        (float) (lowerLeftX + bounds.getWidth());
-
-    final float lowerLeftY =
-        (float) (getPageHeight() - (bounds.getY() +
-            currentPageFormat.getImageableY() +
-            bounds.getHeight() - pageBounds.getY()));
-    final float upperRightY =
-            (float) (getPageHeight() - (bounds.getY() +
-                currentPageFormat.getImageableY() - pageBounds.getY()));
-    cb.setAction(action, lowerLeftX, lowerLeftY, upperRightX, upperRightY);
+    Log.debug ("Added HREF " + href + " Bounds: " + elementBounds);
+    cb.setAction(action, leftX, lowerY, rightX, upperY);
   }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.7.4.1 2004/12/13 19:27:07 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.10 2005/01/25 00:13:19 taqua Exp $
  *
  * Changes
  * -------
@@ -269,7 +269,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     if (reference instanceof URLImageContainer)
     {
       final URLImageContainer urlImage = (URLImageContainer) reference;
-
+      
       final URL url = urlImage.getSourceURL();
       final String name = (String) usedImages.get(url);
       if (name != null)

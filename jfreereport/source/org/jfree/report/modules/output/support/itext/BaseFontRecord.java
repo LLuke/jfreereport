@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecord.java,v 1.5.4.1 2004/03/20 18:56:21 taqua Exp $
+ * $Id: BaseFontRecord.java,v 1.7 2005/01/25 00:12:00 taqua Exp $
  *
  * Changes
  * -------
@@ -41,19 +41,16 @@
 package org.jfree.report.modules.output.support.itext;
 
 import com.lowagie.text.pdf.BaseFont;
-import org.jfree.report.style.FontDefinition;
 
 /**
  * A PDF font record. The record is used to cache the generated PDF fonts. 
- * Once created the base font record is immutable.
+ * Once created the base font record is immutable. The base font record does
+ * not store font sizes.
  *
  * @author Thomas Morgner
  */
 public final class BaseFontRecord
 {
-  /** The AWT font. */
-  private FontDefinition awtFont;
-
   /** The iText base font. */
   private BaseFont baseFont;
 
@@ -68,19 +65,14 @@ public final class BaseFontRecord
   /**
    * Creates a new font record.
    * 
-   * @param font the font definition stored in this record.
    * @param logicalName the logical iText name of the font.
    * @param embedded a flag that defines whether this font should be embedded
    * in the target document.
    * @param baseFont the generated base font for the given font definition.
    */
-  public BaseFontRecord(final FontDefinition font, final String logicalName,
+  public BaseFontRecord(final String logicalName,
                         final boolean embedded, final BaseFont baseFont)
   {
-    if (font == null)
-    {
-      throw new NullPointerException("AWT-FontDefinition is null.");
-    }
     if (baseFont == null)
     {
       throw new NullPointerException("iText-FontDefinition is null.");
@@ -89,7 +81,6 @@ public final class BaseFontRecord
     {
       throw new NullPointerException("Logical font name is null.");
     }
-    this.awtFont = font;
     this.baseFont = baseFont;
     this.logicalName = logicalName;
     this.embedded = embedded;
@@ -140,16 +131,6 @@ public final class BaseFontRecord
   }
 
   /**
-   * Returns the AWT font.
-   *
-   * @return the AWT font.
-   */
-  public FontDefinition getFontDefinition()
-  {
-    return awtFont;
-  }
-
-  /**
    * Returns the iText BaseFont.
    *
    * @return the itext BaseFont.
@@ -157,15 +138,5 @@ public final class BaseFontRecord
   public BaseFont getBaseFont()
   {
     return baseFont;
-  }
-
-  /**
-   * Returns the font height.
-   *
-   * @return the font height.
-   */
-  public float getFontHeight()
-  {
-    return getFontDefinition().getFont().getSize2D();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.13 2005/02/05 18:35:18 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.14 2005/02/19 13:29:58 taqua Exp $
  *
  * Changes
  * -------
@@ -390,6 +390,10 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
     }
   }
 
+  protected void printHRefForCurrentContent (final String href)
+  {
+  }
+
   protected void printTextContent
           (final MetaElement element, final Content content,
            final long vbaShift)
@@ -431,7 +435,9 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
 
     final HorizontalBoundsAlignment hba =
             AlignmentTools.getHorizontalLayout(ha, element.getBounds());
-    printTextLine((TextLine) content, hba, vbaShift);
+
+    final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
+    printTextLine((TextLine) content, hba, vbaShift, hrefTarget);
   }
 
   protected void printShapeContent (final MetaElement element, final Content content)
@@ -468,6 +474,12 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
       updatePaint(paint);
     }
 
+    final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
+    if (hrefTarget != null)
+    {
+      printHRefForCurrentContent(hrefTarget);
+    }
+
     final ShapeContent sc = (ShapeContent) content;
     // todo: Is this correct?
     final Rectangle2D clipBounds = getOperationBounds();
@@ -493,6 +505,13 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
     }
     final ImageContent ic = (ImageContent) content;
     setInternalOperationBounds(AlignmentTools.computeAlignmentBounds(element));
+
+    final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
+    if (hrefTarget != null)
+    {
+      printHRefForCurrentContent(hrefTarget);
+    }
+
     drawImage(ic);
   }
 
@@ -506,6 +525,13 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
     }
     final DrawableContent drawableContent = (DrawableContent) content;
     setInternalOperationBounds(content.getBounds());
+
+    final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
+    if (hrefTarget != null)
+    {
+      printHRefForCurrentContent(hrefTarget);
+    }
+
     drawDrawable (drawableContent);
   }
 
@@ -573,14 +599,22 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
    * @param hba  the bounds.
    * @param vbaShift  the vertical bounds alignment shifting.
    */
-  protected void printTextLine (final TextLine c, final HorizontalBoundsAlignment hba,
-                                  final long vbaShift)
+  protected void printTextLine (final TextLine c,
+                                final HorizontalBoundsAlignment hba,
+                                final long vbaShift,
+                                final String hrefTarget)
   {
     final String value = c.getContent();
     final StrictBounds abounds = hba.align(c.getBounds());
     abounds.setRect(abounds.getX(), abounds.getY() + vbaShift,
         abounds.getWidth(), abounds.getHeight());
     setInternalOperationBounds(abounds);
+
+    if (hrefTarget != null)
+    {
+      printHRefForCurrentContent(hrefTarget);
+    }
+
     printText(value);
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.15 2005/02/04 19:22:51 taqua Exp $
+ * $Id: Element.java,v 1.16 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -607,5 +607,15 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       final DataTarget dt = (DataTarget) ds;
       disconnectDataSource(dt.getDataSource());
     }
+  }
+
+  public void setHRefTarget (final String target)
+  {
+    getStyle().setStyleProperty(ElementStyleSheet.HREF_TARGET, target);
+  }
+
+  public String getHRefTarget ()
+  {
+    return (String) getStyle().getStyleProperty(ElementStyleSheet.HREF_TARGET);
   }
 }

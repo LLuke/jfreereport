@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.9.4.1 2004/10/11 21:00:35 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.11 2005/01/25 00:00:10 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,8 @@
  *
  */
 package org.jfree.report.function;
+
+import java.util.ArrayList;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
@@ -78,7 +80,11 @@ public final class FunctionUtilities
       final Element e = elements[i];
       if (e instanceof Band)
       {
-        return findElement((Band) e, element);
+        final Element retval = findElement((Band) e, element);
+        if (retval != null)
+        {
+          return retval;
+        }
       }
       else if (e.getName().equals(element))
       {
@@ -86,6 +92,44 @@ public final class FunctionUtilities
       }
     }
     return null;
+  }
+
+
+  /**
+   * Try to find the defined element in the last active root-band.
+   *
+   * @param band  the band that is suspected to contain the element.
+   * @param element  the element name.
+   *
+   * @return the found element or null, if no element could be found.
+   */
+  public static Element[] findAllElements(final Band band, final String element)
+  {
+    if (element == null)
+    {
+      throw new NullPointerException("Element name must not be null");
+    }
+    final ArrayList collector = new ArrayList();
+    performFindElement(band, element, collector);
+    return (Element[]) collector.toArray(new Element[collector.size()]);
+  }
+
+  private static void performFindElement (final Band band, final String element,
+                                   final ArrayList collector)
+  {
+    final Element[] elements = band.getElementArray();
+    for (int i = 0; i < elements.length; i++)
+    {
+      final Element e = elements[i];
+      if (e instanceof Band)
+      {
+        performFindElement((Band) e, element, collector);
+      }
+      else if (e.getName().equals(element))
+      {
+        collector.add (e);
+      }
+    }
   }
 
   /**
