@@ -333,6 +333,7 @@ public class ExceptionDialog extends JDialog
     {
       defaultDialog = new ExceptionDialog ();
     }
+    if (e != null) Log.error("UserError" , e);
     defaultDialog.setTitle (title);
     defaultDialog.setMessage (message);
     defaultDialog.setException (e);
