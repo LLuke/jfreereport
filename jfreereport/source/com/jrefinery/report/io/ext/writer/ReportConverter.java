@@ -2,7 +2,7 @@
  * Date: Jan 22, 2003
  * Time: 6:42:09 PM
  *
- * $Id$
+ * $Id: ReportConverter.java,v 1.1 2003/01/22 19:45:28 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.io.OutputStreamWriter;
+import java.io.FileWriter;
 import java.net.URL;
 
 public class ReportConverter
@@ -79,6 +80,7 @@ public class ReportConverter
     }
     catch (Exception e)
     {
+      Log.debug ("Cause: ", e);
       throw new IOException("Failed to parse the report");
     }
     return result;
@@ -92,7 +94,12 @@ public class ReportConverter
       throw new IOException("The specified report definition was not found");
 
     JFreeReport report = parseReport(reportURL);
-    write(report, new OutputStreamWriter (System.out));
+    Writer w = new FileWriter ("C:/test.xml");
+    write(report, w);
+    w.flush();
+    w.close();
+
+    parseReport(new File("C:/test.xml").toURL());
   }
 
   public static void main (String [] args)

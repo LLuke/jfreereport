@@ -32,7 +32,7 @@
   name CDATA   #IMPLIED
 >
 
-<!ELEMENT parser-config ((stylekey-factory|template-factory|datadefinition-factory|object-factory|datasource-factory)*)>
+<!ELEMENT parser-config ((element-factory|stylekey-factory|template-factory|datadefinition-factory|object-factory|datasource-factory)*)>
 
 <!ELEMENT stylekey-factory EMPTY>
 <!ATTLIST stylekey-factory
@@ -58,6 +58,13 @@
 <!ATTLIST datadefinition-factory
   class      CDATA   #IMPLIED
 >
+
+<!ELEMENT element-factory EMPTY>
+<!ATTLIST element-factory
+  class      CDATA   #IMPLIED
+>
+
+
 <!ELEMENT report-config (defaultpageformat?, configuration?)>
 
 <!ELEMENT defaultpageformat EMPTY>

@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 9:07:48 PM
  *
- * $Id: ColorObjectDescription.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: ColorObjectDescription.java,v 1.2 2003/01/13 19:00:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -87,7 +87,7 @@ public class ColorObjectDescription extends AbstractObjectDescription
     }
 
     // no defined constant color, so this must be a user defined color
-    String color = Integer.toHexString(c.getRGB());
+    String color = Integer.toHexString(c.getRGB() & 0x00ffffff);
     StringBuffer retval = new StringBuffer(7);
     retval.append("#");
 

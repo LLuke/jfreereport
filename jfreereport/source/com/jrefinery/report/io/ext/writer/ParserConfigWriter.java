@@ -2,16 +2,19 @@
  * Date: Jan 13, 2003
  * Time: 1:20:24 PM
  *
- * $Id$
+ * $Id: ParserConfigWriter.java,v 1.1 2003/01/13 21:39:07 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
 import com.jrefinery.report.io.ext.ExtReportHandler;
 import com.jrefinery.report.io.ext.ParserConfigHandler;
+import com.jrefinery.report.io.ext.factory.objects.URLClassFactory;
+import com.jrefinery.report.util.Log;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
+import java.lang.reflect.Constructor;
 
 public class ParserConfigWriter extends AbstractXMLDefinitionWriter
 {
@@ -47,9 +50,22 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
     while (it.hasNext())
     {
       Object itObject = it.next();
+      try
+      {
+        Class itClass = itObject.getClass();
+        Constructor c = itClass.getConstructor(new Class[0]);
+        if (c == null)
+          continue;
+      }
+      catch (Exception e)
+      {
+        Log.warn ("FactoryClass " + itObject.getClass() +
+                  " has no default constructor. This class will be ignored"); 
+        continue;
+      }
+
       String className = itObject.getClass().getName();
       writeTag(w, tagName, ParserConfigHandler.CLASS_ATTRIBUTE, className, CLOSE);
-      w.write(getLineSeparator());
     }
   }
 }

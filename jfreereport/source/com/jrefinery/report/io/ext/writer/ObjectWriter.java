@@ -2,20 +2,23 @@
  * Date: Jan 13, 2003
  * Time: 6:32:21 PM
  *
- * $Id: ObjectWriter.java,v 1.1 2003/01/13 21:39:06 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.2 2003/01/22 19:38:28 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
 import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
 import com.jrefinery.report.io.ext.factory.objects.ClassFactoryCollector;
+import com.jrefinery.report.io.ext.factory.objects.ObjectFactoryException;
 import com.jrefinery.report.io.ext.StyleSheetHandler;
 import com.jrefinery.report.io.ext.CompoundObjectHandler;
+import com.jrefinery.report.util.Log;
 
 import java.io.Writer;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class ObjectWriter extends AbstractXMLDefinitionWriter
 {
@@ -27,10 +30,10 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
   {
     super(reportWriter);
     if (baseObject == null)
-      throw new NullPointerException();
+      throw new NullPointerException("BaseObject is null");
     if (objectDescription == null)
-      throw new NullPointerException();
-    
+      throw new NullPointerException("ObjectDescription is null");
+
     this.baseObject = baseObject;
     this.objectDescription = objectDescription;
     cc = getReportWriter().getClassFactoryCollector();
@@ -53,6 +56,8 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
   public void write(Writer writer) throws IOException, ReportWriterException
   {
+    writer.flush();
+
     try
     {
       objectDescription.setParameterFromObject(baseObject);
@@ -82,52 +87,73 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
       if (o == null)
         return null;
 
-      return cc.getDescriptionForClass(o.getClass());
+      parameterDescription = cc.getDescriptionForClass(o.getClass());
+      if (parameterDescription == null)
+      {
+        Log.debug ("Unable to get parameter description for class: " + o.getClass());
+      }
     }
     return parameterDescription;
   }
 
 
-  protected void writeParameter (Writer writer, String name)
+  protected void writeParameter (Writer writer, String parameterName)
     throws IOException, ReportWriterException
   {
-    ObjectDescription parameterDescription = getParameterDescription(name);
+    Object parameterValue = getObjectDescription().getParameter(parameterName);
+    if (parameterValue == null)
+    {
+      Log.debug ("Parameter " + parameterName + " is null. The Parameter will not be defined.");
+      return;
+    }
 
+    Class parameterDefinition = getObjectDescription().getParameterDefinition(parameterName);
+    ObjectDescription parameterDescription = getParameterDescription(parameterName);
     if (parameterDescription == null)
+    {
+      Log.debug("Parameter:" + parameterName + " Value: " + objectDescription.getParameter(parameterName));
       throw new ReportWriterException("Unable to get Parameter description for " +
-                                      getBaseObject() + " Parameter: " + name);
+                                      getBaseObject() + " Parameter: " + parameterName);
+    }
+
+    try
+    {
+      parameterDescription.setParameterFromObject(parameterValue);
+    }
+    catch (ObjectFactoryException ofe)
+    {
+      throw new ReportWriterException("Unable to fill parameter object:" + parameterName);
+    }
+
+    Properties p = new Properties();
+    p.setProperty("name", parameterName);
+    if ((parameterDefinition.equals(parameterValue.getClass())) == false)
+    {
+      p.setProperty("class", parameterValue.getClass().getName());
+    }
 
     List parameterNames = getParameterNames(parameterDescription);
     if (isBasicObject(parameterNames, parameterDescription))
     {
-      writeTag(writer, CompoundObjectHandler.BASIC_OBJECT_TAG, "name", name, OPEN);
+      writeTag(writer, CompoundObjectHandler.BASIC_OBJECT_TAG, p, OPEN);
+      Log.debug ("Write BasicObject: " + parameterName + " -> " + parameterDescription.getParameter("value"));
+      Log.debug ("Write BasicObject: " + parameterName + " -> " + parameterDescription.getObjectClass());
       writer.write(normalize((String) parameterDescription.getParameter("value")));
       writeCloseTag(writer, CompoundObjectHandler.BASIC_OBJECT_TAG);
     }
     else
     {
-      for (int i = 0; i < parameterNames.size(); i++)
-      {
-        String parameterName = (String) parameterNames.get(i);
-        Object object = parameterDescription.getParameter(parameterName);
-        ObjectDescription subObjectDesc =
-            cc.getDescriptionForClass(parameterDescription.getParameterDefinition(parameterName));
-        if (subObjectDesc == null)
-          throw new ReportWriterException("No object description");
+      writeTag(writer, CompoundObjectHandler.COMPOUND_OBJECT_TAG, p, OPEN);
 
-        writeTag(writer, StyleSheetHandler.COMPOUND_KEY_TAG, "name", name, OPEN);
-        ObjectWriter objWriter =
-            new ObjectWriter(getReportWriter(), object, subObjectDesc );
+      ObjectWriter objWriter = new ObjectWriter(getReportWriter(), parameterValue, parameterDescription);
+      objWriter.write(writer);
 
-        objWriter.write(writer);
-
-        writeCloseTag(writer, StyleSheetHandler.COMPOUND_KEY_TAG);
-      }
+      writeCloseTag(writer, CompoundObjectHandler.COMPOUND_OBJECT_TAG);
     }
 
   }
 
-  protected boolean isBasicObject(List parameters, ObjectDescription od)
+  protected static boolean isBasicObject(List parameters, ObjectDescription od)
   {
     if (od == null)
       throw new NullPointerException();
@@ -146,7 +172,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     return false;
   }
 
-  protected ArrayList getParameterNames (ObjectDescription d)
+  protected static ArrayList getParameterNames (ObjectDescription d)
   {
     ArrayList list = new ArrayList();
 

@@ -2,7 +2,7 @@
  * Date: Jan 13, 2003
  * Time: 2:08:56 PM
  *
- * $Id: StylesWriter.java,v 1.1 2003/01/13 21:39:26 taqua Exp $
+ * $Id: StylesWriter.java,v 1.2 2003/01/22 19:38:28 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -46,7 +46,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
       ElementStyleSheet style = (ElementStyleSheet) styles[i];
       writeTag(writer, StylesHandler.STYLE_TAG, "name", style.getName(), OPEN);
 
-      StyleWriter stW = new StyleWriter(getReportWriter(), style);
+      StyleWriter stW = new StyleWriter(getReportWriter(), style, null);
       stW.write(writer);
 
       writeCloseTag(writer, StylesHandler.STYLE_TAG);

@@ -2,7 +2,7 @@
  * Date: Jan 11, 2003
  * Time: 4:52:58 PM
  *
- * $Id: BandHandler.java,v 1.1 2003/01/12 21:33:52 taqua Exp $
+ * $Id: BandHandler.java,v 1.2 2003/01/13 19:00:41 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -32,7 +32,7 @@ public class BandHandler extends ElementHandler
   {
     if (tagName.equals(BAND_TAG))
     {
-      Band band = new ItemBand();
+      Band band = new Band();
       String name = attrs.getValue("name");
       if (name != null)
       {
@@ -51,6 +51,13 @@ public class BandHandler extends ElementHandler
       ElementFactoryCollector fc =
           (ElementFactoryCollector) getParser().getConfigurationValue(ParserConfigHandler.ELEMENT_FACTORY_TAG);
       Element element = fc.getElementForType(type);
+
+      String name = attrs.getValue("name");
+      if (name != null)
+      {
+        element.setName(name);
+      }
+
       elementHandler = new ElementHandler(getParser(), tagName, element);
       getParser().pushFactory(elementHandler);
     }

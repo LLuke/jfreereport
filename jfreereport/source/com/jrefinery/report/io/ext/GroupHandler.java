@@ -2,7 +2,7 @@
  * Date: Jan 22, 2003
  * Time: 3:45:29 PM
  *
- * $Id$
+ * $Id: GroupHandler.java,v 1.1 2003/01/22 19:45:27 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -13,6 +13,7 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.ReportHeader;
 import com.jrefinery.report.GroupHeader;
 import com.jrefinery.report.GroupFooter;
+import com.jrefinery.report.util.CharacterEntityParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -28,9 +29,11 @@ public class GroupHandler implements ReportDefinitionHandler
   private Group group;
   private StringBuffer buffer;
   private BandHandler bandFactory;
+  private CharacterEntityParser entityParser;
 
   public GroupHandler(Parser parser, String finishTag, Group group)
   {
+    this.entityParser = CharacterEntityParser.createXMLEntityParser();
     this.parser = parser;
     this.finishTag = finishTag;
     this.group = group;
@@ -106,7 +109,7 @@ public class GroupHandler implements ReportDefinitionHandler
     }
     else if (tagName.equals (FIELD_TAG))
     {
-      group.addField(buffer.toString());
+      group.addField(entityParser.decodeEntities(buffer.toString()));
       buffer = null;
     }
     else

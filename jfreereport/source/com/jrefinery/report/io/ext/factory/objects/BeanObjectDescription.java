@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 8:17:01 PM
  *
- * $Id: BeanObjectDescription.java,v 1.2 2003/01/13 19:00:50 taqua Exp $
+ * $Id: BeanObjectDescription.java,v 1.3 2003/01/22 19:38:26 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -17,9 +17,19 @@ public class BeanObjectDescription extends AbstractObjectDescription
 {
   public BeanObjectDescription(Class className)
   {
+    this (className, true);
+  }
+
+  public BeanObjectDescription(Class className, boolean init)
+  {
     super(className);
     // now create some method descriptions ..
 
+    if (init == false)
+    {
+      return;
+    }
+    
     Method[] methods = getObjectClass().getMethods();
     for (int i = 0; i < methods.length; i++)
     {

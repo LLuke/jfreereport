@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 10:29:08 PM
  *
- * $Id$
+ * $Id: CompoundObjectHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -11,6 +11,7 @@ import org.xml.sax.Attributes;
 import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
 import com.jrefinery.report.io.ext.BasicObjectHandler;
 import com.jrefinery.report.io.Parser;
+import com.jrefinery.report.util.Log;
 
 public class CompoundObjectHandler extends BasicObjectHandler
 {
@@ -38,10 +39,14 @@ public class CompoundObjectHandler extends BasicObjectHandler
 
   public void endElement(String tagName) throws SAXException
   {
-    if ((tagName.equals(BASIC_OBJECT_TAG)) ||
-        (tagName.equals(COMPOUND_OBJECT_TAG)))
+    if (tagName.equals(COMPOUND_OBJECT_TAG))
     {
-      if (basicFactory != null)
+      if (basicFactory == null && tagName.equals(getFinishTag()))
+      {
+        getParser().popFactory().endElement(tagName);
+        return;
+      }
+      else
       {
         Object o = basicFactory.getValue();
         if (o == null)
@@ -50,10 +55,15 @@ public class CompoundObjectHandler extends BasicObjectHandler
         getKeyObjectDescription().setParameter(parameterName, o);
         basicFactory = null;
       }
-      else
-      {
-        super.endElement(tagName);
-      }
+    }
+    else if (tagName.equals(BASIC_OBJECT_TAG))
+    {
+      Object o = basicFactory.getValue();
+      if (o == null)
+        throw new SAXException("Parameter value is null");
+
+      getKeyObjectDescription().setParameter(parameterName, o);
+      basicFactory = null;
     }
     else if (tagName.equals(getFinishTag()))
     {

@@ -2,7 +2,7 @@
  * Date: Jan 13, 2003
  * Time: 12:39:06 PM
  *
- * $Id: ReportWriter.java,v 1.2 2003/01/14 21:10:01 taqua Exp $
+ * $Id: ReportWriter.java,v 1.3 2003/01/22 19:38:28 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -29,8 +29,14 @@ public class ReportWriter
   private StyleKeyFactoryCollector styleKeyFactoryCollector;
   private TemplateCollector templateCollector;
   private JFreeReport report;
+  private String encoding;
 
   public ReportWriter (JFreeReport report)
+  {
+    this(report, System.getProperty ("file.encoding", "UTF-8"));
+  }
+
+  public ReportWriter (JFreeReport report, String encoding)
   {
     dataSourceCollector = new DataSourceCollector();
     elementFactoryCollector = new ElementFactoryCollector();
@@ -39,6 +45,12 @@ public class ReportWriter
     styleKeyFactoryCollector = new StyleKeyFactoryCollector();
     templateCollector = new TemplateCollector();
     this.report = report;
+    this.encoding = encoding;
+  }
+
+  public String getEncoding()
+  {
+    return encoding;
   }
 
   public void addDataSourceFactory (DataSourceFactory dsf)

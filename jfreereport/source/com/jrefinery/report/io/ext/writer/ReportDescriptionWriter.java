@@ -2,24 +2,28 @@
  * Date: Jan 13, 2003
  * Time: 7:06:26 PM
  *
- * $Id: ReportDescriptionWriter.java,v 1.1 2003/01/13 21:39:19 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.2 2003/01/22 19:38:28 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
 import com.jrefinery.report.Band;
-import com.jrefinery.report.GroupList;
-import com.jrefinery.report.Group;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.filter.EmptyDataSource;
+import com.jrefinery.report.Group;
+import com.jrefinery.report.GroupList;
 import com.jrefinery.report.filter.DataSource;
+import com.jrefinery.report.filter.EmptyDataSource;
 import com.jrefinery.report.filter.templates.Template;
-import com.jrefinery.report.io.ext.ReportDescriptionHandler;
-import com.jrefinery.report.io.ext.GroupsHandler;
-import com.jrefinery.report.io.ext.GroupHandler;
-import com.jrefinery.report.io.ext.ElementHandler;
 import com.jrefinery.report.io.ext.BandHandler;
-import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
+import com.jrefinery.report.io.ext.DataSourceHandler;
+import com.jrefinery.report.io.ext.ElementHandler;
+import com.jrefinery.report.io.ext.ExtReportHandler;
+import com.jrefinery.report.io.ext.GroupHandler;
+import com.jrefinery.report.io.ext.GroupsHandler;
+import com.jrefinery.report.io.ext.ReportDescriptionHandler;
+import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
 import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
+import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -35,26 +39,34 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
   public void write(Writer writer) throws IOException, ReportWriterException
   {
-    writeBand(writer, ReportDescriptionHandler.REPORT_HEADER_TAG, getReport().getReportHeader());
-    writeBand(writer, ReportDescriptionHandler.REPORT_FOOTER_TAG, getReport().getReportFooter());
-    writeBand(writer, ReportDescriptionHandler.PAGE_HEADER_TAG, getReport().getPageHeader());
-    writeBand(writer, ReportDescriptionHandler.PAGE_FOOTER_TAG, getReport().getPageFooter());
+    writeTag(writer, ExtReportHandler.REPORT_DESCRIPTION_TAG);
+    writeBand(writer, ReportDescriptionHandler.REPORT_HEADER_TAG, getReport().getReportHeader(), null);
+    writeBand(writer, ReportDescriptionHandler.REPORT_FOOTER_TAG, getReport().getReportFooter(), null);
+    writeBand(writer, ReportDescriptionHandler.PAGE_HEADER_TAG, getReport().getPageHeader(), null);
+    writeBand(writer, ReportDescriptionHandler.PAGE_FOOTER_TAG, getReport().getPageFooter(), null);
     writeGroups(writer);
-    writeBand(writer, ReportDescriptionHandler.ITEMBAND_TAG, getReport().getItemBand());
+    writeBand(writer, ReportDescriptionHandler.ITEMBAND_TAG, getReport().getItemBand(), null);
+    writeCloseTag(writer, ExtReportHandler.REPORT_DESCRIPTION_TAG);
   }
 
-  private void writeBand (Writer writer, String tagName, Band band)
+  private void writeBand (Writer writer, String tagName, Band band, Band parent)
     throws IOException, ReportWriterException
   {
     writeTag(writer, tagName, "name", band.getName(), OPEN);
 
     writeTag(writer, ElementHandler.STYLE_TAG);
-    StyleWriter styleWriter = new StyleWriter(getReportWriter(), band.getStyle());
+    ElementStyleSheet parentSheet = null;
+    if (parent != null)
+    {
+      parentSheet = parent.getBandDefaults();
+    }
+
+    StyleWriter styleWriter = new StyleWriter(getReportWriter(), band.getStyle(), parentSheet);
     styleWriter.write(writer);
     writeCloseTag(writer, ElementHandler.STYLE_TAG);
 
     writeTag(writer, BandHandler.DEFAULT_STYLE_TAG);
-    StyleWriter defaultStyleWriter = new StyleWriter(getReportWriter(), band.getStyle());
+    StyleWriter defaultStyleWriter = new StyleWriter(getReportWriter(), band.getStyle(), null);
     defaultStyleWriter.write(writer);
     writeCloseTag(writer, BandHandler.DEFAULT_STYLE_TAG);
 
@@ -75,23 +87,31 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     {
       if (list[i] instanceof Band)
       {
-        writeBand(writer, "band", (Band) list[i]);
+        Band b = (Band) list[i];
+        writeBand(writer, "band", b, band);
       }
       else
       {
-        writeElement (writer, list[i]);
+        writeElement (writer, list[i], band);
       }
     }
     writeCloseTag(writer, tagName);
   }
 
-  private void writeElement (Writer writer, Element element)
+  private void writeElement (Writer writer, Element element, Band parent)
     throws IOException, ReportWriterException
   {
-    writeTag(writer, BandHandler.ELEMENT_TAG, "name", element.getName(), OPEN);
+    if (parent.getElements().indexOf(element) == -1)
+      throw new IllegalArgumentException("The given Element is no child of the band");
+
+    Properties p = new Properties();
+    p.setProperty ("name", element.getName());
+    p.setProperty ("type", element.getContentType());
+    writeTag(writer, BandHandler.ELEMENT_TAG, p, OPEN);
 
     writeTag(writer, ElementHandler.STYLE_TAG);
-    StyleWriter styleWriter = new StyleWriter(getReportWriter(), element.getStyle());
+
+    StyleWriter styleWriter = new StyleWriter(getReportWriter(), element.getStyle(), parent.getBandDefaults());
     styleWriter.write(writer);
     writeCloseTag(writer, ElementHandler.STYLE_TAG);
 
@@ -144,7 +164,16 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       throw new ReportWriterException("Unable to resolve DataSource: " + datasource.getClass());
     }
     DataSourceWriter dsWriter = new DataSourceWriter(getReportWriter(), datasource, od);
+
+    DataSourceCollector dataSourceCollector = getReportWriter().getDataSourceCollector();
+    String dsname = dataSourceCollector.getDataSourceName(od);
+    if (dsname == null)
+      throw new ReportWriterException("No name for DataSource " + datasource);
+
+
+    writeTag(writer, DataSourceHandler.DATASOURCE_TAG, "type", dsname, OPEN);
     dsWriter.write(writer);
+    writeCloseTag(writer, DataSourceHandler.DATASOURCE_TAG);
   }
 
   private void writeGroups (Writer writer)
@@ -167,8 +196,8 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       }
       writeCloseTag(writer, GroupHandler.FIELDS_TAG);
 
-      writeBand(writer, GroupHandler.GROUP_HEADER_TAG, g.getHeader());
-      writeBand(writer, GroupHandler.GROUP_FOOTER_TAG, g.getFooter());
+      writeBand(writer, GroupHandler.GROUP_HEADER_TAG, g.getHeader(), null);
+      writeBand(writer, GroupHandler.GROUP_FOOTER_TAG, g.getFooter(), null);
 
       writeCloseTag(writer, GroupsHandler.GROUP_TAG);
     }

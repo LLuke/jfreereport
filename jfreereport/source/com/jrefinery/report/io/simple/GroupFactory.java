@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: GroupFactory.java,v 1.2 2003/01/17 14:47:44 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import com.jrefinery.report.Group;
 import com.jrefinery.report.GroupFooter;
 import com.jrefinery.report.GroupHeader;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.util.CharacterEntityParser;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.targets.FloatDimension;
@@ -67,6 +68,8 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
   /** A font handler. */
   private FontFactory fontFactory;
 
+  private CharacterEntityParser entityParser;
+
   /**
    * Creates a new handler.
    */
@@ -74,6 +77,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
   {
     super(parser, finishTag);
     fontFactory = new FontFactory();
+    entityParser = CharacterEntityParser.createXMLEntityParser();
   }
 
   /**
@@ -339,7 +343,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
   protected void endField ()
           throws SAXException
   {
-    this.currentGroup.addField (this.currentText.toString ());
+    this.currentGroup.addField (entityParser.decodeEntities(currentText.toString ()));
     currentText = null;
   }
 

@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 8:06:54 PM
  *
- * $Id: HtmlProducer.java,v 1.2 2003/01/21 17:11:41 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.3 2003/01/22 19:38:32 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -18,6 +18,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.io.StringReader;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 public class HtmlProducer extends TableProducer
 {
@@ -120,7 +123,7 @@ public class HtmlProducer extends TableProducer
             pout.print(colorValue);
           }
           pout.print("\">");
-          pout.println(entityParser.encodeEntities(cellData.getValue()));
+          printText(entityParser.encodeEntities(cellData.getValue()));
           pout.println("</div>");
           pout.println("</td>");
 
@@ -143,5 +146,38 @@ public class HtmlProducer extends TableProducer
       Log.debug ("Failed to refactor the color value");
     }
     return null;
+  }
+
+  private void printText (String text)
+  {
+    if (text.length() == 0)
+    {
+      pout.println("&nbsp;");
+      return;
+    }
+
+    try
+    {
+      BufferedReader reader = new BufferedReader(new StringReader(text));
+      String readLine = null;
+      boolean flagStart = true;
+      while ((readLine = reader.readLine()) != null)
+      {
+        if (flagStart == true)
+        {
+          flagStart = false;
+        }
+        else
+        {
+          pout.println("<br>");
+        }
+        pout.println(readLine);
+      }
+      reader.close();
+    }
+    catch (IOException ioe)
+    {
+      Log.info("This will not happen.", ioe);
+    }
   }
 }

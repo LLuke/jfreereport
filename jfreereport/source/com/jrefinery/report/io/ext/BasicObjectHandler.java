@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 8:00:51 PM
  *
- * $Id$
+ * $Id: BasicObjectHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -12,6 +12,8 @@ import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
 import com.jrefinery.report.io.ext.factory.objects.ClassFactory;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ReportDefinitionHandler;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.CharacterEntityParser;
 
 public class BasicObjectHandler implements ReportDefinitionHandler
 {
@@ -19,9 +21,11 @@ public class BasicObjectHandler implements ReportDefinitionHandler
   private String finishTag;
   private StringBuffer buffer;
   private ObjectDescription objectDescription;
+  private CharacterEntityParser entityParser;
 
   public BasicObjectHandler(Parser parser, String finishTag, ObjectDescription od)
   {
+    this.entityParser = CharacterEntityParser.createXMLEntityParser();
     this.parser = parser;
     this.finishTag = finishTag;
     this.buffer = new StringBuffer();
@@ -31,6 +35,7 @@ public class BasicObjectHandler implements ReportDefinitionHandler
   public BasicObjectHandler(Parser parser, String finishTag, Class targetObject)
     throws SAXException
   {
+    this.entityParser = CharacterEntityParser.createXMLEntityParser();
     this.parser = parser;
     this.finishTag = finishTag;
     this.buffer = new StringBuffer();
@@ -61,7 +66,7 @@ public class BasicObjectHandler implements ReportDefinitionHandler
       throw new SAXException("Expected tag '" + finishTag + "'");
     }
     ObjectDescription od = getTargetObjectDescription();
-    od.setParameter("value", buffer.toString());
+    od.setParameter("value", entityParser.decodeEntities(buffer.toString()));
     getParser().popFactory().endElement(tagName);
   }
 

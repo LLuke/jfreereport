@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 6:53:26 PM
  *
- * $Id: BasicStyleKeyHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: BasicStyleKeyHandler.java,v 1.2 2003/01/22 19:38:23 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -12,6 +12,7 @@ import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactory;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ReportDefinitionHandler;
 import com.jrefinery.report.targets.style.StyleKey;
+import com.jrefinery.report.util.CharacterEntityParser;
 
 public class BasicStyleKeyHandler implements ReportDefinitionHandler
 {
@@ -21,10 +22,12 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
   private StyleKeyFactory keyfactory;
   private StyleKey key;
   private Class keyValueClass;
+  private CharacterEntityParser entityParser;
 
   public BasicStyleKeyHandler(Parser parser, String finishTag, String name, Class c)
     throws SAXException
   {
+    this.entityParser = CharacterEntityParser.createXMLEntityParser();
     this.parser = parser;
     this.finishTag = finishTag;
     this.buffer = new StringBuffer();
@@ -75,7 +78,7 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
 
   public Object getValue () throws SAXException
   {
-    return keyfactory.createBasicObject(key, buffer.toString(), keyValueClass);
+    return keyfactory.createBasicObject(key, entityParser.decodeEntities(buffer.toString()), keyValueClass);
   }
 
   public Parser getParser()

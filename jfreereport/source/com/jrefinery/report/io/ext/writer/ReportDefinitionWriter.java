@@ -2,7 +2,7 @@
  * Date: Jan 13, 2003
  * Time: 12:53:49 PM
  *
- * $Id: ReportDefinitionWriter.java,v 1.1 2003/01/13 21:39:17 taqua Exp $
+ * $Id: ReportDefinitionWriter.java,v 1.2 2003/01/22 19:38:28 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -19,6 +19,13 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
   public void write (Writer w) throws IOException, ReportWriterException
   {
     String reportName = getReport().getName();
+    w.write ("<?xml version=\"1.0\" encoding=\"" + getReportWriter().getEncoding() + "\"?>");
+    w.write ("<!--");
+    w.write ("<!DOCTYPE report SYSTEM \"http://jfreereport.sourceforge.net/extreport.dtd\">");
+    w.write ("-->");
+    w.write ("<!--");
+    w.write (" This report definition was created by the ReportDefinitionWriter.");
+    w.write ("-->");
     writeTag(w, "report-definition", "name", reportName, OPEN);
 
     ParserConfigWriter parserConfigWriter = new ParserConfigWriter(getReportWriter());

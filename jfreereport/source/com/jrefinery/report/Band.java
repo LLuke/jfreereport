@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.34 2002/12/18 10:12:59 mungady Exp $
+ * $Id: Band.java,v 1.35 2003/01/03 16:20:33 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -59,7 +59,7 @@
  *               descentend. No more dynamic fixes, as it is not handled here anymore :)
  * 06-Dec-2002 : Documentation update.
  * 03-Jan-2002 : More Javadocs (DG);
- * 
+ * 23-Jan-2003 : Bug in the clone() method, element parent was not updated.
  */
 
 package com.jrefinery.report;
@@ -304,7 +304,9 @@ public class Band extends Element implements Serializable, Cloneable
     for (int i = 0; i < allElements.size(); i++)
     {
       Element e = (Element) allElements.get(i);
-      b.allElements.add (e.clone());
+      Element eC = (Element) e.clone();
+      eC.setParent(b);
+      b.allElements.add (eC);
     }
     return b;
   }

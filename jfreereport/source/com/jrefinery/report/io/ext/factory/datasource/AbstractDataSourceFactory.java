@@ -2,7 +2,7 @@
  * Date: Jan 12, 2003
  * Time: 4:33:28 PM
  *
- * $Id: AbstractDataSourceFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: AbstractDataSourceFactory.java,v 1.2 2003/01/22 19:38:25 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.datasource;
 
@@ -40,7 +40,7 @@ public abstract class AbstractDataSourceFactory
     {
       String key = (String) keys.nextElement();
       ObjectDescription ds = (ObjectDescription)dataSources.get(key);
-      if (ds.getObjectClass().equals(ds))
+      if (ds.getObjectClass().equals(od.getObjectClass()))
         return key;
     }
     return null;

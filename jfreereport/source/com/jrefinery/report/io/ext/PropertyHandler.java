@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 5:11:51 PM
  *
- * $Id$
+ * $Id: PropertyHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ReportDefinitionHandler;
+import com.jrefinery.report.util.CharacterEntityParser;
 
 public class PropertyHandler implements ReportDefinitionHandler
 {
@@ -25,8 +26,11 @@ public class PropertyHandler implements ReportDefinitionHandler
   private StringBuffer buffer = null;
   private String name;
 
+  private CharacterEntityParser entityParser;
+
   public PropertyHandler (Parser parser, String finishTag)
   {
+    entityParser = CharacterEntityParser.createXMLEntityParser();
     properties = new Properties();
     this.finishTag = finishTag;
     this.parser = parser;
@@ -46,7 +50,6 @@ public class PropertyHandler implements ReportDefinitionHandler
 
   public void characters(char ch[], int start, int length) throws SAXException
   {
-    // todo: Parse the default entities
     // accumulate the characters in case the text is split into several chunks...
     if (this.buffer != null)
     {
@@ -58,7 +61,7 @@ public class PropertyHandler implements ReportDefinitionHandler
   {
     if (tagName.equals(PROPERTY))
     {
-      properties.setProperty(name, buffer.toString());
+      properties.setProperty(name, entityParser.decodeEntities(buffer.toString()));
       name = null;
       buffer = null;
     }

@@ -2,7 +2,7 @@
  * Date: Jan 11, 2003
  * Time: 2:48:47 PM
  *
- * $Id: LabelTemplateDescription.java,v 1.2 2003/01/13 19:01:07 taqua Exp $
+ * $Id: LabelTemplateDescription.java,v 1.1 2003/01/14 21:08:56 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.templates;
 
@@ -12,6 +12,6 @@ public class LabelTemplateDescription extends AbstractTemplateDescription
 {
   public LabelTemplateDescription(String name)
   {
-    super(name, LabelTemplate.class);
+    super(name, LabelTemplate.class, true);
   }
 }

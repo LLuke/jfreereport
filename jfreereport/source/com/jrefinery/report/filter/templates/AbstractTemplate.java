@@ -2,11 +2,9 @@
  * Date: Jan 14, 2003
  * Time: 1:15:13 PM
  *
- * $Id$
+ * $Id: AbstractTemplate.java,v 1.1 2003/01/14 21:04:36 taqua Exp $
  */
 package com.jrefinery.report.filter.templates;
-
-import com.jrefinery.report.filter.DataRowConnectable;
 
 public abstract class AbstractTemplate implements Template
 {

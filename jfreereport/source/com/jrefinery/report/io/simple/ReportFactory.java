@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.21 2002/12/18 10:13:16 mungady Exp $
+ * $Id: ReportFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.PageFormatFactory;
+import com.jrefinery.report.util.CharacterEntityParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -69,12 +70,15 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
   /** The encoding. */
   private String currentEncoding;
 
+  private CharacterEntityParser entityParser;
+
   /**
    * Constructs a new handler.
    */
   public ReportFactory(Parser parser, String finishTag)
   {
     super(parser,finishTag);
+    entityParser = CharacterEntityParser.createXMLEntityParser();
   }
 
   /**
@@ -230,7 +234,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
           throws SAXException
   {
     getReport().getReportConfiguration().setConfigProperty(currentProperty,
-                                                           currentText.toString ());
+                                                           entityParser.decodeEntities(currentText.toString ()));
     currentText = null;
     currentProperty = null;
   }

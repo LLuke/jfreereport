@@ -2,15 +2,12 @@
  * Date: Jan 14, 2003
  * Time: 6:31:18 PM
  *
- * $Id$
+ * $Id: LabelTemplate.java,v 1.1 2003/01/14 21:05:07 taqua Exp $
  */
 package com.jrefinery.report.filter.templates;
 
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.filter.StringFilter;
-import com.jrefinery.report.filter.SimpleDateFormatFilter;
-import com.jrefinery.report.filter.DataRowDataSource;
-import com.jrefinery.report.DataRow;
 
 public class LabelTemplate extends AbstractTemplate
 {

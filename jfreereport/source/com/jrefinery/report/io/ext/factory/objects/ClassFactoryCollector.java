@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 10:09:07 PM
  *
- * $Id: ClassFactoryCollector.java,v 1.2 2003/01/13 19:00:51 taqua Exp $
+ * $Id: ClassFactoryCollector.java,v 1.3 2003/01/22 19:38:26 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -34,8 +34,20 @@ public class ClassFactoryCollector extends ClassFactoryImpl
     {
       ClassFactory f = (ClassFactory) factories.get(i);
       ObjectDescription od = f.getDescriptionForClass(c);
-      if (od != null) return od;
+      if (od != null)
+        return od;
     }
-    return super.getDescriptionForClass(c);
+    ObjectDescription sod = super.getDescriptionForClass(c);
+    if (sod != null)
+      return sod;
+
+    for (int i = 0; i < factories.size(); i++)
+    {
+      ClassFactory f = (ClassFactory) factories.get(i);
+      ObjectDescription od = f.getSuperClassObjectDescription(c);
+      if (od != null)
+        return od;
+    }
+    return getSuperClassObjectDescription(c);
   }
 }

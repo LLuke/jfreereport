@@ -2,7 +2,7 @@
  * Date: Jan 22, 2003
  * Time: 5:33:53 PM
  *
- * $Id$
+ * $Id: FunctionsWriter.java,v 1.1 2003/01/22 19:45:28 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -60,6 +60,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
       Properties properties = new Properties();
       properties.setProperty("name", expression.getName());
       properties.setProperty("class", expression.getClass().getName());
+      writeTag(writer, tagName, properties, OPEN);
 
       Properties expressionProperties = expression.getProperties();
       Enumeration enum = expressionProperties.keys();
@@ -80,7 +81,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
         writeCloseTag(writer, ExpressionHandler.PROPERTIES_TAG);
       }
 
-      writeTag(writer, tagName, properties, OPEN);
+      writeCloseTag(writer, tagName);
     }
   }
 

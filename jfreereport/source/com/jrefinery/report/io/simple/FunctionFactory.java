@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.16 2002/12/12 20:24:03 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ParserUtil;
+import com.jrefinery.report.util.CharacterEntityParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -75,12 +76,15 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   /** The current encoding. */
   private String currentEncoding;
 
+  private CharacterEntityParser entityParser;
+
   /**
    * Creates a new function handler.
    */
   public FunctionFactory (Parser parser, String finishTag)
   {
     super(parser, finishTag);
+    entityParser = CharacterEntityParser.createXMLEntityParser();
   }
 
   /**
@@ -513,7 +517,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
       throw new SAXException ("EndProperty without properties tag?");
     }
 
-    currentProps.setProperty (currentProperty, currentText.toString ());
+    currentProps.setProperty (currentProperty, entityParser.decodeEntities(currentText.toString ()));
     currentText = null;
   }
 
@@ -527,7 +531,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
           throws SAXException
   {
     getReport().getProperties().setMarked(currentProperty, true);
-    getReport().setProperty(currentProperty, currentText.toString ());
+    getReport().setProperty(currentProperty, entityParser.decodeEntities( currentText.toString ()));
     currentText = null;
   }
 

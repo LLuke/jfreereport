@@ -2,7 +2,7 @@
  * Date: Jan 13, 2003
  * Time: 1:01:18 PM
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.1 2003/01/13 21:39:00 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.2 2003/01/22 19:38:28 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -56,6 +56,7 @@ public abstract class AbstractXMLDefinitionWriter
       safeTags.add(BandHandler.ELEMENT_TAG);
 
       safeTags.add(CompoundObjectHandler.COMPOUND_OBJECT_TAG);
+      safeTags.add(CompoundObjectHandler.COMPOUND_OBJECT_TAG, false, true);
 
       safeTags.add(DataSourceHandler.DATASOURCE_TAG);
 
@@ -92,6 +93,7 @@ public abstract class AbstractXMLDefinitionWriter
       safeTags.add(StylesHandler.STYLE_TAG);
 
       safeTags.add(StyleSheetHandler.COMPOUND_KEY_TAG);
+      safeTags.add(StyleSheetHandler.COMPOUND_KEY_TAG, false, true);
       safeTags.add(StyleSheetHandler.EXTENDS_TAG);
 
       safeTags.add(TemplatesHandler.TEMPLATE_TAG);

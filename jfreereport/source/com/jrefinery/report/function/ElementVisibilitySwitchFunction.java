@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.8 2002/12/02 17:29:04 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.9 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -39,6 +39,7 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Element;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 
 /**
@@ -98,6 +99,10 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
     if (e != null)
     {
       e.setVisible(trigger);
+    }
+    else
+    {
+      Log.debug ("Element not defined in the item band");
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.3 2003/01/21 17:11:37 taqua Exp $
+ * $Id: ElementFactory.java,v 1.4 2003/01/22 19:38:28 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.CharacterEntityParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -112,6 +113,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
 
   private FontFactory.FontInformation textElementFont;
 
+  private CharacterEntityParser entityParser;
+
   /**
    * Creates a new ElementFactory. The factory queries the current Band of the ReportFactory
    * and will add created element to this band. If unknown end-Tags are encountered, the
@@ -124,6 +127,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     this.currentBand = band;
     this.currentText = new StringBuffer();
     fontFactory = new FontFactory();
+    this.entityParser = CharacterEntityParser.createXMLEntityParser();
   }
 
   /**
@@ -238,7 +242,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   protected String getCurrentText()
   {
-    return currentText.toString();
+    return entityParser.decodeEntities(currentText.toString());
   }
 
   /**

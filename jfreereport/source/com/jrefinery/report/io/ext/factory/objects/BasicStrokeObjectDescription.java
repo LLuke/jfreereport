@@ -2,7 +2,7 @@
  * Date: Jan 22, 2003
  * Time: 7:33:26 PM
  *
- * $Id$
+ * $Id: BasicStrokeObjectDescription.java,v 1.1 2003/01/22 19:45:28 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -18,9 +18,16 @@ public class BasicStrokeObjectDescription extends AbstractObjectDescription
 
   private float getFloatParameter (String param)
   {
-    Float p = (Float) getParameter(param);
+    String p = (String) getParameter(param);
     if (p == null) return 0;
-    return p.floatValue();
+    try
+    {
+      return Float.parseFloat(p);
+    }
+    catch (Exception e)
+    {
+      return 0;
+    }
   }
 
   public Object createObject()
