@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.35 2002/09/13 15:38:08 mungady Exp $
+ * $Id: PreviewFrame.java,v 1.36 2002/09/16 16:59:16 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -97,6 +97,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.RepaintManager;
+import javax.swing.AbstractAction;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Insets;
@@ -106,6 +107,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
@@ -127,8 +129,65 @@ import java.util.ResourceBundle;
  */
 public class PreviewFrame
     extends JFrame
-    implements ActionListener, PropertyChangeListener, JFreeReportConstants
+    implements JFreeReportConstants
 {
+
+  private class ReportPanePropertyChangeListener implements PropertyChangeListener
+  {
+    public ReportPanePropertyChangeListener()
+    {
+    }
+
+    /**
+     * Listen to the assigned reportPane
+     *
+     * @param event  the property change event.
+     */
+    public void propertyChange(PropertyChangeEvent event)
+    {
+      Object source = event.getSource();
+      String property = event.getPropertyName();
+
+      if (property.equals(ReportPane.PAGENUMBER_PROPERTY)
+          || property.equals(ReportPane.NUMBER_OF_PAGES_PROPERTY))
+      {
+
+        Object[] params = new Object[]{
+          new Integer(reportPane.getPageNumber()),
+          new Integer(reportPane.getNumberOfPages())
+        };
+        getStatus().setText(
+            MessageFormat.format(
+                getResources().getString("statusline.pages"),
+                params
+            )
+        );
+        validateButtons();
+      }
+      else if (property.equals(ReportPane.ERROR_PROPERTY))
+      {
+        if (reportPane.hasError())
+        {
+          Exception ex = reportPane.getError();
+
+          ex.printStackTrace();
+          getStatus().setText(
+              MessageFormat.format(
+                  getResources().getString("statusline.error"),
+                  new Object[]{ex.getMessage()}
+              )
+          );
+        }
+        validateButtons();
+      }
+      else if (property.equals(ReportPane.ZOOMFACTOR_PROPERTY))
+      {
+        Log.debug ("ZoomFactor changed!");
+        validateButtons();
+        validate();
+      }
+    }
+  }
 
   /**
    * Default 'save as' action for the frame.
@@ -469,6 +528,21 @@ public class PreviewFrame
     }
   }
 
+  private class ZoomSelectAction extends AbstractAction
+  {
+    public ZoomSelectAction()
+    {
+    }
+
+    /**
+     * Invoked when an action occurs.
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+      setZoomFactor(zoomSelect.getSelectedIndex());
+    }
+  }
+
   /** The base class for localised resources. */
   public static final String BASE_RESOURCE_CLASS =
       "com.jrefinery.report.resources.JFreeReportResources";
@@ -558,7 +632,6 @@ public class PreviewFrame
       public void componentHidden(ComponentEvent e)
       {
         ((Window) (e.getComponent())).dispose();
-        System.out.println("Window is disposed...");
       }
     });
 
@@ -580,7 +653,7 @@ public class PreviewFrame
     content.add(toolbar, BorderLayout.NORTH);
 
     reportPane = createReportPane(report);
-    reportPane.addPropertyChangeListener(this);
+    reportPane.addPropertyChangeListener(createReportPanePropertyChangeListener());
 
     JPanel reportPaneHolder = new JPanel(new CenterLayout());
     reportPaneHolder.add(reportPane);
@@ -613,6 +686,11 @@ public class PreviewFrame
   public PDFSaveDialog getPdfSaveDialog()
   {
     return pdfSaveDialog;
+  }
+
+  protected ReportPanePropertyChangeListener createReportPanePropertyChangeListener()
+  {
+    return new ReportPanePropertyChangeListener();
   }
 
   /**
@@ -654,24 +732,9 @@ public class PreviewFrame
   }
 
   /**
-   * Handles user actions within the frame (menu selections and mouse clicks).
-   * @param event The action event.
-   */
-  public void actionPerformed(ActionEvent event)
-  {
-
-    String command = event.getActionCommand();
-
-    if (command.equals("ZoomSelect"))
-    {
-      setZoomFactor(zoomSelect.getSelectedIndex());
-    }
-  }
-
-  /**
    * Presents a "Save As" dialog to the user, enabling him/her to save the report in PDF format.
    */
-  public void attemptSaveAs()
+  protected void attemptSaveAs()
   {
     getPdfSaveDialog().savePDF(reportPane.getReport(), reportPane.getPageFormat());
   }
@@ -679,7 +742,7 @@ public class PreviewFrame
   /**
    * Displays a printer page setup dialog, then updates the report pane with the new page size.
    */
-  public void attemptPageSetup()
+  protected void attemptPageSetup()
   {
     PrinterJob pj = PrinterJob.getPrinterJob();
     PageFormat pf = pj.pageDialog(reportPane.getPageFormat());
@@ -692,7 +755,7 @@ public class PreviewFrame
   /**
    * Prints the report.
    */
-  public void attemptPrint()
+  protected void attemptPrint()
   {
     PrinterJob pj = PrinterJob.getPrinterJob();
     pj.setPageable(reportPane);
@@ -717,7 +780,7 @@ public class PreviewFrame
    * @param localisationBase  the resource key prefix.
    * @param e  the exception.
    */
-  private void showExceptionDialog(String localisationBase, Exception e)
+  protected void showExceptionDialog(String localisationBase, Exception e)
   {
     ExceptionDialog.showExceptionDialog(
         getResources().getString(localisationBase + ".title"),
@@ -731,7 +794,7 @@ public class PreviewFrame
   /**
    * Method lastPage moves to the last page
    */
-  public void lastPage()
+  protected void lastPage()
   {
     reportPane.setPageNumber(reportPane.getNumberOfPages());
     //validateButtons();
@@ -742,7 +805,7 @@ public class PreviewFrame
    *
    * CHANGED FUNCTION
    */
-  public void increasePageNumber()
+  protected void increasePageNumber()
   {
     int pn = reportPane.getPageNumber();
     int mp = reportPane.getNumberOfPages();
@@ -757,7 +820,7 @@ public class PreviewFrame
   /**
    * Method firstPage changes to the first page if not already on the first page
    */
-  public void firstPage()
+  protected void firstPage()
   {
     if (reportPane.getPageNumber() != 1)
     {
@@ -769,7 +832,7 @@ public class PreviewFrame
   /**
    * Decreases the page number.
    */
-  public void decreasePageNumber()
+  protected void decreasePageNumber()
   {
     int pn = reportPane.getPageNumber();
     if (pn > 1)
@@ -783,7 +846,7 @@ public class PreviewFrame
    * Increases the zoom factor for the report pane (unless it is already at maximum zoom).
    *
    */
-  public void increaseZoom()
+  protected void increaseZoom()
   {
     if (zoomIndex < ZOOM_FACTORS.length - 1)
     {
@@ -799,7 +862,7 @@ public class PreviewFrame
   /**
    * Decreases the zoom factor for the report pane (unless it is already at the minimum zoom).
    * */
-  public void decreaseZoom()
+  protected void decreaseZoom()
   {
     if (zoomIndex > 0)
     {
@@ -857,6 +920,20 @@ public class PreviewFrame
     registerAction(previousPageAction);
     registerAction(zoomInAction);
     registerAction(zoomOutAction);
+
+    addWindowListener(new WindowAdapter ()
+    {
+      /**
+       * Invoked when a window is in the process of being closed.
+       * The close operation can be overridden at this point.
+       */
+      public void windowClosing(WindowEvent e)
+      {
+        closeAction.actionPerformed (new ActionEvent (this, ActionEvent.ACTION_PERFORMED, "CloseFrame"));
+      }
+    }
+    );
+
   }
 
   /**
@@ -930,6 +1007,11 @@ public class PreviewFrame
   protected Action createDefaultAboutAction()
   {
     return new DefaultAboutAction();
+  }
+
+  protected Action createZoomSelectAction ()
+  {
+    return new ZoomSelectAction();
   }
 
   /**
@@ -1190,7 +1272,7 @@ public class PreviewFrame
    *
    * @return a panel containing a combobox with zoom values.
    */
-  private JComponent createZoomPane()
+  protected JComponent createZoomPane()
   {
     DefaultComboBoxModel model = new DefaultComboBoxModel();
     for (int i = 0; i < ZOOM_FACTORS.length; i++)
@@ -1200,7 +1282,7 @@ public class PreviewFrame
     zoomSelect = new JComboBox(model);
     zoomSelect.setActionCommand("ZoomSelect");
     zoomSelect.setSelectedIndex(DEFAULT_ZOOM_INDEX);
-    zoomSelect.addActionListener(this);
+    zoomSelect.addActionListener(createZoomSelectAction());
     zoomSelect.setAlignmentX(zoomSelect.RIGHT_ALIGNMENT);
 
     JPanel zoomPane = new JPanel();
@@ -1209,57 +1291,6 @@ public class PreviewFrame
 
     return zoomPane;
   }
-
-  /**
-   * Listen to the assigned reportPane
-   *
-   * @param event  the property change event.
-   */
-  public void propertyChange(PropertyChangeEvent event)
-  {
-    Object source = event.getSource();
-    String property = event.getPropertyName();
-
-    if (property.equals(ReportPane.PAGENUMBER_PROPERTY)
-        || property.equals(ReportPane.NUMBER_OF_PAGES_PROPERTY))
-    {
-
-      Object[] params = new Object[]{
-        new Integer(reportPane.getPageNumber()),
-        new Integer(reportPane.getNumberOfPages())
-      };
-      getStatus().setText(
-          MessageFormat.format(
-              getResources().getString("statusline.pages"),
-              params
-          )
-      );
-      validateButtons();
-    }
-    else if (property.equals(ReportPane.ERROR_PROPERTY))
-    {
-      if (reportPane.hasError())
-      {
-        Exception ex = reportPane.getError();
-
-        ex.printStackTrace();
-        getStatus().setText(
-            MessageFormat.format(
-                getResources().getString("statusline.error"),
-                new Object[]{ex.getMessage()}
-            )
-        );
-      }
-      validateButtons();
-    }
-    else if (property.equals(ReportPane.ZOOMFACTOR_PROPERTY))
-    {
-      Log.debug ("ZoomFactor changed!");
-      validateButtons();
-      validate();
-    }
-  }
-
   /**
    * Updates the states of all buttons to reflect the state of the assigned ReportPane.
    */
@@ -1275,19 +1306,6 @@ public class PreviewFrame
 
     zoomOutAction.setEnabled(zoomSelect.getSelectedIndex() != 0);
     zoomInAction.setEnabled(zoomSelect.getSelectedIndex() != (ZOOM_FACTORS.length - 1));
-  }
-
-  /**
-   * @see JFrame#processWindowEvent(WindowEvent)
-   */
-  protected void processWindowEvent(WindowEvent windowEvent)
-  {
-    if (windowEvent.getID() == WindowEvent.WINDOW_CLOSING)
-    {
-      closeAction.actionPerformed(
-          new ActionEvent(this, ActionEvent.ACTION_PERFORMED, closeAction.NAME));
-    }
-    super.processWindowEvent(windowEvent);
   }
 
   /**
