@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.14 2004/03/16 15:09:22 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.15 2004/03/16 15:21:03 taqua Exp $
  *
  * Changes:
  * --------
@@ -45,17 +45,17 @@ package org.jfree.report;
 import java.util.Arrays;
 
 import org.jfree.JCommon;
+import org.jfree.base.Library;
 import org.jfree.ui.about.Contributor;
-import org.jfree.ui.about.Library;
-import org.jfree.ui.about.Licences;
 import org.jfree.ui.about.ProjectInfo;
+import org.jfree.ui.about.Licences;
 
 /**
  * Details about the JFreeReport project.
  *
  * @author David Gilbert
  */
-public class JFreeReportInfo extends ProjectInfo implements Cloneable
+public class JFreeReportInfo extends ProjectInfo
 {
   /**
    * Constructs an object containing information about the JFreeReport project.
@@ -83,14 +83,8 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
         }
     ));
 
-    setLibraries(Arrays.asList(
-        new Library[]
-        {
-          new Library(JCommon.INFO),
-          new Library("Pixie", "0.8.1", "LGPL",
-              "http://sourceforge.net/projects/jfreereport/"),
-        }
-    ));
+    this.addLibrary(JCommon.INFO);
+    this.addLibrary(new Library("Pixie", "0.8.1", "LGPL", "http://sourceforge.net/projects/jfreereport/"));
   }
 
   /**
