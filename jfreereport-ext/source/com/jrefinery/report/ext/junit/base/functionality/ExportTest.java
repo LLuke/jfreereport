@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportTest.java,v 1.1 2003/06/01 20:43:38 taqua Exp $
+ * $Id: ExportTest.java,v 1.2 2003/06/10 18:17:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,27 +38,11 @@
 
 package com.jrefinery.report.ext.junit.base.functionality;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.net.URL;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
-import com.jrefinery.report.targets.pageable.PageableReportProcessor;
-import com.jrefinery.report.targets.pageable.output.EpsonPrinterCommandSet;
-import com.jrefinery.report.targets.pageable.output.PlainTextOutputTarget;
-import com.jrefinery.report.targets.pageable.output.PrinterCommandSet;
-import com.jrefinery.report.targets.table.csv.CSVTableProcessor;
-import com.jrefinery.report.targets.table.excel.ExcelProcessor;
-import com.jrefinery.report.targets.table.html.HtmlProcessor;
-import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
-import com.jrefinery.report.targets.table.html.ZIPHtmlFilesystem;
-import com.jrefinery.report.targets.table.rtf.RTFProcessor;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.NullOutputStream;
 import junit.framework.TestCase;
 
 public class ExportTest extends TestCase
@@ -68,30 +52,34 @@ public class ExportTest extends TestCase
     super(s);
   }
 
-  public final static String[] REPORTS = ParseTest.REPORTS;
-
   public void testConvertReport() throws Exception
   {
     try
     {
-      for (int i = 0; i < REPORTS.length; i++)
+      for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
       {
-        URL url = this.getClass().getResource(REPORTS[i]);
+        URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[i].getReportDefinition());
         assertNotNull(url);
         Log.debug("Processing: " + url);
         JFreeReport report = ReportGenerator.getInstance().parseReport(url);
+        report.setData(FunctionalityTestLib.REPORTS[i].getReportTableModel());
+
+        Log.debug("   GRAPHICS2D ..");
+        assertTrue(FunctionalityTestLib.execGraphics2D(report));
+        Log.debug("   PDF ..");
+        assertTrue(FunctionalityTestLib.createPDF(report));
         Log.debug("   CSV ..");
-        createCSV(report);
+        FunctionalityTestLib.createCSV(report);
         Log.debug("   PLAIN_TEXT ..");
-        createPlainText(report);
+        assertTrue(FunctionalityTestLib.createPlainText(report));
         Log.debug("   RTF ..");
-        createRTF(report);
+        //createRTF(report); // todo fix the memory leak
         Log.debug("   STREAM_HTML ..");
-        createStreamHTML(report);
+        FunctionalityTestLib.createStreamHTML(report);
         Log.debug("   EXCEL ..");
-        createXLS(report);
+        FunctionalityTestLib.createXLS(report);
         Log.debug("   ZIP_HTML ..");
-        createZIPHTML(report);
+        FunctionalityTestLib.createZIPHTML(report);
       }
     }
     catch (Exception e)
@@ -101,73 +89,5 @@ public class ExportTest extends TestCase
     }
   }
 
-  public static void createPlainText(JFreeReport report)
-      throws Exception
-  {
-    PageableReportProcessor pr = new PageableReportProcessor(report);
-    OutputStream fout = new BufferedOutputStream(new NullOutputStream());
-    PrinterCommandSet pc = new EpsonPrinterCommandSet(fout, report.getDefaultPageFormat(), 10, 15);
-    PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
-
-    pr.setOutputTarget(target);
-    target.open();
-    pr.processReport();
-    target.close();
-    fout.close();
-  }
-
-  public static void createRTF(JFreeReport report)
-      throws Exception
-  {
-    RTFProcessor pr = new RTFProcessor(report);
-    pr.setStrictLayout(false);
-    OutputStream fout = new BufferedOutputStream(new NullOutputStream());
-    pr.setOutputStream(fout);
-    pr.processReport();
-    fout.close();
-  }
-
-  public static void createCSV(JFreeReport report)
-      throws Exception
-  {
-    CSVTableProcessor pr = new CSVTableProcessor(report);
-    pr.setStrictLayout(false);
-    Writer fout = new BufferedWriter(new OutputStreamWriter(new NullOutputStream()));
-    pr.setWriter(fout);
-    pr.processReport();
-    fout.close();
-  }
-
-  public static void createXLS(JFreeReport report)
-      throws Exception
-  {
-    ExcelProcessor pr = new ExcelProcessor(report);
-    pr.setStrictLayout(false);
-    OutputStream fout = new BufferedOutputStream(new NullOutputStream());
-    pr.setOutputStream(fout);
-    pr.processReport();
-    fout.close();
-  }
-
-  public static void createStreamHTML(JFreeReport report)
-      throws Exception
-  {
-    HtmlProcessor pr = new HtmlProcessor(report);
-    pr.setStrictLayout(false);
-    OutputStream fout = new BufferedOutputStream(new NullOutputStream());
-    pr.setFilesystem(new StreamHtmlFilesystem(fout));
-    pr.processReport();
-    fout.close();
-  }
-
-  public static void createZIPHTML(JFreeReport report)
-      throws Exception
-  {
-    HtmlProcessor pr = new HtmlProcessor(report);
-    OutputStream fout = new BufferedOutputStream(new NullOutputStream());
-    pr.setFilesystem(new ZIPHtmlFilesystem(fout, "data"));
-    pr.processReport();
-    fout.close();
-  }
 
 }

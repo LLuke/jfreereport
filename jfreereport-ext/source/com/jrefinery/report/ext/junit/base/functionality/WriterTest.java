@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WriterTest.java,v 1.2 2003/06/10 18:17:27 taqua Exp $
+ * $Id: WriterTest.java,v 1.3 2003/06/12 19:55:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,7 +51,6 @@ import org.xml.sax.InputSource;
 
 public class WriterTest extends TestCase
 {
-  public final static String[] REPORTS = ParseTest.REPORTS;
 
   public WriterTest(String s)
   {
@@ -61,9 +60,9 @@ public class WriterTest extends TestCase
   public void testConvertReport() throws Exception
   {
     ReportConverter rc = new ReportConverter();
-    for (int i = 0; i < REPORTS.length; i++)
+    for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
     {
-      URL url = this.getClass().getResource(REPORTS[i]);
+      URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[i].getReportDefinition());
       assertNotNull(url);
       ByteArrayOutputStream bo = new ByteArrayOutputStream();
       try
