@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -21,58 +21,46 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * UnicodeEncodeTest.java
+ * Java14LogModule.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: UnicodeEncodeTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
+ * $Id$
  *
  * Changes 
  * -------------------------
- * 12.06.2003 : Initial version
+ * 11.07.2003 : Initial version
  *  
  */
 
-package org.jfree.report.ext.junit.ext;
+package org.jfree.report.ext.modules.java14log;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStreamWriter;
-
+import org.jfree.report.modules.AbstractModule;
+import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.ReportConfiguration;
 
-public class UnicodeEncodeTest
+public class Java14LogModule extends AbstractModule
 {
-  public static void main(final String[] args) throws Exception
+  public Java14LogModule() throws ModuleInitializeException
   {
-    /*
-    final String test = " ";
-    writeBytes(test.getBytes("UTF-16"));
-    Log.debug ("------------------");
-    final ByteArrayOutputStream bo = new ByteArrayOutputStream();
-    final OutputStreamWriter wr = new OutputStreamWriter(bo, "UTF-16");
-    wr.write("  ");
-    wr.write("  ");
-    wr.flush();
-    writeBytes(bo.toByteArray());
-    */
-    "Test".getBytes("Cp1250");
+    loadModuleInfo();
   }
 
-  public static void writeBytes (final byte[] bytes)
+  public void initialize() throws ModuleInitializeException
   {
-    for (int i = 0; i < bytes.length; i++)
+    if (ReportConfiguration.getGlobalConfig().isDisableLogging())
     {
-      if (i != 0)
-      {
-        System.out.print (";");
-      }
-      System.out.print (Integer.toHexString(bytes[i]));
-
+      return;
+    }
+    if (ReportConfiguration.getGlobalConfig().getLogTarget().equals
+        (Java14LogTarget.class.getName()))
+    {
+      Log.getJFreeReportLog().addTarget(new Java14LogTarget());
+      Log.info ("Java 1.4 log target started ... previous log messages could have been ignored.");
     }
   }
-
-
 }

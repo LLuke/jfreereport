@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ChineseTextTest.java,v 1.2 2003/07/03 16:06:19 taqua Exp $
+ * $Id: ChineseTextTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,6 +47,7 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.modules.parser.base.ReportGenerator;
+import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.Log;
@@ -120,11 +121,13 @@ public class ChineseTextTest
     //
     // Embedding can also be enabled for single elements (using a FontDefinition
     // object).
-    report.getReportConfiguration().setPDFTargetEmbedFonts(true);
+    report.getReportConfiguration().setConfigProperty
+        (PDFOutputTarget.PDFTARGET_EMBED_FONTS, "true");
 
     // Make the PDF file an Unicode file. Without this, you would only see
     // ascii characters, all other characters would not be displayed.
-    report.getReportConfiguration().setPdfTargetEncoding("Identity-H");
+    report.getReportConfiguration().setConfigProperty
+        (PDFOutputTarget.PDFTARGET_ENCODING, "Identity-H");
     return report;
   }
 
