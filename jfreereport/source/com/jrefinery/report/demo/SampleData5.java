@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SampleData5.java,v 1.5 2002/12/12 12:26:55 mungady Exp $
+ * $Id: SampleData5.java,v 1.6 2003/01/07 15:10:12 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -62,7 +62,7 @@ public class SampleData5 extends AbstractTableModel
    */
   public int getRowCount ()
   {
-    return 12000;
+    return 120000;
   }
 
   /**

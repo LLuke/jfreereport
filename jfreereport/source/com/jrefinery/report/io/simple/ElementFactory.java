@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.16 2003/03/07 16:56:01 taqua Exp $
+ * $Id: ElementFactory.java,v 1.17 2003/03/07 18:58:34 taqua Exp $
  *
  * Changes
  * -------
@@ -48,23 +48,22 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-
 import com.jrefinery.report.Band;
+import com.jrefinery.report.DrawableElement;
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.ImageElement;
 import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.TextElement;
-import com.jrefinery.report.DrawableElement;
-import com.jrefinery.report.filter.DrawableFilter;
 import com.jrefinery.report.filter.DataRowDataSource;
+import com.jrefinery.report.filter.DrawableFilter;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ParserUtil;
-import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.CharacterEntityParser;
 import com.jrefinery.report.util.ReportConfiguration;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 /**
  * The ElementFactory is responsible for creating ReportElements and is called by the
@@ -420,7 +419,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
           elementScale,
           elementARatio);
       boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
-      element.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+      element.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                      new Boolean (elementDynamic));
 
       getCurrentBand().addElement(element);
@@ -457,7 +456,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         elementARatio);
 
     boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
-    element.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    element.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                    new Boolean (elementDynamic));
 
     getCurrentBand().addElement(element);
@@ -506,7 +505,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         elementScale,
         elementARatio);
     boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
-    element.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    element.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                    new Boolean (elementDynamic));
 
     getCurrentBand().addElement(element);
@@ -536,7 +535,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         elementScale,
         elementARatio);
     boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
-    element.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    element.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                    new Boolean (elementDynamic));
 
     getCurrentBand().addElement(element);
@@ -567,7 +566,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         elementScale,
         elementARatio);
     boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
-    element.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    element.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                    new Boolean (elementDynamic));
 
     getCurrentBand().addElement(element);
@@ -770,7 +769,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         null,
         getCurrentText());
 
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
     
@@ -926,7 +925,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         resourceBase,
         getCurrentText());
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
@@ -946,7 +945,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         resourceBase,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
@@ -968,7 +967,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementNullString,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
@@ -989,7 +988,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementNullString,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
@@ -1011,7 +1010,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementFormatString,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
@@ -1033,7 +1032,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementFormatString,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
@@ -1055,7 +1054,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementFormatString,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
@@ -1076,7 +1075,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementNullString,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
@@ -1098,7 +1097,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementFormatString,
         textElementSourceName);
     FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+    te.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.15 2003/03/30 21:23:37 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.16 2003/03/31 20:49:50 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -144,7 +144,7 @@ public class PageTotalFunction extends PageFunction
     // report started is no longer the first event. PageStarted is called first!
     if (pageStorage == null)
     {
-      Log.debug ("Report Started: PageStorage was null: " + this.hashCode());
+//      Log.debug ("Report Started: PageStorage was null: " + this.hashCode());
       o = this;
       pageStorage = new PageStorage(getStartPage() - 1);
     }
@@ -160,7 +160,7 @@ public class PageTotalFunction extends PageFunction
       {
         this.setPage(getPage() + 1);
       }
-      Log.debug ("Stored: " + event.getState().getCurrentDisplayItem());
+  //    Log.debug ("Stored: " + event.getState().getCurrentDisplayItem());
       groupPages.put(new Integer(event.getState().getCurrentDisplayItem()), this.pageStorage);
     }
     else
@@ -172,7 +172,7 @@ public class PageTotalFunction extends PageFunction
             groupPages.get(new Integer(event.getState().getCurrentDisplayItem()));
         if (pageStorage == null)
         {
-          Log.error ("Current DataItem: " + event.getState().getCurrentDisplayItem() + " " + groupPages);
+//          Log.error ("Current DataItem: " + event.getState().getCurrentDisplayItem() + " " + groupPages);
           throw new IllegalStateException("No page-storage for the current state: "
                                           + event.getState().getCurrentDataItem());
 
@@ -259,7 +259,7 @@ public class PageTotalFunction extends PageFunction
   {
     if (this.pageStorage == null)
     {
-      Log.warn ("CurrentPage is null, no repagination done?: " + this.hashCode() + " -> " + (o == this));
+//      Log.warn ("CurrentPage is null, no repagination done?: " + this.hashCode() + " -> " + (o == this));
       return 0;
     }
 
@@ -336,7 +336,7 @@ public class PageTotalFunction extends PageFunction
   {
     PageTotalFunction function = (PageTotalFunction) super.getInstance();
     function.groupPages = new HashMap();
-    Log.debug ("PageStorage Will Be null: " + this.hashCode() + " -> " + (o == this));
+//    Log.debug ("PageStorage Will Be null: " + this.hashCode() + " -> " + (o == this));
     function.pageStorage = null;
     return function;
   }

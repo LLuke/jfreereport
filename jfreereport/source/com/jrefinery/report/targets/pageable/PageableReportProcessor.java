@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.32 2003/03/26 10:49:23 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.33 2003/03/31 20:49:55 taqua Exp $
  *
  * Changes
  * -------
@@ -462,7 +462,6 @@ public class PageableReportProcessor
   public ReportState processPage(final ReportState currPage, OutputTarget out, boolean failOnError)
       throws ReportProcessingException
   {
-    Log.debug ("!---------------------------------------------------------->");
     if (isHandleInterruptedState() && Thread.interrupted())
     {
       throw new ReportInterruptedException("Current thread is interrupted. Returning.");
