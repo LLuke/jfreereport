@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.27 2002/11/05 18:56:42 taqua Exp $
+ * $Id: ReportPane.java,v 1.28 2002/12/02 17:40:59 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -691,9 +691,6 @@ public class ReportPane extends JComponent implements Printable, Pageable
             pageNr = 1;
           }
         }
-        Log.info ("ListSize after Repaginating: " + list.size());
-        Log.info ("PageNumberCount after Repaginating: " + ((Number) (list.get(0)).getProperty (JFreeReport.REPORT_PAGECOUNT_PROPERTY)));
-
         setCurrentPageCount (pageCount);
         setPageNumber (pageNr);
         setPageStateList (list);

@@ -123,14 +123,24 @@
         </function>
 
         <function name="PageNumber" class="com.jrefinery.report.function.PageFunction">
+          <!--
+            Activating this property counts the pages needed for the given group.
+            Only usefull with manual pagebreaks
+
             <properties>
                 <property name="group">Letter Group</property>
             </properties>
+            -->
         </function>
         <function name="PageTotal" class="com.jrefinery.report.function.PageTotalFunction">
+          <!--
+            Activating this property counts the pages needed for the given group.
+            Only usefull with manual pagebreaks
+
             <properties>
                 <property name="group">Letter Group</property>
             </properties>
+           -->
         </function>
         <expression name="pageXofY" class="com.jrefinery.report.function.TextFormatExpression">
             <properties>

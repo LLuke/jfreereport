@@ -19,4 +19,5 @@
 * Better Support for international Fonts in the PDF-Target
   - parse TTF-Files for supported Charsets/Unicode-Ranges
   - automaticly adjust encoding if nessesary
- 
+* Speedup when loosing PageStates ... be more flexible in that list,
+  small reports don't need a huge gap between master-states 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.21 2002/11/06 22:15:29 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.1 2002/12/02 17:57:01 taqua Exp $
  *
  * Changes
  * -------
@@ -432,7 +432,6 @@ public class G2OutputTarget extends AbstractOutputTarget
     double cFact = getFont().getSize2D() / fm.getHeight();
 
     g2.drawString(text, 0.0f, (float) (baseline * cFact));
-    Log.debug ("DrawString: " + getOperationBounds() + " -> "+ text);
   }
 
   /**

@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageableReportProcessor.java,v 1.1 2002/12/02 17:56:52 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.2 2002/12/02 18:25:53 taqua Exp $
  *
  * Changes
  * -------
@@ -131,7 +131,6 @@ public class PageableReportProcessor
     while (!rs.isFinish())
     {
       ReportState nrs = processPage(rs, outputTarget);
-      Log.debug ("OutputTarget State: " + outputTarget.isOpen());
       if ((nrs.isFinish() == false) && nrs.isProceeding(rs) == false)
       {
         throw new ReportProcessingException("Report is not proceeding");

@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: TextContent.java,v 1.1 2002/12/02 17:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,6 @@ public class TextContent extends ContentContainer
   {
     super (bounds);
     this.sizeCalculator = ot;
-    Log.debug ("Text: "  + value + " -> " + ot.getStringWidth(value, 0, value.length()));
 
     double x = bounds.getX();
     double y = bounds.getY();

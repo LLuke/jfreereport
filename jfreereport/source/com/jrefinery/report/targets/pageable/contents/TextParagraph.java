@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: TextParagraph.java,v 1.1 2002/12/02 17:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -33,7 +33,6 @@
 package com.jrefinery.report.targets.pageable.contents;
 
 import com.jrefinery.report.targets.pageable.SizeCalculator;
-import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
 import java.text.BreakIterator;
