@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SubSetTableModel.java,v 1.8 2003/02/26 13:57:59 mungady Exp $
+ * $Id: SubSetTableModel.java,v 1.9 2003/02/26 16:42:22 mungady Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ public class SubSetTableModel implements TableModel
 {
   /**
    * A helper class, that translates tableevents received from the wrapped table model
-   * and forwards them with changed indices to the regitered listeners.
+   * and forwards them with changed indices to the registered listeners.
    */
   private class TableEventTranslator implements TableModelListener
   {
