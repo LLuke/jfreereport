@@ -1,26 +1,47 @@
-/*
- * Copyright (c) 1998, 1999 by Free Software Foundation, Inc.
+/*/**
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License as published
- * by the Free Software Foundation, version 2. (see COPYING.LIB)
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation
- * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------------
+ * Worker.java
+ * ----------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ *
+ * Changes
+ * -------
+ * 05-Feb-2002 : Initial version
  */
 
 package com.jrefinery.report.util;
 
 /**
- * Ein einfacher Arbeiter, der die über setWorkload gelieferte Arbeit
- * ausführt und danach wieder schläft.
- *
+ * A simple worker implementation.
+ * The worker executes a assigned workload and then sleeps until
+ * an other workload is set or the worker is killed.
  */
 public class Worker extends Thread
 {
@@ -40,7 +61,7 @@ public class Worker extends Thread
   }
 
   /**
-   * creates a new worker with an idle timeout of 2 minutes.
+   * creates a new worker with an default idle timeout of 2 minutes.
    */
   public Worker()
   {
@@ -64,21 +85,33 @@ public class Worker extends Thread
   }
 
   /**
-   * Kills the worker after he completed his work.
+   * Kills the worker after he completed his work. Awakens the worker if he's
+   * sleeping, so that the worker dies without delay.
    */
   public void finish()
   {
     finish = true;
+    synchronized (this)
+    {
+      this.notify();
+    }
   }
 
   /**
    * checks, whether this worker has some work to do.
+   *
+   * @return true, if this worker has no more work and is currently sleeping.
    */
   public boolean isAvailable()
   {
     return (workload == null);
   }
 
+  /**
+   * If a workload is set, process it. After the workload is processed,
+   * this worker starts to sleep until a new workload is set for the worker
+   * or the worker got the finish() request.
+   */
   public synchronized void run()
   {
     while (!finish)

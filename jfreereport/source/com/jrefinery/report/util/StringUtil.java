@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringUtil.java,v 1.6 2002/12/12 12:26:57 mungady Exp $
+ * $Id: StringUtil.java,v 1.7 2003/01/25 20:34:12 taqua Exp $
  *
  * Changes
  * -------
  * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
- *
+ * 25-Jan-2003 : Added URL-Encoding and CSS-Encoding methods to support HTML-Output 
  */
 
 package com.jrefinery.report.util;

@@ -25,12 +25,13 @@
  * --------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: LogTarget.java,v 1.6 2002/12/12 12:26:57 mungady Exp $
+ * $Id: LogTarget.java,v 1.7 2002/12/18 10:13:16 mungady Exp $
  *
  * Changes
  * -------
  * 11-May-2002 : Initial version
- *
+ * 06-Dec-2002 : LogTargets now use Object-Parameters instead of Strings.
+ * 05-Feb-2003 : Removed unnecessary methods.
  */
 package com.jrefinery.report.util;
 
@@ -88,65 +89,4 @@ public interface LogTarget
    * @param e  the exception
    */
   public void log (int level, Object message, Exception e);
-
-  /**
-   * A convenience method for logging a 'debug' message.
-   *
-   * @param message  the message.
-   */
-  public void debug (Object message);
-
-  /**
-   * A convenience method for logging a 'debug' message.
-   *
-   * @param message  the message.
-   * @param e  the exception.
-   */
-  public void debug (Object message, Exception e);
-
-  /**
-   * A convenience method for logging an 'info' message.
-   *
-   * @param message  the message.
-   */
-  public void info (Object message);
-
-  /**
-   * A convenience method for logging an 'info' message.
-   *
-   * @param message  the message.
-   * @param e  the exception.
-   */
-  public void info (Object message, Exception e);
-
-  /**
-   * A convenience method for logging a 'warning' message.
-   *
-   * @param message  the message.
-   */
-  public void warn (Object message);
-
-  /**
-   * A convenience method for logging a 'warning' message.
-   *
-   * @param message  the message.
-   * @param e  the exception.
-   */
-  public void warn (Object message, Exception e);
-
-  /**
-   * A convenience method for logging an 'error' message.
-   *
-   * @param message  the message.
-   */
-  public void error (Object message);
-
-  /**
-   * A convenience method for logging an 'error' message.
-   *
-   * @param message  the message.
-   * @param e  the exception.
-   */
-  public void error (Object message, Exception e);
-
 }

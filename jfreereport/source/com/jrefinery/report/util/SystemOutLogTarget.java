@@ -28,13 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.10 2002/12/12 12:26:57 mungady Exp $
+ * $Id: SystemOutLogTarget.java,v 1.11 2002/12/18 10:13:16 mungady Exp $
  *
  * Changes
  * -------
  * 11-May-2002 : Initial version
  * 17-Dec-2002 : Javadoc updates (DG);
- *
+ * 05-Feb-2003 : Interface cleanup - removed unnecessary methods.
  */
 
 package com.jrefinery.report.util;
@@ -101,89 +101,5 @@ public class SystemOutLogTarget implements LogTarget, Serializable
       System.out.println (message);
       e.printStackTrace (System.out);
     }
-  }
-
-  /**
-   * A convenience method for logging a 'debug' message.
-   *
-   * @param message  the message.
-   */
-  public void debug (Object message)
-  {
-    log (DEBUG, message);
-  }
-
-  /**
-   * A convenience method for logging a 'debug' message.
-   *
-   * @param message  the message.
-   * @param e  the exception.
-   */
-  public void debug (Object message, Exception e)
-  {
-    log (DEBUG, message, e);
-  }
-
-  /**
-   * A convenience method for logging an 'info' message.
-   *
-   * @param message  the message.
-   */
-  public void info (Object message)
-  {
-    log (INFO, message);
-  }
-
-  /**
-   * A convenience method for logging an 'info' message.
-   *
-   * @param message  the message.
-   * @param e  the exception.
-   */
-  public void info (Object message, Exception e)
-  {
-    log (INFO, message, e);
-  }
-
-  /**
-   * A convenience method for logging a 'warning' message.
-   *
-   * @param message  the message.
-   */
-  public void warn (Object message)
-  {
-    log (WARN, message);
-  }
-
-  /**
-   * A convenience method for logging a 'warning' message.
-   *
-   * @param message  the message.
-   * @param e  the exception.
-   */
-  public void warn (Object message, Exception e)
-  {
-    log (WARN, message, e);
-  }
-
-  /**
-   * A convenience method for logging an 'error' message.
-   *
-   * @param message  the message.
-   */
-  public void error (Object message)
-  {
-    log (ERROR, message);
-  }
-
-  /**
-   * A convenience method for logging an 'error' message.
-   *
-   * @param message  the message.
-   * @param e  the exception.
-   */
-  public void error (Object message, Exception e)
-  {
-    log (ERROR, message, e);
   }
 }

@@ -1,8 +1,39 @@
 /**
- * Date: Jan 14, 2003
- * Time: 10:28:22 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id$
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------------------
+ * SystemPropertyConfiguration.java
+ * -------------------------
+ * (C)opyright 2000-2002, by Simba Management Limited.
+ *
+ * Original Author:  Thomas Morger
+ * Contributor(s):   Stefan Prange;
+ *
+ * $Id: SystemPropertyConfiguration.java,v 1.1 2003/01/14 23:50:10 taqua Exp $
+ *
+ * Changes (from 8-Feb-2002)
+ * -------------------------
+ * 14-Jan-2003 : Initial Version, moved from inner class of ReportConfiguration
+ * 05-Feb-2003 : This implementation now handles SecurityExceptions.
  */
 package com.jrefinery.report.util;
 
@@ -18,7 +49,44 @@ public class SystemPropertyConfiguration extends ReportConfiguration
    */
   public SystemPropertyConfiguration()
   {
-    super();
-    this.getConfiguration().putAll (System.getProperties());
+    // the configuration set of ReportConfiguration is not filled, we handle request
+    // by using an own implementation...
+  }
+
+  /**
+   * Sets a configuration property.
+   *
+   * @param key  the property key.
+   * @param value  the property value.
+   */
+  public void setConfigProperty(String key, String value)
+  {
+    throw new UnsupportedOperationException("The SystemPropertyConfiguration is readOnly");
+  }
+
+  /**
+   * Returns the configuration property with the specified key (or the specified default value
+   * if there is no such property).
+   * <p>
+   * If the property is not defined in this configuration, the code will lookup the property in
+   * the parent configuration.
+   *
+   * @param key  the property key.
+   * @param defaultValue  the default value.
+   *
+   * @return the property value.
+   */
+  public String getConfigProperty(String key, String defaultValue)
+  {
+    try
+    {
+      String value = System.getProperty(key);
+      if (value != null) return value;
+    }
+    catch (SecurityException se)
+    {
+      // ignore security exceptions, continue as if the property was not set..
+    }
+    return super.getConfigProperty(key, defaultValue);
   }
 }

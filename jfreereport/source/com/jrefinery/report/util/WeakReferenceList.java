@@ -28,14 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WeakReferenceList.java,v 1.12 2002/12/11 00:41:42 mungady Exp $
+ * $Id: WeakReferenceList.java,v 1.13 2003/01/07 15:10:36 taqua Exp $
  *
  * Changes
  * -------
  * 31-May-2002 : Initial version
  * 09-Jun-2002 : Documentation
  * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
- *
+ * 07-Jan-2003 : BugFix: Added additional checks due to a bug in the pagestate list
  */
 
 package com.jrefinery.report.util;

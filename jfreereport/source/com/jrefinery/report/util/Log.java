@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.14 2002/12/18 10:13:16 mungady Exp $
+ * $Id: Log.java,v 1.15 2003/02/04 17:56:33 taqua Exp $
  *
  * Changes
  * -------
@@ -36,12 +36,13 @@
  * 12-Nov-2002 : Removed redundant import (DG).
  * 10-Dec-2002 : Updated Javadocs (DG);
  * 17-Dec-2002 : Removed LEVELS since it is not used (it is also declared in LogTarget) (DG);
- *
+ * 05-Feb-2002 : Interface cleanUp, switched from ArrayList to LogTarget[] 
  */
 
 package com.jrefinery.report.util;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A simple logging facility. Create a class implementing the {@link LogTarget} interface to use
@@ -195,7 +196,7 @@ public final class Log
   private static int debuglevel = 100;
 
   /** Storage for the log targets. */
-  private static ArrayList logTargets = new ArrayList ();
+  private static LogTarget[] logTargets;
 
   /**
    * Private to prevent creating instances.
@@ -250,9 +251,15 @@ public final class Log
    *
    * @param target  the target.
    */
-  public static void addTarget (LogTarget target)
+  public static synchronized void addTarget (LogTarget target)
   {
-    logTargets.add (target);
+    if (target == null)
+      throw new NullPointerException();
+
+    LogTarget[] data = new LogTarget[logTargets.length + 1];
+    System.arraycopy(logTargets, 0, data, 0, logTargets.length);
+    data[logTargets.length] = target;
+    logTargets = data;
   }
 
   /**
@@ -260,9 +267,16 @@ public final class Log
    *
    * @param target  the target to remove.
    */
-  public static void removeTarget (LogTarget target)
+  public synchronized static void removeTarget (LogTarget target)
   {
-    logTargets.remove (target);
+    if (target == null)
+      throw new NullPointerException();
+
+    List l = Arrays.asList(logTargets);
+    l.remove(target);
+
+    LogTarget[] targets = new LogTarget[l.size()];
+    logTargets = (LogTarget[]) l.toArray(targets);
   }
 
   /**
@@ -281,9 +295,9 @@ public final class Log
     }
     if (level <= debuglevel)
     {
-      for (int i = 0; i < logTargets.size (); i++)
+      for (int i = 0; i < logTargets.length; i++)
       {
-        LogTarget t = (LogTarget) logTargets.get (i);
+        LogTarget t = logTargets[i];
         t.log (level, message);
       }
     }
@@ -308,9 +322,9 @@ public final class Log
     }
     if (level <= debuglevel)
     {
-      for (int i = 0; i < logTargets.size (); i++)
+      for (int i = 0; i < logTargets.length; i++)
       {
-        LogTarget t = (LogTarget) logTargets.get (i);
+        LogTarget t = logTargets[i];
         t.log (level, message, e);
       }
     }
@@ -323,11 +337,7 @@ public final class Log
    */
   public static void debug (Object message)
   {
-    for (int i = 0; i < logTargets.size (); i++)
-    {
-      LogTarget t = (LogTarget) logTargets.get (i);
-      t.debug (message);
-    }
+    log (LogTarget.DEBUG, message);
   }
 
   /**
@@ -338,11 +348,7 @@ public final class Log
    */
   public static void debug (Object message, Exception e)
   {
-    for (int i = 0; i < logTargets.size (); i++)
-    {
-      LogTarget t = (LogTarget) logTargets.get (i);
-      t.debug (message, e);
-    }
+    log (LogTarget.DEBUG, message, e);
   }
 
   /**
@@ -352,11 +358,7 @@ public final class Log
    */
   public static void info (Object message)
   {
-    for (int i = 0; i < logTargets.size (); i++)
-    {
-      LogTarget t = (LogTarget) logTargets.get (i);
-      t.info (message);
-    }
+    log (LogTarget.INFO, message);
   }
 
   /**
@@ -367,11 +369,7 @@ public final class Log
    */
   public static void info (Object message, Exception e)
   {
-    for (int i = 0; i < logTargets.size (); i++)
-    {
-      LogTarget t = (LogTarget) logTargets.get (i);
-      t.info (message, e);
-    }
+    log (LogTarget.INFO, message, e);
   }
 
   /**
@@ -381,11 +379,7 @@ public final class Log
    */
   public static void warn (Object message)
   {
-    for (int i = 0; i < logTargets.size (); i++)
-    {
-      LogTarget t = (LogTarget) logTargets.get (i);
-      t.warn (message);
-    }
+    log (LogTarget.WARN, message);
   }
 
   /**
@@ -396,11 +390,7 @@ public final class Log
    */
   public static void warn (Object message, Exception e)
   {
-    for (int i = 0; i < logTargets.size (); i++)
-    {
-      LogTarget t = (LogTarget) logTargets.get (i);
-      t.warn (message, e);
-    }
+    log (LogTarget.WARN, message, e);
   }
 
   /**
@@ -410,11 +400,7 @@ public final class Log
    */
   public static void error (Object message)
   {
-    for (int i = 0; i < logTargets.size (); i++)
-    {
-      LogTarget t = (LogTarget) logTargets.get (i);
-      t.error (message);
-    }
+    log (LogTarget.ERROR, message);
   }
 
   /**
@@ -425,11 +411,7 @@ public final class Log
    */
   public static void error (Object message, Exception e)
   {
-    for (int i = 0; i < logTargets.size (); i++)
-    {
-      LogTarget t = (LogTarget) logTargets.get (i);
-      t.error (message, e);
-    }
+    log (LogTarget.ERROR, message, e);
   }
 
   /**

@@ -28,12 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.30 2003/01/27 03:17:43 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.31 2003/02/01 18:27:04 taqua Exp $
  *
  * Changes
  * -------
  * 06-Nov-2002 : Initial release
  * 12-Nov-2002 : Added Javadoc comments (DG);
+ * 29-Nov-2002 : Fixed bugs reported by CheckStyle (DG)
+ * 05-Dec-2002 : Documentation
  *
  */
 
@@ -613,6 +615,8 @@ public class ReportConfiguration
   }
 
   /**
+   * Set the parent configuration. The parent configuration is queried, if the
+   * requested configuration values was not found in this report configuration.
    *
    * @param config
    */
@@ -767,26 +771,47 @@ public class ReportConfiguration
     return configuration.keys();
   }
 
+  /**
+   * Set to false, to globaly disable the xml-validation.
+   *
+   * @param validate true, if the parser should validate the xml files.
+   */
   public void setValidateXML (boolean validate)
   {
     setConfigProperty(PARSER_VALIDATE, String.valueOf(validate));
   }
 
+  /**
+   * returns true, if the parser should validate the xml files against the DTD
+   * supplied with JFreeReport.
+   *
+   * @return true, if the parser should validate, false otherwise.
+   */
   public boolean isValidateXML ()
   {
     return getConfigProperty(PARSER_VALIDATE, PARSER_VALIDATE_DEFAULT).equalsIgnoreCase("true");
   }
 
-  public static void main (String [] args)
-  {
-    Log.debug (ReportConfiguration.getGlobalConfig().getPdfTargetEncoding());
-  }
-
+  /**
+   * returns true, if the TableWriter should perform a stricter layout translation.
+   * When set to true, all element bounds are used to create the table. This could result
+   * in a complex layout, more suitable for printing. If set to false, only the starting
+   * bounds (the left and the upper border) are used to create the layout. This will result
+   * is lesser cells and rows, the layout will be better suitable for later processing.
+   *
+   * @return true, if strict layouting rules should be applied, false otherwise.
+   */
   public boolean isStrictTableLayout()
   {
     return getConfigProperty(STRICT_TABLE_LAYOUT, STRICT_TABLE_LAYOUT_DEFAULT).equalsIgnoreCase("true");
   }
 
+  /**
+   * Defines whether strict layouting rules should be used for the TableLayouter.
+   *
+   * @see ReportConfiguration#isStrictTableLayout
+   * @param strict set to true, to use strict layouting rules, false otherwise.
+   */
   public void setStrictTableLayout (boolean strict)
   {
     setConfigProperty(STRICT_TABLE_LAYOUT, String.valueOf(strict));

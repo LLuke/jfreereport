@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.14 2003/01/30 22:52:46 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.15 2003/02/05 15:38:29 taqua Exp $
  *
  * Changes
  * -------
@@ -34,18 +34,19 @@
  * 30-Aug-2002 : Added method to define the paper using a String constant referring to a constant
  *               defined in the class.
  * 25-Sep-2002 : Fixed bug 613846 (Javadoc) (DG);
- *
+ * 12-Dec-2002 : Documentation
+ * 30-Jan-2003 : Added methods to calculate the border size of a Paper object
+ * 05-Feb-2003 : Added Serialization Support for PageFormats.
  */
 package com.jrefinery.report.util;
 
 import com.jrefinery.report.targets.FloatDimension;
 
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Dimension2D;
 import java.lang.reflect.Field;
-import java.util.Hashtable;
 
 /**
  * The PageFormatFactory is used to create PageFormats on a higher level. The Factory contains

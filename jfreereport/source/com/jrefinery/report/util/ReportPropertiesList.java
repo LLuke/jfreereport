@@ -25,10 +25,16 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportPropertiesList.java,v 1.5 2002/12/12 12:26:57 mungady Exp $
+ * $Id: ReportPropertiesList.java,v 1.6 2003/01/16 15:35:35 taqua Exp $
  *
  * Changes
  * -------
+ * 23-Oct-2002 : Initial version
+ * 07-Nov-2002 : Documentation
+ * 29-Nov-2002 : More Documentation and CheckStyle-Fixes
+ * 09-Dec-2002 : Documentation
+ * 12-Dec-2002 : Documentation
+ * 16-Jan-2003 : BugFix: Properties could not be marked when no property value was set 
  */
 package com.jrefinery.report.util;
 

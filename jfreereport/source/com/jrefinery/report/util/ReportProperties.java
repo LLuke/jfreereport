@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportProperties.java,v 1.13 2002/12/05 16:48:12 mungady Exp $
+ * $Id: ReportProperties.java,v 1.14 2003/01/16 15:35:35 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,7 @@
  *               This implementation guarantees that all keys are strings.
  * 09-Jun-2002 : Documentation
  * 05-Dec-2002 : Updated Javadocs (DG);
- *
+ * 16-Jan-2003 : BugFix: Properties could not be marked when no value was set.
  */
 
 package com.jrefinery.report.util;
