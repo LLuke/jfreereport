@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.9 2002/07/28 13:25:26 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.10 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,8 @@ package com.jrefinery.report.function;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportState;
+import com.jrefinery.report.DataRow;
 import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.event.ReportListenerAdapter;
 
 import javax.swing.table.TableModel;
 import java.util.Enumeration;
@@ -64,6 +64,7 @@ import java.util.Properties;
  */
 public abstract class AbstractFunction implements Function
 {
+  private DataRow dataRow;
 
   /** Storage for the function properties. */
   private Properties properties;
@@ -401,5 +402,15 @@ public abstract class AbstractFunction implements Function
    */
   public void itemsFinished (ReportEvent event)
   {
+  }
+
+  public DataRow getDataRow()
+  {
+    return dataRow;
+  }
+
+  public void setDataRow(DataRow dataRow)
+  {
+    this.dataRow = dataRow;
   }
 }

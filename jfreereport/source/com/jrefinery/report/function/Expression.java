@@ -7,6 +7,8 @@
  */
 package com.jrefinery.report.function;
 
+import com.jrefinery.report.DataRow;
+
 import java.util.Properties;
 
 public interface Expression
@@ -52,7 +54,12 @@ public interface Expression
   /**
    * Checks that the function has been correctly initialized.  If there is a problem, this method
    * throws a FunctionInitializeException.
+   *
+   * @throws FunctionInitializeException in case the function/expression is not initialized properly.
    */
   public void initialize () throws FunctionInitializeException;
 
+  public DataRow getDataRow ();
+
+  public void setDataRow (DataRow theDataRow);
 }
