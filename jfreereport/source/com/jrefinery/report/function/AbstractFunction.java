@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.11 2002/08/12 19:30:33 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.12 2002/08/16 20:13:36 taqua Exp $
  *
  * Changes
  * -------
@@ -414,5 +414,12 @@ public abstract class AbstractFunction implements Function
   public void setDataRow(DataRow dataRow)
   {
     this.dataRow = dataRow;
+  }
+
+  public Properties getProperties ()
+  {
+    Properties retval = new Properties ();
+    retval.putAll(properties);
+    return retval;
   }
 }

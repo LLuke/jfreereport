@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.15 2002/08/14 21:14:02 taqua Exp $
+ * $Id: Band.java,v 1.16 2002/08/19 21:17:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -250,7 +250,6 @@ public abstract class Band implements Serializable, Cloneable
    */
   public float draw (OutputTarget target, float x, float y) throws OutputTargetException
   {
-    Log.debug ("############ Start Draw");
     if (target == null) throw new NullPointerException ();
     if (isVisible () == false) return 0;
     float maxheight = 0;
@@ -282,18 +281,15 @@ public abstract class Band implements Serializable, Cloneable
         if (eh > maxheight)
         {
           maxheight = (float) eh;
-          Log.debug("MaxHeight adjusted for Element: " + e);
-          Log.debug("target.getBounds(): " + e.getBounds());
-          Log.debug("target.getCursor ().getElementBounds().getY (): " + target.getCursor ().getElementBounds().getY ());
-          Log.debug("target.getCursor ().getElementBounds().getHeight (): " + target.getCursor ().getElementBounds().getHeight ());
         }
       }
-      else
+/*      else
       {
         System.out.println ("Element " + e + " is not visible");
       }
+*/
     }
-    Log.debug ("############ End Draw: " + maxheight);
+//    Log.debug ("############ End Draw: " + maxheight);
     return maxheight;
   }
 

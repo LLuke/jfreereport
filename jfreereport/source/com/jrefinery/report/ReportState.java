@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.23 2002/08/19 21:24:52 taqua Exp $
+ * $Id: ReportState.java,v 1.24 2002/08/19 22:06:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -639,25 +639,35 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param report The report.
    */
-  protected ReportState (JFreeReport report)
+  protected ReportState (JFreeReport reportPar)
   {
     try
     {
-      setReport ((JFreeReport) report.clone());
+      setReport ((JFreeReport) reportPar.clone());
     }
     catch (CloneNotSupportedException cne)
     {
       throw new IllegalArgumentException("IllegalReport connected, cloning not supported");
     }
-    reportProperties = report.getProperties ();
+    reportProperties = getReport().getProperties ();
 
     setCurrentItem (BEFORE_FIRST_ROW);
     setCurrentPage (FIRST_PAGE);
     setCurrentGroupIndex (BEFORE_FIRST_GROUP);
-    setFunctions (report.getFunctions ());
 
     DataRowConnector dc = new DataRowConnector ();
     dc.connectDataSources (getReport ());
+
+    FunctionCollection functions = getReport().getFunctions().getCopy();
+    getReport().setFunctions(functions);
+    setFunctions (functions);
+    functions.connectDataRow(dc);
+
+    // create a readonly copy of the expression collection used in this report.
+    // replace the original expressioncollection in JFreeReport(Clone) with this ReadOnly version
+    ExpressionCollection expressions = getReport().getExpressions().getCopy();
+    getReport().setExpressions(expressions);
+    expressions.connectDataRow(dc);
     setDataRowConnector (dc);
 
     DataRowBackend dr = new DataRowBackend ();

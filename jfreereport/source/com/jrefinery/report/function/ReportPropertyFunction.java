@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.8 2002/08/08 15:28:43 taqua Exp $
+ * $Id: ReportPropertyFunction.java,v 1.9 2002/08/19 21:17:37 taqua Exp $
  *
  * Changes
  * -------
@@ -62,6 +62,7 @@ public class ReportPropertyFunction extends AbstractFunction
 
   /** The function value. */
   private Object value;
+  public static final String REPORTPROPERTY_PROPERTY = "reportProperty";
 
   /**
    * Default constructor.
@@ -160,7 +161,7 @@ public class ReportPropertyFunction extends AbstractFunction
    */
   public String getField ()
   {
-    return getProperty("reportProperty");
+    return getProperty(REPORTPROPERTY_PROPERTY);
   }
 
   /**
@@ -174,7 +175,7 @@ public class ReportPropertyFunction extends AbstractFunction
   {
     if (field == null)
       throw new NullPointerException ();
-    setProperty ("reportProperty", field);
+    setProperty (REPORTPROPERTY_PROPERTY, field);
   }
 
   /**
@@ -184,7 +185,7 @@ public class ReportPropertyFunction extends AbstractFunction
           throws FunctionInitializeException
   {
     super.initialize ();
-    String fieldProp = getProperty ("reportProperty");
+    String fieldProp = getProperty (REPORTPROPERTY_PROPERTY);
     if (fieldProp == null)
     {
       throw new FunctionInitializeException ("No Such Property : reportProperty");

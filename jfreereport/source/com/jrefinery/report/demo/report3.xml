@@ -46,9 +46,9 @@
         <string-field x="0" y="96" width="200" height="12" alignment="left" fieldname="street"/>
         <string-field x="0" y="120" width="200" height="12" alignment="left" fieldname="town"/>
 
-        <label x="0" y="224" width="165" height="12" alignment="left" fontstyle="bold"
-        >Invoice for your order from</label>
-        <date-function x="258" y="224" width="200" height="12" alignment="left" format="EEE, MMM d, yyyy" function="printdate"/>
+        <string-function x="0" y="224" width="165" height="12" alignment="left" fontstyle="bold" function="expr"/>
+
+<!--        <date-function x="258" y="224" width="200" height="12" alignment="left" format="EEE, MMM d, yyyy" function="printdate"/> -->
         <label x="0" y="290" width="450" height="12" alignment="left"
           fontname="Arial Unicode MS" fontstyle="plain" fontsize="11"
         >Dear customer, (&#x30c4;&#x30fc;&#x30eb;&#x3068;&#x30e6;&#x30fc;&#x30c6;&#x30a3;&#x30ea;&#x30c6;&#x30a3;)</label>
@@ -87,6 +87,12 @@
     <number-field x="400" y="0" width="50" height="12" alignment="left" format="'$' #,##0.00" fieldname="total"/>
   </items>
   <functions>
+    <expression name="expr" class="com.jrefinery.report.function.TextFormatExpression">
+      <properties>
+        <property name="pattern">Invoice for your order from {0, date, EEE, MMM d, yyyy}</property>
+        <property name="0">printdate</property>
+      </properties>
+    </expression>
     <function name="totalsum" class="com.jrefinery.report.function.ItemSumFunction">
       <properties>
         <property name="field">total</property>

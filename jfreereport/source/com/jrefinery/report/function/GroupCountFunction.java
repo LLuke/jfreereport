@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.4 2002/05/28 19:36:41 taqua Exp $
+ * $Id: GroupCountFunction.java,v 1.5 2002/06/08 14:31:53 taqua Exp $
  *
  * Changes
  * -------
@@ -52,11 +52,11 @@ import com.jrefinery.report.event.ReportEvent;
  */
 public class GroupCountFunction extends AbstractFunction implements Cloneable
 {
+  public static final String GROUP_PROPERTY = "group";
+
 
   /** The number of groups. */
   private int count;
-
-  private String groupName;
 
   /**
    * Default constructor.
@@ -75,7 +75,7 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
   public GroupCountFunction (String name, String group)
   {
     setName (name);
-    this.groupName = group;
+    setGroup(group);
   }
 
   /**
@@ -83,7 +83,7 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
    */
   public String getGroup ()
   {
-    return groupName;
+    return getProperty(GROUP_PROPERTY);
   }
 
   /**
@@ -92,8 +92,7 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
    */
   public void setGroup (String group)
   {
-    this.groupName = group;
-    setProperty ("group", group);
+    setProperty (GROUP_PROPERTY, group);
   }
 
   /**
@@ -132,16 +131,4 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
   {
     return new Integer (count);
   }
-
-  /**
-   * Initializes this function.
-   * If the property "group" is present, the group will be set to the properties value.
-   */
-  public void initialize ()
-          throws FunctionInitializeException
-  {
-    super.initialize ();
-    setGroup (getProperty ("group"));
-  }
-
 }

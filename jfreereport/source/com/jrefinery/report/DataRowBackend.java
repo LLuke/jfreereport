@@ -28,6 +28,7 @@
  * Changes
  * ------------------------------
  * 27.07.2002 : Inital version
+ * ... missing: Deadlockcheck, be aware!!!!
  */
 package com.jrefinery.report;
 

@@ -9,6 +9,7 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.DataRow;
+import com.jrefinery.report.util.Log;
 
 import java.util.Properties;
 import java.util.Enumeration;
@@ -53,19 +54,24 @@ public abstract class AbstractExpression implements Expression
   {
     if (p != null)
     {
+      Log.debug (p + "");
       Enumeration names = p.keys ();
       while (names.hasMoreElements ())
       {
         String name = (String) names.nextElement ();
         String prop = (String) p.get (name);
         setProperty (name, prop);
+        Log.debug ("Name: " + name + " Prop: " + prop);
       }
+      Log.debug (getProperties() + "");
     }
   }
 
   public Properties getProperties ()
   {
-    return new Properties (properties);
+    Properties retval = new Properties ();
+    retval.putAll(properties);
+    return retval;
   }
 
   /**
@@ -103,12 +109,18 @@ public abstract class AbstractExpression implements Expression
    * @param name The property name.
    * @param value The property value.
    */
-  public void setProperty (String name, String value)
+  public final void setProperty (String name, String value)
   {
     if (value == null)
+    {
+      System.out.println ("Remove is null " + name);
       properties.remove (name);
+    }
     else
+    {
+      System.out.println ("Add is valid " + name + " - " + value);
       properties.setProperty (name, value);
+    }
   }
 
   public DataRow getDataRow()
@@ -127,5 +139,11 @@ public abstract class AbstractExpression implements Expression
     function.properties = (Properties) properties.clone();
     return function;
   }
+
+  public void initialize() throws FunctionInitializeException
+  {
+    if (getName() == null) throw new FunctionInitializeException("Name must not be null");
+  }
+
 
 }

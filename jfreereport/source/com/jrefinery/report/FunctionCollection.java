@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionCollection.java,v 1.9 2002/07/03 18:49:45 taqua Exp $
+ * $Id: FunctionCollection.java,v 1.10 2002/07/28 13:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -99,6 +99,27 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
     public void removeFunction (Function f)
     {
       throw new IllegalStateException ("This is a readonly collection");
+    }
+
+
+    public void connectDataRow (DataRow dr)
+    {
+      if (dr == null) throw new NullPointerException();
+      for (int i = 0; i < functionList.size (); i++)
+      {
+        Function f = (Function) functionList.get (i);
+        f.setDataRow(dr);
+      }
+    }
+
+    public void disconnectDataRow (DataRow dr)
+    {
+      if (dr == null) throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
+      for (int i = 0; i < functionList.size(); i++)
+      {
+        Function f = (Function) functionList.get (i);
+        f.setDataRow(null);
+      }
     }
   }
 
@@ -416,6 +437,16 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
     col.functionList = (ArrayList) functionList.clone ();
     col.functionPositions = (Hashtable) functionPositions.clone ();
     return col;
+  }
+
+  public void connectDataRow (DataRow dr)
+  {
+    throw new IllegalStateException("Only readonly collections can be connected");
+  }
+
+  public void disconnectDataRow (DataRow dr)
+  {
+    throw new IllegalStateException("Only readonly collections can be connected");
   }
 
 }

@@ -84,6 +84,26 @@ public class ExpressionCollection implements Cloneable
     {
       throw new IllegalStateException ("This is a readonly collection");
     }
+
+    public void connectDataRow (DataRow dr)
+    {
+      if (dr == null) throw new NullPointerException();
+      for (int i = 0; i < expressionList.size (); i++)
+      {
+        Expression f = (Expression) expressionList.get (i);
+        f.setDataRow(dr);
+      }
+    }
+
+    public void disconnectDataRow (DataRow dr)
+    {
+      if (dr == null) throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
+      for (int i = 0; i < expressionList.size (); i++)
+      {
+        Expression f = (Expression) expressionList.get (i);
+        f.setDataRow(null);
+      }
+    }
   }
 
   /** Storage for the Expressions in the collection. */
@@ -229,6 +249,17 @@ public class ExpressionCollection implements Cloneable
     col.expressionList = new ArrayList ();
     col.privateAddAll(expressionList);
     return col;
+  }
+
+
+  public void connectDataRow (DataRow dr)
+  {
+    throw new IllegalStateException("Only readonly collections can be connected");
+  }
+
+  public void disconnectDataRow (DataRow dr)
+  {
+    throw new IllegalStateException("Only readonly collections can be connected");
   }
 
 }

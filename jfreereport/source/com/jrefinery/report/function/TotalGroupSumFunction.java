@@ -48,6 +48,9 @@ import java.util.ArrayList;
 
 public class TotalGroupSumFunction extends AbstractFunction
 {
+  public static final String GROUP_PROPERTY = "group";
+  public static final String FIELD_PROPERTY = "field";
+
   private static class GroupSum
   {
     private BigDecimal result;
@@ -198,7 +201,7 @@ public class TotalGroupSumFunction extends AbstractFunction
    */
   public String getGroup ()
   {
-    return (String) getProperty ("group");
+    return (String) getProperty (GROUP_PROPERTY);
   }
 
   /**
@@ -207,7 +210,7 @@ public class TotalGroupSumFunction extends AbstractFunction
    */
   public void setGroup (String group)
   {
-    setProperty ("group", group);
+    setProperty (GROUP_PROPERTY, group);
   }
 
   /**
@@ -232,7 +235,7 @@ public class TotalGroupSumFunction extends AbstractFunction
    */
   public String getField ()
   {
-    return getProperty ("field");
+    return getProperty (FIELD_PROPERTY);
   }
 
   /**
@@ -246,7 +249,7 @@ public class TotalGroupSumFunction extends AbstractFunction
   {
     if (field == null)
       throw new NullPointerException ();
-    setProperty ("field", field);
+    setProperty (FIELD_PROPERTY, field);
   }
 
   /**
@@ -262,6 +265,6 @@ public class TotalGroupSumFunction extends AbstractFunction
   public void initialize () throws FunctionInitializeException
   {
     super.initialize ();
-    if (getProperty ("field") == null) throw new FunctionInitializeException ("Field is required");
+    if (getProperty (FIELD_PROPERTY) == null) throw new FunctionInitializeException ("Field is required");
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.7 2002/07/20 20:48:47 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.8 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -54,9 +54,7 @@ import com.jrefinery.report.event.ReportEvent;
  */
 public class ItemCountFunction extends AbstractFunction implements Cloneable
 {
-
-  /** The group (null permitted). */
-  private String group;
+  public static final String GROUP_PROPERTY = "group";
 
   /** The item count. */
   private int count;
@@ -100,7 +98,7 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
    */
   public String getGroup ()
   {
-    return group;
+    return getProperty(GROUP_PROPERTY);
   }
 
   /**
@@ -111,8 +109,7 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
    */
   public void setGroup (String group)
   {
-    this.group = group;
-    setProperty ("group", group);
+    setProperty (GROUP_PROPERTY, group);
   }
 
   /**
@@ -156,15 +153,4 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
   {
     return new Integer (count);
   }
-
-  /**
-   * ???
-   */
-  public void initialize ()
-          throws FunctionInitializeException
-  {
-    super.initialize ();
-    setGroup (getProperty ("group"));
-  }
-
 }

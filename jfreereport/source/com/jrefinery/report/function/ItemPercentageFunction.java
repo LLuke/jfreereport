@@ -45,6 +45,9 @@ import java.math.BigDecimal;
 
 public class ItemPercentageFunction extends AbstractFunction
 {
+  public static final String GROUP_PROPERTY = "group";
+  public static final String FIELD_PROPERTY = "field";
+
   private TotalGroupSumFunction totalSumFunction;
   private BigDecimal currentValue;
   private static final BigDecimal ZERO = new BigDecimal (0.0);
@@ -191,7 +194,7 @@ public class ItemPercentageFunction extends AbstractFunction
    */
   public String getGroup ()
   {
-    return (String) getProperty ("group");
+    return (String) getProperty (GROUP_PROPERTY);
   }
 
   /**
@@ -200,7 +203,7 @@ public class ItemPercentageFunction extends AbstractFunction
    */
   public void setGroup (String group)
   {
-    setProperty ("group", group);
+    setProperty (GROUP_PROPERTY, group);
   }
 
   /**
@@ -212,7 +215,7 @@ public class ItemPercentageFunction extends AbstractFunction
    */
   public String getField ()
   {
-    return getProperty ("field");
+    return getProperty (FIELD_PROPERTY);
   }
 
   /**
@@ -226,7 +229,7 @@ public class ItemPercentageFunction extends AbstractFunction
   {
     if (field == null)
       throw new NullPointerException ();
-    setProperty ("field", field);
+    setProperty (FIELD_PROPERTY, field);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.2 2002/08/08 15:28:43 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.3 2002/08/19 21:17:37 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -50,6 +50,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
 
   /** The function value. */
   private boolean trigger;
+  public static final String ELEMENT_PROPERTY = "element";
 
   /**
    * Default constructor.
@@ -104,7 +105,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   public void initialize () throws FunctionInitializeException
   {
     super.initialize ();
-    if (getProperty ("element") == null)
+    if (getProperty (ELEMENT_PROPERTY) == null)
       throw new FunctionInitializeException ("Element name must be specified");
   }
 
@@ -117,7 +118,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    */
   public void setElement (String name)
   {
-    setProperty ("element", name);
+    setProperty (ELEMENT_PROPERTY, name);
   }
 
   /**
@@ -127,7 +128,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    */
   public String getElement ()
   {
-    return getProperty ("element", "");
+    return getProperty (ELEMENT_PROPERTY, "");
   }
 
   /**

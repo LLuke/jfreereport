@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.15 2002/07/28 13:53:16 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.16 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -73,14 +73,11 @@ import java.math.BigDecimal;
  */
 public class ItemSumFunction extends AbstractFunction
 {
+  public static final String GROUP_PROPERTY = "group";
+  public static final String FIELD_PROPERTY = "field";
+
   /** Zero. */
   private static final BigDecimal ZERO = new BigDecimal (0.0);
-
-  /** The group name. */
-  private String group;
-
-  /** The field name. */
-  private String field;
 
   /** The sum. */
   private BigDecimal sum;
@@ -145,7 +142,7 @@ public class ItemSumFunction extends AbstractFunction
     }
 
     Group group = event.getReport ().getGroup (event.getState ().getCurrentGroupIndex ());
-    if (this.group.equals (group.getName ()))
+    if (getGroup().equals (group.getName ()))
     {
       this.sum = ZERO;
     }
@@ -158,7 +155,7 @@ public class ItemSumFunction extends AbstractFunction
    */
   public String getGroup ()
   {
-    return group;
+    return getProperty(GROUP_PROPERTY);
   }
 
   /**
@@ -171,8 +168,7 @@ public class ItemSumFunction extends AbstractFunction
    */
   public void setGroup (String _group)
   {
-    this.group = _group;
-    setProperty ("group", _group);
+    setProperty (GROUP_PROPERTY, _group);
   }
 
   /**
@@ -184,7 +180,7 @@ public class ItemSumFunction extends AbstractFunction
    */
   public String getField ()
   {
-    return field;
+    return getProperty(FIELD_PROPERTY);
   }
 
   /**
@@ -199,8 +195,7 @@ public class ItemSumFunction extends AbstractFunction
     if (field == null)
       throw new NullPointerException ();
 
-    this.field = field;
-    setProperty ("field", field);
+    setProperty (FIELD_PROPERTY, field);
   }
 
   /**
@@ -247,13 +242,13 @@ public class ItemSumFunction extends AbstractFunction
   public void initialize ()
           throws FunctionInitializeException
   {
-    String fieldProp = getProperty ("field");
+    String fieldProp = getProperty (FIELD_PROPERTY);
     if (fieldProp == null)
     {
       throw new FunctionInitializeException ("No Such Property : field");
     }
     setField (fieldProp);
-    setGroup (getProperty ("group"));
+    setGroup (getProperty (GROUP_PROPERTY));
   }
 
 }
