@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StreamHtmlFilesystem.java,v 1.9 2005/02/23 21:05:34 taqua Exp $
+ * $Id: StreamHtmlFilesystem.java,v 1.10 2005/03/04 12:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -134,10 +134,6 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
       return new EmptyContentReference();
     }
     final URLImageContainer urlImageContainer = (URLImageContainer) reference;
-    if (urlImageContainer.isLoadable() == false)
-    {
-      return new EmptyContentReference();
-    }
     final URL src = urlImageContainer.getSourceURL();
     if (src != null)
     {
