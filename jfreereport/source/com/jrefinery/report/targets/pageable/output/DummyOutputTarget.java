@@ -2,14 +2,16 @@
  * Date: Jan 29, 2003
  * Time: 8:56:27 PM
  *
- * $Id: DummyOutputTarget.java,v 1.1 2003/01/29 21:59:33 taqua Exp $
+ * $Id: DummyOutputTarget.java,v 1.2 2003/01/29 23:05:21 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.SizeCalculator;
+import com.jrefinery.report.targets.base.layout.SizeCalculator;
+import com.jrefinery.report.targets.base.layout.SizeCalculatorException;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
+import com.jrefinery.report.targets.base.content.ContentFactory;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
@@ -232,9 +234,9 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @return the size calculator.
    *
-   * @throws OutputTargetException if there is a problem with the output target.
+   * @throws SizeCalculatorException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException
+  public SizeCalculator createTextSizeCalculator(FontDefinition font) throws SizeCalculatorException
   {
     return backend.createTextSizeCalculator(font);
   }
@@ -273,5 +275,15 @@ public class DummyOutputTarget extends AbstractOutputTarget
   public float getVerticalAlignmentBorder()
   {
     return backend.getVerticalAlignmentBorder();
+  }
+
+  /**
+   * Returns the assigned content factory for the target.
+   *
+   * @return the content factory.
+   */
+  public ContentFactory getContentFactory()
+  {
+    return backend.getContentFactory();
   }
 }

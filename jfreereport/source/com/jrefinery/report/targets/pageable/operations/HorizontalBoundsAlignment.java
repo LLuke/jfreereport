@@ -20,49 +20,42 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------------
- * OutputTargetException.java
- * --------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ------------------------------
+ * HorizontalBoundsAlignment.java
+ * ------------------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: OutputTargetException.java,v 1.4 2002/12/12 12:26:56 mungady Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: HorizontalBoundsAlignment.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
- * 16-May-2002 : Version 1 (DG);
- * 31-Aug-2002 : Changed PrintStackTrace implementation to reveal the parent exception
+ * 04-Dec-2002 : Javadocs (DG);
+ *
  */
-package com.jrefinery.report.targets.pageable;
 
-import com.jrefinery.report.util.StackableException;
-import com.jrefinery.report.targets.base.layout.SizeCalculatorException;
+package com.jrefinery.report.targets.pageable.operations;
+
+import com.jrefinery.report.targets.pageable.operations.BoundsAlignment;
+
+import java.awt.geom.Rectangle2D;
 
 /**
- * An OutputTargetException is thrown if a element could not be printed in the target or
- * an TargetInternalError occurred, that made proceeding impossible.
+ * An abstract base class for performing horizontal alignment.
  *
- * @author David Gilbert
+ * @author Thomas Morgner
  */
-public class OutputTargetException extends SizeCalculatorException
+public abstract class HorizontalBoundsAlignment extends BoundsAlignment
 {
   /**
-   * Creates an exception.
+   * Creates a new horizontal alignment object.
    *
-   * @param message  the exception message.
-   * @param ex  the parent exception.
+   * @param bounds  the bounds.
    */
-  public OutputTargetException (String message, Exception ex)
+  protected HorizontalBoundsAlignment(Rectangle2D bounds)
   {
-    super (message, ex);
-  }
-
-  /**
-   * Creates an exception.
-   *
-   * @param message  the exception message.
-   */
-  public OutputTargetException (String message)
-  {
-    super (message);
+    super(bounds);
   }
 }

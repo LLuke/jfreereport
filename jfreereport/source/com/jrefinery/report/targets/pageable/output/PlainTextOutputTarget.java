@@ -2,13 +2,18 @@
  * Date: Jan 29, 2003
  * Time: 1:49:26 PM
  *
- * $Id: PlainTextOutputTarget.java,v 1.6 2003/02/01 18:27:04 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.7 2003/02/04 17:56:29 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.SizeCalculator;
+import com.jrefinery.report.targets.base.layout.SizeCalculator;
+import com.jrefinery.report.targets.base.content.ContentFactory;
+import com.jrefinery.report.targets.base.content.DefaultContentFactory;
+import com.jrefinery.report.targets.base.content.TextContentFactoryModule;
+import com.jrefinery.report.targets.base.content.ImageContentFactoryModule;
+import com.jrefinery.report.targets.base.content.ShapeContentFactoryModule;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
@@ -472,4 +477,17 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     return characterHeight;
   }
+
+  /**
+   * PlainTextOutputTarget does not support ImageContent ...
+   * @return
+   */
+  protected ContentFactory createContentFactory ()
+  {
+    DefaultContentFactory contentFactory = new DefaultContentFactory ();
+    contentFactory.addModule(new TextContentFactoryModule());
+    contentFactory.addModule(new ShapeContentFactoryModule());
+    return contentFactory;
+  }
+
 }

@@ -2,12 +2,12 @@
  * Date: Jan 29, 2003
  * Time: 11:11:17 PM
  *
- * $Id: AlignedLogicalPageWrapper.java,v 1.1 2003/01/29 23:06:39 taqua Exp $
+ * $Id: AlignedLogicalPageWrapper.java,v 1.2 2003/02/02 23:43:52 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable;
 
 import com.jrefinery.report.Band;
-import com.jrefinery.report.targets.LayoutSupport;
+import com.jrefinery.report.targets.base.layout.LayoutSupport;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;

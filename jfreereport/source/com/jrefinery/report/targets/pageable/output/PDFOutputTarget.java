@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.18 2003/02/04 17:56:28 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.19 2003/02/06 17:38:19 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.SizeCalculator;
+import com.jrefinery.report.targets.base.layout.SizeCalculator;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;

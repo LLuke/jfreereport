@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.16 2003/02/05 17:56:03 taqua Exp $
+ * $Id: Log.java,v 1.17 2003/02/07 20:26:26 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,8 @@
  * 12-Nov-2002 : Removed redundant import (DG).
  * 10-Dec-2002 : Updated Javadocs (DG);
  * 17-Dec-2002 : Removed LEVELS since it is not used (it is also declared in LogTarget) (DG);
- * 05-Feb-2002 : Interface cleanUp, switched from ArrayList to LogTarget[] 
+ * 05-Feb-2003 : Interface cleanUp, switched from ArrayList to LogTarget[]
+ * 07-Feb-2003 : BugFix, last cleanup caused a NullPointer, I removed too much ;( 
  */
 
 package com.jrefinery.report.util;

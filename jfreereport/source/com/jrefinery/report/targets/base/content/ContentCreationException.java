@@ -20,52 +20,54 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
- * SizeCalculator.java
- * -------------------
+ * ------------------------
+ * ContentCreationException.java
+ * ------------------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SizeCalculator.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: ContentCreationException.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
  *
  * Changes
  * -------
- * 03-Dec-2002 : Javadocs (DG);
- *
+ * 07-Feb-2003 : Initial version
  */
+package com.jrefinery.report.targets.base.content;
 
-package com.jrefinery.report.targets;
+import com.jrefinery.report.util.StackableException;
 
 /**
- * The interface for an class that is able to calculate the width of a given string, and the
- * height of a line of text.  The calculations rely on state information (e.g. font size,
- * graphics device, etc) maintained by the calculator.
- * <p>
- * Every {@link com.jrefinery.report.targets.pageable.OutputTarget} can create an instance of a class that implements this interface,
- * via the {@link com.jrefinery.report.targets.pageable.OutputTarget#createTextSizeCalculator} method.
- *
- * @author Thomas Morgner
+ * A ContentCreationException is thrown whenever a content could not be created.
  */
-public interface SizeCalculator
+public class ContentCreationException extends StackableException
 {
   /**
-   * Calculates the width of a <code>String<code> in the current <code>Graphics</code> context.
-   *
-   * @param text the text.
-   * @param lineStartPos the start position of the substring to be measured.
-   * @param endPos the position of the last character to be measured.
-   *
-   * @return the width of the string in Java2D units.
+   * Creates a ContentCreationException with no message and no parent.
    */
-  public float getStringWidth(String text, int lineStartPos, int endPos);
+  public ContentCreationException()
+  {
+  }
 
   /**
-   * Returns the line height.  This includes the font's ascent, descent and leading.
+   * Creates an ContentCreationException.
    *
-   * @return the line height.
+   * @param message  the exception message.
+   * @param ex  the parent exception.
    */
-  public float getLineHeight();
+  public ContentCreationException(String message, Exception ex)
+  {
+    super(message, ex);
+  }
 
+  /**
+   * Creates an ContentCreationException.
+   *
+   * @param message  the exception message.
+   */
+  public ContentCreationException(String message)
+  {
+    super(message);
+  }
 }

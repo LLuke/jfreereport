@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.18 2003/01/29 18:37:13 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.19 2003/02/01 18:27:04 taqua Exp $
  *
  * Changes
  * -------
@@ -42,10 +42,17 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.content.Content;
+import com.jrefinery.report.targets.base.content.ContentCreationException;
+import com.jrefinery.report.targets.base.content.ContentFactory;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
+import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
+import com.jrefinery.report.targets.pageable.operations.OperationFactory;
+import com.jrefinery.report.targets.pageable.operations.TextOperationModule;
+import com.jrefinery.report.targets.pageable.operations.ImageOperationModule;
+import com.jrefinery.report.targets.pageable.operations.ShapeOperationModule;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
@@ -80,6 +87,8 @@ public class LogicalPageImpl implements LogicalPage
   /** A flag that indicates whether or not the logical page is closed. */
   private boolean closed;
 
+  private OperationFactory operationFactory;
+
   /**
    * A flag that indicates whether or not to add comments to the generated
    * physical operations. This is a usefull debugging option, but you won't have
@@ -108,6 +117,8 @@ public class LogicalPageImpl implements LogicalPage
   {
     addOperationComments = ReportConfiguration.getGlobalConfig().isPrintOperationComment();
     closed = true; // logical page is closed by default ..
+    operationFactory = createOperationFactory();
+
     setPageFormat(log);
     setPhysicalPageFormat(phys);
 
@@ -133,6 +144,19 @@ public class LogicalPageImpl implements LogicalPage
     }
   }
 
+  public OperationFactory getOperationFactory()
+  {
+    return operationFactory;
+  }
+
+  protected OperationFactory createOperationFactory()
+  {
+    OperationFactory operationFactory = new OperationFactory();
+    operationFactory.registerModule(new TextOperationModule());
+    operationFactory.registerModule(new ImageOperationModule());
+    operationFactory.registerModule(new ShapeOperationModule());
+    return operationFactory;
+  }
   /**
    * Returns the physical page at a particular row and column. The logical page
    * can be split into multiple physical pages to display content that would not
@@ -246,7 +270,7 @@ public class LogicalPageImpl implements LogicalPage
    */
   public void replaySpool (Spool operations)
   {
-    com.jrefinery.report.targets.base.operations.PhysicalOperation[] ops = operations.getOperations();
+    PhysicalOperation[] ops = operations.getOperations();
     for (int i = 0; i < ops.length; i++)
     {
       getPhysicalPage(0, 0).addOperation(ops[i]);
@@ -300,7 +324,7 @@ public class LogicalPageImpl implements LogicalPage
 
     if (addOperationComments)
     {
-      spool.addOperation(new com.jrefinery.report.targets.base.operations.PhysicalOperation.AddComment (
+      spool.addOperation(new PhysicalOperation.AddComment (
           new Log.SimpleMessage("Begin Band: ", band.getClass(), " -> ", band.getName())));
     }
 
@@ -311,9 +335,7 @@ public class LogicalPageImpl implements LogicalPage
       Element e = (Element) l.get(i);
       if (e instanceof Band)
       {
-        Log.debug ("SubBand detected: " + e);
         Rectangle2D bbounds = (Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-        Log.debug ("SubBand detected: " + bbounds);
         spoolBand(translateSubRect(bbounds, bounds), (Band) e, spool);
       }
       else
@@ -364,10 +386,11 @@ public class LogicalPageImpl implements LogicalPage
     {
       return;
     }
-    com.jrefinery.report.targets.base.operations.OperationModule mod = com.jrefinery.report.targets.base.operations.OperationFactory.getInstance().getModul(e.getContentType());
-    if (mod == null)
+    ContentFactory factory = outputTarget.getContentFactory();
+    if (factory.canHandleContent(e.getContentType()) == false)
     {
-      throw new OutputTargetException("No handler for content: " + e.getContentType());
+      Log.debug (new Log.SimpleMessage("The OutputTarget does not support the content type: ", e.getContentType()));
+      return;
     }
     Rectangle2D elementBounds = (Rectangle2D)
         e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
@@ -378,22 +401,30 @@ public class LogicalPageImpl implements LogicalPage
     Rectangle2D drawBounds = translateSubRect(bounds, elementBounds);
     if (addOperationComments)
     {
-      operations.addOperation(new com.jrefinery.report.targets.base.operations.PhysicalOperation.AddComment ("Begin Element: " + e.getClass()
+      operations.addOperation(new PhysicalOperation.AddComment ("Begin Element: " + e.getClass()
                               + " -> " + e.getName()));
-      operations.addOperation(new com.jrefinery.report.targets.base.operations.PhysicalOperation.AddComment (" ...  Element: " + drawBounds));
+      operations.addOperation(new PhysicalOperation.AddComment (" ...  Element: " + drawBounds));
     }
 
 
     ElementLayoutInformation eli = new ElementLayoutInformation(drawBounds);
 
-    Content content = mod.createContentForElement(e, eli, getOutputTarget());
-    // split the elements contents, then write ..
-    List opsList = mod.createOperations(e, content, drawBounds);
-    com.jrefinery.report.targets.base.operations.PhysicalOperation[] ops = new com.jrefinery.report.targets.base.operations.PhysicalOperation[opsList.size()];
-    ops = (com.jrefinery.report.targets.base.operations.PhysicalOperation[]) opsList.toArray(ops);
-    for (int i = 0; i < ops.length; i++)
+    try
     {
-      operations.addOperation(ops[i]);
+      Content content = factory.createContentForElement(e, eli, getOutputTarget());
+      // split the elements contents, then write ..
+
+      List opsList = getOperationFactory().createOperations(e, content, drawBounds);
+      PhysicalOperation[] ops = new PhysicalOperation[opsList.size()];
+      ops = (PhysicalOperation[]) opsList.toArray(ops);
+      for (int i = 0; i < ops.length; i++)
+      {
+        operations.addOperation(ops[i]);
+      }
+    }
+    catch (ContentCreationException ce)
+    {
+      throw new OutputTargetException("Unable to create content", ce);
     }
   }
 

@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 2:32:12 PM
  *
- * $Id: TableWriter.java,v 1.6 2003/02/01 18:27:04 taqua Exp $
+ * $Id: TableWriter.java,v 1.7 2003/02/04 17:56:29 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -12,8 +12,8 @@ import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.states.ReportState;
-import com.jrefinery.report.targets.DefaultLayoutSupport;
-import com.jrefinery.report.targets.LayoutSupport;
+import com.jrefinery.report.targets.base.layout.DefaultLayoutSupport;
+import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.9 2003/01/29 03:13:04 taqua Exp $
+ * $Id: PhysicalPage.java,v 1.10 2003/02/02 23:43:52 taqua Exp $
  *
  * Changes
  * -------
@@ -85,7 +85,7 @@ public class PhysicalPage
    *
    * @param op  the operation.
    */
-  public void addOperation(com.jrefinery.report.targets.base.operations.PhysicalOperation op)
+  public void addOperation(com.jrefinery.report.targets.pageable.operations.PhysicalOperation op)
   {
     bandOperations.add(op);
   }
@@ -100,8 +100,8 @@ public class PhysicalPage
   public void write(OutputTarget ot) throws OutputTargetException
   {
     ot.beginPage(this);
-    com.jrefinery.report.targets.base.operations.PhysicalOperation[] ops = new com.jrefinery.report.targets.base.operations.PhysicalOperation[bandOperations.size()];
-    ops = (com.jrefinery.report.targets.base.operations.PhysicalOperation[]) bandOperations.toArray(ops);
+    com.jrefinery.report.targets.pageable.operations.PhysicalOperation[] ops = new com.jrefinery.report.targets.pageable.operations.PhysicalOperation[bandOperations.size()];
+    ops = (com.jrefinery.report.targets.pageable.operations.PhysicalOperation[]) bandOperations.toArray(ops);
 
     for (int i = 0; i < ops.length; i++)
     {

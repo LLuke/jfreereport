@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Spool.java,v 1.6 2003/01/29 03:13:02 taqua Exp $
+ * $Id: Spool.java,v 1.7 2003/02/02 23:43:52 taqua Exp $
  *
  * Changes
  * -------
@@ -69,10 +69,10 @@ public class Spool implements Cloneable
    *
    * @return an array of operations.
    */
-  public com.jrefinery.report.targets.base.operations.PhysicalOperation[] getOperations ()
+  public com.jrefinery.report.targets.pageable.operations.PhysicalOperation[] getOperations ()
   {
-    com.jrefinery.report.targets.base.operations.PhysicalOperation[] ops = new com.jrefinery.report.targets.base.operations.PhysicalOperation[operations.size()];
-    ops = (com.jrefinery.report.targets.base.operations.PhysicalOperation[]) operations.toArray(ops);
+    com.jrefinery.report.targets.pageable.operations.PhysicalOperation[] ops = new com.jrefinery.report.targets.pageable.operations.PhysicalOperation[operations.size()];
+    ops = (com.jrefinery.report.targets.pageable.operations.PhysicalOperation[]) operations.toArray(ops);
     return ops;
   }
 
@@ -81,7 +81,7 @@ public class Spool implements Cloneable
    *
    * @param op  the operation.
    */
-  public void addOperation (com.jrefinery.report.targets.base.operations.PhysicalOperation op)
+  public void addOperation (com.jrefinery.report.targets.pageable.operations.PhysicalOperation op)
   {
     operations.add (op);
   }

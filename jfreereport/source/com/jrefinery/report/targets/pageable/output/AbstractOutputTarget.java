@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.6 2003/01/29 23:05:21 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.7 2003/02/02 23:43:52 taqua Exp $
  *
  * Changes
  * -------
@@ -50,9 +50,18 @@ package com.jrefinery.report.targets.pageable.output;
 
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
+import com.jrefinery.report.targets.base.content.ContentFactory;
+import com.jrefinery.report.targets.base.content.DefaultContentFactory;
+import com.jrefinery.report.targets.base.content.TextContentFactoryModule;
+import com.jrefinery.report.targets.base.content.ImageContentFactoryModule;
+import com.jrefinery.report.targets.base.content.ShapeContentFactoryModule;
 import com.jrefinery.report.targets.pageable.AlignedLogicalPageWrapper;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
+import com.jrefinery.report.targets.pageable.operations.OperationFactory;
+import com.jrefinery.report.targets.pageable.operations.TextOperationModule;
+import com.jrefinery.report.targets.pageable.operations.ImageOperationModule;
+import com.jrefinery.report.targets.pageable.operations.ShapeOperationModule;
 import com.jrefinery.report.targets.pageable.physicals.LogicalPageImpl;
 
 import java.awt.geom.Rectangle2D;
@@ -77,6 +86,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
   /** The operation bounds. */
   private Rectangle2D operationBounds;
+
+  private ContentFactory contentFactory;
 
   /**
    * Creates a new output target.  Both the logical page size and the physical page size will be
@@ -112,6 +123,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     this.logicalPage.setOutputTarget(this);
     operationBounds = new Rectangle2D.Double();
 
+    contentFactory = createContentFactory();
   }
 
   /**
@@ -257,4 +269,24 @@ public abstract class AbstractOutputTarget implements OutputTarget
   {
     return 0;
   }
+
+  /**
+   * Returns the assigned content factory for the target.
+   *
+   * @return the content factory.
+   */
+  public ContentFactory getContentFactory()
+  {
+    return contentFactory;
+  }
+
+  protected ContentFactory createContentFactory ()
+  {
+    DefaultContentFactory contentFactory = new DefaultContentFactory ();
+    contentFactory.addModule(new TextContentFactoryModule());
+    contentFactory.addModule(new ImageContentFactoryModule());
+    contentFactory.addModule(new ShapeContentFactoryModule());
+    return contentFactory;
+  }
+
 }

@@ -21,34 +21,56 @@
  * Boston, MA 02111-1307, USA.
  *
  * -------------------
- * LayoutSupport.java
+ * DefaultLayoutSupport.java
  * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutSupport.java,v 1.3 2003/02/02 23:43:51 taqua Exp $
+ * $Id: DefaultLayoutSupport.java,v 1.4 2003/02/07 20:26:25 taqua Exp $
  *
  * Changes
  * -------
  * 29-Jan-2003 : Initial version
  *
  */
-package com.jrefinery.report.targets;
+package com.jrefinery.report.targets.base.layout;
 
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
+import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
+import com.jrefinery.report.targets.base.layout.SizeCalculator;
+import com.jrefinery.report.targets.base.layout.DefaultSizeCalculator;
+import com.jrefinery.report.targets.base.content.ContentFactory;
+import com.jrefinery.report.targets.base.content.DefaultContentFactory;
+import com.jrefinery.report.targets.base.content.TextContentFactoryModule;
+import com.jrefinery.report.targets.base.content.ShapeContentFactoryModule;
+import com.jrefinery.report.targets.base.content.ImageContentFactoryModule;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.FontDefinition;
 
 /**
- * The LayoutSupport contains all methods required to estaminate sizes for the
+ * The DefaultLayoutSupport uses the AWT to estaminate the content sizes.
+ * A LayoutSupport contains all methods required to estaminate sizes for the
  * content-creation.
  *
  * @see com.jrefinery.report.targets.base.content.Content
- * @see com.jrefinery.report.targets.base.operations.OperationModule
+ * @see com.jrefinery.report.targets.pageable.operations.OperationModule
  */
-public interface LayoutSupport
+public class DefaultLayoutSupport implements LayoutSupport
 {
+  private DefaultContentFactory contentFactory;
+
+  /**
+   * Default-Constructor.
+   */
+  public DefaultLayoutSupport()
+  {
+    contentFactory = new DefaultContentFactory();
+    contentFactory.addModule(new TextContentFactoryModule());
+    contentFactory.addModule(new ImageContentFactoryModule());
+    contentFactory.addModule(new ShapeContentFactoryModule());
+  }
 
   /**
    * Creates a size calculator for the current state of the output target.  The calculator
@@ -60,15 +82,24 @@ public interface LayoutSupport
    *
    * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException;
-
+  public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException
+  {
+    return new DefaultSizeCalculator(font);
+  }
 
   /**
-   * Returns the default layout manager.
+   * Creates and returns a default layout manager for this output target.
+   * <p>
+   * Note that a new layout manager is created every time this method is called.
    *
-   * @return the default layout manager.
+   * @return a default layout manager.
    */
-  public BandLayoutManager getDefaultLayoutManager ();
+  public BandLayoutManager getDefaultLayoutManager()
+  {
+    BandLayoutManager lm = new StaticLayoutManager();
+    lm.setLayoutSupport(this);
+    return lm;
+  }
 
   /**
    * Returns the element alignment. Elements will be layouted aligned to this
@@ -78,7 +109,10 @@ public interface LayoutSupport
    *
    * @return the vertical alignment grid boundry
    */
-  public float getVerticalAlignmentBorder();
+  public float getVerticalAlignmentBorder()
+  {
+    return 0;
+  }
 
   /**
    * Returns the element alignment. Elements will be layouted aligned to this
@@ -88,5 +122,18 @@ public interface LayoutSupport
    *
    * @return the vertical alignment grid boundry
    */
-  public float getHorizontalAlignmentBorder();
+  public float getHorizontalAlignmentBorder()
+  {
+    return 0;
+  }
+
+  /**
+   * Returns the assigned content factory for the target.
+   *
+   * @return the content factory.
+   */
+  public ContentFactory getContentFactory()
+  {
+    return contentFactory;
+  }
 }

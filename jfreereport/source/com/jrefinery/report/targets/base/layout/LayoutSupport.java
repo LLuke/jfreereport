@@ -21,42 +21,37 @@
  * Boston, MA 02111-1307, USA.
  *
  * -------------------
- * DefaultLayoutSupport.java
+ * LayoutSupport.java
  * -------------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultLayoutSupport.java,v 1.2 2003/02/01 18:27:04 taqua Exp $
+ * $Id: LayoutSupport.java,v 1.4 2003/02/07 20:26:26 taqua Exp $
  *
  * Changes
  * -------
  * 29-Jan-2003 : Initial version
  *
  */
-package com.jrefinery.report.targets;
+package com.jrefinery.report.targets.base.layout;
 
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
-import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
-import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.base.layout.SizeCalculatorException;
+import com.jrefinery.report.targets.base.layout.SizeCalculator;
+import com.jrefinery.report.targets.base.content.ContentFactory;
+import com.jrefinery.report.targets.FontDefinition;
 
 /**
- * The DefaultLayoutSupport uses the AWT to estaminate the content sizes.
- * A LayoutSupport contains all methods required to estaminate sizes for the
+ * The LayoutSupport contains all methods required to estaminate sizes for the
  * content-creation.
  *
  * @see com.jrefinery.report.targets.base.content.Content
- * @see com.jrefinery.report.targets.base.operations.OperationModule
+ * @see com.jrefinery.report.targets.pageable.operations.OperationModule
  */
-public class DefaultLayoutSupport implements LayoutSupport
+public interface LayoutSupport
 {
-  /**
-   * Default-Constructor.
-   */
-  public DefaultLayoutSupport()
-  {
-  }
 
   /**
    * Creates a size calculator for the current state of the output target.  The calculator
@@ -68,24 +63,15 @@ public class DefaultLayoutSupport implements LayoutSupport
    *
    * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException
-  {
-    return new DefaultSizeCalculator(font);
-  }
+  public SizeCalculator createTextSizeCalculator(FontDefinition font) throws SizeCalculatorException;
+
 
   /**
-   * Creates and returns a default layout manager for this output target.
-   * <p>
-   * Note that a new layout manager is created every time this method is called.
+   * Returns the default layout manager.
    *
-   * @return a default layout manager.
+   * @return the default layout manager.
    */
-  public BandLayoutManager getDefaultLayoutManager()
-  {
-    BandLayoutManager lm = new StaticLayoutManager();
-    lm.setLayoutSupport(this);
-    return lm;
-  }
+  public BandLayoutManager getDefaultLayoutManager ();
 
   /**
    * Returns the element alignment. Elements will be layouted aligned to this
@@ -95,10 +81,7 @@ public class DefaultLayoutSupport implements LayoutSupport
    *
    * @return the vertical alignment grid boundry
    */
-  public float getVerticalAlignmentBorder()
-  {
-    return 0;
-  }
+  public float getVerticalAlignmentBorder();
 
   /**
    * Returns the element alignment. Elements will be layouted aligned to this
@@ -108,8 +91,12 @@ public class DefaultLayoutSupport implements LayoutSupport
    *
    * @return the vertical alignment grid boundry
    */
-  public float getHorizontalAlignmentBorder()
-  {
-    return 0;
-  }
+  public float getHorizontalAlignmentBorder();
+
+  /**
+   * Returns the assigned content factory for the target.
+   *
+   * @return the content factory.
+   */
+  public ContentFactory getContentFactory ();
 }

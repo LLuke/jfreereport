@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.16 2003/02/01 18:27:04 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.17 2003/02/04 17:56:28 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,9 @@
 package com.jrefinery.report.targets.pageable.output;
 
 import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.targets.DefaultSizeCalculator;
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.SizeCalculator;
+import com.jrefinery.report.targets.base.layout.DefaultSizeCalculator;
+import com.jrefinery.report.targets.base.layout.SizeCalculator;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;

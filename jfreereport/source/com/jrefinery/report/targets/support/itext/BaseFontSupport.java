@@ -28,12 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.1 2003/02/01 22:10:36 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.2 2003/02/04 17:56:29 taqua Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Added Javadocs (DG);
- *
+ * 29-Jan-2003 : moved from pageable.output to support.itext package.
+ * 07-Feb-2003 : Documentation updated
  */
 package com.jrefinery.report.targets.support.itext;
 
@@ -49,7 +50,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * PDF font support.
+ * iText font support.
  *
  * @author Thomas Morgner
  */
@@ -81,7 +82,7 @@ public class BaseFontSupport
    * @param font  the new font (null not permitted).
    * @param encoding  the encoding.
    *
-   * @return the PDF font record.
+   * @return the base font record.
    *
    * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there was a problem setting the font for the target.
    */

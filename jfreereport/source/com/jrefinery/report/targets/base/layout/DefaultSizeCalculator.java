@@ -28,17 +28,19 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.2 2003/02/01 18:27:04 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.3 2003/02/07 20:26:26 taqua Exp $
  *
  * Changes
  * -------
  * 29-Jan-2003 : Initial version
  *
  */
-package com.jrefinery.report.targets;
+package com.jrefinery.report.targets.base.layout;
 
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.targets.base.layout.SizeCalculator;
+import com.jrefinery.report.targets.FontDefinition;
 
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
@@ -49,7 +51,7 @@ import java.awt.geom.Rectangle2D;
  * tries to detect the currently used FontRendererContext; some JDKs are unable
  * to return reasonable sizes for the given text.
  *
- * @see DefaultSizeCalculator
+ * @see com.jrefinery.report.targets.base.layout.DefaultSizeCalculator
  */
 public class DefaultSizeCalculator implements SizeCalculator
 {
@@ -135,7 +137,7 @@ public class DefaultSizeCalculator implements SizeCalculator
 
     /**
      * creates a new FontRenderContext suitable to calculate a string size, independend
-     * from the AWT-bug. 
+     * from the AWT-bug.
      *
      * @return a font render context that is valid and not affected by the bugs.
      */
