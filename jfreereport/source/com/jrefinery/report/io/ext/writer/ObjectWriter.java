@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.11 2003/05/27 08:32:37 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.12 2003/05/30 16:57:51 taqua Exp $
  *
  * Changes
  * -------
@@ -160,31 +160,43 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    */
   protected ObjectDescription getParameterDescription (String name)
   {
+    // Try to find the object description directly ...
     Class parameterClass = objectDescription.getParameterDefinition(name);
     ObjectDescription parameterDescription =
         cc.getDescriptionForClass(parameterClass);
 
-    if (parameterDescription == null)
+    if (parameterDescription != null)
     {
+      //Log.debug ("ParameterDescription found [PARAM]");
+      return parameterDescription;
+    }
+
+    // not found directly ...
+    // try to lookup the object description by the parameter object.
+    // this only works if the object is set, of course ..
+    //Log.debug ("ParameterDescription not found [OBJECT]");
+    Object o = objectDescription.getParameter(name);
+    if (o != null)
+    {
+      parameterDescription = cc.getDescriptionForClass(o.getClass());
+      if (parameterDescription == null)
+      {
+        // try to find the super class of the parameter object.
+        // maybe this can be used to save the object....
+        //Log.debug ("ParameterDescription not found [SUPER_OBJECT]");
+        parameterDescription = cc.getSuperClassObjectDescription(o.getClass(), null);
+      }
+    }
+    else
+    {
+      // try to find the super class of the parameter object.
+      // maybe this can be used to save the object....
+      //Log.debug ("ParameterDescription not found [SUPER_PARAM]");
       parameterDescription = cc.getSuperClassObjectDescription(parameterClass, null);
     }
     if (parameterDescription == null)
     {
-      Object o = objectDescription.getParameter(name);
-      if (o == null)
-      {
-        return null;
-      }
-
-      parameterDescription = cc.getDescriptionForClass(o.getClass());
-      if (parameterDescription == null)
-      {
-        parameterDescription = cc.getSuperClassObjectDescription(o.getClass(), null);
-      }
-      if (parameterDescription == null)
-      {
-        Log.info ("Unable to get parameter description for class: " + o.getClass());
-      }
+      Log.info ("Unable to get parameter description for class: " + o.getClass());
     }
     return parameterDescription;
   }
@@ -204,7 +216,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     Object parameterValue = getObjectDescription().getParameter(parameterName);
     if (parameterValue == null)
     {
-      Log.info ("Parameter " + parameterName + " is null. The Parameter will not be defined.");
+      // Log.info ("Parameter '" + parameterName + "' is null. The Parameter will not be defined.");
       return;
     }
 

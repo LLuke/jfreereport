@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.19 2003/02/26 16:42:08 mungady Exp $
+ * $Id: SampleReport1.java,v 1.20 2003/05/02 12:39:38 taqua Exp $
  *
  * Changes:
  * --------
@@ -309,11 +309,6 @@ public class SampleReport1
    *
    <pre>
    <functions>
-   <function name="report_date" class="com.jrefinery.report.function.ReportPropertyFunction">
-   <properties>
-   <property name="reportProperty">report.date</property>
-   </properties>
-   </function>
    <function name="sum" class="com.jrefinery.report.function.ItemSumFunction">
    <properties>
    <property name="field">Population</property>

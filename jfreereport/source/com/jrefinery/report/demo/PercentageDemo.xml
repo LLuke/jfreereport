@@ -8,13 +8,13 @@
     <!-- Declares the functions used in this report. -->
     <functions>
 
-        <function name="Percentage"
-                  class="com.jrefinery.report.function.ItemColumnQuotientFunction">
+        <expression name="Percentage"
+                  class="com.jrefinery.report.function.ItemColumnQuotientExpression">
             <properties>
                 <property name="dividend">A</property>
                 <property name="divisor">B</property>
             </properties>
-        </function>
+        </expression>
 
     </functions>
 

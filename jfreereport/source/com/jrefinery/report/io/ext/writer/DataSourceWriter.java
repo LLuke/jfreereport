@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.8 2003/05/02 12:40:14 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.9 2003/05/30 16:57:51 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import java.io.Writer;
 import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.io.ext.DataSourceHandler;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
+import com.jrefinery.report.util.Log;
 import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**
@@ -90,7 +91,9 @@ public class DataSourceWriter extends ObjectWriter
 
       if (dsname == null)
       {
-        throw new ReportWriterException("The datasource type is not registered: " 
+        Log.debug ("Name: " + ds);
+        Log.debug ("ObjectDescription: " + dsDesc);
+        throw new ReportWriterException("The datasource type is not registered: "
                                         + ds.getClass());
       }
 

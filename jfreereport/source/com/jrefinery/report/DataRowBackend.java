@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.39 2003/05/14 22:26:25 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.40 2003/05/30 16:57:20 taqua Exp $
  *
  * Changes
  * -------
@@ -184,21 +184,12 @@ public class DataRowBackend implements Cloneable
     }
     if (getTablemodel() != null)
     {
-      if (isPreviewMode())
+      // in some cases, the current row can be +1 greater than the row count.
+      // (when empty table model given or in preview at the end of the table)
+      if (currentRow > getTablemodel().getRowCount())
       {
-        if (currentRow > getTablemodel().getRowCount())
-        {
-          throw new IllegalArgumentException
-              ("CurrentRow cannot be greater than the tablemodel's rowcount");
-        }
-      }
-      else
-      {
-        if (currentRow >= getTablemodel().getRowCount())
-        {
-          throw new IllegalArgumentException
-              ("CurrentRow cannot be greater than or equal to the tablemodel's rowcount");
-        }
+        throw new IllegalArgumentException
+            ("CurrentRow cannot be greater than the tablemodel's rowcount." + currentRow);
       }
     }
     else

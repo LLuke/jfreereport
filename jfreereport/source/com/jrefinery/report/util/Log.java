@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.23 2003/04/28 22:21:44 taqua Exp $
+ * $Id: Log.java,v 1.24 2003/05/11 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -105,7 +105,6 @@ public final class Log extends org.jfree.util.Log
 
   static
   {
-    System.out.println ("Logging initialisiert ...");
     Log l = new Log();
     Log.defineLog(l);
 

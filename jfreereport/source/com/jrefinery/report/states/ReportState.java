@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.39 2003/05/26 13:30:59 taqua Exp $
+ * $Id: ReportState.java,v 1.40 2003/05/30 16:57:53 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -149,10 +149,10 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     setFunctions (functions);
     functions.connectDataRow(dc);
 
+
     DataRowBackend dr = new DataRowBackend ();
     dr.setTablemodel (reportPar.getData ());
     dr.setFunctions (getFunctions ());
-    dr.setCurrentRow (getCurrentDisplayItem ());
     dr.setReportProperties(new ReportPropertiesList(reportProperties));
     setDataRowBackend (dr);
 
@@ -160,6 +160,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
     // we have no clone-ancestor, so forget everyting
     setAncestorHashcode(this.hashCode());
+
+    // reset the current data row ... 
     resetState();
   }
 

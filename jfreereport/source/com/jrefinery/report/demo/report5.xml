@@ -54,7 +54,7 @@
 
 <pagefooter height="15" fontname="Monospaced" fontsize="6">
   <line name="line4" x1="0" y1="0" x2="0" y2="0" weight="1" color="#c0c0c0" />
-  <date-field name="date1" x="0" y="5" width="100%" height="8" alignment="left" color="#000080" format="EEEE d MMMM yyyy" fieldname="report_date"/>
+  <date-field name="date1" x="0" y="5" width="100%" height="8" alignment="left" color="#000080" format="EEEE d MMMM yyyy" fieldname="report.date"/>
   <number-field name="pagenum1" fieldname="PageNumber" format="Pagina 0" x="0" y="5" width="100%" height="8" alignment="right" color="#000080"/>
 </pagefooter>
 
@@ -125,12 +125,7 @@
 </items>
 <!-- FUNCTION -->
 <functions>
-
-<function name="report_date" class="com.jrefinery.report.function.ReportPropertyFunction">
-<properties>
-<property name="reportProperty">report.date</property>
-</properties>
-</function>
+<property-ref name="report.date"/>
 <function name="PageNumber" class="com.jrefinery.report.function.PageFunction"/>
 </functions>
 </report>
