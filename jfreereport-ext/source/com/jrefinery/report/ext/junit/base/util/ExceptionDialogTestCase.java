@@ -7,9 +7,9 @@
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id:$
- * $Author:$
- * $Date:$
+ * $Id: ExceptionDialogTestCase.java,v 1.1 2002/07/08 22:10:38 taqua Exp $
+ * $Author: taqua $
+ * $Date: 2002/07/08 22:10:38 $
  */
 package com.jrefinery.report.ext.junit.base.util;
 
@@ -93,13 +93,6 @@ public class ExceptionDialogTestCase extends TestCase
    * actions which are necessary for performs tests.
    */
   protected void setUp() {
-    Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
-        public void eventDispatched(AWTEvent event) {
-          WindowEvent we = ((WindowEvent) event);
-          if (we.getID() == WindowEvent.WINDOW_OPENED)
-            we.getWindow().dispose();
-        }
-      }, AWTEvent.WINDOW_EVENT_MASK);
     varExceptionDialog = new ExceptionDialog();
   } // end of setUp()
   /**
@@ -116,17 +109,6 @@ public class ExceptionDialogTestCase extends TestCase
    */
   public void testNoMethods() {
   }
-
-  /**
-   * Method for testing how works original method:
-   * javax.swing.JScrollPane access$000( ... )
-   * from tested class
-   */
-  public void testAccess$0001463395288() {
-
-    assertTrue("Warning! This new test method with no real test code inside.", false);
-
-  } // end of testAccess$0001463395288( ... )
 
   /**
    * Method for testing how works original method:
