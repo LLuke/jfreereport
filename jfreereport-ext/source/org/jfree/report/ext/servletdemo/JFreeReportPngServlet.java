@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportPngServlet.java,v 1.4 2003/09/09 10:27:59 taqua Exp $
+ * $Id: JFreeReportPngServlet.java,v 1.5 2005/01/31 17:16:53 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@ package org.jfree.report.ext.servletdemo;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.print.PageFormat;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -146,11 +147,10 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
         return;
       }
 
-      final PageDefinition pageFormat = worker.getReportPageFormat();
-      image = createImage(pageFormat);
+      image = createImage(worker.getReportPageFormat());
       final Graphics2D g2 = image.createGraphics();
       g2.setPaint(Color.white);
-      g2.fillRect(0,0, (int) pageFormat.getWidth(), (int) pageFormat.getHeight());
+      g2.fillRect(0,0, image.getWidth(), image.getHeight());
 
       final G2OutputTarget target = new G2OutputTarget(g2);
       worker.setOutputTarget(target);
@@ -163,6 +163,7 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
       }
 
       worker.processPage(page);
+      g2.dispose();
 
       response.setHeader("Content-Type", "image/png");
       response.setHeader("Content-Disposition","inline;filename=\"report-page-" + page + ".png\"");
@@ -185,11 +186,14 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
   /**
    * Create the empty image for the given page size.
    *
-   * @param pf the page format that defines the image bounds.
+   * @param pd the page definition that defines the image bounds.
    * @return the generated image.
    */
-  private BufferedImage createImage(final PageDefinition pf)
+  private BufferedImage createImage(final PageDefinition pd)
   {
+    // in this simple case we know, that all pages have the same size..
+    final PageFormat pf = pd.getPageFormat(0);
+
     final double width = pf.getWidth();
     final double height = pf.getHeight();
     //write the report to the temp file
