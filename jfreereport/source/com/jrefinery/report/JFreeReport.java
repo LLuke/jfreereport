@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------
  * JFreeReport.java
  * ----------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.42 2002/12/13 10:18:00 mungady Exp $
+ * $Id: JFreeReport.java,v 1.43 2002/12/13 14:55:06 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -56,6 +56,7 @@
  * 26-Jul-2002 : Removed method "isLastItemInHigherGroups()". The same functionality is implemented
  *               in Group.isLastItemInGroup()
  * 05-Dec-2002 : Updated Javadocs (DG);
+ * 03-Jan-2002 : More Javadocs (DG);
  *
  */
 
@@ -253,22 +254,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     setExpressions(new ExpressionCollection(expressions));
   }
 
-
-  /**
-   * Sets the item band for the report. If the ItemBand is null, an
-   * empty itemband is created
-   *
-   * @param band  the new item band.
-   */
-  public void setItemBand (ItemBand band)
-  {
-    if (band == null)
-    {
-      throw new NullPointerException ("An Itemband must not be null");
-    }
-    this.itemBand = band;
-  }
-
   /**
    * Returns the name of the report.
    * <p>
@@ -363,24 +348,24 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
-   * Sets the report header (null not permitted).
+   * Sets the report header.
    *
-   * @param header  the report header.
+   * @param header  the report header (<code>null</code> not permitted).
    */
   public void setReportHeader (ReportHeader header)
   {
     if (header == null)
     {
-      throw new NullPointerException ("ReportHeader must not be null");
+      throw new NullPointerException ("JFreeReport.setReportHeader(...) : null not permitted.");
     }
 
     this.reportHeader = header;
   }
 
   /**
-   * Returns the report header (or <code>null</code> if no report header is defined).
+   * Returns the report header.
    *
-   * @return the report header (possibly <code>null</code>).
+   * @return the report header (never <code>null</code>).
    */
   public ReportHeader getReportHeader ()
   {
@@ -388,15 +373,15 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
-   * Sets the report footer (null not permitted).
+   * Sets the report footer.
    *
-   * @param footer  the report footer.
+   * @param footer  the report footer (<code>null</code> not permitted).
    */
   public void setReportFooter (ReportFooter footer)
   {
     if (footer == null)
     {
-      throw new NullPointerException ("ReportFooter must not be null");
+      throw new NullPointerException ("JFreeReport.setReportFooter(...) : null not permitted.");
     }
 
     this.reportFooter = footer;
@@ -405,7 +390,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Returns the page footer.
    *
-   * @return the report footer or null, if no report footer is defined.
+   * @return the report footer (never <code>null</code>).
    */
   public ReportFooter getReportFooter ()
   {
@@ -413,22 +398,24 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
-   * Sets the page header (null not permitted).
+   * Sets the page header.
    *
-   * @param header  the page header.
+   * @param header  the page header (<code>null</code> not permitted).
    */
   public void setPageHeader (PageHeader header)
   {
     if (header == null)
     {
-      throw new NullPointerException ("PageHeader must not be null");
+      throw new NullPointerException ("JFreeReport.setPageHeader(...) : null not permitted.");
     }
 
     this.pageHeader = header;
   }
 
   /**
-   * @return the page header or null, if no page header is defined.
+   * Returns the page header.
+   * 
+   * @return the page header (never <code>null</code>).
    */
   public PageHeader getPageHeader ()
   {
@@ -436,22 +423,24 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
-   * Sets the page footer (null permitted).
+   * Sets the page footer.
    *
-   * @param footer  the page footer.
+   * @param footer  the page footer (<code>null</code> not permitted).
    */
   public void setPageFooter (PageFooter footer)
   {
     if (footer == null)
     {
-      throw new NullPointerException ("PageFooter must not be null");
+      throw new NullPointerException ("JFreeReport.setPageFooter(...) : null not permitted.");
     }
 
     this.pageFooter = footer;
   }
 
   /**
-   * @return the page footer or null, if no page footer is defined.
+   * Returns the page footer.
+   * 
+   * @return the page footer (never <code>null</code>).
    */
   public PageFooter getPageFooter ()
   {
@@ -459,7 +448,23 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
-   * @return the item band for the report.
+   * Sets the item band for the report.
+   *
+   * @param band  the new item band (<code>null</code> not permitted).
+   */
+  public void setItemBand (ItemBand band)
+  {
+    if (band == null)
+    {
+      throw new NullPointerException ("JFreeReport.setItemBand(...) : null not permitted.");
+    }
+    this.itemBand = band;
+  }
+
+  /**
+   * Returns the report's item band.
+   * 
+   * @return the item band (never <code>null</code>).
    */
   public ItemBand getItemBand ()
   {
@@ -598,7 +603,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   {
     if (functions == null)
     {
-      throw new NullPointerException ("Null-Function collection is not allowed!");
+      throw new NullPointerException ("JFreeReport.setFunctions(...) : null not permitted.");
     }
     else
     {
@@ -607,9 +612,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
-   * Returns the page format that will be used to output the report.
+   * Returns the default page format.
    *
-   * @return the current page format.
+   * @return the page format.
    */
   public PageFormat getDefaultPageFormat ()
   {
@@ -617,11 +622,11 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
-   * Defines the default page format for this report. The defaultPageFormat is a hint
-   * to define at least one suitable format. If no format is defined the systems default
+   * Defines the default page format for this report. The default is a hint
+   * to define at least one suitable format. If no format is defined the system's default
    * page format is used.
    *
-   * @param format  the default format or null, if no such format has been specified.
+   * @param format  the default format (<code>null</code> permitted).
    */
   public void setDefaultPageFormat (PageFormat format)
   {
@@ -635,18 +640,17 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Sets the data for the report.
    * <P>
-   * Reports are generated from a TableModel (as used by Swing's JTable). If you don't want to
-   * give data to the report, use an empty TableModel instead of null.
+   * Reports are generated from a {@link TableModel} (as used by Swing's {@link JTable}). If you 
+   * don't want to give data to the report, use an empty {@link TableModel} instead of 
+   * <code>null</code>.
    *
-   * @param data  the data for the report.
-   *
-   * @throws NullPointerException if the given data is null.
+   * @param data  the data for the report (<code>null</code> not permitted).
    */
   public void setData (TableModel data)
   {
     if (data == null)
     {
-      throw new NullPointerException ("Data must not be null");
+      throw new NullPointerException ("JFreeReport.setData(...) : null not permitted.");
     }
     this.data = data;
   }
@@ -726,13 +730,13 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Sets the expressions for the report.
    *
-   * @param expressions  the expressions.
+   * @param expressions  the expressions (<code>null</code> not permitted).
    */
   public void setExpressions(ExpressionCollection expressions)
   {
     if (expressions == null)
     {
-      throw new NullPointerException();
+      throw new NullPointerException("JFreeReport.setExpressions(...) : null not permitted.");
     }
     this.expressions = expressions;
   }
