@@ -31,28 +31,71 @@ package com.jrefinery.report.filter;
 import java.text.SimpleDateFormat;
 import java.text.Format;
 import java.text.DateFormat;
+import java.util.Date;
 
+/**
+ * Parses a String into a java.util.Date. The string is read from the given datasource
+ * and then parsed by the dateformat contained in this FormatParser.
+ * <p>
+ */
 public class DateFormatParser extends FormatParser
 {
+  /**
+   * DefaultConstructor
+   * <p>
+   * initializes this format
+   */
   public DateFormatParser ()
   {
-    setFormatter(DateFormat.getInstance());
+    setDateFormat(DateFormat.getInstance());
   }
 
+  /**
+   * returns the format for this filter. The format object is returned as DateFormat.
+   *
+   * @param format The format.
+   * @throws NullPointerException if the given format is null
+   */
   public DateFormat getDateFormat ()
   {
     return (DateFormat) getFormatter ();
   }
 
+  /**
+   * Sets the format for the filter.
+   *
+   * @param format The format.
+   * @throws NullPointerException if the given format is null
+   */
   public void setDateFormat (DateFormat format)
   {
     super.setFormatter(format);
   }
 
+  /**
+   * Sets the format for the filter. The formater is required to be of type DateFormat.
+   *
+   * @param format The format.
+   * @throws NullPointerException if the given format is null
+   * @throws ClassCastException if an invalid formater is set.
+   */
   public void setFormatter (Format format)
   {
     super.setFormatter((DateFormat) format);
   }
 
-
+  /**
+   * Sets the value that will be displayed if the data source supplies a null value.
+   * The nullValue itself can be null to cover the case when no reasonable default value
+   * can be defined.
+   * <p>
+   * The null value for date format parsers is required to be either null or a java.util.Date.
+   *
+   * @param nullvalue the nullvalue returned when parsing failed.
+   * @throws ClassCastException if the value is no date or not null.
+   */
+  public void setNullValue (Object nullvalue)
+  {
+    super.setNullValue ((Date)nullvalue);
+  }
 }

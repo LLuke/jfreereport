@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: FunctionDataSource.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
  *
  * Changes
  * -------
@@ -43,22 +43,40 @@ import com.jrefinery.report.function.Function;
 import com.jrefinery.report.ReportState;
 
 /**
- * The base class for a function data source.
+ * The base class for a function data source. A function datasource does not query a
+ * function directly. The functions value is filled into this datasource by the current
+ * band to be printend when the bands populateElements() function is called.
+ * <p>
+ * The value for this element is retrieved from a function registered in the report's
+ * function collection by the name defined in this elements <code>function</code>
+ * property.
+ * <p>
+ * If the function name is invalid (no function registered by that name), null is
+ * returned.
+ *
+ * @see com.jrefinery.report.Band#populateElements
  */
 public class FunctionDataSource implements DataSource
 {
 
-  /** ??? */
+  /**
+   * The name of the function as defined in the function collection for the report
+   *
+   * @see com.jrefinery.report.function.Function#setName(String)
+   * @see com.jrefinery.report.function.Function#getName
+   */
   private String function;
 
   /** The current value of the function. */
   private Object value;
 
   /**
-   * Default constructor.
+   * Default constructor. The function name is empty ("", not null), the value initially
+   * null.
    */
   public FunctionDataSource ()
   {
+    setFunction("");
   }
 
   /**
@@ -74,7 +92,7 @@ public class FunctionDataSource implements DataSource
   /**
    * Sets the function.
    *
-   * @param field ???
+   * @param field the name of the function as defined in the function collection.
    */
   public void setFunction (String field)
   {
@@ -83,9 +101,9 @@ public class FunctionDataSource implements DataSource
   }
 
   /**
-   * Returns the function.
+   * Returns the name of the function bound to this datasource.
    *
-   * @return ???
+   * @return the registered function name
    */
   public String getFunction ()
   {
@@ -93,7 +111,7 @@ public class FunctionDataSource implements DataSource
   }
 
   /**
-   * Sets the value of the function.
+   * Sets the value retrieved from the function by the current band.
    *
    * @param value The value.
    */

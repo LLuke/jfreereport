@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: NumberFormatFilter.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,16 @@ import java.text.NumberFormat;
 import java.text.Format;
 
 /**
- * A filter that formats the value from a data source as a number.
+ * A filter that formats the numeric value from a data source to a string representation.
+ * <p>
+ * This filter will format java.lang.Number objects using a
+ * java.text.NumericFormat to create the string representation for the number obtained
+ * from the datasource.
+ * <p>
+ * If the object read from the datasource is no number, the NullValue defined by
+ * setNullValue(Object) is returned.
+ *
+ * @see java.text.NumberFormat
  */
 public class NumberFormatFilter extends FormatFilter
 {
@@ -53,7 +62,7 @@ public class NumberFormatFilter extends FormatFilter
    */
   public NumberFormatFilter ()
   {
-    setFormatter(NumberFormat.getInstance());
+    setNumberFormat(NumberFormat.getInstance());
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: FormatFilter.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
  *
  * Changes
  * -------
@@ -44,14 +44,22 @@ import java.text.Format;
 /**
  * The base class for filters that format data.  Data is received from a DataSource and formatted.
  * The data source might be a field in the TableModel or a report function, or even another
- * format filter (since this class implements the DataSource interface).
+ * format filter (since filters implement the DataSource interface).
+ * <p>
+ * Formating is done by a java.text.Format object. This filter will always return a String
+ * object on getValue().
+ * <p>
+ * If the formater does not understand the object returned by the defined datasource,
+ * the defined null value is returned.
+ * <p>
+ * The nullValue is set to "-" by default.
  */
 public class FormatFilter implements DataFilter
 {
-  /** The format. */
+  /** The format used to create the string representation of the data. */
   private Format format;
 
-  /** The datasource. */
+  /** The datasource from where the data is obtained. */
   private DataSource datasource;
 
   /** The string used to represent null. */
@@ -62,12 +70,14 @@ public class FormatFilter implements DataFilter
    */
   protected FormatFilter ()
   {
+    nullvalue = "-";
   }
 
   /**
    * Sets the format for the filter.
    *
    * @param format The format.
+   * @throws NullPointerException if the given format is null
    */
   public void setFormatter (Format format)
   {
@@ -86,7 +96,11 @@ public class FormatFilter implements DataFilter
   }
 
   /**
-   * Returns the formatted value.
+   * Returns the formatted string. The value is read using the data source given
+   * and formated using the formatter of this object. The formating is guaranteed to
+   * completly form the object to an string or to return the defined NullValue.
+   * <p>
+   * If format, datasource or object are null, the NullValue is returned.
    *
    * @return The formatted value.
    */

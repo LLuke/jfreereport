@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DateFormatFilter.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,14 @@ import java.text.Format;
 import java.text.DateFormat;
 
 /**
- * A date format filter.
+ * A filter that creates string from dates. This filter will format java.util.
+ * Date objects using a java.text.DateFormat to create the string representation for
+ * the date obtained from the datasource.
+ * <p>
+ * If the object read from the datasource is no date, the NullValue defined by
+ * setNullValue(Object) is returned.
+ *
+ * @see java.text.DateFormat
  */
 public class DateFormatFilter extends FormatFilter
 {
@@ -69,6 +76,7 @@ public class DateFormatFilter extends FormatFilter
    * Sets the date format for the filter.
    *
    * @param format The format.
+   * @throws NullPointerException if the format given is null
    */
   public void setDateFormat (DateFormat format)
   {
@@ -79,6 +87,8 @@ public class DateFormatFilter extends FormatFilter
    * Sets the formatter.
    *
    * @param format The format.
+   * @throws ClassCastException if the format given is no DateFormat
+   * @throws NullPointerException if the format given is null
    */
   public void setFormatter (Format format)
   {

@@ -25,29 +25,76 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * Changes
+ * -------
+ * 20-May-2002 : Initial version
+ * 06-Jun-2002 : Updated Javadoc comments
  */
 package com.jrefinery.report.filter;
 
 import java.text.Format;
 import java.text.ParseException;
 
+/**
+ * A format parser tries to parse a string into an object. If the value returned by the
+ * datasource is no string, a string is formed using String.valueOf (Object). This string
+ * is fed into the java.text.Format of this FormatParser and the parsed object is returned.
+ * <p>
+ * What class of object is returned, is determined by the given format. If parsing failed,
+ * the defined NullValue is returned.
+ */
 public class FormatParser implements DataFilter
 {
+  /** The format used to create the string representation of the data. */
   private Format format;
+
+  /** The datasource from where the data is obtained. */
   private DataSource datasource;
+
+  /** The object used to represent null. */
   private Object nullvalue;
 
+  /**
+   * DefaultConstructor
+   */
+  public FormatParser ()
+  {
+  }
+
+  /**
+   * Sets the format for the filter.
+   *
+   * @param format The format.
+   * @throws NullPointerException if the given format is null
+   */
   public void setFormatter (Format format)
   {
     if (format == null) throw new NullPointerException();
     this.format = format;
   }
 
+  /**
+   * Returns the format for the filter.
+   *
+   * @return The format.
+   */
   public Format getFormatter ()
   {
     return this.format;
   }
 
+  /**
+   * Returns the parsed object. The value is read using the data source given
+   * and parsed using the formatter of this object. The parsing is guaranteed to
+   * completly form the target object or to return the defined NullValue.
+   * <p>
+   * If the given datasource does not return a string, the returned object is
+   * transformed into a string using String.valueOf (Object) and then parsed.
+   * <p>
+   * If format, datasource or object are null, the NullValue is returned.
+   *
+   * @return The formatted value.
+   */
   public Object getValue ()
   {
     Format f = getFormatter();
@@ -69,22 +116,45 @@ public class FormatParser implements DataFilter
     }
   }
 
+  /**
+   * Returns the data source for the filter.
+   *
+   * @return The data source.
+   */
   public DataSource getDataSource ()
   {
     return datasource;
   }
 
+  /**
+   * Sets the data source.
+   *
+   * @param ds The data source.
+   */
   public void setDataSource (DataSource ds)
   {
     if (ds == null) throw new NullPointerException();
     this.datasource = ds;
   }
 
+  /**
+   * Sets the value that will be displayed if the data source supplies a null value.
+   * The nullValue itself can be null to cover the case when no reasonable default value
+   * can be defined.
+   *
+   * @param nullvalue The value returned when the parsing failed.
+   */
   public void setNullValue (Object nullvalue)
    {
      this.nullvalue = nullvalue;
    }
 
+  /**
+   * Returns the object representing a null value from the data source. This value will
+   * also be returned when parsing failed or no parser or datasource is set at all.
+   *
+   * @return The value returned when the parsing failed.
+   */
    public Object getNullValue ()
    {
      return nullvalue;
