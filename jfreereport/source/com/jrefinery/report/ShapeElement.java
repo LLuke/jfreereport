@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.10 2002/05/28 19:28:22 taqua Exp $
+ * $Id: ShapeElement.java,v 1.11 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -148,11 +148,23 @@ public abstract class ShapeElement extends Element
     m_stroke = stroke;
   }
 
+  /**
+   * specifies whether the outline of this elements shape should be printed.
+   * By default this returns true.
+   *
+   * @returns true if the outline should be drawn, false otherwise
+   */
   protected boolean shouldDraw ()
   {
     return true;
   }
 
+  /**
+   * specifies whether the contents of this elements shape should be filled with this elements
+   * paint. By default this returns true.
+   *
+   * @returns true if the outline should be drawn, false otherwise
+   */
   protected boolean shouldFill ()
   {
     return true;
