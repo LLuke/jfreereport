@@ -1,0 +1,27 @@
+<!-- An ANT build file for JFreeReport -->
+
+<!-- This file builds all GUI modules. -->
+
+<project name="jfreereport" default="all" basedir="..">
+
+  <target name="init">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-core.xml" target="init"/>
+    <property file="${antfile.dir}/build.properties"/>
+
+    <antcall target="rebuild-core"/>
+  </target>
+
+  <target name="check-core">
+    <available file="${core-jar-file}" type="file" property="core-jar-file-present"/>
+  </target>
+
+  <target name="rebuild-core" unless="core-jar-file-present" depends="check-core" >
+    <echo>
+      Rebuilding core ...
+    </echo>
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-core.xml" target="all"/>
+  </target>
+
+</project>

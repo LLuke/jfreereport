@@ -1,0 +1,212 @@
+<!-- An ANT build file for JFreeReport -->
+
+<!-- This file builds all parser and writer modules. -->
+
+<project name="jfreereport" default="all" basedir="..">
+
+  <target name="init">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-core.xml" target="init"/>
+    <property file="${antfile.dir}/build.properties"/>
+
+    <antcall target="rebuild-core"/>
+  </target>
+
+  <target name="check-core">
+    <available file="${core-jar-file}" type="file" property="core-jar-file-present"/>
+  </target>
+
+  <target name="rebuild-core" unless="core-jar-file-present" depends="check-core" >
+    <echo>
+      Rebuilding core ...
+    </echo>
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-core.xml" target="all"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Raw CSV Output module                                         -->
+  <!--                                                                -->
+  <!--  Depends on: Core task                                         -->
+  <!-- ************************************************************** -->
+
+  <target name="compile-module-output-csv" depends="init">
+    <description>
+      Compiles the CSV raw output.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/output/csv/*"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-output-csv" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-output-csv-file}"
+         basedir="build">
+      <manifest>
+          <attribute name="Class-Path" value="${core-jar-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-output-csv">
+    <copy file="source/org/jfree/report/modules/output/csv/module.properties"
+      tofile="build/org/jfree/report/modules/output/csv/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/output/csv/configuration.properties"
+      tofile="build/org/jfree/report/modules/output/csv/configuration.properties"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Simple XML Output module                                      -->
+  <!--                                                                -->
+  <!--  Depends on: Core task                                         -->
+  <!-- ************************************************************** -->
+
+  <target name="compile-module-output-xml" depends="init">
+    <description>
+      Compiles the XML raw output.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/output/xml/*"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-output-xml" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-output-xml-file}"
+         basedir="build">
+      <manifest>
+          <attribute name="Class-Path" value="${core-jar-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-output-xml">
+    <copy file="source/org/jfree/report/modules/output/xml/module.properties"
+      tofile="build/org/jfree/report/modules/output/xml/module.properties"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Output support module: iText font support                     -->
+  <!--                                                                -->
+  <!--  Depends on: Core task                                         -->
+  <!-- ************************************************************** -->
+
+  <target name="init-module-output-support-itext" depends="init" >
+    <available file="${libdir}/${itext-jar-file}" property="itext-jar-file-present"/>
+    <fail unless="itext-jar-file-present">
+      The file ${itext-jar-file} was not found in the lib directory.
+      This file is required for PDF and RTF output.
+    </fail>
+
+    <available file="${module-misc-configstore-base-file}" property="module-misc-configstore-base-present"/>
+    <antcall target="rebuild-configstore-base"/>
+  </target>
+
+  <target name="rebuild-configstore-base" unless="module-misc-configstore-base-present">
+    <echo>
+      Rebuilding configstore base module ...
+    </echo>
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-misc.xml" target="compile-module-misc-configstore-base"/>
+  </target>
+
+
+  <target name="compile-module-output-support-itext"
+    depends="init-module-output-support-itext">
+    <description>
+      Compiles the iText base font support.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/output/support/itext/*"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${libdir}/${itext-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-misc-configstore-base-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-output-support-itext" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-output-support-itext-file}"
+         basedir="build">
+      <manifest>
+          <attribute name="Class-Path" value="${core-jar-file} ${module-misc-configstore-base-file} ${manifest-lib-prefix}${itext-jar-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-output-support-itext">
+    <copy file="source/org/jfree/report/modules/output/support/itext/module.properties"
+      tofile="build/org/jfree/report/modules/output/support/itext/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/output/support/itext/configuration.properties"
+      tofile="build/org/jfree/report/modules/output/support/itext/configuration.properties"/>
+  </target>
+
+  <!--
+    This target is called from build-all
+    -->
+  <target name="copy-resources"
+    depends="copy-resources-output-support-itext,
+    copy-resources-output-csv,
+    copy-resources-output-xml" />
+
+  <target name="compile"
+    depends="compile-module-output-csv,
+    compile-module-output-xml,
+    compile-module-output-support-itext"/>
+
+  <target name="all" depends="init, compile"/>
+
+</project>

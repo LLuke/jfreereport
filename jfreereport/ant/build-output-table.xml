@@ -1,0 +1,332 @@
+<!-- An ANT build file for JFreeReport -->
+
+<!-- This file builds all parser and writer modules. -->
+
+<project name="jfreereport" default="all" basedir=".">
+
+  <target name="init">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-core.xml" target="init"/>
+    <property file="${antfile.dir}/build.properties"/>
+
+    <antcall target="rebuild-core"/>
+  </target>
+
+  <target name="check-core">
+    <available file="${core-jar-file}" type="file" property="core-jar-file-present"/>
+  </target>
+
+  <target name="rebuild-core" unless="core-jar-file-present" depends="check-core" >
+    <echo>
+      Rebuilding core ...
+    </echo>
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-core.xml" target="all"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Table Output base module                                      -->
+  <!--                                                                -->
+  <!--  Depends on: Core task                                         -->
+  <!-- ************************************************************** -->
+
+  <target name="compile-module-output-table-base" depends="init">
+    <description>
+      Compiles the table output target base module.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/output/table/base/*"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-output-table-base" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-output-table-base-file}"
+         basedir="build">
+      <manifest>
+          <attribute name="Class-Path" value="${core-jar-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-output-table-base">
+    <copy file="source/org/jfree/report/modules/output/table/base/module.properties"
+      tofile="build/org/jfree/report/modules/output/table/base/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/output/table/base/configuration.properties"
+      tofile="build/org/jfree/report/modules/output/table/base/configuration.properties"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Table CSV output  module                                      -->
+  <!--                                                                -->
+  <!--  Depends on: Core task                                         -->
+  <!-- ************************************************************** -->
+
+  <target name="check-module-output-csv">
+    <available file="${module-output-csv-file}" property="module-output-csv-file-present"/>
+  </target>
+
+  <target name="rebuild-module-output-csv" unless="module-output-csv-file-present" depends="check-module-output-csv">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-output-misc.xml" target="compile-module-output-csv"/>
+  </target>
+
+  <target name="compile-module-output-table-csv" depends="init, compile-module-output-table-base, rebuild-module-output-csv">
+    <description>
+      Compiles the CSV table output module.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/output/table/csv/*"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-output-table-base-file}"/>
+        <pathelement location="${module-output-csv-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-output-table-csv" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-output-table-csv-file}"
+         basedir="build">
+      <manifest>
+          <attribute name="Class-Path" value="${core-jar-file} ${module-output-csv-file} ${module-output-table-base-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-output-table-csv">
+    <copy file="source/org/jfree/report/modules/output/table/csv/module.properties"
+      tofile="build/org/jfree/report/modules/output/table/csv/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/output/table/csv/configuration.properties"
+      tofile="build/org/jfree/report/modules/output/table/csv/configuration.properties"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Table HTML output  module                                      -->
+  <!--                                                                -->
+  <!--  Depends on: Core task                                         -->
+  <!-- ************************************************************** -->
+
+  <target name="compile-module-output-table-html" depends="compile-module-output-table-base">
+    <description>
+      Compiles the HTML table output module.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/output/table/html/*"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-output-table-base-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-output-table-html" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-output-table-html-file}"
+         basedir="build">
+      <manifest>
+          <attribute name="Class-Path" value="${core-jar-file} ${module-output-table-base-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-output-table-html">
+    <copy file="source/org/jfree/report/modules/output/table/html/module.properties"
+      tofile="build/org/jfree/report/modules/output/table/html/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/output/table/html/configuration.properties"
+      tofile="build/org/jfree/report/modules/output/table/html/configuration.properties"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Table RTF output  module                                      -->
+  <!--                                                                -->
+  <!--  Depends on: Core task                                         -->
+  <!-- ************************************************************** -->
+
+  <target name="check-module-output-support-itext">
+    <available file="${module-output-support-itext-file}" property="module-output-support-itext-file-present"/>
+  </target>
+
+  <target name="rebuild-module-output-support-itext" unless="module-output-support-itext-file-present" depends="check-module-output-support-itext">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-output-misc.xml" target="compile-module-output-support-itext"/>
+  </target>
+
+  <target name="init-module-output-table-rtf" depends="init" >
+    <available file="${libdir}/${itext-jar-file}" property="itext-jar-file-present"/>
+    <fail unless="itext-jar-file-present">
+      The file ${itext-jar-file} was not found in the lib directory.
+      This file is required for PDF and RTF output.
+    </fail>
+  </target>
+
+  <target name="compile-module-output-table-rtf"
+    depends="init-module-output-table-rtf, compile-module-output-table-base, rebuild-module-output-support-itext">
+    <description>
+      Compiles the RTF table output module.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/output/table/rtf/*"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${libdir}/${itext-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-output-table-base-file}"/>
+        <pathelement location="${module-output-support-itext-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-output-table-rtf" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-output-table-rtf-file}"
+         basedir="build">
+      <manifest>
+          <attribute name="Class-Path" value="${core-jar-file} ${module-output-support-itext-file} ${module-output-table-base-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-output-table-rtf">
+    <copy file="source/org/jfree/report/modules/output/table/rtf/module.properties"
+      tofile="build/org/jfree/report/modules/output/table/rtf/module.properties"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Table XLS output  module                                      -->
+  <!--                                                                -->
+  <!--  Depends on: Core task                                         -->
+  <!-- ************************************************************** -->
+
+  <target name="init-module-output-table-xls" depends="init" >
+    <available file="${libdir}/${jakarta-poi-jar-file}" property="jakarta-poi-jar-file-present"/>
+    <fail unless="jakarta-poi-jar-file-present">
+      The file ${jakarta-poi-jar-file} was not found in the lib directory.
+      This file is required for Excel output.
+    </fail>
+  </target>
+
+  <target name="compile-module-output-table-xls"
+    depends="init-module-output-table-xls, compile-module-output-table-base">
+    <description>
+      Compiles the Excel table output module.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/output/table/xls/*"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${libdir}/${jakarta-poi-jar-file}" />
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-output-table-base-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-output-table-xls" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-output-table-xls-file}"
+         basedir="build">
+      <manifest>
+          <attribute name="Class-Path" value="${core-jar-file} ${module-output-table-base-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-output-table-xls">
+    <copy file="source/org/jfree/report/modules/output/table/xls/module.properties"
+      tofile="build/org/jfree/report/modules/output/table/xls/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/output/table/xls/configuration.properties"
+      tofile="build/org/jfree/report/modules/output/table/xls/configuration.properties"/>
+  </target>
+
+  <!--
+    This target is called from build-all
+    -->
+  <target name="copy-resources"
+    depends="copy-resources-output-table-base,
+    copy-resources-output-table-csv,
+    copy-resources-output-table-html,
+    copy-resources-output-table-rtf,
+    copy-resources-output-table-xls" />
+
+  <target name="compile"
+    depends="compile-module-output-table-base,
+    compile-module-output-table-csv,
+    compile-module-output-table-html,
+    compile-module-output-table-rtf,
+    compile-module-output-table-xls"/>
+
+  <target name="all" depends="init, compile"/>
+
+</project>
