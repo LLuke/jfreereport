@@ -370,6 +370,8 @@
   nullstring     CDATA          #IMPLIED
   dynamic        (%boolean;)    #IMPLIED
   resource-base  CDATA          #IMPLIED
+  trim-text-content    (%boolean;)   #IMPLIED
+  reserved-literal     CDATA         #IMPLIED
 >
 
 <!--
@@ -388,6 +390,8 @@
   nullstring  CDATA    #IMPLIED
   dynamic     (%boolean;)   #IMPLIED
   resource-base  CDATA          #IMPLIED
+  trim-text-content    (%boolean;)   #IMPLIED
+  reserved-literal     CDATA         #IMPLIED
 >
 
 <!--
@@ -401,6 +405,8 @@
   %fontdef;
   nullstring     CDATA          #IMPLIED
   dynamic        (%boolean;)    #IMPLIED
+  trim-text-content    (%boolean;)   #IMPLIED
+  reserved-literal     CDATA         #IMPLIED
 >
 
 <!--
@@ -415,6 +421,8 @@
   fieldname   CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
   dynamic     (%boolean;)   #IMPLIED
+  trim-text-content    (%boolean;)   #IMPLIED
+  reserved-literal     CDATA         #IMPLIED
 >
 
 
@@ -428,6 +436,8 @@
   fieldname   CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
   dynamic     (%boolean;)   #IMPLIED
+  trim-text-content    (%boolean;)   #IMPLIED
+  reserved-literal     CDATA         #IMPLIED
 >
 
 <!ELEMENT date-field   EMPTY>
@@ -436,10 +446,12 @@
   %basicform;
   %position;
   %fontdef;
-  format		CDATA      #IMPLIED
-  fieldname   CDATA    #REQUIRED
-  nullstring  CDATA    #IMPLIED
-  dynamic     (%boolean;)   #IMPLIED
+  format		           CDATA         #IMPLIED
+  fieldname            CDATA         #REQUIRED
+  dynamic              (%boolean;)   #IMPLIED
+  nullstring           CDATA         #IMPLIED
+  trim-text-content    (%boolean;)   #IMPLIED
+  reserved-literal     CDATA         #IMPLIED
 >
 
 

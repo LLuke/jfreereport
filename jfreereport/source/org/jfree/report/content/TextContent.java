@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.6 2003/09/12 18:46:18 taqua Exp $
+ * $Id: TextContent.java,v 1.7 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public strictfp class TextContent extends ContentContainer
    */
   public TextContent(final String value, final float lineHeight,
                      final Rectangle2D bounds, final SizeCalculator ot,
-                     final String reservedLiteral)
+                     final String reservedLiteral, final boolean trimTextContent)
   {
     super((Rectangle2D) bounds.clone());
     this.sizeCalculator = ot;
@@ -87,7 +87,7 @@ public strictfp class TextContent extends ContentContainer
       for (int i = 0; i < paragraphs.size(); i++)
       {
         final TextParagraph p = new TextParagraph
-            (getSizeCalculator(), lineHeight, reservedLiteral);
+            (getSizeCalculator(), lineHeight, reservedLiteral, trimTextContent);
         p.setContent((String) paragraphs.get(i), x, y + usedHeight, w, h - usedHeight);
         usedHeight += p.getBounds().getHeight();
         addContentPart(p);

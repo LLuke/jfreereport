@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.7 2003/09/13 15:14:40 taqua Exp $
+ * $Id: TextParagraph.java,v 1.8 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes
  * -------
@@ -57,10 +57,13 @@ import org.jfree.report.util.WordBreakIterator;
 public strictfp class TextParagraph extends ContentContainer
 {
   /** The reserved size. */
-  private float reservedSize = 0;
+  private float reservedSize;
 
   /** The reserved size. */
-  private float lineHeight = 0;
+  private float lineHeight;
+
+  /** The reserved size. */
+  private boolean trimTextContent;
 
   /** The size calculator. */
   private final SizeCalculator sizeCalculator;
@@ -77,7 +80,7 @@ public strictfp class TextParagraph extends ContentContainer
    * not fit into the bounds
    */
   public TextParagraph(final SizeCalculator calc, final float lineHeight, 
-                       final String reservedLiteral)
+                       final String reservedLiteral, final boolean trimTextContent)
   {
     super(new Rectangle2D.Float());
     this.sizeCalculator = calc;
@@ -85,6 +88,7 @@ public strictfp class TextParagraph extends ContentContainer
     this.reservedSize = getSizeCalculator().getStringWidth
         (reservedLiteral, 0, reservedLiteral.length());
     this.lineHeight = lineHeight;
+    this.trimTextContent = trimTextContent;
   }
 
   /**
@@ -221,12 +225,13 @@ public strictfp class TextParagraph extends ContentContainer
       // we can assume, that if the first character is a white space, then all
       // characters are whitespaces, as the word break iterator searches for
       // whitespace boundries ...
-      /*
-      while ((lineStartPos < lineLength) && (isWhitespace(mytext.charAt(lineStartPos))))
+      if (isTrimTextContent())
       {
-        lineStartPos++;
+        while ((lineStartPos < lineLength) && (isWhitespace(mytext.charAt(lineStartPos))))
+        {
+          lineStartPos++;
+        }
       }
-      */
       final boolean forceEnd = ((returnLines.size() + 1) == maxLines);
       final int nextPos = findNextBreak(mytext, lineStartPos, width, forceEnd, breakit);
 
@@ -234,27 +239,51 @@ public strictfp class TextParagraph extends ContentContainer
       if (nextPos == BreakIterator.DONE)
       {
         final String addString = mytext.substring(lineStartPos);
-        returnLines.add(addString);
+        if (isTrimTextContent())
+        {
+          returnLines.add (addString.trim());
+        }
+        else
+        {
+          returnLines.add(addString);
+        }
         return returnLines;
       }
 
       if (forceEnd)
       {
         // it won't fit in, so break ...
-        returnLines.add(appendReserveLit(mytext, lineStartPos, nextPos, width));
+        String addString = appendReserveLit(mytext, lineStartPos, nextPos, width);
+        if (isTrimTextContent())
+        {
+          returnLines.add(addString.trim());
+        }
+        else
+        {
+          returnLines.add (addString);
+        }
         return returnLines;
+      }
+
+      // End the line and restart for the next line ...
+      final String addString = mytext.substring(lineStartPos, nextPos);
+      if (isTrimTextContent())
+      {
+        returnLines.add (addString.trim());
       }
       else
       {
-        // End the line and restart for the next line ...
-        final String addString = mytext.substring(lineStartPos, nextPos);
         returnLines.add(addString);
-        lineStartPos = nextPos;
       }
+      lineStartPos = nextPos;
     }
     return returnLines;
   }
 
+  public boolean isTrimTextContent()
+  {
+    return trimTextContent;
+  }
   /**
    * Tests, whether the given character is a whitespace (but not a breakline).
    *
@@ -262,7 +291,6 @@ public strictfp class TextParagraph extends ContentContainer
    * @return true, if this is a whitespace character, but not a
    * linebreak character, false otherwise.
    */
-  /*
   private boolean isWhitespace(final char c)
   {
     if (c == '\n' || c == '\r')
@@ -274,7 +302,6 @@ public strictfp class TextParagraph extends ContentContainer
       return Character.isWhitespace(c);
     }
   }
-  */
 
   /**
    * Locates the next linebreak for the given text.

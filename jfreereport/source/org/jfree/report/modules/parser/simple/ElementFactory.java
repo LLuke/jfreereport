@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.10 2003/10/11 20:44:06 taqua Exp $
+ * $Id: ElementFactory.java,v 1.11 2003/10/18 22:05:11 taqua Exp $
  *
  * Changes
  * -------
@@ -103,6 +103,9 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
 
   /** The character entity parser. */
   private final CharacterEntityParser entityParser;
+  public static final String DYNAMIC_ATT = "dynamic";
+  public static final String RESERVED_LITERAL_ATT = "reserved-literal";
+  public static final String TRIM_TEXT_CONTENT_ATT = "trim-text-content";
 
   /**
    * Creates a new ElementFactory. The factory queries the current Band of the ReportFactory
@@ -860,7 +863,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     {
       factory.setColor(ParserUtil.parseColor(atts.getValue(COLOR_ATT)));
     }
-    factory.setDynamicHeight(parseBoolean(atts.getValue("dynamic")));
+    factory.setDynamicHeight(parseBoolean(atts.getValue(DYNAMIC_ATT)));
     factory.setHorizontalAlignment(parseTextAlignment(atts.getValue(ALIGNMENT_ATT)));
     factory.setVerticalAlignment(parseTextVerticalAlignment(atts.getValue(VALIGNMENT_ATT)));
     factory.setBold(parseBoolean(atts.getValue(FS_BOLD)));
@@ -872,6 +875,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     factory.setLineHeight(parseFloat(atts.getValue(LINEHEIGHT)));
     factory.setStrikethrough(parseBoolean(atts.getValue(FS_STRIKETHR)));
     factory.setUnderline(parseBoolean(atts.getValue(FS_UNDERLINE)));
+    factory.setReservedLiteral(atts.getValue(RESERVED_LITERAL_ATT));
+    factory.setTrimTextContent(parseBoolean(atts.getValue(TRIM_TEXT_CONTENT_ATT)));
     parseSimpleFontStyle(atts.getValue(FONT_STYLE_ATT), factory);
 
 

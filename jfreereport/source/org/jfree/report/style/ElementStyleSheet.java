@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.7 2003/09/09 15:52:53 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.8 2003/09/11 22:17:10 taqua Exp $
  *
  * Changes
  * -------
@@ -215,6 +215,13 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   /** The string that is used to end a text if not all text fits into the element. */
   public static final StyleKey RESERVED_LITERAL = StyleKey.getStyleKey
       ("reserved-literal", String.class);
+
+  /**
+   * The Layout Cacheable stylekey. Set this stylekey to false, to define that the element
+   * is not cachable. This key defaults to true.
+   */
+  public static final StyleKey TRIM_TEXT_CONTENT = StyleKey.getStyleKey("trim-text-content",
+      Boolean.class);
 
   /** The instance id of this ElementStyleSheet. This id is shared among all clones. */
   private InstanceID id;

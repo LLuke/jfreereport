@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.4 2003/09/13 15:14:40 taqua Exp $
+ * $Id: TextContentFactoryModule.java,v 1.5 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes
  * -------
@@ -128,14 +128,18 @@ public class TextContentFactoryModule implements ContentFactoryModule
         (float) dim.getWidth(),
         (float) dim.getHeight());
 
-    final Float lh = (Float) e.getStyle().getStyleProperty(ElementStyleSheet.LINEHEIGHT);
+    final Float lineHeight = (Float) e.getStyle().getStyleProperty(ElementStyleSheet.LINEHEIGHT);
     try
     {
       final String reservedLiteral = (String) e.getStyle().getStyleProperty
           (ElementStyleSheet.RESERVED_LITERAL, "..");
 
-      final TextContent tc = new TextContent(text, lh.floatValue(), tBounds,
-          ot.createTextSizeCalculator(f), reservedLiteral);
+      final boolean trimTextContent = e.getStyle().getBooleanStyleProperty
+          (ElementStyleSheet.TRIM_TEXT_CONTENT);
+
+      final TextContent tc = new TextContent
+          (text, lineHeight.floatValue(), tBounds,
+           ot.createTextSizeCalculator(f), reservedLiteral, trimTextContent);
       return tc;
     }
     catch (SizeCalculatorException se)

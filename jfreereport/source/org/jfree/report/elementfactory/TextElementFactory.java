@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextElementFactory.java,v 1.7 2003/09/24 15:27:35 taqua Exp $
+ * $Id: TextElementFactory.java,v 1.8 2003/10/18 22:05:11 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -79,6 +79,8 @@ public abstract class TextElementFactory extends ElementFactory
   private ElementAlignment horizontalAlignment;
   /** The reserved literal. */
   private String reservedLiteral;
+  /** A flag defining whether to remove leading and trailing whitespaces from text lines. */
+  private Boolean trimTextContent;
 
   /**
    * Default Constructor.
@@ -350,6 +352,16 @@ public abstract class TextElementFactory extends ElementFactory
     this.reservedLiteral = reservedLiteral;
   }
 
+  public Boolean getTrimTextContent()
+  {
+    return trimTextContent;
+  }
+
+  public void setTrimTextContent(Boolean trimTextContent)
+  {
+    this.trimTextContent = trimTextContent;
+  }
+
   /**
    * Applies the defined element style to the given stylesheet. This is a
    * helper function to reduce the code size of the implementors.
@@ -376,5 +388,6 @@ public abstract class TextElementFactory extends ElementFactory
     style.setStyleProperty(ElementStyleSheet.UNDERLINED, getUnderline());
     style.setStyleProperty(ElementStyleSheet.VALIGNMENT, getVerticalAlignment());
     style.setStyleProperty(ElementStyleSheet.RESERVED_LITERAL, getReservedLiteral());
+    style.setStyleProperty(ElementStyleSheet.TRIM_TEXT_CONTENT, getTrimTextContent());
   }
 }
