@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.2 2002/05/07 14:27:59 mungady Exp $
+ * $Id: PDFOutputTarget.java,v 1.3 2002/05/14 21:35:05 taqua Exp $
  *
  * Changes
  * -------
@@ -362,6 +362,7 @@ public class PDFOutputTarget implements OutputTarget
   {
     try
     {
+      System.out.println (imageRef.getSourceURL ());
       com.lowagie.text.Image image = com.lowagie.text.Image.getInstance (imageRef.getSourceURL ());
       image.setAbsolutePosition (x + imageRef.getX (), getPageHeight () - y - imageRef.getY () - imageRef.getHeight ());
       image.scaleAbsolute (imageRef.getWidth (), imageRef.getHeight ());

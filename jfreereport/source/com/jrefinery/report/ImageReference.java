@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ItemBand.java,v 1.1.1.1 2002/04/25 17:02:15 taqua Exp $
+ * $Id: ImageReference.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 25-May-2002)
  * -------------------------
@@ -94,8 +94,8 @@ public class ImageReference
     if (bounds.getWidth () < 1 || bounds.getHeight () < 1)
       throw new IllegalArgumentException ("Width and height have to be > 0");
     InputStream is = null;
-    this.bounds = bounds;
-
+    setBounds (bounds);
+    setSourceURL(url);
     try
     {
       is = url.openStream ();
@@ -140,6 +140,18 @@ public class ImageReference
   public URL getSourceURL ()
   {
     return url;
+  }
+
+  protected void setSourceURL (URL surl)
+  {
+    if (surl == null) throw new NullPointerException();
+    this.url = surl;
+  }
+
+  protected void setBounds (Rectangle2D bounds)
+  {
+    if (bounds == null) throw new NullPointerException();
+    this.bounds = bounds;
   }
 
   /**
