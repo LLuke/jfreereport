@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!--
+    <!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
+
+-->
+<report name="Central Cpy Third Party Report" orientation="landscape" pageformat="A4" leftmargin="50" rightmargin="50">
+
+  <!-- REPORT HEADER -->
+  <reportheader height="44" fontname="Monospaced" fontstyle="bold" fontsize="18">
+    <label name="label Title" x="0" y="0" width="100%" height="20" alignment="center">Central Cpy Third Party Report</label>
+    <string-field name="Cpy Element" x="0" y="0"  width="100%" height="20" alignment="right" fieldname="LBL_STAT_cpyName"/>
+    <label name="label SubTitle" x="0" y="24" width="100%" height="10" fontsize="10" alignment="center">Belmarine Confidential - All amounts in EUR</label>
+    <imageref x="0" y="0" width="75" height="13" src="../../images/Logo.jpg" name="logo"/>
+  </reportheader>
+
+  <!-- REPORT FOOTER -->
+  <reportfooter height="50" fontname="Monospaced" fontstyle="plain" fontsize="8">
+    <label name="label Footer" x="0" y="0" width="100%" height="10" alignment="center" fontstyle="bold" fontsize="10">END OF REPORT</label>
+    <label name="label File"   x="0" y="30" width="100%" height="10" alignment="left">File: thirdPartyAccounts/CpyReport3.xml</label>
+    <label name="label Operation" x="0" y="40" width="100" height="10" alignment="left">Operation : 3502</label>
+<!--
+    <number-field name="ReportRef Element" x="60"  y="40" width="100"  height="10" alignment="left"  format="####" fieldname="reportref"/>
+-->
+  </reportfooter>
+
+  <!-- PAGE HEADER -->
+  <pageheader height="8.5" fontname="Monospaced" fontstyle="bold" fontsize="6" alignment="left" onfirstpage="false">
+    <line name="line1" x1="0" y1="0" x2="0" y2="0" weight="0.5"></line>
+    <label name="Label Closing"     x="0"   y="1" width="40" height="6">CLOSING</label>
+    <label name="Label DateRisk"    x="45"  y="1" width="40" height="6">DATE RISK</label>
+    <label name="Label Cover"       x="90"  y="1" width="30" height="6">COVER</label>
+    <label name="Label PremiumL"    x="125" y="1" width="60" height="6" alignment="right">GROSS PREMIUM</label>
+    <label name="Label BrokerageL"  x="190" y="1" width="60" height="6" alignment="right">BROKERAGE</label>
+    <label name="Label ComissionL"  x="255" y="1" width="60" height="6" alignment="right">COMMISSION</label>
+    <label name="Label NetPremium"  x="320" y="1" width="60" height="6" alignment="right">NET PREMIUM</label>
+    <label name="Label PrshaL"      x="385" y="1" width="60" height="6" alignment="right">P.SHARE</label>
+    <label name="Label ClaimL"      x="450" y="1" width="60" height="6" alignment="right">NET CLAIM</label>
+    <label name="Label ClaimExp"    x="515" y="1" width="60" height="6" alignment="right">CLAIM EXPENSES</label>
+    <label name="Label ClaimPaid"   x="580" y="1" width="60" height="6" alignment="right">TOTAL CLAIM</label>
+    <label name="Label BalanceL"    x="645" y="1" width="60" height="6" alignment="right">NET PAYABLE</label>
+    <line name="line2" x1="0" y1="8" x2="0" y2="8" weight="0.5"></line>
+  </pageheader>
+
+  <!-- PAGE FOOTER -->
+  <pagefooter height="15" fontname="Monospaced" fontsize="6">
+    <line name="line4" x1="0" y1="4" x2="0" y2="4" weight="0.5"/>
+    <label name="label printed"      x="0"  y="5"  width="100%" height="8" alignment="left">Printed: </label>
+    <date-field name="date1"         x="30" y="5"  width="100%" height="8" alignment="left" format="dd/MM/yyyy" fieldname="report_date"/>
+    <number-field name="pagenum1" fieldname="PageNumber" format="Page 0" x="0" y="5" width="100%" height="8" alignment="center"/>
+    <label name="label copyright"    x="0"  y="5"  width="100%" height="8" alignment="right">© Insurance Data S.A.</label>
+    <label name="label internetSite" x="0"  y="10" width="100%" height="8" alignment="right">www.InsuranceData.com</label>
+  </pagefooter>
+
+  <!-- GROUPS -->
+  <groups>
+    <group name="main Group">
+      <groupheader  height="39" fontname="Monospaced" fontstyle="bold" fontsize="6" alignment="left" vertical-alignment="middle">
+        <line name="line1" x1="0" y1="10" x2="0" y2="10" weight="1"></line>
+        <string-field name="ele_thirdId"   x="3"   y="13" width="100" height="8" fontsize="8" fieldname="LBL_STAT_thirdId"/>
+        <string-field name="ele_thirdName" x="30"  y="13" width="100" height="8" fontsize="8" fieldname="LBL_STAT_thirdName"/>
+        <string-field name="ele_accYear"   x="330" y="13" width="20"  height="8" fontsize="8" fieldname="LBL_STAT_accYear"/>
+        <label name="lbl_period"           x="350" y="13" width="40"  height="8" fontsize="8" >- Period</label>
+        <string-field name="ele_period"    x="395" y="13" width="20"  height="8" fontsize="8" fieldname="LBL_STAT_period"/>
+        <label name="lbl_period_details"  x="0"   y="13" width="100%" height="8" fontsize="8" alignment="right" >DETAILS</label>
+        <line name="line2" x1="0" y1="29" x2="0" y2="29" weight="1"></line>
+      </groupheader>
+      <groupfooter height="20" fontname="Monospaced" fontstyle="bold" fontsize="6" vertical-alignment="middle">
+        <line name="line1" x1="0"   y1="1" x2="0" y2="1" weight="1"></line>
+        <line name="line2" x1="0"   y1="3" x2="0" y2="3" weight="1"></line>
+        <number-function name="subtotal" function="SumPremiumL"    format="#,##0.00;-#,##0.00"   x="125"  y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumBrokerageL"  format="#,##0.00;-#,##0.00"   x="190"  y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumComissionL"  format="#,##0.00;-#,##0.00"   x="255" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumNetPremiumL" format="#,##0.00;-#,##0.00"   x="320" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumPrshaL"      format="#,##0.00;-#,##0.00"   x="385" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumClaimL"      format="#,##0.00;-#,##0.00"   x="450" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumClaimExpenseL" format="#,##0.00;-#,##0.00" x="515" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumClaimPaidL"  format="#,##0.00;-#,##0.00"   x="580" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumBalanceL"    format="#,##0.00;-#,##0.00"   x="645" y="4" width="60" height="8" alignment="right"></number-function>
+        <line name="line3" x1="0"   y1="16" x2="0" y2="16" weight="1"></line>
+        <line name="line4" x1="0"   y1="18" x2="0" y2="18" weight="1"></line>
+      </groupfooter>
+      <fields>
+        <field>LBL_STAT_bank</field>
+        <field>LBL_STAT_mo</field>
+        <field>LBL_STAT_balanceBrougthForward</field>
+      </fields>
+    </group>
+
+    <group name="Journal Group">
+      <groupheader  height="23.5" fontname="Monospaced" fontstyle="bold" fontsize="6" alignment="left" vertical-alignment="middle">
+        <line name="line1" x1="0" y1="1" x2="0" y2="1" weight="1"></line>
+        <string-field name="ele_jourId"   x="3"   y="4" width="100" height="8" fontsize="8" fieldname="LBL_STAT_journalId"/>
+        <string-field name="ele_jourName" x="30"  y="4" width="100" height="8" fontsize="8" fieldname="LBL_STAT_journalName"/>
+
+        <line name="line3" x1="0" y1="15" x2="0" y2="15" weight="0.5"></line>
+        <label name="Label Closing"     x="0"   y="16" width="40" height="6">CLOSING</label>
+        <label name="Label DateRisk"    x="45"  y="16" width="40" height="6">DATE RISK</label>
+        <label name="Label Cover"       x="90"  y="16" width="30" height="6">COVER</label>
+        <label name="Label PremiumL"    x="125" y="16" width="60" height="6" alignment="right">GROSS PREMIUM</label>
+        <label name="Label BrokerageL"  x="190" y="16" width="60" height="6" alignment="right">BROKERAGE</label>
+        <label name="Label ComissionL"  x="255" y="16" width="60" height="6" alignment="right">COMMISSION</label>
+        <label name="Label NetPremium"  x="320" y="16" width="60" height="6" alignment="right">NET PREMIUM</label>
+        <label name="Label PrshaL"      x="385" y="16" width="60" height="6" alignment="right">P.SHARE</label>
+        <label name="Label ClaimL"      x="450" y="16" width="60" height="6" alignment="right">NET CLAIM</label>
+        <label name="Label ClaimExp"    x="515" y="16" width="60" height="6" alignment="right">CLAIM EXPENSES</label>
+        <label name="Label ClaimPaid"   x="580" y="16" width="60" height="6" alignment="right">TOTAL CLAIM</label>
+        <label name="Label BalanceL"    x="645" y="16" width="60" height="6" alignment="right">NET PAYABLE</label>
+        <line name="line2" x1="0" y1="23" x2="0" y2="23" weight="0.5"></line>
+      </groupheader>
+      <groupfooter height="25" fontname="Monospaced" fontstyle="bold" fontsize="6" vertical-alignment="middle">
+        <line name="line1" x1="0"   y1="1" x2="0" y2="1" weight="1"></line>
+        <number-function name="subtotal" function="SumJourPremiumL"    format="#,##0.00;-#,##0.00"   x="125"  y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourBrokerageL"  format="#,##0.00;-#,##0.00"   x="190"  y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourComissionL"  format="#,##0.00;-#,##0.00"   x="255" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourNetPremiumL" format="#,##0.00;-#,##0.00"   x="320" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourPrshaL"      format="#,##0.00;-#,##0.00"   x="385" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourClaimL"      format="#,##0.00;-#,##0.00"   x="450" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourClaimExpenseL" format="#,##0.00;-#,##0.00" x="515" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourClaimPaidL"  format="#,##0.00;-#,##0.00"   x="580" y="4" width="60" height="8" alignment="right"></number-function>
+        <number-function name="subtotal" function="SumJourBalanceL"    format="#,##0.00;-#,##0.00"   x="645" y="4" width="60" height="8" alignment="right"></number-function>
+        <line name="line3" x1="0"   y1="16" x2="0" y2="16" weight="1"></line>
+      </groupfooter>
+      <fields>
+        <field>LBL_STAT_bank</field>
+        <field>LBL_STAT_mo</field>
+        <field>LBL_STAT_balanceBrougthForward</field>
+        <field>LBL_STAT_journalId</field>
+      </fields>
+    </group>
+  </groups>
+  <!-- ITEMS -->
+  <items height="10" fontname="Monospaced" fontstyle="plain" fontsize="6" vertical-alignment="middle">
+<!--
+    <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
+-->
+    <line name="top"    x1="0" y1="0"  x2="0" y2="0"  color="#DFDFDF" weight="0.1"/>
+    <line name="bottom" x1="0" y1="10" x2="0" y2="10" color="#DFDFDF" weight="0.1"/>
+
+    <string-field name="Closing Element"     x="0"   y="0" width="40" height="8" alignment="left"  fieldname="LBL_STAT_closing"/>
+    <string-field name="DateRisk Element"    x="45"  y="0" width="40" height="8" alignment="left"  fieldname="LBL_STAT_dateRisk"/>
+    <string-field name="Cover Element"       x="90"  y="0" width="30" height="8" alignment="left"  fieldname="LBL_STAT_coverId"/>
+    <number-field name="PremiumL Element"    x="125"  y="0" width="60" height="8" fontstyle="bold"  alignment="right" format="#,##0.00;-#,##0.00" fieldname="LBL_STAT_premium"/>
+    <number-field name="BrokerageL Element"  x="190"  y="0" width="60" height="8" alignment="right" format="#,##0.00;-#,##0.00" fieldname="LBL_STAT_brokerage"/>
+    <number-field name="ComissionL Element"  x="255" y="0" width="60" height="8" alignment="right" format="#,##0.00;-#,##0.00" fieldname="LBL_STAT_commission"/>
+    <number-field name="NetPremiumL Element" x="320" y="0" width="60" height="8" alignment="right" format="#,##0.00;-#,##0.00" fieldname="LBL_STAT_netPremium"/>
+    <number-field name="PrshaL Element"      x="385" y="0" width="60" height="8" fontstyle="bold"  alignment="right" format="#,##0.00;-#,##0.00" fieldname="LBL_STAT_profitShare"/>
+    <number-field name="ClaimL Element"      x="450" y="0" width="60" height="8" fontstyle="bold"  alignment="right" format="#,##0.00;-#,##0.00" fieldname="LBL_STAT_claim"/>
+    <number-field name="ClaimL Element"      x="515" y="0" width="60" height="8" fontstyle="bold"  alignment="right" format="#,##0.00;-#,##0.00" fieldname="LBL_STAT_claimExpense"/>
+    <number-field name="ClaimL Element"      x="580" y="0" width="60" height="8" fontstyle="bold"  alignment="right" format="#,##0.00;-#,##0.00" fieldname="LBL_STAT_claimPaid"/>
+    <number-field name="BalanceLL Element"   x="645" y="0" width="60" height="8" alignment="right" format="#,##0.00;-#,##0.00" fieldname="LBL_STAT_balance"/>
+  </items>
+
+  <!-- FUNCTIONS -->
+  <functions>
+    <function name="PageNumber" class="org.jfree.report.function.PageFunction"/>
+    <function name="report_date" class="org.jfree.report.function.ReportPropertyFunction">
+      <properties>
+        <property name="reportProperty">report.date</property>
+      </properties>
+    </function>
+<!--
+    <function name="backgroundTrigger" class="org.jfree.report.function.ElementVisibilitySwitchFunction">
+      <properties>
+        <property name="element">background</property>
+      </properties>
+    </function>
+-->
+<!--
+  *****************************************************************************************
+    TOTAL FOR ALL
+  *****************************************************************************************
+-->
+    <function name="SumPremiumL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_premium</property>
+        <property name="group">Main Group</property>
+      </properties>
+    </function>
+    <function name="SumBrokerageL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_brokerage</property>
+        <property name="group">Main Group</property>
+      </properties>
+    </function>
+    <function name="SumComissionL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_commission</property>
+        <property name="group">Main Group</property>
+      </properties>
+    </function>
+    <function name="SumNetPremiumL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_netPremium</property>
+        <property name="group">Main Group</property>
+      </properties>
+    </function>
+    <function name="SumPrshaL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_profitShare</property>
+        <property name="group">Main Group</property>
+      </properties>
+    </function>
+    <function name="SumClaimL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_claim</property>
+        <property name="group">Main Group</property>
+      </properties>
+    </function>
+    <function name="SumClaimExpenseL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_claimExpense</property>
+        <property name="group">Main Group</property>
+      </properties>
+    </function>
+    <function name="SumClaimPaidL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_claimPaid</property>
+        <property name="group">Main Group</property>
+      </properties>
+    </function>
+    <function name="SumTaxNetL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_insuranceTax</property>
+        <property name="group">Main Group</property>
+      </properties>
+    </function>
+    <function name="SumBalanceL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_balance</property>
+        <property name="group">Main Group</property>
+      </properties>
+    </function>
+<!--
+  *****************************************************************************************
+    TOTAL BY JOURNAL
+  *****************************************************************************************
+-->
+    <function name="SumJourPremiumL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_premium</property>
+        <property name="group">Journal Group</property>
+      </properties>
+    </function>
+    <function name="SumJourBrokerageL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_brokerage</property>
+        <property name="group">Journal Group</property>
+      </properties>
+    </function>
+    <function name="SumJourComissionL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_commission</property>
+        <property name="group">Journal Group</property>
+      </properties>
+    </function>
+    <function name="SumJourNetPremiumL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_netPremium</property>
+        <property name="group">Journal Group</property>
+      </properties>
+    </function>
+    <function name="SumJourPrshaL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_profitShare</property>
+        <property name="group">Journal Group</property>
+      </properties>
+    </function>
+    <function name="SumJourClaimL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_claim</property>
+        <property name="group">Journal Group</property>
+      </properties>
+    </function>
+    <function name="SumJourClaimExpenseL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_claimExpense</property>
+        <property name="group">Journal Group</property>
+      </properties>
+    </function>
+    <function name="SumJourClaimPaidL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_claimPaid</property>
+        <property name="group">Journal Group</property>
+      </properties>
+    </function>
+    <function name="SumJourTaxNetL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_insuranceTax</property>
+        <property name="group">Journal Group</property>
+      </properties>
+    </function>
+    <function name="SumJourBalanceL" class="org.jfree.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">LBL_STAT_balance</property>
+        <property name="group">Journal Group</property>
+      </properties>
+    </function>
+  </functions>
+</report>
