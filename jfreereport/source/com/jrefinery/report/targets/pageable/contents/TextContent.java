@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.3 2002/12/03 16:29:22 mungady Exp $
+ * $Id: TextContent.java,v 1.4 2002/12/07 20:53:13 taqua Exp $
  *
  * Changes
  * -------
@@ -84,7 +84,7 @@ public class TextContent extends ContentContainer
       for (int i = 0; i < paragraphs.size(); i++)
       {
         TextParagraph p = new TextParagraph(getSizeCalculator());
-        p.setContent((String) paragraphs.get(i), 
+        p.setContent((String) paragraphs.get(i),
                       new Rectangle2D.Double(x, y + usedHeight, w, h - usedHeight));
         usedHeight += p.getBounds().getHeight();
         addContentPart(p);
@@ -128,5 +128,5 @@ public class TextContent extends ContentContainer
     }
     return lines;
   }
-  
+
 }
