@@ -497,7 +497,11 @@
 <!--
 
   A defined function has a valid implementing class that implement
-  the com.jrefinery.report.function.Function interface.
+  the com.jrefinery.report.function.Function interface. Functions have access to the datarow and
+  can access other functions or expressions or the datasource. Functions are statefull and maintain
+  their state during the report generation. For stateless userdefined computations consider using
+  an expression instead of functions, as expression are cheaper to compute and maintain when using
+  huge reports.
 
   Function parameters are given by propery elements. For visual
   editing, function must obey to the java-beans rules (use get*/set*
@@ -506,6 +510,24 @@
   -->
 <!ELEMENT function   (properties?)>
 <!ATTLIST function
+  class      CDATA    #REQUIRED
+	name       CDATA    #REQUIRED
+>
+
+
+<!--
+
+  An expression is a stateless userdefined function. It can access the datarow and the reportproperties
+  to perform its task. Using the datarow an expression has access to the datasource and other functions
+  and expressions.
+
+  Expression parameters are given by propery elements. For visual
+  editing, Expressions must obey to the java-beans rules (use get*/set*
+  methods, perhaps provide beaninfo and so on)
+
+  -->
+<!ELEMENT expression   (properties?)>
+<!ATTLIST expression
   class      CDATA    #REQUIRED
 	name       CDATA    #REQUIRED
 >

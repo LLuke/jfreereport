@@ -140,6 +140,9 @@ public class ReportGenerator
     InputSource in = new InputSource (bin);
     in.setSystemId (file.toString ());
     JFreeReport report = parseReport (in, contentBase);
+    report.setProperty(JFreeReport.REPORT_DEFINITION_SOURCE, file.toString());
+    if (contentBase != null)
+      report.setProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE, contentBase.toString());
     bin.close ();
     return report;
   }

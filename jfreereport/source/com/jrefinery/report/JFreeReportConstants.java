@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportConstants.java,v 1.8 2002/05/31 19:31:14 taqua Exp $
+ * $Id: JFreeReportConstants.java,v 1.9 2002/06/09 14:46:04 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,9 @@ public interface JFreeReportConstants
   public static final String REPORT_PAGEFORMAT_PROPERTY = "report.pageformat";
   public static final String REPORT_PAGECOUNT_PROPERTY = "report.pagecount";
   public static final String REPORT_PREPARERUN_PROPERTY = "report.preparerun";
+
+  public static final String REPORT_DEFINITION_SOURCE = "report.definition.source";
+  public static final String REPORT_DEFINITION_CONTENTBASE = "report.definition.contentbase";
 
   /** A useful constant that signals that a page is full. */
   public static final boolean PAGE_FULL = true;
