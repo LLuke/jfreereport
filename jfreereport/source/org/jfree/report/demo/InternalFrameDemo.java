@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: InternalFrameDemo.java,v 1.3 2003/10/08 19:31:42 taqua Exp $
+ * $Id: InternalFrameDemo.java,v 1.4 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -144,7 +144,7 @@ public class InternalFrameDemo extends AbstractDemoFrame
     content.add(scrollPane);
     content.add(previewButton, BorderLayout.SOUTH);
 
-    JInternalFrame frame = new JInternalFrame();
+    final JInternalFrame frame = new JInternalFrame();
     frame.setClosable(false);
     frame.setVisible(true);
     frame.setContentPane(content);
@@ -155,7 +155,7 @@ public class InternalFrameDemo extends AbstractDemoFrame
     desktop.setDoubleBuffered(false);
     desktop.add(frame);
 
-    JPanel panel = new JPanel();
+    final JPanel panel = new JPanel();
     panel.setLayout(new BorderLayout());
     panel.add(new JScrollPane(desktop), BorderLayout.CENTER);
     return panel;

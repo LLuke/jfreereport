@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportTask.java,v 1.5 2003/10/18 19:22:32 taqua Exp $
+ * $Id: ExportTask.java,v 1.6 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -69,7 +69,7 @@ public abstract class ExportTask implements Runnable
   /** stores a possible exception that caused the task to fail. */
   private Exception exception;
   /** A list of task listeners. */
-  private ArrayList listeners;
+  private final ArrayList listeners;
 
   /**
    * DefaultConstructor.
@@ -146,7 +146,7 @@ public abstract class ExportTask implements Runnable
    *
    * @param ex the optional exception that caused the trouble.
    */
-  protected synchronized void setTaskFailed(Exception ex)
+  protected synchronized void setTaskFailed(final Exception ex)
   {
     this.taskDone = true;
     this.returnValue = RETURN_FAILED;
@@ -160,7 +160,7 @@ public abstract class ExportTask implements Runnable
    * 
    * @param listener the task listener to be added.
    */
-  public void addExportTaskListener (ExportTaskListener listener)
+  public void addExportTaskListener (final ExportTaskListener listener)
   {
     if (listener == null)
     {
@@ -174,7 +174,7 @@ public abstract class ExportTask implements Runnable
    * 
    * @param listener the task listener to be removed.
    */
-  public void removeExportTaskListener (ExportTaskListener listener)
+  public void removeExportTaskListener (final ExportTaskListener listener)
   {
     if (listener == null)
     {
@@ -190,7 +190,7 @@ public abstract class ExportTask implements Runnable
   {
     for (int i = 0; i < listeners.size(); i++)
     {
-      ExportTaskListener tl = (ExportTaskListener) listeners.get(i);
+      final ExportTaskListener tl = (ExportTaskListener) listeners.get(i);
       tl.taskDone(this);
     }
   }
@@ -203,7 +203,7 @@ public abstract class ExportTask implements Runnable
   {
     for (int i = 0; i < listeners.size(); i++)
     {
-      ExportTaskListener tl = (ExportTaskListener) listeners.get(i);
+      final ExportTaskListener tl = (ExportTaskListener) listeners.get(i);
       tl.taskFailed(this);
     }
   }
@@ -216,7 +216,7 @@ public abstract class ExportTask implements Runnable
   {
     for (int i = 0; i < listeners.size(); i++)
     {
-      ExportTaskListener tl = (ExportTaskListener) listeners.get(i);
+      final ExportTaskListener tl = (ExportTaskListener) listeners.get(i);
       tl.taskAborted(this);
     }
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportPlugin.java,v 1.10 2003/11/07 15:31:39 taqua Exp $
+ * $Id: PlainTextExportPlugin.java,v 1.11 2003/11/07 16:26:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,11 +45,11 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.plaintext.resources.PlainTextExportResources;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -84,7 +84,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   protected ReportProgressDialog createProgressDialog()
   {
-    ReportProgressDialog progressDialog = super.createProgressDialog();
+    final ReportProgressDialog progressDialog = super.createProgressDialog();
     progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
     progressDialog.setTitle(resources.getString("plaintext-export.progressdialog.title"));
     progressDialog.setMessage(resources.getString("plaintext-export.progressdialog.message"));
@@ -228,11 +228,21 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
         ("org.jfree.report.modules.gui.plaintext.Separated", "false").equals("true");
   }
 
+  /**
+   * Returns the dialog used to query the export parameters from the user.
+   * @return the export dialog.
+   */
   protected PlainTextExportDialog getExportDialog()
   {
     return exportDialog;
   }
 
+  /**
+   * Returns the resourcebundle to be used to translate strings into
+   * localized content.
+   *
+   * @return the resourcebundle for the localisation.
+   */
   protected ResourceBundle getResources()
   {
     return resources;

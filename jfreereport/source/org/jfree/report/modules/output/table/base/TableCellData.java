@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellData.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
+ * $Id: TableCellData.java,v 1.3 2003/10/11 13:54:01 taqua Exp $
  *
  * Changes
  * -------
@@ -88,7 +88,7 @@ public abstract class TableCellData
    *
    * @param bounds the bounds.
    */
-  protected void setBounds (Rectangle2D bounds)
+  protected void setBounds (final Rectangle2D bounds)
   {
     outerBounds.setRect(bounds);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationResultTableModel.java,v 1.3 2003/09/10 18:20:25 taqua Exp $
+ * $Id: OperationResultTableModel.java,v 1.4 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -89,7 +89,7 @@ public class OperationResultTableModel extends AbstractTableModel
    * 
    * @param data the operation result objects from the parser or writer.
    */
-  public OperationResultTableModel(OperationResult[] data)
+  public OperationResultTableModel(final OperationResult[] data)
   {
     this.resources = ResourceBundle.getBundle(ConverterResources.class.getName());
     setData(data);
@@ -100,7 +100,7 @@ public class OperationResultTableModel extends AbstractTableModel
    * 
    * @param data the data.
    */
-  public void setData (OperationResult[] data)
+  public void setData (final OperationResult[] data)
   {
     if (data == null)
     {
@@ -153,7 +153,7 @@ public class OperationResultTableModel extends AbstractTableModel
    * @param columnIndex the column whose value is to be queried
    * @return the value Object at the specified cell
    */
-  public Object getValueAt(int rowIndex, int columnIndex)
+  public Object getValueAt(final int rowIndex, final int columnIndex)
   {
     switch (columnIndex)
     {
@@ -171,7 +171,7 @@ public class OperationResultTableModel extends AbstractTableModel
    *  @param columnIndex  the column being queried
    *  @return the Object.class
    */
-  public Class getColumnClass(int columnIndex)
+  public Class getColumnClass(final int columnIndex)
   {
     switch (columnIndex)
     {
@@ -191,7 +191,7 @@ public class OperationResultTableModel extends AbstractTableModel
    * @param column  the column being queried
    * @return a string containing the default name of <code>column</code>
    */
-  public String getColumnName(int column)
+  public String getColumnName(final int column)
   {
     return resources.getString(COLUMN_NAMES[column]);
   }

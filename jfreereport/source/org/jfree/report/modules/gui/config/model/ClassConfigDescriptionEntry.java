@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ClassConfigDescriptionEntry.java,v 1.3 2003/09/08 18:11:49 taqua Exp $
+ * $Id: ClassConfigDescriptionEntry.java,v 1.4 2003/09/10 18:19:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -55,7 +55,7 @@ public class ClassConfigDescriptionEntry extends ConfigDescriptionEntry
    * 
    * @param keyName the full name of the key.
    */
-  public ClassConfigDescriptionEntry(String keyName)
+  public ClassConfigDescriptionEntry(final String keyName)
   {
     super(keyName);
     baseClass = Object.class;
@@ -76,7 +76,7 @@ public class ClassConfigDescriptionEntry extends ConfigDescriptionEntry
    * 
    * @param baseClass the base class, never null.
    */
-  public void setBaseClass(Class baseClass)
+  public void setBaseClass(final Class baseClass)
   {
     if (baseClass == null)
     {

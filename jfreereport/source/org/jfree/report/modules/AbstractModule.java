@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractModule.java,v 1.9 2003/09/02 15:05:32 taqua Exp $
+ * $Id: AbstractModule.java,v 1.10 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -291,7 +291,7 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     while (isNextLineValueLine(reader))
     {
       firstLine = reader.next();
-      String trimedLine = firstLine.trim();
+      final String trimedLine = firstLine.trim();
       if (trimedLine.length() == 0 && (newLine == false))
       {
         b.append ("\n");
@@ -317,13 +317,13 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
    * @return true, if the next line is a value line, false otherwise.
    * @throws IOException if an IO error occurs.
    */
-  private boolean isNextLineValueLine (ReaderHelper reader) throws IOException
+  private boolean isNextLineValueLine (final ReaderHelper reader) throws IOException
   {
     if (reader.hasNext() == false)
     {
       return false;
     }
-    String firstLine = reader.next();
+    final String firstLine = reader.next();
     if (firstLine == null)
     {
       return false;
@@ -675,8 +675,8 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
   {
     try
     {
-      Class c = Thread.currentThread().getContextClassLoader().loadClass(classname);
-      ModuleInitializer mi = (ModuleInitializer) c.newInstance();
+      final Class c = Thread.currentThread().getContextClassLoader().loadClass(classname);
+      final ModuleInitializer mi = (ModuleInitializer) c.newInstance();
       mi.performInit();
     }
     catch (ModuleInitializeException mie)
@@ -709,7 +709,7 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
    *
    * @param name the new name of the subsystem.
    */
-  protected void setSubSystem (String name)
+  protected void setSubSystem (final String name)
   {
     this.subsystem = name;
   }

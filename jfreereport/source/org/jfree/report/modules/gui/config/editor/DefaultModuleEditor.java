@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultModuleEditor.java,v 1.4 2003/09/14 19:24:07 taqua Exp $
+ * $Id: DefaultModuleEditor.java,v 1.5 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -86,7 +86,7 @@ public class DefaultModuleEditor implements ModuleEditor
      * @param ed the key editor that is assigned to the checkbox
      * @param source the checkbox on which this action is registered-
      */
-    public EnableAction(KeyEditor ed, JCheckBox source)
+    public EnableAction(final KeyEditor ed, final JCheckBox source)
     {
       this.editor = ed;
       this.source = source;
@@ -97,7 +97,7 @@ public class DefaultModuleEditor implements ModuleEditor
      * 
      * @param e not used
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       editor.setEnabled(source.isSelected());
     }
@@ -120,7 +120,7 @@ public class DefaultModuleEditor implements ModuleEditor
      * @param editor the editor component to which the checkbox is assigned
      * @param enableBox the checkbox that enabled the editor.
      */
-    public EditorCarrier(KeyEditor editor, JCheckBox enableBox)
+    public EditorCarrier(final KeyEditor editor, final JCheckBox enableBox)
     {
       this.editor = editor;
       this.enableBox = enableBox;
@@ -174,7 +174,7 @@ public class DefaultModuleEditor implements ModuleEditor
     helpPane = new JEditorPane();
     helpPane.setEditable(false);
     helpPane.setEditorKit(new HTMLEditorKit());
-    JPanel toolbar = new JPanel();
+    final JPanel toolbar = new JPanel();
     toolbar.setLayout(new BorderLayout());
     toolbar.add (new JScrollPane(helpPane));
     toolbar.setMinimumSize(new Dimension (100, 150));
@@ -184,7 +184,7 @@ public class DefaultModuleEditor implements ModuleEditor
     {
       // An ugly way of calling
       //   rootpane.setResizeWeight(1);
-      Method m = rootpane.getClass().getMethod
+      final Method m = rootpane.getClass().getMethod
           ("setResizeWeight", new Class[]{ Double.TYPE });
       m.invoke(rootpane, new Object[]{new Double(1)});
     }
@@ -207,9 +207,10 @@ public class DefaultModuleEditor implements ModuleEditor
    * @return the created new editor instance. 
    */
   public ModuleEditor createInstance
-      (Module module, ReportConfiguration config, ConfigDescriptionEntry[] keyNames)
+      (final Module module, final ReportConfiguration config, 
+       final ConfigDescriptionEntry[] keyNames)
   {
-    DefaultModuleEditor ed = new DefaultModuleEditor();
+    final DefaultModuleEditor ed = new DefaultModuleEditor();
     ed.setConfig(config);
     ed.setKeyNames(keyNames);
     ed.setModule(module);
@@ -232,7 +233,7 @@ public class DefaultModuleEditor implements ModuleEditor
    * 
    * @param module the module, which should be handled by this editor.
    */
-  protected void setModule(Module module)
+  protected void setModule(final Module module)
   {
     if (module == null)
     {
@@ -249,7 +250,7 @@ public class DefaultModuleEditor implements ModuleEditor
    * @return true, if this editor may be used to edit the module, false otherwise.
    * @see ModuleEditor#canHandle(Module)
    */
-  public boolean canHandle(Module module)
+  public boolean canHandle(final Module module)
   {
     return true;
   }
@@ -267,7 +268,7 @@ public class DefaultModuleEditor implements ModuleEditor
    * Defines the report configuration for this editor.
    * @param config the report configuration.
    */
-  protected void setConfig(ReportConfiguration config)
+  protected void setConfig(final ReportConfiguration config)
   {
     this.config = config;
   }
@@ -288,7 +289,7 @@ public class DefaultModuleEditor implements ModuleEditor
    * 
    * @param keyNames the key names for the editor.
    */
-  protected void setKeyNames(ConfigDescriptionEntry[] keyNames)
+  protected void setKeyNames(final ConfigDescriptionEntry[] keyNames)
   {
     this.keyNames = keyNames;
   }
@@ -311,7 +312,7 @@ public class DefaultModuleEditor implements ModuleEditor
    * @param keyName the keyname which should be shortend.
    * @return the modified keyname suitable to be displayed as label.
    */
-  private String createDisplayName (String keyName)
+  private String createDisplayName (final String keyName)
   {
     if (keyName.startsWith(modulePackage))
     {
@@ -326,16 +327,16 @@ public class DefaultModuleEditor implements ModuleEditor
    */
   protected void build()
   {
-    StringWriter writer = new StringWriter();
+    final StringWriter writer = new StringWriter();
     writer.write("<html><head><title></title></head><body>");
 
-    JLabel mangleInfo = new JLabel();
+    final JLabel mangleInfo = new JLabel();
     mangleInfo.setText
         ("All keys marked with '~.' are relative to the module package '" +
         modulePackage + "'");
     contentpane.add (mangleInfo);
 
-    ConfigDescriptionEntry[] keyNames = getKeyNames();
+    final ConfigDescriptionEntry[] keyNames = getKeyNames();
     if (keyNames == null)
     {
       throw new IllegalStateException
@@ -344,17 +345,17 @@ public class DefaultModuleEditor implements ModuleEditor
     activeEditors = new EditorCarrier[keyNames.length];
     for (int i = 0; i < keyNames.length; i++)
     {
-      KeyEditor editor;
-      String displayName = createDisplayName(keyNames[i].getKeyName());
+      final KeyEditor editor;
+      final String displayName = createDisplayName(keyNames[i].getKeyName());
 
       if (keyNames[i] instanceof EnumConfigDescriptionEntry)
       {
-        EnumConfigDescriptionEntry entry = (EnumConfigDescriptionEntry) keyNames[i];
+        final EnumConfigDescriptionEntry entry = (EnumConfigDescriptionEntry) keyNames[i];
         editor = new EnumKeyEditor(getConfig(), entry, displayName);
       }
       else if (keyNames[i] instanceof ClassConfigDescriptionEntry)
       {
-        ClassConfigDescriptionEntry entry = (ClassConfigDescriptionEntry) keyNames[i];
+        final ClassConfigDescriptionEntry entry = (ClassConfigDescriptionEntry) keyNames[i];
         editor = new ClassKeyEditor(getConfig(), entry, displayName);
       }
       else
@@ -362,9 +363,9 @@ public class DefaultModuleEditor implements ModuleEditor
         editor = new TextKeyEditor(getConfig(), keyNames[i], displayName);
       }
 
-      JCheckBox enableCB = new JCheckBox();
+      final JCheckBox enableCB = new JCheckBox();
       enableCB.addActionListener(new EnableAction(editor, enableCB));
-      JPanel panel = new JPanel();
+      final JPanel panel = new JPanel();
       panel.setLayout(new BorderLayout());
       panel.add (enableCB, BorderLayout.WEST);
       panel.add (editor.getComponent(), BorderLayout.CENTER);

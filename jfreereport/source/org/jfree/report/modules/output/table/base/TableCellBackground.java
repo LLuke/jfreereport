@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.9 2003/10/11 15:50:17 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.10 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -358,7 +358,8 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
    * @param background the background definition which should be checked.
    * @return true, if the background definition defines a bottom border, false otherwise.
    */
-  private boolean isBottomBorderDefinition (Rectangle2D bounds, TableCellBackground background)
+  private boolean isBottomBorderDefinition 
+    (final Rectangle2D bounds, final TableCellBackground background)
   {
     final Rectangle2D bgBounds = background.getBounds();
     return ((bgBounds.getHeight() == 0) &&
@@ -387,7 +388,8 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
    * @param background the background definition which should be checked.
    * @return true, if the background definition defines a right border, false otherwise.
    */
-  private boolean isRightBorderDefinition (Rectangle2D bounds, TableCellBackground background)
+  private boolean isRightBorderDefinition 
+    (final Rectangle2D bounds, final TableCellBackground background)
   {
     final Rectangle2D bgBounds = background.getBounds();
     return ((bgBounds.getWidth() == 0) &&
@@ -446,11 +448,11 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
    * @param bounds the new bounds of the merged background
    * @return a copy of this background with new bounds.
    */
-  protected TableCellBackground createMergedInstance (Rectangle2D bounds)
+  protected TableCellBackground createMergedInstance (final Rectangle2D bounds)
   {
     try
     {
-      TableCellBackground bg = (TableCellBackground) clone();
+      final TableCellBackground bg = (TableCellBackground) clone();
       bg.setBounds(bounds);
       return bg;
     }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.5 2003/09/15 15:31:58 taqua Exp $
  *
  * Changes
  * -------
@@ -55,9 +55,9 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.TableModel;
 
+import org.jfree.report.Boot;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.Boot;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.gui.base.components.ActionButton;

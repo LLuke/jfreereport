@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DOMWriter.java,v 1.3 2003/09/08 18:11:49 taqua Exp $
+ * $Id: DOMWriter.java,v 1.4 2003/09/10 18:20:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,7 +56,7 @@ public final class DOMWriter extends XMLWriterSupport
    */
   private static SafeTagList createSafeTagList()
   {
-    SafeTagList list = new SafeTagList();
+    final SafeTagList list = new SafeTagList();
     list.add("config-description");
     list.add("key");
     list.add("class");

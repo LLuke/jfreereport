@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellDataFactory.java,v 1.4 2003/10/11 21:33:08 taqua Exp $
+ * $Id: HtmlCellDataFactory.java,v 1.5 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -37,21 +37,21 @@
 package org.jfree.report.modules.output.table.html;
 
 import java.awt.Color;
-import java.awt.Shape;
-import java.awt.Image;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Band;
+import org.jfree.report.DrawableContainer;
 import org.jfree.report.Element;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.ImageReference;
-import org.jfree.report.DrawableContainer;
-import org.jfree.report.util.ImageUtils;
 import org.jfree.report.modules.output.table.base.AbstractTableCellDataFactory;
 import org.jfree.report.modules.output.table.base.TableCellData;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.report.util.ImageUtils;
 import org.jfree.ui.Drawable;
 
 /**
@@ -149,18 +149,18 @@ public class HtmlCellDataFactory extends AbstractTableCellDataFactory
       //
       // we have to rework that .. all of that!
       final HtmlCellStyle style = new HtmlCellStyle(font, color, valign, halign);
-      DrawableContainer container = (DrawableContainer) value;
-      Drawable drawable = container.getDrawable();
+      final DrawableContainer container = (DrawableContainer) value;
+      final Drawable drawable = container.getDrawable();
 
-      Image image = ImageUtils.createTransparentImage
+      final Image image = ImageUtils.createTransparentImage
           ((int) rect.getWidth(), (int) rect.getHeight());
-      Graphics2D g2 = (Graphics2D) image.getGraphics();
+      final Graphics2D g2 = (Graphics2D) image.getGraphics();
       // the clipping bounds are a sub-area of the whole drawable
       // we only want to print a certain area ...
       drawable.draw(g2, new Rectangle2D.Double
           (rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight()));
       g2.dispose();
-      ImageReference imgref = new ImageReference(image);
+      final ImageReference imgref = new ImageReference(image);
       
       return new HtmlImageCellData(rect, imgref, style, useXHTML);
     }

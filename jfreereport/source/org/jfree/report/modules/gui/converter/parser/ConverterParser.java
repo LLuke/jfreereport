@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConverterParser.java,v 1.4 2003/09/10 18:20:25 taqua Exp $
+ * $Id: ConverterParser.java,v 1.5 2003/09/15 18:26:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -67,7 +67,7 @@ public class ConverterParser extends Parser
    * 
    * @param base the backend parser that will do all the work.
    */
-  public ConverterParser(Parser base)
+  public ConverterParser(final Parser base)
   {
     this.base = base;
     currentContext = new Stack();
@@ -84,7 +84,7 @@ public class ConverterParser extends Parser
    * @param qName  the name.
    * @see org.xml.sax.ContentHandler#endDocument
    */
-  public void endElement(String uri, String localName, String qName)
+  public void endElement(final String uri, final String localName, final String qName)
       throws SAXException
   {
     currentContext.pop();
@@ -104,14 +104,14 @@ public class ConverterParser extends Parser
    *            wrapping another exception.
    * @see org.xml.sax.ContentHandler#startElement
    */
-  public void startElement(String uri, String localName,
-                             String qName, Attributes attributes)
+  public void startElement(final String uri, final String localName,
+                             final String qName, final Attributes attributes)
       throws SAXException
   {
     TranslationTableFactory.ContextRule rule = null;
     if (currentContext.isEmpty() == false)
     {
-      Object o = currentContext.peek();
+      final Object o = currentContext.peek();
       if (o instanceof TranslationTableFactory.ContextRule)
       {
         rule = (TranslationTableFactory.ContextRule) o;
@@ -128,7 +128,7 @@ public class ConverterParser extends Parser
     {
       // do translate ..
       currentContext.push(rule);
-      TranslationTable table =
+      final TranslationTable table =
           TranslationTableFactory.getInstance().getTranslationTable(rule);
       base.startElement(uri, localName, qName, new ConverterAttributes(attributes, table));
     }
@@ -164,8 +164,8 @@ public class ConverterParser extends Parser
    *            wrapping another exception.
    * @see InputSource
    */
-  public InputSource resolveEntity(String publicId,
-                                   String systemId)
+  public InputSource resolveEntity(final String publicId,
+                                   final String systemId)
       throws SAXException
   {
     try
@@ -205,9 +205,9 @@ public class ConverterParser extends Parser
    *            wrapping another exception.
    * @see #unparsedEntityDecl
    */
-  public void notationDecl(String name,
-                           String publicId,
-                           String systemId)
+  public void notationDecl(final String name,
+                           final String publicId,
+                           final String systemId)
       throws SAXException
   {
     base.notationDecl(name, publicId, systemId);
@@ -233,10 +233,10 @@ public class ConverterParser extends Parser
    * @param notationName name The name of the associated notation.
    * @see #notationDecl
    */
-  public void unparsedEntityDecl(String name,
-                                 String publicId,
-                                 String systemId,
-                                 String notationName)
+  public void unparsedEntityDecl(final String name,
+                                 final String publicId,
+                                 final String systemId,
+                                 final String notationName)
       throws SAXException
   {
     base.unparsedEntityDecl(name, publicId, systemId, notationName);
@@ -262,7 +262,7 @@ public class ConverterParser extends Parser
    *            wrapping another exception.
    * @see SAXParseException
    */
-  public void warning(SAXParseException exception)
+  public void warning(final SAXParseException exception)
       throws SAXException
   {
     base.warning(exception);
@@ -293,7 +293,7 @@ public class ConverterParser extends Parser
    *            wrapping another exception.
    * @see SAXParseException
    */
-  public void error(SAXParseException exception)
+  public void error(final SAXParseException exception)
       throws SAXException
   {
     base.error(exception);
@@ -319,7 +319,7 @@ public class ConverterParser extends Parser
    *            wrapping another exception.
    * @see SAXParseException
    */
-  public void fatalError(SAXParseException exception)
+  public void fatalError(final SAXParseException exception)
       throws SAXException
   {
     base.fatalError(exception);
@@ -332,7 +332,7 @@ public class ConverterParser extends Parser
    *
    * @return The object.
    */
-  public Object getHelperObject(String key)
+  public Object getHelperObject(final String key)
   {
     return base.getHelperObject(key);
   }
@@ -349,7 +349,7 @@ public class ConverterParser extends Parser
    *
    * @param locator  the locator.
    */
-  public void setDocumentLocator(Locator locator)
+  public void setDocumentLocator(final Locator locator)
   {
     base.setDocumentLocator(locator);
   }
@@ -369,7 +369,7 @@ public class ConverterParser extends Parser
    *
    * @param elementDefinitionHandler  the handler.
    */
-  public void pushFactory(ElementDefinitionHandler elementDefinitionHandler)
+  public void pushFactory(final ElementDefinitionHandler elementDefinitionHandler)
   {
     base.pushFactory(elementDefinitionHandler);
   }
@@ -430,7 +430,7 @@ public class ConverterParser extends Parser
    * @exception SAXException Any SAX exception, possibly wrapping another exception.
    * @see org.xml.sax.ContentHandler#characters
    */
-  public void characters(char[] chars, int start, int length) throws SAXException
+  public void characters(final char[] chars, final int start, final int length) throws SAXException
   {
     base.characters(chars, start, length);
   }
@@ -440,7 +440,7 @@ public class ConverterParser extends Parser
    *
    * @param elementDefinitionHandler  the initial handler.
    */
-  public void setInitialFactory(ElementDefinitionHandler elementDefinitionHandler)
+  public void setInitialFactory(final ElementDefinitionHandler elementDefinitionHandler)
   {
     base.setInitialFactory(elementDefinitionHandler);
   }
@@ -462,7 +462,7 @@ public class ConverterParser extends Parser
    *
    * @return the property value.
    */
-  public String getConfigProperty(String key)
+  public String getConfigProperty(final String key)
   {
     return base.getConfigProperty(key);
   }
@@ -479,7 +479,7 @@ public class ConverterParser extends Parser
    *
    * @return the property value.
    */
-  public String getConfigProperty(String key, String defaultValue)
+  public String getConfigProperty(final String key, final String defaultValue)
   {
     return base.getConfigProperty(key, defaultValue);
   }
@@ -490,7 +490,7 @@ public class ConverterParser extends Parser
    * @param key  the key.
    * @param value  the value.
    */
-  public void setConfigProperty(String key, String value)
+  public void setConfigProperty(final String key, final String value)
   {
     base.setConfigProperty(key, value);
   }
@@ -501,7 +501,7 @@ public class ConverterParser extends Parser
    * @param key  the key.
    * @param value  the value.
    */
-  public void setHelperObject(String key, Object value)
+  public void setHelperObject(final String key, final Object value)
   {
     base.setHelperObject(key, value);
   }

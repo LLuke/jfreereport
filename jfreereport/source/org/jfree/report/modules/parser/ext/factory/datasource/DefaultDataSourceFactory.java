@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultDataSourceFactory.java,v 1.2 2003/08/24 15:08:20 taqua Exp $
+ * $Id: DefaultDataSourceFactory.java,v 1.3 2003/08/26 17:35:51 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -59,17 +59,17 @@ import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.filter.StringFilter;
 import org.jfree.report.filter.URLFilter;
 import org.jfree.report.modules.parser.ext.factory.templates.DateFieldTemplateDescription;
+import org.jfree.report.modules.parser.ext.factory.templates.HorizontalLineTemplateDescription;
 import org.jfree.report.modules.parser.ext.factory.templates.ImageFieldTemplateDescription;
 import org.jfree.report.modules.parser.ext.factory.templates.ImageURLElementTemplateDescription;
 import org.jfree.report.modules.parser.ext.factory.templates.ImageURLFieldTemplateDescription;
 import org.jfree.report.modules.parser.ext.factory.templates.LabelTemplateDescription;
 import org.jfree.report.modules.parser.ext.factory.templates.NumberFieldTemplateDescription;
+import org.jfree.report.modules.parser.ext.factory.templates.RectangleTemplateDescription;
 import org.jfree.report.modules.parser.ext.factory.templates.ResourceFieldTemplateDescription;
 import org.jfree.report.modules.parser.ext.factory.templates.ResourceLabelTemplateDescription;
 import org.jfree.report.modules.parser.ext.factory.templates.ShapeFieldTemplateDescription;
 import org.jfree.report.modules.parser.ext.factory.templates.StringFieldTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.RectangleTemplateDescription;
-import org.jfree.report.modules.parser.ext.factory.templates.HorizontalLineTemplateDescription;
 import org.jfree.report.modules.parser.ext.factory.templates.VerticalLineTemplateDescription;
 import org.jfree.xml.factory.objects.BeanObjectDescription;
 

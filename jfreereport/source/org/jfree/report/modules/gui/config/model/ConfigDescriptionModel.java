@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionModel.java,v 1.6 2003/09/15 18:26:50 taqua Exp $
+ * $Id: ConfigDescriptionModel.java,v 1.7 2003/11/07 15:31:39 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -94,7 +94,7 @@ public class ConfigDescriptionModel extends AbstractListModel
      * @param o2 the second object to compare
      * @return an integer indicating the comparison result.
      */
-    public int compare(Object o1, Object o2)
+    public int compare(final Object o1, final Object o2)
     {
       if (o1 == null && o2 == null)
       {
@@ -108,8 +108,8 @@ public class ConfigDescriptionModel extends AbstractListModel
       {
         return 1;
       }
-      ConfigDescriptionEntry e1 = (ConfigDescriptionEntry) o1;
-      ConfigDescriptionEntry e2 = (ConfigDescriptionEntry) o2;
+      final ConfigDescriptionEntry e1 = (ConfigDescriptionEntry) o1;
+      final ConfigDescriptionEntry e2 = (ConfigDescriptionEntry) o2;
       return e1.getKeyName().compareTo(e2.getKeyName());
     }
   }
@@ -130,7 +130,7 @@ public class ConfigDescriptionModel extends AbstractListModel
    * 
    * @param entry the new entry.
    */
-  public void add (ConfigDescriptionEntry entry)
+  public void add (final ConfigDescriptionEntry entry)
   {
     if (entry == null)
     {
@@ -149,7 +149,7 @@ public class ConfigDescriptionModel extends AbstractListModel
    * 
    * @param entry the entry that should be removed.
    */
-  public void remove (ConfigDescriptionEntry entry)
+  public void remove (final ConfigDescriptionEntry entry)
   {
     if (entry == null)
     {
@@ -166,7 +166,7 @@ public class ConfigDescriptionModel extends AbstractListModel
    * @return the entry
    * @throws IndexOutOfBoundsException if the position is invalid.
    */
-  public ConfigDescriptionEntry get (int pos)
+  public ConfigDescriptionEntry get (final int pos)
   {
     return (ConfigDescriptionEntry) content.get(pos);
   }
@@ -186,7 +186,7 @@ public class ConfigDescriptionModel extends AbstractListModel
    * @param entry the entry whose position should be searched. 
    * @return the position of the entry
    */
-  public int indexOf (ConfigDescriptionEntry entry)
+  public int indexOf (final ConfigDescriptionEntry entry)
   {
     if (entry == null)
     {
@@ -201,7 +201,7 @@ public class ConfigDescriptionModel extends AbstractListModel
    * @param entry the entry that should be checked.
    * @return true, if the entry is already added, false otherwise.
    */
-  public boolean contains (ConfigDescriptionEntry entry)
+  public boolean contains (final ConfigDescriptionEntry entry)
   {
     if (entry == null)
     {
@@ -245,9 +245,9 @@ public class ConfigDescriptionModel extends AbstractListModel
    * @param index the requested index
    * @return the value at <code>index</code>
    */
-  public Object getElementAt(int index)
+  public Object getElementAt(final int index)
   {
-    ConfigDescriptionEntry entry = get (index);
+    final ConfigDescriptionEntry entry = get (index);
     if (entry == null)
     {
       return null;
@@ -262,17 +262,17 @@ public class ConfigDescriptionModel extends AbstractListModel
    * 
    * @param config the report configuration from where to add the entries.
    */
-  public void importFromConfig (ReportConfiguration config)
+  public void importFromConfig (final ReportConfiguration config)
   {
-    Iterator it = config.findPropertyKeys("");
+    final Iterator it = config.findPropertyKeys("");
     while (it.hasNext())
     {
-      String keyname = (String) it.next();
+      final String keyname = (String) it.next();
       if (System.getProperties().containsKey(keyname))
       {
         continue;
       }
-      TextConfigDescriptionEntry entry = new TextConfigDescriptionEntry(keyname);
+      final TextConfigDescriptionEntry entry = new TextConfigDescriptionEntry(keyname);
       if (contains(entry) == false)
       {
         add(entry);
@@ -290,26 +290,26 @@ public class ConfigDescriptionModel extends AbstractListModel
    * @throws ParserConfigurationException if the XML parser could not be 
    * initialized.
    */
-  public void load (InputStream in)
+  public void load (final InputStream in)
       throws IOException, SAXException, ParserConfigurationException
   {
     content.clear();
-    Document doc = DOMUtilities.parseInputStream(in);
-    Element e = doc.getDocumentElement();
-    NodeList list = e.getElementsByTagName("key");
+    final Document doc = DOMUtilities.parseInputStream(in);
+    final Element e = doc.getDocumentElement();
+    final NodeList list = e.getElementsByTagName("key");
     for (int i = 0; i < list.getLength(); i++)
     {
-      Element keyElement = (Element) list.item(i);
-      String keyName = keyElement.getAttribute("name");
-      boolean keyGlobal = StringUtil.parseBoolean (keyElement.getAttribute("global"), false);
-      boolean keyHidden = StringUtil.parseBoolean (keyElement.getAttribute("hidden"), false);
-      String descr = getDescription(keyElement);
+      final Element keyElement = (Element) list.item(i);
+      final String keyName = keyElement.getAttribute("name");
+      final boolean keyGlobal = StringUtil.parseBoolean (keyElement.getAttribute("global"), false);
+      final boolean keyHidden = StringUtil.parseBoolean (keyElement.getAttribute("hidden"), false);
+      final String descr = getDescription(keyElement);
 
-      NodeList enumNodes = keyElement.getElementsByTagName("enum");
+      final NodeList enumNodes = keyElement.getElementsByTagName("enum");
       if (enumNodes.getLength() != 0)
       {
-        String[] alteratives = collectEnumEntries((Element) enumNodes.item(0));
-        EnumConfigDescriptionEntry en = new EnumConfigDescriptionEntry(keyName);
+        final String[] alteratives = collectEnumEntries((Element) enumNodes.item(0));
+        final EnumConfigDescriptionEntry en = new EnumConfigDescriptionEntry(keyName);
         en.setDescription(descr);
         en.setGlobal(keyGlobal);
         en.setHidden(keyHidden);
@@ -318,16 +318,16 @@ public class ConfigDescriptionModel extends AbstractListModel
         continue;
       }
 
-      NodeList classNodes = keyElement.getElementsByTagName("class");
+      final NodeList classNodes = keyElement.getElementsByTagName("class");
       if (classNodes.getLength() != 0)
       {
-        Element classElement = (Element) classNodes.item(0);
-        String className = classElement.getAttribute("instanceof");
+        final Element classElement = (Element) classNodes.item(0);
+        final String className = classElement.getAttribute("instanceof");
         if (className == null)
         {
           throw new SAXException("class element: instanceof attribute missing.");
         }
-        Class baseClass;
+        final Class baseClass;
         try
         {
           baseClass = this.getClass().getClassLoader().loadClass(className);
@@ -336,7 +336,7 @@ public class ConfigDescriptionModel extends AbstractListModel
         {
           throw new SAXException("Failed to load base class", ex);
         }
-        ClassConfigDescriptionEntry ce = new ClassConfigDescriptionEntry(keyName);
+        final ClassConfigDescriptionEntry ce = new ClassConfigDescriptionEntry(keyName);
         ce.setBaseClass(baseClass);
         ce.setDescription(descr);
         ce.setGlobal(keyGlobal);
@@ -345,10 +345,10 @@ public class ConfigDescriptionModel extends AbstractListModel
         continue;
       }
 
-      NodeList textNodes = keyElement.getElementsByTagName("text");
+      final NodeList textNodes = keyElement.getElementsByTagName("text");
       if (textNodes.getLength() != 0)
       {
-        TextConfigDescriptionEntry textEntry = new TextConfigDescriptionEntry(keyName);
+        final TextConfigDescriptionEntry textEntry = new TextConfigDescriptionEntry(keyName);
         textEntry.setDescription(descr);
         textEntry.setGlobal(keyGlobal);
         textEntry.setHidden(keyHidden);
@@ -365,10 +365,10 @@ public class ConfigDescriptionModel extends AbstractListModel
    * @param element the element from where to read the enumeration entries.
    * @return the entries as string array.
    */
-  private String[] collectEnumEntries(Element element)
+  private String[] collectEnumEntries(final Element element)
   {
-    NodeList nl = element.getElementsByTagName("text");
-    String[] retval = new String[nl.getLength()];
+    final NodeList nl = element.getElementsByTagName("text");
+    final String[] retval = new String[nl.getLength()];
     for (int i = 0; i < nl.getLength(); i++)
     {
       retval[i] = DOMUtilities.getText((Element) nl.item(i));
@@ -383,9 +383,9 @@ public class ConfigDescriptionModel extends AbstractListModel
    * @param e the element from where to read the description.
    * @return the description text.
    */
-  private String getDescription (Element e)
+  private String getDescription (final Element e)
   {
-    NodeList descr = e.getElementsByTagName("description");
+    final NodeList descr = e.getElementsByTagName("description");
     if (descr.getLength() == 0)
     {
       return "";
@@ -400,9 +400,9 @@ public class ConfigDescriptionModel extends AbstractListModel
    * @param encoding the encoding of the content.
    * @throws IOException if an error occurs.
    */
-  public void save (OutputStream out, String encoding) throws IOException
+  public void save (final OutputStream out, final String encoding) throws IOException
   {
-    PrintWriter writer = new PrintWriter(new OutputStreamWriter (out, encoding));
+    final PrintWriter writer = new PrintWriter(new OutputStreamWriter (out, encoding));
     writer.println("<?xml version=\"1.0\" encoding=\"" + encoding + "\"?>");
     writer.println("<!DOCTYPE config-description [");
     writer.println("<!ELEMENT config-description  (key*)>");
@@ -422,14 +422,14 @@ public class ConfigDescriptionModel extends AbstractListModel
     writer.println("<!ELEMENT enum               (text)*>");
     writer.println("<!ELEMENT text               (#PCDATA)>");
     writer.println(" ]>");
-    DOMWriter dwriter = DOMWriter.getInstance();
+    final DOMWriter dwriter = DOMWriter.getInstance();
     dwriter.writeTag(writer, "config-description");
 
-    CharacterEntityParser parser = CharacterEntityParser.createXMLEntityParser();
+    final CharacterEntityParser parser = CharacterEntityParser.createXMLEntityParser();
     for (int i = 0; i < getSize(); i++)
     {
-      ConfigDescriptionEntry entry = get(i);
-      AttributeList p = new AttributeList();
+      final ConfigDescriptionEntry entry = get(i);
+      final AttributeList p = new AttributeList();
       p.setAttribute("name", entry.getKeyName());
       p.setAttribute("global", String.valueOf(entry.isGlobal()));
       p.setAttribute("hidden", String.valueOf(entry.isHidden()));
@@ -442,7 +442,7 @@ public class ConfigDescriptionModel extends AbstractListModel
       }
       if (entry instanceof ClassConfigDescriptionEntry)
       {
-        ClassConfigDescriptionEntry ce = (ClassConfigDescriptionEntry) entry;
+        final ClassConfigDescriptionEntry ce = (ClassConfigDescriptionEntry) entry;
         if (ce.getBaseClass() != null)
         {
           dwriter.writeTag
@@ -460,10 +460,10 @@ public class ConfigDescriptionModel extends AbstractListModel
       }
       else if (entry instanceof EnumConfigDescriptionEntry)
       {
-        EnumConfigDescriptionEntry en = (EnumConfigDescriptionEntry) entry;
+        final EnumConfigDescriptionEntry en = (EnumConfigDescriptionEntry) entry;
         dwriter.writeTag(writer, "enum");
 
-        String[] alts = en.getOptions();
+        final String[] alts = en.getOptions();
         if (alts != null)
         {
           for (int optCount = 0; optCount < alts.length; optCount++)

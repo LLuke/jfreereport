@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.6 2003/09/11 22:17:09 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.7 2003/09/12 18:46:18 taqua Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,10 @@
 package org.jfree.report.function;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Arrays;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.event.LayoutEvent;
@@ -68,7 +68,7 @@ public final class LevelledExpressionList implements ReportListener,
   /** The current processing level. */
   private int level;
 
-  /** The levels (in descending order) */
+  /** The levels (in descending order). */
   private int[] levels;
 
   /** The dataRow for all functions. */
@@ -76,7 +76,7 @@ public final class LevelledExpressionList implements ReportListener,
 
   /** The expressions sorted by levels. */
   private Expression[][] levelData;
-  /** all data as flat list */
+  /** all data as flat list. */
   private Expression[] flatData;
 
   /** The number of functions and expressions in this list. */
@@ -111,7 +111,7 @@ public final class LevelledExpressionList implements ReportListener,
    * @param expressionList the level list from where to build the data.
    * @return the function levels.
    */
-  private int[] buildLevels(LevelList expressionList)
+  private int[] buildLevels(final LevelList expressionList)
   {
     // copy all levels from the collections to the cache ...
     // we assume, that the collections do not change anymore!
@@ -841,7 +841,7 @@ public final class LevelledExpressionList implements ReportListener,
   private void initialize(final ExpressionCollection expressionCollection,
                           final ExpressionCollection functionCollection)
   {
-    LevelList expressionList = new LevelList();
+    final LevelList expressionList = new LevelList();
 
     int size = expressionCollection.size();
     for (int i = 0; i < size; i++)
@@ -881,7 +881,7 @@ public final class LevelledExpressionList implements ReportListener,
    * @param expressionList the list containing the expressions and 
    * functions.
    */
-  private void initializeFromLevelList (LevelList expressionList)
+  private void initializeFromLevelList (final LevelList expressionList)
   {
     this.size = 0;
     this.levels = buildLevels(expressionList);
@@ -891,7 +891,7 @@ public final class LevelledExpressionList implements ReportListener,
     for (int i = 0; i < levels.length; i++)
     {
       final int currentLevel = levels[i];
-      Expression[] data = (Expression[])
+      final Expression[] data = (Expression[])
           expressionList.getElementArrayForLevel(currentLevel,
           new Expression[expressionList.getElementCountForLevel(currentLevel)]);
 
@@ -1020,7 +1020,7 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public Iterator getLevelsDescending()
   {
-    Integer[] levelIntegers = new Integer[levels.length];
+    final Integer[] levelIntegers = new Integer[levels.length];
     for (int i = 0; i < levels.length; i++)
     {
       levelIntegers[i] = new Integer(levels[i]);
@@ -1035,7 +1035,7 @@ public final class LevelledExpressionList implements ReportListener,
    */
   public Iterator getLevelsAscending()
   {
-    Integer[] levelIntegers = new Integer[levels.length];
+    final Integer[] levelIntegers = new Integer[levels.length];
     for (int i = 0; i < levels.length; i++)
     {
       levelIntegers[levels.length - i - 1] = new Integer(levels[i]);

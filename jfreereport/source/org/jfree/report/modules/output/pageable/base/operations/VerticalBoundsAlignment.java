@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: VerticalBoundsAlignment.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
+ * $Id: VerticalBoundsAlignment.java,v 1.6 2003/11/01 19:52:28 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public abstract strictfp class VerticalBoundsAlignment extends BoundsAlignment
    */
   public String toString ()
   {
-    StringBuffer buffer = new StringBuffer();
+    final StringBuffer buffer = new StringBuffer();
     buffer.append(this.getClass().getName());
     buffer.append("={bounds=");
     buffer.append(getReferenceBounds());

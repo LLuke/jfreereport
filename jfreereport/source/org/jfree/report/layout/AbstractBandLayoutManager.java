@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.10 2003/10/11 20:44:06 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.11 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -330,7 +330,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
 
     // the preferred size of an band can be a relative value. Then this value is
     // relative to the container bounds
-    Dimension2D prefSize
+    final Dimension2D prefSize
         = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
 
     final Dimension2D minSize = correctDimension((Dimension2D)

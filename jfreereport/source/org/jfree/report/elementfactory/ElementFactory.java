@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.6 2003/10/05 21:52:32 taqua Exp $
+ * $Id: ElementFactory.java,v 1.7 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -212,7 +212,7 @@ public abstract class ElementFactory
    * 
    * @param e the element which was created.
    */
-  protected void applyElementName (Element e)
+  protected void applyElementName (final Element e)
   {
     if (getName() != null)
     {
@@ -225,7 +225,7 @@ public abstract class ElementFactory
    *  
    * @param style the element stylesheet which should receive the style definition.
    */
-  protected void applyStyle (ElementStyleSheet style)
+  protected void applyStyle (final ElementStyleSheet style)
   {
     style.setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, getAbsolutePosition());
     style.setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT, getDynamicHeight());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModule.java,v 1.7 2003/09/13 15:14:40 taqua Exp $
+ * $Id: OperationModule.java,v 1.8 2003/11/01 19:52:28 taqua Exp $
  *
  * Changes
  * -------
@@ -143,7 +143,8 @@ public abstract strictfp class OperationModule
    * @param bounds the bounds of the element
    * @return the created alignment object.
    */
-  public static VerticalBoundsAlignment getVerticalLayout (ElementAlignment va, Rectangle2D bounds)
+  public static VerticalBoundsAlignment getVerticalLayout 
+    (final ElementAlignment va, final Rectangle2D bounds)
   {
     if (va.equals(ElementAlignment.TOP))
     {
@@ -167,7 +168,7 @@ public abstract strictfp class OperationModule
    * @return the created alignment object.
    */
   public static HorizontalBoundsAlignment getHorizontalLayout
-      (ElementAlignment ha, Rectangle2D bounds)
+      (final ElementAlignment ha, final Rectangle2D bounds)
   {
     if (ha.equals(ElementAlignment.CENTER))
     {
@@ -192,14 +193,14 @@ public abstract strictfp class OperationModule
    * @return the aligned content bounds.
    */
   public static Rectangle2D computeAlignmentBounds
-      (Element e, Content content, Rectangle2D bounds)
+      (final Element e, final Content content, final Rectangle2D bounds)
   {
-    Rectangle2D cbounds = content.getMinimumContentSize();
-    if (cbounds == null)
-    {
-      // if the content could not determine its minimum bounds, then skip ...
-      cbounds = bounds.getBounds2D();
-    }
+//    Rectangle2D cbounds = content.getMinimumContentSize();
+//    if (cbounds == null)
+//    {
+//      // if the content could not determine its minimum bounds, then skip ...
+//      cbounds = bounds.getBounds2D();
+//    }
 
     final ElementAlignment va
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
@@ -208,7 +209,7 @@ public abstract strictfp class OperationModule
     final ElementAlignment ha
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
 
-    HorizontalBoundsAlignment hba = getHorizontalLayout(ha, bounds);
+    final HorizontalBoundsAlignment hba = getHorizontalLayout(ha, bounds);
 
     final Rectangle2D abounds = vba.align(hba.align(content.getBounds()));
     return abounds;

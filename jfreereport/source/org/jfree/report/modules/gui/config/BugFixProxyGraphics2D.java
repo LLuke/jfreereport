@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BugFixProxyGraphics2D.java,v 1.3 2003/09/14 19:24:07 taqua Exp $
+ * $Id: BugFixProxyGraphics2D.java,v 1.4 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,18 +47,18 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.Paint;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.Polygon;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
 import java.awt.geom.Arc2D;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ImageObserver;
@@ -92,7 +92,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    *
    * @param parent the original graphics object
    */
-  public BugFixProxyGraphics2D(Graphics2D parent)
+  public BugFixProxyGraphics2D(final Graphics2D parent)
   {
     this.parent = parent;
   }
@@ -102,7 +102,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    *
    * @param s the <code>Shape</code> to be rendered
    */
-  public void draw(Shape s)
+  public void draw(final Shape s)
   {
     parent.draw(s);
   }
@@ -119,9 +119,9 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * fully loaded and completely rendered;
    * <code>false</code> if the <code>Image</code> is still being loaded.
    */
-  public boolean drawImage(Image img,
-                           AffineTransform xform,
-                           ImageObserver obs)
+  public boolean drawImage(final Image img,
+                           final AffineTransform xform,
+                           final ImageObserver obs)
   {
     return parent.drawImage (img, xform, obs);
   }
@@ -148,10 +148,10 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see #clip
    * @see #setClip
    */
-  public void drawImage(BufferedImage img,
-                        BufferedImageOp op,
-                        int x,
-                        int y)
+  public void drawImage(final BufferedImage img,
+                        final BufferedImageOp op,
+                        final int x,
+                        final int y)
   {
     parent.drawImage (img, op, x, y);
   }
@@ -162,8 +162,8 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param img the image to be rendered
    * @param xform the transformation from image space into user space
    */
-  public void drawRenderedImage(RenderedImage img,
-                                AffineTransform xform)
+  public void drawRenderedImage(final RenderedImage img,
+                                final AffineTransform xform)
   {
     parent.drawRenderedImage(img, xform);
   }
@@ -174,8 +174,8 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param img the image to be rendered
    * @param xform the transformation from image space into user space
    */
-  public void drawRenderableImage(RenderableImage img,
-                                  AffineTransform xform)
+  public void drawRenderableImage(final RenderableImage img,
+                                  final AffineTransform xform)
   {
     parent.drawRenderableImage(img, xform);
   }
@@ -191,7 +191,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    *         <code>null</code>
    * @since       JDK1.0
    */
-  public void drawString(String str, int x, int y)
+  public void drawString(final String str, final int x, final int y)
   {
     parent.drawString (str, x, y);
   }
@@ -206,7 +206,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @throws NullPointerException if <code>str</code> is
    *         <code>null</code>
    */
-  public void drawString(String s, float x, float y)
+  public void drawString(final String s, final float x, final float y)
   {
     parent.drawString (s, x, y);
   }
@@ -219,8 +219,8 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param y the coordinates where the iterator's text is to be
    * rendered
    */
-  public void drawString(AttributedCharacterIterator iterator,
-                         int x, int y)
+  public void drawString(final AttributedCharacterIterator iterator,
+                         final int x, final int y)
   {
     parent.drawString (iterator, x, y);
   }
@@ -233,8 +233,8 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param y the coordinates where the iterator's text is to be
    * rendered
    */
-  public void drawString(AttributedCharacterIterator iterator,
-                         float x, float y)
+  public void drawString(final AttributedCharacterIterator iterator,
+                         final float x, final float y)
   {
     parent.drawString (iterator, x, y);
   }
@@ -247,7 +247,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param y the position in User Space where the glyphs should
    * be rendered
    */
-  public void drawGlyphVector(GlyphVector g, float x, float y)
+  public void drawGlyphVector(final GlyphVector g, final float x, final float y)
   {
     parent.drawGlyphVector(g, x, y);
   }
@@ -257,7 +257,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    *
    * @param s the <code>Shape</code> to be filled
    */
-  public void fill(Shape s)
+  public void fill(final Shape s)
   {
     parent.fill (s);
   }
@@ -274,9 +274,9 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @return <code>true</code> if there is a hit; <code>false</code>
    * otherwise.
    */
-  public boolean hit(Rectangle rect,
-                     Shape s,
-                     boolean onStroke)
+  public boolean hit(final Rectangle rect,
+                     final Shape s,
+                     final boolean onStroke)
   {
     return parent.hit (rect, s, onStroke);
   }
@@ -301,7 +301,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    *         does not allow the operation.
    * @param comp the <code>Composite</code> object to be used for rendering
    */
-  public void setComposite(Composite comp)
+  public void setComposite(final Composite comp)
   {
     parent.setComposite(comp);
   }
@@ -312,7 +312,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param paint the <code>Paint</code> object to be used to generate
    * color during the rendering process, or <code>null</code>
    */
-  public void setPaint(Paint paint)
+  public void setPaint(final Paint paint)
   {
     parent.setPaint(paint);
   }
@@ -322,7 +322,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param s the <code>Stroke</code> object to be used to stroke a
    * <code>Shape</code> during the rendering process
    */
-  public void setStroke(Stroke s)
+  public void setStroke(final Stroke s)
   {
     parent.setStroke(s);
   }
@@ -334,7 +334,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param hintValue the value indicating preferences for the specified
    * hint category.
    */
-  public void setRenderingHint(RenderingHints.Key hintKey, Object hintValue)
+  public void setRenderingHint(final RenderingHints.Key hintKey, final Object hintValue)
   {
     parent.setRenderingHint(hintKey,  hintValue);
   }
@@ -347,7 +347,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * Some of the keys and their associated values are defined in the
    * <code>RenderingHints</code> class.
    */
-  public Object getRenderingHint(RenderingHints.Key hintKey)
+  public Object getRenderingHint(final RenderingHints.Key hintKey)
   {
     return parent.getRenderingHint(hintKey);
   }
@@ -357,7 +357,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    *
    * @param hints the rendering hints to be set
    */
-  public void setRenderingHints(Map hints)
+  public void setRenderingHints(final Map hints)
   {
     parent.setRenderingHints(hints);
   }
@@ -367,7 +367,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    *
    * @param hints the rendering hints to be set
    */
-  public void addRenderingHints(Map hints)
+  public void addRenderingHints(final Map hints)
   {
     parent.addRenderingHints(hints);
   }
@@ -390,7 +390,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param y  the specified coordinates
    * @since   JDK1.0
    */
-  public void translate(int x, int y)
+  public void translate(final int x, final int y)
   {
     parent.translate(x, y);
   }
@@ -411,7 +411,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param tx the distance to translate along the x-axis
    * @param ty the distance to translate along the y-axis
    */
-  public void translate(double tx, double ty)
+  public void translate(final double tx, final double ty)
   {
     parent.translate(tx, ty);
   }
@@ -432,7 +432,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * x axis toward the positive y axis.
    * @param theta the angle of rotation in radians
    */
-  public void rotate(double theta)
+  public void rotate(final double theta)
   {
     parent.rotate (theta);
   }
@@ -456,7 +456,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param x coords.
    * @param y coordinates of the origin of the rotation
    */
-  public void rotate(double theta, double x, double y)
+  public void rotate(final double theta, final double x, final double y)
   {
     parent.rotate(theta, x, y);
   }
@@ -480,7 +480,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * rendering operations are multiplied relative to previous
    * rendering operations.
    */
-  public void scale(double sx, double sy)
+  public void scale(final double sx, final double sy)
   {
     parent.scale (sx, sy);
   }
@@ -503,7 +503,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param shy the multiplier by which coordinates are shifted in
    * the positive Y axis direction as a function of their X coordinate
    */
-  public void shear(double shx, double shy)
+  public void shear(final double shx, final double shy)
   {
     parent.shear(shx, shy);
   }
@@ -525,7 +525,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see #setTransform
    * @see AffineTransform
    */
-  public void transform(AffineTransform tx)
+  public void transform(final AffineTransform tx)
   {
     parent.transform(tx);
   }
@@ -561,7 +561,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see #getTransform
    * @see AffineTransform
    */
-  public void setTransform(AffineTransform tx)
+  public void setTransform(final AffineTransform tx)
   {
     parent.setTransform(tx);
   }
@@ -620,7 +620,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see #getBackground
    * @see Graphics#clearRect
    */
-  public void setBackground(Color color)
+  public void setBackground(final Color color)
   {
     parent.setBackground(color);
   }
@@ -667,7 +667,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    *          <code>Clip</code>.  If <code>s</code> is <code>null</code>,
    *          this method clears the current <code>Clip</code>.
    */
-  public void clip(Shape s)
+  public void clip(final Shape s)
   {
     parent.clip(s);
   }
@@ -729,7 +729,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see       Color
    * @see       Graphics#getColor
    */
-  public void setColor(Color c)
+  public void setColor(final Color c)
   {
     parent.setColor(c);
   }
@@ -761,7 +761,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * drawn twice, then all pixels are restored to their original values.
    * @param     c1 the XOR alternation color
    */
-  public void setXORMode(Color c1)
+  public void setXORMode(final Color c1)
   {
     parent.setXORMode(c1);
   }
@@ -787,7 +787,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see     Graphics#drawBytes(byte[], int, int, int, int)
    * @see     Graphics#drawChars(char[], int, int, int, int)
    */
-  public void setFont(Font font)
+  public void setFont(final Font font)
   {
     parent.setFont(font);
   }
@@ -800,7 +800,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see       FontMetrics
    * @see       Graphics#getFontMetrics()
    */
-  public FontMetrics getFontMetrics(Font f)
+  public FontMetrics getFontMetrics(final Font f)
   {
     return parent.getFontMetrics(f);
   }
@@ -846,7 +846,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see #setClip(int, int, int, int)
    * @see #setClip(Shape)
    */
-  public void clipRect(int x, int y, int width, int height)
+  public void clipRect(final int x, final int y, final int width, final int height)
   {
     // fix a bug in the tree renderer ...
     parent.clip(new Rectangle(x, y, width, height));
@@ -867,7 +867,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see         Graphics#getClip
    * @since       JDK1.1
    */
-  public void setClip(int x, int y, int width, int height)
+  public void setClip(final int x, final int y, final int width, final int height)
   {
     parent.setClip(new Rectangle(x, y, width, height));
   }
@@ -909,7 +909,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see         Graphics#setClip(int, int, int, int)
    * @since       JDK1.1
    */
-  public void setClip(Shape clip)
+  public void setClip(final Shape clip)
   {
     parent.setClip(clip);
   }
@@ -933,8 +933,8 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param       dx the horizontal distance to copy the pixels.
    * @param       dy the vertical distance to copy the pixels.
    */
-  public void copyArea(int x, int y, int width, int height,
-                       int dx, int dy)
+  public void copyArea(final int x, final int y, final int width, final int height,
+                       final int dx, final int dy)
   {
     parent.copyArea(x, y, width, height, dx, dy);
   }
@@ -948,7 +948,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param   x2  the second point's <i>x</i> coordinate.
    * @param   y2  the second point's <i>y</i> coordinate.
    */
-  public void drawLine(int x1, int y1, int x2, int y2)
+  public void drawLine(final int x1, final int y1, final int x2, final int y2)
   {
     parent.draw (new Line2D.Float(x1, y1, x2, y2));
   }
@@ -972,7 +972,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see           Graphics#clearRect
    * @see           Graphics#drawRect
    */
-  public void fillRect(int x, int y, int width, int height)
+  public void fillRect(final int x, final int y, final int width, final int height)
   {
     parent.fill(new Rectangle(x, y, width, height));
   }
@@ -996,7 +996,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see         Graphics#setPaintMode
    * @see         Graphics#setXORMode(Color)
    */
-  public void clearRect(int x, int y, int width, int height)
+  public void clearRect(final int x, final int y, final int width, final int height)
   {
     parent.clearRect(x, y, width, height);
   }
@@ -1017,8 +1017,8 @@ public class BugFixProxyGraphics2D extends Graphics2D
    *                    at the four corners.
    * @see        Graphics#fillRoundRect
    */
-  public void drawRoundRect(int x, int y, int width, int height,
-                            int arcWidth, int arcHeight)
+  public void drawRoundRect(final int x, final int y, final int width, final int height,
+                            final int arcWidth, final int arcHeight)
   {
     parent.draw(new RoundRectangle2D.Float(x, y, width, height, arcWidth, arcHeight));
   }
@@ -1039,8 +1039,8 @@ public class BugFixProxyGraphics2D extends Graphics2D
    *                     of the arc at the four corners.
    * @see         Graphics#drawRoundRect
    */
-  public void fillRoundRect(int x, int y, int width, int height,
-                            int arcWidth, int arcHeight)
+  public void fillRoundRect(final int x, final int y, final int width, final int height,
+                            final int arcWidth, final int arcHeight)
   {
     parent.fill(new RoundRectangle2D.Float(x, y, width, height, arcWidth, arcHeight));
   }
@@ -1062,7 +1062,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param       height the height of the oval to be drawn.
    * @see         Graphics#fillOval
    */
-  public void drawOval(int x, int y, int width, int height)
+  public void drawOval(final int x, final int y, final int width, final int height)
   {
     parent.draw(new Ellipse2D.Float(x, y, width, height));
 
@@ -1079,7 +1079,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param       height the height of the oval to be filled.
    * @see         Graphics#drawOval
    */
-  public void fillOval(int x, int y, int width, int height)
+  public void fillOval(final int x, final int y, final int width, final int height)
   {
     parent.fill(new Ellipse2D.Float(x, y, width, height));
   }
@@ -1121,8 +1121,8 @@ public class BugFixProxyGraphics2D extends Graphics2D
    *                    relative to the start angle.
    * @see         Graphics#fillArc
    */
-  public void drawArc(int x, int y, int width, int height,
-                      int startAngle, int arcAngle)
+  public void drawArc(final int x, final int y, final int width, final int height,
+                      final int startAngle, final int arcAngle)
   {
     parent.fill(new Arc2D.Float(x, y, width, height, startAngle, arcAngle, Arc2D.PIE));
   }
@@ -1163,8 +1163,8 @@ public class BugFixProxyGraphics2D extends Graphics2D
    *                    relative to the start angle.
    * @see         Graphics#drawArc
    */
-  public void fillArc(int x, int y, int width, int height,
-                      int startAngle, int arcAngle)
+  public void fillArc(final int x, final int y, final int width, final int height,
+                      final int startAngle, final int arcAngle)
   {
     parent.fill(new Arc2D.Float(x, y, width, height, startAngle, arcAngle, Arc2D.PIE));
   }
@@ -1181,8 +1181,8 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see         Graphics#drawPolygon(int[], int[], int)
    * @since       JDK1.1
    */
-  public void drawPolyline(int xPoints[], int yPoints[],
-                           int nPoints)
+  public void drawPolyline(final int[] xPoints, final int[] yPoints,
+                           final int nPoints)
   {
     parent.drawPolyline(xPoints, yPoints, nPoints);
 
@@ -1207,8 +1207,8 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see          Graphics#fillPolygon
    * @see          Graphics#drawPolyline
    */
-  public void drawPolygon(int xPoints[], int yPoints[],
-                          int nPoints)
+  public void drawPolygon(final int[] xPoints, final int[] yPoints,
+                          final int nPoints)
   {
     parent.draw (new Polygon(xPoints, yPoints, nPoints));
   }
@@ -1233,8 +1233,8 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param        nPoints   a the total number of points.
    * @see          Graphics#drawPolygon(int[], int[], int)
    */
-  public void fillPolygon(int xPoints[], int yPoints[],
-                          int nPoints)
+  public void fillPolygon(final int[] xPoints, final int[] yPoints,
+                          final int nPoints)
   {
     parent.fill(new Polygon(xPoints,yPoints, nPoints));
   }
@@ -1265,8 +1265,8 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see      ImageObserver
    * @see      ImageObserver#imageUpdate(Image, int, int, int, int, int)
    */
-  public boolean drawImage(Image img, int x, int y,
-                           ImageObserver observer)
+  public boolean drawImage(final Image img, final int x, final int y,
+                           final ImageObserver observer)
   {
     return parent.drawImage(img, x, y, observer);
   }
@@ -1306,9 +1306,9 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see      ImageObserver
    * @see      ImageObserver#imageUpdate(Image, int, int, int, int, int)
    */
-  public boolean drawImage(Image img, int x, int y,
-                           int width, int height,
-                           ImageObserver observer)
+  public boolean drawImage(final Image img, final int x, final int y,
+                           final int width, final int height,
+                           final ImageObserver observer)
   {
     return parent.drawImage(img, x, y, width, height, observer);
   }
@@ -1345,9 +1345,9 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see      ImageObserver
    * @see      ImageObserver#imageUpdate(Image, int, int, int, int, int)
    */
-  public boolean drawImage(Image img, int x, int y,
-                           Color bgcolor,
-                           ImageObserver observer)
+  public boolean drawImage(final Image img, final int x, final int y,
+                           final Color bgcolor,
+                           final ImageObserver observer)
   {
     return parent.drawImage(img, x, y, bgcolor, observer);
   }
@@ -1392,10 +1392,10 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see      ImageObserver
    * @see      ImageObserver#imageUpdate(Image, int, int, int, int, int)
    */
-  public boolean drawImage(Image img, int x, int y,
-                           int width, int height,
-                           Color bgcolor,
-                           ImageObserver observer)
+  public boolean drawImage(final Image img, final int x, final int y,
+                           final int width, final int height,
+                           final Color bgcolor,
+                           final ImageObserver observer)
   {
     return parent.drawImage(img, x ,y ,width, height, bgcolor, observer);
   }
@@ -1449,10 +1449,10 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see         ImageObserver#imageUpdate(Image, int, int, int, int, int)
    * @since       JDK1.1
    */
-  public boolean drawImage(Image img,
-                           int dx1, int dy1, int dx2, int dy2,
-                           int sx1, int sy1, int sx2, int sy2,
-                           ImageObserver observer)
+  public boolean drawImage(final Image img,
+                           final int dx1, final int dy1, final int dx2, final int dy2,
+                           final int sx1, final int sy1, final int sx2, final int sy2,
+                           final ImageObserver observer)
   {
     return parent.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
   }
@@ -1512,11 +1512,11 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see         ImageObserver#imageUpdate(Image, int, int, int, int, int)
    * @since       JDK1.1
    */
-  public boolean drawImage(Image img,
-                           int dx1, int dy1, int dx2, int dy2,
-                           int sx1, int sy1, int sx2, int sy2,
-                           Color bgcolor,
-                           ImageObserver observer)
+  public boolean drawImage(final Image img,
+                           final int dx1, final int dy1, final int dx2, final int dy2,
+                           final int sx1, final int sy1, final int sx2, final int sy2,
+                           final Color bgcolor,
+                           final ImageObserver observer)
   {
     return parent.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgcolor, observer);
   }
@@ -1569,9 +1569,9 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see          Graphics#fillRect
    * @see          Graphics#clearRect
    */
-  public void drawRect(int x, int y, int width, int height)
+  public void drawRect(final int x, final int y, final int width, final int height)
   {
-    Rectangle rect = new Rectangle(x, y, width, height);
+    final Rectangle rect = new Rectangle(x, y, width, height);
     if (parent.getClip().intersects(rect))
     {
       parent.draw(rect);
@@ -1585,7 +1585,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @see          Graphics#fillPolygon
    * @see          Graphics#drawPolyline
    */
-  public void drawPolygon(Polygon p)
+  public void drawPolygon(final Polygon p)
   {
     parent.draw(p);
   }
@@ -1599,7 +1599,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @param        p the polygon to fill.
    * @see          Graphics#drawPolygon(int[], int[], int)
    */
-  public void fillPolygon(Polygon p)
+  public void fillPolygon(final Polygon p)
   {
     parent.fill(p);
   }

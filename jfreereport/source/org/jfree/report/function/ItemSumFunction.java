@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.3 2003/08/28 19:36:30 taqua Exp $
  *
  * Changes
  * -------
@@ -206,7 +206,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
       return;
     }
 
-    Number n = (Number) fieldValue;
+    final Number n = (Number) fieldValue;
     sum = sum.add(new BigDecimal(n.doubleValue()));
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.6 2003/09/15 18:26:51 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.7 2003/11/05 17:31:53 taqua Exp $
  *
  * Changes
  * -------
@@ -63,6 +63,7 @@ import org.xml.sax.SAXException;
  */
 public class FunctionFactory extends AbstractReportDefinitionHandler implements ReportDefinitionTags
 {
+  /** A constant defining the XML attribute name for the class specification. */
   public static final String CLASS_ATT = "class";
 
   /** The current function/expression. */
@@ -282,6 +283,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    * Starts processing an expression element.
    *
    * @param attr  the element attributes.
+   * @throws SAXException if the name attribute is missing.
    */
   protected void startPropertyRef(final Attributes attr) throws SAXException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.6 2003/10/11 14:56:18 taqua Exp $
+ * $Id: SampleReport1.java,v 1.7 2003/10/17 17:40:37 taqua Exp $
  *
  * Changes:
  * --------
@@ -46,6 +46,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import org.jfree.report.Boot;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.Group;
 import org.jfree.report.GroupFooter;
@@ -57,7 +58,6 @@ import org.jfree.report.PageFooter;
 import org.jfree.report.PageHeader;
 import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
-import org.jfree.report.Boot;
 import org.jfree.report.elementfactory.DateFieldElementFactory;
 import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.elementfactory.NumberFieldElementFactory;

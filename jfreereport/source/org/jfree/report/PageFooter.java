@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PageFooter.java,v 1.4 2003/09/24 15:27:20 taqua Exp $
+ * $Id: PageFooter.java,v 1.5 2003/11/01 19:52:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -68,7 +68,7 @@ public class PageFooter extends Band
    * @param onLastPage defines, whether the page footer will be printed on the
    * last page.
    */
-  public PageFooter(boolean onFirstPage, boolean onLastPage)
+  public PageFooter(final boolean onFirstPage, final boolean onLastPage)
   {
     super();
     setDisplayOnFirstPage(onFirstPage);

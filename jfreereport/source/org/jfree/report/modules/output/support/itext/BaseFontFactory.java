@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.12 2003/10/08 19:32:32 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.13 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -185,7 +185,7 @@ public final class BaseFontFactory extends DefaultFontMapper
    * A set of fonts which have licence restrictions and may not be embedded.
    * This map is keyed by the font file name. We prefer unrestricted fonts.
    */
-  private Properties notEmbeddedFonts;
+  private final Properties notEmbeddedFonts;
 
   /** Fonts stored by name. */
   private final Properties fontsByName;
@@ -212,7 +212,7 @@ public final class BaseFontFactory extends DefaultFontMapper
   public synchronized void registerDefaultFontPath()
   {
     final ConfigStorage store = ConfigFactory.getInstance().getSystemStorage();
-    HashNMap knownFonts = new HashNMap();
+    final HashNMap knownFonts = new HashNMap();
     Properties seenFiles = new Properties();
     confirmedFiles = new Properties();
 
@@ -220,16 +220,16 @@ public final class BaseFontFactory extends DefaultFontMapper
     {
       try
       {
-        Properties propKnownFonts = store.loadProperties(FONTS_STORAGE_PATH, null);
-        Enumeration keys = propKnownFonts.keys();
+        final Properties propKnownFonts = store.loadProperties(FONTS_STORAGE_PATH, null);
+        final Enumeration keys = propKnownFonts.keys();
         while (keys.hasMoreElements())
         {
-          String fontName = (String) keys.nextElement();
-          String fileName = propKnownFonts.getProperty(fontName);
+          final String fontName = (String) keys.nextElement();
+          final String fileName = propKnownFonts.getProperty(fontName);
           knownFonts.add(fileName, fontName);
         }
 
-        Properties propEmbedded = store.loadProperties(NO_EMBEDDING_FONTS_PATH, null);
+        final Properties propEmbedded = store.loadProperties(NO_EMBEDDING_FONTS_PATH, null);
         notEmbeddedFonts.putAll(propEmbedded);
         Log.info ("Registering fonts for the iText library; using a cached font registry.");
       }
@@ -384,16 +384,16 @@ public final class BaseFontFactory extends DefaultFontMapper
       final File[] files = file.listFiles(FONTPATHFILTER);
       for (int i = 0; i < files.length; i++)
       {
-        File currentFile = files[i];
+        final File currentFile = files[i];
         if (currentFile.isDirectory())
         {
           registerFontPath(currentFile, encoding, knownFonts, seenFiles);
         }
         else
         {
-          String fileName = currentFile.toString();
-          String cachedAccessTime = seenFiles.getProperty(fileName);
-          String newAccessTime =
+          final String fileName = currentFile.toString();
+          final String cachedAccessTime = seenFiles.getProperty(fileName);
+          final String newAccessTime =
               String.valueOf (currentFile.lastModified() + "," + currentFile.length());
 
           // the font file is not known ... or has changed.
@@ -406,10 +406,10 @@ public final class BaseFontFactory extends DefaultFontMapper
           }
           else
           {
-            Iterator it = knownFonts.getAll(fileName);
+            final Iterator it = knownFonts.getAll(fileName);
             while (it.hasNext())
             {
-              String fontName = (String) it.next();
+              final String fontName = (String) it.next();
               fontsByName.put(fontName, fileName);
             }
             confirmedFiles.put(fileName, newAccessTime);
@@ -442,7 +442,7 @@ public final class BaseFontFactory extends DefaultFontMapper
     final File file = new File(filename);
     if (file.exists() && file.isFile() && file.canRead())
     {
-      String newAccessTime =
+      final String newAccessTime =
           String.valueOf (file.lastModified() + "," + file.length());
       confirmedFiles.put(filename, newAccessTime);
       try
@@ -488,7 +488,8 @@ public final class BaseFontFactory extends DefaultFontMapper
       // failed to load the font as embedded font, try not-embedded.
       bfont = BaseFont.createFont(font, encoding, false, false, null, null);
       Log.info (new Log.SimpleMessage
-        ("Font ", font, "  cannot be used as embedded font " +          "due to licensing restrictions."));
+        ("Font ", font, "  cannot be used as embedded font " +
+          "due to licensing restrictions."));
       embedded = "false";
     }
 
@@ -496,11 +497,11 @@ public final class BaseFontFactory extends DefaultFontMapper
     for (int i = 0; i < fi.length; i++)
     {
       final String[] ffi = fi[i];
-      String knownFontEmbeddedState = notEmbeddedFonts.getProperty(font, "false");
+      final String knownFontEmbeddedState = notEmbeddedFonts.getProperty(font, "false");
 
       // if unknown or the known font is a restricted version and this one is none,
       // then register the new font
-      String logicalFontname = ffi[3];
+      final String logicalFontname = ffi[3];
       notEmbeddedFonts.setProperty (font, embedded);
       if ((fontsByName.containsKey(logicalFontname) == false) ||
           ((knownFontEmbeddedState.equals("true") == false) &&

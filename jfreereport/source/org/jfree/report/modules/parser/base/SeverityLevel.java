@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SeverityLevel.java,v 1.2 2003/08/27 20:19:54 taqua Exp $
+ * $Id: SeverityLevel.java,v 1.3 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -69,7 +69,7 @@ public final class SeverityLevel implements Serializable
    * Creates a new the severity level instance.
    * @param name the name of the severity level.
    */
-  private SeverityLevel(String name)
+  private SeverityLevel(final String name)
   {
     myName = name;
   }
@@ -92,7 +92,7 @@ public final class SeverityLevel implements Serializable
    * @param o the other object that should be compared.
    * @return true, if both objects are equal, false otherwise.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     { 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HugeJFreeReportDemo.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: HugeJFreeReportDemo.java,v 1.3 2003/09/15 15:31:58 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -44,8 +44,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.UIManager;
 
-import org.jfree.ui.RefineryUtilities;
 import org.jfree.report.Boot;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * The main frame in the report demonstration application. This demo has huge reports

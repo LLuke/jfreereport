@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationResult.java,v 1.1 2003/08/26 17:37:28 taqua Exp $
+ * $Id: OperationResult.java,v 1.2 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -64,7 +64,7 @@ public class OperationResult implements Serializable
    * @param severity the assigned severity.
    * @throws NullPointerException if one of the parameters is null.
    */
-  public OperationResult(String message, SeverityLevel severity)
+  public OperationResult(final String message, final SeverityLevel severity)
   {
     this (message, severity, -1, -1);
   }
@@ -79,7 +79,8 @@ public class OperationResult implements Serializable
    * @param line the line of the parse position.
    * @throws NullPointerException if one of the parameters is null.
    */
-  public OperationResult(String message, SeverityLevel severity, int column, int line)
+  public OperationResult(final String message, final SeverityLevel severity, 
+                         final int column, final int line)
   {
     if (message == null)
     {

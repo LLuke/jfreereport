@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextElement.java,v 1.4 2003/09/24 13:43:17 taqua Exp $
+ * $Id: TextElement.java,v 1.5 2003/11/01 19:52:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -185,7 +185,7 @@ public class TextElement extends Element
    * 
    * @param fontName the font name
    */
-  public void setFontName(String fontName)
+  public void setFontName(final String fontName)
   {
     getStyle().setStyleProperty(ElementStyleSheet.FONT, fontName);
   }
@@ -197,7 +197,7 @@ public class TextElement extends Element
    */
   public int getFontSize()
   {
-    Integer i = (Integer) getStyle().getStyleProperty
+    final Integer i = (Integer) getStyle().getStyleProperty
         (ElementStyleSheet.FONTSIZE);
     // fontsize is never null.
     return i.intValue();
@@ -212,7 +212,7 @@ public class TextElement extends Element
    * 
    * @param fontSize the font size in points.
    */
-  public void setFontSize(int fontSize)
+  public void setFontSize(final int fontSize)
   {
     getStyle().setStyleProperty
         (ElementStyleSheet.FONTSIZE, new Integer(fontSize));
@@ -237,7 +237,7 @@ public class TextElement extends Element
    * 
    * @param bold true, if the font should be displayed in bold, false otherwise
    */
-  public void setBold(boolean bold)
+  public void setBold(final boolean bold)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.BOLD, bold);
   }
@@ -261,7 +261,7 @@ public class TextElement extends Element
    * 
    * @param italic true, if the font should be in italic style, false otherwise.
    */
-  public void setItalic(boolean italic)
+  public void setItalic(final boolean italic)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.ITALIC, italic);
   }
@@ -286,7 +286,7 @@ public class TextElement extends Element
    * @param underline true, if the text should be displayed underlined, false
    * otherwise.
    */
-  public void setUnderline(boolean underline)
+  public void setUnderline(final boolean underline)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.UNDERLINED, underline);
   }
@@ -311,7 +311,7 @@ public class TextElement extends Element
    * @param strikethrough whether to display the text with strikethrough style
    * applied
    */
-  public void setStrikethrough(boolean strikethrough)
+  public void setStrikethrough(final boolean strikethrough)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.STRIKETHROUGH, strikethrough);
   }
@@ -335,7 +335,7 @@ public class TextElement extends Element
    * 
    * @param font the font definition for this element.
    */
-  public void setFont(FontDefinition font)
+  public void setFont(final FontDefinition font)
   {
     getStyle().setFontDefinitionProperty(font);
 
@@ -350,7 +350,7 @@ public class TextElement extends Element
    */
   public float getLineHeight()
   {
-    Float i = (Float) getStyle().getStyleProperty
+    final Float i = (Float) getStyle().getStyleProperty
         (ElementStyleSheet.LINEHEIGHT);
     if (i == null)
     {
@@ -370,7 +370,7 @@ public class TextElement extends Element
    *  
    * @param lineHeight the defined line height.
    */
-  public void setLineHeight(float lineHeight)
+  public void setLineHeight(final float lineHeight)
   {
     getStyle().setStyleProperty
         (ElementStyleSheet.LINEHEIGHT, new Float(lineHeight));
@@ -396,7 +396,7 @@ public class TextElement extends Element
    *  
    * @param reservedLiteral the reserved literal.
    */
-  public void setReservedLiteral(String reservedLiteral)
+  public void setReservedLiteral(final String reservedLiteral)
   {
     getStyle().setStyleProperty
         (ElementStyleSheet.RESERVED_LITERAL, reservedLiteral);

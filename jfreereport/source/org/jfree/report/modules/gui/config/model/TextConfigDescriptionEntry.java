@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextConfigDescriptionEntry.java,v 1.2 2003/09/08 18:11:49 taqua Exp $
+ * $Id: TextConfigDescriptionEntry.java,v 1.3 2003/09/11 22:17:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -52,7 +52,7 @@ public class TextConfigDescriptionEntry extends ConfigDescriptionEntry
    * 
    * @param keyName the keyname of this entry.
    */
-  public TextConfigDescriptionEntry(String keyName)
+  public TextConfigDescriptionEntry(final String keyName)
   {
     super(keyName);
   }

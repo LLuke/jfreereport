@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.3 2003/08/25 14:29:29 taqua Exp $
+ * $Id: PageFunction.java,v 1.4 2003/08/31 19:27:56 taqua Exp $
  *
  * Changes
  * -------
@@ -46,10 +46,10 @@ package org.jfree.report.function;
 import java.io.Serializable;
 
 import org.jfree.report.Group;
-import org.jfree.report.util.StringUtil;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.states.ReportState;
+import org.jfree.report.util.StringUtil;
 
 /**
  * A report function that counts pages. This method is only useable when a

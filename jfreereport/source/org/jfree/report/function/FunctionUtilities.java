@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.7 2003/10/30 19:40:49 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.8 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ package org.jfree.report.function;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.Group;
-import org.jfree.report.util.Log;
 import org.jfree.report.event.ReportEvent;
 
 /**

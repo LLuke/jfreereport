@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigTreeModel.java,v 1.4 2003/09/15 15:31:59 taqua Exp $
+ * $Id: ConfigTreeModel.java,v 1.5 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,8 +40,8 @@ package org.jfree.report.modules.gui.config.model;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
@@ -78,7 +78,7 @@ public class ConfigTreeModel implements TreeModel
    * @throws ConfigTreeModelException if an error occured while reading
    * the sprecifications and building the model.
    */
-  public ConfigTreeModel(InputStream specs) throws ConfigTreeModelException
+  public ConfigTreeModel(final InputStream specs) throws ConfigTreeModelException
   {
     this.root = new ConfigTreeRootNode("<root>");
     this.globalSection = new ConfigTreeSectionNode("Global configuration");
@@ -104,7 +104,7 @@ public class ConfigTreeModel implements TreeModel
    * @param config the report configuration from where to read the values.
    * @throws ConfigTreeModelException if an error occured while creating the model.
    */
-  public void init (ReportConfiguration config)
+  public void init (final ReportConfiguration config)
     throws ConfigTreeModelException
   {
     globalSection.reset();
@@ -131,7 +131,7 @@ public class ConfigTreeModel implements TreeModel
   {
     for (int i = 0; i < listeners.size(); i++)
     {
-      TreeModelListener l = (TreeModelListener) listeners.get(i);
+      final TreeModelListener l = (TreeModelListener) listeners.get(i);
       l.treeStructureChanged(new TreeModelEvent(this, new TreePath(root)));
     }
   }
@@ -160,9 +160,9 @@ public class ConfigTreeModel implements TreeModel
    * @param   index the index from where to read the child.
    * @return  the child of <code>parent</code> at index <code>index</code>
    */
-  public Object getChild(Object parent, int index)
+  public Object getChild(final Object parent, final int index)
   {
-    TreeNode node = (TreeNode) parent;
+    final TreeNode node = (TreeNode) parent;
     return node.getChildAt(index);
   }
 
@@ -175,9 +175,9 @@ public class ConfigTreeModel implements TreeModel
    * @param   parent  a node in the tree, obtained from this data source
    * @return  the number of children of the node <code>parent</code>
    */
-  public int getChildCount(Object parent)
+  public int getChildCount(final Object parent)
   {
-    TreeNode node = (TreeNode) parent;
+    final TreeNode node = (TreeNode) parent;
     return node.getChildCount();
   }
 
@@ -192,9 +192,9 @@ public class ConfigTreeModel implements TreeModel
    * @param   node  a node in the tree, obtained from this data source
    * @return  true if <code>node</code> is a leaf
    */
-  public boolean isLeaf(Object node)
+  public boolean isLeaf(final Object node)
   {
-    TreeNode tnode = (TreeNode) node;
+    final TreeNode tnode = (TreeNode) node;
     return tnode.isLeaf();
   }
 
@@ -207,7 +207,7 @@ public class ConfigTreeModel implements TreeModel
    * @param path path to the node that the user has altered
    * @param newValue the new value from the TreeCellEditor
    */
-  public void valueForPathChanged(TreePath path, Object newValue)
+  public void valueForPathChanged(final TreePath path, final Object newValue)
   {
   }
 
@@ -221,10 +221,10 @@ public class ConfigTreeModel implements TreeModel
    * @return the index of the child in the parent, or -1 if either
    *    <code>child</code> or <code>parent</code> are <code>null</code>
    */
-  public int getIndexOfChild(Object parent, Object child)
+  public int getIndexOfChild(final Object parent, final Object child)
   {
-    TreeNode node = (TreeNode) parent;
-    TreeNode childNode = (TreeNode) child;
+    final TreeNode node = (TreeNode) parent;
+    final TreeNode childNode = (TreeNode) child;
     return node.getIndex(childNode);
   }
 
@@ -235,7 +235,7 @@ public class ConfigTreeModel implements TreeModel
    * @param   l       the listener to add
    * @see     #removeTreeModelListener
    */
-  public void addTreeModelListener(TreeModelListener l)
+  public void addTreeModelListener(final TreeModelListener l)
   {
     if (l == null)
     {
@@ -251,7 +251,7 @@ public class ConfigTreeModel implements TreeModel
    * @see     #addTreeModelListener
    * @param   l       the listener to remove
    */
-  public void removeTreeModelListener(TreeModelListener l)
+  public void removeTreeModelListener(final TreeModelListener l)
   {
     listeners.remove(l);
   }
@@ -262,7 +262,7 @@ public class ConfigTreeModel implements TreeModel
    * @param key the name of the key
    * @return the entry or null if not found.
    */
-  public ConfigDescriptionEntry getEntryForKey (String key)
+  public ConfigDescriptionEntry getEntryForKey (final String key)
   {
     return nodeFactory.getEntryForKey(key);
   }

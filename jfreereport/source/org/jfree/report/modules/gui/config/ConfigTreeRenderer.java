@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigTreeRenderer.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
+ * $Id: ConfigTreeRenderer.java,v 1.2 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -84,11 +84,11 @@ public class ConfigTreeRenderer extends DefaultTreeCellRenderer
    * @param hasFocus whether the node has the input focus
    * @return the renderer component.
    */
-  public Component getTreeCellRendererComponent(JTree tree, Object value,
-                                                boolean sel,
-                                                boolean expanded,
-                                                boolean leaf, int row,
-                                                boolean hasFocus)
+  public Component getTreeCellRendererComponent(final JTree tree, final Object value,
+                                                final boolean sel,
+                                                final boolean expanded,
+                                                final boolean leaf, final int row,
+                                                final boolean hasFocus)
   {
     if (value instanceof ConfigTreeRootNode)
     {
@@ -97,14 +97,14 @@ public class ConfigTreeRenderer extends DefaultTreeCellRenderer
     }
     else if (value instanceof ConfigTreeSectionNode)
     {
-      ConfigTreeSectionNode node = (ConfigTreeSectionNode) value;
+      final ConfigTreeSectionNode node = (ConfigTreeSectionNode) value;
       return super.getTreeCellRendererComponent(tree, node.getName(),
           sel, expanded, leaf, row, hasFocus);
     }
     else if (value instanceof ConfigTreeModuleNode)
     {
-      ConfigTreeModuleNode node = (ConfigTreeModuleNode) value;
-      StringBuffer text = new StringBuffer();
+      final ConfigTreeModuleNode node = (ConfigTreeModuleNode) value;
+      final StringBuffer text = new StringBuffer();
       text.append(node.getModule().getName());
       text.append(" - ");
       text.append(node.getModule().getMajorVersion());
@@ -128,7 +128,7 @@ public class ConfigTreeRenderer extends DefaultTreeCellRenderer
    *
    * @param g the graphics.
    */
-  public void paint(Graphics g)
+  public void paint(final Graphics g)
   {
     super.paint(new BugFixProxyGraphics2D((Graphics2D) g));
   }

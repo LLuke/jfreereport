@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridBounds.java,v 1.5 2003/10/10 17:16:26 taqua Exp $
+ * $Id: TableGridBounds.java,v 1.6 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -145,7 +145,7 @@ public final class TableGridBounds
     {
       return new int[0];
     }
-    boolean isEndContained = xBounds.contains(new Integer(xMaxBounds));
+    final boolean isEndContained = xBounds.contains(new Integer(xMaxBounds));
     final int[] xBoundsArray;
     if (isEndContained)
     {

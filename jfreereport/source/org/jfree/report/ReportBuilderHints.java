@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportBuilderHints.java,v 1.10 2003/08/31 19:27:40 taqua Exp $
+ * $Id: ReportBuilderHints.java,v 1.11 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -325,7 +325,7 @@ public class ReportBuilderHints implements Serializable
     }
 
     final Object o = getHint(target, hint);
-    List hintList;
+    final List hintList;
     if (o != null)
     {
       if (o instanceof List == false)

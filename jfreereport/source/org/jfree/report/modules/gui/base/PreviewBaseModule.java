@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewBaseModule.java,v 1.8 2003/08/31 19:27:57 taqua Exp $
+ * $Id: PreviewBaseModule.java,v 1.9 2003/09/09 15:52:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,11 +38,11 @@
 
 package org.jfree.report.modules.gui.base;
 
-import java.util.ResourceBundle;
 import java.util.Enumeration;
 import java.util.MissingResourceException;
-import javax.swing.UIManager;
+import java.util.ResourceBundle;
 import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
@@ -84,16 +84,16 @@ public class PreviewBaseModule extends AbstractModule
   {
     if (isTranslateSwingDialogs())
     {
-      ResourceBundle bundle = ResourceBundle.getBundle
+      final ResourceBundle bundle = ResourceBundle.getBundle
           (JFreeReportResources.class.getName());
 
-      UIDefaults defaults = UIManager.getDefaults();
-      Enumeration enum = bundle.getKeys();
+      final UIDefaults defaults = UIManager.getDefaults();
+      final Enumeration enum = bundle.getKeys();
       // JDK1.2 does not know anything about SwingTranslations,
       // we have to put all keys manually in there.
       while (enum.hasMoreElements())
       {
-        String keyName = (String) enum.nextElement();
+        final String keyName = (String) enum.nextElement();
         try
         {
           defaults.put(keyName, bundle.getObject(keyName));

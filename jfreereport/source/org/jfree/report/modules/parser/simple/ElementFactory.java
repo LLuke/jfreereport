@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.13 2003/11/01 19:52:29 taqua Exp $
+ * $Id: ElementFactory.java,v 1.14 2003/11/05 17:31:53 taqua Exp $
  *
  * Changes
  * -------
@@ -329,7 +329,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     // create the report header...
     final Band band = new Band();
 
-    String name = attr.getValue(NAME_ATT);
+    final String name = attr.getValue(NAME_ATT);
     if (name != null)
     {
       band.setName(name);
@@ -349,7 +349,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     final float w = ParserUtil.parseRelativeFloat(widthValue, "Element width not specified");
     final float h = ParserUtil.parseRelativeFloat(heightValue, "Element height not specified");
-    Dimension2D minSize = new FloatDimension(w, h);
+    final Dimension2D minSize = new FloatDimension(w, h);
     band.getStyle().setStyleProperty
         (ElementStyleSheet.MINIMUMSIZE, minSize);
 
@@ -895,7 +895,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * @return the float value.
    * @throws SAXException if an parse error occured.
    */
-  private Float parseFloat(String value) throws SAXException
+  private Float parseFloat(final String value) throws SAXException
   {
     if (value == null)
     {

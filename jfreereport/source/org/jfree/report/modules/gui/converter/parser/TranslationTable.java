@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TranslationTable.java,v 1.3 2003/09/10 18:20:25 taqua Exp $
+ * $Id: TranslationTable.java,v 1.4 2003/09/15 18:26:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -64,7 +64,7 @@ public class TranslationTable
    * @param translations the translations
    * @param context the translation context.
    */
-  public TranslationTable (Properties translations, String context)
+  public TranslationTable (final Properties translations, final String context)
   {
     this.translationMap = translations;
     this.context = context;
@@ -79,7 +79,7 @@ public class TranslationTable
    * @param orgValue the untranslated value as read from the xml file 
    * @return the translated value if defined, else the untranslated value.
    */
-  public String translateAttribute (String localName, String orgValue)
+  public String translateAttribute (final String localName, final String orgValue)
   {
     if (orgValue == null)
     {
@@ -93,13 +93,13 @@ public class TranslationTable
     {
       throw new IllegalArgumentException();
     }
-    StringBuffer key = new StringBuffer();
+    final StringBuffer key = new StringBuffer();
     key.append(context);
     key.append("@");
     key.append(localName);
     key.append("@");
     key.append(orgValue);
-    String o = translationMap.getProperty(key.toString(), orgValue);
+    final String o = translationMap.getProperty(key.toString(), orgValue);
 
     return o;
   }

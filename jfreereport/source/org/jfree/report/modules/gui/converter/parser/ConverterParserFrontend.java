@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConverterParserFrontend.java,v 1.1 2003/08/26 17:35:51 taqua Exp $
+ * $Id: ConverterParserFrontend.java,v 1.2 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,8 +38,8 @@
 
 package org.jfree.report.modules.gui.converter.parser;
 
-import org.jfree.xml.ParserFrontend;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.xml.ParserFrontend;
 
 /**
  * A parser frontend implementation that initializes the converter

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElementFactory.java,v 1.5 2003/10/05 21:52:32 taqua Exp $
+ * $Id: ImageElementFactory.java,v 1.6 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -112,7 +112,7 @@ public abstract class ImageElementFactory extends ElementFactory
    *  
    * @param style the element stylesheet which should receive the style definition.
    */
-  protected void applyStyle (ElementStyleSheet style)
+  protected void applyStyle (final ElementStyleSheet style)
   {
     super.applyStyle(style);
     style.setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, getKeepAspectRatio());

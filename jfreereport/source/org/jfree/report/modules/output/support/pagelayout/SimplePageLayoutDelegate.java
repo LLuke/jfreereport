@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.2 2003/11/01 19:52:29 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.3 2003/11/05 14:56:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -66,14 +66,36 @@ public class SimplePageLayoutDelegate implements
   private SimplePageLayoutWorker worker;
 
   /** small carrier class to transport the maximum page number for this report. */
-  private static class PageCarrier
+  private static final class PageCarrier
   {
     /** stores the last page number of the report processing. */
     private int maxPages;
+    
+    /** DefaultConstructor. */
+    public PageCarrier ()
+    {
+    }
+    /**
+     * Returns the maximum page number.
+     * @return the maximum page.
+     */
+    public int getMaxPages ()
+    {
+      return maxPages;
+    }
+    
+    /**
+     * Defines the maximum page number.
+     * @param pages the maximum page.
+     */
+    public void setMaxPages (int pages)
+    {
+      maxPages = pages;
+    } 
   }
 
   /** the page carrier for this pagelayouter contains the number of the last page. */
-  private PageCarrier pageCarrier;
+  private final PageCarrier pageCarrier;
 
   /** A flag indicating whether the next pagebreak will be the last one. */
   private boolean lastPagebreak;
@@ -85,7 +107,7 @@ public class SimplePageLayoutDelegate implements
    *
    * @param worker the worker.
    */
-  public SimplePageLayoutDelegate(SimplePageLayoutWorker worker)
+  public SimplePageLayoutDelegate(final SimplePageLayoutWorker worker)
   {
     pageCarrier = new PageCarrier();
     setWorker(worker);
@@ -125,7 +147,7 @@ public class SimplePageLayoutDelegate implements
    * @param worker the worker.
    * @throws NullPointerException if the given worker is null.
    */
-  public void setWorker(SimplePageLayoutWorker worker)
+  public void setWorker(final SimplePageLayoutWorker worker)
   {
     if (worker == null)
     {
@@ -150,7 +172,7 @@ public class SimplePageLayoutDelegate implements
    * 
    * @param currentEffectiveGroupIndex the current group index.
    */
-  protected void setCurrentEffectiveGroupIndex(int currentEffectiveGroupIndex)
+  protected void setCurrentEffectiveGroupIndex(final int currentEffectiveGroupIndex)
   {
     this.currentEffectiveGroupIndex = currentEffectiveGroupIndex;
   }
@@ -174,7 +196,7 @@ public class SimplePageLayoutDelegate implements
    * @param lastPagebreak set to true, if the last pagebreak has been reached, 
    * false otherwise
    */
-  protected void setLastPagebreak(boolean lastPagebreak)
+  protected void setLastPagebreak(final boolean lastPagebreak)
   {
     this.lastPagebreak = lastPagebreak;
   }
@@ -188,7 +210,7 @@ public class SimplePageLayoutDelegate implements
    */
   protected int getMaxPage()
   {
-    return pageCarrier.maxPages;
+    return pageCarrier.getMaxPages();
   }
 
   /**
@@ -198,9 +220,9 @@ public class SimplePageLayoutDelegate implements
    * 
    * @param maxPage the number of pages in the report.
    */
-  protected void setMaxPage(int maxPage)
+  protected void setMaxPage(final int maxPage)
   {
-    this.pageCarrier.maxPages = maxPage;
+    this.pageCarrier.setMaxPages(maxPage);
   }
 
   /**
@@ -300,7 +322,7 @@ public class SimplePageLayoutDelegate implements
    *
    * @param event The event.
    */
-  public void pageFinished(ReportEvent event)
+  public void pageFinished(final ReportEvent event)
   {
     try
     {
@@ -343,7 +365,7 @@ public class SimplePageLayoutDelegate implements
    *
    * @param event The event.
    */
-  public void pageCanceled(ReportEvent event)
+  public void pageCanceled(final ReportEvent event)
   {
     // this method is left empty, we dont handle canceled pages.
   }
@@ -355,7 +377,7 @@ public class SimplePageLayoutDelegate implements
    *
    * @param event The event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     // we don't handle the report initialized event.
   }
@@ -368,7 +390,7 @@ public class SimplePageLayoutDelegate implements
    *
    * @param event The event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportStarted(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (worker.isPageEnded())
@@ -397,7 +419,7 @@ public class SimplePageLayoutDelegate implements
    *
    * @param event The event.
    */
-  public void reportFinished(ReportEvent event)
+  public void reportFinished(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (worker.isPageEnded())
@@ -439,7 +461,7 @@ public class SimplePageLayoutDelegate implements
    *
    * @param event The event.
    */
-  public void reportDone(ReportEvent event)
+  public void reportDone(final ReportEvent event)
   {
     // this event is not handled by this implementation.
     // the pagelayouter must make sure, that the report footer is really printed.
@@ -452,7 +474,7 @@ public class SimplePageLayoutDelegate implements
    *
    * @param event The event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (worker.isPageEnded())
@@ -486,7 +508,7 @@ public class SimplePageLayoutDelegate implements
    *
    * @param event The event.
    */
-  public void groupFinished(ReportEvent event)
+  public void groupFinished(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (worker.isPageEnded())
@@ -520,7 +542,7 @@ public class SimplePageLayoutDelegate implements
    *
    * @param event The event.
    */
-  public void itemsStarted(ReportEvent event)
+  public void itemsStarted(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (worker.isPageEnded())
@@ -537,7 +559,7 @@ public class SimplePageLayoutDelegate implements
    *
    * @param event The event.
    */
-  public void itemsFinished(ReportEvent event)
+  public void itemsFinished(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (worker.isPageEnded())
@@ -554,7 +576,7 @@ public class SimplePageLayoutDelegate implements
    *
    * @param event The event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (worker.isPageEnded())

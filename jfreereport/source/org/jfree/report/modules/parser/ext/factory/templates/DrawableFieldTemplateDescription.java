@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableFieldTemplateDescription.java,v 1.2 2003/08/24 15:08:21 taqua Exp $
+ * $Id: DrawableFieldTemplateDescription.java,v 1.1 2003/11/05 17:33:16 taqua Exp $
  *
  * Changes (from 09-Apr-2003)
  * -------------------------
@@ -37,7 +37,6 @@
  */
 package org.jfree.report.modules.parser.ext.factory.templates;
 
-import org.jfree.report.filter.templates.ShapeFieldTemplate;
 import org.jfree.report.filter.templates.DrawableFieldTemplate;
 
 /**

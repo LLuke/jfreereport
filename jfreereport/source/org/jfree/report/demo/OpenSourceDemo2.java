@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo2.java,v 1.5 2003/08/25 14:29:28 taqua Exp $
+ * $Id: OpenSourceDemo2.java,v 1.6 2003/09/15 15:31:58 taqua Exp $
  *
  * Changes
  * -------
@@ -51,12 +51,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
+import org.jfree.report.Boot;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.ItemBand;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.PageFooter;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.Boot;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.elementfactory.NumberFieldElementFactory;
 import org.jfree.report.elementfactory.TextFieldElementFactory;

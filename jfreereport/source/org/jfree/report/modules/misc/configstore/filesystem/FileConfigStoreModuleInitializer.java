@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FileConfigStoreModuleInitializer.java,v 1.4 2003/08/24 15:08:20 taqua Exp $
+ * $Id: FileConfigStoreModuleInitializer.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -113,7 +113,7 @@ public class FileConfigStoreModuleInitializer implements ModuleInitializer
    */
   private File getStoragePath(String baseDirectory) throws ModuleInitializeException
   {
-    File baseDirectoryFile;
+    final File baseDirectoryFile;
 
     if (baseDirectory.startsWith("~/") == false)
     {

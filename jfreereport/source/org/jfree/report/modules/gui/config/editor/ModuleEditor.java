@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleEditor.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
+ * $Id: ModuleEditor.java,v 1.2 2003/09/12 21:06:42 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,9 +40,9 @@ package org.jfree.report.modules.gui.config.editor;
 
 import javax.swing.JComponent;
 
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.modules.Module;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
+import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The module editor is used to provide a customizable editor component

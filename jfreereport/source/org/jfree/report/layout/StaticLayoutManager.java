@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.9 2003/10/11 20:44:06 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.10 2003/10/11 21:32:46 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,6 @@ import org.jfree.report.Element;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleKey;
 import org.jfree.report.util.ElementLayoutInformation;
-//import org.jfree.report.util.Log;
 import org.jfree.ui.FloatDimension;
 
 /**
@@ -116,7 +115,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
     if (isCacheable)
     {
       cacheKey.setSearchConstraint(e, containerBounds);
-      Dimension2D cretval = cache.getMinSize(cacheKey);
+      final Dimension2D cretval = cache.getMinSize(cacheKey);
       if (cretval != null)
       {
         return cretval;
@@ -127,9 +126,9 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
     // to calculate the maximum available space for the element.
     final Point2D absPos = (Point2D)
       e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS);
-    float absPosX = correctRelativeValue((float) absPos.getX(),
+    final float absPosX = correctRelativeValue((float) absPos.getX(),
         (float) containerBounds.getWidth());
-    float absPosY = correctRelativeValue((float) absPos.getY(),
+    final float absPosY = correctRelativeValue((float) absPos.getY(),
         (float) containerBounds.getHeight());
 
     if (containerBounds.getWidth() < absPosX)
@@ -205,7 +204,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
     if (isCachable)
     {
       cacheKey.setSearchConstraint(e, containerBounds);
-      Dimension2D cretval = cache.getMinSize(cacheKey);
+      final Dimension2D cretval = cache.getMinSize(cacheKey);
       if (cretval != null)
       {
         // Log.debug ("+" + cretval);
@@ -217,9 +216,9 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
     // to calculate the maximum available space for the element.
     final Point2D absPos = (Point2D)
       e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS);
-    float absPosX = correctRelativeValue((float) absPos.getX(),
+    final float absPosX = correctRelativeValue((float) absPos.getX(),
         (float) containerBounds.getWidth());
-    float absPosY = correctRelativeValue((float) absPos.getY(),
+    final float absPosY = correctRelativeValue((float) absPos.getY(),
         (float) containerBounds.getHeight());
 
     if (containerBounds.getWidth() < absPosX)
@@ -319,7 +318,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       // Now adjust the defined sizes by using the elements stored in the band.
       final Element[] elements = b.getElementArray();
 
-      Dimension2D tmpResult = null;
+      final Dimension2D tmpResult = null;
       // calculate absolute width
       for (int i = 0; i < elements.length; i++)
       {
@@ -456,7 +455,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       // Check the position of the elements inside and calculate the minimum width
       // needed to display all elements
       final Element[] elements = b.getElementArray();
-      Dimension2D tmpResult = null;
+      final Dimension2D tmpResult = null;
 
       // calculate absolute width
       for (int i = 0; i < elements.length; i++)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelList.java,v 1.7 2003/09/12 18:46:18 taqua Exp $
+ * $Id: LevelList.java,v 1.8 2003/09/15 18:26:51 taqua Exp $
  *
  * Changes
  * -------
@@ -169,7 +169,7 @@ public class LevelList implements Cloneable
      * Returns the size if the list.
      * @return the size.
      */
-    public int size()
+    protected int size()
     {
       return datalist.size();
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalItemCountFunction.java,v 1.5 2003/10/30 19:38:43 taqua Exp $
+ * $Id: TotalItemCountFunction.java,v 1.6 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -145,7 +145,7 @@ public class TotalItemCountFunction extends AbstractFunction implements Serializ
    *
    * @param event the current report event received.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.9 2003/11/07 15:31:39 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.10 2003/11/07 16:26:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,10 +43,10 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.print.resources.PrintExportResources;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -79,15 +79,15 @@ public class PrintingPlugin extends AbstractExportPlugin
   {
     return resources;
   }
-  
-  /** 
-   * Creates the progress dialog that monitors the export process. 
+
+  /**
+   * Creates the progress dialog that monitors the export process.
    *
-   * @return the progress monitor dialog. 
+   * @return the progress monitor dialog.
    */
   protected ReportProgressDialog createProgressDialog ()
   {
-    ReportProgressDialog progressDialog = super.createProgressDialog();
+    final ReportProgressDialog progressDialog = super.createProgressDialog();
     progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
     progressDialog.setTitle(resources.getString("printing-export.progressdialog.title"));
     progressDialog.setMessage(resources.getString("printing-export.progressdialog.message"));
@@ -106,10 +106,10 @@ public class PrintingPlugin extends AbstractExportPlugin
   public boolean performExport(final JFreeReport report)
   {
     // need to connect to the report pane to receive state updates ...
-    ReportProgressDialog progressDialog = createProgressDialog();
+    final ReportProgressDialog progressDialog = createProgressDialog();
     getBase().addRepaginationListener(progressDialog);
-    PrintExportTask task = new PrintExportTask
-        (getBase().getPageable(), progressDialog, 
+    final PrintExportTask task = new PrintExportTask
+        (getBase().getPageable(), progressDialog,
          report.getReportConfiguration().getConfigProperty
             ("org.jfree.report.modules.gui.print.JobName"));
     task.addExportTaskListener(new DefaultExportTaskListener());
@@ -202,5 +202,5 @@ public class PrintingPlugin extends AbstractExportPlugin
     return ReportConfiguration.getGlobalConfig().getConfigProperty
         ("org.jfree.report.modules.gui.print.Separated", "false").equals("true");
   }
- 
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeElementFactory.java,v 1.5 2003/10/05 21:52:32 taqua Exp $
+ * $Id: ShapeElementFactory.java,v 1.6 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,8 +41,8 @@ package org.jfree.report.elementfactory;
 import java.awt.Color;
 import java.awt.Stroke;
 
-import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.ShapeElement;
+import org.jfree.report.style.ElementStyleSheet;
 
 /**
  * A base implementation of a factory to define ShapeElements.
@@ -203,7 +203,7 @@ public abstract class ShapeElementFactory extends ElementFactory
    *  
    * @param style the element stylesheet which should receive the style definition.
    */
-  protected void applyStyle (ElementStyleSheet style)
+  protected void applyStyle (final ElementStyleSheet style)
   {
     super.applyStyle(style);
     style.setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, getKeepAspectRatio());

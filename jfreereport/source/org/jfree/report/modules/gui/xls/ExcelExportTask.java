@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportTask.java,v 1.5 2003/09/10 18:20:25 taqua Exp $
+ * $Id: ExcelExportTask.java,v 1.6 2003/10/18 19:22:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,15 +41,15 @@ package org.jfree.report.modules.gui.xls;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportInterruptedException;
-import org.jfree.report.util.Log;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
+import org.jfree.report.util.Log;
 
 /**
  * An export task implementation, which writes a given report into an
@@ -100,7 +100,7 @@ public class ExcelExportTask extends ExportTask
   protected void performExport()
   {
     OutputStream out = null;
-    File file = new File(fileName);
+    final File file = new File(fileName);
     try
     {
       out = new BufferedOutputStream(new FileOutputStream(file));

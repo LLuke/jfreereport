@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HashNMap.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: HashNMap.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -58,12 +58,12 @@ public class HashNMap implements Serializable, Cloneable
    * An helper class to implement an empty iterator. This iterator will always
    * return false when <code>hasNext</code> is called.
    */
-  private static class EmptyIterator implements Iterator
+  private static final class EmptyIterator implements Iterator
   {
     /**
      * DefaultConstructor.
      */
-    public EmptyIterator()
+    private EmptyIterator()
     {
     }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEntry.java,v 1.3 2003/09/10 18:19:48 taqua Exp $
+ * $Id: ConfigDescriptionEntry.java,v 1.4 2003/09/14 19:24:07 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -61,7 +61,7 @@ public abstract class ConfigDescriptionEntry
    * 
    * @param keyName the name of the entry.
    */
-  public ConfigDescriptionEntry(String keyName)
+  public ConfigDescriptionEntry(final String keyName)
   {
     if (keyName == null)
     {
@@ -94,7 +94,7 @@ public abstract class ConfigDescriptionEntry
    *  
    * @param description the key description.
    */
-  public void setDescription(String description)
+  public void setDescription(final String description)
   {
     this.description = description;
   }
@@ -118,7 +118,7 @@ public abstract class ConfigDescriptionEntry
    *  
    * @param global set to true, if the key is global, false otherwise.
    */
-  public void setGlobal(boolean global)
+  public void setGlobal(final boolean global)
   {
     this.global = global;
   }
@@ -140,7 +140,7 @@ public abstract class ConfigDescriptionEntry
    *
    * @param hidden set to true, if the key is hidden, false otherwise 
    */
-  public void setHidden(boolean hidden)
+  public void setHidden(final boolean hidden)
   {
     this.hidden = hidden;
   }
@@ -155,7 +155,7 @@ public abstract class ConfigDescriptionEntry
    * @param o the other object.
    * @return true, if the config entry is equal to the given object, false otherwise.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     { 

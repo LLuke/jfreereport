@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TotalCalculationFunction.java,v 1.4 2003/10/18 19:32:12 taqua Exp $
+ * $Id: TotalCalculationFunction.java,v 1.5 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -37,9 +37,9 @@
  */
 package org.jfree.report.function;
 
-import java.io.Serializable;
-import java.io.ObjectInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.jfree.report.event.ReportEvent;

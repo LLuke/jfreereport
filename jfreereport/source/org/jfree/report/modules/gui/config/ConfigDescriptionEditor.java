@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEditor.java,v 1.7 2003/09/14 19:24:07 taqua Exp $
+ * $Id: ConfigDescriptionEditor.java,v 1.8 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -60,7 +60,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
-
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -121,7 +120,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public CloseAction()
     {
-      putValue(NAME, resources.getString("action.exit.name"));
+      putValue(NAME, getResources().getString("action.exit.name"));
     }
 
     /**
@@ -129,7 +128,7 @@ public class ConfigDescriptionEditor extends JFrame
      * 
      * @param e not used.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       attempExit();
     }
@@ -145,8 +144,8 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public SaveAction()
     {
-      putValue(NAME, resources.getString("action.save.name"));
-      putValue(SMALL_ICON, resources.getObject("action.save.small-icon"));
+      putValue(NAME, getResources().getString("action.save.name"));
+      putValue(SMALL_ICON, getResources().getObject("action.save.small-icon"));
     }
 
     /**
@@ -154,7 +153,7 @@ public class ConfigDescriptionEditor extends JFrame
      * 
      * @param e not used.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       save();
     }
@@ -171,8 +170,8 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public ImportAction()
     {
-      putValue(NAME, resources.getString("action.import.name"));
-      putValue(SMALL_ICON, resources.getObject("action.import.small-icon"));
+      putValue(NAME, getResources().getString("action.import.name"));
+      putValue(SMALL_ICON, getResources().getObject("action.import.small-icon"));
 
     }
 
@@ -181,11 +180,12 @@ public class ConfigDescriptionEditor extends JFrame
      * 
      * @param e not used.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
+      final ConfigDescriptionModel model = getModel();
       model.importFromConfig(ReportConfiguration.getGlobalConfig());
       model.sort();
-      setStatusText(resources.getString ("config-description-editor.import-complete"));
+      setStatusText(getResources().getString ("config-description-editor.import-complete"));
     }
   }
 
@@ -199,8 +199,8 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public AddEntryAction()
     {
-      putValue(NAME, resources.getString("action.add-entry.name"));
-      putValue(SMALL_ICON, resources.getObject("action.add-entry.small-icon"));
+      putValue(NAME, getResources().getString("action.add-entry.name"));
+      putValue(SMALL_ICON, getResources().getObject("action.add-entry.small-icon"));
     }
 
     /**
@@ -208,13 +208,14 @@ public class ConfigDescriptionEditor extends JFrame
      * 
      * @param e not used.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
-      TextConfigDescriptionEntry te = 
+      final TextConfigDescriptionEntry te =
         new TextConfigDescriptionEntry
-          (resources.getString ("config-description-editor.unnamed-entry"));
+          (getResources().getString ("config-description-editor.unnamed-entry"));
+      final ConfigDescriptionModel model = getModel();
       model.add(te);
-      entryList.setSelectedIndex(model.getSize() - 1);
+      getEntryList().setSelectedIndex(model.getSize() - 1);
     }
   }
 
@@ -228,8 +229,8 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public RemoveEntryAction()
     {
-      putValue(NAME, resources.getString("action.remove-entry.name"));
-      putValue(SMALL_ICON, resources.getObject("action.remove-entry.small-icon"));
+      putValue(NAME, getResources().getString("action.remove-entry.name"));
+      putValue(SMALL_ICON, getResources().getObject("action.remove-entry.small-icon"));
     }
 
     /**
@@ -237,14 +238,15 @@ public class ConfigDescriptionEditor extends JFrame
      * 
      * @param e not used.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
-      int[] selectedEntries = entryList.getSelectedIndices();
+      final int[] selectedEntries = getEntryList().getSelectedIndices();
+      final ConfigDescriptionModel model = getModel();
       for (int i = selectedEntries.length - 1; i >= 0; i--)
       {
         model.remove(model.get(selectedEntries[i]));
       }
-      entryList.clearSelection();
+      getEntryList().clearSelection();
     }
   }
 
@@ -258,8 +260,8 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public LoadAction()
     {
-      putValue(NAME, resources.getString("action.load.name"));
-      putValue(SMALL_ICON, resources.getObject("action.load.small-icon"));
+      putValue(NAME, getResources().getString("action.load.name"));
+      putValue(SMALL_ICON, getResources().getObject("action.load.small-icon"));
     }
 
     /**
@@ -267,7 +269,7 @@ public class ConfigDescriptionEditor extends JFrame
      * 
      * @param e not used.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       load();
     }
@@ -283,7 +285,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public UpdateAction()
     {
-      putValue(NAME, resources.getString ("action.update.name"));
+      putValue(NAME, getResources().getString ("action.update.name"));
     }
 
     /**
@@ -291,7 +293,7 @@ public class ConfigDescriptionEditor extends JFrame
      * 
      * @param e not used.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       updateSelectedEntry();
     }
@@ -307,7 +309,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public CancelAction()
     {
-      putValue(NAME, resources.getString ("action.cancel.name"));
+      putValue(NAME, getResources().getString ("action.cancel.name"));
     }
 
     /**
@@ -315,9 +317,9 @@ public class ConfigDescriptionEditor extends JFrame
      * 
      * @param e not used.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
-      ConfigDescriptionEntry ce = getSelectedEntry();
+      final ConfigDescriptionEntry ce = getSelectedEntry();
       setSelectedEntry(null);
       setSelectedEntry(ce);
     }
@@ -338,7 +340,7 @@ public class ConfigDescriptionEditor extends JFrame
      * @param type the type that should be selected whenever this action
      * gets called.
      */
-    public SelectTypeAction(String name, int type)
+    public SelectTypeAction(final String name, final int type)
     {
       putValue(NAME, name);
       this.type = type;
@@ -349,7 +351,7 @@ public class ConfigDescriptionEditor extends JFrame
      * 
      * @param e not used.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       setEntryType(type);
     }
@@ -371,15 +373,15 @@ public class ConfigDescriptionEditor extends JFrame
      * Called whenever the value of the selection changes.
      * @param e the event that characterizes the change.
      */
-    public void valueChanged(ListSelectionEvent e)
+    public void valueChanged(final ListSelectionEvent e)
     {
-      if (entryList.getSelectedIndex() == -1)
+      if (getEntryList().getSelectedIndex() == -1)
       {
         setSelectedEntry(null);
       }
       else
       {
-        setSelectedEntry(model.get(entryList.getSelectedIndex()));
+        setSelectedEntry(getModel().get(getEntryList().getSelectedIndex()));
       }
     }
   }
@@ -400,16 +402,16 @@ public class ConfigDescriptionEditor extends JFrame
      * Called whenever the value of the selection changes.
      * @param e the event that characterizes the change.
      */
-    public void valueChanged(ListSelectionEvent e)
+    public void valueChanged(final ListSelectionEvent e)
     {
-      if (enumEntryList.getSelectedIndex() == -1)
+      if (getEnumEntryList().getSelectedIndex() == -1)
       {
-        enumEntryEditField.setText("");
+        getEnumEntryEditField().setText("");
       }
       else
       {
-        enumEntryEditField.setText((String) enumEntryListModel.get
-            (enumEntryList.getSelectedIndex()));
+        getEnumEntryEditField().setText((String) getEnumEntryListModel().get
+            (getEnumEntryList().getSelectedIndex()));
       }
     }
   }
@@ -425,17 +427,18 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public SetBooleanEnumEntryAction()
     {
-      putValue(NAME, resources.getString ("action.boolean.name"));
+      putValue(NAME, getResources().getString ("action.boolean.name"));
     }
 
     /**
      * Handles the boolean redefinition request.
      * @param e not used. 
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
+      DefaultListModel enumEntryListModel = getEnumEntryListModel();
       enumEntryListModel.clear();
-      enumEntryEditField.setText("");
+      getEnumEntryEditField().setText("");
       enumEntryListModel.addElement("true");
       enumEntryListModel.addElement("false");
     }
@@ -452,7 +455,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public AddEnumEntryAction()
     {
-      putValue(NAME, resources.getString("action.add-enum-entry.name"));
+      putValue(NAME, getResources().getString("action.add-enum-entry.name"));
     }
 
     /**
@@ -461,9 +464,9 @@ public class ConfigDescriptionEditor extends JFrame
      * 
      * @param e not used.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
-      enumEntryListModel.addElement(enumEntryEditField.getText());
+      getEnumEntryListModel().addElement(getEnumEntryEditField().getText());
     }
   }
 
@@ -478,7 +481,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public RemoveEnumEntryAction()
     {
-      putValue(NAME, resources.getString("action.remove-enum-entry.name"));
+      putValue(NAME, getResources().getString("action.remove-enum-entry.name"));
     }
 
     /**
@@ -487,9 +490,11 @@ public class ConfigDescriptionEditor extends JFrame
      * 
      * @param e not used.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
-      int[] selectedEntries = enumEntryList.getSelectedIndices();
+      final JList enumEntryList = getEnumEntryList();
+      final DefaultListModel enumEntryListModel = getEnumEntryListModel();
+      final int[] selectedEntries = enumEntryList.getSelectedIndices();
       for (int i = selectedEntries.length - 1; i >= 0; i--)
       {
         enumEntryListModel.remove(selectedEntries[i]);
@@ -509,7 +514,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public UpdateEnumEntryAction()
     {
-      putValue(NAME, resources.getString("action.update-enum-entry.name"));
+      putValue(NAME, getResources().getString("action.update-enum-entry.name"));
     }
 
     /**
@@ -518,16 +523,16 @@ public class ConfigDescriptionEditor extends JFrame
      * 
      * @param e not used.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
-      int idx = enumEntryList.getSelectedIndex();
+      final int idx = getEnumEntryList().getSelectedIndex();
       if (idx == -1)
       {
-        enumEntryListModel.addElement(enumEntryEditField.getText());
+        getEnumEntryListModel().addElement(getEnumEntryEditField().getText());
       }
       else
       {
-        enumEntryListModel.setElementAt(enumEntryEditField.getText(), idx);
+        getEnumEntryListModel().setElementAt(getEnumEntryEditField().getText(), idx);
       }
     }
   }
@@ -570,13 +575,13 @@ public class ConfigDescriptionEditor extends JFrame
   /** contains all entries of the enumeration detail editor. */
   private DefaultListModel enumEntryListModel;
   /** The current resource bundle used to translate the strings in this dialog. */
-  private ResourceBundle resources;
+  private final ResourceBundle resources;
   /** This cardlayout is used to display the currently selected detail editor. */
   private CardLayout detailManager;
   /** Contains the detail editor manager. */
   private JPanel detailManagerPanel;
   /** Contains the detail editor for the key. */
-  private JPanel detailEditorPane;
+  private final JPanel detailEditorPane;
   /** The list is used to manage all available keys. */
   private JList entryList;
   /** This list is used to manage the available entries of the enumeration detail editor. */
@@ -584,7 +589,7 @@ public class ConfigDescriptionEditor extends JFrame
   /**the currently selected description entry. */
   private ConfigDescriptionEntry selectedEntry;
   /** The file chooser is used to select the file for the load/save operations. */
-  private JFileChooser fileChooser;
+  private final JFileChooser fileChooser;
   /** Serves as statusline for the dialog. */
   private JLabel statusHolder;
   /** The currently selected detail editor type. */
@@ -599,17 +604,17 @@ public class ConfigDescriptionEditor extends JFrame
     this.resources = ResourceBundle.getBundle(RESOURCE_BUNDLE);
 
     setTitle(resources.getString("config-description-editor.title"));
-    JPanel contentPane = new JPanel();
+    final JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());
 
     detailEditorPane = createEditPane();
-    JSplitPane splitPane = new JSplitPane
+    final JSplitPane splitPane = new JSplitPane
         (JSplitPane.HORIZONTAL_SPLIT, createEntryList(), detailEditorPane);
 
     contentPane.add(splitPane, BorderLayout.CENTER);
     contentPane.add(createButtonPane(), BorderLayout.SOUTH);
 
-    JPanel cPaneStatus = new JPanel();
+    final JPanel cPaneStatus = new JPanel();
     cPaneStatus.setLayout(new BorderLayout());
     cPaneStatus.add (contentPane, BorderLayout.CENTER);
     cPaneStatus.add (createStatusBar(), BorderLayout.SOUTH);
@@ -632,7 +637,7 @@ public class ConfigDescriptionEditor extends JFrame
        * Invoked when a window is in the process of being closed.
        * The close operation can be overridden at this point.
        */
-      public void windowClosing(WindowEvent e)
+      public void windowClosing(final WindowEvent e)
       {
         attempExit();
       }
@@ -647,19 +652,19 @@ public class ConfigDescriptionEditor extends JFrame
    */
   private JPanel createEntryList ()
   {
-    Action addEntryAction = new AddEntryAction();
-    Action removeEntryAction = new RemoveEntryAction();
+    final Action addEntryAction = new AddEntryAction();
+    final Action removeEntryAction = new RemoveEntryAction();
 
     model = new ConfigDescriptionModel();
     entryList = new JList(model);
     entryList.addListSelectionListener(new ConfigListSelectionListener());
 
-    JToolBar toolbar = new JToolBar();
+    final JToolBar toolbar = new JToolBar();
     toolbar.setFloatable(false);
     toolbar.add(addEntryAction);
     toolbar.add(removeEntryAction);
 
-    JPanel panel = new JPanel();
+    final JPanel panel = new JPanel();
     panel.setMinimumSize(new Dimension(200,0));
     panel.setLayout(new BorderLayout());
     panel.add(toolbar, BorderLayout.NORTH);
@@ -670,6 +675,44 @@ public class ConfigDescriptionEditor extends JFrame
   }
 
   /**
+   * Returns the JList component containing all entries of the enumeration
+   * detail editor.
+   * @return the enumeration entry list.
+   */
+  protected JList getEnumEntryList()
+  {
+    return enumEntryList;
+  }
+  
+  /**
+   * Returns the text field containing the currently edited enumeration entry.
+   * @return the textfield containing the current entry.
+   */
+  protected JTextField getEnumEntryEditField ()
+  {
+    return enumEntryEditField;
+  }
+  
+  /**
+   * Returns the List Model containing all entries of the current enumeration
+   * entry editor.
+   * @return the entry list.
+   */
+  protected DefaultListModel getEnumEntryListModel()
+  {
+    return enumEntryListModel;
+  }
+  
+  /**
+   * Returns the JList component containing all configuration entries.
+   * @return the entry list.
+   */
+  protected JList getEntryList ()
+  {
+    return entryList;
+  }
+  
+  /**
    * Creates a panel containing all dialog control buttons, like close,
    * load, save and import.
    * 
@@ -677,16 +720,16 @@ public class ConfigDescriptionEditor extends JFrame
    */
   private JPanel createButtonPane ()
   {
-    Action closeAction = new CloseAction();
-    Action saveAction = new SaveAction();
-    Action loadAction = new LoadAction();
-    Action importAction = new ImportAction();
+    final Action closeAction = new CloseAction();
+    final Action saveAction = new SaveAction();
+    final Action loadAction = new LoadAction();
+    final Action importAction = new ImportAction();
 
-    JPanel panel = new JPanel();
+    final JPanel panel = new JPanel();
     panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
     panel.setBorder(new EmptyBorder (5,5,5,5));
 
-    JPanel buttonHolder = new JPanel();
+    final JPanel buttonHolder = new JPanel();
     buttonHolder.setLayout(new GridLayout(1,4));
     buttonHolder.add (new ActionButton(importAction));
     buttonHolder.add (new ActionButton(loadAction));
@@ -704,20 +747,20 @@ public class ConfigDescriptionEditor extends JFrame
    */
   private JPanel createEditPane()
   {
-    Action updateAction = new UpdateAction();
-    Action cancelAction = new CancelAction();
+    final Action updateAction = new UpdateAction();
+    final Action cancelAction = new CancelAction();
 
-    JPanel buttonHolder = new JPanel();
+    final JPanel buttonHolder = new JPanel();
     buttonHolder.setLayout(new GridLayout(1,4));
     buttonHolder.add (new ActionButton(cancelAction));
     buttonHolder.add (new ActionButton(updateAction));
 
-    JPanel buttonPanel = new JPanel();
+    final JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
     buttonPanel.setBorder(new EmptyBorder (5,5,5,5));
     buttonPanel.add(buttonHolder);
 
-    JPanel panel = new JPanel();
+    final JPanel panel = new JPanel();
     panel.setLayout(new BorderLayout());
     panel.add(createDetailEditorPanel(), BorderLayout.CENTER);
     panel.add(buttonPanel, BorderLayout.SOUTH);
@@ -736,12 +779,12 @@ public class ConfigDescriptionEditor extends JFrame
     enumEntryList = new JList(enumEntryListModel);
     enumEntryList.addListSelectionListener(new EnumerationListSelectionHandler());
 
-    JPanel listPanel = new JPanel();
+    final JPanel listPanel = new JPanel();
     listPanel.setLayout(new BorderLayout());
     listPanel.add(enumEntryEditField, BorderLayout.NORTH);
     listPanel.add(new JScrollPane(enumEntryList), BorderLayout.CENTER);
 
-    JPanel buttonPanel = new JPanel();
+    final JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new GridLayout(5,1));
     buttonPanel.add(new ActionButton(new AddEnumEntryAction()));
     buttonPanel.add(new ActionButton(new RemoveEnumEntryAction()));
@@ -749,11 +792,11 @@ public class ConfigDescriptionEditor extends JFrame
     buttonPanel.add(new JPanel());
     buttonPanel.add(new ActionButton(new SetBooleanEnumEntryAction()));
 
-    JPanel buttonCarrier = new JPanel();
+    final JPanel buttonCarrier = new JPanel();
     buttonCarrier.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
     buttonCarrier.add (buttonPanel);
 
-    JPanel editorPanel = new JPanel();
+    final JPanel editorPanel = new JPanel();
     editorPanel.setLayout(new BorderLayout());
     editorPanel.add(listPanel, BorderLayout.CENTER);
     editorPanel.add(buttonCarrier, BorderLayout.EAST);
@@ -769,15 +812,15 @@ public class ConfigDescriptionEditor extends JFrame
     baseClassField = new JTextField();
     baseClassValidateMessage = new JLabel(" ");
 
-    JLabel textLabel = new JLabel
+    final JLabel textLabel = new JLabel
         (resources.getString ("config-description-editor.baseclass"));
-    JPanel panel = new JPanel();
+    final JPanel panel = new JPanel();
     panel.setLayout(new BorderLayout());
     panel.add(textLabel, BorderLayout.WEST);
     panel.add(baseClassField, BorderLayout.CENTER);
     panel.add(baseClassValidateMessage, BorderLayout.SOUTH);
 
-    JPanel carrier = new JPanel();
+    final JPanel carrier = new JPanel();
     carrier.setLayout(new BorderLayout());
     carrier.add (panel, BorderLayout.NORTH);
     return carrier;
@@ -789,9 +832,9 @@ public class ConfigDescriptionEditor extends JFrame
    */
   private JPanel createTextEditor ()
   {
-    JLabel textLabel = new JLabel
+    final JLabel textLabel = new JLabel
         (resources.getString ("config-description-editor.text-editor-message"));
-    JPanel panel = new JPanel();
+    final JPanel panel = new JPanel();
     panel.setLayout(new FlowLayout());
     panel.add (textLabel);
     return panel;
@@ -805,18 +848,19 @@ public class ConfigDescriptionEditor extends JFrame
    */
   private JPanel createDetailEditorPanel ()
   {
-    JLabel keyNameLabel = new JLabel(resources.getString ("config-description-editor.keyname"));
-    JLabel descriptionLabel = new JLabel
+    final JLabel keyNameLabel = new JLabel
+      (resources.getString ("config-description-editor.keyname"));
+    final JLabel descriptionLabel = new JLabel
       (resources.getString ("config-description-editor.description"));
-    JLabel typeLabel = new JLabel(resources.getString ("config-description-editor.type"));
-    JLabel globalLabel = new JLabel(resources.getString ("config-description-editor.global"));
-    JLabel hiddenLabel = new JLabel(resources.getString ("config-description-editor.hidden"));
+    final JLabel typeLabel = new JLabel(resources.getString ("config-description-editor.type"));
+    final JLabel globalLabel = new JLabel(resources.getString ("config-description-editor.global"));
+    final JLabel hiddenLabel = new JLabel(resources.getString ("config-description-editor.hidden"));
 
     hiddenField = new JCheckBox();
     globalField = new JCheckBox();
-    String font = ReportConfiguration.getGlobalConfig().getConfigProperty
+    final String font = ReportConfiguration.getGlobalConfig().getConfigProperty
         ("org.jfree.report.modules.gui.config.EditorFont", "Monospaced");
-    int fontSize = StringUtil.parseInt
+    final int fontSize = StringUtil.parseInt
         (ReportConfiguration.getGlobalConfig().getConfigProperty
           ("org.jfree.report.modules.gui.config.EditorFontSize"), 12);
     descriptionField = new JTextArea();
@@ -825,9 +869,9 @@ public class ConfigDescriptionEditor extends JFrame
     descriptionField.setWrapStyleWord(true);
     keyNameField = new JTextField();
 
-    JPanel enumerationEditor = createEnumerationEditor();
-    JPanel textEditor = createTextEditor();
-    JPanel classEditor = createClassEditor();
+    final JPanel enumerationEditor = createEnumerationEditor();
+    final JPanel textEditor = createTextEditor();
+    final JPanel classEditor = createClassEditor();
 
     detailManagerPanel = new JPanel();
     detailManager = new CardLayout ();
@@ -836,7 +880,7 @@ public class ConfigDescriptionEditor extends JFrame
     detailManagerPanel.add (textEditor, TEXT_DETAIL_EDITOR_NAME);
     detailManagerPanel.add (enumerationEditor, ENUM_DETAIL_EDITOR_NAME);
 
-    JPanel commonEntryEditorPanel = new JPanel();
+    final JPanel commonEntryEditorPanel = new JPanel();
     commonEntryEditorPanel.setLayout(new GridBagLayout());
     commonEntryEditorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,0,5));
 
@@ -952,7 +996,7 @@ public class ConfigDescriptionEditor extends JFrame
    */
   private JPanel createTypeSelectionPane ()
   {
-    JPanel panel = new JPanel();
+    final JPanel panel = new JPanel();
     panel.setLayout(new GridLayout(3,1));
 
     rbText = new ActionRadioButton (new SelectTypeAction
@@ -962,7 +1006,7 @@ public class ConfigDescriptionEditor extends JFrame
     rbEnum = new ActionRadioButton (new SelectTypeAction
       (resources.getString ("config-description-editor.type-enum"), TYPE_ENUM));
 
-    ButtonGroup bg = new ButtonGroup();
+    final ButtonGroup bg = new ButtonGroup();
     bg.add (rbText);
     bg.add (rbClass);
     bg.add (rbEnum);
@@ -997,15 +1041,19 @@ public class ConfigDescriptionEditor extends JFrame
    * 
    * @param text the new status text.
    */
-  private void setStatusText (String text)
+  protected void setStatusText (final String text)
   {
     statusHolder.setText(text);
   }
 
-//  private String getStatusText ()
-//  {
-//    return statusHolder.getText();
-//  }
+  /**
+   * Returns the currently visible status text of this dialog.
+   * @return the status text.
+   */
+  protected String getStatusText ()
+  {
+    return statusHolder.getText();
+  }
 
   /**
    * Sets the entry type for the current config description entry. This
@@ -1013,7 +1061,7 @@ public class ConfigDescriptionEditor extends JFrame
    * 
    * @param type the type of the currently selected entry.
    */
-  private void setEntryType (int type)
+  protected void setEntryType (final int type)
   {
     this.type = type;
     if (type == TYPE_CLASS)
@@ -1038,7 +1086,7 @@ public class ConfigDescriptionEditor extends JFrame
    * Returns the current entry type.
    * @return the current entry type.
    */
-  private int getEntryType ()
+  protected int getEntryType ()
   {
     return type;
   }
@@ -1048,7 +1096,7 @@ public class ConfigDescriptionEditor extends JFrame
    * 
    * @return the currently selected entry.
    */
-  private ConfigDescriptionEntry getSelectedEntry()
+  protected ConfigDescriptionEntry getSelectedEntry()
   {
     return selectedEntry;
   }
@@ -1059,7 +1107,7 @@ public class ConfigDescriptionEditor extends JFrame
    * 
    * @param selectedEntry the selected entry.
    */
-  private void setSelectedEntry(ConfigDescriptionEntry selectedEntry)
+  protected void setSelectedEntry(final ConfigDescriptionEntry selectedEntry)
   {
     this.selectedEntry = selectedEntry;
 
@@ -1080,7 +1128,7 @@ public class ConfigDescriptionEditor extends JFrame
       descriptionField.setText(selectedEntry.getDescription());
       if (selectedEntry instanceof ClassConfigDescriptionEntry)
       {
-        ClassConfigDescriptionEntry ce = (ClassConfigDescriptionEntry) selectedEntry;
+        final ClassConfigDescriptionEntry ce = (ClassConfigDescriptionEntry) selectedEntry;
         setEntryType(TYPE_CLASS);
         if (ce.getBaseClass() != null)
         {
@@ -1089,8 +1137,8 @@ public class ConfigDescriptionEditor extends JFrame
       }
       else if (selectedEntry instanceof EnumConfigDescriptionEntry)
       {
-        EnumConfigDescriptionEntry enum = (EnumConfigDescriptionEntry) selectedEntry;
-        String[] enums = enum.getOptions();
+        final EnumConfigDescriptionEntry enum = (EnumConfigDescriptionEntry) selectedEntry;
+        final String[] enums = enum.getOptions();
         for (int i= 0; i < enums.length; i++)
         {
           enumEntryListModel.addElement(enums[i]);
@@ -1109,13 +1157,13 @@ public class ConfigDescriptionEditor extends JFrame
    * @param comp the component that should be enabled or disabled.
    * @param state the new enable state.
    */
-  private void deepEnable (Component comp, boolean state)
+  private void deepEnable (final Component comp, final boolean state)
   {
     comp.setEnabled(state);
     if (comp instanceof Container)
     {
-      Container cont = (Container) comp;
-      Component[] childs = cont.getComponents();
+      final Container cont = (Container) comp;
+      final Component[] childs = cont.getComponents();
       for (int i = 0; i < childs.length; i++)
       {
         deepEnable(childs[i], state);
@@ -1126,7 +1174,7 @@ public class ConfigDescriptionEditor extends JFrame
   /**
    * Saves the config description model in a xml file.
    */
-  private void save ()
+  protected void save ()
   {
     fileChooser.setVisible(true);
 
@@ -1135,7 +1183,7 @@ public class ConfigDescriptionEditor extends JFrame
     {
       try
       {
-        OutputStream out = new BufferedOutputStream
+        final OutputStream out = new BufferedOutputStream
           (new FileOutputStream(fileChooser.getSelectedFile()));
         model.save(out, "ISO-8859-1");
         out.close();
@@ -1144,7 +1192,7 @@ public class ConfigDescriptionEditor extends JFrame
       catch (Exception ioe)
       {
         Log.debug ("Failed", ioe);
-        String message = MessageFormat.format
+        final String message = MessageFormat.format
           (resources.getString ("config-description-editor.save-failed"),
            new Object[] { ioe.getMessage()}); 
         setStatusText(message);
@@ -1155,7 +1203,7 @@ public class ConfigDescriptionEditor extends JFrame
   /**
    * Loads the config description model from a xml file.
    */
-  private void load ()
+  protected void load ()
   {
     fileChooser.setVisible(true);
 
@@ -1164,7 +1212,7 @@ public class ConfigDescriptionEditor extends JFrame
     {
       try
       {
-        InputStream in = new BufferedInputStream
+        final InputStream in = new BufferedInputStream
           (new FileInputStream(fileChooser.getSelectedFile()));
         model.load(in);
         in.close();
@@ -1174,7 +1222,7 @@ public class ConfigDescriptionEditor extends JFrame
       catch (Exception ioe)
       {
         Log.debug ("Load Failed", ioe);
-        String message = MessageFormat.format
+        final String message = MessageFormat.format
           (resources.getString ("config-description-editor.load-failed"),
            new Object[] { ioe.getMessage()}); 
         setStatusText(message);
@@ -1187,21 +1235,21 @@ public class ConfigDescriptionEditor extends JFrame
    * detail editor.
    *
    */
-  private void updateSelectedEntry ()
+  protected void updateSelectedEntry ()
   {
-    ConfigDescriptionEntry entry;
+    final ConfigDescriptionEntry entry;
     switch (getEntryType())
     {
       case TYPE_CLASS:
         {
-          ClassConfigDescriptionEntry ce =
+          final ClassConfigDescriptionEntry ce =
               new ClassConfigDescriptionEntry(keyNameField.getText());
           ce.setDescription(descriptionField.getText());
           ce.setGlobal(globalField.isSelected());
           ce.setHidden(hiddenField.isSelected());
           try
           {
-            Class c = this.getClass().getClassLoader().loadClass(baseClassField.getText());
+            final Class c = this.getClass().getClassLoader().loadClass(baseClassField.getText());
             ce.setBaseClass(c);
           }
           catch (Exception e)
@@ -1215,12 +1263,12 @@ public class ConfigDescriptionEditor extends JFrame
         }
       case TYPE_ENUM:
         {
-          EnumConfigDescriptionEntry ece =
+          final EnumConfigDescriptionEntry ece =
               new EnumConfigDescriptionEntry(keyNameField.getText());
           ece.setDescription(descriptionField.getText());
           ece.setGlobal(globalField.isSelected());
           ece.setHidden(hiddenField.isSelected());
-          String[] enumEntries = new String[enumEntryListModel.getSize()];
+          final String[] enumEntries = new String[enumEntryListModel.getSize()];
           for (int i = 0; i < enumEntryListModel.getSize(); i++)
           {
             enumEntries[i] = String.valueOf(enumEntryListModel.get(i));
@@ -1231,7 +1279,7 @@ public class ConfigDescriptionEditor extends JFrame
         }
       default:
         {
-          TextConfigDescriptionEntry te =
+          final TextConfigDescriptionEntry te =
               new TextConfigDescriptionEntry(keyNameField.getText());
           te.setDescription(descriptionField.getText());
           te.setGlobal(globalField.isSelected());
@@ -1252,12 +1300,31 @@ public class ConfigDescriptionEditor extends JFrame
   }
 
   /**
+   * Returns the config description model containing all metainformation about
+   * the configuration. 
+   * @return the config description model.
+   */
+  protected ConfigDescriptionModel getModel()
+  {
+    return model;
+  }
+  
+  /**
    * Handles the attemp to quit the program. This method shuts down the VM.
    *
    */
-  private void attempExit ()
+  protected void attempExit ()
   {
     System.exit (0);
+  }
+  
+  /**
+   * Returns the resource bundle of this editor for translating strings. 
+   * @return the resource bundle.
+   */
+  protected ResourceBundle getResources ()
+  {
+    return resources;
   }
   
   /**
@@ -1265,9 +1332,9 @@ public class ConfigDescriptionEditor extends JFrame
    *  
    * @param args ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
-    ConfigDescriptionEditor ed = new ConfigDescriptionEditor();
+    final ConfigDescriptionEditor ed = new ConfigDescriptionEditor();
     ed.pack();
     ed.setVisible(true);
   }

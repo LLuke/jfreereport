@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.10 2003/10/22 14:44:51 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.11 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -370,14 +370,14 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   public void beginPage(final PhysicalPage page)
   {
-    PageFormat pf = page.getPageFormat();
+    final PageFormat pf = page.getPageFormat();
     // the page must contain the space for the border, or it is invalid
     // the left and top border is always included when performing the layout
     currentPageHeight = correctedDivisionFloor
         ((float) (pf.getImageableHeight() + pf.getImageableY()), characterHeight);
     currentPageWidth = correctedDivisionFloor
         ((float) (pf.getImageableWidth()), characterWidth);
-    int currentPageLeft = correctedDivisionFloor
+    final int currentPageLeft = correctedDivisionFloor
         ((float) (pf.getImageableX()), characterWidth);
 
 //    Log.debug ("Character Height: " + characterHeight + ", " + 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigTreeSectionNode.java,v 1.2 2003/08/31 19:27:57 taqua Exp $
+ * $Id: ConfigTreeSectionNode.java,v 1.3 2003/09/11 22:17:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -52,7 +52,7 @@ public class ConfigTreeSectionNode extends AbstractConfigTreeNode
    * Creates a new section node with the specified name.
    * @param name the name of the node.
    */
-  public ConfigTreeSectionNode(String name)
+  public ConfigTreeSectionNode(final String name)
   {
     super(name);
   }

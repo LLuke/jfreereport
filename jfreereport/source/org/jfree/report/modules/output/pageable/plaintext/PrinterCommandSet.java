@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);;
  *
- * $Id: PrinterCommandSet.java,v 1.8 2003/10/22 14:44:51 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.9 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -613,7 +613,7 @@ public strictfp class PrinterCommandSet
    */
   public void startLine() throws IOException
   {
-    int borderLeft = getBorderLeft();
+    final int borderLeft = getBorderLeft();
     for (int i = 0; i < borderLeft; i++)
     {
       printEmptyChunk();

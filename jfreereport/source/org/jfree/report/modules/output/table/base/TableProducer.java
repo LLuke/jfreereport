@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.14 2003/10/11 21:33:08 taqua Exp $
+ * $Id: TableProducer.java,v 1.15 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -469,10 +469,10 @@ public abstract strictfp class TableProducer
     {
       rect = new Rectangle2D.Float();
     }
-    float x0 = layout.getColumnStart(x);
-    float y0 = layout.getRowStart(y);
-    float x1 = layout.getColumnEnd(x);
-    float y1 = layout.getRowEnd(y);
+    final float x0 = layout.getColumnStart(x);
+    final float y0 = layout.getRowStart(y);
+    final float x1 = layout.getColumnEnd(x);
+    final float y1 = layout.getRowEnd(y);
     rect.setRect(x0, y0, x1 - x0, y1 - y0);
     return rect;
   }

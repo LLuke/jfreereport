@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableExportTask.java,v 1.6 2003/09/10 18:20:25 taqua Exp $
+ * $Id: CSVTableExportTask.java,v 1.7 2003/10/18 19:22:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,16 +41,16 @@ package org.jfree.report.modules.gui.csv;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.io.IOException;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportInterruptedException;
-import org.jfree.report.util.Log;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
+import org.jfree.report.util.Log;
 
 /**
  * An export task implementation that writes an report into a CSV file,
@@ -110,7 +110,7 @@ public class CSVTableExportTask extends ExportTask
   protected void performExport()
   {
     Writer out = null;
-    File file = new File (fileName);
+    final File file = new File (fileName);
     try
     {
       out = new BufferedWriter

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.4 2003/10/08 19:48:58 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.5 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,8 @@ import java.io.Serializable;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
-import org.jfree.report.event.ReportEvent;
 import org.jfree.report.event.PageEventListener;
+import org.jfree.report.event.ReportEvent;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.SerializerHelper;
 import org.jfree.xml.factory.objects.ColorObjectDescription;
@@ -258,7 +258,7 @@ public class ElementColorFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void reportFinished(ReportEvent event)
+  public void reportFinished(final ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {
@@ -274,7 +274,7 @@ public class ElementColorFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportStarted(final ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {
@@ -290,7 +290,7 @@ public class ElementColorFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {
@@ -306,7 +306,7 @@ public class ElementColorFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void groupFinished(ReportEvent event)
+  public void groupFinished(final ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {
@@ -324,7 +324,7 @@ public class ElementColorFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageCanceled(ReportEvent event)
+  public void pageCanceled(final ReportEvent event)
   {
     // this can be ignored, as nothing is printed here...
   }
@@ -334,7 +334,7 @@ public class ElementColorFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageFinished(ReportEvent event)
+  public void pageFinished(final ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {
@@ -350,7 +350,7 @@ public class ElementColorFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageStarted(ReportEvent event)
+  public void pageStarted(final ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {

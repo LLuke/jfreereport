@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TopAlignment.java,v 1.4 2003/09/13 15:14:40 taqua Exp $
+ * $Id: TopAlignment.java,v 1.5 2003/09/15 18:26:51 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ public strictfp class TopAlignment extends VerticalBoundsAlignment
    *
    * @return the aligned rectangle.
    */
-  public Rectangle2D align(Rectangle2D r)
+  public Rectangle2D align(final Rectangle2D r)
   {
     if (r == null)
     {

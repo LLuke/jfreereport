@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleNodeFactory.java,v 1.6 2003/09/15 15:31:59 taqua Exp $
+ * $Id: ModuleNodeFactory.java,v 1.7 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,8 +48,8 @@ import java.util.Hashtable;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.jfree.report.Boot;
-import org.jfree.report.JFreeReportCoreModule;
 import org.jfree.report.DefaultLogModule;
+import org.jfree.report.JFreeReportCoreModule;
 import org.jfree.report.modules.Module;
 import org.jfree.report.modules.PackageManager;
 import org.jfree.report.util.Log;
@@ -91,10 +91,10 @@ public class ModuleNodeFactory
      * @throws ClassCastException if the arguments' types prevent them from
      *         being compared by this Comparator.
      */
-    public int compare(Object o1, Object o2)
+    public int compare(final Object o1, final Object o2)
     {
-      String name1;
-      String name2;
+      final String name1;
+      final String name2;
 
       if (o1.getClass().getPackage() == null || o2.getClass().getPackage() == null)
       {
@@ -125,7 +125,7 @@ public class ModuleNodeFactory
   private ModuleNodeFactory ()
   {
     Boot.start();
-    PackageManager pm = PackageManager.getInstance();
+    final PackageManager pm = PackageManager.getInstance();
     activeModules = pm.getAllModules();
     Arrays.sort(activeModules, new ModuleSorter());
     globalNodes = new ArrayList();
@@ -142,10 +142,10 @@ public class ModuleNodeFactory
    * @param in the input stream from where to read the model content.
    * @throws IOException if an error occured while reading the stream.
    */
-  public ModuleNodeFactory (InputStream in) throws IOException
+  public ModuleNodeFactory (final InputStream in) throws IOException
   {
     this();
-    ConfigDescriptionModel model = new ConfigDescriptionModel();
+    final ConfigDescriptionModel model = new ConfigDescriptionModel();
     try
     {
       model.load(in);
@@ -161,7 +161,7 @@ public class ModuleNodeFactory
       throw new IOException("Failed to configure the xml parser:" + pE.getMessage());
     }
 
-    ConfigDescriptionEntry[] entries = model.toArray();
+    final ConfigDescriptionEntry[] entries = model.toArray();
     for (int i = 0; i < entries.length; i++)
     {
       //Log.debug ("Entry: " + entries[i].getKeyName() + " registered");
@@ -177,16 +177,16 @@ public class ModuleNodeFactory
    * @param config the report configuration that contains the keys.
    * @throws ConfigTreeModelException if an error occurs.
    */
-  public void init (ReportConfiguration config) throws ConfigTreeModelException
+  public void init (final ReportConfiguration config) throws ConfigTreeModelException
   {
     globalNodes.clear();
     localNodes.clear();
     
     //Iterator enum = config.findPropertyKeys("");
-    Enumeration enum = configEntryLookup.keys();
+    final Enumeration enum = configEntryLookup.keys();
     while (enum.hasMoreElements())
     {
-      String key = (String) enum.nextElement();
+      final String key = (String) enum.nextElement();
       processKey(key, config);
     }
   }
@@ -199,11 +199,12 @@ public class ModuleNodeFactory
    * @param config the report configuration used to build the model
    * @throws ConfigTreeModelException if an error occurs
    */
-  private void processKey (String key, ReportConfiguration config) throws ConfigTreeModelException
+  private void processKey (final String key, final ReportConfiguration config) 
+    throws ConfigTreeModelException
   {
     ConfigDescriptionEntry cde = (ConfigDescriptionEntry) configEntryLookup.get(key);
 
-    Module mod = lookupModule(key);
+    final Module mod = lookupModule(key);
     //Log.debug ("ActiveModule: " + mod.getClass() + " for key " + key);
     if (cde == null)
     {
@@ -225,7 +226,7 @@ public class ModuleNodeFactory
         }
         else
         {
-          Log.debug ("Undefinited key added on the fly: " + key);
+          Log.debug ("Undefined key added on the fly: " + key);
           cde = new TextConfigDescriptionEntry(key);
         }
       }
@@ -234,7 +235,6 @@ public class ModuleNodeFactory
         Log.debug ("Unsafe key-definition due to security restrictions: " + key);
         cde = new TextConfigDescriptionEntry(key);
       }
-      return;
     }
 
     // We ignore hidden keys.
@@ -272,11 +272,11 @@ public class ModuleNodeFactory
    * @param nodeList the list with all known modules.
    * @return the node containing the given module, or null if not found.
    */
-  private ConfigTreeModuleNode lookupNode (Module key, ArrayList nodeList)
+  private ConfigTreeModuleNode lookupNode (final Module key, final ArrayList nodeList)
   {
     for (int i = 0; i < nodeList.size(); i++)
     {
-      ConfigTreeModuleNode node = (ConfigTreeModuleNode) nodeList.get(i);
+      final ConfigTreeModuleNode node = (ConfigTreeModuleNode) nodeList.get(i);
       if (key == node.getModule())
       {
         return node;
@@ -293,10 +293,10 @@ public class ModuleNodeFactory
    * @param c the class for which we search the package.
    * @return the name of the package, never null.
    */
-  public static String getPackage (Class c)
+  public static String getPackage (final Class c)
   {
-    String className = c.getName();
-    int idx = className.lastIndexOf('.');
+    final String className = c.getName();
+    final int idx = className.lastIndexOf('.');
     if (idx <= 0)
     {
       // the default package
@@ -320,7 +320,7 @@ public class ModuleNodeFactory
    * @return the module that most likely defines that key
    * @throws ConfigTreeModelException if the core module is not available.
    */
-  private Module lookupModule (String key) throws ConfigTreeModelException
+  private Module lookupModule (final String key) throws ConfigTreeModelException
   {
     Module fallback = null;
     for (int i = 0; i < activeModules.length; i++)
@@ -335,7 +335,7 @@ public class ModuleNodeFactory
       }
       else
       {
-        String modPackage = getPackage(activeModules[i].getClass());
+        final String modPackage = getPackage(activeModules[i].getClass());
         // Log.debug ("Module package: " + modPackage + " for " + activeModules[i].getClass());
         if (key.startsWith(modPackage))
         {
@@ -378,7 +378,7 @@ public class ModuleNodeFactory
    * @param key the name of the key
    * @return the entry or null if not found.
    */
-  public ConfigDescriptionEntry getEntryForKey (String key)
+  public ConfigDescriptionEntry getEntryForKey (final String key)
   {
     return (ConfigDescriptionEntry) configEntryLookup.get (key);
   }

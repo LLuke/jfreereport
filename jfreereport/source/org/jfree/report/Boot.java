@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Boot.java,v 1.3 2003/09/13 15:14:05 taqua Exp $
+ * $Id: Boot.java,v 1.4 2003/09/14 15:43:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -115,7 +115,7 @@ public final class Boot
       Log.warn ("'-Xstrictfp' to restore the default behaviour."); 
     }
 
-    PackageManager mgr = PackageManager.getInstance();
+    final PackageManager mgr = PackageManager.getInstance();
 
     mgr.addModule(JFreeReportCoreModule.class.getName());
     mgr.addModule(DefaultLogModule.class.getName());
@@ -123,13 +123,13 @@ public final class Boot
     mgr.load("org.jfree.report.ext.modules.");
     try
     {
-      String bootModules = System.getProperty("org.jfree.report.boot.Modules");
+      final String bootModules = System.getProperty("org.jfree.report.boot.Modules");
       if (bootModules != null)
       {
-        CSVTokenizer csvToken = new CSVTokenizer(bootModules, ",");
+        final CSVTokenizer csvToken = new CSVTokenizer(bootModules, ",");
         while (csvToken.hasMoreTokens())
         {
-          String token = csvToken.nextToken();
+          final String token = csvToken.nextToken();
           mgr.load(token);
         }
       }
@@ -167,9 +167,9 @@ public final class Boot
    */
   public static boolean isStrictFP ()
   {
-    double d = 8e+307;
-    double result1 = 4.0 * d * 0.5;
-    double result2 = 2.0 * d;
+    final double d = 8e+307;
+    final double result1 = 4.0 * d * 0.5;
+    final double result2 = 2.0 * d;
     return (result1 != result2 && (result1 == Double.POSITIVE_INFINITY));
   }
 }

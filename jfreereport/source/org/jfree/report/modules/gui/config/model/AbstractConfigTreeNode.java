@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractConfigTreeNode.java,v 1.4 2003/09/10 18:19:48 taqua Exp $
+ * $Id: AbstractConfigTreeNode.java,v 1.5 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,9 +38,9 @@
 
 package org.jfree.report.modules.gui.config.model;
 
-import java.util.Enumeration;
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import javax.swing.tree.TreeNode;
 
 /**
@@ -65,7 +65,7 @@ public abstract class AbstractConfigTreeNode implements ConfigTreeNode
    * 
    * @param name the name of the node.
    */
-  public AbstractConfigTreeNode(String name)
+  public AbstractConfigTreeNode(final String name)
   {
     childs = new ArrayList();
     this.name = name;
@@ -76,7 +76,7 @@ public abstract class AbstractConfigTreeNode implements ConfigTreeNode
    * 
    * @param node the new node that should be added.
    */
-  public void add (ConfigTreeNode node)
+  public void add (final ConfigTreeNode node)
   {
     if (node == null)
     {
@@ -97,7 +97,7 @@ public abstract class AbstractConfigTreeNode implements ConfigTreeNode
   {
     for (int i = 0; i < childs.size(); i++)
     {
-      ConfigTreeNode node = (ConfigTreeNode) childs.get(i);
+      final ConfigTreeNode node = (ConfigTreeNode) childs.get(i);
       node.setParent(null);
     }
     childs.clear();
@@ -110,7 +110,7 @@ public abstract class AbstractConfigTreeNode implements ConfigTreeNode
    * @param childIndex the index of the child node within this parent node.
    * @return the child node.
    */
-  public TreeNode getChildAt(int childIndex)
+  public TreeNode getChildAt(final int childIndex)
   {
     return (TreeNode) childs.get(childIndex);
   }
@@ -145,7 +145,7 @@ public abstract class AbstractConfigTreeNode implements ConfigTreeNode
    * @return the index of the given node or -1 if the node is not
    * contained in this node.
    */
-  public int getIndex(TreeNode node)
+  public int getIndex(final TreeNode node)
   {
     return childs.indexOf(node);
   }
@@ -198,7 +198,7 @@ public abstract class AbstractConfigTreeNode implements ConfigTreeNode
    *
    * @param parent the new parent or null.
    */
-  public void setParent(TreeNode parent)
+  public void setParent(final TreeNode parent)
   {
     this.parent = parent;
   }

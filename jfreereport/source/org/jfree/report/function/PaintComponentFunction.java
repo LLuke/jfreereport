@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.6 2003/08/25 14:29:29 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.7 2003/09/24 15:27:35 taqua Exp $
  *
  * Changes
  * -------
@@ -58,8 +58,8 @@ import org.jfree.report.ImageReference;
 import org.jfree.report.event.LayoutEvent;
 import org.jfree.report.event.LayoutListener;
 import org.jfree.report.layout.BandLayoutManagerUtil;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ImageUtils;
+import org.jfree.report.util.ReportConfiguration;
 
 /**
  * Paints a AWT or Swing Component, fitting the component into the element bounds.

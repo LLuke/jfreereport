@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.8 2003/09/11 22:17:10 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.9 2003/10/30 22:15:39 taqua Exp $
  *
  * Changes
  * -------
@@ -813,7 +813,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @param key the key that should be checked.
    * @return true, if the key is a font definition key, false otherwise.
    */
-  private boolean isFontDefinitionProperty (StyleKey key)
+  private boolean isFontDefinitionProperty (final StyleKey key)
   {
     if (key.equals(FONT))
     {

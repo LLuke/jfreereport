@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.6 2003/08/25 14:29:33 taqua Exp $
+ * $Id: GroupFactory.java,v 1.7 2003/11/05 17:31:53 taqua Exp $
  *
  * Changes
  * -------
@@ -150,7 +150,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     final String groupName = atts.getValue(NAME_ATT);
     if (groupName != null)
     {
-      Group group = getReport().getGroupByName(groupName);
+      final Group group = getReport().getGroupByName(groupName);
       if (group != null)
       {
         setCurrentGroup(group);
@@ -162,7 +162,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     }
     else
     {
-      Group group = new Group();
+      final Group group = new Group();
       group.setName(groupName);
       setCurrentGroup(group);
     }

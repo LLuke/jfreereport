@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EnumConfigDescriptionEntry.java,v 1.2 2003/09/08 18:11:49 taqua Exp $
+ * $Id: EnumConfigDescriptionEntry.java,v 1.3 2003/09/11 22:17:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -56,7 +56,7 @@ public class EnumConfigDescriptionEntry extends ConfigDescriptionEntry
    * 
    * @param keyName the keyname of this entry.
    */
-  public EnumConfigDescriptionEntry(String keyName)
+  public EnumConfigDescriptionEntry(final String keyName)
   {
     super(keyName);
     this.options = new String[0];
@@ -69,7 +69,7 @@ public class EnumConfigDescriptionEntry extends ConfigDescriptionEntry
    */
   public synchronized String[] getOptions()
   {
-    String[] retval = new String[options.length];
+    final String[] retval = new String[options.length];
     System.arraycopy(options, 0, retval, 0, options.length);
     return retval;
   }
@@ -79,7 +79,7 @@ public class EnumConfigDescriptionEntry extends ConfigDescriptionEntry
    * 
    * @param options the selectable values for this entry.
    */
-  public synchronized void setOptions(String[] options)
+  public synchronized void setOptions(final String[] options)
   {
     this.options = new String[options.length];
     System.arraycopy(options, 0, this.options, 0, options.length);

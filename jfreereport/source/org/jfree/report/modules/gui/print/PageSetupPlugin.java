@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.4 2003/11/07 15:31:39 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.5 2003/11/07 16:26:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -166,6 +166,13 @@ public class PageSetupPlugin extends AbstractExportPlugin
     return (Integer) resources.getObject("action.page-setup.mnemonic");
   }
 
+
+  /**
+   * Returns the resourcebundle to be used to translate strings into
+   * localized content.
+   *
+   * @return the resourcebundle for the localisation.
+   */
   protected ResourceBundle getResources()
   {
     return resources;

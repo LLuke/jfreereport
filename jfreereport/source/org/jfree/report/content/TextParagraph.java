@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.9 2003/10/30 22:14:59 taqua Exp $
+ * $Id: TextParagraph.java,v 1.10 2003/11/01 19:52:26 taqua Exp $
  *
  * Changes
  * -------
@@ -57,13 +57,13 @@ import org.jfree.report.util.WordBreakIterator;
 public strictfp class TextParagraph extends ContentContainer
 {
   /** The reserved size. */
-  private float reservedSize;
+  private final float reservedSize;
 
   /** The reserved size. */
-  private float lineHeight;
+  private final float lineHeight;
 
   /** The reserved size. */
-  private boolean trimTextContent;
+  private final boolean trimTextContent;
 
   /** The size calculator. */
   private final SizeCalculator sizeCalculator;
@@ -255,7 +255,7 @@ public strictfp class TextParagraph extends ContentContainer
       if (forceEnd)
       {
         // it won't fit in, so break ...
-        String addString = appendReserveLit(mytext, lineStartPos, nextPos, width);
+        final String addString = appendReserveLit(mytext, lineStartPos, nextPos, width);
         if (isTrimTextContent())
         {
           returnLines.add(addString.trim());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WorkerHandle.java,v 1.1 2003/10/18 20:50:38 taqua Exp $
+ * $Id: WorkerHandle.java,v 1.2 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,13 +47,13 @@ package org.jfree.report.util;
 public class WorkerHandle
 {
   /** The worker for this handle. */
-  private Worker worker;
+  private final Worker worker;
 
   /**
    * Creates a new handle for the given worker.
    * @param worker the worker.
    */
-  public WorkerHandle(Worker worker)
+  public WorkerHandle(final Worker worker)
   {
     this.worker = worker;
   }

@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.11 2003/10/11 14:56:26 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.12 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
 
 package org.jfree.report.modules.output.table.xls;
 
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.awt.geom.Rectangle2D;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;

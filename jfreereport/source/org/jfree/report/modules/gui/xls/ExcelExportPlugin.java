@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.13 2003/11/07 15:31:40 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.14 2003/11/07 16:26:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,11 +45,11 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.xls.resources.XLSExportResources;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -84,7 +84,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   protected ReportProgressDialog createProgressDialog()
   {
-    ReportProgressDialog progressDialog = super.createProgressDialog();
+    final ReportProgressDialog progressDialog = super.createProgressDialog();
     progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
     progressDialog.setTitle(resources.getString("excel-export.progressdialog.title"));
     progressDialog.setMessage(resources.getString("excel-export.progressdialog.message"));
@@ -227,11 +227,23 @@ public class ExcelExportPlugin extends AbstractExportPlugin
         ("org.jfree.report.modules.gui.xls.Separated", "false").equals("true");
   }
 
+  /**
+   * Returns the Export dialog used to query the required export parameters
+   * from the user.
+   *
+   * @return the default export dialog.
+   */
   protected ExcelExportDialog getExportDialog()
   {
     return exportDialog;
   }
 
+  /**
+   * Returns the resourcebundle to be used to translate strings into
+   * localized content.
+   * 
+   * @return the resourcebundle for the localisation.
+   */
   protected ResourceBundle getResources()
   {
     return resources;

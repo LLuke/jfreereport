@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EnumKeyEditor.java,v 1.4 2003/09/12 21:06:42 taqua Exp $
+ * $Id: EnumKeyEditor.java,v 1.5 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -73,7 +73,7 @@ public class EnumKeyEditor extends AbstractKeyEditor
      * 
      * @param e not used
      */
-    public void itemStateChanged(ItemEvent e)
+    public void itemStateChanged(final ItemEvent e)
     {
       validateInput();
     }
@@ -96,12 +96,12 @@ public class EnumKeyEditor extends AbstractKeyEditor
    * @param entry the metadata for the edited key.
    * @param displayName the text for the label.
    */
-  public EnumKeyEditor(ReportConfiguration config, 
-    EnumConfigDescriptionEntry entry, String displayName)
+  public EnumKeyEditor(final ReportConfiguration config,
+    final EnumConfigDescriptionEntry entry, final String displayName)
   {
     super(config, entry);
 
-    JPanel contentPane = new JPanel();
+    final JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout(5,0));
     entryLabel = new JLabel (displayName);
     entryLabel.setToolTipText(entry.getDescription());
@@ -168,8 +168,9 @@ public class EnumKeyEditor extends AbstractKeyEditor
    * provide feedback to the user that they cannot take input.
    *
    * @see java.awt.Component#isEnabled
+   * @param enabled defines, whether this editor is enabled.
    */
-  public void setEnabled(boolean enabled)
+  public void setEnabled(final boolean enabled)
   {
     super.setEnabled(enabled);
     content.setEnabled(enabled);
@@ -181,9 +182,9 @@ public class EnumKeyEditor extends AbstractKeyEditor
    * 
    * @param width the new preferred width.
    */
-  public void setLabelWidth(int width)
+  public void setLabelWidth(final int width)
   {
-    Dimension prefSize = entryLabel.getPreferredSize();
+    final Dimension prefSize = entryLabel.getPreferredSize();
     entryLabelCarrier.setPreferredSize(new Dimension(width, prefSize.height));
   }
 
@@ -195,7 +196,7 @@ public class EnumKeyEditor extends AbstractKeyEditor
    */
   public int getLabelWidth()
   {
-    Dimension prefSize = entryLabel.getPreferredSize();
+    final Dimension prefSize = entryLabel.getPreferredSize();
     if (prefSize != null)
     {
       return prefSize.width;

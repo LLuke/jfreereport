@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.11 2003/09/24 15:27:20 taqua Exp $
+ * $Id: Element.java,v 1.12 2003/11/01 19:52:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -462,7 +462,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * 
    * @param dynamicContent the new state of the dynamic flag. 
    */
-  public void setDynamicContent(boolean dynamicContent)
+  public void setDynamicContent(final boolean dynamicContent)
   {
     getStyle().setBooleanStyleProperty
         (ElementStyleSheet.DYNAMIC_HEIGHT, dynamicContent);
@@ -493,7 +493,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * 
    * @param layoutCacheable true, if the layout is cacheable, false otherwise. 
    */
-  public void setLayoutCacheable(boolean layoutCacheable)
+  public void setLayoutCacheable(final boolean layoutCacheable)
   {
     getStyle().setBooleanStyleProperty
         (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, layoutCacheable);
@@ -519,7 +519,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * @param minimumSize the new minimum size or null, if the value should
    * be inherited.
    */
-  public void setMinimumSize(Dimension2D minimumSize)
+  public void setMinimumSize(final Dimension2D minimumSize)
   {
     getStyle().setStyleProperty (ElementStyleSheet.MINIMUMSIZE,
         minimumSize);
@@ -544,7 +544,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * @param maximumSize the new maximum size or null, if the value should
    * be inherited.
    */
-  public void setMaximumSize(Dimension2D maximumSize)
+  public void setMaximumSize(final Dimension2D maximumSize)
   {
     getStyle().setStyleProperty (ElementStyleSheet.MAXIMUMSIZE,
         maximumSize);
@@ -569,7 +569,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * @param preferredSize the new preferred size or null, if the value should
    * be inherited.
    */
-  public void setPreferredSize(Dimension2D preferredSize)
+  public void setPreferredSize(final Dimension2D preferredSize)
   {
     getStyle().setStyleProperty (ElementStyleSheet.PREFERREDSIZE,
         preferredSize);

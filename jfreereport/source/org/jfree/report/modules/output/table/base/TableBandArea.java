@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableBandArea.java,v 1.4 2003/10/10 18:46:48 taqua Exp $
+ * $Id: TableBandArea.java,v 1.5 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -38,8 +38,8 @@
  */
 package org.jfree.report.modules.output.table.base;
 
-import java.awt.geom.Rectangle2D;
 import java.awt.Color;
+import java.awt.geom.Rectangle2D;
 
 /**
  * A band representation. Bands should create their own x- y- cuts so

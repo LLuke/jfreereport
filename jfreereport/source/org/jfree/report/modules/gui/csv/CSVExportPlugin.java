@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportPlugin.java,v 1.10 2003/11/07 15:31:39 taqua Exp $
+ * $Id: CSVExportPlugin.java,v 1.11 2003/11/07 16:26:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,12 +45,12 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.csv.resources.CSVExportResources;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -111,7 +111,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
       return handleExportResult(true);
     }
 
-    ExportTask task;
+    final ExportTask task;
     if (exportDialog.isExportRawData())
     {
       task = new CSVRawExportTask
@@ -127,11 +127,21 @@ public class CSVExportPlugin extends AbstractExportPlugin
     return handleExportResult(task);
   }
 
+  /**
+   * Returns the dialog used to query the export parameters from the user.
+   * @return the export dialog.
+   */
   protected CSVExportDialog getExportDialog()
   {
     return exportDialog;
   }
 
+  /**
+   * Returns the resourcebundle to be used to translate strings into
+   * localized content.
+   *
+   * @return the resourcebundle for the localisation.
+   */
   protected ResourceBundle getResources()
   {
     return resources;

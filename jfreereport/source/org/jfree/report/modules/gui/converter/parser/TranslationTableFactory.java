@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TranslationTableFactory.java,v 1.4 2003/09/10 18:20:25 taqua Exp $
+ * $Id: TranslationTableFactory.java,v 1.5 2003/09/15 18:26:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,8 +43,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Properties;
 
-import org.jfree.report.util.Log;
 import org.jfree.report.util.CSVTokenizer;
+import org.jfree.report.util.Log;
 
 /**
  * The translation table factory is responsible for building the contexts
@@ -73,7 +73,7 @@ public final class TranslationTableFactory
      * @param name the name of the context
      * @param mapTo the name of the target context or null if no mapping is done.
      */
-    public ContextRule(String name, String mapTo)
+    public ContextRule(final String name, final String mapTo)
     {
       if (name == null)
       {
@@ -121,7 +121,7 @@ public final class TranslationTableFactory
      * @param o the other object
      * @return true, if the other object is equal, false otherwise.
      */
-    public boolean equals(Object o)
+    public boolean equals(final Object o)
     {
       if (this == o)
       { 
@@ -194,7 +194,7 @@ public final class TranslationTableFactory
    */
   private void loadTranslationSpecs()
   {
-    InputStream in = this.getClass().getResourceAsStream("translations.properties");
+    final InputStream in = this.getClass().getResourceAsStream("translations.properties");
     if (in == null)
     {
       Log.warn ("Unable to locate the resource 'translations.properties'");
@@ -216,7 +216,7 @@ public final class TranslationTableFactory
    */
   private void loadContextMap()
   {
-    InputStream in = this.getClass().getResourceAsStream("contextmap.properties");
+    final InputStream in = this.getClass().getResourceAsStream("contextmap.properties");
     if (in == null)
     {
       Log.warn ("Unable to locate the resource 'contextmap.properties'");
@@ -224,31 +224,31 @@ public final class TranslationTableFactory
     }
     try
     {
-      Properties contextProperties = new Properties();
+      final Properties contextProperties = new Properties();
       contextProperties.load(in);
 
-      String initialContext = contextProperties.getProperty("%init");
+      final String initialContext = contextProperties.getProperty("%init");
       if (initialContext == null)
       {
         Log.debug ("Initial context is null.");
         return;
       }
-      CSVTokenizer tokenizer = new CSVTokenizer(initialContext, CSVTokenizer.SEPARATOR_COMMA);
+      final CSVTokenizer tokenizer = new CSVTokenizer(initialContext, CSVTokenizer.SEPARATOR_COMMA);
       while (tokenizer.hasMoreTokens())
       {
-        String context = tokenizer.nextToken().trim();
+        final String context = tokenizer.nextToken().trim();
         buildContext(context, contextProperties);
       }
 
       // now validate the mappings
-      Enumeration enum = contexts.keys();
+      final Enumeration enum = contexts.keys();
       while (enum.hasMoreElements())
       {
-        Object key = enum.nextElement();
-        ContextRule rule = (ContextRule) contexts.get(key);
+        final Object key = enum.nextElement();
+        final ContextRule rule = (ContextRule) contexts.get(key);
         if (rule.isMappingDefined())
         {
-          String mapTo = rule.getMapTo();
+          final String mapTo = rule.getMapTo();
           if (contexts.get(mapTo) == null)
           {
             throw new IllegalStateException("No child mapping for " + key);
@@ -270,48 +270,48 @@ public final class TranslationTableFactory
    * @param base the base name
    * @param contextMap the context map that contains all known mappings.
    */
-  private void buildContext (String base, Properties contextMap)
+  private void buildContext (final String base, final Properties contextMap)
   {
-    String equals = contextMap.getProperty(base + ".equal");
+    final String equals = contextMap.getProperty(base + ".equal");
     if (equals != null)
     {
-      CSVTokenizer tokenizer = new CSVTokenizer(equals, CSVTokenizer.SEPARATOR_COMMA);
+      final CSVTokenizer tokenizer = new CSVTokenizer(equals, CSVTokenizer.SEPARATOR_COMMA);
       while (tokenizer.hasMoreTokens())
       {
-        String context = tokenizer.nextToken().trim();
-        String fqContext = base + "." + context;
-        ContextRule rule = new ContextRule(fqContext, base);
+        final String context = tokenizer.nextToken().trim();
+        final String fqContext = base + "." + context;
+        final ContextRule rule = new ContextRule(fqContext, base);
         contexts.put(fqContext, rule);
       }
     }
 
     // if a mapping is defined, there is no way to define childs for
     // an context node.
-    String mapTo = contextMap.getProperty(base + ".mapto");
+    final String mapTo = contextMap.getProperty(base + ".mapto");
     if (mapTo != null)
     {
-      ContextRule rule = new ContextRule(base, mapTo);
+      final ContextRule rule = new ContextRule(base, mapTo);
       contexts.put(base, rule);
       return;
     }
 
-    String childs = contextMap.getProperty(base + ".child");
+    final String childs = contextMap.getProperty(base + ".child");
     if (childs == null)
     {
       throw new IllegalStateException("Property " + base + " defines no childs.");
     }
     else
     {
-      CSVTokenizer tokenizer = new CSVTokenizer(childs, CSVTokenizer.SEPARATOR_COMMA);
+      final CSVTokenizer tokenizer = new CSVTokenizer(childs, CSVTokenizer.SEPARATOR_COMMA);
       while (tokenizer.hasMoreTokens())
       {
-        String context = tokenizer.nextToken().trim();
-        String fqContext = base + "." + context;
+        final String context = tokenizer.nextToken().trim();
+        final String fqContext = base + "." + context;
         buildContext(fqContext, contextMap);
       }
     }
 
-    ContextRule rule = new ContextRule(base, null);
+    final ContextRule rule = new ContextRule(base, null);
     contexts.put(base, rule);
   }
 
@@ -324,7 +324,7 @@ public final class TranslationTableFactory
    * @param context the new context name segment.
    * @return the new context rule, or null, if there is no such context defined.
    */
-  public ContextRule buildContext (ContextRule lastContext, String context)
+  public ContextRule buildContext (final ContextRule lastContext, final String context)
   {
     if (lastContext == null)
     {
@@ -358,7 +358,7 @@ public final class TranslationTableFactory
    * @return a translation table for the given rule.
    * @throws NullPointerException if the rule is null. 
    */
-  public TranslationTable getTranslationTable (ContextRule rule)
+  public TranslationTable getTranslationTable (final ContextRule rule)
   {
     return new TranslationTable(translations, rule.getName());
   }

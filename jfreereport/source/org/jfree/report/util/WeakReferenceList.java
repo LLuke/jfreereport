@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WeakReferenceList.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: WeakReferenceList.java,v 1.3 2003/08/25 14:29:34 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,8 @@ import java.lang.ref.WeakReference;
  * <p>
  * This list is able to add or replace elements, but inserting or removing of elements is not
  * possible.
- *
+ * <p>
+ * Todo: Check, if the master computation can be removed - master seems to be always at index 0
  * @author Thomas Morgner
  */
 public abstract class WeakReferenceList implements Serializable, Cloneable
@@ -86,7 +87,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @param maxChildCount  the maximum number of elements.
    */
-  public WeakReferenceList(final int maxChildCount)
+  protected WeakReferenceList(final int maxChildCount)
   {
     this.maxChilds = maxChildCount;
     this.childs = new Reference[maxChildCount - 1];
@@ -179,7 +180,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return a WeakReference for the object o without any ReferenceQueue attached.
    */
-  protected Reference createReference(final Object o)
+  private Reference createReference(final Object o)
   {
     return new WeakReference(o);
   }

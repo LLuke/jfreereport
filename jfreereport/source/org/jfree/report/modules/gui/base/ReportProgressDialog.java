@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProgressDialog.java,v 1.3 2003/09/09 21:31:36 taqua Exp $
+ * $Id: ReportProgressDialog.java,v 1.4 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -115,7 +115,7 @@ public class ReportProgressDialog extends JDialog
    * 
    * @param dialog the owner of the dialog
    */
-  public ReportProgressDialog(Dialog dialog)
+  public ReportProgressDialog(final Dialog dialog)
   {
     super (dialog);
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
@@ -128,7 +128,7 @@ public class ReportProgressDialog extends JDialog
    * 
    * @param frame the owner of the dialog
    */
-  public ReportProgressDialog(Frame frame)
+  public ReportProgressDialog(final Frame frame)
   {
     super (frame);
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
@@ -332,7 +332,7 @@ public class ReportProgressDialog extends JDialog
       }
       else
       {
-        String message;
+        final String message;
         if (prepare)
         {
           message = getLayoutText();

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.13 2003/09/30 19:47:30 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.14 2003/11/01 19:52:28 taqua Exp $
  *
  * Changes
  * -------
@@ -695,7 +695,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    * @param version the version string.
    * @return the itext character defining the version.
    */
-  private char getVersion(String version)
+  private char getVersion(final String version)
   {
     if (version == null)
     {
@@ -706,7 +706,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       Log.warn("PDF version specification is invalid.");
       return '4';
     }
-    char retval = version.charAt(2);
+    final char retval = version.charAt(2);
     if (retval < '2' || retval > '5')
     {
       Log.warn("PDF version specification is invalid.");
@@ -757,7 +757,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       writer = PdfWriter.getInstance(getDocument(), out);
       writer.setLinearPageMode();
 
-      char version = getVersion(getProperty(PDF_VERSION, PDF_VERSION_DEFAULT));
+      final char version = getVersion(getProperty(PDF_VERSION, PDF_VERSION_DEFAULT));
       writer.setPdfVersion(version);
 
       final String encrypt = getProperty(SECURITY_ENCRYPTION);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.12 2003/08/26 17:35:51 taqua Exp $
+ * $Id: ReportParser.java,v 1.13 2003/08/27 20:19:54 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportBuilderHints;
 import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.xml.sax.Locator;
 
 /**
  * The report parser initializes the parsing engine and coordinates the parsing
@@ -202,12 +202,12 @@ public class ReportParser extends Parser
    * @see org.xml.sax.ErrorHandler#fatalError
    * @see SAXParseException
    */
-  public void fatalError(SAXParseException e)
+  public void fatalError(final SAXParseException e)
       throws SAXException
   {
     if (getReport() != null)
     {
-      Locator locator = getLocator();
+      final Locator locator = getLocator();
       int column = -1;
       int line = -1;
       if (locator != null)
@@ -215,7 +215,7 @@ public class ReportParser extends Parser
         column = locator.getColumnNumber();
         line = locator.getLineNumber();
       }
-      OperationResult result = new OperationResult
+      final OperationResult result = new OperationResult
           (e.getMessage(), SeverityLevel.FATAL_ERROR, line, column);
       getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
       getParserHints().addHintList(ReportParser.class.getName(), "Error", result);
@@ -237,12 +237,12 @@ public class ReportParser extends Parser
    * @see org.xml.sax.ErrorHandler#warning
    * @see SAXParseException
    */
-  public void warning(SAXParseException e)
+  public void warning(final SAXParseException e)
       throws SAXException
   {
     if (getReport() != null)
     {
-      Locator locator = getLocator();
+      final Locator locator = getLocator();
       int column = -1;
       int line = -1;
       if (locator != null)
@@ -250,7 +250,7 @@ public class ReportParser extends Parser
         column = locator.getColumnNumber();
         line = locator.getLineNumber();
       }
-      OperationResult result = new OperationResult
+      final OperationResult result = new OperationResult
           (e.getMessage(), SeverityLevel.WARNING, line, column);
       getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
       getParserHints().addHintList(ReportParser.class.getName(), "Warning", result);
@@ -272,12 +272,12 @@ public class ReportParser extends Parser
    * @see org.xml.sax.ErrorHandler#warning
    * @see SAXParseException
    */
-  public void error(SAXParseException e)
+  public void error(final SAXParseException e)
       throws SAXException
   {
     if (getReport() != null)
     {
-      Locator locator = getLocator();
+      final Locator locator = getLocator();
       int column = -1;
       int line = -1;
       if (locator != null)
@@ -285,7 +285,7 @@ public class ReportParser extends Parser
         column = locator.getColumnNumber();
         line = locator.getLineNumber();
       }
-      OperationResult result = new OperationResult
+      final OperationResult result = new OperationResult
           (e.getMessage(), SeverityLevel.ERROR, line, column);
       getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
       getParserHints().addHintList(ReportParser.class.getName(), "Error", result);
@@ -299,12 +299,12 @@ public class ReportParser extends Parser
    * @param message the message.
    * @throws SAXException if an error occurs.
    */
-  public void info(String message)
+  public void info(final String message)
       throws SAXException
   {
     if (getReport() != null)
     {
-      Locator locator = getLocator();
+      final Locator locator = getLocator();
       int column = -1;
       int line = -1;
       if (locator != null)
@@ -312,7 +312,7 @@ public class ReportParser extends Parser
         column = locator.getColumnNumber();
         line = locator.getLineNumber();
       }
-      OperationResult result = new OperationResult
+      final OperationResult result = new OperationResult
           (message, SeverityLevel.ERROR, line, column);
       getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
       getParserHints().addHintList(ReportParser.class.getName(), "Info", result);

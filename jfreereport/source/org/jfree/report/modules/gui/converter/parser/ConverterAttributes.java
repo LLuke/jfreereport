@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConverterAttributes.java,v 1.1 2003/08/26 17:35:51 taqua Exp $
+ * $Id: ConverterAttributes.java,v 1.2 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -60,7 +60,7 @@ public class ConverterAttributes implements Attributes
    * @param base the attributes from the XML parser
    * @param translationTable the translation table.
    */
-  public ConverterAttributes(Attributes base, TranslationTable translationTable)
+  public ConverterAttributes(final Attributes base, final TranslationTable translationTable)
   {
     if (base == null)
     {
@@ -88,9 +88,9 @@ public class ConverterAttributes implements Attributes
    *         index is out of range.
    * @see #getLength
    */
-  public String getValue(int index)
+  public String getValue(final int index)
   {
-    String localName = getLocalName(index);
+    final String localName = getLocalName(index);
     return translationTable.translateAttribute(localName, base.getValue(index));
   }
 
@@ -107,7 +107,7 @@ public class ConverterAttributes implements Attributes
    * @return The attribute value as a string, or null if the
    *         attribute is not in the list.
    */
-  public String getValue(String uri, String localName)
+  public String getValue(final String uri, final String localName)
   {
     // local name already given ...
     return translationTable.translateAttribute(localName, base.getValue(uri, localName));
@@ -124,7 +124,7 @@ public class ConverterAttributes implements Attributes
    *         attribute is not in the list or if qualified names
    *         are not available.
    */
-  public String getValue(String qName)
+  public String getValue(final String qName)
   {
     return translationTable.translateAttribute(qName, base.getValue(qName));
   }
@@ -156,7 +156,7 @@ public class ConverterAttributes implements Attributes
    *         range.
    * @see #getLength
    */
-  public String getURI(int index)
+  public String getURI(final int index)
   {
     return base.getURI(index);
   }
@@ -170,7 +170,7 @@ public class ConverterAttributes implements Attributes
    *         if the index is out of range.
    * @see #getLength
    */
-  public String getLocalName(int index)
+  public String getLocalName(final int index)
   {
     return base.getLocalName(index);
   }
@@ -184,7 +184,7 @@ public class ConverterAttributes implements Attributes
    *         is out of range.
    * @see #getLength
    */
-  public String getQName(int index)
+  public String getQName(final int index)
   {
     return base.getQName(index);
   }
@@ -209,7 +209,7 @@ public class ConverterAttributes implements Attributes
    *         index is out of range.
    * @see #getLength
    */
-  public String getType(int index)
+  public String getType(final int index)
   {
     return base.getType(index);
   }
@@ -223,7 +223,7 @@ public class ConverterAttributes implements Attributes
    * @return The index of the attribute, or -1 if it does not
    *         appear in the list.
    */
-  public int getIndex(String uri, String localName)
+  public int getIndex(final String uri, final String localName)
   {
     return base.getIndex(uri, localName);
   }
@@ -235,7 +235,7 @@ public class ConverterAttributes implements Attributes
    * @return The index of the attribute, or -1 if it does not
    *         appear in the list.
    */
-  public int getIndex(String qName)
+  public int getIndex(final String qName)
   {
     return base.getIndex(qName);
   }
@@ -253,7 +253,7 @@ public class ConverterAttributes implements Attributes
    *         attribute is not in the list or if Namespace
    *         processing is not being performed.
    */
-  public String getType(String uri, String localName)
+  public String getType(final String uri, final String localName)
   {
     return getType(uri, localName);
   }
@@ -269,7 +269,7 @@ public class ConverterAttributes implements Attributes
    *         attribute is not in the list or if qualified names
    *         are not available.
    */
-  public String getType(String qName)
+  public String getType(final String qName)
   {
     return getType(qName);
   }

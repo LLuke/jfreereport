@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyFactoryCollector.java,v 1.5 2003/08/24 15:08:21 taqua Exp $
+ * $Id: StyleKeyFactoryCollector.java,v 1.6 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -155,7 +155,7 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
    * @param o the other object.
    * @return true, if the object is equal, false otherwise.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     {

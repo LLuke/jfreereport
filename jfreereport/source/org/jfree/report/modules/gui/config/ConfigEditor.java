@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigEditor.java,v 1.7 2003/09/15 18:26:50 taqua Exp $
+ * $Id: ConfigEditor.java,v 1.8 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -111,7 +111,7 @@ public class ConfigEditor extends JFrame
      */
     public CloseAction()
     {
-      putValue(NAME, resources.getString("action.exit.name"));
+      putValue(NAME, getResources().getString("action.exit.name"));
     }
 
     /**
@@ -119,7 +119,7 @@ public class ConfigEditor extends JFrame
      *
      * @param e the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       attempClose();
     }
@@ -135,15 +135,15 @@ public class ConfigEditor extends JFrame
      */
     public SaveAction()
     {
-      putValue(NAME, resources.getString("action.save.name"));
-      putValue(SMALL_ICON, resources.getObject("action.save.small-icon"));
+      putValue(NAME, getResources().getString("action.save.name"));
+      putValue(SMALL_ICON, getResources().getObject("action.save.small-icon"));
     }
 
     /**
-     * Saves the configuration
+     * Saves the configuration.
      * @param e the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       save();
     }
@@ -159,15 +159,15 @@ public class ConfigEditor extends JFrame
      */
     public LoadAction()
     {
-      putValue(NAME, resources.getString("action.load.name"));
-      putValue(SMALL_ICON, resources.getObject("action.load.small-icon"));
+      putValue(NAME, getResources().getString("action.load.name"));
+      putValue(SMALL_ICON, getResources().getObject("action.load.small-icon"));
     }
 
     /**
-     * Loads the configuration
+     * Loads the configuration.
      * @param e the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       load();
     }
@@ -183,15 +183,15 @@ public class ConfigEditor extends JFrame
      */
     public NewAction()
     {
-      putValue(NAME, resources.getString("action.new.name"));
-      putValue(SMALL_ICON, resources.getObject("action.new.small-icon"));
+      putValue(NAME, getResources().getString("action.new.name"));
+      putValue(SMALL_ICON, getResources().getObject("action.new.small-icon"));
     }
 
     /**
-     * Reset the configuration
+     * Reset the configuration.
      * @param e the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       reset();
     }
@@ -214,13 +214,14 @@ public class ConfigEditor extends JFrame
      * Called whenever the value of the selection changes.
      * @param e the event that characterizes the change.
      */
-    public void valueChanged(TreeSelectionEvent e)
+    public void valueChanged(final TreeSelectionEvent e)
     {
-      TreePath path = e.getPath();
-      Object lastPathElement = path.getLastPathComponent();
+      final TreePath path = e.getPath();
+      final Object lastPathElement = path.getLastPathComponent();
       if (lastPathElement instanceof ConfigTreeModuleNode)
       {
-        ConfigTreeModuleNode node = (ConfigTreeModuleNode) lastPathElement;
+        final ConfigTreeModuleNode node = (ConfigTreeModuleNode) lastPathElement;
+        ConfigEditorPanel detailEditorPane = getDetailEditorPane();
         detailEditorPane.store();
         detailEditorPane.editModule
             (node.getModule(), node.getConfiguration(), node.getAssignedKeys());
@@ -250,15 +251,15 @@ public class ConfigEditor extends JFrame
   /** A label that serves as status bar. */
   private JLabel statusHolder;
   /** The resource bundle instance of this dialog. */
-  private ResourceBundle resources;
+  private final ResourceBundle resources;
 
   /** The detail editor for the currently selected tree node. */
-  private ConfigEditorPanel detailEditorPane;
+  private final ConfigEditorPanel detailEditorPane;
   /** The tree model used to display the structure of the report configuration.*/
   private ConfigTreeModel treeModel;
 
   /** The currently used report configuration. */
-  private ReportConfiguration currentReportConfiguration;
+  private final ReportConfiguration currentReportConfiguration;
   /** The file chooser used to load and save the report configuration. */
   private JFileChooser fileChooser;
 
@@ -278,17 +279,17 @@ public class ConfigEditor extends JFrame
     setTitle(resources.getString("config-editor.title"));
 
 
-    JSplitPane splitPane = new JSplitPane
+    final JSplitPane splitPane = new JSplitPane
         (JSplitPane.HORIZONTAL_SPLIT, createEntryTree(),
             detailEditorPane);
 
-    JPanel contentPane = new JPanel();
+    final JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());
     contentPane.add(splitPane, BorderLayout.CENTER);
     contentPane.add(createButtonPane(), BorderLayout.SOUTH);
 
 
-    JPanel cPaneStatus = new JPanel();
+    final JPanel cPaneStatus = new JPanel();
     cPaneStatus.setLayout(new BorderLayout());
     cPaneStatus.add(contentPane, BorderLayout.CENTER);
     cPaneStatus.add(createStatusBar(), BorderLayout.SOUTH);
@@ -301,7 +302,7 @@ public class ConfigEditor extends JFrame
        * Invoked when a window is in the process of being closed.
        * The close operation can be overridden at this point.
        */
-      public void windowClosing(WindowEvent e)
+      public void windowClosing(final WindowEvent e)
       {
         attempClose();
       }
@@ -310,6 +311,15 @@ public class ConfigEditor extends JFrame
   }
 
   /**
+   * Returns the resource bundle of this editor for translating strings. 
+   * @return the resource bundle.
+   */
+  protected ResourceBundle getResources ()
+  {
+    return resources;
+  }
+  
+  /**
    * Creates the JTree for the report configuration.
    *
    * @return the tree component.
@@ -317,7 +327,7 @@ public class ConfigEditor extends JFrame
    */
   private JComponent createEntryTree() throws ConfigTreeModelException
   {
-    InputStream in = getClass().getResourceAsStream("config-description.xml");
+    final InputStream in = getClass().getResourceAsStream("config-description.xml");
     if (in == null)
     {
       throw new IllegalStateException("Missing resource 'config-description.xml'");
@@ -325,17 +335,17 @@ public class ConfigEditor extends JFrame
     treeModel = new ConfigTreeModel(in);
     treeModel.init(currentReportConfiguration);
 
-    TreeSelectionModel selectionModel = new DefaultTreeSelectionModel();
+    final TreeSelectionModel selectionModel = new DefaultTreeSelectionModel();
     selectionModel.setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-    JTree tree = new JTree(treeModel);
+    final JTree tree = new JTree(treeModel);
     tree.setSelectionModel(selectionModel);
     tree.setCellRenderer(new ConfigTreeRenderer());
     tree.setRootVisible(false);
     tree.setShowsRootHandles(true);
     tree.addTreeSelectionListener(new ModuleTreeSelectionHandler());
 
-    JScrollPane pane = new JScrollPane
+    final JScrollPane pane = new JScrollPane
         (tree, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     return pane;
@@ -348,16 +358,16 @@ public class ConfigEditor extends JFrame
    */
   private JPanel createButtonPane()
   {
-    Action closeAction = new CloseAction();
-    Action saveAction = new SaveAction();
-    Action loadAction = new LoadAction();
-    Action newAction = new NewAction();
+    final Action closeAction = new CloseAction();
+    final Action saveAction = new SaveAction();
+    final Action loadAction = new LoadAction();
+    final Action newAction = new NewAction();
 
-    JPanel panel = new JPanel();
+    final JPanel panel = new JPanel();
     panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
     panel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-    JPanel buttonHolder = new JPanel();
+    final JPanel buttonHolder = new JPanel();
     buttonHolder.setLayout(new GridLayout(1, 4));
     buttonHolder.add(new ActionButton(newAction));
     buttonHolder.add(new ActionButton(loadAction));
@@ -392,7 +402,7 @@ public class ConfigEditor extends JFrame
    *
    * @param text the new statul bar text.
    */
-  private void setStatusText(String text)
+  private void setStatusText(final String text)
   {
     statusHolder.setText(text);
   }
@@ -405,7 +415,7 @@ public class ConfigEditor extends JFrame
   /**
    * Loads the report configuration from a user selectable report properties file.
    */
-  private void load()
+  protected void load()
   {
     setStatusText("Loading: Select file ...");
     if (fileChooser == null)
@@ -427,10 +437,10 @@ public class ConfigEditor extends JFrame
       {
         selFileName = selFileName + ".properties";
       }
-      Properties prop = new Properties();
+      final Properties prop = new Properties();
       try
       {
-        InputStream in = new BufferedInputStream(new FileInputStream(selFileName));
+        final InputStream in = new BufferedInputStream(new FileInputStream(selFileName));
         prop.load(in);
         in.close();
       }
@@ -443,11 +453,11 @@ public class ConfigEditor extends JFrame
 
       reset();
 
-      Enumeration enum = prop.keys();
+      final Enumeration enum = prop.keys();
       while (enum.hasMoreElements())
       {
-        String key = (String) enum.nextElement();
-        String value = prop.getProperty(key);
+        final String key = (String) enum.nextElement();
+        final String value = prop.getProperty(key);
         currentReportConfiguration.setConfigProperty(key, value);
       }
       try
@@ -466,13 +476,13 @@ public class ConfigEditor extends JFrame
   /**
    * Resets all values.
    */
-  private void reset()
+  protected void reset()
   {
     // clear all previously set configuration settings ...
-    Enumeration defaults = currentReportConfiguration.getConfigProperties();
+    final Enumeration defaults = currentReportConfiguration.getConfigProperties();
     while (defaults.hasMoreElements())
     {
-      String key = (String) defaults.nextElement();
+      final String key = (String) defaults.nextElement();
       currentReportConfiguration.setConfigProperty(key, null);
     }
   }
@@ -480,7 +490,7 @@ public class ConfigEditor extends JFrame
   /**
    * Saves the report configuration to a user selectable report properties file.
    */
-  private void save()
+  protected void save()
   {
     setStatusText("Saving: Select file ...");
     detailEditorPane.store();
@@ -513,15 +523,15 @@ public class ConfigEditor extends JFrame
    * 
    * @param filename the target file name
    */
-  private void write(String filename)
+  private void write(final String filename)
   {
-    Properties prop = new Properties();
-    ArrayList names = new ArrayList();
+    final Properties prop = new Properties();
+    final ArrayList names = new ArrayList();
     // clear all previously set configuration settings ...
-    Enumeration defaults = currentReportConfiguration.getConfigProperties();
+    final Enumeration defaults = currentReportConfiguration.getConfigProperties();
     while (defaults.hasMoreElements())
     {
-      String key = (String) defaults.nextElement();
+      final String key = (String) defaults.nextElement();
       names.add(key);
       prop.setProperty(key, currentReportConfiguration.getConfigProperty(key));
     }
@@ -530,19 +540,19 @@ public class ConfigEditor extends JFrame
 
     try
     {
-      PrintWriter out =
+      final PrintWriter out =
           new PrintWriter(new OutputStreamWriter
               (new BufferedOutputStream(new FileOutputStream(filename))));
 
       for (int i = 0; i < names.size(); i++)
       {
-        String key = (String) names.get(i);
-        String value = prop.getProperty(key);
+        final String key = (String) names.get(i);
+        final String value = prop.getProperty(key);
 
-        ConfigDescriptionEntry entry = treeModel.getEntryForKey(key);
+        final ConfigDescriptionEntry entry = treeModel.getEntryForKey(key);
         if (entry != null)
         {
-          String description = entry.getDescription();
+          final String description = entry.getDescription();
           writeDescription(description, out);
         }
         saveConvert(key, ESCAPE_KEY, out);
@@ -567,7 +577,7 @@ public class ConfigEditor extends JFrame
    * one line, every line will be prepended by the comment character.
    * @param writer the writer that should receive the content.
    */
-  private void writeDescription(String text, PrintWriter writer)
+  private void writeDescription(final String text, final PrintWriter writer)
   {
     // check if empty content ... this case is easy ...
     if (text.length() == 0)
@@ -593,15 +603,15 @@ public class ConfigEditor extends JFrame
    * @param escapeMode the mode that should be applied.
    * @param writer the writer that should receive the content.
    */
-  private void saveConvert(String text, int escapeMode, PrintWriter writer)
+  private void saveConvert(final String text, final int escapeMode, final PrintWriter writer)
   {
-    char[] string = text.toCharArray();
-    char[] hexChars = { '0', '1', '2', '3', '4', '5', '6', '7',
+    final char[] string = text.toCharArray();
+    final char[] hexChars = { '0', '1', '2', '3', '4', '5', '6', '7',
                         '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
     for (int x = 0; x < string.length; x++)
     {
-      char aChar = string[x];
+      final char aChar = string[x];
       switch (aChar)
       {
         case ' ':
@@ -697,21 +707,30 @@ public class ConfigEditor extends JFrame
    * Closes this frame and exits the JavaVM.
    *
    */
-  private void attempClose()
+  protected void attempClose()
   {
     System.exit(0);
+  }
+
+  /**
+   * Returns the detail editor pane.
+   * @return the detail editor.
+   */
+  protected ConfigEditorPanel getDetailEditorPane()
+  {
+    return detailEditorPane;
   }
 
   /**
    * main Method to start the editor.
    * @param args not used.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     try
     {
       Boot.start();
-      ConfigEditor ed = new ConfigEditor();
+      final ConfigEditor ed = new ConfigEditor();
       ed.pack();
       ed.setVisible(true);
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextElementFactory.java,v 1.9 2003/10/30 22:15:38 taqua Exp $
+ * $Id: TextElementFactory.java,v 1.10 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -358,7 +358,7 @@ public abstract class TextElementFactory extends ElementFactory
    * 
    * @param reservedLiteral the reserved literal.
    */
-  public void setReservedLiteral(String reservedLiteral)
+  public void setReservedLiteral(final String reservedLiteral)
   {
     this.reservedLiteral = reservedLiteral;
   }
@@ -382,7 +382,7 @@ public abstract class TextElementFactory extends ElementFactory
    * if the text should never be trimmed or null, if the default should
    * be applied.
    */
-  public void setTrimTextContent(Boolean trimTextContent)
+  public void setTrimTextContent(final Boolean trimTextContent)
   {
     this.trimTextContent = trimTextContent;
   }

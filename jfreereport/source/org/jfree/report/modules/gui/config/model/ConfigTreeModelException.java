@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigTreeModelException.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
+ * $Id: ConfigTreeModelException.java,v 1.2 2003/09/11 22:17:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -61,7 +61,7 @@ public class ConfigTreeModelException extends StackableException
    * @param message  the exception message.
    * @param ex  the parent exception.
    */
-  public ConfigTreeModelException(String message, Exception ex)
+  public ConfigTreeModelException(final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -71,7 +71,7 @@ public class ConfigTreeModelException extends StackableException
    *
    * @param message  the exception message.
    */
-  public ConfigTreeModelException(String message)
+  public ConfigTreeModelException(final String message)
   {
     super(message);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.15 2003/09/14 19:24:07 taqua Exp $
+ * $Id: PackageManager.java,v 1.16 2003/10/30 18:09:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -137,7 +137,7 @@ public final class PackageManager
    *
    * @param modulePrefix the module prefix.
    */
-  public void load (String modulePrefix)
+  public void load (final String modulePrefix)
   {
     if (initSections.contains(modulePrefix))
     {
@@ -262,7 +262,7 @@ public final class PackageManager
    *  
    * @param state the failed module.
    */
-  private void dropFailedModule (PackageState state)
+  private void dropFailedModule (final PackageState state)
   {
     if (modules.contains(state) == false)
     {
@@ -286,7 +286,7 @@ public final class PackageManager
    * @return true, if the module was loaded successfully, false otherwise.
    */
   private boolean loadModule(final ModuleInfo moduleInfo, final ArrayList incompleteModules,
-                             final ArrayList modules, boolean fatal)
+                             final ArrayList modules, final boolean fatal)
   {
     try
     {
@@ -298,17 +298,17 @@ public final class PackageManager
         // module conflict!
         Log.warn("Module " + module.getName() + ": required version: " + moduleInfo +
             ", but found Version: \n" + module);
-        PackageState state = new PackageState(module, PackageState.STATE_ERROR);
+        final PackageState state = new PackageState(module, PackageState.STATE_ERROR);
         dropFailedModule(state);
         return false;
       }
 
-      int moduleContained = containsModule(modules, module);
+      final int moduleContained = containsModule(modules, module);
       if (moduleContained == RETURN_MODULE_ERROR)
       {
         // the module caused harm before ...
         Log.debug ("Indicated failure for module: " + module.getModuleClass());
-        PackageState state = new PackageState(module, PackageState.STATE_ERROR);
+        final PackageState state = new PackageState(module, PackageState.STATE_ERROR);
         dropFailedModule(state);
         return false;
       }
@@ -320,7 +320,7 @@ public final class PackageManager
           Log.error(new Log.SimpleMessage
             ("Circular module reference: This module definition is invalid: ", 
               module.getClass()));
-          PackageState state = new PackageState(module, PackageState.STATE_ERROR);
+          final PackageState state = new PackageState(module, PackageState.STATE_ERROR);
           dropFailedModule(state);
           return false;
         }
@@ -331,7 +331,7 @@ public final class PackageManager
           if (loadModule(required[i], incompleteModules, modules, true) == false)
           {
             Log.debug ("Indicated failure for module: " + module.getModuleClass());
-            PackageState state = new PackageState(module, PackageState.STATE_ERROR);
+            final PackageState state = new PackageState(module, PackageState.STATE_ERROR);
             dropFailedModule(state);
             return false;
           }
@@ -450,8 +450,8 @@ public final class PackageManager
   private boolean acceptVersion(final String modVer, final String depModVer)
   {
     final int mLength = Math.max(modVer.length(), depModVer.length());
-    char[] modVerArray = null;
-    char[] depVerArray = null;
+    char[] modVerArray;
+    char[] depVerArray;
     if (modVer.length() > depModVer.length())
     {
       modVerArray = modVer.toCharArray();
@@ -498,10 +498,10 @@ public final class PackageManager
    */
   public Module[] getAllModules ()
   {
-    Module[] mods = new Module[modules.size()];
+    final Module[] mods = new Module[modules.size()];
     for (int i = 0; i < modules.size(); i++)
     {
-      PackageState state = (PackageState) modules.get(i);
+      final PackageState state = (PackageState) modules.get(i);
       mods[i] = state.getModule();
     }
     return mods;
@@ -515,16 +515,16 @@ public final class PackageManager
    */
   public Module[] getActiveModules ()
   {
-    Module[] mods = new Module[modules.size()];
+    final ArrayList mods = new ArrayList();
     for (int i = 0; i < modules.size(); i++)
     {
-      PackageState state = (PackageState) modules.get(i);
+      final PackageState state = (PackageState) modules.get(i);
       if (state.getState() == PackageState.STATE_INITIALIZED)
       {
-        mods[i] = state.getModule();
+        mods.add(state.getModule());
       }
     }
-    return mods;
+    return (Module[]) mods.toArray(new Module[mods.size()]);
   }
 
 //  public static void main (String [] args)

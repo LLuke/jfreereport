@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: VerticalLayout.java,v 1.4 2003/10/22 14:44:51 taqua Exp $
+ * $Id: VerticalLayout.java,v 1.5 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -57,7 +57,7 @@ public class VerticalLayout implements LayoutManager
    * Defines, whether to use the parents size or whether to compute
    * the size from the parent's childs during the layouting.
    */
-  private boolean useSizeFromParent;
+  private final boolean useSizeFromParent;
 
   /**
    * DefaultConstructor.
@@ -74,7 +74,7 @@ public class VerticalLayout implements LayoutManager
    * 
    * @param useParent defines, whether the parent's size is used. 
    */
-  public VerticalLayout(boolean useParent)
+  public VerticalLayout(final boolean useParent)
   {
     this.useSizeFromParent = useParent;
   }
@@ -85,7 +85,7 @@ public class VerticalLayout implements LayoutManager
    * @param name the component name
    * @param comp the component to be added
    */
-  public void addLayoutComponent(String name, Component comp)
+  public void addLayoutComponent(final String name, final Component comp)
   {
   }
 
@@ -93,7 +93,7 @@ public class VerticalLayout implements LayoutManager
    * Removes the specified component from the layout.
    * @param comp the component to be removed
    */
-  public void removeLayoutComponent(Component comp)
+  public void removeLayoutComponent(final Component comp)
   {
   }
 
@@ -104,12 +104,12 @@ public class VerticalLayout implements LayoutManager
    * @return the preferred layout size
    * @see #minimumLayoutSize
    */
-  public Dimension preferredLayoutSize(Container parent)
+  public Dimension preferredLayoutSize(final Container parent)
   {
     synchronized (parent.getTreeLock())
     {
-      Insets ins = parent.getInsets();
-      Component[] comps = parent.getComponents();
+      final Insets ins = parent.getInsets();
+      final Component[] comps = parent.getComponents();
       int height = 0;
       int width = 0;
       for (int i = 0; i < comps.length; i++)
@@ -118,7 +118,7 @@ public class VerticalLayout implements LayoutManager
         {
           continue;
         }
-        Dimension pref = comps[i].getPreferredSize();
+        final Dimension pref = comps[i].getPreferredSize();
         height += pref.height;
         if (pref.width > width)
         {
@@ -139,12 +139,12 @@ public class VerticalLayout implements LayoutManager
    * @return the minimul layoutsize
    * @see #preferredLayoutSize
    */
-  public Dimension minimumLayoutSize(Container parent)
+  public Dimension minimumLayoutSize(final Container parent)
   {
     synchronized (parent.getTreeLock())
     {
-      Insets ins = parent.getInsets();
-      Component[] comps = parent.getComponents();
+      final Insets ins = parent.getInsets();
+      final Component[] comps = parent.getComponents();
       int height = 0;
       int width = 0;
       for (int i = 0; i < comps.length; i++)
@@ -153,7 +153,7 @@ public class VerticalLayout implements LayoutManager
         {
           continue;
         }
-        Dimension min = comps[i].getMinimumSize();
+        final Dimension min = comps[i].getMinimumSize();
         height += min.height;
         if (min.width > width)
         {
@@ -179,36 +179,36 @@ public class VerticalLayout implements LayoutManager
    * Lays out the container in the specified panel.
    * @param parent the component which needs to be laid out
    */
-  public void layoutContainer(Container parent)
+  public void layoutContainer(final Container parent)
   {
     synchronized (parent.getTreeLock())
     {
-      Insets ins = parent.getInsets();
-      int insHorizontal = ins.left + ins.right;
+      final Insets ins = parent.getInsets();
+      final int insHorizontal = ins.left + ins.right;
 
-      int width;
+      final int width;
       if (isUseSizeFromParent())
       {
-        Rectangle bounds = parent.getBounds();
+        final Rectangle bounds = parent.getBounds();
         width = bounds.width - insHorizontal;
       }
       else
       {
         width = preferredLayoutSize(parent).width - insHorizontal;
       }
-      Component[] comps = parent.getComponents();
+      final Component[] comps = parent.getComponents();
 
       //final int x = bounds.x + ins.left;
       int y = /*bounds.y + */ ins.top;
 
       for (int i = 0; i < comps.length; i++)
       {
-        Component c = comps[i];
+        final Component c = comps[i];
         if (c.isVisible() == false)
         {
           continue;
         }
-        Dimension dim = c.getPreferredSize();
+        final Dimension dim = c.getPreferredSize();
         c.setBounds(0, y, width, dim.height);
         y += dim.height;
       }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.9 2003/08/31 19:27:58 taqua Exp $
+ * $Id: TableProcessor.java,v 1.10 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------
@@ -45,8 +45,8 @@ import java.util.Properties;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
-import org.jfree.report.ReportProcessingException;
 import org.jfree.report.ReportInterruptedException;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
 import org.jfree.report.function.FunctionInitializeException;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.7 2003/09/09 15:52:52 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.8 2003/11/05 14:55:53 taqua Exp $
  *
  * Changes
  * -------
@@ -48,8 +48,8 @@ import java.util.Iterator;
 import org.jfree.report.EmptyReportException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
-import org.jfree.report.ReportProcessingException;
 import org.jfree.report.ReportInterruptedException;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
 import org.jfree.report.function.FunctionInitializeException;

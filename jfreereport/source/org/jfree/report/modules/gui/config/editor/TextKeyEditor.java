@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextKeyEditor.java,v 1.3 2003/09/12 21:06:42 taqua Exp $
+ * $Id: TextKeyEditor.java,v 1.4 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,10 +41,10 @@ package org.jfree.report.modules.gui.config.editor;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.JPanel;
-import javax.swing.event.DocumentListener;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.util.ReportConfiguration;
@@ -76,7 +76,7 @@ public class TextKeyEditor extends AbstractKeyEditor
      *
      * @param e the document event
      */
-    public void changedUpdate(DocumentEvent e)
+    public void changedUpdate(final DocumentEvent e)
     {
       validateContent();
     }
@@ -88,7 +88,7 @@ public class TextKeyEditor extends AbstractKeyEditor
      *
      * @param e the document event
      */
-    public void removeUpdate(DocumentEvent e)
+    public void removeUpdate(final DocumentEvent e)
     {
       validateContent();
     }
@@ -99,7 +99,7 @@ public class TextKeyEditor extends AbstractKeyEditor
      *
      * @param e the document event
      */
-    public void insertUpdate(DocumentEvent e)
+    public void insertUpdate(final DocumentEvent e)
     {
       validateContent();
     }
@@ -121,11 +121,13 @@ public class TextKeyEditor extends AbstractKeyEditor
    * @param entry the entry description supplies the meta data.
    * @param displayName the label content.
    */
-  public TextKeyEditor(ReportConfiguration config, ConfigDescriptionEntry entry, String displayName)
+  public TextKeyEditor(final ReportConfiguration config, 
+                       final ConfigDescriptionEntry entry, 
+                       final String displayName)
   {
     super(config, entry);
 
-    JPanel contentPane = new JPanel();
+    final JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout(5,0));
     entryLabel = new JLabel (displayName);
     entryLabel.setToolTipText(entry.getDescription());
@@ -199,9 +201,10 @@ public class TextKeyEditor extends AbstractKeyEditor
    * representation when they are disabled in order to
    * provide feedback to the user that they cannot take input.
    *
-   * @see Component#isEnabled
+   * @see java.awt.Component#isEnabled
+   * @param enabled defines, whether this editor will be enabled.
    */
-  public void setEnabled(boolean enabled)
+  public void setEnabled(final boolean enabled)
   {
     super.setEnabled(enabled);
     content.setEnabled(enabled);
@@ -213,9 +216,9 @@ public class TextKeyEditor extends AbstractKeyEditor
    * 
    * @param width the new preferred width.
    */
-  public void setLabelWidth(int width)
+  public void setLabelWidth(final int width)
   {
-    Dimension prefSize = entryLabel.getPreferredSize();
+    final Dimension prefSize = entryLabel.getPreferredSize();
     entryLabelCarrier.setPreferredSize(new Dimension(width, prefSize.height));
   }
 
@@ -227,7 +230,7 @@ public class TextKeyEditor extends AbstractKeyEditor
    */
   public int getLabelWidth()
   {
-    Dimension prefSize = entryLabel.getPreferredSize();
+    final Dimension prefSize = entryLabel.getPreferredSize();
     if (prefSize != null)
     {
       return prefSize.width;

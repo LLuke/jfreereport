@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ClassKeyEditor.java,v 1.2 2003/09/08 18:11:48 taqua Exp $
+ * $Id: ClassKeyEditor.java,v 1.3 2003/09/12 21:06:42 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,9 +38,9 @@
 
 package org.jfree.report.modules.gui.config.editor;
 
-import org.jfree.report.util.ReportConfiguration;
-import org.jfree.report.util.Log;
 import org.jfree.report.modules.gui.config.model.ClassConfigDescriptionEntry;
+import org.jfree.report.util.Log;
+import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The class key editor is used to edit report configuration keys which
@@ -61,8 +61,8 @@ public class ClassKeyEditor extends TextKeyEditor
    * @param entry the configuration description entry that describes the key 
    * @param displayName the text for the label
    */
-  public ClassKeyEditor(ReportConfiguration config, 
-      ClassConfigDescriptionEntry entry, String displayName)
+  public ClassKeyEditor(final ReportConfiguration config,
+      final ClassConfigDescriptionEntry entry, final String displayName)
   {
     super(config, entry, displayName);
     baseClass = entry.getBaseClass();
@@ -88,7 +88,7 @@ public class ClassKeyEditor extends TextKeyEditor
     }
     try
     {
-      Class c = getClass().getClassLoader().loadClass(getContent());
+      final Class c = getClass().getClassLoader().loadClass(getContent());
       setValidInput (baseClass.isAssignableFrom(c));
     }
     catch (Exception e)

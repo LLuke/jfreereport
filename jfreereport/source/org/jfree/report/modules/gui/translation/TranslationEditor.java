@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TranslationEditor.java,v 1.1 2003/10/01 20:41:41 taqua Exp $
+ * $Id: TranslationEditor.java,v 1.2 2003/11/01 19:52:28 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -70,7 +70,7 @@ public class TranslationEditor extends JFrame
      * Called whenever the value of the selection changes.
      * @param e the event that characterizes the change.
      */
-    public void valueChanged(ListSelectionEvent e)
+    public void valueChanged(final ListSelectionEvent e)
     {
       if (entryList.getSelectedIndex() == -1)
       {
@@ -115,7 +115,7 @@ public class TranslationEditor extends JFrame
     translationsModel = new DefaultListModel();
     translationList = new JList(translationsModel);
     //translationList.addListSelectionListener();
-    JScrollPane translationListContainer = new JScrollPane
+    final JScrollPane translationListContainer = new JScrollPane
         (translationList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -123,15 +123,15 @@ public class TranslationEditor extends JFrame
     entryList = new JList(model);
     entryList.addListSelectionListener(new ConfigListSelectionListener());
 
-    JScrollPane entryListContainer = new JScrollPane
+    final JScrollPane entryListContainer = new JScrollPane
         (entryList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-    JSplitPane listContainer = new JSplitPane
+    final JSplitPane listContainer = new JSplitPane
         (JSplitPane.VERTICAL_SPLIT, translationListContainer, entryListContainer);
 
 
-    JPanel detailEditorPane = new JPanel();
+    final JPanel detailEditorPane = new JPanel();
     detailEditorPane.setLayout(new GridBagLayout());
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
@@ -183,15 +183,15 @@ public class TranslationEditor extends JFrame
     gbc.weightx = 1;
     detailEditorPane.add(translatedValue, gbc);
 
-    JSplitPane splitPane = new JSplitPane
+    final JSplitPane splitPane = new JSplitPane
         (JSplitPane.HORIZONTAL_SPLIT, listContainer, detailEditorPane);
 
     setContentPane(splitPane);
   }
 
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
-    TranslationEditor ed = new TranslationEditor();
+    final TranslationEditor ed = new TranslationEditor();
     ed.pack();
     ed.setVisible(true);
   }

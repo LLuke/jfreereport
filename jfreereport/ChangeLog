@@ -3,6 +3,26 @@
 ---------------
 A list of changes in recent versions:
 
+0.8.4-5 (07-Nov-2003):
+        * BugFix: The report footer was not printed, if an automatic
+          pagebreak was done right before the printing of the footer.
+
+        * BugFix: Minor fixes in the simple parser to improve
+          the quality of the generated report definition.
+
+        * BugFix: DrawableTemplate did not implement DataRowConnectable
+          and was not available in the ext-parser.
+
+        * The export plugins of the GUI are better configurable now.
+          The report configuration can be used to define, whether a
+          plugin will appear separated from previous menu entries or
+          whether the export will be selectable from the toolbar.
+
+        * The ResultSetTableModelFactory can now be configured to map
+          either ColumnNames or ColumnLabels to the column indices.
+
+        * The PreviewBase has been reworked to be more extensible.
+
 0.8.4-4 (01-Nov-2003):
         * BugFix: TotalItemCountFunction is now serializable and handles
           nested groups correctly.
@@ -439,7 +459,7 @@ A list of changes in recent versions:
 
         * The report converter GUI now displays exceptions to the user.
 
-r0.8.2    : (12-Apr-2003):
+0.8.2 : (12-Apr-2003):
         * Important: There were fixes in the shape handling and the order of the
           function events, please read the file migration.txt for detailed
           information about API changes of this release.

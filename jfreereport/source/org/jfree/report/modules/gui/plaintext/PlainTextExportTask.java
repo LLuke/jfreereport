@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.7 2003/09/10 18:20:25 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.8 2003/10/18 19:22:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,13 +41,11 @@ package org.jfree.report.modules.gui.plaintext;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportInterruptedException;
-import org.jfree.report.util.StringUtil;
-import org.jfree.report.util.Log;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
@@ -55,6 +53,8 @@ import org.jfree.report.modules.output.pageable.plaintext.EpsonPrinterCommandSet
 import org.jfree.report.modules.output.pageable.plaintext.IBMPrinterCommandSet;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
+import org.jfree.report.util.Log;
+import org.jfree.report.util.StringUtil;
 
 /**
  * An export task implementation that writes the report into a plain text file.
@@ -149,7 +149,7 @@ public class PlainTextExportTask extends ExportTask
   protected void performExport()
   {
     OutputStream out = null;
-    File file = new File (fileName);
+    final File file = new File (fileName);
     try
     {
       out = new BufferedOutputStream(

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WorkerPool.java,v 1.1 2003/10/18 20:50:38 taqua Exp $
+ * $Id: WorkerPool.java,v 1.2 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -67,7 +67,7 @@ public class WorkerPool
    * 
    * @param size the maximum number of workers available.
    */
-  public WorkerPool(int size)
+  public WorkerPool(final int size)
   {
     this (size, "WorkerPool-worker");
   }
@@ -79,7 +79,7 @@ public class WorkerPool
    * @param size the size of the worker pool.
    * @param namePrefix the name prefix for all created workers.
    */
-  public WorkerPool(int size, String namePrefix)
+  public WorkerPool(final int size, final String namePrefix)
   {
     if (size <= 0)
     {
@@ -103,7 +103,7 @@ public class WorkerPool
   /**
    * Updates the workersAvailable flag after a worker was assigned.
    */
-  protected void updateWorkersAvailable ()
+  private void updateWorkersAvailable ()
   {
     for (int i = 0; i < workers.length; i++)
     {
@@ -124,7 +124,7 @@ public class WorkerPool
   /**
    * Waits until a worker will be available.
    */
-  protected synchronized void waitForWorkerAvailable ()
+  private synchronized void waitForWorkerAvailable ()
   {
     while (isWorkerAvailable() == false)
     {
@@ -147,7 +147,7 @@ public class WorkerPool
    * @param r the workload for the worker
    * @return a handle to the worker.
    */
-  public synchronized WorkerHandle getWorkerForWorkload (Runnable r)
+  public synchronized WorkerHandle getWorkerForWorkload (final Runnable r)
   {
     waitForWorkerAvailable();
 
@@ -190,7 +190,7 @@ public class WorkerPool
    * 
    * @param worker the worker which was finished.
    */
-  public void workerFinished (Worker worker)
+  public void workerFinished (final Worker worker)
   {
     if (worker.isFinish() == false)
     {
@@ -217,7 +217,7 @@ public class WorkerPool
    * 
    * @param worker the worker which was available.
    */
-  public synchronized void workerAvailable (Worker worker)
+  public synchronized void workerAvailable (final Worker worker)
   {
     for (int i = 0; i < workers.length; i++)
     {

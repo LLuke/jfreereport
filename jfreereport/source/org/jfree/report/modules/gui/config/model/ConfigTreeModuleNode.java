@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigTreeModuleNode.java,v 1.3 2003/09/11 22:17:09 taqua Exp $
+ * $Id: ConfigTreeModuleNode.java,v 1.4 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -71,7 +71,7 @@ public class ConfigTreeModuleNode extends AbstractConfigTreeNode
    * @param module the module for which to build a tree node.
    * @param config the report configuration from where to read the keys.
    */
-  public ConfigTreeModuleNode(Module module, ReportConfiguration config)
+  public ConfigTreeModuleNode(final Module module, final ReportConfiguration config)
   {
     super(module.getName());
     this.assignedKeys = new ArrayList();
@@ -119,7 +119,7 @@ public class ConfigTreeModuleNode extends AbstractConfigTreeNode
    */
   public String toString ()
   {
-    StringBuffer buffer = new StringBuffer();
+    final StringBuffer buffer = new StringBuffer();
     buffer.append("ConfigTreeModule={");
     buffer.append(getConfigurationPrefix());
     buffer.append("}");
@@ -152,7 +152,7 @@ public class ConfigTreeModuleNode extends AbstractConfigTreeNode
    * @param key the new key to be added
    * @throws NullPointerException if the given key is null.
    */
-  public void addAssignedKey (ConfigDescriptionEntry key)
+  public void addAssignedKey (final ConfigDescriptionEntry key)
   {
     if (key == null)
     {
@@ -170,7 +170,7 @@ public class ConfigTreeModuleNode extends AbstractConfigTreeNode
    * @param key the key that should be removed.
    * @throws NullPointerException if the given key is null.
    */
-  public void removeAssignedKey (ConfigDescriptionEntry key)
+  public void removeAssignedKey (final ConfigDescriptionEntry key)
   {
     if (key == null)
     {

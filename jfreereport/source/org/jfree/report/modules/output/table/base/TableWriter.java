@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.7 2003/09/30 19:47:30 taqua Exp $
+ * $Id: TableWriter.java,v 1.8 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,6 @@ import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Band;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.util.Log;
-import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
-import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelegate;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
@@ -53,8 +50,11 @@ import org.jfree.report.function.Expression;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.layout.LayoutSupport;
+import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelegate;
+import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.style.BandStyleSheet;
+import org.jfree.report.util.Log;
 
 /**
  * The TableWriter is the content creation function used to collect the cell data.
@@ -125,7 +125,7 @@ public strictfp class TableWriter extends AbstractFunction
    */
   public Object clone() throws CloneNotSupportedException
   {
-    TableWriter clone = (TableWriter) super.clone();
+    final TableWriter clone = (TableWriter) super.clone();
     clone.delegate = (SimplePageLayoutDelegate) delegate.clone();
     clone.delegate.setWorker(clone);
     return clone;
@@ -139,7 +139,7 @@ public strictfp class TableWriter extends AbstractFunction
    */
   public Expression getInstance()
   {
-    TableWriter tw = (TableWriter) super.getInstance();
+    final TableWriter tw = (TableWriter) super.getInstance();
     tw.delegate = new SimplePageLayoutDelegate(tw);
     return tw;
   }
@@ -176,7 +176,7 @@ public strictfp class TableWriter extends AbstractFunction
    *
    * @param topPosition the first usable position to print content.
    */
-  public void setTopPageContentPosition(float topPosition)
+  public void setTopPageContentPosition(final float topPosition)
   {
   }
 
@@ -201,7 +201,7 @@ public strictfp class TableWriter extends AbstractFunction
    * 
    * @param reserved the reserved page height.
    */
-  public void setReservedSpace(float reserved)
+  public void setReservedSpace(final float reserved)
   {
   }
 
@@ -251,7 +251,7 @@ public strictfp class TableWriter extends AbstractFunction
    * @throws ReportProcessingException if an exception occured while processing
    * the band.
    */
-  public boolean printBottom(Band band) throws ReportProcessingException
+  public boolean printBottom(final Band band) throws ReportProcessingException
   {
     return print (band, false, false);
   }
@@ -267,7 +267,8 @@ public strictfp class TableWriter extends AbstractFunction
    * @throws ReportProcessingException if an exception occured while processing
    * the band.
    */
-  public boolean print(Band band, boolean spoolBand, boolean handlePagebreakBefore)
+  public boolean print(final Band band, final boolean spoolBand, 
+                       final boolean handlePagebreakBefore)
       throws ReportProcessingException
   {
     if (!isInEndPage() && (isPageEmpty() == false)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DowngradeActionMap.java,v 1.1 2003/11/07 16:26:17 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,6 +39,7 @@
 package org.jfree.report.modules.gui.base.components;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 import javax.swing.Action;
 
 /**
@@ -49,28 +50,59 @@ import javax.swing.Action;
  * does not know this interface.
  * <p>
  * The usage is still the same.
+ *
+ * @author Thomas Morger
  */
 public class DowngradeActionMap
 {
-  private HashMap actionMap;
+  /** A map containing the key to action mapping. */
+  private final HashMap actionMap;
+  /** A list containing the actionkeys in their order of addition. */
+  private final ArrayList actionList;
+  /** The parent of this action map. */
   private DowngradeActionMap parent;
 
+  /**
+   * Default Constructor. Creates a new empty map.
+   */
   public DowngradeActionMap()
   {
     actionMap = new HashMap();
+    actionList = new ArrayList();
   }
 
-  public void setParent(DowngradeActionMap map)
+  /**
+   * Sets this <code>ActionMap</code>'s parent.
+   *
+   * @param map  the <code>ActionMap</code> that is the parent of this one
+   */
+  public void setParent(final DowngradeActionMap map)
   {
     this.parent = map;
   }
 
+  /**
+   * Returns this <code>ActionMap</code>'s parent.
+   *
+   * @return the <code>ActionMap</code> that is the parent of this one,
+   *         or null if this <code>ActionMap</code> has no parent
+   */
   public DowngradeActionMap getParent()
   {
     return parent;
   }
 
-  public void put(Object key, Action action)
+  /**
+   * Adds a binding for <code>key</code> to <code>action</code>.
+   * If <code>action</code> is null, this removes the current binding
+   * for <code>key</code>.
+   * <p>In most instances, <code>key</code> will be
+   * <code>action.getValue(NAME)</code>.
+   *
+   * @param key the key for the action.
+   * @param action the action to be added.
+   */
+  public void put(final Object key, final Action action)
   {
     if (action == null)
     {
@@ -78,13 +110,25 @@ public class DowngradeActionMap
     }
     else
     {
+      if (actionMap.containsKey(key))
+      {
+        remove(key);
+      }
       this.actionMap.put(key, action);
+      this.actionList.add (key);
     }
   }
 
-  public Action get(Object key)
+  /**
+   * Returns the binding for <code>key</code>, messaging the
+   * parent <code>ActionMap</code> if the binding is not locally defined.
+   *
+   * @param key the key to be queried.
+   * @return the action for this key, or null if there is no such action.
+   */
+  public Action get(final Object key)
   {
-    Action retval = (Action) actionMap.get(key);
+    final Action retval = (Action) actionMap.get(key);
     if (retval != null)
     {
       return retval;
@@ -96,35 +140,62 @@ public class DowngradeActionMap
     return null;
   }
 
-  public void remove(Object key)
+  /**
+   * Removes the binding for <code>key</code> from this <code>ActionMap</code>.
+   *
+   * @param key the key to be removed.
+   */
+  public void remove(final Object key)
   {
     actionMap.remove(key);
+    actionList.remove(key);
   }
 
+  /**
+   * Removes all the mappings from this <code>ActionMap</code>.
+   */
   public void clear()
   {
     actionMap.clear();
+    actionList.clear();
   }
 
+  /**
+   * Returns the <code>Action</code> names that are bound in this <code>ActionMap</code>.
+   *
+   * @return the keys which are directly bound to this map.
+   */
   public Object[] keys()
   {
-    return actionMap.keySet().toArray();
+    return actionList.toArray();
   }
 
+  /**
+   * Returns the number of bindings.
+   *
+   * @return the number of entries in this map.
+   */
   public int size()
   {
     return actionMap.size();
   }
 
+  /**
+   * Returns an array of the keys defined in this <code>ActionMap</code> and
+   * its parent. This method differs from <code>keys()</code> in that
+   * this method includes the keys defined in the parent.
+   *
+   * @return all keys of this map and all parents.
+   */
   public Object[] allKeys()
   {
     if (parent == null)
     {
       return keys();
     }
-    Object[] parentKeys = parent.allKeys();
-    Object[] key = keys();
-    Object[] retval = new Object[parentKeys.length + key.length];
+    final Object[] parentKeys = parent.allKeys();
+    final Object[] key = keys();
+    final Object[] retval = new Object[parentKeys.length + key.length];
     System.arraycopy(key, 0, retval, 0, key.length);
     System.arraycopy(retval, 0, retval, key.length, retval.length);
     return retval;

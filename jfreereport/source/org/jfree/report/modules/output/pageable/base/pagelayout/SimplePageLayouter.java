@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.11 2003/11/01 19:52:28 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.12 2003/11/05 14:56:16 taqua Exp $
  *
  * Changes
  * -------
@@ -202,7 +202,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
    *  
    * @param reserved the reserved space.
    */
-  public void setReservedSpace(float reserved)
+  public void setReservedSpace(final float reserved)
   {
     if (getCursor() == null)
     {
@@ -234,7 +234,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
    *
    * @param topContentPosition the first content position.
    */
-  public void setTopPageContentPosition(float topContentPosition)
+  public void setTopPageContentPosition(final float topContentPosition)
   {
     if (getCursor() == null)
     {

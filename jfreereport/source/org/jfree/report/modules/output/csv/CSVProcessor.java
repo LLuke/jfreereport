@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.5 2003/08/26 17:35:51 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.6 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------
@@ -49,8 +49,8 @@ import java.util.Iterator;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
-import org.jfree.report.ReportProcessingException;
 import org.jfree.report.ReportInterruptedException;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.states.FinishState;
 import org.jfree.report.states.ReportState;

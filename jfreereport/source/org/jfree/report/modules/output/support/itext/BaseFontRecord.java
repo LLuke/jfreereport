@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecord.java,v 1.3 2003/08/31 19:27:58 taqua Exp $
+ * $Id: BaseFontRecord.java,v 1.4 2003/09/08 18:11:49 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public final class BaseFontRecord
    * @param baseFont the generated base font for the given font definition.
    */
   public BaseFontRecord(final FontDefinition font, final String logicalName,
-                        boolean embedded, final BaseFont baseFont)
+                        final boolean embedded, final BaseFont baseFont)
   {
     if (font == null)
     {

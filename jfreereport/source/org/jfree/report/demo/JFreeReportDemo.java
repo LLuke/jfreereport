@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.4 2003/09/14 19:24:07 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.5 2003/09/15 15:31:58 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -71,8 +71,8 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import org.jfree.report.JFreeReport;
 import org.jfree.report.Boot;
+import org.jfree.report.JFreeReport;
 import org.jfree.report.demo.helper.AboutAction;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.modules.gui.base.PreviewFrame;

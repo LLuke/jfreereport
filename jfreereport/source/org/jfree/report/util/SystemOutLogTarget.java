@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.5 2003/09/09 15:52:53 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.6 2003/09/15 18:26:51 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,8 @@
 
 package org.jfree.report.util;
 
-import java.io.Serializable;
 import java.io.PrintStream;
+import java.io.Serializable;
 
 import org.jfree.util.LogTarget;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.7 2003/09/12 17:47:03 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.8 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -116,7 +116,7 @@ public strictfp class TextOperationModule extends OperationModule
     final ElementAlignment ha
         = (ElementAlignment) element.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
 
-    HorizontalBoundsAlignment hba = getHorizontalLayout(ha, bounds);
+    final HorizontalBoundsAlignment hba = getHorizontalLayout(ha, bounds);
     addContent(c, col, hba, vbaShift);
     // bugfix here: Dont move the line content within the global content bounds.
   }

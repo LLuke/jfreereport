@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.9 2003/09/24 15:27:20 taqua Exp $
+ * $Id: Band.java,v 1.10 2003/11/01 19:52:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -153,7 +153,7 @@ public class Band extends Element implements Serializable, Cloneable
    * @param pagebreakBefore defines, whether a pagebreak should be done
    * before that band gets printed.
    */
-  public Band(boolean pagebreakBefore, boolean pagebreakAfter)
+  public Band(final boolean pagebreakBefore, final boolean pagebreakAfter)
   {
     this();
     setPagebreakBeforePrint(pagebreakBefore);
@@ -595,7 +595,7 @@ public class Band extends Element implements Serializable, Cloneable
    * @param pagebreakBeforePrint set to true, if to force a pagebreak before
    * this band is printed, false otherwise
    */
-  public void setPagebreakBeforePrint(boolean pagebreakBeforePrint)
+  public void setPagebreakBeforePrint(final boolean pagebreakBeforePrint)
   {
     getStyle().setBooleanStyleProperty
         (BandStyleSheet.PAGEBREAK_BEFORE, pagebreakBeforePrint);
@@ -623,7 +623,7 @@ public class Band extends Element implements Serializable, Cloneable
    * @param pagebreakAfterPrint set to true, if to force a pagebreak before
    * this band is printed, false otherwise
    */
-  public void setPagebreakAfterPrint(boolean pagebreakAfterPrint)
+  public void setPagebreakAfterPrint(final boolean pagebreakAfterPrint)
   {
     getStyle().setBooleanStyleProperty
         (BandStyleSheet.PAGEBREAK_AFTER, pagebreakAfterPrint);

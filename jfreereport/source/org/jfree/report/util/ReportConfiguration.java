@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.10 2003/09/09 15:52:53 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.11 2003/09/15 18:26:51 taqua Exp $
  *
  * Changes
  * -------
@@ -51,8 +51,8 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.TreeSet;
 
-import org.jfree.report.modules.PackageManager;
 import org.jfree.report.Boot;
+import org.jfree.report.modules.PackageManager;
 import org.jfree.util.Configuration;
 
 /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStreamExportTask.java,v 1.5 2003/09/10 18:20:25 taqua Exp $
+ * $Id: HtmlStreamExportTask.java,v 1.6 2003/10/18 19:22:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,16 +41,16 @@ package org.jfree.report.modules.gui.html;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportInterruptedException;
-import org.jfree.report.util.Log;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
+import org.jfree.report.util.Log;
 
 /**
  * An export task implementation that exports the report into a single HTML
@@ -100,7 +100,7 @@ public class HtmlStreamExportTask extends ExportTask
   protected void performExport()
   {
     OutputStream out = null;
-    File file = new File(fileName);
+    final File file = new File(fileName);
     try
     {
       out = new BufferedOutputStream(new FileOutputStream(file));

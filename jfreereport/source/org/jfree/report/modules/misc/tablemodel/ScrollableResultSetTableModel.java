@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2002, 2003, by Thomas Morgner.
  *
- * $Id: ScrollableResultSetTableModel.java,v 1.2 2003/08/24 15:08:20 taqua Exp $
+ * $Id: ScrollableResultSetTableModel.java,v 1.3 2003/11/07 15:31:40 taqua Exp $
  *
  * Changes
  * -------
@@ -57,34 +57,27 @@ import org.jfree.report.util.Log;
  */
 public class ScrollableResultSetTableModel extends AbstractTableModel implements CloseableTableModel
 {
-  /**
-   * The scrollable ResultSet source.
-   */
+  /** The scrollable ResultSet source. */
   private ResultSet resultset;
-
-  /**
-   * The ResultSetMetaData object for this result set.
-   */
+  /** The ResultSetMetaData object for this result set. */
   private ResultSetMetaData dbmd;
-
-  /**
-   * The number of rows in the result set.
-   */
+  /** The number of rows in the result set. */
   private int rowCount;
-
-  private boolean labelMapMode;
+  /** Defines the column naming mode. */
+  private final boolean labelMapMode;
 
   /**
    * Constructs the model.
    *
    * @param resultset  the result set.
-   *
+   * @param labelMapMode defines, whether to use column names or column labels
+   * to compute the column index.
    * @throws SQLException if there is a problem with the result set.
    */
-  public ScrollableResultSetTableModel(final ResultSet resultset, boolean labelMapMode)
+  public ScrollableResultSetTableModel(final ResultSet resultset, final boolean labelMapMode)
       throws SQLException
   {
-    this.labelMapMode = labelMapMode;;
+    this.labelMapMode = labelMapMode;
     if (resultset != null)
     {
       updateResultSet(resultset);
@@ -95,17 +88,29 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
     }
   }
 
-  public boolean isLabelMapMode()
+  /**
+   * Creates a new scrollable result set with no resultset assigned and
+   * the specified label map mode.
+   *
+   * @param labelMapMode defines, whether to use column names or column labels
+   * to compute the column index.
+   */
+  protected ScrollableResultSetTableModel(final boolean labelMapMode)
   {
-    return labelMapMode;
+    this.labelMapMode = labelMapMode;
   }
 
   /**
-   * Default constructor.
+   * Returns the column name mode used to map column names into column indices.
+   * If true, then the Label is used, else the Name is used.
+   *
+   * @see ResultSetMetaData#getColumnLabel
+   * @see ResultSetMetaData#getColumnName
+   * @return true, if the column label is used for the mapping, false otherwise.
    */
-  protected ScrollableResultSetTableModel(boolean labelMapMode)
+  public boolean isLabelMapMode()
   {
-    this.labelMapMode = labelMapMode;
+    return labelMapMode;
   }
 
   /**

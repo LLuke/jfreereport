@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableFieldElementFactory.java,v 1.7 2003/11/01 19:52:27 taqua Exp $
+ * $Id: DrawableFieldElementFactory.java,v 1.8 2003/11/05 17:31:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,8 +40,6 @@ package org.jfree.report.elementfactory;
 
 import org.jfree.report.DrawableElement;
 import org.jfree.report.Element;
-import org.jfree.report.filter.DataRowDataSource;
-import org.jfree.report.filter.DrawableFilter;
 import org.jfree.report.filter.templates.DrawableFieldTemplate;
 
 /**

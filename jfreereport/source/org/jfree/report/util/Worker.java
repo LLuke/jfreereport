@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.8 2003/10/18 20:49:17 taqua Exp $
+ * $Id: Worker.java,v 1.9 2003/11/01 19:52:29 taqua Exp $
  *
  *
  * Changes
@@ -271,7 +271,7 @@ public class Worker extends Thread
    * @param workerPool the worker pool 
    * (or null, if the worker is not assigned to a pool).
    */
-  public void setWorkerPool(WorkerPool workerPool)
+  public void setWorkerPool(final WorkerPool workerPool)
   {
     this.workerPool = workerPool;
   }

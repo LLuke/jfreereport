@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.9 2003/09/10 18:20:24 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.10 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes
  * -------
@@ -45,12 +45,12 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.Writer;
 import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-import java.io.OutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
@@ -69,27 +69,27 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
+import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.gui.converter.components.OperationResultTableModel;
 import org.jfree.report.modules.gui.converter.parser.ConverterParserFrontend;
 import org.jfree.report.modules.gui.converter.resources.ConverterResources;
-import org.jfree.report.modules.parser.extwriter.ReportWriter;
-import org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory;
+import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory;
+import org.jfree.report.modules.parser.ext.factory.elements.DefaultElementFactory;
 import org.jfree.report.modules.parser.ext.factory.objects.BandLayoutClassFactory;
+import org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory;
 import org.jfree.report.modules.parser.ext.factory.stylekey.DefaultStyleKeyFactory;
 import org.jfree.report.modules.parser.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
 import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
-import org.jfree.report.modules.parser.ext.factory.elements.DefaultElementFactory;
-import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory;
+import org.jfree.report.modules.parser.extwriter.ReportWriter;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.StringUtil;
-import org.jfree.report.JFreeReport;
 import org.jfree.util.DefaultConfiguration;
 import org.jfree.xml.Parser;
-import org.jfree.xml.factory.objects.URLClassFactory;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
+import org.jfree.xml.factory.objects.URLClassFactory;
 
 /**
  * A utility application for converting XML report files from the old format to the
@@ -220,14 +220,14 @@ public class ReportConverterGUI extends JFrame
     sourceField = new JTextField();
     targetField = new JTextField();
 
-    JTable table = new JTable(resultTableModel);
+    final JTable table = new JTable(resultTableModel);
     table.setMinimumSize(new Dimension (100, 100));
-    JSplitPane componentPane = new JSplitPane
+    final JSplitPane componentPane = new JSplitPane
         (JSplitPane.VERTICAL_SPLIT, createMainPane(), new JScrollPane(table));
     componentPane.setOneTouchExpandable(true);
     componentPane.resetToPreferredSizes();
 
-    JPanel contentPane = new JPanel();
+    final JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());
     contentPane.add(componentPane, BorderLayout.CENTER);
     contentPane.add(createStatusBar(), BorderLayout.SOUTH);
@@ -264,7 +264,7 @@ public class ReportConverterGUI extends JFrame
    * 
    * @param text the new text that should be displayed in the status bar.
    */
-  public void setStatusText (String text)
+  public void setStatusText (final String text)
   {
     statusHolder.setText(text);
   }
@@ -564,19 +564,19 @@ public class ReportConverterGUI extends JFrame
 
     try
     {
-      ConverterParserFrontend frontend = new ConverterParserFrontend();
-      File sourceFile = new File (getSourceFile());
-      File targetFile = new File (getTargetFile());
+      final ConverterParserFrontend frontend = new ConverterParserFrontend();
+      final File sourceFile = new File (getSourceFile());
+      final File targetFile = new File (getTargetFile());
       final String encoding = encodingModel.getSelectedEncoding();
-      JFreeReport report = (JFreeReport)
+      final JFreeReport report = (JFreeReport)
           frontend.parse(sourceFile.toURL(), sourceFile.toURL());
 
-      DefaultConfiguration config = new DefaultConfiguration();
+      final DefaultConfiguration config = new DefaultConfiguration();
       config.setProperty(Parser.CONTENTBASE_KEY, targetFile.toURL().toExternalForm());
 
       // adding all factories will make sure that all stylekeys are found,
       // even if the report was parsed from a simple report definition  
-      ReportWriter writer = new ReportWriter(report, encoding, config);
+      final ReportWriter writer = new ReportWriter(report, encoding, config);
       writer.addClassFactoryFactory(new URLClassFactory());
       writer.addClassFactoryFactory(new DefaultClassFactory());
       writer.addClassFactoryFactory(new BandLayoutClassFactory());

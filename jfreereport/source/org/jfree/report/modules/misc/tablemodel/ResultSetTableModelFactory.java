@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.6 2003/11/07 15:31:40 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.7 2003/11/07 16:26:18 taqua Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,10 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public final class ResultSetTableModelFactory
 {
+  /** The configuration key defining how to map column names to column indices. */
+  public static final String COLUMN_NAME_MAPPING_KEY =
+      "org.jfree.report.modules.misc.tablemodel.ColumnNameMapping";
+
   /** The 'ResultSet factory mode'. */
   public static final String RESULTSET_FACTORY_MODE
       = "org.jfree.report.modules.misc.tablemodel.TableFactoryMode";
@@ -79,13 +83,30 @@ public final class ResultSetTableModelFactory
   {
   }
 
+  /**
+   * Creates a table model by using the given <code>ResultSet</code> as the backend.
+   * If the <code>ResultSet</code> is scrollable (the type is not <code>TYPE_FORWARD_ONLY</code>),
+   * an instance of
+   * {@link org.jfree.report.modules.misc.tablemodel.ScrollableResultSetTableModel} is
+   * returned. This model uses the
+   * extended capabilities of scrollable resultsets to directly read data from the database
+   * without caching or the need of copying the complete <code>ResultSet</code> into the programs
+   * memory.
+   * <p>
+   * If the <code>ResultSet</code> lacks the scollable features, the data will be copied into a
+   * <code>DefaultTableModel</code> and the <code>ResultSet</code> gets closed.
+   *
+   * @param rs  the result set.
+   * @return a closeable table model.
+   *
+   * @throws SQLException if there is a problem with the result set.
+   */
   public CloseableTableModel createTableModel(final ResultSet rs)
       throws SQLException
   {
     return createTableModel
         (rs, ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.misc.tablemodel.ColumnNameMapping",
-            "Label").equals("Label"));
+        (COLUMN_NAME_MAPPING_KEY, "Label").equals("Label"));
   }
 
   /**
@@ -108,7 +129,7 @@ public final class ResultSetTableModelFactory
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public CloseableTableModel createTableModel(final ResultSet rs, boolean labelMapping)
+  public CloseableTableModel createTableModel(final ResultSet rs, final boolean labelMapping)
       throws SQLException
   {
     // Allow for override, some jdbc drivers are buggy :(
@@ -199,8 +220,7 @@ public final class ResultSetTableModelFactory
       throws SQLException
   {
     return generateDefaultTableModel(rs, ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.misc.tablemodel.ColumnNameMapping",
-            "Label").equals("Label"));
+        (COLUMN_NAME_MAPPING_KEY, "Label").equals("Label"));
   }
 
   /**
@@ -218,7 +238,8 @@ public final class ResultSetTableModelFactory
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public CloseableTableModel generateDefaultTableModel(final ResultSet rs, boolean labelMapping)
+  public CloseableTableModel generateDefaultTableModel
+    (final ResultSet rs, final boolean labelMapping)
       throws SQLException
   {
     final ResultSetMetaData rsmd = rs.getMetaData();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.8 2003/08/31 19:27:58 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.9 2003/10/08 19:32:33 taqua Exp $
  *
  * Changes
  * -------
@@ -159,7 +159,7 @@ public class BaseFontSupport
       return fontRecord;
     }
 
-    BaseFontFactory factory = BaseFontFactory.getFontFactory();
+    final BaseFontFactory factory = BaseFontFactory.getFontFactory();
     try
     {
       final String filename = BaseFontFactory.getFontFactory().getFontfileForName(fontKey);

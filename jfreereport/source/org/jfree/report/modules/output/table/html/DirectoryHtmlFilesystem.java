@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.5 2003/08/25 14:29:32 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.6 2003/09/07 15:27:08 taqua Exp $
  *
  * Changes
  * -------
@@ -66,13 +66,6 @@ import org.jfree.report.util.WaitingImageObserver;
  */
 public class DirectoryHtmlFilesystem implements HtmlFilesystem
 {
-  /** a simple counter carrier. */
-  private class CounterRef
-  {
-    /** a counter. */
-    private int count;
-  }
-
   /** the root file to store the generated main html file. */
   private File rootFile;
 
@@ -326,17 +319,17 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    */
   private String createName(final String base)
   {
-    CounterRef ref = (CounterRef) usedNames.get(base);
+    CounterReference ref = (CounterReference) usedNames.get(base);
     if (ref == null)
     {
-      ref = new CounterRef();
+      ref = new CounterReference();
       usedNames.put(base, ref);
       return base;
     }
     else
     {
-      ref.count++;
-      return base + ref.count;
+      ref.increase();
+      return base + ref.getCount();
     }
   }
 

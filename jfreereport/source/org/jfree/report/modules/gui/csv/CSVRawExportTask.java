@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVRawExportTask.java,v 1.6 2003/09/10 18:20:25 taqua Exp $
+ * $Id: CSVRawExportTask.java,v 1.7 2003/10/18 19:22:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -100,7 +100,7 @@ public class CSVRawExportTask extends ExportTask
   protected void performExport()
   {
     Writer out = null;
-    File file = new File (fileName);
+    final File file = new File (fileName);
     try
     {
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigTreeRootNode.java,v 1.1 2003/08/30 15:05:00 taqua Exp $
+ * $Id: ConfigTreeRootNode.java,v 1.2 2003/09/11 22:17:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -53,7 +53,7 @@ public class ConfigTreeRootNode extends AbstractConfigTreeNode
    * 
    * @param name the name of the node.
    */
-  public ConfigTreeRootNode(String name)
+  public ConfigTreeRootNode(final String name)
   {
     super(name);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageState.java,v 1.7 2003/09/02 15:05:32 taqua Exp $
+ * $Id: PackageState.java,v 1.8 2003/09/09 15:52:39 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -193,7 +193,7 @@ public class PackageState
    * @return true, if the other object is also a PackageState containing
    * the same module, false otherwise. 
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.4 2003/08/24 15:06:10 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.5 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -72,12 +72,6 @@ import org.jfree.report.util.WaitingImageObserver;
  */
 public class ZIPHtmlFilesystem implements HtmlFilesystem
 {
-  /** a simple counter carrier. */
-  private class CounterRef
-  {
-    /** a counter. */
-    private int count;
-  }
 
   /** The name of the data directory within the ZIP-file. */
   private String dataDirectory;
@@ -357,17 +351,17 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    */
   private String createName(final String base)
   {
-    CounterRef ref = (CounterRef) usedNames.get(base);
+    CounterReference ref = (CounterReference) usedNames.get(base);
     if (ref == null)
     {
-      ref = new CounterRef();
+      ref = new CounterReference();
       usedNames.put(base, ref);
       return base;
     }
     else
     {
-      ref.count++;
-      return base + ref.count;
+      ref.increase();
+      return base + ref.getCount();
     }
   }
 

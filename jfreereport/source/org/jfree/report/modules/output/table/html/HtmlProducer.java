@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.12 2003/10/27 20:40:05 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.13 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,7 @@
  */
 package org.jfree.report.modules.output.table.html;
 
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -43,7 +44,6 @@ import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
@@ -441,7 +441,7 @@ public class HtmlProducer extends TableProducer
   private void generatePage(final TableGridLayout layout)
   {
     pout.println();
-    StringBuffer styleBuilder = new StringBuffer();
+    final StringBuffer styleBuilder = new StringBuffer();
     Rectangle2D cellBounds = new Rectangle2D.Float();
 
     for (int y = 0; y < layout.getHeight(); y++)
@@ -453,7 +453,7 @@ public class HtmlProducer extends TableProducer
       styleBuilder.append(lastRowHeight);
       styleBuilder.append("pt");
 
-      String trStyle = styleBuilder.toString();
+      final String trStyle = styleBuilder.toString();
 //      String trStyleClass = styleCollection.getTableStyleClass(trStyle);
 //      if (trStyleClass == null || isCreateBodyFragment())
 //      {
@@ -481,7 +481,7 @@ public class HtmlProducer extends TableProducer
           styleBuilder.append("pt");
 
           pout.println("    <!-- No Element -->");
-          String tdStyle = styleBuilder.toString();
+          final String tdStyle = styleBuilder.toString();
 //          String tdStyleClass = styleCollection.getTableStyleClass(tdStyle);
 //          if (tdStyleClass == null || isCreateBodyFragment())
 //          {
@@ -529,7 +529,7 @@ public class HtmlProducer extends TableProducer
             styleBuilder.append(style);
           }
         }
-        String tdStyle = styleBuilder.toString();
+        final String tdStyle = styleBuilder.toString();
 //        String tdStyleClass = styleCollection.getTableStyleClass(tdStyle);
 //        if (tdStyleClass == null || isCreateBodyFragment())
 //        {

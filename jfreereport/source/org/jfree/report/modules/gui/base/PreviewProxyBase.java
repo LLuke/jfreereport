@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.26 2003/11/07 15:31:39 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.27 2003/11/07 16:25:42 taqua Exp $
  *
  * Changes
  * -------
@@ -107,14 +107,25 @@ import org.jfree.xml.ParserUtil;
  */
 public class PreviewProxyBase extends JComponent
 {
+  /** The property name for the largeIconsEnabled property for the toolbar. */
+  public static final String LARGE_ICONS_PROPERTY = "largeIconsEnabled";
+  /** A key to query an action from the action map. */
   public static final String GOTO_ACTION_KEY = "GotoAction";
+  /** A key to query an action from the action map. */
   public static final String ABOUT_ACTION_KEY = "AboutAction";
+  /** A key to query an action from the action map. */
   public static final String CLOSE_ACTION_KEY = "CloseAction";
+  /** A key to query an action from the action map. */
   public static final String FIRSTPAGE_ACTION_KEY = "FirstPageAction";
+  /** A key to query an action from the action map. */
   public static final String LASTPAGE_ACTION_KEY = "LastPageAction";
+  /** A key to query an action from the action map. */
   public static final String NEXT_PAGE_ACTION_KEY = "NextPageAction";
+  /** A key to query an action from the action map. */
   public static final String PREV_PAGE_ACTION_KEY = "PreviousPageAction";
+  /** A key to query an action from the action map. */
   public static final String ZOOM_IN_ACTION_KEY = "ZoomInAction";
+  /** A key to query an action from the action map. */
   public static final String ZOOM_OUT_ACTION_KEY = "ZoomOutAction";
 
   /** The default width of the report pane. */
@@ -147,29 +158,37 @@ public class PreviewProxyBase extends JComponent
   public static final String TOOLBAR_FLOATABLE_PROPERTY
       = "org.jfree.report.modules.gui.base.ToolbarFloatable";
 
+  /** The property name for the toolbarFloatable property. */
   public static final String TOOLBAR_FLOATABLE_PROPERTYNAME
       = "toolbarFloatable";
 
+  /**
+   * An property change handler for the toolbar. Handles the toolbarFloatable
+   * and largeIconsEnabled properties.
+   */
   private class ToolbarPropertyChangeListener implements PropertyChangeListener
   {
     /**
      * This method gets called when a bound property is changed.
      * @param evt A PropertyChangeEvent object describing the event source
-     *   	and the property that has changed.
+     *        and the property that has changed.
      */
-    public void propertyChange(PropertyChangeEvent evt)
+    public void propertyChange(final PropertyChangeEvent evt)
     {
-      if (evt.getSource() == toolbar)
+      if (evt.getSource() == getToolbar())
       {
         if ("floatable".equals(evt.getPropertyName()))
         {
-          reinitialize();
+          setToolbarFloatable(getToolbar().isFloatable());
         }
       }
       else if (evt.getSource() == PreviewProxyBase.this)
       {
-        if (TOOLBAR_FLOATABLE_PROPERTYNAME.equals(evt.getPropertyName()) ||
-            LARGE_ICONS_ENABLED_PROPERTY.equals(evt.getPropertyName()))
+        if (TOOLBAR_FLOATABLE_PROPERTYNAME.equals(evt.getPropertyName()))
+        {
+          getToolbar().setFloatable(isToolbarFloatable());
+        }
+        else if (LARGE_ICONS_ENABLED_PROPERTY.equals(evt.getPropertyName()))
         {
           reinitialize();
         }
@@ -539,11 +558,14 @@ public class PreviewProxyBase extends JComponent
 
   /** The worker thread which is used to perform the repagination. */
   private WorkerPool exportWorkerPool;
-
-  private DowngradeActionMap baseActionMap;
-  private DowngradeActionMap navigationActionMap;
-  private DowngradeActionMap zoomActionMap;
-  private DowngradeActionMap exportActionMap;
+  /** An action map storing all basic actions. */
+  private final DowngradeActionMap baseActionMap;
+  /** An action map storing all navigation related actions. */
+  private final DowngradeActionMap navigationActionMap;
+  /** An action map storing all zoom related actions. */
+  private final DowngradeActionMap zoomActionMap;
+  /** An action map storing all export related actions. */
+  private final DowngradeActionMap exportActionMap;
 
   /** The available zoom factors. */
   protected static final float[]
@@ -576,7 +598,7 @@ public class PreviewProxyBase extends JComponent
   private boolean toolbarFloatable;
 
   /** A preview proxy. */
-  private PreviewProxy proxy;
+  private final PreviewProxy proxy;
 
   /** A list of all export plugins known to this preview proxy base. */
   private ArrayList exportPlugIns;
@@ -585,14 +607,11 @@ public class PreviewProxyBase extends JComponent
   private HashMap pluginActions;
 
   /** The progress monitor dialog used to visualize the pagination progress. */
-  private ReportProgressDialog progressDialog;
+  private final ReportProgressDialog progressDialog;
   /** A flag to define whether the interface should be the locked state. */
   private boolean lockInterface;
-  /** The action concentrator used to lock or unlock the interface. */
-  //private ActionConcentrator zoomActionConcentrator;
   /** A flag that defines, whether the preview component is closed. */
   private boolean closed;
-  public static final String LARGE_ICONS_PROPERTY = "largeIconsEnabled";
 
   /**
    * Creates a preview proxy.
@@ -622,7 +641,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @param report the report for which to build the plugins
    */
-  private void buildExportPlugins (JFreeReport report)
+  private void buildExportPlugins (final JFreeReport report)
   {
     final ExportPluginFactory factory = ExportPluginFactory.getInstance();
     exportPlugIns = factory.createExportPlugIns
@@ -788,7 +807,7 @@ public class PreviewProxyBase extends JComponent
    */
   protected JToolBar createToolBar ()
   {
-    JToolBar toolbar = new JToolBar();
+    final JToolBar toolbar = new JToolBar();
     return toolbar;
   }
 
@@ -1077,8 +1096,8 @@ public class PreviewProxyBase extends JComponent
     navigationActionMap.put(LASTPAGE_ACTION_KEY, createDefaultLastPageAction());
     navigationActionMap.put(NEXT_PAGE_ACTION_KEY, createDefaultNextPageAction());
     navigationActionMap.put(PREV_PAGE_ACTION_KEY, createDefaultPreviousPageAction());
-    Action zoomInAction = createDefaultZoomInAction();
-    Action zoomOutAction = createDefaultZoomOutAction();
+    final Action zoomInAction = createDefaultZoomInAction();
+    final Action zoomOutAction = createDefaultZoomOutAction();
     zoomActionMap.put(ZOOM_IN_ACTION_KEY, zoomInAction);
     zoomActionMap.put(ZOOM_OUT_ACTION_KEY, zoomOutAction);
     // todo asdasd
@@ -1248,7 +1267,7 @@ public class PreviewProxyBase extends JComponent
   {
     final ResourceBundle resources = getResources();
     final JMenu fileMenu = new JMenu(resources.getString("menu.file.name"));
-    Character mnemonic = (Character) resources.getObject("menu.file.mnemonic");
+    final Character mnemonic = (Character) resources.getObject("menu.file.mnemonic");
     fileMenu.setMnemonic(mnemonic.charValue());
 
     final Iterator it = exportPlugIns.iterator();
@@ -1283,7 +1302,7 @@ public class PreviewProxyBase extends JComponent
     final ResourceBundle resources = getResources();
     // the navigation menu ...
     final JMenu navMenu = new JMenu(resources.getString("menu.navigation.name"));
-    Character mnemonic = (Character) resources.getObject("menu.navigation.mnemonic");
+    final Character mnemonic = (Character) resources.getObject("menu.navigation.mnemonic");
     navMenu.setMnemonic(mnemonic.charValue());
 
     navMenu.add(createMenuItem(getGotoAction()));
@@ -1306,14 +1325,14 @@ public class PreviewProxyBase extends JComponent
     final ResourceBundle resources = getResources();
     // the navigation menu ...
     final JMenu zoomMenu = new JMenu(resources.getString("menu.zoom.name"));
-    Character mnemonic = (Character) resources.getObject("menu.zoom.mnemonic");
+    final Character mnemonic = (Character) resources.getObject("menu.zoom.mnemonic");
     zoomMenu.setMnemonic(mnemonic.charValue());
 
     zoomMenu.add(createMenuItem(getZoomInAction()));
     zoomMenu.add(createMenuItem(getZoomOutAction()));
     zoomMenu.add(new JSeparator());
 
-    DowngradeActionMap zoomActionMap = getZoomActionMap();
+    final DowngradeActionMap zoomActionMap = getZoomActionMap();
     for (int i = 0; i < ZOOM_FACTORS.length; i++)
     {
       final Action action = new ZoomSetAction(i);
@@ -1334,7 +1353,7 @@ public class PreviewProxyBase extends JComponent
     final ResourceBundle resources = getResources();
     // then the help menu
     final JMenu helpMenu = new JMenu(resources.getString("menu.help.name"));
-    Character mnemonic = (Character) resources.getObject("menu.help.mnemonic");
+    final Character mnemonic = (Character) resources.getObject("menu.help.mnemonic");
     helpMenu.setMnemonic(mnemonic.charValue());
     helpMenu.add(createMenuItem(getAboutAction()));
     return helpMenu;
@@ -1448,7 +1467,7 @@ public class PreviewProxyBase extends JComponent
    */
   public void setToolbarFloatable(final boolean b)
   {
-    boolean oldValue = this.toolbarFloatable;
+    final boolean oldValue = this.toolbarFloatable;
     this.toolbarFloatable = b;
     firePropertyChange("toolbarFloatable", oldValue, b);
   }
@@ -1519,7 +1538,7 @@ public class PreviewProxyBase extends JComponent
     }
 
     zoomSelect.setEnabled(true);
-    Object[] keys = zoomActionMap.keys();
+    final Object[] keys = zoomActionMap.keys();
     for (int i = 0; i < keys.length; i++)
     {
       zoomActionMap.get(keys[i]).setEnabled(true);
@@ -1548,7 +1567,7 @@ public class PreviewProxyBase extends JComponent
     getNextPageAction().setEnabled(false);
     getPreviousPageAction().setEnabled(false);
     getFirstPageAction().setEnabled(false);
-    Object[] keys = zoomActionMap.keys();
+    final Object[] keys = zoomActionMap.keys();
     for (int i = 0; i < keys.length; i++)
     {
       zoomActionMap.get(keys[i]).setEnabled(false);
@@ -1563,21 +1582,46 @@ public class PreviewProxyBase extends JComponent
     }
   }
 
+  /**
+   * Returns the export action map containing all export related actions.
+   * This map contains the actions for the export plugins.
+   *
+   * @return the export action map.
+   */
   public DowngradeActionMap getExportActionMap()
   {
     return exportActionMap;
   }
 
+  /**
+   * Returns the base action map containing all basic actions.
+   * This map contains such actions like the Close-Action or the
+   * About-Action.
+   *
+   * @return the export action map.
+   */
   public DowngradeActionMap getBaseActionMap()
   {
     return baseActionMap;
   }
 
+  /**
+   * Returns the navigation action map containing all navigation related
+   * actions. This map contains the various "Goto..." actions.
+   *
+   * @return the export action map.
+   */
   public DowngradeActionMap getNavigationActionMap()
   {
     return navigationActionMap;
   }
 
+  /**
+   * Returns the zoom action map containing all zoom related actions.
+   * This map contains actions controling the zoom level of the report pane.
+   *
+   * @return the export action map.
+   */
   public DowngradeActionMap getZoomActionMap()
   {
     return zoomActionMap;
@@ -1609,7 +1653,7 @@ public class PreviewProxyBase extends JComponent
    */
   public void setLargeIconsEnabled(final boolean b)
   {
-    boolean oldValue = largeIconsEnabled;
+    final boolean oldValue = largeIconsEnabled;
     largeIconsEnabled = b;
     firePropertyChange(LARGE_ICONS_PROPERTY, oldValue, b);
   }
@@ -1932,9 +1976,10 @@ public class PreviewProxyBase extends JComponent
         public void run()
         {
           final ReportPane reportPane = getReportPane();
+          ReportProgressDialog progressDialog = getProgressDialog();
           try
           {
-            long startTime = System.currentTimeMillis();
+            final long startTime = System.currentTimeMillis();
             reportPane.addRepaginationListener(progressDialog);
             RefineryUtilities.positionFrameRandomly(progressDialog);
             progressDialog.setVisible(true);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.7 2003/10/18 20:49:17 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.8 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -73,7 +73,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
      * 
      * @param task the export task which was completed.
      */
-    public void taskAborted(ExportTask task)
+    public void taskAborted(final ExportTask task)
     {
       AbstractExportPlugin.this.handleExportResult(task);
     }
@@ -83,7 +83,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
      * 
      * @param task the export task which was aborted.
      */
-    public void taskDone(ExportTask task)
+    public void taskDone(final ExportTask task)
     {
       AbstractExportPlugin.this.handleExportResult(task);
     }
@@ -93,7 +93,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
      * 
      * @param task the export task which failed.
      */
-    public void taskFailed(ExportTask task)
+    public void taskFailed(final ExportTask task)
     {
       AbstractExportPlugin.this.handleExportResult(task);
     }
@@ -105,7 +105,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
      * 
      * @param task the export task.
      */
-    public void taskWaiting(ExportTask task)
+    public void taskWaiting(final ExportTask task)
     {
     }
   }

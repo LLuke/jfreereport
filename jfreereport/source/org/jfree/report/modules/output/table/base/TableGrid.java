@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGrid.java,v 1.8 2003/10/10 18:46:48 taqua Exp $
+ * $Id: TableGrid.java,v 1.9 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -184,7 +184,7 @@ public class TableGrid
    */
   public int[] getYCuts()
   {
-    boolean isEndContained = yBounds.contains(new Integer(yBoundsMax));
+    final boolean isEndContained = yBounds.contains(new Integer(yBoundsMax));
     final int[] yBoundsArray;
     if (isEndContained)
     {

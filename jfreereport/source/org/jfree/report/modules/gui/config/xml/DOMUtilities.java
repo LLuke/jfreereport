@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DOMUtilities.java,v 1.2 2003/09/08 18:11:49 taqua Exp $
+ * $Id: DOMUtilities.java,v 1.3 2003/09/10 18:20:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,14 +44,14 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.jfree.report.util.CharacterEntityParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.jfree.report.util.CharacterEntityParser;
 
 /**
  * Some utility methods to help parsing when using a DOM parser.
@@ -81,11 +81,11 @@ public final class DOMUtilities
    * @throws IOException if reading from the input stream failed. 
    * 
    */
-  public static Document parseInputStream (InputStream instream)
+  public static Document parseInputStream (final InputStream instream)
     throws ParserConfigurationException, SAXException, IOException
   {
-    DocumentBuilder db;
-    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    final DocumentBuilder db;
+    final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     db = dbf.newDocumentBuilder();
     return db.parse(new InputSource(instream));
   }
@@ -100,17 +100,17 @@ public final class DOMUtilities
    * textnodes.
    * @return the extracted String
    */
-  public static String getText(Element e)
+  public static String getText(final Element e)
   {
-    NodeList nl = e.getChildNodes();
-    StringBuffer result = new StringBuffer();
+    final NodeList nl = e.getChildNodes();
+    final StringBuffer result = new StringBuffer();
 
     for (int i = 0; i < nl.getLength(); i++)
     {
-      Node n = nl.item(i);
+      final Node n = nl.item(i);
       if (n.getNodeType() == Node.TEXT_NODE)
       {
-        Text text = (Text) n;
+        final Text text = (Text) n;
 
         result.append(text.getData());
       }

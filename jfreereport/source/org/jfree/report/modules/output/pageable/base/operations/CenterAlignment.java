@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CenterAlignment.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
+ * $Id: CenterAlignment.java,v 1.6 2003/09/15 18:26:51 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public strictfp class CenterAlignment extends HorizontalBoundsAlignment
    *
    * @return the aligned rectangle.
    */
-  public Rectangle2D align(Rectangle2D inner)
+  public Rectangle2D align(final Rectangle2D inner)
   {
     if (inner == null)
     {
