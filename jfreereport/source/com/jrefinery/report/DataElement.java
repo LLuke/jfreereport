@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DataElement.java,v 1.1.1.1 2002/04/25 17:02:14 taqua Exp $
+ * $Id: DataElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -38,7 +38,6 @@
  */
 
 package com.jrefinery.report;
-
 
 /**
  * The base class for all report elements that display data (that is, information from the report's
@@ -56,7 +55,7 @@ public abstract class DataElement extends TextElement
   /**
    * Constructs a data element using float coordinates.
    */
-  protected DataElement ()
+  protected DataElement()
   {
   }
 
@@ -65,10 +64,10 @@ public abstract class DataElement extends TextElement
    *
    * @throws NullPointerException if the field is null.
    */
-  public void setField (String fieldname)
+  public void setField(String fieldname)
   {
     if (fieldname == null)
-      throw new NullPointerException ("Fieldname must not be null for field " + getName ());
+      throw new NullPointerException("Fieldname must not be null for field " + getName());
 
     this.field = fieldname;
   }
@@ -77,7 +76,7 @@ public abstract class DataElement extends TextElement
    * Returns the name of the field in the data source that this element obtains its data from.
    * @return The field name.
    */
-  public String getField ()
+  public String getField()
   {
     return this.field;
   }
@@ -86,7 +85,7 @@ public abstract class DataElement extends TextElement
    * Sets the current value of the element.
    * @param value The new value for the element;
    */
-  public void setValue (Object value)
+  public void setValue(Object value)
   {
     this.value = value;
   }
@@ -95,7 +94,7 @@ public abstract class DataElement extends TextElement
    * Queries the current value of the element.
    * @returns the value for the element;
    */
-  public Object getValue ()
+  public Object getValue()
   {
     return value;
   }
@@ -105,9 +104,8 @@ public abstract class DataElement extends TextElement
    * @return A formatted version of the data value or "null" if the element
    * is null
    */
-  public String getFormattedText ()
+  public String getFormattedText()
   {
-    return String.valueOf (value);
+    return value == null ? "" : value.toString();
   }
-
 }
