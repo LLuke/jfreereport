@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.5 2003/01/23 18:07:46 taqua Exp $
+ * $Id: ElementFactory.java,v 1.6 2003/01/25 02:47:09 taqua Exp $
  *
  * Changes
  * -------
@@ -785,6 +785,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
       throws SAXException
   {
     getTextElementAttributes(attrs);
+    textElementNullString = ParserUtil.parseString(attrs.getValue(NULLSTRING_ATT), "-");
     resourceBase = attrs.getValue(RESOURCEBASE_ATTR);
 
     if (resourceBase == null)
