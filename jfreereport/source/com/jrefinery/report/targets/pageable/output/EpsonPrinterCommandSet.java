@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EpsonPrinterCommandSet.java,v 1.7 2003/02/27 10:35:40 mungady Exp $
+ * $Id: EpsonPrinterCommandSet.java,v 1.8 2003/03/07 16:56:03 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 import com.jrefinery.report.util.StringUtil;
+import com.jrefinery.report.util.EncodingSupport;
 
 /**
  * Implements the printer command set for Epson ESC/P compatible printers.
@@ -419,7 +420,11 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
     {
       // check the supplied encoding ...
       // only Cp- encodings are supported ...
-      new String(" ").getBytes(cp);
+      if (EncodingSupport.isSupportedEncoding(cp) == false)
+      {
+        throw new UnsupportedEncodingException("The encoding " + cp + "is not valid");
+      }
+
       try
       {
         int i = Integer.parseInt(cp.substring(2));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.7 2003/03/09 17:48:58 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.8 2003/03/13 18:38:59 taqua Exp $
  *
  * Changes
  * --------
@@ -368,9 +368,6 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
     setModal(true);
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     setTitle(getResources().getString("plain-text-exportdialog.dialogtitle"));
-    fileChooser = new JFileChooser();
-    fileChooser.addChoosableFileFilter(new ExtensionFileFilter("Plain text files", ".txt"));
-    fileChooser.setMultiSelectionEnabled(false);
 
     defaultEncodingModel = EncodingComboBoxModel.createDefaultModel();
     plainTextEncodingModel = createEncodingModel(new PrinterCommandSet(new NullOutputStream(),
@@ -1023,6 +1020,13 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
    */
   protected void performSelectFile()
   {
+    if (fileChooser == null)
+    {
+      fileChooser = new JFileChooser();
+      fileChooser.addChoosableFileFilter(new ExtensionFileFilter("Plain text files", ".txt"));
+      fileChooser.setMultiSelectionEnabled(false);
+    }
+
     fileChooser.setSelectedFile(new File(getFilename()));
     int option = fileChooser.showSaveDialog(this);
     if (option == JFileChooser.APPROVE_OPTION)

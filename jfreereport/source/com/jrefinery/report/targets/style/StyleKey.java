@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKey.java,v 1.4 2003/02/05 15:38:29 taqua Exp $
+ * $Id: StyleKey.java,v 1.5 2003/02/26 13:58:00 mungady Exp $
  *
  * Changes
  * -------
@@ -209,10 +209,7 @@ public class StyleKey implements Serializable, Cloneable
    */
   public int hashCode()
   {
-    int result;
-    result = name.hashCode();
-    result = 29 * result + valueType.hashCode();
-    return result;
+    return name.hashCode();
   }
 
   /**
