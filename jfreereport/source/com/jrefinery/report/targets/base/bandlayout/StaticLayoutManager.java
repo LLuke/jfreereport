@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.17 2003/02/25 18:46:52 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.18 2003/02/26 16:42:25 mungady Exp $
  *
  * Changes
  * -------
@@ -562,7 +562,7 @@ public class StaticLayoutManager implements BandLayoutManager
     //Log.debug ("Dimension after dynamic part: " + width + " -> " + height);
     // now apply the minimum limit defined for that band in case the calculated height
     // is lower than the given minimum height.
-    height =(float) Math.max(height, minSize.getHeight());
+    height = (float) Math.max(height, minSize.getHeight());
     width = (float) Math.max(width, minSize.getWidth());
 
     // now take the maximum limit defined for that band into account for a last time.

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * SizeCalculator.java
  * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SizeCalculator.java,v 1.1 2003/02/07 22:40:40 taqua Exp $
+ * $Id: SizeCalculator.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,10 @@ package com.jrefinery.report.targets.base.layout;
  * height of a line of text.  The calculations rely on state information (e.g. font size,
  * graphics device, etc) maintained by the calculator.
  * <p>
- * Every {@link com.jrefinery.report.targets.base.layout.LayoutSupport} can create an instance of a class that implements this interface,
- * via the {@link com.jrefinery.report.targets.base.layout.LayoutSupport#createTextSizeCalculator} method.
+ * Every {@link com.jrefinery.report.targets.base.layout.LayoutSupport} can create an instance of
+ * a class that implements this interface,
+ * via the {@link com.jrefinery.report.targets.base.layout.LayoutSupport#createTextSizeCalculator} 
+ * method.
  *
  * @author Thomas Morgner
  */

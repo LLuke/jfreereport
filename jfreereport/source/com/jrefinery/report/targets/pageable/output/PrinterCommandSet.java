@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
+ * ----------------------
  * PrinterCommandSet.java
- * --------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * ----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributoers.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);;
  *
- * $Id: PrinterCommandSet.java,v 1.6 2003/02/21 16:31:30 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.7 2003/02/25 18:47:09 taqua Exp $
  *
  * Changes
  * -------
@@ -37,9 +37,6 @@
  */
 package com.jrefinery.report.targets.pageable.output;
 
-import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.util.PageFormatFactory;
-
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.io.IOException;
@@ -47,30 +44,44 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
+import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.util.PageFormatFactory;
+
 /**
  * Implements a printer command set for plain text output. The output is
  * not enriched with any printer specific control sequences.
+ * 
+ * @author Thomas Morgner
  */
 public class PrinterCommandSet
 {
   /** the roman font. */
   public static final byte SELECT_FONT_ROMAN = 0x00;
+  
   /** the swiss font. */
   public static final byte SELECT_FONT_SWISS = 0x01;
+  
   /** the courier font. */
   public static final byte SELECT_FONT_COURIER = 0x02;
+  
   /** the prestige font. */
   public static final byte SELECT_FONT_PRESTIGE = 0x03;
+  
   /** the OCR-A font. */
   public static final byte SELECT_FONT_OCR_A = 0x05;
+  
   /** the OCR-B font. */
   public static final byte SELECT_FONT_OCR_B = 0x06;
+  
   /** the orator font. */
   public static final byte SELECT_FONT_ORATOR = 0x07;
+  
   /** the swiss-bold font. */
   public static final byte SELECT_FONT_SWISS_BOLD = 0x7A;
+  
   /** the gothic font. */
   public static final byte SELECT_FONT_GOTHIC = 0x7C;
+  
   /** selects the font, which is selected on the printer menu. */
   public static final byte SELECT_FONT_FROM_MENU = 0x7F;
 
@@ -79,36 +90,49 @@ public class PrinterCommandSet
    * the printer carriage returns to the start of the line.
    */
   public static final byte CARRIAGE_RETURN = 0x0D;
+  
   /** scrolls the paper up a single line. */
   public static final byte LINE_FEED = 0x0A;
+  
   /** the form feed character, ejects the current page and starts the next page. */
   public static final byte FORM_FEED = 0x0C;
+  
   /** the space character. */
   public static final byte SPACE = 0x20;
 
   /** the output stream. */
   private OutputStream out;
+  
   /** the font selector byte. */
   private byte font;
+  
   /** character width. */
   private byte characterWidth;
+  
   /** the paper height in lines. */
   private int paperSize;
+  
   /** the current bold state for the font. */
   private boolean bold;
+  
   /** the current italic state for the font. */
   private boolean italic;
+  
   /** the current underline state for the font. */
   private boolean underline;
+  
   /** the current strikethrough state for the font. */
   private boolean strikethrough;
 
   /** the left border in characters. */
   private int borderLeft;
+  
   /** the right border in characters. */
   private int borderRight;
+  
   /** the upper border in lines. */
   private int borderTop;
+  
   /** the bottom border in lines. */
   private int borderBottom;
 
@@ -117,17 +141,22 @@ public class PrinterCommandSet
 
   /** the current linespacing in 1/1440 inches. */
   private int lineSpacing;
+  
   /** the AutoLF state. */
   private boolean autoLf;
+  
   /** the printQuality flag, true for letter quality. */
   private boolean letterQuality;
 
   /** the lines per inch for this page. */
   private int  defaultLPI;
+  
   /** the characters per inch for this page. */
   private int  defaultCPI;
+  
   /** the pageformat used in this page. */
   private PageFormat pageFormat;
+  
   /** the emptyCellCounter is used to optimize the printing. */
   private int emptyCellCounter;
 
@@ -380,7 +409,10 @@ public class PrinterCommandSet
    */
   public void setLineSpacing (int spaceInInch) throws IOException
   {
-    if (spaceInInch <= 0) throw new IllegalArgumentException();
+    if (spaceInInch <= 0) 
+    {
+      throw new IllegalArgumentException();
+    }
     this.lineSpacing = spaceInInch;
   }
 
@@ -480,16 +512,16 @@ public class PrinterCommandSet
 
     PageFormatFactory fact = PageFormatFactory.getInstance();
     Paper paper = pageFormat.getPaper();
-    int cWidthPoints = 72/getCharacterWidth();
-    int left = (int)(fact.getLeftBorder(paper) / cWidthPoints);
-    int right = (int)(fact.getRightBorder(paper) / cWidthPoints);
+    int cWidthPoints = 72 / getCharacterWidth();
+    int left = (int) (fact.getLeftBorder(paper) / cWidthPoints);
+    int right = (int) (fact.getRightBorder(paper) / cWidthPoints);
     setHorizontalBorder(left, right);
 
     int top = (int) (fact.getTopBorder(paper) * 20);
     int bottom = (int) (fact.getBottomBorder(paper) * 20);
     setVerticalBorder(top, bottom);
 
-    int lines = (int)((paper.getHeight() / 72) * getDefaultLPI());
+    int lines = (int) ((paper.getHeight() / 72) * getDefaultLPI());
     setPaperSize(lines);
   }
 
@@ -500,7 +532,7 @@ public class PrinterCommandSet
    */
   public void startPage ()  throws IOException
   {
-    int topBorderLines = ((getBorderTop()/ 1440) / getLineSpacing());
+    int topBorderLines = ((getBorderTop() / 1440) / getLineSpacing());
     for (int i = 0; i < topBorderLines; i++)
     {
       startLine(); endLine();
@@ -519,7 +551,7 @@ public class PrinterCommandSet
     {
       startLine(); endLine();
     }
-   out.write(FORM_FEED);
+    out.write(FORM_FEED);
   }
 
   /**
@@ -537,7 +569,7 @@ public class PrinterCommandSet
    *
    * @throws IOException if an IOError occures.
    */
-  public void endLine ()  throws IOException
+  public void endLine () throws IOException
   {
     emptyCellCounter = 0;
     // CR = (ASCII #13) reset the print position to the start of the line

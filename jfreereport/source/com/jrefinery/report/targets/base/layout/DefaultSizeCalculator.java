@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * --------------------------
  * DefaultSizeCalculator.java
- * -------------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * --------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.4 2003/02/25 18:46:59 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.5 2003/02/26 13:57:59 mungady Exp $
  *
  * Changes
  * -------
@@ -91,13 +91,13 @@ public class DefaultSizeCalculator implements SizeCalculator
 
       // On a 1.4 version, the aliasing has no influence on non-fractional metrics
       // aliasing has no influence on any version if fractional metrics are enabled.
-      FontRenderContext frc_alias = new FontRenderContext(null, true, false);
-      FontRenderContext frc_noAlias = new FontRenderContext(null, false, false);
+      FontRenderContext frcAlias = new FontRenderContext(null, true, false);
+      FontRenderContext frcNoAlias = new FontRenderContext(null, false, false);
       Font font = new Font ("Serif", Font.PLAIN, 10);
       String myText = "A simple text with some characters to calculate the length.";
 
-      double wAlias =  font.getStringBounds(myText, 0, myText.length(), frc_alias).getWidth();
-      double wNoAlias =  font.getStringBounds(myText, 0, myText.length(), frc_noAlias).getWidth();
+      double wAlias =  font.getStringBounds(myText, 0, myText.length(), frcAlias).getWidth();
+      double wNoAlias =  font.getStringBounds(myText, 0, myText.length(), frcNoAlias).getWidth();
       isBuggyVersion = (wAlias != wNoAlias);
       boolean buggyOverride = ReportConfiguration.getGlobalConfig().isG2BuggyFRC();
       Log.debug ("This is a buggy version of the font-renderer context: " + isBuggyVersion);

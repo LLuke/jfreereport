@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FontDefinition.java,v 1.8 2003/02/25 18:46:50 taqua Exp $
+ * $Id: FontDefinition.java,v 1.9 2003/02/26 16:42:23 mungady Exp $
  *
  * Changes
  * -------
@@ -52,19 +52,19 @@ import com.jrefinery.report.util.StringUtil;
 public class FontDefinition implements Serializable, Cloneable
 {
   /** a constant to draw a font in bold style. */
-  public static boolean BOLD = true;
+  public static final boolean BOLD = true;
   
   /** a constant to draw a font in italic style. */
-  public static boolean ITALIC = true;
+  public static final boolean ITALIC = true;
   
   /** a constant to draw a font with underline style. */
-  public static boolean UNDERLINE = true;
+  public static final boolean UNDERLINE = true;
   
   /** a constant to draw a font with strikethrough style. */
-  public static boolean STRIKETHROUGH = true;
+  public static final boolean STRIKETHROUGH = true;
   
   /** a constant to draw a font in plain style. */
-  public static boolean PLAIN = false;
+  public static final boolean PLAIN = false;
 
   /** the preferred text encoding for this font. */
   private String fontEncoding;
@@ -299,9 +299,13 @@ public class FontDefinition implements Serializable, Cloneable
   public String getFontEncoding (String defaultEncoding)
   {
     if (this.fontEncoding == null)
+    {
       return defaultEncoding;
+    }
     else
+    {
       return fontEncoding;
+    }
   }
 
   /**

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
+ * ------------------
  * PlainTextPage.java
- * --------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * ------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextPage.java,v 1.9 2003/02/21 16:31:30 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.10 2003/02/25 18:47:08 taqua Exp $
  *
  * Changes
  * -------
@@ -37,13 +37,15 @@
  */
 package com.jrefinery.report.targets.pageable.output;
 
-import com.jrefinery.report.targets.FontDefinition;
-
 import java.io.IOException;
+
+import com.jrefinery.report.targets.FontDefinition;
 
 /**
  * The plain text page is used to buffer a complete page and to write the
  * buffered data when the page is closed.
+ * 
+ * @author Thomas Morgner
  */
 public class PlainTextPage
 {
@@ -54,12 +56,16 @@ public class PlainTextPage
   {
     /** The text that should be printed. */
     private String text;
+    
     /** The font definition stores the font style. */
     private FontDefinition font;
+    
     /** the column where the text starts. */
     private int x;
+    
     /** the row of the text. */
     private int y;
+    
     /** the text width. */
     private int width;
 
@@ -134,10 +140,13 @@ public class PlainTextPage
 
   /** the page buffer is used to store all TextDataChunks. */
   private TextDataChunk[][] pageBuffer;
+  
   /** The commandset that is used to finally print the content. */
   private PrinterCommandSet commandSet;
+  
   /** The width of the page in characters. */
   private int width;
+  
   /** the height of the page in lines. */
   private int height;
 
@@ -151,8 +160,14 @@ public class PlainTextPage
    */
   public PlainTextPage(int w, int h, PrinterCommandSet commandSet)
   {
-    if (w <= 0) throw new IllegalArgumentException("W <= 0");
-    if (h <= 0) throw new IllegalArgumentException("W <= 0");
+    if (w <= 0) 
+    {
+      throw new IllegalArgumentException("W <= 0");
+    }
+    if (h <= 0) 
+    {
+      throw new IllegalArgumentException("W <= 0");
+    }
     pageBuffer = new TextDataChunk[w][h];
     width = w;
     height = h;
@@ -189,11 +204,26 @@ public class PlainTextPage
    */
   public void addTextChunk(int x, int y, int w, String text, FontDefinition format)
   {
-    if (x < 0) throw new IllegalArgumentException("X < 0");
-    if (y < 0) throw new IllegalArgumentException("y < 0");
-    if (w < 0) throw new IllegalArgumentException("w < 0");
-    if (x + w > width) throw new IllegalArgumentException("X+W > bufferWidth");
-    if (y > height) throw new IllegalArgumentException("Y > bufferHeight: " + text + " y=" + y + " h=" + height);
+    if (x < 0) 
+    {
+      throw new IllegalArgumentException("X < 0");
+    }
+    if (y < 0) 
+    {
+      throw new IllegalArgumentException("y < 0");
+    }
+    if (w < 0) 
+    {
+      throw new IllegalArgumentException("w < 0");
+    }
+    if (x + w > width) 
+    {
+      throw new IllegalArgumentException("X+W > bufferWidth");
+    }
+    if (y > height) 
+    {
+      throw new IllegalArgumentException("Y > bufferHeight: " + text + " y=" + y + " h=" + height);
+    }
 
     TextDataChunk chunk = new TextDataChunk(text, format, x, y, w);
     for (int i = 0; i < w; i++)

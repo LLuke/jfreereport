@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------------
+ * -------------------------
  * ContentFactoryModule.java
- * ------------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentFactoryModule.java,v 1.1 2003/02/07 22:40:39 taqua Exp $
+ * $Id: ContentFactoryModule.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,8 @@ import com.jrefinery.report.targets.base.layout.LayoutSupport;
  * is able to create a certain content type from the given element's data.
  *
  * @see DefaultContentFactory 
+ * 
+ * @author Thomas Morgner
  */
 public interface ContentFactoryModule
 {
@@ -56,7 +58,7 @@ public interface ContentFactoryModule
    *
    * @return <code>true</code> or <code>false</code>.
    */
-  public abstract boolean canHandleContent (String contentType);
+  public boolean canHandleContent (String contentType);
 
   /**
    * Creates content for an element.
@@ -69,7 +71,8 @@ public interface ContentFactoryModule
    *
    * @throws ContentCreationException if there is a problem with the Content creation.
    */
-  public abstract Content createContentForElement(Element e, ElementLayoutInformation bounds, LayoutSupport ot)
+  public Content createContentForElement(Element e, ElementLayoutInformation bounds, 
+                                         LayoutSupport ot)
       throws ContentCreationException;
 
 }

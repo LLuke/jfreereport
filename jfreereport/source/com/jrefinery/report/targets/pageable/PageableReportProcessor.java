@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------------------
  * PageableReportProcessor.java
  * ----------------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.26 2003/02/20 21:05:00 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.27 2003/02/22 18:52:28 taqua Exp $
  *
  * Changes
  * -------
@@ -41,20 +41,19 @@
 
 package com.jrefinery.report.targets.pageable;
 
+import java.awt.print.PageFormat;
+import java.util.Iterator;
+
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportInterruptedException;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
 import com.jrefinery.report.targets.pageable.pagelayout.PageLayouter;
 import com.jrefinery.report.targets.pageable.pagelayout.SimplePageLayouter;
-
-import java.awt.print.PageFormat;
-import java.util.Iterator;
 
 /**
  * A report processor for Pageable OutputTargets. The processor coordinates
@@ -119,7 +118,8 @@ public class PageableReportProcessor
    * If this is set to true and the thread was interrupted, then the report processing
    * is aborted.
    *
-   * @param handleInterruptedState true, if the processor should check the current thread state, false otherwise.
+   * @param handleInterruptedState true, if the processor should check the current thread state, 
+   *                               false otherwise.
    */
   public void setHandleInterruptedState(boolean handleInterruptedState)
   {
@@ -324,7 +324,9 @@ public class PageableReportProcessor
           {
             state = new StartState((FinishState) state, level);
             if (state.getCurrentPage() != 1)
+            {
               throw new IllegalStateException("State was not set up properly");
+            }
           }
           else
           {
@@ -367,7 +369,8 @@ public class PageableReportProcessor
    * @return The report state suitable for the next page or ReportState.FinishState.
    *
    * @throws IllegalArgumentException if the given state is a start or a finish state.
-   * @throws ReportProcessingException if there is a problem processing the report or the current thread has been interrupted.
+   * @throws ReportProcessingException if there is a problem processing the report or the 
+   *                                   current thread has been interrupted.
    */
   public ReportState processPage(final ReportState currPage, OutputTarget out)
       throws ReportProcessingException
@@ -412,7 +415,9 @@ public class PageableReportProcessor
     {
       state = state.advance();
       if (state.isFinish() == false)
+      {
         throw new ReportProcessingException("State finished page during restore");
+      }
     }
     else
     {

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * --------------------
  * PDFOutputTarget.java
  * --------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2002, 2003, by Simba Management Limited.and Contributors; 
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.27 2003/02/22 18:52:29 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.28 2003/02/25 18:47:07 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,18 @@
 
 package com.jrefinery.report.targets.pageable.output;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Rectangle2D;
+import java.awt.print.PageFormat;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ShapeElement;
@@ -59,9 +71,9 @@ import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.LogicalPageImpl;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
+import com.jrefinery.report.targets.support.itext.BaseFontFactory;
 import com.jrefinery.report.targets.support.itext.BaseFontRecord;
 import com.jrefinery.report.targets.support.itext.BaseFontSupport;
-import com.jrefinery.report.targets.support.itext.BaseFontFactory;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.keypoint.PngEncoder;
@@ -74,18 +86,6 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
-
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Paint;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Rectangle2D;
-import java.awt.print.PageFormat;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
 
 /**
  * An output target for the report engine that generates a PDF file using the iText class library
@@ -102,6 +102,7 @@ import java.net.MalformedURLException;
  * The Encoding property is now a string with one of the values of "none" "40bit" or "128bit".
  *
  * @author David Gilbert
+ * @author Thomas Morgner
  */
 public class PDFOutputTarget extends AbstractOutputTarget
 {
@@ -301,9 +302,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
       return; // no need to do anything ...
     }
     this.fontDefinition = font;
-    this.baseFont = fontSupport.createBaseFont(font,
-                                               font.getFontEncoding(getFontEncoding()),
-                                               (isEmbedFonts() || font.isEmbeddedFont())).getBaseFont();
+    this.baseFont = fontSupport.createBaseFont(font, font.getFontEncoding(getFontEncoding()),
+                        (isEmbedFonts() || font.isEmbeddedFont())).getBaseFont();
     if (baseFont == null)
     {
       throw new OutputTargetException("The font definition was not successfull.");
@@ -372,7 +372,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return an image.
    *
-   * @throws DocumentException if no PDFImageElement could be created using the given ImageReference.
+   * @throws DocumentException if no PDFImageElement could be created using the given 
+   *                           ImageReference.
    * @throws IOException if the image could not be read.
    */
   private Image getImage(ImageReference imageRef) throws DocumentException, IOException
@@ -382,7 +383,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     try
     {
-      Rectangle2D drawArea = new Rectangle2D.Float (0, 0, (float) bounds.getWidth(), (float) bounds.getHeight());
+      Rectangle2D drawArea = new Rectangle2D.Float (0, 0, (float) bounds.getWidth(), 
+                                                          (float) bounds.getHeight());
       if ((imageRef.getSourceURL() != null) && (drawArea.contains(imageBounds)))
       {
         return Image.getInstance(imageRef.getSourceURL());
@@ -400,7 +402,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
     if (imageRef.getImage() != null)
     {
       // use best compression but iText does not support the Alpha-Channel ...
-      PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.NO_ALPHA, PngEncoder.FILTER_NONE, 9);
+      PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.NO_ALPHA, 
+                                          PngEncoder.FILTER_NONE, 9);
       byte[] data = encoder.pngEncode();
       return Image.getInstance(data);
     }
@@ -589,7 +592,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public void open() throws OutputTargetException
   {
-//    Log.debug ("Opening PDFTarget: Encoding: " + getFontEncoding() + " DefaultEncoding: " + getDefaultFontEncoding());
 
     PageFormat pageFormat = getLogicalPage().getPhysicalPageFormat();
     float urx = (float) pageFormat.getWidth();

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * ----------------------------------
  * ScrollableResultSetTableModel.java
  * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, 2003, by Thomas Morgner.
  *
- * $Id: ScrollableResultSetTableModel.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
+ * $Id: ScrollableResultSetTableModel.java,v 1.2 2003/02/04 17:56:23 taqua Exp $
  *
  * Changes
  * -------
@@ -35,13 +35,14 @@
  */
 package com.jrefinery.report.tablemodel;
 
-import com.jrefinery.report.util.CloseableTableModel;
-import com.jrefinery.report.util.Log;
-
-import javax.swing.table.AbstractTableModel;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+
+import javax.swing.table.AbstractTableModel;
+
+import com.jrefinery.report.util.CloseableTableModel;
+import com.jrefinery.report.util.Log;
 
 /**
  * A tableModel which is backed up by a java.sql.ResultSet. Use this to directly feed your
@@ -77,7 +78,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @param resultset  the result set.
    *
-   * @throws java.sql.SQLException if there is a problem with the result set.
+   * @throws SQLException if there is a problem with the result set.
    */
   public ScrollableResultSetTableModel (ResultSet resultset) throws SQLException
   {
@@ -103,7 +104,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @param resultset the new result set.
    *
-   * @throws java.sql.SQLException if there is a problem with the result set.
+   * @throws SQLException if there is a problem with the result set.
    */
   public void updateResultSet (ResultSet resultset) throws SQLException
   {

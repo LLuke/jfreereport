@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------
  * TopAlignment.java
  * -----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TopAlignment.java,v 1.5 2003/02/07 22:40:43 taqua Exp $
+ * $Id: TopAlignment.java,v 1.6 2003/02/18 19:37:31 taqua Exp $
  *
  * Changes
  * -------
@@ -37,8 +37,6 @@
  */
 
 package com.jrefinery.report.targets.pageable.operations;
-
-import com.jrefinery.report.targets.pageable.operations.VerticalBoundsAlignment;
 
 import java.awt.geom.Rectangle2D;
 

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------------------
  * ResultSetTableModelFactory.java
  * -------------------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.4 2003/02/25 14:07:32 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.5 2003/02/25 18:46:49 taqua Exp $
  *
  * Changes
  * -------
@@ -40,20 +40,22 @@
  */
 package com.jrefinery.report.tablemodel;
 
-import com.jrefinery.report.util.CloseableTableModel;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.ReportConfiguration;
-
-import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.table.DefaultTableModel;
+
+import com.jrefinery.report.util.CloseableTableModel;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
+
 /**
  * Creates a <code>TableModel</code> which is backed up by a <code>ResultSet</code>.
- * If the <code>ResultSet</code> is scrollable, a {@link com.jrefinery.report.tablemodel.ScrollableResultSetTableModel} is
+ * If the <code>ResultSet</code> is scrollable, a 
+ * {@link com.jrefinery.report.tablemodel.ScrollableResultSetTableModel} is
  * created, otherwise all data is copied from the <code>ResultSet</code> into a
  * <code>DefaultTableModel</code>.
  * <p>
@@ -77,7 +79,8 @@ public class ResultSetTableModelFactory
   /**
    * Creates a table model by using the given <code>ResultSet</code> as the backend.
    * If the <code>ResultSet</code> is scrollable (the type is not <code>TYPE_FORWARD_ONLY</code>),
-   * an instance of {@link com.jrefinery.report.tablemodel.ScrollableResultSetTableModel} is returned. This model uses the
+   * an instance of {@link com.jrefinery.report.tablemodel.ScrollableResultSetTableModel} is 
+   * returned. This model uses the
    * extended capabilities of scrollable resultsets to directly read data from the database
    * without caching or the need of copying the complete <code>ResultSet</code> into the programs
    * memory.
@@ -89,7 +92,7 @@ public class ResultSetTableModelFactory
    *
    * @return a closeable table model.
    *
-   * @throws java.sql.SQLException if there is a problem with the result set.
+   * @throws SQLException if there is a problem with the result set.
    */
   public CloseableTableModel createTableModel(ResultSet rs)
       throws SQLException
@@ -173,7 +176,7 @@ public class ResultSetTableModelFactory
    *
    * @return a closeable table model.
    *
-   * @throws java.sql.SQLException if there is a problem with the result set.
+   * @throws SQLException if there is a problem with the result set.
    */
   public CloseableTableModel generateDefaultTableModel(ResultSet rs)
       throws SQLException

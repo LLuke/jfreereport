@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------------
  * TextOperationModule.java
  * ------------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.8 2003/02/07 22:40:43 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.9 2003/02/09 23:09:15 taqua Exp $
  *
  * Changes
  * -------
@@ -39,21 +39,18 @@
 
 package com.jrefinery.report.targets.pageable.operations;
 
-import com.jrefinery.report.Element;
-import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.pageable.operations.CenterAlignment;
-import com.jrefinery.report.targets.pageable.operations.MiddleAlignment;
-import com.jrefinery.report.targets.pageable.operations.BottomAlignment;
-import com.jrefinery.report.targets.base.content.Content;
-import com.jrefinery.report.targets.base.content.TextLine;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.util.Log;
-
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.jrefinery.report.Element;
+import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.base.content.Content;
+import com.jrefinery.report.targets.base.content.TextLine;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.util.Log;
 
 /**
  * Creates the required operations to display/print text content in the output target.

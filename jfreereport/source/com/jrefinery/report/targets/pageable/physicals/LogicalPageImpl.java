@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * --------------------
  * LogicalPageImpl.java
  * --------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.25 2003/02/19 15:28:16 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.26 2003/02/25 15:42:26 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,10 @@
 
 package com.jrefinery.report.targets.pageable.physicals;
 
+import java.awt.geom.Rectangle2D;
+import java.awt.print.PageFormat;
+import java.util.List;
+
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
@@ -52,18 +56,14 @@ import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
-import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
-import com.jrefinery.report.targets.pageable.operations.OperationFactory;
-import com.jrefinery.report.targets.pageable.operations.TextOperationModule;
 import com.jrefinery.report.targets.pageable.operations.ImageOperationModule;
+import com.jrefinery.report.targets.pageable.operations.OperationFactory;
+import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
 import com.jrefinery.report.targets.pageable.operations.ShapeOperationModule;
+import com.jrefinery.report.targets.pageable.operations.TextOperationModule;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
-
-import java.awt.geom.Rectangle2D;
-import java.awt.print.PageFormat;
-import java.util.List;
 
 /**
  * A simple logical page implementation. Does work with a single physical page
@@ -91,6 +91,7 @@ public class LogicalPageImpl implements LogicalPage
   /** A flag that indicates whether or not the logical page is closed. */
   private boolean closed;
 
+  /** The operation factory. */
   private OperationFactory operationFactory;
 
   /**
@@ -423,7 +424,8 @@ public class LogicalPageImpl implements LogicalPage
     ContentFactory factory = outputTarget.getContentFactory();
     if (factory.canHandleContent(e.getContentType()) == false)
     {
-      Log.debug (new Log.SimpleMessage("The OutputTarget does not support the content type: ", e.getContentType()));
+      Log.debug (new Log.SimpleMessage("The OutputTarget does not support the content type: ", 
+                                       e.getContentType()));
       return;
     }
     Rectangle2D elementBounds = (Rectangle2D)
@@ -446,8 +448,9 @@ public class LogicalPageImpl implements LogicalPage
     {
       Content content = factory.createContentForElement(e, eli, getOutputTarget());
       if (content == null)
+      {
         return;
-
+      }
       // split the elements contents, then write ..
       List opsList = getOperationFactory().createOperations(e, content, drawBounds);
       PhysicalOperation[] ops = new PhysicalOperation[opsList.size()];

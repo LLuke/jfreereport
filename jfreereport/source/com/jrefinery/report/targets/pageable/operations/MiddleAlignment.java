@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------
  * LeftAlignment.java
  * ------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MiddleAlignment.java,v 1.5 2003/02/07 22:40:42 taqua Exp $
+ * $Id: MiddleAlignment.java,v 1.6 2003/02/18 19:37:31 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,8 @@ public class MiddleAlignment extends VerticalBoundsAlignment
     }
     r = referenceBounds.createIntersection(r);
     float x = (float) r.getX();
-    float y = (float) (referenceBounds.getY() + ((referenceBounds.getHeight() - r.getHeight()) / 2));
+    float y = (float) (referenceBounds.getY() 
+                       + ((referenceBounds.getHeight() - r.getHeight()) / 2));
     float w = (float) r.getWidth();
     float h = (float) r.getHeight();
     return new Rectangle2D.Float(x, y, w, h);

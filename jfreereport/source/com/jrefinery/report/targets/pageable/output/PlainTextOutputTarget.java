@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
+ * --------------------------
  * PlainTextOutputTarget.java
- * --------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * --------------------------
+ * (C)opyright 2003, by Thomas Morgner.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.14 2003/02/22 18:52:29 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.15 2003/02/25 18:47:08 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,13 @@
  * 21-Feb-2003 : Fixed a bug with unclean calculations when writing strings.
  */
 package com.jrefinery.report.targets.pageable.output;
+
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.Rectangle2D;
+import java.awt.print.PageFormat;
+import java.io.IOException;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FontDefinition;
@@ -48,13 +55,6 @@ import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.ReportConfiguration;
-
-import java.awt.Paint;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.Rectangle2D;
-import java.awt.print.PageFormat;
-import java.io.IOException;
 
 /**
  * An outputtarget, that generates plaintext. The text can be enriched with
@@ -86,6 +86,8 @@ import java.io.IOException;
  * @see IBMPrinterCommandSet
  * @see EpsonPrinterCommandSet
  * @see PlainTextPage
+ * 
+ * @author Thomas Morgner
  */
 public class PlainTextOutputTarget extends AbstractOutputTarget
 {
@@ -149,6 +151,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     /** the current character width. */
     private float characterWidth;
+    
     /** the current character height. */
     private float characterHeight;
 
@@ -175,11 +178,20 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      */
     public float getStringWidth(String text, int lineStartPos, int endPos)
     {
-      if (lineStartPos < 0) throw new IllegalArgumentException("LineStart < 0");
-      if (endPos < lineStartPos) throw new IllegalArgumentException("LineEnd < LineStart");
-      if (endPos > text.length()) throw new IllegalArgumentException("EndPos > TextLength");
+      if (lineStartPos < 0) 
+      {
+        throw new IllegalArgumentException("LineStart < 0");
+      }
+      if (endPos < lineStartPos) 
+      {
+        throw new IllegalArgumentException("LineEnd < LineStart");
+      }
+      if (endPos > text.length()) 
+      {
+        throw new IllegalArgumentException("EndPos > TextLength");
+      }
 
-      return characterWidth * ((float)(endPos - lineStartPos));
+      return characterWidth * ((float) (endPos - lineStartPos));
     }
 
     /**
@@ -195,24 +207,34 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
 
   /** a flag indicating whether this OutputTarget is open. */
   private boolean open;
+  
   /** the current font definition. */
   private FontDefinition font;
+  
   /** the current paint, is not used. */
   private Paint paint;
+  
   /** the current stroke, is not used. */
   private Stroke stroke;
+  
   /** the current page width in CPI. */
   private int currentPageWidth;
+  
   /** the current page height in LPI. */
   private int currentPageHeight;
+  
   /** the character width in points. */
   private float characterWidth;
+  
   /** the character height in points. */
   private float characterHeight;
+  
   /** the current save state of this output target. */
   private PlainTextState savedState;
+  
   /** the currently generated page. */
   private PlainTextPage pageBuffer;
+  
   /** the current printer command set used to write and format the page. */
   private PrinterCommandSet commandSet;
 
@@ -228,8 +250,9 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     super(format);
     if (commandSet == null)
+    {
       throw new NullPointerException();
-
+    }
     this.commandSet = commandSet;
   }
 
@@ -242,12 +265,14 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    * @param physical  the page format used by this target for printing.
    * @throws NullPointerException if the printer command set is null
    */
-  public PlainTextOutputTarget(PageFormat logical, PageFormat physical, PrinterCommandSet commandSet)
+  public PlainTextOutputTarget(PageFormat logical, PageFormat physical, 
+                               PrinterCommandSet commandSet)
   {
     super(logical, physical);
     if (commandSet == null)
+    {
       throw new NullPointerException();
-
+    }
     this.commandSet = commandSet;
   }
 
@@ -263,8 +288,9 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     super(logicalPage);
     if (commandSet == null)
+    {
       throw new NullPointerException();
-
+    }
     this.commandSet = commandSet;
   }
 
@@ -287,7 +313,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     try
     {
       // 1 inch = 72 point
-      characterWidth = (72f / (float)commandSet.getDefaultCPI());
+      characterWidth = (72f / (float) commandSet.getDefaultCPI());
       characterHeight = (72f / (float) commandSet.getDefaultLPI());
     }
     catch (Exception e)

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------
  * ImageContent.java
  * -----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.3 2003/02/18 19:37:29 taqua Exp $
+ * $Id: ImageContent.java,v 1.4 2003/02/25 18:46:55 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,8 @@ public class ImageContent implements Content
   }
 
   /**
-   * Returns the content type, in this case {@link com.jrefinery.report.targets.base.content.ContentType#IMAGE}.
+   * Returns the content type, in this case 
+   * {@link com.jrefinery.report.targets.base.content.ContentType#IMAGE}.
    *
    * @return the content type.
    */

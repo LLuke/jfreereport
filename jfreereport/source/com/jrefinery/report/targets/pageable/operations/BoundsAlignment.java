@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * --------------------
  * BoundsAlignment.java
  * --------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BoundsAlignment.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
+ * $Id: BoundsAlignment.java,v 1.5 2003/02/07 22:40:41 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,8 @@ public abstract class BoundsAlignment
   /**
    * Aligns a rectangle with this object's reference bounds.
    * <P>
-   * Subclasses determine the exact alignment behaviour (for example, the {@link com.jrefinery.report.targets.pageable.operations.TopAlignment}
+   * Subclasses determine the exact alignment behaviour (for example, the 
+   * {@link com.jrefinery.report.targets.pageable.operations.TopAlignment}
    * class will align a rectangle to the top of the reference bounds).
    *
    * @param r  the rectangle to be aligned with this object's reference bounds.

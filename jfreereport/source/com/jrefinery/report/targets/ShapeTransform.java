@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * ShapeTransform.java
  * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.2 2003/01/28 22:05:24 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.3 2003/02/07 20:26:26 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,8 @@ import java.awt.geom.Rectangle2D;
 
 /**
  * Utility class, which resizes a Shape.
+ * 
+ * @author Thomas Morgner
  */
 public class ShapeTransform
 {
@@ -62,7 +64,8 @@ public class ShapeTransform
    * @param dim the target dimension.
    * @return the transformed shape
    */
-  public static Shape transformShape (Shape s, boolean scale, boolean keepAR, Point2D point, Dimension2D dim)
+  public static Shape transformShape (Shape s, boolean scale, boolean keepAR, Point2D point, 
+                                      Dimension2D dim)
   {
     AffineTransform af = AffineTransform.getTranslateInstance(-point.getX(), -point.getY());
 

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * LayoutSupport.java
  * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutSupport.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
+ * $Id: LayoutSupport.java,v 1.3 2003/02/26 13:58:00 mungady Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public interface LayoutSupport
    *
    * @return the size calculator.
    *
-   * @throws SizecalculatorException if there is a problem with the output target.
+   * @throws SizeCalculatorException if there is a problem with the output target.
    */
   public SizeCalculator createTextSizeCalculator(FontDefinition font) 
       throws SizeCalculatorException;

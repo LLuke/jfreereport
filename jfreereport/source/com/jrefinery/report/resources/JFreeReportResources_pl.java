@@ -138,9 +138,9 @@ public class JFreeReportResources_pl extends JFreeReportResources
             {"pdfsavedialog.ownerpasswordNoMatch", 
                 "Has\u0142o i potwierdzenie has\u0142a s\u0105 r\u00f3\u017cne."},
 
-            {"pdfsavedialog.ownerpasswordEmpty", "Nie podano has\u0142a w\u0142a\u015bciciela. " +
-              "U\u017cytkownicy b\u0119d\u0105 mogli zmienia\u0107 ustawienia zabezpiecze\u0144. "
-              + "Kontynuowa\u0107?" },
+            {"pdfsavedialog.ownerpasswordEmpty", "Nie podano has\u0142a w\u0142a\u015bciciela. " 
+                + "U\u017cytkownicy b\u0119d\u0105 mogli zmienia\u0107 ustawienia "
+                + "zabezpiecze\u0144. Kontynuowa\u0107?" },
 
             {"pdfsavedialog.errorTitle", "B\u0142\u0105d"},
             {"pdfsavedialog.targetIsEmpty", "Prosz\u0119 poda\u0107 nazw\u0119 pliku PDF."},

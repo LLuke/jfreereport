@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,21 +20,25 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------
+ * -----------------------------
  * TextContentFactoryModule.java
- * -------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -----------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.3 2003/02/18 19:37:30 taqua Exp $
+ * $Id: TextContentFactoryModule.java,v 1.4 2003/02/25 18:46:58 taqua Exp $
  *
  * Changes
  * -------
  * 07-Feb-2003 : Initial version, extracted from OperationFactoryModule
  */
 package com.jrefinery.report.targets.base.content;
+
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.FloatDimension;
@@ -44,13 +48,11 @@ import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.base.layout.SizeCalculatorException;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 /**
  * The TextContentFactoryModule creates plain text content from the given element.
  * The content type of the used element should be "text/plain".
+ * 
+ * @author Thomas Morgner
  */
 public class TextContentFactoryModule implements ContentFactoryModule
 {
@@ -83,9 +85,11 @@ public class TextContentFactoryModule implements ContentFactoryModule
    * @param ot  the output target.
    *
    * @return the content.
-   * @throws ContentCreationException
+   * 
+   * @throws ContentCreationException if there is a problem creating the content.
    */
-  public Content createContentForElement(Element e, ElementLayoutInformation bounds, LayoutSupport ot)
+  public Content createContentForElement(Element e, ElementLayoutInformation bounds, 
+                                         LayoutSupport ot)
     throws ContentCreationException
   {
     Point2D point = bounds.getAbsolutePosition();
@@ -109,7 +113,8 @@ public class TextContentFactoryModule implements ContentFactoryModule
     Float lh = (Float) e.getStyle().getStyleProperty(ElementStyleSheet.LINEHEIGHT);
     try
     {
-      TextContent tc = new TextContent(text, lh.floatValue(), tBounds, ot.createTextSizeCalculator(f));
+      TextContent tc = new TextContent(text, lh.floatValue(), tBounds, 
+                                       ot.createTextSizeCalculator(f));
       return tc;
     }
     catch (SizeCalculatorException se)

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * --------------------
  * CenterAlignment.java
  * --------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CenterAlignment.java,v 1.6 2003/02/07 22:40:41 taqua Exp $
+ * $Id: CenterAlignment.java,v 1.7 2003/02/18 19:37:31 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,8 @@ public class CenterAlignment extends HorizontalBoundsAlignment
       throw new NullPointerException("Inner Bound must not be null");
     }
     inner = referenceBounds.createIntersection(inner);
-    float x = (float) (referenceBounds.getX() + ((referenceBounds.getWidth() - inner.getWidth()) / 2));
+    float x = (float) (referenceBounds.getX() 
+                       + ((referenceBounds.getWidth() - inner.getWidth()) / 2));
     float y = (float) inner.getY();
     float w = (float) inner.getWidth();
     float h = (float) inner.getHeight();

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ---------------------
  * FlowPageLayouter.java
  * ---------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FlowPageLayouter.java,v 1.6 2003/02/17 16:07:20 taqua Exp $
+ * $Id: FlowPageLayouter.java,v 1.7 2003/02/25 15:42:25 taqua Exp $
  *
  * Changes
  * -------
@@ -37,13 +37,13 @@
  */
 package com.jrefinery.report.targets.pageable.pagelayout;
 
+import java.util.ArrayList;
+import java.util.Stack;
+
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.ReportState;
-
-import java.util.ArrayList;
-import java.util.Stack;
 
 /**
  * A page layouter.  No real implementation ... next release ..
@@ -172,6 +172,11 @@ public class FlowPageLayouter extends PageLayouter
     super.initialize();
   }
 
+  /**
+   * Returns <code>false</code>.
+   * 
+   * @return <code>false</code>.
+   */
   public boolean isNewPageStarted()
   {
     return false;

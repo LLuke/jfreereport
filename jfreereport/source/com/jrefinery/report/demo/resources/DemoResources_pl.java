@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------
+ * ---------------------
  * DemoResources_pl.java
- * ------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * ---------------------
+ * (C)opyright 2002, 2003, by Piotr Bzdyl.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
+ * Original Author:  Piotr Bzdyl;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_pl.java,v 1.1 2003/01/30 12:38:44 pbzdyl Exp $
+ * $Id: DemoResources_pl.java,v 1.2 2003/02/06 17:38:17 taqua Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,8 @@ public class DemoResources_pl extends JFreeReportResources
     {"exitdialog.message", "Czy na pewno wyj\u015b\u0107 z programu?"},
 
 
-    {"report.definitionnotfound", "Definicja raportu {0} nie znaleziona w \u015bcie\u017ce (classpath)"},
+    {"report.definitionnotfound", 
+        "Definicja raportu {0} nie znaleziona w \u015bcie\u017ce (classpath)"},
     {"report.definitionfailure.message", "Nie mo\u017cna za\u0142adowa� definicji raportu {0}."},
     {"report.definitionfailure.title", "B\u0142\u0105d podczas \u0142adowania (Loader error)"},
     {"report.definitionnull", "Definicja raportu nie zosta\u0142a wygenerowana"},

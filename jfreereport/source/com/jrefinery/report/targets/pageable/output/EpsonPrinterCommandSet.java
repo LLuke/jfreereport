@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ---------------------------
  * EpsonPrinterCommandSet.java
- * -------------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * ---------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   Thomas Morgner;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EpsonPrinterCommandSet.java,v 1.5 2003/02/21 16:31:29 taqua Exp $
+ * $Id: EpsonPrinterCommandSet.java,v 1.6 2003/02/25 18:47:05 taqua Exp $
  *
  * Changes
  * -------
@@ -37,12 +37,12 @@
  */
 package com.jrefinery.report.targets.pageable.output;
 
-import com.jrefinery.report.util.StringUtil;
-
 import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+
+import com.jrefinery.report.util.StringUtil;
 
 /**
  * Implements the printer command set for Epson ESC/P compatible printers.
@@ -53,6 +53,8 @@ import java.io.UnsupportedEncodingException;
  *
  * @see PrinterCommandSet
  * @see PlainTextOutputTarget
+ * 
+ * @author Thomas Morgner
  */
 public class EpsonPrinterCommandSet extends PrinterCommandSet
 {
@@ -74,8 +76,8 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * the available fonts are defined in PrinterCommandSet. You may use additional fonts,
    * if your printer supports them.
    * <p>
-   * To use these fonts, specify the font parameter for the escape sequence 0x1b, 0x6b, [font-selection]
-   * as defined in your printers reference manual.
+   * To use these fonts, specify the font parameter for the escape sequence 0x1b, 0x6b, 
+   * [font-selection] as defined in your printers reference manual.
    *
    * @param fontSelection the printers font selection token.
    * @throws IOException if there was an IOError while writing the command.
@@ -83,8 +85,9 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
   public void setFont(byte fontSelection) throws IOException
   {
     if (fontSelection == getFont())
+    {
       return;
-
+    }
     getOut().write (0x1b);
     getOut().write (0x6b);
     getOut().write (fontSelection);
@@ -131,7 +134,10 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    */
   public void setCharacterWidth(byte charWidth) throws IOException
   {
-    if (charWidth == getCharacterWidth()) return;
+    if (charWidth == getCharacterWidth()) 
+    {
+      return;
+    }
 
     switch (charWidth)
     {

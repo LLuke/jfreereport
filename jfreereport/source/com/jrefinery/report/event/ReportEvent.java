@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportEvent.java,v 1.12 2002/12/13 10:22:44 mungady Exp $
+ * $Id: ReportEvent.java,v 1.13 2003/01/03 16:11:26 mungady Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -98,8 +98,9 @@ public class ReportEvent extends EventObject
   /**
    * Returns the currently assigned dataRow for this event. 
    * <p>
-   * The {@link DataRow} is used to access the fields of the {@link DataSource} and other 
-   * functions and expressions within the current row of the report.
+   * The {@link DataRow} is used to access the fields of the 
+   * {@link com.jrefinery.report.filter.DataSource} and other functions and expressions within the 
+   * current row of the report.
    *
    * @return the data row.
    */

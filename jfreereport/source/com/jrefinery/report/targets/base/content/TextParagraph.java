@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------
  * TextParagraph.java
  * ------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.7 2003/02/18 19:37:30 taqua Exp $
+ * $Id: TextParagraph.java,v 1.8 2003/02/25 18:46:59 taqua Exp $
  *
  * Changes
  * -------
@@ -38,12 +38,12 @@
  */
 package com.jrefinery.report.targets.base.content;
 
-import com.jrefinery.report.targets.base.layout.SizeCalculator;
-
 import java.awt.geom.Rectangle2D;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.jrefinery.report.targets.base.layout.SizeCalculator;
 
 /**
  * A paragraph of an given text content. A paragraph consists of one or more
@@ -98,8 +98,14 @@ public class TextParagraph extends ContentContainer
    */
   public void setContent(String content, Rectangle2D maxBounds)
   {
-    if (content == null) throw new NullPointerException("MaxBounds must not be null");
-    if (maxBounds == null) throw new NullPointerException("MaxBounds must not be null");
+    if (content == null) 
+    {
+      throw new NullPointerException("MaxBounds must not be null");
+    }
+    if (maxBounds == null) 
+    {
+      throw new NullPointerException("MaxBounds must not be null");
+    }
     if (maxBounds.getX () < 0)
     {
       throw new IllegalArgumentException();
@@ -132,8 +138,9 @@ public class TextParagraph extends ContentContainer
         String lineText = (String) l.get(i);
         TextLine line = new TextLine(getSizeCalculator(), lineHeight);
         float height = (float) maxBounds.getHeight();
-        line.setContent(lineText, new Rectangle2D.Float(x, y + usedHeight,
-                                                         (float) maxBounds.getWidth(), height - usedHeight));
+        line.setContent(lineText, 
+                        new Rectangle2D.Float(x, y + usedHeight,
+                                              (float) maxBounds.getWidth(), height - usedHeight));
         usedHeight += line.getBounds().getHeight();
         if (line.getBounds().getHeight() > 0)
         {
@@ -276,7 +283,8 @@ public class TextParagraph extends ContentContainer
    *
    * @param base  the base string.
    * @param lineStart  the position of the first character in the line.
-   * @param lastCheckedChar  the last character of the line, which is known to fit into the given width.
+   * @param lastCheckedChar  the last character of the line, which is known to fit into the given 
+   *                         width.
    * @param width  the maximum width.
    *
    * @return a string with '..' appended.
@@ -310,7 +318,8 @@ public class TextParagraph extends ContentContainer
     int maxFillerLength = base.length() - lastCheckedChar;
     for (int i = 0; i < maxFillerLength; i++)
     {
-      float fillerWidth = getSizeCalculator().getStringWidth(base, lastCheckedChar, lastCheckedChar + i);
+      float fillerWidth = getSizeCalculator().getStringWidth(base, lastCheckedChar, 
+                                                             lastCheckedChar + i);
       if (filler < fillerWidth)
       {
         return base.substring(lineStart, lastCheckedChar + i) + RESERVED_LITERAL;

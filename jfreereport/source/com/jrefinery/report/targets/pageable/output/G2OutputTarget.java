@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * G2OutputTarget.java
  * -------------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.22 2003/02/22 18:52:28 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.23 2003/02/25 18:47:06 taqua Exp $
  *
  * Changes
  * -------
@@ -45,17 +45,6 @@
 
 package com.jrefinery.report.targets.pageable.output;
 
-import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.base.layout.DefaultSizeCalculator;
-import com.jrefinery.report.targets.base.layout.SizeCalculator;
-import com.jrefinery.report.targets.pageable.LogicalPage;
-import com.jrefinery.report.targets.pageable.OutputTarget;
-import com.jrefinery.report.targets.pageable.OutputTargetException;
-import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.ReportConfiguration;
-
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -68,6 +57,17 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
+
+import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.base.layout.DefaultSizeCalculator;
+import com.jrefinery.report.targets.base.layout.SizeCalculator;
+import com.jrefinery.report.targets.pageable.LogicalPage;
+import com.jrefinery.report.targets.pageable.OutputTarget;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
 
 /**
  * A report output target that uses a Graphics2D object to draw the report.  This allows reports
@@ -315,14 +315,13 @@ public class G2OutputTarget extends AbstractOutputTarget
     Rectangle2D pageBounds = currentPage.getBounds();
     PageFormat currentPageFormat = page.getPageFormat();
     Rectangle2D bounds = new Rectangle2D.Float ((float) currentPageFormat.getImageableX(),
-                                                 (float) currentPageFormat.getImageableY(),
-                                                 (float) currentPageFormat.getImageableWidth() + 1,
-                                                 (float) currentPageFormat.getImageableHeight() + 1);
+                                                (float) currentPageFormat.getImageableY(),
+                                                (float) currentPageFormat.getImageableWidth() + 1,
+                                                (float) currentPageFormat.getImageableHeight() + 1);
     g2.clip(bounds);
-    g2.transform(AffineTransform.getTranslateInstance(currentPageFormat.getImageableX()
-                                                      + pageBounds.getX(),
-                                                      currentPageFormat.getImageableY()
-                                                      + pageBounds.getY()));
+    g2.transform(AffineTransform.getTranslateInstance(
+        currentPageFormat.getImageableX() + pageBounds.getX(),
+        currentPageFormat.getImageableY() + pageBounds.getY()));
     savedState = saveState();
   }
 
@@ -346,13 +345,14 @@ public class G2OutputTarget extends AbstractOutputTarget
   /**
    * Sets the font.
    *
-   * @param font The font.
+   * @param font  the font.
    */
   public void setFont(FontDefinition font)
   {
     if (font == null)
+    {
       throw new NullPointerException();
-
+    }
     this.fontDefinition = font;
     g2.setFont(font.getFont());
   }
@@ -498,7 +498,7 @@ public class G2OutputTarget extends AbstractOutputTarget
     if (getFont().isStrikeThrough())
     {
       float l = getFont().getFont().getSize2D();
-      Line2D line = new Line2D.Float(0, l/2, (float) getOperationBounds().getWidth(), l/2);
+      Line2D line = new Line2D.Float(0, l / 2, (float) getOperationBounds().getWidth(), l / 2);
       g2.draw(line);
     }
   }

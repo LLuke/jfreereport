@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------------
+ * ----------------------
  * DummyOutputTarget.java
- * -------------------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * ----------------------
+ * (C)opyright 2003, by Simba Management Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   Thomas Morgner;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DummyOutputTarget.java,v 1.4 2003/02/10 19:33:50 taqua Exp $
+ * $Id: DummyOutputTarget.java,v 1.5 2003/02/25 18:47:04 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,10 @@
  * 10-Feb-2003 : Save state implemented; Documentation
  */
 package com.jrefinery.report.targets.pageable.output;
+
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.Stroke;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FontDefinition;
@@ -48,10 +52,6 @@ import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.ReportConfiguration;
 
-import java.awt.Paint;
-import java.awt.Shape;
-import java.awt.Stroke;
-
 /**
  * The dummy output target wraps an output target for the layouting process,
  * so that no real output is done.
@@ -60,6 +60,8 @@ import java.awt.Stroke;
  * functionality to the wrapped OutputTarget. All other method calls are ignored.
  *
  * @see com.jrefinery.report.targets.base.layout.LayoutSupport
+ * 
+ * @author Thomas Morgner
  */
 public class DummyOutputTarget extends AbstractOutputTarget
 {
@@ -199,8 +201,9 @@ public class DummyOutputTarget extends AbstractOutputTarget
   public void restoreState() throws OutputTargetException
   {
     if (state == null)
+    {
       throw new IllegalStateException("No page started, unable to restore state");
-
+    }
     state.restore(this);
   }
 

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ---------------------------
  * SimplePageLayoutCursor.java
  * ---------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.8 2003/02/18 19:37:32 taqua Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.9 2003/02/25 15:42:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -46,8 +46,6 @@
  */
 
 package com.jrefinery.report.targets.pageable.pagelayout;
-
-import com.jrefinery.report.util.Log;
 
 import java.io.Serializable;
 

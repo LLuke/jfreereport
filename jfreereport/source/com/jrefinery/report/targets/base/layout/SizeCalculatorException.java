@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ----------------------------
  * SizeCalculatorException.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ----------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SizeCalculatorException.java,v 1.1 2003/02/07 22:40:40 taqua Exp $
+ * $Id: SizeCalculatorException.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,8 @@ import com.jrefinery.report.util.StackableException;
 /**
  * The SizeCalculatorException is thrown if a SizeCalculator was not able to compute
  * the dimensions of a given content.
+ * 
+ * @author Thomas Morgner
  */
 public class SizeCalculatorException extends StackableException
 {

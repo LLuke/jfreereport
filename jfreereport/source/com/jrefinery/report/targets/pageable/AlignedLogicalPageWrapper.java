@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * ------------------------------
  * AlignedLogicalPageWrapper.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ------------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AlignedLogicalPageWrapper.java,v 1.5 2003/02/18 19:37:30 taqua Exp $
+ * $Id: AlignedLogicalPageWrapper.java,v 1.6 2003/02/25 18:47:01 taqua Exp $
  *
  * Changes
  * -------
@@ -37,16 +37,18 @@
  */
 package com.jrefinery.report.targets.pageable;
 
-import com.jrefinery.report.Band;
-import com.jrefinery.report.targets.base.layout.LayoutSupport;
-
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 
+import com.jrefinery.report.Band;
+import com.jrefinery.report.targets.base.layout.LayoutSupport;
+
 /**
  * The AlignedLogicalPageWrapper corrects all values of the wrapped LogicalPage
  * so that the bounds are aligned for a given LayoutSupport.  
+ * 
+ * @author Thomas Morgner
  */
 public class AlignedLogicalPageWrapper implements LogicalPage
 {
@@ -67,11 +69,13 @@ public class AlignedLogicalPageWrapper implements LogicalPage
   public AlignedLogicalPageWrapper(LogicalPage logicalPage, LayoutSupport support)
   {
     if (logicalPage == null)
+    {
       throw new NullPointerException();
-
+    }
     if (support == null)
+    {
       throw new NullPointerException();
-
+    }
     this.logicalPage = logicalPage;
     this.layoutSupport = support;
   }
@@ -80,15 +84,16 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    * A helper function which alignes the given value along the boundry.
    *
    * @param value the value that should be aligned
-   * @param boundry the alignment boundry
+   * @param boundary the alignment boundary
    * @return the aligned value
    */
-  private float alignDown (float value, float boundry)
+  private float alignDown (float value, float boundary)
   {
-    if (boundry == 0)
+    if (boundary == 0)
+    {
       return value;
-
-    return (float) Math.floor(value / boundry) * boundry;
+    }
+    return (float) Math.floor(value / boundary) * boundary;
   }
 
   /**
@@ -168,7 +173,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    * @param bounds  the bounds.
    * @param band  the band.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem with the output target.
+   * @throws OutputTargetException if there is a problem with the output target.
    *
    * @return a spool.
    */
@@ -183,7 +188,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    * @param bounds  the bounds.
    * @param band  the band.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem with the output target.
+   * @throws OutputTargetException if there is a problem with the output target.
    */
   public void addBand(Rectangle2D bounds, Band band) throws OutputTargetException
   {

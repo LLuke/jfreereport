@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.35 2003/02/25 15:42:26 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.36 2003/02/26 13:58:00 mungady Exp $
  *
  * Changes
  * -------
@@ -117,6 +117,11 @@ public class SimplePageLayouter extends PageLayouter
       return band;
     }
 
+    /**
+     * Returns a string describing the object.
+     * 
+     * @return The string.
+     */
     public String toString ()
     {
       return "State={" + band + "}";
@@ -495,7 +500,8 @@ public class SimplePageLayouter extends PageLayouter
       restartPage();
 
       Object prepareRun =
-          event.getState().getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
+          event.getState().getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, 
+                                       Boolean.FALSE);
       if (prepareRun.equals(Boolean.TRUE))
       {
         setMaxPage(event.getState().getCurrentPage());

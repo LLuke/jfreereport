@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------
  * ReportState.java
  * ----------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.23 2003/02/25 09:55:52 taqua Exp $
+ * $Id: ReportState.java,v 1.24 2003/02/25 18:46:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -477,7 +477,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * Creates a shallow clone. Handle with care.
    *
    * @return a shallow clone of this state.
-   * @throws CloneNotSupportedException
+   * 
+   * @throws CloneNotSupportedException this should never happen.
    */
   public ReportState copyState () throws CloneNotSupportedException
   {
@@ -594,8 +595,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       return message + currentState.getCurrentGroupIndex() + ", DataItem: "
                      + currentState.getCurrentDataItem() + ",Page: "
                      + currentState.getCurrentPage() + " Class: "
-                     + currentState.getClass() + "\n" +
-          "Old State: " + oldState.getCurrentGroupIndex() + ", DataItem: "
+                     + currentState.getClass() + "\n" 
+                     + "Old State: " + oldState.getCurrentGroupIndex() + ", DataItem: "
                      + oldState.getCurrentDataItem() + ",Page: "
                      + oldState.getCurrentPage() + " Class: "
                      + oldState.getClass() + "\n";

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------
+ * ------------------------------
  * ShapeContentFactoryModule.java
- * -------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ------------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContentFactoryModule.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
+ * $Id: ShapeContentFactoryModule.java,v 1.3 2003/02/25 18:46:57 taqua Exp $
  *
  * Changes
  * -------
@@ -36,21 +36,23 @@
  */
 package com.jrefinery.report.targets.base.content;
 
-import com.jrefinery.report.Element;
-import com.jrefinery.report.targets.base.layout.LayoutSupport;
-import com.jrefinery.report.targets.ShapeTransform;
-import com.jrefinery.report.targets.base.ElementLayoutInformation;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.util.StringUtil;
-
 import java.awt.Shape;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
+
+import com.jrefinery.report.Element;
+import com.jrefinery.report.targets.ShapeTransform;
+import com.jrefinery.report.targets.base.ElementLayoutInformation;
+import com.jrefinery.report.targets.base.layout.LayoutSupport;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.util.StringUtil;
 
 /**
  * The ShapeContentFactoryModule is used to create a content wrapper for java.awt.Shape
  * objects. This FactoryModules is able to handle all elements with the content type
  * "shape/*".
+ * 
+ * @author Thomas Morgner
  */
 public class ShapeContentFactoryModule implements ContentFactoryModule
 {
@@ -87,7 +89,8 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
    *
    * @throws ContentCreationException if there is a problem with the OutputTarget.
    */
-  public Content createContentForElement(Element e, ElementLayoutInformation bounds, LayoutSupport ot)
+  public Content createContentForElement(Element e, ElementLayoutInformation bounds, 
+                                         LayoutSupport ot)
       throws ContentCreationException
   {
     Point2D point = bounds.getAbsolutePosition();
@@ -95,10 +98,9 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
                                                             bounds.getPreferredSize());
 
     Shape s = ShapeTransform.transformShape((Shape) e.getValue(),
-                                  e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
-                                  e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
-                                  point,
-                                  iBounds);
+                         e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
+                         e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
+                         point, iBounds);
     return new ShapeContent (s);
   }
 }
