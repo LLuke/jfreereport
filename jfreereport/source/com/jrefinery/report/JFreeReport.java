@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.15 2002/06/05 21:45:10 taqua Exp $
+ * $Id: JFreeReport.java,v 1.16 2002/06/05 23:28:09 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -48,6 +48,7 @@
  * 26-May-2002 : Changed repagination behaviour. Reports are repaginated before printed, so that
  *               global initialisations can be done.
  * 05-Jun-2002 : Updated Javadoc comments (DG);
+ * 08-Jun-2002 : The defaultPageFormat is now always filled (and used in PreviewFrame)
  */
 
 package com.jrefinery.report;
@@ -64,7 +65,9 @@ import com.jrefinery.ui.about.ProjectInfo;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.print.PageFormat;
+import java.awt.print.PrinterJob;
 import java.awt.Graphics2D;
+import java.awt.PrintJob;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -478,12 +481,17 @@ public class JFreeReport implements JFreeReportConstants
 
   /**
    * Defines the default page format for this report. The defaultPageFormat is a hint
-   * to define at least one suitable format.
+   * to define at least one suitable format. If no format is defined the systems default
+   * page format is used.
    *
-   * @return the default format or null, if no such format has been specified.
+   * @param formt the default format or null, if no such format has been specified.
    */
   public void setDefaultPageFormat(PageFormat format)
   {
+    if (format == null)
+    {
+      format = PrinterJob.getPrinterJob().defaultPage();
+    }
     defaultPageFormat = format;
   }
 

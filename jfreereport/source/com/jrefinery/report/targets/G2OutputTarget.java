@@ -28,14 +28,14 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.5 2002/05/28 19:38:10 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.6 2002/05/31 19:16:01 taqua Exp $
  *
  * Changes
  * -------
  * 21-Feb-2002 : Version 1 (DG);
  * 18-Apr-2002 : MultilineText is working again, ImageElement support
  * 16-May-2002 : Interface of drawShape changhed so we can draw different line width (JS)
- *
+ * 08-Jun-2002 : Documentation
  */
 
 package com.jrefinery.report.targets;
@@ -54,7 +54,6 @@ import java.awt.Stroke;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 
@@ -313,10 +312,10 @@ public class G2OutputTarget extends AbstractOutputTarget
       Rectangle2D textBounds = g2.getFont ().getStringBounds (text, frc);
       x = (float) ((bounds.getX () + bounds.getWidth ()) - textBounds.getWidth ());
     }
-    int display = getFont().canDisplayUpTo(text);
-    if (display != text.length())
+    int display = getFont ().canDisplayUpTo (text);
+    if (display != text.length ())
     {
-      Log.warn("Unable to display the string completely. Can display up to " + display + " chars.");
+      Log.warn ("Unable to display the string completely. Can display up to " + display + " chars.");
     }
     g2.drawString (text, x, baseline);
   }

@@ -25,6 +25,9 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * Changes
+ * -------
+ * 16-May-2002 : Initial version
  */
 package com.jrefinery.report.targets;
 
@@ -89,7 +92,8 @@ public class BandCursor
   }
 
   /**
-   * Translated
+   * returns the translated element bounds. Some targets may have a different coordinate
+   * system and may require the translation of the coordinates into the native format.
    */
   public Rectangle2D getDrawBounds ()
   {

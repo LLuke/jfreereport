@@ -25,9 +25,16 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * Changes
+ * -------
+ * 16-May-2002 : Version 1 (DG);
  */
 package com.jrefinery.report.targets;
 
+/**
+ * An OutputTargetException is thrown if a element could not be printed in the target or
+ * an TargetInternalError occured, that made proceeding impossible.
+ */
 public class OutputTargetException extends Exception
 {
   private Exception parent;

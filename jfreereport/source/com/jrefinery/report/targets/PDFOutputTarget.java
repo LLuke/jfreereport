@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.6 2002/05/28 19:38:10 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.8 2002/06/04 15:56:25 jaosch Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,7 @@
  * 16-May-2002 : Interface of drawShape changhed so we can draw different line width (JS)
  * 27-May-2002 : Fonts are embedded now, TrueType fonts are loaded directly into the pdf.
  *               See report4.xml for a demo. An encoding property is added to support unicode.
+ * 08-Jun-2002 : Documentation.
  */
 
 package com.jrefinery.report.targets;
@@ -57,15 +58,14 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPatternPainter;
 import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.DocumentException;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.GraphicsEnvironment;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
@@ -73,17 +73,22 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-import java.util.Enumeration;
 
 /**
  * An output target for the report engine that generates a PDF file using the iText class library
  * (see http://www.lowagie.com/itext).
+ * <p>
+ * If the systemproperty "com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT" is set to "true",
+ * the PDF-FontFactory is automaticly initialized when this class is loaded. Be aware that
+ * embedding many fonts will result in larger files.
+ * <p>
+ * When using unicode characters, you will have to adjust the encoding of this target to
+ * "Identity-H", to enable horizontal unicode printing. This will result in larger files.
  */
 public class PDFOutputTarget extends AbstractOutputTarget
 {
@@ -114,8 +119,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /** The stroke used for shapes */
   private Stroke awtStroke;
 
+  /** The current Paint as used in the AWT */
   private Paint awtPaint;
 
+  /** The current encoding */
   private String encoding;
 
   /**
@@ -176,13 +183,17 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
   }
 
+  /**
+   * The PDFFontFactory is used to find and register all TrueTypeFonts for embedding them
+   * in the PDF-File.
+   */
   public static class PDFFontFactory
   {
     private Hashtable fontsByName;
 
     private PDFFontFactory ()
     {
-      fontsByName = new Hashtable();
+      fontsByName = new Hashtable ();
     }
 
     /**
@@ -195,21 +206,21 @@ public class PDFOutputTarget extends AbstractOutputTarget
       String osname = System.getProperty ("os.name");
       String jrepath = System.getProperty ("java.home");
       String fontPath = null;
-      String fs = System.getProperty("file.separator");
+      String fs = System.getProperty ("file.separator");
 
-      System.out.println(osname);
-      if (!osname.substring(0, 7).equalsIgnoreCase("windows"))
+      System.out.println (osname);
+      if (!osname.substring (0, 7).equalsIgnoreCase ("windows"))
       {
         // Assume X11 is installed in the default location.
         registerFontPath (new File (jrepath, "lib/fonts").toString ());
         fontPath = "/usr/X11R6/lib/X11/fonts/truetype";
       }
-      else 
+      else
       {
         // Assume windows
         // If you are not using windows, ignore this. This just checks if a windows system
         // directory exist and includes a font dir.
-        
+
         String windirs = System.getProperty ("java.library.path");
         if (windirs != null)
         {
@@ -217,26 +228,30 @@ public class PDFOutputTarget extends AbstractOutputTarget
           while (strtok.hasMoreTokens ())
           {
             String token = strtok.nextToken ();
-            
-            if (token.endsWith("System32")) {
+
+            if (token.endsWith ("System32"))
+            {
               // found windows folder ;-)
-              int lastBackslash = token.lastIndexOf(fs);
-              fontPath = token.substring(0,lastBackslash) + fs + "Fonts";
+              int lastBackslash = token.lastIndexOf (fs);
+              fontPath = token.substring (0, lastBackslash) + fs + "Fonts";
 
               break;
             }
           }
         }
       }
-      
-      System.out.println("Fonts located in \"" + fontPath + "\"");
-      if (fontPath != null) 
+
+      System.out.println ("Fonts located in \"" + fontPath + "\"");
+      if (fontPath != null)
       {
-        registerFontPath(fontPath);
+        registerFontPath (fontPath);
       }
       registerFontPath (new File (jrepath, "lib" + fs + "fonts").toString ());
     }
 
+    /**
+     * Register all fonts (*.ttf files) in the given path.
+     */
     public void registerFontPath (String path)
     {
       File file = new File (path);
@@ -249,12 +264,15 @@ public class PDFOutputTarget extends AbstractOutputTarget
         }
       }
       file = null;
-      System.gc();
+      System.gc ();
     }
 
+    /**
+     * Register the font (must end this *.ttf) to the FontFactory.
+     */
     public void registerFontFile (String filename)
     {
-      if (!filename.toLowerCase().endsWith("ttf"))
+      if (!filename.toLowerCase ().endsWith ("ttf"))
       {
         return;
       }
@@ -273,8 +291,11 @@ public class PDFOutputTarget extends AbstractOutputTarget
       }
     }
 
-    protected void addFont (String font)
-       throws DocumentException, IOException
+    /**
+     * Adds the font by creating the basefont object
+     */
+    private void addFont (String font)
+            throws DocumentException, IOException
     {
       BaseFont bfont = BaseFont.createFont (font, BaseFont.WINANSI, true);
       String[][] fi = bfont.getFullFontName ();
@@ -285,34 +306,48 @@ public class PDFOutputTarget extends AbstractOutputTarget
       }
     }
 
+    /**
+     * Returns all registered fonts as enumeration.
+     */
     public Enumeration getRegisteredFonts ()
     {
-      return fontsByName.keys();
+      return fontsByName.keys ();
     }
 
+    /**
+     * Returns the font by looking up the name in the Factory.
+     */
     public String getFontfileForName (String font)
     {
-      return (String) fontsByName.get(font);
+      return (String) fontsByName.get (font);
     }
   }
 
   private static PDFFontFactory fontFactory;
 
+  /**
+   * returns/creates the singleton font factory.
+   */
   public static PDFFontFactory getFontFactory ()
   {
     if (fontFactory == null)
     {
-      fontFactory = new PDFFontFactory();
+      fontFactory = new PDFFontFactory ();
     }
     return fontFactory;
   }
 
+  /**
+   * Initialialize the font factory when this class is loaded and the system property
+   * of  <code>"com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT"</code> is set to
+   * <code>true</code>
+   */
   static
   {
-    String prop = System.getProperty("com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT", "false");
-    if (prop.equalsIgnoreCase("true"))
+    String prop = System.getProperty ("com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT", "false");
+    if (prop.equalsIgnoreCase ("true"))
     {
-      getFontFactory().registerDefaultFontPath();
+      getFontFactory ().registerDefaultFontPath ();
     }
   }
 
@@ -338,7 +373,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     this.out = out;
     this.embedFonts = embedFonts;
     this.baseFonts = new TreeMap ();
-    setFontEncoding(System.getProperty("com.jrefinery.report.targets.PDFOutputTarget.ENCODING", BaseFont.WINANSI));
+    setFontEncoding (System.getProperty ("com.jrefinery.report.targets.PDFOutputTarget.ENCODING", BaseFont.WINANSI));
   }
 
 
@@ -432,16 +467,26 @@ public class PDFOutputTarget extends AbstractOutputTarget
     return fontSize;
   }
 
+  /**
+   * Helper functions to query a strings start portion.
+   *
+   * @see String#startsWith
+   */
   private boolean startsWithIgnoreCase (String base, String start)
   {
-    return base.regionMatches(true, 0, start, 0,  start.length());
+    return base.regionMatches (true, 0, start, 0, start.length ());
   }
 
+  /**
+   * Helper functions to query a strings end portion.
+   *
+   * @see String#endsWith
+   */
   private boolean endsWithIgnoreCase (String base, String end)
   {
-    if (base.length() < end.length())
+    if (base.length () < end.length ())
       return false;
-    return base.regionMatches(true, base.length() - end.length(), end, 0,  end.length());
+    return base.regionMatches (true, base.length () - end.length (), end, 0, end.length ());
   }
 
   /**
@@ -463,27 +508,25 @@ public class PDFOutputTarget extends AbstractOutputTarget
     String fontKey = null;
     String logicalName = font.getName ();
 
-    if (startsWithIgnoreCase(logicalName, "dialoginput") ||
-        startsWithIgnoreCase(logicalName ,"monospaced"))
+    if (startsWithIgnoreCase (logicalName, "dialoginput") ||
+            startsWithIgnoreCase (logicalName, "monospaced"))
     {
       boolean bold = false;
       boolean italic = false;
 
-      if (endsWithIgnoreCase(logicalName, "bolditalic") ||
-          (font.isBold() && font.isItalic()))
+      if (endsWithIgnoreCase (logicalName, "bolditalic") ||
+              (font.isBold () && font.isItalic ()))
       {
         bold = true;
         italic = true;
       }
-      else
-      if (endsWithIgnoreCase(logicalName, "bold") ||
-          (font.isBold()))
+      else if (endsWithIgnoreCase (logicalName, "bold") ||
+              (font.isBold ()))
       {
         bold = true;
       }
-      else
-      if (endsWithIgnoreCase(logicalName, "italic") ||
-          (font.isItalic()))
+      else if (endsWithIgnoreCase (logicalName, "italic") ||
+              (font.isItalic ()))
       {
         italic = true;
       }
@@ -506,26 +549,24 @@ public class PDFOutputTarget extends AbstractOutputTarget
       }
 
     }
-    else if (startsWithIgnoreCase(logicalName, "Serif"))
+    else if (startsWithIgnoreCase (logicalName, "Serif"))
     {
       boolean bold = false;
       boolean italic = false;
 
-      if (endsWithIgnoreCase(logicalName, "bolditalic") ||
-          (font.isBold() && font.isItalic()))
+      if (endsWithIgnoreCase (logicalName, "bolditalic") ||
+              (font.isBold () && font.isItalic ()))
       {
         bold = true;
         italic = true;
       }
-      else
-      if (endsWithIgnoreCase(logicalName, "bold") ||
-          (font.isBold()))
+      else if (endsWithIgnoreCase (logicalName, "bold") ||
+              (font.isBold ()))
       {
         bold = true;
       }
-      else
-      if (endsWithIgnoreCase(logicalName, "italic") ||
-          (font.isItalic()))
+      else if (endsWithIgnoreCase (logicalName, "italic") ||
+              (font.isItalic ()))
       {
         italic = true;
       }
@@ -548,27 +589,25 @@ public class PDFOutputTarget extends AbstractOutputTarget
       }
 
     }
-    else if (startsWithIgnoreCase(logicalName, "SansSerif") ||
-             startsWithIgnoreCase(logicalName, "Dialog"))
+    else if (startsWithIgnoreCase (logicalName, "SansSerif") ||
+            startsWithIgnoreCase (logicalName, "Dialog"))
     { // default, this catches Dialog and SansSerif
       boolean bold = false;
       boolean italic = false;
 
-      if (endsWithIgnoreCase(logicalName, "bolditalic") ||
-          (font.isBold() && font.isItalic()))
+      if (endsWithIgnoreCase (logicalName, "bolditalic") ||
+              (font.isBold () && font.isItalic ()))
       {
         bold = true;
         italic = true;
       }
-      else
-      if (endsWithIgnoreCase(logicalName, "bold") ||
-          (font.isBold()))
+      else if (endsWithIgnoreCase (logicalName, "bold") ||
+              (font.isBold ()))
       {
         bold = true;
       }
-      else
-      if (endsWithIgnoreCase(logicalName, "italic") ||
-          (font.isItalic()))
+      else if (endsWithIgnoreCase (logicalName, "italic") ||
+              (font.isItalic ()))
       {
         italic = true;
       }
@@ -601,18 +640,18 @@ public class PDFOutputTarget extends AbstractOutputTarget
     {
       try
       {
-        String filename = getFontFactory().getFontfileForName(fontKey);
+        String filename = getFontFactory ().getFontfileForName (fontKey);
         if (filename != null)
         {
-          if (font.isBold() && font.isItalic())
+          if (font.isBold () && font.isItalic ())
           {
             fontKey = filename + ",BoldItalic";
           }
-          else if (font.isBold())
+          else if (font.isBold ())
           {
             fontKey = filename + ",Bold";
           }
-          else if (font.isItalic())
+          else if (font.isItalic ())
           {
             fontKey = filename + ",Italic";
           }
@@ -621,7 +660,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
             fontKey = filename;
           }
         }
-        f = BaseFont.createFont (fontKey, getFontEncoding(), this.embedFonts);
+        f = BaseFont.createFont (fontKey, getFontEncoding (), this.embedFonts);
       }
       catch (Exception e)
       {
@@ -632,7 +671,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
         // fallback .. use BaseFont.HELVETICA as default
         try
         {
-          f = BaseFont.createFont (BaseFont.HELVETICA, getFontEncoding(), this.embedFonts);
+          f = BaseFont.createFont (BaseFont.HELVETICA, getFontEncoding (), this.embedFonts);
         }
         catch (Exception e)
         {
@@ -647,7 +686,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
     else
     {
-      this.baseFonts.put(fontKey, f);
+      this.baseFonts.put (fontKey, f);
     }
 
     this.baseFont = f;
@@ -756,7 +795,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     PathIterator pit = shape.getPathIterator (null);
     PdfContentByte cb = this.writer.getDirectContent ();
-    int windingRule = pit.getWindingRule();
+    int windingRule = pit.getWindingRule ();
 
     float[] params = new float[6];
     // How to apply this? This should be needed in fillShape
@@ -1051,18 +1090,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
     return new PDFState (this);
   }
 
-  public static void main (String[] args) throws Exception
-  {
-    getFontFactory().registerDefaultFontPath ();
-
-    Font[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
-    for (int i = 0; i < fonts.length; i++)
-    {
-      if (getFontFactory().getFontfileForName(fonts[i].getName()) == null) continue;
-      BaseFont bf = BaseFont.createFont(getFontFactory().getFontfileForName(fonts[i].getName()), BaseFont.WINANSI, true);
-    }
-  }
-
+  /**
+   * returns the font encoding used in this output target.
+   */
   public String getFontEncoding ()
   {
     return encoding;
@@ -1082,7 +1112,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public void setFontEncoding (String encoding)
   {
-    if (encoding == null) throw new NullPointerException();
+    if (encoding == null) throw new NullPointerException ();
     this.encoding = encoding;
   }
 }

@@ -38,8 +38,13 @@ import java.io.StringReader;
 import java.text.BreakIterator;
 import java.util.Vector;
 
+/**
+ * The abstract OutputTarget implements common code for all OutputTargets. It contains
+ * functions to manage the cursor, the pageformat and the line breaking of strings.
+ */
 public abstract class AbstractOutputTarget implements OutputTarget
 {
+  /** A literal used for lines that get shortened by the linebreak implementation. */
   public static final String RESERVED_LITERAL = " ...";
 
   /**
@@ -50,7 +55,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
    */
   private boolean STRICT_MODE = false;
 
+  /** The pageFormat for this target */
   private PageFormat pageformat;
+
+  /** The cursor for the target. */
   private BandCursor cursor;
 
   /**
@@ -364,7 +372,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
   {
     if (false)
     {
-      drawString(mytext, align);
+      drawString (mytext, align);
       return;
     }
     Rectangle2D bounds = getCursor ().getDrawBounds ();
@@ -373,7 +381,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     Vector lines = null;
     if (maxLinesToDisplay <= 1)
     {
-      lines = new Vector();
+      lines = new Vector ();
       lines.add (mytext);
     }
     else

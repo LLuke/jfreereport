@@ -48,23 +48,25 @@ import java.net.URL;
  * the the default parser.
  *
  * To create a report from an URL, use
- *
  * <code>
  * ReportGenerator.getInstance().parseReport (URL myURl, URL contentBase);
  * </code>
  */
 public class ReportGenerator
 {
-  private static String defaultDtd;
   private static ReportGenerator generator;
   private AbstractReportDefinitionHandler defaulthandler;
   private SAXParserFactory factory;
   private String dtd;
 
+  /**
+   * creates a new reportgenerator. The generator uses the singleton pattern by default,
+   * so use generator.getInstance() to get the generator.
+   */
   protected ReportGenerator ()
   {
-    dtd = defaultDtd;
     defaulthandler = new ReportDefinitionContentHandler ();
+    initFromSystem ();
   }
 
   /**
@@ -76,11 +78,19 @@ public class ReportGenerator
     this.dtd = dtd;
   }
 
+  /**
+   * returns the location of the DTD. This is used for validating XML parsers to
+   * validate the structure of the report definition.
+   */
   public String getDTDLocation ()
   {
     return dtd;
   }
 
+  /**
+   * Trys to initilialize the generator by reading the system property "com.jrefinery.report.dtd".
+   * This property should point to the dtd used for parsing.
+   */
   public void initFromSystem ()
   {
     String reportDtd = System.getProperty ("com.jrefinery.report.dtd");
@@ -90,10 +100,14 @@ public class ReportGenerator
     File f = new File (reportDtd);
     if (f.exists () && f.isFile () && f.canRead ())
     {
-      defaultDtd = reportDtd;
+      dtd = reportDtd;
     }
   }
 
+  /**
+   * parses an report using the given parameter as filename and the directory containing
+   * the file as content base.
+   */
   public JFreeReport parseReport (String file) throws IOException, ReportDefinitionException
   {
     if (file == null)
@@ -110,7 +124,7 @@ public class ReportGenerator
   public JFreeReport parseReport (URL file)
           throws ReportDefinitionException, IOException
   {
-    return parseReport(file, file);
+    return parseReport (file, file);
   }
 
   /**
@@ -158,17 +172,28 @@ public class ReportGenerator
     return factory.newSAXParser ();
   }
 
+  /**
+   * Sets the default handler used for parsing reports. This handler is used to
+   * initiate parsing.
+   */
   public void setDefaultHandler (AbstractReportDefinitionHandler handler)
   {
     if (handler == null) throw new NullPointerException ();
     this.defaulthandler = handler;
   }
 
+  /**
+   * returns the ReportDefinitionHandler used for parsing reports.
+   */
   public AbstractReportDefinitionHandler getDefaultHandler ()
   {
     return defaulthandler;
   }
 
+  /**
+   * Creates a new instance of the currently set default handler and sets the contentbase
+   * for the handler to <code>contentBase</code>
+   */
   protected AbstractReportDefinitionHandler createDefaultHandler (URL contentBase)
   {
     AbstractReportDefinitionHandler handler = getDefaultHandler ().getInstance ();
@@ -218,33 +243,5 @@ public class ReportGenerator
       generator.initFromSystem ();
     }
     return generator;
-  }
-
-  public static void main (String[] args)
-  {
-    File file1 = FileUtilities.findFileOnClassPath ("report1.xml");
-    if (file1 == null)
-    {
-      JOptionPane.showMessageDialog (
-              null,
-              "ReportDefinition report1.xml not found on classpath");
-      return;
-    }
-    ReportGenerator gen = ReportGenerator.getInstance ();
-
-    try
-    {
-      for (int i = 0; i < 100; i++)
-        gen.parseReport (file1);
-    }
-    catch (Exception ioe)
-    {
-      JOptionPane.showMessageDialog (
-              null,
-              ioe.getMessage (),
-              "Error: " + ioe.getClass ().getName (),
-              JOptionPane.ERROR_MESSAGE);
-      return;
-    }
   }
 }

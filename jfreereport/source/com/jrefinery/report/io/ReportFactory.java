@@ -53,16 +53,20 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
   /** The report under construction. */
   private JFreeReport report;
 
-  /** ??? */
+  /**
+   * the base handler used as general coordination instance. This is the DefaultHandler used
+   * by sax. This base handler distributes the sax events to the different factories depending on
+   * the current state
+   */
   private ReportDefinitionContentHandler handler;
 
-  /** ??? */
+  /** the current band */
   private Band currentBand;
 
   /**
    * Constructs a new handler.
    *
-   * @param handler ???.
+   * @param handler the base handler for this report factory
    */
   public ReportFactory (ReportDefinitionContentHandler handler)
   {
@@ -107,6 +111,9 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     }
   }
 
+  /**
+   * Handle the end-tag event of sax.
+   */
   public void endElement (String namespaceURI, String localName, String qName) throws SAXException
   {
     String elementName = qName.toLowerCase ().trim ();
@@ -121,6 +128,9 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     }
   }
 
+  /**
+   * creates a new report depending on the attributes given.
+   */
   public void startReport (Attributes atts)
           throws SAXException
   {
@@ -131,6 +141,10 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     setReport (report);
   }
 
+  /**
+   * creates a new group list for the report. The group factory will be the new default handler
+   * for SAX Events
+   */
   public void startGroups (Attributes atts)
           throws SAXException
   {
@@ -138,6 +152,10 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     getHandler ().setExpectedHandler (groupFactory);
   }
 
+  /**
+   * creates a new function collection for the report. The FunctionFactory will be the new
+   * default handler for SAX Events
+   */
   public void startFunctions (Attributes atts)
           throws SAXException
   {
@@ -145,33 +163,51 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     getHandler ().setExpectedHandler (functionFactory);
   }
 
+  /**
+   * Finishes the report generation.
+   */
   public void endReport ()
           throws SAXException
   {
     getHandler ().setReport (report);
   }
 
+  /**
+   * returns the currently to be build report
+   */
   public JFreeReport getReport ()
   {
     return report;
   }
 
+  /**
+   * return the current ReportDefinitionContentHandler
+   */
   public ReportDefinitionContentHandler getHandler ()
   {
     return handler;
   }
 
+  /**
+   * returns the current band
+   */
   public Band getCurrentBand ()
   {
     return currentBand;
   }
 
+  /**
+   * defines the current band.
+   */
   public void setCurrentBand (Band band)
   {
     this.currentBand = band;
   }
 
-  public void setReport (JFreeReport report)
+  /**
+   * sets the current report
+   */
+  private void setReport (JFreeReport report)
   {
     this.report = report;
   }

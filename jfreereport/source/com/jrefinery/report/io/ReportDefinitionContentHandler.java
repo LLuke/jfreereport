@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportDefinitionContentHandler.java,v 1.3 2002/05/23 22:32:22 taqua Exp $
+ * $Id: ReportDefinitionContentHandler.java,v 1.4 2002/05/28 19:36:42 taqua Exp $
  *
  * Changes
  * -------
@@ -160,36 +160,57 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
     handler.endElement (namespaceURI, localName, qName);
   }
 
+  /**
+   * Creates a new ElementFactory.
+   */
   public ElementFactory createElementFactory ()
   {
     return new ElementFactory (getReportFactory ());
   }
 
+  /**
+   * Creates a new FontFactory.
+   */
   public FontFactory createFontFactory ()
   {
     return new FontFactory ();
   }
 
+  /**
+   * Creates a new FunctionFactory.
+   */
   public FunctionFactory createFunctionFactory ()
   {
     return new FunctionFactory (getReportFactory ());
   }
 
+  /**
+   * Creates a new GroupFactory.
+   */
   public GroupFactory createGroupFactory ()
   {
     return new GroupFactory (getReportFactory ());
   }
 
+  /**
+   * Creates a new ReportFactory.
+   */
   public ReportFactory createReportFactory ()
   {
     return new ReportFactory (this);
   }
 
+  /**
+   * Creates a new BandFactory.
+   */
   public BandFactory createBandFactory ()
   {
     return new BandFactory (getReportFactory ());
   }
 
+  /**
+   * returns a new Instance of this ReportDefinitionHandler, using this implementation as prototype.
+   */
   public AbstractReportDefinitionHandler getInstance ()
   {
     return new ReportDefinitionContentHandler ();
