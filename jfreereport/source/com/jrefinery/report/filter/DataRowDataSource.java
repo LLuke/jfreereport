@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowDataSource.java,v 1.6 2003/01/25 02:47:09 taqua Exp $
+ * $Id: DataRowDataSource.java,v 1.7 2003/02/02 23:43:49 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  */
 
 package com.jrefinery.report.filter;
+
+import java.io.Serializable;
 
 import com.jrefinery.report.DataRow;
 
@@ -54,13 +56,17 @@ import com.jrefinery.report.DataRow;
  *
  * @author Thomas Morgner
  */
-public class DataRowDataSource implements DataSource, DataRowConnectable
+public class DataRowDataSource implements DataSource, DataRowConnectable, Serializable
 {
   /**  The name of the field/expression/function referenced by this data source. */
   private String dataSourceColumnName;
 
-  /** The DataRow connected with this DataSource. */
-  private DataRow dataRow;
+  /**
+   * The DataRow connected with this DataSource. The datarow will not be serialized,
+   * as it is assigned during the report processing and we dont support serializing during
+   * that state.
+   */
+  private transient DataRow dataRow;
 
   /**
    * Default constructor. 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.50 2003/03/18 15:50:24 mungady Exp $
+ * $Id: JFreeReport.java,v 1.51 2003/05/02 12:39:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -77,9 +77,9 @@ import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.ExpressionCollection;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
-import com.jrefinery.report.util.PageFormatFactory;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.ReportProperties;
+import com.jrefinery.report.util.SerializerHelper;
 
 /**
  * This class co-ordinates the process of generating a report from a <code>TableModel</code>.  
@@ -120,9 +120,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /** The page format for the report (determines the page size, and therefore the report width). */
   private transient PageFormat defaultPageFormat;
   
-  /** a private serialization object that carries the serialized page format values. */
-  private Object[] pageFormatResolve;
-
   /** Storage for arbitrary properties that a user can assign to the report. */
   private ReportProperties properties;
 
@@ -757,11 +754,8 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   private void writeObject(ObjectOutputStream out)
       throws IOException
   {
-    if (defaultPageFormat != null)
-    {
-      pageFormatResolve = PageFormatFactory.getInstance().resolvePageFormat(defaultPageFormat);
-    }
     out.defaultWriteObject();
+    SerializerHelper.getInstance().writeObject(defaultPageFormat, out);
   }
 
   /**
@@ -776,10 +770,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
           throws IOException, ClassNotFoundException
   {
     in.defaultReadObject ();
-    if (pageFormatResolve != null)
-    {
-      defaultPageFormat = PageFormatFactory.getInstance().createPageFormat(pageFormatResolve);
-    }
+    defaultPageFormat = (PageFormat) SerializerHelper.getInstance().readObject(in);
   }
 
 

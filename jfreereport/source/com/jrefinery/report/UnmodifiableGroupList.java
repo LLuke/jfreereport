@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: UnmodifiableGroupList.java,v 1.1 2003/04/05 19:22:00 taqua Exp $
+ * $Id: UnmodifiableGroupList.java,v 1.2 2003/04/09 15:45:48 mungady Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public class UnmodifiableGroupList extends GroupList
    *
    * @param o  the object.
    *
-   * @return a boolean indicating whether or not the object was removed.
+   * @throws UnsupportedOperationException as this GroupList is not modifiable.
    */
   public boolean remove(Object o)
   {
@@ -72,11 +72,9 @@ public class UnmodifiableGroupList extends GroupList
    * Adds an object to the list.
    *
    * @param o  the object (must be an instance of the Group class).
-   *
-   * @return true if the list did not already contain the specified element.
-   * Returns always true, as the old value is removed if needed.
+   * @throws UnsupportedOperationException as this GroupList is not modifiable.
    */
-  public boolean add(Object o)
+  public void add(Group o)
   {
     throw new UnsupportedOperationException();
   }

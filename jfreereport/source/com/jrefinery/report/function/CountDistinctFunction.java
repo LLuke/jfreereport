@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CountDistinctFunction.java,v 1.1 2003/05/16 19:29:50 taqua Exp $
+ * $Id: CountDistinctFunction.java,v 1.2 2003/05/26 13:30:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,6 +38,9 @@
 
 package com.jrefinery.report.function;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.HashSet;
 
 import com.jrefinery.report.event.ReportEvent;
@@ -48,7 +51,7 @@ import com.jrefinery.report.event.ReportEvent;
  *
  * @author Thomas Morgner
  */
-public class CountDistinctFunction extends AbstractFunction
+public class CountDistinctFunction extends AbstractFunction implements Serializable
 {
   /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";
@@ -57,7 +60,7 @@ public class CountDistinctFunction extends AbstractFunction
   public static final String FIELD_PROPERTY = "field";
 
   /** The collected values for the current group. */
-  private HashSet values;
+  private transient HashSet values;
 
   /**
    * DefaultConstructor.
@@ -177,5 +180,12 @@ public class CountDistinctFunction extends AbstractFunction
   public Object getValue()
   {
     return new Integer (values.size());
+  }
+
+  private void readObject(ObjectInputStream in)
+     throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    values = new HashSet();
   }
 }

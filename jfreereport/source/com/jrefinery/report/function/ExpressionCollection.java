@@ -30,12 +30,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * 
- * $Id: ExpressionCollection.java,v 1.9 2003/04/08 14:41:48 mungady Exp $
+ * $Id: ExpressionCollection.java,v 1.10 2003/05/11 13:39:16 taqua Exp $
 =======
- * $Id: ExpressionCollection.java,v 1.9 2003/04/08 14:41:48 mungady Exp $
+ * $Id: ExpressionCollection.java,v 1.10 2003/05/11 13:39:16 taqua Exp $
 >>>>>>> 1.7
 =======
- * $Id: ExpressionCollection.java,v 1.9 2003/04/08 14:41:48 mungady Exp $
+ * $Id: ExpressionCollection.java,v 1.10 2003/05/11 13:39:16 taqua Exp $
 >>>>>>> 1.8
  *
  * Changes
@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.io.Serializable;
 
 /**
  * Collects all expressions used in the report. There exist 2 states of the ExpressionCollection.
@@ -63,7 +64,7 @@ import java.util.Iterator;
  *
  * @author Thomas Morgner
  */
-public class ExpressionCollection implements Cloneable
+public class ExpressionCollection implements Cloneable, Serializable
 {
   /** Storage for the Expressions in the collection. */
   private HashMap expressionPositions;

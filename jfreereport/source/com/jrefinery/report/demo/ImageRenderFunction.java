@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageRenderFunction.java,v 1.7 2002/12/12 12:26:55 mungady Exp $
+ * $Id: ImageRenderFunction.java,v 1.8 2003/05/02 12:39:34 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -40,6 +40,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 
@@ -53,10 +54,10 @@ import com.jrefinery.report.function.AbstractFunction;
  *
  * @author Thomas Morgner
  */
-public class ImageRenderFunction extends AbstractFunction
+public class ImageRenderFunction extends AbstractFunction implements Serializable
 {
   /** The function value. */
-  private ImageReference functionValue;
+  private transient ImageReference functionValue;
 
   /**
    * Create a image according to the current state, simple and silly ...

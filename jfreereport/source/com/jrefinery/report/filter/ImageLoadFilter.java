@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.15 2003/05/02 12:39:43 taqua Exp $
+ * $Id: ImageLoadFilter.java,v 1.16 2003/05/09 17:12:12 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -37,6 +37,7 @@
 package com.jrefinery.report.filter;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 
 import com.jrefinery.report.ImageReference;
@@ -62,7 +63,7 @@ import com.jrefinery.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class ImageLoadFilter implements DataFilter
+public class ImageLoadFilter implements DataFilter, Serializable
 {
   /**
    * the cache for previously loaded images. If the maximum size of the cache reached,

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.10 2003/02/28 12:02:38 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.11 2003/03/07 18:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,9 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ImageReference;
@@ -62,7 +65,8 @@ import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
  * 
  * @author Thomas Morgner
  */
-public class PaintComponentFunction extends AbstractFunction implements LayoutListener
+public class PaintComponentFunction extends AbstractFunction
+    implements LayoutListener, Serializable
 {
   /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
@@ -74,10 +78,10 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
   public static final String SCALE_PROPERTY = "scale";
 
   /** the created image, cached for getValue(). */
-  private Image image;
+  private transient Image image;
 
   /** supplies a valid peer for the draw operation. */
-  private Frame peerSupply;
+  private transient Frame peerSupply;
 
   /**
    * DefaultConstructor.
@@ -294,5 +298,13 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     {
       throw new FunctionInitializeException("No Such Property : element");
     }
+  }
+
+  private void readObject(ObjectInputStream in)
+     throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    peerSupply = new Frame();
+    peerSupply.setLayout(new BorderLayout());
   }
 }

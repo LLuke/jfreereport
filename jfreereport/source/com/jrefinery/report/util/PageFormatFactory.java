@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.22 2003/05/02 12:40:47 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.23 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,9 @@
  */
 package com.jrefinery.report.util;
 
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.lang.reflect.Field;
-
-import org.jfree.ui.FloatDimension;
 
 /**
  * The PageFormatFactory is used to create PageFormats on a higher level. The Factory contains
@@ -814,11 +810,11 @@ public class PageFormatFactory
   {
     Integer orientation = new Integer (format.getOrientation());
     Paper p = format.getPaper();
-    FloatDimension fdim = new FloatDimension((float) p.getWidth(), (float) p.getHeight());
-    Rectangle2D rect = new Rectangle2D.Float((float) p.getImageableX(),
-                                             (float) p.getImageableY(),
-                                             (float) p.getImageableWidth(),
-                                             (float) p.getImageableHeight());
+    float[] fdim = new float[] { (float) p.getWidth(), (float) p.getHeight()};
+    float[] rect = new float[] { (float) p.getImageableX(),
+                                 (float) p.getImageableY(),
+                                 (float) p.getImageableWidth(),
+                                 (float) p.getImageableHeight() };
     return new Object[] { orientation, fdim, rect };
   }
 
@@ -831,11 +827,11 @@ public class PageFormatFactory
   public PageFormat createPageFormat (Object[] data)
   {
     Integer orientation = (Integer) data[0];
-    Dimension2D dim = (Dimension2D) data[1];
-    Rectangle2D rect = (Rectangle2D) data[2];
+    float[] dim = (float[]) data[1];
+    float[] rect = (float[]) data[2];
     Paper p = new Paper();
-    p.setSize(dim.getWidth(), dim.getHeight());
-    p.setImageableArea(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+    p.setSize(dim[0], dim[1]);
+    p.setImageableArea(rect[0], rect[1], rect[2], rect[3]);
     PageFormat format = new PageFormat();
     format.setPaper(p);
     format.setOrientation(orientation.intValue());

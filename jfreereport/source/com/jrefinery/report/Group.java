@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.20 2003/04/06 18:10:54 taqua Exp $
+ * $Id: Group.java,v 1.21 2003/04/09 00:10:32 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,16 +51,20 @@
 package com.jrefinery.report;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * A report group.  Reports can contain any number of (nested) groups.
  * The order of the fields is important. If the group does not contain
  * any fields, the group spans the whole report from the first to the last
  * row.
+ * <p>
+ * The group's field list should not be modified after the group was added
+ * to the group list, or the results are undefined.
  *
  * @see GroupList
  *
@@ -73,10 +77,10 @@ public class Group implements Serializable, Cloneable, Comparable
   private String name;
 
   /** The fields that define the group (can be empty). */
-  private ArrayList fields;
+  private TreeSet fields;
 
   /** Cached fields. */
-  private String[] fieldsCached;
+  private transient String[] fieldsCached;
 
   /** The group header (optional). */
   private GroupHeader header;
@@ -89,8 +93,8 @@ public class Group implements Serializable, Cloneable, Comparable
    */
   public Group()
   {
-    name = "anonymousGroup@" + hashCode();
-    fields = new ArrayList();
+    name = "anonymousGroup@" + super.hashCode();
+    fields = new TreeSet();
     setFooter(new GroupFooter());
     setHeader(new GroupHeader());
   }
@@ -224,7 +228,11 @@ public class Group implements Serializable, Cloneable, Comparable
    */
   public List getFields()
   {
-    return Collections.unmodifiableList(fields);
+    if (fieldsCached == null)
+    {
+      fieldsCached = (String[]) fields.toArray(new String[fields.size()]);
+    }
+    return Collections.unmodifiableList(Arrays.asList(fieldsCached));
   }
 
   /**
@@ -262,7 +270,7 @@ public class Group implements Serializable, Cloneable, Comparable
   public Object clone() throws CloneNotSupportedException
   {
     Group g = (Group) super.clone();
-    g.fields = (ArrayList) fields.clone();
+    g.fields = new TreeSet(fields);
     g.fieldsCached = fieldsCached;
     g.footer = (GroupFooter) footer.clone();
     g.header = (GroupHeader) header.clone();
@@ -334,16 +342,11 @@ public class Group implements Serializable, Cloneable, Comparable
 
     final Group group = (Group) o;
 
-    if (fields != null ? !fields.equals(group.fields) : group.fields != null)
-    {
-      return false;
-    }
     if (name != null ? !name.equals(group.name) : group.name != null)
     {
       return false;
     }
-
-    return true;
+    return compareTo(group) == 0;
   }
 
   /**
@@ -379,6 +382,12 @@ public class Group implements Serializable, Cloneable, Comparable
       if (fields.containsAll(g.fields))
       {
         return 0;
+      }
+      else
+      {
+        // groups with the same number of -, but different fields, are not compareable.
+        throw new IllegalArgumentException("These groups are not comparable, they don't have any "
+                                           + "subgroup relation");
       }
     }
 

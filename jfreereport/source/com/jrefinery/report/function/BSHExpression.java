@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.14 2003/02/25 14:07:24 taqua Exp $
+ * $Id: BSHExpression.java,v 1.15 2003/05/02 12:39:48 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -44,6 +44,7 @@ import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Serializable;
 
 import bsh.Interpreter;
 import com.jrefinery.report.util.Log;
@@ -99,7 +100,7 @@ import com.jrefinery.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class BSHExpression extends AbstractExpression
+public class BSHExpression extends AbstractExpression implements Serializable
 {
   /** The headerfile with the default initialisations.*/
   private static final String BSHHEADERFILE =

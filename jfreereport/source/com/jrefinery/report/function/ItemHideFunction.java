@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.5 2002/12/12 12:26:56 mungady Exp $
+ * $Id: ItemHideFunction.java,v 1.6 2003/01/14 21:06:32 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,8 @@
  */
 
 package com.jrefinery.report.function;
+
+import java.io.Serializable;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.event.ReportEvent;
@@ -49,7 +51,7 @@ import com.jrefinery.report.event.ReportEvent;
  *
  * @author Thomas Morgner
  */
-public class ItemHideFunction extends AbstractFunction
+public class ItemHideFunction extends AbstractFunction implements Serializable
 {
   /** Literal text for the 'element' property. */
   public static final String ELEMENT_PROPERTY = "element";

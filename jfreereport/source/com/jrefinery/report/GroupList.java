@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.23 2003/05/02 12:39:02 taqua Exp $
+ * $Id: GroupList.java,v 1.24 2003/05/30 18:47:48 taqua Exp $
  *
  * Changes:
  * --------
@@ -39,6 +39,8 @@
  * 06-Dec-2002 : Added validity check to the group list.
  * 10-Dec-2002 : Updated Javadocs (DG);
  * 04-Feb-2003 : Implemented hashCode for GroupComparator
+ * 31-May-2003 : Removed isValid() test, as the compare implementation of group cannot create
+ *               invalid group lists.
  */
 
 package com.jrefinery.report;
@@ -128,32 +130,21 @@ public class GroupList implements Cloneable, Serializable
   }
 
   /**
-   * Adds an object to the list.
+   * Adds a group to the list.
    *
-   * @param o  the object (must be an instance of the Group class).
-   *
-   * @return true if the list did not already contain the specified element.
-   * Returns always true, as the old value is removed if needed.
+   * @param o  the group object.
    */
-  public boolean add(Object o)
+  public void add(Group o)
   {
     if (o == null)
     {
       throw new NullPointerException("Try to add null");
     }
-    if (o instanceof Group)
+    cache = null;
+    if (backend.add(o) == false)
     {
-      cache = null;
-      if (backend.add(o) == false)
-      {
-        backend.remove(o);
-        return backend.add(o);
-      }
-      return true;
-    }
-    else
-    {
-      throw new ClassCastException("Group required, was " + o.getClass().getName());
+      backend.remove(o);
+      backend.add(o);
     }
   }
 
@@ -190,37 +181,6 @@ public class GroupList implements Cloneable, Serializable
   public Iterator iterator ()
   {
     return new ReadOnlyIterator (backend.iterator());
-  }
-
-  /**
-   * Validates the groups contained in this list. All groups are valid,
-   * when every sub group contains all fields of its parent and has more
-   * elements than its parent.
-   *
-   * @return true, if the group list is valid, false otherwise.
-   */
-  public boolean isValid()
-  {
-    if (backend.size() == 0)
-    {
-      return true;
-    }
-
-    Group parent = get(0);
-    for (int i = 1; i < backend.size(); i++)
-    {
-      Group sub = get(i);
-      if (sub.getFields().containsAll(parent.getFields()) == false)
-      {
-        return false;
-      }
-      if (sub.getFields().size() == parent.getFields().size())
-      {
-        return false;
-      }
-      parent = sub;
-    }
-    return true;
   }
 
   /**

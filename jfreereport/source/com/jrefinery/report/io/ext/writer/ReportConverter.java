@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.13 2003/05/09 17:12:13 taqua Exp $
+ * $Id: ReportConverter.java,v 1.14 2003/05/11 13:39:17 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.io.BufferedWriter;
 import java.net.URL;
 
 import com.jrefinery.report.JFreeReport;
@@ -171,13 +172,57 @@ public class ReportConverter
     {
       throw new IOException("The specified report definition was not found");
     }
-    JFreeReport report = parseReport(reportURL);
-    Writer w = new FileWriter (outFile);
-    write(report, w, new File(outFile).toURL());
-    w.flush();
-    w.close();
+    File out = new File (outFile);
+    Writer w = new BufferedWriter(new FileWriter(out));
+    try
+    {
+      convertReport(reportURL, out.toURL(), w);
+    }
+    finally
+    {
+      w.close();
+    }
+  }
 
-    parseReport(new File(inName).toURL());
+  /**
+   * Parses a report from the old version of the XML report format, and writes a file
+   * in the new XML report format.
+   *
+   * @param in  the input report file.
+   * @param out the output report file.
+   *
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
+   */
+  public void convertReport (File in, File out) throws IOException, ReportWriterException
+  {
+    Writer w = new BufferedWriter (new FileWriter(out));
+    try
+    {
+      convertReport(in.toURL(), out.toURL(), w);
+    }
+    finally
+    {
+      w.close();
+    }
+  }
+
+  /**
+   * Parses a report from the old version of the XML report format, and writes a file
+   * in the new XML report format.
+   *
+   * @param in the input resource from where to read the report
+   * @param contentBase the contentbase where the new report will be stored.
+   * @param w the report writer
+   * 
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
+   */
+  public void convertReport (URL in, URL contentBase, Writer w) throws IOException, ReportWriterException
+  {
+    JFreeReport report = parseReport(in);
+    write(report, w, contentBase);
+    w.flush();
   }
 
   /**
@@ -193,7 +238,6 @@ public class ReportConverter
   public static void main (String [] args)
     throws Exception
   {
-//    String reportName = "/com/jrefinery/report/demo/report1.xml";
     if (args.length != 2)
     {
       System.err.println ("Usage: ReportConverter <InFile> <OutFile>");

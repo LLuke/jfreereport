@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FormatFilter.java,v 1.11 2002/10/15 20:37:21 taqua Exp $
+ * $Id: FormatFilter.java,v 1.12 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@
 package com.jrefinery.report.filter;
 
 import java.text.Format;
+import java.io.Serializable;
 
 /**
  * The base class for filters that format data.  Data is received from a DataSource and formatted.
@@ -56,7 +57,7 @@ import java.text.Format;
  *
  * @author Thomas Morgner
  */
-public class FormatFilter implements DataFilter
+public class FormatFilter implements DataFilter, Serializable
 {
   /** The format used to create the string representation of the data. */
   private Format format;

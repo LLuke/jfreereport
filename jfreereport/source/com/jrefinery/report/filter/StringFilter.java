@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFilter.java,v 1.10 2002/09/13 15:38:07 mungady Exp $
+ * $Id: StringFilter.java,v 1.11 2002/12/06 17:21:50 mungady Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,8 @@
 
 package com.jrefinery.report.filter;
 
+import java.io.Serializable;
+
 /**
  * A filter that returns the value from a data source as a String. The value is converted to an
  * String using String.valueOf () which uses Object.toString() to convert the object into the
@@ -50,7 +52,7 @@ package com.jrefinery.report.filter;
  *
  * @author Thomas Morgner
  */
-public class StringFilter implements DataFilter
+public class StringFilter implements DataFilter, Serializable
 {
   /** The data source for this filter. */
   private DataSource source;

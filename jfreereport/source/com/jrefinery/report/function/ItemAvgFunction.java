@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemAvgFunction.java,v 1.9 2003/05/02 12:39:51 taqua Exp $
+ * $Id: ItemAvgFunction.java,v 1.10 2003/05/16 17:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package com.jrefinery.report.function;
 
 import java.math.BigDecimal;
+import java.io.Serializable;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.event.ReportEvent;
@@ -66,7 +67,7 @@ import com.jrefinery.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class ItemAvgFunction extends AbstractFunction
+public class ItemAvgFunction extends AbstractFunction implements Serializable
 {
   /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.12 2003/04/05 18:57:11 taqua Exp $
+ * $Id: GroupCountFunction.java,v 1.13 2003/05/16 17:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  */
 
 package com.jrefinery.report.function;
+
+import java.io.Serializable;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.event.ReportEvent;
@@ -51,7 +53,7 @@ import com.jrefinery.report.states.ReportState;
  *
  * @author David Gilbert
  */
-public class GroupCountFunction extends AbstractFunction implements Cloneable
+public class GroupCountFunction extends AbstractFunction implements Serializable
 {
   /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";

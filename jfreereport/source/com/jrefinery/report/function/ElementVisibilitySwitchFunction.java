@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.23 2003/04/24 18:08:47 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.24 2003/05/11 13:39:16 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -38,6 +38,8 @@
  * 24-Mar-2003 : Bug: After page breaks, the visible state could be invalid.
  */
 package com.jrefinery.report.function;
+
+import java.io.Serializable;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.event.ReportEvent;
@@ -53,7 +55,7 @@ import com.jrefinery.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class ElementVisibilitySwitchFunction extends AbstractFunction
+public class ElementVisibilitySwitchFunction extends AbstractFunction implements Serializable
 {
   /** the Property key for the name of the ItemBand element. */
   public static final String ELEMENT_PROPERTY = "element";

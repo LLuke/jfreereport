@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.6 2003/05/02 12:39:50 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.7 2003/05/14 22:26:38 taqua Exp $
  *
  * Changes
  * -------
@@ -37,9 +37,14 @@
 package com.jrefinery.report.function;
 
 import java.awt.Color;
+import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
+import com.jrefinery.report.util.SerializerHelper;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.jfree.xml.factory.objects.ColorObjectDescription;
@@ -54,7 +59,7 @@ import org.jfree.xml.factory.objects.ColorObjectDescription;
  *
  * @author Thomas Morgner
  */
-public class ElementColorFunction extends AbstractFunction
+public class ElementColorFunction extends AbstractFunction implements Serializable
 {
   /** the Property key for the name of the ItemBand element. */
   public static final String ELEMENT_PROPERTY = "element";
@@ -63,13 +68,13 @@ public class ElementColorFunction extends AbstractFunction
   public static final String FIELD_PROPERTY = "field";
 
   /** the color if the field is TRUE. */
-  private Color elementColorTrue;
+  private transient Color elementColorTrue;
   
   /** the color if the field is FALSE. */
-  private Color elementColorFalse;
+  private transient Color elementColorFalse;
   
   /** The color object descripion. */
-  private ColorObjectDescription cod;
+  private transient ColorObjectDescription cod;
 
   /**
    * Default constructor. 
@@ -269,5 +274,22 @@ public class ElementColorFunction extends AbstractFunction
   public Object getValue()
   {
     return null;
+  }
+
+  private void writeObject(ObjectOutputStream out)
+     throws IOException
+  {
+    out.defaultWriteObject();
+    SerializerHelper.getInstance().writeObject(elementColorFalse, out);
+    SerializerHelper.getInstance().writeObject(elementColorTrue, out);
+  }
+
+  private void readObject(ObjectInputStream in)
+     throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    elementColorFalse = (Color) SerializerHelper.getInstance().readObject(in);
+    elementColorTrue  = (Color) SerializerHelper.getInstance().readObject(in);
+    cod = new ColorObjectDescription();
   }
 }

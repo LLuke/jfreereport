@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemPercentageFunction.java,v 1.16 2003/04/05 18:57:11 taqua Exp $
+ * $Id: ItemPercentageFunction.java,v 1.17 2003/05/16 17:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@
 package com.jrefinery.report.function;
 
 import java.math.BigDecimal;
+import java.io.Serializable;
 
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.filter.DecimalFormatParser;
@@ -56,7 +57,7 @@ import com.jrefinery.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class ItemPercentageFunction extends AbstractFunction
+public class ItemPercentageFunction extends AbstractFunction implements Serializable
 {
   /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";

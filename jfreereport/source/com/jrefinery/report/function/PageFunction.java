@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.12 2003/04/05 18:57:11 taqua Exp $
+ * $Id: PageFunction.java,v 1.13 2003/05/16 17:26:42 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@
 
 package com.jrefinery.report.function;
 
+import java.io.Serializable;
+
 import com.jrefinery.report.Group;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.states.ReportState;
@@ -52,7 +54,7 @@ import com.jrefinery.report.states.ReportState;
  *
  * @author Thomas Morgner
  */
-public class PageFunction extends AbstractFunction
+public class PageFunction extends AbstractFunction implements Serializable
 {
 
   /** The page. */

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited)
  *                   for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientFunction.java,v 1.8 2003/05/16 17:26:42 taqua Exp $
+ * $Id: TotalGroupSumQuotientFunction.java,v 1.9 2003/05/16 19:29:50 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ package com.jrefinery.report.function;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.filter.DecimalFormatParser;
@@ -73,7 +74,7 @@ import com.jrefinery.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class TotalGroupSumQuotientFunction extends AbstractFunction
+public class TotalGroupSumQuotientFunction extends AbstractFunction implements Serializable
 {
   /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";
@@ -87,7 +88,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
   /**
    * Helperclass to make summing easier.
    */
-  private static class GroupSum
+  private static class GroupSum implements Serializable
   {
     /** The result. */
     private BigDecimal result;

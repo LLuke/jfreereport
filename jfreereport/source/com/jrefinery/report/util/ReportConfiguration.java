@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.44 2003/05/11 13:39:20 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.45 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,10 @@ package com.jrefinery.report.util;
 
 import java.util.Enumeration;
 import java.util.Properties;
+import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 
 import org.jfree.util.Configuration;
 
@@ -269,7 +273,7 @@ import org.jfree.util.Configuration;
  *
  * @author Thomas Morgner
  */
-public class ReportConfiguration implements Configuration
+public class ReportConfiguration implements Configuration, Serializable
 {
   /** The text aliasing configuration key. */
   public static final String G2TARGET_USEALIASING
@@ -474,10 +478,10 @@ public class ReportConfiguration implements Configuration
   private Properties configuration;
 
   /** The parent configuration (null if this is the root configuration). */
-  private ReportConfiguration parentConfiguration;
+  private transient ReportConfiguration parentConfiguration;
 
   /** The global configuration. */
-  private static ReportConfiguration globalConfig;
+  private static transient ReportConfiguration globalConfig;
 
   /**
    * Default constructor.
@@ -1158,5 +1162,33 @@ public class ReportConfiguration implements Configuration
     setConfigProperty(CSV_OUTPUT_ENCODING, targetEncoding);
   }
 
+  private void writeObject(ObjectOutputStream out)
+     throws IOException
+  {
+    out.defaultWriteObject();
+    if (parentConfiguration == globalConfig)
+    {
+      out.writeBoolean(false);
+    }
+    else
+    {
+      out.writeBoolean(true);
+      out.writeObject(parentConfiguration);
+    }
+  }
 
+  private void readObject(ObjectInputStream in)
+     throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    boolean readParent = in.readBoolean();
+    if (readParent)
+    {
+      parentConfiguration = (ReportConfiguration) in.readObject();
+    }
+    else
+    {
+      parentConfiguration = ReportConfiguration.getGlobalConfig();
+    }
+  }
 }

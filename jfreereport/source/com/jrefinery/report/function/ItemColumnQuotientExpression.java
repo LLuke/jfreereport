@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemColumnQuotientFunction.java,v 1.4 2003/05/14 22:26:38 taqua Exp $
+ * $Id: ItemColumnQuotientExpression.java,v 1.1 2003/05/20 16:54:18 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package com.jrefinery.report.function;
 
 import java.math.BigDecimal;
+import java.io.Serializable;
 
 import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.filter.NumberFormatParser;
@@ -60,7 +61,7 @@ import com.jrefinery.report.util.Log;
  *
  * @author Heiko Evermann
  */
-public class ItemColumnQuotientExpression extends AbstractExpression
+public class ItemColumnQuotientExpression extends AbstractExpression implements Serializable
 {
   /** Literal text for the 'dividend' property. */
   public static final String DIVIDEND_PROPERTY = "dividend";

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticDataSource.java,v 1.7 2002/09/13 15:38:07 mungady Exp $
+ * $Id: StaticDataSource.java,v 1.8 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -39,15 +39,21 @@
 
 package com.jrefinery.report.filter;
 
+import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+import com.jrefinery.report.util.SerializerHelper;
+
 /**
  * A data source that returns a constant value.  An example is a label on a report.
  *
  * @author Thomas Morgner
  */
-public class StaticDataSource implements DataSource
+public class StaticDataSource implements DataSource, Serializable
 {
   /** The value. */
-  private Object value;
+  private transient Object value;
 
   /**
    * Default constructor.
@@ -96,5 +102,19 @@ public class StaticDataSource implements DataSource
   public Object clone () throws CloneNotSupportedException
   {
     return super.clone ();
+  }
+
+  private void writeObject(ObjectOutputStream out)
+     throws IOException
+  {
+    out.defaultWriteObject();
+    SerializerHelper.getInstance().writeObject(value, out);
+  }
+
+  private void readObject(java.io.ObjectInputStream in)
+     throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    value = SerializerHelper.getInstance().readObject(in);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventMonitorFunction.java,v 1.4 2003/03/07 16:55:55 taqua Exp $
+ * $Id: EventMonitorFunction.java,v 1.5 2003/03/26 10:49:22 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  */
 
 package com.jrefinery.report.function;
+
+import java.io.Serializable;
 
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.util.Log;
@@ -47,7 +49,7 @@ import com.jrefinery.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class EventMonitorFunction extends AbstractFunction
+public class EventMonitorFunction extends AbstractFunction implements Serializable
 {
   /** Counts the number of times the reportStarted(...) method is called. */
   private int reportStartCount = 0;

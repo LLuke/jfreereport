@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * $Id: ExpressionDataSource.java,v 1.6 2002/12/12 12:26:55 mungady Exp $
+ * $Id: ExpressionDataSource.java,v 1.7 2003/02/25 14:07:19 taqua Exp $
  *
  * Changes
  * -------
@@ -33,6 +33,8 @@
  * 28-Aug-2002 : Documentation
  */
 package com.jrefinery.report.filter;
+
+import java.io.Serializable;
 
 import com.jrefinery.report.DataRow;
 
@@ -48,7 +50,7 @@ import com.jrefinery.report.DataRow;
  *
  * @deprecated use DataRowDataSource as unified access class instead
  */
-public class ExpressionDataSource implements DataSource, DataRowConnectable
+public class ExpressionDataSource implements DataSource, DataRowConnectable, Serializable
 {
   /**
    * The name of the expression as defined in the function collection for the report.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.8 2003/05/02 12:39:51 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.9 2003/05/16 17:26:42 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
+import java.io.ObjectInputStream;
+import java.io.IOException;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.event.ReportEvent;
@@ -55,7 +58,7 @@ import com.jrefinery.report.event.ReportEvent;
  * 
  * @author Thomas Morgner
  */
-public class PaintDynamicComponentFunction extends AbstractFunction
+public class PaintDynamicComponentFunction extends AbstractFunction implements Serializable
 {
   /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
@@ -64,10 +67,10 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   public static final String SCALE_PROPERTY = "scale";
 
   /** the created image, cached for getValue(). */
-  private Image image;
+  private transient Image image;
 
   /** supplies a valid peer for the draw operation. */
-  private Frame peerSupply;
+  private transient Frame peerSupply;
 
   /**
    * DefaultConstructor.
@@ -314,4 +317,12 @@ public class PaintDynamicComponentFunction extends AbstractFunction
     return pc;
   }
 
+
+  private void readObject(ObjectInputStream in)
+     throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    peerSupply = new Frame();
+    peerSupply.setLayout(new BorderLayout());
+  }
 }

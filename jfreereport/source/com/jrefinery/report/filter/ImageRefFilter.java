@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageRefFilter.java,v 1.11 2003/04/08 14:03:15 mungady Exp $
+ * $Id: ImageRefFilter.java,v 1.12 2003/05/02 12:39:43 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package com.jrefinery.report.filter;
 
 import java.awt.Image;
+import java.io.Serializable;
 
 import com.jrefinery.report.ImageReference;
 
@@ -51,7 +52,7 @@ import com.jrefinery.report.ImageReference;
  *
  * @author Thomas Morgner
  */
-public class ImageRefFilter implements DataFilter
+public class ImageRefFilter implements DataFilter, Serializable
 {
   /**
    * Default constructor.

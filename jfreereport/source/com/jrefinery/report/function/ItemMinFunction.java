@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemMinFunction.java,v 1.7 2003/05/02 12:39:51 taqua Exp $
+ * $Id: ItemMinFunction.java,v 1.8 2003/05/16 17:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@
 package com.jrefinery.report.function;
 
 import java.math.BigDecimal;
+import java.io.Serializable;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.event.ReportEvent;
@@ -71,7 +72,7 @@ import com.jrefinery.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class ItemMinFunction extends AbstractFunction
+public class ItemMinFunction extends AbstractFunction implements Serializable
 {
   /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";

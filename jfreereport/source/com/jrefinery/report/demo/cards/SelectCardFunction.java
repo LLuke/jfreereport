@@ -28,13 +28,15 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SelectCardFunction.java,v 1.2 2003/04/09 15:30:27 mungady Exp $
+ * $Id: SelectCardFunction.java,v 1.3 2003/05/14 22:26:37 taqua Exp $
  *
  * Changes
  * -------
  * 29.03.2003 : Initial version
  */
 package com.jrefinery.report.demo.cards;
+
+import java.io.Serializable;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
@@ -58,7 +60,7 @@ import com.jrefinery.report.function.FunctionInitializeException;
  * 
  * @author Thomas Morgner.
  */
-public class SelectCardFunction extends AbstractFunction
+public class SelectCardFunction extends AbstractFunction implements Serializable
 {
   /** Literal text for the field property. */
   public static final String FIELD_PROPERTY = "field";

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.20 2003/04/09 15:47:31 mungady Exp $
+ * $Id: PageTotalFunction.java,v 1.21 2003/05/16 17:26:42 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -41,6 +41,7 @@
 package com.jrefinery.report.function;
 
 import java.util.HashMap;
+import java.io.Serializable;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.ReportDefinition;
@@ -76,7 +77,7 @@ public class PageTotalFunction extends PageFunction
    * The current number is a shared secret over multiple report states and is shared
    * among all states of a report (if global) or all states which belong to a group.
    */
-  private static class PageStorage
+  private static class PageStorage implements Serializable
   {
     /** The page. */
     private int page;

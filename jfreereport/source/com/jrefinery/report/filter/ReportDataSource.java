@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDataSource.java,v 1.9 2002/09/13 15:38:07 mungady Exp $
+ * $Id: ReportDataSource.java,v 1.10 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,8 @@
  */
 
 package com.jrefinery.report.filter;
+
+import java.io.Serializable;
 
 import com.jrefinery.report.DataRow;
 
@@ -50,7 +52,7 @@ import com.jrefinery.report.DataRow;
  *
  * @deprecated use DataRowDataSource as unified access class instead
  */
-public class ReportDataSource implements DataSource, DataRowConnectable
+public class ReportDataSource implements DataSource, DataRowConnectable, Serializable
 {
 
   /** The field name. */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: SerializerHelper.java,v 1.1 2003/05/30 18:47:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,6 +56,7 @@ import com.jrefinery.report.util.serializers.Line2DSerializer;
 import com.jrefinery.report.util.serializers.Point2DSerializer;
 import com.jrefinery.report.util.serializers.Rectangle2DSerializer;
 import com.jrefinery.report.util.serializers.BandLayoutManagerSerializer;
+import com.jrefinery.report.util.serializers.PageFormatSerializer;
 
 public class SerializerHelper
 {
@@ -74,6 +75,7 @@ public class SerializerHelper
       singleton.registerMethod(new Point2DSerializer());
       singleton.registerMethod(new Rectangle2DSerializer());
       singleton.registerMethod(new BandLayoutManagerSerializer());
+      singleton.registerMethod(new PageFormatSerializer());
     }
     return singleton;
   }
@@ -152,11 +154,6 @@ public class SerializerHelper
           }
         }
       }
-      else
-      {
-        Log.debug(keyClass + " is not assignable from " + d);
-      }
-
     }
     return knownSuperClass;
   }

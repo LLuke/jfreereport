@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.27 2003/05/16 17:26:40 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.28 2003/05/16 19:29:50 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@
 package com.jrefinery.report.function;
 
 import java.math.BigDecimal;
+import java.io.Serializable;
 
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.filter.DecimalFormatParser;
@@ -76,7 +77,7 @@ import com.jrefinery.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class ItemSumFunction extends AbstractFunction
+public class ItemSumFunction extends AbstractFunction implements Serializable
 {
   /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";

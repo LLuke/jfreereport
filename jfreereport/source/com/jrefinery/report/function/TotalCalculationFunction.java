@@ -2,11 +2,12 @@
  * Date: Mar 7, 2003
  * Time: 6:36:32 PM
  *
- * $Id: TotalCalculationFunction.java,v 1.3 2003/05/16 17:26:42 taqua Exp $
+ * $Id: TotalCalculationFunction.java,v 1.4 2003/05/16 19:29:50 taqua Exp $
  */
 package com.jrefinery.report.function;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 
 import com.jrefinery.report.event.ReportEvent;
 
@@ -27,7 +28,7 @@ import com.jrefinery.report.event.ReportEvent;
  *
  * @author Thomas Morgner
  */
-public class TotalCalculationFunction extends AbstractFunction
+public class TotalCalculationFunction extends AbstractFunction implements Serializable
 {
   /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";
@@ -39,7 +40,7 @@ public class TotalCalculationFunction extends AbstractFunction
   private int currentIndex;
 
   /** The current object. */
-  private Object currentObject;
+  private transient Object currentObject;
 
   /**
    * Constructs a new function.

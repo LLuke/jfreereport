@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontChangeFunction.java,v 1.12 2003/02/26 13:57:37 mungady Exp $
+ * $Id: FontChangeFunction.java,v 1.13 2003/04/05 18:57:09 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,7 @@
 package com.jrefinery.report.demo;
 
 import java.awt.Font;
+import java.io.Serializable;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.TextElement;
@@ -58,7 +59,7 @@ import com.jrefinery.report.targets.FontDefinition;
  *
  * @author Thomas Morgner
  */
-public class FontChangeFunction extends AbstractFunction
+public class FontChangeFunction extends AbstractFunction implements Serializable
 {
 
   /**

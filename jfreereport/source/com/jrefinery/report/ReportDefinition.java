@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinition.java,v 1.1 2003/04/05 19:22:00 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.2 2003/04/09 15:45:47 mungady Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,8 @@ import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.ReportProperties;
 
 /**
- * A report definition.
+ * A report definition. This the working copy of the JFreeReport object. This object
+ * is not serializable, as it is used internally.
  * 
  * @author Thomas Morgner.
  */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.17 2003/04/09 15:47:30 mungady Exp $
+ * $Id: ItemCountFunction.java,v 1.18 2003/05/16 17:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,8 @@
 
 package com.jrefinery.report.function;
 
+import java.io.Serializable;
+
 import com.jrefinery.report.Group;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.states.ReportState;
@@ -55,7 +57,7 @@ import com.jrefinery.report.states.ReportState;
  *
  * @author Thomas Morgner
  */
-public class ItemCountFunction extends AbstractFunction implements Cloneable
+public class ItemCountFunction extends AbstractFunction implements Serializable
 {
   /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.15 2002/12/12 12:26:56 mungady Exp $
+ * $Id: ReportPropertyFunction.java,v 1.16 2003/01/14 21:07:12 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,11 @@
 
 package com.jrefinery.report.function;
 
+import java.io.Serializable;
+
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.states.ReportState;
+import com.jrefinery.report.util.Log;
 
 /**
  * A report function that returns a property that has been set for a report.
@@ -61,7 +64,7 @@ import com.jrefinery.report.states.ReportState;
  *
  * @author David Gilbert
  */
-public class ReportPropertyFunction extends AbstractFunction
+public class ReportPropertyFunction extends AbstractFunction implements Serializable
 {
 
   /** The function value. */
@@ -75,6 +78,8 @@ public class ReportPropertyFunction extends AbstractFunction
    */
   public ReportPropertyFunction()
   {
+    Log.warn ("The use of the 'ReportPropertyFunction' is deprecated. " +
+        "Please use the 'property-ref' instead.");
   }
 
   /**

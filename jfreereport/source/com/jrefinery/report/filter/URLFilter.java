@@ -25,7 +25,7 @@
  * --------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: URLFilter.java,v 1.10 2003/02/25 14:07:22 taqua Exp $
+ * $Id: URLFilter.java,v 1.11 2003/05/02 12:39:43 taqua Exp $
  *
  * Changes
  * -------
@@ -34,6 +34,7 @@
 package com.jrefinery.report.filter;
 
 import java.io.File;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -45,7 +46,7 @@ import com.jrefinery.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class URLFilter implements DataFilter
+public class URLFilter implements DataFilter, Serializable
 {
   /**
    * The datasource used to form the urls. This datasource should return

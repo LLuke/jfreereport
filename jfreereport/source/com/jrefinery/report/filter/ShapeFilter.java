@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFieldTemplate.java,v 1.5 2003/03/07 16:55:55 taqua Exp $
+ * $Id: ShapeFilter.java,v 1.2 2003/04/09 00:12:30 mungady Exp $
  *
  * Changes
  * -------
@@ -39,13 +39,14 @@
 package com.jrefinery.report.filter;
 
 import java.awt.Shape;
+import java.io.Serializable;
 
 /**
  * A shape filter.
  * 
  * @author Thomas Morgner.
  */
-public class ShapeFilter implements DataFilter
+public class ShapeFilter implements DataFilter, Serializable
 {
   /**
    * Default constructor.

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *
 
- * $Id: TextFormatExpression.java,v 1.7 2003/02/25 14:07:28 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.8 2003/05/02 12:39:51 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ package com.jrefinery.report.function;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.io.Serializable;
 
 import com.jrefinery.report.util.PropertiesIterator;
 
@@ -67,7 +68,7 @@ import com.jrefinery.report.util.PropertiesIterator;
  *
  * @author Thomas Morgner
  */
-public class TextFormatExpression extends AbstractExpression
+public class TextFormatExpression extends AbstractExpression implements Serializable
 {
   /** The property key for the pattern property. */
   public static final String PATTERN_PROPERTY = "pattern";

@@ -25,7 +25,7 @@
  * -----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FormatParser.java,v 1.11 2002/12/12 12:26:55 mungady Exp $
+ * $Id: FormatParser.java,v 1.12 2003/02/25 14:07:19 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@ package com.jrefinery.report.filter;
 
 import java.text.Format;
 import java.text.ParseException;
+import java.io.Serializable;
 
 /**
  * A format parser tries to parse a string into an object. If the value returned by the
@@ -50,7 +51,7 @@ import java.text.ParseException;
  *
  * @author Thomas Morgner
  */
-public class FormatParser implements DataFilter
+public class FormatParser implements DataFilter, Serializable
 {
   /** The format used to create the string representation of the data. */
   private Format format;
