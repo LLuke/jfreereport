@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandHandler.java,v 1.9 2003/12/04 18:04:06 taqua Exp $
+ * $Id: BandHandler.java,v 1.8.4.2 2004/10/13 18:42:23 taqua Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,12 @@ package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
-
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollector;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.xml.ParseException;
 import org.jfree.xml.CommentHandler;
+import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

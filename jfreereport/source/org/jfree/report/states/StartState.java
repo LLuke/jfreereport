@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.4 2004/04/15 15:14:21 taqua Exp $
+ * $Id: StartState.java,v 1.5 2004/05/07 08:14:22 mungady Exp $
  *
  * Changes
  * -------
@@ -38,11 +38,13 @@
 
 package org.jfree.report.states;
 
+import java.awt.print.PageFormat;
 import java.util.Date;
 import java.util.Iterator;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.function.FunctionInitializeException;
+import org.jfree.report.PageDefinition;
+import org.jfree.util.Log;
 
 /**
  * The first state in the JFreeReport state transition diagram.
@@ -64,7 +66,7 @@ public final class StartState extends ReportState
    * @throws CloneNotSupportedException if the initial cloning of the report definition fails.
    */
   public StartState(final JFreeReport report)
-      throws CloneNotSupportedException, FunctionInitializeException
+      throws CloneNotSupportedException
   {
     super(report);
     final Iterator it = getLevels();
@@ -105,6 +107,17 @@ public final class StartState extends ReportState
 
     // a PropertyHandler should set the properties.
     setProperty(JFreeReport.REPORT_DATE_PROPERTY, new Date());
+
+    Log.debug ("Date: " + getDataRow().get("report.date"));
+    // the pageformat is added to the report properties, PageFormat is not serializable,
+    // so a repaginated report is no longer serializable.
+    //
+    // The pageformat will cause trouble in later versions, when printing over
+    // multiple pages gets implemented. This property will be replaced by a more
+    // suitable alternative.
+    final PageDefinition p = getReport().getPageDefinition();
+    final PageFormat pf = p.getPageFormat(0);
+    setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, pf.clone());
 
     fireReportInitializedEvent();
     return new PostReportInitializedState(this);

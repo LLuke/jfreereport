@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003 by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.12 2004/03/16 15:09:56 taqua Exp $
+ * $Id: Worker.java,v 1.11.4.2 2004/11/21 18:28:41 taqua Exp $
  *
  *
  * Changes
@@ -93,11 +93,11 @@ public class Worker extends Thread
     {
       throw new IllegalStateException("This worker is not idle.");
     }
-    Log.debug("Workload set...");
+    //Log.debug("Workload set...");
     synchronized (this)
     {
       workload = r;
-      Log.debug("Workload assigned: Notified " + getName());
+      //Log.debug("Workload assigned: Notified " + getName());
       this.notifyAll();
     }
   }
@@ -110,7 +110,6 @@ public class Worker extends Thread
   {
     finish = true;
     // we are evil ..
-    // Log.debug ("Finished Thread: " + getName(), new Exception());
     try
     {
       this.interrupt();

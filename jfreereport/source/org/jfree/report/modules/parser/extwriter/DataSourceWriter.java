@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.6 2003/12/04 18:04:06 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.5.4.2 2004/10/13 18:42:23 taqua Exp $
  *
  * Changes
  * -------
@@ -42,10 +42,10 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.jfree.report.filter.DataSource;
-import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.DataSourceHandler;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
+import org.jfree.xml.CommentHandler;
 import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**

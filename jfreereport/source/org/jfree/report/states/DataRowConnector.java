@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowConnector.java,v 1.4 2003/12/06 15:24:02 taqua Exp $
+ * $Id: DataRowConnector.java,v 1.5 2003/12/06 16:47:25 taqua Exp $
  *
  * Changes
  * -------
@@ -41,14 +41,7 @@
 
 package org.jfree.report.states;
 
-import java.util.List;
-
-import org.jfree.report.Band;
 import org.jfree.report.DataRow;
-import org.jfree.report.Element;
-import org.jfree.report.Group;
-import org.jfree.report.ReportDefinition;
-import org.jfree.report.filter.DataRowConnectable;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.DataTarget;
 
@@ -185,56 +178,6 @@ public class DataRowConnector implements DataRow
       throw new IllegalStateException("Not connected");
     }
     return getDataRowBackend().getColumnCount();
-  }
-
-  /**
-   * Connects the Report and all contained bands and all Elements within the bands to this DataRow.
-   *
-   * @param report the report which will be connected
-   * @param con  the data row connector.
-   * @deprecated datarow connectors are not used anymore
-   */
-  public static void connectDataSources(final ReportDefinition report, final DataRowConnector con)
-  {
-    throw new UnsupportedOperationException("DataRowConnectors are no longer used.");
-  }
-
-  /**
-   * Connects the Band and all Elements within the band to this DataRow.
-   *
-   * @param band the band which will be connected.
-   * @param con  the connector.
-   * @deprecated datarow connectors are not used anymore
-   */
-  public static void connectDataSources(final Band band, final DataRowConnector con)
-  {
-    throw new UnsupportedOperationException("DataRowConnectors are no longer used.");
-  }
-
-  /**
-   * Removes the reference to this DataRow from the Report and all contained Bands and all
-   * Elements contained in the Bands.
-   *
-   * @param report  the report which will be disconnected from this DataRow.
-   * @param con  the connector.
-   * @deprecated datarow connectors are not used anymore
-   */
-  public static void disconnectDataSources
-    (final ReportDefinition report, final DataRowConnector con)
-  {
-    throw new UnsupportedOperationException("DataRowConnectors are no longer used.");
-  }
-
-  /**
-   * Removes the reference to this DataRow from the Band and all Elements contained in the Band.
-   *
-   * @param band  the band which will be disconnected from this DataRow.
-   * @param con  the connector.
-   * @deprecated datarow connectors are not used anymore
-   */
-  public static void disconnectDataSources(final Band band, final DataRowConnector con)
-  {
-    throw new UnsupportedOperationException("DataRowConnectors are no longer used.");
   }
 
   /**

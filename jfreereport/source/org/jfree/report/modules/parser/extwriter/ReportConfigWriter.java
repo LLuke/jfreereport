@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.7 2004/03/16 15:09:55 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.5.4.3 2004/10/13 18:42:23 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Enumeration;
 
-import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
 import org.jfree.report.modules.parser.ext.ExtReportHandler;
@@ -53,6 +52,7 @@ import org.jfree.report.modules.parser.ext.ReportConfigHandler;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.xml.CommentHandler;
 import org.jfree.xml.writer.AttributeList;
 
 /**
@@ -110,14 +110,14 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
     writeTag(writer, ReportConfigHandler.DEFAULT_PAGEFORMAT_TAG,
         buildPageFormatProperties(), CLOSE);
     final ReportConfiguration config = getReport().getReportConfiguration();
-    final Enumeration enum = config.getConfigProperties();
-    if (enum.hasMoreElements())
+    final Enumeration properties = config.getConfigProperties();
+    if (properties.hasMoreElements())
     {
       writeComment(writer, CONFIGURATION_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(writer, ReportConfigHandler.CONFIGURATION_TAG);
-      while (enum.hasMoreElements())
+      while (properties.hasMoreElements())
       {
-        final String key = (String) enum.nextElement();
+        final String key = (String) properties.nextElement();
         final String value = config.getConfigProperty(key);
         if (value != null)
         {
@@ -146,8 +146,7 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
   private AttributeList buildPageFormatProperties()
   {
     final AttributeList retval = new AttributeList();
-    // todo PageFormat changed
-    final PageFormat fmt = new PageFormat();//getReport().getDefaultPageFormat();
+    final PageFormat fmt = getReport().getPageDefinition().getPageFormat(0);
     final int[] borders = getBorders(fmt.getPaper());
 
     if (fmt.getOrientation() == PageFormat.LANDSCAPE)

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyHandler.java,v 1.8 2003/12/04 18:04:06 taqua Exp $
+ * $Id: PropertyHandler.java,v 1.7.4.3 2004/12/30 14:46:13 taqua Exp $
  *
  * Changes
  * -------
@@ -38,12 +38,12 @@
 
 package org.jfree.report.modules.parser.ext;
 
-import java.util.Properties;
+import java.util.ArrayList;
 
-import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.CharacterEntityParser;
+import org.jfree.xml.CommentHandler;
 import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -52,11 +52,35 @@ import org.xml.sax.SAXException;
  * A property handler. Handles the defintion of properties. The defined properties
  * are collected in a java.util.Properties object and returned when the finishTag
  * was reached on endElement.
+ * <p>
+ * This implementation maintains the definition order of the properties set. 
  *
  * @author Thomas Morgner.
  */
 public class PropertyHandler extends AbstractExtReportParserHandler
 {
+  public static class PropertyDefinition
+  {
+    private String name;
+    private String value;
+
+    public PropertyDefinition(String name, String value)
+    {
+      this.name = name;
+      this.value = value;
+    }
+
+    public String getName()
+    {
+      return name;
+    }
+
+    public String getValue()
+    {
+      return value;
+    }
+  }
+
   /** The 'property' tag name. */
   public static final String PROPERTY_TAG = "property";
 
@@ -64,7 +88,7 @@ public class PropertyHandler extends AbstractExtReportParserHandler
   public static final String NAME_ATTR = "name";
 
   /** The properties. */
-  private final Properties properties;
+  private final ArrayList properties;
 
   /** The string buffer. */
   private StringBuffer buffer = null;
@@ -90,7 +114,7 @@ public class PropertyHandler extends AbstractExtReportParserHandler
   {
     super(parser, finishTag);
     entityParser = CharacterEntityParser.createXMLEntityParser();
-    properties = new Properties();
+    properties = new ArrayList();
     if (base == null)
     {
       throw new NullPointerException("CommentHint base must not be null.");
@@ -155,7 +179,8 @@ public class PropertyHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(PROPERTY_TAG))
     {
-      properties.setProperty(name, entityParser.decodeEntities(buffer.toString()));
+      properties.add(new PropertyDefinition
+          (name, entityParser.decodeEntities(buffer.toString())));
       name = null;
       buffer = null;
     }
@@ -175,7 +200,7 @@ public class PropertyHandler extends AbstractExtReportParserHandler
    *
    * @return The properties.
    */
-  public Properties getProperties()
+  public ArrayList getProperties()
   {
     return properties;
   }

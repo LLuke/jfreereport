@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinitionImpl.java,v 1.8 2004/04/15 15:14:21 taqua Exp $
+ * $Id: ReportDefinitionImpl.java,v 1.9 2004/05/07 08:14:21 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -38,23 +38,23 @@
 
 package org.jfree.report.states;
 
+import org.jfree.report.Band;
+import org.jfree.report.DataRow;
+import org.jfree.report.Element;
 import org.jfree.report.Group;
 import org.jfree.report.GroupList;
 import org.jfree.report.ItemBand;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.PageDefinition;
 import org.jfree.report.PageFooter;
 import org.jfree.report.PageHeader;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
-import org.jfree.report.Band;
-import org.jfree.report.DataRow;
-import org.jfree.report.Element;
 import org.jfree.report.Watermark;
-import org.jfree.report.PageDefinition;
 import org.jfree.report.filter.DataSource;
-import org.jfree.report.filter.ReportConnectable;
 import org.jfree.report.filter.DataTarget;
+import org.jfree.report.filter.ReportConnectable;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ReportProperties;

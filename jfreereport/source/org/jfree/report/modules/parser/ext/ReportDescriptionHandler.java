@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionHandler.java,v 1.11 2003/12/06 15:24:02 taqua Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.9.2.1.2.1 2004/01/30 14:25:37 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,9 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.Band;
-import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.xml.CommentHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -196,8 +196,8 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
           + REPORT_FOOTER_TAG + ", "
           + PAGE_HEADER_TAG + ", "
           + PAGE_FOOTER_TAG + ", "
-          + ITEMBAND_TAG + ", "
           + WATERMARK_TAG + ", "
+          + ITEMBAND_TAG + ", "
           + GROUPS_TAG);
     }
 
@@ -264,8 +264,8 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
           + REPORT_FOOTER_TAG + ", "
           + PAGE_HEADER_TAG + ", "
           + PAGE_FOOTER_TAG + ", "
-          + ITEMBAND_TAG + ", "
           + WATERMARK_TAG + ", "
+          + ITEMBAND_TAG + ", "
           + GROUPS_TAG + ", "
           + getFinishTag());
     }

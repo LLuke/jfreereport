@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.9 2003/12/06 17:15:21 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.8.4.3 2004/12/30 14:46:14 taqua Exp $
  *
  * Changes
  * -------
@@ -42,12 +42,14 @@
 
 package org.jfree.report.modules.parser.simple;
 
-import java.util.Properties;
-
 import org.jfree.report.function.Expression;
-import org.jfree.report.function.Function;
+import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.CharacterEntityParser;
+import org.jfree.report.util.Log;
+import org.jfree.report.util.beans.BeanException;
+import org.jfree.report.util.beans.BeanUtility;
+import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.ParserUtil;
 import org.xml.sax.Attributes;
@@ -67,9 +69,6 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   /** The current function/expression. */
   private Expression currentFunction;
 
-  /** The report properties. */
-  private Properties currentProperties;
-
   /** The current text. */
   private StringBuffer currentText;
 
@@ -81,6 +80,8 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
 
   /** A character entity parser. */
   private final CharacterEntityParser entityParser;
+
+  private BeanUtility beanUtility;
 
   /**
    * Creates a new function handler.
@@ -119,7 +120,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     }
     else if (elementName.equals(PROPERTIES_TAG))
     {
-      startProperties(atts);
+      startProperties();
     }
     else if (elementName.equals(PROPERTY_TAG))
     {
@@ -145,45 +146,16 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     }
   }
 
-  /**
-   * Returns the current properties bundle for the function that is currently created.
-   *
-   * @return the function/expression properties.
-   */
-  protected Properties getProperties()
+  private void startProperties() throws SAXException
   {
-    return currentProperties;
-  }
-
-  /**
-   * Sets the properties for the current function.
-   *
-   * @param p  the properties.
-   */
-  protected void setProperties(final Properties p)
-  {
-    this.currentProperties = p;
-  }
-
-  /**
-   * Returns the function under construction.
-   *
-   * @return the function just built (or under construction).
-   */
-  protected Function getCurrentFunction()
-  {
-    return (Function) currentFunction;
-  }
-
-  /**
-   * Defines the current function. This function gets properties set and is then added
-   * to the report's function collection.
-   *
-   * @param function  the function.
-   */
-  protected void setCurrentFunction(final Function function)
-  {
-    this.currentFunction = function;
+    try
+    {
+      beanUtility = new BeanUtility(getCurrentExpression());
+    }
+    catch (Exception e)
+    {
+      throw new ParseException("Unable to init bean handler", e);
+    }
   }
 
   /**
@@ -205,16 +177,6 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   protected void setCurrentExpression(final Expression function)
   {
     this.currentFunction = function;
-  }
-
-  /**
-   * Starts the Properties tag to create a new property bundle for a function.
-   *
-   * @param atts  the element attributes.
-   */
-  protected void startProperties(final Attributes atts)
-  {
-    setProperties(new Properties());
   }
 
   /**
@@ -254,7 +216,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
 
     try
     {
-      final Class fnC = getClass().getClassLoader().loadClass(className);
+      final Class fnC = ObjectUtilities.getClassLoader(getClass()).loadClass(className);
       setCurrentExpression((Expression) fnC.newInstance());
       getCurrentExpression().setName(name);
       getCurrentExpression().setDependencyLevel(depLevel);
@@ -324,10 +286,10 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
 
     try
     {
-      final Class fnC = getClass().getClassLoader().loadClass(className);
-      setCurrentFunction((Function) fnC.newInstance());
-      getCurrentFunction().setName(name);
-      getCurrentFunction().setDependencyLevel(depLevel);
+      final Class fnC = ObjectUtilities.getClassLoader(getClass()).loadClass(className);
+      setCurrentExpression((Expression) fnC.newInstance());
+      getCurrentExpression().setName(name);
+      getCurrentExpression().setDependencyLevel(depLevel);
     }
     catch (ClassNotFoundException e)
     {
@@ -410,6 +372,11 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     }
   }
 
+  private void endProperties()
+  {
+    beanUtility = null;
+  }
+
   /**
    * Ends the function. The current function is added to the report and initialized during
    * this process.
@@ -419,7 +386,14 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   protected void endFunction()
       throws SAXException
   {
-    getReport().addExpression(getCurrentFunction());
+    try
+    {
+      getReport().addExpression(getCurrentExpression());
+    }
+    catch (FunctionInitializeException fie)
+    {
+      throw new SAXException(fie);
+    }
   }
 
   /**
@@ -431,7 +405,15 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   protected void endExpression()
       throws SAXException
   {
-    getReport().addExpression(getCurrentExpression());
+    try
+    {
+      getReport().addExpression(getCurrentExpression());
+    }
+    catch (FunctionInitializeException fie)
+    {
+      Log.warn("Function initialization failed", fie);
+      throw new ParseException(fie);
+    }
   }
 
   /**
@@ -446,23 +428,6 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   }
 
   /**
-   * Ends the properties parsing for the current function. The properties are added to the
-   * current function.
-   *
-   * @throws SAXException if there is a problem parsing the element.
-   */
-  protected void endProperties()
-      throws SAXException
-  {
-    final Expression f = getCurrentExpression();
-    if (f == null)
-    {
-      throw new ParseException("End properties reached without a function defined", getLocator());
-    }
-    f.setProperties(currentProperties);
-  }
-
-  /**
    * Ends the definition of a single property entry.
    *
    * @throws SAXException if there is a problem parsing the element.
@@ -470,13 +435,20 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   protected void endProperty()
       throws SAXException
   {
-    final Properties currentProps = getProperties();
-    if (currentProps == null)
+    if (beanUtility == null)
     {
-      throw new ParseException("EndProperty without properties tag?", getLocator());
+      throw new ParseException("No current expression");
     }
-
-    currentProps.setProperty(currentProperty, entityParser.decodeEntities(currentText.toString()));
+    try
+    {
+      beanUtility.setPropertyAsString
+          (currentProperty, entityParser.decodeEntities(currentText.toString()));
+    }
+    catch (BeanException e)
+    {
+      throw new ParseException("Unable to assign property '" + currentProperty
+              + "' for expression.", e);
+    }
     currentText = null;
   }
 

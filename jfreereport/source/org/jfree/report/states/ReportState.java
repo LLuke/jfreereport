@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.10 2004/03/16 15:09:56 taqua Exp $
+ * $Id: ReportState.java,v 1.11 2004/05/07 08:14:22 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -66,10 +66,9 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.LayoutEvent;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.LevelledExpressionList;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.util.ReportProperties;
 import org.jfree.report.util.ReportPropertiesList;
-import org.jfree.util.ObjectUtils;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * Captures state information for a report while it is in the process of being displayed or
@@ -132,13 +131,14 @@ public abstract class ReportState implements Cloneable
    * @throws CloneNotSupportedException if the initial cloning of the report definition fails.
    */
   protected ReportState(final JFreeReport reportPar)
-      throws CloneNotSupportedException, FunctionInitializeException
+      throws CloneNotSupportedException
   {
     setReportDefinition(new ReportDefinitionImpl(reportPar));
     numberOfRows = reportPar.getData().getRowCount();
     reportProperties = getReport().getProperties();
 
-    final LevelledExpressionList functions = new LevelledExpressionList(reportPar.getExpressions());
+    final LevelledExpressionList functions =
+            new LevelledExpressionList(reportPar.getExpressions());
 
     final DataRowBackend dr = new DataRowBackend();
     dr.setTablemodel(reportPar.getData());
@@ -863,7 +863,7 @@ public abstract class ReportState implements Cloneable
 
         final Object item1 = currentDataRow.get(column1);
         final Object item2 = nextDataRow.get(column2);
-        if (ObjectUtils.equal(item1, item2) == false)
+        if (ObjectUtilities.equal(item1, item2) == false)
         {
           return true;
         }
@@ -871,4 +871,10 @@ public abstract class ReportState implements Cloneable
       return false;
     }
   }
+
+  public void fireOutputCompleteEvent (final Band band, final int type)
+  {
+    getFunctions().outputComplete(new LayoutEvent(this, band, LayoutEvent.LAYOUT_EVENT | type));
+  }
+
 }

@@ -189,9 +189,6 @@
   rightmargin    CDATA           #IMPLIED
   topmargin      CDATA           #IMPLIED
   bottommargin   CDATA           #IMPLIED
-  vertical-pages    CDATA        #IMPLIED
-  horizontal-pages  CDATA        #IMPLIED
-
 >
 
 <!--

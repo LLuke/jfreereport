@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * -------------------------
  * ReportPropertiesList.java
  * -------------------------
- * (C)opyright 2000-2002, by Object Refinery Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportPropertiesList.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: ReportPropertiesList.java,v 1.2.4.1 2004/05/11 13:25:53 taqua Exp $
  *
  * Changes
  * -------
@@ -76,10 +76,10 @@ public class ReportPropertiesList
     this.base = base;
     this.columns = new ArrayList();
 
-    final Iterator enum = base.keys();
-    while (enum.hasNext())
+    final Iterator keys = base.keys();
+    while (keys.hasNext())
     {
-      final String key = (String) enum.next();
+      final String key = (String) keys.next();
       if (base.isMarked(key))
       {
         columns.add(key);

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.9 2003/11/07 20:37:48 taqua Exp $
+ * $Id: GroupFactory.java,v 1.9.4.1 2004/04/04 19:03:30 taqua Exp $
  *
  * Changes
  * -------
@@ -191,6 +191,15 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
           new FloatDimension(0, height));
     }
 
+    final String fixedPos = atts.getValue("fixed-position");
+    if (fixedPos != null)
+    {
+      final float fixedPosValue = ParserUtil.parseFloat
+              (fixedPos, "FixedPosition is invalid!");
+      groupHeader.getStyle().setStyleProperty(BandStyleSheet.FIXED_POSITION,
+              new Float (fixedPosValue));
+    }
+
     String pagebreakBeforeAttr = atts.getValue("pagebreak");
     if (pagebreakBeforeAttr == null)
     {
@@ -256,6 +265,15 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
       final float height = ParserUtil.parseFloat(heightAttr, 0);
       groupFooter.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
           new FloatDimension(0, height));
+    }
+
+    final String fixedPos = atts.getValue("fixed-position");
+    if (fixedPos != null)
+    {
+      final float fixedPosValue = ParserUtil.parseFloat
+              (fixedPos, "FixedPosition is invalid!");
+      groupFooter.getStyle().setStyleProperty(BandStyleSheet.FIXED_POSITION,
+              new Float (fixedPosValue));
     }
 
     String pagebreakBeforeAttr = atts.getValue("pagebreak");

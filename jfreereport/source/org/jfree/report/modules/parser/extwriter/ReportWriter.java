@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.5 2003/08/27 20:19:54 taqua Exp $
+ * $Id: ReportWriter.java,v 1.5.4.2 2004/12/13 19:27:14 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,7 @@ import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.Configuration;
+import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
@@ -300,7 +301,7 @@ public class ReportWriter
 
       try
       {
-        final Class c = getClass().getClassLoader().loadClass((String) hintValues[i]);
+        final Class c = ObjectUtilities.getClassLoader(getClass()).loadClass((String) hintValues[i]);
         if (factoryType.isAssignableFrom(c) == false)
         {
           Log.warn(new Log.SimpleMessage

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.13 2004/03/16 15:09:56 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.14 2004/05/07 08:14:24 mungady Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@
 package org.jfree.report.style;
 
 import java.awt.Color;
-import java.awt.Stroke;
 import java.awt.Paint;
+import java.awt.Stroke;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002-2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.13 2003/12/04 18:04:07 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.12.2.1.2.2 2004/10/06 21:28:44 taqua Exp $
  *
  * Changes
  * -------
@@ -41,19 +41,8 @@
 
 package org.jfree.report.util;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.TreeSet;
-
-import org.jfree.report.Boot;
-import org.jfree.report.modules.PackageManager;
-import org.jfree.util.Configuration;
+import org.jfree.base.config.HierarchicalConfiguration;
+import org.jfree.report.JFreeReportBoot;
 
 /**
  * Global and local configurations for JFreeReport.
@@ -76,7 +65,7 @@ import org.jfree.util.Configuration;
  *
  * @author Thomas Morgner
  */
-public class ReportConfiguration implements Configuration, Serializable
+public class ReportConfiguration extends HierarchicalConfiguration
 {
   /** The text aliasing configuration key. */
   public static final String FONTRENDERER_USEALIASING
@@ -160,12 +149,6 @@ public class ReportConfiguration implements Configuration, Serializable
     }
   }
 
-  /** Storage for the configuration properties. */
-  private final Properties configuration;
-
-  /** The parent configuration (null if this is the root configuration). */
-  private transient ReportConfiguration parentConfiguration;
-
   /** The global configuration. */
   private static transient ReportConfiguration globalConfig;
 
@@ -174,7 +157,7 @@ public class ReportConfiguration implements Configuration, Serializable
    */
   protected ReportConfiguration()
   {
-    configuration = new Properties();
+    this(null);
   }
 
   /**
@@ -184,82 +167,7 @@ public class ReportConfiguration implements Configuration, Serializable
    */
   public ReportConfiguration(final ReportConfiguration globalConfig)
   {
-    this();
-    parentConfiguration = globalConfig;
-  }
-
-  /**
-   * Returns the configuration property with the specified key.
-   *
-   * @param key  the property key.
-   *
-   * @return the property value.
-   */
-  public String getConfigProperty(final String key)
-  {
-    return getConfigProperty(key, null);
-  }
-
-  /**
-   * Returns the configuration property with the specified key
-   * (or the specified default value if there is no such property).
-   * <p>
-   * If the property is not defined in this configuration, the code
-   * will lookup the property in the parent configuration.
-   *
-   * @param key  the property key.
-   * @param defaultValue  the default value.
-   *
-   * @return the property value.
-   */
-  public String getConfigProperty(final String key, final String defaultValue)
-  {
-    String value = configuration.getProperty(key);
-    if (value == null)
-    {
-      if (isRootConfig())
-      {
-        value = defaultValue;
-      }
-      else
-      {
-        value = parentConfiguration.getConfigProperty(key, defaultValue);
-      }
-    }
-    return value;
-  }
-
-  /**
-   * Sets a configuration property.
-   *
-   * @param key  the property key.
-   * @param value  the property value.
-   */
-  public void setConfigProperty(final String key, final String value)
-  {
-    if (key == null)
-    {
-      throw new NullPointerException();
-    }
-
-    if (value == null)
-    {
-      configuration.remove(key);
-    }
-    else
-    {
-      configuration.setProperty(key, value);
-    }
-  }
-
-  /**
-   * Returns true if this object has no parent.
-   *
-   * @return true, if this report is the root configuration, false otherwise.
-   */
-  private boolean isRootConfig()
-  {
-    return parentConfiguration == null;
+    super(globalConfig);
   }
 
   /**
@@ -326,16 +234,6 @@ public class ReportConfiguration implements Configuration, Serializable
   }
 
   /**
-   * Returns the collection of properties for the configuration.
-   *
-   * @return the properties.
-   */
-  protected Properties getConfiguration()
-  {
-    return configuration;
-  }
-
-  /**
    * Returns the global configuration for JFreeReport.
    * <p>
    * In the current implementation, the configuration has no properties defined,
@@ -359,7 +257,7 @@ public class ReportConfiguration implements Configuration, Serializable
       rootProperty.load("/org/jfree/report/jfreereport.properties");
       rootProperty.load("/org/jfree/report/ext/jfreereport-ext.properties");
       globalConfig.insertConfiguration(rootProperty);
-      globalConfig.insertConfiguration(PackageManager.getInstance().getPackageConfiguration());
+      globalConfig.insertConfiguration(JFreeReportBoot.getInstance().getPackageManager().getPackageConfiguration());
 
       final PropertyFileReportConfiguration baseProperty = new PropertyFileReportConfiguration();
       baseProperty.load("/jfreereport.properties");
@@ -369,47 +267,9 @@ public class ReportConfiguration implements Configuration, Serializable
       globalConfig.insertConfiguration(systemConfig);
       // just in case it is not already started ...
 
-      Boot.start();
+      JFreeReportBoot.getInstance().start();
     }
     return globalConfig;
-  }
-
-  /**
-   * The new configuartion will be inserted into the list of report configuration,
-   * so that this configuration has the given report configuration instance as parent.
-   *
-   * @param config the new report configuration.
-   */
-  protected void insertConfiguration(final ReportConfiguration config)
-  {
-    config.setParentConfig(getParentConfig());
-    setParentConfig(config);
-  }
-
-  /**
-   * Set the parent configuration. The parent configuration is queried, if the
-   * requested configuration values was not found in this report configuration.
-   *
-   * @param config  the parent configuration.
-   */
-  protected void setParentConfig(final ReportConfiguration config)
-  {
-    if (parentConfiguration == this)
-    {
-      throw new IllegalArgumentException("Cannot add myself as parent configuration.");
-    }
-    parentConfiguration = config;
-  }
-
-  /**
-   * Returns the parent configuration. The parent configuration is queried, if the
-   * requested configuration values was not found in this report configuration.
-   *
-   * @return the parent configuration.
-   */
-  protected ReportConfiguration getParentConfig()
-  {
-    return parentConfiguration;
   }
 
   /**
@@ -526,18 +386,6 @@ public class ReportConfiguration implements Configuration, Serializable
   }
 
   /**
-   * Returns all defined configuration properties for the report. The enumeration
-   * contains all keys of the changed properties, properties set from files or
-   * the system properties are not included.
-   *
-   * @return all defined configuration properties for the report.
-   */
-  public Enumeration getConfigProperties()
-  {
-    return configuration.keys();
-  }
-
-  /**
    * Checks, whether a stricter error handling is applied to the report processing.
    * If set to true, then errors in the handling of report events will cause the report
    * processing to fail. This is a safe-and-paranoid setting, life is simpler with
@@ -571,102 +419,16 @@ public class ReportConfiguration implements Configuration, Serializable
     setConfigProperty(STRICT_ERRORHANDLING, String.valueOf(strictErrorHandling));
   }
 
-  /**
-   * Helper method for serialization.
-   *
-   * @param out the output stream where to write the object.
-   * @throws IOException if errors occur while writing the stream.
-   */
-  private void writeObject(final ObjectOutputStream out)
-      throws IOException
+  protected boolean isParentSaved ()
   {
-    out.defaultWriteObject();
-    if (parentConfiguration == globalConfig)
-    {
-      out.writeBoolean(false);
-    }
-    else
-    {
-      out.writeBoolean(true);
-      out.writeObject(parentConfiguration);
-    }
+    return this != globalConfig;
   }
 
-  /**
-   * Helper method for serialization.
-   *
-   * @param in the input stream from where to read the serialized object.
-   * @throws IOException when reading the stream fails.
-   * @throws ClassNotFoundException if a class definition for a serialized object
-   * could not be found.
-   */
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  protected void configurationLoaded ()
   {
-    in.defaultReadObject();
-    final boolean readParent = in.readBoolean();
-    if (readParent)
+    if (isParentSaved() == false)
     {
-      parentConfiguration = (ReportConfiguration) in.readObject();
+      setParentConfig(globalConfig);
     }
-    else
-    {
-      parentConfiguration = ReportConfiguration.getGlobalConfig();
-    }
-  }
-
-  /**
-   * Searches all property keys that start with a given prefix.
-   *
-   * @param prefix the prefix that all selected property keys should share
-   * @return the properties as iterator.
-   */
-  public Iterator findPropertyKeys(final String prefix)
-  {
-    final TreeSet keys = new TreeSet();
-    collectPropertyKeys(prefix, this, keys);
-    return Collections.unmodifiableSet(keys).iterator();
-  }
-
-  /**
-   * Collects property keys from this and all parent report configurations, which
-   * start with the given prefix.
-   *
-   * @param prefix the prefix, that selects the property keys.
-   * @param config the currently processed report configuration.
-   * @param collector the target list, that should receive all valid keys.
-   */
-  private void collectPropertyKeys(final String prefix, final ReportConfiguration config,
-                                   final TreeSet collector)
-  {
-    final Enumeration enum = config.getConfigProperties();
-    while (enum.hasMoreElements())
-    {
-      final String key = (String) enum.nextElement();
-      if (key.startsWith(prefix))
-      {
-        if (collector.contains(key) == false)
-        {
-          collector.add(key);
-        }
-      }
-    }
-
-    if (config.parentConfiguration != null)
-    {
-      collectPropertyKeys(prefix, config.parentConfiguration, collector);
-    }
-  }
-
-  /**
-   * Checks, whether the given key is localy defined in this instance or
-   * whether the key's value is inherited.
-   * 
-   * @param key the key that should be checked.
-   * @return true, if the key is defined locally, false otherwise.
-   */
-  public boolean isLocallyDefined (final String key)
-  {
-    return configuration.containsKey(key);
   }
 }

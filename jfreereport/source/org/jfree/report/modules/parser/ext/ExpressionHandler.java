@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionHandler.java,v 1.8 2003/12/04 18:04:06 taqua Exp $
+ * $Id: ExpressionHandler.java,v 1.7.4.2 2004/12/30 14:46:13 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,14 @@
 
 package org.jfree.report.modules.parser.ext;
 
+import java.util.ArrayList;
+
 import org.jfree.report.function.Expression;
-import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.util.beans.BeanUtility;
+import org.jfree.xml.CommentHandler;
+import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -146,7 +150,21 @@ public class ExpressionHandler extends AbstractExtReportParserHandler
       path.addName(tagName);
       getReport().getReportBuilderHints().putHint
           (path, CommentHandler.CLOSE_TAG_COMMENT, getReportParser().getComments());
-      expression.setProperties(propertyHandler.getProperties());
+      ArrayList properties = propertyHandler.getProperties();
+      try
+      {
+        BeanUtility beanUtility = new BeanUtility(getExpression());
+        for (int i = 0; i < properties.size(); i++)
+        {
+          final PropertyHandler.PropertyDefinition pdef =
+              (PropertyHandler.PropertyDefinition) properties.get(i);
+          beanUtility.setPropertyAsString(pdef.getName(), pdef.getValue());
+        }
+      }
+      catch(Exception ex)
+      {
+        throw new ParseException("Unable to assign expression properties.");
+      }
       propertyHandler = null;
     }
     else if (tagName.equals(getFinishTag()))

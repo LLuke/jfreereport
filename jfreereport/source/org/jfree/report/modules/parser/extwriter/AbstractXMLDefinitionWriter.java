@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.6 2003/08/27 20:19:54 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.6.4.1 2004/10/11 21:00:59 taqua Exp $
  *
  * Changes
  * -------
@@ -187,8 +187,12 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
    */
   public static String normalize(final String s)
   {
+    if (s == null)
+    {
+      return "";
+    }
     final StringBuffer str = new StringBuffer();
-    final int len = (s != null) ? s.length() : 0;
+    final int len = s.length();
 
     for (int i = 0; i < len; i++)
     {

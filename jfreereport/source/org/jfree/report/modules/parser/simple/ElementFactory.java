@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.15 2003/11/07 18:33:57 taqua Exp $
+ * $Id: ElementFactory.java,v 1.15.4.6 2004/12/30 14:46:14 taqua Exp $
  *
  * Changes
  * -------
@@ -70,6 +70,7 @@ import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.base.ReportParserUtil;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.CharacterEntityParser;
+import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.FloatDimension;
 import org.jfree.xml.ParseException;
@@ -505,18 +506,26 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   {
     final String name = atts.getValue(NAME_ATT);
     final Color c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
-    final float x1 = ParserUtil.parseFloat(atts.getValue("x1"), "Element x1 not specified");
-    final float y1 = ParserUtil.parseFloat(atts.getValue("y1"), "Element y1 not specified");
-    final float x2 = ParserUtil.parseFloat(atts.getValue("x2"), "Element x2 not specified");
-    final float y2 = ParserUtil.parseFloat(atts.getValue("y2"), "Element y2 not specified");
+    final float x1 = ParserUtil.parseRelativeFloat(atts.getValue("x1"), "Element x1 not specified");
+    final float y1 = ParserUtil.parseRelativeFloat(atts.getValue("y1"), "Element y1 not specified");
+    final float x2 = ParserUtil.parseRelativeFloat(atts.getValue("x2"), "Element x2 not specified");
+    final float y2 = ParserUtil.parseRelativeFloat(atts.getValue("y2"), "Element y2 not specified");
+    final Stroke stroke = ParserUtil.parseStroke(atts.getValue("weight"));
 
-    final Line2D line = new Line2D.Float(x1, y1, x2, y2);
-    final ShapeElement element = StaticShapeElementFactory.createLineShapeElement(
-        name,
-        c,
-        ParserUtil.parseStroke(atts.getValue("weight")),
-        line);
-    getCurrentBand().addElement(element);
+    if (x1 == x2 && y1 == y2)
+    {
+      getCurrentBand().addElement
+              (StaticShapeElementFactory.createHorizontalLine
+          (name, c, stroke, y2));
+    }
+    else
+    {
+      final Line2D line = new Line2D.Float(x1, y1, x2, y2);
+      final ShapeElement element =
+              StaticShapeElementFactory.createShapeElement
+                (name, c, stroke, line, true, false);
+      getCurrentBand().addElement(element);
+    }
   }
 
   /**
@@ -711,7 +720,11 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   private void startNumberField(final Attributes atts) throws SAXException
   {
     final NumberFieldElementFactory factory = new NumberFieldElementFactory();
-    factory.setFormatString(atts.getValue(FORMAT_ATT));
+    final String format = atts.getValue(FORMAT_ATT);
+    if (format != null)
+    {
+      factory.setFormatString(format);
+    }
     getTextFieldElementAttributes(atts, factory);
     textElementFactory = factory;
   }
@@ -726,7 +739,11 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   private void startDateField(final Attributes atts) throws SAXException
   {
     final DateFieldElementFactory factory = new DateFieldElementFactory();
-    factory.setFormatString(atts.getValue(FORMAT_ATT));
+    final String format = atts.getValue(FORMAT_ATT);
+    if (format != null)
+    {
+      factory.setFormatString(format);
+    }
     getTextFieldElementAttributes(atts, factory);
     textElementFactory = factory;
   }
@@ -785,6 +802,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
       throws SAXException
   {
     final ResourceFieldElementFactory factory = new ResourceFieldElementFactory();
+    textElementFactory = factory;
     getTextFieldElementAttributes(attrs, factory);
 
     String resourceBase = attrs.getValue(RESOURCEBASE_ATTR);
@@ -819,6 +837,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   private void endResourceField()
   {
+    Log.debug ("GetCurrentBand: " + getCurrentBand());
     getCurrentBand().addElement(textElementFactory.createElement());
     textElementFactory = null;
   }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PathIteratorSegmentObjectDescription.java,v 1.3 2003/08/25 14:29:33 taqua Exp $
+ * $Id: PathIteratorSegmentObjectDescription.java,v 1.3.4.1 2004/12/13 19:27:13 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -216,11 +216,11 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
 
     final PathIteratorSegment seg = (PathIteratorSegment) o;
     setParameter("segmentType", createSegmentType(seg.getSegmentType()));
-    setParameter("x1", String.valueOf(seg.getX1()));
-    setParameter("x2", String.valueOf(seg.getX2()));
-    setParameter("x3", String.valueOf(seg.getX3()));
-    setParameter("y1", String.valueOf(seg.getY1()));
-    setParameter("y2", String.valueOf(seg.getY2()));
-    setParameter("y2", String.valueOf(seg.getY3()));
+    setParameter("x1", new Float(seg.getX1()));
+    setParameter("x2", new Float(seg.getX2()));
+    setParameter("x3", new Float(seg.getX3()));
+    setParameter("y1", new Float(seg.getY1()));
+    setParameter("y2", new Float(seg.getY2()));
+    setParameter("y2", new Float(seg.getY3()));
   }
 }

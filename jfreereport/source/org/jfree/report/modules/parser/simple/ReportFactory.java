@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,10 +26,10 @@
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.13 2004/04/19 17:03:24 taqua Exp $
+ * $Id: ReportFactory.java,v 1.8.2.1 2003/12/21 23:28:46 taqua Exp $
  *
  * Changes
  * -------
@@ -129,7 +129,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     }
     else if (tagName.equals(GROUPS_TAG))
     {
-      startGroups();
+      startGroups(atts);
     }
     else if (tagName.equals(CONFIGURATION_TAG))
     {
@@ -137,7 +137,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     }
     else if (tagName.equals(FUNCTIONS_TAG))
     {
-      startFunctions();
+      startFunctions(atts);
     }
     else if (tagName.equals(PROPERTY_TAG))
     {
@@ -248,8 +248,8 @@ public class ReportFactory extends AbstractReportDefinitionHandler
         || elementName.equals(PAGE_HEADER_TAG)
         || elementName.equals(PAGE_FOOTER_TAG)
         || elementName.equals(FUNCTIONS_TAG)
-        || elementName.equals(WATERMARK_TAG)
         || elementName.equals(GROUPS_TAG)
+        || elementName.equals(WATERMARK_TAG)
         || elementName.equals(ITEMS_TAG))
     {
       // ignore ...
@@ -288,6 +288,8 @@ public class ReportFactory extends AbstractReportDefinitionHandler
       return;
     }
 
+
+
     final JFreeReport report = new JFreeReport();
     final String name = atts.getValue(NAME_ATT);
     if (name != null)
@@ -295,16 +297,13 @@ public class ReportFactory extends AbstractReportDefinitionHandler
       report.setName(name);
     }
 
-    PageFormat format = new PageFormat();//report.getDefaultPageFormat();
+    PageFormat format = report.getPageDefinition().getPageFormat(0);
     float defTopMargin = (float) format.getImageableY();
     float defBottomMargin = (float) (format.getHeight() - format.getImageableHeight()
         - format.getImageableY());
     float defLeftMargin = (float) format.getImageableX();
     float defRightMargin = (float) (format.getWidth() - format.getImageableWidth()
         - format.getImageableX());
-
-    final int verticalPages = ParserUtil.parseInt(atts.getValue(VERTICAL_PAGES), 1);
-    final int horizontalPages = ParserUtil.parseInt(atts.getValue(HORIZONTAL_PAGES), 1);
 
     format = createPageFormat(format, atts);
 
@@ -334,8 +333,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     }
 
     format.setPaper(p);
-    report.setPageDefinition
-            (new SimplePageDefinition (format, horizontalPages, verticalPages));
+    report.setPageDefinition(new SimplePageDefinition (format));
 
     //PageFormatFactory.logPageFormat(format);
     getParser().setHelperObject(ReportParser.HELPER_OBJ_REPORT_NAME, report);
@@ -415,8 +413,10 @@ public class ReportFactory extends AbstractReportDefinitionHandler
   /**
    * Creates a new group list for the report. The group factory will be the new default handler
    * for SAX Events.
+   *
+   * @param atts  the element attributes.
    */
-  private void startGroups()
+  private void startGroups(final Attributes atts)
   {
     getParser().pushFactory(new GroupFactory(getReportParser(), GROUPS_TAG));
   }
@@ -424,8 +424,10 @@ public class ReportFactory extends AbstractReportDefinitionHandler
   /**
    * Creates a new function collection for the report. The FunctionFactory will be the new
    * default handler for SAX Events
+   *
+   * @param atts  the element attributes.
    */
-  private void startFunctions()
+  private void startFunctions(final Attributes atts)
   {
     getParser().pushFactory(new FunctionFactory(getReportParser(), FUNCTIONS_TAG));
   }

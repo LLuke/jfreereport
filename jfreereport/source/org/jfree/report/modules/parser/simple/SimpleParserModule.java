@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,7 +26,7 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
  * $Id: SimpleParserModule.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
  *
@@ -38,8 +38,9 @@
 
 package org.jfree.report.modules.parser.simple;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.SubSystem;
 
 /**
  * The Module specification for the simple parser module. This module handles the
@@ -64,7 +65,7 @@ public class SimpleParserModule extends AbstractModule
    *
    * @throws ModuleInitializeException if initialisation fails.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize(SubSystem subSystem) throws ModuleInitializeException
   {
     performExternalInitialize(SimpleParserModuleInit.class.getName());
   }

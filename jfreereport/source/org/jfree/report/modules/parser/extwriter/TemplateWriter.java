@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateWriter.java,v 1.7 2003/12/04 18:04:07 taqua Exp $
+ * $Id: TemplateWriter.java,v 1.6.4.3 2004/12/13 19:27:14 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,11 +42,11 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 
-import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.ElementHandler;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
-import org.jfree.util.ObjectUtils;
+import org.jfree.util.ObjectUtilities;
+import org.jfree.xml.CommentHandler;
 import org.jfree.xml.writer.AttributeList;
 
 /**
@@ -160,7 +160,7 @@ public class TemplateWriter extends ObjectWriter
       return false;
     }
     final Object parentObject = parent.getParameter(parameterName);
-    if (ObjectUtils.equal(parameterObject, parentObject))
+    if (ObjectUtilities.equal(parameterObject, parentObject))
     {
       //Log.debug ("Should not write: Parameter objects are equal.");
       return false;

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollection.java,v 1.9 2003/11/12 22:40:03 taqua Exp $
+ * $Id: TemplateCollection.java,v 1.9.4.1 2004/05/11 13:25:49 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -110,10 +110,10 @@ public class TemplateCollection implements Serializable
     {
       throw new NullPointerException("Template given must not be null.");
     }
-    final Iterator enum = templates.values().iterator();
-    while (enum.hasNext())
+    final Iterator values = templates.values().iterator();
+    while (values.hasNext())
     {
-      final TemplateDescription td = (TemplateDescription) enum.next();
+      final TemplateDescription td = (TemplateDescription) values.next();
       if (td.getObjectClass().equals(template.getClass()))
       {
         return (TemplateDescription) td.getInstance();

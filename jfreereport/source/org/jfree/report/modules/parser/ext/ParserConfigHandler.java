@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigHandler.java,v 1.9 2003/12/04 18:04:06 taqua Exp $
+ * $Id: ParserConfigHandler.java,v 1.8.4.4 2004/12/13 19:27:13 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,6 @@
 
 package org.jfree.report.modules.parser.ext;
 
-import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
@@ -50,6 +49,8 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryColle
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollection;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
+import org.jfree.xml.CommentHandler;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
@@ -223,7 +224,7 @@ public class ParserConfigHandler extends AbstractExtReportParserHandler
   {
     try
     {
-      final Class f = getClass().getClassLoader().loadClass(classname);
+      final Class f = ObjectUtilities.getClassLoader(getClass()).loadClass(classname);
       return f.newInstance();
     }
     catch (Exception e)

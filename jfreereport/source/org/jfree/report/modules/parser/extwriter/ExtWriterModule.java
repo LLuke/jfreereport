@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,7 +26,7 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
  * $Id: ExtWriterModule.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
  *
@@ -38,8 +38,10 @@
 
 package org.jfree.report.modules.parser.extwriter;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
+
 
 /**
  * The module definition for the extended report description writer module.
@@ -58,13 +60,17 @@ public class ExtWriterModule extends AbstractModule
   }
 
   /**
-   * Initalizes the module. This performs the external initialization
-   * and checks that an JAXP1.1 parser is available.
-   * @see org.jfree.report.modules.Module#initialize()
+   * Initializes the module. Use this method to perform all initial setup operations. This
+   * method is called only once in a modules lifetime. If the initializing cannot be
+   * completed, throw a ModuleInitializeException to indicate the error,. The module will
+   * not be available to the system.
    *
-   * @throws ModuleInitializeException if an error occured.
+   * @param subSystem the subSystem.
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if an error ocurred while initializing the module.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize (SubSystem subSystem)
+          throws ModuleInitializeException
   {
   }
 }

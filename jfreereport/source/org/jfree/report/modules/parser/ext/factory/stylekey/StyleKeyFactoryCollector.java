@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyFactoryCollector.java,v 1.7 2003/11/07 18:33:57 taqua Exp $
+ * $Id: StyleKeyFactoryCollector.java,v 1.7.4.1 2004/05/11 13:25:49 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -139,10 +139,10 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
     for (int i = 0; i < factories.size(); i++)
     {
       final StyleKeyFactory f = (StyleKeyFactory) factories.get(i);
-      final Iterator enum = f.getRegisteredKeys();
-      while (enum.hasNext())
+      final Iterator keys = f.getRegisteredKeys();
+      while (keys.hasNext())
       {
-        list.add(enum.next());
+        list.add(keys.next());
       }
     }
     return list.iterator();

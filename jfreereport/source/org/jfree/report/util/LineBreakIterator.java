@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineBreakIterator.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: LineBreakIterator.java,v 1.2.4.1 2004/11/21 16:39:27 taqua Exp $
  *
  * Changes
  * -------
@@ -245,25 +245,5 @@ public class LineBreakIterator implements Iterator
    */
   public void remove()
   {
-  }
-
-  /**
-   * Testing code - please ignore.
-   *
-   * @param args  ignored.
-   */
-  public static void main(final String[] args)
-  {
-    final String test = "The lazy \n fox \r\n jumps \nover the funny tree\n";
-    LineBreakIterator lbi = new LineBreakIterator(test);
-    while (lbi.hasNext())
-    {
-      System.out.println("Text: " + lbi.next());
-    }
-    lbi = new LineBreakIterator("\n");
-    while (lbi.hasNext())
-    {
-      System.out.println("Text: " + lbi.next());
-    }
   }
 }

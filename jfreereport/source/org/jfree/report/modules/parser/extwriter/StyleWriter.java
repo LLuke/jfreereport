@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.8 2004/03/16 15:09:55 taqua Exp $
+ * $Id: StyleWriter.java,v 1.6.4.3 2004/12/13 19:27:14 taqua Exp $
  *
  * Changes
  * -------
@@ -44,14 +44,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jfree.report.ShapeElement;
-import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.StyleSheetHandler;
 import org.jfree.report.style.BandDefaultStyleSheet;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleKey;
-import org.jfree.util.ObjectUtils;
+import org.jfree.util.ObjectUtilities;
+import org.jfree.xml.CommentHandler;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
@@ -206,7 +206,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     {
       odKey = cc.getSuperClassObjectDescription(key.getValueType(), odKey);
     }
-    return ObjectUtils.equal(odKey, odObject);
+    return ObjectUtilities.equal(odKey, odObject);
   }
 
   /**

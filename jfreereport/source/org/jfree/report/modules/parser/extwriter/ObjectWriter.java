@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.6 2003/12/04 18:04:07 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.5.4.3 2004/12/13 19:27:14 taqua Exp $
  *
  * Changes
  * -------
@@ -44,11 +44,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.CompoundObjectHandler;
 import org.jfree.report.util.Log;
-import org.jfree.util.ObjectUtils;
+import org.jfree.util.ObjectUtilities;
+import org.jfree.xml.CommentHandler;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
@@ -190,17 +190,20 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     final Object o = objectDescription.getParameter(name);
     if (o != null)
     {
+//      Log.debug ("ObjectDesc: " + objectDescription.getObjectClass());
+//      Log.debug ("ParameterName: " + name);
+//      Log.debug ("Object: " + o);
       parameterDescription = cc.getDescriptionForClass(o.getClass());
       if (parameterDescription == null)
       {
         // try to find the super class of the parameter object.
         // maybe this can be used to save the object....
-        //Log.debug ("ParameterDescription not found [OBJECT]");
+//        Log.debug ("ParameterDescription not found [OBJECT]");
         parameterDescription = cc.getSuperClassObjectDescription(o.getClass(), null);
       }
       else
       {
-        //Log.debug ("ParameterDescription found [OBJECT]");
+//        Log.debug ("ParameterDescription found [OBJECT]: " + parameterDescription.getObjectClass());
         return parameterDescription;
       }
     }
@@ -211,13 +214,13 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
       if (parameterDescription != null)
       {
-        //Log.debug ("ParameterDescription found [PARAM]");
+//        Log.debug ("ParameterDescription found [PARAM]");
         return parameterDescription;
       }
 
       // try to find the super class of the parameter object.
       // maybe this can be used to save the object....
-      //Log.debug ("ParameterDescription not found [SUPER_PARAM]");
+//      Log.debug ("ParameterDescription not found [SUPER_PARAM]");
       parameterDescription = cc.getSuperClassObjectDescription(parameterClass, null);
     }
 
@@ -261,6 +264,9 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     }
     catch (ObjectFactoryException ofe)
     {
+//      ofe.printStackTrace();
+//      Log.debug ("parameterDescription.getObjectClass(): " + parameterDescription.getObjectClass());
+//      Log.debug ("objectDescription.getObjectClass(): " + objectDescription.getObjectClass());
       throw new ReportWriterException("Unable to fill parameter object:" + parameterName);
     }
 
@@ -321,7 +327,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     {
       odParameter = cc.getSuperClassObjectDescription(parameter, odParameter);
     }
-    return ObjectUtils.equal(odParameter, odObject);
+    return ObjectUtilities.equal(odParameter, odObject);
   }
 
 

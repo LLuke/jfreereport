@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.11 2004/03/16 15:09:55 taqua Exp $
+ * $Id: BandFactory.java,v 1.7.2.1.2.3 2004/10/13 18:42:23 taqua Exp $
  *
  * Changes
  * -------
@@ -119,13 +119,13 @@ public class BandFactory extends AbstractReportDefinitionHandler
     {
       startPageFooter(atts);
     }
-    else if (elementName.equals(ITEMS_TAG))
-    {
-      startItems(atts);
-    }
     else if (elementName.equals(WATERMARK_TAG))
     {
       startWatermark(atts);
+    }
+    else if (elementName.equals(ITEMS_TAG))
+    {
+      startItems(atts);
     }
     else
     {
@@ -167,13 +167,13 @@ public class BandFactory extends AbstractReportDefinitionHandler
     {
       endPageFooter();
     }
-    else if (elementName.equals(ITEMS_TAG))
-    {
-      endItems();
-    }
     else if (elementName.equals(WATERMARK_TAG))
     {
       endWatermark();
+    }
+    else if (elementName.equals(ITEMS_TAG))
+    {
+      endItems();
     }
     else if (elementName.equals(getFinishTag()))
     {
@@ -209,7 +209,20 @@ public class BandFactory extends AbstractReportDefinitionHandler
           new FloatDimension(0, heightValue));
     }
 
-    final String ownPageAttr = attr.getValue("ownpage");
+    final String fixedPos = attr.getValue("fixed-position");
+    if (fixedPos != null)
+    {
+      final float fixedPosValue = ParserUtil.parseFloat
+              (fixedPos, "FixedPosition is invalid!");
+      reportHeader.getStyle().setStyleProperty(BandStyleSheet.FIXED_POSITION,
+              new Float (fixedPosValue));
+    }
+
+    String ownPageAttr = attr.getValue("ownpage");
+    if (ownPageAttr == null)
+    {
+      ownPageAttr = attr.getValue("pagebreak-after");
+    }
     if (ownPageAttr != null)
     {
       final boolean ownPage = ParserUtil.parseBoolean(ownPageAttr, false);
@@ -261,14 +274,29 @@ public class BandFactory extends AbstractReportDefinitionHandler
           new FloatDimension(0, heightValue));
     }
 
-    final String ownPageAttr = attr.getValue("ownpage");
+    final String fixedPos = attr.getValue("fixed-position");
+    if (fixedPos != null)
+    {
+      final float fixedPosValue = ParserUtil.parseFloat
+              (fixedPos, "FixedPosition is invalid!");
+      reportFooter.getStyle().setStyleProperty(BandStyleSheet.FIXED_POSITION,
+              new Float (fixedPosValue));
+    }
+
+    String ownPageAttr = attr.getValue("ownpage");
+    if (ownPageAttr == null)
+    {
+      ownPageAttr = attr.getValue("pagebreak-before");
+    }
     if (ownPageAttr != null)
     {
       final boolean ownPage = ParserUtil.parseBoolean(ownPageAttr, false);
+
       reportFooter.getStyle().setBooleanStyleProperty
           (BandStyleSheet.PAGEBREAK_BEFORE, ownPage);
-
     }
+
+
 
     final FontFactory.FontInformation fi = FontFactory.createFont(attr);
     FontFactory.applyFontInformation(reportFooter.getBandDefaults(), fi);
@@ -466,6 +494,15 @@ public class BandFactory extends AbstractReportDefinitionHandler
 
       items.getStyle().setStyleProperty
           (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
+    }
+
+    final String fixedPos = attr.getValue("fixed-position");
+    if (fixedPos != null)
+    {
+      final float fixedPosValue = ParserUtil.parseFloat
+              (fixedPos, "FixedPosition is invalid!");
+      items.getStyle().setStyleProperty(BandStyleSheet.FIXED_POSITION,
+              new Float (fixedPosValue));
     }
 
     final FontFactory.FontInformation fi = FontFactory.createFont(attr);

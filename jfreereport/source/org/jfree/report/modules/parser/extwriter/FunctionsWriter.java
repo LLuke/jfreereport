@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.8 2004/03/16 15:09:55 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.6.4.4 2004/12/30 14:46:13 taqua Exp $
  *
  * Changes
  * -------
@@ -40,20 +40,19 @@ package org.jfree.report.modules.parser.extwriter;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.Properties;
 
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.ExpressionCollection;
-import org.jfree.report.function.Function;
-import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.ExpressionHandler;
 import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
 import org.jfree.report.modules.parser.ext.ExtReportHandler;
 import org.jfree.report.modules.parser.ext.FunctionsHandler;
 import org.jfree.report.util.ReportProperties;
+import org.jfree.report.util.beans.BeanException;
+import org.jfree.report.util.beans.BeanUtility;
+import org.jfree.xml.CommentHandler;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.writer.AttributeList;
@@ -143,62 +142,71 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     for (int i = 0; i < exp.size(); i++)
     {
       final Expression expression = exp.getExpression(i);
-      String tagName = FunctionsHandler.EXPRESSION_TAG;
-      if (expression instanceof Function)
-      {
-        tagName = FunctionsHandler.FUNCTION_TAG;
-      }
 
       final CommentHintPath path = FUNCTIONS_PATH.getInstance();
       path.addName(expression);
       writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
 
-      final Properties expressionProperties = expression.getProperties();
-      if (expressionProperties.isEmpty())
+      try
       {
-        final AttributeList properties = new AttributeList();
-        properties.setAttribute("name", expression.getName());
-        properties.setAttribute("class", expression.getClass().getName());
-        writeTag(writer, tagName, properties, CLOSE);
-      }
-      else
-      {
-        final AttributeList properties = new AttributeList();
-        properties.setAttribute("name", expression.getName());
-        properties.setAttribute("class", expression.getClass().getName());
-        writeTag(writer, tagName, properties, OPEN);
-
-        final Enumeration enum = expressionProperties.keys();
-        if (enum.hasMoreElements())
+        BeanUtility bu = new BeanUtility(expression);
+        String[] propertyNames = bu.getProperties();
+        if (propertyNames.length == 0)
         {
-          final CommentHintPath propertiesPath = path.getInstance();
-          propertiesPath.addName(ExpressionHandler.PROPERTIES_TAG);
-          writeComment(writer, propertiesPath, CommentHandler.OPEN_TAG_COMMENT);
-          writeTag(writer, ExpressionHandler.PROPERTIES_TAG);
+          final AttributeList properties = new AttributeList();
+          properties.setAttribute("name", expression.getName());
+          properties.setAttribute("class", expression.getClass().getName());
+          writeTag(writer, FunctionsHandler.EXPRESSION_TAG, properties, CLOSE);
+        }
+        else
+        {
+          final AttributeList properties = new AttributeList();
+          properties.setAttribute("name", expression.getName());
+          properties.setAttribute("class", expression.getClass().getName());
+          writeTag(writer, FunctionsHandler.EXPRESSION_TAG, properties, OPEN);
 
-          while (enum.hasMoreElements())
-          {
-            final String key = (String) enum.nextElement();
-            final String value = expressionProperties.getProperty(key);
-            if (value != null)
-            {
-              final CommentHintPath propertyPath = propertiesPath.getInstance();
-              propertyPath.addName(key);
-              writeComment(writer, propertyPath, CommentHandler.OPEN_TAG_COMMENT);
+          writeExpressionParameters(writer, path, propertyNames, bu);
 
-              writeTag(writer, "property", "name", key, OPEN);
-              writer.write(normalize(value));
-              writeCloseTag(writer, "property");
-            }
-          }
-          writeComment(writer, propertiesPath, CommentHandler.CLOSE_TAG_COMMENT);
-          writeCloseTag(writer, ExpressionHandler.PROPERTIES_TAG);
+          writeComment(writer, path, CommentHandler.CLOSE_TAG_COMMENT);
+          writeCloseTag(writer, FunctionsHandler.EXPRESSION_TAG);
         }
 
-        writeComment(writer, path, CommentHandler.CLOSE_TAG_COMMENT);
-        writeCloseTag(writer, tagName);
+      }
+      catch (Exception e)
+      {
+        throw new IOException("Unable to extract or write properties.");
       }
     }
+  }
+
+  private void writeExpressionParameters
+      (Writer writer, final CommentHintPath path,
+       final String[] propertyNames, final BeanUtility beanUtility)
+      throws IOException, BeanException
+  {
+    final CommentHintPath propertiesPath = path.getInstance();
+    propertiesPath.addName(ExpressionHandler.PROPERTIES_TAG);
+    writeComment(writer, propertiesPath, CommentHandler.OPEN_TAG_COMMENT);
+    writeTag(writer, ExpressionHandler.PROPERTIES_TAG);
+
+    for (int i = 0; i < propertyNames.length; i++)
+    {
+      final String key = propertyNames[i];
+      final String value = beanUtility.getPropertyAsString(key);
+      if (value != null)
+      {
+        final CommentHintPath propertyPath = propertiesPath.getInstance();
+        propertyPath.addName(key);
+        writeComment(writer, propertyPath, CommentHandler.OPEN_TAG_COMMENT);
+
+        writeTag(writer, "property", "name", key, OPEN);
+        writer.write(normalize(value));
+        writeCloseTag(writer, "property");
+      }
+    }
+
+    writeComment(writer, propertiesPath, CommentHandler.CLOSE_TAG_COMMENT);
+    writeCloseTag(writer, ExpressionHandler.PROPERTIES_TAG);
   }
 
   /**
@@ -213,10 +221,10 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
       throws IOException, ReportWriterException
   {
     final ReportProperties reportProperties = getReport().getProperties();
-    final Iterator enum = reportProperties.keys();
-    while (enum.hasNext())
+    final Iterator keys = reportProperties.keys();
+    while (keys.hasNext())
     {
-      final String name = (String) enum.next();
+      final String name = (String) keys.next();
       if (reportProperties.isMarked(name))
       {
         final Object value = reportProperties.get(name);

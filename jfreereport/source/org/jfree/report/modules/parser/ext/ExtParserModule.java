@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,7 +26,7 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
  * $Id: ExtParserModule.java,v 1.7 2003/08/25 14:29:32 taqua Exp $
  *
@@ -38,8 +38,9 @@
 
 package org.jfree.report.modules.parser.ext;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.SubSystem;
 
 /**
  * The module definition for the extended parser module.
@@ -60,11 +61,11 @@ public class ExtParserModule extends AbstractModule
   /**
    * Initalizes the module. This performs the external initialization
    * and checks that an JAXP1.1 parser is available.
-   * @see org.jfree.report.modules.Module#initialize()
    *
    * @throws ModuleInitializeException if an error occured.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize (SubSystem subSystem)
+          throws ModuleInitializeException
   {
     if (isClassLoadable("org.xml.sax.ext.LexicalHandler") == false)
     {

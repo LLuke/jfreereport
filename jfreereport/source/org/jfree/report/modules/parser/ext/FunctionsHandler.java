@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.11 2003/12/06 17:15:21 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.9.4.5 2004/12/30 14:46:13 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,10 @@ import java.util.Iterator;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.Function;
 import org.jfree.report.function.FunctionInitializeException;
-import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.util.ObjectUtilities;
+import org.jfree.xml.CommentHandler;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
@@ -174,7 +175,7 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
   {
     try
     {
-      final Class propertyClass = getClass().getClassLoader().loadClass(className);
+      final Class propertyClass = ObjectUtilities.getClassLoader(getClass()).loadClass(className);
       final ClassFactoryCollector fc = (ClassFactoryCollector) getParser().getHelperObject(
           ParserConfigHandler.OBJECT_FACTORY_TAG);
       ObjectDescription retval = fc.getDescriptionForClass(propertyClass);
@@ -207,7 +208,7 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
   {
     try
     {
-      final Class fnC = getClass().getClassLoader().loadClass(className);
+      final Class fnC = ObjectUtilities.getClassLoader(getClass()).loadClass(className);
       final Expression retVal = (Expression) fnC.newInstance();
       retVal.setName(expName);
       retVal.setDependencyLevel(depLevel);
@@ -254,17 +255,33 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(EXPRESSION_TAG))
     {
-      final Expression expression = expressionHandler.getExpression();
-      getReport().addExpression(expression);
-      addComment(createPath(expression), CommentHandler.CLOSE_TAG_COMMENT);
-      expressionHandler = null;
+      try
+      {
+        final Expression expression = expressionHandler.getExpression();
+        getReport().addExpression(expression);
+        addComment(createPath(expression), CommentHandler.CLOSE_TAG_COMMENT);
+        expressionHandler = null;
+      }
+      catch (FunctionInitializeException fe)
+      {
+        expressionHandler = null;
+        throw new ParseException("Unable to initialize function.", fe, getParser().getLocator());
+      }
     }
     else if (tagName.equals(FUNCTION_TAG))
     {
-      final Function expression = (Function) expressionHandler.getExpression();
-      getReport().addExpression(expression);
-      addComment(createPath(expression.getName()), CommentHandler.CLOSE_TAG_COMMENT);
-      expressionHandler = null;
+      try
+      {
+        final Function expression = (Function) expressionHandler.getExpression();
+        getReport().addExpression(expression);
+        addComment(createPath(expression.getName()), CommentHandler.CLOSE_TAG_COMMENT);
+        expressionHandler = null;
+      }
+      catch (FunctionInitializeException fe)
+      {
+        expressionHandler = null;
+        throw new ParseException("Unable to initialize function.", fe, getParser().getLocator());
+      }
     }
     else if (tagName.equals(PROPERTY_REF_TAG))
     {

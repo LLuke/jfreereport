@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.3 2003/08/27 20:19:54 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.4 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------
@@ -491,28 +491,6 @@ public class DataRowBackend implements Cloneable
     }
     return db;
   }
-
-//  /**
-//   * Create a preview backend. Such datarows will have no access to functions (all functions
-//   * will return null).
-//   * <p>
-//   * This method will return null, if this is the last row.
-//   *
-//   * @return The 'preview' data row backend.
-//   */
-//  public DataRowBackend previewNextRow()
-//  {
-//    if (isLastRow())
-//    {
-//      return null;
-//    }
-//    if (preview == null)
-//    {
-//      preview = new DataRowPreview(this);
-//    }
-//    preview.update(this);
-//    return preview;
-//  }
 
   /**
    * Calculates the end index for tableentries. TableEntries are the first entries in the row.

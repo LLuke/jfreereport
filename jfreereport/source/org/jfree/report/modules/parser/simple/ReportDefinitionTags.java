@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * -------------------------
  * ReportDefinitionTags.java
  * -------------------------
- * (C)opyright 2000-2002, by Object Refinery Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportDefinitionTags.java,v 1.5 2004/04/15 15:14:20 taqua Exp $
+ * $Id: ReportDefinitionTags.java,v 1.3.2.1 2003/12/21 23:28:46 taqua Exp $
  *
  * Changes
  * -------
@@ -59,10 +59,11 @@ public interface ReportDefinitionTags
   public static final String PAGE_FOOTER_TAG = "pagefooter";
 
   /** Literal text for an XML report element. */
-  public static final String WATERMARK_TAG = "watermark";
+  public static final String BAND_TAG = "band";
 
   /** Literal text for an XML report element. */
-  public static final String BAND_TAG = "band";
+  public static final String WATERMARK_TAG = "watermark";
+
   /**
    * Group definition
    */
@@ -285,7 +286,4 @@ public interface ReportDefinitionTags
 
   /** The configuration tag. */
   public static final String CONFIGURATION_TAG = "configuration";
-
-  public static final String VERTICAL_PAGES = "vertical-pages";
-  public static final String HORIZONTAL_PAGES = "horizontal-pages";
 }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.5 2003/08/31 19:27:59 taqua Exp $
+ * $Id: CharacterEntityParser.java,v 1.5.4.3 2004/12/13 19:27:15 taqua Exp $
  *
  * Changes
  * -------
@@ -65,10 +65,10 @@ public class CharacterEntityParser
   {
     entities = characterEntities;
     reverse = new Properties();
-    final Enumeration enum = entities.keys();
-    while (enum.hasMoreElements())
+    final Enumeration keys = entities.keys();
+    while (keys.hasMoreElements())
     {
-      final String key = (String) enum.nextElement();
+      final String key = (String) keys.nextElement();
       final String value = entities.getProperty(key);
       reverse.setProperty(value, key);
     }
@@ -120,14 +120,7 @@ public class CharacterEntityParser
   private String lookupCharacter(final String key)
   {
     final String val = getEntities().getProperty(key);
-    if (val == null)
-    {
-      return key;
-    }
-    else
-    {
-      return val;
-    }
+    return val;
   }
 
   /**
@@ -181,44 +174,76 @@ public class CharacterEntityParser
    * @param value the string that should be decoded.
    * @return the decoded string.
    */
-  public String decodeEntities(String value)
+  public String decodeEntities(final String value)
   {
     int parserIndex = 0;
-    int subStart;
-    int subEnd;
-    int subValue;
-    String replaceString = null;
-    final StringBuffer bufValue = new StringBuffer(value);
-
-    while (((subStart = value.indexOf("&", parserIndex)) != -1)
-        && (subEnd = value.indexOf(";", parserIndex)) != -1)
+    int subStart = value.indexOf("&", parserIndex);
+    if (subStart == -1)
     {
-      parserIndex = subStart;
-      final StringBuffer buf = new StringBuffer();
-      buf.append(bufValue.substring(subStart + 1, subEnd));
-      if (buf.charAt(0) == '#')
+      return value;
+    }
+    int subEnd = value.indexOf(";", subStart);
+    if (subEnd == -1)
+    {
+      return value;
+    }
+
+    final StringBuffer bufValue = new StringBuffer(value.substring(0, subStart));
+    do
+    {
+      // at this point we know, that there is at least one entity ..
+      if (value.charAt(subStart + 1) == '#')
       {
-        buf.deleteCharAt(0);
-        subValue = StringUtil.parseInt(buf.toString(), 0);
+        final int subValue = StringUtil.parseInt(value.substring(subStart + 2, subEnd), 0);
         if ((subValue >= 1) && (subValue <= 65536))
         {
           final char[] chr = new char[1];
           chr[0] = (char) subValue;
-          replaceString = new String(chr);
+          bufValue.append(chr);
+        }
+        else
+        {
+          // invalid entity, do not decode ..
+          bufValue.append (value.substring(subStart, subEnd));
         }
       }
       else
       {
-        replaceString = lookupCharacter(buf.toString());
+        final String entity = value.substring(subStart + 1, subEnd);
+        final String replaceString = lookupCharacter(entity);
+        if (replaceString != null)
+        {
+          bufValue.append(decodeEntities(replaceString));
+        }
+        else
+        {
+          bufValue.append("&");
+          bufValue.append(entity);
+          bufValue.append(";");
+        }
       }
-      if (replaceString != null)
+      parserIndex = subEnd + 1;
+      subStart = value.indexOf("&", parserIndex);
+      if (subStart == -1)
       {
-        replaceString = decodeEntities(replaceString);
-        bufValue.replace(subStart, subEnd + 1, replaceString);
-        parserIndex = parserIndex + replaceString.length();
+        bufValue.append(value.substring(parserIndex));
+        subEnd = -1;
       }
-      value = bufValue.toString();
+      else
+      {
+        subEnd = value.indexOf(";", subStart);
+        if (subEnd == -1)
+        {
+          bufValue.append(value.substring(parserIndex));
+        }
+        else
+        {
+          bufValue.append(value.substring(parserIndex, subStart));
+        }
+      }
     }
+    while (subStart != -1 && subEnd != -1);
+
     return bufValue.toString();
   }
 }

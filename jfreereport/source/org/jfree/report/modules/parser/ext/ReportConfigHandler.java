@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.12 2004/04/19 17:03:24 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.8.4.3 2004/12/30 14:46:13 taqua Exp $
  *
  * Changes
  * -------
@@ -40,17 +40,16 @@ package org.jfree.report.modules.parser.ext;
 
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
-import java.util.Enumeration;
-import java.util.Properties;
+import java.util.ArrayList;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.SimplePageDefinition;
-import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.xml.CommentHandler;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.ParserUtil;
 import org.xml.sax.Attributes;
@@ -76,9 +75,6 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
 
   /** The 'default page format' tag name. */
   public static final String DEFAULT_PAGEFORMAT_TAG = "defaultpageformat";
-
-  public static final String VERTICAL_PAGES = "vertical-pages";
-  public static final String HORIZONTAL_PAGES = "horizontal-pages";
 
   /** The 'configuration' tag name. */
   public static final String CONFIGURATION_TAG = "configuration";
@@ -204,14 +200,15 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
     {
       addComment(createPath(tagName), CommentHandler.CLOSE_TAG_COMMENT);
       // add all properties of the PropertyHandler to the report configuration
-      final Properties p = currentPropertyFactory.getProperties();
+      final ArrayList p = currentPropertyFactory.getProperties();
       final ReportConfiguration rc = getReport().getReportConfiguration();
 
-      final Enumeration pEnum = p.keys();
-      while (pEnum.hasMoreElements())
+      for (int i = 0; i < p.size(); i++)
       {
-        final String key = (String) pEnum.nextElement();
-        final String value = p.getProperty(key);
+        final PropertyHandler.PropertyDefinition pdef =
+            (PropertyHandler.PropertyDefinition) p.get(i);
+        final String key = pdef.getName();
+        final String value = pdef.getValue();
         if (value != null)
         {
           rc.setConfigProperty(key, value);
@@ -243,17 +240,13 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
   {
     final JFreeReport report = getReport();
 
-    // todo page format changed, how to reflect that
-    PageFormat format = new PageFormat();//report.getDefaultPageFormat();
+    PageFormat format = report.getPageDefinition().getPageFormat(0);
     float defTopMargin = (float) format.getImageableY();
     float defBottomMargin = (float) (format.getHeight() - format.getImageableHeight()
         - format.getImageableY());
     float defLeftMargin = (float) format.getImageableX();
     float defRightMargin = (float) (format.getWidth() - format.getImageableWidth()
         - format.getImageableX());
-
-    final int verticalPages = ParserUtil.parseInt(atts.getValue(VERTICAL_PAGES), 1);
-    final int horizontalPages = ParserUtil.parseInt(atts.getValue(HORIZONTAL_PAGES), 1);
 
     format = createPageFormat(format, atts);
 
@@ -284,8 +277,7 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
     }
 
     format.setPaper(p);
-    report.setPageDefinition
-            (new SimplePageDefinition (format, horizontalPages, verticalPages));
+    report.setPageDefinition(new SimplePageDefinition (format));
   }
 
   /**

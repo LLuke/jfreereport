@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HashNMap.java,v 1.3 2003/11/07 18:33:57 taqua Exp $
+ * $Id: HashNMap.java,v 1.3.4.1 2004/05/11 13:25:52 taqua Exp $
  *
  * Changes
  * -------
@@ -332,10 +332,10 @@ public class HashNMap implements Serializable, Cloneable
   {
     final HashNMap map = (HashNMap) super.clone();
     map.table = new HashMap();
-    final Iterator enum = keys();
-    while (enum.hasNext())
+    final Iterator keys = keys();
+    while (keys.hasNext())
     {
-      final Object key = enum.next();
+      final Object key = keys.next();
       final ArrayList list = (ArrayList) map.table.get(key);
       if (list != null)
       {

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SerializerHelper.java,v 1.3 2003/08/25 14:29:34 taqua Exp $
+ * $Id: SerializerHelper.java,v 1.3.4.3 2004/12/13 19:27:15 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,6 +51,7 @@ import org.jfree.report.util.serializers.BasicStrokeSerializer;
 import org.jfree.report.util.serializers.ColorSerializer;
 import org.jfree.report.util.serializers.Dimension2DSerializer;
 import org.jfree.report.util.serializers.Ellipse2DSerializer;
+import org.jfree.report.util.serializers.GeneralPathSerializer;
 import org.jfree.report.util.serializers.Line2DSerializer;
 import org.jfree.report.util.serializers.PageFormatSerializer;
 import org.jfree.report.util.serializers.Point2DSerializer;
@@ -75,7 +76,7 @@ public class SerializerHelper
    *
    * @return the SerializerHelper singleton instance.
    */
-  public static SerializerHelper getInstance()
+  public synchronized static SerializerHelper getInstance()
   {
     if (singleton == null)
     {
@@ -89,6 +90,7 @@ public class SerializerHelper
       singleton.registerMethod(new Rectangle2DSerializer());
       singleton.registerMethod(new BandLayoutManagerSerializer());
       singleton.registerMethod(new PageFormatSerializer());
+      singleton.registerMethod(new GeneralPathSerializer());
     }
     return singleton;
   }
@@ -186,10 +188,10 @@ public class SerializerHelper
   protected SerializeMethod getSuperClassObjectDescription
       (final Class d, SerializeMethod knownSuperClass)
   {
-    final Iterator enum = methods.keySet().iterator();
-    while (enum.hasNext())
+    final Iterator keys = methods.keySet().iterator();
+    while (keys.hasNext())
     {
-      final Class keyClass = (Class) enum.next();
+      final Class keyClass = (Class) keys.next();
       if (keyClass.isAssignableFrom(d))
       {
         final SerializeMethod od = (SerializeMethod) methods.get(keyClass);
