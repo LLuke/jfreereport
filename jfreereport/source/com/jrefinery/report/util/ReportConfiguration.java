@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.41 2003/04/23 17:13:45 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.42 2003/04/24 18:08:58 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ package com.jrefinery.report.util;
 
 import java.util.Enumeration;
 import java.util.Properties;
+
+import org.jfree.util.Configuration;
 
 /**
  * Global and local configurations for JFreeReport.
@@ -267,7 +269,7 @@ import java.util.Properties;
  *
  * @author Thomas Morgner
  */
-public class ReportConfiguration
+public class ReportConfiguration implements Configuration
 {
   /** The text aliasing configuration key. */
   public static final String G2TARGET_USEALIASING

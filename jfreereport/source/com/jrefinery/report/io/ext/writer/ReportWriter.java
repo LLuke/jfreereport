@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.9 2003/04/24 18:08:53 taqua Exp $
+ * $Id: ReportWriter.java,v 1.10 2003/05/02 12:40:17 taqua Exp $
  *
  * Changes
  * -------
@@ -107,6 +107,8 @@ public class ReportWriter
     templateCollector = new TemplateCollector();
     this.report = report;
     this.encoding = encoding;
+    dataSourceCollector.configure(report.getReportConfiguration());
+    classFactoryCollector.configure(report.getReportConfiguration());
   }
 
   /**
