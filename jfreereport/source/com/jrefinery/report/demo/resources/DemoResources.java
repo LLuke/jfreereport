@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources.java,v 1.3 2002/05/16 13:04:17 jaosch Exp $
+ * $Id: DemoResources.java,v 1.4 2002/05/16 23:08:02 taqua Exp $
  *
  * Changes
  * -------
@@ -39,13 +39,10 @@
 
 package com.jrefinery.report.demo.resources;
 
-import java.awt.event.KeyEvent;
-import java.util.ListResourceBundle;
-
-import javax.swing.ImageIcon;
-import javax.swing.KeyStroke;
-
 import com.jrefinery.report.resources.JFreeReportResources;
+
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
 
 /**
  * User interface items for the JFreeReport demonstration application.  These have been put into
@@ -56,43 +53,43 @@ public class DemoResources extends JFreeReportResources
   /**
    * Returns the contents of the resource bundle.
    */
-  public Object[][] getContents()
+  public Object[][] getContents ()
   {
     return contents;
   }
 
   /** The resources to be localised. */
   private static final Object[][] contents = {
-    { "project.name", "JFreeReport" }, 
-    { "project.version", "0.7.1" }, 
-    { "project.info", "http://www.object-refinery.com/jfreereport/index.html" }, 
-    { "project.copyright","(C)opyright 2000-2002, by Simba Management Limited and Contributors" },
+    {"project.name", "JFreeReport"},
+    {"project.version", "0.7.1"},
+    {"project.info", "http://www.object-refinery.com/jfreereport/index.html"},
+    {"project.copyright", "(C)opyright 2000-2002, by Simba Management Limited and Contributors"},
 
     // in the title pattern, leave in the '{0}' as it gets replaced with the version number
-    { "main-frame.title.pattern", "JFreeReport {0} Demo" }, 
+    {"main-frame.title.pattern", "JFreeReport {0} Demo"},
 
-    { "action.close.name", "Exit" }, 
-    { "action.close.description", "exits JFreeReportDemo" }, 
-    { "action.close.mnemonic", new Integer(KeyEvent.VK_E)},
-    { "action.close.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK)},
+    {"action.close.name", "Exit"},
+    {"action.close.description", "exits JFreeReportDemo"},
+    {"action.close.mnemonic", new Integer (KeyEvent.VK_E)},
+    {"action.close.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_X, KeyEvent.CTRL_MASK)},
 
-    { "action.print-preview.name", "Print Preview..." }, 
-    { "action.print-preview.description", "Preview the report" }, 
-    { "action.print-preview.mnemonic", new Integer(KeyEvent.VK_P)},
-    { "action.print-preview.accelerator",KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
-    { "action.print-preview.small-icon", getIcon("com/jrefinery/report/resources/PrintPreview16.gif")},
-    { "action.print-preview.icon", getIcon("com/jrefinery/report/resources/PrintPreview24.gif")},
+    {"action.print-preview.name", "Print Preview..."},
+    {"action.print-preview.description", "Preview the report"},
+    {"action.print-preview.mnemonic", new Integer (KeyEvent.VK_P)},
+    {"action.print-preview.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
+    {"action.print-preview.small-icon", getIcon ("com/jrefinery/report/resources/PrintPreview16.gif")},
+    {"action.print-preview.icon", getIcon ("com/jrefinery/report/resources/PrintPreview24.gif")},
 
-    { "action.about.name", "About..."}, 
-    { "action.about.description", "Information about the application" }, 
-    { "action.about.mnemonic", new Integer(KeyEvent.VK_A)},
-    { "action.about.small-icon", getIcon("com/jrefinery/report/resources/About16.gif")},
-    { "action.about.icon", getIcon("com/jrefinery/report/resources/About24.gif")},
+    {"action.about.name", "About..."},
+    {"action.about.description", "Information about the application"},
+    {"action.about.mnemonic", new Integer (KeyEvent.VK_A)},
+    {"action.about.small-icon", getIcon ("com/jrefinery/report/resources/About16.gif")},
+    {"action.about.icon", getIcon ("com/jrefinery/report/resources/About24.gif")},
 //    {"action.print-preview.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
 
-    { "menu.file.name", "File" }, 
-    { "menu.file.mnemonic", new Character('F')},
-    { "menu.help.name", "Help" }, 
-    { "menu.help.mnemonic", new Character('H')}
+    {"menu.file.name", "File"},
+    {"menu.file.mnemonic", new Character ('F')},
+    {"menu.help.name", "Help"},
+    {"menu.help.mnemonic", new Character ('H')}
   };
 }

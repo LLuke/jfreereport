@@ -25,11 +25,10 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportProcessingException.java,v 1.1.1.1 2002/04/25 17:02:14 taqua Exp $
+ * $Id: ReportProcessor.java,v 1.1 2002/05/14 21:35:02 taqua Exp $
  * Changes
  * -------------------------
  * 10-May-2002 : Initial version
- *
  */
 package com.jrefinery.report;
 
@@ -60,20 +59,48 @@ public class ReportProcessor implements JFreeReportConstants
     cursor.reserveSpace (pageFooter.getHeight ());
   }
 
+  /**
+   * Draws this band to the current OutputTarget. If draw is false, no printing is performed.
+   *
+   * @param band the band to be printed
+   */
   protected void draw (Band band)
   {
     draw (band, cursor.getY ());
   }
 
+  /**
+   * checks whether to draw on the output target.
+   * @returns true, if the processor should draw, false otherwise.
+   */
+  protected boolean isDraw ()
+  {
+    return draw;
+  }
+
+  /**
+   * Draws this band to the current OutputTarget. If draw is false, no printing is performed.
+   * Prints on the given position. The cursor is advanced to the given position plus the
+   * height of the band.
+   *
+   * @param band the band to be printed
+   * @param y the position on which to print.
+   */
   protected void draw (Band band, float y)
   {
-    if (draw)
+    if (isDraw())
     {
       band.draw (target, cursor.getPageLeft (), y);
     }
-    cursor.advance (band.getHeight ());
+    cursor.advance (y - cursor.getY() + band.getHeight ());
   }
 
+  /**
+   * Prints the given ReportHeader on the current OutputTarget. If draw is false,
+   * no printing is performed, but the cursor is advanced.
+   *
+   * @param reportHeader the reportheader to print.
+   */
   public void printReportHeader (ReportHeader reportHeader)
   {
     if (reportHeader == null)
@@ -83,6 +110,13 @@ public class ReportProcessor implements JFreeReportConstants
     pageDone = reportHeader.isOwnPage ();
   }
 
+
+  /**
+   * Prints the given PageHeader on the current OutputTarget. If draw is false,
+   * no printing is performed, but the cursor is advanced.
+   *
+   * @param reportHeader the pageheader to print.
+   */
   public void printPageHeader (PageHeader pageHeader)
   {
     if (pageHeader == null)
@@ -91,6 +125,12 @@ public class ReportProcessor implements JFreeReportConstants
     draw (pageHeader);
   }
 
+  /**
+   * Prints the given PageFooter on the current OutputTarget. If draw is false,
+   * no printing is performed, but the cursor is advanced.
+   *
+   * @param reportHeader the pagefooter to print.
+   */
   public void printPageFooter (PageFooter pageFooter)
   {
     if (pageFooter == null)
@@ -99,6 +139,12 @@ public class ReportProcessor implements JFreeReportConstants
     draw (pageFooter, cursor.getPageBottom ());
   }
 
+  /**
+   * Prints the given GroupHeader on the current OutputTarget. If draw is false,
+   * no printing is performed, but the cursor is advanced.
+   *
+   * @param reportHeader the groupheader to print.
+   */
   public void printGroupHeader (GroupHeader groupHeader)
   {
     if (groupHeader == null)
@@ -110,6 +156,12 @@ public class ReportProcessor implements JFreeReportConstants
     }
   }
 
+  /**
+   * Prints the given ItemBand on the current OutputTarget. If draw is false,
+   * no printing is performed, but the cursor is advanced.
+   *
+   * @param reportHeader the itemband to print.
+   */
   public void printItemBand (ItemBand itemBand)
   {
     if (itemBand == null)
@@ -121,6 +173,12 @@ public class ReportProcessor implements JFreeReportConstants
     }
   }
 
+  /**
+   * Prints the given GroupFooter on the current OutputTarget. If draw is false,
+   * no printing is performed, but the cursor is advanced.
+   *
+   * @param reportHeader the GroupFooter to print.
+   */
   public void printGroupFooter (GroupFooter footer)
   {
     if (footer == null)
@@ -132,6 +190,12 @@ public class ReportProcessor implements JFreeReportConstants
     }
   }
 
+  /**
+   * Prints the given ReportFooter on the current OutputTarget. If draw is false,
+   * no printing is performed, but the cursor is advanced.
+   *
+   * @param reportHeader the reportfooter to print.
+   */
   public void printReportFooter (ReportFooter footer)
   {
     if (footer == null)
@@ -171,6 +235,9 @@ public class ReportProcessor implements JFreeReportConstants
     pageDone = true;
   }
 
+  /**
+   * checks whether a pagebreak should be performed before printing any other element.
+   */
   public boolean isPageDone ()
   {
     return pageDone;

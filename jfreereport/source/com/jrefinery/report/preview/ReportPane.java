@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPane.java,v 1.1 2002/05/14 21:35:05 taqua Exp $
+ * $Id: ReportPane.java,v 1.2 2002/05/16 19:56:50 jaosch Exp $
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
@@ -62,6 +62,7 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.OutputTarget;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.ReportState;
+import com.jrefinery.report.ReportProcessor;
 import com.jrefinery.report.util.Log;
 
 /** 
@@ -333,10 +334,9 @@ public class ReportPane extends JComponent implements Printable
       g2.setPaint(Color.lightGray);
       g2.draw(printingArea);
       ReportState state = (ReportState) this.pageStates.get(pageNumber - 1);
-      ReportState clone = (ReportState) state.clone();
 
       //report.processPage(pageNumber, state, g2, this.pageFormat, true);
-      report.processPage(target, clone, true);
+      report.processPage(target, state, true);
 
       /** Paint Page Shadow */
       Rectangle2D southborder =
@@ -449,12 +449,12 @@ public class ReportPane extends JComponent implements Printable
   /** Processes the entire report and records the state at the end of every page. */
   protected void repaginate(Graphics2D g2) throws ReportProcessingException
   {
-    long currentTime = System.currentTimeMillis();
-
     pageStates.clear();
     ReportState state = new ReportState.Start(report);
-    pageStates.add(state);
+    ReportProcessor prc = new ReportProcessor(getOutputTarget(), false, report.getPageFooter());
+    state = state.advance(prc);
 
+    pageStates.add(state);
     state = report.processPage(target, state, false);
     while (!state.isFinish())
     {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.4 2002/05/16 19:58:24 jaosch Exp $
+ * $Id: ReportState.java,v 1.5 2002/05/17 13:24:40 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -39,6 +39,8 @@
  *               JFreeReport.advanceState has moved into the corresponding ReportState-class.
  *               ReportEvents are used to inform listeners, a ReportProcessor encapsulates the
  *               knowledge how to display the elements.
+ * 17-May-2002 : Fixed the ReportPropertyBug by adding a new state (PreReportHeader).
+ *               ReportState.Start.advance has to be executed before the first page is printed.
  */
 
 package com.jrefinery.report;
@@ -83,11 +85,58 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       setCurrentPage(1);
 
       // PropertyHandler should set the properties.
-
       report.setProperty(JFreeReport.REPORT_DATE_PROPERTY, new Date());
 
+      // Initialize the report before any band (and especially before the pageheader)
+      // is printed.
       ReportEvent event = new ReportEvent(report, this);
       fireReportStartedEvent(event);
+
+      return new PreReportHeader(this);
+    }
+
+    /**
+     * Tests whether is state is a start-state.
+     *
+     * @return always true
+     */
+    public boolean isStart()
+    {
+      return true;
+    }
+
+    /**
+     * Returns the corrected display item for this state. As the currentItem has not yet advanced
+     * we perform a readAHead lookup when populating elements.
+     */
+    public int getCurrentDisplayItem()
+    {
+      return getCurrentDataItem() + 1;
+    }
+  }
+
+  /**
+   * Initial state for an report. Prints the report header and proceeds to PostProcessHeader-State.<p>
+   * alias PreReportHeader<br>
+   * advances to PostReportHeader<br>
+   * before the print, a reportStarted event gets fired.
+   */
+  public static class PreReportHeader extends ReportState
+  {
+    /**
+     * Default constructor and the only constructor to create a state without cloning another.
+     */
+    public PreReportHeader(ReportState previousState)
+    {
+      super(previousState);
+    }
+
+    /**
+     * The report started. Print the report header.
+     */
+    public ReportState advance(ReportProcessor rpc)
+    {
+      JFreeReport report = getReport();
 
       ReportHeader reportHeader = report.getReportHeader();
       reportHeader.populateElements(this);
@@ -722,11 +771,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     {
       throw new NullPointerException("Empty function collection?");
     }
-    else
-    {
-      functions = (FunctionCollection) pfunctions.clone();
-      addReportListener(functions);
-    }
+    functions = (FunctionCollection) pfunctions.clone();
+    addReportListener(functions);
   }
 
   /**
@@ -741,6 +787,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     {
       result = (ReportState) super.clone();
       result.setFunctions(getFunctions());
+      System.out.println (result.getFunctions() + " vs. " + getFunctions());
+      System.out.println (result.getFunctions().hashCode() + " vs. " + getFunctions().hashCode());
     }
     catch (CloneNotSupportedException e)
     {

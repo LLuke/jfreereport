@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.5 2002/05/16 19:58:24 jaosch Exp $
+ * $Id: JFreeReport.java,v 1.6 2002/05/17 13:24:40 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -43,7 +43,8 @@
  *               Objects. Created AccessorMethods for Properties. (TM)
  * 11-May-2002 : All bands have to be initialized. Null is no longer allowed for pageHeader,pageFooter,
  *               reportHeader, reportFooter, itemBand, functionCollection
- *
+ * 17-May-2002 : Fixed reportPropertyInitialisation and checked if the report is proceeding on
+ *               print.
  */
 
 package com.jrefinery.report;
@@ -51,6 +52,7 @@ package com.jrefinery.report;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.ui.about.ProjectInfo;
 
 import javax.swing.table.DefaultTableModel;
@@ -506,14 +508,25 @@ public class JFreeReport implements JFreeReportConstants
 
     int page = 1;
     ReportState rs = new ReportState.Start(this);
-
+    ReportProcessor prc = new ReportProcessor(target, draw, getPageFooter());
+    rs = rs.advance(prc);
+    Log.error ("1PREPROCESSPAGE: " + String.valueOf (getProperty(REPORT_DATE_PROPERTY)));
     rs = processPage(target, rs, draw);
+    Log.error ("2PREPROCESSPAGE");
     target.endPage();
+    Log.error ("3PREPROCESSPAGE");
+    Log.error ("4POSTPROCESSPAGE: " + String.valueOf (getProperty(REPORT_DATE_PROPERTY)));
 
     while (!(rs instanceof ReportState.Finish))
     {
-      rs = processPage(target, rs, draw);
+      ReportState nrs = processPage(target, rs, draw);
       target.endPage();
+      Log.error (String.valueOf (getProperty(REPORT_DATE_PROPERTY)));
+      if (nrs.isProceeding(rs) == false)
+      {
+        throw new ReportProcessingException("Report is not proceeding");
+      }
+      rs = nrs;
     }
     return rs;
   }
@@ -540,7 +553,7 @@ public class JFreeReport implements JFreeReportConstants
     ReportState state = (ReportState) currPage.clone();
     int page = state.getCurrentPage();
     boolean pageDone = false;
-    ReportProcessor prc = new ReportProcessor(target, draw, pageFooter);
+    ReportProcessor prc = new ReportProcessor(target, draw, getPageFooter());
 
     FunctionCollection functions = state.getFunctions();
     ReportEvent event = new ReportEvent(this, state);
@@ -549,17 +562,17 @@ public class JFreeReport implements JFreeReportConstants
     // print the page header (if there is one) and measure the page footer (if there is one)...
     // on reportheader start
 
-    pageHeader.populateElements(state);
+    getPageHeader().populateElements(state);
     if (page == 1)
     {
-      if (pageHeader.isDisplayOnFirstPage())
+      if (getPageHeader().isDisplayOnFirstPage())
       {
-        prc.printPageHeader(pageHeader);
+        prc.printPageHeader(getPageHeader());
       }
     }
     else
     {
-      prc.printPageHeader(pageHeader);
+      prc.printPageHeader(getPageHeader());
     }
 
     // Do some real work.  The report header and footer, and the page headers and footers are
@@ -574,17 +587,17 @@ public class JFreeReport implements JFreeReportConstants
     event = new ReportEvent(this, state);
     state.firePageFinishedEvent(event);
 
-    pageFooter.populateElements(state);
+    getPageFooter().populateElements(state);
     if (page == 1)
     {
-      if (pageFooter.isDisplayOnFirstPage())
+      if (getPageFooter().isDisplayOnFirstPage())
       {
-        prc.printPageFooter(pageFooter);
+        prc.printPageFooter(getPageFooter());
       }
     }
     else
     {
-      prc.printPageFooter(pageFooter);
+      prc.printPageFooter(getPageFooter());
     }
 
     // return the state at the end of the page...

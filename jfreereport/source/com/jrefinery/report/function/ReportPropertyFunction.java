@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.2 2002/05/14 21:35:04 taqua Exp $
+ * $Id: ReportPropertyFunction.java,v 1.3 2002/05/16 12:44:18 mungady Exp $
  *
  * Changes
  * -------
@@ -94,15 +94,7 @@ public class ReportPropertyFunction extends AbstractFunction
   public void reportStarted (ReportEvent event)
   {
     JFreeReport report = event.getReport ();
-    Object value = report.getProperty (field);
-    if (value == null)
-    {
-      this.value = "-";
-    }
-    else
-    {
-      this.value = value;
-    }
+    value = report.getProperty (field);
   }
 
   /**
