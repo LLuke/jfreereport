@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.40 2002/12/05 16:55:15 mungady Exp $
+ * $Id: JFreeReport.java,v 1.41 2002/12/10 21:04:19 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -286,7 +286,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Sets the name of the report.
    * <P>
-   * The report name is stored as a property (key: <code>NAME_PROPERTY = "report.name"</code>) of 
+   * The report name is stored as a property (key: <code>NAME_PROPERTY = "report.name"</code>) of
    * the report.  If you supply <code>null</code> as the name, the property is removed.
    *
    * @param name  the name of the report.
@@ -378,9 +378,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
-   * Returns the report footer.
+   * Returns the report header (or <code>null</code> if no report header is defined).
    *
-   * @return the report footer or null, if no report footer is defined.
+   * @return the report header (possibly <code>null</code>).
    */
   public ReportHeader getReportHeader ()
   {
