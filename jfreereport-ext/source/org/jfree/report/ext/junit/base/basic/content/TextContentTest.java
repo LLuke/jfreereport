@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
+ * $Id: TextContentTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -55,7 +55,7 @@ import org.jfree.report.util.ElementLayoutInformation;
 
 public class TextContentTest extends TestCase
 {
-  private static class DebugSizeCalculator implements SizeCalculator
+  public static class DebugSizeCalculator implements SizeCalculator
   {
     private float lineHeight;
     private float charWidth;
@@ -133,7 +133,7 @@ public class TextContentTest extends TestCase
     final String textLeadWhite = "  abc\n  abc";
     final TextContent content = new TextContent
         (textLeadWhite, 10, new Rectangle2D.Float (0,0, 100, 10),
-            new DebugSizeCalculator(10, 10));
+            new DebugSizeCalculator(10, 10), "..");
     assertEquals(new Rectangle2D.Float(0,0, 50, 10), content.getMinimumContentSize());
 
     final TextParagraph tp = (TextParagraph) content.getContentPart(0);
@@ -146,7 +146,7 @@ public class TextContentTest extends TestCase
   {
     final String content = "123 thousand people";
     final SizeCalculator ds = new DebugSizeCalculator(10, 10);
-    final TextParagraph tp = new TextParagraph(ds, 10);
+    final TextParagraph tp = new TextParagraph(ds, 10, "..");
     tp.setContent(content, 0, 0, 100, 10);
 
     final TextLine tl = (TextLine) tp.getContentPart(0);
@@ -175,7 +175,7 @@ public class TextContentTest extends TestCase
       "page:"
     };
 
-    final TextParagraph tp = new TextParagraph(new DebugSizeCalculator(10, 10), 10);
+    final TextParagraph tp = new TextParagraph(new DebugSizeCalculator(10, 10), 10, "..");
     tp.setContent(content, 0, 0, 345, 5000);
     assertEquals(new Rectangle2D.Float(0,0, 330, 100), tp.getMinimumContentSize());
 
@@ -183,6 +183,8 @@ public class TextContentTest extends TestCase
     {
       final TextLine tl = (TextLine) tp.getContentPart(i);
       assertTrue(tl.getBounds().getWidth() < 345);
+      assertTrue(tl.getBounds().getY() == (i * 10));
+      assertTrue(tl.getBounds().getHeight() == (10));
       assertEquals(results[i], tl.getContent());
     }
   }
@@ -202,13 +204,15 @@ public class TextContentTest extends TestCase
       "together."
     };
     Content tc = new TextContent
-        (content, 10, new Rectangle2D.Float(0, 0, 500, 5000), new DebugSizeCalculator(10, 10));
+        (content, 10, new Rectangle2D.Float(0, 0, 500, 5000), new DebugSizeCalculator(10, 10), "..");
     tc = tc.getContentForBounds(tc.getMinimumContentSize());
     final Content tp = tc.getContentPart(0);
     for (int i = 0; i < tp.getContentPartCount(); i++)
     {
       final TextLine tl = (TextLine) tp.getContentPart(i);
       assertTrue(tl.getBounds().getWidth() <= 500);
+      assertTrue(tl.getBounds().getY() == (i * 10));
+      assertTrue(tl.getBounds().getHeight() == (10));
       assertEquals(results[i], tl.getContent());
     }
 
@@ -221,7 +225,7 @@ public class TextContentTest extends TestCase
   {
     final String content = "Thisisareallylongword, noone thought thatawordcanbethatlong, itwontfitonaline, but these words do, so heres the test!";
     Content tc = new TextContent(content, 10, new Rectangle2D.Float(0, 0, 200, 5000),
-        new DebugSizeCalculator(10, 10));
+        new DebugSizeCalculator(10, 10),"..");
 
     final String[] results = {
       "Thisisareallylongwor",
@@ -238,6 +242,8 @@ public class TextContentTest extends TestCase
     {
       final TextLine tl = (TextLine) tp.getContentPart(i);
       assertTrue(tl.getBounds().getWidth() <= 500);
+      assertTrue(tl.getBounds().getY() == (i * 10));
+      assertTrue(tl.getBounds().getHeight() == (10));
       assertEquals(results[i], tl.getContent());
     }
     assertEquals(new Rectangle2D.Float(0,0, 200, 70), tp.getMinimumContentSize());
