@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.17 2003/02/25 14:10:22 taqua Exp $
+ * $Id: SampleReport1.java,v 1.18 2003/02/26 13:57:37 mungady Exp $
  *
  * Changes:
  * --------
@@ -138,22 +138,28 @@ public class SampleReport1
     return footer;
   }
 */
-  private float WIDTH = -100;
+  /** A constant for 100% width. */
+  private static final float WIDTH = -100;
 
+  /**
+   * Creates a page footer.
+   * 
+   * @return The page footer. 
+   */
   private PageFooter createPageFooter()
   {
-    PageFooter pageFooter = (PageFooter) ItemFactory.createPageFooter(30, new Font("Dialog", Font.PLAIN, 10), null, true, true);
-    pageFooter.addElement(ItemFactory.createRectangleShapeElement("",Color.black, null,
-                                                                  new Rectangle2D.Float(0, 0, -100, -100),
-                                                                  true, false
-                                                                  ));
+    PageFooter pageFooter = (PageFooter) ItemFactory.createPageFooter(
+        30, new Font("Dialog", Font.PLAIN, 10), null, true, true);
+    pageFooter.addElement(ItemFactory.createRectangleShapeElement(
+        "", Color.black, null, new Rectangle2D.Float(0, 0, -100, -100), true, false));
     Element field3 = ItemFactory.createLabelElement(
         "Label 2",
         new Rectangle2D.Float(10, 0, WIDTH, 0),
         null,
         Element.LEFT, Element.TOP,
         null,
-        " 111111111 2222222222 333333333 4444444444444 5555 66666666 777 88888888888888 99999999 10101011 "
+        " 111111111 2222222222 333333333 4444444444444 5555 66666666 777 88888888888888 99999999 "
+        + "10101011 "
     );
     field3.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
                                        new Boolean(true));

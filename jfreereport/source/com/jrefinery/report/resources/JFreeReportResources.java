@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.46 2003/02/25 15:16:38 mungady Exp $
+ * $Id: JFreeReportResources.java,v 1.47 2003/02/25 18:46:10 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -179,32 +179,40 @@ public class JFreeReportResources extends ListResourceBundle
             {"action.export-to-excel.mnemonic", new Integer (KeyEvent.VK_E)},
             {"action.export-to-excel.accelerator", KeyStroke.getKeyStroke ("control E")},
             // temporarily using the same icon as "Save to PDF", till we have a better one
-            {"action.export-to-excel.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
-            {"action.export-to-excel.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
+            {"action.export-to-excel.small-icon", 
+                getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
+            {"action.export-to-excel.icon", 
+                getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
             {"action.export-to-html.name", "Export to html..."},
             {"action.export-to-html.description", "Save to HTML format"},
             {"action.export-to-html.mnemonic", new Integer (KeyEvent.VK_H)},
             {"action.export-to-html.accelerator", KeyStroke.getKeyStroke ("control H")},
             // temporarily using the same icon as "Save to PDF", till we have a better one
-            {"action.export-to-html.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
-            {"action.export-to-html.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
+            {"action.export-to-html.small-icon", 
+                getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
+            {"action.export-to-html.icon", 
+                getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
             {"action.export-to-csv.name", "Export to CSV..."},
             {"action.export-to-csv.description", "Save to CSV format"},
             {"action.export-to-csv.mnemonic", new Integer (KeyEvent.VK_C)},
             {"action.export-to-csv.accelerator", KeyStroke.getKeyStroke ("control C")},
             // temporarily using the same icon as "Save to PDF", till we have a better one
-            {"action.export-to-csv.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
-            {"action.export-to-csv.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
+            {"action.export-to-csv.small-icon", 
+                getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
+            {"action.export-to-csv.icon", 
+                getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
             {"action.export-to-plaintext.name", "Save as text file..."},
             {"action.export-to-plaintext.description", "Save to PlainText format"},
             {"action.export-to-plaintext.mnemonic", new Integer (KeyEvent.VK_T)},
             {"action.export-to-plaintext.accelerator", KeyStroke.getKeyStroke ("control T")},
             // temporarily using the same icon as "Save to PDF", till we have a better one
-            {"action.export-to-plaintext.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
-            {"action.export-to-plaintext.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
+            {"action.export-to-plaintext.small-icon", 
+                getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
+            {"action.export-to-plaintext.icon", 
+                getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
             {"action.page-setup.name", "Page Setup"},
             {"action.page-setup.description", "Page Setup"},
@@ -408,12 +416,13 @@ public class JFreeReportResources extends ListResourceBundle
             {"htmlexportdialog.cancel", "Cancel"},
             {"htmlexportdialog.confirm", "Confirm"},
             {"htmlexportdialog.targetPathIsAbsolute",
-                "The specified target path denotes an absolute directory.\n" +
-                "Please enter a data directory within the ZIP file."},
-            {"htmlexportdialog.targetDataDirIsNoDirectory", "The specified data directory is not valid."},
+                "The specified target path denotes an absolute directory.\n"
+                + "Please enter a data directory within the ZIP file."},
+            {"htmlexportdialog.targetDataDirIsNoDirectory", 
+                "The specified data directory is not valid."},
             {"htmlexportdialog.targetCreateDataDirConfirmation",
-                "The specified data directory does not exist.\n" +
-                "Shall the missing subdirectories be created?"},
+                "The specified data directory does not exist.\n" 
+                + "Shall the missing subdirectories be created?"},
             {"htmlexportdialog.targetCreateDataDirTitle", "Create data directory?"},
 
             {"csvexportdialog.dialogtitle", "Export Report into a CSV File ..."},
@@ -456,7 +465,8 @@ public class JFreeReportResources extends ListResourceBundle
 
             {"plain-text-exportdialog.warningTitle", "Warning"},
             {"plain-text-exportdialog.errorTitle", "Error"},
-            {"plain-text-exportdialog.targetIsEmpty", "Please specify a filename for the CSV file."},
+            {"plain-text-exportdialog.targetIsEmpty", 
+                "Please specify a filename for the CSV file."},
             {"plain-text-exportdialog.targetIsNoFile", "The selected target is no ordinary file."},
             {"plain-text-exportdialog.targetIsNotWritable", "The selected file is not writable."},
             {"plain-text-exportdialog.targetOverwriteConfirmation",

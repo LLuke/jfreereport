@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.8 2003/02/24 17:34:06 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.9 2003/02/25 12:48:19 taqua Exp $
  *
  * Changes
  * -------
@@ -88,9 +88,18 @@ public class StyleSheetHandler implements ReportDefinitionHandler
    */
   public StyleSheetHandler(Parser parser, String finishTag, ElementStyleSheet styleSheet)
   {
-    if (parser == null) throw new NullPointerException("Parser is null");
-    if (finishTag == null) throw new NullPointerException("FinishTag is null");
-    if (styleSheet == null) throw new NullPointerException("StyleSheet is null");
+    if (parser == null) 
+    {
+      throw new NullPointerException("Parser is null");
+    }
+    if (finishTag == null) 
+    {
+      throw new NullPointerException("FinishTag is null");
+    }
+    if (styleSheet == null) 
+    {
+      throw new NullPointerException("StyleSheet is null");
+    }
 
     this.parser = parser;
     this.finishTag = finishTag;

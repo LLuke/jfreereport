@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------
  * GroupFactory.java
  * -----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.5 2003/02/25 14:07:30 taqua Exp $
+ * $Id: GroupFactory.java,v 1.6 2003/02/26 13:57:58 mungady Exp $
  *
  * Changes
  * -------
@@ -121,7 +121,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     }
     else
     {
-      throw new SAXException ("Expected one of: group, groupfooter, groutheader, fields, field. -> " 
+      throw new SAXException ("Expected one of: group, groupfooter, groutheader, fields, field. -> "
                               + qName);
     }
   }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * -----------------
  * HtmlCellData.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -----------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellData.java,v 1.5 2003/02/20 00:39:37 taqua Exp $
+ * $Id: HtmlCellData.java,v 1.6 2003/02/21 18:12:49 taqua Exp $
  *
  * Changes
  * -------
@@ -36,14 +36,16 @@
  */
 package com.jrefinery.report.targets.table.html;
 
-import com.jrefinery.report.targets.table.TableCellData;
-
 import java.awt.geom.Rectangle2D;
 import java.io.PrintWriter;
+
+import com.jrefinery.report.targets.table.TableCellData;
 
 /**
  * The baseclass for all HTML-Content cells. The cell has a HtmlCellStyle assigned
  * and carries a flag to indicate whether to create XHTML output.
+ * 
+ * @author Thomas Morgner
  */
 public abstract class HtmlCellData extends TableCellData
 {

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,57 +20,59 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------
- * StraightToPDF.java
- * ------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * -------------------------
+ * StraightToEverything.java
+ * -------------------------
+ * (C)opyright 2003, by Thomas Morgner.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.3 2003/02/12 17:36:05 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.4 2003/02/25 14:10:24 taqua Exp $
  *
  * Changes
  * -------
- * 13-Dec-2002 : Version 1 (DG);
+ * 13-Dec-2002 : Version 1 (TM);
  *
  */
 
 package com.jrefinery.report.demo;
 
+import java.awt.print.PageFormat;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.OutputStream;
+import java.io.Writer;
+import java.net.URL;
+
+import javax.swing.table.TableModel;
+
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.targets.pageable.PageableReportProcessor;
 import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
-import com.jrefinery.report.targets.pageable.output.PrinterCommandSet;
 import com.jrefinery.report.targets.pageable.output.PlainTextOutputTarget;
-import com.jrefinery.report.targets.table.rtf.RTFProcessor;
+import com.jrefinery.report.targets.pageable.output.PrinterCommandSet;
 import com.jrefinery.report.targets.table.csv.CSVTableProcessor;
 import com.jrefinery.report.targets.table.excel.ExcelProcessor;
+import com.jrefinery.report.targets.table.html.DirectoryHtmlFilesystem;
 import com.jrefinery.report.targets.table.html.HtmlProcessor;
 import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
-import com.jrefinery.report.targets.table.html.DirectoryHtmlFilesystem;
 import com.jrefinery.report.targets.table.html.ZIPHtmlFilesystem;
-import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.targets.table.rtf.RTFProcessor;
 import com.jrefinery.report.util.Log;
-
-import javax.swing.table.TableModel;
-import java.awt.print.PageFormat;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.net.URL;
+import com.jrefinery.report.util.ReportConfiguration;
 
 /**
  * A demonstration that shows how to generate a report and save it to PDF without displaying
  * the print preview or the PDF save-as dialog. The methods to save the report to the various
- * file formats are also implemented in {@link com.jrefinery.report.targets.support.ReportProcessorUtil}.
+ * file formats are also implemented in 
+ * {@link com.jrefinery.report.targets.support.ReportProcessorUtil}.
  *
- * @author David Gilbert
+ * @author Thomas Morgner
  */
 public class StraightToEverything
 {
@@ -120,7 +122,7 @@ public class StraightToEverything
     }
     catch (Exception e)
     {
-      Log.error ("Failed to parse the report",e);
+      Log.error ("Failed to parse the report", e);
     }
     return result;
   }
@@ -161,7 +163,9 @@ public class StraightToEverything
       try
       {
         if (out != null)
+        {
           out.close();
+        }
       }
       catch (Exception e)
       {
@@ -304,7 +308,8 @@ public class StraightToEverything
   {
     ReportConfiguration.getGlobalConfig().setLogLevel("Warn");
     ReportConfiguration.getGlobalConfig().setPDFTargetAutoInit(false);
-    StraightToEverything demo = new StraightToEverything(System.getProperty("user.home") + "/test-everything");
+    StraightToEverything demo = new StraightToEverything(System.getProperty("user.home") 
+                                                         + "/test-everything");
     System.exit(0);
   }
 

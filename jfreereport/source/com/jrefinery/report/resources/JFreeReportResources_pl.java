@@ -1,12 +1,12 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -68,7 +68,8 @@ public class JFreeReportResources_pl extends JFreeReportResources
             {"action.close.mnemonic", new Integer (KeyEvent.VK_K)},
 
             {"action.gotopage.name", "Przejd\u017a do strony..."},
-            {"action.gotopage.description", "Przejd\u017a bezpo\u015brednio do okre\u015blonej strony"},
+            {"action.gotopage.description", 
+                "Przejd\u017a bezpo\u015brednio do okre\u015blonej strony"},
 
             {"dialog.gotopage.message", "Podaj numer strony"},
             {"dialog.gotopage.title", "Przejd\u017a do strony..."},
@@ -105,12 +106,16 @@ public class JFreeReportResources_pl extends JFreeReportResources
 
             {"file.save.pdfdescription", "Pliki PDF"},
             {"statusline.pages", "Strona {0} z {1}"},
-            {"statusline.error", "Wyst\u0105pi\u0142 b\u0142\u0105d podczas generowania raportu: {0}"},
+            {"statusline.error", 
+                "Wyst\u0105pi\u0142 b\u0142\u0105d podczas generowania raportu: {0}"},
             {"error.processingfailed.title", "Przetwarzanie raportu nie powiod\u0142o si\u0119"},
-            {"error.processingfailed.message", "Podczas przetwarzania raportu wyst\u0105pi\u0142 nast\u0119puj\u0105cy b\u0142\u0105d: {0}"},
-            {"error.savefailed.message", "Podczas zapisywania do pliku PDF wyst\u0105pi\u0142 nast\u0119puj\u0105cy b\u0142\u0105d: {0}"},
+            {"error.processingfailed.message", "Podczas przetwarzania raportu wyst\u0105pi\u0142 "
+                + "nast\u0119puj\u0105cy b\u0142\u0105d: {0}"},
+            {"error.savefailed.message", "Podczas zapisywania do pliku PDF wyst\u0105pi\u0142 "
+                + "nast\u0119puj\u0105cy b\u0142\u0105d: {0}"},
             {"error.savefailed.title", "B\u0142\u0105d podczas zapisywania"},
-            {"error.printfailed.message", "Podczas drukowania wyst\u0105pi\u0142 nast\u0119puj\u0105cy b\u0142\u0105d: {0}"},
+            {"error.printfailed.message", 
+                "Podczas drukowania wyst\u0105pi\u0142 nast\u0119puj\u0105cy b\u0142\u0105d: {0}"},
             {"error.printfailed.title", "B\u0142\u0105d podczas drukowania"},
 
             {"pdfsavedialog.warningTitle", "Ostrze\u017cenie"},
@@ -126,27 +131,33 @@ public class JFreeReportResources_pl extends JFreeReportResources
             {"pdfsavedialog.security128bit", "Szyfrowanie 128-bitowym kluczem"},
             {"pdfsavedialog.userpassword", "Has\u0142o u\u017cytkownika"},
             {"pdfsavedialog.userpasswordconfirm", "Powt\u00f3rzenie has\u0142a)"},
-            {"pdfsavedialog.userpasswordNoMatch", "Has\u0142o i powt\u00f3rzenie has\u0142a s\u0105 r\u00f3\u017cne."},
+            {"pdfsavedialog.userpasswordNoMatch", 
+                "Has\u0142o i powt\u00f3rzenie has\u0142a s\u0105 r\u00f3\u017cne."},
             {"pdfsavedialog.ownerpassword", "Has\u0142o w\u0142a\u015bciciela"},
             {"pdfsavedialog.ownerpasswordconfirm", "Powt\u00f3rzenie has\u0142a"},
-            {"pdfsavedialog.ownerpasswordNoMatch", "Has\u0142o i potwierdzenie has\u0142a s\u0105 r\u00f3\u017cne."},
+            {"pdfsavedialog.ownerpasswordNoMatch", 
+                "Has\u0142o i potwierdzenie has\u0142a s\u0105 r\u00f3\u017cne."},
 
             {"pdfsavedialog.ownerpasswordEmpty", "Nie podano has\u0142a w\u0142a\u015bciciela. " +
-              "U\u017cytkownicy b\u0119d\u0105 mogli zmienia\u0107 ustawienia zabezpiecze\u0144. Kontynuowa\u0107?" },
+              "U\u017cytkownicy b\u0119d\u0105 mogli zmienia\u0107 ustawienia zabezpiecze\u0144. "
+              + "Kontynuowa\u0107?" },
 
             {"pdfsavedialog.errorTitle", "B\u0142\u0105d"},
             {"pdfsavedialog.targetIsEmpty", "Prosz\u0119 poda\u0107 nazw\u0119 pliku PDF."},
             {"pdfsavedialog.targetIsNoFile", "Wybrano nieprawid\u0142owy plik."},
             {"pdfsavedialog.targetIsNotWritable", "Wybrany plik nie mo\u017ce by\u0107 zapisany."},
-            {"pdfsavedialog.targetOverwriteConfirmation", "Plik ''{0}'' ju\u017c istnieje. Zast\u0105pi\u0107?"},
+            {"pdfsavedialog.targetOverwriteConfirmation", 
+                "Plik ''{0}'' ju\u017c istnieje. Zast\u0105pi\u0107?"},
             {"pdfsavedialog.targetOverwriteTitle", "Nadpisa\u0107 plik?"},
 
             {"pdfsavedialog.allowCopy", "Zezw\u00f3l na kopiowanie"},
             {"pdfsavedialog.allowPrinting", "Opcje drukowania"},
             {"pdfsavedialog.allowDegradedPrinting", "Zezw\u00f3l na ograniczone drukowanie"},
-            {"pdfsavedialog.allowScreenreader", "Zezw\u00f3l na u\u017cycie innych urz\u0105dze\u0144 czytaj\u0105cych"},
+            {"pdfsavedialog.allowScreenreader", 
+                "Zezw\u00f3l na u\u017cycie innych urz\u0105dze\u0144 czytaj\u0105cych"},
             {"pdfsavedialog.allowAssembly", "Zezw\u00f3l na edycj\u0119 sk\u0142adu"},
-            {"pdfsavedialog.allowModifyContents", "Zezw\u00f3l na modyfikacj\u0119 zawarto\u015bci"},
+            {"pdfsavedialog.allowModifyContents", 
+                "Zezw\u00f3l na modyfikacj\u0119 zawarto\u015bci"},
             {"pdfsavedialog.allowModifyAnnotations", "Zezw\u00f3l na modyfikacj\u0119 notatek"},
             {"pdfsavedialog.allowFillIn", "Zezw\u00f3l na wprowadzanie danych do formularzy"},
 

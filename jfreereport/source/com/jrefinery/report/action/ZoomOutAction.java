@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------
  * ZoomOutAction.java
  * ------------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, 2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ZoomOutAction.java,v 1.13 2003/02/02 23:43:48 taqua Exp $
+ * $Id: ZoomOutAction.java,v 1.14 2003/02/10 19:33:20 taqua Exp $
  *
  * Changes
  * -------
@@ -39,16 +39,18 @@
  */
 package com.jrefinery.report.action;
 
+import java.util.ResourceBundle;
+
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionDowngrade;
-
-import java.util.ResourceBundle;
 
 /**
  * The zoomOut action is used to decrease the ZoomFactor of the report. Zooming
  * can be increased in predefined steps from 25% to 400%. This abstract base class
  * implements the locales specific initialisations, actual work is done in an internal
  * subclass in PreviewFrame.
+ * 
+ * @author David Gilbert
  */
 public abstract class ZoomOutAction extends AbstractActionDowngrade
 {

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,11 +20,11 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------
+ * ------------------------
  * ResourceCompareTool.java
- * ----------------------------
+ * ------------------------
  *
- * $Id: ResourceCompareTool.java,v 1.4 2003/02/25 18:46:12 taqua Exp $
+ * $Id: ResourceCompareTool.java,v 1.5 2003/02/25 20:15:46 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ import java.util.Collections;
  * default resource bundle, but defined in the localized version.
  * <p>
  * Using the automated comparing will help to make translations more easier.
+ * 
+ * @author Thomas Morgner
  */
 public class ResourceCompareTool
 {
@@ -92,8 +94,9 @@ public class ResourceCompareTool
     Object[][] contentsRes = resources.getContents();
     Object[][] contentsComp = compare.getContents();
     if (compare.getContents() == null)
+    {
       throw new IllegalArgumentException("The given localisation is not a valid implementation");
-
+    }
     Hashtable baseContentTable = new Hashtable();
     Hashtable compContentTable = new Hashtable();
 
@@ -145,7 +148,8 @@ public class ResourceCompareTool
     Collections.sort(invalidKey);
     Collections.sort(notImplemented);
 
-    System.out.println ("The following keys return values, which are not of the same baseclass as the original key.");
+    System.out.println ("The following keys return values, which are not of the same baseclass as "
+        + "the original key.");
     for (int i = 0; i < wrongType.size(); i++)
     {
       System.out.println(wrongType.get(i));
@@ -155,7 +159,8 @@ public class ResourceCompareTool
     System.out.println ("---------------------------------------\n\n");
 
     System.out.println ("The following keys are not implemented by the localisation.");
-    System.out.println ("This does not always indicate an error, if the key does not need to be translated.");
+    System.out.println ("This does not always indicate an error, if the key does not need to be "
+        + "translated.");
     for (int i = 0; i < notImplemented.size(); i++)
     {
       System.out.println(notImplemented.get(i));
@@ -164,7 +169,8 @@ public class ResourceCompareTool
     System.out.println ("  " + notImplemented.size() + " elements listed ");
     System.out.println ("---------------------------------------\n\n");
 
-    System.out.println ("The following are invalid. These keys are not implemented by the base class.");
+    System.out.println ("The following are invalid. These keys are not implemented by the base "
+        + "class.");
     for (int i = 0; i < invalidKey.size(); i++)
     {
       System.out.println(invalidKey.get(i));

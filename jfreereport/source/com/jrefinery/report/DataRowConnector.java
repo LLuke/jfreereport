@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowConnector.java,v 1.12 2002/12/18 20:31:38 taqua Exp $
+ * $Id: DataRowConnector.java,v 1.13 2003/02/05 15:38:12 taqua Exp $
  *
  * Changes
  * -------
@@ -311,6 +311,11 @@ public class DataRowConnector implements DataRow
     return s;
   }
 
+  /**
+   * Returns a string describing the object.
+   * 
+   * @return The string.
+   */
   public String toString ()
   {
     if (dataRow == null)

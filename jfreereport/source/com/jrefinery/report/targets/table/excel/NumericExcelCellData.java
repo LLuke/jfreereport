@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: NumericExcelCellData.java,v 1.6 2003/02/25 15:42:38 taqua Exp $
+ * $Id: NumericExcelCellData.java,v 1.7 2003/02/26 13:58:03 mungady Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,8 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 
 /**
  * A excel cell that stores a number. 
+ * 
+ * @author Heiko Evermann
  */
 public class NumericExcelCellData extends ExcelCellData
 {

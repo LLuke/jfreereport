@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateHandler.java,v 1.6 2003/02/24 17:34:12 taqua Exp $
+ * $Id: TemplateHandler.java,v 1.7 2003/02/25 12:48:19 taqua Exp $
  *
  * Changes
  * -------
@@ -84,9 +84,18 @@ public class TemplateHandler implements ReportDefinitionHandler
    */
   public TemplateHandler(Parser parser, String finishTag, TemplateDescription template)
   {
-    if (parser == null) throw new NullPointerException("Parser is null");
-    if (finishTag == null) throw new NullPointerException("FinishTag is null");
-    if (template == null) throw new NullPointerException("Template is null");
+    if (parser == null) 
+    {
+      throw new NullPointerException("Parser is null");
+    }
+    if (finishTag == null) 
+    {
+      throw new NullPointerException("FinishTag is null");
+    }
+    if (template == null) 
+    {
+      throw new NullPointerException("Template is null");
+    }
 
     this.parser = parser;
     this.finishTag = finishTag;

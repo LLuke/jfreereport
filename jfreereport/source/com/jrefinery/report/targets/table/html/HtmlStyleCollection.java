@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ------------------------
  * HtmlStyleCollection.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.8 2003/02/24 16:48:58 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.9 2003/02/25 15:42:43 taqua Exp $
  *
  * Changes
  * -------
@@ -36,29 +36,36 @@
  */
 package com.jrefinery.report.targets.table.html;
 
-import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.io.ext.factory.objects.ColorObjectDescription;
-import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.table.TableCellBackground;
-
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 
+import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.io.ext.factory.objects.ColorObjectDescription;
+import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.table.TableCellBackground;
+
 /**
  * The HtmlStyleCollection is used to create HtmlCellStyles and to convert these
  * cell styles into Cascading StyleSheet code.
  * <p>
  * The collection reuses previously generated styles to create optimized code.
+ * 
+ * @author Thomas Morgner
  */
 public class HtmlStyleCollection
 {
-  /** the ObjectDescription for color objects is used to translate colors into names or RGB-values. */
+  /** 
+   * the ObjectDescription for color objects is used to translate colors into names or 
+   * RGB-values. 
+   */
   private ColorObjectDescription colorObjectDescription;
+  
   /** contains all generated style sheets. */
   private Hashtable table;
+  
   /** the name counter helps to create unique names for the styles. */
   private int nameCounter;
 
@@ -237,9 +244,13 @@ public class HtmlStyleCollection
   private String translateHorizontalAlignment (ElementAlignment ea)
   {
     if (ea == ElementAlignment.RIGHT)
+    {
       return "right";
+    }
     if (ea == ElementAlignment.CENTER)
+    {
       return "center";
+    }
     return "left";
   }
 
@@ -253,9 +264,13 @@ public class HtmlStyleCollection
   private String translateVerticalAlignment (ElementAlignment ea)
   {
     if (ea == ElementAlignment.BOTTOM)
+    {
       return "bottom";
+    }
     if (ea == ElementAlignment.MIDDLE)
+    {
       return "middle";
+    }
     return "top";
   }
 

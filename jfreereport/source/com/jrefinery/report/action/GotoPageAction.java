@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,15 +23,15 @@
  * -------------------
  * GotoPageAction.java
  * -------------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   Thomas Morgner;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GotoPageAction.java,v 1.11 2003/02/02 23:43:48 taqua Exp $
+ * $Id: GotoPageAction.java,v 1.12 2003/02/10 19:33:19 taqua Exp $
  *
  * Changes
- * -------------------
+ * -------
  * 31-May-2002 : Initial version
  * 04-Jun-2002 : Documentation
  * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
@@ -50,6 +50,8 @@ import java.util.ResourceBundle;
  * The GotoPageAction is used to direclty jump to a page. A simple dialog opens to
  * ask the user for the page. This is the abstract base for the action doing the
  * localisation specific initialisation.
+ * 
+ * @author Thomas Morgner
  */
 public abstract class GotoPageAction extends AbstractActionDowngrade
 {

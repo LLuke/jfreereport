@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,21 +20,25 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ---------------------
  * RTFImageCellData.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ---------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFImageCellData.java,v 1.5 2003/02/20 00:39:37 taqua Exp $
+ * $Id: RTFImageCellData.java,v 1.6 2003/02/25 11:57:58 taqua Exp $
  *
  * Changes
  * -------
  * 25-Jan-2003 : Initial version
  */
 package com.jrefinery.report.targets.table.rtf;
+
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.net.URL;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.util.Log;
@@ -45,12 +49,10 @@ import com.lowagie.text.Cell;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
 
-import java.awt.geom.Rectangle2D;
-import java.io.IOException;
-import java.net.URL;
-
 /**
  * A wrapper for Image content within the generated RTFTable.
+ * 
+ * @author Thomas Morgner
  */
 public class RTFImageCellData extends RTFCellData
 {
@@ -67,7 +69,10 @@ public class RTFImageCellData extends RTFCellData
   public RTFImageCellData(Rectangle2D outerBounds, ImageReference image, RTFCellStyle style)
   {
     super(outerBounds, style);
-    if (image == null) throw new NullPointerException();
+    if (image == null) 
+    {
+      throw new NullPointerException();
+    }
     this.image = image;
   }
 
@@ -108,7 +113,6 @@ public class RTFImageCellData extends RTFCellData
     return false;
   }
 
-
   /**
    * Helperfunction to extract an image from an imagereference. If the image is
    * contained as java.awt.Image object or is provided in an invalid format,
@@ -118,7 +122,8 @@ public class RTFImageCellData extends RTFCellData
    *
    * @return an image.
    *
-   * @throws DocumentException if no PDFImageElement could be created using the given ImageReference.
+   * @throws DocumentException if no PDFImageElement could be created using the given 
+   *         ImageReference.
    * @throws IOException if the image could not be read.
    */
   private Image getImage(ImageReference imageRef) throws DocumentException, IOException
@@ -128,10 +133,11 @@ public class RTFImageCellData extends RTFCellData
 
     try
     {
-      Rectangle2D drawArea = new Rectangle2D.Float (0, 0, (float) bounds.getWidth(), (float) bounds.getHeight());
-      if ((imageRef.getSourceURL() != null) &&
-          (drawArea.contains(imageBounds)) &&
-          isSupportedImageFormat(imageRef.getSourceURL()))
+      Rectangle2D drawArea = new Rectangle2D.Float (0, 0, (float) bounds.getWidth(), 
+                                                          (float) bounds.getHeight());
+      if ((imageRef.getSourceURL() != null) 
+          && (drawArea.contains(imageBounds)) 
+          && isSupportedImageFormat(imageRef.getSourceURL()))
       {
         return Image.getInstance(imageRef.getSourceURL());
       }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * --------------------------
  * BandLayoutManagerUtil.java
  * --------------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.10 2003/02/25 09:55:52 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.11 2003/02/25 18:46:51 taqua Exp $
  *
  * Changes
  * -------
@@ -38,14 +38,14 @@
 
 package com.jrefinery.report.targets.base.bandlayout;
 
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Rectangle2D;
+
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Rectangle2D;
 
 /**
  * A collection of utility methods for use by classes that implement the BandLayoutManager 
@@ -69,8 +69,9 @@ public class BandLayoutManagerUtil
         (BandLayoutManager) e.getStyle().getStyleProperty(BandLayoutManager.LAYOUTMANAGER);
 
     if (ot == null)
+    {
       throw new NullPointerException();
-
+    }
     if (lm == null)
     {
       lm = ot.getDefaultLayoutManager();
@@ -125,10 +126,12 @@ public class BandLayoutManagerUtil
    * The bands elements get their BOUNDS property updated
    * to reflect the new layout settings.
    *
-   * @param band the band that should be laid out.
-   * @param support the LayoutSupport implementation used to calculate the bounds of dynamic content.
-   * @param width the initial maximum width of the container.
-   * @param height the initial maximum height of the container.
+   * @param band  the band that should be laid out.
+   * @param support  the LayoutSupport implementation used to calculate the bounds of dynamic 
+   *                 content.
+   * @param width  the initial maximum width of the container.
+   * @param height  the initial maximum height of the container.
+   * 
    * @return the bounds for the layouted band. The band itself got updated to
    * contain the new element bounds.
    */

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.41 2003/02/04 17:56:05 taqua Exp $
+ * $Id: Band.java,v 1.42 2003/02/05 15:38:12 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -158,8 +158,9 @@ public class Band extends Element implements Serializable, Cloneable
   /**
    * Adds a report element to the band. The element will be inserted on the specified position.
    *
-   * @param position the position where to insert the element
-   * @param element the element that should be added
+   * @param position  the position where to insert the element
+   * @param element  the element that should be added
+   * 
    * @throws NullPointerException if the given element is null
    * @throws IllegalArgumentException if the position is invalid, either negative or
    * greater than the number of elements in this band.
@@ -167,11 +168,13 @@ public class Band extends Element implements Serializable, Cloneable
   public synchronized void addElement(int position, Element element)
   {
     if (position < 0)
+    {
       throw new IllegalArgumentException("Position < 0");
-
+    }
     if (position > allElements.size())
+    {
       throw new IllegalArgumentException("Position < 0");
-
+    }
     if (element == null)
     {
       throw new NullPointerException("Band.addElement(...): element is null.");

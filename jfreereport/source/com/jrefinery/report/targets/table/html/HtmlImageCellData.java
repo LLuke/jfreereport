@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ----------------------
  * HtmlImageCellData.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlImageCellData.java,v 1.4 2003/02/20 00:39:37 taqua Exp $
+ * $Id: HtmlImageCellData.java,v 1.5 2003/02/24 16:48:56 taqua Exp $
  *
  * Changes
  * -------
@@ -36,16 +36,18 @@
  */
 package com.jrefinery.report.targets.table.html;
 
-import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.util.Log;
-
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.util.Log;
+
 /**
  * A wrapper for Image content within the generated HtmlTable. The image content
  * will be inserted using a HtmlReference from the provided FileSystem.
+ * 
+ * @author Thomas Morgner
  */
 public class HtmlImageCellData extends HtmlCellData
 {
@@ -60,10 +62,14 @@ public class HtmlImageCellData extends HtmlCellData
    * @param style the assigned cell style.
    * @param useXHTML a flag indicating whether to create XHTML instead of HTML4 code.
    */
-  public HtmlImageCellData(Rectangle2D outerBounds, ImageReference image, HtmlCellStyle style, boolean useXHTML)
+  public HtmlImageCellData(Rectangle2D outerBounds, ImageReference image, HtmlCellStyle style, 
+                           boolean useXHTML)
   {
     super(outerBounds, style, useXHTML);
-    if (image == null) throw new NullPointerException("Image must not be null.");
+    if (image == null) 
+    {
+      throw new NullPointerException("Image must not be null.");
+    }
     this.image = image;
   }
 
@@ -96,10 +102,13 @@ public class HtmlImageCellData extends HtmlCellData
           b.append(image.getSourceURL());
         }
         if (isUseXHTML())
+        {
           b.append("\" />");
+        }
         else
+        {
           b.append("/>");
-
+        }
         pout.write(b.toString());
       }
       else

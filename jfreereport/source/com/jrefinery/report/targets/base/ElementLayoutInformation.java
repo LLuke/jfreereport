@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVQuoter.java,v 1.4 2003/02/24 15:00:17 mungady Exp $
+ * $Id: ElementLayoutInformation.java,v 1.6 2003/02/25 14:57:00 mungady Exp $
  *
  * Changes
  * -------
@@ -80,8 +80,8 @@ public class ElementLayoutInformation
       throw new NullPointerException();
     }
     absolutePosition = new Point2D.Float((float) rect.getX(), (float) rect.getY());
-    maximumSize= new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
-    minimumSize= new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
+    maximumSize = new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
+    minimumSize = new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
     preferredSize = new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
   }
   

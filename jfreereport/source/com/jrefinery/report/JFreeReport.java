@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.47 2003/02/05 15:38:13 taqua Exp $
+ * $Id: JFreeReport.java,v 1.48 2003/02/23 20:39:10 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -646,9 +646,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Sets the data for the report.
    * <P>
-   * Reports are generated from a {@link TableModel} (as used by Swing's {@link javax.swing.JTable}). If you 
-   * don't want to give data to the report, use an empty {@link TableModel} instead of 
-   * <code>null</code>.
+   * Reports are generated from a {@link TableModel} (as used by Swing's 
+   * {@link javax.swing.JTable}). If you don't want to give data to the report, use an empty 
+   * {@link TableModel} instead of <code>null</code>.
    *
    * @param data  the data for the report (<code>null</code> not permitted).
    */

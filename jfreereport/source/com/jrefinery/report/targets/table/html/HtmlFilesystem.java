@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * HtmlFilesystem.java
  * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlFilesystem.java,v 1.4 2003/02/24 16:48:56 taqua Exp $
+ * $Id: HtmlFilesystem.java,v 1.5 2003/02/24 20:13:59 taqua Exp $
  *
  * Changes
  * -------
@@ -36,10 +36,10 @@
  */
 package com.jrefinery.report.targets.table.html;
 
-import com.jrefinery.report.ImageReference;
-
 import java.io.IOException;
 import java.io.OutputStream;
+
+import com.jrefinery.report.ImageReference;
 
 /**
  * The HtmlFilesystem provides an abstraction layer for the various storage methods
@@ -59,6 +59,8 @@ import java.io.OutputStream;
  * Similiar to the DirectoryHtmlFilesystem, the generated Html-File and the supplementary
  * data files (images and external Stylesheet definition) into a directory in a ZIP-File.
  * The data files can be written into a separated data directory within the ZIP-File.
+ * 
+ * @author Thomas Morgner
  */
 public interface HtmlFilesystem
 {

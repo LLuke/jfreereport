@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,13 +23,13 @@
  * -------------------------
  * InitialReportHandler.java
  * -------------------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, 2003, by Simba Management Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   Thomas Morgner;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
 
- * $Id: InitialReportHandler.java,v 1.2 2003/02/02 23:43:49 taqua Exp $
+ * $Id: InitialReportHandler.java,v 1.3 2003/02/25 14:07:28 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,11 @@
  */
 package com.jrefinery.report.io;
 
-import com.jrefinery.report.io.ext.ExtReportHandler;
-import com.jrefinery.report.io.simple.ReportFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+
+import com.jrefinery.report.io.ext.ExtReportHandler;
+import com.jrefinery.report.io.simple.ReportFactory;
 
 /**
  * The InitialReportHandler is used to decide, which parser profile to use
@@ -53,11 +54,14 @@ import org.xml.sax.SAXException;
  * <p>
  * Once one of the profiles is activated, the parser forwards all SAXEvents to
  * the selected ReportDefinitionHandler.
+ * 
+ * @author Thomas Morgner
  */
 public class InitialReportHandler implements ReportDefinitionHandler
 {
   /** the document element tag for the extended report format. */
   public static final String REPORT_DEFINITION_TAG = "report-definition";
+  
   /** the document element tag for the simple report format. */
   public static final String OLD_REPORT_TAG = "report";
 
@@ -99,8 +103,8 @@ public class InitialReportHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " +
-                              REPORT_DEFINITION_TAG + ".");
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " 
+                              + REPORT_DEFINITION_TAG + ".");
     }
   }
 
@@ -135,8 +139,8 @@ public class InitialReportHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " +
-                              REPORT_DEFINITION_TAG + ".");
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " 
+                              + REPORT_DEFINITION_TAG + ".");
     }
   }
 

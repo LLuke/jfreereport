@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,31 +20,21 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * -----------------
  * HtmlProducer.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -----------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.18 2003/02/24 16:48:57 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.19 2003/02/25 15:42:42 taqua Exp $
  *
  * Changes
  * -------
  * 18-Jan-2003 : Initial version
  */
 package com.jrefinery.report.targets.table.html;
-
-import com.jrefinery.report.function.FunctionProcessingException;
-import com.jrefinery.report.targets.table.TableCellBackground;
-import com.jrefinery.report.targets.table.TableCellDataFactory;
-import com.jrefinery.report.targets.table.TableGridLayout;
-import com.jrefinery.report.targets.table.TableGridPosition;
-import com.jrefinery.report.targets.table.TableProducer;
-import com.jrefinery.report.util.CharacterEntityParser;
-import com.jrefinery.report.util.IOUtils;
-import com.jrefinery.report.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -61,6 +51,16 @@ import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
+import com.jrefinery.report.function.FunctionProcessingException;
+import com.jrefinery.report.targets.table.TableCellBackground;
+import com.jrefinery.report.targets.table.TableCellDataFactory;
+import com.jrefinery.report.targets.table.TableGridLayout;
+import com.jrefinery.report.targets.table.TableGridPosition;
+import com.jrefinery.report.targets.table.TableProducer;
+import com.jrefinery.report.util.CharacterEntityParser;
+import com.jrefinery.report.util.IOUtils;
+import com.jrefinery.report.util.Log;
+
 /**
  * The TableProducer is responsible for creating the produced Table. After
  * the writer has finished the band layout process, the layouted bands are
@@ -70,28 +70,38 @@ import java.util.zip.InflaterInputStream;
  * <p>
  * The generated HTML code is cached and written after the last cell was created,
  * to insert the StyleSheet into the html header.
+ * 
+ * @author Thomas Morgner
  */
 public class HtmlProducer extends TableProducer
 {
   /** the printwriter for the main html file. */
   private PrintWriter pout;
+  
   /** the report name. */
   private String reportName;
+  
   /** the cell data factory used for creating the content cells. */
   private HtmlCellDataFactory cellDataFactory;
+  
   /** the character entity parser converts Strings into the HTML format. */
   private static CharacterEntityParser entityParser;
+  
   /** the style collection is used to create the style sheet and the cell styles. */
   private HtmlStyleCollection styleCollection;
+  
   /** the Filesystem is used to store the main html file and any external content. */
   private HtmlFilesystem filesystem;
+  
   /** a flag indicating whether to use XHTML output. */
   private boolean useXHTML;
+  
   /** the fileencoding for the main html file. */
   private String encoding;
 
   /** the content cache for the main html file. */
   private ByteArrayOutputStream content;
+  
   /** a flag indicating whether this producer is open. */
   private boolean isOpen;
 
@@ -128,9 +138,18 @@ public class HtmlProducer extends TableProducer
                       String encoding)
   {
     super(strict);
-    if (filesystem == null) throw new NullPointerException();
-    if (reportName == null) reportName = "unnamed report";
-    if (encoding == null) throw new NullPointerException();
+    if (filesystem == null) 
+    {
+      throw new NullPointerException();
+    }
+    if (reportName == null) 
+    {
+      reportName = "unnamed report";
+    }
+    if (encoding == null) 
+    {
+      throw new NullPointerException();
+    }
     
     this.filesystem = filesystem;
     this.content = null;
@@ -173,7 +192,8 @@ public class HtmlProducer extends TableProducer
   public void open()
   {
     this.content = new ByteArrayOutputStream();
-    DeflaterOutputStream deflaterStream = new DeflaterOutputStream(content, new Deflater(Deflater.BEST_COMPRESSION));
+    DeflaterOutputStream deflaterStream 
+        = new DeflaterOutputStream(content, new Deflater(Deflater.BEST_COMPRESSION));
     try
     {
       this.pout = new PrintWriter(new OutputStreamWriter(deflaterStream, getEncoding()));
@@ -286,7 +306,8 @@ public class HtmlProducer extends TableProducer
       content = null;
       pout = null;
 
-      InflaterInputStream infIn = new InflaterInputStream(new BufferedInputStream(new ByteArrayInputStream(data)));
+      InflaterInputStream infIn 
+         = new InflaterInputStream(new BufferedInputStream(new ByteArrayInputStream(data)));
       InputStreamReader inReader = new InputStreamReader(infIn);
 
       IOUtils.getInstance().copyWriter(inReader, writer);
@@ -364,8 +385,9 @@ public class HtmlProducer extends TableProducer
   {
     TableCellBackground bg = createTableCellStyle(background);
     if (bg == null)
+    {
       return null;
-
+    }
     return styleCollection.getBackgroundStyle(bg);
   }
 

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------
+ * -------------------------
  * ParserEntityResolver.java
- * ---------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserEntityResolver.java,v 1.4 2003/02/22 18:52:25 taqua Exp $
+ * $Id: ParserEntityResolver.java,v 1.5 2003/02/23 20:39:29 taqua Exp $
  *
  * Changes
  * -------
@@ -37,25 +37,31 @@
  */
 package com.jrefinery.report.io;
 
-import com.jrefinery.report.util.Log;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.EntityResolver;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Hashtable;
 
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import com.jrefinery.report.util.Log;
+
 /**
  * Resolves the JFreeReport DTD specification and routes the parser to a local copy.
+ * 
+ * @author Thomas Morgner
  */
 public class ParserEntityResolver implements EntityResolver
 {
   /** the Public ID for the simple version of JFreeReport XML definitions. */
-  public static final String PUBLIC_ID_SIMPLE =   "-//JFreeReport//DTD report definition//EN//simple";
+  public static final String PUBLIC_ID_SIMPLE =   
+      "-//JFreeReport//DTD report definition//EN//simple";
+      
   /** the Public ID for the extensible version of JFreeReport XML definitions. */
-  public static final String PUBLIC_ID_EXTENDED = "-//JFreeReport//DTD report definition//EN//extended";
+  public static final String PUBLIC_ID_EXTENDED = 
+      "-//JFreeReport//DTD report definition//EN//extended";
 
   /** The hashtable for the known entities. */
   private Hashtable dtds;
@@ -72,7 +78,10 @@ public class ParserEntityResolver implements EntityResolver
    * Defines a DTD used to validate the report definition. Your XMLParser
    * must be a validating parser for this feature to work.
    *
-   * @param publicID the URL for the DTD.
+   * @param publicID  the public ID.
+   * @param location  the URL.
+   * 
+   * @return A boolean.
    */
   public boolean setDTDLocation (String publicID, URL location)
   {
@@ -92,6 +101,8 @@ public class ParserEntityResolver implements EntityResolver
    * Sets the location of the DTD. This is used for validating XML parsers to
    * validate the structure of the report definition.
    *
+   * @param publicID  the id.
+   *
    * @return the URL for the DTD.
    */
   public URL getDTDLocation (String publicID)
@@ -103,11 +114,15 @@ public class ParserEntityResolver implements EntityResolver
    * Checks whether the speficied URL is readable.
    *
    * @param reportDtd the url pointing to the local DTD copy.
+   * 
    * @return true, if the URL can be read, false otherwise.
    */
   private boolean isValid (URL reportDtd)
   {
-    if (reportDtd == null) return false;
+    if (reportDtd == null) 
+    {
+      return false;
+    }
     try
     {
       InputStream uc = reportDtd.openStream();
@@ -125,6 +140,14 @@ public class ParserEntityResolver implements EntityResolver
    * <p>
    * Resolves the DTD definition to point to a local copy, if the specified
    * public ID is known to this resolver.
+   * 
+   * @param publicId  the public ID.
+   * @param systemId  the system ID.
+   * 
+   * @return The input source.
+   * 
+   * @throws SAXException if there is a parsing problem.
+   * @throws IOException if there is an I/O problem.
    */
   public InputSource resolveEntity(String publicId, String systemId)
       throws SAXException, IOException
@@ -159,7 +182,8 @@ public class ParserEntityResolver implements EntityResolver
     ParserEntityResolver res = new ParserEntityResolver();
     URL urlReportDTD = res.getClass().getResource("/com/jrefinery/report/resources/report.dtd");
     res.setDTDLocation(PUBLIC_ID_SIMPLE, urlReportDTD);
-    URL urlExtReportDTD = res.getClass().getResource("/com/jrefinery/report/resources/extreport.dtd");
+    URL urlExtReportDTD = res.getClass().getResource(
+        "/com/jrefinery/report/resources/extreport.dtd");
     res.setDTDLocation(PUBLIC_ID_EXTENDED, urlExtReportDTD);
     return res;
   }

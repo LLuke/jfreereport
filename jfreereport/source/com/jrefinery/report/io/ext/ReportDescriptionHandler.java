@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionHandler.java,v 1.5 2003/02/24 17:34:06 taqua Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.6 2003/02/25 12:48:19 taqua Exp $
  *
  * Changes
  * -------
@@ -94,8 +94,14 @@ public class ReportDescriptionHandler implements ReportDefinitionHandler
    */
   public ReportDescriptionHandler(Parser parser, String finishTag)
   {
-    if (parser == null) throw new NullPointerException("Parser is null");
-    if (finishTag == null) throw new NullPointerException("FinishTag is null");
+    if (parser == null) 
+    {
+      throw new NullPointerException("Parser is null");
+    }
+    if (finishTag == null) 
+    {
+      throw new NullPointerException("FinishTag is null"); 
+    }
     this.parser = parser;
     this.finishTag = finishTag;
   }

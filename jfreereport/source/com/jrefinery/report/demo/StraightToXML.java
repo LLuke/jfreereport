@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -21,34 +21,35 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------
- * StraightToPDF.java
+ * StraightToXML.java
  * ------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2003, by Thomas Morgner.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToXML.java,v 1.3 2003/02/04 17:56:08 taqua Exp $
+ * $Id: StraightToXML.java,v 1.4 2003/02/06 17:38:02 taqua Exp $
  *
  * Changes
  * -------
- * 13-Dec-2002 : Version 1 (DG);
+ * ??-Jan-2002 : Version 1 (TM);
  *
  */
 
 package com.jrefinery.report.demo;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.io.ReportGenerator;
-import com.jrefinery.report.targets.xml.XMLProcessor;
-
-import javax.swing.table.TableModel;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
 import java.net.URL;
+
+import javax.swing.table.TableModel;
+
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.io.ReportGenerator;
+import com.jrefinery.report.targets.xml.XMLProcessor;
+import com.jrefinery.report.util.Log;
 
 /**
  * A demonstration that shows how to generate a report and save it to PDF without displaying
@@ -126,7 +127,9 @@ public class StraightToXML
       try
       {
         if (out != null)
+        {
           out.close();
+        }
       }
       catch (Exception e)
       {

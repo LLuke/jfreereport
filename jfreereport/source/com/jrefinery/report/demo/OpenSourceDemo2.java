@@ -206,7 +206,8 @@ public class OpenSourceDemo2 extends ApplicationFrame implements ActionListener
 
     // set up the functions...
     PageFunction f1 = new PageFunction("page_number");
-    try {
+    try 
+    {
       result.addFunction(f1);
     }
     catch (Exception e) 

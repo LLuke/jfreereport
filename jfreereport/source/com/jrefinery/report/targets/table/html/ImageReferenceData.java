@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * -----------------------
  * ImageReferenceData.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageReferenceData.java,v 1.3 2003/02/24 17:34:42 taqua Exp $
+ * $Id: ImageReferenceData.java,v 1.4 2003/02/25 15:42:43 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@ package com.jrefinery.report.targets.table.html;
 /**
  * Defines a external image reference to an image file. The image is included
  * in the generated content using the &lt;IMG&gt; html-tag.
+ * 
+ * @author Thomas Morgner
  */
 public class ImageReferenceData extends HtmlReferenceData
 {

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,27 +20,21 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ----------------------------
  * DirectoryHtmlFilesystem.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ----------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.8 2003/02/24 20:13:59 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.9 2003/02/25 15:42:38 taqua Exp $
  *
  * Changes
  * -------
  * 26-Jan-2003 : Initial version
  */
 package com.jrefinery.report.targets.table.html;
-
-import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.util.IOUtils;
-import com.jrefinery.report.util.ImageComparator;
-import com.jrefinery.report.util.StringUtil;
-import com.keypoint.PngEncoder;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -52,6 +46,12 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.Hashtable;
 
+import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.util.IOUtils;
+import com.jrefinery.report.util.ImageComparator;
+import com.jrefinery.report.util.StringUtil;
+import com.keypoint.PngEncoder;
+
 /**
  * Writes the generated Html-File and the supplementary data files (images and
  * external Stylesheet definition) into a directory. The data files can be written
@@ -60,6 +60,8 @@ import java.util.Hashtable;
  * External referenced content can either be copied into the data directory or could
  * be included as linked content. This behaviour is controled by the <code>copyExternalImages</code>
  * flag.
+ * 
+ * @author Thomas Morgner
  */
 public class DirectoryHtmlFilesystem implements HtmlFilesystem
 {
@@ -72,18 +74,25 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
 
   /** the root file to store the generated main html file. */
   private File rootFile;
+  
   /** the handle to the data directory. */
   private File dataDirectory;
+  
   /** the root stream for writing the file. */
   private FileOutputStream rootStream;
+  
   /** A collection of all used file names for generating external content. */
   private Hashtable usedNames;
+  
   /** A collection of all referenced external content. */
   private Hashtable usedURLs;
+  
   /** A collection of all previously encoded images. */
   private Hashtable encodedImages;
+  
   /** the image comparator used to compare generated images. */
   private ImageComparator comparator;
+  
   /** A flag indicating whether to copy external references into the data directory. */
   private boolean copyExternalImages;
 
@@ -159,8 +168,8 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * to the linked files. If you pan to use the report offline, then it is best to
    * copy all referenced data into the zip file.
    *
-   * @param copyExternalImages true, if external referenced content should be copied into the ZIP file,
-   * false otherwise.
+   * @param copyExternalImages true, if external referenced content should be copied into the 
+   *                           ZIP file, false otherwise.
    */
   public void setCopyExternalImages(boolean copyExternalImages)
   {
@@ -276,7 +285,8 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
       String name = (String) usedURLs.get(url);
       if (name == null)
       {
-        File dataFile = new File (dataDirectory, createName(IOUtils.getInstance().getFileName(url)));
+        File dataFile 
+            = new File (dataDirectory, createName(IOUtils.getInstance().getFileName(url)));
         InputStream urlIn = new BufferedInputStream(reference.getSourceURL().openStream());
         OutputStream fout = new BufferedOutputStream(new FileOutputStream(dataFile));
         IOUtils.getInstance().copyStreams(urlIn, fout);
@@ -290,8 +300,8 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     }
     else
     {
-      String baseName = IOUtils.getInstance().createRelativeURL( reference.getSourceURL(),
-                                                                 dataDirectory.toURL());
+      String baseName = IOUtils.getInstance().createRelativeURL(reference.getSourceURL(),
+                                                                dataDirectory.toURL());
       return new ImageReferenceData(baseName);
     }
   }
@@ -333,8 +343,8 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     OutputStream fout = new BufferedOutputStream (new FileOutputStream(refFile));
     fout.write(styleSheet.getBytes());
     fout.close();
-    String baseName = IOUtils.getInstance().createRelativeURL( refFile.toURL(),
-                                                               dataDirectory.toURL());
+    String baseName = IOUtils.getInstance().createRelativeURL(refFile.toURL(),
+                                                              dataDirectory.toURL());
     return new HRefReferenceData(baseName);
   }
 

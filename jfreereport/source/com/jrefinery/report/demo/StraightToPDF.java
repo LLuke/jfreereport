@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------
  * StraightToPDF.java
  * ------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2002, 2003, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.4 2003/02/04 17:56:08 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.5 2003/02/06 17:38:01 taqua Exp $
  *
  * Changes
  * -------
@@ -135,7 +135,9 @@ public class StraightToPDF
       try
       {
         if (out != null)
+        {
           out.close();
+        }
       }
       catch (Exception e)
       {

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,21 +20,25 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ------------------------
  * HtmlCellDataFactory.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellDataFactory.java,v 1.10 2003/02/22 18:52:30 taqua Exp $
+ * $Id: HtmlCellDataFactory.java,v 1.11 2003/02/25 15:42:40 taqua Exp $
  *
  * Changes
  * -------
  * 18-Jan-2003 : Initial version
  */
 package com.jrefinery.report.targets.table.html;
+
+import java.awt.Color;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
@@ -44,17 +48,14 @@ import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.table.AbstractTableCellDataFactory;
 import com.jrefinery.report.targets.table.TableCellData;
-import com.jrefinery.report.util.Log;
-
-import java.awt.Color;
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
 
 /**
  * The cell data factory is responsible for converting elements into
  * HTML cell data. The element style is converted using an external
  * style factory. This factory reuses previously defined styles if
  * possible, to increase the file creating efficiency.
+ * 
+ * @author Thomas Morgner
  */
 public class HtmlCellDataFactory extends AbstractTableCellDataFactory
 {
@@ -72,7 +73,10 @@ public class HtmlCellDataFactory extends AbstractTableCellDataFactory
    */
   public HtmlCellDataFactory(HtmlStyleCollection styleCollection, boolean useXHTML)
   {
-    if (styleCollection == null) throw new NullPointerException();
+    if (styleCollection == null) 
+    {
+      throw new NullPointerException();
+    }
     this.styleCollection = styleCollection;
     this.useXHTML = useXHTML;
   }
@@ -107,8 +111,10 @@ public class HtmlCellDataFactory extends AbstractTableCellDataFactory
 
     FontDefinition font = e.getStyle().getFontDefinitionProperty();
     Color color = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
-    ElementAlignment valign = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
-    ElementAlignment halign = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
+    ElementAlignment valign 
+        = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
+    ElementAlignment halign 
+        = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
 
     if (value instanceof ImageReference)
     {

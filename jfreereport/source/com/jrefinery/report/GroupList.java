@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * --------------
  * GroupList.java
  * --------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.16 2003/02/12 17:35:49 taqua Exp $
+ * $Id: GroupList.java,v 1.17 2003/02/25 14:06:30 taqua Exp $
  *
  * Changes:
  * --------
@@ -96,7 +96,9 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
       {
         // both lists contain the same elements.
         if (c1.containsAll(c2))
+        {
           return 0;
+        }
       }
 
       if (c1.containsAll(c2))
@@ -111,7 +113,8 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
       }
       // not compareable, invalid groups
       // return 0;
-      throw new IllegalArgumentException("These groups are not compareable, they don't have any subgroup releation");
+      throw new IllegalArgumentException("These groups are not comparable, they don't have any "
+                                         + "subgroup relation");
 
 /*
       int maxIdx = Math.min (c1.size (), c2.size ());

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------
  * ZoomInAction.java
  * -----------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, 2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ZoomInAction.java,v 1.13 2003/02/02 23:43:48 taqua Exp $
+ * $Id: ZoomInAction.java,v 1.14 2003/02/10 19:33:20 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,8 @@ import java.util.ResourceBundle;
  * can be increased in predefined steps from 25% to 400%. This abstract base class
  * implements the locales specific initialisations, actual work is done in an internal
  * subclass in PreviewFrame.
+ * 
+ * @author David Gilbert
  */
 public abstract class ZoomInAction extends AbstractActionDowngrade
 {

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------
  * Element.java
  * ------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.23 2003/02/05 15:38:12 taqua Exp $
+ * $Id: Element.java,v 1.24 2003/02/23 20:39:10 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -330,13 +330,18 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * default paint of the band used to draw this element is used.
    *
    * @param p  the paint for this element (null permitted).
+   * 
    * @deprecated use a stylesheet to define the paint.
    */
   public void setPaint(Paint p)
   {
     if (p instanceof Color)
+    {
       getStyle().setStyleProperty(ElementStyleSheet.PAINT, p);
+    }
     else
+    {
       throw new IllegalArgumentException("This style-key requires a Color object");
+    }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.5 2003/02/24 17:34:09 taqua Exp $
+ * $Id: StylesHandler.java,v 1.6 2003/02/25 12:48:19 taqua Exp $
  *
  * Changes
  * -------
@@ -83,8 +83,14 @@ public class StylesHandler implements ReportDefinitionHandler
    */
   public StylesHandler(Parser parser, String finishTag)
   {
-    if (parser == null) throw new NullPointerException("Parser is null");
-    if (finishTag == null) throw new NullPointerException("FinishTag is null");
+    if (parser == null) 
+    {
+      throw new NullPointerException("Parser is null");
+    }
+    if (finishTag == null) 
+    {
+      throw new NullPointerException("FinishTag is null");
+    }
     this.parser = parser;
     this.finishTag = finishTag;
     styleCollection = (Hashtable) getParser().getConfigurationValue(STYLES_COLLECTION);

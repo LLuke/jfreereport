@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,21 +20,25 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ----------------
  * RTFProducer.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ----------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProducer.java,v 1.4 2003/02/22 18:52:31 taqua Exp $
+ * $Id: RTFProducer.java,v 1.5 2003/02/25 11:57:58 taqua Exp $
  *
  * Changes
  * -------
  * 01-Feb-2003 : Initial version
  */
 package com.jrefinery.report.targets.table.rtf;
+
+import java.awt.Color;
+import java.io.OutputStream;
+import java.util.List;
 
 import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.targets.table.TableCellBackground;
@@ -49,23 +53,23 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Table;
 import com.lowagie.text.rtf.RtfWriter;
 
-import java.awt.Color;
-import java.io.OutputStream;
-import java.util.List;
-
 /**
  * The TableProducer is responsible for creating the produced Table. After
  * the writer has finished the band layout process, the layouted bands are
  * forwarded into the TableProducer. The TableProducer coordinates the cell
  * creation process and collects the generated TableCellData. The raw CellData
  * objects are later transformed into a TableGridLayout.
+ * 
+ * @author Thomas Morgner
  */
 public class RTFProducer extends TableProducer
 {
   /** the output stream used to write the content. */
   private OutputStream outputStream;
+
   /** the iText document used for writing the content. */
   private Document document;
+
   /** the cell factory. */
   private RTFCellDataFactory cellDataFactory;
 
@@ -79,7 +83,10 @@ public class RTFProducer extends TableProducer
   public RTFProducer(OutputStream outputStream, boolean strictLayout)
   {
     super(strictLayout);
-    if (outputStream == null) throw new NullPointerException();
+    if (outputStream == null) 
+    {
+      throw new NullPointerException();
+    }
     this.outputStream = outputStream;
     cellDataFactory = new RTFCellDataFactory();
   }
@@ -134,8 +141,9 @@ public class RTFProducer extends TableProducer
   {
     TableCellBackground bg = createTableCellStyle(background);
     if (bg == null)
+    {
       return;
-
+    }
     Color color = bg.getColor();
     if (color != null)
     {
@@ -149,11 +157,13 @@ public class RTFProducer extends TableProducer
     Color bL = bg.getColorLeft();
     Color bR = bg.getColorRight();
     if (bT == null || bB == null || bL == null || bR == null)
+    {
       return;
-    if (bT.equals(bB) && bT.equals(bL) && bT.equals(bR) &&
-        bg.getBorderSizeBottom() == bg.getBorderSizeTop() &&
-        bg.getBorderSizeBottom() == bg.getBorderSizeLeft() &&
-        bg.getBorderSizeBottom() == bg.getBorderSizeRight())
+    }
+    if (bT.equals(bB) && bT.equals(bL) && bT.equals(bR) 
+        && bg.getBorderSizeBottom() == bg.getBorderSizeTop() 
+        && bg.getBorderSizeBottom() == bg.getBorderSizeLeft() 
+        && bg.getBorderSizeBottom() == bg.getBorderSizeRight())
     {
       cell.setBorderColor(bT);
       cell.setBorderWidth(bg.getBorderSizeTop());
@@ -268,7 +278,9 @@ public class RTFProducer extends TableProducer
   public boolean isOpen()
   {
     if (document == null)
+    {
       return false;
+    }
     return document.isOpen();
   }
 }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * HtmlCellStyle.java
  * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellStyle.java,v 1.9 2003/02/21 18:12:50 taqua Exp $
+ * $Id: HtmlCellStyle.java,v 1.10 2003/02/25 15:42:41 taqua Exp $
  *
  * Changes
  * -------
@@ -36,23 +36,28 @@
  */
 package com.jrefinery.report.targets.table.html;
 
+import java.awt.Color;
+
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FontDefinition;
-
-import java.awt.Color;
 
 /**
  * The HtmlCellStyle is used to define the style for the generated HTML-CellStyle.
  * This style directly references to an CSS-StyleDefinition.
+ * 
+ * @author Thomas Morgner
  */
 public class HtmlCellStyle
 {
   /** the font definition used for the text. */
   private FontDefinition font;
+  
   /** the text color. */
   private Color fontColor;
-  /* the vertical content alignment. */
+  
+  /** the vertical content alignment. */
   private ElementAlignment verticalAlignment;
+  
   /** the horizontal content alignment. */
   private ElementAlignment horizontalAlignment;
 
@@ -65,12 +70,25 @@ public class HtmlCellStyle
    * @param horizontalAlignment the horizontal content alignment.
    * @throws NullPointerException if any of the parameters is null.
    */
-  public HtmlCellStyle(FontDefinition font, Color fontColor, ElementAlignment verticalAlignment, ElementAlignment horizontalAlignment)
+  public HtmlCellStyle(FontDefinition font, Color fontColor, ElementAlignment verticalAlignment, 
+                       ElementAlignment horizontalAlignment)
   {
-    if (font == null) throw new NullPointerException("Font");
-    if (fontColor == null) throw new NullPointerException("FontColor");
-    if (verticalAlignment == null) throw new NullPointerException("VAlign");
-    if (horizontalAlignment == null) throw new NullPointerException("HAlign");
+    if (font == null) 
+    {
+      throw new NullPointerException("Font");
+    }
+    if (fontColor == null) 
+    {
+      throw new NullPointerException("FontColor");
+    }
+    if (verticalAlignment == null) 
+    {
+      throw new NullPointerException("VAlign");
+    }
+    if (horizontalAlignment == null) 
+    {
+      throw new NullPointerException("HAlign");
+    }
     
     this.font = font;
     this.fontColor = fontColor;
@@ -127,7 +145,10 @@ public class HtmlCellStyle
    */
   public boolean equals(Object o)
   {
-    if (this == o) return true;
+    if (this == o) 
+    {
+      return true;
+    }
     if (!(o instanceof HtmlCellStyle))
     {
       return false;

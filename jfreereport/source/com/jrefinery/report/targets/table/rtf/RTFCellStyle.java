@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * -----------------
  * RTFCellStyle.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -----------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellStyle.java,v 1.2 2003/02/20 00:39:37 taqua Exp $
+ * $Id: RTFCellStyle.java,v 1.3 2003/02/25 11:57:58 taqua Exp $
  *
  * Changes
  * -------
@@ -49,15 +49,20 @@ import java.awt.Color;
  * The RTFCellStyle is used to define the style for the generated RTF-TableCell.
  * <p>
  * iText only supports the predefined logical fonts for RTF documents.
+ * 
+ * @author Thomas Morgner
  */
 public class RTFCellStyle
 {
   /** The used font definition. */
   private FontDefinition font;
+  
   /** The text color. */
   private Color fontColor;
+  
   /** The vertical alignment of the cell content. */
   private ElementAlignment verticalAlignment;
+  
   /** The horizontal alignment of the cell content. */
   private ElementAlignment horizontalAlignment;
 
@@ -73,10 +78,22 @@ public class RTFCellStyle
   public RTFCellStyle(FontDefinition font, Color fontColor,
                       ElementAlignment verticalAlignment, ElementAlignment horizontalAlignment)
   {
-    if (font == null) throw new NullPointerException("Font");
-    if (fontColor == null) throw new NullPointerException("FontColor");
-    if (verticalAlignment == null) throw new NullPointerException("VAlign");
-    if (horizontalAlignment == null) throw new NullPointerException("HAlign");
+    if (font == null) 
+    {
+      throw new NullPointerException("Font");
+    }
+    if (fontColor == null) 
+    {
+      throw new NullPointerException("FontColor");
+    }
+    if (verticalAlignment == null) 
+    {
+      throw new NullPointerException("VAlign");
+    }
+    if (horizontalAlignment == null) 
+    {
+      throw new NullPointerException("HAlign");
+    }
 
     this.font = font;
     this.fontColor = fontColor;
@@ -133,7 +150,10 @@ public class RTFCellStyle
    */
   public boolean equals(Object o)
   {
-    if (this == o) return true;
+    if (this == o) 
+    {
+      return true;
+    }
     if (!(o instanceof RTFCellStyle))
     {
       return false;

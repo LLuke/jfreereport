@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * --------------------
  * ReportGenerator.java
  * --------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.25 2003/02/08 19:32:06 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.26 2003/02/25 14:07:28 taqua Exp $
  *
  * Changes
  * -------
@@ -39,19 +39,21 @@
 
 package com.jrefinery.report.io;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.util.ReportConfiguration;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.util.ReportConfiguration;
 
 /**
  * The reportgenerator initializes the parser and provides an interface
@@ -78,6 +80,7 @@ public class ReportGenerator
   /** The DTD. */
   private ParserEntityResolver entityResolver;
 
+  /** Validate the DTD? */
   private boolean validateDTD;
 
   /**
@@ -90,21 +93,42 @@ public class ReportGenerator
     initFromSystem ();
   }
 
+  /**
+   * Returns <code>true</code> if the report definition should be validated against the DTD, and
+   * <code>false</code> otherwise.
+   * 
+   * @return A boolean.
+   */
   public boolean isValidateDTD()
   {
     return validateDTD;
   }
 
+  /**
+   * Sets a flag that controls whether or not the report definition is validated against the DTD.
+   * 
+   * @param validateDTD  the flag.
+   */
   public void setValidateDTD(boolean validateDTD)
   {
     this.validateDTD = validateDTD;
   }
 
+  /**
+   * Returns the entity resolver.
+   * 
+   * @return The entity resolver.
+   */
   public ParserEntityResolver getEntityResolver()
   {
     return entityResolver;
   }
 
+  /**
+   * Sets the entity resolver.
+   * 
+   * @param entityResolver  the entity resolver.
+   */
   public void setEntityResolver(ParserEntityResolver entityResolver)
   {
     this.entityResolver = entityResolver;
@@ -128,8 +152,8 @@ public class ReportGenerator
    *
    * @return the report.
    *
-   * @throws java.io.IOException if an I/O error occurs.
-   * @throws com.jrefinery.report.io.ReportDefinitionException if there is a problem parsing the report template.
+   * @throws IOException if an I/O error occurs.
+   * @throws ReportDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (String file) throws IOException, ReportDefinitionException
   {
@@ -150,8 +174,8 @@ public class ReportGenerator
    *
    * @return the report.
    *
-   * @throws java.io.IOException if an I/O error occurs.
-   * @throws com.jrefinery.report.io.ReportDefinitionException if there is a problem parsing the report template.
+   * @throws IOException if an I/O error occurs.
+   * @throws ReportDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (URL file)
           throws ReportDefinitionException, IOException
@@ -172,8 +196,8 @@ public class ReportGenerator
    *
    * @return the parsed report.
    *
-   * @throws java.io.IOException if an I/O error occurs.
-   * @throws com.jrefinery.report.io.ReportDefinitionException if there is a problem parsing the report template.
+   * @throws IOException if an I/O error occurs.
+   * @throws ReportDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (URL file, URL contentBase)
           throws ReportDefinitionException, IOException
@@ -209,8 +233,8 @@ public class ReportGenerator
    *
    * @return the parsed report.
    *
-   * @throws java.io.IOException if an I/O error occurs.
-   * @throws com.jrefinery.report.io.ReportDefinitionException if there is a problem parsing the report template.
+   * @throws IOException if an I/O error occurs.
+   * @throws ReportDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (File file) throws IOException, ReportDefinitionException
   {
@@ -228,8 +252,8 @@ public class ReportGenerator
    *
    * @return a SAXParser.
    *
-   * @throws javax.xml.parsers.ParserConfigurationException if there is a problem configuring the parser.
-   * @throws org.xml.sax.SAXException if there is a problem with the parser initialisation
+   * @throws ParserConfigurationException if there is a problem configuring the parser.
+   * @throws SAXException if there is a problem with the parser initialisation
    */
   protected SAXParser getParser () throws ParserConfigurationException, SAXException
   {
@@ -288,7 +312,7 @@ public class ReportGenerator
    *
    * @return the report.
    *
-   * @throws com.jrefinery.report.io.ReportDefinitionException if an error occurred.
+   * @throws ReportDefinitionException if an error occurred.
    */
   public JFreeReport parseReport (InputSource input, URL contentBase)
           throws ReportDefinitionException

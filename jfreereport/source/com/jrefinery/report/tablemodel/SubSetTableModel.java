@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SubSetTableModel.java,v 1.7 2003/02/25 18:46:50 taqua Exp $
+ * $Id: SubSetTableModel.java,v 1.8 2003/02/26 13:57:59 mungady Exp $
  *
  * Changes
  * -------
@@ -219,8 +219,9 @@ public class SubSetTableModel implements TableModel
    * to initialize the table's column header name.  Note: this name does
    * not need to be unique; two columns in a table can have the same name.
    *
-   * @param	columnIndex	the index of the column
-   * @return  the name of the column
+   * @param columnIndex  the index of the column
+   * 
+   * @return the name of the column
    */
   public String getColumnName(int columnIndex)
   {
@@ -247,8 +248,8 @@ public class SubSetTableModel implements TableModel
    * is editable.  Otherwise, <code>setValueAt</code> on the cell will not
    * change the value of that cell.
    *
-   * @param	rowIndex  the row whose value to be queried
-   * @param	columnIndex  the column whose value to be queried
+   * @param rowIndex  the row whose value to be queried
+   * @param columnIndex  the column whose value to be queried
    * 
    * @return  true if the cell is editable
    * 
@@ -263,8 +264,8 @@ public class SubSetTableModel implements TableModel
    * Returns the value for the cell at <code>columnIndex</code> and
    * <code>rowIndex</code>.
    *
-   * @param	rowIndex  the row whose value is to be queried
-   * @param	columnIndex  the column whose value is to be queried
+   * @param rowIndex  the row whose value is to be queried
+   * @param columnIndex  the column whose value is to be queried
    * 
    * @return  the value Object at the specified cell
    */
@@ -277,9 +278,9 @@ public class SubSetTableModel implements TableModel
    * Sets the value in the cell at <code>columnIndex</code> and
    * <code>rowIndex</code> to <code>aValue</code>.
    *
-   * @param	aValue  the new value
-   * @param	rowIndex  the row whose value is to be changed
-   * @param	columnIndex  the column whose value is to be changed
+   * @param aValue  the new value
+   * @param rowIndex  the row whose value is to be changed
+   * @param columnIndex  the column whose value is to be changed
    * 
    * @see #getValueAt
    * @see #isCellEditable
@@ -293,7 +294,7 @@ public class SubSetTableModel implements TableModel
    * Adds a listener to the list that is notified each time a change
    * to the data model occurs.
    *
-   * @param	l  the TableModelListener
+   * @param l  the TableModelListener
    */
   public void addTableModelListener(TableModelListener l)
   {
@@ -304,7 +305,7 @@ public class SubSetTableModel implements TableModel
    * Removes a listener from the list that is notified each time a
    * change to the data model occurs.
    *
-   * @param	l  the TableModelListener
+   * @param l  the TableModelListener
    */
   public void removeTableModelListener(TableModelListener l)
   {

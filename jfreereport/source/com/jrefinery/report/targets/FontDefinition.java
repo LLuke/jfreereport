@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * FontDefinition.java
  * -------------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FontDefinition.java,v 1.7 2003/02/07 20:26:26 taqua Exp $
+ * $Id: FontDefinition.java,v 1.8 2003/02/25 18:46:50 taqua Exp $
  *
  * Changes
  * -------
@@ -37,47 +37,62 @@
  */
 package com.jrefinery.report.targets;
 
-import com.jrefinery.report.util.StringUtil;
-
 import java.awt.Font;
 import java.io.Serializable;
+
+import com.jrefinery.report.util.StringUtil;
 
 /**
  * The FontDefinition encapsulates all Font-Style information. The java.awt.Font
  * class does not support extended Styles like Strikethrough or Underline or font
  * metadata like the base encoding.
+ * 
+ * @author Thomas Morgner
  */
 public class FontDefinition implements Serializable, Cloneable
 {
   /** a constant to draw a font in bold style. */
   public static boolean BOLD = true;
+  
   /** a constant to draw a font in italic style. */
   public static boolean ITALIC = true;
+  
   /** a constant to draw a font with underline style. */
   public static boolean UNDERLINE = true;
+  
   /** a constant to draw a font with strikethrough style. */
   public static boolean STRIKETHROUGH = true;
+  
   /** a constant to draw a font in plain style. */
   public static boolean PLAIN = false;
 
   /** the preferred text encoding for this font. */
   private String fontEncoding;
+  
   /** The FontName of the font. This defines the Font-Family. */
   private String fontName;
+  
   /** the font size in point. */
   private int fontSize;
+  
   /** this font's bold flag. */
   private boolean isBold;
+  
   /** this font's italic flag. */
   private boolean isItalic;
+  
   /** this font's underline flag. */
   private boolean isUnderline;
+  
   /** this font's strikethrough flag. */
   private boolean isStrikeThrough;
+  
   /** the AWT-Font represented by this font definition. */
   private transient Font font;
+  
   /** whether to embedd the font in the target documents, if supported. */
   private boolean embeddedFont;
+  
   // color is defined elsewhere
 
   /**
@@ -89,14 +104,22 @@ public class FontDefinition implements Serializable, Cloneable
    * @param bold true, if the font should be bold, false otherwise
    * @param italic true, if the font should be italic, false otherwise
    * @param underline true, if the font should be drawn with underline style, false otherwise
-   * @param strikeThrough true, if the font should be drawn with strikethrough style, false otherwise
+   * @param strikeThrough true, if the font should be drawn with strikethrough style, 
+   *                      false otherwise
    * @param encoding the default text encoding that should be used with this font.
    * @param embedded whether this font should be embedded in the target document.
    */
-  public FontDefinition(String fontName, int fontSize, boolean bold, boolean italic, boolean underline, boolean strikeThrough, String encoding, boolean embedded)
+  public FontDefinition(String fontName, int fontSize, boolean bold, boolean italic, 
+                        boolean underline, boolean strikeThrough, String encoding, boolean embedded)
   {
-    if (fontName == null) throw new NullPointerException();
-    if (fontSize < 0) throw new IllegalArgumentException();
+    if (fontName == null) 
+    {
+      throw new NullPointerException();
+    }
+    if (fontSize < 0) 
+    {
+      throw new IllegalArgumentException();
+    }
     this.fontName = fontName;
     this.fontSize = fontSize;
     isBold = bold;
@@ -111,14 +134,16 @@ public class FontDefinition implements Serializable, Cloneable
    * Creates a font definition using the given name and size and with the given
    * styles defined.
    *
-   * @param fontName the font name used in this font definition.
-   * @param fontSize the font size for the defined font.
-   * @param bold true, if the font should be bold, false otherwise
-   * @param italic true, if the font should be italic, false otherwise
-   * @param underline true, if the font should be drawn with underline style, false otherwise
-   * @param strikeThrough true, if the font should be drawn with strikethrough style, false otherwise
+   * @param fontName  the font name used in this font definition.
+   * @param fontSize  the font size for the defined font.
+   * @param bold  true, if the font should be bold, false otherwise
+   * @param italic  true, if the font should be italic, false otherwise
+   * @param underline  true, if the font should be drawn with underline style, false otherwise
+   * @param strikeThrough  true, if the font should be drawn with strikethrough style, 
+   *                       false otherwise
    */
-  public FontDefinition(String fontName, int fontSize, boolean bold, boolean italic, boolean underline, boolean strikeThrough)
+  public FontDefinition(String fontName, int fontSize, boolean bold, boolean italic, 
+                        boolean underline, boolean strikeThrough)
   {
     this (fontName, fontSize, bold, italic, underline, strikeThrough, null, false);
   }
@@ -127,8 +152,8 @@ public class FontDefinition implements Serializable, Cloneable
    * Creates a font definition using the given name and size and with no additional
    * style enabled.
    *
-   * @param fontName the font name used in this font definition.
-   * @param fontSize the font size for the defined font.
+   * @param fontName  the font name used in this font definition.
+   * @param fontSize  the font size for the defined font.
    */
   public FontDefinition(String fontName, int fontSize)
   {
@@ -142,7 +167,8 @@ public class FontDefinition implements Serializable, Cloneable
    */
   public FontDefinition(Font font)
   {
-    this (font.getName(), font.getSize(), font.isBold(), font.isItalic(), false, false, null, false);
+    this (font.getName(), font.getSize(), font.isBold(), font.isItalic(), false, false, null, 
+          false);
   }
 
   /**
@@ -308,19 +334,50 @@ public class FontDefinition implements Serializable, Cloneable
    */
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof FontDefinition)) return false;
+    if (this == o) 
+    {
+      return true;
+    }
+    if (!(o instanceof FontDefinition)) 
+    {
+      return false;
+    }
 
     final FontDefinition definition = (FontDefinition) o;
 
-    if (embeddedFont != definition.embeddedFont) return false;
-    if (fontSize != definition.fontSize) return false;
-    if (isBold != definition.isBold) return false;
-    if (isItalic != definition.isItalic) return false;
-    if (isStrikeThrough != definition.isStrikeThrough) return false;
-    if (isUnderline != definition.isUnderline) return false;
-    if (fontEncoding != null ? !fontEncoding.equals(definition.fontEncoding) : definition.fontEncoding != null) return false;
-    if (!fontName.equals(definition.fontName)) return false;
+    if (embeddedFont != definition.embeddedFont) 
+    {
+      return false;
+    }
+    if (fontSize != definition.fontSize) 
+    {
+      return false;
+    }
+    if (isBold != definition.isBold) 
+    {
+      return false;
+    }
+    if (isItalic != definition.isItalic) 
+    {
+      return false;
+    }
+    if (isStrikeThrough != definition.isStrikeThrough) 
+    {
+      return false;
+    }
+    if (isUnderline != definition.isUnderline) 
+    {
+      return false;
+    }
+    if (fontEncoding != null ? !fontEncoding.equals(definition.fontEncoding) 
+                             : definition.fontEncoding != null) 
+    {
+      return false;
+    }
+    if (!fontName.equals(definition.fontName)) 
+    {
+      return false;
+    }
 
     return true;
   }
@@ -378,6 +435,5 @@ public class FontDefinition implements Serializable, Cloneable
   {
     return (StringUtil.startsWithIgnoreCase(fontName, "serif"));
   }
-
 
 }

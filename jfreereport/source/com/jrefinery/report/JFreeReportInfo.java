@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.11 2003/02/21 18:28:34 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.12 2003/02/26 13:52:32 mungady Exp $
  *
  * Changes:
  * --------
@@ -118,7 +118,8 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
     System.out.println(info.getCopyright());
     System.out.println(info.getInfo());
     System.out.println("----------------------------------------------------------------");
-    System.out.println("This project is licenced under the terms of the " + info.getLicenceName() + ".");
+    System.out.println("This project is licenced under the terms of the " 
+                       + info.getLicenceName() + ".");
     System.exit(0);
   }
 }

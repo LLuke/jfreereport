@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * HtmlProcessor.java
  * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProcessor.java,v 1.9 2003/02/20 00:39:37 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.10 2003/02/24 16:48:57 taqua Exp $
  *
  * Changes
  * -------
@@ -64,13 +64,17 @@ import com.jrefinery.report.util.NullOutputStream;
  * at least UTF-8 and US-ASCII encoding.
  *
  * @see HtmlFilesystem
+ * 
+ * @author Thomas Morgner
  */
 public class HtmlProcessor extends TableProcessor
 {
   /** the filesystem implementation used for writing the generated content. */
   private HtmlFilesystem filesystem;
+  
   /** a flag indicating whether to generate XHTML output instead of HTML4 code. */
   private boolean useXHTML;
+  
   /** the character encoding used for the HTML-File. */
   private String encoding;
 
@@ -91,12 +95,14 @@ public class HtmlProcessor extends TableProcessor
   /**
    * Creates a new HtmlProcessor, which uses the standard file encoding.
    *
-   * @param report the report that should be processed.
-   * @param useXHTML true, if XML output should be generated, false for HTML4 compatible output.
+   * @param report  the report that should be processed.
+   * @param useXHTML  true, if XML output should be generated, false for HTML4 compatible output.
+   * 
    * @throws ReportProcessingException if the report initialization failed
    * @throws FunctionInitializeException if the table writer initialization failed.
    */
-  public HtmlProcessor(JFreeReport report, boolean useXHTML) throws ReportProcessingException, FunctionInitializeException
+  public HtmlProcessor(JFreeReport report, boolean useXHTML) 
+      throws ReportProcessingException, FunctionInitializeException
   {
     this (report, useXHTML, System.getProperty("file.encoding", "UTF-8"));
   }
@@ -104,9 +110,10 @@ public class HtmlProcessor extends TableProcessor
   /**
    * Creates a new HtmlProcessor.
    *
-   * @param report the report that should be processed.
-   * @param useXHTML true, if XML output should be generated, false for HTML4 compatible output.
-   * @param encoding the file encoding, which should be used.
+   * @param report  the report that should be processed.
+   * @param useXHTML  true, if XML output should be generated, false for HTML4 compatible output.
+   * @param encoding  the file encoding, which should be used.
+   * 
    * @throws ReportProcessingException if the report initialization failed
    * @throws FunctionInitializeException if the table writer initialization failed.
    * @throws NullPointerException if the specified encoding is null.
@@ -116,7 +123,10 @@ public class HtmlProcessor extends TableProcessor
   {
     super(report);
     this.useXHTML = useXHTML;
-    if (encoding == null) throw new NullPointerException();
+    if (encoding == null) 
+    {
+      throw new NullPointerException();
+    }
     this.encoding = encoding;
   }
 

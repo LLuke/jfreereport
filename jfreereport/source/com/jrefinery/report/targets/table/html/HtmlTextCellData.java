@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ---------------------
  * HtmlTextCellData.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ---------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlTextCellData.java,v 1.3 2003/02/20 00:39:37 taqua Exp $
+ * $Id: HtmlTextCellData.java,v 1.4 2003/02/24 17:34:42 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@ import java.io.PrintWriter;
 
 /**
  * A wrapper for text content within the generated HtmlTable.
+ * 
+ * @author Thomas Morgner
  */
 public class HtmlTextCellData extends HtmlCellData
 {
@@ -55,10 +57,14 @@ public class HtmlTextCellData extends HtmlCellData
    * @param style the style definition for the cell.
    * @param useXHTML a flag indicating whether to use XHTML.
    */
-  public HtmlTextCellData(Rectangle2D outerBounds, String value, HtmlCellStyle style, boolean useXHTML)
+  public HtmlTextCellData(Rectangle2D outerBounds, String value, HtmlCellStyle style, 
+                          boolean useXHTML)
   {
     super(outerBounds, style, useXHTML);
-    if (value == null) throw new NullPointerException();
+    if (value == null) 
+    {
+      throw new NullPointerException();
+    }
     this.value = value;
   }
 

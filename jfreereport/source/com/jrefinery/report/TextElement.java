@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------
  * TextElement.java
  * ----------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextElement.java,v 1.29 2003/02/20 21:04:31 taqua Exp $
+ * $Id: TextElement.java,v 1.30 2003/02/23 20:39:11 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -284,7 +284,8 @@ public class TextElement extends Element
    */
   public void setAlignment(int alignment)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.translateHorizontalAlignment(alignment));
+    getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, 
+                                ElementAlignment.translateHorizontalAlignment(alignment));
   }
 
   /**
@@ -314,6 +315,7 @@ public class TextElement extends Element
    */
   public void setVerticalAlignment(int alignment)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.translateVerticalAlignment(alignment));
+    getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, 
+                                ElementAlignment.translateVerticalAlignment(alignment));
   }
 }

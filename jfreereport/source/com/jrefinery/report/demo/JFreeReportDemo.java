@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.53 2003/02/06 17:38:01 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.54 2003/02/25 14:10:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -268,7 +268,8 @@ public class JFreeReportDemo extends JFrame
                       RefineryUtilities.createTablePanel(data2));
     tabbedPane.addTab("ItemHideFunction-Demo", RefineryUtilities.createTablePanel(data2));
     tabbedPane.addTab("Dynamic-Demo", RefineryUtilities.createTablePanel(data2));
-    tabbedPane.addTab("Band in Band Stacking", RefineryUtilities.createTablePanel(new DefaultTableModel()));
+    tabbedPane.addTab("Band in Band Stacking", 
+                      RefineryUtilities.createTablePanel(new DefaultTableModel()));
 
     content.add(tabbedPane);
 

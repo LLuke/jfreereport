@@ -1,12 +1,12 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.28 2003/02/21 18:29:13 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.29 2003/02/25 18:46:10 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@ import java.awt.event.KeyEvent;
 /**
  * German Language Resources.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class JFreeReportResources_de extends JFreeReportResources
 {
@@ -148,7 +148,8 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"error.savefailed.title", "Speichern fehlgeschlagen"},
         {"error.printfailed.message", "Das Drucken ist fehlgeschlagen: {0}"},
         {"error.printfailed.title", "Druck fehlgeschlagen"},
-        {"error.validationfailed.message", "Die \u00fcberpr\u00fcfung der Benutzereingaben schlug fehl."},
+        {"error.validationfailed.message", 
+            "Die \u00fcberpr\u00fcfung der Benutzereingaben schlug fehl."},
         {"error.validationfailed.title", "Eingabe\u00fcberpr\u00fcfung fehlgeschlagen"},
 
         {"pdfsavedialog.warningTitle", "Warnung"},
@@ -170,8 +171,9 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"pdfsavedialog.ownerpasswordconfirm", "Wiederholen"},
         {"pdfsavedialog.ownerpasswordNoMatch", "Die Hauptkennworte stimmen nicht \u00fcberein."},
 
-        {"pdfsavedialog.ownerpasswordEmpty", "Das Benutzerpasswort ist leer. Benutzer sind " +
-      "m\u00f6glicherweise in der Lage die Sicherheitsbeschr\u00e4nkungen zu umgehen. Trotzdem fortfahren?"},
+        {"pdfsavedialog.ownerpasswordEmpty", "Das Benutzerpasswort ist leer. Benutzer sind " 
+            + "m\u00f6glicherweise in der Lage die Sicherheitsbeschr\u00e4nkungen zu umgehen. "
+            + "Trotzdem fortfahren?"},
 
         {"pdfsavedialog.errorTitle", "Fehler"},
         {"pdfsavedialog.targetIsEmpty",
@@ -213,10 +215,11 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"excelexportdialog.errorTitle", "Fehler"},
         {"excelexportdialog.targetIsEmpty",
          "Bitte geben Sie einen Dateinamen f\u00fcr die Excel-Datei an."},
-        {"excelexportdialog.targetIsNoFile", "Der Dateiname zeigt auf keine gew\u00f6hnliche Datei."},
+        {"excelexportdialog.targetIsNoFile", 
+            "Der Dateiname zeigt auf keine gew\u00f6hnliche Datei."},
         {"excelexportdialog.targetIsNotWritable",
-         "Sie besitzen keine ausreichenden Rechte um die ausgew\u00e4hlte Datei zu "
-      + "\u00fcberschreiben."},
+            "Sie besitzen keine ausreichenden Rechte um die ausgew\u00e4hlte Datei zu "
+            + "\u00fcberschreiben."},
         {"excelexportdialog.targetOverwriteConfirmation",
          "Die Datei ''{0}'' existiert bereits. Soll diese Datei \u00fcberschrieben werden?"},
         {"excelexportdialog.targetOverwriteTitle", "Datei \u00fcberschreiben?"},
@@ -234,10 +237,11 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"htmlexportdialog.errorTitle", "Fehler"},
         {"htmlexportdialog.targetIsEmpty",
          "Bitte geben Sie einen Dateinamen f\u00dcr die Html-Datei an."},
-        {"htmlexportdialog.targetIsNoFile", "Der Dateiname zeigt auf keine gew\u00f6hnliche Datei."},
+        {"htmlexportdialog.targetIsNoFile", 
+            "Der Dateiname zeigt auf keine gew\u00f6hnliche Datei."},
         {"htmlexportdialog.targetIsNotWritable",
-         "Sie besitzen keine ausreichenden Rechte um die ausgew\u00e4hlte Datei zu "
-      + "\u00fcberschreiben."},
+            "Sie besitzen keine ausreichenden Rechte um die ausgew\u00e4hlte Datei zu "
+            + "\u00fcberschreiben."},
         {"htmlexportdialog.targetOverwriteConfirmation",
          "Die Datei ''{0}'' existiert bereits. Soll diese Datei \u00fcberschrieben werden?"},
         {"htmlexportdialog.targetOverwriteTitle", "Datei \u00fcberschreiben?"},
@@ -257,8 +261,8 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"htmlexportdialog.selectZipFile", "Ausw\u00e4hlen"},
 
         {"htmlexportdialog.targetCreateDataDirConfirmation",
-         "Das eingegebene Datenverzeichnis existiert nicht, " +
-      "soll ein neues Verzeichnis erzeugt werden?"},
+            "Das eingegebene Datenverzeichnis existiert nicht, " 
+            + "soll ein neues Verzeichnis erzeugt werden?"},
         {"htmlexportdialog.targetCreateDataDirTitle", "Datenverzeichnis erzeugen?"},
         {"htmlexportdialog.targetDataDirIsNoDirectory",
          "Das angegebene Datenverzeichnis verweist nicht auf ein Verzeichnis."},
@@ -273,7 +277,8 @@ public class JFreeReportResources_de extends JFreeReportResources
 
         {"csvexportdialog.warningTitle", "Warnung"},
         {"csvexportdialog.errorTitle", "Fehler"},
-        {"csvexportdialog.targetIsEmpty", "Bitte geben Sie einen Dateinamen f\u00fcr die CSV-Datei an."},
+        {"csvexportdialog.targetIsEmpty", 
+            "Bitte geben Sie einen Dateinamen f\u00fcr die CSV-Datei an."},
         {"csvexportdialog.targetIsNoFile", "Der Dateiname zeigt auf keine gew\u00f6hnliche Datei."},
         {"csvexportdialog.targetIsNotWritable",
          "Sie besitzen keine ausreichenden Rechte um die ausgew\u00e4hlte Datei zu "
@@ -294,7 +299,8 @@ public class JFreeReportResources_de extends JFreeReportResources
 
         {"csvexportdialog.exporttype", "Bitte Export-Methode ausw\u00e4hlen"},
         {"csvexportdialog.export.data", "Exportiere die Datenquelle (Rohdaten)"},
-        {"csvexportdialog.export.printed_elements", "Exportiere die gedruckten Daten (Bearbeitete Daten)"},
+        {"csvexportdialog.export.printed_elements", 
+            "Exportiere die gedruckten Daten (Bearbeitete Daten)"},
 
         {"convertdialog.action.convert.description", "Konvertiert die Quelldatei"},
         {"convertdialog.action.convert.name", "Konvertieren"},
@@ -351,4 +357,5 @@ public class JFreeReportResources_de extends JFreeReportResources
   {
     new JFreeReportResources_de().printAll();
   }
+  
 }
