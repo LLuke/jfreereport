@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -23,22 +23,25 @@
  * ---------------------------
  * ReportPropertyFunction.java
  * ---------------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.1.1.1 2002/04/25 17:02:33 taqua Exp $
+ * $Id: ReportPropertyFunction.java,v 1.2 2002/05/14 21:35:04 taqua Exp $
  *
  * Changes
  * -------
  * 01-Mar-2002 : Version 1 (DG);
- * 18-Apr-2002 : Using the generator to create a function will create
- *               the function using the default constructor. In this
- *               case, field was null and raised a nullpointerexception.
+ * 18-Apr-2002 : Using the generator to create a function will create the function using the
+ *               default constructor. In this case, field was null and raised a null pointer
+ *               exception (TM);
  * 24-Apr-2002 : Changed the implementation to reflect the changes in Function and
- *               AbstractFunction
- * 10-May-2002 : Applied the ReportEvent interface
+ *               AbstractFunction (TM);
+ * 10-May-2002 : Applied the ReportEvent interface (TM);
+ * 16-May-2002 : Changed 'field' to 'reportProperty' when looking up attributes.  Updated the
+ *               Javadoc comments (DG);
+ *
  */
 
 package com.jrefinery.report.function;
@@ -47,15 +50,26 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.event.ReportEvent;
 
 /**
- * A report function that returns a report property.
+ * A report function that returns a property that has been set for a report.
+ * <P>
+ * There are some properties that are defined for all reports: "report.name" and "report.date".
+ * You can add arbitrary properties to a report using the setProperty method.
+ *
  */
 public class ReportPropertyFunction extends AbstractFunction
 {
 
   /** The function value. */
   private Object value;
+
+  /** The name of the report property that this function accesses. */
   private String field;
 
+  // DEVNOTE: I'd recommend changing 'field' to 'propertyName' (DG);
+
+  /**
+   * Default constructor.
+   */
   public ReportPropertyFunction ()
   {
   }
@@ -64,7 +78,7 @@ public class ReportPropertyFunction extends AbstractFunction
    * Constructs a new function.
    *
    * @param name The function name.
-   * @param propertyNam The property name.
+   * @param propertyName The property name.
    */
   public ReportPropertyFunction (String name, String propertyName)
   {
@@ -74,6 +88,8 @@ public class ReportPropertyFunction extends AbstractFunction
 
   /**
    * Receives notification that a new report is about to start.
+   *
+   * @param event The event.
    */
   public void reportStarted (ReportEvent event)
   {
@@ -91,6 +107,8 @@ public class ReportPropertyFunction extends AbstractFunction
 
   /**
    * Returns the function's value.
+   *
+   * @return The function value.
    */
   public Object getValue ()
   {
@@ -99,6 +117,8 @@ public class ReportPropertyFunction extends AbstractFunction
 
   /**
    * Returns a copy of this function.
+   *
+   * @return A clone of the function.
    */
   public Object clone ()
   {
@@ -112,18 +132,32 @@ public class ReportPropertyFunction extends AbstractFunction
     catch (CloneNotSupportedException e)
     {
       // this should never happen...
-      System.err.println ("ReportProertyFunction: clone not supported");
+      System.err.println ("ReportPropertyFunction: clone not supported");
     }
 
     return result;
 
   }
 
+  /**
+   * Returns the name of the report property that the function accesses.
+   * <P>
+   * I recommend renaming this method getReportPropertyName() (DG);
+   *
+   * @return The name of the report property.
+   */
   public String getField ()
   {
     return field;
   }
 
+  /**
+   * Sets the name of the report property that the function accesses.
+   * <P>
+   * I recommend renaming this method setReportPropertyName() (DG);
+   *
+   * @param field The report property name.
+   */
   public void setField (String field)
   {
     if (field == null)
@@ -132,15 +166,17 @@ public class ReportPropertyFunction extends AbstractFunction
     setProperty("field", field);
   }
 
-
+  /**
+   * Initialises the function.
+   */
   public void initialize ()
     throws FunctionInitializeException
   {
     super.initialize();
-    String fieldProp = getProperty ("field");
+    String fieldProp = getProperty ("reportProperty");
     if (fieldProp == null)
     {
-      throw new FunctionInitializeException("No Such Property : field");
+      throw new FunctionInitializeException("No Such Property : reportProperty");
     }
     setField (fieldProp);
   }
