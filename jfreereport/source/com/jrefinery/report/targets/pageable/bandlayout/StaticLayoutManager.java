@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.8 2002/12/13 10:49:33 mungady Exp $
+ * $Id: StaticLayoutManager.java,v 1.9 2003/01/07 15:10:34 taqua Exp $
  *
  * Changes
  * -------
  * 03-Dec-2002 : Javadocs (DG);
- *
+ * 21-Jan-2003 : removed ABSOLUTE_DIM StyleKey. The beast would cause trouble.
  */
 
 package com.jrefinery.report.targets.pageable.bandlayout;
@@ -45,7 +45,9 @@ import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.pageable.operations.OperationModule;
 import com.jrefinery.report.targets.pageable.operations.OperationFactory;
 import com.jrefinery.report.targets.pageable.contents.Content;
+import com.jrefinery.report.targets.pageable.contents.ImageContent;
 import com.jrefinery.report.targets.pageable.OutputTarget;
+import com.jrefinery.report.targets.pageable.ElementLayoutInformation;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleKey;
 
@@ -72,10 +74,6 @@ public class StaticLayoutManager implements BandLayoutManager
 {
   /** A key for the absolute position of an element. */
   public static final StyleKey ABSOLUTE_POS  = StyleKey.getStyleKey("absolute_pos", Point2D.class);
-
-  /** A key for the absolute dimension of an element. */
-  public static final StyleKey ABSOLUTE_DIM  = StyleKey.getStyleKey("absolute_dim",
-                                                                    Dimension2D.class);
 
   /** A key for the dynamic height flag for an element. */
   public static final StyleKey DYNAMIC_HEIGHT = StyleKey.getStyleKey("dynamic_height",
@@ -145,9 +143,10 @@ public class StaticLayoutManager implements BandLayoutManager
       else
       {
         // return the absolute dimension as fallback
-        retval = (Dimension2D) e.getStyle().getStyleProperty(ABSOLUTE_DIM);
+        retval = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
       }
     }
+
     if (e.getStyle().getBooleanStyleProperty(DYNAMIC_HEIGHT))
     {
       retval = getElementContentBounds(retval, e, containerBounds);
@@ -159,6 +158,7 @@ public class StaticLayoutManager implements BandLayoutManager
   /**
    * Calculation rules: Take the width of given bounds to calculate a height based
    * on the content. Then cut the content to a maybe defined max-value.
+   * todo redefine the context creation process, height or width can be dynamic
    *
    * @param bounds  the bounds of the element calculated so far.
    * @param e  the element.
@@ -169,6 +169,8 @@ public class StaticLayoutManager implements BandLayoutManager
   private Dimension2D getElementContentBounds (Dimension2D bounds, Element e, Dimension2D conBounds)
   {
     // check if we can handle the content before doing anything...
+    // ...
+    // bounds can be null, if no absolute dim was defined.
     OperationModule mod = OperationFactory.getInstance().getModul(e.getContentType());
     if (mod == null)
     {
@@ -177,30 +179,53 @@ public class StaticLayoutManager implements BandLayoutManager
 
     Dimension2D parentDim = new FloatDimension(conBounds.getWidth(), conBounds.getHeight());
     bounds = correctDimension(bounds, parentDim);
-    double w = bounds.getWidth();
-    double h = Short.MAX_VALUE;
 
+    Point2D absPos = correctPoint(
+        (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim);
     Dimension2D maxSize = correctDimension(
         (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), parentDim);
-    if (maxSize != null)
+    Dimension2D minSize = correctDimension(
+        (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE), parentDim);
+
+    Dimension2D prefSize = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
+    if (prefSize != null)
     {
-      w = Math.min (w, maxSize.getWidth());
+      prefSize = correctDimension(prefSize, parentDim);
     }
 
-    Rectangle2D elementBounds = new Rectangle2D.Double (0, 0, w, h);
+    // the width is the limiting element in the calculation, height is considered
+    // infinitive ...
+    maxSize.setSize(Math.min (parentDim.getWidth() - absPos.getX(), maxSize.getWidth()),
+                    Short.MAX_VALUE);
+
+    // Rectangle2D elementBounds = new Rectangle2D.Double (0, 0, w, h);
     try
     {
-      Content content = mod.createContentForElement(e, elementBounds, getOutputTarget());
-      //Log.debug ("Calc: Content: " + content);
+      ElementLayoutInformation eli = new ElementLayoutInformation(absPos, minSize, maxSize, prefSize);
+      Content content = mod.createContentForElement(e, eli, getOutputTarget());
       Rectangle2D contentBounds = content.getMinimumContentSize();
-      FloatDimension retval = new FloatDimension(Math.max(contentBounds.getWidth(), bounds.getWidth()),
-                                Math.max (contentBounds.getHeight(), bounds.getHeight()));
-      return retval;
+      if (e.getName().equals("trace"))
+      {
+        Log.debug ("Calc: Content: " + contentBounds);
+        Log.debug ("Calc: Container: " + conBounds);
+        Log.debug ("Calc: Min: " + minSize);
+        Log.debug ("Calc: Max: " + maxSize);
+        Log.debug ("Calc: Pref: " + prefSize);
+        Log.debug ("Calc: Point: " + absPos);
+      }
+
+      if (contentBounds == null)
+      {
+        Log.debug ("Null-Content: " + content);
+        Log.debug ("Elemnt: " + e);
+        return new FloatDimension();
+      }
+      return new FloatDimension(contentBounds.getWidth(), contentBounds.getHeight());
     }
     catch (Exception ex)
     {
       Log.warn ("Unable to calculate the content bounds: ", ex);
-      return new FloatDimension(w, h);
+      return new FloatDimension(bounds.getWidth(), bounds.getHeight());
     }
 
   }
@@ -224,14 +249,8 @@ public class StaticLayoutManager implements BandLayoutManager
     }
     else
     {
-      //operations.calulatePreferredElementSize();
-      // return the absolute width as fallback
-      retval = (Dimension2D) e.getStyle().getStyleProperty(ABSOLUTE_DIM);
-      if (retval == null)
-      {
-        // if prefsize is defined, then return it
-        retval = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
-      }
+      // return the minimum size as fallback
+      retval = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
     }
     return retval;
   }
@@ -434,7 +453,7 @@ public class StaticLayoutManager implements BandLayoutManager
    * within these bounds. The band's properties will not be changed during the layouting.
    * <p>
    * This layout manager requires that all direct child elements have the <code>ABSOLUTE_POS</code>
-   * and <code>ABSOLUTE_DIM</code> properties set.
+   * and <code>MINIMUM_SIZE</code> properties set to valid values.
    *
    * @param b the band to lay out.
    */

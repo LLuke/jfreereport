@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.24 2002/12/10 21:04:16 taqua Exp $
+ * $Id: ItemFactory.java,v 1.25 2003/01/15 15:55:39 taqua Exp $
  *
  * Changes
  * -------
@@ -156,7 +156,10 @@ public class ItemFactory
   {
 
     DateFieldTemplate dft = new DateFieldTemplate();
-    dft.setFormat(format);
+    if (format != null)
+    {
+      dft.setFormat(format);
+    }
     dft.setNullValue(nullString);
     dft.setField(field);
 
@@ -244,7 +247,10 @@ public class ItemFactory
     if (format instanceof SimpleDateFormat)
     {
       DateFieldTemplate dft = new DateFieldTemplate();
-      dft.setDateFormat((SimpleDateFormat) format);
+      if (format != null)
+      {
+        dft.setDateFormat((SimpleDateFormat) format);
+      }
       dft.setNullValue(nullString);
       dft.setField(field);
       ds = dft;
@@ -252,7 +258,10 @@ public class ItemFactory
     else
     {
       DateFormatFilter filter = new DateFormatFilter();
-      filter.setFormatter(format);
+      if (format != null)
+      {
+        filter.setFormatter(format);
+      }
       filter.setDataSource(new DataRowDataSource(field));
       ds = filter;
     }
@@ -1056,7 +1065,10 @@ public class ItemFactory
     if (format instanceof DecimalFormat)
     {
       NumberFieldTemplate template = new NumberFieldTemplate ();
-      template.setDecimalFormat((DecimalFormat) format);
+      if (format != null)
+      {
+        template.setDecimalFormat((DecimalFormat) format);
+      }
       template.setNullValue(nullString);
       template.setField(field);
       ds = template;
@@ -1064,7 +1076,10 @@ public class ItemFactory
     else
     {
       NumberFormatFilter filter = new NumberFormatFilter();
-      filter.setFormatter(format);
+      if (format != null)
+      {
+        filter.setFormatter(format);
+      }
       filter.setDataSource(new DataRowDataSource(field));
       ds = filter;
     }
@@ -1150,7 +1165,10 @@ public class ItemFactory
                                                 String field)
   {
     NumberFieldTemplate template = new NumberFieldTemplate();
-    template.setFormat(format);
+    if (format != null)
+    {
+      template.setFormat(format);
+    }
     template.setNullValue(nullString);
     template.setField(field);
 
@@ -1668,7 +1686,7 @@ public class ItemFactory
   {
     e.getStyle().setStyleProperty(StaticLayoutManager.ABSOLUTE_POS,
                                   new Point2D.Double(bounds.getX(), bounds.getY()));
-    e.getStyle().setStyleProperty(StaticLayoutManager.ABSOLUTE_DIM,
+    e.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
                                   new FloatDimension((float) bounds.getWidth(),
                                                      (float) bounds.getHeight()));
   }

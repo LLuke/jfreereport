@@ -25,7 +25,7 @@
  * ---------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: SimpleDateFormatFilter.java,v 1.7 2002/12/02 17:19:50 taqua Exp $
+ * $Id: SimpleDateFormatFilter.java,v 1.8 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -114,6 +114,9 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    */
   public void setFormatString (String format)
   {
+    if (format == null)
+      throw new NullPointerException();
+    
     getSimpleDateFormat ().applyPattern (format);
   }
 

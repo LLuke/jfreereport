@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: ElementFactory.java,v 1.2 2003/01/17 14:47:43 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import com.jrefinery.report.TextElement;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -361,11 +362,19 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     Log.debug("Loading: " + getContentBase() + " " + elementSource + " as image");
     try
     {
+      boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
+      boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
       ImageElement element = ItemFactory.createImageElement(
           elementName,
           ParserUtil.getElementPosition(atts),
           Color.white,
-          new URL(getContentBase(), elementSource));
+          new URL(getContentBase(), elementSource),
+          elementScale,
+          elementARatio);
+      boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
+      element.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                     new Boolean (elementDynamic));
+
       getCurrentBand().addElement(element);
     }
     catch (IOException mfule)
@@ -389,12 +398,22 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
     String elementSource = atts.getValue(FIELDNAME_ATT);
 
+    boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
+    boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
     ImageElement element = ItemFactory.createImageDataRowElement(
         elementName,
         ParserUtil.getElementPosition(atts),
         Color.white,
-        elementSource);
+        elementSource,
+        elementScale,
+        elementARatio);
+
+    boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
+    element.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (elementDynamic));
+
     getCurrentBand().addElement(element);
+
   }
 
   /**
@@ -411,11 +430,19 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
     String elementSource = atts.getValue(FIELDNAME_ATT);
 
+    boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
+    boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
     ImageElement element = ItemFactory.createImageURLElement(
         elementName,
         ParserUtil.getElementPosition(atts),
         Color.white,
-        elementSource);
+        elementSource,
+        elementScale,
+        elementARatio);
+    boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
+    element.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (elementDynamic));
+
     getCurrentBand().addElement(element);
   }
 
@@ -433,11 +460,19 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
     String elementSource = atts.getValue(FUNCTIONNAME_ATT);
 
+    boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
+    boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
     ImageElement element = ItemFactory.createImageDataRowElement(
         elementName,
         ParserUtil.getElementPosition(atts),
         Color.white,
-        elementSource);
+        elementSource,
+        elementScale,
+        elementARatio);
+    boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
+    element.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (elementDynamic));
+
     getCurrentBand().addElement(element);
   }
 
@@ -456,11 +491,19 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
     String elementSource = atts.getValue(FUNCTIONNAME_ATT);
 
+    boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
+    boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
     ImageElement element = ItemFactory.createImageURLElement(
         elementName,
         ParserUtil.getElementPosition(atts),
         Color.white,
-        elementSource);
+        elementSource,
+        elementScale,
+        elementARatio);
+    boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
+    element.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (elementDynamic));
+
     getCurrentBand().addElement(element);
   }
 

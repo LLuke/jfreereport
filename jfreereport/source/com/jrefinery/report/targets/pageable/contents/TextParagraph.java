@@ -28,14 +28,17 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.3 2002/12/03 16:29:24 mungady Exp $
+ * $Id: TextParagraph.java,v 1.4 2002/12/13 01:26:11 taqua Exp $
  *
  * Changes
  * -------
+ *
+ * 21-Jan-2002: BugFix: Breakline was inaccurate 
  */
 package com.jrefinery.report.targets.pageable.contents;
 
 import com.jrefinery.report.targets.pageable.SizeCalculator;
+import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
 import java.text.BreakIterator;
@@ -156,7 +159,7 @@ public class TextParagraph extends ContentContainer
     {
       throw new IllegalArgumentException("Width must not be less or equal 0, was " + width);
     }
-    
+
     // a 0 maxLines is no longer allowed - to test the max size, ask the layoutmanager to
     // create a Max-Bounds and test that bound...
     if (maxLines == 0)
@@ -209,13 +212,13 @@ public class TextParagraph extends ContentContainer
         }
         else
         {
-          if (x >= w)
+          if (x > w)
           {
             // add by leonlyong
             //when the first word of the line is too big then cut the word ...
             if (wordCnt == 1)
             {
-              while (getSizeCalculator().getStringWidth(mytext, startPos, endPos) >= w)
+              while (getSizeCalculator().getStringWidth(mytext, startPos, endPos) > w)
               {
                 endPos--;
               }

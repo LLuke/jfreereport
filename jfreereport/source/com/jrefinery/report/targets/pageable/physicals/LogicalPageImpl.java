@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.14 2003/01/14 21:14:46 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.15 2003/01/16 15:35:35 taqua Exp $
  *
  * Changes
  * -------
@@ -44,15 +44,19 @@ import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
+import com.jrefinery.report.targets.pageable.ElementLayoutInformation;
 import com.jrefinery.report.targets.pageable.contents.Content;
 import com.jrefinery.report.targets.pageable.operations.OperationFactory;
 import com.jrefinery.report.targets.pageable.operations.OperationModule;
 import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Dimension2D;
 import java.awt.print.PageFormat;
 import java.util.List;
 
@@ -388,7 +392,10 @@ public class LogicalPageImpl implements LogicalPage
       operations.addOperation(new PhysicalOperation.AddComment (" ...  Element: " + drawBounds));
     }
 
-    Content content = mod.createContentForElement(e, drawBounds, getOutputTarget());
+
+    ElementLayoutInformation eli = new ElementLayoutInformation(drawBounds);
+
+    Content content = mod.createContentForElement(e, eli, getOutputTarget());
     // split the elements contents, then write ..
     List opsList = mod.createOperations(e, content, drawBounds);
     PhysicalOperation[] ops = new PhysicalOperation[opsList.size()];

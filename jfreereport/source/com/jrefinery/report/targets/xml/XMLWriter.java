@@ -2,7 +2,7 @@
  * Date: Jan 7, 2003
  * Time: 5:15:08 PM
  *
- * $Id: XMLWriter.java,v 1.1 2003/01/07 17:34:29 taqua Exp $
+ * $Id: XMLWriter.java,v 1.2 2003/01/18 20:47:36 taqua Exp $
  */
 package com.jrefinery.report.targets.xml;
 
@@ -12,6 +12,7 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.CharacterEntityParser;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -21,10 +22,12 @@ public class XMLWriter extends AbstractFunction
 {
   private Writer w;
   private int depLevel;
+  private CharacterEntityParser entityParser;
 
   public XMLWriter()
   {
     setDependencyLevel(-1);
+    entityParser = CharacterEntityParser.createXMLEntityParser();
   }
 
   public Writer getWriter()
@@ -48,9 +51,9 @@ public class XMLWriter extends AbstractFunction
       if (e.getContentType().startsWith("text"))
       {
         w.write ("<element name=\"");
-        w.write (e.getName());
+        w.write (entityParser.encodeEntities(e.getName()));
         w.write ("\">");
-        w.write(String.valueOf(e.getValue()));
+        w.write(entityParser.encodeEntities(String.valueOf(e.getValue())));
         w.write ("</element>");
       }
       else if (e instanceof Band)
@@ -113,7 +116,7 @@ public class XMLWriter extends AbstractFunction
     {
       w.write("<groupheader name=\"");
       Group g = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
-      w.write(g.getName());
+      w.write(entityParser.encodeEntities(g.getName()));
       w.write("\">");
       writeBand(g.getHeader());
       w.write("</groupheader>");
@@ -135,7 +138,7 @@ public class XMLWriter extends AbstractFunction
     {
       w.write("<groupfooter name=\"");
       Group g = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
-      w.write(g.getName());
+      w.write(entityParser.encodeEntities(g.getName()));
       w.write("\">");
       writeBand(g.getFooter());
       w.write("</groupfooter>");

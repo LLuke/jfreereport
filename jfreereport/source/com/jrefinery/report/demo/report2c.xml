@@ -61,6 +61,7 @@
 
   <!-- ITEMS -->
   <items height="10" fontname="Monospaced" fontstyle="plain" fontsize="8">
+    <rectangle x="0" y="0" width="60" height="8" color="#AFAFAF" weight="0"/>
     <string-field x="0" y="0" width="60" height="8" alignment="left" fieldname="Name" dynamic="true"/>
     <number-field fieldname="Count1" format="0" x="110" y="0" width="40" height="8" alignment="right"/>
     <string-field x="210" y="0" width="60" height="8" alignment="left" fieldname="Letter"/>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageOperationModule.java,v 1.2 2002/12/05 12:05:09 mungady Exp $
+ * $Id: ImageOperationModule.java,v 1.1 2002/12/12 20:20:27 taqua Exp $
  *
  * Changes
  * -------
@@ -37,13 +37,19 @@ package com.jrefinery.report.targets.pageable.operations;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.pageable.OutputTarget;
+import com.jrefinery.report.targets.pageable.ElementLayoutInformation;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.contents.Content;
 import com.jrefinery.report.targets.pageable.contents.ImageContent;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Dimension2D;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,8 +98,13 @@ public class ImageOperationModule extends OperationModule
    *
    * @return the content.
    */
-  public Content createContentForElement(Element e, Rectangle2D bounds, OutputTarget ot)
+  public Content createContentForElement(Element e, ElementLayoutInformation bounds, OutputTarget ot)
+      throws OutputTargetException
   {
+    Point2D point = bounds.getAbsolutePosition();
+    Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
+                                                            bounds.getPreferredSize());
+
     ImageReference ir = (ImageReference) e.getValue();
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE))
     {
@@ -104,16 +115,32 @@ public class ImageOperationModule extends OperationModule
 
       if (w != 0)
       {
-        scaleX = bounds.getWidth() / w;
+        scaleX = iBounds.getWidth() / w;
       }
       if (h != 0)
       {
-        scaleY = bounds.getHeight() / h;
+        scaleY = iBounds.getHeight() / h;
       }
-      ir.setScaleX((float) scaleX);
-      ir.setScaleY((float) scaleY);
+      if (scaleX != 1 || scaleY != 1)
+      {
+        if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO))
+        {
+          float scale = (float) Math.min (scaleX, scaleY);
+          ir.setScaleX(scale);
+          ir.setScaleY(scale);
+        }
+        else
+        {
+          ir.setScaleX((float) scaleX);
+          ir.setScaleY((float) scaleY);
+        }
+      }
     }
-    return new ImageContent(ir, bounds);
+    Rectangle2D irBounds = new Rectangle2D.Double(point.getX(),
+                                                  point.getY(),
+                                                  ir.getBoundsScaled().getWidth(),
+                                                  ir.getBoundsScaled().getHeight());
+    return new ImageContent(ir, irBounds);
   }
 
 }

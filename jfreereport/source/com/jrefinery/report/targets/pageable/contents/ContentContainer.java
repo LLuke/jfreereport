@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentContainer.java,v 1.4 2002/12/12 20:24:03 taqua Exp $
+ * $Id: ContentContainer.java,v 1.5 2002/12/16 17:30:59 mungady Exp $
  *
  * Changes
  * -------
@@ -162,7 +162,7 @@ public class ContentContainer implements Content
   /**
    * Returns the minimum content size for the container.
    *
-   * @return the minimum size.
+   * @return the minimum size or null, if this container has no content.
    */
   public Rectangle2D getMinimumContentSize()
   {

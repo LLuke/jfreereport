@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.1 2002/12/12 20:20:28 taqua Exp $
+ * $Id: ShapeOperationModule.java,v 1.2 2002/12/16 17:31:05 mungady Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@ package com.jrefinery.report.targets.pageable.operations;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.targets.pageable.OutputTarget;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.pageable.ElementLayoutInformation;
 import com.jrefinery.report.targets.pageable.contents.Content;
 import com.jrefinery.report.targets.pageable.contents.ShapeContent;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
@@ -50,6 +52,8 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,19 +114,29 @@ public class ShapeOperationModule extends OperationModule
   }
 
   /**
-   * Creates a {@link ShapeContent} item for a report element.
+   * Creates content for an element.
    *
    * @param e  the element.
    * @param bounds  the bounds.
    * @param ot  the output target.
    *
    * @return the content.
+   *
+   * @throws OutputTargetException if there is a problem with the OutputTarget.
    */
-  public Content createContentForElement(Element e, Rectangle2D bounds, OutputTarget ot)
+  public Content createContentForElement(Element e, ElementLayoutInformation bounds, OutputTarget ot)
+      throws OutputTargetException
   {
-    AffineTransform af = AffineTransform.getTranslateInstance(bounds.getX(), bounds.getY());
+    Point2D point = bounds.getAbsolutePosition();
+    Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
+                                                            bounds.getPreferredSize());
+
+    AffineTransform af = AffineTransform.getTranslateInstance(point.getX(), point.getY());
     Shape s = (Shape) e.getValue();
 
+    /**
+     * Always scale to the maximum bounds ...
+     */
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE))
     {
       Rectangle2D boundsShape = s.getBounds2D();
@@ -133,15 +147,23 @@ public class ShapeOperationModule extends OperationModule
 
       if (w != 0)
       {
-        scaleX = bounds.getWidth() / w;
+        scaleX = iBounds.getWidth() / w;
       }
       if (h != 0)
       {
-        scaleY = bounds.getHeight() / h;
+        scaleY = iBounds.getHeight() / h;
       }
       if (scaleX != 1 || scaleY != 1)
       {
-        af.concatenate(AffineTransform.getScaleInstance(scaleX, scaleY));
+        if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO))
+        {
+          double scale = Math.min (scaleX, scaleY);
+          af.concatenate(AffineTransform.getScaleInstance(scale, scale));
+        }
+        else
+        {
+          af.concatenate(AffineTransform.getScaleInstance(scaleX, scaleY));
+        }
       }
     }
     Shape retval =  af.createTransformedShape(s);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModule.java,v 1.1 2002/12/12 20:20:28 taqua Exp $
+ * $Id: OperationModule.java,v 1.2 2002/12/16 17:31:05 mungady Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,12 @@ package com.jrefinery.report.targets.pageable.operations;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.pageable.ElementLayoutInformation;
 import com.jrefinery.report.targets.pageable.contents.Content;
+import com.jrefinery.report.targets.FloatDimension;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Dimension2D;
 import java.util.List;
 
 /**
@@ -146,6 +149,7 @@ public abstract class OperationModule
    *
    * @throws OutputTargetException if there is a problem with the OutputTarget.
    */
-  public abstract Content createContentForElement(Element e, Rectangle2D bounds, OutputTarget ot)
+  public abstract Content createContentForElement(Element e, ElementLayoutInformation bounds, OutputTarget ot)
       throws OutputTargetException;
+
 }

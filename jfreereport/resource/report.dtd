@@ -379,6 +379,9 @@
   src         CDATA #REQUIRED
   height      CDATA #REQUIRED
   name        CDATA #IMPLIED
+  dynamic     (%boolean;)   #IMPLIED
+  scale       (%boolean;)   #IMPLIED
+  keepAspectRatio     (%boolean;)   #IMPLIED
 >
 <!--
 
@@ -392,6 +395,9 @@
   fieldname   CDATA #REQUIRED
   height      CDATA #REQUIRED
   name        CDATA #IMPLIED
+  dynamic     (%boolean;)   #IMPLIED
+  scale       (%boolean;)   #IMPLIED
+  keepAspectRatio     (%boolean;)   #IMPLIED
 >
 <!--
 
@@ -405,6 +411,9 @@
   height      CDATA #REQUIRED
   fieldname   CDATA #REQUIRED
   name        CDATA #IMPLIED
+  dynamic     (%boolean;)   #IMPLIED
+  scale       (%boolean;)   #IMPLIED
+  keepAspectRatio     (%boolean;)   #IMPLIED
 >
 
 

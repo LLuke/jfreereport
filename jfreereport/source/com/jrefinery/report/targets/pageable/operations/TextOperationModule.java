@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.2 2002/12/13 01:26:11 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.3 2002/12/16 17:31:05 mungady Exp $
  *
  * Changes
  * -------
@@ -43,14 +43,18 @@ import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.pageable.ElementLayoutInformation;
 import com.jrefinery.report.targets.pageable.contents.Content;
 import com.jrefinery.report.targets.pageable.contents.TextContent;
 import com.jrefinery.report.targets.pageable.contents.TextLine;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.FloatDimension;
 
 import java.awt.Font;
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -184,12 +188,27 @@ public class TextOperationModule extends OperationModule
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public Content createContentForElement(Element e, Rectangle2D bounds, OutputTarget ot)
+  public Content createContentForElement(Element e, ElementLayoutInformation bounds, OutputTarget ot)
     throws OutputTargetException
   {
+    Point2D point = bounds.getAbsolutePosition();
+
+    // TextElement has a defined width (Max(MinSize, PrefSize).
+    // and a maximum height (Min(MaxSize, PrefSize).
+
+    Dimension2D wDim = ElementLayoutInformation.unionMax(bounds.getMinimumSize(),
+                                                           bounds.getPreferredSize());
+    Dimension2D hDim = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
+                                                           bounds.getPreferredSize());
+    Dimension2D dim = new FloatDimension(wDim.getWidth(), hDim.getHeight());
+
     String text = (String) e.getValue();
     Font f = e.getStyle().getFontStyleProperty();
-    TextContent tc = new TextContent(text, bounds, ot.createTextSizeCalculator(f));
+    Rectangle2D tBounds = new Rectangle2D.Double(point.getX(),
+                                                  point.getY(),
+                                                  dim.getWidth(),
+                                                  dim.getHeight());
+    TextContent tc = new TextContent(text, tBounds, ot.createTextSizeCalculator(f));
     return tc;
   }
 
