@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.25 2003/11/01 19:52:27 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.26 2003/11/07 15:31:39 taqua Exp $
  *
  * Changes
  * -------
@@ -729,6 +729,8 @@ public class PreviewProxyBase extends JComponent
     setLayout(new BorderLayout());
     setDoubleBuffered(false);
 
+    createDefaultActions(proxy.createDefaultCloseAction());
+
     this.zoomIndex = DEFAULT_ZOOM_INDEX;
 
     toolbar = createToolBar ();
@@ -774,8 +776,6 @@ public class PreviewProxyBase extends JComponent
   protected void reinitialize ()
   {
     initializeToolBar();
-    createDefaultActions(proxy.createDefaultCloseAction());
-
     // set up the menu
     proxy.setJMenuBar(createMenuBar());
   }
@@ -1250,7 +1250,7 @@ public class PreviewProxyBase extends JComponent
     final JMenu fileMenu = new JMenu(resources.getString("menu.file.name"));
     Character mnemonic = (Character) resources.getObject("menu.file.mnemonic");
     fileMenu.setMnemonic(mnemonic.charValue());
-    
+
     final Iterator it = exportPlugIns.iterator();
     final boolean addedItem = it.hasNext();
     while (it.hasNext())

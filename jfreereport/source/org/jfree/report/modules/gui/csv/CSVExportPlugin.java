@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportPlugin.java,v 1.9 2003/11/01 19:52:27 taqua Exp $
+ * $Id: CSVExportPlugin.java,v 1.10 2003/11/07 15:31:39 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -242,7 +242,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
   public boolean isSeparated()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.gui.csv.Separate", "false").equals("true");
+        ("org.jfree.report.modules.gui.csv.Separated", "false").equals("true");
   }
 
 

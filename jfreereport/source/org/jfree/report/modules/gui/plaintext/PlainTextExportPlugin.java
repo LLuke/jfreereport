@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportPlugin.java,v 1.9 2003/11/01 19:52:28 taqua Exp $
+ * $Id: PlainTextExportPlugin.java,v 1.10 2003/11/07 15:31:39 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -225,7 +225,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
   public boolean isSeparated()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.gui.plaintext.Separate", "false").equals("true");
+        ("org.jfree.report.modules.gui.plaintext.Separated", "false").equals("true");
   }
 
   protected PlainTextExportDialog getExportDialog()

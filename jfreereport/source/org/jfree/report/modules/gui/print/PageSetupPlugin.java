@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.3 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.4 2003/11/07 15:31:39 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -194,7 +194,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
   public boolean isSeparated()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.gui.print.pagesetup.Separate", "false").equals("true");
+        ("org.jfree.report.modules.gui.print.pagesetup.Separated", "false").equals("true");
   }
 
 }

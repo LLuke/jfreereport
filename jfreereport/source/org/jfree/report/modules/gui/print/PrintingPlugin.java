@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.8 2003/11/01 19:52:28 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.9 2003/11/07 15:31:39 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -200,7 +200,7 @@ public class PrintingPlugin extends AbstractExportPlugin
   public boolean isSeparated()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.gui.print.Separate", "false").equals("true");
+        ("org.jfree.report.modules.gui.print.Separated", "false").equals("true");
   }
  
 }

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.7 2003/09/09 21:31:48 taqua Exp $
  *
  * Changes
  * --------
@@ -356,6 +356,8 @@ public class ExcelExportDialog extends JDialog
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
+    getRootPane().setDefaultButton(btnConfirm);
+
     buttonPanel.registerKeyboardAction(getActionConfirm(), KeyStroke.getKeyStroke('\n'),
         JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     gbc = new GridBagConstraints();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.11 2003/09/09 21:31:48 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.12 2003/10/18 19:22:32 taqua Exp $
  *
  * Changes
  * --------
@@ -572,6 +572,7 @@ public class PDFSaveDialog extends JDialog
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
+    getRootPane().setDefaultButton(btnConfirm);
     buttonPanel.registerKeyboardAction(getActionConfirm(),
         KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
         JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);

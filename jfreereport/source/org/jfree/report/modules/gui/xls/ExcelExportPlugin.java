@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.12 2003/11/01 19:52:28 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.13 2003/11/07 15:31:40 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -77,10 +77,10 @@ public class ExcelExportPlugin extends AbstractExportPlugin
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
   }
 
-  /** 
-   * Creates the progress dialog that monitors the export process. 
+  /**
+   * Creates the progress dialog that monitors the export process.
    *
-   * @return the progress monitor dialog. 
+   * @return the progress monitor dialog.
    */
   protected ReportProgressDialog createProgressDialog()
   {
@@ -224,7 +224,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
   public boolean isSeparated()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.gui.xls.Separate", "false").equals("true");
+        ("org.jfree.report.modules.gui.xls.Separated", "false").equals("true");
   }
 
   protected ExcelExportDialog getExportDialog()

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.6 2003/09/09 21:31:48 taqua Exp $
  *
  * Changes
  * --------
@@ -397,6 +397,7 @@ public class CSVExportDialog extends JDialog
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
+    getRootPane().setDefaultButton(btnConfirm);
     buttonPanel.registerKeyboardAction(new ActionConfirm(),
         KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
         JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.5 2003/08/25 14:29:31 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.6 2003/11/07 15:31:40 taqua Exp $
  *
  * Changes
  * -------
@@ -85,7 +85,7 @@ public final class ResultSetTableModelFactory
     return createTableModel
         (rs, ReportConfiguration.getGlobalConfig().getConfigProperty
         ("org.jfree.report.modules.misc.tablemodel.ColumnNameMapping",
-            "false").equals("true"));
+            "Label").equals("Label"));
   }
 
   /**
@@ -200,7 +200,7 @@ public final class ResultSetTableModelFactory
   {
     return generateDefaultTableModel(rs, ReportConfiguration.getGlobalConfig().getConfigProperty
         ("org.jfree.report.modules.misc.tablemodel.ColumnNameMapping",
-            "false").equals("true"));
+            "Label").equals("Label"));
   }
 
   /**
