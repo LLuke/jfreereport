@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.6 2003/02/25 14:07:27 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.7 2003/02/26 13:57:57 mungady Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import java.awt.image.BufferedImage;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.LayoutEvent;
 import com.jrefinery.report.event.LayoutListener;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
@@ -103,6 +104,7 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
         return e;
       }
     }
+    Log.debug ("Element not found in " + band);
     return null;
   }
 
@@ -178,6 +180,7 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     if ((o instanceof Component) == false)
     {
       image = null;
+      Log.debug ("Is no Component");
       return;
     }
 
@@ -186,8 +189,10 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     if (element == null)
     {
       // don't change/delete the image if already created ...
+      Log.debug ("Element not found");
       return;
     }
+    Log.debug ("Element found");
 
     float scale = getScale();
 
@@ -202,6 +207,23 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     Dimension dim = new Dimension((int) (bounds.getWidth()), (int) (bounds.getHeight()));
     comp.setSize(dim);
     comp.validate();
+    if (comp.getParent() != null)
+    {
+      // if the parent is not visible, the component will not be painted...
+      Log.info ("This component has a parent, this may influence the paint process.");
+    }
+    // this may be deprecated, but it is the only way to check whether the
+    // component has a peer ...
+    if (comp.getPeer() == null)
+    {
+      Log.warn ("This component has no peer, and may be invisible. This could prevent painting.");
+    }
+    if (comp.isShowing() == false)
+    {
+      // isShowing == false means,that nothing is painted ...
+      Log.warn ("This component is not visible and may deny painting.");
+    }
+
     BufferedImage bi = new BufferedImage((int) (scale * dim.width),
                                          (int) (scale * dim.height),
                                          BufferedImage.TYPE_INT_ARGB);
@@ -223,6 +245,7 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
   {
     if (image == null)
     {
+      Log.debug ("No Image created ..");
       return null;
     }
     ImageReference ref = new ImageReference(image);

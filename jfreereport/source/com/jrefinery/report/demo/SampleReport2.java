@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport2.java,v 1.4 2003/02/25 14:10:24 taqua Exp $
+ * $Id: SampleReport2.java,v 1.5 2003/02/26 16:42:10 mungady Exp $
  *
  * Changes:
  * --------
@@ -36,17 +36,27 @@
  */
 package com.jrefinery.report.demo;
 
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.geom.Point2D;
-
 import com.jrefinery.report.Band;
 import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportFooter;
 import com.jrefinery.report.ReportHeader;
+import com.jrefinery.report.function.AbstractExpression;
+import com.jrefinery.report.function.Expression;
+import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.function.PaintComponentFunction;
+import com.jrefinery.report.preview.PDFSaveDialog;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.util.Log;
+
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Rectangle;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * A sample to show the band in band capabilities of JFreeReport ...
@@ -55,6 +65,56 @@ import com.jrefinery.report.targets.style.ElementStyleSheet;
  */
 public class SampleReport2
 {
+  /**
+   * An expression that returns a very complex component.
+   */
+  private class ComplexComponentExpression extends AbstractExpression
+  {
+    private Component pif;
+
+    public ComplexComponentExpression(String name)
+    {
+      setName(name);
+      try
+      {
+        PDFSaveDialog dlg = new PDFSaveDialog();
+        pif = dlg.getContentPane();
+        pif.setVisible(true);
+        // remove the old content pane from the dialog, so that it has no
+        // parent ...
+        dlg.setContentPane(new JPanel());
+      }
+      catch (Exception e)
+      {
+        Log.error ("PIF init failed");
+      }
+    }
+
+    /**
+     * Return a completly separated copy of this function. The copy does no
+     * longer share any changeable objects with the original function. Only
+     * the datarow may be shared.
+     *
+     * @return a copy of this function.
+     */
+    public Expression getInstance()
+    {
+      return new ComplexComponentExpression(getName());
+    }
+
+    /**
+     * Return the current expression value.
+     * <P>
+     * The value depends (obviously) on the expression implementation.
+     *
+     * @return the value of the function.
+     */
+    public Object getValue()
+    {
+      return pif;
+    }
+  }
+
   /**
    * Default constructor.
    */
@@ -105,7 +165,7 @@ public class SampleReport2
    *
    * @return the created report.
    */
-  public JFreeReport createReport ()
+  public JFreeReport createReport () throws FunctionInitializeException
   {
     Band levelA1 = createBand("A1", Color.magenta, 0, 0, 100, 100);
     levelA1.addElement(createBand("A1-B1", Color.blue, 0, 50, 50, 50));
@@ -133,8 +193,25 @@ public class SampleReport2
     header.addElement(levelA1);
     header.addElement(levelA2);
 
+    ReportFooter footer = new ReportFooter();
+    footer.addElement(ItemFactory.createImageDataRowElement("element",
+                                                            new Rectangle2D.Float (0,0,400, 400),
+                                                            Color.white, "PaintComponent"));
+
     JFreeReport report = new JFreeReport();
     report.setReportHeader(header);
+    report.setReportFooter(footer);
+
+    report.addExpression(new ComplexComponentExpression("CreateComponent"));
+
+    PaintComponentFunction pc = new PaintComponentFunction();
+    pc.setName("PaintComponent");
+    pc.setProperty("field", "CreateComponent");
+    pc.setProperty("element", "element");
+    pc.setProperty("scale", "5");
+    report.addFunction(pc);
+
+    Log.debug (report.getReportFooter().getElement("element"));
     return report;
   }
 
