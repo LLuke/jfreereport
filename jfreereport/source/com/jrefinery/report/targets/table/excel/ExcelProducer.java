@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.6 2003/01/30 00:04:54 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.7 2003/02/04 17:56:31 taqua Exp $
  *
  * Changes
  * -------
@@ -234,7 +234,7 @@ public class ExcelProducer extends TableProducer
                                        (short)(x + content.getColSpan() - 1)));
     }
 
-    ExcelContentCellData contentCell = (ExcelContentCellData) content.getElement();
+    ExcelCellData contentCell = (ExcelCellData) content.getElement();
 
     HSSFCell cell = row.createCell(x);
     HSSFCellStyle style = cellDataFactory.getStyleFactory().createCellStyle(contentCell.getExcelCellStyle(), bg);

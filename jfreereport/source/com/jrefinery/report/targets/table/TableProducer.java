@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.11 2003/02/12 21:17:18 taqua Exp $
+ * $Id: TableProducer.java,v 1.12 2003/02/16 23:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,14 @@ import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 /**
- *
+ * The TableProducer is responsible for creating the produced Table. After
+ * the writer has finished the band layout process, the layouted bands are
+ * forwarded into the TableProducer. The TableProducer coordinates the cell
+ * creation process and collects the generated TableCellData. The raw CellData
+ * objects are later transformed into a TableGridLayout.
+ * <p>
+ * This class defines the global contract and provides some helper methods for
+ * the implementors.
  */
 public abstract class TableProducer
 {
@@ -175,6 +182,8 @@ public abstract class TableProducer
     {
       return;
     }
+
+    // this separation should not be needed
 /*
     processBandInner(bounds, band);
   }
@@ -263,6 +272,14 @@ public abstract class TableProducer
     }
   }
 
+  /**
+   * Merges all TableCellBackgrounds contained in the given list. The list must
+   * be sorted by preference, the first background in the list overlays all other
+   * backgrounds.
+   *
+   * @param background the collected backgrounds for a single table cell.
+   * @return the merged TableCellBackground.
+   */
   protected TableCellBackground createTableCellStyle (List background)
   {
     if (background == null)
@@ -294,11 +311,21 @@ public abstract class TableProducer
     return (bg);
   }
 
+  /**
+   * Gets the dummy mode state, in dummy mode no output is done.
+   *
+   * @return true, if the producer is working in dummy mode, no output is done.
+   */
   public boolean isDummy ()
   {
     return dummy;
   }
 
+  /**
+   * Defines the dummy mode.
+   *
+   * @param dummy set to true, to activate the dummy mode, so that all output is skipped. 
+   */
   public void setDummy(boolean dummy)
   {
     this.dummy = dummy;

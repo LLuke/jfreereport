@@ -1,8 +1,39 @@
 /**
- * Date: Jan 14, 2003
- * Time: 2:32:12 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: TableWriter.java,v 1.11 2003/02/12 23:05:57 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------------
+ * TableWriter.java
+ * -------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: TableWriter.java,v 1.12 2003/02/16 23:23:46 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 24-Jan-2003 : Initial version
+ * 17-Feb-2003 : Documentation
  */
 package com.jrefinery.report.targets.table;
 
@@ -26,20 +57,34 @@ import java.awt.geom.Rectangle2D;
  * <p>
  * This can be used to f.i. to create separate sheets in Excel-Workbooks, the detailed
  * semantics depend on concrete implementation of the TableProducer.
+ * <p>
+ * This writer is not thread-safe.
  */
 public class TableWriter extends AbstractFunction
 {
+  /**
+   * The SheetName-function property, defines the name of an StringFunction
+   * that creates the sheet names.
+   */
   public static final String SHEET_NAME_FUNCTION_PROPERTY =
       "com.jrefinery.report.targets.table.TableWriter.SheetNameFunction";
 
+  /** the layout support used for the band layout */
   private LayoutSupport layoutSupport;
+  /** The current event, stored on every call to one of the ReportListener methods */
   private ReportEvent currentEvent;
+  /** The table producer used to create the layout */
   private TableProducer producer;
+  /** the cursor pointing to the current position on the sheet. */
   private TableWriterCursor cursor;
 
+  /** the maximum width, required for the BandLayout */
   private float maxWidth;
+  /** the dependency level for this function, usually -1 */
   private int depLevel;
+  /** A flag indicating whether the writer is currently handling the end of an page */
   private boolean inEndPage;
+  /** A flag indicating whether the current page is empty */
   private boolean isPageEmpty;
 
 
@@ -49,30 +94,57 @@ public class TableWriter extends AbstractFunction
   /** A flag that indicates that the current pagebreak will be the last one. */
   private boolean isLastPageBreak;
 
+  /**
+   * Creates a new TableWriter. The dependency level is set to -1 and the maxwidth
+   * is defined to be 1000.
+   */
   public TableWriter()
   {
     setDependencyLevel(-1);
     setMaxWidth(1000);
   }
 
-  public String getSheetNameFunction()
+  /**
+   * Gets the name of the SheetName function. The sheetname function defines the
+   * names of the generated sheets.
+   *
+   * @return the name of the sheet name function, or null, if that name is not known yet.
+   */
+  private String getSheetNameFunction()
   {
     if (getCurrentEvent() == null)
+    {
       return null;
+    }
     return getCurrentEvent().getReport().getReportConfiguration().getConfigProperty(SHEET_NAME_FUNCTION_PROPERTY);
   }
 
-  public boolean isInEndPage()
+  /**
+   * Returns true, if the tablewriter is currently handling the end of the current page.
+   *
+   * @return true, if the end of the page is currently handled.
+   */
+  private boolean isInEndPage()
   {
     return inEndPage;
   }
 
-  public TableWriterCursor getCursor()
+  /**
+   * Gets the cursor for this writer. The cursor marks the current position in the
+   * current sheet.
+   *
+   * @return the cursor.
+   */
+  private TableWriterCursor getCursor()
   {
     return cursor;
   }
 
-  public void setCursor(TableWriterCursor cursor)
+  /**
+   * Sets the cursor for the writer.
+   * @param cursor the new cursor.
+   */
+  private void setCursor(TableWriterCursor cursor)
   {
     this.cursor = cursor;
   }
@@ -105,11 +177,21 @@ public class TableWriter extends AbstractFunction
     return this;
   }
 
+  /**
+   * Gets the maximum width available for a root band during the layouting process.
+   *
+   * @return the maximum width for a root band.
+   */
   public float getMaxWidth()
   {
     return maxWidth;
   }
 
+  /**
+   * Defines the maximum width available for a root band during the layouting process.
+   *
+   * @param width the maximum width for a root band.
+   */
   public void setMaxWidth(float width)
   {
     maxWidth = width;
@@ -123,7 +205,7 @@ public class TableWriter extends AbstractFunction
    *
    * @return the dimensions of the band.
    */
-  protected Rectangle2D doLayout(Band band)
+  private Rectangle2D doLayout(Band band)
   {
     // in this layouter the width of a band is always the full page width.
     // the height is not limited ...
@@ -138,7 +220,16 @@ public class TableWriter extends AbstractFunction
     return bounds;
   }
 
-  protected void doPrint (Rectangle2D bounds, Band band)
+  /**
+   * Forwards the given band to the TableProducer. This will create the content
+   * and will add the TableCellData object to the grid.
+   *
+   * @see TableProducer#processBand
+   * @param bounds the bounds of the band, defines the position of the printed band within
+   * the sheet.
+   * @param band the band that should be printed.
+   */
+  private void doPrint (Rectangle2D bounds, Band band)
   {
     int cellCount = producer.getCellCount();
 
@@ -153,7 +244,10 @@ public class TableWriter extends AbstractFunction
   }
 
 
-  public void endPage ()
+  /**
+   * Ends the current page. Fires the PageFinished event.
+   */
+  private void endPage ()
   {
     if (inEndPage == true)
     {
@@ -169,6 +263,9 @@ public class TableWriter extends AbstractFunction
     inEndPage = false;
   }
 
+  /**
+   * Starts a new page. Fires the PageStarted event.
+   */
   public void startPage ()
   {
     if (inEndPage == true)
@@ -186,7 +283,7 @@ public class TableWriter extends AbstractFunction
   }
 
   /**
-   * Prints a band.
+   * Performs the band layout and prints the band.
    *
    * @param b  the band.
    */
@@ -271,7 +368,7 @@ public class TableWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that a page has started.
+   * Prints the PageHeader and all repeating group headers.
    *
    * @param event  the event.
    */
@@ -342,7 +439,7 @@ public class TableWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that a page has ended.
+   * Prints the page footer.
    *
    * @param event  the event.
    */
@@ -374,7 +471,7 @@ public class TableWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that a group has started.
+   * Prints the group header for the current group.
    *
    * @param event  the event.
    */
@@ -388,7 +485,7 @@ public class TableWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that a group has finished.
+   * Prints the group footer for the current group.
    *
    * @param event  the event.
    */
@@ -402,7 +499,7 @@ public class TableWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that a row of data is being processed.
+   * Prints the itemband.
    *
    * @param event  the event.
    */
@@ -413,7 +510,7 @@ public class TableWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that a group of item bands is about to be processed.
+   * Handles the start of the item processing.
    * <P>
    * The next events will be itemsAdvanced events until the itemsFinished event is raised.
    *
@@ -427,7 +524,7 @@ public class TableWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that a group of item bands has been completed.
+   * Handles the end of the item processing.
    * <P>
    * The itemBand is finished, the report starts to close open groups.
    *
@@ -440,21 +537,43 @@ public class TableWriter extends AbstractFunction
     isInItemGroup = false;
   }
 
+  /**
+   * Returns the current event, which has been updated at the start of every
+   * ReportListener method.
+   *
+   * @return the current event.
+   */
   public ReportEvent getCurrentEvent()
   {
     return currentEvent;
   }
 
+  /**
+   * Defines the current event, which must be updated at the start of every
+   * ReportListener method.
+   *
+   * @param currentEvent the current event.
+   */
   public void setCurrentEvent(ReportEvent currentEvent)
   {
     this.currentEvent = currentEvent;
   }
 
+  /**
+   * Gets the TableProducer.
+   *
+   * @return the table producer that should be used to create the TableCellData.
+   */
   public TableProducer getProducer()
   {
     return producer;
   }
 
+  /**
+   * Sets the TableProducer, that should be used to create the TableCellData.
+   *
+   * @param producer the table producer that should be used to create the TableCellData.
+   */
   public void setProducer(TableProducer producer)
   {
     this.producer = producer;
