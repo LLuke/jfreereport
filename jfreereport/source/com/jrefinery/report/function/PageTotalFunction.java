@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.14 2003/03/18 18:28:16 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.15 2003/03/30 21:23:37 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -73,6 +73,7 @@ import com.jrefinery.report.util.Log;
  */
 public class PageTotalFunction extends PageFunction
 {
+  private static Object o;
   /**
    * The current number is a shared secret over multiple report states and is shared
    * among all states of a report (if global) or all states which belong to a group.
@@ -140,6 +141,14 @@ public class PageTotalFunction extends PageFunction
    */
   public void pageStarted(ReportEvent event)
   {
+    // report started is no longer the first event. PageStarted is called first!
+    if (pageStorage == null)
+    {
+      Log.debug ("Report Started: PageStorage was null: " + this.hashCode());
+      o = this;
+      pageStorage = new PageStorage(getStartPage() - 1);
+    }
+
     if (event.getState().isPrepareRun() && event.getState().getLevel() < 0)
     {
       if (isGroupStarted)
@@ -151,6 +160,7 @@ public class PageTotalFunction extends PageFunction
       {
         this.setPage(getPage() + 1);
       }
+      Log.debug ("Stored: " + event.getState().getCurrentDisplayItem());
       groupPages.put(new Integer(event.getState().getCurrentDisplayItem()), this.pageStorage);
     }
     else
@@ -162,7 +172,7 @@ public class PageTotalFunction extends PageFunction
             groupPages.get(new Integer(event.getState().getCurrentDisplayItem()));
         if (pageStorage == null)
         {
-          Log.error ("Current DataItem: " + event.getState().getCurrentDataItem() + " " + groupPages);
+          Log.error ("Current DataItem: " + event.getState().getCurrentDisplayItem() + " " + groupPages);
           throw new IllegalStateException("No page-storage for the current state: "
                                           + event.getState().getCurrentDataItem());
 
@@ -219,16 +229,12 @@ public class PageTotalFunction extends PageFunction
    */
   public void reportStarted(ReportEvent event)
   {
-    // report started is no longer the first event. PageStarted is called first!
-    if (pageStorage == null)
-    {
-      pageStorage = new PageStorage(getStartPage() - 1);
-    }
-
+    /**
     if (event.getState().isPrepareRun() && event.getState().getLevel() < 0)
     {
       this.groupPages.clear();
     }
+     **/
   }
 
   /**
@@ -253,7 +259,7 @@ public class PageTotalFunction extends PageFunction
   {
     if (this.pageStorage == null)
     {
-      Log.warn ("CurrentPage is null, no repagination done?");
+      Log.warn ("CurrentPage is null, no repagination done?: " + this.hashCode() + " -> " + (o == this));
       return 0;
     }
 
@@ -330,6 +336,7 @@ public class PageTotalFunction extends PageFunction
   {
     PageTotalFunction function = (PageTotalFunction) super.getInstance();
     function.groupPages = new HashMap();
+    Log.debug ("PageStorage Will Be null: " + this.hashCode() + " -> " + (o == this));
     function.pageStorage = null;
     return function;
   }

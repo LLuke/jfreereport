@@ -95,6 +95,7 @@
   </items>
   <!-- FUNCTIONS -->
   <functions>
+    <!-- <function class="com.jrefinery.report.function.EventMonitorFunction" name="monitor"/> -->
     <property-ref name="report.date"/>
     <function name="Count1" class="com.jrefinery.report.function.ItemCountFunction">
       <properties>

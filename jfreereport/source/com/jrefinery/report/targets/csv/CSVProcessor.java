@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.8 2003/02/25 14:54:51 mungady Exp $
+ * $Id: CSVProcessor.java,v 1.9 2003/03/04 20:28:57 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.ReportEventException;
+import com.jrefinery.report.ReportInitialisationException;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;

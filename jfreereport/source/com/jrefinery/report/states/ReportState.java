@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.27 2003/03/04 20:28:57 taqua Exp $
+ * $Id: ReportState.java,v 1.28 2003/03/13 17:41:54 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -54,22 +54,21 @@
 
 package com.jrefinery.report.states;
 
+import java.util.Iterator;
+import java.util.List;
+
+import com.jrefinery.report.Band;
 import com.jrefinery.report.DataRow;
 import com.jrefinery.report.DataRowBackend;
 import com.jrefinery.report.DataRowConnector;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.Band;
-import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.event.LayoutEvent;
+import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.LevelledExpressionList;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportProperties;
 import com.jrefinery.report.util.ReportPropertiesList;
-
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Captures state information for a report while it is in the process of being displayed or
@@ -127,10 +126,12 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * This constructor is protected, it is intended to be used by subclasses only.
    *
    * @param reportPar  the report.
+   * @throws CloneNotSupportedException if the initial cloning of the report definition fails.
    */
-  protected ReportState (JFreeReport reportPar)
+  protected ReportState (JFreeReport reportPar) throws CloneNotSupportedException
   {
-    setReport(reportPar);
+    setReport((JFreeReport) reportPar.clone());
+
     reportProperties = getReport().getProperties ();
 
     DataRowConnector dc = new DataRowConnector ();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.31 2003/03/18 22:35:24 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.32 2003/03/26 10:49:23 taqua Exp $
  *
  * Changes
  * -------
@@ -96,6 +96,11 @@ public class PageableReportProcessor
   {
     try
     {
+      // first cloning ... protect the page layouter function ...
+      // and any changes we may do to the report instance.
+
+      // a second cloning is done in the start state, to protect the
+      // processed data.
       this.report = (JFreeReport) report.clone();
     }
     catch (CloneNotSupportedException cne)
@@ -406,6 +411,10 @@ public class PageableReportProcessor
     catch (OutputTargetException ote)
     {
       throw new ReportProcessingException("Unable to repaginate Report", ote);
+    }
+    catch (CloneNotSupportedException cne)
+    {
+      throw new ReportProcessingException("Unable to initialize the report, clone error", cne);
     }
   }
 
